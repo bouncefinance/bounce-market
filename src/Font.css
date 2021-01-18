@@ -1,0 +1,29 @@
+@import url('https://fonts.font.im/css?family=IBM+Plex+Mono');
+
+@font-face {
+    font-family: 'Optima';
+    font-weight: normal;
+    font-style: normal;
+    src: url('./assets/fonts/Optima/newOptima.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Optima';
+    font-weight: bold;
+    font-style: normal;
+    src: url('./assets/fonts/Optima/newOptima_bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    font-weight: normal;
+    font-style: normal;
+    src: url('./assets/fonts/Helvetica/helveticaneue.woff') format('truetype');
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    font-weight: bold;
+    font-style: normal;
+    src: url('./assets/fonts/Helvetica/helveticaneue-bold.woff') format('truetype');
+}
