@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import Test from './test'
+import { Reducer } from './redux'
+import { Web3Provider } from "@ethersproject/providers"
+import { Web3ReactProvider } from "@web3-react/core"
 
 function App() {
+  const getLibrary = (provider, connector) => {
+    const library = new Web3Provider(provider);
+    library.pollingInterval = 8000;
+    return library;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Reducer>
+        <div className="App">
+          <Test />
+        </div>
+      </Reducer>
+    </Web3ReactProvider>
   );
 }
 
