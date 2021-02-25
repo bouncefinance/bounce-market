@@ -1,7 +1,7 @@
 // import Test from './test'
 import Page from './pages'
-import './Font.css'
-import './App.css'
+import './stastic/css/Font.css'
+import './stastic/css/App.css'
 import { Reducer } from './redux'
 import { Web3Provider } from "@ethersproject/providers"
 import { Web3ReactProvider } from "@web3-react/core"
