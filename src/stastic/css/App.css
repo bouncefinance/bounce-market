@@ -33,7 +33,7 @@ th,
 td {
     margin: 0;
     padding: 0;
-    font-family: "微软雅黑";
+    font-family: "Helvetica Neue";
 }
 
 fieldset,
@@ -45,7 +45,7 @@ ul,
 ol,
 li {
     list-style: none;
-    font-family: 'Microsoft YaHei';
+    font-family: 'Helvetica Neue';
 }
 
 /* remember to define focus styles! */
@@ -197,7 +197,6 @@ q:after {
 html,
 body {
     font-family: 'Helvetica Neue';
-    font-size: 16px;
     color: #000;
     font-weight: 500;
 }
@@ -210,4 +209,48 @@ h5,
 h6 {
     font-family: 'Optima';
     font-weight: 700;
+}
+
+h6 {
+    font-size: 16px;
+}
+
+h5 {
+    font-size: 20px;
+}
+
+h4 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 48px;
+}
+
+h1 {
+    font-size: 60px;
+}
+
+.primary {
+    color: #124EEB;
+}
+
+.success {
+    color: #2DAF4A;
+}
+
+.error {
+    color: #E43F29;
+}
+
+p{
+    font-weight: 500;
+}
+
+span{
+    font-weight: 400;
 }

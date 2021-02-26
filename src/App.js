@@ -1,5 +1,5 @@
-// import Test from './test'
-import Page from './pages'
+import Test from './test'
+// import Page from './pages'
 import './stastic/css/Font.css'
 import './stastic/css/App.css'
 import { Reducer } from './redux'
@@ -19,8 +19,8 @@ function App() {
       <Web3ReactProvider getLibrary={getLibrary}>
         <Reducer>
           <BrowserRouter>
-            {/* <Test /> */}
-            <Page />
+            <Test />
+            {/* <Page /> */}
           </BrowserRouter>
         </Reducer>
       </Web3ReactProvider>
