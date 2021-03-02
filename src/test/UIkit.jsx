@@ -1,8 +1,31 @@
 import React from 'react'
-import { UIkitStyled } from './styled'
-import { TextInput, NumberInput } from '../components/UI-kit/Input'
-import { PullRadioBox, PullCheckBox } from '../components/UI-kit/Select'
-import { Button, OtherButton } from '../components/UI-kit/Button'
+import styled from 'styled-components'
+import { TextInput, NumberInput, PullRadioBox, PullCheckBox, Button, OtherButton } from '../components/UI-kit'
+
+const UIkitStyled = styled.div`
+    padding: 20px 30px;
+
+    .title{
+        margin-bottom: 10px;
+    }
+
+    .content{
+        padding-bottom: 15px;
+    }
+
+    .container{
+        display: flex;
+        &>div{
+            width: 50%;
+        }
+    }
+
+    hr{
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+`
 
 export default function UIkit() {
     return (
@@ -119,9 +142,9 @@ export default function UIkit() {
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <Button value={'Check Status'} size='lg' disabled onClick={() => { alert('clock Button') }} />
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <Button value={'Check Status'} size='lg' type='white' />
+                        <Button value={'Check Status'} size='lg' primary />
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <Button value={'Check Status'} size='lg' type='white' disabled />
+                        <Button value={'Check Status'} size='lg' primary disabled />
                         <br />
                         <br />
 
@@ -129,9 +152,9 @@ export default function UIkit() {
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <Button value={'Check Status'} disabled />
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <Button value={'Check Status'} type='white' />
+                        <Button value={'Check Status'} primary />
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <Button value={'Check Status'} type='white' disabled />
+                        <Button value={'Check Status'} primary disabled />
                         <br />
                         <br />
 
@@ -139,13 +162,13 @@ export default function UIkit() {
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <Button value={'Check Status'} size='sm' disabled />
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <Button value={'Check Status'} size='sm' type='white' />
+                        <Button value={'Check Status'} size='sm' primary />
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <Button value={'Check Status'} size='sm' type='white' disabled />
+                        <Button value={'Check Status'} size='sm' primary disabled />
                         <br />
                         <br />
 
-                        <OtherButton type='setting' value={'Setting'} onClick={()=>{alert('setting')}}/>
+                        <OtherButton type='setting' value={'Setting'} onClick={() => { alert('setting') }} />
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <OtherButton type='setting' value={'Setting'} disabled />
                         <br />

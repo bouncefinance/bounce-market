@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { InputStyled } from './styled'
-import { ErrorStatus } from './const'
+import { ErrorStatus } from './error_config'
 
 export default function NumberInput({
     title,

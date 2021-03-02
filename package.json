@@ -17,7 +17,7 @@
     "web3": "^1.3.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=8888 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -40,7 +40,10 @@
       "last 1 safari version"
     ]
   },
-  "rules":{
-    "indent": [2, 4]
+  "rules": {
+    "indent": [
+      2,
+      4
+    ]
   }
 }
