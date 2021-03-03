@@ -1,7 +1,7 @@
 import React from 'react'
 import { LayoutStyled } from './styled'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
-import Header from './Header'
+import Header from './component/Header'
 import UIkit from '../test/UIkit'
 import Test from '../test'
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { Button } from '../../components/UI-kit'
+import { Button } from '../../../components/UI-kit'
 import Search from './Search'
 
-import logo_bounce from '../../assets/images/logo/bounce.svg'
+import logo_bounce from '../../../assets/images/logo/bounce.svg'
 
 const HeaderStyled = styled.div`
     height: 76px;
