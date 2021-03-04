@@ -95,7 +95,7 @@ const Nav_list = [{
 export default function Index() {
     const { connectWallect } = useModal()
     const { onConnect } = useWalletConnect()
-    const [curNav, setCurNav] = useState(window.localStorage.getItem('Herder_CurNav') || 'Home')
+    const [curNav, setCurNav] = useState('Home')
     const { account, chainId, active } = useActiveWeb3React()
 
     useEffect(() => {
@@ -103,6 +103,13 @@ export default function Index() {
         if (type) {
             onConnect(type)
         }
+
+        const pathName = window.location.pathname
+        Nav_list.forEach(element => {
+            if (pathName.indexOf(element.route) !== -1) {
+                setCurNav(element.name)
+            }
+        });
         // eslint-disable-next-line
     }, [])
 
@@ -128,7 +135,6 @@ export default function Index() {
                                 key={item.name}
                                 className={item.name === curNav ? 'active' : ''}
                                 onClick={() => {
-                                    window.localStorage.setItem('Herder_CurNav', item.name)
                                     setCurNav(item.name)
                                 }}
                             >
