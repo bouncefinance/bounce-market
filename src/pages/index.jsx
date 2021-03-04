@@ -2,6 +2,7 @@ import React from 'react'
 import { LayoutStyled } from './styled'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 import Header from './component/Header'
+import Footer from './component/Footer'
 import UIkit from '../test/UIkit'
 import Test from '../test'
 
@@ -25,6 +26,8 @@ export default function Index() {
                 <Route exact path='/Marketplace' component={Marketplace} />
                 <Route exact path='/Brands' component={Brands} />
                 <Route exact path='/P2P' component={P2P} />
+
+                <Footer />
             </LayoutStyled>
         </BrowserRouter>
     )

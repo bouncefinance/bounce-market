@@ -1,12 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
+import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
 import PopularItem from './PopularItem'
 import BrandsItem from './BrandsItem'
 import RequestsItem from './RequestsItem'
+import arrows_white from '@assets/images/icon/arrows-white.svg'
 import img_banner from '@assets/images/banner.svg'
 import img_example_1 from '@assets/images/example_1.svg'
 import img_alpaca_city from '@assets/images/alpaca_city.svg'
+import two_setting from './assets/two-setting.svg'
 
 const HomeStyled = styled.div`
   .banner{
@@ -65,6 +68,41 @@ const HomeStyled = styled.div`
       }
     }
   }
+
+  .bottom_banner{
+      width: 1100px;
+      height: 120px;
+      box-sizing: border-box;
+      background-color: #000;
+      margin: 0 auto;
+      margin-top: 68px;
+      margin-bottom: 84px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .left{
+        color: #fff;
+        display: flex;
+        align-items: center;
+        margin-left: 28px;
+        cursor: pointer;
+
+        h3{
+          font-size: 30px;
+        }
+
+        img{
+          margin-left: 20px;
+          width: 30px;
+        }
+      }
+
+      .right{
+        /* margin-top: 25px; */
+        margin-right: 67px;
+      }
+    }
 `
 
 const banner_Nav = [{
@@ -107,18 +145,18 @@ export default function Index() {
         </div>
       </div>
 
+      <CardBanner />
+
       <CardGroup title='Most Popular Items' link='' marinTop='64px'>
-        <PopularItem src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
-        <PopularItem src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
-        <PopularItem src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
-        <PopularItem src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
+        {[...new Array(4)].map((item, index) => {
+          return <PopularItem key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
+        })}
       </CardGroup>
 
       <CardGroup title='Hotest Brands' link=''>
-        <BrandsItem src={img_alpaca_city} name='Alpaca City' />
-        <BrandsItem src={img_alpaca_city} name='Alpaca City' />
-        <BrandsItem src={img_alpaca_city} name='Alpaca City' />
-        <BrandsItem src={img_alpaca_city} name='Alpaca City' /> 
+        {[...new Array(4)].map((item, index) => {
+          return <BrandsItem key={index} src={img_alpaca_city} name='Alpaca City' />
+        })}
       </CardGroup>
 
       <CardGroup title='Newest Requests' link=''>
@@ -133,6 +171,14 @@ It shouldn’t be longer then ~20-30 sec.'
           />
         })}
       </CardGroup>
+
+      <div className="bottom_banner">
+        <div className="left">
+          <h3>Create your unique NFT on Bounce</h3>
+          <img src={arrows_white} alt="" />
+        </div>
+        <img className='right' src={two_setting} alt="" />
+      </div>
     </HomeStyled>
   )
 }

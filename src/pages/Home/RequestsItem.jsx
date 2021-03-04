@@ -8,7 +8,6 @@ const RequestsItemStyled = styled.div`
     margin-right: 17px;
     padding: 16px 20px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    margin-bottom: 50px;
     &:nth-child(4n){
         margin-right: 0px;
     }
