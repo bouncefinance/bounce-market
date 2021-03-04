@@ -12,6 +12,7 @@ import { useWalletConnect } from '@/web3/useWalletConnect'
 const HeaderStyled = styled.div`
     height: 76px;
     width: 100%;
+    min-width: 1100px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
