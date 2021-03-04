@@ -42,12 +42,16 @@ const Vessel = styled.div`
   .introduceBottom{
     display: flex;
     justify-content: flex-start;
+    margin: 0 auto;
+    width: 1100px;
     margin-bottom: 64px;
     margin-top: 52px;
   }
   .popular{
     display: flex;
     justify-content: flex-start;
+    margin: 0 auto;
+    width: 1100px;
     margin-bottom: 64px;
   }
   .popularTitle{
@@ -55,11 +59,15 @@ const Vessel = styled.div`
     font-style: normal;
     font-weight: bold;
     font-size: 28px;
+    margin: 0 auto;
+    width: 1100px;
     margin-bottom: 16px;
   }
   .Requests{
     display: flex;
     justify-content: flex-start;
+    margin: 0 auto;
+    width: 1100px;
     margin-bottom: 64px;
   }
 `
@@ -155,11 +163,15 @@ const Bottom = styled.div`
   background: black;
   color:#ffffff;
   font-size: 30px;
+  margin: 0 auto;
+  width: 1100px;
   margin-bottom: 50px;
   padding-left: 28px;
   font-family: Optima;
   font-style: normal;
   font-weight: bold;
+  margin-left: 23px;
+  
 `
 const RequestsTop = styled.div`
     display: flex;
@@ -193,9 +205,37 @@ const RequestsBottom = styled.div`
   font-weight: 600;
   font-size: 16px;
 `
+const Top = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 800px;
+  margin: 14px auto;
+  font-family: Helvetica Neue;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  color: #242424;
+  opacity: 0.8;
+`
+const About = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 1100px;
+  margin: 0px auto;
+
+`
 export default function Index() {
     return (
         <div>
+            <Top>
+                <div>New</div>
+                <div>Popular</div>
+                <div>Pictures</div>
+                <div>Audios</div>
+                <div>Videos</div>
+                <div>Games</div>
+                <div>Requests</div>
+            </Top>
            <Introduce >
                <div>
                    <div className='title1'>On Bounce you will find unique content for every taste</div>
@@ -219,7 +259,7 @@ export default function Index() {
                         </div>
                         <img className='introduceBottom1' src={introduceBottom2}/>
                     </IntroduceBottomItem>
-                    <IntroduceBottomItem>
+                    <IntroduceBottomItem style={{marginRight: -8}}>
                         <div>
                             <div className='title1'>Point-2-Point</div>
                             <div className='title2'>You can find your content here according to your taste</div>
@@ -316,7 +356,7 @@ export default function Index() {
                             100 USDT
                         </RequestsBottom>
                     </RequestsItem>
-                    <RequestsItem>
+                    <RequestsItem style={{marginRight: -8}}>
                         <RequestsTop >
                             <div className='title1'>B-day Video</div>
                             <div className='title2'>Video</div>
@@ -334,6 +374,12 @@ export default function Index() {
                     Create your unique NFT on Bounce
                 </Bottom>
             </Vessel>
+            <div>
+
+            </div>
+            <About>
+            {/*border-bottom: 1px solid;*/}
+            </About>
         </div>
     )
 }
