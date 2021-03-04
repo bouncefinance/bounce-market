@@ -1,17 +1,20 @@
 export const initState = {
-    isLogin: false,
-    account: null,
-    chainId: 1,
-    showModal: null
+    Show_Modal: null, // Connect_Wallect
 }
 
 export const reducer = (state, action) => {
     switch (action.type) {
-        case 'SHOW_MODAL':
+        case 'Show_Modal':
             return {
                 ...initState,
-                showModal: action.value
+                Show_Modal: action.value
             }
+
+            case 'CONNECT_WALLET':
+                return {
+                    ...initState,
+                    CONNECT_WALLET: action.value
+                }
 
         default:
             return state

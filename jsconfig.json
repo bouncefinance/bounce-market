@@ -7,7 +7,7 @@
         "paths": {
           "@/*": ["src/*"],
           "@assets/*": ["src/assets/*"],
-          "@component/*": ["src/components/*"]
+          "@components/*": ["src/components/*"]
         }
     },
     "exclude": [

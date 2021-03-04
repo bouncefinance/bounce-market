@@ -8,6 +8,6 @@ export function getContract(library, abi, address) {
 
 export const useActiveWeb3React = () => {
     const context = useWeb3React()
-    // const contextNetwork = useWeb3React()
-    return context
+    const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
+    return { ...context, type }
 }

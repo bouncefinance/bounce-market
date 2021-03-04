@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
 import Search from './Search'
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
+import useModal from '@components/Modal/useModal'
+import { useActiveWeb3React } from '@/web3'
+import { useWalletConnect } from '@/web3/useWalletConnect'
 
 const HeaderStyled = styled.div`
     height: 76px;
@@ -54,6 +57,25 @@ const HeaderStyled = styled.div`
             }
         }
     }
+    .avatar_box{
+        width: 32px;
+        height: 74px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.open{
+            border-bottom: 2px solid #124EEB;
+        }
+
+        .avatar{
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(154.16deg, #306AFF 6.12%, #3E74FE 49.44%, #003BD3 89.29%);
+            cursor: pointer;
+        }
+    } 
 `
 
 const Nav_list = [{
@@ -71,7 +93,23 @@ const Nav_list = [{
 }]
 
 export default function Index() {
+    const { connectWallect } = useModal()
+    const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState(window.localStorage.getItem('Herder_CurNav') || 'Home')
+    const { account, chainId, active } = useActiveWeb3React()
+
+    useEffect(() => {
+        const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
+        if (type) {
+            onConnect(type)
+        }
+        // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+        if (!active) return
+        console.log(account, chainId, active)
+    }, [account, chainId, active])
 
     return (
         <HeaderStyled>
@@ -90,6 +128,7 @@ export default function Index() {
                                 key={item.name}
                                 className={item.name === curNav ? 'active' : ''}
                                 onClick={() => {
+                                    window.localStorage.setItem('Herder_CurNav', item.name)
                                     setCurNav(item.name)
                                 }}
                             >
@@ -99,7 +138,12 @@ export default function Index() {
                             </li>
                         })}
                     </ul>
-                    <Button className='connect_btn' primary>Connect Wallet</Button>
+                    {active ? <div className='avatar_box'>
+                        <div className='avatar'></div>
+                    </div> : <Button className='connect_btn' primary onClick={() => {
+                        connectWallect()
+                    }}>Connect Wallet</Button>}
+
                 </div>
             </div>
         </HeaderStyled>
