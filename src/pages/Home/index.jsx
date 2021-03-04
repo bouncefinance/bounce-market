@@ -205,9 +205,37 @@ const RequestsBottom = styled.div`
   font-weight: 600;
   font-size: 16px;
 `
+const Top = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 800px;
+  margin: 14px auto;
+  font-family: Helvetica Neue;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  color: #242424;
+  opacity: 0.8;
+`
+const About = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 1100px;
+  margin: 0px auto;
+
+`
 export default function Index() {
     return (
         <div>
+            <Top>
+                <div>New</div>
+                <div>Popular</div>
+                <div>Pictures</div>
+                <div>Audios</div>
+                <div>Videos</div>
+                <div>Games</div>
+                <div>Requests</div>
+            </Top>
            <Introduce >
                <div>
                    <div className='title1'>On Bounce you will find unique content for every taste</div>
@@ -346,6 +374,12 @@ export default function Index() {
                     Create your unique NFT on Bounce
                 </Bottom>
             </Vessel>
+            <div>
+
+            </div>
+            <About>
+            {/*border-bottom: 1px solid;*/}
+            </About>
         </div>
     )
 }
