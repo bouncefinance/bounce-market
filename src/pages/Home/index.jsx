@@ -170,6 +170,7 @@ const Bottom = styled.div`
   font-family: Optima;
   font-style: normal;
   font-weight: bold;
+  margin-left: 23px;
   
 `
 const RequestsTop = styled.div`
