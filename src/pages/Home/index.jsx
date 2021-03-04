@@ -42,12 +42,16 @@ const Vessel = styled.div`
   .introduceBottom{
     display: flex;
     justify-content: flex-start;
+    margin: 0 auto;
+    width: 1100px;
     margin-bottom: 64px;
     margin-top: 52px;
   }
   .popular{
     display: flex;
     justify-content: flex-start;
+    margin: 0 auto;
+    width: 1100px;
     margin-bottom: 64px;
   }
   .popularTitle{
@@ -55,11 +59,15 @@ const Vessel = styled.div`
     font-style: normal;
     font-weight: bold;
     font-size: 28px;
+    margin: 0 auto;
+    width: 1100px;
     margin-bottom: 16px;
   }
   .Requests{
     display: flex;
     justify-content: flex-start;
+    margin: 0 auto;
+    width: 1100px;
     margin-bottom: 64px;
   }
 `
@@ -155,11 +163,14 @@ const Bottom = styled.div`
   background: black;
   color:#ffffff;
   font-size: 30px;
+  margin: 0 auto;
+  width: 1100px;
   margin-bottom: 50px;
   padding-left: 28px;
   font-family: Optima;
   font-style: normal;
   font-weight: bold;
+  
 `
 const RequestsTop = styled.div`
     display: flex;
@@ -219,7 +230,7 @@ export default function Index() {
                         </div>
                         <img className='introduceBottom1' src={introduceBottom2}/>
                     </IntroduceBottomItem>
-                    <IntroduceBottomItem>
+                    <IntroduceBottomItem style={{marginRight: -8}}>
                         <div>
                             <div className='title1'>Point-2-Point</div>
                             <div className='title2'>You can find your content here according to your taste</div>
@@ -316,7 +327,7 @@ export default function Index() {
                             100 USDT
                         </RequestsBottom>
                     </RequestsItem>
-                    <RequestsItem>
+                    <RequestsItem style={{marginRight: -8}}>
                         <RequestsTop >
                             <div className='title1'>B-day Video</div>
                             <div className='title2'>Video</div>
