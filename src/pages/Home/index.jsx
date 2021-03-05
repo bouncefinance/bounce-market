@@ -5,6 +5,9 @@ import bounce_Title from '@assets/images/bounceTitle.svg'
 import introduceBottom1 from '@assets/images/introduceBottom1.svg'
 import introduceBottom2 from '@assets/images/introduceBottom2.svg'
 import introduceBottom3 from '@assets/images/introduceBottom3.svg'
+import aboutIcon1 from '@assets/images/aboutIcon1.svg'
+import aboutIcon2 from '@assets/images/aboutIcon2.svg'
+import aboutIcon3 from '@assets/images/aboutIcon3.svg'
 const Introduce = styled.div`
   height: 280px;
   background: black;
@@ -220,13 +223,25 @@ const Top = styled.div`
 const About = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 1100px;
+  width: 1122px;
+  height: 81px;
+  line-height: 81px;
   margin: 0px auto;
+  .aboutIcon{
+    margin-right: 40px;
+  }
+  .logo{
+    width: 100px;
+    height: 20px;
+    display: inline-block;
+    margin-top: 28px;
+  }
 
 `
 export default function Index() {
     return (
         <div>
+            <div style={{borderBottom: '1px solid #ccc'}}>
             <Top>
                 <div>New</div>
                 <div>Popular</div>
@@ -377,8 +392,14 @@ export default function Index() {
             <div>
 
             </div>
+            </div>
             <About>
-            {/*border-bottom: 1px solid;*/}
+                <img className='logo' src={logo_bounce}/>
+                <div>
+                    <img className='aboutIcon' src={aboutIcon1}/>
+                    <img className='aboutIcon' src={aboutIcon2}/>
+                    <img src={aboutIcon3}/>
+                </div>
             </About>
         </div>
     )
