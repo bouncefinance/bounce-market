@@ -95,7 +95,7 @@ const PopularTitle = styled.div`
     font-weight: 500;
     font-size: 12px;
     color: #124EEB;
-    line-height: 32px;
+    line-height: 33px;
   }
 `
 const IntroduceBottomItem = styled.div`
@@ -199,7 +199,7 @@ const Bottom = styled.div`
   font-family: Optima;
   font-style: normal;
   font-weight: bold;
-  margin-left: 23px;
+  padding-left: 23px;
   .bottomIcon{
     width: 112px;
     margin-right: 67px;
