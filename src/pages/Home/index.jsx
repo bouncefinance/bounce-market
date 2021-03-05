@@ -8,6 +8,9 @@ import introduceBottom3 from '@assets/images/introduceBottom3.svg'
 import aboutIcon1 from '@assets/images/aboutIcon1.svg'
 import aboutIcon2 from '@assets/images/aboutIcon2.svg'
 import aboutIcon3 from '@assets/images/aboutIcon3.svg'
+import bottomIcon from '@assets/images/bottomIcon.svg'
+import arrows1 from '@assets/images/arrows1.svg'
+import arrows2 from '@assets/images/arrows2.svg'
 const Introduce = styled.div`
   height: 280px;
   background: black;
@@ -182,6 +185,8 @@ const BrandsItem = styled.div`
   }
 `
 const Bottom = styled.div`
+  display: flex;
+  justify-content: space-between;
   height: 120px;
   line-height: 120px;
   background: black;
@@ -195,6 +200,10 @@ const Bottom = styled.div`
   font-style: normal;
   font-weight: bold;
   margin-left: 23px;
+  .bottomIcon{
+    width: 112px;
+    margin-right: 67px;
+  }
   
 `
 const RequestsTop = styled.div`
@@ -283,21 +292,21 @@ export default function Index() {
                 <div className='introduceBottom'>
                     <IntroduceBottomItem>
                         <div>
-                        <div className='title1'>Marketplace</div>
+                        <div className='title1'>Marketplace<img src={arrows1} style={{marginLeft:10}}/></div>
                         <div className='title2'>You can find your content here according to your taste</div>
                         </div>
                         <img className='introduceBottom1' src={introduceBottom1}/>
                     </IntroduceBottomItem>
                     <IntroduceBottomItem>
                         <div>
-                            <div className='title1'>Brands</div>
+                            <div className='title1'>Brands<img src={arrows1} style={{marginLeft:10}}/></div>
                             <div className='title2'>You can find your content here according to your taste</div>
                         </div>
                         <img className='introduceBottom1' src={introduceBottom2}/>
                     </IntroduceBottomItem>
                     <IntroduceBottomItem style={{marginRight: -8}}>
                         <div>
-                            <div className='title1'>Point-2-Point</div>
+                            <div className='title1'>Point-2-Point<img src={arrows1} style={{marginLeft:10}}/></div>
                             <div className='title2'>You can find your content here according to your taste</div>
                         </div>
                         <img className='introduceBottom1' src={introduceBottom3}/>
@@ -309,6 +318,7 @@ export default function Index() {
                     </div>
                     <div className='title2'>
                         View All
+                        <img src={arrows1} style={{marginLeft:10}}/>
                     </div>
                 </PopularTitle>
                 <div className='popular'>
@@ -339,6 +349,7 @@ export default function Index() {
                     </div>
                     <div className='title2'>
                         View All
+                        <img src={arrows1} style={{marginLeft:10}}/>
                     </div>
                 </PopularTitle>
                 <div className='popular'>
@@ -365,6 +376,7 @@ export default function Index() {
                     </div>
                     <div className='title2'>
                         View All
+                        <img src={arrows1} style={{marginLeft:10}}/>
                     </div>
                 </PopularTitle>
                 <div className='Requests'>
@@ -422,7 +434,8 @@ export default function Index() {
                     </RequestsItem>
                 </div>
                 <Bottom>
-                    Create your unique NFT on Bounce
+                    <div className='title1'>Create your unique NFT on Bounce<img src={arrows2} style={{marginLeft:19}}/></div>
+                    <img className='bottomIcon' src={bottomIcon}/>
                 </Bottom>
             </Vessel>
             <div>
