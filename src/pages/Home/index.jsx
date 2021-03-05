@@ -74,6 +74,27 @@ const Vessel = styled.div`
     margin-bottom: 64px;
   }
 `
+const PopularTitle = styled.div`
+  display:flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 1100px;
+  margin-bottom: 16px;
+  .title1{
+    font-family: Optima;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 28px;
+  }
+  .title2{
+    font-family: IBM Plex Mono;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    color: #124EEB;
+    line-height: 32px;
+  }
+`
 const IntroduceBottomItem = styled.div`
     border: 2px solid #000000;
   width: 354px;
@@ -282,9 +303,14 @@ export default function Index() {
                         <img className='introduceBottom1' src={introduceBottom3}/>
                     </IntroduceBottomItem>
                 </div>
-                <div className='popularTitle'>
-                    Most Popular Items
-                </div>
+                <PopularTitle>
+                    <div className='title1'>
+                        Most Popular Items
+                    </div>
+                    <div className='title2'>
+                        View All
+                    </div>
+                </PopularTitle>
                 <div className='popular'>
                     <PopularItem>
                         <img className='imgPopular' src={logo_bounce}/>
@@ -307,9 +333,14 @@ export default function Index() {
                         <div className='PopularText2'>0,9931 ETH</div>
                     </PopularItem>
                 </div>
-                <div className='popularTitle'>
-                    Hotest Brands
-                </div>
+                <PopularTitle>
+                    <div className='title1'>
+                        Hotest Brands
+                    </div>
+                    <div className='title2'>
+                        View All
+                    </div>
+                </PopularTitle>
                 <div className='popular'>
                     <BrandsItem>
                         <img className='imgBrands' src={logo_bounce}/>
@@ -328,9 +359,14 @@ export default function Index() {
                         <div className='BrandsText'>yGift Store</div>
                     </BrandsItem>
                 </div>
-                <div className='popularTitle'>
-                    Newest Requests
-                </div>
+                <PopularTitle>
+                    <div className='title1'>
+                        Newest Requests
+                    </div>
+                    <div className='title2'>
+                        View All
+                    </div>
+                </PopularTitle>
                 <div className='Requests'>
                     <RequestsItem>
                         <RequestsTop >
