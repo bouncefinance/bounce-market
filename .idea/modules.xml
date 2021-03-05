@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/bounce-market.iml" filepath="$PROJECT_DIR$/.idea/bounce-market.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/market_bounce.iml" filepath="$PROJECT_DIR$/.idea/market_bounce.iml" />
     </modules>
   </component>
 </project>
