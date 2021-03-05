@@ -102,7 +102,7 @@ const HomeStyled = styled.div`
         /* margin-top: 25px; */
         margin-right: 67px;
       }
-    }
+  }
 `
 
 const banner_Nav = [{

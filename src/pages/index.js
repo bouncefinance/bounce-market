@@ -11,6 +11,11 @@ import Marketplace from './Marketplace'
 import Brands from './Brands'
 import P2P from './P2P'
 
+import MyInventory from './Myprofile/MyInventory'
+import MyBrands from './Myprofile/MyBrands'
+import MyActivities from './Myprofile/MyActivities'
+import MyP2P from './Myprofile/Point-2-Point'
+
 export default function Index() {
 
     return (
@@ -26,6 +31,12 @@ export default function Index() {
                 <Route exact path='/Marketplace' component={Marketplace} />
                 <Route exact path='/Brands' component={Brands} />
                 <Route exact path='/P2P' component={P2P} />
+
+
+                <Route exact path='/MyInventory' component={MyInventory} />
+                <Route exact path='/MyBrands' component={MyBrands} />
+                <Route exact path='/MyActivities' component={MyActivities} />
+                <Route exact path='/MyP2P' component={MyP2P} />
 
                 <Footer />
             </LayoutStyled>

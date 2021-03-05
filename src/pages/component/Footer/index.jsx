@@ -28,7 +28,6 @@ const FooterStyled = styled.div`
             align-items: center;
 
             li{
-                
                 margin-left: 40px;
                 img{
                     width: 18px;

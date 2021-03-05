@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
 import Search from './Search'
+import InfoBox from './InfoBox'
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
 import useModal from '@components/Modal/useModal'
@@ -25,6 +26,7 @@ const HeaderStyled = styled.div`
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: relative;
 
         >div{
             display: flex;
@@ -58,12 +60,14 @@ const HeaderStyled = styled.div`
             }
         }
     }
+
     .avatar_box{
         width: 32px;
-        height: 74px;
+        height: 76px;
         display: flex;
         justify-content: center;
         align-items: center;
+        box-sizing: border-box;
 
         &.open{
             border-bottom: 2px solid #124EEB;
@@ -98,6 +102,7 @@ export default function Index() {
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState(window.localStorage.getItem('Herder_CurNav') || 'Home')
     const { account, chainId, active } = useActiveWeb3React()
+    const [isShowInfo, setIsShowInfo] = useState(false)
 
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
@@ -139,13 +144,16 @@ export default function Index() {
                             </li>
                         })}
                     </ul>
-                    {active ? <div className='avatar_box'>
-                        <div className='avatar'></div>
+                    {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
+                        <div className='avatar' onClick={() => {
+                            setIsShowInfo(!isShowInfo)
+                        }}></div>
                     </div> : <Button className='connect_btn' primary onClick={() => {
                         connectWallect()
                     }}>Connect Wallet</Button>}
 
                 </div>
+                {isShowInfo && <InfoBox setIsShowInfo={setIsShowInfo}/>}
             </div>
         </HeaderStyled>
     )
