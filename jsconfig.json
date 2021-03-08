@@ -1,16 +1,16 @@
 {
-    "compilerOptions": {
-        "target": "ES6",
-        "module": "commonjs",
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": "./",
-        "paths": {
-          "@/*": ["src/*"],
-          "@assets/*": ["src/assets/*"],
-          "@components/*": ["src/components/*"]
-        }
-    },
-    "exclude": [
-        "node_modules"
-    ]
-  }
+  "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "allowSyntheticDefaultImports": true,
+      "baseUrl": "./",
+      "paths": {
+        "@/*": ["src/*"],
+        "@assets/*": ["src/assets/*"],
+        "@components/*": ["src/components/*"]
+      }
+  },
+  "exclude": [
+      "node_modules"
+  ]
+}
