@@ -36,7 +36,9 @@ export default function Index() {
                 <Route exact path='/MyInventory' component={MyInventory} />
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyActivities' component={MyActivities} />
-                <Route exact path='/MyP2P' component={MyP2P} />
+
+                <Route exact path='/MyP2P' render={() => { return <Redirect to='/MyP2P/Requests' /> }} />
+                <Route exact path='/MyP2P/:type' component={MyP2P} />
 
                 <Footer />
             </LayoutStyled>
