@@ -7,6 +7,7 @@ const PopularItemStyled = styled.div`
     box-sizing: border-box;
     margin-right: 17px;
     border: 1px solid rgba(0, 0, 0, 0.2);
+    overflow: hidden;
     &:nth-child(4n){
         margin-right: 0px;
     }

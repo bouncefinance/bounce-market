@@ -8,6 +8,7 @@ import icon_yes_select from '../assets/yes_select.svg'
 
 export const PullRadioBoxStyled = styled.div`
     cursor: pointer;
+    position: relative;
     .select{
         width: 262px;
         height: 48px;
@@ -18,7 +19,7 @@ export const PullRadioBoxStyled = styled.div`
         justify-content: space-between;
         align-items: center;
         user-select: none;
-        margin-top: 20px;
+        /* margin-top: 20px; */
 
         &>div{
             display: flex;
@@ -61,6 +62,7 @@ export const PullRadioBoxStyled = styled.div`
     }
 
     ul.options{
+        position: absolute;
         width: 262px;
         max-height: 220px;
         box-sizing: border-box;
@@ -105,6 +107,7 @@ export const PullRadioBoxStyled = styled.div`
 
 export const PullCheckBoxStyled = styled.div`
     cursor: pointer;
+    position: relative;
     .select{
         width: 440px;
         height: 48px;
@@ -158,6 +161,7 @@ export const PullCheckBoxStyled = styled.div`
     }
 
     ul.options{
+        position: absolute;
         width: 440px;
         max-height: 220px;
         box-sizing: border-box;

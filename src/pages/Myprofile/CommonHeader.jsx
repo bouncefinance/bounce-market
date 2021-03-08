@@ -24,7 +24,7 @@ const CommonHeaderStyled = styled.div`
             align-items: center;
             margin-top: 40px;
             .left{
-                width: 480px;
+                width: 520px;
                 height: 60px;
                 display: flex;
                 align-items: center;
