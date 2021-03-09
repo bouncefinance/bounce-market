@@ -16,6 +16,7 @@ import MyBrands from './Myprofile/MyBrands'
 import MyActivities from './Myprofile/MyActivities'
 import MyP2P from './Myprofile/Point-2-Point'
 
+import AllItems from './Myprofile/MyBrands/CookieStore/AllItems'
 export default function Index() {
 
     return (
@@ -37,6 +38,8 @@ export default function Index() {
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyActivities' component={MyActivities} />
                 <Route exact path='/MyP2P' component={MyP2P} />
+
+                <Route exact path='/AllItems' component={AllItems} />
 
                 <Footer />
             </LayoutStyled>
