@@ -6,7 +6,7 @@ import Search from './Search'
 import InfoBox from './InfoBox'
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
-import useModal from '@components/Modal/useModal'
+import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import { useActiveWeb3React } from '@/web3'
 import { useWalletConnect } from '@/web3/useWalletConnect'
 
@@ -20,6 +20,7 @@ const HeaderStyled = styled.div`
     justify-content: center;
     border: 1px solid rgba(3,3,3,.1);
     user-select: none;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
 
     .wrapper{
         width: 1100px;
@@ -98,7 +99,7 @@ const Nav_list = [{
 }]
 
 export default function Index() {
-    const { connectWallect } = useModal()
+    const [isConnectWallect, setIsConnectWallect] = useState(false)
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState(window.localStorage.getItem('Herder_CurNav') || 'Home')
     const { account, chainId, active } = useActiveWeb3React()
@@ -118,43 +119,46 @@ export default function Index() {
     }, [account, chainId, active])
 
     return (
-        <HeaderStyled>
-            <div className="wrapper">
-                <div className='left'>
-                    <img src={logo_bounce} alt="" />
+        <>
+            <HeaderStyled>
+                <div className="wrapper">
+                    <div className='left'>
+                        <img src={logo_bounce} alt="" />
 
-                    <Search
-                        placeholder={'Search Items, Shops and Accounts'}
-                    />
-                </div>
-                <div className='right'>
-                    <ul>
-                        {Nav_list.map(item => {
-                            return <li
-                                key={item.name}
-                                className={item.name === curNav ? 'active' : ''}
-                                onClick={() => {
-                                    window.localStorage.setItem('Herder_CurNav', item.name)
-                                    setCurNav(item.name)
-                                }}
-                            >
-                                <Link to={item.route}>
-                                    <h5>/ {item.name}</h5>
-                                </Link>
-                            </li>
-                        })}
-                    </ul>
-                    {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
-                        <div className='avatar' onClick={() => {
-                            setIsShowInfo(!isShowInfo)
-                        }}></div>
-                    </div> : <Button className='connect_btn' primary onClick={() => {
-                        connectWallect()
-                    }}>Connect Wallet</Button>}
+                        <Search
+                            placeholder={'Search Items, Shops and Accounts'}
+                        />
+                    </div>
+                    <div className='right'>
+                        <ul>
+                            {Nav_list.map(item => {
+                                return <li
+                                    key={item.name}
+                                    className={item.name === curNav ? 'active' : ''}
+                                    onClick={() => {
+                                        window.localStorage.setItem('Herder_CurNav', item.name)
+                                        setCurNav(item.name)
+                                    }}
+                                >
+                                    <Link to={item.route}>
+                                        <h5>/ {item.name}</h5>
+                                    </Link>
+                                </li>
+                            })}
+                        </ul>
+                        {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
+                            <div className='avatar' onClick={() => {
+                                setIsShowInfo(!isShowInfo)
+                            }}></div>
+                        </div> : <Button className='connect_btn' primary onClick={() => {
+                            setIsConnectWallect(true)
+                        }}>Connect Wallet</Button>}
 
+                    </div>
+                    {isShowInfo && <InfoBox setIsShowInfo={setIsShowInfo} />}
                 </div>
-                {isShowInfo && <InfoBox setIsShowInfo={setIsShowInfo}/>}
-            </div>
-        </HeaderStyled>
+            </HeaderStyled>
+            <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />
+        </>
     )
 }

@@ -27,6 +27,7 @@ const InfoBoxStyled = styled.div`
     box-shadow: 0px 1px 14px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    z-index: 2;
     .top_info{
 
         height: 70px;

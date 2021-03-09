@@ -18,6 +18,8 @@ import MyP2P from './Myprofile/Point-2-Point'
 
 export default function Index() {
 
+
+
     return (
         <BrowserRouter>
             <LayoutStyled>
@@ -30,7 +32,8 @@ export default function Index() {
                 <Route exact path='/Home' component={Home} />
                 <Route exact path='/Marketplace' component={Marketplace} />
                 <Route exact path='/Brands' component={Brands} />
-                <Route exact path='/P2P' component={P2P} />
+                <Route exact path='/P2P' render={() => { return <Redirect to='/P2P/Requests' /> }} />
+                <Route exact path='/P2P/:type' component={P2P} />
 
 
                 <Route exact path='/MyInventory' component={MyInventory} />

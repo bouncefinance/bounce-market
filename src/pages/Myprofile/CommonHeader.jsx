@@ -11,6 +11,9 @@ import inventory_black from '../component/Header/assets/inventory_black.svg'
 import p2p_black from '../component/Header/assets/p2p_black.svg'
 import icon_copy from '@assets/images/icon/copy.svg'
 
+import SettingAccountModal from './SettingAccountModal'
+
+
 const CommonHeaderStyled = styled.div`
     .wrapper{
         width: 1100px;
@@ -127,6 +130,7 @@ export default function CommonHeader() {
     const [curItem, setCurItem] = useState('/MyInventory')
     const history = useHistory()
     const { account } = useActiveWeb3React()
+    const [isSettingAccount, setIsSettingAccount] = useState(false)
 
     useEffect(() => {
         const pathName = window.location.pathname
@@ -157,7 +161,9 @@ export default function CommonHeader() {
                         </div>
                     </div>
                     <div className="right">
-                        <OtherButton type='setting' value={'Settings'} />
+                        <OtherButton type='setting' value={'Settings'} onClick={() => {
+                            setIsSettingAccount(true)
+                        }} />
                         <OtherButton type='share' value={'Share'} />
                     </div>
 
@@ -176,6 +182,7 @@ export default function CommonHeader() {
                     </ul>
                 </div>
             </div>
+            <SettingAccountModal open={isSettingAccount} setOpen={setIsSettingAccount} />
         </CommonHeaderStyled>
     )
 }

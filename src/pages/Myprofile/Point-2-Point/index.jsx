@@ -60,8 +60,7 @@ const menuList = [{
 export default function Index() {
     const { type } = useParams()
     const history = useHistory()
-
-    console.log(type)
+    
     return (
         <>
             <CommonHeader />
@@ -79,9 +78,8 @@ export default function Index() {
                         <AddCardItem />
                     </li>
                     {[...new Array(8)].map((item, index) => {
-                        return <li>
+                        return <li key={index}>
                             <CardItem
-                                key={index}
                                 title='Mobile Game'
                                 status={'Live'}
                                 context={'I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec. I want to a custom video for my birthday.'}
@@ -97,9 +95,8 @@ export default function Index() {
                         <AddCardItem />
                     </li>
                     {[...new Array(4)].map((item, index) => {
-                        return <li>
+                        return <li key={index}>
                             <CardItem
-                                key={index}
                                 title='Mobile Game'
                                 status={'Live'}
                                 context={'I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec. I want to a custom video for my birthday.'}

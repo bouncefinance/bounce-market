@@ -5,4 +5,5 @@ export const LayoutStyled = styled.div`
     min-height: 100vh;
     box-sizing: border-box;
     background-color: #fff;
+    position: relative;
 `

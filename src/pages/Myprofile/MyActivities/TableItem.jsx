@@ -45,7 +45,7 @@ const TableItemStyled = styled(TableRow)`
 `
 
 export default function TableItem({ row }) {
-    console.log(row)
+    // console.log(row)
     return (
         <TableItemStyled>
             <TableCell className='event'>
