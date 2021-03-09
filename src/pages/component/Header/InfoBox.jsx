@@ -16,6 +16,7 @@ import p2p_black from './assets/p2p_black.svg'
 import setting_white from './assets/setting_white.svg'
 import setting_black from './assets/setting_black.svg'
 import { useActiveWeb3React } from '@/web3'
+import SettingAccountModal from '../../Myprofile/SettingAccountModal'
 
 const InfoBoxStyled = styled.div`
     width: 218px;
@@ -116,7 +117,7 @@ export default function InfoBox({ setIsShowInfo }) {
     const history = useHistory()
     const [curItem, setCurItem] = useState(-1)
     const { account } = useActiveWeb3React()
-
+    const [isSettingAccount, setIsSettingAccount] = useState(false)
 
     return (
         <InfoBoxStyled>
@@ -142,6 +143,9 @@ export default function InfoBox({ setIsShowInfo }) {
                             setCurItem(-1)
                         }}
                         onClick={() => {
+                            if(item.name==='Account Settings'){
+                                return setIsSettingAccount(true)
+                            }
                             if (item.route === '') return
                             history.push(item.route)
                             setIsShowInfo(false)
@@ -153,6 +157,8 @@ export default function InfoBox({ setIsShowInfo }) {
                 })}
 
             </ul>
+
+            <SettingAccountModal open={isSettingAccount} setOpen={setIsSettingAccount} />
         </InfoBoxStyled>
     )
 }

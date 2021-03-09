@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
-import { TextInput, Button, PullRadioBox } from '@components/UI-kit'
+import { TextInput, TextAreaInput, Button, PullRadioBox } from '@components/UI-kit'
 
 const AddNewRequestModalStyled = styled.div`
     width: 1100px;
@@ -51,10 +51,10 @@ export default function AddNewRequestModal({ open, setOpen }) {
                     console.log(item)
                 }} />
 
-                <TextInput
+                <TextAreaInput
                     title='Description'
                     width='620px'
-                    value={`I’m keepi`}
+                    defaultValue={`I’m keepi`}
                     required={true}
                     marginTop={'24px'}
                 />
@@ -62,6 +62,7 @@ export default function AddNewRequestModal({ open, setOpen }) {
                 <TextInput
                     title='Price'
                     width='620px'
+                    height='80px'
                     placeholder={'Enter your request’s price'}
                     required={true}
                     marginTop={'24px'}

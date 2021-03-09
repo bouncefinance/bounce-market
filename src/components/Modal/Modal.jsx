@@ -6,7 +6,7 @@ import Fade from '@material-ui/core/Fade';
 import icon_close from '@assets/images/icon/close.svg'
 import styled from 'styled-components'
 
-const useStyles = makeStyles((theme, width, height) => ({
+const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
     alignItems: 'center',
@@ -59,7 +59,7 @@ export default function ModalBox({
 
   // eslint-disable-next-line
   const handleClose = () => {
-    if (isWrapperClose) return
+    if (!isWrapperClose) return
     setOpen && setOpen(false);
   };
 
