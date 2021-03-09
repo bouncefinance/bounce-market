@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
 
-const CardItemStyled = styled.div`
+const RequestsCardItemStyled = styled.div`
     width: 262px;
     height: 300px;
     box-sizing: border-box;
@@ -13,11 +13,12 @@ const CardItemStyled = styled.div`
     position: relative;
 
     .top{
+        height: 24px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-bottom: 2px solid #000;
-        padding-bottom: 16px;
+        padding-bottom: 14px;
 
         p{
             font-size: 15px;
@@ -78,6 +79,9 @@ const CardItemStyled = styled.div`
 
     &:hover .button_group{
         display: flex;
+        button{
+            width: 100%;
+        }
     }
 
     &:hover .price{
@@ -85,10 +89,10 @@ const CardItemStyled = styled.div`
     }
 `
 
-export default function CardItem({ title, status, context, price }) {
+export default function RequestsCardItem({ title, status, context, price }) {
 
     return (
-        <CardItemStyled>
+        <RequestsCardItemStyled>
             <div className="top">
                 <p>{title}</p>
                 <div className={status}>
@@ -104,9 +108,8 @@ export default function CardItem({ title, status, context, price }) {
             </div>
 
             <div className="button_group">
-                <Button value='Check' primary />
-                <Button value='Delete' />
+                <Button value='Show More' primary />
             </div>
-        </CardItemStyled>
+        </RequestsCardItemStyled>
     )
 }

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
+import AddNewRequestModal from './AddNewRequestModal'
 
 import img_addItem from './assets/addItem.svg'
 
@@ -129,12 +130,19 @@ const AddCardItemStyled = styled(CardItemStyled)`
 `
 
 export function AddCardItem() {
+    const [showCreateModal, setShowCreateModal] = useState(false)
+
     return (
-        <AddCardItemStyled>
-            <img src={img_addItem} alt="" />
-            <div className="create_wrapper">
-                <Button value='Create' />
-            </div>
-        </AddCardItemStyled>
+        <>
+            <AddCardItemStyled>
+                <img src={img_addItem} alt="" />
+                <div className="create_wrapper">
+                    <Button value='Create' onClick={() => {
+                        setShowCreateModal(true)
+                    }} />
+                </div>
+            </AddCardItemStyled>
+            <AddNewRequestModal open={showCreateModal} setOpen={setShowCreateModal} />
+        </>
     )
 }

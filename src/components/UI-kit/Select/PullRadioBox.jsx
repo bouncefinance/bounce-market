@@ -9,6 +9,15 @@ import icon_pull from '../assets/pull.svg'
 const PullRadioBoxStyled = styled.div`
     cursor: pointer;
     position: relative;
+
+    .title{
+        font-weight: 700;
+        font-size: 13px;
+        color: rgba(0,0,0,.6);
+        margin-bottom: 8px;
+        margin-top: ${({ marginTop }) => { return marginTop || '24px' }};
+    }
+
     .select{
         width: ${({ width }) => { return width || '262px' }};
         height: 48px;
@@ -29,6 +38,7 @@ const PullRadioBoxStyled = styled.div`
 
             .prefix{
                 margin-right: 6px;
+                opacity: .4;
             }
         }
 
@@ -73,6 +83,7 @@ const PullRadioBoxStyled = styled.div`
         box-shadow: 0px 1px 14px rgba(0, 0, 0, 0.1);
         margin-top: 5px;
         z-index: 1;
+        
         li{
             width: 100%;
             height: 42px;
@@ -106,7 +117,10 @@ const PullRadioBoxStyled = styled.div`
     }
 `
 
-export default function PullRadioBox({ options, defaultValue, defaultItem, onChange, onValChange, disabled, prefix, style, width }) {
+export default function PullRadioBox({
+    options, defaultValue, defaultItem, onChange,
+    onValChange, disabled, prefix, style, width,
+    marginTop, title }) {
     // 这个组件的option 一定要传value属性
     const [open, setOpen] = useState(false)
     const [checkVal, setCheckVal] = useState(defaultValue || options[0].value)
@@ -119,7 +133,8 @@ export default function PullRadioBox({ options, defaultValue, defaultItem, onCha
     }, [checkVal])
 
     return (
-        <PullRadioBoxStyled style={style} width={width}>
+        <PullRadioBoxStyled style={style} width={width} marginTop={marginTop}>
+            {title && <p className={`title`}>{title}</p>}
             <div className={`select ${!disabled && open && 'open'} ${disabled && 'disabled'}`} onClick={() => {
                 if (disabled) return
                 setOpen(!open)

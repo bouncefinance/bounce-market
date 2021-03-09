@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Modal from '../../components/Modal/Modal'
+import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
 import { TextInput,Button } from '@components/UI-kit'

@@ -5,8 +5,11 @@ import icon_question from './assets/icon_question.svg'
 import icon_plaint from './assets/icon_plaint.svg'
 import Search from './Search'
 import { PullRadioBox } from '@components/UI-kit'
-import CardItem from './CardItem'
+import RequestsCardItem from './RequestsCardItem'
+import OffersCardItem from './OffersCardItem'
 import PagingControls from './PagingControls'
+
+import example_avater from './assets/example_avater.svg'
 
 const P2PStyled = styled.div`
     width: 1100px;
@@ -107,13 +110,9 @@ export default function Index() {
                     console.log(item)
                 }} />
 
-                <PullRadioBox prefix={'Status:'} width='206px' options={[{
-                    value: 'All'
-                }, {
-                    value: 'Listed'
-                }, {
-                    value: 'Unlisted'
-                }]} defaultValue='All' onChange={(item) => {
+                <PullRadioBox prefix={'Sort by:'} width='206px' options={[{
+                    value: 'New'
+                }]} defaultValue='New' onChange={(item) => {
                     console.log(item)
                 }} />
             </div>
@@ -121,7 +120,7 @@ export default function Index() {
             {type === 'Requests' && <ul className='list'>
                 {[...new Array(16)].map((item, index) => {
                     return <li key={index}>
-                        <CardItem
+                        <RequestsCardItem
                             title={'B-day Video'}
                             context={'I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec.'}
                             status={'Live'}
@@ -134,12 +133,16 @@ export default function Index() {
 
 
             {type === 'Offers' && <ul className='list'>
-                {[...new Array(5)].map((item, index) => {
+                {[...new Array(16)].map((item, index) => {
                     return <li key={index}>
-                        <CardItem
-                            title={'B-day Video'}
-                            context={'I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec.'}
-                            status={'Live'}
+                        <OffersCardItem
+                            title={'John Doe'}
+                            context={`Hey! I create 3D images, 3D video and audio on request.
+
+                            Images from 5 USDT
+                            Video from 10 USDT
+                            Audio from 7 USDT`}
+                            cover={example_avater}
                             price={'100 USDT'}
                         />
                     </li>
