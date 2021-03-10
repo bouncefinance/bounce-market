@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
 import { TextInput, TextAreaInput, Button, PullRadioBox } from '@components/UI-kit'
 
-const AddNewRequestModalStyled = styled.div`
+const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
     /* height: 690px; */
     box-sizing: border-box; 
@@ -20,7 +20,7 @@ const AddNewRequestModalStyled = styled.div`
 
 `
 
-export default function AddNewRequestModal({ open, setOpen }) {
+export default function AddNewBrandstModal({ open, setOpen, defaultValue }) {
     const { active } = useActiveWeb3React()
 
     useEffect(() => {
@@ -28,15 +28,16 @@ export default function AddNewRequestModal({ open, setOpen }) {
     }, [active])
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'Add New Request', isClose: true }}>
-            <AddNewRequestModalStyled>
+        <Modal open={open} setOpen={setOpen} header={{ title: 'Add New Item', isClose: true }}>
+            <AddNewBrandstModalStyled>
                 <TextInput
-                    title='Title'
+                    title='Name'
                     width='620px'
-                    defaultValue={'Digital Image Name'}
+                    defaultValue={'Cookie N1'}
                     required={true}
                     marginTop={0}
                 />
+
                 <PullRadioBox title={'Category'} marginTop='24px' width='620px' options={[{
                     value: 'Images'
                 }, {
@@ -47,30 +48,22 @@ export default function AddNewRequestModal({ open, setOpen }) {
                     value: 'Games'
                 }, {
                     value: 'Others'
-                }]} defaultValue='Images' onChange={(item) => {
+                }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'} onChange={(item) => {
                     console.log(item)
                 }} />
+
+                <TextInput
+                    title='External Link'
+                    width='620px'
+                    placeholder={'Enter external link'}
+                    required={true}
+                    marginTop={'24px'}
+                />
 
                 <TextAreaInput
                     title='Description'
                     width='620px'
                     defaultValue={`I’m keepi`}
-                    required={true}
-                    marginTop={'24px'}
-                />
-
-                <TextInput
-                    title='Price'
-                    width='620px'
-                    placeholder={'Enter your request’s price'}
-                    required={true}
-                    marginTop={'24px'}
-                />
-
-                <TextInput
-                    title='Deadline date'
-                    width='620px'
-                    placeholder={'01.01.2021'}
                     required={true}
                     marginTop={'24px'}
                 />
@@ -81,7 +74,7 @@ export default function AddNewRequestModal({ open, setOpen }) {
                     }}>Cancel</Button>
                     <Button height='48px' width='302px' primary>Submit</Button>
                 </div>
-            </AddNewRequestModalStyled>
+            </AddNewBrandstModalStyled>
         </Modal >
     )
 }
