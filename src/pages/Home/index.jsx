@@ -14,10 +14,13 @@ import two_setting from './assets/two-setting.svg'
 const HomeStyled = styled.div`
   .banner{
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     flex-wrap: wrap;
     &>ul{
+      width: 1100px;
+      margin: 0 auto;
       display: flex;
+      justify-content: center;
       height: 37px;
       align-items: center;
 
@@ -34,6 +37,7 @@ const HomeStyled = styled.div`
 
     .banner_wrapper{
       width: 100%;
+      min-width: 1100px;
       height: 280px;
       box-sizing: border-box;
       background-color: #000;
