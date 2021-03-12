@@ -7,7 +7,7 @@ import Search from './Search'
 import { PullRadioBox } from '@components/UI-kit'
 import RequestsCardItem from './RequestsCardItem'
 import OffersCardItem from './OffersCardItem'
-import PagingControls from './PagingControls'
+import PagingControls from '../component/Other/PagingControls'
 
 import example_avater from './assets/example_avater.svg'
 

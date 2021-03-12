@@ -7,12 +7,12 @@ import edit_white from '@assets/images/icon/edit_white.svg'
 import edit_black from '@assets/images/icon/edit_black.svg'
 import ygift_img from './assets/ygift_img.svg'
 
-import nav_all from './assets/nav_all.svg'
-import nav_audio from './assets/nav_audio.svg'
-import nav_game from './assets/nav_game.svg'
-import nav_image from './assets/nav_image.svg'
-import nav_other from './assets/nav_other.svg'
-import nav_video from './assets/nav_video.svg'
+import nav_all from '@assets/images/icon/nav_all.svg'
+import nav_audio from '@assets/images/icon/nav_audio.svg'
+import nav_game from '@assets/images/icon/nav_game.svg'
+import nav_image from '@assets/images/icon/nav_image.svg'
+import nav_other from '@assets/images/icon/nav_other.svg'
+import nav_video from '@assets/images/icon/nav_video.svg'
 
 import img_example_3 from '@assets/images/example_3.svg'
 

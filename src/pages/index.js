@@ -31,7 +31,8 @@ export default function Index() {
 
                 <Route exact path='/' render={() => { return <Redirect to='/Home' /> }} />
                 <Route exact path='/Home' component={Home} />
-                <Route exact path='/Marketplace' component={Marketplace} />
+                <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/Images' /> }} />
+                <Route exact path='/Marketplace/:type' component={Marketplace} />
                 <Route exact path='/Brands' component={Brands} />
                 <Route exact path='/P2P' render={() => { return <Redirect to='/P2P/Requests' /> }} />
                 <Route exact path='/P2P/:type' component={P2P} />
