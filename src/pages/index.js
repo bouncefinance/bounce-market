@@ -10,6 +10,7 @@ import Home from './Home'
 import Marketplace from './Marketplace'
 import Brands from './Brands'
 import P2P from './P2P'
+import Factory from './Factory'
 
 import MyInventory from './Myprofile/MyInventory'
 import MyBrands from './Myprofile/MyBrands'
@@ -36,6 +37,7 @@ export default function Index() {
                 <Route exact path='/Brands' component={Brands} />
                 <Route exact path='/P2P' render={() => { return <Redirect to='/P2P/Requests' /> }} />
                 <Route exact path='/P2P/:type' component={P2P} />
+                <Route exact path='/Factory' component={Factory} />
 
                 <Route exact path='/MyInventory' component={MyInventory} />
                 <Route exact path='/MyBrands' component={MyBrands} />
