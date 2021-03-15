@@ -46,10 +46,17 @@ const HeaderStyled = styled.div`
                         h5{
                             font-size: 16px;
                             margin-right: 28px;
+
                             color: rgba(0,0,0,.4);
 
                             &:hover{
                                 color: rgba(0,0,0,.6);
+                            }
+                        }
+                        
+                        &:last-child {
+                            h5 {
+                                margin-right: 0;
                             }
                         }
 
@@ -96,6 +103,9 @@ const Nav_list = [{
 }, {
     name: 'P2P',
     route: '/P2P'
+}, {
+    name: 'Factory',
+    route: '/Factory'
 }]
 
 export default function Index() {
