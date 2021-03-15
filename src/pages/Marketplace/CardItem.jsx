@@ -142,7 +142,6 @@ export function VideoCardItem({ cover, name, price, cardId }) {
     )
 }
 
-
 const AudioCardItemStyled = styled(CardItemStyled)`
        .mask{
             position: absolute;

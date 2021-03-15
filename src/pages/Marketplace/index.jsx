@@ -15,6 +15,8 @@ import nav_video from '@assets/images/icon/nav_video.svg'
 import example_2 from '@assets/images/example_2.svg'
 import example_video from './assets/example_video.svg'
 import example_audio from './assets/example_audio.svg'
+import example_game from './assets/example_game.svg'
+import example_other from './assets/example_other.svg'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -156,12 +158,40 @@ export default function Marketplace() {
                     })}
                 </ul>
 
+            case 'Games':
+                return <ul className={`list_wrapper ${type}`}>
+                    {[...new Array(16)].map((item, index) => {
+                        return <li key={index}>
+                            <CardItem
+                                cover={example_game}
+                                name={'Game Item Name'}
+                                cardId={index + 1}
+                                price={'0.93512 ETH '}
+                            />
+                        </li>
+                    })}
+                </ul>
+
+            case 'Others':
+                return <ul className={`list_wrapper ${type}`}>
+                    {[...new Array(16)].map((item, index) => {
+                        return <li key={index}>
+                            <CardItem
+                                cover={example_other}
+                                name={'Item Name'}
+                                cardId={index + 1}
+                                price={'0.93512 ETH '}
+                            />
+                        </li>
+                    })}
+                </ul>
+
             default:
                 return <ul className={`list_wrapper ${type}`}>
                     {[...new Array(16)].map((item, index) => {
                         return <li key={index}>
                             <CardItem
-                                cover={example_2}
+                                cover={example_other}
                                 name={'Image Name'}
                                 cardId={index + 1}
                                 price={'0.93512 ETH '}
