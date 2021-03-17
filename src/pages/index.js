@@ -9,6 +9,7 @@ import Test from '../test'
 import Home from './Home'
 import Marketplace from './Marketplace'
 import Brands from './Brands'
+import BrandGoods from './BrandGoods'
 import P2P from './P2P'
 import Factory from './Factory'
 
@@ -34,7 +35,11 @@ export default function Index() {
                 <Route exact path='/Home' component={Home} />
                 <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/Images' /> }} />
                 <Route exact path='/Marketplace/:type' component={Marketplace} />
+
                 <Route exact path='/Brands' component={Brands} />
+                <Route exact path='/Brands/:brandId/:type' component={BrandGoods} />
+                <Route exact path='/BrandsGoods/' component={BrandGoods} />
+
                 <Route exact path='/P2P' render={() => { return <Redirect to='/P2P/Requests' /> }} />
                 <Route exact path='/P2P/:type' component={P2P} />
                 <Route exact path='/Factory' component={Factory} />
