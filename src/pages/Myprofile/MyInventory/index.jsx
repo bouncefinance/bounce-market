@@ -47,7 +47,7 @@ export default function Index() {
                     }, {
                         value: 'Unlisted'
                     }]} defaultValue='All' onChange={(item) => {
-                        console.log(item)
+                        // console.log(item)
                     }} />
 
                     <PullRadioBox prefix={'Categories:'} options={[{
@@ -61,7 +61,7 @@ export default function Index() {
                     }, {
                         value: 'Others'
                     }]} defaultValue='Images' onChange={(item) => {
-                        console.log(item)
+                        // console.log(item)
                     }} />
                 </div>
 

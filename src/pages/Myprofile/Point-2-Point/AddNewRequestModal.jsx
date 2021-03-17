@@ -48,7 +48,7 @@ export default function AddNewRequestModal({ open, setOpen }) {
                 }, {
                     value: 'Others'
                 }]} defaultValue='Images' onChange={(item) => {
-                    console.log(item)
+                    // console.log(item)
                 }} />
 
                 <TextAreaInput

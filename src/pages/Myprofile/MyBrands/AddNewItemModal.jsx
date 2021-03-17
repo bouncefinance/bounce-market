@@ -49,7 +49,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue }) {
                 }, {
                     value: 'Others'
                 }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'} onChange={(item) => {
-                    console.log(item)
+                    // console.log(item)
                 }} />
 
                 <TextInput

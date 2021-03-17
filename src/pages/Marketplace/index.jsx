@@ -222,13 +222,13 @@ export default function Marketplace() {
                 <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{
                     value: 'ETH'
                 }]} defaultValue='ETH' onChange={(item) => {
-                    console.log(item)
+                    // console.log(item)
                 }} />
 
                 <PullRadioBox prefix={'Sort by:'} width={'204px'} options={[{
                     value: 'New'
                 }]} defaultValue='New' onChange={(item) => {
-                    console.log(item)
+                    // console.log(item)
                 }} />
             </div>
 

@@ -107,13 +107,13 @@ export default function Index() {
                 }, {
                     value: 'Others'
                 }]} defaultValue='Images' onChange={(item) => {
-                    console.log(item)
+                    // console.log(item)
                 }} />
 
                 <PullRadioBox prefix={'Sort by:'} width='206px' options={[{
                     value: 'New'
                 }]} defaultValue='New' onChange={(item) => {
-                    console.log(item)
+                    // console.log(item)
                 }} />
             </div>
 

@@ -90,7 +90,7 @@ export default function Index() {
                     defaultValue={'New'}
                     prefix={"Sort by:"}
                     onChange={(item) => {
-                        console.log(item)
+                        // console.log(item)
                     }}
                 />
             </div>

@@ -98,7 +98,7 @@ export default function NumberInput({
 
 
         setValue(val)
-        console.log(val, minVal, maxVal)
+        // console.log(val, minVal, maxVal)
 
         if (!onValChange) return
 
