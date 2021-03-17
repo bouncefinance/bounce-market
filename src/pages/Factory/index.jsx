@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import FactoryCard from './FactoryCard'
@@ -45,7 +45,8 @@ const CardList = styled.div`
 `
 
 
-function index() {
+
+function Factory() {
     return (
         <CardList>
             {
@@ -57,7 +58,8 @@ function index() {
                                 title={CardInfo.title}
                                 discription={CardInfo.discription}
                                 button_value={CardInfo.button_value}
-                            />
+                            >
+                            </FactoryCard>
                         </li>
                     )
                 })
@@ -66,4 +68,4 @@ function index() {
     )
 }
 
-export default index
+export default Factory

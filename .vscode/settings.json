@@ -8,5 +8,6 @@
         "gitlens.codeLens.scopes": [
             "document"
         ]
-    }
+    },
+    "workbench.editor.enablePreview": false
 }

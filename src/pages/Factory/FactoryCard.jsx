@@ -15,6 +15,14 @@ const StyledCard = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
 
+    
+    &:hover {
+        cursor: pointer;
+        border: 1px solid #000000;
+        box-sizing: border-box;
+        box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
+    }
+
     .top {
         img {
             width: 352px;
