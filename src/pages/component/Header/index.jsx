@@ -54,11 +54,11 @@ const HeaderStyled = styled.div`
                             }
                         }
                         
-                        &:last-child {
+                        /* &:last-child {
                             h5 {
                                 margin-right: 0;
                             }
-                        }
+                        } */
 
                        &.active h5{
                            color: rgba(0,0,0,1)
