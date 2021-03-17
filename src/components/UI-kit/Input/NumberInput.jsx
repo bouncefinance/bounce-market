@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import styled from 'styled-components'
 import { ErrorStatus } from './error_config'
 
@@ -84,6 +84,11 @@ export default function NumberInput({
     const [errMsg, setErrMsg] = useState(null)
     const [value, setValue] = useState(defaultValue || '')
 
+    useEffect(() => {
+        onValChange && onValChange(defaultValue)
+        // eslint-disable-next-line
+    }, [])
+
     const handelChange = (e) => {
         onChange && onChange(e) 
 
@@ -102,11 +107,12 @@ export default function NumberInput({
 
         if (!onValChange) return
 
-        if (required && val === '') {
-            return onValChange(ErrorStatus.required, val)
-        }
+        // if (required && val === '') {
+        //     return onValChange(ErrorStatus.required, val)
+        // }
 
-        onValChange(null, val)
+        // onValChange(null, val)
+        onValChange(val)
     }
 
     const handelBlur = (e) => {

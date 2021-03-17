@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
-import { TextInput,Button } from '@components/UI-kit'
+import { TextInput, Button, Upload } from '@components/UI-kit'
 
 const SettingAccountStyled = styled.div`
     width: 1100px;
@@ -61,8 +61,10 @@ export default function SettingAccountModal({ open, setOpen }) {
                     marginTop={'24px'}
                 />
 
+                <Upload type='avatar'/>
+
                 <div className="button_group">
-                    <Button height='48px' width='302px' onClick={()=>{
+                    <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)
                     }}>Cancel</Button>
                     <Button height='48px' width='302px' primary>Save</Button>

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+// import loading_gif from '@assets/gifs/bounce_loading.svg'
 
 const ButtonStyled = styled.button`
     box-sizing: border-box;
@@ -17,6 +18,10 @@ const ButtonStyled = styled.button`
         background-color: rgb(51,51,51);
     }
     
+    .loading_img{
+        width: 25px;
+        height: 25px
+    }
 
     &.disabled{
         background-color: rgb(204,204,204);
@@ -60,7 +65,7 @@ export default function Button({
 
             onClick={onClick}
         >
-            {value}
+            { value}
             {children}
         </ButtonStyled >
     )

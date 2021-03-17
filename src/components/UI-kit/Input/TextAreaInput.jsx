@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ErrorStatus } from './error_config'
 
@@ -84,17 +84,23 @@ export default function TextAreaInput({
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
 
+    useEffect(() => {
+        onValChange && onValChange(defaultValue)
+        // eslint-disable-next-line
+    }, [])
+
     const handelChange = (e) => {
         onChange && onChange(e)
 
         if (!onValChange) return
         const val = e.target.value
 
-        if (required && val === '') {
-            return onValChange(ErrorStatus.required, val)
-        }
+        // if (required && val === '') {
+        //     return onValChange(ErrorStatus.required, val)
+        // }
 
-        return onValChange(null, val)
+        // return onValChange(null, val)
+        return onValChange(val)
     }
 
     const handelBlur = (e) => {
