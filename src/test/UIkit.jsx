@@ -89,7 +89,7 @@ export default function UIkit() {
                         }, {
                             value: 'Others'
                         }]} defaultValue='Images' onChange={(item) => {
-                            console.log(item)
+                            // console.log(item)
                         }} />
 
                         <PullRadioBox disabled options={[{
@@ -112,7 +112,7 @@ export default function UIkit() {
                         }, {
                             value: 'Others'
                         }]} defaultValue={['Images', 'Games']} onChange={(item) => {
-                            console.log(item)
+                            // console.log(item)
                         }} />
 
                         <PullCheckBox prefix='Categories:' options={[{
@@ -126,7 +126,7 @@ export default function UIkit() {
                         }, {
                             value: 'Others'
                         }]} disabled onChange={(item) => {
-                            console.log(item)
+                            // console.log(item)
                         }} />
                     </div>
                 </div>

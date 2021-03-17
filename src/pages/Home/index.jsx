@@ -1,385 +1,188 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
-import logo_bounce from '@assets/images/logo/bounce.svg'
-import bounce_Title from '@assets/images/bounceTitle.svg'
-import introduceBottom1 from '@assets/images/introduceBottom1.svg'
-import introduceBottom2 from '@assets/images/introduceBottom2.svg'
-import introduceBottom3 from '@assets/images/introduceBottom3.svg'
-const Introduce = styled.div`
-  height: 280px;
-  background: black;
-  color:#ffffff;
-  padding-left: 170px;
-  padding-top: 64px;
-  display: flex;
-  justify-content: space-between;
-  padding-right: 248px;
-  .title1{
-    font-family: Optima;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 38px;
-    width: 517px;
-    margin-bottom: 26px;
-  }
-  .title2{
-    font-family: Helvetica Neue;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    border: 1px solid #FFFFFF;
-    width: 124px;
-    height: 44px;
-    line-height: 44px;
-    text-align: center;
-  }
-  .titleBounce{
-    margin-top: -64px
-  }
-`
-const Vessel = styled.div`
-  padding: 0 170px;
-  .introduceBottom{
+import styled from 'styled-components'
+import CardBanner from './CardBanner'
+import CardGroup from './CardGroup'
+import PopularItem from './PopularItem'
+import BrandsItem from './BrandsItem'
+import RequestsItem from './RequestsItem'
+import arrows_white from '@assets/images/icon/arrows-white.svg'
+import img_banner from '@assets/images/banner.svg'
+import img_example_1 from '@assets/images/example_1.svg'
+import img_alpaca_city from '@assets/images/alpaca_city.svg'
+import two_setting from './assets/two-setting.svg'
+
+const HomeStyled = styled.div`
+  .banner{
     display: flex;
-    justify-content: flex-start;
-    margin: 0 auto;
-    width: 1100px;
-    margin-bottom: 64px;
-    margin-top: 52px;
-  }
-  .popular{
-    display: flex;
-    justify-content: flex-start;
-    margin: 0 auto;
-    width: 1100px;
-    margin-bottom: 64px;
-  }
-  .popularTitle{
-    font-family: Optima;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 28px;
-    margin: 0 auto;
-    width: 1100px;
-    margin-bottom: 16px;
-  }
-  .Requests{
-    display: flex;
-    justify-content: flex-start;
-    margin: 0 auto;
-    width: 1100px;
-    margin-bottom: 64px;
-  }
-`
-const IntroduceBottomItem = styled.div`
-    border: 2px solid #000000;
-  width: 354px;
-  height: 110px;
-  margin-right: 19px;
-  padding-left: 24px;
-  padding-top: 28px;
-  display: flex;
-  justify-content: space-between;
-  .title1{
-    font-family: Optima;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-    color: #000000;
-    margin-bottom: 8px;
-  }
-  .title2{
-    font-family: Helvetica Neue;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 124%;
-    color: #1F191B;
-    opacity: 0.7;
-    width: 171px;
-  }
-  .introduceBottom1{
-    margin-right: 12px;
+    /* justify-content: center; */
+    flex-wrap: wrap;
+    &>ul{
+      width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      height: 37px;
+      align-items: center;
+
+      li{
+        margin-right: 59px;
+        font-weight: 500;
+        font-size: 12px;
+        color: rgba(36,36,36,.8);
+        &:nth-last-child(){
+          margin-right: 0;
+        }
+      }
+    }
+
+    .banner_wrapper{
+      width: 100%;
+      min-width: 1100px;
+      height: 280px;
+      box-sizing: border-box;
+      background-color: #000;
+
+      .banner_img{
+        width: 1100px;
+        height: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+
+        h1{
+          width: 517px;
+          color: #fff;
+          font-size: 38px;
+          line-height: 46.13px;
+        }
+
+        button{
+          width: 124px;
+          height: 44px;
+          box-sizing: border-box;
+          border: 1px solid #FFFFFF;
+          font-weight: 700;
+          color: #fff;
+          background-color:#000;
+          cursor: pointer;
+          margin-top: 24px;
+        }
+      }
+    }
   }
 
-`
-const PopularItem = styled.div`
-    border: 1px solid rgba(0, 0, 0, 0.2);
-  width: 262px;
-  height: 332px;
-  margin-right: 18px;
-  .imgPopular{
-    width: 261px;
-    height: 261px;
-  }
-  .PopularText1{
-    color: #000000;
-    opacity: 0.4;
-    font-family: IBM Plex Mono;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    margin-top: 14px;
-    margin-left: 16px;
-  }
-  .PopularText2{
-    color: #000000;
-    font-family: IBM Plex Mono;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    margin-top: 8px;
-    margin-left: 16px;
-  }
-`
-const RequestsItem = styled.div`
-    border: 1px solid rgba(0, 0, 0, 0.2);
-  width: 262px;
-  height: 228px;
-  margin-right: 18px;
-  padding: 20px 16px;
-`
-const BrandsItem = styled.div`
-    border: 1px solid #DDDDDD;
-  width: 262px;
-  height: 228px;
-  margin-right: 18px;
-  .imgBrands{
-    width: 261px;
-    height: 179px;
-  }
-  .BrandsText{
-    font-family: IBM Plex Mono;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    margin-top: 14px;
-    margin-left: 16px;
-  }
-`
-const Bottom = styled.div`
-  height: 120px;
-  line-height: 120px;
-  background: black;
-  color:#ffffff;
-  font-size: 30px;
-  margin: 0 auto;
-  width: 1100px;
-  margin-bottom: 50px;
-  padding-left: 28px;
-  font-family: Optima;
-  font-style: normal;
-  font-weight: bold;
-  margin-left: 23px;
-  
-`
-const RequestsTop = styled.div`
-    display: flex;
-  justify-content: space-between;
-  border-bottom: 2px solid #000000;
-  padding-bottom: 16px;
-  .title1{
-    font-family: IBM Plex Mono;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 15px;
-  }
-  .title2{
-    font-family: IBM Plex Mono;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-  }
-`
-const RequestsMiddle = styled.div`
-  padding-top: 14px;
-  padding-bottom: 30px;
-  color: #1F191B;
-  opacity: 0.7;
-`
-const RequestsBottom = styled.div`
-  padding-top: 16px;
-  padding-bottom: 34px;
-  font-family: IBM Plex Mono;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-`
-const Top = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 800px;
-  margin: 14px auto;
-  font-family: Helvetica Neue;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  color: #242424;
-  opacity: 0.8;
-`
-const About = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 1100px;
-  margin: 0px auto;
+  .bottom_banner{
+      width: 1100px;
+      height: 120px;
+      box-sizing: border-box;
+      background-color: #000;
+      margin: 0 auto;
+      margin-top: 68px;
+      margin-bottom: 84px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
+      .left{
+        color: #fff;
+        display: flex;
+        align-items: center;
+        margin-left: 28px;
+        cursor: pointer;
+
+        h3{
+          font-size: 30px;
+        }
+
+        img{
+          margin-left: 20px;
+          width: 30px;
+        }
+      }
+
+      .right{
+        /* margin-top: 25px; */
+        margin-right: 67px;
+      }
+  }
 `
+
+const banner_Nav = [{
+  name: 'New'
+}, {
+  name: 'Popular'
+}, {
+  name: 'Pictures'
+}, {
+  name: 'Audios'
+}, {
+  name: 'Videos'
+}, {
+  name: 'Games'
+}, {
+  name: 'Requests'
+}]
+
 export default function Index() {
-    return (
-        <div>
-            <Top>
-                <div>New</div>
-                <div>Popular</div>
-                <div>Pictures</div>
-                <div>Audios</div>
-                <div>Videos</div>
-                <div>Games</div>
-                <div>Requests</div>
-            </Top>
-           <Introduce >
-               <div>
-                   <div className='title1'>On Bounce you will find unique content for every taste</div>
-                   <div className='title2'>Explore</div>
-               </div>
-               <img className='titleBounce' src={bounce_Title}/>
-           </Introduce>
-            <Vessel >
-                <div className='introduceBottom'>
-                    <IntroduceBottomItem>
-                        <div>
-                        <div className='title1'>Marketplace</div>
-                        <div className='title2'>You can find your content here according to your taste</div>
-                        </div>
-                        <img className='introduceBottom1' src={introduceBottom1}/>
-                    </IntroduceBottomItem>
-                    <IntroduceBottomItem>
-                        <div>
-                            <div className='title1'>Brands</div>
-                            <div className='title2'>You can find your content here according to your taste</div>
-                        </div>
-                        <img className='introduceBottom1' src={introduceBottom2}/>
-                    </IntroduceBottomItem>
-                    <IntroduceBottomItem style={{marginRight: -8}}>
-                        <div>
-                            <div className='title1'>Point-2-Point</div>
-                            <div className='title2'>You can find your content here according to your taste</div>
-                        </div>
-                        <img className='introduceBottom1' src={introduceBottom3}/>
-                    </IntroduceBottomItem>
-                </div>
-                <div className='popularTitle'>
-                    Most Popular Items
-                </div>
-                <div className='popular'>
-                    <PopularItem>
-                        <img className='imgPopular' src={logo_bounce}/>
-                        <div className='PopularText1'>Digital Image Name</div>
-                        <div className='PopularText2'>0,9931 ETH</div>
-                    </PopularItem>
-                    <PopularItem>
-                        <img className='imgPopular' src={logo_bounce}/>
-                        <div className='PopularText1'>Digital Image Name</div>
-                        <div className='PopularText2'>0,9931 ETH</div>
-                    </PopularItem>
-                    <PopularItem>
-                        <img className='imgPopular' src={logo_bounce}/>
-                        <div className='PopularText1'>Digital Image Name</div>
-                        <div className='PopularText2'>0,9931 ETH</div>
-                    </PopularItem>
-                    <PopularItem>
-                        <img className='imgPopular' src={logo_bounce}/>
-                        <div className='PopularText1'>Digital Image Name</div>
-                        <div className='PopularText2'>0,9931 ETH</div>
-                    </PopularItem>
-                </div>
-                <div className='popularTitle'>
-                    Hotest Brands
-                </div>
-                <div className='popular'>
-                    <BrandsItem>
-                        <img className='imgBrands' src={logo_bounce}/>
-                        <div className='BrandsText'>Alpaca City</div>
-                    </BrandsItem>
-                    <BrandsItem>
-                        <img className='imgBrands' src={logo_bounce}/>
-                        <div className='BrandsText'>yGift Store</div>
-                    </BrandsItem>
-                    <BrandsItem>
-                        <img className='imgBrands' src={logo_bounce}/>
-                        <div className='BrandsText'>Alpaca City</div>
-                    </BrandsItem>
-                    <BrandsItem>
-                        <img className='imgBrands' src={logo_bounce}/>
-                        <div className='BrandsText'>yGift Store</div>
-                    </BrandsItem>
-                </div>
-                <div className='popularTitle'>
-                    Newest Requests
-                </div>
-                <div className='Requests'>
-                    <RequestsItem>
-                        <RequestsTop >
-                            <div className='title1'>B-day Video</div>
-                            <div className='title2'>Video</div>
-                        </RequestsTop>
-                        <RequestsMiddle >
-                        I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec. I want to a custom video for my birthday.
-                        It shouldn’t be longer then ~20-30 sec.
-                        </RequestsMiddle>
-                        <RequestsBottom >
-                            100 USDT
-                        </RequestsBottom>
-                    </RequestsItem>
-                    <RequestsItem>
-                        <RequestsTop >
-                            <div className='title1'>Mobile Game</div>
-                            <div className='title2'>Game</div>
-                        </RequestsTop>
-                        <RequestsMiddle >
-                            I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec. I want to a custom video for my birthday.
-                            It shouldn’t be longer then ~20-30 sec.
-                        </RequestsMiddle>
-                        <RequestsBottom >
-                            100 USDT
-                        </RequestsBottom>
-                    </RequestsItem>
-                    <RequestsItem>
-                        <RequestsTop >
-                            <div className='title1'>Digital Picture</div>
-                            <div className='title2'>Picture</div>
-                        </RequestsTop>
-                        <RequestsMiddle >
-                            I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec. I want to a custom video for my birthday.
-                            It shouldn’t be longer then ~20-30 sec.
-                        </RequestsMiddle>
-                        <RequestsBottom >
-                            100 USDT
-                        </RequestsBottom>
-                    </RequestsItem>
-                    <RequestsItem style={{marginRight: -8}}>
-                        <RequestsTop >
-                            <div className='title1'>B-day Video</div>
-                            <div className='title2'>Video</div>
-                        </RequestsTop>
-                        <RequestsMiddle >
-                            I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec. I want to a custom video for my birthday.
-                            It shouldn’t be longer then ~20-30 sec.
-                        </RequestsMiddle>
-                        <RequestsBottom >
-                            100 USDT
-                        </RequestsBottom>
-                    </RequestsItem>
-                </div>
-                <Bottom>
-                    Create your unique NFT on Bounce
-                </Bottom>
-            </Vessel>
-            <div>
-
+  return (
+    <HomeStyled>
+      <div className="banner">
+        <ul>
+          {banner_Nav.map((item) => {
+            return <li key={item.name}>{item.name}</li>
+          })}
+        </ul>
+        <div className="banner_wrapper">
+          <div className='banner_img'>
+            <div className='left'>
+              <h1>On Bounce you will find
+                    unique content for every taste</h1>
+              <button>Explore</button>
             </div>
-            <About>
-            {/*border-bottom: 1px solid;*/}
-            </About>
+
+            <div className="right">
+              <img src={img_banner} alt="" />
+            </div>
+          </div>
         </div>
-    )
+      </div>
+
+      <CardBanner />
+
+      <CardGroup title='Most Popular Items' link='' marinTop='64px'>
+        {[...new Array(4)].map((item, index) => {
+          return <PopularItem key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
+        })}
+      </CardGroup>
+
+      <CardGroup title='Hotest Brands' link=''>
+        {[...new Array(4)].map((item, index) => {
+          return <BrandsItem key={index} src={img_alpaca_city} name='Alpaca City' />
+        })}
+      </CardGroup>
+
+      <CardGroup title='Newest Requests' link=''>
+        {[...new Array(4)].map((item, index) => {
+          return <RequestsItem
+            key={index}
+            title='B-day Video'
+            type='Video'
+            context='I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec. I want to a custom video for my birthday.
+It shouldn’t be longer then ~20-30 sec.'
+            price='100 USDT'
+          />
+        })}
+      </CardGroup>
+
+      <div className="bottom_banner">
+        <div className="left">
+          <h3>Create your unique NFT on Bounce</h3>
+          <img src={arrows_white} alt="" />
+        </div>
+        <img className='right' src={two_setting} alt="" />
+      </div>
+    </HomeStyled>
+  )
 }

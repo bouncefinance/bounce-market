@@ -3,27 +3,31 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
 import Search from './Search'
+import InfoBox from './InfoBox'
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
-import useModal from '@components/Modal/useModal'
+import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import { useActiveWeb3React } from '@/web3'
 import { useWalletConnect } from '@/web3/useWalletConnect'
 
 const HeaderStyled = styled.div`
     height: 76px;
     width: 100%;
+    min-width: 1100px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid rgba(3,3,3,.1);
     user-select: none;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
 
     .wrapper{
         width: 1100px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: relative;
 
         >div{
             display: flex;
@@ -42,12 +46,19 @@ const HeaderStyled = styled.div`
                         h5{
                             font-size: 16px;
                             margin-right: 28px;
+
                             color: rgba(0,0,0,.4);
 
                             &:hover{
                                 color: rgba(0,0,0,.6);
                             }
                         }
+                        
+                        /* &:last-child {
+                            h5 {
+                                margin-right: 0;
+                            }
+                        } */
 
                        &.active h5{
                            color: rgba(0,0,0,1)
@@ -57,12 +68,14 @@ const HeaderStyled = styled.div`
             }
         }
     }
+
     .avatar_box{
         width: 32px;
-        height: 74px;
+        height: 76px;
         display: flex;
         justify-content: center;
         align-items: center;
+        box-sizing: border-box;
 
         &.open{
             border-bottom: 2px solid #124EEB;
@@ -90,13 +103,17 @@ const Nav_list = [{
 }, {
     name: 'P2P',
     route: '/P2P'
+}, {
+    name: 'Factory',
+    route: '/Factory'
 }]
 
 export default function Index() {
-    const { connectWallect } = useModal()
+    const [isConnectWallect, setIsConnectWallect] = useState(false)
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState('Home')
     const { account, chainId, active } = useActiveWeb3React()
+    const [isShowInfo, setIsShowInfo] = useState(false)
 
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
@@ -119,39 +136,46 @@ export default function Index() {
     }, [account, chainId, active])
 
     return (
-        <HeaderStyled>
-            <div className="wrapper">
-                <div className='left'>
-                    <img src={logo_bounce} alt="" />
+        <>
+            <HeaderStyled>
+                <div className="wrapper">
+                    <div className='left'>
+                        <img src={logo_bounce} alt="" />
 
-                    <Search
-                        placeholder={'Search Items, Shops and Accounts'}
-                    />
-                </div>
-                <div className='right'>
-                    <ul>
-                        {Nav_list.map(item => {
-                            return <li
-                                key={item.name}
-                                className={item.name === curNav ? 'active' : ''}
-                                onClick={() => {
-                                    setCurNav(item.name)
-                                }}
-                            >
-                                <Link to={item.route}>
-                                    <h5>/ {item.name}</h5>
-                                </Link>
-                            </li>
-                        })}
-                    </ul>
-                    {active ? <div className='avatar_box'>
-                        <div className='avatar'></div>
-                    </div> : <Button className='connect_btn' primary onClick={() => {
-                        connectWallect()
-                    }}>Connect Wallet</Button>}
+                        <Search
+                            placeholder={'Search Items, Shops and Accounts'}
+                        />
+                    </div>
+                    <div className='right'>
+                        <ul>
+                            {Nav_list.map(item => {
+                                return <li
+                                    key={item.name}
+                                    className={item.name === curNav ? 'active' : ''}
+                                    onClick={() => {
+                                        window.localStorage.setItem('Herder_CurNav', item.name)
+                                        setCurNav(item.name)
+                                    }}
+                                >
+                                    <Link to={item.route}>
+                                        <h5>/ {item.name}</h5>
+                                    </Link>
+                                </li>
+                            })}
+                        </ul>
+                        {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
+                            <div className='avatar' onClick={() => {
+                                setIsShowInfo(!isShowInfo)
+                            }}></div>
+                        </div> : <Button className='connect_btn' primary onClick={() => {
+                            setIsConnectWallect(true)
+                        }}>Connect Wallet</Button>}
 
+                    </div>
+                    {isShowInfo && <InfoBox setIsShowInfo={setIsShowInfo} />}
                 </div>
-            </div>
-        </HeaderStyled>
+            </HeaderStyled>
+            <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />
+        </>
     )
 }

@@ -12,16 +12,19 @@ const SearchStyled = styled.input`
     font-weight: 700;
     border: 1px solid rgba(0,0,0,.2);
     padding: 0 16px;
+    padding-left: 44px;
     background: url(${icon_search}) no-repeat;
     background-size: 16px 16px;
     background-position: 16px center;
-    text-indent: 28px;
+    /* text-indent: 28px; */
+    text-overflow: ellipsis;
     &::placeholder{
         color: rgba(0,0,0,.2);
     }
 
     &:focus{
         border: 1px solid rgba(0,0,0,.4);
+        /* text-indent: 28px; */
     }
 `
 

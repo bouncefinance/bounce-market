@@ -1,27 +1,13 @@
-export const getBotAddr = (chainID) => {
+export const getFixedSwapNFT = (chainID) => {
     switch (chainID) {
         case 1:
-            return '0x主网地址'
+            return ''
         case 4:
-            return '0x测试网地址'
+            return '0xDb922B6D4dF57a44e0faC7d3A8AA052f5af1af93'
         case 56:
-            return '0x币安网地址'
+            return ''
 
         default:
-            return '0x主网地址'
-    }
-}
-
-export const getAUCTIONAddr = (chainID) => {
-    switch (chainID) {
-        case 1:
-            return '0x主网地址'
-        case 4:
-            return '0x测试网地址'
-        case 56:
-            return '0x币安网地址'
-
-        default:
-            return '0x主网地址'
+            return '0xDb922B6D4dF57a44e0faC7d3A8AA052f5af1af93'
     }
 }

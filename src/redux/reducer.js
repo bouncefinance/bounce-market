@@ -10,12 +10,6 @@ export const reducer = (state, action) => {
                 Show_Modal: action.value
             }
 
-            case 'CONNECT_WALLET':
-                return {
-                    ...initState,
-                    CONNECT_WALLET: action.value
-                }
-
         default:
             return state
     }
