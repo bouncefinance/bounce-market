@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { TextInput, NumberInput, PullRadioBox, PullCheckBox, Button, OtherButton } from '../components/UI-kit'
+import LinkButton from '../components/UI-kit/Button/LinkButton'
 
 const UIkitStyled = styled.div`
     padding: 20px 30px;
@@ -171,6 +172,8 @@ export default function UIkit() {
                         <OtherButton type='setting' value={'Setting'} onClick={() => { alert('setting') }} />
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <OtherButton type='setting' value={'Setting'} disabled />
+                        
+                        <LinkButton to="/Home" width="30px" >LinkButton</LinkButton>
                         <br />
                     </div>
                 </div>

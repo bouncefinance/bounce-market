@@ -107,8 +107,8 @@ function GenerateNFTModal({ open, setOpen }) {
                     }]}
                     defaultValue='Image'
                     onChange={(item) => {
-                        console.log("typeof(item): ", typeof(item))
-                        console.log(item)
+                        /* console.log("typeof(item): ", typeof(item))
+                        console.log(item) */
                         setFileType(item.value)
                     }}
                 />
@@ -138,6 +138,11 @@ function GenerateNFTModal({ open, setOpen }) {
                         width="302px"
                         height="48px"
                         value="Cancel"
+                        onClick={
+                            () => {
+                                setOpen(false)
+                            }
+                        }
                     />
                     <Button
                         width="302px"

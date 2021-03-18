@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { TextInput, TextAreaInput, Button } from '@components/UI-kit'
@@ -107,6 +107,11 @@ function CreateBrandModal({ open, setOpen }) {
                         width="302px"
                         height="48px"
                         value="Cancel"
+                        onClick={
+                            () => {
+                                setOpen(false)
+                            }
+                        }
                     />
                     <Button
                         width="302px"
