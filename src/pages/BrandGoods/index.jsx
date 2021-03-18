@@ -11,6 +11,7 @@ import img_goods1 from './assets/img_goods1.svg'
 import img_goods2 from './assets/img_goods2.svg'
 import img_test1 from './assets/img_test1.svg'
 import img_avatar1 from './assets/img_avatar1.svg'
+import useHook from './useHook'
 
 
 const StyledBrandGoods = styled.div`
@@ -150,7 +151,10 @@ const goodsInfoList = {
 }
 
 function BrandGoods() {
-    const { type } = useParams()
+    // const { type } = useParams()
+    const { brandId, type } = useParams()
+    const { brand_info } = useHook(brandId, type)
+    console.log(brand_info)
 
     return (
         <StyledBrandGoods>

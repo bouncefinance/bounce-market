@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ErrorStatus } from './error_config'
 
@@ -40,6 +40,11 @@ const InputStyled = styled.div`
             color: rgba(0,0,0,1);
             opacity: .2;
         }
+        &.lockInput:disabled{
+            border: 1px solid rgba(0,0,0,.2);
+            color: rgba(0,0,0,.8);
+            opacity: 1;
+        }
 
         &.error{
             border: 1px solid #E43F29;
@@ -79,6 +84,7 @@ export default function NumberInput({
     defaultValue,
     maxVal,
     minVal,
+    lockInput
 }) {
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
@@ -90,7 +96,7 @@ export default function NumberInput({
     }, [])
 
     const handelChange = (e) => {
-        onChange && onChange(e) 
+        onChange && onChange(e)
 
 
         let val = e.target.value
@@ -132,9 +138,9 @@ export default function NumberInput({
             {title && <p className={`title ${error && 'error'}`}>{title}</p>}
             <input
                 type='number'
-                className={`number_input ${error && 'error'}`}
+                className={`number_input ${error && 'error'} ${lockInput && 'lockInput'}`}
                 placeholder={placeholder}
-                disabled={disabled}
+                disabled={disabled || lockInput}
                 onChange={handelChange}
                 onBlur={handelBlur}
                 onFocus={handelFocus}

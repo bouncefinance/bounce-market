@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { TextInput, Button } from '@components/UI-kit'

@@ -63,7 +63,8 @@ export default function Upload({
     type = 'image',
     infoTitle: defaltInfoTitle = 'upload Image',
     onFileChange,
-    disabled
+    disabled,
+    lockInput
 }) {
     const [coverSrc, setCoverSrc] = useState(upload_img)
     const [infoTitle, setInfoTitle] = useState(defaltInfoTitle)
@@ -133,7 +134,7 @@ export default function Upload({
         <UploadStyled>
             <div className={`left_img ${type}`}>
                 <img src={coverSrc} alt="" />
-                <input disabled={disabled} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" />
+                <input disabled={disabled || lockInput} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" />
             </div>
 
             <div className="right_info">

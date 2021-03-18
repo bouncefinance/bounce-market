@@ -2,8 +2,8 @@ import React from 'react'
 import CommonHeader from '../CommonHeader'
 import styled from 'styled-components'
 import { CardItem, AddCardItem } from './ListCardItem'
-import ygift_img from './assets/ygift_img.svg'
 import { useHistory } from 'react-router'
+import useHook from './useHook'
 
 const BrandsStyled = styled.div`
     width: 1100px;
@@ -24,8 +24,10 @@ const BrandsStyled = styled.div`
     }
 `
 
+
 export default function Index() {
     const history = useHistory()
+    const { brand_list } = useHook()
 
     return (
         <div>
@@ -37,14 +39,14 @@ export default function Index() {
                     <li>
                         <AddCardItem />
                     </li>
-                    {[...new Array(1)].map((item, index) => {
-                        return <li key={index} onClick={() => {
-                            history.push('/MyBrands/0/All')
+                    {brand_list.map((item) => {
+                        return <li key={item.id} onClick={() => {
+                            history.push(`/MyBrands/${item.id}/All`)
                         }}>
                             <CardItem
-                                cover={ygift_img}
-                                name={'yGift Store'}
-                                count={15}
+                                cover={item.imgurl}
+                                name={item.brandname}
+                                count={0}
                             />
                         </li>
                     })}

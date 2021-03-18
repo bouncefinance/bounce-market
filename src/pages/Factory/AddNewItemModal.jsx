@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { TextInput, PullRadioBox as DropDownMenu, TextAreaInput, Button } from '@components/UI-kit'
@@ -90,7 +90,7 @@ function AddNewItemModal({ open, setOpen }) {
                     required={true}
                     marginTop={0}
                 />
-            
+
                 <DropDownMenu
                     title='Category'
                     width='620px'
@@ -107,7 +107,7 @@ function AddNewItemModal({ open, setOpen }) {
                     }]}
                     defaultValue='Image'
                     onChange={(item) => {
-                        console.log("typeof(item): ", typeof(item))
+                        console.log("typeof(item): ", typeof (item))
                         console.log(item)
                         setFileType(item.value)
                     }}
@@ -120,7 +120,7 @@ function AddNewItemModal({ open, setOpen }) {
                     required={true}
                     marginTop="24px"
                 />
-            
+
                 <TextAreaInput
                     title='Description'
                     width='620px'
@@ -128,19 +128,19 @@ function AddNewItemModal({ open, setOpen }) {
                     required={true}
                     marginTop="24px"
                 />
-                
+
                 <div className="upload">
-                    <img src={uploadResourceList[fileType].img} alt=""/>
+                    <img src={uploadResourceList[fileType].img} alt="" />
                     <div className="text">
                         <span className="title">upload {fileType} </span>
                         <div className="requirement">
                             {uploadResourceList[fileType].requirement1}
-                            <br/>
+                            <br />
                             {uploadResourceList[fileType].requirement2}
                         </div>
                     </div>
                 </div>
-            
+
                 <div className="button_group">
                     <Button
                         width="302px"

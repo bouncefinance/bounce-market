@@ -41,6 +41,12 @@ const InputStyled = styled.div`
             opacity: .2;
         }
 
+        &.lockInput:disabled{
+            border: 1px solid rgba(0,0,0,.2);
+            color: rgba(0,0,0,.8);
+            opacity: 1;
+        }
+
         &.error{
             border: 1px solid #E43F29;
             color:  #E43F29;
@@ -77,7 +83,8 @@ export default function TextInput({
     required = false,
     width = '440px',
     height = '48px',
-    marginTop = '20px'
+    marginTop = '20px',
+    lockInput
 }) {
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
@@ -117,10 +124,10 @@ export default function TextInput({
             {title && <p className={`title ${error && 'error'}`}>{title}</p>}
             <input
                 type='text'
-                className={`${error && 'error'}`}
+                className={`${error && 'error'} ${lockInput && 'lockInput'}`}
                 defaultValue={defaultValue}
                 placeholder={placeholder}
-                disabled={disabled}
+                disabled={disabled || lockInput}
                 onChange={handelChange}
                 onBlur={handelBlur}
                 onFocus={handelFocus}

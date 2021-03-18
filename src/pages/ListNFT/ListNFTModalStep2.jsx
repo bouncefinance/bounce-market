@@ -1,11 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
-import { TextInput, Button } from '@components/UI-kit'
+import {  Button } from '@components/UI-kit'
 
 import TableList from './TableList'
-
-import img1 from './assets/img1.svg'
 
 const Wrapper = styled.div`
     width: 1100px;

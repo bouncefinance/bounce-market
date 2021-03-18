@@ -43,6 +43,12 @@ const TextAreaStyled = styled.div`
             opacity: .2;
         }
 
+        &.lockInput:disabled{
+            border: 1px solid rgba(0,0,0,.2);
+            color: rgba(0,0,0,.8);
+            opacity: 1;
+        }
+
         &.error{
             border: 1px solid #E43F29;
             color:  #E43F29;
@@ -79,7 +85,8 @@ export default function TextAreaInput({
     required = false,
     width,
     height,
-    marginTop = '20px'
+    marginTop = '20px',
+    lockInput
 }) {
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
@@ -117,12 +124,12 @@ export default function TextAreaInput({
 
     return (
         <TextAreaStyled width={width} height={height} marginTop={marginTop}>
-            {title && <p className={`title ${error && 'error'}`}>{title}</p>}
+            {title && <p className={`title ${error && 'error'} `}>{title}</p>}
             <textarea
-                className={`textarea ${error && 'error'}`}
+                className={`textarea ${error && 'error'} ${lockInput&&'lockInput'}`}
                 defaultValue={defaultValue}
                 placeholder={placeholder}
-                disabled={disabled}
+                disabled={disabled || lockInput}
                 onChange={handelChange}
                 onBlur={handelBlur}
                 onFocus={handelFocus}
