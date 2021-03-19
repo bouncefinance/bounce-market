@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import FactoryCard from './FactoryCard'
@@ -67,19 +67,19 @@ function Factory() {
                     img={pic_Generate}
                     title="Generate your NFT"
                     discription="You can turn contents in to NFTs without creating your own store or brand"
-                    button={<GenerateButton/>}
+                    button={<GenerateButton />}
                 />
                 <FactoryCard
                     img={pic_Build}
                     title="Build your brand"
                     discription="You can create a contract and produce unlimited amount of NFTs under your own contract"
-                    button={<BuildButton/>}
+                    button={<BuildButton />}
                 />
                 <FactoryCard
                     img={pic_List}
                     title="List your NFT"
                     discription="If you already have a token contract set up and you just want to set up a space to sell them, use our get-listed flow instead"
-                    button={<ListButton/>}
+                    button={<ListButton />}
                 />
             </CardList>
 
