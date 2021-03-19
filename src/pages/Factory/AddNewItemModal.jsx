@@ -146,6 +146,11 @@ function AddNewItemModal({ open, setOpen }) {
                         width="302px"
                         height="48px"
                         value="Cancel"
+                        onClick={
+                            () => {
+                                setOpen(false)
+                            }
+                        }
                     />
                     <Button
                         width="302px"

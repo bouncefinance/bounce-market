@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Button from '../../components/UI-kit/Button/Button'
-
 const StyledCard = styled.div`
     display: flex;
     flex-direction: column;
@@ -65,27 +63,14 @@ const StyledCard = styled.div`
             }
         }
 
-        Button {
+        button {
             width: 132px;
             height: 36px;
-
-            .button_value {
-                font-family: Helvetica Neue;
-                font-style: normal;
-                font-weight: bold;
-                font-size: 13px;
-                line-height: 16px;
-                align-items: center;
-                text-align: center;
-                text-transform: capitalize;
-                color: #FFFFFF;
-            }
         }
-
     }
 `
 
-function FactoryCard({ img, title, discription, button_value}) {
+function FactoryCard({ img, title, discription, button}) {
     return (
         <div>
             <StyledCard>
@@ -97,9 +82,7 @@ function FactoryCard({ img, title, discription, button_value}) {
                         <span className="title">{title}</span>
                         <p className="discription">{discription}</p>
                     </div>
-                    <Button primary>
-                        <span className="button_value">{button_value}</span>
-                    </Button>
+                    {button}
                 </div>
             </StyledCard>
         </div>

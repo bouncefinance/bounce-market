@@ -6,7 +6,6 @@ const Base_URL = 'http://3.0.175.182'
 const signStr = 'Welcome to Bounce!'
 
 export default function useAxios() {
-
     const { account, library } = useWeb3React()
 
     const getNewToken = async () => {
@@ -30,6 +29,8 @@ export default function useAxios() {
     }
 
     const sign_Axios_Post = async (path, params, option = {}) => {
+        
+        console.log(111)
         let token = window.localStorage.getItem('JWT_TOKEN')
         if (!token) {
             token = await getNewToken()
@@ -42,7 +43,6 @@ export default function useAxios() {
             },
             ...option
         }
-
         let res = await axios.post(Base_URL + path, params, config)
         if (res.status === 200 && res.data.code === -1) {
             // token 无效过期
@@ -104,6 +104,7 @@ export default function useAxios() {
         Axios: {
             get: Axios_Get,
             post: Axios_Post
-        }
+        },
+        axios
     }
 }
