@@ -75,7 +75,6 @@ export default function useAxios() {
             token: token
         }
         
-        console.log(params)
         let res = await axios.get(Base_URL + path, { params, headers })
         if (res.status === 200 && res.data.code === -1) {
             // token 无效过期

@@ -4,6 +4,7 @@ import useAxios from '@utils/useAxios.js'
 import { useActiveWeb3React } from '@/web3'
 
 export default function useHook(brandId, type) {
+    
     const { sign_Axios } = useAxios()
     const { active, account, chainId } = useActiveWeb3React()
     const [brand_info, setBrand_info] = useState([])

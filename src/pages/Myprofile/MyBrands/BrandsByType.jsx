@@ -5,7 +5,6 @@ import { CardItem, AddCardItem } from './CardItem'
 import arrows_left from '@assets/images/icon/arrows-left.svg'
 import edit_white from '@assets/images/icon/edit_white.svg'
 import edit_black from '@assets/images/icon/edit_black.svg'
-import ygift_img from './assets/ygift_img.svg'
 
 import nav_all from '@assets/images/icon/nav_all.svg'
 import nav_audio from '@assets/images/icon/nav_audio.svg'
@@ -15,6 +14,7 @@ import nav_other from '@assets/images/icon/nav_other.svg'
 import nav_video from '@assets/images/icon/nav_video.svg'
 
 import img_example_3 from '@assets/images/example_3.svg'
+import { useBrandInfo } from './useHook'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -184,11 +184,12 @@ const nav_list = [{
     route: 'Others'
 }]
 
+
 export default function BrandsByType() {
     const { brandId, type } = useParams()
     const history = useHistory()
     const [listData, setListData] = useState([])
-
+    const { brandInfo } = useBrandInfo(brandId)
 
     const getListData = (type) => {
         // console.log(type)
@@ -250,12 +251,12 @@ export default function BrandsByType() {
 
             <div className="info_wrapper">
                 <div className="left">
-                    <img src={ygift_img} alt="" />
+                    <img src={brandInfo.imgurl} alt="" />
                 </div>
                 <div className="right">
                     <div className="div">
-                        <h2>Cookie Store</h2>
-                        <p>You can find your content here according to your taste</p>
+                        <h2>{brandInfo.brandname}</h2>
+                        <p>{brandInfo.description}</p>
                     </div>
                     <button>
                         <img src={edit_black} alt="" />

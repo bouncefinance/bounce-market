@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
-import { TextInput, TextAreaInput, Button, PullRadioBox } from '@components/UI-kit'
+import { TextInput, TextAreaInput, Button, PullRadioBox, Radio } from '@components/UI-kit'
+import { useState } from 'react'
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
@@ -18,13 +19,22 @@ const AddNewBrandstModalStyled = styled.div`
         }
     }
 
+    .category_select{
+        width: 620px;
+        display: flex;
+        justify-content: space-between;
+    }
+
 `
 
 export default function AddNewBrandstModal({ open, setOpen, defaultValue }) {
     const { active } = useActiveWeb3React()
+    const [nftType, setNFTType] = useState()
+    // const [formData, setFromData] = useState({})
 
     useEffect(() => {
         if (!active) return
+
     }, [active])
 
     return (
@@ -38,27 +48,45 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue }) {
                     marginTop={0}
                 />
 
-                <PullRadioBox title={'Category'} marginTop='24px' width='620px' options={[{
-                    value: 'Images'
-                }, {
-                    value: 'Video'
-                }, {
-                    value: 'Audio'
-                }, {
-                    value: 'Games'
-                }, {
-                    value: 'Others'
-                }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'} onChange={(item) => {
-                    // console.log(item)
-                }} />
+                <div className="category_select">
+                    <PullRadioBox title={'Category'} marginTop='24px' width='150px' options={[{
+                        value: 'Images'
+                    }, {
+                        value: 'Video'
+                    }, {
+                        value: 'Audio'
+                    }, {
+                        value: 'Games'
+                    }, {
+                        value: 'Others'
+                    }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'} onChange={(item) => {
+                        // console.log(item)
+                    }} />
 
-                <TextInput
-                    title='External Link'
+                    <PullRadioBox title={'Category'} marginTop='24px' width='150px' options={[{
+                        value: 'Fine Arts'
+                    }]} defaultValue={defaultValue === 'Fine Arts'} onChange={(item) => {
+                        // console.log(item)
+                    }} />
+
+                    <Radio title={'Standard'} options={[{
+                        name: 'ERC-721',
+                        value: '721'
+                    }, {
+                        name: 'ERC-1155',
+                        value: '1155'
+                    }]} defaultValue={'721'} onValChange={({ name }) => {
+                        setNFTType(name)
+                    }} />
+                </div>
+
+                {nftType==='ERC-1155'&&<TextInput
+                    title='Supply'
                     width='620px'
-                    placeholder={'Enter external link'}
+                    defaultValue={0}
                     required={true}
                     marginTop={'24px'}
-                />
+                />}
 
                 <TextAreaInput
                     title='Description'

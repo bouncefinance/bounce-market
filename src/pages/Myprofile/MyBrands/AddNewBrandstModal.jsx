@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
 import { TextInput, TextAreaInput, Button, Upload } from '@components/UI-kit'
 import useAxios from '@utils/useAxios.js'
+import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
+// import { FreeFocusInside } from 'react-focus-lock';
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
@@ -32,6 +34,8 @@ export default function AddNewBrandstModal({ open, setOpen }) {
     const [btnLock, setBtnLock] = useState(true)
     const [inputDisable, setInputDisable] = useState(false)
     const [btnText, setBtnText] = useState('Save')
+
+    const [modalStatus, setModalStatus] = useState(initStatus);
 
     useEffect(() => {
         if (!active) return
@@ -99,57 +103,66 @@ export default function AddNewBrandstModal({ open, setOpen }) {
     }
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'Create your Brand', isClose: true }}>
-            <AddNewBrandstModalStyled>
-                <TextInput
-                    title='Brand Name'
-                    width='620px'
-                    required={true}
-                    marginTop={0}
-                    lockInput={inputDisable}
-                    onValChange={(val) => {
-                        setFromDate({ ...fromDate, Brand_Name: val })
-                    }}
-                />
+        <>
 
-                <TextInput
-                    title='Symbol'
-                    width='620px'
-                    required={true}
-                    marginTop={'24px'}
-                    lockInput={inputDisable}
-                    onValChange={(val) => {
-                        setFromDate({ ...fromDate, Symbol: val })
-                    }}
-                />
 
-                <TextAreaInput
-                    title='Description'
-                    width='620px'
-                    placeholder={`Describe your brand`}
-                    required={true}
-                    marginTop={'24px'}
-                    lockInput={inputDisable}
-                    onValChange={(val) => {
-                        setFromDate({ ...fromDate, Description: val })
-                    }}
-                />
+            <Modal open={open} setOpen={setOpen} header={{ title: 'Create your Brand', isClose: true }}>
+                <AddNewBrandstModalStyled>
+                    <TextInput
+                        title='Brand Name'
+                        width='620px'
+                        required={true}
+                        marginTop={0}
+                        lockInput={inputDisable}
+                        onValChange={(val) => {
+                            setFromDate({ ...fromDate, Brand_Name: val })
+                        }}
+                    />
 
-                <Upload type='image'
-                    lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData, file) => {
-                        setFileDate(formData)
-                        setFromDate({ ...fromDate, Brand_img: file.name })
-                        // setBtnLock(false)
-                        // console.log(file)
-                    }} />
+                    <TextInput
+                        title='Symbol'
+                        width='620px'
+                        required={true}
+                        marginTop={'24px'}
+                        lockInput={inputDisable}
+                        onValChange={(val) => {
+                            setFromDate({ ...fromDate, Symbol: val })
+                        }}
+                    />
 
-                <div className="button_group">
-                    <Button height='48px' width='302px' onClick={() => {
-                        setOpen(false)
-                    }}>Cancel</Button>
-                    <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
-                </div>
-            </AddNewBrandstModalStyled>
-        </Modal >
+                    <TextAreaInput
+                        title='Description'
+                        width='620px'
+                        placeholder={`Describe your brand`}
+                        required={true}
+                        marginTop={'24px'}
+                        lockInput={inputDisable}
+                        onValChange={(val) => {
+                            setFromDate({ ...fromDate, Description: val })
+                        }}
+                    />
+
+                    <Upload type='image'
+                        lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData, file) => {
+                            setFileDate(formData)
+                            setFromDate({ ...fromDate, Brand_img: file.name })
+                            // setBtnLock(false)
+                            // console.log(file)
+                        }} />
+
+                    <div className="button_group">
+                        <Button height='48px' width='302px' onClick={() => {
+                            // setOpen(false)
+                            setModalStatus(approveStatus)
+                        }}>Cancel</Button>
+                        <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
+                    </div>
+                </AddNewBrandstModalStyled>
+            </Modal >
+
+            <TransferStatusModal modalStatus={modalStatus} onDismiss={() => {
+                setModalStatus(initStatus)
+            }} />
+        </>
     )
 }

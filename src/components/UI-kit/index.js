@@ -6,6 +6,7 @@ import Upload from './Input/Upload'
 import TextAreaInput from './Input/TextAreaInput'
 import PullCheckBox from './Select/PullCheckBox'
 import PullRadioBox from './Select/PullRadioBox'
+import Radio from './RadioCheck/Radio'
 
 export {
     Button,
@@ -15,5 +16,6 @@ export {
     NumberInput,
     PullCheckBox,
     PullRadioBox,
-    Upload
+    Upload,
+    Radio
 }
