@@ -30,7 +30,6 @@ export default function useAxios() {
 
     const sign_Axios_Post = async (path, params, option = {}) => {
         
-        console.log(111)
         let token = window.localStorage.getItem('JWT_TOKEN')
         if (!token) {
             token = await getNewToken()
@@ -65,6 +64,8 @@ export default function useAxios() {
     }
 
     const sign_Axios_Get = async (path, params) => {
+        
+
         let token = window.localStorage.getItem('JWT_TOKEN')
         if (!token) {
             token = await getNewToken()
@@ -73,6 +74,8 @@ export default function useAxios() {
         let headers = {
             token: token
         }
+        
+        console.log(params)
         let res = await axios.get(Base_URL + path, { params, headers })
         if (res.status === 200 && res.data.code === -1) {
             // token 无效过期
