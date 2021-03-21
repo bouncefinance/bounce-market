@@ -1,14 +1,16 @@
 import useAxios from '@/utils/useAxios'
+import { useActiveWeb3React } from '@/web3'
 import { useState, useEffect } from 'react'
 
 export function useUserInfo() {
     const [userExisted, setUserExisted] = useState(false)
     const [userInfo, setUserInfo] = useState({})
     const { sign_Axios } = useAxios()
+    const {account} = useActiveWeb3React()
 
     const getUserInfo = async () => {
         try {
-            const res = await sign_Axios.post('/api/v2/main/auth/getaccount')
+            const res = await sign_Axios.post('/api/v2/main/auth/getaccount', {accountaddress: account})
             if (res.data.code === 1) {
                 setUserExisted(true)
                 setUserInfo(res.data.data)
@@ -41,9 +43,10 @@ export function useUserInfo() {
 
 
     useEffect(() => {
+        if(!account) return
         getUserInfo()
         // eslint-disable-next-line
-    }, [])
+    }, [account])
 
     return { userExisted, userInfo, updateUserInfo }
 }

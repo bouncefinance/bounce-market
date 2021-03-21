@@ -1,12 +1,18 @@
 import axios from 'axios'
 import Web3 from 'web3'
 import { useWeb3React } from '@web3-react/core'
+import { useEffect } from 'react'
 const Base_URL = 'http://3.0.175.182'
 
 const signStr = 'Welcome to Bounce!'
 
 export default function useAxios() {
     const { account, library } = useWeb3React()
+
+    useEffect(() => {
+        // getNewToken()
+        console.log(111)
+    }, [account])
 
     const getNewToken = async () => {
         const web3 = new Web3(library.provider);
@@ -42,7 +48,7 @@ export default function useAxios() {
             },
             ...option
         }
-        let res = await axios.post(Base_URL + path, params, config)
+        let res = await axios.post(Base_URL + path, {...params, accountaddress: account}, config)
         if (res.status === 200 && res.data.code === -1) {
             // token 无效过期
             config = {
@@ -52,7 +58,7 @@ export default function useAxios() {
                 },
                 ...option
             }
-            res = await axios.post(Base_URL + path, params, config)
+            res = await axios.post(Base_URL + path, {...params, accountaddress: account}, config)
         }
 
         return res

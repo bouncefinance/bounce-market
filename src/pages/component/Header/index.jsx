@@ -9,6 +9,7 @@ import logo_bounce from '@assets/images/logo/bounce.svg'
 import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import { useActiveWeb3React } from '@/web3'
 import { useWalletConnect } from '@/web3/useWalletConnect'
+import { useUserInfo } from '../../Myprofile/useUserInfo'
 
 const HeaderStyled = styled.div`
     height: 76px;
@@ -81,6 +82,13 @@ const HeaderStyled = styled.div`
             border-bottom: 2px solid #124EEB;
         }
 
+        img{
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
         .avatar{
             width: 28px;
             height: 28px;
@@ -108,12 +116,13 @@ const Nav_list = [{
     route: '/Factory'
 }]
 
-export default function Index() {
+export default function Index () {
     const [isConnectWallect, setIsConnectWallect] = useState(false)
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState('Home')
     const { account, chainId, active } = useActiveWeb3React()
     const [isShowInfo, setIsShowInfo] = useState(false)
+    const { userInfo } = useUserInfo()
 
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
@@ -132,8 +141,8 @@ export default function Index() {
 
     useEffect(() => {
         if (!active) return
-        console.log(account, chainId, active)
-    }, [account, chainId, active])
+        console.log(userInfo)
+    }, [account, chainId, active, userInfo])
 
     return (
         <>
@@ -164,15 +173,17 @@ export default function Index() {
                             })}
                         </ul>
                         {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
-                            <div className='avatar' onClick={() => {
+                            {userInfo && userInfo.imgurl ? <img src={userInfo && userInfo.imgurl} alt="" onClick={() => {
                                 setIsShowInfo(!isShowInfo)
-                            }}></div>
+                            }} /> : <div className='avatar' onClick={() => {
+                                setIsShowInfo(!isShowInfo)
+                            }}></div>}
                         </div> : <Button className='connect_btn' primary onClick={() => {
                             setIsConnectWallect(true)
                         }}>Connect Wallet</Button>}
 
                     </div>
-                    {isShowInfo && <InfoBox setIsShowInfo={setIsShowInfo} />}
+                    {isShowInfo && <InfoBox setIsShowInfo={setIsShowInfo} username={userInfo && userInfo.username} />}
                 </div>
             </HeaderStyled>
             <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />
