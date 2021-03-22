@@ -59,10 +59,11 @@ const UploadStyled = styled.div`
     }
 `
 
-export default function Upload({
+export default function Upload ({
     type = 'image',
     infoTitle: defaltInfoTitle = 'upload Image',
     onFileChange,
+    defaultValue,
     disabled,
     lockInput
 }) {
@@ -77,7 +78,7 @@ export default function Upload({
     useEffect(() => {
         switch (type) {
             case 'image':
-                setCoverSrc(upload_img)
+                setCoverSrc(defaultValue || upload_img)
                 setInfoTitle(infoTitle || 'upload Image')
                 setInfoTip([
                     'Supports JPG, PNG, JPEG2000',
@@ -86,7 +87,7 @@ export default function Upload({
                 setFileLimit('image/*')
                 break;
             case 'video':
-                setCoverSrc(upload_video)
+                setCoverSrc(defaultValue || upload_video)
                 setInfoTitle(infoTitle || 'Upload File')
                 setInfoTip([
                     'Supports MP4, AVI, WMV, MOV',
@@ -95,7 +96,7 @@ export default function Upload({
                 setFileLimit('video/*')
                 break;
             case 'avatar':
-                setCoverSrc(upload_avatar)
+                setCoverSrc(defaultValue || upload_avatar)
                 setInfoTitle(infoTitle || 'Change Profile Photo')
                 setInfoTip([
                     'Supports JPG, PNG, JPEG2000',

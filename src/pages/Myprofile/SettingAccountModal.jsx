@@ -21,14 +21,20 @@ const SettingAccountStyled = styled.div`
             margin-right: 16px;
         }
     }
+
+    .name_row{
+        width: 620px;
+        display: flex;
+        justify-content: space-between;
+    }
 `
 
-export default function SettingAccountModal({ open, setOpen }) {
+export default function SettingAccountModal ({ open, setOpen }) {
     const { active, account } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
     const { userInfo, updateUserInfo } = useUserInfo()
     const [fileData, setFileData] = useState(null)
-    const [formData, setFormData] = useState({ account: 'Please connect your wallet account' })
+    const [formData, setFormData] = useState({})
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [btnText, setBtnText] = useState('Save')
@@ -36,13 +42,14 @@ export default function SettingAccountModal({ open, setOpen }) {
     useEffect(() => {
         if (!active) return
         console.log(userInfo)
+        setFormData({ ...userInfo })
         // eslint-disable-next-line
-    }, [active])
+    }, [active, userInfo])
 
     useEffect(() => {
         // console.log(formData, fileData)
-        if (fileData && formData) {
-            const requireArr = ['name', 'email', 'bio']
+        if ((fileData || formData.imgurl) && formData) {
+            const requireArr = ['username', 'fullname', 'email', 'bio']
             let errorCount = 0
             requireArr.forEach(item => {
                 if (!checkInput(formData[item])) {
@@ -60,56 +67,75 @@ export default function SettingAccountModal({ open, setOpen }) {
         // eslint-disable-next-line
     }, [fileData, formData])
 
-    const submitSave = () => {
+    const submitSave = async () => {
         setBtnLock(true)
         setInputDisable(true)
-        setBtnText('Uploading File ...')
 
-        // 第一步：上传图片
-        sign_Axios
-            .post('/api/v2/main/auth/fileupload', fileData)
-            .then(function (response) {
-                setBtnText('Uploading Date ...')
-                if (response.data.code === 200) {
-                    return response.data.result.path
+        try {
+            let imgUrl = formData.imgurl
+            if (!imgUrl) {
+                // 如果没上传图片则先上传图片
+                setBtnText('Uploading File ...')
+                const res = await sign_Axios.post('/api/v2/main/auth/fileupload', fileData)
+                if (res.data.code === 200) {
+                    imgUrl = res.data.result.path
                 } else {
-                    throw new Error('File upload failed,' + response.data.msg)
+                    throw new Error('File upload failed,' + res.data.msg)
                 }
-            }).then(imgUrl => {
-                setBtnText('Uploading Data ...')
-                const params = {
-                    accountaddress: account,
-                    username: formData.name,
-                    imgurl: imgUrl,
-                    email: formData.email,
-                    bio: formData.bio
-                }
+            }
+            setBtnText('Uploading Data ...')
+            const params = {
+                accountaddress: account,
+                username: formData.username,
+                fullname: formData.fullname,
+                imgurl: imgUrl,
+                email: formData.email,
+                bio: formData.bio
+            }
 
-                updateUserInfo(params)
-            }).catch(err => {
-                alert('服务器故障，请稍后重试')
-            }).finally(() => {
-                setBtnLock(false)
-                setInputDisable(false)
-                setBtnText('Save')
-            })
+            await updateUserInfo(params)
+            setBtnLock(false)
+            setInputDisable(false)
+            setBtnText('Save')
+        } catch (error) {
+            alert('服务器故障，请稍后重试')
+            setBtnLock(false)
+            setInputDisable(false)
+            setBtnText('Save')
+        }
     }
 
 
     return (
         <Modal open={open} setOpen={setOpen} header={{ title: 'My Account Settings', isClose: true }}>
             <SettingAccountStyled>
-                <TextInput
-                    title='Name'
-                    width='620px'
-                    defaultValue={'Cookie Store'}
-                    required={true}
-                    marginTop={0}
-                    onValChange={(val) => {
-                        setFormData({ ...formData, name: val })
-                    }}
-                    inputDisable={inputDisable}
-                />
+                <div className='name_row'>
+                    <TextInput
+                        title='User Name'
+                        width='300px'
+                        defaultValue={userInfo.username}
+                        required={true}
+                        marginTop={0}
+                        onValChange={(val) => {
+                            setFormData({ ...formData, username: val })
+                        }}
+                        inputDisable={inputDisable}
+                    />
+
+                    <TextInput
+                        title='Full Name'
+                        width='300px'
+                        defaultValue={userInfo.fullname}
+                        required={true}
+                        marginTop={0}
+                        disabled={Boolean(userInfo.fullname)}
+                        onValChange={(val) => {
+                            setFormData({ ...formData, fullname: val })
+                        }}
+                        inputDisable={inputDisable}
+                    />
+                </div>
+
                 <TextInput
                     title='Bounce ID'
                     width='620px'
@@ -127,6 +153,7 @@ export default function SettingAccountModal({ open, setOpen }) {
                     title='Email (Optional)'
                     width='620px'
                     placeholder={'Enter your email'}
+                    defaultValue={userInfo.email}
                     required={true}
                     marginTop={'24px'}
                     onValChange={(val) => {
@@ -139,6 +166,7 @@ export default function SettingAccountModal({ open, setOpen }) {
                     title='Short Bio (Optional)'
                     width='620px'
                     placeholder={'Describe your bio'}
+                    defaultValue={userInfo.bio}
                     required={true}
                     marginTop={'24px'}
                     onValChange={(val) => {
@@ -147,7 +175,7 @@ export default function SettingAccountModal({ open, setOpen }) {
                     inputDisable={inputDisable}
                 />
 
-                <Upload type='avatar' onFileChange={(file) => {
+                <Upload type='avatar' defaultValue={userInfo.imgurl} onFileChange={(file) => {
                     setFileData(file)
                 }} inputDisable={inputDisable} />
 

@@ -113,7 +113,7 @@ const InfoList = [{
     route: ''
 }]
 
-export default function InfoBox({ setIsShowInfo }) {
+export default function InfoBox ({ setIsShowInfo, username }) {
     const history = useHistory()
     const [curItem, setCurItem] = useState(-1)
     const { account } = useActiveWeb3React()
@@ -122,7 +122,7 @@ export default function InfoBox({ setIsShowInfo }) {
     return (
         <InfoBoxStyled>
             <div className="top_info">
-                <span>John Doe</span>
+                <span>{username}</span>
                 <div className='accout'>
                     <p>{account}</p>
                     <CopyToClipboard
@@ -143,7 +143,7 @@ export default function InfoBox({ setIsShowInfo }) {
                             setCurItem(-1)
                         }}
                         onClick={() => {
-                            if(item.name==='Account Settings'){
+                            if (item.name === 'Account Settings') {
                                 return setIsSettingAccount(true)
                             }
                             if (item.route === '') return
