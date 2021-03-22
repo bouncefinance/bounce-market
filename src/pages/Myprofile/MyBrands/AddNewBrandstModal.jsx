@@ -6,6 +6,8 @@ import { TextInput, TextAreaInput, Button, Upload } from '@components/UI-kit'
 import useAxios from '@utils/useAxios.js'
 import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
 // import { FreeFocusInside } from 'react-focus-lock';
+import DatePicker from 'material-ui/DatePicker';
+import Dialog from 'material-ui/Dialog';
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
@@ -36,6 +38,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
     const [btnText, setBtnText] = useState('Save')
 
     const [modalStatus, setModalStatus] = useState(initStatus);
+    const [isDatePicker, setIsDatePicker] = useState(false);
 
     useEffect(() => {
         if (!active) return
@@ -153,16 +156,29 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                     <div className="button_group">
                         <Button height='48px' width='302px' onClick={() => {
                             // setOpen(false)
-                            setModalStatus(approveStatus)
+                            // setModalStatus(approveStatus)
+                            setIsDatePicker(true)
                         }}>Cancel</Button>
                         <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
                     </div>
                 </AddNewBrandstModalStyled>
+
+                <Dialog
+                    title="Dialog With Date Picker"
+                    // actions={actions}
+                    modal={false}
+                    open={isDatePicker}
+                    onRequestClose={()=>{setIsDatePicker(false)}}
+                >
+                    Open a Date Picker dialog from within a dialog.
+                    <DatePicker hintText="Date Picker" />
+                </Dialog>
             </Modal >
 
-            <TransferStatusModal modalStatus={modalStatus} onDismiss={() => {
+
+            {/* <TransferStatusModal modalStatus={modalStatus} onDismiss={() => {
                 setModalStatus(initStatus)
-            }} />
+            }} /> */}
         </>
     )
 }
