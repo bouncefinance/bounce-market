@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
 import Search from './Search'
 import InfoBox from './InfoBox'
@@ -129,21 +129,27 @@ export default function Index () {
     const { account, chainId, active } = useActiveWeb3React()
     const [isShowInfo, setIsShowInfo] = useState(false)
     const { userInfo } = useUserInfo()
+    const history = useHistory()
 
+    const updateActive = () => {
+        const pathName = window.location.pathname
+        Nav_list.forEach(element => {
+            if (pathName.indexOf(element.route) !== -1) {
+                setCurNav(element.name)
+            }
+        })
+    }
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
         if (type) {
             onConnect(type)
         }
 
-        const pathName = window.location.pathname
-        Nav_list.forEach(element => {
-            if (pathName.indexOf(element.route) !== -1) {
-                setCurNav(element.name)
-            }
-        });
+        updateActive()
+        history.listen(historyLocation => updateActive())
+
         // eslint-disable-next-line
-    }, [])
+    }, [history])
 
     useEffect(() => {
         if (!active) return
@@ -155,7 +161,9 @@ export default function Index () {
             <HeaderStyled>
                 <div className="wrapper">
                     <div className='left'>
-                        <img src={logo_bounce} alt="" />
+                        <Link to="/">
+                            <img src={logo_bounce} alt=""></img>
+                        </Link>
 
                         <Search
                             placeholder={'Search Items, Shops and Accounts'}
@@ -175,8 +183,7 @@ export default function Index () {
                                     <Link to={item.route}>
                                         <h5>/ {item.name}</h5>
                                     </Link>
-                                </li> : <Tooltip title="Coming soon"><li
-                                    key={item.name}
+                                </li> : <Tooltip key={item.name} title="Coming soon"><li
                                     style={{ opacity: 0.5 }}
                                 >
                                     <h5>/ {item.name}</h5>

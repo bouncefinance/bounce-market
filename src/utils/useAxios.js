@@ -11,7 +11,6 @@ export default function useAxios() {
 
     useEffect(() => {
         // getNewToken()
-        console.log(111)
     }, [account])
 
     const getNewToken = async () => {

@@ -4,12 +4,13 @@ import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
 import PopularItem from './PopularItem'
 import BrandsItem from './BrandsItem'
-import RequestsItem from './RequestsItem'
+// import RequestsItem from './RequestsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
 import img_banner from '@assets/images/banner.svg'
 import img_example_1 from '@assets/images/example_1.svg'
 import img_alpaca_city from '@assets/images/alpaca_city.svg'
 import two_setting from './assets/two-setting.svg'
+import { Link } from 'react-router-dom'
 
 const HomeStyled = styled.div`
   .banner{
@@ -68,6 +69,9 @@ const HomeStyled = styled.div`
           background-color:#000;
           cursor: pointer;
           margin-top: 24px;
+          a{
+            color: #fff;
+          }
         }
       }
     }
@@ -109,29 +113,23 @@ const HomeStyled = styled.div`
   }
 `
 
-const banner_Nav = [{
-  name: 'New'
-}, {
-  name: 'Popular'
-}, {
-  name: 'Pictures'
-}, {
-  name: 'Audios'
-}, {
-  name: 'Videos'
-}, {
-  name: 'Games'
-}, {
-  name: 'Requests'
-}]
+const banner_Nav = [
+  // ----sort----
+  { name: 'New' },
+  { name: 'Popular' },
+  // ----channel----
+  { name: 'Fine Arts' },
+  { name: 'Sports' },
+  { name: 'Comic Books' },
+]
 
-export default function Index() {
+export default function Index () {
   return (
     <HomeStyled>
       <div className="banner">
         <ul>
           {banner_Nav.map((item) => {
-            return <li key={item.name}>{item.name}</li>
+            return <li key={item.name}><Link to={`/Marketplace/${item.name}`}>{item.name}</Link></li>
           })}
         </ul>
         <div className="banner_wrapper">
@@ -139,7 +137,9 @@ export default function Index() {
             <div className='left'>
               <h1>On Bounce you will find
                     unique content for every taste</h1>
-              <button>Explore</button>
+              <button>
+                <Link to="/Marketplace">Explore</Link>
+              </button>
             </div>
 
             <div className="right">
@@ -163,7 +163,7 @@ export default function Index() {
         })}
       </CardGroup>
 
-      <CardGroup title='Newest Requests' link=''>
+      {/* <CardGroup title='Newest Requests' link=''>
         {[...new Array(4)].map((item, index) => {
           return <RequestsItem
             key={index}
@@ -174,13 +174,16 @@ It shouldn’t be longer then ~20-30 sec.'
             price='100 USDT'
           />
         })}
-      </CardGroup>
+      </CardGroup> */}
 
       <div className="bottom_banner">
-        <div className="left">
-          <h3>Create your unique NFT on Bounce</h3>
-          <img src={arrows_white} alt="" />
-        </div>
+
+        <Link to="/Factory">
+          <div className="left">
+            <h3>Create your unique NFT on Bounce</h3>
+            <img src={arrows_white} alt="" />
+          </div>
+        </Link>
         <img className='right' src={two_setting} alt="" />
       </div>
     </HomeStyled>
