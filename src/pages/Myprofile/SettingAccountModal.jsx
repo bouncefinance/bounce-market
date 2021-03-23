@@ -1,4 +1,4 @@
-import React, { useEffect , useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
@@ -7,7 +7,7 @@ import { useUserInfo } from './useUserInfo'
 import { useState } from 'react'
 import { checkInput } from '@utils/compareFun'
 import useAxios from '@/utils/useAxios'
-import {myContext} from '@/redux/index.js'
+import { myContext } from '@/redux/index.js'
 
 const SettingAccountStyled = styled.div`
     width: 1100px;
@@ -30,8 +30,8 @@ const SettingAccountStyled = styled.div`
     }
 `
 
-export default function SettingAccountModal ({ open, setOpen }) {
-    const {dispatch} = useContext(myContext);
+export default function SettingAccountModal({ open, setOpen }) {
+    const { dispatch } = useContext(myContext);
     const { active, account } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
     const { userInfo, updateUserInfo } = useUserInfo()
@@ -78,7 +78,7 @@ export default function SettingAccountModal ({ open, setOpen }) {
             if (!imgUrl) {
                 // 如果没上传图片则先上传图片
                 setBtnText('Uploading File ...')
-                const res = await sign_Axios.post('/api/v2/main/auth/fileupload', fileData)
+                const res = await sign_Axios.post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
                 if (res.data.code === 200) {
                     imgUrl = res.data.result.path
                 } else {
@@ -100,7 +100,7 @@ export default function SettingAccountModal ({ open, setOpen }) {
             setInputDisable(false)
             setBtnText('Save')
         } catch (error) {
-            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"服务器故障，请稍后重试"});
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "服务器故障，请稍后重试" });
             setBtnLock(false)
             setInputDisable(false)
             setBtnText('Save')
