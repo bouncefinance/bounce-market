@@ -4,6 +4,8 @@ import arrows_blue from '@assets/images/icon/arrows-blue.svg'
 import banner_1 from './assets/banner_1.svg'
 import banner_2 from './assets/banner_2.svg'
 import banner_3 from './assets/banner_3.svg'
+import { Tooltip } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 const CardBannerStyled = styled.ul`
     width: 1100px;
@@ -15,24 +17,32 @@ const CardBannerStyled = styled.ul`
 `
 
 
-export default function CardBannerGroup() {
+export default function CardBannerGroup () {
     return (
         <CardBannerStyled>
-            <CardBannerItem
-                title='Marketplace'
-                context='You can find your content here according to your taste'
-                img={banner_1}
-            />
-            <CardBannerItem
-                title='Brands'
-                context='You can find your content here according to your taste'
-                img={banner_2}
-            />
-            <CardBannerItem
-                title='Point-2-Point'
-                context='You can find your content here according to your taste'
-                img={banner_3}
-            />
+            <Link to="/Brands">
+                <CardBannerItem
+                    title='Marketplace'
+                    context='You can find your content here according to your taste'
+                    img={banner_1}
+                />
+            </Link>
+            <Link to="/Brands">
+                <CardBannerItem
+                    title='Brands'
+                    context='You can find your content here according to your taste'
+                    img={banner_2}
+                />
+            </Link>
+            <Tooltip title="Coming soon">
+                <div style={{ opacity: 0.5, cursor: 'pointer' }}>
+                    <CardBannerItem
+                        title='Point-2-Point'
+                        context='You can find your content here according to your taste'
+                        img={banner_3}
+                    />
+                </div>
+            </Tooltip>
         </CardBannerStyled>
     )
 }
@@ -71,7 +81,7 @@ const CardBannerItemStyled = styled.li`
     }
 `
 
-function CardBannerItem({ title, context, img }) {
+function CardBannerItem ({ title, context, img }) {
     return (
         <CardBannerItemStyled>
             <div className="left">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
 import Search from './Search'
 import InfoBox from './InfoBox'
@@ -10,6 +10,7 @@ import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import { useActiveWeb3React } from '@/web3'
 import { useWalletConnect } from '@/web3/useWalletConnect'
 import { useUserInfo } from '../../Myprofile/useUserInfo'
+import { Tooltip } from '@material-ui/core'
 
 const HeaderStyled = styled.div`
     height: 76px;
@@ -101,19 +102,24 @@ const HeaderStyled = styled.div`
 
 const Nav_list = [{
     name: 'Home',
-    route: '/Home'
+    route: '/Home',
+    enable: true,
 }, {
     name: 'Marketplace',
-    route: '/Marketplace'
+    route: '/Marketplace',
+    enable: true,
 }, {
     name: 'Brands',
-    route: '/Brands'
+    route: '/Brands',
+    enable: true,
 }, {
     name: 'P2P',
-    route: '/P2P'
+    route: '/P2P',
+    enable: false,
 }, {
     name: 'Factory',
-    route: '/Factory'
+    route: '/Factory',
+    enable: true,
 }]
 
 export default function Index () {
@@ -123,21 +129,27 @@ export default function Index () {
     const { account, chainId, active } = useActiveWeb3React()
     const [isShowInfo, setIsShowInfo] = useState(false)
     const { userInfo } = useUserInfo()
+    const history = useHistory()
 
+    const updateActive = () => {
+        const pathName = window.location.pathname
+        Nav_list.forEach(element => {
+            if (pathName.indexOf(element.route) !== -1) {
+                setCurNav(element.name)
+            }
+        })
+    }
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
         if (type) {
             onConnect(type)
         }
 
-        const pathName = window.location.pathname
-        Nav_list.forEach(element => {
-            if (pathName.indexOf(element.route) !== -1) {
-                setCurNav(element.name)
-            }
-        });
+        updateActive()
+        history.listen(historyLocation => updateActive())
+
         // eslint-disable-next-line
-    }, [])
+    }, [history])
 
     useEffect(() => {
         if (!active) return
@@ -149,7 +161,9 @@ export default function Index () {
             <HeaderStyled>
                 <div className="wrapper">
                     <div className='left'>
-                        <img src={logo_bounce} alt="" />
+                        <Link to="/">
+                            <img src={logo_bounce} alt=""></img>
+                        </Link>
 
                         <Search
                             placeholder={'Search Items, Shops and Accounts'}
@@ -158,7 +172,7 @@ export default function Index () {
                     <div className='right'>
                         <ul>
                             {Nav_list.map(item => {
-                                return <li
+                                return item.enable ? <li
                                     key={item.name}
                                     className={item.name === curNav ? 'active' : ''}
                                     onClick={() => {
@@ -169,7 +183,11 @@ export default function Index () {
                                     <Link to={item.route}>
                                         <h5>/ {item.name}</h5>
                                     </Link>
-                                </li>
+                                </li> : <Tooltip key={item.name} title="Coming soon"><li
+                                    style={{ opacity: 0.5 }}
+                                >
+                                    <h5>/ {item.name}</h5>
+                                </li></Tooltip>
                             })}
                         </ul>
                         {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
