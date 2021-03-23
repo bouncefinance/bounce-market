@@ -20,6 +20,7 @@ import BrandsByType from './Myprofile/MyBrands/BrandsByType'
 import MyActivities from './Myprofile/MyActivities'
 import MyP2P from './Myprofile/Point-2-Point'
 import ModalMessage from '@components/Modal/ModalMessage'
+import ErrorNotification from '@components/Modal/ErrorNotification'
 
 export default function Index() {
 
@@ -27,6 +28,7 @@ export default function Index() {
         <BrowserRouter>
             <LayoutStyled>
                 <ModalMessage />
+                <ErrorNotification />
                 <Header />
                 <Route exact path='/test' component={Test} />
                 <Route exact path='/UIkit' component={UIkit} />

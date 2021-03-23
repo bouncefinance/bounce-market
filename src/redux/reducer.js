@@ -1,6 +1,7 @@
 export const initState = {
     Show_Modal: null, // Connect_Wallect
-    Modal_Message: false,
+    showMessageModal: false,
+    showErrorNotificationModal:false,
 }
 
 export const reducer = (state, action) => {
@@ -11,7 +12,9 @@ export const reducer = (state, action) => {
                 Show_Modal: action.value
             }
         case 'Modal_Message':
-            return { ...state, showMessageModal: action.showMessageModal,modelType: action.modelType,modelMessage:action.modelMessage }
+            return { ...initState, showMessageModal: action.showMessageModal,modelType: action.modelType,modelMessage:action.modelMessage }
+        case 'Error_Notification':
+            return { ...initState, showErrorNotificationModal: action.showErrorNotificationModal}
         default:
             return state
     }

@@ -14,15 +14,6 @@ const useStyles = makeStyles((theme) => ({
         '& > * + *': {
         marginTop: theme.spacing(2),
         },
-        '& .MuiAlert-standardInfo':{
-            backgroundColor:'#000000'
-        },
-        '& .MuiAlert-standardSuccess':{
-            backgroundColor:'#2DAB50'
-        },
-        '& .MuiAlert-standardWarning':{
-            backgroundColor:'rgb(255, 244, 229)'
-        },
         '& .MuiAlert-standardError':{
             backgroundColor:'#E43F29'
         }  
@@ -44,19 +35,21 @@ const useStyles = makeStyles((theme) => ({
     },
     close: {
         color:'#fff'
+    },
+    links:{
+        textDecoration:'underline',
+        padding:'0 6px',
+        cursor:'pointer'
     }
 }));
-// modelType:'info'/'success'/'error'/'warning'
-
-export default function ModalMessage() {
+export default function ErrorNotification() {
   const classes = useStyles();
   const {state, dispatch} = useContext(myContext);
   return (
     <div className={classes.root}>
-      <Collapse in={state.showMessageModal}>
+      <Collapse in={state.showErrorNotificationModal}>
         <Alert
-        // "error"
-            severity={state.modelType||'warning'}
+            severity={'error'}
             className={classes.alerts}
             icon={false}
             action={
@@ -65,14 +58,14 @@ export default function ModalMessage() {
                 color="inherit"
                 size="small"
                 onClick={() => {
-                    dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:""});
+                    dispatch({type: 'Error_Notification', showErrorNotificationModal: false});
                 }}
                 >
                 <CloseIcon className={classes.close} fontSize="inherit"  />
             </IconButton>
           }
         >
-          {state.modelMessage ||"Info"}
+            Oops! Something went wrong. <span className={classes.links}> Try again </span> or <span className={classes.links}> check Bounce Docs</span>
         </Alert>
       </Collapse>
     </div>
