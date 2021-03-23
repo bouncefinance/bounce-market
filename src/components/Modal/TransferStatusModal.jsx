@@ -1,16 +1,22 @@
-import  Modal,{ ModalContent, ModalTitle } from "./OldBounceModal";
-// import  { ModalContent, ModalTitle } from "./OldBounceModal";
-// import Modal from "./Modal";
+import Modal, { ModalContent, ModalTitle ,ModalIcon} from "./OldBounceModal";
 import Lottie from "react-lottie";
-// import { FormStatus } from "./Form";
 import icon_wait from "@assets/images/status_wait.svg";
-
+import styled from 'styled-components'
 import icon_success from "@assets/images/status_success.svg";
 import icon_error from "@assets/images/status_error.svg";
 import { Button } from "@components/UI-kit";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import bounce_loading from "@assets/videos/bounce_loading.json";
+import { myContext } from "@/redux";
 
+const TransferStatusModalStyled = styled.div`
+    .modal_box{
+        /* img{
+            width: 50px;
+            height: 50px;
+        } */
+    }
+`
 
 const defaultOptions = {
     loop: true,
@@ -31,39 +37,99 @@ export const errorStatus = { status: -1, title: 'Transaction Failed', content: '
 export const cancelStatus = { status: -2, title: 'Canceling your pool creation', content: 'You cancel your pool creation' }
 export const initStatus = { status: 0, title: '', content: '' }
 
-export const successClaimStatus = { status: 6, title: 'Success!', content: 'You successfully claim your reward' }
+const successClaimStatus = { status: 6, title: 'Success!', content: 'You successfully claim your reward' }
+const successStatus = { status: 7, title: 'successfully!', content: 'The transaction has been successfully completed！' }
 
 
 
-export default function TransferStatusModal({ modalStatus, onDismiss}){
+export default function TransferStatusModal({ successCallback }) {
     // console.log('modalStatus', modalStatus)
+    const { state } = useContext(myContext)
+    const [modalStatus, setModalStatus] = useState('initStatus')
     const { status, title, content } = modalStatus
+    const [isShow, setIsShow] = useState(false)
 
-    return (
-        <Modal isOpen={status !== 0} onDismiss={() => {
-            onDismiss()
-        }}>
-            <ModalTitle style={{ textAlign: 'center' }}>{title}</ModalTitle>
+    useEffect(() => {
+        if (!state.TransferModal) return setIsShow(false)
+        setIsShow(true)
+        switch (state.TransferModal) {
+            case 'initStatus':
+                setModalStatus(initStatus)
+                break;
 
-            {(status === 1 || status === 2 || status === 3) &&
-                <Lottie width={200} height={200} options={defaultOptions} />}
+            case 'approveStatus':
+                setModalStatus(approveStatus)
+                break;
 
-            {status === 4 &&
-                <div ><img alt='' src={icon_wait} /></div>}
+            case 'confirmStatus':
+                setModalStatus(confirmStatus)
+                break;
 
-            {(status === 5 || status === 6) &&
-                <div ><img alt='' src={icon_success} /></div>}
+            case 'successStatus':
+                setModalStatus(successStatus)
+                break;
 
-            {(status === -1) &&
-                <div><img alt='' src={icon_error} /></div>}
+            case 'pendingStatus':
+                setModalStatus(pendingStatus)
+                break;
 
-            <ModalContent style={{ width: 300, textAlign: 'center' }}>{content}</ModalContent>
-            {(status === 1 || status === 2 || status === 3) && <Button width={'320px'} black>Awaiting...</Button>}
-            {(status === 4 || status === 6 || status === 5) && <Button width={'320px'} black onClick={() => {
-                //onDismiss()
-                window.location.reload()
-            }}>Close</Button>}
-            {status === -1 && <Button onClick={() => { onDismiss() }} width={'320px'} black>Try again</Button>}
-        </Modal>
+            case 'successStakeStatus':
+                setModalStatus(successStakeStatus)
+                break;
+
+            case 'successUnStakeStatus':
+                setModalStatus(successUnStakeStatus)
+                break;
+
+            case 'errorStatus':
+                setModalStatus(errorStatus)
+                break;
+
+            case 'cancelStatus':
+                setModalStatus(cancelStatus)
+                break;
+
+            case 'successClaimStatus':
+                setModalStatus(successClaimStatus)
+                break;
+
+            default:
+                setIsShow(false)
+                break;
+        }
+    }, [state.TransferModal])
+
+    const onDismiss = () => {
+        setIsShow(false)
+    }
+
+    return isShow && (
+        <TransferStatusModalStyled>
+            <Modal class='modal_box' isOpen={status !== 0} onDismiss={() => {
+                onDismiss()
+            }}>
+                <ModalTitle style={{ textAlign: 'center' }}>{title}</ModalTitle>
+
+                {(status === 1 || status === 2 || status === 3) &&
+                    <Lottie width={200} height={200} options={defaultOptions} />}
+
+                {status === 4 &&
+                    <ModalIcon ><img alt='' src={icon_wait} /></ModalIcon>}
+
+                {(status === 5 || status === 6) &&
+                    <ModalIcon ><img alt='' src={icon_success} /></ModalIcon>}
+
+                {(status === -1) &&
+                    <ModalIcon><img alt='' src={icon_error} /></ModalIcon>}
+
+                <ModalContent style={{ width: 300, textAlign: 'center' }}>{content}</ModalContent>
+                {(status === 1 || status === 2 || status === 3) && <Button width={'320px'} black>Awaiting...</Button>}
+                {(status === 4 || status === 6 || status === 5) && <Button width={'320px'} black onClick={() => {
+                    //onDismiss()
+                    window.location.reload()
+                }}>Close</Button>}
+                {status === -1 && <Button onClick={() => { onDismiss() }} width={'320px'} black>Try again</Button>}
+            </Modal>
+        </TransferStatusModalStyled>
     )
 }

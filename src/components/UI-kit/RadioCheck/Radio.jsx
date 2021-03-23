@@ -12,6 +12,11 @@ const RadioStyled = styled.div`
         margin-top: ${({ marginTop }) => { return marginTop || '24px' }};
     }
 
+    .description{
+        font-size: 12px;
+        color: rgba(0,0,0,.4);
+    }
+
     .select_box{
         display: flex;
         height: 48px;
@@ -35,6 +40,7 @@ const RadioStyled = styled.div`
 
 export default function Radio({
     title,
+    description,
     options = [],
     defaultValue,
     onValChange
@@ -60,6 +66,7 @@ export default function Radio({
     return (
         <RadioStyled>
             {title && <p className={`title`}>{title}</p>}
+            <span className='description'>{description}</span>
             <ul className="select_box">
                 {options.map(item => {
                     return <li key={item.name}>

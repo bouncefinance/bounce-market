@@ -153,7 +153,7 @@ export default function Index () {
 
     useEffect(() => {
         if (!active) return
-        console.log(userInfo)
+        // console.log(userInfo)
     }, [account, chainId, active, userInfo])
 
     return (

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
-import { useActiveWeb3React } from '@/web3'
-import { TextInput, TextAreaInput, Button, Upload } from '@components/UI-kit'
+import { getContract, useActiveWeb3React } from '@/web3'
+import { TextInput, TextAreaInput, Button, Upload, Radio } from '@components/UI-kit'
 import useAxios from '@utils/useAxios.js'
-import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
+// import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
+import { checkInput } from '@/utils/compareFun'
+import { getNFTFactory } from '@/web3/address_list/contract'
+import BounceNFTFactory from '@/web3/abi/BounceNFTFactory.json'
+import useTransferModal from '@/web3/useTransferModal'
 // import { FreeFocusInside } from 'react-focus-lock';
+import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
@@ -23,10 +28,10 @@ const AddNewBrandstModalStyled = styled.div`
 `
 
 export default function AddNewBrandstModal({ open, setOpen }) {
-    const { active, account } = useActiveWeb3React()
+    const { active, library, chainId, account } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
-    const [fileDate, setFileDate] = useState(null)
-    const [fromDate, setFromDate] = useState({
+    const [fileData, setFileData] = useState(null)
+    const [formData, setFormData] = useState({
         Brand_Name: '',
         Symbol: '',
         Description: ''
@@ -34,29 +39,33 @@ export default function AddNewBrandstModal({ open, setOpen }) {
     const [btnLock, setBtnLock] = useState(true)
     const [inputDisable, setInputDisable] = useState(false)
     const [btnText, setBtnText] = useState('Save')
-
-    const [modalStatus, setModalStatus] = useState(initStatus);
+    const [nftType, setNftType] = useState('ERC-721');
+    const { showTransferByStatus } = useTransferModal()
+    // const [brandAddress, setBrandAddress] = useState(false)
 
     useEffect(() => {
         if (!active) return
     }, [active])
 
     useEffect(() => {
-        let empt_len = 0
-        for (const key in fromDate) {
-            if (fromDate.hasOwnProperty.call(fromDate, key)) {
-                const element = fromDate[key];
-                if (String(element).trim().length === 0 || !element) {
-                    empt_len++
+
+        if ((fileData || formData.imgurl) && formData) {
+            const requireArr = ['Brand_Name', 'Description', 'Symbol']
+            let errorCount = 0
+            requireArr.forEach(item => {
+                if (!checkInput(formData[item])) {
+                    errorCount++
                 }
+            })
+            if (errorCount === 0) {
+                setBtnLock(false)
+            } else {
+                setBtnLock(true)
             }
-        }
-        if (empt_len === 0) {
-            setBtnLock(false)
         } else {
             setBtnLock(true)
         }
-    }, [fromDate])
+    }, [formData, fileData])
 
     const handelSubmit = () => {
         setBtnLock(true)
@@ -65,9 +74,9 @@ export default function AddNewBrandstModal({ open, setOpen }) {
 
         // 第一步：上传图片
         sign_Axios
-            .post('/api/v2/main/auth/fileupload', fileDate)
+            .post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
             .then(function (response) {
-                setBtnText('Uploading Date ...')
+                setBtnText('Uploading Data ...')
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
@@ -75,37 +84,68 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                 }
             }).then((imgUrl) => {
                 setBtnLock(true)
-
                 //TODO 第二步：调用工厂合约创建一个子合约
+                // console.log(nftType)
+                const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
+                const _name = formData.Brand_Name
+                const _symbol = formData.Symbol
+                if (nftType === 'ERC-721') {
+                    Factory_CT.methods.createBrand721(_name, _symbol).send({ from: account })
+                        .on('transactionHash', hash => {
+                            setOpen(false)
+                            // setBidStatus(pendingStatus)
+                            showTransferByStatus('pendingStatus')
+                        })
+                        .on('receipt', async (_, receipt) => {
+                            // console.log('bid fixed swap receipt:', receipt)
+                            // setBidStatus(successVotedStatus)
+                            showTransferByStatus('successVotedStatus')
+                            const brandAddress = await getCreatedBrand()
+                            
+                        })
+                        .on('error', (err, receipt) => {
+                            // setBidStatus(errorStatus)
+                            showTransferByStatus('errorStatus')
+                        })
+                } else if (nftType === 'ERC-1155') {
+
+                }
+
 
                 // 第三步 传入将信息后端
-                const params = {
-                    brandname: fromDate.Brand_Name,
-                    contractaddress: '0x' + new Date().getTime(),
-                    description: fromDate.Description,
-                    imgurl: imgUrl,
-                    owneraddress: account,
-                    ownername: 'homie@xu'
-                }
-                sign_Axios.post('/api/v2/main/auth/addbrand', params).then(res => {
-                    if (res.status === 200 && res.data.code === 1) {
-                        alert('Brand 创建成功')
-                    } else {
-                        alert('服务器端 创建失败')
-                    }
-                }).catch(err => {
-                    alert('Brand 创建失败')
-                })
+                // const params = {
+                //     brandname: formData.Brand_Name,
+                //     contractaddress: '0x' + new Data().getTime(),
+                //     description: formData.Description,
+                //     imgurl: imgUrl,
+                //     owneraddress: account,
+                //     ownername: 'homie@xu'
+                // }
+
+                // sign_Axios.post('/api/v2/main/auth/addbrand', params).then(res => {
+                //     if (res.status === 200 && res.data.code === 1) {
+                //         alert('Brand 创建成功')
+                //     } else {
+                //         alert('服务器端 创建失败')
+                //     }
+                // }).catch(err => {
+                //     alert('Brand 创建失败')
+                // })
 
             }).catch(function (error) {
+                console.log(error)
                 setBtnText('Upload Error')
             })
     }
 
+    const getCreatedBrand = async () => {
+        const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
+        const brand_address = await Factory_CT.methods.brands(account).call()
+        return brand_address
+    }
+
     return (
         <>
-
-
             <Modal open={open} setOpen={setOpen} header={{ title: 'Create your Brand', isClose: true }}>
                 <AddNewBrandstModalStyled>
                     <TextInput
@@ -115,7 +155,20 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                         marginTop={0}
                         lockInput={inputDisable}
                         onValChange={(val) => {
-                            setFromDate({ ...fromDate, Brand_Name: val })
+                            setFormData({ ...formData, Brand_Name: val })
+                        }}
+                    />
+
+                    <Radio title={'Standard'} description={`Select a Standard for the created Brand,which is not changed,and the new Item under BRAN will also cast this SRANDARD.`}
+                        options={[{
+                            name: 'ERC-721',
+                            value: 'ERC-721'
+                        }, {
+                            name: 'ERC-1155',
+                            value: 'ERC-1155'
+                        }]}
+                        onValChange={(e) => {
+                            setNftType(e.value)
                         }}
                     />
 
@@ -126,7 +179,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                         marginTop={'24px'}
                         lockInput={inputDisable}
                         onValChange={(val) => {
-                            setFromDate({ ...fromDate, Symbol: val })
+                            setFormData({ ...formData, Symbol: val })
                         }}
                     />
 
@@ -138,31 +191,27 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                         marginTop={'24px'}
                         lockInput={inputDisable}
                         onValChange={(val) => {
-                            setFromDate({ ...fromDate, Description: val })
+                            setFormData({ ...formData, Description: val })
                         }}
                     />
 
                     <Upload type='image'
                         lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData, file) => {
-                            setFileDate(formData)
-                            setFromDate({ ...fromDate, Brand_img: file.name })
-                            // setBtnLock(false)
-                            // console.log(file)
+                            setFileData(formData)
                         }} />
 
                     <div className="button_group">
                         <Button height='48px' width='302px' onClick={() => {
-                            // setOpen(false)
-                            setModalStatus(approveStatus)
+                            setOpen(false)
+                            // setModalStatus(approveStatus)
                         }}>Cancel</Button>
                         <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
                     </div>
                 </AddNewBrandstModalStyled>
             </Modal >
 
-            <TransferStatusModal modalStatus={modalStatus} onDismiss={() => {
-                setModalStatus(initStatus)
-            }} />
+
+
         </>
     )
 }
