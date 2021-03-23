@@ -10,6 +10,7 @@ let isRequestLoad = false
 export default function useAxios() {
     const { account, library } = useWeb3React()
     const getNewToken = async () => {
+        isRequestLoad = true;
         const web3 = new Web3(library.provider);
         const sign = await web3.eth.personal.sign(signStr, account)
 
@@ -39,9 +40,19 @@ export default function useAxios() {
         }
         let token = window.localStorage.getItem('JWT_TOKEN')
         if (!token) {
-            token = await getNewToken()
+            if(!isRequestLoad){
+                isRequestLoad = true;
+                token = await getNewToken();
+                isRequestLoad = false;
+            }else{
+                const timer = setInterval(() => {
+                    if(window.localStorage.getItem('JWT_TOKEN')){
+                        clearInterval(timer);
+                        sign_Axios_Post(path, params);
+                    }
+                }, 300);
+            }
         }
-
         let config = {
             headers: {
                 token: token,
@@ -50,24 +61,32 @@ export default function useAxios() {
             ...option.config
         }
         let res = await axios.post(Base_URL + path, params, config)
-        if (res.status === 200 && res.data.code === -1 && !isRequestLoad) {
-            // token 无效过期
+        if (res.status === 200 && res.data.code === -1) {
+            if(!isRequestLoad){
+                isRequestLoad = true;
+                token = await getNewToken();
+                isRequestLoad = false;
+            }else{
+                const timer = setInterval(() => {
+                    if(window.localStorage.getItem('JWT_TOKEN')){
+                        clearInterval(timer);
+                        sign_Axios_Post(path, params);
+                    }
+                }, 300);
+            }
             config = {
                 headers: {
-                    token: await getNewToken(),
+                    token: token,
                     "Content-Type": "application/x-www-from-urlencoded"
                 },
                 ...option.config
             }
-            isRequestLoad(true)
-            setTimeout(() => {
-                isRequestLoad(false)
-            }, 3000)
             res = await axios.post(Base_URL + path, params, config)
         }
-
         return res
     }
+
+
 
     const Axios_Post = async (path, params, option = {}) => {
         const res = await axios.post(Base_URL + path, params, option)
