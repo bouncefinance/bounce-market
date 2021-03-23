@@ -32,15 +32,11 @@ export default function AddNewBrandstModal({ open, setOpen }) {
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
     const [fileData, setFileData] = useState(null)
-    const [formData, setFormData] = useState({
-        Brand_Name: '',
-        Symbol: '',
-        Description: ''
-    })
+    const [formData, setFormData] = useState({})
     const [btnLock, setBtnLock] = useState(true)
     const [inputDisable, setInputDisable] = useState(false)
     const [btnText, setBtnText] = useState('Save')
-    const [nftType, setNftType] = useState('ERC-721');
+    const [nftType, setNftType] = useState('ERC-721')
     const { showTransferByStatus } = useTransferModal()
     // const [brandAddress, setBrandAddress] = useState(false)
 
@@ -85,11 +81,13 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                 }
             }).then((imgUrl) => {
                 setBtnLock(true)
-                //TODO 第二步：调用工厂合约创建一个子合约
+                // 第二步：调用工厂合约创建一个子合约
                 // console.log(nftType)
                 const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
                 const _name = formData.Brand_Name
                 const _symbol = formData.Symbol
+                const _uri = require('@/config.json').ERC_1155_BaseRui
+
                 if (nftType === 'ERC-721') {
                     Factory_CT.methods.createBrand721(_name, _symbol).send({ from: account })
                         .on('transactionHash', hash => {
@@ -108,8 +106,24 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                             // setBidStatus(errorStatus)
                             showTransferByStatus('errorStatus')
                         })
-                } else if (nftType === 'ERC-1155') {
-
+                }else if(nftType === 'ERC-1155'){
+                    Factory_CT.methods.createBrand1155(_uri).send({ from: account })
+                    .on('transactionHash', hash => {
+                        setOpen(false)
+                        // setBidStatus(pendingStatus)
+                        showTransferByStatus('pendingStatus')
+                    })
+                    .on('receipt', async (_, receipt) => {
+                        // console.log('bid fixed swap receipt:', receipt)
+                        // setBidStatus(successVotedStatus)
+                        showTransferByStatus('successVotedStatus')
+                        const brandAddress = await getCreatedBrand()
+                        uploadData(imgUrl, brandAddress)
+                    })
+                    .on('error', (err, receipt) => {
+                        // setBidStatus(errorStatus)
+                        showTransferByStatus('errorStatus')
+                    })
                 }
 
             }).catch(function (error) {
@@ -120,7 +134,9 @@ export default function AddNewBrandstModal({ open, setOpen }) {
 
     const getCreatedBrand = async () => {
         const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
+        // console.log(account)
         const brand_address = await Factory_CT.methods.brands(account).call()
+
         return brand_address
     }
 
@@ -129,6 +145,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
         const params = {
             brandname: formData.Brand_Name,
             contractaddress: brandAddress,
+            standard: nftType === 'ERC-721' ? 1 : 2,
             description: formData.Description,
             imgurl: imgUrl,
             owneraddress: account,
@@ -198,7 +215,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                     />
 
                     <Upload type='image'
-                        lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData, file) => {
+                        lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
                             setFileData(formData)
                         }} />
 
@@ -211,9 +228,6 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                     </div>
                 </AddNewBrandstModalStyled>
             </Modal >
-
-
-
         </>
     )
 }

@@ -278,7 +278,7 @@ export default function BrandsByType() {
 
             <ul className="list_wrapper">
                 <li>
-                    <AddCardItem type={type} />
+                    <AddCardItem type={type} nftType={brandInfo.standard} brandInfo={brandInfo} />
                 </li>
                 {listData.map((item, index) => {
                     return <li key={index}>

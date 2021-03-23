@@ -43,7 +43,9 @@ export default function Radio({
     description,
     options = [],
     defaultValue,
-    onValChange
+    onValChange,
+    inputDisable,
+    disabled
 }) {
     const [curSelect, setCurSelect] = useState(options && options[0])
 
@@ -71,6 +73,7 @@ export default function Radio({
                 {options.map(item => {
                     return <li key={item.name}>
                         <img onClick={() => {
+                            if(inputDisable || disabled) return
                             setCurSelect(item)
                         }} src={curSelect.name === item.name ? radio_select : radio_no_select} alt="" />
                         <p>{item.name}</p>

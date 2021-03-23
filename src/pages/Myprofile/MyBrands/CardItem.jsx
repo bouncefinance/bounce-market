@@ -64,7 +64,7 @@ const AddCardItemStyled = styled(CardItemStyled)`
     }
 `
 
-export function AddCardItem({ type }) {
+export function AddCardItem({ type, brandInfo }) {
     const [showCreateModal, setShowCreateModal] = useState(false)
 
     return (
@@ -77,7 +77,7 @@ export function AddCardItem({ type }) {
                     }} />
                 </div>
             </AddCardItemStyled>
-            <AddNewItemModal open={showCreateModal} setOpen={setShowCreateModal} defaultValue={type} />
+            <AddNewItemModal open={showCreateModal} setOpen={setShowCreateModal} defaultValue={type} brandInfo={brandInfo} />
         </>
     )
 }
