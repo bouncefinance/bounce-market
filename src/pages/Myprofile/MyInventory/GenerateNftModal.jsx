@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React, getContract } from '@/web3'
 import { TextInput, TextAreaInput, Button, PullRadioBox, Radio, Upload } from '@components/UI-kit'
 import { useState } from 'react'
 import { checkInput } from '@/utils/compareFun'
-import BounceERC721 from '@/web3/abi/BounceERC721.json'
-import BounceERC1155 from '@/web3/abi/BounceERC1155.json'
+import BounceERC721WithSign from '@/web3/abi/BounceERC721WithSign.json'
+import BounceERC1155WithSign from '@/web3/abi/BounceERC1155WithSign.json'
 import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
+import { myContext } from '@/redux'
+import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
 import { numToWei } from '@/utils/useBigNumber'
 
-const AddNewBrandstModalStyled = styled.div`
+const GenerateNFTModalStyled = styled.div`
     width: 1100px;
     /* height: 690px; */
     box-sizing: border-box; 
@@ -33,14 +35,16 @@ const AddNewBrandstModalStyled = styled.div`
 
 `
 
-export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandInfo = {} }) {
-    const { active, library, account } = useActiveWeb3React()
+export default function GenerateNftModal({ open, setOpen, defaultValue }) {
+    const { active, library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
+    const { state } = useContext(myContext)
     const { showTransferByStatus } = useTransferModal()
     const [btnText, setBtnText] = useState('Submit')
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
+    const [nftType, setNftType] = useState('ERC-721')
     const [formData, setFormData] = useState({
         Category: 'image',
         Channel: 'Fine Arts',
@@ -86,28 +90,29 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
             }).then((imgUrl) => {
                 // 第二步 上传数据生成 json
                 const params = {
-                    brandid: brandInfo.id,
+                    brandid: nftType === 'ERC-721' ? 10 : 11,
                     category: formData.Category,
                     channel: formData.Channel,
-                    contractaddress: brandInfo.contractaddress,
+                    contractaddress: nftType === 'ERC-721' ? getBounceERC721WithSign(chainId) : getBounceERC1155WithSign(chainId),
                     description: formData.Description,
                     fileurl: imgUrl,
                     itemname: formData.Name,
-                    itemsymbol: brandInfo.brandsymbol,
-                    owneraddress: brandInfo.owneraddress,
-                    ownername: brandInfo.ownername,
-                    standard: brandInfo.standard,
-                    supply: formData.Supply
+                    itemsymbol: 'BOUNCE',
+                    owneraddress: account,
+                    ownername: state.username,
+                    standard: nftType === 'ERC-721' ? 1 : 2,
+                    supply: nftType === 'ERC-721' ? 1 : formData.Supply
                 }
                 console.log(params)
                 sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {
-                    const nftId = res.data.data.id
+                    const _nftId = res.data.data.id
+                    const _sign = res.data.data.signaturestr
                     if (res.data.code === 1) {
-                        console.log(nftId, brandInfo.standard)
-                        if (brandInfo.standard === 1) {
-                            const BounceERC721_CT = getContract(library, BounceERC721.abi, brandInfo.contractaddress)
+                        if (nftType === 'ERC-721') {
+                            const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, getBounceERC721WithSign(chainId))
+                            console.log(_nftId, _sign)
                             try {
-                                BounceERC721_CT.methods.mint(account, nftId).send({ from: account })
+                                BounceERC721WithSign_CT.methods.mintUser(_nftId, _sign).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
@@ -123,15 +128,15 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                         showTransferByStatus('errorStatus')
                                     })
                             } catch (error) {
-                                console.log('BounceERC721_CT.methods.mint', error)
+                                console.log('BounceERC721_CT.methods.mintUser', error)
                             }
 
                         } else {
-                            const BounceERC1155_CT = getContract(library, BounceERC1155.abi, brandInfo.contractaddress)
+                            const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
                             const _amount = numToWei(formData.Supply)
                             const _data = ''
                             try {
-                                BounceERC1155_CT.methods.mint(account, nftId, _amount, _data).send({ from: account })
+                                BounceERC1155WithSign_CT.methods.mintUser( _nftId, _amount, _data, _sign).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
@@ -147,7 +152,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                         showTransferByStatus('errorStatus')
                                     })
                             } catch (error) {
-                                console.log('BounceERC1155_CT.methods.mint', error)
+                                console.log('BounceERC1155_CT.methods.mintUser', error)
                             }
                         }
                     }
@@ -157,11 +162,12 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                 })
             })
         // 第三步 调用合约生成 NFT
+        // const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
     }
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'Add New Item', isClose: true }}>
-            <AddNewBrandstModalStyled>
+        <Modal open={open} setOpen={setOpen} header={{ title: 'Generate New Item', isClose: true }}>
+            <GenerateNFTModalStyled>
                 <TextInput
                     title='Name'
                     width='620px'
@@ -199,10 +205,12 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     }, {
                         name: 'ERC-1155',
                         value: '1155'
-                    }]} defaultValue={brandInfo.standard === 1 ? '721' : '1155'} disabled />
+                    }]} defaultValue={'721'} onValChange={(item) => {
+                        setNftType(item.name)
+                    }} />
                 </div>
 
-                {brandInfo.standard === 2 && <TextInput
+                {nftType === 'ERC-1155' && <TextInput
                     title='Supply'
                     width='620px'
                     defaultValue={1}
@@ -237,7 +245,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     }}>Cancel</Button>
                     <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
                 </div>
-            </AddNewBrandstModalStyled>
+            </GenerateNFTModalStyled>
         </Modal >
     )
 }

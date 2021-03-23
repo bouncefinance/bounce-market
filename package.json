@@ -15,6 +15,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/walletconnect-connector": "^6.1.9",
     "axios": "^0.21.1",
+    "bignumber": "^1.1.0",
     "customize-cra": "^1.0.0",
     "material-ui": "^0.20.2",
     "polished": "^4.1.1",

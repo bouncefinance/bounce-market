@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
+import GenerateNftModal from './GenerateNftModal'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -125,14 +126,21 @@ const AddCardItemStyle = styled(CardItemStyled)`
 `
 
 export function AddCardItem() {
+    const [showGenrateModal, setShowGenrateModal] = useState(false)
+
     return (
-        <AddCardItemStyle>
-            <div className="img_wrapper">
-                <img src={img_addItem} alt="" />
-            </div>
-            <div className="content">
-                <Button value={'Add'} />
-            </div>
-        </AddCardItemStyle>
+        <>
+            <AddCardItemStyle>
+                <div className="img_wrapper">
+                    <img src={img_addItem} alt="" />
+                </div>
+                <div className="content">
+                    <Button value={'Add'} onClick={()=>{
+                        setShowGenrateModal(true)
+                    }}/>
+                </div>
+            </AddCardItemStyle>
+            <GenerateNftModal open={showGenrateModal} setOpen={setShowGenrateModal}/>
+        </>
     )
 }
