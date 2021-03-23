@@ -11,7 +11,7 @@ import BounceNFTFactory from '@/web3/abi/BounceNFTFactory.json'
 import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 // import { FreeFocusInside } from 'react-focus-lock';
-import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
+// import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
