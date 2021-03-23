@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { getContract, useActiveWeb3React } from '@/web3'
@@ -9,6 +9,7 @@ import { checkInput } from '@/utils/compareFun'
 import { getNFTFactory } from '@/web3/address_list/contract'
 import BounceNFTFactory from '@/web3/abi/BounceNFTFactory.json'
 import useTransferModal from '@/web3/useTransferModal'
+import { myContext } from '@/redux'
 // import { FreeFocusInside } from 'react-focus-lock';
 
 const AddNewBrandstModalStyled = styled.div`
@@ -28,6 +29,7 @@ const AddNewBrandstModalStyled = styled.div`
 
 export default function AddNewBrandstModal({ open, setOpen }) {
     const { active, library, chainId, account } = useActiveWeb3React()
+    const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
     const [fileData, setFileData] = useState(null)
     const [formData, setFormData] = useState({
@@ -100,7 +102,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                             // setBidStatus(successVotedStatus)
                             showTransferByStatus('successVotedStatus')
                             const brandAddress = await getCreatedBrand()
-                            
+                            uploadData(imgUrl, brandAddress)
                         })
                         .on('error', (err, receipt) => {
                             // setBidStatus(errorStatus)
@@ -109,27 +111,6 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                 } else if (nftType === 'ERC-1155') {
 
                 }
-
-
-                // 第三步 传入将信息后端
-                // const params = {
-                //     brandname: formData.Brand_Name,
-                //     contractaddress: '0x' + new Data().getTime(),
-                //     description: formData.Description,
-                //     imgurl: imgUrl,
-                //     owneraddress: account,
-                //     ownername: 'homie@xu'
-                // }
-
-                // sign_Axios.post('/api/v2/main/auth/addbrand', params).then(res => {
-                //     if (res.status === 200 && res.data.code === 1) {
-                //         alert('Brand 创建成功')
-                //     } else {
-                //         alert('服务器端 创建失败')
-                //     }
-                // }).catch(err => {
-                //     alert('Brand 创建失败')
-                // })
 
             }).catch(function (error) {
                 console.log(error)
@@ -141,6 +122,28 @@ export default function AddNewBrandstModal({ open, setOpen }) {
         const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
         const brand_address = await Factory_CT.methods.brands(account).call()
         return brand_address
+    }
+
+    const uploadData = async (imgUrl, brandAddress) => {
+        // 第三步 传入将信息后端
+        const params = {
+            brandname: formData.Brand_Name,
+            contractaddress: brandAddress,
+            description: formData.Description,
+            imgurl: imgUrl,
+            owneraddress: account,
+            ownername: state.UserInfo.username
+        }
+
+        sign_Axios.post('/api/v2/main/auth/addbrand', params).then(res => {
+            if (res.status === 200 && res.data.code === 1) {
+                alert('Brand 创建成功')
+            } else {
+                alert('服务器端 创建失败')
+            }
+        }).catch(err => {
+            alert('Brand 创建失败')
+        })
     }
 
     return (
