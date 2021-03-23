@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import upload_img from '@assets/images/upload_img.svg'
 import upload_video from '@assets/images/upload_video.svg'
 import upload_avatar from '@assets/images/upload_avatar.svg'
-
+import {myContext} from '@/redux/index.js'
 const UploadStyled = styled.div`
     display: flex;
     margin-top: 22px;
@@ -67,6 +67,7 @@ export default function Upload ({
     disabled,
     lockInput
 }) {
+    const {dispatch} = useContext(myContext);
     const [coverSrc, setCoverSrc] = useState(upload_img)
     const [infoTitle, setInfoTitle] = useState(defaltInfoTitle)
     const [infoTip, setInfoTip] = useState([
@@ -125,7 +126,7 @@ export default function Upload ({
             onFileChange && onFileChange(formData, file)
             // setFormData(formData)
         } else {
-            alert('The file format you selected is incorrect')
+            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"The file format you selected is incorrect"});
         }
     }
 
