@@ -10,7 +10,7 @@ const Wrapper = styled.div`
     box-sizing: border-box; 
     padding: 32px 397px 44px 83px;
 
-    .discription {
+    .description {
         font-family: Helvetica Neue;
         font-style: normal;
         font-weight: 500;
@@ -84,7 +84,7 @@ function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
                         <Wrapper>
 
                             <div className="step1">
-                                <p className="discription">1/2 Enter your contract address</p>
+                                <p className="description">1/2 Enter your contract address</p>
 
                                 <TextInput
                                     title='What is the address of your ERC721 or ERC1155 contract on the Ethereum Network?'
@@ -136,7 +136,7 @@ function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
                         <Wrapper>
 
                             <div className="step2">
-                                <p className="discription">2/2 List your Items</p>
+                                <p className="description">2/2 List your Items</p>
 
                                 <TableList tableInfoList={dataList.tableInfoList} />
 

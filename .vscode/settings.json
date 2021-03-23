@@ -9,5 +9,7 @@
             "document"
         ]
     },
-    "workbench.editor.enablePreview": false
+    "workbench.editor.enablePreview": false,
+    "editor.fontFamily": "'Fira Code'",
+    "editor.fontLigatures": true
 }

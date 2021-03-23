@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
+
 import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
 
@@ -85,6 +87,8 @@ const CardItemStyled = styled.div`
 `
 
 export function CardItem({ cover, status }) {
+    const history = useHistory()
+
     return (
         <CardItemStyled>
             <div className="img_wrapper">
@@ -100,7 +104,11 @@ export function CardItem({ cover, status }) {
                         <Button value={'Check Status'} primary />
                         <Button value={'Make Unlisted'} />
                     </div> : <div className='button_group'>
-                        <Button value={'Sell'} primary />
+                        <Button
+                            value={'Sell'}
+                            primary
+                            onClick={() => {history.push("/MyInventory/NFTId")}}
+                        />
                         <Button value={'Make Listed'} />
                     </div>
                 }
