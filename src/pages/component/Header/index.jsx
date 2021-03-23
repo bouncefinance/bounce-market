@@ -10,6 +10,7 @@ import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import { useActiveWeb3React } from '@/web3'
 import { useWalletConnect } from '@/web3/useWalletConnect'
 import { useUserInfo } from '../../Myprofile/useUserInfo'
+import { Tooltip } from '@material-ui/core'
 
 const HeaderStyled = styled.div`
     height: 76px;
@@ -101,19 +102,24 @@ const HeaderStyled = styled.div`
 
 const Nav_list = [{
     name: 'Home',
-    route: '/Home'
+    route: '/Home',
+    enable: true,
 }, {
     name: 'Marketplace',
-    route: '/Marketplace'
+    route: '/Marketplace',
+    enable: true,
 }, {
     name: 'Brands',
-    route: '/Brands'
+    route: '/Brands',
+    enable: true,
 }, {
     name: 'P2P',
-    route: '/P2P'
+    route: '/P2P',
+    enable: false,
 }, {
     name: 'Factory',
-    route: '/Factory'
+    route: '/Factory',
+    enable: true,
 }]
 
 export default function Index () {
@@ -158,7 +164,7 @@ export default function Index () {
                     <div className='right'>
                         <ul>
                             {Nav_list.map(item => {
-                                return <li
+                                return item.enable ? <li
                                     key={item.name}
                                     className={item.name === curNav ? 'active' : ''}
                                     onClick={() => {
@@ -169,7 +175,12 @@ export default function Index () {
                                     <Link to={item.route}>
                                         <h5>/ {item.name}</h5>
                                     </Link>
-                                </li>
+                                </li> : <Tooltip title="Coming soon"><li
+                                    key={item.name}
+                                    style={{ opacity: 0.5 }}
+                                >
+                                    <h5>/ {item.name}</h5>
+                                </li></Tooltip>
                             })}
                         </ul>
                         {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
