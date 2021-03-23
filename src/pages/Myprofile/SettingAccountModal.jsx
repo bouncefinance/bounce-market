@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect , useContext } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
@@ -7,6 +7,7 @@ import { useUserInfo } from './useUserInfo'
 import { useState } from 'react'
 import { checkInput } from '@utils/compareFun'
 import useAxios from '@/utils/useAxios'
+import {myContext} from '@/redux/index.js'
 
 const SettingAccountStyled = styled.div`
     width: 1100px;
@@ -30,6 +31,7 @@ const SettingAccountStyled = styled.div`
 `
 
 export default function SettingAccountModal ({ open, setOpen }) {
+    const {dispatch} = useContext(myContext);
     const { active, account } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
     const { userInfo, updateUserInfo } = useUserInfo()
@@ -98,7 +100,7 @@ export default function SettingAccountModal ({ open, setOpen }) {
             setInputDisable(false)
             setBtnText('Save')
         } catch (error) {
-            alert('服务器故障，请稍后重试')
+            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"服务器故障，请稍后重试"});
             setBtnLock(false)
             setInputDisable(false)
             setBtnText('Save')

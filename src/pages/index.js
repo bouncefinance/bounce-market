@@ -19,14 +19,14 @@ import MyBrands from './Myprofile/MyBrands'
 import BrandsByType from './Myprofile/MyBrands/BrandsByType'
 import MyActivities from './Myprofile/MyActivities'
 import MyP2P from './Myprofile/Point-2-Point'
+import ModalMessage from '@components/Modal/ModalMessage'
 
 export default function Index() {
-
-
 
     return (
         <BrowserRouter>
             <LayoutStyled>
+                <ModalMessage />
                 <Header />
                 <Route exact path='/test' component={Test} />
                 <Route exact path='/UIkit' component={UIkit} />

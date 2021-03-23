@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
 import { TextInput, TextAreaInput, Button, Upload } from '@components/UI-kit'
 import useAxios from '@utils/useAxios.js'
 import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
-// import { FreeFocusInside } from 'react-focus-lock';
+import {myContext} from '@/redux/index.js'
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
@@ -23,6 +23,7 @@ const AddNewBrandstModalStyled = styled.div`
 `
 
 export default function AddNewBrandstModal({ open, setOpen }) {
+    const {dispatch} = useContext(myContext);
     const { active, account } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
     const [fileDate, setFileDate] = useState(null)
@@ -89,12 +90,12 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                 }
                 sign_Axios.post('/api/v2/main/auth/addbrand', params).then(res => {
                     if (res.status === 200 && res.data.code === 1) {
-                        alert('Brand 创建成功')
+                        dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"Brand 创建成功"});
                     } else {
-                        alert('服务器端 创建失败')
+                        dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"服务器端 创建失败"});
                     }
                 }).catch(err => {
-                    alert('Brand 创建失败')
+                    dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"Brand 创建失败"});
                 })
 
             }).catch(function (error) {

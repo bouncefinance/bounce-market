@@ -1,8 +1,10 @@
 import useAxios from '@/utils/useAxios'
 import { useActiveWeb3React } from '@/web3'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import {myContext} from '@/redux/index.js'
 
 export function useUserInfo() {
+    const {dispatch} = useContext(myContext);
     const [userExisted, setUserExisted] = useState(false)
     const [userInfo, setUserInfo] = useState({})
     const { sign_Axios } = useAxios()
@@ -31,12 +33,12 @@ export function useUserInfo() {
         sign_Axios.post(requireUrl, params).then(res => {
             console.log(res)
             if (res.status === 200 && res.data.code === 1) {
-                alert('信息上传更新成功')
+                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"信息上传更新成功"});
             }else{
-                alert('信息上传更新成功')
+                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"信息上传更新成功"});
             }
         }).catch(()=>{
-            alert('服务器故障，请稍后重试')
+            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"服务器故障，请稍后重试"});
         })
         return 500
     }
