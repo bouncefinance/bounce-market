@@ -35,12 +35,12 @@ export const useBrandList = () => {
 export const useBrandInfo = (brandId) => {
     const { sign_Axios } = useAxios()
     const [brandInfo, setBrandInfo] = useState({})
-    const { account } = useActiveWeb3React()
+    const {account} = useActiveWeb3React()
 
     useEffect(() => {
         getBrandInfoById()
         // eslint-disable-next-line
-    }, [brandId, account])
+    }, [brandId,account])
 
     const getBrandInfoById = () => {
         sign_Axios.post(`/api/v2/main/auth/getbrandbyid`, { id: parseInt(brandId), accountaddress: account })
