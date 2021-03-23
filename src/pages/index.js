@@ -19,6 +19,7 @@ import MyBrands from './Myprofile/MyBrands'
 import BrandsByType from './Myprofile/MyBrands/BrandsByType'
 import MyActivities from './Myprofile/MyActivities'
 import MyP2P from './Myprofile/Point-2-Point'
+import TransferStatusModal from '@components/Modal/TransferStatusModal'
 
 export default function Index() {
 
@@ -55,6 +56,8 @@ export default function Index() {
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
 
                 <Footer />
+                {/* 交易状态模态框 */}
+                <TransferStatusModal />
             </LayoutStyled>
         </BrowserRouter>
     )

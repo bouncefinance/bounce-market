@@ -21,7 +21,7 @@ export const useBrandList = () => {
     }, [active, account, chainId])
 
     const getBrandList = async (source) => {
-        const res = await sign_Axios.get('/api/v2/main/auth/getaccountbrands', { cancelToken: source.token })
+        const res = await sign_Axios.post('/api/v2/main/auth/getaccountbrands')
         if (res.status === 200 && res.data.code === 1) {
             setBrand_list(res.data.data)
         }
@@ -35,14 +35,15 @@ export const useBrandList = () => {
 export const useBrandInfo = (brandId) => {
     const { sign_Axios } = useAxios()
     const [brandInfo, setBrandInfo] = useState({})
+    const { account } = useActiveWeb3React()
 
     useEffect(() => {
         getBrandInfoById()
         // eslint-disable-next-line
-    }, [brandId])
+    }, [brandId, account])
 
     const getBrandInfoById = () => {
-        sign_Axios.get(`/api/v2/main/auth/getbrandbyid`, { id: brandId })
+        sign_Axios.post(`/api/v2/main/auth/getbrandbyid`, { id: parseInt(brandId), accountaddress: account })
             .then(res => {
                 if (res.status === 200 && res.data.code === 1) {
                     setBrandInfo(res.data.data)

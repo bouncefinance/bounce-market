@@ -1,13 +1,20 @@
 export const initState = {
-    Show_Modal: null, // Connect_Wallect
+    TransferModal: '', // Connect_Wallect
+    UserInfo: {}
 }
 
 export const reducer = (state, action) => {
     switch (action.type) {
-        case 'Show_Modal':
+        case 'UserInfo':
             return {
                 ...initState,
-                Show_Modal: action.value
+                UserInfo: action.value
+            }
+
+        case 'TransferModal':
+            return {
+                ...initState,
+                TransferModal: action.value
             }
 
         default:

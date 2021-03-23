@@ -41,7 +41,7 @@ export default function SettingAccountModal ({ open, setOpen }) {
 
     useEffect(() => {
         if (!active) return
-        console.log(userInfo)
+        // console.log(userInfo)
         setFormData({ ...userInfo })
         // eslint-disable-next-line
     }, [active, userInfo])
