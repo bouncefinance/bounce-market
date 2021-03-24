@@ -50,8 +50,8 @@ export default function Index() {
                 <Route exact path='/ListNFT' component={ListNFT} />
 
                 <Route exact path='/MyInventory' component={MyInventory} />
-                <Route exact path='/MyInventory/NFTId' component={MyNFT} />
-                <Route exact path='/MyInventory/NFTId/Sell' component={SellNFT} />
+                <Route exact path='/MyInventory/:NFTId' component={MyNFT} />
+                <Route exact path='/MyInventory/:NFTId/Sell' component={SellNFT} />
                 
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyBrands/:brandId/:type' component={BrandsByType} />

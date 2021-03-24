@@ -231,18 +231,17 @@ export default function SellNFT(/* { NFTImg } */) {
 	const [duration, setDuration] = useState(0);
 
 	useEffect(() => {
-		console.log(
-			auctionType,
-			price,
-			priceUnit,
-			minimumBid,
-			minimumBid_Unit,
-			directPurchasePrice,
-			directPurchasePrice_Unit,
-			reservePrice,
-			reservePrice_Unit,
-			duration,
-		);
+		console.log("auctionType: " + auctionType);
+		console.log("price: " + price);
+		console.log("priceUnit: " + priceUnit);
+		console.log("minimumBid: " + minimumBid);
+		console.log("minimumBid_Unit: " + minimumBid_Unit);
+		console.log("directPurchasePrice: " + directPurchasePrice);
+		console.log("directPurchasePrice_Unit: " + directPurchasePrice_Unit);
+		console.log("reservePrice: " + reservePrice);
+		console.log("reservePrice_Unit: " + reservePrice_Unit);
+		console.log("duration: " + duration);
+		console.log("----------------")
 	}, [
 		auctionType,
 		price,
@@ -383,8 +382,8 @@ export default function SellNFT(/* { NFTImg } */) {
 						fees={fees}
 					/>
 				);
-				default:
-					return;
+			default:
+				return;
 		}
 	};
 

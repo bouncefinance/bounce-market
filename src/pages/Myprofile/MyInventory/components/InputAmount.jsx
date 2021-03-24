@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import UnitDropdown from "./UnitDropdown";
@@ -109,12 +109,39 @@ const InputRow = styled.div`
 function InputAmount({
 	className,
 	title,
+	price,
 	setPrice,
 	setUnit,
 	notice,
 	gridArea,
 	options,
 }) {
+	const [inputValue, setInputValue] = useState("");
+
+	const checkInput = (e) => {
+		console.log("key value: ", e.target.value);
+
+		if (e.target.value.match("^$") != null) {
+			setPrice(0);
+			setInputValue("");
+		} else if (e.target.value.match("^0$") != null) {
+			setPrice(0);
+			setInputValue("0");
+		} else if (e.target.value.match("^\\d+$") != null) {
+			setPrice(e.target.value);
+			setInputValue(e.target.value);
+		} else if (e.target.value.match("^\\d+\\.$") != null) {
+			setPrice(e.target.value.slice(0, -1));
+			setInputValue(e.target.value);
+		} else if (e.target.value.match("^\\d+\\.[0-9]*0+$") != null) {
+			setPrice(parseFloat(e.target.value));
+			setInputValue(e.target.value);
+		} else if (e.target.value.match("^\\d+\\.[0-9]*[1-9]+$") != null) {
+			setPrice(e.target.value);
+			setInputValue(e.target.value);
+		}
+	};
+
 	return (
 		<Wrapper className={className} gridArea={gridArea}>
 			<span className="title">{title}</span>
@@ -135,9 +162,8 @@ function InputAmount({
 					type="text"
 					placeholder="Amount"
 					maxLength={18}
-					onChange={(e) => {
-						setPrice(e.target.value);
-					}}
+					value={inputValue}
+					onChange={checkInput}
 				/>
 			</InputRow>
 
