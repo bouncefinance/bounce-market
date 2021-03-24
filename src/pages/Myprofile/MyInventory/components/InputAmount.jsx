@@ -133,16 +133,6 @@ function InputAmount({
 
 				<input
 					type="text"
-					/* οnKeyUp={(e) => {
-						if (isNaN(value)) {
-							execCommand("undo");
-						}
-					}}
-					onAfterPaste={(value) => {
-						if (isNaN(value)) {
-							execCommand("undo");
-						}
-					}} */
 					placeholder="Amount"
 					maxLength={18}
 					onChange={(e) => {
