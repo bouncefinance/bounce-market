@@ -15,6 +15,9 @@ import Factory from './Factory'
 import ListNFT from './ListNFT'
 
 import MyInventory from './Myprofile/MyInventory'
+import MyNFT from './Myprofile/MyInventory/MyNFT'
+import SellNFT from './Myprofile/MyInventory/SellNFT'
+
 import MyBrands from './Myprofile/MyBrands'
 import BrandsByType from './Myprofile/MyBrands/BrandsByType'
 import MyActivities from './Myprofile/MyActivities'
@@ -50,6 +53,9 @@ export default function Index() {
                 <Route exact path='/ListNFT' component={ListNFT} />
 
                 <Route exact path='/MyInventory' component={MyInventory} />
+                <Route exact path='/MyInventory/:nftId' component={MyNFT} />
+                <Route exact path='/MyInventory/:nftId/Sell' component={SellNFT} />
+                
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyBrands/:brandId/:type' component={BrandsByType} />
                 <Route exact path='/MyActivities' component={MyActivities} />

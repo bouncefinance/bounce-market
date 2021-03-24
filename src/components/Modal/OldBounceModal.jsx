@@ -21,9 +21,11 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
     align-items: center;
     justify-content: center;
 
-    background-color: ${({ theme }) => theme.modalBG};
+    /* background-color: ${({ theme }) => theme.modalBG}; */
+    
+    background-color: rgba(0,0,0,.7);
     @media (max-width: 767px) {
-      background-color: #fff;
+      background-color: rgba(0,0,0,.7);
       padding-top: 50px;
     }
   }

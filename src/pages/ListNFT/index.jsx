@@ -39,7 +39,7 @@ const StyledButton = styled.button`
             margin-top: 70px;
         }
 
-        .discription {
+        .description {
             font-family: Helvetica Neue;
             font-style: normal;
             font-weight: normal;
@@ -100,7 +100,7 @@ function ListNFT() {
                 >
                     <div className="content">
                         <span className="title">Live on mainnet</span>
-                        <p className="discription">We have something and it's ready to roll</p>
+                        <p className="description">We have something and it's ready to roll</p>
                     </div>
                 </StyledButton>
                 <StyledButton 
@@ -114,7 +114,7 @@ function ListNFT() {
                 >
                     <div className="content">
                         <span className="title">Live on Rinkeby</span>
-                        <p className="discription">It's on Rinkeby and ready to migrate over to mainnet</p>
+                        <p className="description">It's on Rinkeby and ready to migrate over to mainnet</p>
                     </div>
                 </StyledButton>
                 <StyledButton 
@@ -128,7 +128,7 @@ function ListNFT() {
                 >
                     <div className="content">
                         <span className="title">Not developed</span>
-                        <p className="discription">We have an idea and a prototype</p>
+                        <p className="description">We have an idea and a prototype</p>
                     </div>
                 </StyledButton>
             </CardList>

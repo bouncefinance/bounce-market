@@ -56,6 +56,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     }, [active])
 
     useEffect(() => {
+        // console.log(fileData, formData)
         if ((fileData || formData.imgurl) && formData) {
             const requireArr = ['Name', 'Description']
             let errorCount = 0
@@ -77,7 +78,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
 
     const handelSubmit = () => {
         // 第一步 上传图片
-        setInputDisable(false)
+        setInputDisable(true)
+        setBtnLock(true)
+
         sign_Axios
             .post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
             .then(function (response) {
@@ -103,16 +106,18 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     standard: nftType === 'ERC-721' ? 1 : 2,
                     supply: nftType === 'ERC-721' ? 1 : formData.Supply
                 }
-                console.log(params)
+                // console.log(params)
                 sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {
                     const _nftId = res.data.data.id
                     const _sign = res.data.data.signaturestr
+                    const _expiredtime = res.data.data.expiredtime
                     if (res.data.code === 1) {
                         if (nftType === 'ERC-721') {
                             const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, getBounceERC721WithSign(chainId))
-                            console.log(_nftId, _sign)
+                            console.log(_nftId, _sign, _expiredtime)
                             try {
-                                BounceERC721WithSign_CT.methods.mintUser(_nftId, _sign).send({ from: account })
+
+                                BounceERC721WithSign_CT.methods.mintUser(_nftId, _sign, _expiredtime).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
@@ -136,7 +141,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             const _amount = numToWei(formData.Supply)
                             const _data = ''
                             try {
-                                BounceERC1155WithSign_CT.methods.mintUser( _nftId, _amount, _data, _sign).send({ from: account })
+                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
