@@ -14,6 +14,7 @@ const CardItemStyled = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
     &:hover{
         box-shadow:0 0 16px rgba(48,69,114,0.2)
     }
@@ -26,6 +27,14 @@ const CardItemStyled = styled.div`
         transition-delay:250ms;
         z-index:1;
     }
+
+    &:hover .item_wrapper .info_wrapper{
+        display: flex;
+    }
+    &:hover .mask{
+        display: flex;
+    }
+
     img{
         width: 262px;
         height: 262px;
@@ -76,9 +85,7 @@ const CardItemStyled = styled.div`
             transition-duration: 200ms;
             transition-property: z-index, opacity;
             transition-timing-function: linear;
-        }
-        
-        
+        } 
     }
 `
 
