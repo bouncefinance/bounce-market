@@ -11,8 +11,6 @@ import brands_white from './assets/brands_white.svg'
 import brands_black from './assets/brands_black.svg'
 import activities_white from './assets/activities_white.svg'
 import activities_black from './assets/activities_black.svg'
-// import p2p_white from './assets/p2p_white.svg'
-// import p2p_black from './assets/p2p_black.svg'
 import setting_white from './assets/setting_white.svg'
 import setting_black from './assets/setting_black.svg'
 import { useActiveWeb3React } from '@/web3'
@@ -106,7 +104,7 @@ const InfoList = [{
     img_white: p2p_white,
     img_black: p2p_black,
     route: '/MyP2P'
-}*/ {
+}*/ , {
     name: 'Account Settings',
     img_white: setting_white,
     img_black: setting_black,

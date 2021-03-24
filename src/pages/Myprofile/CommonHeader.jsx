@@ -8,7 +8,6 @@ import { useActiveWeb3React } from '@/web3'
 import activities_black from '../component/Header/assets/activities_black.svg'
 import brands_black from '../component/Header/assets/brands_black.svg'
 import inventory_black from '../component/Header/assets/inventory_black.svg'
-// import p2p_black from '../component/Header/assets/p2p_black.svg'
 import icon_copy from '@assets/images/icon/copy.svg'
 
 import SettingAccountModal from './SettingAccountModal'
