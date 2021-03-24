@@ -139,9 +139,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                         } else {
                             const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
                             const _amount = numToWei(formData.Supply)
-                            const _data = ''
+                            const _data = 0 
+                            console.log(_nftId, _amount, _data, _sign,_expiredtime)
                             try {
-                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign).send({ from: account })
+                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign,_expiredtime).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
