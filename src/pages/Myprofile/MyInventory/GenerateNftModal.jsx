@@ -11,7 +11,7 @@ import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
-import { numToWei } from '@/utils/useBigNumber'
+// import { numToWei } from '@/utils/useBigNumber'
 
 const GenerateNFTModalStyled = styled.div`
     width: 1100px;
@@ -138,10 +138,11 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
 
                         } else {
                             const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
-                            const _amount = numToWei(formData.Supply)
-                            const _data = ''
+                            const _amount = formData.Supply
+                            const _data = 0 
+                            // console.log(_nftId, _amount, _data, _sign,_expiredtime)
                             try {
-                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign).send({ from: account })
+                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign,_expiredtime).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)

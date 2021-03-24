@@ -28,7 +28,7 @@ const BrandsStyled = styled.div`
 `
 
 
-export default function Index() {
+export default function Index () {
     const history = useHistory()
     const { brand_list } = useBrandList()
     // const [modalStatus, setModalStatus] = useState(initStatus);
