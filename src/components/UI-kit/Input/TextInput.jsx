@@ -128,19 +128,21 @@ export default function TextInput({
 
 	return (
 		<InputStyled width={width} height={height} marginTop={marginTop}>
+		<label>
 			{title && <p className={`title ${error && "error"}`}>{title}</p>}
-			<input
-				type="text"
-				className={`${error && "error"} ${lockInput && "lockInput"}`}
-				defaultValue={defaultValue}
-				placeholder={placeholder}
-				disabled={disabled || lockInput}
-				onChange={handelChange}
-				onBlur={handelBlur}
-				onFocus={handelFocus}
-				required={required}
-				maxLength={maxLength}
-			/>
+				<input
+					type="text"
+					className={`${error && "error"} ${lockInput && "lockInput"}`}
+					defaultValue={defaultValue}
+					placeholder={placeholder}
+					disabled={disabled || lockInput}
+					onChange={handelChange}
+					onBlur={handelBlur}
+					onFocus={handelFocus}
+					required={required}
+					maxLength={maxLength}
+				/>
+			</label>	
 			<p className={`${error && 'errorType'} ${'err_msg'}`}>{errMsg}</p>
 		</InputStyled>
 	);
