@@ -55,7 +55,6 @@ export default function ModalMessage() {
     <div className={classes.root}>
       <Collapse in={state.showMessageModal}>
         <Alert
-        // "error"
             severity={state.modelType||'warning'}
             className={classes.alerts}
             icon={false}

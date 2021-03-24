@@ -15,6 +15,26 @@ const CardItemStyled = styled.div`
     flex-direction: column;
     justify-content: space-between;
 
+    &:hover{
+        box-shadow:0 0 16px rgba(48,69,114,0.2)
+    }
+    &:hover .info_wrapper{
+        opacity: 0;
+        transform:scale(1,0);
+    }
+    &:hover .item_wrapper .button_group{
+        opacity: 1;
+        transition-delay:250ms;
+        z-index:1;
+    }
+
+    &:hover .item_wrapper .info_wrapper{
+        display: flex;
+    }
+    &:hover .mask{
+        display: flex;
+    }
+
     img{
         width: 262px;
         height: 262px;
@@ -32,6 +52,10 @@ const CardItemStyled = styled.div`
         .info_wrapper{
             display: flex;
             flex-direction: column;
+            transform-origin: center;
+            transition-duration: 200ms;
+            transition-property: transform, opacity;
+            transition-timing-function: linear;
             div{
                 font-size: 12px;
                 display: flex;
@@ -55,18 +79,13 @@ const CardItemStyled = styled.div`
             left: 0;
             width: 100%;
             box-sizing: border-box;
-            display: none;
-            /* display: flex; */
-            justify-content: center;
-        }
-        
-        &:hover .button_group{
             display: flex;
-        }
-
-        &:hover .info_wrapper{
-            display: none;
-        }
+            justify-content: center;
+            opacity: 0;
+            transition-duration: 200ms;
+            transition-property: z-index, opacity;
+            transition-timing-function: linear;
+        } 
     }
 `
 
