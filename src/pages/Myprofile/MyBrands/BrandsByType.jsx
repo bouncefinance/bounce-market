@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router'
 import styled from 'styled-components'
+import Modal from '@components/Modal/Modal'
+import { TextInput, TextAreaInput, Button, } from '@components/UI-kit'
+import { myContext } from '@/redux'
+import useAxios from '@utils/useAxios.js'
 import { CardItem, AddCardItem } from './CardItem'
 import arrows_left from '@assets/images/icon/arrows-left.svg'
 import edit_white from '@assets/images/icon/edit_white.svg'
 import edit_black from '@assets/images/icon/edit_black.svg'
 
 import nav_all from '@assets/images/icon/nav_all.svg'
-import nav_audio from '@assets/images/icon/nav_audio.svg'
-import nav_game from '@assets/images/icon/nav_game.svg'
+// import nav_audio from '@assets/images/icon/nav_audio.svg'
+// import nav_game from '@assets/images/icon/nav_game.svg'
 import nav_image from '@assets/images/icon/nav_image.svg'
-import nav_other from '@assets/images/icon/nav_other.svg'
-import nav_video from '@assets/images/icon/nav_video.svg'
+// import nav_other from '@assets/images/icon/nav_other.svg'
+// import nav_video from '@assets/images/icon/nav_video.svg'
 
 import img_example_3 from '@assets/images/example_3.svg'
 import { useBrandInfo } from './useHook'
+import Snackbar from '@material-ui/core/Snackbar';
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -158,6 +163,18 @@ const BrandsByTypeStyled = styled.div`
     }
 `
 
+const EditBrandstModalStyled = styled.div`width: 1100px;
+    box-sizing: border-box;
+    padding: 32px 83px;
+    box-sizing: border-box;
+
+    .button_group{
+        margin-top: 36px;
+        button{
+            margin-right: 16px;
+        }
+    }`
+
 const nav_list = [{
     name: 'All Items',
     icon: nav_all,
@@ -166,7 +183,7 @@ const nav_list = [{
     name: 'Images',
     icon: nav_image,
     route: 'Images'
-}, {
+}/*, {
     name: 'Video',
     icon: nav_video,
     route: 'Video'
@@ -182,14 +199,64 @@ const nav_list = [{
     name: 'Others',
     icon: nav_other,
     route: 'Others'
-}]
+}*/]
 
 
-export default function BrandsByType() {
+export default function BrandsByType () {
     const { brandId, type } = useParams()
     const history = useHistory()
     const [listData, setListData] = useState([])
-    const { brandInfo } = useBrandInfo(brandId)
+    const { brandInfo, run } = useBrandInfo(brandId)
+    const { state } = useContext(myContext)
+    const { sign_Axios } = useAxios()
+    // ----edit----
+    const [isEdit, setIsEdit] = useState(false)
+    const [editFormData, setEditFormData] = useState({
+        brandname: brandInfo.brandname,
+        description: brandInfo.description,
+        ownername: state.UserInfo.username,
+        id: brandId | 0,
+    })
+    const [editBtnText, setEditBtnText] = useState('Save')
+    const [inputDisable, setInputDisable] = useState(false)
+    const [btnLock, setBtnLock] = useState(false)
+    // { open: Boolean, type: 'error' | 'success' }
+    const [editSnackbar, setEditSnackbar] = useState({
+        open: false,
+        type: 'error',
+    })
+    const handelEditSubmit = async () => {
+        setBtnLock(true)
+        setInputDisable(true)
+        setEditBtnText('Submitting ...')
+        const response = await sign_Axios.post('/api/v2/main/auth/updatebrandbyid', editFormData)
+        setBtnLock(false)
+        setInputDisable(false)
+        setEditBtnText('Save')
+        try {
+            const data = response.data
+            console.log('response: ', data)
+            if (data.code === 200 || data.code === 1) {
+                setEditSnackbar({
+                    open: true,
+                    type: 'success',
+                })
+                setIsEdit(false)
+                // update data of page
+                run()
+            } else {
+                throw new Error('')
+            }
+        } catch {
+            setEditSnackbar({
+                open: true,
+                type: 'error',
+            })
+        }
+        setTimeout(() => {
+            setEditSnackbar({ open: false, ...editSnackbar })
+        }, 1000)
+    }
 
     const getListData = (type) => {
         // console.log(type)
@@ -258,7 +325,14 @@ export default function BrandsByType() {
                         <h2>{brandInfo.brandname}</h2>
                         <p>{brandInfo.description}</p>
                     </div>
-                    <button>
+                    <button onClick={() => {
+                        setEditFormData({
+                            ...editFormData,
+                            brandname: brandInfo.brandname,
+                            description: brandInfo.description,
+                        })
+                        setIsEdit(true)
+                    }}>
                         <img src={edit_black} alt="" />
                         Edit
                     </button>
@@ -286,6 +360,47 @@ export default function BrandsByType() {
                     </li>
                 })}
             </ul>
+
+            {/* EDIT */}
+            <Modal open={isEdit} setOpen={setIsEdit} header={{ title: 'Edit your Brand', isClose: true }}>
+                <EditBrandstModalStyled>
+                    <TextInput
+                        title='Brand Name'
+                        width='620px'
+                        required={true}
+                        marginTop={0}
+                        lockInput={inputDisable}
+                        defaultValue={editFormData.brandname}
+                        onValChange={(brandname) => {
+                            setEditFormData({ ...editFormData, brandname })
+                        }}
+                    />
+                    <TextAreaInput
+                        title='Description'
+                        width='620px'
+                        placeholder={`Describe your brand`}
+                        required={true}
+                        marginTop={'24px'}
+                        lockInput={inputDisable}
+                        defaultValue={editFormData.description}
+                        onValChange={(description) => {
+                            setEditFormData({ ...editFormData, description })
+                        }}
+                    />
+                    <div className="button_group">
+                        <Button height='48px' width='302px' onClick={() => setIsEdit(false)}>Cancel</Button>
+                        <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelEditSubmit}>{editBtnText}</Button>
+                    </div>
+                </EditBrandstModalStyled>
+            </Modal>
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={editSnackbar.open}
+                onClose={() => { }}
+                message={editSnackbar.type === 'error' ? "system error" : 'success'}
+                autoHideDuration={2000}
+            >
+            </Snackbar>
         </BrandsByTypeStyled>
     )
 }
