@@ -44,11 +44,11 @@ const FooterStyled = styled.div`
     }
 `
 
-export default function Index() {
+export default function Index () {
     const history = useHistory()
     const [hasScroll, setHasScroll] = useState()
 
-    function hasScrollbar() {
+    function hasScrollbar () {
         return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight);
     }
 
@@ -78,17 +78,17 @@ export default function Index() {
                     <img src={logo_bounce} alt="" />
                     <ul>
                         <li>
-                            <a href={'http://baidu.com'}>
+                            <a target="_blank" rel="noreferrer" href={'https://bouncefinance.medium.com'}>
                                 <img src={link_media} alt="" />
                             </a>
                         </li>
                         <li>
-                            <a href={'http://baidu.com'}>
+                            <a target="_blank" rel="noreferrer" href={'https://t.me/bounce_finance'}>
                                 <img src={link_telegram} alt="" />
                             </a>
                         </li>
                         <li>
-                            <a href={'http://baidu.com'}>
+                            <a target="_blank" rel="noreferrer" href={'https://twitter.com/bounce_finance?s=21'}>
                                 <img src={link_twitter} alt="" />
                             </a>
                         </li>
