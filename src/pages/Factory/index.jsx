@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import FactoryCard from './FactoryCard'
 import GenerateNFTModal from './GenerateNFTModal'
-import CreateBrandModal from './CreateBrandModal'
+import CreateBrandModal from '../Myprofile/MyBrands/AddNewBrandstModal'
 import AddNewItemModal from './AddNewItemModal'
 import LinkButton from '@/components/UI-kit/Button/LinkButton'
 import Button from '@/components/UI-kit/Button/Button'
