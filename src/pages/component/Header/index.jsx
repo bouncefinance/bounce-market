@@ -112,17 +112,19 @@ const Nav_list = [{
     name: 'Brands',
     route: '/Brands',
     enable: true,
-}, {
-    name: 'P2P',
-    route: '/P2P',
-    enable: false,
-}, {
+},
+//  {
+//     name: 'P2P',
+//     route: '/P2P',
+//     enable: false,
+// },
+{
     name: 'Factory',
     route: '/Factory',
     enable: true,
 }]
 
-export default function Index () {
+export default function Index() {
     const [isConnectWallect, setIsConnectWallect] = useState(false)
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState('Home')

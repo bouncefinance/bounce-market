@@ -107,7 +107,7 @@ const nav_list = [{
     route: 'Others'
 }]
 
-export default function Marketplace() {
+export default function Marketplace () {
     const { type } = useParams()
     const history = useHistory()
 
@@ -205,7 +205,7 @@ export default function Marketplace() {
 
     return (
         <MarketplaceStyled>
-            <ul className="nav_wrapper">
+            {false && <ul className="nav_wrapper">
                 {nav_list.map((item) => {
                     return <li key={item.name} className={type === item.route ? 'active' : ''} onClick={() => {
                         history.push(`/Marketplace/${item.route}`)
@@ -214,20 +214,29 @@ export default function Marketplace() {
                         <p>{item.name}</p>
                     </li>
                 })}
+            </ul>}
+            <ul className="nav_wrapper">
+                {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
+                    return <li key={item.name} className={type === item.name ? 'active' : ''} onClick={() => {
+                        history.push(`/Marketplace/${item.name}`)
+                    }}>
+                        <p>{item.name}</p>
+                    </li>
+                })}
             </ul>
 
             <div className="filterBox">
                 <Search placeholder={'Search Items and Accounts'} />
 
-                <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{
-                    value: 'ETH'
-                }]} defaultValue='ETH' onChange={(item) => {
+                <PullRadioBox prefix={'Gategory:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
                     // console.log(item)
                 }} />
 
-                <PullRadioBox prefix={'Sort by:'} width={'204px'} options={[{
-                    value: 'New'
-                }]} defaultValue='New' onChange={(item) => {
+                <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'ETH' }]} defaultValue='ETH' onChange={(item) => {
+                    // console.log(item)
+                }} />
+
+                <PullRadioBox prefix={'Sort by:'} width={'204px'} options={[{ value: 'New' }, { value: 'Popular' }]} defaultValue='New' onChange={(item) => {
                     // console.log(item)
                 }} />
             </div>

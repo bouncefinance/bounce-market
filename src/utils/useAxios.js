@@ -11,27 +11,27 @@ export default function useAxios() {
     const { account, library } = useWeb3React()
     const getNewToken = async () => {
         // console.log(isRequestLock)
-        if(isRequestLock) return null
+        if (!isRequestLock) {
+            const web3 = new Web3(library.provider);
+            const sign = await web3.eth.personal.sign(signStr, account)
+
+            const params = {
+                "accountaddress": account,
+                "message": signStr,
+                "signature": sign
+            }
+
+            const res_getSignToken = await axios.post(Base_URL + '/api/v2/main/jwtauth', params)
+            // isRequestLock = false
+            if (res_getSignToken.status === 200 && res_getSignToken.data.code === 200) {
+                const { token } = res_getSignToken.data.data
+                window.localStorage.setItem('JWT_TOKEN', token)
+                return token
+            } else {
+                return null
+            }
+        }
         isRequestLock = true
-        const web3 = new Web3(library.provider);
-        const sign = await web3.eth.personal.sign(signStr, account)
-
-        const params = {
-            "accountaddress": account,
-            "message": signStr,
-            "signature": sign
-        }
-
-        const res_getSignToken = await axios.post(Base_URL + '/api/v2/main/jwtauth', params)
-        isRequestLock = false
-        if (res_getSignToken.status === 200 && res_getSignToken.data.code === 200) {
-            const { token } = res_getSignToken.data.data
-            window.localStorage.setItem('JWT_TOKEN', token)
-            return token
-        } else {
-            return null
-        }
-        
     }
 
     const sign_Axios_Post = async (path, params, option = {
@@ -55,7 +55,7 @@ export default function useAxios() {
             ...option.config
         }
         let res = await axios.post(Base_URL + path, params, config)
-        if (res.status === 200 && res.data.code === -1 ) {
+        if (res.status === 200 && res.data.code === -1) {
             // token 无效过期
             config = {
                 headers: {

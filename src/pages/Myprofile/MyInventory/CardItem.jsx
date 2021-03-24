@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useHistory } from 'react-router-dom'
+
 import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
 import GenerateNftModal from './GenerateNftModal'
@@ -85,7 +87,9 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, status }) {
+export function CardItem({ cover, status, nftId }) {
+    const history = useHistory()
+
     return (
         <CardItemStyled>
             <div className="img_wrapper">
@@ -98,10 +102,16 @@ export function CardItem({ cover, status }) {
                 </div>
                 {
                     status === 'Listed' ? <div className='button_group'>
-                        <Button value={'Check Status'} primary />
+                        <Button value={'Check Status'} primary onClick={() => {
+                            history.push(`/MyInventory/${nftId}`)
+                        }} />
                         <Button value={'Make Unlisted'} />
                     </div> : <div className='button_group'>
-                        <Button value={'Sell'} primary />
+                        <Button
+                            value={'Sell'}
+                            primary
+                            onClick={() => { history.push(`/MyInventory/${nftId}/Sell`) }}
+                        />
                         <Button value={'Make Listed'} />
                     </div>
                 }
@@ -135,12 +145,12 @@ export function AddCardItem() {
                     <img src={img_addItem} alt="" />
                 </div>
                 <div className="content">
-                    <Button value={'Add'} onClick={()=>{
+                    <Button value={'Add'} onClick={() => {
                         setShowGenrateModal(true)
-                    }}/>
+                    }} />
                 </div>
             </AddCardItemStyle>
-            <GenerateNftModal open={showGenrateModal} setOpen={setShowGenrateModal}/>
+            <GenerateNftModal open={showGenrateModal} setOpen={setShowGenrateModal} />
         </>
     )
 }
