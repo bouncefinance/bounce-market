@@ -104,7 +104,7 @@ const InfoList = [{
     img_white: p2p_white,
     img_black: p2p_black,
     route: '/MyP2P'
-}*/ , {
+},*/  {
     name: 'Account Settings',
     img_white: setting_white,
     img_black: setting_black,
