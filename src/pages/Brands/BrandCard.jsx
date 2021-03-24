@@ -7,9 +7,11 @@ const StyledCard = styled.div`
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.2);
     display: grid;
-
+    overflow: hidden;
     grid-template-columns: 542px 1fr;
-
+    &:hover{
+        box-shadow:0 0 16px rgba(48,69,114,0.2)
+    }
     .right {
         padding-top: 88px;
         padding-right: 35px;
@@ -76,16 +78,20 @@ const StyledCard = styled.div`
         }
 
         .button_visit{
-            margin-top: 38px;
-            display: none;
+            // margin-top: 38px;
+            position: relative;
+            top: 70px;
+            opacity: 0;
         }
         
         &:hover .button_visit{
-            display: flex;
+            transition-duration: 600ms;
+            transform: translate(0, -38px);
+            opacity: 1;
         }
-
-        &:hover {
-            padding-top: 48px;
+        &:hover{
+            transition-duration: 600ms;
+            transform: translate(0, -40px);
         }
     }
         
