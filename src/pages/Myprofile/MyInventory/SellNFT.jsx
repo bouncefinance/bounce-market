@@ -8,182 +8,6 @@ import Summary from "./components/Summary";
 
 import pic_NFT1 from "./assets/pic_NFT1.svg";
 
-const Page = styled.div`
-	width: 1100px;
-	margin: 0 auto 110px auto;
-	display: grid;
-	grid-template-rows: 86px 1fr;
-`;
-
-const BreadcrumbNav = styled.div`
-	font-family: IBM Plex Mono;
-	font-style: normal;
-	font-weight: 500;
-	font-size: 12px;
-	line-height: 16px;
-	display: flex;
-	color: #1f191b;
-	opacity: 0.8;
-
-	padding-top: 24px;
-	padding-bottom: 44px;
-
-	box-sizing: border-box;
-
-	span {
-		opacity: 0.4;
-	}
-`;
-
-const PageBody = styled.div`
-	width: 1100px;
-	display: grid;
-	grid-template-columns: 1fr 296px;
-	column-gap: 60px;
-`;
-
-const PageBodyLeft = styled.div`
-	display: grid;
-	grid-template-rows: 25px 126px 1fr;
-	grid-template-areas:
-		"str_SelectSellMethod"
-		"ButtonGroup"
-		"LeftItemsOnSetPrice";
-
-	span.str_SelectSellMethod {
-		font-family: Helvetica Neue;
-		font-style: normal;
-		font-weight: bold;
-		font-size: 12px;
-		line-height: 15px;
-		text-transform: capitalize;
-		color: #1f191b;
-
-		grid-area: str_SelectSellMethod;
-	}
-`;
-
-const ButtonGroup = styled.div`
-	grid-area: ButtonGroup;
-
-	display: grid;
-	grid-template-columns: 360px 360px;
-	column-gap: 20px;
-
-	button {
-		background: #ffffff;
-		border: 1px solid rgba(0, 0, 0, 0.2);
-		box-sizing: border-box;
-		cursor: pointer;
-		width: 360px;
-		height: 88px;
-
-		display: grid;
-		grid-template-rows: 45px 25px 1fr;
-		align-items: end;
-
-		.auctionType {
-			font-family: Optima;
-			font-style: normal;
-			font-weight: bold;
-			font-size: 22px;
-			line-height: 27px;
-			color: #000000;
-		}
-
-		.saleFeature {
-			font-family: Helvetica Neue;
-			font-style: normal;
-			font-weight: normal;
-			font-size: 12px;
-			line-height: 124%;
-			color: #1f191b;
-			opacity: 0.8;
-		}
-	}
-
-	button.active {
-		border: 1px solid #000000;
-		box-sizing: border-box;
-		box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
-	}
-`;
-
-/* LeftItemsOnSetPrice */
-const LeftItemsOnSetPrice = styled.div`
-	display: grid;
-	align-items: center;
-	grid-template-rows: 147px 38px 1fr;
-	grid-template-areas:
-		"Price"
-		"."
-		"Instructions";
-
-	.Instructions {
-		grid-area: Instructions;
-		align-self: start;
-	}
-`;
-
-/* LeftItemsOnEnglishAuction */
-const LeftItemsOnEnglishAuction = styled.div`
-	display: grid;
-	align-items: center;
-	grid-template-rows: 147px 38px 147px 38px 147px 38px 147px 38px 1fr;
-	grid-template-areas:
-		"Minimum_bid"
-		"."
-		"Direct_purchase_price"
-		"."
-		"Reserve_price"
-		"."
-		"Expriration_Date"
-		"."
-		"Instructions";
-
-	.Instructions {
-		grid-area: Instructions;
-		align-self: start;
-	}
-
-	/* 重设过期时间的样式 */
-	.Expriration_Date {
-		img.icon {
-			display: none;
-		}
-
-		input {
-			display: none;
-		}
-
-		li img {
-			display: none;
-		}
-
-		li.option {
-			padding-right: 0;
-			padding-left: 0;
-		}
-	}
-`;
-
-/* Right */
-const PageBodyRight = styled.div`
-	display: grid;
-	align-items: center;
-	grid-template-rows: 296px 1fr;
-	row-gap: 20px;
-	grid-template-areas:
-		"NFTImg"
-		"Summary";
-
-	img.NFTImg {
-		width: 296px;
-		height: 296px;
-		grid-area: NFTImg;
-	}
-`;
-
 export default function SellNFT(/* { NFTImg } */) {
 	const unitOptions = [
 		{
@@ -230,31 +54,35 @@ export default function SellNFT(/* { NFTImg } */) {
 	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
 	const [duration, setDuration] = useState(0);
 
-	useEffect(() => {
-		console.log(
-			auctionType,
-			price,
-			priceUnit,
-			minimumBid,
-			minimumBid_Unit,
-			directPurchasePrice,
-			directPurchasePrice_Unit,
-			reservePrice,
-			reservePrice_Unit,
-			duration,
-		);
-	}, [
-		auctionType,
-		price,
-		priceUnit,
-		minimumBid,
-		minimumBid_Unit,
-		directPurchasePrice,
-		directPurchasePrice_Unit,
-		reservePrice,
-		reservePrice_Unit,
-		duration,
-	]);
+	// useEffect(() => {
+	// 	console.log(
+	// 		auctionType,
+	// 		price,
+	// 		priceUnit,
+	// 		minimumBid,
+	// 		minimumBid_Unit,
+	// 		directPurchasePrice,
+	// 		directPurchasePrice_Unit,
+	// 		reservePrice,
+	// 		reservePrice_Unit,
+	// 		duration,
+	// 	);
+	// }, [
+	// 	auctionType,
+	// 	price,
+	// 	priceUnit,
+	// 	minimumBid,
+	// 	minimumBid_Unit,
+	// 	directPurchasePrice,
+	// 	directPurchasePrice_Unit,
+	// 	reservePrice,
+	// 	reservePrice_Unit,
+	// 	duration,
+	// ]);
+
+	useEffect(()=>{
+		
+	})
 
 	const render_LeftItems = (auctionType) => {
 		switch (auctionType) {
@@ -448,3 +276,183 @@ export default function SellNFT(/* { NFTImg } */) {
 		</Page>
 	);
 }
+
+
+
+
+
+const Page = styled.div`
+	width: 1100px;
+	margin: 0 auto 110px auto;
+	display: grid;
+	grid-template-rows: 86px 1fr;
+`;
+
+const BreadcrumbNav = styled.div`
+	font-family: IBM Plex Mono;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 16px;
+	display: flex;
+	color: #1f191b;
+	opacity: 0.8;
+
+	padding-top: 24px;
+	padding-bottom: 44px;
+
+	box-sizing: border-box;
+
+	span {
+		opacity: 0.4;
+	}
+`;
+
+const PageBody = styled.div`
+	width: 1100px;
+	display: grid;
+	grid-template-columns: 1fr 296px;
+	column-gap: 60px;
+`;
+
+const PageBodyLeft = styled.div`
+	display: grid;
+	grid-template-rows: 25px 126px 1fr;
+	grid-template-areas:
+		"str_SelectSellMethod"
+		"ButtonGroup"
+		"LeftItemsOnSetPrice";
+
+	span.str_SelectSellMethod {
+		font-family: Helvetica Neue;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 12px;
+		line-height: 15px;
+		text-transform: capitalize;
+		color: #1f191b;
+
+		grid-area: str_SelectSellMethod;
+	}
+`;
+
+const ButtonGroup = styled.div`
+	grid-area: ButtonGroup;
+
+	display: grid;
+	grid-template-columns: 360px 360px;
+	column-gap: 20px;
+
+	button {
+		background: #ffffff;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		box-sizing: border-box;
+		cursor: pointer;
+		width: 360px;
+		height: 88px;
+
+		display: grid;
+		grid-template-rows: 45px 25px 1fr;
+		align-items: end;
+
+		.auctionType {
+			font-family: Optima;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 22px;
+			line-height: 27px;
+			color: #000000;
+		}
+
+		.saleFeature {
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: normal;
+			font-size: 12px;
+			line-height: 124%;
+			color: #1f191b;
+			opacity: 0.8;
+		}
+	}
+
+	button.active {
+		border: 1px solid #000000;
+		box-sizing: border-box;
+		box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
+	}
+`;
+
+/* LeftItemsOnSetPrice */
+const LeftItemsOnSetPrice = styled.div`
+	display: grid;
+	align-items: center;
+	grid-template-rows: 147px 38px 1fr;
+	grid-template-areas:
+		"Price"
+		"."
+		"Instructions";
+
+	.Instructions {
+		grid-area: Instructions;
+		align-self: start;
+	}
+`;
+
+/* LeftItemsOnEnglishAuction */
+const LeftItemsOnEnglishAuction = styled.div`
+	display: grid;
+	align-items: center;
+	grid-template-rows: 147px 38px 147px 38px 147px 38px 147px 38px 1fr;
+	grid-template-areas:
+		"Minimum_bid"
+		"."
+		"Direct_purchase_price"
+		"."
+		"Reserve_price"
+		"."
+		"Expriration_Date"
+		"."
+		"Instructions";
+
+	.Instructions {
+		grid-area: Instructions;
+		align-self: start;
+	}
+
+	/* 重设过期时间的样式 */
+	.Expriration_Date {
+		img.icon {
+			display: none;
+		}
+
+		input {
+			display: none;
+		}
+
+		li img {
+			display: none;
+		}
+
+		li.option {
+			padding-right: 0;
+			padding-left: 0;
+		}
+	}
+`;
+
+/* Right */
+const PageBodyRight = styled.div`
+	display: grid;
+	align-items: center;
+	grid-template-rows: 296px 1fr;
+	row-gap: 20px;
+	grid-template-areas:
+		"NFTImg"
+		"Summary";
+
+	img.NFTImg {
+		width: 296px;
+		height: 296px;
+		grid-area: NFTImg;
+	}
+`;
