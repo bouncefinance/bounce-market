@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
+import GenerateNftModal from './GenerateNftModal'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -86,7 +87,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, status }) {
+export function CardItem({ cover, status, nftId }) {
     const history = useHistory()
 
     return (
@@ -101,13 +102,15 @@ export function CardItem({ cover, status }) {
                 </div>
                 {
                     status === 'Listed' ? <div className='button_group'>
-                        <Button value={'Check Status'} primary />
+                        <Button value={'Check Status'} primary onClick={() => {
+                            history.push(`/MyInventory/${nftId}`)
+                        }} />
                         <Button value={'Make Unlisted'} />
                     </div> : <div className='button_group'>
                         <Button
                             value={'Sell'}
                             primary
-                            onClick={() => {history.push("/MyInventory/NFTId")}}
+                            onClick={() => { history.push(`/MyInventory/${nftId}/Sell`) }}
                         />
                         <Button value={'Make Listed'} />
                     </div>
@@ -133,14 +136,21 @@ const AddCardItemStyle = styled(CardItemStyled)`
 `
 
 export function AddCardItem() {
+    const [showGenrateModal, setShowGenrateModal] = useState(false)
+
     return (
-        <AddCardItemStyle>
-            <div className="img_wrapper">
-                <img src={img_addItem} alt="" />
-            </div>
-            <div className="content">
-                <Button value={'Add'} />
-            </div>
-        </AddCardItemStyle>
+        <>
+            <AddCardItemStyle>
+                <div className="img_wrapper">
+                    <img src={img_addItem} alt="" />
+                </div>
+                <div className="content">
+                    <Button value={'Add'} onClick={() => {
+                        setShowGenrateModal(true)
+                    }} />
+                </div>
+            </AddCardItemStyle>
+            <GenerateNftModal open={showGenrateModal} setOpen={setShowGenrateModal} />
+        </>
     )
 }

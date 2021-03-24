@@ -84,7 +84,7 @@ function ListNFT() {
     const [Open, setOpen] = useState("0")
     const [Step, setStep] = useState("0")
 
-    console.log("Step: ", Step)
+    // console.log("Step: ", Step)
     
     return (
         <>

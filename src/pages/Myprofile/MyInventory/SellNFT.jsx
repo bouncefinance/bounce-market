@@ -230,7 +230,7 @@ export default function SellNFT(/* { NFTImg } */) {
 	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
 	const [duration, setDuration] = useState(0);
 
-	useEffect(() => {
+	/* useEffect(() => {
 		console.log("auctionType: " + auctionType);
 		console.log("price: " + price);
 		console.log("priceUnit: " + priceUnit);
@@ -253,7 +253,7 @@ export default function SellNFT(/* { NFTImg } */) {
 		reservePrice,
 		reservePrice_Unit,
 		duration,
-	]);
+	]); */
 
 	const render_LeftItems = (auctionType) => {
 		switch (auctionType) {

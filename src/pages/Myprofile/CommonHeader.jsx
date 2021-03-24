@@ -8,7 +8,6 @@ import { useActiveWeb3React } from '@/web3'
 import activities_black from '../component/Header/assets/activities_black.svg'
 import brands_black from '../component/Header/assets/brands_black.svg'
 import inventory_black from '../component/Header/assets/inventory_black.svg'
-import p2p_black from '../component/Header/assets/p2p_black.svg'
 import icon_copy from '@assets/images/icon/copy.svg'
 
 import SettingAccountModal from './SettingAccountModal'
@@ -120,13 +119,13 @@ const ItemList = [{
     name: 'My Activities',
     img_black: activities_black,
     route: '/MyActivities'
-}, {
+},/*{
     name: 'Point-2-Point',
     img_black: p2p_black,
     route: '/MyP2P'
-}]
+}*/]
 
-export default function CommonHeader() {
+export default function CommonHeader () {
     const [curItem, setCurItem] = useState('/MyInventory')
     const history = useHistory()
     const { account } = useActiveWeb3React()

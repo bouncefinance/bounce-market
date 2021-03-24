@@ -22,14 +22,17 @@ import MyBrands from './Myprofile/MyBrands'
 import BrandsByType from './Myprofile/MyBrands/BrandsByType'
 import MyActivities from './Myprofile/MyActivities'
 import MyP2P from './Myprofile/Point-2-Point'
+import TransferStatusModal from '@components/Modal/TransferStatusModal'
+import ModalMessage from '@components/Modal/ModalMessage'
+import ErrorNotification from '@components/Modal/ErrorNotification'
 
 export default function Index() {
-
-
 
     return (
         <BrowserRouter>
             <LayoutStyled>
+                <ModalMessage />
+                <ErrorNotification />
                 <Header />
                 <Route exact path='/test' component={Test} />
                 <Route exact path='/UIkit' component={UIkit} />
@@ -50,8 +53,8 @@ export default function Index() {
                 <Route exact path='/ListNFT' component={ListNFT} />
 
                 <Route exact path='/MyInventory' component={MyInventory} />
-                <Route exact path='/MyInventory/:NFTId' component={MyNFT} />
-                <Route exact path='/MyInventory/:NFTId/Sell' component={SellNFT} />
+                <Route exact path='/MyInventory/:nftId' component={MyNFT} />
+                <Route exact path='/MyInventory/:nftId/Sell' component={SellNFT} />
                 
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyBrands/:brandId/:type' component={BrandsByType} />
@@ -61,6 +64,8 @@ export default function Index() {
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
 
                 <Footer />
+                {/* 交易状态模态框 */}
+                <TransferStatusModal />
             </LayoutStyled>
         </BrowserRouter>
     )

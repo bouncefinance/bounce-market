@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '@/web3'
 import { TextInput, Button, Upload } from '@components/UI-kit'
+import { useUserInfo } from './useUserInfo'
+import { useState } from 'react'
+import { checkInput } from '@utils/compareFun'
+import useAxios from '@/utils/useAxios'
+import { myContext } from '@/redux/index.js'
 
 const SettingAccountStyled = styled.div`
     width: 1100px;
@@ -18,56 +23,169 @@ const SettingAccountStyled = styled.div`
         }
     }
 
+    .name_row{
+        width: 620px;
+        display: flex;
+        justify-content: space-between;
+    }
 `
 
 export default function SettingAccountModal({ open, setOpen }) {
-    const { active } = useActiveWeb3React()
+    const { dispatch } = useContext(myContext);
+    const { active, account } = useActiveWeb3React()
+    const { sign_Axios } = useAxios()
+    const { userInfo, updateUserInfo } = useUserInfo()
+    const [fileData, setFileData] = useState(null)
+    const [formData, setFormData] = useState({})
+    const [inputDisable, setInputDisable] = useState(false)
+    const [btnLock, setBtnLock] = useState(true)
+    const [btnText, setBtnText] = useState('Save')
 
     useEffect(() => {
         if (!active) return
-    }, [active])
+        // console.log(userInfo)
+        setFormData({ ...userInfo })
+        // eslint-disable-next-line
+    }, [active, userInfo])
+
+    useEffect(() => {
+        // console.log(formData, fileData)
+        if ((fileData || formData.imgurl) && formData) {
+            const requireArr = ['username', 'fullname', 'email', 'bio']
+            let errorCount = 0
+            requireArr.forEach(item => {
+                if (!checkInput(formData[item])) {
+                    errorCount++
+                }
+            })
+            if (errorCount === 0) {
+                setBtnLock(false)
+            } else {
+                setBtnLock(true)
+            }
+        } else {
+            setBtnLock(true)
+        }
+        // eslint-disable-next-line
+    }, [fileData, formData])
+
+    const submitSave = async () => {
+        setBtnLock(true)
+        setInputDisable(true)
+
+        try {
+            let imgUrl = formData.imgurl
+            if (!imgUrl) {
+                // 如果没上传图片则先上传图片
+                setBtnText('Uploading File ...')
+                const res = await sign_Axios.post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
+                if (res.data.code === 200) {
+                    imgUrl = res.data.result.path
+                } else {
+                    throw new Error('File upload failed,' + res.data.msg)
+                }
+            }
+            setBtnText('Uploading Data ...')
+            const params = {
+                accountaddress: account,
+                username: formData.username,
+                fullname: formData.fullname,
+                imgurl: imgUrl,
+                email: formData.email,
+                bio: formData.bio
+            }
+
+            await updateUserInfo(params)
+            setBtnLock(false)
+            setInputDisable(false)
+            setBtnText('Save')
+        } catch (error) {
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "服务器故障，请稍后重试" });
+            setBtnLock(false)
+            setInputDisable(false)
+            setBtnText('Save')
+        }
+    }
+
 
     return (
         <Modal open={open} setOpen={setOpen} header={{ title: 'My Account Settings', isClose: true }}>
             <SettingAccountStyled>
-                <TextInput
-                    title='Name'
-                    width='620px'
-                    defaultValue={'Cookie Store'}
-                    required={true}
-                    marginTop={0}
-                />
+                <div className='name_row'>
+                    <TextInput
+                        title='User Name'
+                        width='300px'
+                        defaultValue={userInfo.username}
+                        required={true}
+                        marginTop={0}
+                        onValChange={(val) => {
+                            setFormData({ ...formData, username: val })
+                        }}
+                        inputDisable={inputDisable}
+                    />
+
+                    <TextInput
+                        title='Full Name'
+                        width='300px'
+                        defaultValue={userInfo.fullname}
+                        required={true}
+                        marginTop={0}
+                        disabled={Boolean(userInfo.fullname)}
+                        onValChange={(val) => {
+                            setFormData({ ...formData, fullname: val })
+                        }}
+                        inputDisable={inputDisable}
+                    />
+                </div>
+
                 <TextInput
                     title='Bounce ID'
                     width='620px'
-                    defaultValue={'0x33a9b7ed8c71c6910fb4a9bc41de2391b74c2976'}
+                    defaultValue={account}
                     required={true}
+                    disabled={true}
                     marginTop={'24px'}
+                    onValChange={(val) => {
+                        setFormData({ ...formData, address: val })
+                    }}
+                    inputDisable={inputDisable}
                 />
 
                 <TextInput
                     title='Email (Optional)'
                     width='620px'
                     placeholder={'Enter your email'}
+                    defaultValue={userInfo.email}
                     required={true}
                     marginTop={'24px'}
+                    onValChange={(val) => {
+                        setFormData({ ...formData, email: val })
+                    }}
+                    inputDisable={inputDisable}
                 />
 
                 <TextInput
                     title='Short Bio (Optional)'
                     width='620px'
                     placeholder={'Describe your bio'}
+                    defaultValue={userInfo.bio}
                     required={true}
                     marginTop={'24px'}
+                    onValChange={(val) => {
+                        setFormData({ ...formData, bio: val })
+                    }}
+                    inputDisable={inputDisable}
                 />
 
-                <Upload type='avatar'/>
+                <Upload type='avatar' defaultValue={userInfo.imgurl} onFileChange={(file) => {
+                    setFileData(file)
+                }} inputDisable={inputDisable} />
 
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)
                     }}>Cancel</Button>
-                    <Button height='48px' width='302px' primary>Save</Button>
+                    <Button onClick={submitSave} disabled={btnLock} height='48px' width='302px' primary>{btnText}</Button>
                 </div>
             </SettingAccountStyled>
         </Modal >

@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import upload_img from '@assets/images/upload_img.svg'
 import upload_video from '@assets/images/upload_video.svg'
 import upload_avatar from '@assets/images/upload_avatar.svg'
-
+import {myContext} from '@/redux/index.js'
 const UploadStyled = styled.div`
     display: flex;
     margin-top: 22px;
 
     .left_img{
         margin-right: 40px;
-        width: 240px;
-        height: 160px;
+        width: ${({ width }) => { return width }};
+        height:${({ height }) => { return height }};
         box-sizing: border-box;
         position: relative;
         &.avatar{
@@ -59,13 +59,17 @@ const UploadStyled = styled.div`
     }
 `
 
-export default function Upload({
+export default function Upload ({
     type = 'image',
     infoTitle: defaltInfoTitle = 'upload Image',
     onFileChange,
+    defaultValue,
     disabled,
-    lockInput
+    lockInput,
+    width = '240px',
+    height = '160px',
 }) {
+    const {dispatch} = useContext(myContext);
     const [coverSrc, setCoverSrc] = useState(upload_img)
     const [infoTitle, setInfoTitle] = useState(defaltInfoTitle)
     const [infoTip, setInfoTip] = useState([
@@ -77,7 +81,7 @@ export default function Upload({
     useEffect(() => {
         switch (type) {
             case 'image':
-                setCoverSrc(upload_img)
+                setCoverSrc(defaultValue || upload_img)
                 setInfoTitle(infoTitle || 'upload Image')
                 setInfoTip([
                     'Supports JPG, PNG, JPEG2000',
@@ -86,7 +90,7 @@ export default function Upload({
                 setFileLimit('image/*')
                 break;
             case 'video':
-                setCoverSrc(upload_video)
+                setCoverSrc(defaultValue || upload_video)
                 setInfoTitle(infoTitle || 'Upload File')
                 setInfoTip([
                     'Supports MP4, AVI, WMV, MOV',
@@ -95,7 +99,7 @@ export default function Upload({
                 setFileLimit('video/*')
                 break;
             case 'avatar':
-                setCoverSrc(upload_avatar)
+                setCoverSrc(defaultValue || upload_avatar)
                 setInfoTitle(infoTitle || 'Change Profile Photo')
                 setInfoTip([
                     'Supports JPG, PNG, JPEG2000',
@@ -124,14 +128,14 @@ export default function Upload({
             onFileChange && onFileChange(formData, file)
             // setFormData(formData)
         } else {
-            alert('The file format you selected is incorrect')
+            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"The file format you selected is incorrect"});
         }
     }
 
     // 'https://account.bounce.finance:16000/api/v1/fileupload'
 
     return (
-        <UploadStyled>
+        <UploadStyled  width={width} height={height} >
             <div className={`left_img ${type}`}>
                 <img src={coverSrc} alt="" />
                 <input disabled={disabled || lockInput} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" />

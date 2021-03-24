@@ -59,11 +59,11 @@ const TextAreaStyled = styled.div`
 
     
     .number_input{
-            &::-webkit-outer-spin-button,
-            &::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-            }
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
         }
+    }
 
 
     .err_msg{
@@ -71,6 +71,11 @@ const TextAreaStyled = styled.div`
         font-size: 12px;
         line-height: 16px;
         margin-top: 4px;
+        min-height:16px;
+        visibility: hidden;
+    }
+    .errorType{
+        visibility: visible;
     }
 `
 
@@ -124,19 +129,21 @@ export default function TextAreaInput({
 
     return (
         <TextAreaStyled width={width} height={height} marginTop={marginTop}>
-            {title && <p className={`title ${error && 'error'} `}>{title}</p>}
-            <textarea
-                className={`textarea ${error && 'error'} ${lockInput&&'lockInput'}`}
-                defaultValue={defaultValue}
-                placeholder={placeholder}
-                disabled={disabled || lockInput}
-                onChange={handelChange}
-                onBlur={handelBlur}
-                onFocus={handelFocus}
-                required={required}
-                maxLength={maxLength}
-            />
-            {error && <p className='err_msg'>{errMsg}</p>}
+            <label>
+                {title && <p className={`title ${error && 'error'} `}>{title}</p>}
+                <textarea
+                    className={`textarea ${error && 'error'} ${lockInput&&'lockInput'}`}
+                    defaultValue={defaultValue}
+                    placeholder={placeholder}
+                    disabled={disabled || lockInput}
+                    onChange={handelChange}
+                    onBlur={handelBlur}
+                    onFocus={handelFocus}
+                    required={required}
+                    maxLength={maxLength}
+                />
+            </label>
+            <p className={`${error && 'errorType'} ${'err_msg'}`}>{errMsg}</p>
         </TextAreaStyled>
     )
 }

@@ -7,7 +7,8 @@ const SearchStyled = styled.div`
     position: relative;
 
     input{
-        width: 652px;
+        // width: 652px;
+        width: 447px;
         height: 48px;
         box-sizing: border-box;
         font-family: 'Optima';
@@ -37,7 +38,7 @@ const SearchStyled = styled.div`
     }
 `
 
-export default function Search({ placeholder, value: defaultValue, onChange, width }) {
+export default function Search ({ placeholder, value: defaultValue, onChange, width }) {
     const [isShowButton, setIsShowButton] = useState(false)
     const [value, setValue] = useState(defaultValue || '')
 
@@ -48,7 +49,7 @@ export default function Search({ placeholder, value: defaultValue, onChange, wid
         } else {
             setIsShowButton(true)
         }
-        
+
         // eslint-disable-next-line
     }, [value])
 

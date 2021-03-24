@@ -11,8 +11,6 @@ import brands_white from './assets/brands_white.svg'
 import brands_black from './assets/brands_black.svg'
 import activities_white from './assets/activities_white.svg'
 import activities_black from './assets/activities_black.svg'
-import p2p_white from './assets/p2p_white.svg'
-import p2p_black from './assets/p2p_black.svg'
 import setting_white from './assets/setting_white.svg'
 import setting_black from './assets/setting_black.svg'
 import { useActiveWeb3React } from '@/web3'
@@ -101,19 +99,19 @@ const InfoList = [{
     img_white: activities_white,
     img_black: activities_black,
     route: '/MyActivities'
-}, {
+}, /*{
     name: 'Point-2-Point',
     img_white: p2p_white,
     img_black: p2p_black,
     route: '/MyP2P'
-}, {
+},*/  {
     name: 'Account Settings',
     img_white: setting_white,
     img_black: setting_black,
     route: ''
 }]
 
-export default function InfoBox({ setIsShowInfo }) {
+export default function InfoBox ({ setIsShowInfo, username }) {
     const history = useHistory()
     const [curItem, setCurItem] = useState(-1)
     const { account } = useActiveWeb3React()
@@ -122,7 +120,7 @@ export default function InfoBox({ setIsShowInfo }) {
     return (
         <InfoBoxStyled>
             <div className="top_info">
-                <span>John Doe</span>
+                <span>{username || 'Undefined'}</span>
                 <div className='accout'>
                     <p>{account}</p>
                     <CopyToClipboard
@@ -143,7 +141,7 @@ export default function InfoBox({ setIsShowInfo }) {
                             setCurItem(-1)
                         }}
                         onClick={() => {
-                            if(item.name==='Account Settings'){
+                            if (item.name === 'Account Settings') {
                                 return setIsSettingAccount(true)
                             }
                             if (item.route === '') return

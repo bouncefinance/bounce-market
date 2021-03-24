@@ -1,21 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-/* import { useParams } from 'react-router' */
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useActiveWeb3React } from "@/web3";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import useAxios from "@utils/useAxios.js";
 
 import { Button } from "@components/UI-kit";
 import NFTInfoDropdown from "./components/NFTInfoDropdown";
 
 import icon_copy from "@assets/images/icon/copy.svg";
-import pic_NFT1 from "./assets/pic_NFT1.svg";
+/* import pic_NFT1 from "./assets/pic_NFT1.svg"; */
 
 const Page = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 1100px;
-	margin: 0 auto;
+	margin: 0 auto 34px auto;
 
 	.sellNFT {
 		margin-top: 50px;
@@ -195,36 +195,75 @@ const InfoDropdowns = styled.div`
 `;
 
 function MyNFT() {
-	const { account } = useActiveWeb3React();
+	const { account, active } = useActiveWeb3React();
 	const history = useHistory();
-	/* const { NFTId } = useParams() */
+	/* const { nftId } = useParams(); */
+	const nftId = 16856;
+	const { sign_Axios } = useAxios();
 
-	const NFTInfoList = [
+	const [NFTName, setNFTName] = useState();
+	const [descriptionContent, setDescriptionContent] = useState();
+	const [supply, setSupply] = useState();
+	const [tokenID, setTokenID] = useState();
+	const [tokenSymbol, setTokenSymbol] = useState();
+	const [creator, setCreator] = useState();
+	const [externalLink, setExternalLink] = useState();
+	const [imgURL, setImgURL] = useState();
+
+	/* const NFTInfoList = [
 		{ title: "Description", content: "An irreplaceable girl" },
 		{ title: "Supply", content: "114514" },
 		{ title: "Token ID", content: "#123456" },
 		{ title: "Token Symbol", content: "CKIE" },
 		{ title: "Created By", content: "Ralph Waldo" },
 		{ title: "External Link", content: "http://www.baidu.com" },
-	];
+	]; */
+
+	useEffect(() => {
+		if (!active || !nftId) return;
+		getNFTInfoList(nftId);
+	}, [active, nftId]);
+	const getNFTInfoList = async (nftId) => {
+		const params = {
+			id: parseInt(nftId),
+		};
+
+		sign_Axios
+			.post("/api/v2/main/auth/getoneitembyid", params)
+			.then((res) => {
+				if (res.status === 200 && res.data.code === 1) {
+					/* alert("获取成功"); */
+					/* console.log(res); */
+					let NFTInfoList = res.data.data;
+					/* console.log(NFTInfoList) */
+					setNFTName(NFTInfoList.itemname);
+					setDescriptionContent(NFTInfoList.description);
+					setSupply(NFTInfoList.supply);
+					setTokenID(NFTInfoList.id);
+					setTokenSymbol(NFTInfoList.itemsymbol);
+					setCreator(NFTInfoList.owneraddress);
+					setExternalLink(NFTInfoList.externallink);
+					setImgURL(NFTInfoList.fileurl);
+				} else {
+					alert("获取失败");
+				}
+			})
+			.catch((err) => {
+				alert("获取失败2");
+			});
+	};
 
 	return (
 		<Page>
 			<BreadcrumbNav className="breadcrumb_Nav">
 				My Inventory&nbsp;/&nbsp;
-				<span className="NFTNameInNav">
-					Image Name
-					{/* {NFTName} */}
-				</span>
+				<span className="NFTNameInNav">{NFTName}</span>
 			</BreadcrumbNav>
 			<PageBody className="sellNFT">
-				<img className="NFTImg" src={pic_NFT1} alt="" />
+				<img className="NFTImg" src={imgURL} alt="" />
 
 				<PageBodyRight className="right">
-					<span className="NFTName">
-						{/* {NFTName} */}
-						Digital Image Name
-					</span>
+					<span className="NFTName">{NFTName}</span>
 
 					<div className="account">
 						<p>{account}</p>
@@ -239,29 +278,31 @@ function MyNFT() {
 							width="200px"
 							value="Sell"
 							onClick={() => {
-								/* history.push("/MyInventory/:NFTId/Sell") */
+								/* history.push("/MyInventory/:nftId/Sell") */
 								history.push("/MyInventory/Sell");
 							}}
 						/>
 						<Button width="200px" value="Transfer" />
 					</div>
 
-					<span className="description">{NFTInfoList[0].title}</span>
+					<span className="description">Description</span>
 
 					<span className="descriptionContent">
-						{NFTInfoList[0].content}
+						{descriptionContent}
 					</span>
 
 					<InfoDropdowns>
-						{NFTInfoList.slice(1).map((info, index) => {
-							return (
-								<NFTInfoDropdown
-									key={index}
-									title={info.title}
-									content={info.content}
-								/>
-							);
-						})}
+						<NFTInfoDropdown title="Supply" content={supply} />
+						<NFTInfoDropdown title="Token ID" content={tokenID} />
+						<NFTInfoDropdown
+							title="Token Symbol"
+							content={tokenSymbol}
+						/>
+						<NFTInfoDropdown title="Created By" content={creator} />
+						<NFTInfoDropdown
+							title="External Link"
+							content={externalLink}
+						/>
 					</InfoDropdowns>
 				</PageBodyRight>
 			</PageBody>
