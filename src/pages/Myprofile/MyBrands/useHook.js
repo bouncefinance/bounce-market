@@ -53,5 +53,5 @@ export const useBrandInfo = (brandId) => {
             })
     }
 
-    return { brandInfo }
+    return { brandInfo, run: getBrandInfoById }
 }

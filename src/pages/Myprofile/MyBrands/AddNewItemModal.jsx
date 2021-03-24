@@ -9,7 +9,7 @@ import BounceERC721 from '@/web3/abi/BounceERC721.json'
 import BounceERC1155 from '@/web3/abi/BounceERC1155.json'
 import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
-import { numToWei } from '@/utils/useBigNumber'
+// import { numToWei } from '@/utils/useBigNumber'
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
@@ -128,8 +128,8 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
 
                         } else {
                             const BounceERC1155_CT = getContract(library, BounceERC1155.abi, brandInfo.contractaddress)
-                            const _amount = numToWei(formData.Supply)
-                            const _data = ''
+                            const _amount = formData.Supply
+                            const _data = 0
                             try {
                                 BounceERC1155_CT.methods.mint(account, nftId, _amount, _data).send({ from: account })
                                     .on('transactionHash', hash => {
@@ -227,6 +227,8 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                 />
 
                 <Upload type='image' inputDisable={inputDisable}
+                    width='200px'
+                    height='200px'
                     lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
                         setFileData(formData)
                     }} />

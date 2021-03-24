@@ -50,7 +50,7 @@ const StyledCard = styled.div`
                 color: #000000;
             }
 
-            .discription {
+            .description {
                 margin-top: 8px;
 
                 font-family: Helvetica Neue;
@@ -70,7 +70,7 @@ const StyledCard = styled.div`
     }
 `
 
-function FactoryCard({ img, title, discription, button}) {
+function FactoryCard({ img, title, description, button}) {
     return (
         <div>
             <StyledCard>
@@ -80,7 +80,7 @@ function FactoryCard({ img, title, discription, button}) {
                 <div className="bottom">
                     <div className="text">
                         <span className="title">{title}</span>
-                        <p className="discription">{discription}</p>
+                        <p className="description">{description}</p>
                     </div>
                     {button}
                 </div>

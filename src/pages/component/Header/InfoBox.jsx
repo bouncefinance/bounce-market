@@ -99,7 +99,12 @@ const InfoList = [{
     img_white: activities_white,
     img_black: activities_black,
     route: '/MyActivities'
-}, {
+}, /*{
+    name: 'Point-2-Point',
+    img_white: p2p_white,
+    img_black: p2p_black,
+    route: '/MyP2P'
+},*/  {
     name: 'Account Settings',
     img_white: setting_white,
     img_black: setting_black,

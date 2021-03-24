@@ -66,19 +66,19 @@ function Factory() {
                 <FactoryCard
                     img={pic_Generate}
                     title="Generate your NFT"
-                    discription="You can turn contents in to NFTs without creating your own store or brand"
+                    description="You can turn contents in to NFTs without creating your own store or brand"
                     button={<GenerateButton />}
                 />
                 <FactoryCard
                     img={pic_Build}
                     title="Build your brand"
-                    discription="You can create a contract and produce unlimited amount of NFTs under your own contract"
+                    description="You can create a contract and produce unlimited amount of NFTs under your own contract"
                     button={<BuildButton />}
                 />
                 <FactoryCard
                     img={pic_List}
                     title="List your NFT"
-                    discription="If you already have a token contract set up and you just want to set up a space to sell them, use our get-listed flow instead"
+                    description="If you already have a token contract set up and you just want to set up a space to sell them, use our get-listed flow instead"
                     button={<ListButton />}
                 />
             </CardList>

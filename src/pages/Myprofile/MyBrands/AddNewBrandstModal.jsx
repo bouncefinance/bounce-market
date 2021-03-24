@@ -4,14 +4,12 @@ import styled from 'styled-components'
 import { getContract, useActiveWeb3React } from '@/web3'
 import { TextInput, TextAreaInput, Button, Upload, Radio } from '@components/UI-kit'
 import useAxios from '@utils/useAxios.js'
-// import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
 import { checkInput } from '@/utils/compareFun'
 import { getNFTFactory } from '@/web3/address_list/contract'
 import BounceNFTFactory from '@/web3/abi/BounceNFTFactory.json'
 import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
-// import { FreeFocusInside } from 'react-focus-lock';
-// import TransferStatusModal, { approveStatus, initStatus } from '@components/Modal/TransferStatusModal'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
@@ -21,9 +19,22 @@ const AddNewBrandstModalStyled = styled.div`
 
     .button_group{
         margin-top: 36px;
+        display:flex;
         button{
             margin-right: 16px;
         }
+    }
+    .wrap{
+        position:relative
+    }
+    .buttonProgress{
+        position: absolute;
+        top:50%;
+        left:50%;
+        width:28px !important;
+        height:28px !important;
+        margin-top:-14px;
+        margin-left:-22px;
     }
 
 `
@@ -196,7 +207,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                         title='Symbol'
                         width='620px'
                         required={true}
-                        marginTop={'24px'}
+                        marginTop={'16px'}
                         lockInput={inputDisable}
                         onValChange={(val) => {
                             setFormData({ ...formData, Symbol: val })
@@ -208,7 +219,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                         width='620px'
                         placeholder={`Describe your brand`}
                         required={true}
-                        marginTop={'24px'}
+                        marginTop={'16px'}
                         lockInput={inputDisable}
                         onValChange={(val) => {
                             setFormData({ ...formData, Description: val })
@@ -216,6 +227,8 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                     />
 
                     <Upload type='image'
+                        width='200px'
+                        height='200px'
                         lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
                             setFileData(formData)
                         }} />
@@ -225,7 +238,10 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                             setOpen(false)
                             // setModalStatus(approveStatus)
                         }}>Cancel</Button>
-                        <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
+                        <div className="wrap">
+                            <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
+                            {inputDisable &&  <CircularProgress className="buttonProgress"/>}
+                        </div>
                     </div>
                 </AddNewBrandstModalStyled>
             </Modal >

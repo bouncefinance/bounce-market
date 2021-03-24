@@ -119,7 +119,7 @@ const ItemList = [{
     name: 'My Activities',
     img_black: activities_black,
     route: '/MyActivities'
-}, /*{
+},/*{
     name: 'Point-2-Point',
     img_black: p2p_black,
     route: '/MyP2P'

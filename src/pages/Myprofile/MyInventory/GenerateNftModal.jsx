@@ -11,7 +11,7 @@ import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
-import { numToWei } from '@/utils/useBigNumber'
+// import { numToWei } from '@/utils/useBigNumber'
 
 const GenerateNFTModalStyled = styled.div`
     width: 1100px;
@@ -56,6 +56,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     }, [active])
 
     useEffect(() => {
+        // console.log(fileData, formData)
         if ((fileData || formData.imgurl) && formData) {
             const requireArr = ['Name', 'Description']
             let errorCount = 0
@@ -77,7 +78,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
 
     const handelSubmit = () => {
         // 第一步 上传图片
-        setInputDisable(false)
+        setInputDisable(true)
+        setBtnLock(true)
+
         sign_Axios
             .post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
             .then(function (response) {
@@ -103,16 +106,18 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     standard: nftType === 'ERC-721' ? 1 : 2,
                     supply: nftType === 'ERC-721' ? 1 : formData.Supply
                 }
-                console.log(params)
+                // console.log(params)
                 sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {
                     const _nftId = res.data.data.id
                     const _sign = res.data.data.signaturestr
+                    const _expiredtime = res.data.data.expiredtime
                     if (res.data.code === 1) {
                         if (nftType === 'ERC-721') {
                             const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, getBounceERC721WithSign(chainId))
-                            console.log(_nftId, _sign)
+                            console.log(_nftId, _sign, _expiredtime)
                             try {
-                                BounceERC721WithSign_CT.methods.mintUser(_nftId, _sign).send({ from: account })
+
+                                BounceERC721WithSign_CT.methods.mintUser(_nftId, _sign, _expiredtime).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
@@ -133,10 +138,11 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
 
                         } else {
                             const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
-                            const _amount = numToWei(formData.Supply)
-                            const _data = ''
+                            const _amount = formData.Supply
+                            const _data = 0 
+                            // console.log(_nftId, _amount, _data, _sign,_expiredtime)
                             try {
-                                BounceERC1155WithSign_CT.methods.mintUser( _nftId, _amount, _data, _sign).send({ from: account })
+                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign,_expiredtime).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
@@ -235,6 +241,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />
 
                 <Upload type='image' inputDisable={inputDisable}
+                    width='200px'
+                    height='200px'
                     lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
                         setFileData(formData)
                     }} />

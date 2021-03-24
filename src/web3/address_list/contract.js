@@ -31,12 +31,12 @@ export const getBounceERC721WithSign = (chainID) => {
         case 1:
             return ''
         case 4:
-            return '0x019eF61b07F05508be59eeF554f2Cb5CFc2Cb994'
+            return '0xD9b73E3f331420C8bCBa26c98Fb7fbbCd2A682E7'
         case 56:
             return ''
 
         default:
-            return '0x019eF61b07F05508be59eeF554f2Cb5CFc2Cb994'
+            return '0xD9b73E3f331420C8bCBa26c98Fb7fbbCd2A682E7'
     }
 }
 
@@ -45,11 +45,11 @@ export const getBounceERC1155WithSign = (chainID) => {
         case 1:
             return ''
         case 4:
-            return '0x7589Ea0768c5598E8583E45D7BDAdc0b073b8B7e'
+            return '0x57174694E5E1221709992B93C71d43eba7F5d73F'
         case 56:
             return ''
 
         default:
-            return '0x7589Ea0768c5598E8583E45D7BDAdc0b073b8B7e'
+            return '0x57174694E5E1221709992B93C71d43eba7F5d73F'
     }
 }
