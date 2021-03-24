@@ -235,6 +235,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />
 
                 <Upload type='image' inputDisable={inputDisable}
+                    width='200px'
+                    height='200px'
                     lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
                         setFileData(formData)
                     }} />

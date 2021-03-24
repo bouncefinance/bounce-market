@@ -10,8 +10,8 @@ const UploadStyled = styled.div`
 
     .left_img{
         margin-right: 40px;
-        width: 240px;
-        height: 160px;
+        width: ${({ width }) => { return width }};
+        height:${({ height }) => { return height }};
         box-sizing: border-box;
         position: relative;
         &.avatar{
@@ -65,7 +65,9 @@ export default function Upload ({
     onFileChange,
     defaultValue,
     disabled,
-    lockInput
+    lockInput,
+    width = '240px',
+    height = '160px',
 }) {
     const {dispatch} = useContext(myContext);
     const [coverSrc, setCoverSrc] = useState(upload_img)
@@ -133,7 +135,7 @@ export default function Upload ({
     // 'https://account.bounce.finance:16000/api/v1/fileupload'
 
     return (
-        <UploadStyled>
+        <UploadStyled  width={width} height={height} >
             <div className={`left_img ${type}`}>
                 <img src={coverSrc} alt="" />
                 <input disabled={disabled || lockInput} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" />

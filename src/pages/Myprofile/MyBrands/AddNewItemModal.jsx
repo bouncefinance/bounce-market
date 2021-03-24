@@ -227,6 +227,8 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                 />
 
                 <Upload type='image' inputDisable={inputDisable}
+                    width='200px'
+                    height='200px'
                     lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
                         setFileData(formData)
                     }} />

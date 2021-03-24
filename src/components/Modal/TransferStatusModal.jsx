@@ -128,7 +128,7 @@ export default function TransferStatusModal({ successCallback }) {
                     //onDismiss()
                     window.location.reload()
                 }}>Close</Button>}
-                {status === -1 && <Button onClick={() => { onDismiss() }} width={'320px'} black>Try again</Button>}
+                {status === -1 && <Button onClick={() => { window.location.reload() }} width={'320px'} black>Try again</Button>}
             </Modal>
         </TransferStatusModalStyled>
     )

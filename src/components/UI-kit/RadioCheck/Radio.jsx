@@ -9,7 +9,7 @@ const RadioStyled = styled.div`
         font-size: 13px;
         color: rgba(0,0,0,.6);
         margin-bottom: 8px;
-        margin-top: ${({ marginTop }) => { return marginTop || '24px' }};
+        margin-top: ${({ marginTop }) => { return marginTop || '16px' }};
     }
 
     .description{
@@ -24,7 +24,7 @@ const RadioStyled = styled.div`
         &>li{
             display: flex;
             margin-right: 30px;
-
+            cursor: pointer;
             &:last-child{
                 margin-right: 0px;
             }
@@ -32,7 +32,6 @@ const RadioStyled = styled.div`
             img{
                 margin-right: 16px;
                 cursor: pointer;
-
             }
         }
     }
@@ -71,11 +70,11 @@ export default function Radio({
             <span className='description'>{description}</span>
             <ul className="select_box">
                 {options.map(item => {
-                    return <li key={item.name}>
-                        <img onClick={() => {
-                            if(inputDisable || disabled) return
-                            setCurSelect(item)
-                        }} src={curSelect.name === item.name ? radio_select : radio_no_select} alt="" />
+                    return <li key={item.name} onClick={() => {
+                        if(inputDisable || disabled) return
+                        setCurSelect(item)
+                    }}>
+                        <img  src={curSelect.name === item.name ? radio_select : radio_no_select} alt="" />
                         <p>{item.name}</p>
                     </li>
                 })}

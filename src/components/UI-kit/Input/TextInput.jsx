@@ -69,6 +69,11 @@ const InputStyled = styled.div`
         font-size: 12px;
         line-height: 16px;
         margin-top: 4px;
+        min-height:16px;
+        visibility: hidden;
+    }
+    .errorType{
+        visibility: visible;
     }
 `
 
@@ -121,20 +126,22 @@ export default function TextInput({
 
     return (
         <InputStyled width={width} height={height} marginTop={marginTop}>
-            {title && <p className={`title ${error && 'error'}`}>{title}</p>}
-            <input
-                type='text'
-                className={`${error && 'error'} ${lockInput && 'lockInput'}`}
-                defaultValue={defaultValue}
-                placeholder={placeholder}
-                disabled={disabled || lockInput}
-                onChange={handelChange}
-                onBlur={handelBlur}
-                onFocus={handelFocus}
-                required={required}
-                maxLength={maxLength}
-            />
-            {error && <p className='err_msg'>{errMsg}</p>}
+            <label>
+                {title && <p className={`title ${error && 'error'}`}>{title}</p>}
+                <input
+                    type='text'
+                    className={`${error && 'error'} ${lockInput && 'lockInput'}`}
+                    defaultValue={defaultValue}
+                    placeholder={placeholder}
+                    disabled={disabled || lockInput}
+                    onChange={handelChange}
+                    onBlur={handelBlur}
+                    onFocus={handelFocus}
+                    required={required}
+                    maxLength={maxLength}
+                />
+            </label>
+            <p className={`${error && 'errorType'} ${'err_msg'}`}>{errMsg}</p>
         </InputStyled>
     )
 }
