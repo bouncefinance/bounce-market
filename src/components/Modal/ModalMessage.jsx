@@ -51,6 +51,14 @@ const useStyles = makeStyles((theme) => ({
 export default function ModalMessage() {
   const classes = useStyles();
   const {state, dispatch} = useContext(myContext);
+  let timer;
+  if(timer){
+    clearTimeout(timer);
+  }
+  timer = setTimeout(() => {
+    dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:""});
+  }, 4000);
+  
   return (
     <div className={classes.root}>
       <Collapse in={state.showMessageModal}>

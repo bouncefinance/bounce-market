@@ -108,10 +108,6 @@ export default function TextInput({
 		if (!onValChange) return;
 		const val = e.target.value;
 
-		// if (required && val === '') {
-		//     return onValChange(null)
-		// }
-
 		return onValChange(val);
 	};
 
@@ -120,10 +116,10 @@ export default function TextInput({
 		if (required && val.trim() === "") {
 			setError(true);
 			setErrMsg(ErrorStatus.required.tip);
-		}else if(inputType ==="email" && required && !ErrorStatus.email.reg.test(val)){
+		}else if(inputType ==="email" && (required || val.trim() !== "")  && !ErrorStatus.email.reg.test(val)){
 			setError(true);
 			setErrMsg(ErrorStatus.email.tip);
-		}else if(inputType ==="url" && required && !ErrorStatus.url.reg.test(val)){
+		}else if(inputType ==="url" && (required || val.trim() !== "") && !ErrorStatus.url.reg.test(val)){
 			setError(true);
 			setErrMsg(ErrorStatus.url.tip);
 		}

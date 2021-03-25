@@ -118,7 +118,10 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                         })
                         .on('error', (err, receipt) => {
                             // setBidStatus(errorStatus)
-                            showTransferByStatus('errorStatus')
+                            setBtnLock(false);
+                            setBtnText("Try Again");
+                            setInputDisable(false);
+                            // showTransferByStatus('errorStatus')
                         })
                 }else if(nftType === 'ERC-1155'){
                     Factory_CT.methods.createBrand1155(_uri).send({ from: account })
@@ -136,7 +139,10 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                     })
                     .on('error', (err, receipt) => {
                         // setBidStatus(errorStatus)
-                        showTransferByStatus('errorStatus')
+                        // showTransferByStatus('errorStatus');
+                        setBtnLock(false);
+                        setBtnText("Try Again");
+                        setInputDisable(false);
                     })
                 }
 
@@ -169,12 +175,16 @@ export default function AddNewBrandstModal({ open, setOpen }) {
         sign_Axios.post('/api/v2/main/auth/addbrand', params).then(res => {
             if (res.status === 200 && res.data.code === 1) {
                 getBrandList();
+                setBtnLock(false);
                 alert('Brand 创建成功')
             } else {
+                setBtnLock(false);
                 alert('服务器端 创建失败')
             }
         }).catch(err => {
-            alert('Brand 创建失败')
+            setBtnLock(false);
+            setBtnText("Try Again");
+            // alert('Brand 创建失败')
         })
     }
 
