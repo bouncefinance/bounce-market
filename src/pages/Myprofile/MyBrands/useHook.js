@@ -29,6 +29,7 @@ export const useBrandList = () => {
 
     return {
         brand_list, // brand 列表
+        getBrandList
     }
 }
 

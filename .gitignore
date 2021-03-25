@@ -24,3 +24,5 @@ yarn-error.log*
 
 # 自定义
 .eslintcache
+/.vscode
+/.idea

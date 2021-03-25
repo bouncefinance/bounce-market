@@ -54,7 +54,7 @@ export default function Index () {
                             <CardItem
                                 cover={item.imgurl}
                                 name={item.brandname}
-                                count={0}
+                                count={item.standard}
                             />
                         </li>
                     })}

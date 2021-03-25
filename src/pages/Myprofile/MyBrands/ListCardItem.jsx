@@ -46,7 +46,7 @@ export function CardItem({ cover, name, count }) {
             <img src={cover} alt="" />
             <div className="item_wrapper">
                 <span>{name}</span>
-                <p>{count} items</p>
+                <p>{count} {count > 1?'items':'item'}</p>
             </div>
         </CardItemStyled>
     )

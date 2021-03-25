@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { OtherButton } from '@components/UI-kit'
 import { useHistory } from 'react-router-dom'
@@ -9,7 +9,7 @@ import activities_black from '../component/Header/assets/activities_black.svg'
 import brands_black from '../component/Header/assets/brands_black.svg'
 import inventory_black from '../component/Header/assets/inventory_black.svg'
 import icon_copy from '@assets/images/icon/copy.svg'
-
+import { myContext } from '@/redux/index.js'
 import SettingAccountModal from './SettingAccountModal'
 
 
@@ -38,6 +38,13 @@ const CommonHeaderStyled = styled.div`
                     border-radius: 50%;
                     margin-right: 24px;
                     background: linear-gradient(154.16deg, #306AFF 6.12%, #3E74FE 49.44%, #003BD3 89.29%);
+                }
+                .avaterImg{
+                    width: 60px;
+                    height: 60px;
+                    box-sizing: border-box;
+                    border-radius: 50%;
+                    margin-right: 24px; 
                 }
 
                 .account_box{
@@ -130,6 +137,7 @@ export default function CommonHeader () {
     const history = useHistory()
     const { account } = useActiveWeb3React()
     const [isSettingAccount, setIsSettingAccount] = useState(false)
+    const {state} = useContext(myContext);
 
     useEffect(() => {
         const pathName = window.location.pathname
@@ -145,9 +153,10 @@ export default function CommonHeader () {
             <div className="wrapper">
                 <div className="top">
                     <div className="left">
-                        <div className="avater"></div>
-                        <div className='account_box'>
-                            <h5>Unnamed User</h5>
+                    {state.userInfo && state.userInfo.imgurl ? <img className="avaterImg" src={state.userInfo && state.userInfo.imgurl} alt=""/>:
+                    <div className="avater"></div>}
+                    <div className='account_box'>
+                        <h5>{state.userInfo.username||'Unnamed User'}</h5>
                             <div className='account'>
                                 <p>{account}</p>
                                 <CopyToClipboard
