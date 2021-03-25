@@ -16,11 +16,10 @@ export function useUserInfo() {
             if (res.data.code === 1) {
                 setUserExisted(true)
                 setUserInfo(res.data.data)
-
                 // 在redux 存在储信息
                 dispatch({
                     type: 'UserInfo',
-                    value: res.data.data
+                    userInfo: res.data.data
                 })
             } else {
                 setUserExisted(false)
@@ -36,17 +35,17 @@ export function useUserInfo() {
             requireUrl = '/api/v2/main/auth/updateaccount'
             delete params.accountaddress
         }
-        sign_Axios.post(requireUrl, params).then(res => {
-            console.log(res)
+        return await sign_Axios.post(requireUrl, params).then(res => {
             if (res.status === 200 && res.data.code === 1) {
                 dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"信息上传更新成功"});
             }else{
                 dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"信息上传更新成功"});
             }
+            getUserInfo();
+            return res;
         }).catch(()=>{
             dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"服务器故障，请稍后重试"});
         })
-        return 500
     }
 
 
@@ -56,5 +55,5 @@ export function useUserInfo() {
         // eslint-disable-next-line
     }, [account])
 
-    return { userExisted, userInfo, updateUserInfo }
+    return { userExisted, userInfo, updateUserInfo,getUserInfo }
 }
