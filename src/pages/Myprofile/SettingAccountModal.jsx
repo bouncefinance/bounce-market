@@ -51,7 +51,7 @@ export default function SettingAccountModal({ open, setOpen }) {
     useEffect(() => {
         // console.log(formData, fileData)
         if ((fileData || formData.imgurl) && formData) {
-            const requireArr = ['username', 'fullname', 'email', 'bio']
+            const requireArr = ['username', 'fullname']
             let errorCount = 0
             requireArr.forEach(item => {
                 if (!checkInput(formData[item])) {
@@ -104,7 +104,7 @@ export default function SettingAccountModal({ open, setOpen }) {
             setInputDisable(false)
             setBtnText('Save')
         } catch (error) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "服务器故障，请稍后重试" });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
             setBtnLock(false)
             setInputDisable(false)
             setBtnText('Save')
