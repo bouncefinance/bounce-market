@@ -160,7 +160,7 @@ export default function SettingAccountModal({ open, setOpen }) {
                     width='620px'
                     placeholder={'Enter your email'}
                     defaultValue={userInfo.email}
-                    required={true}
+                    required={false}
                     marginTop={'24px'}
                     inputType={'email'}
                     onValChange={(val) => {
@@ -174,9 +174,8 @@ export default function SettingAccountModal({ open, setOpen }) {
                     width='620px'
                     placeholder={'Describe your bio'}
                     defaultValue={userInfo.bio}
-                    required={true}
+                    required={false}
                     marginTop={'24px'}
-                    inputType={'url'}
                     onValChange={(val) => {
                         setFormData({ ...formData, bio: val })
                     }}

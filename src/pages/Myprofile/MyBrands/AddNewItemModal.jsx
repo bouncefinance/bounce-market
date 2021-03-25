@@ -9,8 +9,9 @@ import BounceERC721 from '@/web3/abi/BounceERC721.json'
 import BounceERC1155 from '@/web3/abi/BounceERC1155.json'
 import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
+import { useThrottle } from '@/utils/useThrottle'
 // import { numToWei } from '@/utils/useBigNumber'
-
+const DEBOUNCE = 500;
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
     /* height: 690px; */
@@ -70,10 +71,11 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
         }
     }, [formData, fileData])
 
-
+    
     const handelSubmit = () => {
         // 第一步 上传图片
-        setInputDisable(false)
+        setInputDisable(false);
+        setBtnLock(true)
         sign_Axios
             .post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
             .then(function (response) {
@@ -120,10 +122,14 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
-                                        showTransferByStatus('errorStatus')
+                                        // showTransferByStatus('errorStatus')
+                                        setBtnLock(false);
+                                        setBtnText("Try Again");
                                     })
                             } catch (error) {
-                                console.log('BounceERC721_CT.methods.mint', error)
+                                setBtnLock(false);
+                                setBtnText("Try Again");
+                                console.log('BounceERC721_CT.methods.mint', error);
                             }
 
                         } else {
@@ -143,21 +149,31 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                         showTransferByStatus('successVotedStatus')
                                     })
                                     .on('error', (err, receipt) => {
+                                        setBtnLock(false);
+                                        setBtnText("Try Again");
                                         // setBidStatus(errorStatus)
-                                        showTransferByStatus('errorStatus')
+                                        // showTransferByStatus('errorStatus')
                                     })
                             } catch (error) {
+                                setBtnLock(false);
+                                setBtnText("Try Again");
                                 console.log('BounceERC1155_CT.methods.mint', error)
                             }
                         }
                     }
 
                 }).catch(err => {
+                    setBtnLock(false);
+                    setBtnText("Try Again");
                     alert('请求服务器出错')
                 })
             })
         // 第三步 调用合约生成 NFT
     }
+
+    const debounce = useThrottle(() => {
+        handelSubmit && handelSubmit();
+    }, DEBOUNCE);
 
     return (
         <Modal open={open} setOpen={setOpen} header={{ title: 'Add New Item', isClose: true }}>
@@ -237,7 +253,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)
                     }}>Cancel</Button>
-                    <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
+                    <Button disabled={btnLock} height='48px' width='302px' primary onClick={debounce}>{btnText}</Button>
                 </div>
             </AddNewBrandstModalStyled>
         </Modal >
