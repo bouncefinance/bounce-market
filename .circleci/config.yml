@@ -1,0 +1,86 @@
+version: 2.1
+
+build-template: &build-template
+  docker:
+    - image: ankrnetwork/bounceimg:v0.0.6
+  steps:
+    - checkout
+    - setup_remote_docker
+    - run:
+        name: Output env info
+        command: node --version && yarn --version
+    - run:
+        name: Pull dependencies
+        command: yarn
+    - run:
+        no_output_timeout: 10m
+        name: Building ...
+        command: yarn build
+    - persist_to_workspace:
+        root: '.'
+        paths:
+          - '.'
+
+upload-template: &upload-template
+  docker:
+    - image: bigbadalien/awscli-node-kops-kubectl:0.3
+  steps:
+    - setup_remote_docker
+    - attach_workspace:
+        at: '.'
+    - run:
+        name: Upload artifacts
+        command: aws s3 cp ./build s3://$DOMAIN_MARKET/ --acl bucket-owner-full-control --recursive --cache-control "public,max-age=600,s-maxage=3600"
+    - run:
+        name: Cloudfront invalidation
+        command: aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID_MARKET --paths '/*'
+
+jobs:
+  # build
+  build-stage:
+    <<: *build-template
+  build-prod:
+    <<: *build-template
+  # upload
+  upload-stage:
+    <<: *upload-template
+  upload-prod:
+    <<: *upload-template
+
+workflows:
+  version: 2.1
+  bounce_market:
+    jobs:
+      # stage
+      - approve-stage:
+          type: approval
+          filters:
+            branches:
+              only: [ stage ]
+      - build-stage:
+          context:
+            - bounce_build_stage
+          requires:
+            - approve-stage
+      - upload-stage:
+          context:
+            - cicd
+            - bounce_build_stage
+          requires:
+            - build-stage
+      # prod
+      - approve-prod:
+          type: approval
+          filters:
+            branches:
+              only: [ master ]
+      - build-prod:
+          context: bounce_build_prod
+          requires:
+            - approve-prod
+      - upload-prod:
+          context:
+            - cicd
+            - bounce_build_prod
+          requires:
+            - build-prod

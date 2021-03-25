@@ -1,0 +1,387 @@
+import React from "react";
+import styled from "styled-components";
+import { useHistory, Link } from "react-router-dom";
+
+import BreadcrumbNav from "./components/BreadcrumbNav";
+import { Button } from "@components/UI-kit";
+import NFTInfoDropdown from "./components/NFTInfoDropdown";
+import { DetailsContent, TokenInfoContent } from "./components/DropdownContent";
+import OffersTable from "./components/OffersTable";
+import TradeTable from "./components/TradeTable";
+
+import pic_test1 from "./assets/pic_test1.svg";
+import icon_altAvatar from "./assets/icon_altAvatar.svg";
+
+const NFTType = "Images";
+const NFTName = "Digital Image Name";
+
+const Page = styled.div`
+	width: 1096px;
+	margin: 0 auto 55px auto;
+
+	display: grid;
+	grid-template-rows: 93px min-content 382px;
+	grid-template-areas:
+		"BreadcrumbNav"
+		"PageMiddle"
+		"TradingHistory";
+`;
+
+const PageMiddle = styled.div`
+	grid-area: PageMiddle;
+
+	box-sizing: border-box;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+	display: grid;
+	grid-template-columns: 416px 650px;
+    grid-template-rows: min-content;
+	column-gap: 30px;
+	grid-template-areas: "PageMiddleLeft PageMiddleRight";
+`;
+
+const PageMiddleLeft = styled.div`
+	grid-area: PageMiddleLeft;
+
+    display: grid;
+	grid-template-rows: 416px 89px min-content;
+	grid-template-areas:
+		"NFTImg"
+		"Description"
+		"Dropdowns";
+
+	img.NFTImg {
+		width: 416px;
+		height: 416px;
+	}
+`;
+
+const Description = styled.div`
+	grid-area: Description;
+
+	display: grid;
+	grid-template-rows: 28px 37px;
+	grid-template-areas:
+		"DescriptionTitle"
+		"DescriptionContent";
+
+	span.description {
+		font-family: IBM Plex Mono;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 16px;
+		display: flex;
+		align-items: center;
+		color: #1f191b;
+		opacity: 0.5;
+
+		grid-area: DescriptionTitle;
+
+        padding-top: 22px;
+        padding-bottom: 14px;
+	}
+
+	/* DescriptionContent */
+	span.descriptionContent {
+		font-family: Helvetica Neue;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 16px;
+		line-height: 19px;
+		display: flex;
+		align-items: center;
+		color: #1f191b;
+
+		grid-area: DescriptionContent;
+	}
+`;
+
+const Dropdowns = styled.div`
+    grid-area: Dropdowns;
+`
+
+const PageMiddleRight = styled.div`
+	grid-area: PageMiddleRight;
+
+	display: grid;
+	grid-template-rows: 59px 20px 24px 17px 32px 64px 48px 70px 1fr;
+	grid-template-areas:
+		"NFTName"
+		"ShowOwner"
+		"SaleEndDay"
+		"BorderBottomGap"
+		"BidStatus"
+		"TopBidPrice"
+		"ButtonGroup"
+		"str_Offers"
+		"OffersTable";
+
+	span.NFTName {
+		font-family: Optima;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 34px;
+		line-height: 41px;
+		color: #000000;
+
+		grid-area: NFTName;
+
+        padding-top: 7px;
+        padding-bottom: 10px;
+	}
+
+	.ShowOwner {
+        grid-area: ShowOwner;
+
+		display: flex;
+		align-items: center;
+
+		span.str_Ownedby {
+			margin-left: 8px;
+
+			font-family: IBM Plex Mono;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 12px;
+			line-height: 16px;
+			display: flex;
+			align-items: center;
+			color: #1f191b;
+			opacity: 0.4;
+		}
+
+		a {
+			font-family: IBM Plex Mono;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 12px;
+			line-height: 16px;
+			display: flex;
+			align-items: center;
+			color: #124eeb;
+			opacity: 0.8;
+
+			margin-left: 6px;
+		}
+	}
+
+	span.SaleEndDay {
+		font-family: IBM Plex Mono;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 16px;
+		display: flex;
+		align-items: center;
+		color: #1f191b;
+		opacity: 0.4;
+
+        padding-top: 8px;
+
+		grid-area: SaleEndDay;
+	}
+
+	span.BidStatus {
+		font-family: IBM Plex Mono;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 16px;
+		display: flex;
+		align-items: center;
+		color: #1f191b;
+		opacity: 0.4;
+
+		grid-area: BidStatus;
+
+        padding-top: 16px;
+        padding-bottom: 12px;
+	}
+
+	.TopBidStatus {
+		grid-area: TopBidPrice;
+		padding-top: 12px;
+		padding-bottom: 20px;
+
+		display: grid;
+		grid-template-columns: auto auto;
+		grid-template-areas: "ETHPrice USDPrice";
+		justify-content: start;
+		align-items: end;
+		column-gap: 8px;
+
+		span.ETHPrice {
+			font-family: Optima;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 28px;
+			line-height: 34px;
+			color: #000000;
+
+			grid-area: ETHPrice;
+		}
+
+		span.USDPrice {
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 130.5%;
+			color: #1f191b;
+			opacity: 0.4;
+
+			grid-area: USDPrice;
+		}
+	}
+
+	.BorderBottomGap {
+		box-sizing: border-box;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+		grid-area: BorderBottomGap;
+	}
+
+	.ButtonGroup {
+		grid-area: ButtonGroup;
+
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		column-gap: 20px;
+
+		button {
+			width: 315px;
+			height: 48px;
+		}
+	}
+
+	span.str_Offers {
+		font-family: IBM Plex Mono;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 16px;
+		display: flex;
+		align-items: center;
+		color: #000000;
+
+		grid-area: str_Offers;
+
+		padding-top: 30px;
+		padding-bottom: 24px;
+	}
+`;
+
+const TradingHistory = styled.div`
+	grid-area: TradingHistory;
+
+	display: grid;
+	grid-template-rows: 70px 1fr;
+	grid-template-areas:
+		"str_TradingHistory"
+		"TradeTable";
+
+	span.str_TradingHistory {
+		grid-area: str_TradingHistory;
+
+		font-family: IBM Plex Mono;
+		font-style: normal;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 16px;
+		display: flex;
+		color: #000000;
+
+		padding-top: 30px;
+		padding-bottom: 24px;
+	}
+`;
+
+function Buy() {
+	const history = useHistory();
+	return (
+		<Page>
+			<BreadcrumbNav NFTType={NFTType} NFTName={NFTName} />
+
+			<PageMiddle>
+				<PageMiddleLeft>
+					<img className="NFTImg" src={pic_test1} alt="" />
+
+					<Description>
+						<span className="description">Description</span>
+
+						<span className="descriptionContent">
+							{/* {descriptionContent} */}
+							An irreplaceable girl
+						</span>
+					</Description>
+
+					<Dropdowns>
+                        <NFTInfoDropdown
+                            title="Details"
+                            content={<DetailsContent generatorName="zhuzaoren" />}
+                        />
+                        
+                        <NFTInfoDropdown
+                            title="Token Info"
+                            content={
+                                <TokenInfoContent
+                                    TokenID="245678543223356..."
+                                    Total="10"
+                                />
+                            }
+                        />
+                    </Dropdowns>
+				</PageMiddleLeft>
+
+				<PageMiddleRight>
+					<span className="NFTName">Digital Image Name</span>
+
+					<div className="ShowOwner">
+						<img src={icon_altAvatar} alt="" />
+						<span className="str_Ownedby">Owned by</span>
+						<Link to={"/"}>Mapache{/* {ownerName} */}</Link>
+					</div>
+
+					<span className="SaleEndDay">
+						Sale ends in 5 days(March 23,2021 at 11:59am CST)
+					</span>
+
+					<span className="BidStatus">
+						Top bid--Reserve price not met.
+					</span>
+
+					<div className="TopBidStatus">
+						<span className="ETHPrice">0,0799 ETH</span>
+						<span className="USDPrice">($36,52)</span>
+					</div>
+
+					<span className="BorderBottomGap"></span>
+
+					<div className="ButtonGroup">
+						<Button
+							primary
+							value="Place Bid"
+							onClick={() => {
+								/* history.push("/MyInventory/:nftId/Sell") */
+								history.push("/MyInventory/Sell");
+							}}
+						/>
+						<Button value="Buy New For 1 ETHransfer" />
+					</div>
+
+					<span className="str_Offers">Offers</span>
+
+					<OffersTable />
+				</PageMiddleRight>
+			</PageMiddle>
+
+			<TradingHistory>
+				<span className="str_TradingHistory">Trading History</span>
+				<TradeTable />
+			</TradingHistory>
+		</Page>
+	);
+}
+
+export default Buy;
