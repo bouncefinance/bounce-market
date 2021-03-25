@@ -199,7 +199,7 @@ function Summary({ auctionType, price, unit, duration, fees, nftInfo }) {
 
 			console.log(nftInfo)
 			console.log(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot)
-			
+
 
 			if (nftInfo.standard === 1) {
 
@@ -223,9 +223,9 @@ function Summary({ auctionType, price, unit, duration, fees, nftInfo }) {
 				}
 
 				if (!approveResult) return showTransferByStatus('errorStatus')
-				
 
-				BounceFixedSwapNFT_CT.methods.createErc721(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot).send({ from: account, value: _amountTotal1 })
+
+				BounceFixedSwapNFT_CT.methods.createErc721(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot).send({ from: account })
 					.on('transactionHash', hash => {
 						// setBidStatus(pendingStatus)
 						showTransferByStatus('pendingStatus')
@@ -256,7 +256,7 @@ function Summary({ auctionType, price, unit, duration, fees, nftInfo }) {
 
 				if (!approveResult) return showTransferByStatus('errorStatus')
 
-				BounceFixedSwapNFT_CT.methods.createErc1155(_name, _token0, _token1, _tokenId, _amountTotal0, _amountTotal1, _onlyBot).send({ from: account, value: _amountTotal1 })
+				BounceFixedSwapNFT_CT.methods.createErc1155(_name, _token0, _token1, _tokenId, _amountTotal0, _amountTotal1, _onlyBot).send({ from: account })
 					.on('transactionHash', hash => {
 						// setBidStatus(pendingStatus)
 						showTransferByStatus('pendingStatus')

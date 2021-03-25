@@ -52,9 +52,7 @@ export default function SellNFT() {
 	const [minimumBid, set_MinimumBid] = useState(0);
 	const [minimumBid_Unit, set_MinimumBid_Unit] = useState("ETH");
 	const [directPurchasePrice, set_DirectPurchasePrice] = useState(0);
-	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState(
-		"ETH"
-	);
+	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState("ETH");
 	const [reservePrice, set_ReservePrice] = useState(0);
 	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
 	const [duration, setDuration] = useState(0);
@@ -79,7 +77,7 @@ export default function SellNFT() {
 					<LeftItemsOnSetPrice>
 						<InputAmount
 							className="InputAmount Price"
-							title="Price"
+							title="Unit Price"
 							price={price}
 							setPrice={setPrice}
 							unit={priceUnit}
@@ -88,6 +86,7 @@ export default function SellNFT() {
 							gridArea="Price"
 							options={unitOptions}
 						/>
+
 
 						<InstructionsDropdown
 							className="Instructions"
