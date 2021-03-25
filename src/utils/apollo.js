@@ -6,6 +6,28 @@ export const client = new ApolloClient({
     cache: new InMemoryCache(),
 })
 
+export const QueryItesms = gql`
+  query {
+    bounce721Items {
+      tokenId
+    }
+    bounce1155Items {
+      tokenId
+    }
+  }
+`
+
+export const QueryBrands = gql`
+  query {
+    bounce721Brands(first: 3) {
+      id
+    }
+    bounce1155Brands(first: 3) {
+      id
+    }
+  }
+`
+
 export const QueryBrand721 = gql`
   query {
     bounce721Brands {
