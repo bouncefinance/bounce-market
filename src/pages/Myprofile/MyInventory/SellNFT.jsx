@@ -5,10 +5,12 @@ import InstructionsDropdown from "./components/InstructionsDropdown";
 import InputAmount from "./components/InputAmount";
 import SelectDuration from "./components/SelectDuration";
 import Summary from "./components/Summary";
-
 import pic_NFT1 from "./assets/pic_NFT1.svg";
+import useNftInfo from "@/utils/useNftInfo";
+import { useParams } from "react-router-dom";
+import { useActiveWeb3React } from "@/web3";
 
-export default function SellNFT(/* { NFTImg } */) {
+export default function SellNFT() {
 	const unitOptions = [
 		{
 			value: "ETH",
@@ -41,6 +43,9 @@ export default function SellNFT(/* { NFTImg } */) {
 
 	const fees = "0.5";
 
+	const { exportNftInfo } = useNftInfo()
+	const { nftId } = useParams()
+	const { active } = useActiveWeb3React()
 	const [auctionType, setauctionType] = useState("setPrice");
 	const [price, setPrice] = useState(0);
 	const [priceUnit, set_PriceUnit] = useState("ETH");
@@ -54,35 +59,18 @@ export default function SellNFT(/* { NFTImg } */) {
 	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
 	const [duration, setDuration] = useState(0);
 
-	// useEffect(() => {
-	// 	console.log(
-	// 		auctionType,
-	// 		price,
-	// 		priceUnit,
-	// 		minimumBid,
-	// 		minimumBid_Unit,
-	// 		directPurchasePrice,
-	// 		directPurchasePrice_Unit,
-	// 		reservePrice,
-	// 		reservePrice_Unit,
-	// 		duration,
-	// 	);
-	// }, [
-	// 	auctionType,
-	// 	price,
-	// 	priceUnit,
-	// 	minimumBid,
-	// 	minimumBid_Unit,
-	// 	directPurchasePrice,
-	// 	directPurchasePrice_Unit,
-	// 	reservePrice,
-	// 	reservePrice_Unit,
-	// 	duration,
-	// ]);
+	const [nftInfo, setNftId] = useState()
 
-	useEffect(()=>{
-		
-	})
+	useEffect(() => {
+		if (!active) return
+		setInitNftInfo(nftId)
+		// eslint-disable-next-line
+	}, [active])
+
+	const setInitNftInfo = async (nftId) => {
+		const info = await exportNftInfo(nftId)
+		setNftId(info)
+	}
 
 	const render_LeftItems = (auctionType) => {
 		switch (auctionType) {
@@ -195,6 +183,7 @@ export default function SellNFT(/* { NFTImg } */) {
 			case "setPrice":
 				return (
 					<Summary
+						nftInfo={nftInfo}
 						auctionType="setPrice"
 						price={price}
 						unit={priceUnit}
@@ -204,6 +193,7 @@ export default function SellNFT(/* { NFTImg } */) {
 			case "EnglishAuction":
 				return (
 					<Summary
+						nftInfo={nftInfo}
 						auctionType="EnglishAuction"
 						price={reservePrice}
 						unit={reservePrice_Unit}
@@ -211,8 +201,8 @@ export default function SellNFT(/* { NFTImg } */) {
 						fees={fees}
 					/>
 				);
-				default:
-					return;
+			default:
+				return;
 		}
 	};
 
@@ -269,7 +259,7 @@ export default function SellNFT(/* { NFTImg } */) {
 				</PageBodyLeft>
 
 				<PageBodyRight>
-					<img className="NFTImg" src={pic_NFT1} alt="" />
+					<img className="NFTImg" src={nftInfo && (nftInfo.fileurl || pic_NFT1)} alt="" />
 					{render_Summary(auctionType)}
 				</PageBodyRight>
 			</PageBody>

@@ -5,7 +5,7 @@ import { useActiveWeb3React } from '@/web3'
 import { TextInput, Button, Upload } from '@components/UI-kit'
 import { useUserInfo } from './useUserInfo'
 import { useState } from 'react'
-import { checkInput } from '@utils/compareFun'
+import { checkInput } from '@/utils/compareFun'
 import useAxios from '@/utils/useAxios'
 import { myContext } from '@/redux/index.js'
 

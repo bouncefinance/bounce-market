@@ -2,7 +2,7 @@ import axios from 'axios'
 import Web3 from 'web3'
 import { useWeb3React } from '@web3-react/core'
 const host = window.location.host
-const Base_URL = host === 'localhost:3000' ? 'http://market-test.bounce.finance:11000' : 'https://market-test.bounce.finance'
+const Base_URL = host === 'localhost:8888' ? 'http://market-test.bounce.finance:11000' : 'https://market-test.bounce.finance'
 
 const signStr = 'Welcome to Bounce!'
 let isRequestLock = false

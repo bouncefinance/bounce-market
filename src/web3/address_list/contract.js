@@ -1,17 +1,3 @@
-export const getFixedSwapNFT = (chainID) => {
-    switch (chainID) {
-        case 1:
-            return ''
-        case 4:
-            return '0xDb922B6D4dF57a44e0faC7d3A8AA052f5af1af93'
-        case 56:
-            return ''
-
-        default:
-            return '0xDb922B6D4dF57a44e0faC7d3A8AA052f5af1af93'
-    }
-}
-
 export const getNFTFactory = (chainID) => {
     switch (chainID) {
         case 1:
@@ -51,5 +37,33 @@ export const getBounceERC1155WithSign = (chainID) => {
 
         default:
             return '0x57174694E5E1221709992B93C71d43eba7F5d73F'
+    }
+}
+
+export const getFixedSwapNFT = (chainID) => {
+    switch (chainID) {
+        case 1:
+            return ''
+        case 4:
+            return '0x65B2FA838588003102fb3883e608f8b0049BFDD1'
+        case 56:
+            return ''
+
+        default:
+            return '0x65B2FA838588003102fb3883e608f8b0049BFDD1'
+    }
+}
+
+export const getEnglishAuctionNFT = (chainID) => {
+    switch (chainID) {
+        case 1:
+            return ''
+        case 4:
+            return '0x6D00b8C5771ff62D2aA6E69f7b148D48167210bF'
+        case 56:
+            return ''
+
+        default:
+            return '0x6D00b8C5771ff62D2aA6E69f7b148D48167210bF'
     }
 }
