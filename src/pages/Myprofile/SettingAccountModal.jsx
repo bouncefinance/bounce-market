@@ -75,7 +75,7 @@ export default function SettingAccountModal({ open, setOpen }) {
 
         try {
             let imgUrl = formData.imgurl
-            if (!imgUrl) {
+            if (fileData) {
                 // 如果没上传图片则先上传图片
                 setBtnText('Uploading File ...')
                 const res = await sign_Axios.post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
@@ -95,7 +95,11 @@ export default function SettingAccountModal({ open, setOpen }) {
                 bio: formData.bio
             }
 
-            await updateUserInfo(params)
+            const updatedUer = await updateUserInfo(params)
+            if (updatedUer.status === 200) {
+                setOpen(false)
+            }
+
             setBtnLock(false)
             setInputDisable(false)
             setBtnText('Save')
@@ -158,6 +162,7 @@ export default function SettingAccountModal({ open, setOpen }) {
                     defaultValue={userInfo.email}
                     required={true}
                     marginTop={'24px'}
+                    inputType={'email'}
                     onValChange={(val) => {
                         setFormData({ ...formData, email: val })
                     }}
@@ -171,6 +176,7 @@ export default function SettingAccountModal({ open, setOpen }) {
                     defaultValue={userInfo.bio}
                     required={true}
                     marginTop={'24px'}
+                    inputType={'url'}
                     onValChange={(val) => {
                         setFormData({ ...formData, bio: val })
                     }}
