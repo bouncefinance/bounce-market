@@ -91,12 +91,17 @@ export default function SettingAccountModal({ open, setOpen }) {
                 username: formData.username,
                 fullname: formData.fullname,
                 imgurl: imgUrl,
-                email: formData.email,
-                bio: formData.bio
+                email: formData.email||"",
+                bio: formData.bio||""
             }
 
             const updatedUer = await updateUserInfo(params)
-            if (updatedUer.status === 200) {
+            console.log(JSON.stringify(updatedUer));
+            if(updatedUer.data.code === 0){
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: updatedUer.data.msg });
+                setBtnLock(false)
+                setInputDisable(false)
+            }else if (updatedUer.status === 200) {
                 setOpen(false)
             }
 
