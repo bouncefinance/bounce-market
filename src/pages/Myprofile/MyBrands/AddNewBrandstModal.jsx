@@ -39,7 +39,7 @@ const AddNewBrandstModalStyled = styled.div`
 
 `
 
-export default function AddNewBrandstModal({ open, setOpen }) {
+export default function AddNewBrandstModal ({ open, setOpen }) {
     const { active, library, chainId, account } = useActiveWeb3React()
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
@@ -118,24 +118,24 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                             // setBidStatus(errorStatus)
                             showTransferByStatus('errorStatus')
                         })
-                }else if(nftType === 'ERC-1155'){
+                } else if (nftType === 'ERC-1155') {
                     Factory_CT.methods.createBrand1155(_uri).send({ from: account })
-                    .on('transactionHash', hash => {
-                        setOpen(false)
-                        // setBidStatus(pendingStatus)
-                        showTransferByStatus('pendingStatus')
-                    })
-                    .on('receipt', async (_, receipt) => {
-                        // console.log('bid fixed swap receipt:', receipt)
-                        // setBidStatus(successVotedStatus)
-                        showTransferByStatus('successVotedStatus')
-                        const brandAddress = await getCreatedBrand()
-                        uploadData(imgUrl, brandAddress)
-                    })
-                    .on('error', (err, receipt) => {
-                        // setBidStatus(errorStatus)
-                        showTransferByStatus('errorStatus')
-                    })
+                        .on('transactionHash', hash => {
+                            setOpen(false)
+                            // setBidStatus(pendingStatus)
+                            showTransferByStatus('pendingStatus')
+                        })
+                        .on('receipt', async (_, receipt) => {
+                            // console.log('bid fixed swap receipt:', receipt)
+                            // setBidStatus(successVotedStatus)
+                            showTransferByStatus('successVotedStatus')
+                            const brandAddress = await getCreatedBrand()
+                            uploadData(imgUrl, brandAddress)
+                        })
+                        .on('error', (err, receipt) => {
+                            // setBidStatus(errorStatus)
+                            showTransferByStatus('errorStatus')
+                        })
                 }
 
             }).catch(function (error) {
@@ -240,7 +240,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                         }}>Cancel</Button>
                         <div className="wrap">
                             <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
-                            {inputDisable &&  <CircularProgress className="buttonProgress"/>}
+                            {inputDisable && <CircularProgress className="buttonProgress" />}
                         </div>
                     </div>
                 </AddNewBrandstModalStyled>

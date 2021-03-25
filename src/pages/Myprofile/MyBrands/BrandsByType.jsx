@@ -20,6 +20,7 @@ import nav_image from '@assets/images/icon/nav_image.svg'
 import img_example_3 from '@assets/images/example_3.svg'
 import { useBrandInfo } from './useHook'
 import Snackbar from '@material-ui/core/Snackbar';
+import UpdateTopBarImg from './updateTopBarImg'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -209,6 +210,8 @@ export default function BrandsByType () {
     const { brandInfo, run } = useBrandInfo(brandId)
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
+
+    const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
     // ----edit----
     const [isEdit, setIsEdit] = useState(false)
     const [editFormData, setEditFormData] = useState({
@@ -309,8 +312,9 @@ export default function BrandsByType () {
                 </button>
             </div>
 
-            <div className='bg_wrapper'>
-                <button>
+            <div className='bg_wrapper' style={brandInfo.bandimgurl ? { backgroundSize: '100%', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
+                {/* <div className='bg_wrapper' style={{ backgroundSize: '100%', background: `url(https://market-test.bounce.finance/pngfileget/blob-1616642351.png) center center no-repeat` }}> */}
+                <button onClick={() => setOpenUpdateTopBarImg(true)}>
                     <img src={edit_white} alt="" />
                     <p>Change</p>
                 </button>
@@ -401,6 +405,7 @@ export default function BrandsByType () {
                 autoHideDuration={2000}
             >
             </Snackbar>
+            {<UpdateTopBarImg open={openUpdateTopBarImg} setOpen={setOpenUpdateTopBarImg} run={run} />}
         </BrandsByTypeStyled>
     )
 }
