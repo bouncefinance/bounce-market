@@ -220,7 +220,7 @@ export default function BrandsByType () {
     const [editFormData, setEditFormData] = useState({
         brandname: brandInfo.brandname,
         description: brandInfo.description,
-        ownername: state.UserInfo.username,
+        ownername: state.userInfo.username,
         id: brandId | 0,
         imgurl: '',
     })

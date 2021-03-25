@@ -72,7 +72,7 @@ export default function Index() {
 
                     {[...new Array(6)].map((item, index) => {
                         return <li key={index}>
-                            <CardItem nftId={index} cover={img_example_3} status={index % 2 === 0 ? 'Listed' : ''} />
+                            <CardItem nftId={16856} cover={img_example_3} status={index % 2 === 0 ? 'Listed' : ''} />
                         </li>
                     })}
                 </ul>

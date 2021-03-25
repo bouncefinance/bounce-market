@@ -92,6 +92,7 @@ export default function TextInput({
 	height = "48px",
 	marginTop = "20px",
 	lockInput,
+	inputType = "text"
 }) {
 	const [error, setError] = useState(false);
 	const [errMsg, setErrMsg] = useState(null);
@@ -116,9 +117,15 @@ export default function TextInput({
 
 	const handelBlur = (e) => {
 		const val = e.target.value;
-		if (required && val === "") {
+		if (required && val.trim() === "") {
 			setError(true);
 			setErrMsg(ErrorStatus.required.tip);
+		}else if(inputType ==="email" && required && !ErrorStatus.email.reg.test(val)){
+			setError(true);
+			setErrMsg(ErrorStatus.email.tip);
+		}else if(inputType ==="url" && required && !ErrorStatus.url.reg.test(val)){
+			setError(true);
+			setErrMsg(ErrorStatus.url.tip);
 		}
 	};
 

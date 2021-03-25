@@ -10,6 +10,7 @@ import BounceNFTFactory from '@/web3/abi/BounceNFTFactory.json'
 import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useBrandList } from './useHook'
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
@@ -50,6 +51,7 @@ export default function AddNewBrandstModal ({ open, setOpen }) {
     const [btnText, setBtnText] = useState('Save')
     const [nftType, setNftType] = useState('ERC-721')
     const { showTransferByStatus } = useTransferModal()
+    const { getBrandList } = useBrandList()
     // const [brandAddress, setBrandAddress] = useState(false)
 
     useEffect(() => {
@@ -161,11 +163,12 @@ export default function AddNewBrandstModal ({ open, setOpen }) {
             description: formData.Description,
             imgurl: imgUrl,
             owneraddress: account,
-            ownername: state.UserInfo.username
+            ownername: state.userInfo.username
         }
 
         sign_Axios.post('/api/v2/main/auth/addbrand', params).then(res => {
             if (res.status === 200 && res.data.code === 1) {
+                getBrandList();
                 alert('Brand 创建成功')
             } else {
                 alert('服务器端 创建失败')

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import styled from 'styled-components'
 import { Link, useHistory } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
@@ -11,6 +11,7 @@ import { useActiveWeb3React } from '@/web3'
 import { useWalletConnect } from '@/web3/useWalletConnect'
 import { useUserInfo } from '../../Myprofile/useUserInfo'
 import { Tooltip } from '@material-ui/core'
+import { myContext } from '@/redux/index.js';
 
 const HeaderStyled = styled.div`
     height: 76px;
@@ -130,8 +131,9 @@ export default function Index() {
     const [curNav, setCurNav] = useState('Home')
     const { account, chainId, active } = useActiveWeb3React()
     const [isShowInfo, setIsShowInfo] = useState(false)
-    const { userInfo } = useUserInfo()
+    const { getUserInfo } = useUserInfo()
     const history = useHistory()
+    const {state} = useContext(myContext);
 
     const updateActive = () => {
         const pathName = window.location.pathname
@@ -155,8 +157,9 @@ export default function Index() {
 
     useEffect(() => {
         if (!active) return
-        // console.log(userInfo)
-    }, [account, chainId, active, userInfo])
+        getUserInfo();
+        // eslint-disable-next-line
+    }, [account, chainId, active])
 
     return (
         <>
@@ -193,7 +196,7 @@ export default function Index() {
                             })}
                         </ul>
                         {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
-                            {userInfo && userInfo.imgurl ? <img src={userInfo && userInfo.imgurl} alt="" onClick={() => {
+                            {state.userInfo && state.userInfo.imgurl ? <img src={state.userInfo && state.userInfo.imgurl} alt="" onClick={() => {
                                 setIsShowInfo(!isShowInfo)
                             }} /> : <div className='avatar' onClick={() => {
                                 setIsShowInfo(!isShowInfo)
@@ -203,7 +206,7 @@ export default function Index() {
                         }}>Connect Wallet</Button>}
 
                     </div>
-                    {isShowInfo && <InfoBox setIsShowInfo={setIsShowInfo} username={userInfo && userInfo.username} />}
+                    {isShowInfo && <InfoBox setIsShowInfo={setIsShowInfo} username={state.userInfo && state.userInfo.username} />}
                 </div>
             </HeaderStyled>
             <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />

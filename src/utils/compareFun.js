@@ -29,3 +29,14 @@ export const checkInput = (val) => {
 
     return val
 }
+
+export const equalAddress = (addr1, addr2) => {
+    addr1 = String(addr1).toLowerCase()
+    addr2 = String(addr2).toLowerCase()
+
+    if(addr1===addr2){
+        return true
+    }else{
+        return false
+    }
+}
