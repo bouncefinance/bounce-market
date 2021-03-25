@@ -199,6 +199,7 @@ function Summary({ auctionType, price, unit, duration, fees, nftInfo }) {
 
 			console.log(nftInfo)
 			console.log(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot)
+			
 
 			if (nftInfo.standard === 1) {
 
