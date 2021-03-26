@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React, getContract } from '@/web3'
@@ -10,6 +10,7 @@ import BounceERC1155 from '@/web3/abi/BounceERC1155.json'
 import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
 import { useThrottle } from '@/utils/useThrottle'
+import { myContext } from '@/redux'
 // import { numToWei } from '@/utils/useBigNumber'
 const DEBOUNCE = 500;
 const AddNewBrandstModalStyled = styled.div`
@@ -47,6 +48,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
         Channel: 'Fine Arts',
         Supply: 1
     })
+    const { dispatch } = useContext(myContext);
 
     useEffect(() => {
         if (!active) return
@@ -83,6 +85,10 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                    setBtnLock(false)
+                    setInputDisable(false)
+                    setBtnText('Submit');
                     throw new Error('File upload failed,' + response.data.msg)
                 }
             }).then((imgUrl) => {
@@ -124,11 +130,12 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                         // setBidStatus(errorStatus)
                                         // showTransferByStatus('errorStatus')
                                         setBtnLock(false);
-                                        setBtnText("Try Again");
+                                        setBtnText("Submit");
+                                        setInputDisable(false);
                                     })
                             } catch (error) {
                                 setBtnLock(false);
-                                setBtnText("Try Again");
+                                setBtnText("Submit");
                                 console.log('BounceERC721_CT.methods.mint', error);
                             }
 
@@ -150,22 +157,24 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('error', (err, receipt) => {
                                         setBtnLock(false);
-                                        setBtnText("Try Again");
+                                        setBtnText("Submit");
+                                        setInputDisable(false);
                                         // setBidStatus(errorStatus)
                                         // showTransferByStatus('errorStatus')
                                     })
                             } catch (error) {
                                 setBtnLock(false);
-                                setBtnText("Try Again");
+                                setBtnText("Submit");
                                 console.log('BounceERC1155_CT.methods.mint', error)
                             }
                         }
                     }
 
                 }).catch(err => {
-                    setBtnLock(false);
-                    setBtnText("Try Again");
-                    alert('请求服务器出错')
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                    setBtnLock(false)
+                    setInputDisable(false)
+                    setBtnText('Submit')
                 })
             })
         // 第三步 调用合约生成 NFT
