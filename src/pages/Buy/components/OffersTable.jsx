@@ -14,7 +14,7 @@ const useStyles = makeStyles({
         gridArea: "OffersTable",
     },
 	table: {
-		width: "620px",
+		width: "650px",
 		margin: "24px auto 0 auto",
 	},
 	TableHead: {

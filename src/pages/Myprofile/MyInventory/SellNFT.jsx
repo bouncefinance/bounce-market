@@ -2,11 +2,277 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import InstructionsDropdown from "./components/InstructionsDropdown";
-import InputAmount from "./components/InputAmount";
+import InputPrice from "./components/InputPrice";
 import SelectDuration from "./components/SelectDuration";
 import Summary from "./components/Summary";
-
 import pic_NFT1 from "./assets/pic_NFT1.svg";
+import useNftInfo from "@/utils/useNftInfo";
+import { useParams } from "react-router-dom";
+import { useActiveWeb3React } from "@/web3";
+
+export default function SellNFT() {
+	const unitOptions = [
+		{
+			value: "ETH",
+		},
+		{
+			value: "USDT",
+		},
+		{
+			value: "USDC",
+		},
+		{
+			value: "BNB",
+		},
+	];
+
+	const duration_Options = [
+		{
+			value: 5,
+		},
+		{
+			value: 15,
+		},
+		{
+			value: 30,
+		},
+		{
+			value: 90,
+		},
+	];
+
+	const fees = "0.5";
+
+	const { exportNftInfo } = useNftInfo();
+	const { nftId } = useParams();
+	const { active } = useActiveWeb3React();
+	const [auctionType, setauctionType] = useState("setPrice");
+
+	const [amount, setAmount] = useState(0);
+	const [price, setPrice] = useState(0);
+	const [priceUnit, set_PriceUnit] = useState("ETH");
+	const [minimumBid, set_MinimumBid] = useState(0);
+	const [minimumBid_Unit, set_MinimumBid_Unit] = useState("ETH");
+	const [directPurchasePrice, set_DirectPurchasePrice] = useState(0);
+	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState(
+		"ETH"
+	);
+	const [reservePrice, set_ReservePrice] = useState(0);
+	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
+	const [duration, setDuration] = useState(0);
+
+	const [nftInfo, setNftId] = useState();
+
+	useEffect(() => {
+		if (!active) return;
+		setInitNftInfo(nftId);
+		// eslint-disable-next-line
+	}, [active]);
+
+	const setInitNftInfo = async (nftId) => {
+		const info = await exportNftInfo(nftId);
+		/* console.log(info); */
+		setNftId(info);
+	};
+
+	const render_LeftItems = (auctionType) => {
+		switch (auctionType) {
+			case "setPrice":
+				return (
+					<LeftItemsOnSetPrice>
+						<InputPrice
+							className="InputPrice Price"
+							title="Price"
+							setPrice={setPrice}
+							setUnit={set_PriceUnit}
+							ifInputAmount={true}
+							setAmount={setAmount}
+							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
+							gridArea="Price"
+							options={unitOptions}
+						/>
+
+						<InstructionsDropdown
+							className="Instructions"
+							width="740px"
+							layDownItems={[
+								{
+									value:
+										"Bounce is decentralized,so it will never host your items...",
+								},
+								{
+									value:
+										"Bounce is decentralized,so it will never host your items...",
+								},
+								{
+									value:
+										"Bounce is decentralized,so it will never host your items...",
+								},
+							]}
+						/>
+					</LeftItemsOnSetPrice>
+				);
+			case "EnglishAuction":
+				return (
+					<LeftItemsOnEnglishAuction>
+						<InputPrice
+							className="InputPrice Minimum_bid"
+							title="Minimum bid"
+							price={minimumBid}
+							setPrice={set_MinimumBid}
+							unit={minimumBid_Unit}
+							setUnit={set_MinimumBid_Unit}
+							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
+							gridArea="Minimum_bid"
+							options={unitOptions}
+						/>
+						<InputPrice
+							className="InputPrice Direct_purchase_price"
+							title="Direct purchase price"
+							price={directPurchasePrice}
+							setPrice={set_DirectPurchasePrice}
+							unit={directPurchasePrice_Unit}
+							setUnit={set_directPurchasePrice_Unit}
+							notice="A direct transaction price can be set,that is,users can skip the bidding process and buy directly at this price.The direct transaction price must be greater than the Minimum Bid minimum starting price."
+							gridArea="Direct_purchase_price"
+							options={unitOptions}
+						/>
+						<InputPrice
+							className="InputPrice Reserve_price"
+							title="Reserve price"
+							price={reservePrice}
+							setPrice={set_ReservePrice}
+							unit={reservePrice_Unit}
+							setUnit={set_ReservePrice_Unit}
+							notice="Setting a reserve price creates a hidden limit,If you receive no bids equal to or greater than your reserve,your auction will end with end without selling the item."
+							gridArea="Reserve_price"
+							options={unitOptions}
+						/>
+						<SelectDuration
+							className="Expriration_Date"
+							title="Expriration Date"
+							notice="Your auction will automatically end at this time and the highest bidder will win.No need to cancel it!"
+							setDuration={setDuration}
+							gridArea="Expriration_Date"
+							options={duration_Options}
+						/>
+						<InstructionsDropdown
+							className="Instructions"
+							width="740px"
+							layDownItems={[
+								{
+									value:
+										"Bounce is decentralized,so it will never host your items...",
+								},
+								{
+									value:
+										"Bounce is decentralized,so it will never host your items...",
+								},
+								{
+									value:
+										"Bounce is decentralized,so it will never host your items...",
+								},
+							]}
+						/>
+					</LeftItemsOnEnglishAuction>
+				);
+			default:
+				return;
+		}
+	};
+
+	const render_Summary = (auctionType) => {
+		switch (auctionType) {
+			case "setPrice":
+				return (
+					<Summary
+						nftInfo={nftInfo}
+						auctionType="setPrice"
+						price={price}
+						unit={priceUnit}
+						fees={fees}
+					/>
+				);
+			case "EnglishAuction":
+				return (
+					<Summary
+						nftInfo={nftInfo}
+						auctionType="EnglishAuction"
+						price={reservePrice}
+						unit={reservePrice_Unit}
+						duration={duration}
+						fees={fees}
+					/>
+				);
+			default:
+				return;
+		}
+	};
+
+	return (
+		<Page>
+			<BreadcrumbNav>
+				My Inventory / Digital Image Name /&nbsp;
+				<span>
+					Sell
+					{/* {NFTName} */}
+				</span>
+			</BreadcrumbNav>
+			<PageBody>
+				<PageBodyLeft>
+					<span className="str_SelectSellMethod">
+						Select your sell method
+					</span>
+
+					<ButtonGroup>
+						<button
+							className={
+								auctionType === "setPrice"
+									? "setPrice active"
+									: "setPrice"
+							}
+							onClick={() => {
+								setauctionType("setPrice");
+							}}
+						>
+							<span className="auctionType">Set Price</span>
+							<span className="saleFeature">
+								Sell at a fixed price
+							</span>
+						</button>
+
+						<button
+							className={
+								auctionType === "EnglishAuction"
+									? "EnglishAuction active"
+									: "EnglishAuction"
+							}
+							onClick={() => {
+								setauctionType("EnglishAuction");
+							}}
+						>
+							<span className="auctionType">English Auction</span>
+							<span className="saleFeature">
+								Auction to the highest bidder
+							</span>
+						</button>
+					</ButtonGroup>
+
+					{render_LeftItems(auctionType)}
+				</PageBodyLeft>
+
+				<PageBodyRight>
+					<img
+						className="NFTImg"
+						src={nftInfo && (nftInfo.fileurl || pic_NFT1)}
+						alt=""
+					/>
+					{render_Summary(auctionType)}
+				</PageBodyRight>
+			</PageBody>
+		</Page>
+	);
+}
 
 const Page = styled.div`
 	width: 1100px;
@@ -183,267 +449,3 @@ const PageBodyRight = styled.div`
 		grid-area: NFTImg;
 	}
 `;
-
-export default function SellNFT(/* { NFTImg } */) {
-	const unitOptions = [
-		{
-			value: "ETH",
-		},
-		{
-			value: "USDT",
-		},
-		{
-			value: "USDC",
-		},
-		{
-			value: "BNB",
-		},
-	];
-
-	const duration_Options = [
-		{
-			value: 5,
-		},
-		{
-			value: 15,
-		},
-		{
-			value: 30,
-		},
-		{
-			value: 90,
-		},
-	];
-
-	const fees = "0.5";
-
-	const [auctionType, setauctionType] = useState("setPrice");
-	const [price, setPrice] = useState(0);
-	const [priceUnit, set_PriceUnit] = useState("ETH");
-	const [minimumBid, set_MinimumBid] = useState(0);
-	const [minimumBid_Unit, set_MinimumBid_Unit] = useState("ETH");
-	const [directPurchasePrice, set_DirectPurchasePrice] = useState(0);
-	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState(
-		"ETH"
-	);
-	const [reservePrice, set_ReservePrice] = useState(0);
-	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
-	const [duration, setDuration] = useState(0);
-
-	/* useEffect(() => {
-		console.log("auctionType: " + auctionType);
-		console.log("price: " + price);
-		console.log("priceUnit: " + priceUnit);
-		console.log("minimumBid: " + minimumBid);
-		console.log("minimumBid_Unit: " + minimumBid_Unit);
-		console.log("directPurchasePrice: " + directPurchasePrice);
-		console.log("directPurchasePrice_Unit: " + directPurchasePrice_Unit);
-		console.log("reservePrice: " + reservePrice);
-		console.log("reservePrice_Unit: " + reservePrice_Unit);
-		console.log("duration: " + duration);
-		console.log("----------------")
-	}, [
-		auctionType,
-		price,
-		priceUnit,
-		minimumBid,
-		minimumBid_Unit,
-		directPurchasePrice,
-		directPurchasePrice_Unit,
-		reservePrice,
-		reservePrice_Unit,
-		duration,
-	]); */
-
-	const render_LeftItems = (auctionType) => {
-		switch (auctionType) {
-			case "setPrice":
-				return (
-					<LeftItemsOnSetPrice>
-						<InputAmount
-							className="InputAmount Price"
-							title="Price"
-							price={price}
-							setPrice={setPrice}
-							unit={priceUnit}
-							setUnit={set_PriceUnit}
-							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
-							gridArea="Price"
-							options={unitOptions}
-						/>
-
-						<InstructionsDropdown
-							className="Instructions"
-							width="740px"
-							layDownItems={[
-								{
-									value:
-										"Bounce is decentralized,so it will never host your items...",
-								},
-								{
-									value:
-										"Bounce is decentralized,so it will never host your items...",
-								},
-								{
-									value:
-										"Bounce is decentralized,so it will never host your items...",
-								},
-							]}
-						/>
-					</LeftItemsOnSetPrice>
-				);
-			case "EnglishAuction":
-				return (
-					<LeftItemsOnEnglishAuction>
-						<InputAmount
-							className="InputAmount Minimum_bid"
-							title="Minimum bid"
-							price={minimumBid}
-							setPrice={set_MinimumBid}
-							unit={minimumBid_Unit}
-							setUnit={set_MinimumBid_Unit}
-							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
-							gridArea="Minimum_bid"
-							options={unitOptions}
-						/>
-						<InputAmount
-							className="InputAmount Direct_purchase_price"
-							title="Direct purchase price"
-							price={directPurchasePrice}
-							setPrice={set_DirectPurchasePrice}
-							unit={directPurchasePrice_Unit}
-							setUnit={set_directPurchasePrice_Unit}
-							notice="A direct transaction price can be set,that is,users can skip the bidding process and buy directly at this price.The direct transaction price must be greater than the Minimum Bid minimum starting price."
-							gridArea="Direct_purchase_price"
-							options={unitOptions}
-						/>
-						<InputAmount
-							className="InputAmount Reserve_price"
-							title="Reserve price"
-							price={reservePrice}
-							setPrice={set_ReservePrice}
-							unit={reservePrice_Unit}
-							setUnit={set_ReservePrice_Unit}
-							notice="Setting a reserve price creates a hidden limit,If you receive no bids equal to or greater than your reserve,your auction will end with end without selling the item."
-							gridArea="Reserve_price"
-							options={unitOptions}
-						/>
-						<SelectDuration
-							className="Expriration_Date"
-							title="Expriration Date"
-							notice="Your auction will automatically end at this time and the highest bidder will win.No need to cancel it!"
-							setDuration={setDuration}
-							gridArea="Expriration_Date"
-							options={duration_Options}
-						/>
-						<InstructionsDropdown
-							className="Instructions"
-							width="740px"
-							layDownItems={[
-								{
-									value:
-										"Bounce is decentralized,so it will never host your items...",
-								},
-								{
-									value:
-										"Bounce is decentralized,so it will never host your items...",
-								},
-								{
-									value:
-										"Bounce is decentralized,so it will never host your items...",
-								},
-							]}
-						/>
-					</LeftItemsOnEnglishAuction>
-				);
-			default:
-				return;
-		}
-	};
-
-	const render_Summary = (auctionType) => {
-		switch (auctionType) {
-			case "setPrice":
-				return (
-					<Summary
-						auctionType="setPrice"
-						price={price}
-						unit={priceUnit}
-						fees={fees}
-					/>
-				);
-			case "EnglishAuction":
-				return (
-					<Summary
-						auctionType="EnglishAuction"
-						price={reservePrice}
-						unit={reservePrice_Unit}
-						duration={duration}
-						fees={fees}
-					/>
-				);
-			default:
-				return;
-		}
-	};
-
-	return (
-		<Page>
-			<BreadcrumbNav>
-				My Inventory / Digital Image Name /&nbsp;
-				<span>
-					Sell
-					{/* {NFTName} */}
-				</span>
-			</BreadcrumbNav>
-			<PageBody>
-				<PageBodyLeft>
-					<span className="str_SelectSellMethod">
-						Select your sell method
-					</span>
-
-					<ButtonGroup>
-						<button
-							className={
-								auctionType === "setPrice"
-									? "setPrice active"
-									: "setPrice"
-							}
-							onClick={() => {
-								setauctionType("setPrice");
-							}}
-						>
-							<span className="auctionType">Set Price</span>
-							<span className="saleFeature">
-								Sell at a fixed price
-							</span>
-						</button>
-
-						<button
-							className={
-								auctionType === "EnglishAuction"
-									? "EnglishAuction active"
-									: "EnglishAuction"
-							}
-							onClick={() => {
-								setauctionType("EnglishAuction");
-							}}
-						>
-							<span className="auctionType">English Auction</span>
-							<span className="saleFeature">
-								Auction to the highest bidder
-							</span>
-						</button>
-					</ButtonGroup>
-
-					{render_LeftItems(auctionType)}
-				</PageBodyLeft>
-
-				<PageBodyRight>
-					<img className="NFTImg" src={pic_NFT1} alt="" />
-					{render_Summary(auctionType)}
-				</PageBodyRight>
-			</PageBody>
-		</Page>
-	);
-}

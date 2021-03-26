@@ -15,6 +15,95 @@ import icon_altAvatar from "./assets/icon_altAvatar.svg";
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
 
+
+function Buy() {
+	const history = useHistory();
+	return (
+		<Page>
+			<BreadcrumbNav NFTType={NFTType} NFTName={NFTName} />
+
+			<PageMiddle>
+				<PageMiddleLeft>
+					<img className="NFTImg" src={pic_test1} alt="" />
+
+					<Description>
+						<span className="description">Description</span>
+
+						<span className="descriptionContent">
+							{/* {descriptionContent} */}
+							An irreplaceable girl
+						</span>
+					</Description>
+
+					<Dropdowns>
+                        <NFTInfoDropdown
+                            title="Details"
+                            content={<DetailsContent generatorName="zhuzaoren" />}
+                        />
+                        
+                        <NFTInfoDropdown
+                            title="Token Info"
+                            content={
+                                <TokenInfoContent
+                                    TokenID="245678543223356..."
+                                    Total="10"
+                                />
+                            }
+                        />
+                    </Dropdowns>
+				</PageMiddleLeft>
+
+				<PageMiddleRight>
+					<span className="NFTName">Digital Image Name</span>
+
+					<div className="ShowOwner">
+						<img src={icon_altAvatar} alt="" />
+						<span className="str_Ownedby">Owned by</span>
+						<Link to={"/"}>Mapache{/* {ownerName} */}</Link>
+					</div>
+
+					<span className="SaleEndDay">
+						Sale ends in 5 days(March 23,2021 at 11:59am CST)
+					</span>
+
+					<span className="BidStatus">
+						Top bid--Reserve price not met.
+					</span>
+
+					<div className="TopBidStatus">
+						<span className="ETHPrice">0,0799 ETH</span>
+						<span className="USDPrice">($36,52)</span>
+					</div>
+
+					<span className="BorderBottomGap"></span>
+
+					<div className="ButtonGroup">
+						<Button
+							primary
+							value="Place Bid"
+							onClick={() => {
+								/* history.push("/MyInventory/:nftId/Sell") */
+								history.push("/MyInventory/Sell");
+							}}
+						/>
+						<Button value="Buy New For 1 ETHransfer" />
+					</div>
+
+					<span className="str_Offers">Offers</span>
+
+					<OffersTable />
+				</PageMiddleRight>
+			</PageMiddle>
+
+			<TradingHistory>
+				<span className="str_TradingHistory">Trading History</span>
+				<TradeTable />
+			</TradingHistory>
+		</Page>
+	);
+}
+
+
 const Page = styled.div`
 	width: 1096px;
 	margin: 0 auto 55px auto;
@@ -60,7 +149,7 @@ const Description = styled.div`
 	grid-area: Description;
 
 	display: grid;
-	grid-template-rows: 28px 37px;
+	grid-template-rows: 40px 49px;
 	grid-template-areas:
 		"DescriptionTitle"
 		"DescriptionContent";
@@ -72,12 +161,11 @@ const Description = styled.div`
 		font-size: 12px;
 		line-height: 16px;
 		display: flex;
-		align-items: center;
+		align-items: end;
 		color: #1f191b;
 		opacity: 0.5;
 
 		grid-area: DescriptionTitle;
-
         padding-top: 22px;
         padding-bottom: 14px;
 	}
@@ -94,6 +182,9 @@ const Description = styled.div`
 		color: #1f191b;
 
 		grid-area: DescriptionContent;
+
+        padding-top: 12px;
+        padding-bottom: 21px;
 	}
 `;
 
@@ -296,92 +387,5 @@ const TradingHistory = styled.div`
 		padding-bottom: 24px;
 	}
 `;
-
-function Buy() {
-	const history = useHistory();
-	return (
-		<Page>
-			<BreadcrumbNav NFTType={NFTType} NFTName={NFTName} />
-
-			<PageMiddle>
-				<PageMiddleLeft>
-					<img className="NFTImg" src={pic_test1} alt="" />
-
-					<Description>
-						<span className="description">Description</span>
-
-						<span className="descriptionContent">
-							{/* {descriptionContent} */}
-							An irreplaceable girl
-						</span>
-					</Description>
-
-					<Dropdowns>
-                        <NFTInfoDropdown
-                            title="Details"
-                            content={<DetailsContent generatorName="zhuzaoren" />}
-                        />
-                        
-                        <NFTInfoDropdown
-                            title="Token Info"
-                            content={
-                                <TokenInfoContent
-                                    TokenID="245678543223356..."
-                                    Total="10"
-                                />
-                            }
-                        />
-                    </Dropdowns>
-				</PageMiddleLeft>
-
-				<PageMiddleRight>
-					<span className="NFTName">Digital Image Name</span>
-
-					<div className="ShowOwner">
-						<img src={icon_altAvatar} alt="" />
-						<span className="str_Ownedby">Owned by</span>
-						<Link to={"/"}>Mapache{/* {ownerName} */}</Link>
-					</div>
-
-					<span className="SaleEndDay">
-						Sale ends in 5 days(March 23,2021 at 11:59am CST)
-					</span>
-
-					<span className="BidStatus">
-						Top bid--Reserve price not met.
-					</span>
-
-					<div className="TopBidStatus">
-						<span className="ETHPrice">0,0799 ETH</span>
-						<span className="USDPrice">($36,52)</span>
-					</div>
-
-					<span className="BorderBottomGap"></span>
-
-					<div className="ButtonGroup">
-						<Button
-							primary
-							value="Place Bid"
-							onClick={() => {
-								/* history.push("/MyInventory/:nftId/Sell") */
-								history.push("/MyInventory/Sell");
-							}}
-						/>
-						<Button value="Buy New For 1 ETHransfer" />
-					</div>
-
-					<span className="str_Offers">Offers</span>
-
-					<OffersTable />
-				</PageMiddleRight>
-			</PageMiddle>
-
-			<TradingHistory>
-				<span className="str_TradingHistory">Trading History</span>
-				<TradeTable />
-			</TradingHistory>
-		</Page>
-	);
-}
 
 export default Buy;

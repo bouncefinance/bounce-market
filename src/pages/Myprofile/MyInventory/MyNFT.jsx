@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useActiveWeb3React } from "@/web3";
-import { useHistory/* , useParams */ } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import useAxios from "@utils/useAxios.js";
 
 import { Button } from "@components/UI-kit";
@@ -197,8 +197,7 @@ const InfoDropdowns = styled.div`
 function MyNFT() {
 	const { account, active } = useActiveWeb3React();
 	const history = useHistory();
-	/* const { nftId } = useParams(); */
-	const nftId = 16856;
+	const { nftId } = useParams();
 	const { sign_Axios } = useAxios();
 
 	const [NFTName, setNFTName] = useState();
@@ -251,8 +250,36 @@ function MyNFT() {
 		};
 		if (!active || !nftId) return;
 		getNFTInfoList(nftId);
-	}, [active, nftId, sign_Axios]);
+		// eslint-disable-next-line
+	}, [active, nftId]);
+	
+	/* const getNFTInfoList = async (nftId) => {
+		const params = {
+			id: parseInt(nftId),
+		};
 
+		sign_Axios
+			.post("/api/v2/main/auth/getoneitembyid", params)
+			.then((res) => {
+				if (res.status === 200 && res.data.code === 1) {
+					let NFTInfoList = res.data.data;
+					setNFTName(NFTInfoList.itemname);
+					setDescriptionContent(NFTInfoList.description);
+					setSupply(NFTInfoList.supply);
+					setTokenID(NFTInfoList.id);
+					setTokenSymbol(NFTInfoList.itemsymbol);
+					setCreator(NFTInfoList.owneraddress);
+					setExternalLink(NFTInfoList.externallink);
+					setImgURL(NFTInfoList.fileurl);
+				} else {
+					alert("获取失败");
+				}
+			})
+			.catch((err) => {
+				alert("获取失败2");
+			});
+	};
+ */
 	return (
 		<Page>
 			<BreadcrumbNav className="breadcrumb_Nav">
@@ -267,7 +294,7 @@ function MyNFT() {
 
 					<div className="account">
 						<p>{account}</p>
-						<CopyToClipboard text={account} onCopy={() => {}}>
+						<CopyToClipboard text={account} onCopy={() => { }}>
 							<img className="icon_copy" src={icon_copy} alt="" />
 						</CopyToClipboard>
 					</div>
