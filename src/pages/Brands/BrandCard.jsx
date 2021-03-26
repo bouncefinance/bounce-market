@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import { Button } from '@components/UI-kit'
 
 const StyledCard = styled.div`
@@ -104,7 +104,8 @@ const StyledCard = styled.div`
 
 `
 
-function BrandCard({img, brandName, profile, avatar, ownerName}) {
+function BrandCard({img, brandName, profile, avatar, ownerName, owneraddress, nftType}) {
+    const history = useHistory();
     return (
         <StyledCard>
             <img src={img} width={540} height={332} alt=""/>
@@ -114,10 +115,12 @@ function BrandCard({img, brandName, profile, avatar, ownerName}) {
                 <div className="owner">
                     <img src={avatar} className='avatar' alt=""/>
                     <span className="text">Owned by</span>
-                    <Link to={"/"}>{ownerName}</Link>
+                    <Link to={`/`}>{ownerName}</Link>
                 </div>
                 <div className="button_visit">
-                    <Button primary width={'162px'}>Visit Store</Button>
+                    <Button primary width={'162px'} onClick={() => {
+                        history.push(`/AirHome/${owneraddress}/${nftType}/Image`)
+                    }}>Visit Store</Button>
                 </div>
             </div>
         </StyledCard>

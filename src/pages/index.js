@@ -67,7 +67,7 @@ export default function Index() {
                 <Route exact path='/MyP2P' render={() => { return <Redirect to='/MyP2P/Requests' /> }} />
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
 
-                <Route exact path='/AirHome/:airId/:type' component={AirHome} />
+                <Route exact path='/AirHome/:owner/:nftType/:type' component={AirHome} />
 
                 <Footer />
                 {/* 交易状态模态框 */}

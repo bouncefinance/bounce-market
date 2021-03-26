@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import UpdateTopBarImg from '../Myprofile/MyBrands/updateTopBarImg'
 import edit_white from '@assets/images/icon/edit_white.svg'
-import PagingControls from '../component/Other/PagingControls'
 import PullRadioBox from '@/components/UI-kit/Select/PullRadioBox'
 import Search from '../component/Other/Search'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { CardItem } from '../Marketplace/CardItem'
 
 import example_2 from '@assets/images/example_2.svg'
+import { useQuery } from '@apollo/client'
+import { QueryMyBrandItems } from '@/utils/apollo'
+import { useActiveWeb3React } from '@/web3'
+import useAxios from '@/utils/useAxios'
+import { Controller } from '@/utils/controller'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -159,13 +163,33 @@ export function AirHome() {
   const history = useHistory()
   const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
   const run = () => { }
+
+  const { active, account } = useActiveWeb3React();
+  const { type, owner, nftType } = useParams();
+  const { sign_Axios } = useAxios();
+  
+  const { data } = useQuery(QueryMyBrandItems, 
+    {variables: {owner:  owner}
+  })
+
+  useEffect(() => {
+    if (!active) return;
+    sign_Axios.post(Controller.brands.getaccountbrands, {
+      accountaddress: owner
+    })
+    .then(res => {
+      const data = res.data.data;
+      
+    })
+  }, [active, owner, account]);
+
   // test data
   const brandInfo = {
     bandimgurl: `https://market-test.bounce.finance/pngfileget/blob-1616653069.png`
   }
   const userImage = `https://market-test.bounce.finance/jpgfileget/%E6%B3%B0%E5%8B%922-1616658302.jpg`
 
-  const type = 'Images'
+  
   const renderListByType = (type) => {
     switch (type) {
       case 'Images':
@@ -196,7 +220,7 @@ export function AirHome() {
       <div className="userinfo">
         <img src={userImage} alt="" />
         <h2>Unnamed User</h2>
-        <p>0x33a9b7ed8c71c6910fb4a9bc41de2391b74c2976</p>
+        <p>{owner}</p>
       </div>
     </div>
     <MarketplaceStyled>
@@ -240,10 +264,8 @@ export function AirHome() {
 
       {renderListByType(type)}
 
-      <PagingControls />
+      {/* <PagingControls /> */}
     </MarketplaceStyled>
     <UpdateTopBarImg open={openUpdateTopBarImg} setOpen={setOpenUpdateTopBarImg} run={run} />
   </AirHomeStyled>
 }
-
-// http://localhost:8889/AirHome/88/Images
