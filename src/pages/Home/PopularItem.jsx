@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const PopularItemStyled = styled.div`
     width: 262px;
@@ -12,10 +13,6 @@ const PopularItemStyled = styled.div`
         margin-right: 0px;
     }
 
-    img{
-        width: 262px;
-        height: 262px;
-    }
 
 
     .info_box{
@@ -37,10 +34,10 @@ const PopularItemStyled = styled.div`
     
 `
 
-export default function PopularItem({ src, name, price }) {
+export default function PopularItem ({ src, name, price }) {
     return (
         <PopularItemStyled>
-            <img src={src} alt="" />
+            <AutoStretchBaseWidthOrHeightImg src={src} width={262} height={262} />
             <div className='info_box'>
                 <p>{name}</p>
                 <span>{price}</span>

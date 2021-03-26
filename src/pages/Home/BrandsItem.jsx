@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const BrandsItemStyled = styled.div`
     width: 262px;
@@ -12,10 +13,6 @@ const BrandsItemStyled = styled.div`
         margin-right: 0px;
     }
 
-    img{
-        width: 262px;
-        height: 180px;
-    }
 
 
     .info_box{
@@ -34,10 +31,10 @@ const BrandsItemStyled = styled.div`
     
 `
 
-export default function BrandsItem({ src, name }) {
+export default function BrandsItem ({ src, name }) {
     return (
         <BrandsItemStyled>
-            <img src={src} alt="" />
+            <AutoStretchBaseWidthOrHeightImg src={src} width={262} height={180} />
             <div className='info_box'>
                 <span>{name}</span>
             </div>

@@ -14,7 +14,7 @@ import BounceERC1155WithSign from '@/web3/abi/BounceERC1155WithSign.json'
 import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import { numToWei } from "@/utils/useBigNumber";
-import useNftInfo from "@/utils/useNftInfo";
+import useNftInfo from "@/utils/useToken";
 
 const SummaryWrapper = styled.div`
 	grid-area: Summary;

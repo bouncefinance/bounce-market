@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import upload_img from '@assets/images/upload_img.svg'
 import upload_video from '@assets/images/upload_video.svg'
 import upload_avatar from '@assets/images/upload_avatar.svg'
-import {myContext} from '@/redux/index.js'
+import { myContext } from '@/redux/index.js'
 const UploadStyled = styled.div`
     display: flex;
     margin-top: 22px;
@@ -69,7 +69,7 @@ export default function Upload ({
     width = '240px',
     height = '160px',
 }) {
-    const {dispatch} = useContext(myContext);
+    const { dispatch } = useContext(myContext);
     const [coverSrc, setCoverSrc] = useState(upload_img)
     const [infoTitle, setInfoTitle] = useState(defaltInfoTitle)
     const [infoTip, setInfoTip] = useState([
@@ -129,14 +129,14 @@ export default function Upload ({
             onFileChange && onFileChange(formData, file)
             // setFormData(formData)
         } else {
-            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"The file format you selected is incorrect"});
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "The file format you selected is incorrect" });
         }
     }
 
     // 'https://account.bounce.finance:16000/api/v1/fileupload'
 
     return (
-        <UploadStyled  width={width} height={height} >
+        <UploadStyled width={width} height={height} >
             <div className={`left_img ${type}`}>
                 <img src={coverSrc} alt="" />
                 <input disabled={disabled || lockInput} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" />
@@ -150,3 +150,5 @@ export default function Upload ({
         </UploadStyled>
     )
 }
+
+export const UploadStyle = UploadStyled
