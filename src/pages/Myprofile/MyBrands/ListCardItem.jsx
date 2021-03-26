@@ -65,21 +65,22 @@ const AddCardItemStyled = styled(CardItemStyled)`
     }
 `
 
-export function AddCardItem () {
+export function AddCardItem ({ run, hasAddressButNotBrand, brandAddress, isCreate }) {
     const [showCreateModal, setShowCreateModal] = useState(false)
 
     return (
         <>
             <AddCardItemStyled>
-                {/* <img src={img_addItem} alt="" /> */}
                 <AutoStretchBaseWidthOrHeightImg src={img_addItem} widgth={262} height={180} />
                 <div className="create_wrapper">
-                    <Button value='Create' onClick={() => {
+                    {isCreate ? <Button value='Create' onClick={() => {
                         setShowCreateModal(true)
-                    }} />
+                    }} /> : <div style={{ opacity: 0.5 }}>
+                        <Button value='Create' />
+                    </div>}
                 </div>
             </AddCardItemStyled>
-            <AddNewBrandstModal open={showCreateModal} setOpen={setShowCreateModal} />
+            <AddNewBrandstModal run={run} hasAddressButNotBrand={hasAddressButNotBrand} brandAddress={brandAddress} open={showCreateModal} setOpen={setShowCreateModal} />
         </>
     )
 }

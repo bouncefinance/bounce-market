@@ -40,7 +40,7 @@ const AddNewBrandstModalStyled = styled.div`
 
 `
 
-export default function AddNewBrandstModal ({ open, setOpen }) {
+export default function AddNewBrandstModal ({ run, hasAddressButNotBrand, brandAddress, open, setOpen }) {
     const { active, library, chainId, account } = useActiveWeb3React()
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
@@ -96,6 +96,10 @@ export default function AddNewBrandstModal ({ open, setOpen }) {
             }).then((imgUrl) => {
                 setBtnLock(true)
                 // 第二步：调用工厂合约创建一个子合约
+                if (hasAddressButNotBrand) {
+                    uploadData(imgUrl, brandAddress)
+                    return
+                }
                 // console.log(nftType)
                 const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
                 const _name = formData.Brand_Name
@@ -177,6 +181,8 @@ export default function AddNewBrandstModal ({ open, setOpen }) {
                 getBrandList();
                 setBtnLock(false);
                 // alert('Brand 创建成功')
+                setOpen(false)
+                run && run()
             } else {
                 setBtnLock(false);
                 // alert('服务器端 创建失败')
