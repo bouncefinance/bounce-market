@@ -60,6 +60,7 @@ export default function Index () {
             setbrandAddContract(addressNull)
             setbrandAddress(address)
         })
+        // eslint-disable-next-line
     }, [active])
     const hasAddressButNotBrand = brand_list.length === 0 && brandAddContract
     return (

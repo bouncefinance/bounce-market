@@ -16,6 +16,7 @@ import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
 import { QueryItesms } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
+import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -106,7 +107,7 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export default function Marketplace() {
+export default function Marketplace () {
   const { type } = useParams()
   const history = useHistory()
   const { active } = useActiveWeb3React()
@@ -118,10 +119,12 @@ export default function Marketplace() {
   const [isSet, setIsSet] = useState(false);
   const [channel, setChannel] = useState('');
 
+  const [loading, setLoding] = useState(true)
+
   useEffect(() => {
     if (!active) return
-    
-    if ( data && !isSet) {
+
+    if (data && !isSet) {
       const bounce721Items = data.bounce721Items.map(item => item.tokenId);
       const bounce1155Items = data.bounce1155Items.map(item => item.tokenId);
       const list = bounce721Items.concat(bounce1155Items);
@@ -130,13 +133,14 @@ export default function Marketplace() {
         category: type,
         channel: channel
       })
-      .then(res => {
-        if (res.status === 200 && res.data.code === 1) {
-          setIsSet(true);
-          setTokenList(res.data.data);
-        }
-      })
-      .catch(() =>{})
+        .then(res => {
+          if (res.status === 200 && res.data.code === 1) {
+            setIsSet(true);
+            setTokenList(res.data.data);
+            setLoding(false)
+          }
+        })
+        .catch(() => { })
     }
   }, [active, data, type, channel, isSet, sign_Axios])
 
@@ -220,7 +224,7 @@ export default function Marketplace() {
         return <ul className={`list_wrapper ${type}`}>
           {tokenList.map((item, index) => {
             return <li key={index}>
-               <CardItem
+              <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.id}
@@ -272,6 +276,7 @@ export default function Marketplace() {
         }} />
       </div>
 
+      {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
       {renderListByType(type)}
 
       {/* <PagingControls /> */}
