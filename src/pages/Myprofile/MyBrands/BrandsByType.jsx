@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router'
 import styled from 'styled-components'
 import Modal from '@components/Modal/Modal'
-import { TextInput, TextAreaInput, Button, } from '@components/UI-kit'
+import { TextInput, TextAreaInput, Button, Upload } from '@components/UI-kit'
 import { myContext } from '@/redux'
 import useAxios from '@utils/useAxios.js'
 import { CardItem, AddCardItem } from './CardItem'
@@ -24,6 +24,8 @@ import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
 import { QueryBrandItems } from '@/utils/apollo'
+import UpdateTopBarImg from './updateTopBarImg'
+import { ImgToUrl } from '@/utils/imgToUrl'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -49,6 +51,7 @@ const BrandsByTypeStyled = styled.div`
         background: linear-gradient(154.16deg, #306AFF 6.12%, #3E74FE 49.44%, #003BD3 89.29%);
         position: relative;
         margin-top: 16px;
+        background-size: 100%!important;
         button{
             background: none;
             width: 124px;
@@ -213,13 +216,17 @@ export default function BrandsByType () {
     const { brandInfo, run } = useBrandInfo(brandId)
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
+    const [fileData, setFileData] = useState(null)
+
+    const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
     // ----edit----
     const [isEdit, setIsEdit] = useState(false)
     const [editFormData, setEditFormData] = useState({
         brandname: brandInfo.brandname,
         description: brandInfo.description,
-        ownername: state.UserInfo.username,
+        ownername: state.userInfo.username,
         id: brandId | 0,
+        imgurl: '',
     })
     const [editBtnText, setEditBtnText] = useState('Save')
     const [inputDisable, setInputDisable] = useState(false)
@@ -230,10 +237,15 @@ export default function BrandsByType () {
         type: 'error',
     })
     const handelEditSubmit = async () => {
+        if (!editFormData.brandname || !editFormData.description) {
+            return
+        }
+        const imgurl = await ImgToUrl(sign_Axios, fileData)
         setBtnLock(true)
         setInputDisable(true)
         setEditBtnText('Submitting ...')
-        const response = await sign_Axios.post(Controller.brands.updatebrandbyid, editFormData)
+        
+        const response = await sign_Axios.post(Controller.brands.updatebrandbyid, { ...editFormData, imgurl })
         setBtnLock(false)
         setInputDisable(false)
         setEditBtnText('Save')
@@ -314,8 +326,9 @@ export default function BrandsByType () {
                 </button>
             </div>
 
-            <div className='bg_wrapper'>
-                <button>
+            <div className='bg_wrapper' style={brandInfo.bandimgurl ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
+                {/* <div className='bg_wrapper' style={{ backgroundSize: '100%', background: `url(https://market-test.bounce.finance/pngfileget/blob-1616642351.png) center center no-repeat` }}> */}
+                <button onClick={() => setOpenUpdateTopBarImg(true)}>
                     <img src={edit_white} alt="" />
                     <p>Change</p>
                 </button>
@@ -335,6 +348,7 @@ export default function BrandsByType () {
                             ...editFormData,
                             brandname: brandInfo.brandname,
                             description: brandInfo.description,
+                            imgurl: brandInfo.imgurl
                         })
                         setIsEdit(true)
                     }}>
@@ -392,6 +406,13 @@ export default function BrandsByType () {
                             setEditFormData({ ...editFormData, description })
                         }}
                     />
+                    <Upload type='image'
+                        width='200px'
+                        height='200px'
+                        defaultValue={editFormData.imgurl}
+                        lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
+                            setFileData(formData)
+                        }} />
                     <div className="button_group">
                         <Button height='48px' width='302px' onClick={() => setIsEdit(false)}>Cancel</Button>
                         <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelEditSubmit}>{editBtnText}</Button>
@@ -406,6 +427,7 @@ export default function BrandsByType () {
                 autoHideDuration={2000}
             >
             </Snackbar>
+            {<UpdateTopBarImg open={openUpdateTopBarImg} setOpen={setOpenUpdateTopBarImg} run={run} />}
         </BrandsByTypeStyled>
     )
 }

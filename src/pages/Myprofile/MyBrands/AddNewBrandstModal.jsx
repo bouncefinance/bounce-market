@@ -10,6 +10,7 @@ import BounceNFTFactory from '@/web3/abi/BounceNFTFactory.json'
 import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useBrandList } from './useHook'
 
 const AddNewBrandstModalStyled = styled.div`
     width: 1100px;
@@ -39,7 +40,7 @@ const AddNewBrandstModalStyled = styled.div`
 
 `
 
-export default function AddNewBrandstModal({ open, setOpen }) {
+export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAddress, open, setOpen }) {
     const { active, library, chainId, account } = useActiveWeb3React()
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
@@ -50,10 +51,12 @@ export default function AddNewBrandstModal({ open, setOpen }) {
     const [btnText, setBtnText] = useState('Save')
     const [nftType, setNftType] = useState('ERC-721')
     const { showTransferByStatus } = useTransferModal()
+    const { getBrandList } = useBrandList()
     // const [brandAddress, setBrandAddress] = useState(false)
 
     useEffect(() => {
         if (!active) return
+        // eslint-disable-next-line
     }, [active])
 
     useEffect(() => {
@@ -74,6 +77,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
         } else {
             setBtnLock(true)
         }
+        // eslint-disable-next-line
     }, [formData, fileData])
 
     const handelSubmit = () => {
@@ -94,6 +98,10 @@ export default function AddNewBrandstModal({ open, setOpen }) {
             }).then((imgUrl) => {
                 setBtnLock(true)
                 // 第二步：调用工厂合约创建一个子合约
+                if (hasAddressButNotBrand) {
+                    uploadData(imgUrl, brandAddress)
+                    return
+                }
                 // console.log(nftType)
                 const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
                 const _name = formData.Brand_Name
@@ -116,26 +124,32 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                         })
                         .on('error', (err, receipt) => {
                             // setBidStatus(errorStatus)
-                            showTransferByStatus('errorStatus')
+                            setBtnLock(false);
+                            setBtnText("Try Again");
+                            setInputDisable(false);
+                            // showTransferByStatus('errorStatus')
                         })
-                }else if(nftType === 'ERC-1155'){
+                } else if (nftType === 'ERC-1155') {
                     Factory_CT.methods.createBrand1155(_uri).send({ from: account })
-                    .on('transactionHash', hash => {
-                        setOpen(false)
-                        // setBidStatus(pendingStatus)
-                        showTransferByStatus('pendingStatus')
-                    })
-                    .on('receipt', async (_, receipt) => {
-                        // console.log('bid fixed swap receipt:', receipt)
-                        // setBidStatus(successVotedStatus)
-                        showTransferByStatus('successVotedStatus')
-                        const brandAddress = await getCreatedBrand()
-                        uploadData(imgUrl, brandAddress)
-                    })
-                    .on('error', (err, receipt) => {
-                        // setBidStatus(errorStatus)
-                        showTransferByStatus('errorStatus')
-                    })
+                        .on('transactionHash', hash => {
+                            setOpen(false)
+                            // setBidStatus(pendingStatus)
+                            showTransferByStatus('pendingStatus')
+                        })
+                        .on('receipt', async (_, receipt) => {
+                            // console.log('bid fixed swap receipt:', receipt)
+                            // setBidStatus(successVotedStatus)
+                            showTransferByStatus('successVotedStatus')
+                            const brandAddress = await getCreatedBrand()
+                            uploadData(imgUrl, brandAddress)
+                        })
+                        .on('error', (err, receipt) => {
+                            // setBidStatus(errorStatus)
+                            // showTransferByStatus('errorStatus');
+                            setBtnLock(false);
+                            setBtnText("Try Again");
+                            setInputDisable(false);
+                        })
                 }
 
             }).catch(function (error) {
@@ -161,17 +175,24 @@ export default function AddNewBrandstModal({ open, setOpen }) {
             description: formData.Description,
             imgurl: imgUrl,
             owneraddress: account,
-            ownername: state.UserInfo.username
+            ownername: state.userInfo.username
         }
 
         sign_Axios.post('/api/v2/main/auth/addbrand', params).then(res => {
             if (res.status === 200 && res.data.code === 1) {
-                alert('Brand 创建成功')
+                getBrandList();
+                setBtnLock(false);
+                // alert('Brand 创建成功')
+                setOpen(false)
+                run && run()
             } else {
-                alert('服务器端 创建失败')
+                setBtnLock(false);
+                // alert('服务器端 创建失败')
             }
         }).catch(err => {
-            alert('Brand 创建失败')
+            setBtnLock(false);
+            setBtnText("Try Again");
+            // alert('Brand 创建失败')
         })
     }
 
@@ -240,7 +261,7 @@ export default function AddNewBrandstModal({ open, setOpen }) {
                         }}>Cancel</Button>
                         <div className="wrap">
                             <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
-                            {inputDisable &&  <CircularProgress className="buttonProgress"/>}
+                            {inputDisable && <CircularProgress className="buttonProgress" />}
                         </div>
                     </div>
                 </AddNewBrandstModalStyled>

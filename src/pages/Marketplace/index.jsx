@@ -218,10 +218,10 @@ export default function Marketplace() {
         return <ul className={`list_wrapper ${type}`}>
           {tokenList.map((item, index) => {
             return <li key={index}>
-              <CardItem
+               <CardItem
                 cover={item.fileurl}
-                name={'Image Name'}
-                cardId={index + 1}
+                name={item.itemname}
+                cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
               />
             </li>

@@ -2,8 +2,8 @@ import Web3 from "web3";
 import { BigNumber } from 'bignumber.js';
 BigNumber.config({ EXPONENTIAL_AT: [-30, 30] })
 
-export const getWei =  (decimals) => {
-  switch (decimals){
+export const getWei = (decimals) => {
+  switch (decimals) {
     case '0':
       return 'nanoether'
     case '1':
@@ -39,11 +39,11 @@ export const weiToNumber = (value, decimals, fixed = 6) => {
 };
 
 export const weiToNum = (value, decimals = 18, fixed = 6) => {
-  return new BigNumber(fromWei(value, decimals).toFixed(fixed === -1 ? null : fixed)).toNumber().toString()
+  return new BigNumber(fromWei(value, decimals).toFixed(fixed === -1 ? null : fixed, 1)).toNumber().toString()
 };
 
 export const numToWei = (value, decimals = 18) => {
-  return new BigNumber(toWei(value, decimals).toNumber().toFixed(6)).toString()
+  return new BigNumber(toWei(value, decimals).toNumber().toFixed(6, 1)).toString()
 };
 
 export const weiDiv = (value1, value2, fixed = 6) => {

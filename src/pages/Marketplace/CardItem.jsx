@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
+import { useHistory } from 'react-router'
+import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -89,11 +91,13 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId }) {
+export function CardItem ({ cover, name, price, cardId }) {
+    const history = useHistory()
 
     return (
         <CardItemStyled>
-            <img src={cover} alt="" />
+            {/* <img src={cover} alt="" /> */}
+            <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />
             <div className="item_wrapper">
                 <div className='info_wrapper'>
                     <div>
@@ -104,7 +108,11 @@ export function CardItem({ cover, name, price, cardId }) {
                 </div>
 
                 <div className="button_group">
-                    <Button primary width={'162px'}>Show More</Button>
+                    <Button primary width={'162px'} onClick={() => {
+                        const pathname = window.location.pathname
+                        // TODO Buy poolId
+                        history.push(`${pathname}/${4}`)
+                    }}>Show More</Button>
                 </div>
             </div>
 
@@ -137,7 +145,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem({ cover, name, price, cardId }) {
+export function VideoCardItem ({ cover, name, price, cardId }) {
 
     return (
         <VideoCardItemStyled>
@@ -185,7 +193,7 @@ const AudioCardItemStyled = styled(CardItemStyled)`
        }
 `
 
-export function AudioCardItem({ cover, name, price, cardId, describe }) {
+export function AudioCardItem ({ cover, name, price, cardId, describe }) {
 
     return (
         <AudioCardItemStyled>

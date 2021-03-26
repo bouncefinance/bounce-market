@@ -8,6 +8,8 @@ import Test from '../test'
 
 import Home from './Home'
 import Marketplace from './Marketplace'
+import Buy from './Buy'
+
 import Brands from './Brands'
 import BrandGoods from './BrandGoods'
 import P2P from './P2P'
@@ -25,6 +27,7 @@ import MyP2P from './Myprofile/Point-2-Point'
 import TransferStatusModal from '@components/Modal/TransferStatusModal'
 import ModalMessage from '@components/Modal/ModalMessage'
 import ErrorNotification from '@components/Modal/ErrorNotification'
+import { AirHome } from './AirHome'
 
 export default function Index() {
 
@@ -42,6 +45,7 @@ export default function Index() {
                 <Route exact path='/Home' component={Home} />
                 <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/Image' /> }} />
                 <Route exact path='/Marketplace/:type' component={Marketplace} />
+                <Route exact path='/Marketplace/:type/:poolId' component={Buy} />
 
                 <Route exact path='/Brands' component={Brands} />
                 <Route exact path='/Brands/:brandId/:type' component={BrandGoods} />
@@ -62,6 +66,8 @@ export default function Index() {
 
                 <Route exact path='/MyP2P' render={() => { return <Redirect to='/MyP2P/Requests' /> }} />
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
+
+                <Route exact path='/AirHome/:airId/:type' component={AirHome} />
 
                 <Footer />
                 {/* 交易状态模态框 */}
