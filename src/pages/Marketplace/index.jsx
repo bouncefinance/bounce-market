@@ -136,13 +136,16 @@ export default function Marketplace () {
       })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          const list = res.data.data.map((item, index) => ({
-            ...item,
-            poolId: pools[index].poolId,
-            price: Web3.utils.fromWei(pools[index].price)
-          }))
+          const list = res.data.data.map((item, index) => {
+            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            return {
+              ...item,
+              poolId: poolInfo.poolId,
+              price: Web3.utils.fromWei(pools[index].price)
+            }
+          })
           setIsSet(true);
-          setTokenList(list);
+          setTokenList(list.sort((a, b) => a.poolId - b.poolId));
         }
       })
       .catch(() =>{})
