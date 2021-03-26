@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
 import AddNewBrandstModal from './AddNewBrandstModal'
 import img_addItem from './assets/addItem_img.png'
+import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -39,14 +40,14 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, count }) {
+export function CardItem ({ cover, name, count }) {
 
     return (
         <CardItemStyled>
-            <img src={cover} alt="" />
+            <AutoStretchBaseWidthOrHeightImg src={cover} widgth={262} height={180} />
             <div className="item_wrapper">
                 <span>{name}</span>
-                <p>{count} {count > 1?'items':'item'}</p>
+                <p>{count} {count > 1 ? 'items' : 'item'}</p>
             </div>
         </CardItemStyled>
     )
@@ -64,13 +65,14 @@ const AddCardItemStyled = styled(CardItemStyled)`
     }
 `
 
-export function AddCardItem() {
+export function AddCardItem () {
     const [showCreateModal, setShowCreateModal] = useState(false)
 
     return (
         <>
             <AddCardItemStyled>
-                <img src={img_addItem} alt="" />
+                {/* <img src={img_addItem} alt="" /> */}
+                <AutoStretchBaseWidthOrHeightImg src={img_addItem} widgth={262} height={180} />
                 <div className="create_wrapper">
                     <Button value='Create' onClick={() => {
                         setShowCreateModal(true)
