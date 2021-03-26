@@ -32,6 +32,7 @@ function Buy() {
 	const { active, library, account, chainId } = useActiveWeb3React()
 	const [nftInfo, setNftInfo] = useState({})
 	const { poolsInfo } = useHook(poolId)
+	const [isLoading, setIsLoading] = useState(false)
 
 	useEffect(() => {
 		if (!active || poolsInfo === {}) return
@@ -46,8 +47,9 @@ function Buy() {
 
 
 	const handelBid = async () => {
-		console.log(poolId, poolsInfo.amountTotal0)
-		if (nftInfo.standard === 1) {
+		console.log(nftInfo, poolsInfo)
+		setIsLoading(true)
+		if (poolsInfo.nftType === '0') {
 			const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
 
 			BounceFixedSwapNFT_CT.methods.swap(poolId, poolsInfo.amountTotal0)
@@ -130,19 +132,23 @@ function Buy() {
 					<span className="BorderBottomGap"></span>
 
 					<div className="ButtonGroup">
-						<Button
+						{isLoading ? <Button
+							primary
+							value={'Loading, Please Wait ...'}
+							disabled={true}
+						/> : <Button
 							primary
 							value={poolsInfo.status && poolsInfo.status === 'Live' ? 'Place Bid' : poolsInfo.status === 'Filled' ? 'Sold Out' : 'Loading Status ...'}
 							disabled={poolsInfo.status !== 'Live'}
 							onClick={handelBid}
-						/>
+						/>}
 						{/* 英式拍 一口价 */}
 						{poolsInfo.poolType === 'English-Auction' && <Button value="Buy New For 1 ETH ransfer" />}
 					</div>
 
 					<span className="str_Offers">Offers</span>
 
-                    <OffersTable/>
+					<OffersTable />
 				</PageMiddleRight>
 			</PageMiddle>
 

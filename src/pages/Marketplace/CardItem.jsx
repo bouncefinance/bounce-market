@@ -110,8 +110,7 @@ export function CardItem ({ cover, name, price, cardId }) {
                 <div className="button_group">
                     <Button primary width={'162px'} onClick={() => {
                         const pathname = window.location.pathname
-                        // TODO Buy poolId
-                        history.push(`${pathname}/${4}`)
+                        history.push(`${pathname}/${cardId}`)
                     }}>Show More</Button>
                 </div>
             </div>

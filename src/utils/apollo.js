@@ -11,6 +11,8 @@ export const QueryTradePools = gql`
   query {
     tradePools {
       tokenId
+      poolId
+      price
     }
   }
 `

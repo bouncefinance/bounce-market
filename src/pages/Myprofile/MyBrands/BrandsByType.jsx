@@ -20,12 +20,12 @@ import nav_image from '@assets/images/icon/nav_image.svg'
 import img_example_3 from '@assets/images/example_3.svg'
 import { useBrandInfo } from './useHook'
 import Snackbar from '@material-ui/core/Snackbar';
-import UpdateTopBarImg from './updateTopBarImg'
-import { ImgToUrl } from '@/utils/imgToUrl'
 import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
 import { QueryBrandItems } from '@/utils/apollo'
+import UpdateTopBarImg from './updateTopBarImg'
+import { ImgToUrl } from '@/utils/imgToUrl'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -240,12 +240,13 @@ export default function BrandsByType () {
         if (!editFormData.brandname || !editFormData.description) {
             return
         }
-        // const imgurl = await ImgToUrl(sign_Axios, fileData)
-        await ImgToUrl(sign_Axios, fileData)
+        const imgurl = await ImgToUrl(sign_Axios, fileData)
+        // await ImgToUrl(sign_Axios, fileData)
         setBtnLock(true)
         setInputDisable(true)
         setEditBtnText('Submitting ...')
-        const response = await sign_Axios.post(Controller.brands.updatebrandbyid, editFormData)
+        
+        const response = await sign_Axios.post(Controller.brands.updatebrandbyid, { ...editFormData, imgurl })
         setBtnLock(false)
         setInputDisable(false)
         setEditBtnText('Save')

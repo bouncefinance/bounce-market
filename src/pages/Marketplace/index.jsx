@@ -16,6 +16,7 @@ import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
 import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
+import Web3 from 'web3'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -122,7 +123,8 @@ export default function Marketplace() {
     if (!active) return
     
     if ( data && !isSet) {
-      const list = data.tradePools.map(item => item.tokenId); 
+      const pools = data.tradePools;
+      const list = pools.map(item => item.tokenId); 
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         category: type,
@@ -130,8 +132,13 @@ export default function Marketplace() {
       })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
+          const list = res.data.data.map((item, index) => ({
+            ...item,
+            poolId: pools[index].poolId,
+            price: Web3.utils.fromWei(pools[index].price)
+          }))
           setIsSet(true);
-          setTokenList(res.data.data);
+          setTokenList(list);
         }
       })
       .catch(() =>{})
@@ -148,7 +155,7 @@ export default function Marketplace() {
               <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
-                cardId={item.id}
+                cardId={item.poolId}
                 price={!!item.price ? `${item.price} ETH` : `--`}
               />
             </li>

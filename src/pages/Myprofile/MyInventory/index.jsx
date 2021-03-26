@@ -106,7 +106,6 @@ export default function Index() {
           <li>
             <AddCardItem />
           </li>
-
           {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem 
