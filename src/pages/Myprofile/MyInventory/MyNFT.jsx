@@ -253,7 +253,6 @@ function MyNFT() {
 		// eslint-disable-next-line
 	}, [active, nftId]);
 	
-
 	return (
 		<Page>
 			<BreadcrumbNav className="breadcrumb_Nav">

@@ -8,6 +8,7 @@ import NFTInfoDropdown from "./components/NFTInfoDropdown";
 import { DetailsContent, TokenInfoContent } from "./components/DropdownContent";
 import OffersTable from "./components/OffersTable";
 import TradeTable from "./components/TradeTable";
+
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 
 import icon_altAvatar from "./assets/icon_altAvatar.svg";
@@ -17,13 +18,14 @@ import { getFixedSwapNFT } from "@/web3/address_list/contract";
 import useTransferModal from "@/web3/useTransferModal";
 import useHook from "./useHook";
 import { weiMul, weiToNum } from "@/utils/useBigNumber";
+import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
 
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
 
 
 
-function Buy() {
+function Buy () {
 	// const history = useHistory();
 	const { poolId } = useParams()
 	const { exportNftInfo } = useNftInfo()
@@ -31,6 +33,7 @@ function Buy() {
 	const { active, library, account, chainId } = useActiveWeb3React()
 	const [nftInfo, setNftInfo] = useState({})
 	const { poolsInfo } = useHook(poolId)
+	const [isLoading, setIsLoading] = useState(false)
 
 	useEffect(() => {
 		if (!active || poolsInfo === {}) return
@@ -45,8 +48,9 @@ function Buy() {
 
 
 	const handelBid = async () => {
-		console.log(poolId, poolsInfo.amountTotal0)
-		if (nftInfo.standard === 1) {
+		console.log(nftInfo, poolsInfo)
+		setIsLoading(true)
+		if (poolsInfo.nftType === '0') {
 			const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
 
 			BounceFixedSwapNFT_CT.methods.swap(poolId, poolsInfo.amountTotal0)
@@ -75,7 +79,8 @@ function Buy() {
 
 			<PageMiddle>
 				<PageMiddleLeft>
-					<img className="NFTImg" src={nftInfo.fileurl} alt="" />
+					{/* <img className="NFTImg" src={nftInfo.fileurl} alt="" /> */}
+					<AutoStretchBaseWidthOrHeightImg src={nftInfo.fileurl} width={416} height={416} />
 
 					<Description>
 						<span className="description">Description</span>
@@ -129,12 +134,16 @@ function Buy() {
 					<span className="BorderBottomGap"></span>
 
 					<div className="ButtonGroup">
-						<Button
+						{isLoading ? <Button
+							primary
+							value={'Loading, Please Wait ...'}
+							disabled={true}
+						/> : <Button
 							primary
 							value={poolsInfo.status && poolsInfo.status === 'Live' ? 'Place Bid' : poolsInfo.status === 'Filled' ? 'Sold Out' : 'Loading Status ...'}
 							disabled={poolsInfo.status !== 'Live'}
 							onClick={handelBid}
-						/>
+						/>}
 						{/* 英式拍 一口价 */}
 						{poolsInfo.poolType === 'English-Auction' && <Button value="Buy New For 1 ETH ransfer" />}
 					</div>
@@ -201,7 +210,7 @@ const Description = styled.div`
 	grid-area: Description;
 
 	display: grid;
-	grid-template-rows: 28px 37px;
+	grid-template-rows: 40px 49px;
 	grid-template-areas:
 		"DescriptionTitle"
 		"DescriptionContent";
@@ -213,12 +222,11 @@ const Description = styled.div`
 		font-size: 12px;
 		line-height: 16px;
 		display: flex;
-		align-items: center;
+		align-items: end;
 		color: #1f191b;
 		opacity: 0.5;
 
 		grid-area: DescriptionTitle;
-
         padding-top: 22px;
         padding-bottom: 14px;
 	}
@@ -235,6 +243,9 @@ const Description = styled.div`
 		color: #1f191b;
 
 		grid-area: DescriptionContent;
+
+        padding-top: 12px;
+        padding-bottom: 21px;
 	}
 `;
 

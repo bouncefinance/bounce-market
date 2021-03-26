@@ -65,6 +65,12 @@ export default function useToken() {
         return approveRes
     }
 
+    // const getBalanceOf = async (tokenContract, tarContract, accountAddr = account) => {
+    //     const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, tokenContract)
+    //     const approveRes = await BounceERC1155WithSign_CT.methods.isApprovedForAl(accountAddr, tarContract).call()
+    //     return approveRes
+    // }
+
     const exportErc20Info = async (tokenAddr) => {
         if (tokenAddr === ZERO_ADDRESS) {
             const web3 = new Web3(library.provider)
@@ -107,7 +113,7 @@ export default function useToken() {
         }
         const res = await axios.get('https://dncapi.bqrank.net/api/v2/Coin/market_ticker?page=1&pagesize=1&code=' + code)
         if (res.data.code === 200) {
-            console.log(res)
+            // console.log(res)
             price = res.data.data[0].price
         }
         return price
