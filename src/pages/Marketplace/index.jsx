@@ -17,7 +17,7 @@ import { useQuery } from '@apollo/client'
 import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import Web3 from 'web3'
-import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
+// import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 // import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const MarketplaceStyled = styled.div`

@@ -70,7 +70,7 @@ function InputPrice({
 
 				{ifInputAmount && (
 					<div className="Amount">
-						<span className="str_Buy">Buy:</span>
+						<span className="str_Buy">Amount: </span>
 						<input
 							className="InputAmount"
 							type="text"
@@ -78,7 +78,7 @@ function InputPrice({
 							maxLength={18}
 							onChange={(e)=>setAmount(e.target.value)}
 						/>
-						<span className="balance">25/25</span>
+						<span className="balance"> / Your Balance: 10</span>
 					</div>
 				)}
 			</InputRow>
@@ -196,7 +196,7 @@ const InputRow = styled.div`
 		align-items: center;
 		box-sizing: border-box;
 		
-		margin-left: 180px;
+		margin-left: auto;
 
 		input.InputAmount {
 			margin-left: 10px;
