@@ -14,7 +14,7 @@ import nav_video from '@assets/images/icon/nav_video.svg'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
-import { QueryItesms } from '@/utils/apollo'
+import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 
 const MarketplaceStyled = styled.div`
@@ -111,7 +111,7 @@ export default function Marketplace() {
   const history = useHistory()
   const { active } = useActiveWeb3React()
 
-  const { data } = useQuery(QueryItesms)
+  const { data } = useQuery(QueryTradePools)
   const { sign_Axios } = useAxios();
 
   const [tokenList, setTokenList] = useState([]);
@@ -122,9 +122,7 @@ export default function Marketplace() {
     if (!active) return
     
     if ( data && !isSet) {
-      const bounce721Items = data.bounce721Items.map(item => item.tokenId);
-      const bounce1155Items = data.bounce1155Items.map(item => item.tokenId);
-      const list = bounce721Items.concat(bounce1155Items);
+      const list = data.tradePools.map(item => item.tokenId); 
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         category: type,
@@ -143,7 +141,7 @@ export default function Marketplace() {
 
   const renderListByType = (type) => {
     switch (type) {
-      case 'Images':
+      case 'Image':
         return <ul className={`list_wrapper ${type}`}>
           {tokenList.map((item, index) => {
             return <li key={index}>
@@ -151,7 +149,7 @@ export default function Marketplace() {
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.id}
-                price={!!item.price ? `${item.price} ETH` : '--'}
+                price={!!item.price ? `${item.price} ETH` : `--`}
               />
             </li>
           })}

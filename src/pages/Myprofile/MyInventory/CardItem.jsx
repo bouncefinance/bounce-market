@@ -87,7 +87,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, status, nftId }) {
+export function CardItem({ cover, status, nftId, itemname, user }) {
     const history = useHistory()
 
     return (
@@ -97,8 +97,8 @@ export function CardItem({ cover, status, nftId }) {
             </div>
             <div className="content">
                 <div className="info">
-                    <p>Digital Image Name</p>
-                    <span>Cindy Yi</span>
+                    <p>{itemname}</p>
+                    <span>{user}</span>
                 </div>
                 {
                     status === 'Listed' ? <div className='button_group'>
