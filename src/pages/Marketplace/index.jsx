@@ -137,7 +137,7 @@ export default function Marketplace() {
             return {
               ...item,
               poolId: poolInfo.poolId,
-              price: Web3.utils.fromWei(pools[index].price)
+              price: Web3.utils.fromWei(poolInfo.price)
             }
           })
           setIsSet(true);
