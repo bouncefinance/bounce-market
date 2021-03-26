@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 
 import BreadcrumbNav from "./components/BreadcrumbNav";
-import { Button, StubInput } from "@components/UI-kit";
+import { Button } from "@components/UI-kit";
 import NFTInfoDropdown from "./components/NFTInfoDropdown";
 import { DetailsContent, TokenInfoContent } from "./components/DropdownContent";
 import OffersTable from "./components/OffersTable";
@@ -147,12 +147,10 @@ function Buy() {
 						<span className="USDPrice">{poolsInfo.token1 && `$ ${weiMul(poolsInfo.token1.price, weiToNum(poolsInfo.amountTotal1, poolsInfo.token1.decimals))}`}</span>
 					</div>
 
-					<span className="BorderBottomGap"></span>
+					<span className="BorderBottomGap" ></span>
 
+					
 					<div className="ButtonGroup">
-
-						<StubInput />
-						<br />
 
 						{isLoading ? <Button
 							primary

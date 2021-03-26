@@ -26,7 +26,7 @@ function InputPrice({
 	const { getBalance_ERC_1155 } = useToken()
 
 	useEffect(() => {
-		if (!active || !nftInfo) return
+		if (!active || !nftInfo || nftInfo.standard !== 2) return
 		// console.log(nftInfo)
 		const getBalance = async () => {
 			const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)

@@ -59,11 +59,11 @@ export const getEnglishAuctionNFT = (chainID) => {
         case 1:
             return ''
         case 4:
-            return '0x6D00b8C5771ff62D2aA6E69f7b148D48167210bF'
+            return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525'
         case 56:
             return ''
 
         default:
-            return '0x6D00b8C5771ff62D2aA6E69f7b148D48167210bF'
+            return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525'
     }
 }

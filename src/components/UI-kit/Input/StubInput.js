@@ -9,7 +9,6 @@ const StubInputStyled = styled.div`
 export default function StubInput() {
     return (
         <StubInputStyled>
-            <p>Amount</p>
             <input type="text" placeholder={'Amount'}/>
         </StubInputStyled>
     )
