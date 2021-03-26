@@ -55,11 +55,11 @@ export const QueryBrandItems = gql`
 `
 
 export const QueryMyNFT = gql`
-  query nft721Items($user: String!) {
-    nft721Items(user: $user) {
+  query nftItems($user: String!) {
+    nft721Items(where: {user: $user}) {
       tokenId
     }
-    nft1155Items(user: $user) {
+    nft1155Items(where: {user: $user}) {
       tokenId
     }
   }
