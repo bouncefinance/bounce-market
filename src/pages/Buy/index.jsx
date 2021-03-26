@@ -11,11 +11,12 @@ import TradeTable from "./components/TradeTable";
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 
 import icon_altAvatar from "./assets/icon_altAvatar.svg";
-import useNftInfo from "@/utils/useNftInfo";
+import useNftInfo from "@/utils/useToken";
 import { getContract, useActiveWeb3React } from "@/web3";
 import { getFixedSwapNFT } from "@/web3/address_list/contract";
 import useTransferModal from "@/web3/useTransferModal";
 import useHook from "./useHook";
+import { weiMul, weiToNum } from "@/utils/useBigNumber";
 
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
@@ -38,18 +39,18 @@ function Buy() {
 	}, [active, poolsInfo])
 
 	const initShowNftInfo = async () => {
-		const info = await exportNftInfo(poolsInfo._tokenId)
+		const info = await exportNftInfo(poolsInfo.tokenId)
 		setNftInfo(info)
 	}
 
 
 	const handelBid = async () => {
-		console.log(poolId, poolsInfo._amountTotal0)
+		console.log(poolId, poolsInfo.amountTotal0)
 		if (nftInfo.standard === 1) {
 			const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
 
-			BounceFixedSwapNFT_CT.methods.swap(poolId, poolsInfo._amountTotal0)
-				.send({ from: account, value: poolsInfo._amountTotal1 })
+			BounceFixedSwapNFT_CT.methods.swap(poolId, poolsInfo.amountTotal0)
+				.send({ from: account, value: poolsInfo.amountTotal1 })
 				.on('transactionHash', hash => {
 					// setBidStatus(pendingStatus)
 					showTransferByStatus('pendingStatus')
@@ -121,8 +122,8 @@ function Buy() {
 					</span>
 
 					<div className="TopBidStatus">
-						<span className="ETHPrice">0,0799 ETH</span>
-						<span className="USDPrice">($36,52)</span>
+						<span className="ETHPrice">{poolsInfo.token1 && weiToNum(poolsInfo.amountTotal1, poolsInfo.token1.decimals)} {poolsInfo.token1 && poolsInfo.token1.symbol}</span>
+						<span className="USDPrice">{poolsInfo.token1 && `$ ${weiMul(poolsInfo.token1.price, weiToNum(poolsInfo.amountTotal1, poolsInfo.token1.decimals))}`}</span>
 					</div>
 
 					<span className="BorderBottomGap"></span>
@@ -130,10 +131,12 @@ function Buy() {
 					<div className="ButtonGroup">
 						<Button
 							primary
-							value="Place Bid"
+							value={poolsInfo.status && poolsInfo.status === 'Live' ? 'Place Bid' : poolsInfo.status === 'Filled' ? 'Sold Out' : 'Loading Status ...'}
+							disabled={poolsInfo.status !== 'Live'}
 							onClick={handelBid}
 						/>
-						<Button value="Buy New For 1 ETHransfer" />
+						{/* 英式拍 一口价 */}
+						{poolsInfo.poolType === 'English-Auction' && <Button value="Buy New For 1 ETH ransfer" />}
 					</div>
 
 					<span className="str_Offers">Offers</span>

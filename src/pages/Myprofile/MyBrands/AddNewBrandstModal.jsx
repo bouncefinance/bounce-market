@@ -40,7 +40,7 @@ const AddNewBrandstModalStyled = styled.div`
 
 `
 
-export default function AddNewBrandstModal ({ run, hasAddressButNotBrand, brandAddress, open, setOpen }) {
+export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAddress, open, setOpen }) {
     const { active, library, chainId, account } = useActiveWeb3React()
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
@@ -56,6 +56,7 @@ export default function AddNewBrandstModal ({ run, hasAddressButNotBrand, brandA
 
     useEffect(() => {
         if (!active) return
+        // eslint-disable-next-line
     }, [active])
 
     useEffect(() => {
@@ -76,6 +77,7 @@ export default function AddNewBrandstModal ({ run, hasAddressButNotBrand, brandA
         } else {
             setBtnLock(true)
         }
+        // eslint-disable-next-line
     }, [formData, fileData])
 
     const handelSubmit = () => {

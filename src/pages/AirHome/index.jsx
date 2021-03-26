@@ -155,7 +155,7 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export function AirHome () {
+export function AirHome() {
   const history = useHistory()
   const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
   const run = () => { }
@@ -181,6 +181,8 @@ export function AirHome () {
             </li>
           })}
         </ul>
+      default:
+        return
     }
   }
   return <AirHomeStyled>

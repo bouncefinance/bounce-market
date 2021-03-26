@@ -6,7 +6,7 @@ import InputAmount from "./components/InputAmount";
 import SelectDuration from "./components/SelectDuration";
 import Summary from "./components/Summary";
 import pic_NFT1 from "./assets/pic_NFT1.svg";
-import useNftInfo from "@/utils/useNftInfo";
+import useNftInfo from "@/utils/useToken";
 import { useParams } from "react-router-dom";
 import { useActiveWeb3React } from "@/web3";
 
