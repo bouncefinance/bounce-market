@@ -53,7 +53,7 @@ export function useUserInfo() {
         if (!account) return
         getUserInfo()
         // eslint-disable-next-line
-    }, [state.authToken])
+    }, [state.authToken,account])
 
     return { userExisted, userInfo, updateUserInfo,getUserInfo }
 }
