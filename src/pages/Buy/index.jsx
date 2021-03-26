@@ -8,6 +8,7 @@ import NFTInfoDropdown from "./components/NFTInfoDropdown";
 import { DetailsContent, TokenInfoContent } from "./components/DropdownContent";
 import OffersTable from "./components/OffersTable";
 import TradeTable from "./components/TradeTable";
+
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 
 import icon_altAvatar from "./assets/icon_altAvatar.svg";
@@ -141,7 +142,7 @@ function Buy() {
 
 					<span className="str_Offers">Offers</span>
 
-					<OffersTable />
+                    <OffersTable/>
 				</PageMiddleRight>
 			</PageMiddle>
 
@@ -201,7 +202,7 @@ const Description = styled.div`
 	grid-area: Description;
 
 	display: grid;
-	grid-template-rows: 28px 37px;
+	grid-template-rows: 40px 49px;
 	grid-template-areas:
 		"DescriptionTitle"
 		"DescriptionContent";
@@ -213,12 +214,11 @@ const Description = styled.div`
 		font-size: 12px;
 		line-height: 16px;
 		display: flex;
-		align-items: center;
+		align-items: end;
 		color: #1f191b;
 		opacity: 0.5;
 
 		grid-area: DescriptionTitle;
-
         padding-top: 22px;
         padding-bottom: 14px;
 	}
@@ -235,6 +235,9 @@ const Description = styled.div`
 		color: #1f191b;
 
 		grid-area: DescriptionContent;
+
+        padding-top: 12px;
+        padding-bottom: 21px;
 	}
 `;
 
