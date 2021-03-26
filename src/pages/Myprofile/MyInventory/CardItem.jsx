@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
 import GenerateNftModal from './GenerateNftModal'
+import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -87,13 +88,14 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, status, nftId }) {
+export function CardItem ({ cover, status, nftId }) {
     const history = useHistory()
 
     return (
         <CardItemStyled>
             <div className="img_wrapper">
-                <img src={cover} alt="" />
+                {/* <img src={cover} alt="" /> */}
+                <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />
             </div>
             <div className="content">
                 <div className="info">
@@ -135,7 +137,7 @@ const AddCardItemStyle = styled(CardItemStyled)`
     }
 `
 
-export function AddCardItem() {
+export function AddCardItem () {
     const [showGenrateModal, setShowGenrateModal] = useState(false)
 
     return (

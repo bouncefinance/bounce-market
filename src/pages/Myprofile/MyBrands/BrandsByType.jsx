@@ -22,6 +22,7 @@ import { useBrandInfo } from './useHook'
 import Snackbar from '@material-ui/core/Snackbar';
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
+import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -330,7 +331,7 @@ export default function BrandsByType () {
 
             <div className="info_wrapper">
                 <div className="left">
-                    <img src={brandInfo.imgurl} alt="" />
+                    <AutoStretchBaseWidthOrHeightImg src={brandInfo.imgurl} width={270} height={180} />
                 </div>
                 <div className="right">
                     <div className="div">
