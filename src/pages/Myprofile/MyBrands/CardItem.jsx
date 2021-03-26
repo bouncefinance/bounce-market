@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
 import AddNewItemModal from './AddNewItemModal'
 import img_addItem from './assets/addItem.svg'
+import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -39,11 +40,11 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ type, cover, name, price }) {
+export function CardItem ({ type, cover, name, price }) {
 
     return (
         <CardItemStyled type={type}>
-            <img src={cover} alt="" />
+            <AutoStretchBaseWidthOrHeightImg src={cover} widgth={262} height={262} />
             <div className="item_wrapper">
                 <p>{name}</p>
                 <span>{price}</span>
@@ -64,7 +65,7 @@ const AddCardItemStyled = styled(CardItemStyled)`
     }
 `
 
-export function AddCardItem({ type, brandInfo }) {
+export function AddCardItem ({ type, brandInfo }) {
     const [showCreateModal, setShowCreateModal] = useState(false)
 
     return (
