@@ -30,10 +30,10 @@ export const QueryItesms = gql`
 
 export const QueryBrands = gql`
   query {
-    bounce721Brands(first: 3) {
+    bounce721Brands {
       id
     }
-    bounce1155Brands(first: 3) {
+    bounce1155Brands {
       id
     }
   }
