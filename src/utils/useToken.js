@@ -61,15 +61,15 @@ export default function useToken() {
 
     const hasApprove_ERC_1155 = async (tokenContract, tarContract, accountAddr = account) => {
         const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, tokenContract)
-        const approveRes = await BounceERC1155WithSign_CT.methods.isApprovedForAl(accountAddr, tarContract).call()
+        const approveRes = await BounceERC1155WithSign_CT.methods.isApprovedForAll(accountAddr, tarContract).call()
         return approveRes
     }
 
-    // const getBalanceOf = async (tokenContract, tarContract, accountAddr = account) => {
-    //     const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, tokenContract)
-    //     const approveRes = await BounceERC1155WithSign_CT.methods.isApprovedForAl(accountAddr, tarContract).call()
-    //     return approveRes
-    // }
+    const getBalance_ERC_1155 = async (tokenContract, nftId, accountAddr = account) => {
+        const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, tokenContract)
+        const balance = await BounceERC1155WithSign_CT.methods.balanceOf(accountAddr, nftId).call()
+        return balance
+    }
 
     const exportErc20Info = async (tokenAddr) => {
         if (tokenAddr === ZERO_ADDRESS) {
@@ -124,6 +124,7 @@ export default function useToken() {
         hasApprove_ERC_721,
         hasApprove_ERC_1155,
         isOwner_ERC_721,
-        exportErc20Info
+        exportErc20Info,
+        getBalance_ERC_1155
     }
 }

@@ -85,6 +85,7 @@ export default function SellNFT() {
 							title="Price"
 							setPrice={setPrice}
 							setUnit={set_PriceUnit}
+							nftInfo={nftInfo}
 							ifInputAmount={true}
 							setAmount={setAmount}
 							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
@@ -189,6 +190,7 @@ export default function SellNFT() {
 						nftInfo={nftInfo}
 						auctionType="setPrice"
 						price={price}
+						amount={amount || 1}
 						unit={priceUnit}
 						fees={fees}
 					/>
@@ -209,7 +211,6 @@ export default function SellNFT() {
 		}
 	};
 
-	console.log(amount);
 	return (
 		<Page>
 			<BreadcrumbNav>

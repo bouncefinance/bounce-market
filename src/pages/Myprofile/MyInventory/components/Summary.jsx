@@ -13,7 +13,7 @@ import BounceERC1155WithSign from '@/web3/abi/BounceERC1155WithSign.json'
 
 import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
-import { numToWei } from "@/utils/useBigNumber";
+import { numToWei, weiMul } from "@/utils/useBigNumber";
 import useNftInfo from "@/utils/useToken";
 
 const SummaryWrapper = styled.div`
@@ -161,7 +161,7 @@ const render_ListingText = (auctionType, price, unit, duration) => {
 	}
 };
 
-function Summary({ auctionType, price, unit, duration, fees, nftInfo }) {
+function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
 	const [btnLock, setBtnLock] = useState(true)
@@ -169,19 +169,20 @@ function Summary({ auctionType, price, unit, duration, fees, nftInfo }) {
 
 	useEffect(() => {
 		if (auctionType === 'setPrice') {
-			if (price && nftInfo) {
+
+			if (Boolean(price) && Boolean(parseInt(amount)) && nftInfo) {
 				setBtnLock(false)
 			} else {
 				setBtnLock(true)
 			}
 		} else {
-			if (price && price && unit && duration && nftInfo) {
+			if (price && unit && duration && nftInfo) {
 				setBtnLock(false)
 			} else {
 				setBtnLock(true)
 			}
 		}
-	}, [auctionType, price, unit, duration, fees, nftInfo])
+	}, [auctionType, price, unit, duration, fees, nftInfo, amount])
 
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
@@ -235,22 +236,25 @@ function Summary({ auctionType, price, unit, duration, fees, nftInfo }) {
 					})
 			} else if (nftInfo.standard === 2) {
 				// approve
+				console.log(amount, price)
 
-				const _amountTotal0 = numToWei('0.1')
-				const _amountTotal1 = numToWei('2')
+				const _amountTotal0 = amount
+				const _amountTotal1 = weiMul(numToWei(price), amount)
 
 				showTransferByStatus('approveStatus')
-				let approveResult = await hasApprove_ERC_1155(_token0, account, getFixedSwapNFT(chainId))
+				let approveResult = await hasApprove_ERC_1155(_token0, getFixedSwapNFT(chainId), account)
 				if (!approveResult) {
-					approveResult = await BounceERC1155WithSign_CT.methods.setApprovalForAl(
+					approveResult = await BounceERC1155WithSign_CT.methods.setApprovalForAll(
 						getFixedSwapNFT(chainId),
 						true
 					).send({ from: account });
 				}
 
 				if (!approveResult) return showTransferByStatus('errorStatus')
+				console.log(_name, _token0, _token1, _tokenId, _amountTotal0, _amountTotal1, _onlyBot)
 
-				BounceFixedSwapNFT_CT.methods.createErc1155(_name, _token0, _token1, _tokenId, _amountTotal0, _amountTotal1, _onlyBot).send({ from: account })
+				BounceFixedSwapNFT_CT.methods.createErc1155(_name, _token0, _token1, _tokenId, _amountTotal0, _amountTotal1, _onlyBot)
+					.send({ from: account })
 					.on('transactionHash', hash => {
 						// setBidStatus(pendingStatus)
 						showTransferByStatus('pendingStatus')
@@ -266,7 +270,7 @@ function Summary({ auctionType, price, unit, duration, fees, nftInfo }) {
 					})
 			}
 		} else {
-			alert('1155暂未实现')
+			alert('english auction暂未实现')
 		}
 	}
 
