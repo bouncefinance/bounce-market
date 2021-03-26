@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import arrows_blue from '@assets/images/icon/arrows-blue.svg'
 import banner_1 from './assets/banner_1.svg'
 import banner_2 from './assets/banner_2.svg'
-import banner_3 from './assets/banner_3.svg'
-import { Tooltip } from '@material-ui/core'
+// import banner_3 from './assets/banner_3.svg'
+// import { Tooltip } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 
 const CardBannerStyled = styled.ul`
@@ -34,7 +34,7 @@ export default function CardBannerGroup () {
                     img={banner_2}
                 />
             </Link>
-            <Tooltip title="Coming soon">
+            {/* <Tooltip title="Coming soon">
                 <div style={{ opacity: 0.5, cursor: 'pointer' }}>
                     <CardBannerItem
                         title='Point-2-Point'
@@ -42,14 +42,14 @@ export default function CardBannerGroup () {
                         img={banner_3}
                     />
                 </div>
-            </Tooltip>
+            </Tooltip> */}
         </CardBannerStyled>
     )
 }
 
 
 const CardBannerItemStyled = styled.li`
-    width: 354px;
+    width: 540px;
     height: 110px;
     box-sizing: border-box;
     border: 2px solid #000000;

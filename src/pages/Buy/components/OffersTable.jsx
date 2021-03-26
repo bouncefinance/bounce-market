@@ -12,6 +12,7 @@ import icon_ETH from "./assets/icon_ETH.svg";
 
 const StyledTableContainer = styled(TableContainer)`
 	grid-area: OffersTable;
+	/* margin-bottom: 40px; */
 	max-height: 270px;
 
 	.TableHeaderRow {
@@ -32,18 +33,14 @@ const StyledTableContainer = styled(TableContainer)`
 		height: 52px;
 		box-sizing: border-box;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-	}
 
-	img {
-		width: 20px;
-		height: 20px;
-		display: inline-block;
-		vertical-align: top;
+		.CellWrapper {
+			display: flex;
+			align-items: center;
+		}
 	}
 
 	span {
-		display: inline-block;
-		vertical-align: top;
 		font-family: Helvetica Neue;
 		font-style: normal;
 		font-weight: normal;
@@ -52,11 +49,11 @@ const StyledTableContainer = styled(TableContainer)`
 		color: #1f191b;
 	}
 
-	span.From {
+	span.AccountName {
 		margin-left: 10px;
 	}
 
-	span.Price {
+	span.PriceText {
 		margin-left: 16px;
 	}
 `;
@@ -94,23 +91,29 @@ export default function DenseTable() {
 					{rows.map((row, index) => (
 						<TableRow key={index} className="TableBodyRow">
 							<TableCell>
-								<img
-									className="icon_Avatar"
-									src={icon_altAvatar}
-									alt=""
-								/>
-								<span className="From">{row.From}</span>
+								<div className="CellWrapper">
+									<img
+										className="Avatar"
+										src={icon_altAvatar}
+										alt=""
+									/>
+									<span className="AccountName">{row.From}</span>
+								</div>
 							</TableCell>
 							<TableCell>
-								<img
-									className="icon_ETH"
-									src={icon_ETH}
-									alt=""
-								/>
-								<span className="Price">{row.Price}</span>
+								<div className="CellWrapper">
+									<img
+										className="UnitIcon"
+										src={icon_ETH}
+										alt=""
+									/>
+									<span className="PriceText">{row.Price}</span>
+								</div>
 							</TableCell>
 							<TableCell>
-								<span>{row.Expiration}</span>
+								<div className="CellWrapper">
+									<span>{row.Expiration}</span>
+								</div>
 							</TableCell>
 						</TableRow>
 					))}
