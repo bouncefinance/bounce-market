@@ -41,6 +41,12 @@ const StyledCard = styled.div`
             margin-top: 16px;
         }
 
+        .avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
         .owner {
             margin-top: 30px;
 
@@ -101,12 +107,12 @@ const StyledCard = styled.div`
 function BrandCard({img, brandName, profile, avatar, ownerName}) {
     return (
         <StyledCard>
-            <img src={img} alt=""/>
+            <img src={img} width={540} height={332} alt=""/>
             <div className="right">
                 <span className="brandName">{brandName}</span>
                 <p className="profile">{profile}</p>
                 <div className="owner">
-                    <img src={avatar} alt=""/>
+                    <img src={avatar} className='avatar' alt=""/>
                     <span className="text">Owned by</span>
                     <Link to={"/"}>{ownerName}</Link>
                 </div>
