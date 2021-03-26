@@ -40,9 +40,10 @@ export default function Index() {
   const { account } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
 
-  const { data } = useQuery(QueryMyNFT, {
-    variables: { user: account }
+  const { data } = useQuery(QueryMyNFT, 
+    {variables: {user: account}
   });
+  
   const [itemList, setItemList] = useState([]);
   const [isSet, setIsSet] = useState(false);
   const [type, setType] = useState('image');
