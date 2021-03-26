@@ -5,13 +5,20 @@ import { Link, useParams } from "react-router-dom";
 import BreadcrumbNav from "./components/BreadcrumbNav";
 import { Button } from "@components/UI-kit";
 import NFTInfoDropdown from "./components/NFTInfoDropdown";
-import { DetailsContent, TokenInfoContent } from "./components/DropdownContent";
+import {
+	DetailsContent,
+	TokenInfoContent,
+	OffersContent,
+	TradingHistoryContent,
+} from "./components/DropdownContent";
 import OffersTable from "./components/OffersTable";
-import TradeTable from "./components/TradeTable";
+/* import TradeTable from "./components/TradeTable"; */
 
-import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
+import BounceFixedSwapNFT from "@/web3/abi/BounceFixedSwapNFT.json";
 
 import icon_altAvatar from "./assets/icon_altAvatar.svg";
+import icon_Clock from "./assets/icon_Clock.svg";
+
 import useNftInfo from "@/utils/useToken";
 import { getContract, useActiveWeb3React } from "@/web3";
 import { getFixedSwapNFT } from "@/web3/address_list/contract";
@@ -22,53 +29,55 @@ import { weiMul, weiToNum } from "@/utils/useBigNumber";
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
 
-
-
 function Buy() {
 	// const history = useHistory();
-	const { poolId } = useParams()
-	const { exportNftInfo } = useNftInfo()
-	const { showTransferByStatus } = useTransferModal()
-	const { active, library, account, chainId } = useActiveWeb3React()
-	const [nftInfo, setNftInfo] = useState({})
-	const { poolsInfo } = useHook(poolId)
+	const { poolId } = useParams();
+	const { exportNftInfo } = useNftInfo();
+	const { showTransferByStatus } = useTransferModal();
+	const { active, library, account, chainId } = useActiveWeb3React();
+	const [nftInfo, setNftInfo] = useState({});
+	const { poolsInfo } = useHook(poolId);
 
 	useEffect(() => {
-		if (!active || poolsInfo === {}) return
-		initShowNftInfo()
+		if (!active || poolsInfo === {}) return;
+		initShowNftInfo();
 		// eslint-disable-next-line
-	}, [active, poolsInfo])
+	}, [active, poolsInfo]);
 
 	const initShowNftInfo = async () => {
-		const info = await exportNftInfo(poolsInfo.tokenId)
-		setNftInfo(info)
-	}
-
+		const info = await exportNftInfo(poolsInfo.tokenId);
+		setNftInfo(info);
+	};
 
 	const handelBid = async () => {
-		console.log(poolId, poolsInfo.amountTotal0)
+		console.log(poolId, poolsInfo.amountTotal0);
 		if (nftInfo.standard === 1) {
-			const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
+			const BounceFixedSwapNFT_CT = getContract(
+				library,
+				BounceFixedSwapNFT.abi,
+				getFixedSwapNFT(chainId)
+			);
 
-			BounceFixedSwapNFT_CT.methods.swap(poolId, poolsInfo.amountTotal0)
+			BounceFixedSwapNFT_CT.methods
+				.swap(poolId, poolsInfo.amountTotal0)
 				.send({ from: account, value: poolsInfo.amountTotal1 })
-				.on('transactionHash', hash => {
+				.on("transactionHash", (hash) => {
 					// setBidStatus(pendingStatus)
-					showTransferByStatus('pendingStatus')
+					showTransferByStatus("pendingStatus");
 				})
-				.on('receipt', async (_, receipt) => {
+				.on("receipt", async (_, receipt) => {
 					// console.log('bid fixed swap receipt:', receipt)
 					// setBidStatus(successVotedStatus)
-					showTransferByStatus('successVotedStatus')
+					showTransferByStatus("successVotedStatus");
 				})
-				.on('error', (err, receipt) => {
+				.on("error", (err, receipt) => {
 					// setBidStatus(errorStatus)
-					showTransferByStatus('errorStatus')
-				})
+					showTransferByStatus("errorStatus");
+				});
 		} else if (nftInfo.standard === 2) {
-			alert('bid 1155')
+			alert("bid 1155");
 		}
-	}
+	};
 
 	return (
 		<Page>
@@ -77,20 +86,58 @@ function Buy() {
 			<PageMiddle>
 				<PageMiddleLeft>
 					<img className="NFTImg" src={nftInfo.fileurl} alt="" />
+				</PageMiddleLeft>
 
-					<Description>
-						<span className="description">Description</span>
+				<PageMiddleRight>
+					<span className="NFTName">{nftInfo.itemname}</span>
 
-						<span className="descriptionContent">
-							{/* {descriptionContent} */}
-							{nftInfo.description}
-						</span>
-					</Description>
+					<div className="Row2">
+						<div className="ShowOwner">
+							<img src={icon_altAvatar} alt="" />
+							<span className="str_Ownedby">Owned by</span>
+							<Link to={"/"}>
+								{nftInfo.ownername || "Anonymity"}
+								{/* {ownerName} */}
+							</Link>
+						</div>
+
+						<div className="SaleEndTime">
+							<img src={icon_Clock} alt="" />
+							<span className="SaleEndTimeText">
+								Sale ends in 2 days
+							</span>
+						</div>
+					</div>
+
+					<span className="Description">
+						Hyper Geography is a website artwork created in 2011.
+						The website features hundreds of found images collaged
+						in a looping grid. The source images were collected from
+						other blogs on Tumblr. Blogs that had a particularly
+						strong...
+					</span>
+
+					<Link className="Link_Readmore" to="#">
+						Read more
+					</Link>
+
+					<span className="str_TopBid">Top Bid</span>
 
 					<Dropdowns>
 						<NFTInfoDropdown
+							title="Offers"
+							content={<OffersContent />}
+						/>
+
+						<NFTInfoDropdown
 							title="Details"
-							content={<DetailsContent generatorName={nftInfo.ownername || 'Anonymity'} />}
+							content={
+								<DetailsContent
+									generatorName={
+										nftInfo.ownername || "Anonymity"
+									}
+								/>
+							}
 						/>
 
 						<NFTInfoDropdown
@@ -102,29 +149,35 @@ function Buy() {
 								/>
 							}
 						/>
+
+						<NFTInfoDropdown
+							title="Trading History"
+							content={
+								<TradingHistoryContent
+								/>
+							}
+						/>
 					</Dropdowns>
-				</PageMiddleLeft>
-
-				<PageMiddleRight>
-					<span className="NFTName">{nftInfo.itemname}</span>
-
-					<div className="ShowOwner">
-						<img src={icon_altAvatar} alt="" />
-						<span className="str_Ownedby">Owned by</span>
-						<Link to={"/"}>{nftInfo.ownername || 'Anonymity'}{/* {ownerName} */}</Link>
-					</div>
-
-					<span className="SaleEndDay">
-						Sale ends in 5 days(March 23,2021 at 11:59am CST)
-					</span>
-
-					<span className="BidStatus">
-						Top bid--Reserve price not met.
-					</span>
 
 					<div className="TopBidStatus">
-						<span className="ETHPrice">{poolsInfo.token1 && weiToNum(poolsInfo.amountTotal1, poolsInfo.token1.decimals)} {poolsInfo.token1 && poolsInfo.token1.symbol}</span>
-						<span className="USDPrice">{poolsInfo.token1 && `$ ${weiMul(poolsInfo.token1.price, weiToNum(poolsInfo.amountTotal1, poolsInfo.token1.decimals))}`}</span>
+						<span className="ETHPrice">
+							{poolsInfo.token1 &&
+								weiToNum(
+									poolsInfo.amountTotal1,
+									poolsInfo.token1.decimals
+								)}{" "}
+							{poolsInfo.token1 && poolsInfo.token1.symbol}
+						</span>
+						<span className="USDPrice">
+							{poolsInfo.token1 &&
+								`$ ${weiMul(
+									poolsInfo.token1.price,
+									weiToNum(
+										poolsInfo.amountTotal1,
+										poolsInfo.token1.decimals
+									)
+								)}`}
+						</span>
 					</div>
 
 					<span className="BorderBottomGap"></span>
@@ -132,41 +185,47 @@ function Buy() {
 					<div className="ButtonGroup">
 						<Button
 							primary
-							value={poolsInfo.status && poolsInfo.status === 'Live' ? 'Place Bid' : poolsInfo.status === 'Filled' ? 'Sold Out' : 'Loading Status ...'}
-							disabled={poolsInfo.status !== 'Live'}
+							value={
+								poolsInfo.status && poolsInfo.status === "Live"
+									? "Place Bid"
+									: poolsInfo.status === "Filled"
+									? "Sold Out"
+									: "Loading Status ..."
+							}
+							disabled={poolsInfo.status !== "Live"}
 							onClick={handelBid}
 						/>
 						{/* 英式拍 一口价 */}
-						{poolsInfo.poolType === 'English-Auction' && <Button value="Buy New For 1 ETH ransfer" />}
+						{poolsInfo.poolType === "English-Auction" && (
+							<Button value="Buy New For 1 ETH ransfer" />
+						)}
 					</div>
 
-					<span className="str_Offers">Offers</span>
+					<div className="Gap"></div>
 
-                    <OffersTable/>
+					<OffersTable />
 				</PageMiddleRight>
 			</PageMiddle>
 
-			<TradingHistory>
+			{/* <TradingHistory>
 				<span className="str_TradingHistory">Trading History</span>
 				<TradeTable />
-			</TradingHistory>
+			</TradingHistory> */}
 		</Page>
 	);
 }
 
 export default Buy;
 
-
 const Page = styled.div`
 	width: 1096px;
 	margin: 0 auto 55px auto;
 
 	display: grid;
-	grid-template-rows: 93px min-content 382px;
+	grid-template-rows: 93px 1fr;
 	grid-template-areas:
 		"BreadcrumbNav"
-		"PageMiddle"
-		"TradingHistory";
+		"PageMiddle";
 `;
 
 const PageMiddle = styled.div`
@@ -176,8 +235,7 @@ const PageMiddle = styled.div`
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
 	display: grid;
-	grid-template-columns: 416px 650px;
-    grid-template-rows: min-content;
+	grid-template-columns: 500px 540px;
 	column-gap: 30px;
 	grid-template-areas: "PageMiddleLeft PageMiddleRight";
 `;
@@ -185,20 +243,17 @@ const PageMiddle = styled.div`
 const PageMiddleLeft = styled.div`
 	grid-area: PageMiddleLeft;
 
-    display: grid;
-	grid-template-rows: 416px 89px min-content;
-	grid-template-areas:
-		"NFTImg"
-		"Description"
-		"Dropdowns";
+	display: grid;
+	grid-template-rows: 1fr;
+	grid-template-areas: "NFTImg";
 
 	img.NFTImg {
-		width: 416px;
-		height: 416px;
+		width: 500px;
+		height: 500px;
 	}
 `;
 
-const Description = styled.div`
+/* const Description = styled.div`
 	grid-area: Description;
 
 	display: grid;
@@ -223,7 +278,6 @@ const Description = styled.div`
         padding-bottom: 14px;
 	}
 
-	/* DescriptionContent */
 	span.descriptionContent {
 		font-family: Helvetica Neue;
 		font-style: normal;
@@ -239,27 +293,27 @@ const Description = styled.div`
         padding-top: 12px;
         padding-bottom: 21px;
 	}
-`;
+`; */
 
 const Dropdowns = styled.div`
-    grid-area: Dropdowns;
-`
+	grid-area: Dropdowns;
+`;
 
 const PageMiddleRight = styled.div`
 	grid-area: PageMiddleRight;
 
 	display: grid;
-	grid-template-rows: 59px 20px 24px 17px 32px 64px 48px 70px 1fr;
+	grid-template-rows: 59px 28px 82px 49px 14px 64px 48px 32px 1fr;
 	grid-template-areas:
 		"NFTName"
-		"ShowOwner"
-		"SaleEndDay"
-		"BorderBottomGap"
-		"BidStatus"
+		"Row2"
+		"Description"
+		"Link_Readmore"
+		"str_TopBid"
 		"TopBidPrice"
 		"ButtonGroup"
-		"str_Offers"
-		"OffersTable";
+		"Gap"
+		"Dropdowns";
 
 	span.NFTName {
 		font-family: Optima;
@@ -271,76 +325,104 @@ const PageMiddleRight = styled.div`
 
 		grid-area: NFTName;
 
-        padding-top: 7px;
-        padding-bottom: 10px;
+		padding-top: 7px;
+		padding-bottom: 10px;
 	}
 
-	.ShowOwner {
-        grid-area: ShowOwner;
-
-		display: flex;
+	.Row2 {
+		grid-area: Row2;
+		display: grid;
+		grid-template-areas: "ShowOwner SaleEndTime";
+		grid-template-columns: min-content auto;
+		column-gap: 16px;
 		align-items: center;
 
-		span.str_Ownedby {
-			margin-left: 8px;
+		.ShowOwner {
+			grid-area: ShowOwner;
 
-			font-family: IBM Plex Mono;
-			font-style: normal;
-			font-weight: 500;
-			font-size: 12px;
-			line-height: 16px;
-			display: flex;
+			display: grid;
+			grid-template-columns: 20px 74px auto;
 			align-items: center;
-			color: #1f191b;
-			opacity: 0.4;
+
+			span.str_Ownedby {
+				padding-left: 8px;
+
+				font-family: Helvetica Neue;
+				font-style: normal;
+				font-weight: 500;
+				font-size: 14px;
+				line-height: 17px;
+				display: flex;
+				align-items: center;
+
+				opacity: 0.4;
+				width: 66px;
+			}
+
+			a {
+				font-family: IBM Plex Mono;
+				font-style: normal;
+				font-weight: 500;
+				font-size: 12px;
+				line-height: 16px;
+				display: flex;
+				align-items: center;
+				color: #124eeb;
+				opacity: 0.8;
+
+				margin-left: 6px;
+			}
 		}
 
-		a {
-			font-family: IBM Plex Mono;
-			font-style: normal;
-			font-weight: 500;
-			font-size: 12px;
-			line-height: 16px;
-			display: flex;
-			align-items: center;
-			color: #124eeb;
-			opacity: 0.8;
+		.SaleEndTime {
+			grid-area: SaleEndTime;
 
-			margin-left: 6px;
+			img {
+			}
+
+			span.SaleEndTimeText {
+			}
 		}
 	}
 
-	span.SaleEndDay {
-		font-family: IBM Plex Mono;
+	span.Description {
+		font-family: Helvetica Neue;
 		font-style: normal;
-		font-weight: 500;
-		font-size: 12px;
-		line-height: 16px;
-		display: flex;
-		align-items: center;
+		font-weight: normal;
+		font-size: 14px;
+		line-height: 17px;
 		color: #1f191b;
-		opacity: 0.4;
+		opacity: 0.7;
 
-        padding-top: 8px;
+		grid-area: Description;
+		padding-top: 20px;
+		padding-bottom: 8px;
 
-		grid-area: SaleEndDay;
+		text-overflow: ellipsis;
 	}
 
-	span.BidStatus {
-		font-family: IBM Plex Mono;
+	.Link_Readmore {
+		font-family: Helvetica Neue;
 		font-style: normal;
 		font-weight: 500;
-		font-size: 12px;
+		font-size: 14px;
+		line-height: 17px;
+		color: #0075ff;
+
+		grid-area: Link_Readmore;
+		padding-bottom: 32px;
+	}
+
+	span.str_TopBid {
+		font-family: Helvetica Neue;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 13px;
 		line-height: 16px;
-		display: flex;
-		align-items: center;
-		color: #1f191b;
-		opacity: 0.4;
+		color: #000000;
+		opacity: 0.6;
 
-		grid-area: BidStatus;
-
-        padding-top: 16px;
-        padding-bottom: 12px;
+		grid-area: str_TopBid;
 	}
 
 	.TopBidStatus {
@@ -399,23 +481,11 @@ const PageMiddleRight = styled.div`
 		}
 	}
 
-	span.str_Offers {
-		font-family: IBM Plex Mono;
-		font-style: normal;
-		font-weight: 500;
-		font-size: 12px;
-		line-height: 16px;
-		display: flex;
-		align-items: center;
-		color: #000000;
-
-		grid-area: str_Offers;
-
-		padding-top: 30px;
-		padding-bottom: 24px;
+	.Gap {
+		grid-area: Gap;
 	}
 `;
-
+/* 
 const TradingHistory = styled.div`
 	grid-area: TradingHistory;
 
@@ -439,4 +509,4 @@ const TradingHistory = styled.div`
 		padding-top: 30px;
 		padding-bottom: 24px;
 	}
-`;
+`; */
