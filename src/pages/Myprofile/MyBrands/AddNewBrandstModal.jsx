@@ -176,10 +176,10 @@ export default function AddNewBrandstModal({ open, setOpen }) {
             if (res.status === 200 && res.data.code === 1) {
                 getBrandList();
                 setBtnLock(false);
-                alert('Brand 创建成功')
+                // alert('Brand 创建成功')
             } else {
                 setBtnLock(false);
-                alert('服务器端 创建失败')
+                // alert('服务器端 创建失败')
             }
         }).catch(err => {
             setBtnLock(false);

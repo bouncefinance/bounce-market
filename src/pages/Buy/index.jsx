@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import BreadcrumbNav from "./components/BreadcrumbNav";
 import { Button } from "@components/UI-kit";
@@ -8,58 +8,110 @@ import NFTInfoDropdown from "./components/NFTInfoDropdown";
 import { DetailsContent, TokenInfoContent } from "./components/DropdownContent";
 import OffersTable from "./components/OffersTable";
 import TradeTable from "./components/TradeTable";
+import Table2 from "./components/OffersTable";
 
-import pic_test1 from "./assets/pic_test1.svg";
+import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
+
 import icon_altAvatar from "./assets/icon_altAvatar.svg";
+import useNftInfo from "@/utils/useNftInfo";
+import { getContract, useActiveWeb3React } from "@/web3";
+import { getFixedSwapNFT } from "@/web3/address_list/contract";
+import useTransferModal from "@/web3/useTransferModal";
+import useHook from "./useHook";
 
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
 
 
+
 function Buy() {
-	const history = useHistory();
+	// const history = useHistory();
+	const { poolId } = useParams()
+	const { exportNftInfo } = useNftInfo()
+	const { showTransferByStatus } = useTransferModal()
+	const { active, library, account, chainId } = useActiveWeb3React()
+	const [nftInfo, setNftInfo] = useState({})
+	const { poolsInfo } = useHook(poolId)
+
+	useEffect(() => {
+		if (!active || poolsInfo === {}) return
+		initShowNftInfo()
+		// eslint-disable-next-line
+	}, [active, poolsInfo])
+
+	const initShowNftInfo = async () => {
+		const info = await exportNftInfo(poolsInfo._tokenId)
+		setNftInfo(info)
+	}
+
+
+	const handelBid = async () => {
+		console.log(poolId, poolsInfo._amountTotal0)
+		if (nftInfo.standard === 1) {
+			const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
+
+			BounceFixedSwapNFT_CT.methods.swap(poolId, poolsInfo._amountTotal0)
+				.send({ from: account, value: poolsInfo._amountTotal1 })
+				.on('transactionHash', hash => {
+					// setBidStatus(pendingStatus)
+					showTransferByStatus('pendingStatus')
+				})
+				.on('receipt', async (_, receipt) => {
+					// console.log('bid fixed swap receipt:', receipt)
+					// setBidStatus(successVotedStatus)
+					showTransferByStatus('successVotedStatus')
+				})
+				.on('error', (err, receipt) => {
+					// setBidStatus(errorStatus)
+					showTransferByStatus('errorStatus')
+				})
+		} else if (nftInfo.standard === 2) {
+			alert('bid 1155')
+		}
+	}
+
 	return (
 		<Page>
 			<BreadcrumbNav NFTType={NFTType} NFTName={NFTName} />
 
 			<PageMiddle>
 				<PageMiddleLeft>
-					<img className="NFTImg" src={pic_test1} alt="" />
+					<img className="NFTImg" src={nftInfo.fileurl} alt="" />
 
 					<Description>
 						<span className="description">Description</span>
 
 						<span className="descriptionContent">
 							{/* {descriptionContent} */}
-							An irreplaceable girl
+							{nftInfo.description}
 						</span>
 					</Description>
 
 					<Dropdowns>
-                        <NFTInfoDropdown
-                            title="Details"
-                            content={<DetailsContent generatorName="zhuzaoren" />}
-                        />
-                        
-                        <NFTInfoDropdown
-                            title="Token Info"
-                            content={
-                                <TokenInfoContent
-                                    TokenID="245678543223356..."
-                                    Total="10"
-                                />
-                            }
-                        />
-                    </Dropdowns>
+						<NFTInfoDropdown
+							title="Details"
+							content={<DetailsContent generatorName={nftInfo.ownername || 'Anonymity'} />}
+						/>
+
+						<NFTInfoDropdown
+							title="Token Info"
+							content={
+								<TokenInfoContent
+									TokenID={nftInfo.id}
+									Total={nftInfo.supply}
+								/>
+							}
+						/>
+					</Dropdowns>
 				</PageMiddleLeft>
 
 				<PageMiddleRight>
-					<span className="NFTName">Digital Image Name</span>
+					<span className="NFTName">{nftInfo.itemname}</span>
 
 					<div className="ShowOwner">
 						<img src={icon_altAvatar} alt="" />
 						<span className="str_Ownedby">Owned by</span>
-						<Link to={"/"}>Mapache{/* {ownerName} */}</Link>
+						<Link to={"/"}>{nftInfo.ownername || 'Anonymity'}{/* {ownerName} */}</Link>
 					</div>
 
 					<span className="SaleEndDay">
@@ -81,17 +133,16 @@ function Buy() {
 						<Button
 							primary
 							value="Place Bid"
-							onClick={() => {
-								/* history.push("/MyInventory/:nftId/Sell") */
-								history.push("/MyInventory/Sell");
-							}}
+							onClick={handelBid}
 						/>
 						<Button value="Buy New For 1 ETHransfer" />
 					</div>
 
 					<span className="str_Offers">Offers</span>
 
-					<OffersTable />
+					{/* <OffersTable /> */}
+                    {/* <TableList/> */}
+                    <Table2/>
 				</PageMiddleRight>
 			</PageMiddle>
 
@@ -102,6 +153,8 @@ function Buy() {
 		</Page>
 	);
 }
+
+export default Buy;
 
 
 const Page = styled.div`
@@ -387,5 +440,3 @@ const TradingHistory = styled.div`
 		padding-bottom: 24px;
 	}
 `;
-
-export default Buy;

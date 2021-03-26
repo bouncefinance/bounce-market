@@ -20,6 +20,8 @@ export const reducer = (state, action) => {
             return { ...state, showMessageModal: action.showMessageModal,modelType: action.modelType,modelMessage:action.modelMessage }
         case 'Error_Notification':
             return { ...state, showErrorNotificationModal: action.showErrorNotificationModal}
+        case 'Token':
+            return { ...state, authToken: action.authToken}
         default:
             return state
     }

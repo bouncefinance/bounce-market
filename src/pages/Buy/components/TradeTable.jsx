@@ -9,9 +9,9 @@ import TableRow from "@material-ui/core/TableRow";
 import TradeTableDataRow from "./TradeTableDataRow";
 
 const useStyles = makeStyles({
-    TableContainer: {
-        gridArea: "TradeTable",
-    },
+	TableContainer: {
+		gridArea: "TradeTable",
+	},
 	table: {
 		width: "620px",
 		margin: "24px auto 0 auto",
@@ -34,7 +34,6 @@ const useStyles = makeStyles({
 	},
 });
 
-
 export default function BasicTable(/* { offerList } */) {
 	const classes = useStyles();
 
@@ -43,20 +42,24 @@ export default function BasicTable(/* { offerList } */) {
 	}
 
 	const rows = [
-        createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
-        createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
-        createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
-        createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
-        createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
-        createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
-        createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
-        createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
-        createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
-      ];
+		createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
+		createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
+		createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
+		createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
+		createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
+		createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
+		createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
+		createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
+		createData("Transfer", "1ETH", "You", "64F804", "19 hours ago"),
+	];
 
 	return (
 		<TableContainer className={classes.TableContainer}>
-			<Table className={classes.Table} stickyHeader aria-label="simple table">
+			<Table
+				className={classes.Table}
+				stickyHeader
+				aria-label="simple table"
+			>
 				<TableHead className={classes.TableHead}>
 					<TableRow>
 						<TableCell className={classes.TableCell}>
@@ -68,9 +71,7 @@ export default function BasicTable(/* { offerList } */) {
 						<TableCell className={classes.TableCell}>
 							From
 						</TableCell>
-						<TableCell className={classes.TableCell}>
-							To
-						</TableCell>
+						<TableCell className={classes.TableCell}>To</TableCell>
 						<TableCell className={classes.TableCell}>
 							Date
 						</TableCell>
@@ -78,7 +79,10 @@ export default function BasicTable(/* { offerList } */) {
 				</TableHead>
 				<TableBody>
 					{rows.map((row, index) => (
-						<TradeTableDataRow key={index} row={row}></TradeTableDataRow>
+						<TradeTableDataRow
+							key={index}
+							row={row}
+						></TradeTableDataRow>
 					))}
 				</TableBody>
 			</Table>

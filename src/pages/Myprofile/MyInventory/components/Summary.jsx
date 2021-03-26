@@ -197,17 +197,11 @@ function Summary({ auctionType, price, unit, duration, fees, nftInfo }) {
 			const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, _token0)
 			const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, _token0)
 
-			console.log(nftInfo)
-			console.log(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot)
+			// console.log(nftInfo)
+			// console.log(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot)
 
 
 			if (nftInfo.standard === 1) {
-
-				// await BounceERC721WithSign_CT.methods.transferFrom(
-				// 	getFixedSwapNFT(chainId),
-				// 	'0x87E12f9b95583D52ca72ED4553f38683757FB978',
-				// 	16856
-				// ).send({ from: account });
 
 				// approve
 				showTransferByStatus('approveStatus')

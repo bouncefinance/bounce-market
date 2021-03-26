@@ -4,7 +4,7 @@ import { useActiveWeb3React } from '@/web3'
 import { useState, useEffect, useContext } from 'react'
 
 export function useUserInfo() {
-    const {dispatch} = useContext(myContext);
+    const {state,dispatch} = useContext(myContext);
     const [userExisted, setUserExisted] = useState(false)
     const [userInfo, setUserInfo] = useState({})
     const { sign_Axios } = useAxios()
@@ -44,7 +44,7 @@ export function useUserInfo() {
             getUserInfo();
             return res;
         }).catch(()=>{
-            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"服务器故障，请稍后重试"});
+            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"Only Supports JPG, PNG, JPEG2000"});
         })
     }
 
@@ -53,7 +53,7 @@ export function useUserInfo() {
         if (!account) return
         getUserInfo()
         // eslint-disable-next-line
-    }, [account])
+    }, [state.authToken,account])
 
     return { userExisted, userInfo, updateUserInfo,getUserInfo }
 }

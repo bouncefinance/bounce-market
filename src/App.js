@@ -4,6 +4,8 @@ import Page from './pages'
 import { Reducer } from './redux'
 import { Web3Provider } from "@ethersproject/providers"
 import { Web3ReactProvider } from "@web3-react/core"
+import { ApolloProvider } from '@apollo/client';
+import { client } from './utils/apollo'
 
 function App() {
   const getLibrary = (provider, _connector) => {
@@ -14,11 +16,13 @@ function App() {
 
   return (
     <div className="App">
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <Reducer>
-          <Page />
-        </Reducer>
-      </Web3ReactProvider>
+      <ApolloProvider client={client}>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <Reducer>
+            <Page />
+          </Reducer>
+        </Web3ReactProvider>
+      </ApolloProvider>
     </div>
   );
 }

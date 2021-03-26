@@ -253,33 +253,6 @@ function MyNFT() {
 		// eslint-disable-next-line
 	}, [active, nftId]);
 	
-	/* const getNFTInfoList = async (nftId) => {
-		const params = {
-			id: parseInt(nftId),
-		};
-
-		sign_Axios
-			.post("/api/v2/main/auth/getoneitembyid", params)
-			.then((res) => {
-				if (res.status === 200 && res.data.code === 1) {
-					let NFTInfoList = res.data.data;
-					setNFTName(NFTInfoList.itemname);
-					setDescriptionContent(NFTInfoList.description);
-					setSupply(NFTInfoList.supply);
-					setTokenID(NFTInfoList.id);
-					setTokenSymbol(NFTInfoList.itemsymbol);
-					setCreator(NFTInfoList.owneraddress);
-					setExternalLink(NFTInfoList.externallink);
-					setImgURL(NFTInfoList.fileurl);
-				} else {
-					alert("获取失败");
-				}
-			})
-			.catch((err) => {
-				alert("获取失败2");
-			});
-	};
- */
 	return (
 		<Page>
 			<BreadcrumbNav className="breadcrumb_Nav">

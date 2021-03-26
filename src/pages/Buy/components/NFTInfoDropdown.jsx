@@ -73,7 +73,6 @@ export default function NFTInfoDropdown({ title, content, className }) {
 		if (open) return content;
 	}
 
-	console.log(content);
 	return (
 		<StyledDropdown className={className}>
 			<Top />
