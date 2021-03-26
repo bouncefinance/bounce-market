@@ -6,8 +6,6 @@ import { PullRadioBox as DropDownMenu } from '../../components/UI-kit'
 import BrandCard from './BrandCard'
 import PagingControls from '../component/Other/PagingControls'
 
-import img_test1 from './assets/img_test1.svg'
-import img_avatar1 from './assets/img_avatar1.svg'
 import { useQuery } from '@apollo/client'
 import { QueryBrands } from '@/utils/apollo'
 import useAxios from '@/utils/useAxios'
