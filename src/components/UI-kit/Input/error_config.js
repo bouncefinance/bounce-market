@@ -20,5 +20,11 @@ export const ErrorStatus = {
         reg:/(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/,
         msg: 'Please enter a valid address',
         tip: 'Please enter a valid address'
+    },
+    intNum:{
+        code: 401,
+        reg:/^\+?[1-9]\d*$/,
+        msg: 'Please enter a positive integer',
+        tip: 'Please enter a positive integer'
     }
 }

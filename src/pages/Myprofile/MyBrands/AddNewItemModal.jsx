@@ -234,6 +234,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     required={true}
                     marginTop={'24px'}
                     inputDisable={inputDisable}
+                    inputType={'intNum'}
                     onValChange={(val) => {
                         setFormData({ ...formData, Supply: parseInt(val) })
                     }}

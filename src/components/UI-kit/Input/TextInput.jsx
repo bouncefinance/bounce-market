@@ -122,6 +122,9 @@ export default function TextInput({
 		}else if(inputType ==="url" && (required || val.trim() !== "") && !ErrorStatus.url.reg.test(val)){
 			setError(true);
 			setErrMsg(ErrorStatus.url.tip);
+		}else if(inputType ==="intNum" && (required || val.trim() !== "") && !ErrorStatus.intNum.reg.test(val)){
+			setError(true);
+			setErrMsg(ErrorStatus.intNum.tip);
 		}
 	};
 
