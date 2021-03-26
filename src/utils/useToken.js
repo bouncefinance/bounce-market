@@ -107,7 +107,7 @@ export default function useToken() {
         }
         const res = await axios.get('https://dncapi.bqrank.net/api/v2/Coin/market_ticker?page=1&pagesize=1&code=' + code)
         if (res.data.code === 200) {
-            console.log(res)
+            // console.log(res)
             price = res.data.data[0].price
         }
         return price
