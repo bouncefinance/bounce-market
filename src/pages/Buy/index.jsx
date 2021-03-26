@@ -18,13 +18,14 @@ import { getFixedSwapNFT } from "@/web3/address_list/contract";
 import useTransferModal from "@/web3/useTransferModal";
 import useHook from "./useHook";
 import { weiMul, weiToNum } from "@/utils/useBigNumber";
+import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
 
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
 
 
 
-function Buy() {
+function Buy () {
 	// const history = useHistory();
 	const { poolId } = useParams()
 	const { exportNftInfo } = useNftInfo()
@@ -78,7 +79,8 @@ function Buy() {
 
 			<PageMiddle>
 				<PageMiddleLeft>
-					<img className="NFTImg" src={nftInfo.fileurl} alt="" />
+					{/* <img className="NFTImg" src={nftInfo.fileurl} alt="" /> */}
+					<AutoStretchBaseWidthOrHeightImg src={nftInfo.fileurl} width={416} height={416} />
 
 					<Description>
 						<span className="description">Description</span>
