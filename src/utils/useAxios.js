@@ -1,7 +1,9 @@
 import axios from 'axios'
 import Web3 from 'web3'
 import { useWeb3React } from '@web3-react/core'
-import { useEffect } from 'react'
+// import { useUserInfo } from '../pages/Myprofile/useUserInfo'
+import { useEffect,useContext } from 'react';
+import { myContext } from '@/redux/index.js';
 const host = window.location.host
 const Base_URL = host === 'localhost:8888' ? 'http://market-test.bounce.finance:11000' : 'https://market-test.bounce.finance'
 
@@ -9,8 +11,9 @@ const signStr = 'Welcome to Bounce!'
 let isRequestLock = false
 
 export default function useAxios() {
-    const { account, library } = useWeb3React()
-
+    const { account, library } = useWeb3React();
+    const {dispatch} = useContext(myContext);
+    // const { getUserInfo } = useUserInfo()
     useEffect(() => {
         if (!account || isRequestLock) return
         isRequestLock = true
@@ -23,10 +26,11 @@ export default function useAxios() {
         const res = await sign_Axios_Post('/api/v2/main/auth/getaccount', { accountaddress: account })
         if (res.status === 200 && res.data.code === -1) {
             // 重新授权
-            const token = await getNewToken()
+            const token = await getNewToken();
             const JWT_TOKEN_V2 = JSON.parse(window.localStorage.getItem('JWT_TOKEN_V2')) || {}
             JWT_TOKEN_V2[account] = token
             window.localStorage.setItem('JWT_TOKEN_V2', JSON.stringify(JWT_TOKEN_V2))
+            dispatch({type: 'Token', authToken: token});
         }
     }
 

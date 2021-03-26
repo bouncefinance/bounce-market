@@ -51,7 +51,7 @@ export default function SettingAccountModal({ open, setOpen }) {
     useEffect(() => {
         // console.log(formData, fileData)
         if ((fileData || formData.imgurl) && formData) {
-            const requireArr = ['username', 'fullname', 'email', 'bio']
+            const requireArr = ['username', 'fullname']
             let errorCount = 0
             requireArr.forEach(item => {
                 if (!checkInput(formData[item])) {
@@ -91,12 +91,17 @@ export default function SettingAccountModal({ open, setOpen }) {
                 username: formData.username,
                 fullname: formData.fullname,
                 imgurl: imgUrl,
-                email: formData.email,
-                bio: formData.bio
+                email: formData.email||"",
+                bio: formData.bio||""
             }
 
             const updatedUer = await updateUserInfo(params)
-            if (updatedUer.status === 200) {
+            console.log(JSON.stringify(updatedUer));
+            if(updatedUer.data.code === 0){
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: updatedUer.data.msg });
+                setBtnLock(false)
+                setInputDisable(false)
+            }else if (updatedUer.status === 200) {
                 setOpen(false)
             }
 
@@ -104,7 +109,7 @@ export default function SettingAccountModal({ open, setOpen }) {
             setInputDisable(false)
             setBtnText('Save')
         } catch (error) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "服务器故障，请稍后重试" });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
             setBtnLock(false)
             setInputDisable(false)
             setBtnText('Save')
@@ -160,7 +165,7 @@ export default function SettingAccountModal({ open, setOpen }) {
                     width='620px'
                     placeholder={'Enter your email'}
                     defaultValue={userInfo.email}
-                    required={true}
+                    required={false}
                     marginTop={'24px'}
                     inputType={'email'}
                     onValChange={(val) => {
@@ -174,9 +179,8 @@ export default function SettingAccountModal({ open, setOpen }) {
                     width='620px'
                     placeholder={'Describe your bio'}
                     defaultValue={userInfo.bio}
-                    required={true}
+                    required={false}
                     marginTop={'24px'}
-                    inputType={'url'}
                     onValChange={(val) => {
                         setFormData({ ...formData, bio: val })
                     }}

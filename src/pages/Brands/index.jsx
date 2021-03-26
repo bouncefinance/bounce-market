@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import SearchBar from '../component/Header/Search'
@@ -6,8 +6,11 @@ import { PullRadioBox as DropDownMenu } from '../../components/UI-kit'
 import BrandCard from './BrandCard'
 import PagingControls from '../component/Other/PagingControls'
 
-import img_test1 from './assets/img_test1.svg'
-import img_avatar1 from './assets/img_avatar1.svg'
+import { useQuery } from '@apollo/client'
+import { QueryBrands } from '@/utils/apollo'
+import useAxios from '@/utils/useAxios'
+import { useActiveWeb3React } from '@/web3'
+import { Controller } from '@/utils/controller'
 
 const StyledBrandPage = styled.div`
     width: 1100px;
@@ -45,74 +48,75 @@ const StyledBrandPage = styled.div`
     }
 `
 
-const cardsInfoList = [
-    {
-        img: img_test1,
-        brandName: "Cookie Store",
-        profile: "You can find your content here according to your taste. All type of content: images, video, audio, games, etc.",
-        avatar: img_avatar1,
-        ownerName: "Mapache",
-    },
-    {
-        img: img_test1,
-        brandName: "Cookie Store",
-        profile: "You can find your content here according to your taste. All type of content: images, video, audio, games, etc.",
-        avatar: img_avatar1,
-        ownerName: "Mapache",
-    },
-    {
-        img: img_test1,
-        brandName: "Cookie Store",
-        profile: "You can find your content here according to your taste. All type of content: images, video, audio, games, etc.",
-        avatar: img_avatar1,
-        ownerName: "Mapache",
-    },
-    {
-        img: img_test1,
-        brandName: "Cookie Store",
-        profile: "You can find your content here according to your taste. All type of content: images, video, audio, games, etc.",
-        avatar: img_avatar1,
-        ownerName: "Mapache",
-    },
-]
-
 export default function Index() {
-    return (
-        <StyledBrandPage>
-            <div className="row-1">
-                <SearchBar placeholder={"Search Brand Name or Brand Creator"} />
-                <DropDownMenu
-                    width={"261px"}
-                    options={[{
-                        value: 'New'
-                    },
-                    ]}
-                    defaultValue={'New'}
-                    prefix={"Sort by:"}
-                    onChange={(item) => {
-                        // console.log(item)
-                    }}
+  const { data } = useQuery(QueryBrands);
+  const { active } = useActiveWeb3React();
+  const { sign_Axios } = useAxios();
+
+  const [isSet, setIsSet] = useState(false);
+  const [list, setList] = useState([])
+
+  useEffect(() => {
+    if (!active) return;
+    if (data && !isSet) {
+      const bounce721Brands = data.bounce721Brands.map(item => item.id);
+      const bounce1155Brands = data.bounce1155Brands.map(item => item.id);
+      const list = bounce721Brands.concat(bounce1155Brands);
+      sign_Axios.post(Controller.brands.getbrandsbyfilter,  {
+        Brandcontractaddressess:  list
+      })
+      .then(res => {
+        if (res.status === 200 && res.data.code === 1) {
+          setIsSet(true);
+          const list = res.data.data.map(item => ({
+            img: item.imgurl,
+            brandName: item.brandname,
+            profile: item.description,
+            avatar: item.imgurl,
+            ownerName: item.ownername 
+          }))
+          setList(list);
+        }
+      })
+    }
+  }, [active, data, isSet, sign_Axios]);
+
+  return (
+    <StyledBrandPage>
+      <div className="row-1">
+        <SearchBar placeholder={"Search Brand Name or Brand Creator"} />
+        <DropDownMenu
+          width={"261px"}
+          options={[{
+            value: 'New'
+          },
+          ]}
+          defaultValue={'New'}
+          prefix={"Sort by:"}
+          onChange={(item) => {
+            // console.log(item)
+          }}
+        />
+      </div>
+      <div className="BrandCardList">
+        {
+          list.map(
+            (cardsInfo, index) => {
+              return (
+                <BrandCard
+                  key={index}
+                  img={cardsInfo.img}
+                  brandName={cardsInfo.brandName}
+                  profile={cardsInfo.profile}
+                  avatar={cardsInfo.avatar}
+                  ownerName={cardsInfo.ownerName}
                 />
-            </div>
-            <div className="BrandCardList">
-                {
-                    cardsInfoList.map(
-                        (cardsInfo, index) => {
-                            return (
-                                <BrandCard
-                                    key={index}
-                                    img={cardsInfo.img}
-                                    brandName={cardsInfo.brandName}
-                                    profile={cardsInfo.profile}
-                                    avatar={cardsInfo.avatar}
-                                    ownerName={cardsInfo.ownerName}
-                                />
-                            )
-                        }
-                    )
-                }
-            </div>
-            <PagingControls />
-        </StyledBrandPage>
-    )
+              )
+            }
+          )
+        }
+      </div>
+      <PagingControls />
+    </StyledBrandPage>
+  )
 }
