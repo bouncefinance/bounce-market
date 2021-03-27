@@ -7,7 +7,7 @@ export const reducer = (state, action) => {
     switch (action.type) {
         case 'UserInfo':
             return {
-                ...state,
+                ...initState,
                 userInfo: action.userInfo
             }
 

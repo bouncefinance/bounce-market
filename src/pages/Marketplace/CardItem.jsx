@@ -98,6 +98,7 @@ export function CardItem ({ cover, name, price, cardId }) {
         <CardItemStyled>
             {/* <img src={cover} alt="" /> */}
             <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />
+            {/* <AutoStretchBaseWidthOrHeightImg src={'http://market-test.bounce.finance:11000/jpgfileget/%E6%B3%B0%E5%8B%923-1616501976.jpg'} width={216} height={216} /> */}
             <div className="item_wrapper">
                 <div className='info_wrapper'>
                     <div>
@@ -110,8 +111,7 @@ export function CardItem ({ cover, name, price, cardId }) {
                 <div className="button_group">
                     <Button primary width={'162px'} onClick={() => {
                         const pathname = window.location.pathname
-                        // TODO Buy poolId
-                        history.push(`${pathname}/${4}`)
+                        history.push(`${pathname}/${cardId}`)
                     }}>Show More</Button>
                 </div>
             </div>

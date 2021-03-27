@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import SearchBar from '../component/Header/Search'
 import { PullRadioBox as DropDownMenu } from '../../components/UI-kit'
 import BrandCard from './BrandCard'
-import PagingControls from '../component/Other/PagingControls'
 
 import { useQuery } from '@apollo/client'
 import { QueryBrands } from '@/utils/apollo'
@@ -116,7 +115,6 @@ export default function Index() {
           )
         }
       </div>
-      <PagingControls />
     </StyledBrandPage>
   )
 }

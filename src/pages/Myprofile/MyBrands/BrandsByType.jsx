@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router'
 import styled from 'styled-components'
 import Modal from '@components/Modal/Modal'
@@ -20,8 +20,13 @@ import nav_image from '@assets/images/icon/nav_image.svg'
 import img_example_3 from '@assets/images/example_3.svg'
 import { useBrandInfo } from './useHook'
 import Snackbar from '@material-ui/core/Snackbar';
+import { useActiveWeb3React } from '@/web3'
+import { Controller } from '@/utils/controller'
+import { useQuery } from '@apollo/client'
+import { QueryBrandItems } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
+import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -237,10 +242,12 @@ export default function BrandsByType () {
             return
         }
         const imgurl = await ImgToUrl(sign_Axios, fileData)
+        // await ImgToUrl(sign_Axios, fileData)
         setBtnLock(true)
         setInputDisable(true)
         setEditBtnText('Submitting ...')
-        const response = await sign_Axios.post('/api/v2/main/auth/updatebrandbyid', { ...editFormData, imgurl })
+        
+        const response = await sign_Axios.post(Controller.brands.updatebrandbyid, { ...editFormData, imgurl })
         setBtnLock(false)
         setInputDisable(false)
         setEditBtnText('Save')
@@ -294,20 +301,21 @@ export default function BrandsByType () {
         }])
     }
 
+    const { active, account } = useActiveWeb3React();
+    const { data } = useQuery(QueryBrandItems, {
+        variables: { account }
+    });
+
     useEffect(() => {
-        setTimeout(() => {
-            getListData(type)
-        }, 100)
-        history.listen(_route => {
-            setTimeout(() => {
-                getListData(type)
-            }, 100)
-        })
-        // eslint-disable-next-line
-    }, [])
+        if (!active) return;
+        if (data) {
+            
+        }
+        
+        console.log(data);
+        getListData();
 
-
-
+    }, [active, data, account]);
 
     return (
         <BrandsByTypeStyled>
@@ -330,7 +338,7 @@ export default function BrandsByType () {
 
             <div className="info_wrapper">
                 <div className="left">
-                    <img src={brandInfo.imgurl} alt="" />
+                    <AutoStretchBaseWidthOrHeightImg src={brandInfo.imgurl} width={270} height={180} />
                 </div>
                 <div className="right">
                     <div className="div">

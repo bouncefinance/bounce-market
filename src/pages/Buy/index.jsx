@@ -25,6 +25,7 @@ import { getFixedSwapNFT } from "@/web3/address_list/contract";
 import useTransferModal from "@/web3/useTransferModal";
 import useHook from "./useHook";
 import { weiMul, weiToNum } from "@/utils/useBigNumber";
+import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
 
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
@@ -37,6 +38,7 @@ function Buy() {
 	const { active, library, account, chainId } = useActiveWeb3React();
 	const [nftInfo, setNftInfo] = useState({});
 	const { poolsInfo } = useHook(poolId);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		if (!active || poolsInfo === {}) return;
@@ -50,8 +52,9 @@ function Buy() {
 	};
 
 	const handelBid = async () => {
-		console.log(poolId, poolsInfo.amountTotal0);
-		if (nftInfo.standard === 1) {
+		console.log(nftInfo, poolsInfo);
+		setIsLoading(true);
+		if (poolsInfo.nftType === "0") {
 			const BounceFixedSwapNFT_CT = getContract(
 				library,
 				BounceFixedSwapNFT.abi,
@@ -74,8 +77,29 @@ function Buy() {
 					// setBidStatus(errorStatus)
 					showTransferByStatus("errorStatus");
 				});
-		} else if (nftInfo.standard === 2) {
-			alert("bid 1155");
+		} else {
+			const BounceFixedSwapNFT_CT = getContract(
+				library,
+				BounceFixedSwapNFT.abi,
+				getFixedSwapNFT(chainId)
+			);
+
+			BounceFixedSwapNFT_CT.methods
+				.swap(poolId, poolsInfo.amountTotal0)
+				.send({ from: account, value: poolsInfo.amountTotal1 })
+				.on("transactionHash", (hash) => {
+					// setBidStatus(pendingStatus)
+					showTransferByStatus("pendingStatus");
+				})
+				.on("receipt", async (_, receipt) => {
+					// console.log('bid fixed swap receipt:', receipt)
+					// setBidStatus(successVotedStatus)
+					showTransferByStatus("successVotedStatus");
+				})
+				.on("error", (err, receipt) => {
+					// setBidStatus(errorStatus)
+					showTransferByStatus("errorStatus");
+				});
 		}
 	};
 
@@ -85,9 +109,13 @@ function Buy() {
 
 			<PageMiddle>
 				<PageMiddleLeft>
-					<img className="NFTImg" src={nftInfo.fileurl} alt="" />
+					{/* <img className="NFTImg" src={nftInfo.fileurl} alt="" /> */}
+					<AutoStretchBaseWidthOrHeightImg
+						src={nftInfo.fileurl}
+						width={416}
+						height={416}
+					/>
 				</PageMiddleLeft>
-
 				<PageMiddleRight>
 					<span className="NFTName">{nftInfo.itemname}</span>
 
@@ -152,10 +180,7 @@ function Buy() {
 
 						<NFTInfoDropdown
 							title="Trading History"
-							content={
-								<TradingHistoryContent
-								/>
-							}
+							content={<TradingHistoryContent />}
 						/>
 					</Dropdowns>
 
@@ -183,18 +208,27 @@ function Buy() {
 					<span className="BorderBottomGap"></span>
 
 					<div className="ButtonGroup">
-						<Button
-							primary
-							value={
-								poolsInfo.status && poolsInfo.status === "Live"
-									? "Place Bid"
-									: poolsInfo.status === "Filled"
-									? "Sold Out"
-									: "Loading Status ..."
-							}
-							disabled={poolsInfo.status !== "Live"}
-							onClick={handelBid}
-						/>
+						{isLoading ? (
+							<Button
+								primary
+								value={"Loading, Please Wait ..."}
+								disabled={true}
+							/>
+						) : (
+							<Button
+								primary
+								value={
+									poolsInfo.status &&
+									poolsInfo.status === "Live"
+										? "Place Bid"
+										: poolsInfo.status === "Filled"
+										? "Sold Out"
+										: "Loading Status ..."
+								}
+								disabled={poolsInfo.status !== "Live"}
+								onClick={handelBid}
+							/>
+						)}
 						{/* 英式拍 一口价 */}
 						{poolsInfo.poolType === "English-Auction" && (
 							<Button value="Buy New For 1 ETH ransfer" />
@@ -485,28 +519,3 @@ const PageMiddleRight = styled.div`
 		grid-area: Gap;
 	}
 `;
-/* 
-const TradingHistory = styled.div`
-	grid-area: TradingHistory;
-
-	display: grid;
-	grid-template-rows: 70px 1fr;
-	grid-template-areas:
-		"str_TradingHistory"
-		"TradeTable";
-
-	span.str_TradingHistory {
-		grid-area: str_TradingHistory;
-
-		font-family: IBM Plex Mono;
-		font-style: normal;
-		font-weight: 500;
-		font-size: 12px;
-		line-height: 16px;
-		display: flex;
-		color: #000000;
-
-		padding-top: 30px;
-		padding-bottom: 24px;
-	}
-`; */

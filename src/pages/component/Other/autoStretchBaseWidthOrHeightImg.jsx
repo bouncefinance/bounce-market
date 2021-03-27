@@ -1,16 +1,26 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from 'styled-components'
+// G: \bounce - market\src\assets\images\loading\2.svg
+import errorImg from '../../../assets/images/loading/2.svg'
 
 const AutoStretchBaseWidthOrHeightImgStyled = styled.div`
 div{
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: 63px;
   background-position: center;
+  background-color: rgba(0, 0, 0, 1);
+  img{
+    background-color: rgb(247, 247, 247);
+    object-fit: contain;
+  }
 }
 `
 export function AutoStretchBaseWidthOrHeightImg ({ src, width, height }) {
+  const [imgShow, setImgShow] = useState(true)
   return <AutoStretchBaseWidthOrHeightImgStyled>
-    <div style={{ width: `${width}px`, height: `${height}px`, backgroundImage: `url(${src})` }}></div>
+    <div style={{ width: `${width}px`, height: `${height}px`, backgroundImage: `url(${errorImg})` }}>
+      {imgShow && <img width={width} height={height} src={src} alt="" onError={() => setImgShow(false)} />}
+    </div>
   </AutoStretchBaseWidthOrHeightImgStyled>
 }
 
@@ -52,3 +62,17 @@ export function AutoStretchBaseWidthOrHeightImg ({ src, width, height }) {
 //       background - repeat: no - repeat;
 // background - size: contain;
 // background - position: center;
+
+
+// const AutoStretchBaseWidthOrHeightImgStyled = styled.div`
+// div{
+//   background-repeat: no-repeat;
+//   background-size: contain;
+//   background-position: center;
+// }
+// `
+// export function AutoStretchBaseWidthOrHeightImg ({ src, width, height }) {
+//   return <AutoStretchBaseWidthOrHeightImgStyled>
+//     <div style={{ width: `${width}px`, height: `${height}px`, backgroundColor: 'rgba(0,0,0,.03)', backgroundImage: `url(${src})` }}></div>
+//   </AutoStretchBaseWidthOrHeightImgStyled>
+// }

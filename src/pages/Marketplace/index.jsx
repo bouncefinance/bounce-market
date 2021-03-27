@@ -14,8 +14,11 @@ import nav_video from '@assets/images/icon/nav_video.svg'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
-import { QueryItesms } from '@/utils/apollo'
+import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
+import Web3 from 'web3'
+// import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
+// import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -106,25 +109,26 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export default function Marketplace() {
+export default function Marketplace () {
   const { type } = useParams()
   const history = useHistory()
   const { active } = useActiveWeb3React()
 
-  const { data } = useQuery(QueryItesms)
+  const { data } = useQuery(QueryTradePools)
   const { sign_Axios } = useAxios();
 
   const [tokenList, setTokenList] = useState([]);
   const [isSet, setIsSet] = useState(false);
   const [channel, setChannel] = useState('');
 
+  // const [loading, setLoding] = useState(true)
+
   useEffect(() => {
     if (!active) return
     
     if ( data && !isSet) {
-      const bounce721Items = data.bounce721Items.map(item => item.tokenId);
-      const bounce1155Items = data.bounce1155Items.map(item => item.tokenId);
-      const list = bounce721Items.concat(bounce1155Items);
+      const pools = data.tradePools;
+      const list = pools.map(item => item.tokenId); 
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         category: type,
@@ -132,8 +136,16 @@ export default function Marketplace() {
       })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
+          const list = res.data.data.map((item, index) => {
+            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            return {
+              ...item,
+              poolId: poolInfo.poolId,
+              price: Web3.utils.fromWei(poolInfo.price)
+            }
+          })
           setIsSet(true);
-          setTokenList(res.data.data);
+          setTokenList(list.sort((a, b) => a.poolId - b.poolId));
         }
       })
       .catch(() =>{})
@@ -143,15 +155,15 @@ export default function Marketplace() {
 
   const renderListByType = (type) => {
     switch (type) {
-      case 'Images':
+      case 'Image':
         return <ul className={`list_wrapper ${type}`}>
           {tokenList.map((item, index) => {
             return <li key={index}>
               <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
-                cardId={item.id}
-                price={!!item.price ? `${item.price} ETH` : '--'}
+                cardId={item.poolId}
+                price={!!item.price ? `${item.price} ETH` : `--`}
               />
             </li>
           })}
@@ -220,7 +232,7 @@ export default function Marketplace() {
         return <ul className={`list_wrapper ${type}`}>
           {tokenList.map((item, index) => {
             return <li key={index}>
-               <CardItem
+              <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.id}
@@ -272,6 +284,7 @@ export default function Marketplace() {
         }} />
       </div>
 
+      {/* {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>} */}
       {renderListByType(type)}
 
       {/* <PagingControls /> */}
