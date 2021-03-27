@@ -11,6 +11,8 @@ import brands_white from './assets/brands_white.svg'
 import brands_black from './assets/brands_black.svg'
 import activities_white from './assets/activities_white.svg'
 import activities_black from './assets/activities_black.svg'
+import icon_liked from '@assets/images/icon/liked.svg'
+import icon_liked_black from '@assets/images/icon/liked_black.svg'
 import setting_white from './assets/setting_white.svg'
 import setting_black from './assets/setting_black.svg'
 import { useActiveWeb3React } from '@/web3'
@@ -99,6 +101,12 @@ const InfoList = [{
     img_white: activities_white,
     img_black: activities_black,
     route: '/MyActivities'
+},
+{
+    name: 'My Liked',
+    img_white: icon_liked_black,
+    img_black: icon_liked,
+    route: '/MyLiked'
 }, /*{
     name: 'Point-2-Point',
     img_white: p2p_white,

@@ -9,8 +9,9 @@ import pic_NFT1 from "./assets/pic_NFT1.svg";
 import useNftInfo from "@/utils/useToken";
 import { useParams } from "react-router-dom";
 import { useActiveWeb3React } from "@/web3";
+import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
 
-export default function SellNFT() {
+export default function SellNFT () {
 	const unitOptions = [
 		{
 			value: "ETH",
@@ -284,11 +285,12 @@ export default function SellNFT() {
 				</PageBodyLeft>
 
 				<PageBodyRight>
-					<img
+					{/* <img
 						className="NFTImg"
-						src={nftInfo && (nftInfo.fileurl || pic_NFT1)}
+
 						alt=""
-					/>
+					/> */}
+					<AutoStretchBaseWidthOrHeightImg src={nftInfo && (nftInfo.fileurl || pic_NFT1)} width={296} height={296} />
 					{render_Summary(auctionType)}
 				</PageBodyRight>
 			</PageBody>
