@@ -91,7 +91,6 @@ export default function Index() {
             <PullRadioBox prefix={'Items:'} options={[{
               value: 'All'
             },]} defaultValue='All' onChange={(item) => {
-              // setIsSet(false);
               // setType(item.value);
             }} />
             <div style={{ width: '16px' }}></div>

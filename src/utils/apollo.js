@@ -15,6 +15,10 @@ export const QueryTradePools = gql`
       poolId
       price
     }
+    tradeAuctions {
+      tokenId
+      poolId
+    }
   }
 `
 
@@ -73,6 +77,10 @@ export const QueryBrandTradeItems = gql`
       poolId
       price
     }
+    tradeAuctions(where: {tokenId_in: $tokenList}) {
+      tokenId
+      poolId
+    }
   }
 `
 
@@ -101,6 +109,18 @@ export const QueryActivity = gql`
       timestamp
     }
     poolCancels(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    auctionCreates(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    auctionBids(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    auctionClaims(where: {sender: $user}) {
       poolId
       timestamp
     }

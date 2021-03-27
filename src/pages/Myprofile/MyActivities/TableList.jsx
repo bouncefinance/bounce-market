@@ -73,7 +73,39 @@ export default function BasicTable() {
             From: '',
             To: '',
         }));
-        const list = createPool.concat(swapPool).concat(cancelPool).sort((a, b) => {
+        const auctionCreates = data.auctionCreates.map(item => ({
+            Event: 'Created',
+            timestamp: item.timestamp,
+            Date: formatDistanceToNow(item.timestamp * 1000),
+            Quantity: '1',
+            Price: '--',
+            From: '',
+            To: '',
+        }));
+        const auctionBids = data.auctionBids.map(item => ({
+            Event: 'Bid',
+            timestamp: item.timestamp,
+            Date: formatDistanceToNow(item.timestamp * 1000),
+            Quantity: '1',
+            Price: '--',
+            From: '',
+            To: '',
+        }));
+        const auctionClaims = data.auctionClaims.map(item => ({
+            vent: 'Claim',
+            timestamp: item.timestamp,
+            Date: formatDistanceToNow(item.timestamp * 1000),
+            Quantity: '1',
+            Price: '--',
+            From: '',
+            To: '',
+        }));
+        const list = createPool.concat(swapPool)
+            .concat(cancelPool)
+            .concat(auctionCreates)
+            .concat(auctionBids)
+            .concat(auctionClaims)
+            .sort((a, b) => {
             return b.timestamp - a.timestamp
         });
         setList(list);

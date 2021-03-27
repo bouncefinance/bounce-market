@@ -279,7 +279,7 @@ export default function BrandsByType () {
     const { active, account } = useActiveWeb3React();
     const [tokenList, setTokenList] = useState([]);
 
-    const handleBrandTradeItems = (tradePools) => {
+    const handleBrandTradeItems = (pools) => {
         sign_Axios.post(Controller.items.getitemsbyfilter, {
           ids: tokenList,
           category: type.toLowerCase() === 'all' ? '' : type,
@@ -288,7 +288,7 @@ export default function BrandsByType () {
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
             const list = res.data.data.map(item => {
-              const poolInfo = tradePools.find(pool => pool.tokenId === item.id);
+              const poolInfo = pools.find(pool => pool.tokenId === item.id);
               return {
                 ...item,
                 poolId: poolInfo ? poolInfo.poolId : '--',
@@ -303,7 +303,9 @@ export default function BrandsByType () {
     const [getBrandTradeItems, brandTradeItems ] = useLazyQuery(QueryBrandTradeItems, {
         variables: {tokenList:  tokenList},
         onCompleted: () => {
-          handleBrandTradeItems(brandTradeItems.data.tradePools);
+            const tradePools = brandTradeItems.data.tradePools;
+            const tradeAuctions = brandTradeItems.data.tradeAuctions;
+            handleBrandTradeItems(tradePools.concat(tradeAuctions));
         }
       })
 
