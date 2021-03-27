@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import InstructionsDropdown from "./components/InstructionsDropdown";
-import InputAmount from "./components/InputAmount";
+import InputPrice from "./components/InputPrice";
 import SelectDuration from "./components/SelectDuration";
 import Summary from "./components/Summary";
 import pic_NFT1 from "./assets/pic_NFT1.svg";
@@ -43,50 +43,57 @@ export default function SellNFT() {
 
 	const fees = "0.5";
 
-	const { exportNftInfo } = useNftInfo()
-	const { nftId } = useParams()
-	const { active } = useActiveWeb3React()
+	const { exportNftInfo } = useNftInfo();
+	const { nftId } = useParams();
+	const { active } = useActiveWeb3React();
 	const [auctionType, setauctionType] = useState("setPrice");
+
+	const [amount, setAmount] = useState(0);
 	const [price, setPrice] = useState(0);
 	const [priceUnit, set_PriceUnit] = useState("ETH");
 	const [minimumBid, set_MinimumBid] = useState(0);
+	const [maximumBid, set_MaximumBid] = useState(0);
 	const [minimumBid_Unit, set_MinimumBid_Unit] = useState("ETH");
+	const [maximumBid_Unit, set_MaximumBid_Unit] = useState("ETH");
 	const [directPurchasePrice, set_DirectPurchasePrice] = useState(0);
-	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState("ETH");
+	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState(
+		"ETH"
+	);
 	const [reservePrice, set_ReservePrice] = useState(0);
 	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
 	const [duration, setDuration] = useState(0);
 
-	const [nftInfo, setNftId] = useState()
+	const [nftInfo, setNftId] = useState();
 
 	useEffect(() => {
-		if (!active) return
-		setInitNftInfo(nftId)
+		if (!active) return;
+		setInitNftInfo(nftId);
 		// eslint-disable-next-line
-	}, [active])
+	}, [active]);
 
 	const setInitNftInfo = async (nftId) => {
-		const info = await exportNftInfo(nftId)
-		setNftId(info)
-	}
+		const info = await exportNftInfo(nftId);
+		/* console.log(info); */
+		setNftId(info);
+	};
 
 	const render_LeftItems = (auctionType) => {
 		switch (auctionType) {
 			case "setPrice":
 				return (
 					<LeftItemsOnSetPrice>
-						<InputAmount
-							className="InputAmount Price"
-							title="Unit Price"
-							price={price}
+						<InputPrice
+							className="InputPrice Price"
+							title="Price"
 							setPrice={setPrice}
-							unit={priceUnit}
 							setUnit={set_PriceUnit}
+							nftInfo={nftInfo}
+							ifInputAmount={true}
+							setAmount={setAmount}
 							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
 							gridArea="Price"
 							options={unitOptions}
 						/>
-
 
 						<InstructionsDropdown
 							className="Instructions"
@@ -111,19 +118,34 @@ export default function SellNFT() {
 			case "EnglishAuction":
 				return (
 					<LeftItemsOnEnglishAuction>
-						<InputAmount
-							className="InputAmount Minimum_bid"
-							title="Minimum bid"
-							price={minimumBid}
-							setPrice={set_MinimumBid}
-							unit={minimumBid_Unit}
-							setUnit={set_MinimumBid_Unit}
-							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
-							gridArea="Minimum_bid"
-							options={unitOptions}
-						/>
-						<InputAmount
-							className="InputAmount Direct_purchase_price"
+						<div style={{ display: "flex", justifyContent: "space-between" }}>
+							<InputPrice
+								className="InputPrice Minimum_bid"
+								title="Minimum bid"
+								price={minimumBid}
+								setPrice={set_MinimumBid}
+								unit={minimumBid_Unit}
+								setUnit={set_MinimumBid_Unit}
+								notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
+								gridArea="Minimum_bid"
+								options={unitOptions}
+							/>
+
+							<InputPrice
+								className="InputPrice Maxium_bid"
+								title="Maxium bid"
+								price={maximumBid}
+								setPrice={set_MaximumBid}
+								unit={maximumBid_Unit}
+								setUnit={set_MaximumBid_Unit}
+								notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
+								gridArea="Maximum_bid"
+								options={unitOptions}
+							/>
+						</div>
+
+						<InputPrice
+							className="InputPrice Direct_purchase_price"
 							title="Direct purchase price"
 							price={directPurchasePrice}
 							setPrice={set_DirectPurchasePrice}
@@ -133,8 +155,8 @@ export default function SellNFT() {
 							gridArea="Direct_purchase_price"
 							options={unitOptions}
 						/>
-						<InputAmount
-							className="InputAmount Reserve_price"
+						<InputPrice
+							className="InputPrice Reserve_price"
 							title="Reserve price"
 							price={reservePrice}
 							setPrice={set_ReservePrice}
@@ -185,6 +207,7 @@ export default function SellNFT() {
 						nftInfo={nftInfo}
 						auctionType="setPrice"
 						price={price}
+						amount={amount || 1}
 						unit={priceUnit}
 						fees={fees}
 					/>
@@ -198,6 +221,9 @@ export default function SellNFT() {
 						unit={reservePrice_Unit}
 						duration={duration}
 						fees={fees}
+						minPrice={minimumBid}
+						maxPrice={maximumBid}
+						minIncr={directPurchasePrice}
 					/>
 				);
 			default:
@@ -258,17 +284,17 @@ export default function SellNFT() {
 				</PageBodyLeft>
 
 				<PageBodyRight>
-					<img className="NFTImg" src={nftInfo && (nftInfo.fileurl || pic_NFT1)} alt="" />
+					<img
+						className="NFTImg"
+						src={nftInfo && (nftInfo.fileurl || pic_NFT1)}
+						alt=""
+					/>
 					{render_Summary(auctionType)}
 				</PageBodyRight>
 			</PageBody>
 		</Page>
 	);
 }
-
-
-
-
 
 const Page = styled.div`
 	width: 1100px;

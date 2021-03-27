@@ -17,6 +17,8 @@ import { useQuery } from '@apollo/client'
 import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import Web3 from 'web3'
+// import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
+// import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -107,7 +109,7 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export default function Marketplace() {
+export default function Marketplace () {
   const { type } = useParams()
   const history = useHistory()
   const { active } = useActiveWeb3React()
@@ -118,6 +120,8 @@ export default function Marketplace() {
   const [tokenList, setTokenList] = useState([]);
   const [isSet, setIsSet] = useState(false);
   const [channel, setChannel] = useState('');
+
+  // const [loading, setLoding] = useState(true)
 
   useEffect(() => {
     if (!active) return
@@ -228,7 +232,7 @@ export default function Marketplace() {
         return <ul className={`list_wrapper ${type}`}>
           {tokenList.map((item, index) => {
             return <li key={index}>
-               <CardItem
+              <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.id}
@@ -280,6 +284,7 @@ export default function Marketplace() {
         }} />
       </div>
 
+      {/* {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>} */}
       {renderListByType(type)}
 
       {/* <PagingControls /> */}

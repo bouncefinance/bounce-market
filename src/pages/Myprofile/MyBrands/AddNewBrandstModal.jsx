@@ -42,7 +42,7 @@ const AddNewBrandstModalStyled = styled.div`
 
 export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAddress, open, setOpen }) {
     const { active, library, chainId, account } = useActiveWeb3React()
-    const { state } = useContext(myContext)
+    const { state,dispatch } = useContext(myContext);
     const { sign_Axios } = useAxios()
     const [fileData, setFileData] = useState(null)
     const [formData, setFormData] = useState({})
@@ -93,6 +93,10 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                    setBtnLock(false)
+                    setInputDisable(false)
+                    setBtnText('Save');
                     throw new Error('File upload failed,' + response.data.msg)
                 }
             }).then((imgUrl) => {
@@ -153,8 +157,10 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                 }
 
             }).catch(function (error) {
-                console.log(error)
-                setBtnText('Upload Error')
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                setBtnLock(false)
+                setInputDisable(false)
+                setBtnText('Try Again')
             })
     }
 

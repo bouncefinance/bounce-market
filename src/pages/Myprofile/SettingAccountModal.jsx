@@ -82,6 +82,10 @@ export default function SettingAccountModal({ open, setOpen }) {
                 if (res.data.code === 200) {
                     imgUrl = res.data.result.path
                 } else {
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                    setBtnLock(false)
+                    setInputDisable(false)
+                    setBtnText('Save')
                     throw new Error('File upload failed,' + res.data.msg)
                 }
             }

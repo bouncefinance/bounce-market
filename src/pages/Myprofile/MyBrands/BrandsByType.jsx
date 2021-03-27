@@ -26,6 +26,7 @@ import { useQuery } from '@apollo/client'
 import { QueryBrandItems } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
+import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -241,6 +242,7 @@ export default function BrandsByType () {
             return
         }
         const imgurl = await ImgToUrl(sign_Axios, fileData)
+        // await ImgToUrl(sign_Axios, fileData)
         setBtnLock(true)
         setInputDisable(true)
         setEditBtnText('Submitting ...')
@@ -336,7 +338,7 @@ export default function BrandsByType () {
 
             <div className="info_wrapper">
                 <div className="left">
-                    <img src={brandInfo.imgurl} alt="" />
+                    <AutoStretchBaseWidthOrHeightImg src={brandInfo.imgurl} width={270} height={180} />
                 </div>
                 <div className="right">
                     <div className="div">
