@@ -58,23 +58,28 @@ export default function Index() {
   useEffect(() => {
     if (!active) return;
     if (data && !isSet) {
-      const bounce721Brands = data.bounce721Brands.map(item => item.id);
-      const bounce1155Brands = data.bounce1155Brands.map(item => item.id);
+      const bounce721Brands = data.bounce721Brands.map(item => ({id: item.id, nftType: 'nft721' }))
+      const bounce1155Brands = data.bounce1155Brands.map(item => ({id: item.id, nftType: 'nft1155'}))
       const list = bounce721Brands.concat(bounce1155Brands);
       sign_Axios.post(Controller.brands.getbrandsbyfilter,  {
-        Brandcontractaddressess:  list
+        Brandcontractaddressess:  list.map(item => item.id)
       })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
           setIsSet(true);
-          const list = res.data.data.map(item => ({
-            img: item.imgurl,
-            brandName: item.brandname,
-            profile: item.description,
-            avatar: item.imgurl,
-            ownerName: item.ownername 
-          }))
-          setList(list);
+          const itemList = res.data.data.map(item => {
+            const brandInfo = list.find(brand => brand.id.toLowerCase() === item.contractaddress.toLowerCase());
+            return {
+              img: item.imgurl,
+              brandName: item.brandname,
+              profile: item.description,
+              avatar: item.imgurl,
+              ownerName: item.ownername,
+              owneraddress: item.owneraddress,
+              nftType: brandInfo.nftType,
+            }
+          })
+          setList(itemList);
         }
       })
     }
@@ -109,6 +114,8 @@ export default function Index() {
                   profile={cardsInfo.profile}
                   avatar={cardsInfo.avatar}
                   ownerName={cardsInfo.ownerName}
+                  owneraddress={cardsInfo.owneraddress}
+                  nftType={cardsInfo.nftType}
                 />
               )
             }
