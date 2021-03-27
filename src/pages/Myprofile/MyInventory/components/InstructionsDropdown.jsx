@@ -7,17 +7,17 @@ import icon_instructions from "./assets/icon_instructions.svg";
 const StyledDropdown = styled.div`
 	cursor: pointer;
 	box-sizing: border-box;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	
 
 	.dropdownHeader {
-		width: 740px;
-		height: 20px;
+		width: 540px;
+		border: 1px solid rgba(0, 0, 0, 0.3);
+		height:50px;
+		line-height:50px;
 		display: grid;
-		grid-template-columns: 20px 10px 69px 619px 12px;
-		grid-template-areas: "icon_instructions . str_Instructions . icon_arrow";
+		grid-template-columns: 20px  20px 10px 69px 400px 12px;
+		grid-template-areas: ". icon_instructions . str_Instructions . icon_arrow";
 		align-items: center;
-
-		margin-bottom: 20px;
 
 		img.icon_instructions {
 			grid-area: icon_instructions;
@@ -60,7 +60,7 @@ const StyledDropdown = styled.div`
 			display: flex;
 			align-items: center;
 			color: #1f191b;
-
+			text-indent: 20px;
 			margin-bottom: 7px;
 
 			&:last-child {

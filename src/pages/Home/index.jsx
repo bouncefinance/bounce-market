@@ -111,6 +111,20 @@ const HomeStyled = styled.div`
         margin-right: 67px;
       }
   }
+  .load_more{
+    height: 48px;
+    line-height: 48px;
+    width: 280px;
+    border-radius: 0px;
+    background: #000000;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    margin: auto;
+    margin-top:32px;
+    cursor: pointer;
+    user-select: none;
+  }
 `
 
 const banner_Nav = [
@@ -156,6 +170,7 @@ export default function Index () {
           return <PopularItem key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
         })}
       </CardGroup>
+      <div className="load_more">Load More</div>
 
       <CardGroup title='Hotest Brands' link=''>
         {[...new Array(4)].map((item, index) => {

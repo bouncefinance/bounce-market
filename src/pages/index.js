@@ -8,7 +8,7 @@ import Test from '../test'
 
 import Home from './Home'
 import Marketplace from './Marketplace'
-import Buy from './Buy'
+import Buy from './Buy/newIndex'
 
 import Brands from './Brands'
 import BrandGoods from './BrandGoods'
@@ -28,6 +28,7 @@ import TransferStatusModal from '@components/Modal/TransferStatusModal'
 import ModalMessage from '@components/Modal/ModalMessage'
 import ErrorNotification from '@components/Modal/ErrorNotification'
 import { AirHome } from './AirHome'
+import MyLiked from './Myprofile/MyLiked'
 
 export default function Index() {
 
@@ -63,6 +64,8 @@ export default function Index() {
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyBrands/:brandId/:type' component={BrandsByType} />
                 <Route exact path='/MyActivities' component={MyActivities} />
+
+                <Route exact path='/MyLiked' component={MyLiked} />
 
                 <Route exact path='/MyP2P' render={() => { return <Redirect to='/MyP2P/Requests' /> }} />
                 <Route exact path='/MyP2P/:type' component={MyP2P} />

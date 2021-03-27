@@ -16,7 +16,7 @@ import useNftInfo from "@/utils/useToken";
 import { getContract, useActiveWeb3React } from "@/web3";
 import { getFixedSwapNFT } from "@/web3/address_list/contract";
 import useTransferModal from "@/web3/useTransferModal";
-import useHook from "./useHook";
+import useHook from "./use_FS_Hook";
 import { weiMul, weiToNum } from "@/utils/useBigNumber";
 import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
 

@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
-import img_addItem from './assets/addItem.svg'
+// import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
 import GenerateNftModal from './GenerateNftModal'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const CardItemStyled = styled.div`
     width: 262px;
-    height: 332px;
+    /* height: 332px; */
     overflow: hidden;
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -53,7 +53,7 @@ const CardItemStyled = styled.div`
             position: absolute;
             width: 100%;
             box-sizing: border-box;
-            top: 0px;
+            /* top: 0px; */
             left: 0px;
             z-index: 1;
 
@@ -61,6 +61,11 @@ const CardItemStyled = styled.div`
             display: none;
             justify-content: space-between;
             margin-top: 16px;
+
+            bottom: 0px;
+            padding-bottom: 10px;
+            padding-top: 14px;
+            background: #fff;
 
             button{
                 font-size: 13px;
@@ -71,9 +76,10 @@ const CardItemStyled = styled.div`
             display: none;
         }
 
-        &:hover .button_group{
-            display: flex;
-        }
+    }
+
+    &:hover .button_group{
+        display: flex;
     }
 
     .tag{
@@ -86,23 +92,58 @@ const CardItemStyled = styled.div`
         font-size: 12px;
         font-weight: 700;
     }
+    .info-box{
+        padding: 20px;
+        .name{
+            font-size: 16px;
+        }
+        .line{
+            margin-top: 20px;
+            margin-bottom: 12px;
+            height: 0px;
+            opacity: 0.1;
+            border-bottom: 1px solid #000000;
+        }
+        .type{
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.5)
+        }
+        ._tag{
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.3)
+        }
+        .price{
+            font-family: Helvetica Neue;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 4px;
+        }
+    }
 `
 
-export function CardItem({ cover, status, nftId, itemname, user }) {
+export function CardItem ({ cover, status, nftId, itemname, user }) {
     const history = useHistory()
 
     return (
         <CardItemStyled>
             <div className="img_wrapper">
-                {/* <img src={cover} alt="" /> */}
                 <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />
             </div>
             <div className="content">
-                <div className="info">
+                {/* <div className="info">
                     <p>{itemname}</p>
                     <span>{user}</span>
+                </div> */}
+                <div className="info-box">
+                    <h5 className="name">{itemname}</h5>
+                    <div className="line"></div>
+                    <div className="flex flex-space-x">
+                        <p className="type">{'Top bid'}</p>
+                        <p className="_tag">{'#12345'}</p>
+                    </div>
+                    <h4 className="price">{'Not on sale'}</h4>
                 </div>
-                {
+               {
                     status === 'Listed' ? <div className='button_group'>
                         <Button value={'Check Status'} primary onClick={() => {
                             history.push(`/MyInventory/${nftId}`)
@@ -125,14 +166,16 @@ export function CardItem({ cover, status, nftId, itemname, user }) {
     )
 }
 
-const AddCardItemStyle = styled(CardItemStyled)`
+const AddCardItemStyle = styled.div`
     .content{
         width: 100%;
         text-align: center;
         button{
-            width: 162px;
-            height: 36px;
-            margin: 18px auto;
+            width: 224px;
+            height: 46px;
+            color:#fff;
+            background-color: #000;
+            /* margin: 18px auto; */
         }
     }
 `
@@ -143,11 +186,11 @@ export function AddCardItem () {
     return (
         <>
             <AddCardItemStyle>
-                <div className="img_wrapper">
+                {/* <div className="img_wrapper">
                     <img src={img_addItem} alt="" />
-                </div>
+                </div> */}
                 <div className="content">
-                    <Button value={'Add'} onClick={() => {
+                    <Button value={'+ Add new NFT'} onClick={() => {
                         setShowGenrateModal(true)
                     }} />
                 </div>

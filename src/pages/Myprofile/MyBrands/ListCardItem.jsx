@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
 import AddNewBrandstModal from './AddNewBrandstModal'
-import img_addItem from './assets/addItem_img.png'
+// import img_addItem from './assets/addItem_img.png'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const CardItemStyled = styled.div`
@@ -53,14 +53,18 @@ export function CardItem ({ cover, name, count }) {
     )
 }
 
-const AddCardItemStyled = styled(CardItemStyled)`
+const AddCardItemStyled = styled.div`
     cursor: default;
+    width: 224px;
     .create_wrapper{
         width: 100%;
         text-align: center;
         button{
-            margin: 15px auto;
-            cursor: pointer;
+            width: 224px;
+            height: 46px;
+            color:#fff;
+            background-color: #000;
+            margin-top: 32px;
         }
     }
 `
@@ -71,7 +75,7 @@ export function AddCardItem ({ run, hasAddressButNotBrand, brandAddress, isCreat
     return (
         <>
             <AddCardItemStyled>
-                <AutoStretchBaseWidthOrHeightImg src={img_addItem} widgth={262} height={180} />
+                {/* <AutoStretchBaseWidthOrHeightImg src={img_addItem} widgth={262} height={180} /> */}
                 <div className="create_wrapper">
                     {isCreate ? <Button value='Create' onClick={() => {
                         setShowCreateModal(true)

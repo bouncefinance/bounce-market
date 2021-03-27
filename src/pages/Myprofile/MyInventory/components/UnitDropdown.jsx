@@ -8,7 +8,8 @@ import icon_pull from "./assets/pull.svg";
 const PullRadioBoxStyled = styled.div`
 	cursor: pointer;
 	position: relative;
-
+	border-left:1px solid rgba(0,0,0,0.2);
+	padding-left:12px;
 	.select {
 		width: ${({ width }) => {
 			return width || "262px";
@@ -62,7 +63,6 @@ const PullRadioBoxStyled = styled.div`
 		}
 
 		&.disabled {
-			border: 1px solid rgba(0, 0, 0, 0.5);
 			color: #000;
 			opacity: 0.4;
 			&:hover {
@@ -153,23 +153,6 @@ export default function PullRadioBox({
 			height={height}
 			marginTop={marginTop}
 		>
-			<div
-				className={`select ${!disabled && open && "open"} ${
-					disabled && "disabled"
-				}`}
-				onClick={() => {
-					if (disabled) return;
-					setOpen(!open);
-				}}
-			>
-				{icon && <img className="icon" src={icon} alt="" />}
-				<div>
-					{prefix && <span className="prefix">{prefix}</span>}
-					<p className="value">{checkVal}</p>
-				</div>
-				<img src={icon_pull} className={open ? "up" : "down"} alt="" />
-			</div>
-
 			{!disabled && open && (
 				<ul className="options">
 					{options.map((item, index) => {
@@ -193,6 +176,22 @@ export default function PullRadioBox({
 					})}
 				</ul>
 			)}
+			<div
+				className={`select ${!disabled && open && "open"} ${
+					disabled && "disabled"
+				}`}
+				onClick={() => {
+					if (disabled) return;
+					setOpen(!open);
+				}}
+			>
+				{icon && <img className="icon" src={icon} alt="" />}
+				<div>
+					{prefix && <span className="prefix">{prefix}</span>}
+					<p className="value">{checkVal}</p>
+				</div>
+				<img src={icon_pull} className={open ? "up" : "down"} alt="" />
+			</div>
 		</PullRadioBoxStyled>
 	);
 }
