@@ -33,16 +33,15 @@ function InputPrice({
 				const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
 				setBalance(balance)
 			}
-			getBalance();
 		}else if(nftInfo.standard === 1){
 			getBalance = async () => {
 				const balance = await getBalance_ERC_721(nftInfo.contractaddress, nftInfo.id)
 				setBalance(balance)
 			}
-			getBalance();
 		}
+		getBalance();
 		// eslint-disable-next-line
-	}, [active, nftInfo])
+	}, [active, nftInfo,ifInputAmount])
 	useEffect(() => {
 		if (!price) return;
 		setpriceValue(price)
@@ -60,7 +59,7 @@ function InputPrice({
 			setPrice(e.target.value);
 			setpriceValue(e.target.value);
 		} else if (e.target.value.match("^\\d+\\.$") != null) {
-			setPrice(e.target.value.slice(0, -1));
+			setPrice(e.target.value);
 			setpriceValue(e.target.value);
 		} else if (e.target.value.match("^\\d+\\.[0-9]*0+$") != null) {
 			setPrice(parseFloat(e.target.value));
@@ -71,13 +70,15 @@ function InputPrice({
 		}
 	};
 	const checkAmountVal = (e) => {
+		if(e.target.value.match("^\\d+\\.$") != null){
+			setAmount(e.target.value.slice(0, -1));
+			setAmountValue(e.target.value.slice(0, -1));
+		}
 		if(balance && parseFloat(balance) <  parseFloat(e.target.value)){
 			setAmount(balance);
 			setAmountValue(balance);
-		}else{
-			setAmount(e.target.value);
-			setAmountValue(e.target.value);
 		}
+		
 	};
 
 	return (
@@ -276,6 +277,7 @@ const AmounttRow = styled.div`
 	grid-template-columns: auto;
 	align-items: center;
 	height:54px;
+	margin-bottom:20px;
 	input {
 		width: 146px;
 		box-sizing: border-box;
