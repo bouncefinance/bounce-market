@@ -11,6 +11,7 @@ import Marketplace from './Marketplace'
 import Buy from './Buy'
 
 import Brands from './Brands'
+import Brands2 from './Brands/index2'
 import BrandGoods from './BrandGoods'
 import P2P from './P2P'
 import Factory from './Factory'
@@ -49,6 +50,7 @@ export default function Index() {
                 <Route exact path='/Marketplace/:type/:poolId' component={Buy} />
 
                 <Route exact path='/Brands' component={Brands} />
+                <Route exact path='/Brands2' component={Brands2} />
                 <Route exact path='/Brands/:brandId/:type' component={BrandGoods} />
                 <Route exact path='/BrandsGoods/' component={BrandGoods} />
 
