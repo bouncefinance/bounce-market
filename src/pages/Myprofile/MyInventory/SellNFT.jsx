@@ -9,7 +9,7 @@ import pic_NFT1 from "./assets/pic_NFT1.svg";
 import useNftInfo from "@/utils/useToken";
 import { useParams } from "react-router-dom";
 import { useActiveWeb3React } from "@/web3";
-// import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
+import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
 
 export default function SellNFT () {
 	const unitOptions = [
@@ -76,6 +76,19 @@ export default function SellNFT () {
 		setNftId(info);
 	};
 
+	useEffect(() => {
+		console.log(directPurchasePrice,reservePrice,minimumBid)
+		if(directPurchasePrice && reservePrice && parseFloat(reservePrice) > parseFloat(directPurchasePrice) ){
+			set_ReservePrice(directPurchasePrice);
+		}
+		if(reservePrice && minimumBid && parseFloat(minimumBid) > parseFloat(reservePrice)){
+			set_MinimumBid(reservePrice);
+		}
+		if(directPurchasePrice && minimumBid && parseFloat(minimumBid) > parseFloat(directPurchasePrice)){
+			set_DirectPurchasePrice(reservePrice);
+		}
+	}, [directPurchasePrice,reservePrice,minimumBid]);
+
 	const render_LeftItems = (auctionType) => {
 		switch (auctionType) {
 			case "setPrice":
@@ -140,7 +153,7 @@ export default function SellNFT () {
 						/>
 						<InputPrice
 							className="InputPrice Maximum_bid"
-							title="Maximum bid"
+							title="Minimum Increasing"
 							price={maximumBid}
 							setPrice={set_MaximumBid}
 							unit={maximumBid_Unit}
@@ -206,8 +219,8 @@ export default function SellNFT () {
 						duration={duration}
 						fees={fees}
 						minPrice={minimumBid}
-						maxPrice={maximumBid}
-						minIncr={directPurchasePrice}
+						maxPrice={directPurchasePrice}
+						minIncr={maximumBid}
 					/>
 					</>
 				);
@@ -227,11 +240,7 @@ export default function SellNFT () {
 			</BreadcrumbNav>
 			<PageBody>
 				<PageBodyLeft>
-					<img
-						className="NFTImg"
-						src={nftInfo && (nftInfo.fileurl || pic_NFT1)}
-						alt=""
-					/>
+					<AutoStretchBaseWidthOrHeightImg  width={500} height={500} src={nftInfo && (nftInfo.fileurl || pic_NFT1)} />
 				</PageBodyLeft>
 				<PageBodyRight>
 					<span className="str_SelectSellMethod">
