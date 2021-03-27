@@ -43,7 +43,7 @@ export default function SellNFT () {
 	];
 
 	const fees = "0.5";
-	const { exportNftInfo, exportErc20Info } = useNftInfo();
+	const { exportNftInfo } = useNftInfo();
 	const { nftId } = useParams();
 	const { active } = useActiveWeb3React();
 	const [auctionType, setauctionType] = useState("setPrice");
@@ -117,7 +117,7 @@ export default function SellNFT () {
 						nftInfo={nftInfo}
 						auctionType="setPrice"
 						price={price}
-						amount={amount}
+						amount={amount || 1}
 						unit={priceUnit}
 						fees={fees}
 					/>
