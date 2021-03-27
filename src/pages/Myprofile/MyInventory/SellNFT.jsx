@@ -9,7 +9,9 @@ import pic_NFT1 from "./assets/pic_NFT1.svg";
 import useNftInfo from "@/utils/useToken";
 import { useParams } from "react-router-dom";
 import { useActiveWeb3React } from "@/web3";
-export default function SellNFT() {
+// import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
+
+export default function SellNFT () {
 	const unitOptions = [
 		{
 			value: "ETH",
@@ -50,9 +52,10 @@ export default function SellNFT() {
 	const [price, setPrice] = useState(0);
 	const [priceUnit, set_PriceUnit] = useState("ETH");
 	const [minimumBid, set_MinimumBid] = useState(0);
-	const [maxmumBid, set_MaximumBid] = useState(0);
-	const [maxmumBid_Unit, set_MaxmumBid_Unit] = useState("ETH");
+	// const [maxmumBid_Unit, set_MaxmumBid_Unit] = useState("ETH");
+	const [maximumBid, set_MaximumBid] = useState(0);
 	const [minimumBid_Unit, set_MinimumBid_Unit] = useState("ETH");
+	const [maximumBid_Unit, set_MaximumBid_Unit] = useState("ETH");
 	const [directPurchasePrice, set_DirectPurchasePrice] = useState(0);
 	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState("ETH");
 	const [reservePrice, set_ReservePrice] = useState(0);
@@ -83,6 +86,7 @@ export default function SellNFT() {
 							title="Price"
 							setPrice={setPrice}
 							setUnit={set_PriceUnit}
+							nftInfo={nftInfo}
 							ifInputAmount={true}
 							setAmount={setAmount}
 							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
@@ -137,10 +141,10 @@ export default function SellNFT() {
 						<InputPrice
 							className="InputPrice Maximum_bid"
 							title="Maximum bid"
-							price={maxmumBid}
+							price={maximumBid}
 							setPrice={set_MaximumBid}
-							unit={maxmumBid_Unit}
-							setUnit={set_MaxmumBid_Unit}
+							unit={maximumBid_Unit}
+							setUnit={set_MaximumBid_Unit}
 							notice="The Price Bidding Ends at. It'll Be Publicly Visible. You Can Manually Accept Bids Below This Value But Above Your Reserve Price If You Want."
 							gridArea="Maximum_bid"
 							options={unitOptions}
@@ -201,6 +205,9 @@ export default function SellNFT() {
 						unit={reservePrice_Unit}
 						duration={duration}
 						fees={fees}
+						minPrice={minimumBid}
+						maxPrice={maximumBid}
+						minIncr={directPurchasePrice}
 					/>
 					</>
 				);

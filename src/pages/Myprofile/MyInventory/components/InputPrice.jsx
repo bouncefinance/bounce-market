@@ -5,23 +5,51 @@ import UnitDropdown from "./UnitDropdown";
 import { ZERO_ADDRESS } from "@/web3/address_list/token";
 import icon_ETH from "./assets/icon_ETH.svg";
 import { useActiveWeb3React } from "@/web3";
+// import useToken from "@/utils/useToken";
+
 
 function InputPrice({
 	className,
 	title,
 	setPrice,
 	setUnit,
-	ifInputAmount=false,
+	ifInputAmount = false,
 	setAmount,
 	notice,
 	gridArea,
 	options,
+	nftInfo
 }) {
 	const { active } = useActiveWeb3React();
 	const [priceValue, setpriceValue] = useState("");
-	const [amountValue, setAmountValue] = useState("");
 	const [balance, setBalance] = useState(0);
+	const [amountValue, setAmountValue] = useState(0);
+	// const { getBalance_ERC_1155 } = useToken()
 	const { exportErc20Info } = useNftInfo();
+
+	// useEffect(() => {
+	// 	if (!active || !nftInfo || nftInfo.standard !== 2) return
+	// 	// console.log(nftInfo)
+	// 	const getBalance = async () => {
+	// 		const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
+	// 		// console.log(balance)
+	// 		setBalance(balance)
+	// 	}
+
+	// 	getBalance()
+	// 	// eslint-disable-next-line
+	// }, [active, nftInfo])
+
+	useEffect(() => {
+		if (!active) return;
+		setExportErc20Info(ZERO_ADDRESS);
+		// eslint-disable-next-line
+	}, [active]);
+	const setExportErc20Info = async (Addr) => {
+		const info = await exportErc20Info(Addr);
+		setBalance(info?.balance);
+	};
+
 	const checkInputPrice = (e) => {
 		// console.log("key value: ", e.target.value);
 
@@ -50,20 +78,11 @@ function InputPrice({
 			setAmount(balance);
 			setAmountValue(balance);
 		}else{
-			setAmount(e.target.value)
+			setAmount(e.target.value);
 			setAmountValue(e.target.value);
 		}
 	};
 
-	useEffect(() => {
-		if (!active) return;
-		setExportErc20Info(ZERO_ADDRESS);
-		// eslint-disable-next-line
-	}, [active]);
-	const setExportErc20Info = async (Addr) => {
-		const info = await exportErc20Info(Addr);
-		setBalance(info.balance);
-	};
 	return (
 		<Wrapper className={className} gridArea={gridArea}>
 			<span className="title">{title}</span>
@@ -97,18 +116,11 @@ function InputPrice({
 						<input
 							className="InputAmount"
 							type="text"
+							defaultValue={1}
 							placeholder="Amount"
 							maxLength={18}
 							value={amountValue}
 							onChange={checkAmountVal}
-							// onChange={(e)=>{
-							// 	console.log(balance && parseFloat(balance) <  parseFloat(e.target.value))
-							// 	if(balance && parseFloat(balance) <  parseFloat(e.target.value)){
-							// 		setAmount(balance);
-							// 	}else{
-							// 		setAmount(e.target.value)
-							// 	}
-							// }}
 						/>
 						<span className="balance"> Balance: {balance}</span>
 					</div>

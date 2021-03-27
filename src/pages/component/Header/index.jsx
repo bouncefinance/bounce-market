@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { Link, useHistory } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
@@ -6,6 +6,7 @@ import Search from './Search'
 import InfoBox from './InfoBox'
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
+import logo_bfangible from '@assets/images/logo/fangible.svg'
 import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import { useActiveWeb3React } from '@/web3'
 import { useWalletConnect } from '@/web3/useWalletConnect'
@@ -125,16 +126,17 @@ const Nav_list = [{
     enable: true,
 }]
 
-export default function Index() {
+export default function Index () {
     const [isConnectWallect, setIsConnectWallect] = useState(false)
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState('Home')
     const { account, chainId, active } = useActiveWeb3React()
-    const [isShowInfo, setIsShowInfo] = useState(false)
+    const [isShowInfo, setIsShowInfo] = useState(true)
     const { getUserInfo } = useUserInfo()
     const history = useHistory()
-    const {state} = useContext(myContext);
-    const { dispatch} = useContext(myContext);
+    const { state } = useContext(myContext);
+    const { dispatch } = useContext(myContext);
+    const [isFangible, setIsFangible] = useState(false)
 
     const updateActive = () => {
         const pathName = window.location.pathname
@@ -143,6 +145,16 @@ export default function Index() {
                 setCurNav(element.name)
             }
         })
+        if (
+            pathName === '/MyInventory' ||
+            pathName === '/MyActivities' ||
+            pathName === '/MyLiked' ||
+            pathName === '/MyBrands'
+        ) {
+            setIsFangible(true)
+        } else {
+            setIsFangible(false)
+        }
     }
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
@@ -157,13 +169,28 @@ export default function Index() {
     }, [history])
 
     useEffect(() => {
+        const eventShowInfo = () => {
+            setIsShowInfo(false)
+        }
+        document.body.addEventListener('click', eventShowInfo)
+        return () => {
+            document.body.removeEventListener('click', eventShowInfo)
+        }
+    }, [])
+
+    useEffect(() => {
         if (!active) return
-        if(chainId && chainId !== 4){
-            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"请选择Rinkeby测试网络"});
+        if (chainId && chainId !== 4) {
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "请选择Rinkeby测试网络" });
         }
         getUserInfo();
         // eslint-disable-next-line
     }, [account, chainId, active])
+
+    const onHandleShowInfo = (e) => {
+        window.event ? window.event.cancelBubble = true : e.stopPropagation()
+        setIsShowInfo(!isShowInfo)
+    }
 
     return (
         <>
@@ -171,7 +198,7 @@ export default function Index() {
                 <div className="wrapper">
                     <div className='left'>
                         <Link to="/">
-                            <img src={logo_bounce} alt=""></img>
+                            <img src={isFangible ? logo_bfangible : logo_bounce} alt=""></img>
                         </Link>
 
                         <Search
@@ -200,11 +227,7 @@ export default function Index() {
                             })}
                         </ul>
                         {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
-                            {state.userInfo && state.userInfo.imgurl ? <img src={state.userInfo && state.userInfo.imgurl} alt="" onClick={() => {
-                                setIsShowInfo(!isShowInfo)
-                            }} /> : <div className='avatar' onClick={() => {
-                                setIsShowInfo(!isShowInfo)
-                            }}></div>}
+                            {state.userInfo && state.userInfo.imgurl ? <img src={state.userInfo && state.userInfo.imgurl} alt="" onClick={onHandleShowInfo} /> : <div className='avatar' onClick={onHandleShowInfo}></div>}
                         </div> : <Button className='connect_btn' primary onClick={() => {
                             setIsConnectWallect(true)
                         }}>Connect Wallet</Button>}

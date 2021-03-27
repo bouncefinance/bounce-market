@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import SearchBar from '../component/Header/Search'
 import { PullRadioBox as DropDownMenu } from '../../components/UI-kit'
 import BrandCard from './BrandCard'
-import PagingControls from '../component/Other/PagingControls'
 
 import { useQuery } from '@apollo/client'
 import { QueryBrands } from '@/utils/apollo'
@@ -59,8 +58,8 @@ export default function Index() {
   useEffect(() => {
     if (!active) return;
     if (data && !isSet) {
-      const bounce721Brands = data.bounce721Brands.map(item => item.id);
-      const bounce1155Brands = data.bounce1155Brands.map(item => item.id);
+      const bounce721Brands = data.bounce721Brands.map(item => item.id)
+      const bounce1155Brands = data.bounce1155Brands.map(item => item.id)
       const list = bounce721Brands.concat(bounce1155Brands);
       sign_Axios.post(Controller.brands.getbrandsbyfilter,  {
         Brandcontractaddressess:  list
@@ -68,14 +67,16 @@ export default function Index() {
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
           setIsSet(true);
-          const list = res.data.data.map(item => ({
+          const itemList = res.data.data.map(item => ({
+            id: item.id,
             img: item.imgurl,
             brandName: item.brandname,
             profile: item.description,
             avatar: item.imgurl,
-            ownerName: item.ownername 
+            ownerName: item.ownername,
+            standard:  item.standard,
           }))
-          setList(list);
+          setList(itemList);
         }
       })
     }
@@ -110,13 +111,14 @@ export default function Index() {
                   profile={cardsInfo.profile}
                   avatar={cardsInfo.avatar}
                   ownerName={cardsInfo.ownerName}
+                  id={cardsInfo.id}
+                  standard={cardsInfo.standard} //1: 721 2: 1155
                 />
               )
             }
           )
         }
       </div>
-      <PagingControls />
     </StyledBrandPage>
   )
 }

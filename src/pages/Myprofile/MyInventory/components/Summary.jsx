@@ -4,7 +4,7 @@ import moment from "moment";
 
 import Button from "@components/UI-kit/Button/Button";
 
-import icon_dotLine from "./assets/icon_dotLine.svg";
+// import icon_dotLine from "./assets/icon_dotLine.svg";
 import { getFixedSwapNFT } from "@/web3/address_list/contract";
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 import BounceERC721WithSign from '@/web3/abi/BounceERC721WithSign.json'
@@ -148,41 +148,6 @@ const SummaryWrapper = styled.div`
 		}
 	}
 `;
-
-const render_ListingText = (auctionType, price, unit, duration) => {
-	switch (auctionType) {
-		case "setPrice":
-			return (
-				<span className="text priceInfo">
-					Your item will be listed for
-					<span className="bold">
-						{" "}
-						{price || "0"} {unit}.
-					</span>
-				</span>
-			);
-		case "EnglishAuction":
-			return (
-				<span className="text priceInfo">
-					Your item will be auctioned and the highest bidder will win
-					it at
-					<span className="bold">
-						{" "}
-						{moment()
-							.add(duration, "days")
-							.format("ha on MMMM DD,YYYY")}
-					</span>
-					,as long as his bid is higher than
-					<span className="bold">
-						{" "}
-						{price || "0"} {unit}.
-					</span>
-				</span>
-			);
-		default:
-			return;
-	}
-};
 
 function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo }) {
 	const { chainId, library, account } = useActiveWeb3React()

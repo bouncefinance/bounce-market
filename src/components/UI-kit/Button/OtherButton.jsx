@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Button from './Button'
 import icon_setting from '../assets/setting.svg'
 import icon_share from '../assets/share.svg'
+import icon_like from '../assets/like.svg'
 
 export default function OtherButton({
     style,
@@ -26,6 +27,10 @@ export default function OtherButton({
 
             case 'share':
                 img = icon_share
+                break;
+
+            case 'like':
+                img = icon_like
                 break;
 
             default:

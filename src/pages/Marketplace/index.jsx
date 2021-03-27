@@ -17,7 +17,7 @@ import { useQuery } from '@apollo/client'
 import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import Web3 from 'web3'
-// import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
+import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 // import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const MarketplaceStyled = styled.div`
@@ -121,34 +121,36 @@ export default function Marketplace () {
   const [isSet, setIsSet] = useState(false);
   const [channel, setChannel] = useState('');
 
-  // const [loading, setLoding] = useState(true)
+  const [loading, setLoding] = useState(true)
 
   useEffect(() => {
     if (!active) return
-    
-    if ( data && !isSet) {
+
+    if (data && !isSet) {
       const pools = data.tradePools;
-      const list = pools.map(item => item.tokenId); 
+      const list = pools.map(item => item.tokenId);
+      setLoding(true)
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         category: type,
         channel: channel
       })
-      .then(res => {
-        if (res.status === 200 && res.data.code === 1) {
-          const list = res.data.data.map((item, index) => {
-            const poolInfo = pools.find(pool => pool.tokenId === item.id);
-            return {
-              ...item,
-              poolId: poolInfo.poolId,
-              price: Web3.utils.fromWei(pools[index].price)
-            }
-          })
-          setIsSet(true);
-          setTokenList(list.sort((a, b) => a.poolId - b.poolId));
-        }
-      })
-      .catch(() =>{})
+        .then(res => {
+          if (res.status === 200 && res.data.code === 1) {
+            const list = res.data.data.map((item, index) => {
+              const poolInfo = pools.find(pool => pool.tokenId === item.id);
+              return {
+                ...item,
+                poolId: poolInfo.poolId,
+                price: Web3.utils.fromWei(poolInfo.price)
+              }
+            })
+            setIsSet(true);
+            setTokenList(list.sort((a, b) => a.poolId - b.poolId));
+            setLoding(false)
+          }
+        })
+        .catch(() => { })
     }
   }, [active, data, type, channel, isSet, sign_Axios])
 
@@ -284,7 +286,7 @@ export default function Marketplace () {
         }} />
       </div>
 
-      {/* {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>} */}
+      {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
       {renderListByType(type)}
 
       {/* <PagingControls /> */}
