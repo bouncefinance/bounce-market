@@ -37,10 +37,11 @@ const MyInventoryStyled = styled.div`
     }
 `
 
-export default function Index () {
+export default function Index() {
   const { account, active } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
+  // eslint-disable-next-line
   const [type, setType] = useState('image');
   const [loading, setLoading] = useState(true)
 
@@ -75,7 +76,7 @@ export default function Index () {
     if (!active) return;
     getMyNFT();
 
-  }, [active, getMyNFT]);
+  }, [active, account, getMyNFT]);
 
 
   return (
