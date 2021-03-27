@@ -96,7 +96,7 @@ export default function SettingAccountModal({ open, setOpen }) {
             }
 
             const updatedUer = await updateUserInfo(params)
-            console.log(JSON.stringify(updatedUer));
+            //console.log(JSON.stringify(updatedUer));
             if(updatedUer.data.code === 0){
                 dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: updatedUer.data.msg });
                 setBtnLock(false)

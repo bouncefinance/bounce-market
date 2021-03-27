@@ -104,7 +104,7 @@ const StyledCard = styled.div`
 
 `
 
-function BrandCard({img, brandName, profile, avatar, ownerName, owneraddress, nftType}) {
+function BrandCard({img, brandName, profile, avatar, ownerName, id, standard}) {
     const history = useHistory();
     return (
         <StyledCard>
@@ -119,7 +119,7 @@ function BrandCard({img, brandName, profile, avatar, ownerName, owneraddress, nf
                 </div>
                 <div className="button_visit">
                     <Button primary width={'162px'} onClick={() => {
-                        history.push(`/AirHome/${owneraddress}/${nftType}/Image`)
+                        history.push(`/AirHome/${id}/${standard}/Image`)
                     }}>Visit Store</Button>
                 </div>
             </div>

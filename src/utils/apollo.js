@@ -65,7 +65,7 @@ export const  QueryMyNFT = gql`
   }
 `
 
-export const QueryMyBrandItems = gql`
+export const QueryOwnerBrandItems = gql`
   query nftItems($owner: String!) {
     bounce721Brands(where: {owner: $owner}) {
       tokenList {
@@ -76,6 +76,16 @@ export const QueryMyBrandItems = gql`
       tokenList {
         tokenId
       }
+    }
+  }
+`
+
+export const QueryBrandTradeItems = gql`
+  query brandTradeItems($tokenList: [Int!]!) {
+    tradePools(where: {tokenId_in: $tokenList}) {
+      tokenId
+      poolId
+      price
     }
   }
 `
