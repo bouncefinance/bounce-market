@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import useNftInfo from "@/utils/useToken";
 import UnitDropdown from "./UnitDropdown";
-import { ZERO_ADDRESS } from "@/web3/address_list/token";
 import icon_ETH from "./assets/icon_ETH.svg";
 import { useActiveWeb3React } from "@/web3";
-// import useToken from "@/utils/useToken";
+import useToken from "@/utils/useToken";
 
 
 function InputPrice({
 	className,
 	title,
+	price,
 	setPrice,
 	setUnit,
 	ifInputAmount = false,
@@ -23,35 +22,33 @@ function InputPrice({
 	const { active } = useActiveWeb3React();
 	const [priceValue, setpriceValue] = useState("");
 	const [balance, setBalance] = useState(0);
-	const [amountValue, setAmountValue] = useState(0);
-	// const { getBalance_ERC_1155 } = useToken()
-	const { exportErc20Info } = useNftInfo();
-
-	// useEffect(() => {
-	// 	if (!active || !nftInfo || nftInfo.standard !== 2) return
-	// 	// console.log(nftInfo)
-	// 	const getBalance = async () => {
-	// 		const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
-	// 		// console.log(balance)
-	// 		setBalance(balance)
-	// 	}
-
-	// 	getBalance()
-	// 	// eslint-disable-next-line
-	// }, [active, nftInfo])
+	const [amountValue, setAmountValue] = useState(1);
+	const { getBalance_ERC_1155,getBalance_ERC_721 } = useToken()
 
 	useEffect(() => {
-		if (!active) return;
-		setExportErc20Info(ZERO_ADDRESS);
+		if (!active || !nftInfo || !nftInfo.standard) return;
+		let getBalance 
+		if(nftInfo.standard === 2){
+			getBalance = async () => {
+				const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
+				setBalance(balance)
+			}
+			getBalance();
+		}else if(nftInfo.standard === 1){
+			getBalance = async () => {
+				const balance = await getBalance_ERC_721(nftInfo.contractaddress, nftInfo.id)
+				setBalance(balance)
+			}
+			getBalance();
+		}
 		// eslint-disable-next-line
-	}, [active]);
-	const setExportErc20Info = async (Addr) => {
-		const info = await exportErc20Info(Addr);
-		setBalance(info?.balance);
-	};
+	}, [active, nftInfo])
+	useEffect(() => {
+		if (!price) return;
+		setpriceValue(price)
+	}, [price])
 
 	const checkInputPrice = (e) => {
-		// console.log("key value: ", e.target.value);
 
 		if (e.target.value.match("^$") != null) {
 			setPrice(0);
@@ -119,6 +116,7 @@ function InputPrice({
 							defaultValue={1}
 							placeholder="Amount"
 							maxLength={18}
+							disabled={nftInfo && nftInfo.standard === 1}
 							value={amountValue}
 							onChange={checkAmountVal}
 						/>
