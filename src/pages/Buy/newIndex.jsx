@@ -8,9 +8,11 @@ import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import { getFixedSwapNFT } from "@/web3/address_list/contract";
+import NewPullDown from './components/NewPullDown'
 
 import icon_altAvatar from './assets/icon_altAvatar.svg'
 import icon_time from './assets/icon_time.svg'
+import { weiMul, weiToNum } from '@/utils/useBigNumber';
 
 
 const NewIndexStyled = styled.div`
@@ -131,6 +133,10 @@ const NewIndexStyled = styled.div`
                 justify-content: space-between;
                 margin-top: 21px;
             }
+
+            .pullInfoBox{
+                margin-top: 32px;
+            }
         }
         
     }
@@ -145,20 +151,25 @@ export default function NewIndex() {
     const [btnText, setBtnText] = useState('Place a bid')
 
     useEffect(() => {
+
+        console.log(nftInfo, poolInfo)
         if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
             setBtnText('loading ...')
             return
         }
 
-        setIsLoading(false)
-        setBtnText('Place a bid')
+        if (poolInfo.status === 'Live') {
+            setIsLoading(false)
+            setBtnText('Place a bid')
+        } else {
+            setBtnText('Sold Out')
+        }
         // eslint-disable-next-line
     }, [active, nftInfo, poolInfo])
 
 
     const handelBid = async () => {
-        console.log(nftInfo, poolInfo)
         setIsLoading(true)
         if (poolInfo.nftType === '0') {
             const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
@@ -217,11 +228,11 @@ export default function NewIndex() {
 
                 <div className="container_right">
                     <div className="sell_info">
-                        <h3>Digital Image Name</h3>
+                        <h3>{nftInfo.itemname || 'Name Is Loading ...'}</h3>
                         <div className="seller">
                             <div className='info'>
                                 <img src={icon_altAvatar} alt="" />
-                                <p>Owned by <a href="http://">Mapache</a></p>
+                                <p>Owned by <a href="http://">{nftInfo.ownername || 'Anonymity'}</a></p>
 
                                 <div className="close_time">
                                     <img src={icon_time} alt="" />
@@ -229,7 +240,7 @@ export default function NewIndex() {
                                 </div>
                             </div>
                             <div className="desc">
-                                <p>Hyper Geography is a website artwork created in 2011. The website features hundreds of found images collaged in a looping grid. The source images were collected from other blogs on Tumblr. Blogs that had a particularly strong...</p>
+                                <p>{nftInfo.description || 'description Is Loading ...'}</p>
                                 <span>Read more</span>
 
                             </div>
@@ -237,19 +248,25 @@ export default function NewIndex() {
                         <div className="bidInfo">
                             <div>
                                 <h5>Top Bid</h5>
-                                <h3>0,0799 ETH <span>($36,52)</span></h3>
+                                <h3>{poolInfo.token1 && weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                                    <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals))} ) `}</span></h3>
                             </div>
 
                             <div>
                                 <h5>Amount</h5>
-                                <h3>1 / 1</h3>
+                                <h3>{(poolInfo.amountTotal0 && poolInfo.swappedAmount0P) ?
+                                    `${parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)} / ${poolInfo.amountTotal0}` : '0 / 0'}</h3>
                             </div>
                         </div>
                         <div className="btn_group">
-                            <Button primary width='262px' height='48px' disabled={isLoading}
+                            <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
                                 onClick={handelBid}
                             >{btnText}</Button>
-                            <Button width='262px' height='48px'>Buy now for 1 ETH</Button>
+                            {poolInfo.poolType === 'English-Auction' && <Button width='262px' height='48px'>Buy now for 1 ETH</Button>}
+                        </div>
+                        <div className="pullInfoBox">
+
+                            <NewPullDown></NewPullDown>
                         </div>
                     </div>
                 </div>
