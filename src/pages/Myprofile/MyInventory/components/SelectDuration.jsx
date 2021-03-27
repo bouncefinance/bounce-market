@@ -10,16 +10,16 @@ const StyledInputBlock = styled.div`
 	grid-area: ${({ gridArea }) => {
 		return gridArea;
 	}};
-
+	margin-bottom:20px;
 	display: grid;
 	align-items: center;
-	grid-template-rows: 15px 16px 32px 19px 1fr;
+	grid-template-rows: 15px 10px 70 10px 32px;
 	grid-template-areas:
 		"title"
 		"."
-		"InputRow"
+		"notice"
 		"."
-		"notice";
+		"InputRow";
 
 	span.title {
 		font-family: Helvetica Neue;
@@ -42,27 +42,21 @@ const StyledInputBlock = styled.div`
 		line-height: 17px;
 		color: #1f191b;
 		opacity: 0.3;
-
 		box-sizing: border-box;
-		/* border-bottom: 1px solid rgba(0, 0, 0, 0.3); */
-		border-bottom: 1px solid #000000;
-
 		grid-area: notice;
-
 		padding-top: 10px;
 		padding-bottom: 20px;
-
 		align-self: start;
 	}
 `;
 
 const InputRow = styled.div`
 	grid-area: InputRow;
-	display: grid;
-	grid-template-columns: 104px 146px;
-	column-gap: 22px;
+	height:50px;
+	line-height:50px;
 	align-items: center;
-
+	border:1px solid rgba(0,0,0,0.3);
+	text-indent:20px;
 `;
 
 function SelectDuration({
@@ -77,11 +71,12 @@ function SelectDuration({
 	return (
 		<StyledInputBlock className={className} gridArea={gridArea}>
 			<span className="title">{title}</span>
-
+			<span className="notice">{notice}</span>
 			<InputRow>
 				<DurationDropdown
 					/* title='Category' */
-					width="104px"
+					width="98%"
+					height = "50px"
 					options={options}
 					icon={icon_ETH}
 					defaultValue={5}
@@ -93,8 +88,6 @@ function SelectDuration({
 					}}
 				/>
 			</InputRow>
-
-			<span className="notice">{notice}</span>
 		</StyledInputBlock>
 	);
 }

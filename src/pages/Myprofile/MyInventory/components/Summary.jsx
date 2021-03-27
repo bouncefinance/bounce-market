@@ -4,8 +4,6 @@ import moment from "moment";
 
 import Button from "@components/UI-kit/Button/Button";
 
-import icon_summary from "./assets/icon_summary.svg";
-import icon_dotLine from "./assets/icon_dotLine.svg";
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
@@ -21,11 +19,11 @@ const SummaryWrapper = styled.div`
 	grid-area: Summary;
 	align-self: start;
 
-	width: 296px;
-	background: #f8f8fb;
-
+	width: 100%;
+	background: #f0f0f0;
+	margin-top:24px;
 	display: grid;
-	grid-template-rows: 57px 1fr 92px;
+	grid-template-rows: 57px 1fr;
 	grid-template-areas:
 		"summaryHeader"
 		"listing"
@@ -35,11 +33,10 @@ const SummaryWrapper = styled.div`
 		font-family: Helvetica Neue;
 		font-style: normal;
 		font-weight: bold;
-		font-size: 12px;
-		line-height: 15px;
+		font-size: 14px;
+		line-height: 17px;
 		text-transform: capitalize;
-		color: #1f191b;
-		opacity: 0.7;
+		color: #000000;
 	}
 
 	span.text {
@@ -57,8 +54,9 @@ const SummaryWrapper = styled.div`
 		font-weight: 500;
 		font-size: 14px;
 		line-height: 17px;
-		color: #1f191b;
-		opacity: 0.3;
+		color: #000;
+		min-width:140px;
+		text-align:right;
 	}
 
 	.summaryHeader {
@@ -77,26 +75,50 @@ const SummaryWrapper = styled.div`
 		grid-area: listing;
 
 		box-sizing: border-box;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 		padding: 20px;
-
-		display: grid;
-		grid-template-rows: 25px 1fr 30px 40px;
-		grid-template-areas:
-			"str_Listing"
-			"text"
-			"."
-			"button";
-
-		button {
-			grid-area: button;
-		}
-
 		span.bold {
 			color: rgba(31, 25, 27, 1);
 		}
+		.listingDetail{
+			display:flex;
+			justify-content: space-between;
+			margin-bottom:20px;
+		}
+		.fees{
+			display:flex;
+			justify-content: space-between;
+			padding:0;
+			margin-bottom:16px;
+		}
+		.title{
+			font-weight: 500;
+			opacity: 0.7;
+			margin-right:4px;
+		}
+		.list{
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: normal;
+			font-size: 14px;
+			line-height: 17px;
+			color: rgba(0,0,0,0.5);
+		}
+		.listingVal{
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 14px;
+			line-height: 17px;
+			text-align: right;
+			color: #124EEB;
+			min-width:140px;
+		}
+		button{
+			width: 100%;
+			height: 48px;
+			line-height: 48px;
+		}
 	}
-
 	.fees {
 		grid-area: fees;
 
@@ -127,41 +149,6 @@ const SummaryWrapper = styled.div`
 	}
 `;
 
-const render_ListingText = (auctionType, price, unit, duration) => {
-	switch (auctionType) {
-		case "setPrice":
-			return (
-				<span className="text priceInfo">
-					Your item will be listed for
-					<span className="bold">
-						{" "}
-						{price || "0"} {unit}.
-					</span>
-				</span>
-			);
-		case "EnglishAuction":
-			return (
-				<span className="text priceInfo">
-					Your item will be auctioned and the highest bidder will win
-					it at
-					<span className="bold">
-						{" "}
-						{moment()
-							.add(duration, "days")
-							.format("ha on MMMM DD,YYYY")}
-					</span>
-					,as long as his bid is higher than
-					<span className="bold">
-						{" "}
-						{price || "0"} {unit}.
-					</span>
-				</span>
-			);
-		default:
-			return;
-	}
-};
-
 function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
@@ -170,20 +157,19 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 
 	useEffect(() => {
 		if (auctionType === 'setPrice') {
-
-			if (Boolean(price) && Boolean(parseInt(amount)) && nftInfo) {
+			if (price && nftInfo) {
 				setBtnLock(false)
 			} else {
 				setBtnLock(true)
 			}
 		} else {
-			if (price && unit && duration && nftInfo) {
+			if (price && price && unit && duration && nftInfo) {
 				setBtnLock(false)
 			} else {
 				setBtnLock(true)
 			}
 		}
-	}, [auctionType, price, unit, duration, fees, nftInfo, amount])
+	}, [auctionType, price, unit, duration, fees, nftInfo])
 
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
@@ -283,7 +269,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			const _amountMin1 = numToWei(minPrice, 18)
 			const _amountMinIncr1 = numToWei(minIncr, 18)
 			const _amountReserve1 = numToWei(price, 18)
-			const _duration = 5 * 60 * 60
+			const _duration = duration * 60 * 60
 			const _onlyBot = false
 
 			console.log(_name, _token0, _token1, _tokenId,
@@ -371,19 +357,33 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 	return (
 		<SummaryWrapper>
 			<div className="summaryHeader">
-				<img src={icon_summary} alt="" />
 				<span className="title">Summary</span>
 			</div>
 			<div className="listing">
-				<span className="title">Listing</span>
-				{render_ListingText(auctionType, price, unit, duration)}
+				<div className="listingDetail">
+					<p className="list"><span className="title">Listing.</span>
+						{auctionType === "setPrice" && 
+							<span>Your item will be listed for</span>
+						}
+						{auctionType === "EnglishAuction" && 
+							<span>Your item will be auctioned. The highest bidder will win it as long as their bid is at least 2ETH.</span>
+						}
+					</p>
+					<span className="listingVal">{price || "0"} {unit}</span>
+				</div>
+				{auctionType === "EnglishAuction" && 
+					<div className="listingDetail">
+						<p className="list"><span className="title">Expiration Date</span></p>
+						<span className="text2 percentage">{moment()
+							.add(duration, "days")
+							.format("ha on MMMM DD,YYYY")}</span>
+					</div>
+				}
+				<div className="fees">
+					<p className="list"><span className="title">Fees.</span>To bounce </p>
+					<span className="text2 percentage">{fees}%</span>
+				</div>
 				<Button primary disabled={btnLock} onClick={handelSubmit}>Post your Listing</Button>
-			</div>
-			<div className="fees">
-				<span className="title">Fees</span>
-				<span className="text2 toBounce">To bounce</span>
-				<img className="dotLine" src={icon_dotLine} alt="" />
-				<span className="text2 percentage">{fees}%</span>
 			</div>
 		</SummaryWrapper>
 	);

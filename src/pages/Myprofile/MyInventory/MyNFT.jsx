@@ -6,7 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import useAxios from "@utils/useAxios.js";
 
 import { Button } from "@components/UI-kit";
-import NFTInfoDropdown from "./components/NFTInfoDropdown";
+import NFTInfo from "./components/NFTInfo";
 
 import icon_copy from "@assets/images/icon/copy.svg";
 /* import pic_NFT1 from "./assets/pic_NFT1.svg"; */
@@ -201,7 +201,7 @@ function MyNFT() {
 	const { sign_Axios } = useAxios();
 
 	const [NFTName, setNFTName] = useState();
-	const [descriptionContent, setDescriptionContent] = useState();
+	// const [descriptionContent, setDescriptionContent] = useState();
 	const [supply, setSupply] = useState();
 	const [tokenID, setTokenID] = useState();
 	const [tokenSymbol, setTokenSymbol] = useState();
@@ -232,8 +232,9 @@ function MyNFT() {
 						/* console.log(res); */
 						let NFTInfoList = res.data.data;
 						/* console.log(NFTInfoList) */
+						console.log(JSON.stringify(NFTInfoList));
 						setNFTName(NFTInfoList.itemname);
-						setDescriptionContent(NFTInfoList.description);
+						// setDescriptionContent(NFTInfoList.description);
 						setSupply(NFTInfoList.supply);
 						setTokenID(NFTInfoList.id);
 						setTokenSymbol(NFTInfoList.itemsymbol);
@@ -278,8 +279,8 @@ function MyNFT() {
 							width="200px"
 							value="Sell"
 							onClick={() => {
-								/* history.push("/MyInventory/:nftId/Sell") */
-								history.push("/MyInventory/Sell");
+								 history.push(`/MyInventory/${nftId}/Sell`)
+								// history.push("/MyInventory/Sell");
 							}}
 						/>
 						<Button width="200px" value="Transfer" />
@@ -287,19 +288,19 @@ function MyNFT() {
 
 					<span className="description">Description</span>
 
-					<span className="descriptionContent">
+					{/*<span className="descriptionContent">
 						{descriptionContent}
-					</span>
+					</span>*/}
 
 					<InfoDropdowns>
-						<NFTInfoDropdown title="Supply" content={supply} />
-						<NFTInfoDropdown title="Token ID" content={tokenID} />
-						<NFTInfoDropdown
+						<NFTInfo title="Supply" content={supply?'ERC-1155':'ERC-721'} />
+						<NFTInfo title="Token ID" content={tokenID} />
+						<NFTInfo
 							title="Token Symbol"
 							content={tokenSymbol}
 						/>
-						<NFTInfoDropdown title="Created By" content={creator} />
-						<NFTInfoDropdown
+						<NFTInfo title="Created By" content={creator} />
+						<NFTInfo
 							title="External Link"
 							content={externalLink}
 						/>

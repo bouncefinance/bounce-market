@@ -143,7 +143,7 @@ export function CardItem ({ cover, status, nftId, itemname, user }) {
                     </div>
                     <h4 className="price">{'Not on sale'}</h4>
                 </div>
-                {
+               {
                     status === 'Listed' ? <div className='button_group'>
                         <Button value={'Check Status'} primary onClick={() => {
                             history.push(`/MyInventory/${nftId}`)
