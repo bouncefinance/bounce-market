@@ -9,10 +9,11 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import { getFixedSwapNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
+import { NumberInput } from '@components/UI-kit'
 
 import icon_altAvatar from './assets/icon_altAvatar.svg'
 import icon_time from './assets/icon_time.svg'
-import { weiMul, weiToNum } from '@/utils/useBigNumber';
+import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
 
 
 const NewIndexStyled = styled.div`
@@ -134,6 +135,7 @@ const NewIndexStyled = styled.div`
                 margin-top: 21px;
             }
 
+
             .pullInfoBox{
                 margin-top: 32px;
             }
@@ -149,10 +151,11 @@ export default function NewIndex() {
     const { nftInfo, poolInfo } = use_FS_Hook(poolId)
     const [isLoading, setIsLoading] = useState(false)
     const [btnText, setBtnText] = useState('Place a bid')
+    const [amount, setAmount] = useState(1)
 
     useEffect(() => {
 
-        console.log(nftInfo, poolInfo)
+        // console.log(nftInfo, poolInfo)
         if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
             setBtnText('loading ...')
@@ -192,8 +195,13 @@ export default function NewIndex() {
         } else {
             const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
 
-            BounceFixedSwapNFT_CT.methods.swap(poolId, poolInfo.amountTotal0)
-                .send({ from: account, value: poolInfo.amountTotal1 })
+            const _amount0 = amount
+            const _amount1 = numToWei(weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))
+
+            // console.log(_amount0, _amount1)
+
+            BounceFixedSwapNFT_CT.methods.swap(poolId, _amount0)
+                .send({ from: account, value: _amount1 })
                 .on('transactionHash', hash => {
                     // setBidStatus(pendingStatus)
                     showTransferByStatus('pendingStatus')
@@ -234,10 +242,10 @@ export default function NewIndex() {
                                 <img src={icon_altAvatar} alt="" />
                                 <p>Owned by <a href="http://">{nftInfo.ownername || 'Anonymity'}</a></p>
 
-                                <div className="close_time">
+                                {poolInfo.poolType === 'EA' && <div className="close_time">
                                     <img src={icon_time} alt="" />
                                     <span> Sale ends in 2 days</span>
-                                </div>
+                                </div>}
                             </div>
                             <div className="desc">
                                 <p>{nftInfo.description || 'description Is Loading ...'}</p>
@@ -245,11 +253,26 @@ export default function NewIndex() {
 
                             </div>
                         </div>
+
+                        <NumberInput
+                            className='input_amount'
+                            title='Buy Amount'
+                            width='100%'
+                            isInteger={true}
+                            maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
+                            minVal={1}
+                            defaultValue={1}
+                            onValChange={(val) => {
+                                setAmount(val)
+                            }}
+                            disabled={poolInfo.nftType === '1' && false}
+                        />
+
                         <div className="bidInfo">
                             <div>
                                 <h5>Top Bid</h5>
-                                <h3>{poolInfo.token1 && weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                                    <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals))} ) `}</span></h3>
+                                <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
+                                    <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
                             </div>
 
                             <div>
@@ -266,7 +289,9 @@ export default function NewIndex() {
                         </div>
                         <div className="pullInfoBox">
 
-                            <NewPullDown></NewPullDown>
+                            <NewPullDown title='Offers'>
+
+                            </NewPullDown>
                         </div>
                     </div>
                 </div>
