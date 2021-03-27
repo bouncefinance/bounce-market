@@ -131,7 +131,7 @@ export default function Index () {
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState('Home')
     const { account, chainId, active } = useActiveWeb3React()
-    const [isShowInfo, setIsShowInfo] = useState(false)
+    const [isShowInfo, setIsShowInfo] = useState(true)
     const { getUserInfo } = useUserInfo()
     const history = useHistory()
     const { state } = useContext(myContext);
@@ -169,6 +169,16 @@ export default function Index () {
     }, [history])
 
     useEffect(() => {
+        const eventShowInfo = () => {
+            setIsShowInfo(false)
+        }
+        document.body.addEventListener('click', eventShowInfo)
+        return () => {
+            document.body.removeEventListener('click', eventShowInfo)
+        }
+    }, [])
+
+    useEffect(() => {
         if (!active) return
         if (chainId && chainId !== 4) {
             dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "请选择Rinkeby测试网络" });
@@ -176,6 +186,11 @@ export default function Index () {
         getUserInfo();
         // eslint-disable-next-line
     }, [account, chainId, active])
+
+    const onHandleShowInfo = (e) => {
+        window.event ? window.event.cancelBubble = true : e.stopPropagation()
+        setIsShowInfo(!isShowInfo)
+    }
 
     return (
         <>
@@ -212,11 +227,7 @@ export default function Index () {
                             })}
                         </ul>
                         {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
-                            {state.userInfo && state.userInfo.imgurl ? <img src={state.userInfo && state.userInfo.imgurl} alt="" onClick={() => {
-                                setIsShowInfo(!isShowInfo)
-                            }} /> : <div className='avatar' onClick={() => {
-                                setIsShowInfo(!isShowInfo)
-                            }}></div>}
+                            {state.userInfo && state.userInfo.imgurl ? <img src={state.userInfo && state.userInfo.imgurl} alt="" onClick={onHandleShowInfo} /> : <div className='avatar' onClick={onHandleShowInfo}></div>}
                         </div> : <Button className='connect_btn' primary onClick={() => {
                             setIsConnectWallect(true)
                         }}>Connect Wallet</Button>}
