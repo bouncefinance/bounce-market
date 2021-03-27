@@ -17,16 +17,16 @@ import nav_image from '@assets/images/icon/nav_image.svg'
 // import nav_other from '@assets/images/icon/nav_other.svg'
 // import nav_video from '@assets/images/icon/nav_video.svg'
 
-import img_example_3 from '@assets/images/example_3.svg'
 import { useBrandInfo } from './useHook'
 import Snackbar from '@material-ui/core/Snackbar';
 import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
-import { useQuery } from '@apollo/client'
-import { QueryBrandItems } from '@/utils/apollo'
+import { useLazyQuery } from '@apollo/client'
+import { QueryOwnerBrandItems, QueryBrandTradeItems } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
+import Web3 from 'web3'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -188,9 +188,9 @@ const nav_list = [{
     icon: nav_all,
     route: 'All'
 }, {
-    name: 'Images',
+    name: 'Image',
     icon: nav_image,
-    route: 'Images'
+    route: 'Image'
 }/*, {
     name: 'Video',
     icon: nav_video,
@@ -253,7 +253,7 @@ export default function BrandsByType () {
         setEditBtnText('Save')
         try {
             const data = response.data
-            console.log('response: ', data)
+            //console.log('response: ', data)
             if (data.code === 200 || data.code === 1) {
                 setEditSnackbar({
                     open: true,
@@ -276,46 +276,56 @@ export default function BrandsByType () {
         }, 1000)
     }
 
-    const getListData = (type) => {
-        // console.log(type)
-        return setListData([{
-            name: 'Digital Image Name',
-            cover: img_example_3,
-            price: '0,9931 ETH',
-            type: type
-        }, {
-            name: 'Digital Image Name',
-            cover: img_example_3,
-            price: '0,9931 ETH',
-            type: type
-        }, {
-            name: 'Digital Image Name',
-            cover: img_example_3,
-            price: '0,9931 ETH',
-            type: type
-        }, {
-            name: 'Digital Image Name',
-            cover: img_example_3,
-            price: '0,9931 ETH',
-            type: type
-        }])
-    }
-
     const { active, account } = useActiveWeb3React();
-    const { data } = useQuery(QueryBrandItems, {
-        variables: { account }
-    });
+    const [tokenList, setTokenList] = useState([]);
+
+    const handleBrandTradeItems = (tradePools) => {
+        sign_Axios.post(Controller.items.getitemsbyfilter, {
+          ids: tokenList,
+          category: type.toLowerCase() === 'all' ? '' : type,
+          channel: ''
+        })
+        .then(res => {
+          if (res.status === 200 && res.data.code === 1) {
+            const list = res.data.data.map(item => {
+              const poolInfo = tradePools.find(pool => pool.tokenId === item.id);
+              return {
+                ...item,
+                poolId: poolInfo ? poolInfo.poolId : '--',
+                price: poolInfo ? Web3.utils.fromWei(poolInfo.price) : '--',
+              }
+            })
+            setListData(list);
+          }
+        })
+      }
+
+    const [getBrandTradeItems, brandTradeItems ] = useLazyQuery(QueryBrandTradeItems, {
+        variables: {tokenList:  tokenList},
+        onCompleted: () => {
+          handleBrandTradeItems(brandTradeItems.data.tradePools);
+        }
+      })
+
+    const handleBrandItems = (data) => {
+        const brands = brandInfo.standard === 1 ? data.bounce721Brands[0] : data.bounce1155Brands[0];
+        if (!brands) return;
+        const tokenList = brands.tokenList.map(item => item.tokenId);
+        setTokenList(tokenList);
+        getBrandTradeItems();
+      }
+
+    const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
+        variables: {owner: account ? account.toLowerCase() : account },
+        onCompleted: () => {
+          handleBrandItems(brandItems.data);
+        }
+      })
 
     useEffect(() => {
         if (!active) return;
-        if (data) {
-            
-        }
-        
-        console.log(data);
-        getListData();
-
-    }, [active, data, account]);
+        getBrandItems();
+    }, [active, getBrandItems]);
 
     return (
         <BrandsByTypeStyled>
@@ -377,7 +387,13 @@ export default function BrandsByType () {
                 </li>
                 {listData.map((item, index) => {
                     return <li key={index}>
-                        <CardItem type={item.type} cover={item.cover} name={item.name} price={item.price} />
+                        <CardItem 
+                            type={item.type} 
+                            cover={item.fileurl} 
+                            name={item.itemname} 
+                            price={!!item.price ? `${item.price} ETH` : `--`}
+                            poolId={item.poolId}
+                        />
                     </li>
                 })}
             </ul>
