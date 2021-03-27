@@ -59,7 +59,7 @@ export default function Index() {
   }
 
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT, 
-    {variables: { user: account },
+    {variables: { user: String(account).toLowerCase() },
     onCompleted: () => {
       handleMyNFT(data);
     }
