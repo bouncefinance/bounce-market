@@ -318,7 +318,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				// approve
 				console.log(amount, price)
 
-				const _amountTotal0 = 1
+				const _amountTotal0 = amount;
 				// const _amountTotal1 = weiMul(numToWei(price), amount)
 
 				showTransferByStatus('approveStatus')
@@ -333,7 +333,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				if (!approveResult) return showTransferByStatus('errorStatus')
 				console.log(_name, _token0, _token1, _tokenId, _amountTotal0,
 					_amountMax1, _amountMin1, _amountMinIncr1, _amountReserve1, _duration, _onlyBot)
-
+				
+				
 				BounceEnglishAuctionNFT_CT.methods.createErc1155(_name, _token0, _token1, _tokenId, _amountTotal0,
 					_amountMax1, _amountMin1, _amountMinIncr1, _amountReserve1, _duration, _onlyBot)
 					.send({ from: account })

@@ -182,7 +182,10 @@ export default function SellNFT () {
 							setUnit={set_ReservePrice_Unit}
 							notice="Setting a reserve price creates a hidden limit,If you receive no bids equal to or greater than your reserve,your auction will end with end without selling the item."
 							gridArea="Reserve_price"
+							ifInputAmount={true}
 							options={unitOptions}
+							nftInfo={nftInfo}
+							setAmount={setAmount}
 						/>
 						<SelectDuration
 							className="Expriration_Date"
@@ -221,6 +224,7 @@ export default function SellNFT () {
 						minPrice={minimumBid}
 						maxPrice={directPurchasePrice}
 						minIncr={maximumBid}
+						amount={amount || 1}
 					/>
 					</>
 				);
