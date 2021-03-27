@@ -102,7 +102,7 @@ export function CardItem({ cover, status, nftId, itemname, user }) {
                     <p>{itemname}</p>
                     <span>{user}</span>
                 </div>
-                {
+                {/* {
                     status === 'Listed' ? <div className='button_group'>
                         <Button value={'Check Status'} primary onClick={() => {
                             history.push(`/MyInventory/${nftId}`)
@@ -116,7 +116,13 @@ export function CardItem({ cover, status, nftId, itemname, user }) {
                         />
                         <Button value={'Make Listed'} />
                     </div>
-                }
+                }*/}
+                <div className='button_group'>
+                    <Button value={'Check Status'} primary onClick={() => {
+                        history.push(`/MyInventory/${nftId}`)
+                    }} />
+                    <Button value={'Make Unlisted'} />
+                </div>
             </div>
             { status === 'Listed' && <div className="tag">
                 {status}

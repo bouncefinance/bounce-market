@@ -61,7 +61,8 @@ export default function useToken() {
 
     const hasApprove_ERC_1155 = async (tokenContract, tarContract, accountAddr = account) => {
         const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, tokenContract)
-        const approveRes = await BounceERC1155WithSign_CT.methods.isApprovedForAl(accountAddr, tarContract).call()
+        console.log(BounceERC1155WithSign_CT);
+        const approveRes = await BounceERC1155WithSign_CT.methods.isApprovedForAll(accountAddr, tarContract).call()
         return approveRes
     }
 
@@ -73,7 +74,7 @@ export default function useToken() {
 
     const exportErc20Info = async (tokenAddr) => {
         if (tokenAddr === ZERO_ADDRESS) {
-            const web3 = new Web3(library.provider)
+            const web3 = new Web3(library?.provider)
             const balanceOf = await web3.eth.getBalance(account)
             return {
                 chainId,
