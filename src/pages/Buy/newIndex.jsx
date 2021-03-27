@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
 import styled from 'styled-components'
 import use_FS_Hook from './use_FS_Hook'
-import { OtherButton,Button } from '@components/UI-kit'
+import { OtherButton, Button } from '@components/UI-kit'
 import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
+import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
+import { getContract, useActiveWeb3React } from "@/web3";
+import useTransferModal from "@/web3/useTransferModal";
+import { getFixedSwapNFT } from "@/web3/address_list/contract";
+
 import icon_altAvatar from './assets/icon_altAvatar.svg'
 import icon_time from './assets/icon_time.svg'
 
@@ -132,12 +137,67 @@ const NewIndexStyled = styled.div`
 `
 
 export default function NewIndex() {
+    const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId } = useParams()
+    const { showTransferByStatus } = useTransferModal()
     const { nftInfo, poolInfo } = use_FS_Hook(poolId)
-    useEffect(() => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [btnText, setBtnText] = useState('Place a bid')
 
+    useEffect(() => {
+        if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
+            setIsLoading(true)
+            setBtnText('loading ...')
+            return
+        }
+
+        setIsLoading(false)
+        setBtnText('Place a bid')
+        // eslint-disable-next-line
+    }, [active, nftInfo, poolInfo])
+
+
+    const handelBid = async () => {
         console.log(nftInfo, poolInfo)
-    }, [nftInfo, poolInfo])
+        setIsLoading(true)
+        if (poolInfo.nftType === '0') {
+            const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
+
+            BounceFixedSwapNFT_CT.methods.swap(poolId, poolInfo.amountTotal0)
+                .send({ from: account, value: poolInfo.amountTotal1 })
+                .on('transactionHash', hash => {
+                    // setBidStatus(pendingStatus)
+                    showTransferByStatus('pendingStatus')
+                })
+                .on('receipt', async (_, receipt) => {
+                    // console.log('bid fixed swap receipt:', receipt)
+                    // setBidStatus(successVotedStatus)
+                    showTransferByStatus('successVotedStatus')
+                })
+                .on('error', (err, receipt) => {
+                    // setBidStatus(errorStatus)
+                    showTransferByStatus('errorStatus')
+                })
+        } else {
+            const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
+
+            BounceFixedSwapNFT_CT.methods.swap(poolId, poolInfo.amountTotal0)
+                .send({ from: account, value: poolInfo.amountTotal1 })
+                .on('transactionHash', hash => {
+                    // setBidStatus(pendingStatus)
+                    showTransferByStatus('pendingStatus')
+                })
+                .on('receipt', async (_, receipt) => {
+                    // console.log('bid fixed swap receipt:', receipt)
+                    // setBidStatus(successVotedStatus)
+                    showTransferByStatus('successVotedStatus')
+                })
+                .on('error', (err, receipt) => {
+                    // setBidStatus(errorStatus)
+                    showTransferByStatus('errorStatus')
+                })
+        }
+    }
 
     return (
         <NewIndexStyled>
@@ -186,7 +246,9 @@ export default function NewIndex() {
                             </div>
                         </div>
                         <div className="btn_group">
-                            <Button primary width='262px' height='48px'>Place a bid</Button>
+                            <Button primary width='262px' height='48px' disabled={isLoading}
+                                onClick={handelBid}
+                            >{btnText}</Button>
                             <Button width='262px' height='48px'>Buy now for 1 ETH</Button>
                         </div>
                     </div>
