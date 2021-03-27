@@ -8,7 +8,7 @@ import Test from '../test'
 
 import Home from './Home'
 import Marketplace from './Marketplace'
-import Buy from './Buy'
+import Buy from './Buy/newIndex'
 
 import Brands from './Brands'
 import BrandGoods from './BrandGoods'

@@ -165,12 +165,14 @@ export function AirHome() {
   const run = () => { }
 
   const { active, account } = useActiveWeb3React();
-  const { type, owner, nftType } = useParams();
+  // const { type, owner, nftType } = useParams();
+  const { type, owner } = useParams();
   const { sign_Axios } = useAxios();
   
   const { data } = useQuery(QueryMyBrandItems, 
     {variables: {owner:  owner}
   })
+  console.log(data)
 
   useEffect(() => {
     if (!active) return;
@@ -179,8 +181,9 @@ export function AirHome() {
     })
     .then(res => {
       const data = res.data.data;
-      
+      console.log(data)
     })
+    // eslint-disable-next-line
   }, [active, owner, account]);
 
   // test data
