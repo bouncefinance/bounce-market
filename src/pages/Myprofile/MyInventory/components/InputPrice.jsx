@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import UnitDropdown from "./UnitDropdown";
 
 import icon_ETH from "./assets/icon_ETH.svg";
+import { useActiveWeb3React } from "@/web3";
+import useToken from "@/utils/useToken";
 
 
 function InputPrice({
@@ -11,13 +13,30 @@ function InputPrice({
 	title,
 	setPrice,
 	setUnit,
-	ifInputAmount=false,
+	ifInputAmount = false,
 	setAmount,
 	notice,
 	gridArea,
 	options,
+	nftInfo
 }) {
 	const [priceValue, setpriceValue] = useState("");
+	const [balance, setBalance] = useState(0)
+	const { active } = useActiveWeb3React()
+	const { getBalance_ERC_1155 } = useToken()
+
+	useEffect(() => {
+		if (!active || !nftInfo || nftInfo.standard !== 2) return
+		// console.log(nftInfo)
+		const getBalance = async () => {
+			const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
+			// console.log(balance)
+			setBalance(balance)
+		}
+
+		getBalance()
+		// eslint-disable-next-line
+	}, [active, nftInfo])
 
 	const checkInputPrice = (e) => {
 		// console.log("key value: ", e.target.value);
@@ -74,11 +93,12 @@ function InputPrice({
 						<input
 							className="InputAmount"
 							type="text"
+							defaultValue={1}
 							placeholder="Amount"
 							maxLength={18}
-							onChange={(e)=>setAmount(e.target.value)}
+							onChange={(e) => setAmount(e.target.value)}
 						/>
-						<span className="balance"> / Your Balance: 10</span>
+						<span className="balance"> / Your Balance: {balance}</span>
 					</div>
 				)}
 			</InputRow>

@@ -30,10 +30,10 @@ export const QueryItesms = gql`
 
 export const QueryBrands = gql`
   query {
-    bounce721Brands(first: 3) {
+    bounce721Brands {
       id
     }
-    bounce1155Brands(first: 3) {
+    bounce1155Brands {
       id
     }
   }
@@ -54,13 +54,38 @@ export const QueryBrandItems = gql`
   }
 `
 
-export const QueryMyNFT = gql`
-  query nft721Items($user: String!) {
-    nft721Items(user: $user) {
+export const  QueryMyNFT = gql`
+  query nftItems($user: String!) {
+    nft721Items(where: {user: $user}) {
       tokenId
     }
-    nft1155Items(user: $user) {
+    nft1155Items(where: {user: $user}) {
       tokenId
+    }
+  }
+`
+
+export const QueryOwnerBrandItems = gql`
+  query nftItems($owner: String!) {
+    bounce721Brands(where: {owner: $owner}) {
+      tokenList {
+        tokenId
+      } 
+    }
+    bounce1155Brands(where: {owner: $owner}) {
+      tokenList {
+        tokenId
+      }
+    }
+  }
+`
+
+export const QueryBrandTradeItems = gql`
+  query brandTradeItems($tokenList: [Int!]!) {
+    tradePools(where: {tokenId_in: $tokenList}) {
+      tokenId
+      poolId
+      price
     }
   }
 `

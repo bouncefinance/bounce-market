@@ -3,6 +3,7 @@ import OtherButton from './Button/OtherButton'
 import LinkButton from './Button/LinkButton'
 import NumberInput from './Input/NumberInput'
 import TextInput from './Input/TextInput'
+import StubInput from './Input/StubInput'
 import Upload from './Input/Upload'
 import TextAreaInput from './Input/TextAreaInput'
 import PullCheckBox from './Select/PullCheckBox'
@@ -19,5 +20,6 @@ export {
     PullCheckBox,
     PullRadioBox,
     Upload,
-    Radio
+    Radio,
+    StubInput
 }

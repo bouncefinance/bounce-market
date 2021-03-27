@@ -16,7 +16,7 @@ import useNftInfo from "@/utils/useToken";
 import { getContract, useActiveWeb3React } from "@/web3";
 import { getFixedSwapNFT } from "@/web3/address_list/contract";
 import useTransferModal from "@/web3/useTransferModal";
-import useHook from "./useHook";
+import useHook from "./use_FS_Hook";
 import { weiMul, weiToNum } from "@/utils/useBigNumber";
 import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
 
@@ -25,7 +25,7 @@ const NFTName = "Digital Image Name";
 
 
 
-function Buy () {
+function Buy() {
 	// const history = useHistory();
 	const { poolId } = useParams()
 	const { exportNftInfo } = useNftInfo()
@@ -68,8 +68,24 @@ function Buy () {
 					// setBidStatus(errorStatus)
 					showTransferByStatus('errorStatus')
 				})
-		} else if (nftInfo.standard === 2) {
-			alert('bid 1155')
+		} else {
+			const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
+
+			BounceFixedSwapNFT_CT.methods.swap(poolId, poolsInfo.amountTotal0)
+				.send({ from: account, value: poolsInfo.amountTotal1 })
+				.on('transactionHash', hash => {
+					// setBidStatus(pendingStatus)
+					showTransferByStatus('pendingStatus')
+				})
+				.on('receipt', async (_, receipt) => {
+					// console.log('bid fixed swap receipt:', receipt)
+					// setBidStatus(successVotedStatus)
+					showTransferByStatus('successVotedStatus')
+				})
+				.on('error', (err, receipt) => {
+					// setBidStatus(errorStatus)
+					showTransferByStatus('errorStatus')
+				})
 		}
 	}
 
@@ -131,9 +147,11 @@ function Buy () {
 						<span className="USDPrice">{poolsInfo.token1 && `$ ${weiMul(poolsInfo.token1.price, weiToNum(poolsInfo.amountTotal1, poolsInfo.token1.decimals))}`}</span>
 					</div>
 
-					<span className="BorderBottomGap"></span>
+					<span className="BorderBottomGap" ></span>
 
+					
 					<div className="ButtonGroup">
+
 						{isLoading ? <Button
 							primary
 							value={'Loading, Please Wait ...'}

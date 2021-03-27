@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import UpdateTopBarImg from '../Myprofile/MyBrands/updateTopBarImg'
 import edit_white from '@assets/images/icon/edit_white.svg'
-import PagingControls from '../component/Other/PagingControls'
 import PullRadioBox from '@/components/UI-kit/Select/PullRadioBox'
 import Search from '../component/Other/Search'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { CardItem } from '../Marketplace/CardItem'
 
-import example_2 from '@assets/images/example_2.svg'
+import { useLazyQuery } from '@apollo/client'
+import { QueryBrandTradeItems, QueryOwnerBrandItems } from '@/utils/apollo'
+import { useActiveWeb3React } from '@/web3'
+import useAxios from '@/utils/useAxios'
+import { Controller } from '@/utils/controller'
+import Web3 from 'web3'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -134,9 +138,9 @@ const MarketplaceStyled = styled.div`
 `
 
 const nav_list = [{
-  name: 'Images',
+  name: 'Image',
   // icon: nav_image,
-  route: 'Images'
+  route: 'Image'
 }, {
   name: 'Video',
   // icon: nav_video,
@@ -159,24 +163,82 @@ export function AirHome() {
   const history = useHistory()
   const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
   const run = () => { }
-  // test data
-  const brandInfo = {
-    bandimgurl: `https://market-test.bounce.finance/pngfileget/blob-1616653069.png`
-  }
-  const userImage = `https://market-test.bounce.finance/jpgfileget/%E6%B3%B0%E5%8B%922-1616658302.jpg`
 
-  const type = 'Images'
+  const { active } = useActiveWeb3React();
+  const { id, standard, type } = useParams();
+  const { sign_Axios } = useAxios();
+
+  const [brandInfo, setBrandInfo] = useState({});
+  const [tokenList, setTokenList] = useState([]);
+  const [itemList, setItemList] = useState([]);
+
+  const handleBrandTradeItems = (tradePools) => {
+    sign_Axios.post(Controller.items.getitemsbyfilter, {
+      ids: tokenList,
+      category: type,
+      channel: ''
+    })
+    .then(res => {
+      if (res.status === 200 && res.data.code === 1) {
+        const list = res.data.data.map(item => {
+          const poolInfo = tradePools.find(pool => pool.tokenId === item.id);
+          return {
+            ...item,
+            poolId: poolInfo ? poolInfo.poolId : '--',
+            price: poolInfo ? Web3.utils.fromWei(poolInfo.price) : '--',
+          }
+        })
+        setItemList(list);
+      }
+    })
+  }
+
+  const [getBrandTradeItems, brandTradeItems ] = useLazyQuery(QueryBrandTradeItems, {
+    variables: {tokenList:  tokenList},
+    onCompleted: () => {
+      handleBrandTradeItems(brandTradeItems.data.tradePools);
+    }
+  })
+
+  const handleBrandItems = (data) => {
+    const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
+    const tokenList = brands.tokenList.map(item => item.tokenId);
+    setTokenList(tokenList);
+    getBrandTradeItems();
+  }
+  
+  const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
+    variables: {owner:  brandInfo.owneraddress},
+    onCompleted: () => {
+      handleBrandItems(brandItems.data);
+    }
+  })
+  
+  useEffect(() => {
+    if (!active) return;
+    sign_Axios.post(Controller.brands.getbrandbyid, {
+      id: Number(id)
+    })
+    .then(res => {
+      const data = res.data.data;
+      setBrandInfo(data);
+      getBrandItems();
+    })
+  // eslint-disable-next-line
+  }, [active, id]);
+
+  
   const renderListByType = (type) => {
     switch (type) {
-      case 'Images':
+      case 'Image':
         return <ul className={`list_wrapper ${type}`}>
-          {[...new Array(16)].map((item, index) => {
+          {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem
-                cover={example_2}
-                name={'Image Name'}
-                cardId={index + 1}
-                price={'0.93512 ETH '}
+                cover={item.fileurl}
+                name={item.itemname}
+                cardId={item.poolId}
+                price={!!item.price ? `${item.price} ETH` : `--`}
               />
             </li>
           })}
@@ -187,16 +249,16 @@ export function AirHome() {
   }
   return <AirHomeStyled>
     <div className="top_bar">
-      <div className='bg_wrapper' style={brandInfo.bandimgurl ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
+      <div className='bg_wrapper' style={brandInfo ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
         <button onClick={() => setOpenUpdateTopBarImg(true)}>
           <img src={edit_white} alt="" />
           <p>Change</p>
         </button>
       </div>
       <div className="userinfo">
-        <img src={userImage} alt="" />
-        <h2>Unnamed User</h2>
-        <p>0x33a9b7ed8c71c6910fb4a9bc41de2391b74c2976</p>
+        <img src={brandInfo.bandimgurl} alt="" />
+        <h2>{brandInfo.ownername}</h2>
+        <p>{brandInfo.contractaddress}</p>
       </div>
     </div>
     <MarketplaceStyled>
@@ -240,10 +302,8 @@ export function AirHome() {
 
       {renderListByType(type)}
 
-      <PagingControls />
+      {/* <PagingControls /> */}
     </MarketplaceStyled>
     <UpdateTopBarImg open={openUpdateTopBarImg} setOpen={setOpenUpdateTopBarImg} run={run} />
   </AirHomeStyled>
 }
-
-// http://localhost:8889/AirHome/88/Images

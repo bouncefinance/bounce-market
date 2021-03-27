@@ -8,7 +8,7 @@ import Test from '../test'
 
 import Home from './Home'
 import Marketplace from './Marketplace'
-import Buy from './Buy'
+import Buy from './Buy/newIndex'
 
 import Brands from './Brands'
 import BrandGoods from './BrandGoods'
@@ -70,7 +70,7 @@ export default function Index() {
                 <Route exact path='/MyP2P' render={() => { return <Redirect to='/MyP2P/Requests' /> }} />
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
 
-                <Route exact path='/AirHome/:airId/:type' component={AirHome} />
+                <Route exact path='/AirHome/:id/:standard/:type' component={AirHome} />
 
                 <Footer />
                 {/* 交易状态模态框 */}
