@@ -49,19 +49,19 @@ export default function TableItem({ row }) {
     return (
         <TableItemStyled>
             <TableCell className='event'>
-                {row.Event === 'Transfer' && <img src={icon_transfer} alt="" />}
+                {row.Event === 'Buy' && <img src={icon_transfer} alt="" />}
                 {row.Event === 'Created' && <img src={icon_create} alt="" />}
                 {row.Event}
-            </TableCell>
-            <TableCell className='item'>
-                {row.Cover ? <img src={row.Cover} alt="" /> : <img src={default_img} alt="" />}
-                {row.Item}
             </TableCell>
             <TableCell>
                 {row.Quantity}
             </TableCell>
             <TableCell>
-                {row.Status}
+                {row.Price}
+            </TableCell>
+            <TableCell className='item'>
+                {row.Cover ? <img src={row.Cover} alt="" /> : <img src={default_img} alt="" />}
+                {row.Item}
             </TableCell>
             <TableCell>
                 {row.From}

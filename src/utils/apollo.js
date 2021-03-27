@@ -87,4 +87,22 @@ export const QueryBrand721 = gql`
         tokenId
       }
     }
-  }`
+  }
+`
+
+export const QueryActivity = gql`
+  query queryActivitiesByUser($user: Bytes!) {
+    poolCreates(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    poolSwaps(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    poolCancels(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+  }
+`
