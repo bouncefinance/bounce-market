@@ -9,11 +9,16 @@ import activities_black from '../component/Header/assets/activities_black.svg'
 import brands_black from '../component/Header/assets/brands_black.svg'
 import inventory_black from '../component/Header/assets/inventory_black.svg'
 import icon_copy from '@assets/images/icon/copy.svg'
+import icon_liked from '@assets/images/icon/liked.svg'
 import { myContext } from '@/redux/index.js'
 import SettingAccountModal from './SettingAccountModal'
 
 
 const CommonHeaderStyled = styled.div`
+    .top-bg{
+        background: url('https://market-test.bounce.finance/pngfileget/e873aef2157d78c3f1d04b773bedb82c-1616836587.png') center center no-repeat;
+        height: 180px;
+    }
     .wrapper{
         width: 1100px;
         margin: 0 auto;
@@ -123,6 +128,10 @@ const ItemList = [{
     img_black: brands_black,
     route: '/MyBrands'
 }, {
+    name: 'My Liked',
+    img_black: icon_liked,
+    route: '/MyLiked'
+}, {
     name: 'My Activities',
     img_black: activities_black,
     route: '/MyActivities'
@@ -137,7 +146,7 @@ export default function CommonHeader () {
     const history = useHistory()
     const { account } = useActiveWeb3React()
     const [isSettingAccount, setIsSettingAccount] = useState(false)
-    const {state} = useContext(myContext);
+    const { state } = useContext(myContext);
 
     useEffect(() => {
         const pathName = window.location.pathname
@@ -150,13 +159,14 @@ export default function CommonHeader () {
 
     return (
         <CommonHeaderStyled>
+            <div className="top-bg"></div>
             <div className="wrapper">
                 <div className="top">
                     <div className="left">
-                    {state.userInfo && state.userInfo.imgurl ? <img className="avaterImg" src={state.userInfo && state.userInfo.imgurl} alt=""/>:
-                    <div className="avater"></div>}
-                    <div className='account_box'>
-                        <h5>{state.userInfo.username||'Unnamed User'}</h5>
+                        {state.userInfo && state.userInfo.imgurl ? <img className="avaterImg" src={state.userInfo && state.userInfo.imgurl} alt="" /> :
+                            <div className="avater"></div>}
+                        <div className='account_box'>
+                            <h5>{state.userInfo.username || 'Unnamed User'}</h5>
                             <div className='account'>
                                 <p>{account}</p>
                                 <CopyToClipboard

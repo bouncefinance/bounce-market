@@ -68,15 +68,13 @@ export default function Index () {
             <CommonHeader />
 
             <BrandsStyled>
+                <AddCardItem run={getBrandList} hasAddressButNotBrand={hasAddressButNotBrand} brandAddress={brandAddress} isCreate={hasAddressButNotBrand ? true : !brandAddContract} />
                 <ul className="list_wrapper">
                     {/* <li>
                         <button onClick={()=>{
                             setModalStatus(approveStatus)
                         }}>按钮</button>
                     </li> */}
-                    <li>
-                        <AddCardItem run={getBrandList} hasAddressButNotBrand={hasAddressButNotBrand} brandAddress={brandAddress} isCreate={hasAddressButNotBrand ? true : !brandAddContract} />
-                    </li>
                     {brand_list.map((item) => {
                         return <li key={item.id} onClick={() => {
                             history.push(`/MyBrands/${item.id}/All`)
