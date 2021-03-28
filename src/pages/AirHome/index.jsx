@@ -172,7 +172,7 @@ export function AirHome() {
   const [tokenList, setTokenList] = useState([]);
   const [itemList, setItemList] = useState([]);
 
-  const handleBrandTradeItems = (tradePools) => {
+  const handleBrandTradeItems = (pools) => {
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
       category: type,
@@ -181,7 +181,7 @@ export function AirHome() {
     .then(res => {
       if (res.status === 200 && res.data.code === 1) {
         const list = res.data.data.map(item => {
-          const poolInfo = tradePools.find(pool => pool.tokenId === item.id);
+          const poolInfo = pools.find(pool => pool.tokenId === item.id);
           return {
             ...item,
             poolId: poolInfo ? poolInfo.poolId : '--',
@@ -196,7 +196,9 @@ export function AirHome() {
   const [getBrandTradeItems, brandTradeItems ] = useLazyQuery(QueryBrandTradeItems, {
     variables: {tokenList:  tokenList},
     onCompleted: () => {
-      handleBrandTradeItems(brandTradeItems.data.tradePools);
+      const tradePools = brandTradeItems.data.tradePools;
+      const tradeAuctions = brandTradeItems.data.tradeAuctions;
+      handleBrandTradeItems(tradePools.concat(tradeAuctions));
     }
   })
 
