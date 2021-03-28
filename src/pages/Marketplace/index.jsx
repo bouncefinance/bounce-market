@@ -118,17 +118,21 @@ export default function Marketplace () {
   const { sign_Axios } = useAxios();
 
   const [tokenList, setTokenList] = useState([]);
-  const [isSet, setIsSet] = useState(false);
   const [channel, setChannel] = useState('');
 
   const [loading, setLoding] = useState(true)
 
+  const [length, setLength] = useState(4);
+
   useEffect(() => {
     if (!active) return
 
-    if (data && !isSet) {
-      const pools = data.tradePools;
+    if (data) {
+      const tradePools = data.tradePools;
+      const tradeAuctions = data.tradeAuctions;
+      const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
+      setLength(list.length);
       setLoding(true)
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
@@ -142,17 +146,17 @@ export default function Marketplace () {
               return {
                 ...item,
                 poolId: poolInfo.poolId,
-                price: Web3.utils.fromWei(poolInfo.price)
+                price: poolInfo.price ? Web3.utils.fromWei(poolInfo.price) : '--',
               }
             })
-            setIsSet(true);
             setTokenList(list.sort((a, b) => a.poolId - b.poolId));
             setLoding(false)
           }
         })
         .catch(() => { })
     }
-  }, [active, data, type, channel, isSet, sign_Axios])
+    // eslint-disable-next-line
+  }, [active, data, type, channel])
 
 
   const renderListByType = (type) => {
@@ -262,7 +266,6 @@ export default function Marketplace () {
       <ul className="nav_wrapper">
         {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={type === item.name ? 'active' : ''} onClick={() => {
-            setIsSet(false);
             setChannel(item.name)
           }}>
             <p>{item.name}</p>
@@ -286,7 +289,7 @@ export default function Marketplace () {
         }} />
       </div>
 
-      {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
+      {loading && <SkeletonNFTCards n={length} ></SkeletonNFTCards>}
       {renderListByType(type)}
 
       {/* <PagingControls /> */}

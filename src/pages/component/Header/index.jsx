@@ -131,7 +131,7 @@ export default function Index () {
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState('Home')
     const { account, chainId, active } = useActiveWeb3React()
-    const [isShowInfo, setIsShowInfo] = useState(true)
+    const [isShowInfo, setIsShowInfo] = useState(!true)
     const { getUserInfo } = useUserInfo()
     const history = useHistory()
     const { state } = useContext(myContext);

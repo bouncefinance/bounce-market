@@ -40,7 +40,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem ({ type, cover, name, price }) {
+export function CardItem ({ type, cover, name, price, poolId }) {
 
     return (
         <CardItemStyled type={type}>

@@ -2,7 +2,8 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 export const client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/id/QmZi2uuo9jYTuBNnHyig2Gf8TK2BEErKbvrWA8kfYN8bfg',
+    uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft',
+    //uri: 'https://api.thegraph.com/subgraphs/id/QmZi2uuo9jYTuBNnHyig2Gf8TK2BEErKbvrWA8kfYN8bfg',
     //uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',
     cache: new InMemoryCache(),
 })
@@ -13,6 +14,10 @@ export const QueryTradePools = gql`
       tokenId
       poolId
       price
+    }
+    tradeAuctions {
+      tokenId
+      poolId
     }
   }
 `
@@ -35,21 +40,6 @@ export const QueryBrands = gql`
     }
     bounce1155Brands {
       id
-    }
-  }
-`
-
-export const QueryBrandItems = gql`
-  query {
-    bounce721Brands {
-      tokenList {
-        tokenId
-      }
-    }
-    bounce1155Brands {
-      tokenList {
-        tokenId
-      }
     }
   }
 `
@@ -87,6 +77,10 @@ export const QueryBrandTradeItems = gql`
       poolId
       price
     }
+    tradeAuctions(where: {tokenId_in: $tokenList}) {
+      tokenId
+      poolId
+    }
   }
 `
 
@@ -101,4 +95,34 @@ export const QueryBrand721 = gql`
         tokenId
       }
     }
-  }`
+  }
+`
+
+export const QueryActivity = gql`
+  query queryActivitiesByUser($user: Bytes!) {
+    poolCreates(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    poolSwaps(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    poolCancels(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    auctionCreates(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    auctionBids(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+    auctionClaims(where: {sender: $user}) {
+      poolId
+      timestamp
+    }
+  }
+`
