@@ -14,6 +14,7 @@ import { NumberInput } from '@components/UI-kit'
 import icon_altAvatar from './assets/icon_altAvatar.svg'
 import icon_time from './assets/icon_time.svg'
 import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
+import TradingHistory from './components/TradingHistory';
 
 
 const NewIndexStyled = styled.div`
@@ -137,14 +138,29 @@ const NewIndexStyled = styled.div`
 
 
             .pullInfoBox{
-                margin-top: 32px;
+                margin: 32px 0px;
             }
         }
         
     }
+
+    .token-info{
+        >div{
+            margin-bottom: 12px;
+            font-size: 12px;
+            >p{
+                :first-child{
+                    color: #000;
+                }
+                :last-child{
+                    color: rgba(31,25,27,0.5);
+                }
+            }
+        }
+    }
 `
 
-export default function NewIndex() {
+export default function NewIndex () {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId } = useParams()
     const { showTransferByStatus } = useTransferModal()
@@ -289,8 +305,50 @@ export default function NewIndex() {
                         </div>
                         <div className="pullInfoBox">
 
-                            <NewPullDown title='Offers'>
-
+                            <NewPullDown open={true} title='Offers'>
+                                <OffersStyled>
+                                    <div className="Offers flex flex-space-x">
+                                        <div className="flex Offers-info">
+                                            <p className="name">@Scarlett_vfx0</p>
+                                            <p className="time">March 18, 2021 at 4:14am</p>
+                                        </div>
+                                        <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
+                                    </div>
+                                    <div className="Offers flex flex-space-x">
+                                        <div className="flex Offers-info">
+                                            <p className="name">@Scarlett_vfx0</p>
+                                            <p className="time">March 18, 2021 at 4:14am</p>
+                                        </div>
+                                        <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
+                                    </div>
+                                </OffersStyled>
+                            </NewPullDown>
+                            <NewPullDown open={true} title='Token Info'>
+                                <div className="token-info">
+                                    <div className="flex flex-space-x">
+                                        <p>Token Contact Address</p>
+                                        <p style={{ color: '#124EEB' }}>0x33a9b7ed8c71c...2976</p>
+                                    </div>
+                                    <div className="flex flex-space-x">
+                                        <p>Token Symbol</p>
+                                        <p>CKIE</p>
+                                    </div>
+                                    <div className="flex flex-space-x">
+                                        <p>Token ID</p>
+                                        <p>#123456</p>
+                                    </div>
+                                </div>
+                            </NewPullDown>
+                            <NewPullDown open={true} title='External link'>
+                                <div>--</div>
+                            </NewPullDown>
+                            <NewPullDown open={true} title='Trading History'>
+                                <TradingHistory rows={[
+                                    { Event: 'Buy', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vfaaaaa`, Date: `1 days ago` },
+                                    { Event: 'Bid', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vf`, Date: `1 days ago` },
+                                    { Event: 'Transfer', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
+                                    { Event: 'Created', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
+                                ]} />
                             </NewPullDown>
                         </div>
                     </div>
@@ -299,3 +357,32 @@ export default function NewIndex() {
         </NewIndexStyled>
     )
 }
+
+
+const OffersStyled = styled.div`
+font-family: Helvetica Neue;
+line-height: 15px;
+.Offers{
+    margin-top: 12px;
+    :first-child{
+        margin-top: 0px;
+    }
+    .Offers-info{
+        font-size: 12px;
+        .name{
+            font-weight: 550;
+            color: #1F191B;
+        }
+        .time{
+            margin-left: 27px;
+            color: rgba(0,0,0,.5);
+        }
+    }
+    .Offers-price{
+        color: rgba(0,0,0,.5);
+        :nth-child(1){
+            color: #1F191B;
+        }
+    }
+}
+`
