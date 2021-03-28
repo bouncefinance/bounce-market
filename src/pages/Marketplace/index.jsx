@@ -26,6 +26,7 @@ import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 const MarketplaceStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
+    margin-bottom: 30px;
 
     .nav_wrapper{
         width: 1100px;
@@ -113,7 +114,7 @@ const nav_list = [{
 }]
 
 export default function Marketplace () {
-  const { type } = useParams()
+  let { type } = useParams()
   const history = useHistory()
   const { active } = useActiveWeb3React()
 
@@ -122,9 +123,15 @@ export default function Marketplace () {
 
   const [tokenList, setTokenList] = useState([]);
   const [isSet, setIsSet] = useState(false);
-  const [channel, setChannel] = useState('Fine Arts');
+  const [channel, setChannel] = useState(
+    type === 'Sports' ? 'Sports' :
+      type === 'Comic Books' ? 'Comic Books' :
+        'Fine Arts');
 
   const [loading, setLoding] = useState(true)
+
+  // fix value
+  type = 'Image'
 
   useEffect(() => {
     if (!active) return
