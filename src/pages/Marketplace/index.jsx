@@ -10,6 +10,9 @@ import nav_game from '@assets/images/icon/nav_game.svg'
 import nav_image from '@assets/images/icon/nav_image.svg'
 import nav_other from '@assets/images/icon/nav_other.svg'
 import nav_video from '@assets/images/icon/nav_video.svg'
+import icon_arts from '@assets/images/icon/image.svg'
+import icon_comics from '@assets/images/icon/comics.svg'
+import icon_sport from '@assets/images/icon/sport.svg'
 
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
@@ -18,11 +21,13 @@ import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import Web3 from 'web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
+// import { weiToNum } from '@/utils/useBigNumber'
 // import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
+    margin-bottom: 30px;
 
     .nav_wrapper{
         width: 1100px;
@@ -109,33 +114,42 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export default function Marketplace () {
-  const { type } = useParams()
+export default function Marketplace() {
+  let { type } = useParams()
   const history = useHistory()
   const { active } = useActiveWeb3React()
 
   const { data } = useQuery(QueryTradePools)
   const { sign_Axios } = useAxios();
-
+  // const [isSet, setIsSet] = useState(false);
   const [tokenList, setTokenList] = useState([]);
-  const [channel, setChannel] = useState('');
+  const [channel, setChannel] = useState(
+    type === 'Sports' ? 'Sports' :
+      type === 'Comic Books' ? 'Comic Books' :
+        'Fine Arts');
+
 
   const [loading, setLoding] = useState(true)
 
   const [length, setLength] = useState(4);
 
+  type = 'Image'
+
   useEffect(() => {
     if (!active) return
 
     if (data) {
+      // console.log(data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: 'fixed-swap'
       }));
       const tradeAuctions = data.tradeAuctions.map(item => ({
         ...item,
+        price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: 'english-auction'
       }));
+      // console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
       setLength(list.length);
@@ -278,10 +292,16 @@ export default function Marketplace () {
       </ul>}
       <ul className="nav_wrapper">
         {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
-          return <li key={item.name} className={type === item.name ? 'active' : ''} onClick={() => {
+          return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
+            // setIsSet(false);
             setChannel(item.name)
           }}>
-            <p>{item.name}</p>
+            <p className="flex flex-center-y"><img src={
+              item.name === 'Fine Arts' ? icon_arts :
+                item.name === 'Sports' ? icon_sport :
+                  item.name === 'Comic Books' ? icon_comics :
+                    ''
+            } alt="" />{item.name}</p>
           </li>
         })}
       </ul>

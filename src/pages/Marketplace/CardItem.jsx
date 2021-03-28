@@ -111,7 +111,7 @@ export function CardItem ({ cover, name, price, cardId, poolType }) {
                 <div className="button_group">{cardId !== '--' &&
                     <Button primary width={'162px'} onClick={() => {
                         const pathname = window.location.pathname
-                        history.push(`${pathname}/${cardId}`)
+                        history.push(`${pathname}/${poolType}/${cardId}`)
                     }}>Show More</Button>}
                 </div>
             </div>

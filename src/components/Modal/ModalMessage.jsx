@@ -56,9 +56,10 @@ export default function ModalMessage() {
     clearTimeout(timer);
   }
   timer = setTimeout(() => {
-    dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:""});
+    if(state.showMessageModal){
+      dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:""});
+    }
   }, 4000);
-  
   return (
     <div className={classes.root}>
       <Collapse in={state.showMessageModal}>

@@ -51,6 +51,7 @@ export default function TransferStatusModal({ successCallback }) {
 
     useEffect(() => {
         if (!state.TransferModal) return setIsShow(false)
+        console.log(state.TransferModal)
         setIsShow(true)
         switch (state.TransferModal) {
             case 'initStatus':
@@ -124,7 +125,7 @@ export default function TransferStatusModal({ successCallback }) {
 
                 <ModalContent style={{ width: 300, textAlign: 'center' }}>{content}</ModalContent>
                 {(status === 1 || status === 2 || status === 3) && <Button width={'320px'} black>Awaiting...</Button>}
-                {(status === 4 || status === 6 || status === 5) && <Button width={'320px'} black onClick={() => {
+                {(status === 4 || status === 6 || status === 5|| status === 7) && <Button width={'320px'} black onClick={() => {
                     //onDismiss()
                     window.location.reload()
                 }}>Close</Button>}
