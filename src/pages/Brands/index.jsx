@@ -52,12 +52,11 @@ export default function Index() {
   const { active } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
 
-  const [isSet, setIsSet] = useState(false);
   const [list, setList] = useState([])
 
   useEffect(() => {
     if (!active) return;
-    if (data && !isSet) {
+    if (data) {
       const bounce721Brands = data.bounce721Brands.map(item => item.id)
       const bounce1155Brands = data.bounce1155Brands.map(item => item.id)
       const list = bounce721Brands.concat(bounce1155Brands);
@@ -66,7 +65,6 @@ export default function Index() {
       })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          setIsSet(true);
           const itemList = res.data.data.map(item => ({
             id: item.id,
             img: item.imgurl,
@@ -80,7 +78,8 @@ export default function Index() {
         }
       })
     }
-  }, [active, data, isSet, sign_Axios]);
+  // eslint-disable-next-line
+  }, [active, data]);
 
   return (
     <StyledBrandPage>

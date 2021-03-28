@@ -128,7 +128,7 @@ export default function InfoBox ({ setIsShowInfo, username }) {
     return (
         <InfoBoxStyled>
             <div className="top_info">
-                <span>{username || 'Undefined'}</span>
+                <span>{username || 'Unnamed User'}</span>
                 <div className='accout'>
                     <p>{account}</p>
                     <CopyToClipboard

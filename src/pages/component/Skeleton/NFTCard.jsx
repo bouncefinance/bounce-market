@@ -10,7 +10,8 @@ export function SkeletonNFTCard () {
 }
 
 export function SkeletonNFTCards ({ n }) {
-  return <div style={{ marginTop: '32px' }}>{new Array(n).fill().map((_, i) => <div key={i} style={{ display: 'inline-block', marginRight: '17px' }}>
+  return <div style={{ marginTop: '32px', marginRight: '-12px' }}>
+      {new Array(n).fill().map((_, i) => <div key={i} style={{ display: 'inline-block', marginRight: '16px' }}>
     <SkeletonNFTCard />
   </div>)}
   </div>

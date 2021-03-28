@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
 import styled from 'styled-components'
 import use_FS_Hook from './use_FS_Hook'
+import use_EA_Hook from './use_EA_Hook'
 import { OtherButton, Button } from '@components/UI-kit'
 import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
+import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
-import { getFixedSwapNFT } from "@/web3/address_list/contract";
+import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
 import { NumberInput } from '@components/UI-kit'
 
@@ -132,6 +134,7 @@ const NewIndexStyled = styled.div`
 
             .btn_group{
                 display: flex;
+                flex-wrap:wrap;
                 justify-content: space-between;
                 margin-top: 21px;
             }
@@ -162,12 +165,14 @@ const NewIndexStyled = styled.div`
 
 export default function NewIndex () {
     const { library, account, chainId, active } = useActiveWeb3React()
-    const { poolId } = useParams()
+    const { poolId, aucType } = useParams()
     const { showTransferByStatus } = useTransferModal()
-    const { nftInfo, poolInfo } = use_FS_Hook(poolId)
+    const { nftInfo, poolInfo } = aucType === 'fixed-swap' ? use_FS_Hook(poolId) : use_EA_Hook(poolId)
     const [isLoading, setIsLoading] = useState(false)
     const [btnText, setBtnText] = useState('Place a bid')
     const [amount, setAmount] = useState(1)
+    const [bidPrice, setBidPrice] = useState()
+    const [minPrice, setMinPrice] = useState(0)
 
     useEffect(() => {
 
@@ -187,6 +192,19 @@ export default function NewIndex () {
         // eslint-disable-next-line
     }, [active, nftInfo, poolInfo])
 
+    useEffect(() => {
+        console.log(poolInfo)
+        if (poolInfo.poolType === 'EA' && poolInfo.status === 'Live') {
+            if (poolInfo.bidCountP === '0') {
+                setMinPrice(weiToNum(poolInfo.amountMin1))
+            } else {
+                const price = weiMul(weiToNum(poolInfo.amountMin1), 1.05)
+                setMinPrice(price)
+            }
+        }
+        // eslint-disable-next-line
+    }, [poolInfo])
+
 
     const handelBid = async () => {
         setIsLoading(true)
@@ -201,8 +219,8 @@ export default function NewIndex () {
                 })
                 .on('receipt', async (_, receipt) => {
                     // console.log('bid fixed swap receipt:', receipt)
-                    // setBidStatus(successVotedStatus)
-                    showTransferByStatus('successVotedStatus')
+                    // setBidStatus(successStatus)
+                    showTransferByStatus('successStatus')
                 })
                 .on('error', (err, receipt) => {
                     // setBidStatus(errorStatus)
@@ -224,13 +242,201 @@ export default function NewIndex () {
                 })
                 .on('receipt', async (_, receipt) => {
                     // console.log('bid fixed swap receipt:', receipt)
-                    // setBidStatus(successVotedStatus)
-                    showTransferByStatus('successVotedStatus')
+                    // setBidStatus(successStatus)
+                    showTransferByStatus('successStatus')
                 })
                 .on('error', (err, receipt) => {
                     // setBidStatus(errorStatus)
                     showTransferByStatus('errorStatus')
                 })
+        }
+    }
+
+
+    const handelEnglishAuctionBid = async (amountMax1) => {
+        setIsLoading(true)
+        // if (poolInfo.nftType === '0') {
+            const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
+            
+            const _amount1 = amountMax1 || numToWei(bidPrice)
+            console.log(_amount1)
+
+            BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
+                .send({ from: account, value: _amount1 })
+                .on('transactionHash', hash => {
+                    // setBidStatus(pendingStatus)
+                    showTransferByStatus('pendingStatus')
+                })
+                .on('receipt', async (_, receipt) => {
+                    // console.log('bid fixed swap receipt:', receipt)
+                    // setBidStatus(successStatus)
+                    showTransferByStatus('successStatus')
+                })
+                .on('error', (err, receipt) => {
+                    // setBidStatus(errorStatus)
+                    showTransferByStatus('errorStatus')
+                })
+        // } else {
+        //     const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
+
+        //     const _amount0 = amount
+        //     const _amount1 = numToWei(weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))
+
+        //     // console.log(_amount0, _amount1)
+
+        //     BounceEnglishAuctionNFT_CT.methods.swap(poolId, _amount0)
+        //         .send({ from: account, value: _amount1 })
+        //         .on('transactionHash', hash => {
+        //             // setBidStatus(pendingStatus)
+        //             showTransferByStatus('pendingStatus')
+        //         })
+        //         .on('receipt', async (_, receipt) => {
+        //             // console.log('bid fixed swap receipt:', receipt)
+        //             // setBidStatus(successStatus)
+        //             showTransferByStatus('successStatus')
+        //         })
+        //         .on('error', (err, receipt) => {
+        //             // setBidStatus(errorStatus)
+        //             showTransferByStatus('errorStatus')
+        //         })
+        // }
+    }
+
+    const bidderClaim = async () => {
+        const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
+        BounceEnglishAuctionNFT_CT.methods.bidderClaim(poolId)
+            .send({ from: account })
+            .on('transactionHash', hash => {
+                // setBidStatus(pendingStatus)
+                showTransferByStatus('pendingStatus')
+            })
+            .on('receipt', async (_, receipt) => {
+                // console.log('bid fixed swap receipt:', receipt)
+                // setBidStatus(successStatus)
+                showTransferByStatus('successStatus')
+            })
+            .on('error', (err, receipt) => {
+                // setBidStatus(errorStatus)
+                showTransferByStatus('errorStatus')
+            })
+    }
+
+    const renderByAucType = () => {
+        if (aucType === 'fixed-swap') {
+            return <>
+                <NumberInput
+                    className='input_amount'
+                    title='Buy Amount'
+                    width='100%'
+                    isInteger={true}
+                    maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
+                    minVal={1}
+                    defaultValue={1}
+                    onValChange={(val) => {
+                        setAmount(val)
+                    }}
+                    disabled={poolInfo.nftType === '1' && false}
+                />
+
+                <div className="bidInfo">
+                    <div>
+                        <h5>Top Bid</h5>
+                        <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
+                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
+                    </div>
+
+                    <div>
+                        <h5>Amount</h5>
+                        <h3>{(poolInfo.amountTotal0 && poolInfo.swappedAmount0P) ?
+                            `${parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)} / ${poolInfo.amountTotal0}` : '0 / 0'}</h3>
+                    </div>
+                </div>
+                <div className="btn_group">
+                    <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
+                        onClick={handelBid}
+                    >{btnText}</Button>
+                </div>
+            </>
+        } else if (aucType === 'english-auction') {
+            return <>
+
+
+                <div className="bidInfo">
+                    <div>
+                        <h5>Asking price</h5>
+                        <h3>{poolInfo.token1 && weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals))} ) `}</span></h3>
+                    </div>
+
+                    <div>
+                        <h5>Total Amount</h5>
+                        <h3>{poolInfo.tokenAmount0 && `${poolInfo.tokenAmount0}`}</h3>
+                    </div>
+                </div>
+
+                <div className="bidInfo">
+                    <div>
+                        <h5>Current Price</h5>
+                        <h3>{poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals))} ) `}</span></h3>
+                    </div>
+
+                    <div>
+                        <h5>Current Round</h5>
+                        <h3>{poolInfo.bidCountP && `${poolInfo.bidCountP}`}</h3>
+                    </div>
+                </div>
+
+                <NumberInput
+                    className='input_amount'
+                    title={`I'll make an offer`}
+                    width='100%'
+                    maxVal={poolInfo.token1 && poolInfo.token1.balance}
+                    // minVal={minPrice}
+                    defaultValue={minPrice}
+                    onValChange={(val) => {
+                        setBidPrice(val)
+                    }}
+                    afterFix={poolInfo.token1 && `Balance: ${poolInfo.token1.balance} ${poolInfo.token1.symbol}`}
+                    disabled={isLoading || poolInfo.status !== 'Live'}
+                />
+
+                <div className="btn_group">
+                    <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
+                        onClick={()=>{handelEnglishAuctionBid()}}
+                    >{btnText}</Button>
+                    {poolInfo.amountMax1 && <Button width='262px' disabled={isLoading || poolInfo.status !== 'Live'} height='48px' onClick={() => {
+                        handelEnglishAuctionBid(poolInfo.amountMax1)
+                    }}>Buy now for {weiToNum(poolInfo.amountMax1)} ETH</Button>}
+                    {poolInfo.status === 'Close' && poolInfo.currentBidderP === account && !poolInfo.myClaimedP &&
+                        < Button onClick={() => {
+                            bidderClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'}>
+                            Claim Bid NFT
+                    </Button>}
+
+                    {poolInfo.status === 'Close' && poolInfo.currentBidderP === account && poolInfo.myClaimedP &&
+                        < Button onClick={() => {
+                            bidderClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'} disabled>
+                            You have successfully bid and claimed
+                    </Button>}
+
+                    {poolInfo.status === 'Close' && poolInfo.creator === account && !poolInfo.creatorClaimedP &&
+                        < Button onClick={() => {
+                            bidderClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'}>
+                            Claim {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                        </Button>}
+
+                    {poolInfo.status === 'Close' && poolInfo.creator === account && poolInfo.creatorClaimedP &&
+                        < Button onClick={() => {
+                            bidderClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'} disabled>
+                            You have successfully received {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                        </Button>}
+                </div>
+            </>
         }
     }
 
@@ -258,9 +464,9 @@ export default function NewIndex () {
                                 <img src={icon_altAvatar} alt="" />
                                 <p>Owned by <a href="http://">{nftInfo.ownername || 'Anonymity'}</a></p>
 
-                                {poolInfo.poolType === 'EA' && <div className="close_time">
+                                {aucType === 'english-auction' && <div className="close_time">
                                     <img src={icon_time} alt="" />
-                                    <span> Sale ends in 2 days</span>
+                                    <span>{poolInfo.showTime}</span>
                                 </div>}
                             </div>
                             <div className="desc">
@@ -270,39 +476,7 @@ export default function NewIndex () {
                             </div>
                         </div>
 
-                        <NumberInput
-                            className='input_amount'
-                            title='Buy Amount'
-                            width='100%'
-                            isInteger={true}
-                            maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
-                            minVal={1}
-                            defaultValue={1}
-                            onValChange={(val) => {
-                                setAmount(val)
-                            }}
-                            disabled={poolInfo.nftType === '1' && false}
-                        />
-
-                        <div className="bidInfo">
-                            <div>
-                                <h5>Top Bid</h5>
-                                <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
-                                    <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
-                            </div>
-
-                            <div>
-                                <h5>Amount</h5>
-                                <h3>{(poolInfo.amountTotal0 && poolInfo.swappedAmount0P) ?
-                                    `${parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)} / ${poolInfo.amountTotal0}` : '0 / 0'}</h3>
-                            </div>
-                        </div>
-                        <div className="btn_group">
-                            <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
-                                onClick={handelBid}
-                            >{btnText}</Button>
-                            {poolInfo.poolType === 'English-Auction' && <Button width='262px' height='48px'>Buy now for 1 ETH</Button>}
-                        </div>
+                        {renderByAucType()}
                         <div className="pullInfoBox">
 
                             <NewPullDown open={true} title='Offers'>
@@ -323,7 +497,7 @@ export default function NewIndex () {
                                     </div>
                                 </OffersStyled>
                             </NewPullDown>
-                            <NewPullDown open={true} title='Token Info'>
+                            <NewPullDown open={false} title='Token Info'>
                                 <div className="token-info">
                                     <div className="flex flex-space-x">
                                         <p>Token Contact Address</p>
@@ -339,10 +513,10 @@ export default function NewIndex () {
                                     </div>
                                 </div>
                             </NewPullDown>
-                            <NewPullDown open={true} title='External link'>
+                            <NewPullDown open={false} title='External link'>
                                 <div>--</div>
                             </NewPullDown>
-                            <NewPullDown open={true} title='Trading History'>
+                            <NewPullDown open={false} title='Trading History'>
                                 <TradingHistory rows={[
                                     { Event: 'Buy', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vfaaaaa`, Date: `1 days ago` },
                                     { Event: 'Bid', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vf`, Date: `1 days ago` },

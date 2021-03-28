@@ -11,6 +11,7 @@ const ButtonStyled = styled.button`
     cursor: pointer;
     width: ${({ width }) => { return width || 'auto' }};
     height: ${({ height }) => { return height || '36px' }};
+    margin-top: ${({ marginTop }) => { return marginTop || 0 }};
     min-width: 100px;
     padding: 0 11.4px;
 
@@ -52,7 +53,8 @@ export default function Button({
     onClick,
     primary,
     children,
-    disabled
+    disabled,
+    marginTop
 }) {
     return (
         <ButtonStyled
@@ -62,7 +64,7 @@ export default function Button({
             primary={primary}
             className={`${!primary && 'white'} ${disabled && 'disabled'}`}
             disabled={disabled}
-
+            marginTop={marginTop}
             onClick={onClick}
         >
             { value}

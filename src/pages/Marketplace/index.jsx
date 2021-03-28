@@ -120,25 +120,33 @@ export default function Marketplace () {
 
   const { data } = useQuery(QueryTradePools)
   const { sign_Axios } = useAxios();
-
-  const [tokenList, setTokenList] = useState([]);
   const [isSet, setIsSet] = useState(false);
+  const [tokenList, setTokenList] = useState([]);
   const [channel, setChannel] = useState(
     type === 'Sports' ? 'Sports' :
       type === 'Comic Books' ? 'Comic Books' :
         'Fine Arts');
 
+
   const [loading, setLoding] = useState(true)
 
-  // fix value
-  type = 'Image'
+  const [length, setLength] = useState(4);
 
   useEffect(() => {
     if (!active) return
 
-    if (data && !isSet) {
-      const pools = data.tradePools;
+    if (data) {
+      const tradePools = data.tradePools.map(item => ({
+        ...item,
+        poolType: 'fixed-swap'
+      }));
+      const tradeAuctions = data.tradeAuctions.map(item => ({
+        ...item,
+        poolType: 'english-auction'
+      }));
+      const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
+      setLength(list.length);
       setLoding(true)
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
@@ -151,18 +159,19 @@ export default function Marketplace () {
               const poolInfo = pools.find(pool => pool.tokenId === item.id);
               return {
                 ...item,
+                poolType: poolInfo.poolType,
                 poolId: poolInfo.poolId,
-                price: Web3.utils.fromWei(poolInfo.price)
+                price: poolInfo.price ? Web3.utils.fromWei(poolInfo.price) : '--',
               }
             })
-            setIsSet(true);
             setTokenList(list.sort((a, b) => a.poolId - b.poolId));
             setLoding(false)
           }
         })
         .catch(() => { })
     }
-  }, [active, data, type, channel, isSet, sign_Axios])
+    // eslint-disable-next-line
+  }, [active, data, type, channel])
 
 
   const renderListByType = (type) => {
@@ -176,6 +185,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.poolId}
                 price={!!item.price ? `${item.price} ETH` : `--`}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -190,6 +200,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -205,8 +216,9 @@ export default function Marketplace () {
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
                 describe={`Audio with a fun birthday song.
-                                Recorded using guitar and drums.
-                                Please enjoy`}
+                  Recorded using guitar and drums.
+                  Please enjoy`}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -221,6 +233,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -235,6 +248,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -249,6 +263,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -301,7 +316,7 @@ export default function Marketplace () {
         }} />
       </div>
 
-      {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
+      {loading && <SkeletonNFTCards n={length} ></SkeletonNFTCards>}
       {renderListByType(type)}
 
       {/* <PagingControls /> */}
