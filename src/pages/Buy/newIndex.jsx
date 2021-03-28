@@ -237,7 +237,7 @@ export default function NewIndex () {
     return (
         <NewIndexStyled>
             <ul className='crumbs'>
-                <li><span>Marketplase</span></li>
+                <li><span>Marketplace</span></li>
                 <li><span>Fine Arts</span></li>
                 <li><span>Digital Image Name</span></li>
             </ul>
