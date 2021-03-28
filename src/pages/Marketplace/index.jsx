@@ -120,7 +120,7 @@ export default function Marketplace () {
 
   const { data } = useQuery(QueryTradePools)
   const { sign_Axios } = useAxios();
-  const [isSet, setIsSet] = useState(false);
+  // const [isSet, setIsSet] = useState(false);
   const [tokenList, setTokenList] = useState([]);
   const [channel, setChannel] = useState(
     type === 'Sports' ? 'Sports' :
@@ -131,6 +131,8 @@ export default function Marketplace () {
   const [loading, setLoding] = useState(true)
 
   const [length, setLength] = useState(4);
+
+  type = 'Image'
 
   useEffect(() => {
     if (!active) return
@@ -287,7 +289,7 @@ export default function Marketplace () {
       <ul className="nav_wrapper">
         {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
-            setIsSet(false);
+            // setIsSet(false);
             setChannel(item.name)
           }}>
             <p className="flex flex-center-y"><img src={
