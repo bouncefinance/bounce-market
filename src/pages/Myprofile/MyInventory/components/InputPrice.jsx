@@ -70,15 +70,16 @@ function InputPrice({
 		}
 	};
 	const checkAmountVal = (e) => {
-		if(e.target.value.match("^\\d+\\.$") != null){
-			setAmount(e.target.value.slice(0, -1));
-			setAmountValue(e.target.value.slice(0, -1));
-		}
 		if(balance && parseFloat(balance) <  parseFloat(e.target.value)){
 			setAmount(balance);
 			setAmountValue(balance);
+		}else if(e.target.value > 0){
+			setAmount(e.target.value.replace(/\D/g,''));
+			setAmountValue(e.target.value.replace(/\D/g,''))
+		}else{
+			setAmount("")
+			setAmountValue("")
 		}
-		
 	};
 
 	return (

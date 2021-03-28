@@ -189,77 +189,78 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			// console.log(nftInfo)
 			// console.log(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot)
 
+			try{
+				if (nftInfo.standard === 1) {
+					
+					// approve
+					showTransferByStatus('approveStatus')
+					const isOwner = await isOwner_ERC_721(_token0, _tokenId, account)
+					// 没有这个 NFT
+					if (!isOwner) showTransferByStatus('errorStatus')
+					let approveResult = await hasApprove_ERC_721(_token0, _tokenId, getFixedSwapNFT(chainId))
+					if (!approveResult) {
+						approveResult = await BounceERC721WithSign_CT.methods.approve(
+							getFixedSwapNFT(chainId),
+							parseInt(_tokenId)
+						).send({ from: account });
+					}
 
-			if (nftInfo.standard === 1) {
+					if (!approveResult) return showTransferByStatus('errorStatus')
 
-				// approve
-				showTransferByStatus('approveStatus')
-				const isOwner = await isOwner_ERC_721(_token0, _tokenId, account)
-				// 没有这个 NFT
-				if (!isOwner) showTransferByStatus('errorStatus')
-				let approveResult = await hasApprove_ERC_721(_token0, _tokenId, getFixedSwapNFT(chainId))
-				if (!approveResult) {
-					approveResult = await BounceERC721WithSign_CT.methods.approve(
-						getFixedSwapNFT(chainId),
-						parseInt(_tokenId)
-					).send({ from: account });
+
+					BounceFixedSwapNFT_CT.methods.createErc721(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot).send({ from: account })
+						.on('transactionHash', hash => {
+							// setBidStatus(pendingStatus)
+							showTransferByStatus('pendingStatus')
+						})
+						.on('receipt', async (_, receipt) => {
+							// console.log('bid fixed swap receipt:', receipt)
+							// setBidStatus(successVotedStatus)
+							showTransferByStatus('successVotedStatus')
+						})
+						.on('error', (err, receipt) => {
+							// setBidStatus(errorStatus)
+							showTransferByStatus('errorStatus')
+						})
+				} else if (nftInfo.standard === 2) {
+					// approve
+					console.log(amount, price)
+
+					const _amountTotal0 = amount 
+					const _amountTotal1 = weiMul(numToWei(price), amount)
+
+					showTransferByStatus('approveStatus')
+					let approveResult = await hasApprove_ERC_1155(_token0, getFixedSwapNFT(chainId), account)
+					if (!approveResult) {
+						approveResult = await BounceERC1155WithSign_CT.methods.setApprovalForAll(
+							getFixedSwapNFT(chainId),
+							true
+						).send({ from: account });
+					}
+
+					if (!approveResult) return showTransferByStatus('errorStatus')
+					console.log(_name, _token0, _token1, _tokenId, _amountTotal0, _amountTotal1, _onlyBot)
+
+					BounceFixedSwapNFT_CT.methods.createErc1155(_name, _token0, _token1, _tokenId, _amountTotal0,
+						_amountTotal1, _onlyBot)
+						.send({ from: account })
+						.on('transactionHash', hash => {
+							// setBidStatus(pendingStatus)
+							showTransferByStatus('pendingStatus')
+						})
+						.on('receipt', async (_, receipt) => {
+							// console.log('bid fixed swap receipt:', receipt)
+							// setBidStatus(successVotedStatus)
+							showTransferByStatus('successVotedStatus')
+						})
+						.on('error', (err, receipt) => {
+							// setBidStatus(errorStatus)
+							showTransferByStatus('errorStatus')
+						})
 				}
-
-				if (!approveResult) return showTransferByStatus('errorStatus')
-
-
-				BounceFixedSwapNFT_CT.methods.createErc721(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot).send({ from: account })
-					.on('transactionHash', hash => {
-						// setBidStatus(pendingStatus)
-						showTransferByStatus('pendingStatus')
-					})
-					.on('receipt', async (_, receipt) => {
-						// console.log('bid fixed swap receipt:', receipt)
-						// setBidStatus(successVotedStatus)
-						showTransferByStatus('successVotedStatus')
-					})
-					.on('error', (err, receipt) => {
-						// setBidStatus(errorStatus)
-						showTransferByStatus('errorStatus')
-					})
-			} else if (nftInfo.standard === 2) {
-				// approve
-				console.log(amount, price)
-
-				const _amountTotal0 = amount 
-				const _amountTotal1 = weiMul(numToWei(price), amount)
-
-				showTransferByStatus('approveStatus')
-				let approveResult = await hasApprove_ERC_1155(_token0, getFixedSwapNFT(chainId), account)
-				if (!approveResult) {
-					approveResult = await BounceERC1155WithSign_CT.methods.setApprovalForAll(
-						getFixedSwapNFT(chainId),
-						true
-					).send({ from: account });
-				}
-
-				if (!approveResult) return showTransferByStatus('errorStatus')
-				console.log(_name, _token0, _token1, _tokenId, _amountTotal0, _amountTotal1, _onlyBot)
-
-				BounceFixedSwapNFT_CT.methods.createErc1155(_name, _token0, _token1, _tokenId, _amountTotal0,
-					_amountTotal1, _onlyBot)
-					.send({ from: account })
-					.on('transactionHash', hash => {
-						// setBidStatus(pendingStatus)
-						showTransferByStatus('pendingStatus')
-					})
-					.on('receipt', async (_, receipt) => {
-						// console.log('bid fixed swap receipt:', receipt)
-						// setBidStatus(successVotedStatus)
-						showTransferByStatus('successVotedStatus')
-					})
-					.on('error', (err, receipt) => {
-						// setBidStatus(errorStatus)
-						showTransferByStatus('errorStatus')
-					})
-			}
+			}catch(e){console.log(e);showTransferByStatus('errorStatus')}
 		} else {
-
+			try{
 			// Fixswap NFT
 			const _name = nftInfo.itemname
 			const _token0 = nftInfo.contractaddress
@@ -352,6 +353,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						showTransferByStatus('errorStatus')
 					})
 			}
+		}catch(e){console.log(e);showTransferByStatus('errorStatus')}
 		}
 	}
 
