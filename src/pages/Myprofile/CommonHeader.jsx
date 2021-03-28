@@ -12,12 +12,34 @@ import icon_copy from '@assets/images/icon/copy.svg'
 import icon_liked from '@assets/images/icon/liked.svg'
 import { myContext } from '@/redux/index.js'
 import SettingAccountModal from './SettingAccountModal'
+import UpdateTopBarImg from './MyBrands/updateTopBarImg'
+import edit_white from '@assets/images/icon/edit_white.svg'
 
 
 const CommonHeaderStyled = styled.div`
     .top-bg{
         background: url('https://market-test.bounce.finance/pngfileget/e873aef2157d78c3f1d04b773bedb82c-1616836587.png') center center no-repeat;
         height: 180px;
+        background-size: 100%!important;
+        position: relative;
+         button{
+            background: none;
+            width: 124px;
+            height: 40px;
+            box-sizing: border-box;
+            border: 1px solid #fff;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 28px;
+            right: 40px;
+            cursor: pointer;
+            img{
+                margin-right: 6.8px;
+            }
+        }
     }
     .wrapper{
         width: 1100px;
@@ -146,7 +168,8 @@ export default function CommonHeader () {
     const history = useHistory()
     const { account } = useActiveWeb3React()
     const [isSettingAccount, setIsSettingAccount] = useState(false)
-    const { state } = useContext(myContext);
+    const { state, dispatch } = useContext(myContext);
+    const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
 
     useEffect(() => {
         const pathName = window.location.pathname
@@ -159,7 +182,18 @@ export default function CommonHeader () {
 
     return (
         <CommonHeaderStyled>
-            <div className="top-bg"></div>
+            {<UpdateTopBarImg open={openUpdateTopBarImg} useType="my" setOpen={setOpenUpdateTopBarImg} run={({ bandimgurl }) => {
+                dispatch({
+                    type: 'UserInfo',
+                    userInfo: { ...state.userInfo, bandimgurl }
+                })
+            }} />}
+            <div className="top-bg" style={state.userInfo.bandimgurl ? { background: `url(${state.userInfo.bandimgurl}) center center no-repeat` } : {}}>
+                <button onClick={() => setOpenUpdateTopBarImg(true)}>
+                    <img src={edit_white} alt="" />
+                    <p>Change</p>
+                </button>
+            </div>
             <div className="wrapper">
                 <div className="top">
                     <div className="left">

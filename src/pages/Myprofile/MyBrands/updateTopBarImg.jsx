@@ -100,16 +100,19 @@ export default function UpdateTopBarImg (props) {
       const formData = new FormData()
       formData.append('filename', new File([blob], 'blob.png', { type: 'image/png' }))
       const bandimgurl = await ImgToUrl(sign_Axios, formData)
-      const { data } = await sign_Axios.post('/api/v2/main/auth/updatebandimg', {
+      const { data } = await sign_Axios.post(props.useType === 'my' ? '/api/v2/main/auth/updateaccountbandimg' : '/api/v2/main/auth/updatebandimg', {
         bandimgurl,
-        id: brandId | 0
+        id: props.useType === 'my' ? 0 : (brandId | 0)
       })
       if (data.code === 200 || data.code === 1) {
         // TODO tips success
         props.setOpen(false)
         unlock()
         // update data of page
-        props.run()
+        props.run({ bandimgurl })
+        // 重置
+        setPreview(false)
+        setImage('')
       } else {
         throw new Error('')
       }

@@ -55,7 +55,7 @@ export default function Index () {
             }
         }
         getCreatedBrand().then(address => {
-            console.log('address:', address)
+            // console.log('address:', address)
             const addressNull = address.split('0x').join('').split('').filter(e => e !== '0').join('') !== ''
             setbrandAddContract(addressNull)
             setbrandAddress(address)
