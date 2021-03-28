@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TableItem from './TableItem'
 
-import { QueryActivity } from '@/utils/apollo';
+import { QueryActivities } from '@/utils/apollo';
 import { useLazyQuery } from '@apollo/client';
 import { useActiveWeb3React } from '@/web3';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
@@ -46,72 +46,15 @@ export default function BasicTable() {
     const [list, setList] = useState([]);
 
     const handleActivities = (data) => {
-        const createPool = data.poolCreates.map(item => ({
-            Event: 'Created',
-            timestamp: item.timestamp,
-            Date: formatDistanceToNow(item.timestamp * 1000),
-            Quantity: '1',
-            Price: '--',
-            From: '',
-            To: '',
-        }))
-        const swapPool = data.poolSwaps.map(item => ({
-            Event: 'Buy',
-            timestamp: item.timestamp,
-            Date: formatDistanceToNow(item.timestamp * 1000),
-            Quantity: '1',
-            Price: '--',
-            From: '',
-            To: '',
+        const list = data.activities.map(item => ({
+            ...item,
+            date: formatDistanceToNow(item.timestamp * 1000),
+            status: item.event === 'Cancel' || item.event === 'Claim' ? 'Unlisted' : 'Listed',
         }));
-        const cancelPool = data.poolCancels.map(item => ({
-            Event: 'Cancel',
-            timestamp: item.timestamp,
-            Date: formatDistanceToNow(item.timestamp * 1000),
-            Quantity: '1',
-            Price: '--',
-            From: '',
-            To: '',
-        }));
-        const auctionCreates = data.auctionCreates.map(item => ({
-            Event: 'Created',
-            timestamp: item.timestamp,
-            Date: formatDistanceToNow(item.timestamp * 1000),
-            Quantity: '1',
-            Price: '--',
-            From: '',
-            To: '',
-        }));
-        const auctionBids = data.auctionBids.map(item => ({
-            Event: 'Bid',
-            timestamp: item.timestamp,
-            Date: formatDistanceToNow(item.timestamp * 1000),
-            Quantity: '1',
-            Price: '--',
-            From: '',
-            To: '',
-        }));
-        const auctionClaims = data.auctionClaims.map(item => ({
-            vent: 'Claim',
-            timestamp: item.timestamp,
-            Date: formatDistanceToNow(item.timestamp * 1000),
-            Quantity: '1',
-            Price: '--',
-            From: '',
-            To: '',
-        }));
-        const list = createPool.concat(swapPool)
-            .concat(cancelPool)
-            .concat(auctionCreates)
-            .concat(auctionBids)
-            .concat(auctionClaims)
-            .sort((a, b) => {
-            return b.timestamp - a.timestamp
-        });
         setList(list);
     }
 
-    const [getActivities, { data }] = useLazyQuery(QueryActivity, {
+    const [getActivities, { data }] = useLazyQuery(QueryActivities, {
         variables: { user: account ? account.toLowerCase() : account},
         onCompleted: () => {
             handleActivities(data);
@@ -129,9 +72,9 @@ export default function BasicTable() {
                 <TableHead className={classes.TableHead}>
                     <TableRow>
                         <TableCell className={classes.TableCell} >Event</TableCell>
-                        <TableCell className={classes.TableCell} >Quantity</TableCell>
-                        <TableCell className={classes.TableCell} >Price</TableCell>
                         <TableCell className={classes.TableCell} >Item</TableCell>
+                        <TableCell className={classes.TableCell} >Quantity</TableCell>
+                        <TableCell className={classes.TableCell} >Status</TableCell>
                         <TableCell className={classes.TableCell} >From</TableCell>
                         <TableCell className={classes.TableCell} >To</TableCell>
                         <TableCell className={classes.TableCell} >Date</TableCell>

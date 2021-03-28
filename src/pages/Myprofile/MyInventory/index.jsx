@@ -137,7 +137,7 @@ export default function Index() {
             </li>
           })}
         </ul>
-        {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
+        {loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
       </MyInventoryStyled>
     </>
   )
