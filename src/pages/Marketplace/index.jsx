@@ -128,8 +128,14 @@ export default function Marketplace () {
     if (!active) return
 
     if (data) {
-      const tradePools = data.tradePools;
-      const tradeAuctions = data.tradeAuctions;
+      const tradePools = data.tradePools.map(item => ({
+        ...item,
+        poolType: 'fixed-swap'
+      }));
+      const tradeAuctions = data.tradeAuctions.map(item => ({
+        ...item,
+        poolType: 'english-auction'
+      }));
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
       setLength(list.length);
@@ -145,6 +151,7 @@ export default function Marketplace () {
               const poolInfo = pools.find(pool => pool.tokenId === item.id);
               return {
                 ...item,
+                poolType: poolInfo.poolType,
                 poolId: poolInfo.poolId,
                 price: poolInfo.price ? Web3.utils.fromWei(poolInfo.price) : '--',
               }
@@ -170,6 +177,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.poolId}
                 price={!!item.price ? `${item.price} ETH` : `--`}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -184,6 +192,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -199,8 +208,9 @@ export default function Marketplace () {
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
                 describe={`Audio with a fun birthday song.
-                                Recorded using guitar and drums.
-                                Please enjoy`}
+                  Recorded using guitar and drums.
+                  Please enjoy`}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -215,6 +225,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -229,6 +240,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
+                poolType={item.poolType}
               />
             </li>
           })}
@@ -243,6 +255,7 @@ export default function Marketplace () {
                 name={item.itemname}
                 cardId={item.id}
                 price={!!item.price ? `${item.price} ETH` : '--'}
+                poolType={item.poolType}
               />
             </li>
           })}

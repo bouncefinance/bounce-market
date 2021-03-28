@@ -91,9 +91,9 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem ({ cover, name, price, cardId }) {
+export function CardItem ({ cover, name, price, cardId, poolType }) {
     const history = useHistory()
-
+    
     return (
         <CardItemStyled>
             {/* <img src={cover} alt="" /> */}
@@ -145,7 +145,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem ({ cover, name, price, cardId }) {
+export function VideoCardItem ({ cover, name, price, cardId, poolType }) {
 
     return (
         <VideoCardItemStyled>
@@ -193,8 +193,7 @@ const AudioCardItemStyled = styled(CardItemStyled)`
        }
 `
 
-export function AudioCardItem ({ cover, name, price, cardId, describe }) {
-
+export function AudioCardItem ({ cover, name, price, cardId, describe, poolType }) {
     return (
         <AudioCardItemStyled>
             <img src={cover} alt="" />
