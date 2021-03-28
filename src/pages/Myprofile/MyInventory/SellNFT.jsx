@@ -43,7 +43,6 @@ export default function SellNFT () {
 	];
 
 	const fees = "0.5";
-
 	const { exportNftInfo } = useNftInfo();
 	const { nftId } = useParams();
 	const { active } = useActiveWeb3React();
@@ -53,13 +52,12 @@ export default function SellNFT () {
 	const [price, setPrice] = useState(0);
 	const [priceUnit, set_PriceUnit] = useState("ETH");
 	const [minimumBid, set_MinimumBid] = useState(0);
+	// const [maxmumBid_Unit, set_MaxmumBid_Unit] = useState("ETH");
 	const [maximumBid, set_MaximumBid] = useState(0);
 	const [minimumBid_Unit, set_MinimumBid_Unit] = useState("ETH");
 	const [maximumBid_Unit, set_MaximumBid_Unit] = useState("ETH");
 	const [directPurchasePrice, set_DirectPurchasePrice] = useState(0);
-	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState(
-		"ETH"
-	);
+	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState("ETH");
 	const [reservePrice, set_ReservePrice] = useState(0);
 	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
 	const [duration, setDuration] = useState(0);
@@ -74,15 +72,28 @@ export default function SellNFT () {
 
 	const setInitNftInfo = async (nftId) => {
 		const info = await exportNftInfo(nftId);
-		/* console.log(info); */
+		// console.log(info); 
 		setNftId(info);
 	};
+
+	useEffect(() => {
+		console.log(directPurchasePrice,reservePrice,minimumBid)
+		if(directPurchasePrice && reservePrice && parseFloat(reservePrice) > parseFloat(directPurchasePrice) ){
+			set_ReservePrice(directPurchasePrice);
+		}
+		if(reservePrice && minimumBid && parseFloat(minimumBid) > parseFloat(reservePrice)){
+			set_MinimumBid(reservePrice);
+		}
+		if(directPurchasePrice && minimumBid && parseFloat(minimumBid) > parseFloat(directPurchasePrice)){
+			set_DirectPurchasePrice(reservePrice);
+		}
+	}, [directPurchasePrice,reservePrice,minimumBid]);
 
 	const render_LeftItems = (auctionType) => {
 		switch (auctionType) {
 			case "setPrice":
 				return (
-					<LeftItemsOnSetPrice>
+					<><RightItemsOnSetPrice>
 						<InputPrice
 							className="InputPrice Price"
 							title="Price"
@@ -98,7 +109,7 @@ export default function SellNFT () {
 
 						<InstructionsDropdown
 							className="Instructions"
-							width="740px"
+							width="540px"
 							layDownItems={[
 								{
 									value:
@@ -114,37 +125,43 @@ export default function SellNFT () {
 								},
 							]}
 						/>
-					</LeftItemsOnSetPrice>
+					</RightItemsOnSetPrice>
+					<Summary
+						nftInfo={nftInfo}
+						auctionType="setPrice"
+						price={price}
+						amount={amount || 1}
+						unit={priceUnit}
+						fees={fees}
+					/>
+					</>
 				);
 			case "EnglishAuction":
 				return (
-					<LeftItemsOnEnglishAuction>
-						<div style={{ display: "flex", justifyContent: "space-between" }}>
-							<InputPrice
-								className="InputPrice Minimum_bid"
-								title="Minimum bid"
-								price={minimumBid}
-								setPrice={set_MinimumBid}
-								unit={minimumBid_Unit}
-								setUnit={set_MinimumBid_Unit}
-								notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
-								gridArea="Minimum_bid"
-								options={unitOptions}
-							/>
-
-							<InputPrice
-								className="InputPrice Maxium_bid"
-								title="Maxium bid"
-								price={maximumBid}
-								setPrice={set_MaximumBid}
-								unit={maximumBid_Unit}
-								setUnit={set_MaximumBid_Unit}
-								notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
-								gridArea="Maximum_bid"
-								options={unitOptions}
-							/>
-						</div>
-
+					<>
+					<RightItemsOnEnglishAuction>
+						<InputPrice
+							className="InputPrice Minimum_bid"
+							title="Minimum bid"
+							price={minimumBid}
+							setPrice={set_MinimumBid}
+							unit={minimumBid_Unit}
+							setUnit={set_MinimumBid_Unit}
+							notice="The price bidding starts at. It'll be publicly visible. You can manually accept bids above this value but below your reserve price if you want."
+							gridArea="Minimum_bid"
+							options={unitOptions}
+						/>
+						<InputPrice
+							className="InputPrice Maximum_bid"
+							title="Minimum Increasing"
+							price={maximumBid}
+							setPrice={set_MaximumBid}
+							unit={maximumBid_Unit}
+							setUnit={set_MaximumBid_Unit}
+							notice="The Price Bidding Ends at. It'll Be Publicly Visible. You Can Manually Accept Bids Below This Value But Above Your Reserve Price If You Want."
+							gridArea="Maximum_bid"
+							options={unitOptions}
+						/>
 						<InputPrice
 							className="InputPrice Direct_purchase_price"
 							title="Direct purchase price"
@@ -152,7 +169,7 @@ export default function SellNFT () {
 							setPrice={set_DirectPurchasePrice}
 							unit={directPurchasePrice_Unit}
 							setUnit={set_directPurchasePrice_Unit}
-							notice="A direct transaction price can be set,that is,users can skip the bidding process and buy directly at this price.The direct transaction price must be greater than the Minimum Bid minimum starting price."
+							notice="A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct tranaction price must be greater than Minimum Bid minimum starting price."
 							gridArea="Direct_purchase_price"
 							options={unitOptions}
 						/>
@@ -165,19 +182,22 @@ export default function SellNFT () {
 							setUnit={set_ReservePrice_Unit}
 							notice="Setting a reserve price creates a hidden limit,If you receive no bids equal to or greater than your reserve,your auction will end with end without selling the item."
 							gridArea="Reserve_price"
+							ifInputAmount={true}
 							options={unitOptions}
+							nftInfo={nftInfo}
+							setAmount={setAmount}
 						/>
 						<SelectDuration
 							className="Expriration_Date"
 							title="Expriration Date"
-							notice="Your auction will automatically end at this time and the highest bidder will win.No need to cancel it!"
+							notice="Setting a reserve price creates a hidden limit. If you receive no bids equal to or greater than your reserve, your auction will end without selling the item."
 							setDuration={setDuration}
 							gridArea="Expriration_Date"
 							options={duration_Options}
 						/>
 						<InstructionsDropdown
 							className="Instructions"
-							width="740px"
+							width="540px"
 							layDownItems={[
 								{
 									value:
@@ -193,28 +213,7 @@ export default function SellNFT () {
 								},
 							]}
 						/>
-					</LeftItemsOnEnglishAuction>
-				);
-			default:
-				return;
-		}
-	};
-
-	const render_Summary = (auctionType) => {
-		switch (auctionType) {
-			case "setPrice":
-				return (
-					<Summary
-						nftInfo={nftInfo}
-						auctionType="setPrice"
-						price={price}
-						amount={amount || 1}
-						unit={priceUnit}
-						fees={fees}
-					/>
-				);
-			case "EnglishAuction":
-				return (
+					</RightItemsOnEnglishAuction>
 					<Summary
 						nftInfo={nftInfo}
 						auctionType="EnglishAuction"
@@ -223,9 +222,11 @@ export default function SellNFT () {
 						duration={duration}
 						fees={fees}
 						minPrice={minimumBid}
-						maxPrice={maximumBid}
-						minIncr={directPurchasePrice}
+						maxPrice={directPurchasePrice}
+						minIncr={maximumBid}
+						amount={amount || 1}
 					/>
+					</>
 				);
 			default:
 				return;
@@ -243,8 +244,11 @@ export default function SellNFT () {
 			</BreadcrumbNav>
 			<PageBody>
 				<PageBodyLeft>
+					<AutoStretchBaseWidthOrHeightImg  width={500} height={500} src={nftInfo && (nftInfo.fileurl || pic_NFT1)} />
+				</PageBodyLeft>
+				<PageBodyRight>
 					<span className="str_SelectSellMethod">
-						Select your sell method
+						{nftInfo && (nftInfo.itemname || 'Select your sell method')}
 					</span>
 
 					<ButtonGroup>
@@ -260,7 +264,7 @@ export default function SellNFT () {
 						>
 							<span className="auctionType">Set Price</span>
 							<span className="saleFeature">
-								Sell at a fixed price
+							Enter the price for which the item will be instantly sold
 							</span>
 						</button>
 
@@ -276,22 +280,13 @@ export default function SellNFT () {
 						>
 							<span className="auctionType">English Auction</span>
 							<span className="saleFeature">
-								Auction to the highest bidder
+								Sell at a highest bid at an auction for the selected time period
 							</span>
 						</button>
 					</ButtonGroup>
 
 					{render_LeftItems(auctionType)}
-				</PageBodyLeft>
 
-				<PageBodyRight>
-					{/* <img
-						className="NFTImg"
-
-						alt=""
-					/> */}
-					<AutoStretchBaseWidthOrHeightImg src={nftInfo && (nftInfo.fileurl || pic_NFT1)} width={296} height={296} />
-					{render_Summary(auctionType)}
 				</PageBodyRight>
 			</PageBody>
 		</Page>
@@ -328,24 +323,25 @@ const BreadcrumbNav = styled.div`
 const PageBody = styled.div`
 	width: 1100px;
 	display: grid;
-	grid-template-columns: 1fr 296px;
-	column-gap: 60px;
+	grid-template-columns: 500px 1fr;
+	column-gap: 80px;
 `;
 
-const PageBodyLeft = styled.div`
+const PageBodyRight = styled.div`
 	display: grid;
-	grid-template-rows: 25px 126px 1fr;
+	grid-template-rows: 60px 90px 1fr;
 	grid-template-areas:
 		"str_SelectSellMethod"
 		"ButtonGroup"
-		"LeftItemsOnSetPrice";
+		"RightItemsOnSetPrice"
+		"Summary"
+		;
 
 	span.str_SelectSellMethod {
 		font-family: Helvetica Neue;
 		font-style: normal;
-		font-weight: bold;
-		font-size: 12px;
-		line-height: 15px;
+		font-weight: 700;
+		font-size: 34px;
 		text-transform: capitalize;
 		color: #1f191b;
 
@@ -357,7 +353,7 @@ const ButtonGroup = styled.div`
 	grid-area: ButtonGroup;
 
 	display: grid;
-	grid-template-columns: 360px 360px;
+	grid-template-columns: 260px 260px;
 	column-gap: 20px;
 
 	button {
@@ -365,18 +361,17 @@ const ButtonGroup = styled.div`
 		border: 1px solid rgba(0, 0, 0, 0.2);
 		box-sizing: border-box;
 		cursor: pointer;
-		width: 360px;
+		width: 260px;
 		height: 88px;
-
 		display: grid;
-		grid-template-rows: 45px 25px 1fr;
-		align-items: end;
+		text-align: left;
+		padding:16px 24px;
 
 		.auctionType {
 			font-family: Optima;
 			font-style: normal;
 			font-weight: bold;
-			font-size: 22px;
+			font-size: 14px;
 			line-height: 27px;
 			color: #000000;
 		}
@@ -385,10 +380,10 @@ const ButtonGroup = styled.div`
 			font-family: Helvetica Neue;
 			font-style: normal;
 			font-weight: normal;
-			font-size: 12px;
+			font-size: 14px;
 			line-height: 124%;
 			color: #1f191b;
-			opacity: 0.8;
+			opacity: 0.5;
 		}
 	}
 
@@ -399,37 +394,26 @@ const ButtonGroup = styled.div`
 	}
 `;
 
-/* LeftItemsOnSetPrice */
-const LeftItemsOnSetPrice = styled.div`
+/* RightItemsOnSetPrice */
+const RightItemsOnSetPrice = styled.div`
 	display: grid;
 	align-items: center;
-	grid-template-rows: 147px 38px 1fr;
+	grid-template-rows: 210px 1fr;
+	padding-top:28px;
 	grid-template-areas:
 		"Price"
-		"."
 		"Instructions";
 
 	.Instructions {
 		grid-area: Instructions;
 		align-self: start;
+		margin-top:20px;
 	}
 `;
 
-/* LeftItemsOnEnglishAuction */
-const LeftItemsOnEnglishAuction = styled.div`
-	display: grid;
-	align-items: center;
-	grid-template-rows: 147px 38px 147px 38px 147px 38px 147px 38px 1fr;
-	grid-template-areas:
-		"Minimum_bid"
-		"."
-		"Direct_purchase_price"
-		"."
-		"Reserve_price"
-		"."
-		"Expriration_Date"
-		"."
-		"Instructions";
+/* RightItemsOnEnglishAuction */
+const RightItemsOnEnglishAuction = styled.div`
+	padding-top:28px;
 
 	.Instructions {
 		grid-area: Instructions;
@@ -457,19 +441,17 @@ const LeftItemsOnEnglishAuction = styled.div`
 	}
 `;
 
-/* Right */
-const PageBodyRight = styled.div`
+/* Left */
+const PageBodyLeft = styled.div`
 	display: grid;
-	align-items: center;
-	grid-template-rows: 296px 1fr;
+	align-items: top;
 	row-gap: 20px;
 	grid-template-areas:
-		"NFTImg"
-		"Summary";
+		"NFTImg";
 
 	img.NFTImg {
-		width: 296px;
-		height: 296px;
+		width: 500px;
+		height: 500px;
 		grid-area: NFTImg;
 	}
 `;

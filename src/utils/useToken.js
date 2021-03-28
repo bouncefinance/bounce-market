@@ -61,6 +61,7 @@ export default function useToken() {
 
     const hasApprove_ERC_1155 = async (tokenContract, tarContract, accountAddr = account) => {
         const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, tokenContract)
+        console.log(BounceERC1155WithSign_CT);
         const approveRes = await BounceERC1155WithSign_CT.methods.isApprovedForAll(accountAddr, tarContract).call()
         return approveRes
     }
@@ -70,17 +71,22 @@ export default function useToken() {
         const balance = await BounceERC1155WithSign_CT.methods.balanceOf(accountAddr, nftId).call()
         return balance
     }
+    const getBalance_ERC_721 = async (tokenContract, nftId, accountAddr = account) => {
+        const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, tokenContract)
+        const balance = await BounceERC721WithSign_CT.methods.balanceOf(accountAddr).call()
+        return balance
+    }
 
     const exportErc20Info = async (tokenAddr) => {
         if (tokenAddr === ZERO_ADDRESS) {
-            const web3 = new Web3(library.provider)
+            const web3 = new Web3(library?.provider)
             const balanceOf = await web3.eth.getBalance(account)
             return {
                 chainId,
                 decimals: 18,
                 symbol: chainId === 56 || chainId === 97 ? 'BNB' : 'ETH',
                 balanceOf,
-                balance: weiToNum(balanceOf, 18),
+                balance: weiToNum(balanceOf),
                 price: chainId === 56 || chainId === 97 ? await queryPrice('BNB') : await queryPrice('ETH')
             }
         }
@@ -125,6 +131,7 @@ export default function useToken() {
         hasApprove_ERC_1155,
         isOwner_ERC_721,
         exportErc20Info,
-        getBalance_ERC_1155
+        getBalance_ERC_1155,
+        getBalance_ERC_721
     }
 }

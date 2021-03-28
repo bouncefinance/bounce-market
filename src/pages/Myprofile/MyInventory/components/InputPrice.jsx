@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
 import UnitDropdown from "./UnitDropdown";
-
 import icon_ETH from "./assets/icon_ETH.svg";
 import { useActiveWeb3React } from "@/web3";
 import useToken from "@/utils/useToken";
@@ -11,6 +9,7 @@ import useToken from "@/utils/useToken";
 function InputPrice({
 	className,
 	title,
+	price,
 	setPrice,
 	setUnit,
 	ifInputAmount = false,
@@ -20,26 +19,35 @@ function InputPrice({
 	options,
 	nftInfo
 }) {
+	const { active } = useActiveWeb3React();
 	const [priceValue, setpriceValue] = useState("");
-	const [balance, setBalance] = useState(0)
-	const { active } = useActiveWeb3React()
-	const { getBalance_ERC_1155 } = useToken()
+	const [balance, setBalance] = useState(0);
+	const [amountValue, setAmountValue] = useState(1);
+	const { getBalance_ERC_1155,getBalance_ERC_721 } = useToken()
 
 	useEffect(() => {
-		if (!active || !nftInfo || nftInfo.standard !== 2) return
-		// console.log(nftInfo)
-		const getBalance = async () => {
-			const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
-			// console.log(balance)
-			setBalance(balance)
+		if (!active || !nftInfo || !nftInfo.standard) return;
+		let getBalance 
+		if(nftInfo.standard === 2){
+			getBalance = async () => {
+				const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
+				setBalance(balance)
+			}
+		}else if(nftInfo.standard === 1){
+			getBalance = async () => {
+				const balance = await getBalance_ERC_721(nftInfo.contractaddress, nftInfo.id)
+				setBalance(balance)
+			}
 		}
-
-		getBalance()
+		getBalance();
 		// eslint-disable-next-line
-	}, [active, nftInfo])
+	}, [active, nftInfo,ifInputAmount])
+	useEffect(() => {
+		if (!price) return;
+		setpriceValue(price)
+	}, [price])
 
 	const checkInputPrice = (e) => {
-		// console.log("key value: ", e.target.value);
 
 		if (e.target.value.match("^$") != null) {
 			setPrice(0);
@@ -51,7 +59,7 @@ function InputPrice({
 			setPrice(e.target.value);
 			setpriceValue(e.target.value);
 		} else if (e.target.value.match("^\\d+\\.$") != null) {
-			setPrice(e.target.value.slice(0, -1));
+			setPrice(e.target.value);
 			setpriceValue(e.target.value);
 		} else if (e.target.value.match("^\\d+\\.[0-9]*0+$") != null) {
 			setPrice(parseFloat(e.target.value));
@@ -61,23 +69,23 @@ function InputPrice({
 			setpriceValue(e.target.value);
 		}
 	};
+	const checkAmountVal = (e) => {
+		if(e.target.value.match("^\\d+\\.$") != null){
+			setAmount(e.target.value.slice(0, -1));
+			setAmountValue(e.target.value.slice(0, -1));
+		}
+		if(balance && parseFloat(balance) <  parseFloat(e.target.value)){
+			setAmount(balance);
+			setAmountValue(balance);
+		}
+		
+	};
 
 	return (
 		<Wrapper className={className} gridArea={gridArea}>
 			<span className="title">{title}</span>
-
+			<span className="notice">{notice}</span>
 			<InputRow>
-				<UnitDropdown
-					className={className + "Unit"}
-					width="104px"
-					options={options}
-					icon={icon_ETH}
-					defaultValue="ETH"
-					onChange={(item) => {
-						setUnit && setUnit(item.value);
-					}}
-				/>
-
 				<input
 					className="InputPrice"
 					type="text"
@@ -86,24 +94,38 @@ function InputPrice({
 					value={priceValue}
 					onChange={checkInputPrice}
 				/>
-
-				{ifInputAmount && (
+				<UnitDropdown
+					className={className + "Unit"}
+					width="88px"
+					height="32px"
+					options={options}
+					icon={icon_ETH}
+					defaultValue="ETH"
+					disabled={true}
+					onChange={(item) => {
+						setUnit && setUnit(item.value);
+					}}
+				/>
+			</InputRow>
+			{ifInputAmount && <>
+				<span className="amount">Amount</span>
+				<AmounttRow>
 					<div className="Amount">
-						<span className="str_Buy">Amount: </span>
 						<input
 							className="InputAmount"
 							type="text"
 							defaultValue={1}
 							placeholder="Amount"
 							maxLength={18}
-							onChange={(e) => setAmount(e.target.value)}
+							disabled={nftInfo && nftInfo.standard === 1}
+							value={amountValue}
+							onChange={checkAmountVal}
 						/>
-						<span className="balance"> / Your Balance: {balance}</span>
+						<span className="balance"> Balance: {balance}</span>
 					</div>
-				)}
-			</InputRow>
-
-			<span className="notice">{notice}</span>
+				</AmounttRow>	
+			</>}
+			
 		</Wrapper>
 	);
 }
@@ -115,15 +137,19 @@ const Wrapper = styled.div`
 		return gridArea;
 	}};
 
-	display: grid;
-	align-items: center;
-	grid-template-rows: 15px 16px 32px 19px 1fr;
-	grid-template-areas:
-		"title"
-		"."
-		"InputRow"
-		"."
-		"notice";
+	// display: grid;
+	// align-items: center;
+	// grid-template-rows: 15px 16px 15px 16px 52px 15px 16px 16px 1fr;
+	// grid-template-areas:
+	// 	"title"
+	// 	"."
+	// 	"notice"
+	// 	"."
+	// 	"InputRow"
+	// 	"."
+	// 	"amount"
+	// 	"."
+	// 	"AmounttRow";
 
 	span.title {
 		font-family: Helvetica Neue;
@@ -134,39 +160,124 @@ const Wrapper = styled.div`
 		text-transform: capitalize;
 		color: #1f191b;
 		opacity: 0.7;
-
+		display:block;
 		grid-area: title;
 	}
-
 	span.notice {
 		font-family: Helvetica Neue;
 		font-style: normal;
-		font-weight: 500;
-		font-size: 14px;
-		line-height: 17px;
+		font-weight: normal;
+		font-size: 13px;
+		line-height: 15px;
+		text-transform: capitalize;
 		color: #1f191b;
-		opacity: 0.3;
-
-		box-sizing: border-box;
-		/* border-bottom: 1px solid rgba(0, 0, 0, 0.3); */
-		border-bottom: 1px solid #000000;
-
+		opacity: 0.5;
 		grid-area: notice;
-
-		padding-top: 10px;
-		padding-bottom: 20px;
-
-		align-self: start;
+		margin: 6px 0 8px;
+		display:block;
 	}
+	
+	span.amount {
+		font-family: Helvetica Neue;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 12px;
+		line-height: 15px;
+		text-transform: capitalize;
+		color: #1f191b;
+		opacity: 0.7;
+		grid-area: amount;
+	}
+	
+
+	// span.notice {
+	// 	font-family: Helvetica Neue;
+	// 	font-style: normal;
+	// 	font-weight: 500;
+	// 	font-size: 14px;
+	// 	line-height: 17px;
+	// 	color: #1f191b;
+	// 	opacity: 0.3;
+
+	// 	box-sizing: border-box;
+	// 	/* border-bottom: 1px solid rgba(0, 0, 0, 0.3); */
+	// 	border-bottom: 1px solid #000000;
+
+	// 	grid-area: notice;
+
+	// 	padding-top: 10px;
+	// 	padding-bottom: 20px;
+
+	// 	align-self: start;
+	// }
 `;
 
 const InputRow = styled.div`
 	grid-area: InputRow;
 	display: grid;
-	grid-template-columns: 104px 146px auto;
-
+	grid-template-columns: 79% auto;
+	border: 1px solid rgba(0, 0, 0, 0.3);
 	align-items: center;
+	margin-bottom: 20px;
+	input {
+		box-sizing: border-box;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		height: 50px;
+		text-indent: 20px;
+		&::-webkit-input-placeholder {
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 20px;
+			text-transform: capitalize;
+			color: #1f191b;
+			opacity: 0.3;
+		}
 
+		&::-moz-placeholder {
+			/* Mozilla Firefox 19+ */
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 20px;
+			text-transform: capitalize;
+			color: #1f191b;
+			opacity: 0.3;
+		}
+
+		&:-ms-input-placeholder {
+			/* Internet Explorer 10+ */
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 20px;
+			text-transform: capitalize;
+			color: #1f191b;
+			opacity: 0.3;
+		}
+	}
+
+	.Amount {
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
+		margin-left: auto;
+		input.InputAmount {
+			margin-left: 10px;
+		}
+	}
+`;
+const AmounttRow = styled.div`
+	grid-area: AmounttRow;
+	display: grid;
+	grid-template-columns: auto;
+	align-items: center;
+	height:54px;
+	margin-bottom:20px;
 	input {
 		width: 146px;
 		box-sizing: border-box;
@@ -215,11 +326,25 @@ const InputRow = styled.div`
 		display: flex;
 		align-items: center;
 		box-sizing: border-box;
-		
+		width:100%;
 		margin-left: auto;
-
+		height:50px;
+		border: 1px solid rgba(0,0,0,0.3);
+		justify-content: space-between;
 		input.InputAmount {
 			margin-left: 10px;
+			width:78%;
+			height:48px;
+			border-bottom:none;
+		}
+		.balance{
+			display:inline-block;
+			height:32px;
+			line-height:32px;
+			padding-left:12px;
+			white-space: nowrap;
+			border-left: 1px solid rgba(0,0,0,0.2);
+			margin-right: 10px;
 		}
 	}
 `;
