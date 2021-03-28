@@ -115,8 +115,9 @@ export default function Upload ({
 
     const handelFileChange = (e) => {
         const file = e.target.files[0]
+        // console.log(file)
         if (!file) return
-        if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/gif') {
+        if (file.type === 'image/png' || file.type === 'image/jpg'|| file.type === 'image/jpeg' || file.type === 'image/gif') {
             let reader = new FileReader();  //调用FileReader
             reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
             reader.onload = function (evt) {   //读取操作完成时触发。

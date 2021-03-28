@@ -29,7 +29,7 @@ export default function useHook(poolIndex) {
 
 
 
-        console.log(pools)
+        // console.log(pools)
         if (pools.tokenId) {
             const info = await exportNftInfo(pools.tokenId)
             setNftInfo(info)
