@@ -215,8 +215,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						})
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
-							// setBidStatus(successVotedStatus)
-							showTransferByStatus('successVotedStatus')
+							// setBidStatus(successStatus)
+							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {
 							// setBidStatus(errorStatus)
@@ -250,8 +250,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						})
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
-							// setBidStatus(successVotedStatus)
-							showTransferByStatus('successVotedStatus')
+							// setBidStatus(successStatus)
+							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {
 							// setBidStatus(errorStatus)
@@ -308,8 +308,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						})
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
-							// setBidStatus(successVotedStatus)
-							showTransferByStatus('successVotedStatus')
+							// setBidStatus(successStatus)
+							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {
 							// setBidStatus(errorStatus)
@@ -345,8 +345,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						})
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
-							// setBidStatus(successVotedStatus)
-							showTransferByStatus('successVotedStatus')
+							// setBidStatus(successStatus)
+							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {
 							// setBidStatus(errorStatus)

@@ -18,6 +18,8 @@ export const QueryTradePools = gql`
     tradeAuctions {
       tokenId
       poolId
+      lastestBidAmount
+      amountMin1
     }
   }
 `

@@ -123,8 +123,8 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        // setBidStatus(successVotedStatus)
-                                        showTransferByStatus('successVotedStatus')
+                                        // setBidStatus(successStatus)
+                                        showTransferByStatus('successStatus')
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -152,8 +152,8 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        // setBidStatus(successVotedStatus)
-                                        showTransferByStatus('successVotedStatus')
+                                        // setBidStatus(successStatus)
+                                        showTransferByStatus('successStatus')
                                     })
                                     .on('error', (err, receipt) => {
                                         setBtnLock(false);
