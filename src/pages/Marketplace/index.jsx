@@ -139,7 +139,7 @@ export default function Marketplace() {
     if (!active) return
 
     if (data) {
-      console.log(data)
+      // console.log(data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: 'fixed-swap'
@@ -149,7 +149,7 @@ export default function Marketplace() {
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: 'english-auction'
       }));
-      console.log(tradeAuctions)
+      // console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
       setLength(list.length);
