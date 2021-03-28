@@ -77,7 +77,12 @@ export default function SellNFT () {
 	};
 
 	useEffect(() => {
-		console.log(directPurchasePrice,reservePrice,minimumBid)
+		if((directPurchasePrice && (directPurchasePrice.charAt(directPurchasePrice.length - 1) === '.'))  || 
+		(reservePrice && (reservePrice.charAt(reservePrice.length - 1) === '.')) || 
+		(minimumBid && (minimumBid.charAt(minimumBid.length - 1) === '.')) ){
+			return false;
+		}
+		
 		if(directPurchasePrice && reservePrice && parseFloat(reservePrice) > parseFloat(directPurchasePrice) ){
 			set_ReservePrice(directPurchasePrice);
 		}
@@ -87,6 +92,7 @@ export default function SellNFT () {
 		if(directPurchasePrice && minimumBid && parseFloat(minimumBid) > parseFloat(directPurchasePrice)){
 			set_DirectPurchasePrice(reservePrice);
 		}
+
 	}, [directPurchasePrice,reservePrice,minimumBid]);
 
 	const render_LeftItems = (auctionType) => {
