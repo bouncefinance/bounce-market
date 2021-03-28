@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 
 import icon_check_black from '../assets/check_black.svg'
@@ -125,6 +125,7 @@ export default function PullRadioBox({
     const [open, setOpen] = useState(false)
     const [checkVal, setCheckVal] = useState(defaultValue || options[0].value)
     const [checkItem, setCheckItem] = useState(defaultItem || options[0])
+    const inputRef = useRef(null);
 
     useEffect(() => {
         onChange && onChange(checkItem)
@@ -132,10 +133,22 @@ export default function PullRadioBox({
         // eslint-disable-next-line
     }, [checkVal])
 
+    function bindBodyClick(e) {
+        if (e.target === inputRef.current) return;
+        setOpen(false);
+    }
+
+    useEffect(() => {
+        document.addEventListener('click', bindBodyClick, false);
+        return () => {
+            document.removeEventListener('click', bindBodyClick, false);
+        }
+    }, [open])
+
     return (
         <PullRadioBoxStyled style={style} width={width} marginTop={marginTop}>
             {title && <p className={`title`}>{title}</p>}
-            <div className={`select ${!disabled && open && 'open'} ${disabled && 'disabled'}`} onClick={() => {
+            <div  ref={inputRef} className={`select ${!disabled && open && 'open'} ${disabled && 'disabled'}`} onClick={() => {
                 if (disabled) return
                 setOpen(!open)
             }}>
