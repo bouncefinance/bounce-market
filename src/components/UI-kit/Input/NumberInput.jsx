@@ -16,43 +16,60 @@ const InputStyled = styled.div`
         }
     }
 
-    input{
-        width: ${({ width }) => { return width }};
-        height:${({ height }) => { return height }};
-        border: 1px solid rgba(0,0,0,.2);
-        box-sizing: border-box;
-        color: rgba(0,0,0,.8);
-        font-weight: 500px;
-        font-size: 16px;
-        padding: 0 20px;
+    
 
-        &:hover{
-            border: 1px solid rgba(0,0,0,.6);
+    .input_box{
+        position: relative;
+        .afterFix{
+            position: absolute;
+            height: 100%;
+            line-height: 48px;
+            top: 0;
+            right: 20px;
+            padding-left: 10px;
+            border-left: 1px solid rgba(0,0,0,.2);
         }
 
-        &:focus{
-            border: 1px solid rgba(0,0,0,.8);
-            color: rgba(0,0,0,1);
-        }
-
-        &:disabled{
-            border: 1px solid rgba(0,0,0,1);
-            color: rgba(0,0,0,1);
-            opacity: .2;
-        }
-        &.lockInput:disabled{
+        input{
+            width: ${({ width }) => { return width }};
+            height:${({ height }) => { return height }};
             border: 1px solid rgba(0,0,0,.2);
+            box-sizing: border-box;
             color: rgba(0,0,0,.8);
-            opacity: 1;
-        }
+            font-weight: 500px;
+            font-size: 16px;
+            padding: 0 20px;
 
-        &.error{
-            border: 1px solid #E43F29;
-            color:  #E43F29;
-        }
+            &:hover{
+                border: 1px solid rgba(0,0,0,.6);
+            }
 
-        
+            &:focus{
+                border: 1px solid rgba(0,0,0,.8);
+                color: rgba(0,0,0,1);
+            }
+
+            &:disabled{
+                border: 1px solid rgba(0,0,0,1);
+                color: rgba(0,0,0,1);
+                opacity: .2;
+            }
+            &.lockInput:disabled{
+                border: 1px solid rgba(0,0,0,.2);
+                color: rgba(0,0,0,.8);
+                opacity: 1;
+            }
+
+            &.error{
+                border: 1px solid #E43F29;
+                color:  #E43F29;
+            }
+
+            
+        }
     }
+
+    
 
     
     .number_input{
@@ -76,6 +93,7 @@ export default function NumberInput({
     placeholder,
     disabled,
     onChange,
+    onBlur,
     onValChange,
     required = false,
     width = '440px',
@@ -85,7 +103,8 @@ export default function NumberInput({
     maxVal,
     minVal,
     lockInput,
-    isInteger
+    isInteger,
+    afterFix
 }) {
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
@@ -130,6 +149,7 @@ export default function NumberInput({
     }
 
     const handelBlur = (e) => {
+        onBlur && onBlur(e)
         const val = e.target.value
         if (required && val === '') {
             setError(true)
@@ -144,17 +164,20 @@ export default function NumberInput({
     return (
         <InputStyled width={width} height={height} marginTop={marginTop}>
             {title && <p className={`title ${error && 'error'}`}>{title}</p>}
-            <input
-                type='number'
-                className={`number_input ${error && 'error'} ${lockInput && 'lockInput'}`}
-                placeholder={placeholder}
-                disabled={disabled || lockInput}
-                onChange={handelChange}
-                onBlur={handelBlur}
-                onFocus={handelFocus}
-                required={required}
-                value={value}
-            />
+            <div className='input_box'>
+                <input
+                    type='number'
+                    className={`number_input ${error && 'error'} ${lockInput && 'lockInput'}`}
+                    placeholder={placeholder}
+                    disabled={disabled || lockInput}
+                    onChange={handelChange}
+                    onBlur={handelBlur}
+                    onFocus={handelFocus}
+                    required={required}
+                    value={value}
+                />
+                {afterFix && <p className='afterFix'>{afterFix}</p>}
+            </div>
             {error && <p className='err_msg'>{errMsg}</p>}
         </InputStyled>
     )
