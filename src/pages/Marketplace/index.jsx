@@ -10,6 +10,9 @@ import nav_game from '@assets/images/icon/nav_game.svg'
 import nav_image from '@assets/images/icon/nav_image.svg'
 import nav_other from '@assets/images/icon/nav_other.svg'
 import nav_video from '@assets/images/icon/nav_video.svg'
+import icon_arts from '@assets/images/icon/image.svg'
+import icon_comics from '@assets/images/icon/comics.svg'
+import icon_sport from '@assets/images/icon/sport.svg'
 
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
@@ -119,7 +122,7 @@ export default function Marketplace () {
 
   const [tokenList, setTokenList] = useState([]);
   const [isSet, setIsSet] = useState(false);
-  const [channel, setChannel] = useState('');
+  const [channel, setChannel] = useState('Fine Arts');
 
   const [loading, setLoding] = useState(true)
 
@@ -261,11 +264,16 @@ export default function Marketplace () {
       </ul>}
       <ul className="nav_wrapper">
         {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
-          return <li key={item.name} className={type === item.name ? 'active' : ''} onClick={() => {
+          return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
             setIsSet(false);
             setChannel(item.name)
           }}>
-            <p>{item.name}</p>
+            <p className="flex flex-center-y"><img src={
+              item.name === 'Fine Arts' ? icon_arts :
+                item.name === 'Sports' ? icon_sport :
+                  item.name === 'Comic Books' ? icon_comics :
+                    ''
+            } alt="" />{item.name}</p>
           </li>
         })}
       </ul>
