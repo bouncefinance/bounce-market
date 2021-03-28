@@ -84,7 +84,8 @@ export default function NumberInput({
     defaultValue,
     maxVal,
     minVal,
-    lockInput
+    lockInput,
+    isInteger
 }) {
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
@@ -100,6 +101,13 @@ export default function NumberInput({
 
 
         let val = e.target.value
+
+        if (val === '') {
+            val = 0
+        }
+        if (isInteger) {
+            val = parseInt(val)
+        }
 
         if (maxVal && parseFloat(val) > parseFloat(maxVal)) {
             val = maxVal
