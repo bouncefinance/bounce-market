@@ -91,7 +91,7 @@ export default function useHook(poolIndex) {
             
         }
 
-        console.log(poolsObj)
+        // console.log(poolsObj)
 
         setPoolInfo(poolsObj)
     }
