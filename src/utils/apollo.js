@@ -2,7 +2,7 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 export const client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/id/QmPd74K3eFxUREFDpmaWpAf1CCZZ9CbAEs1iQBBkh8ErAi',
+    uri: 'https://api.thegraph.com/subgraphs/id/QmZjguTqcfqXWpGanVs3jSaC77W2Riw3rXXc8YaNpfRxZX',
     cache: new InMemoryCache(),
 })
 
