@@ -59,6 +59,7 @@ export default function UpdateTopBarImg (props) {
   const [image, setImage] = useState(defaultSrc)
   const [cropData, setCropData] = useState("#")
   const [cropper, setCropper] = useState()
+  // let cropperRef = useRef(null)
   const infoTip = [
     'Supports JPG, PNG, JPEG2000',
     `no more than 100MB, ${ratio[0]}*${ratio[1]} Reccomended`
@@ -100,16 +101,19 @@ export default function UpdateTopBarImg (props) {
       const formData = new FormData()
       formData.append('filename', new File([blob], 'blob.png', { type: 'image/png' }))
       const bandimgurl = await ImgToUrl(sign_Axios, formData)
-      const { data } = await sign_Axios.post('/api/v2/main/auth/updatebandimg', {
+      const { data } = await sign_Axios.post(props.useType === 'my' ? '/api/v2/main/auth/updateaccountbandimg' : '/api/v2/main/auth/updatebandimg', {
         bandimgurl,
-        id: brandId | 0
+        id: props.useType === 'my' ? 0 : (brandId | 0)
       })
       if (data.code === 200 || data.code === 1) {
         // TODO tips success
         props.setOpen(false)
         unlock()
         // update data of page
-        props.run()
+        props.run({ bandimgurl })
+        // 重置
+        setPreview(false)
+        setImage('')
       } else {
         throw new Error('')
       }
@@ -130,12 +134,20 @@ export default function UpdateTopBarImg (props) {
           {image ? <div>
             <div className="step_title">Cropper</div>
             <Cropper
+              // ref={(ref) => cropperRef = ref}
               style={{ height: 200, width: "100%" }}
               viewMode={1}
               aspectRatio={1440 / 180}
               src={image}
+              autoCropArea={1}
+              minCanvasWidth={500}
               onInitialized={(instance) => {
+                // console.log('init---', cropperRef.cropper)
+                // cropperRef.cropper.cropper.move(1, -1).rotate(45).scale(1, -1)
                 setCropper(instance);
+              }}
+              ready={(e) => {
+                // console.log(e)
               }}
             />
             <div className="button_group">

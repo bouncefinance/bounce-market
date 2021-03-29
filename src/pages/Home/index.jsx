@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
@@ -8,9 +8,21 @@ import BrandsItem from './BrandsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
 import img_banner from '@assets/images/banner.svg'
 import img_example_1 from '@assets/images/example_1.svg'
-import img_alpaca_city from '@assets/images/alpaca_city.svg'
+// import img_alpaca_city from '@assets/images/alpaca_city.svg'
 import two_setting from './assets/two-setting.svg'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import useAxios from '@/utils/useAxios'
+import { useWeb3React } from '@web3-react/core'
+import { SkeletonBrandCards } from '../component/Skeleton/BrandItem'
+import { NewSkeletonNFTCards } from '../component/Skeleton/NFTCard'
+// import { myContext } from '@/redux/index.js';
+
+
+import { useQuery } from '@apollo/client'
+import { QueryTradePools } from '@/utils/apollo'
+// import { useActiveWeb3React } from '@/web3'
+// import useToken from '@/utils/useToken'
+import { weiToNum } from '@/utils/useBigNumber'
 
 const HomeStyled = styled.div`
   .banner{
@@ -137,7 +149,91 @@ const banner_Nav = [
   { name: 'Comic Books' },
 ]
 
-export default function Index () {
+export default function Index() {
+  // const { state } = useContext(myContext);
+  const { sign_Axios } = useAxios()
+  const { account, active } = useWeb3React();
+  const history = useHistory()
+  const [brands, setbrands] = useState([])
+  const { data } = useQuery(QueryTradePools)
+  const [itemList, setItemList] = useState()
+  // const { exportArrayNftInfo } = useToken()
+  const [loadingBrands, setLoadingBrands] = useState(false)
+  const [loadingItems, setLoadingItems] = useState(true)
+
+  useEffect(() => {
+    if (!account) {
+      return
+    }
+
+    const init = async () => {
+      setLoadingBrands(true)
+      const brandsRes = await sign_Axios.post('/api/v2/main/auth/getpopularbrands', {})
+      setLoadingBrands(false)
+      if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
+        const brands = brandsRes.data.data
+        setbrands(brands)
+        // console.log('---brands----', brands)
+      } else {
+        // TODO ERROR SHOW
+        alert('error')
+      }
+    }
+
+    init()
+    // eslint-disable-next-line
+  }, [account])
+
+  useEffect(() => {
+    if (!active || !data) return
+    setLoadingItems(true)
+    const tradePools = data.tradePools.map(item => ({
+      ...item,
+      poolType: 'fixed-swap'
+    }));
+    const tradeAuctions = data.tradeAuctions.map(item => ({
+      ...item,
+      price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
+      poolType: 'english-auction'
+    }));
+
+    const pools = tradePools.concat(tradeAuctions);
+    const list = pools.map(item => item.tokenId);
+
+    sign_Axios.post('/api/v2/main/auth/getitemsbyfilter', {
+      ids: list,
+      category: '',
+      channel: ''
+    })
+      .then(res => {
+        if (res.status === 200 && res.data.code === 1) {
+          const list = res.data.data.map((item, index) => {
+            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            return {
+              ...item,
+              poolType: poolInfo.poolType,
+              poolId: poolInfo.poolId,
+              price: poolInfo.price ? weiToNum(poolInfo.price) : '--',
+              createTime: poolInfo.createTime
+            }
+          })
+
+          const list_2 = list.sort((a, b) => b.createTime - a.createTime)
+          const list_3 = list_2.slice(0, 8)
+          // console.log(list_3)
+          // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
+          setItemList(list_3);
+          setLoadingItems(false)
+          // setLoding(false)
+        }
+      })
+      .catch(() => { })
+    // const dataList = [...data.tradeAuctions,]
+    // eslint-disable-next-line
+  }, [active, data])
+
+
+
   return (
     <HomeStyled>
       <div className="banner">
@@ -165,17 +261,20 @@ export default function Index () {
 
       <CardBanner />
 
-      <CardGroup title='Most Popular Items' link='' marinTop='64px'>
-        {[...new Array(4)].map((item, index) => {
-          return <PopularItem key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
+      <CardGroup title='Most Popular Items' link='/Marketplace/Image' marinTop='64px'>
+        {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
+          return <PopularItem itemInfo={item} key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
         })}
       </CardGroup>
-      <div className="load_more">Load More</div>
+      <div className="load_more" onClick={() => {
+        history.push('/Marketplace/Image')
+      }}>Load More</div>
 
-      <CardGroup title='Hotest Brands' link=''>
-        {[...new Array(4)].map((item, index) => {
-          return <BrandsItem key={index} src={img_alpaca_city} name='Alpaca City' />
+      <CardGroup title='Hotest Brands' link='/Brands'>
+        {brands.map((item, index) => {
+          return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
         })}
+        {loadingBrands && <SkeletonBrandCards n={4} />}
       </CardGroup>
 
       {/* <CardGroup title='Newest Requests' link=''>

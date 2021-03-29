@@ -157,7 +157,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                 }
 
             }).catch(function (error) {
-                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
                 setBtnLock(false)
                 setInputDisable(false)
                 setBtnText('Try Again')

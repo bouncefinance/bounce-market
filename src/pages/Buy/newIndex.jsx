@@ -168,7 +168,7 @@ const NewIndexStyled = styled.div`
     }
 `
 
-export default function NewIndex () {
+export default function NewIndex() {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { showTransferByStatus } = useTransferModal()
@@ -260,51 +260,46 @@ export default function NewIndex () {
 
     const handelEnglishAuctionBid = async (amountMax1) => {
         setIsLoading(true)
-        // if (poolInfo.nftType === '0') {
-            const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
-            
-            const _amount1 = amountMax1 || numToWei(bidPrice)
-            console.log(_amount1)
+        const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
 
-            BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
-                .send({ from: account, value: _amount1 })
-                .on('transactionHash', hash => {
-                    // setBidStatus(pendingStatus)
-                    showTransferByStatus('pendingStatus')
-                })
-                .on('receipt', async (_, receipt) => {
-                    // console.log('bid fixed swap receipt:', receipt)
-                    // setBidStatus(successStatus)
-                    showTransferByStatus('successStatus')
-                })
-                .on('error', (err, receipt) => {
-                    // setBidStatus(errorStatus)
-                    showTransferByStatus('errorStatus')
-                })
-        // } else {
-        //     const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
+        const _amount1 = amountMax1 || numToWei(bidPrice)
+        console.log(_amount1)
 
-        //     const _amount0 = amount
-        //     const _amount1 = numToWei(weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))
+        BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
+            .send({ from: account, value: _amount1 })
+            .on('transactionHash', hash => {
+                // setBidStatus(pendingStatus)
+                showTransferByStatus('pendingStatus')
+            })
+            .on('receipt', async (_, receipt) => {
+                // console.log('bid fixed swap receipt:', receipt)
+                // setBidStatus(successStatus)
+                showTransferByStatus('successStatus')
+            })
+            .on('error', (err, receipt) => {
+                // setBidStatus(errorStatus)
+                showTransferByStatus('errorStatus')
+            })
+    }
 
-        //     // console.log(_amount0, _amount1)
+    const handelFixedSwapCancel = async () => {
+        const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
 
-        //     BounceEnglishAuctionNFT_CT.methods.swap(poolId, _amount0)
-        //         .send({ from: account, value: _amount1 })
-        //         .on('transactionHash', hash => {
-        //             // setBidStatus(pendingStatus)
-        //             showTransferByStatus('pendingStatus')
-        //         })
-        //         .on('receipt', async (_, receipt) => {
-        //             // console.log('bid fixed swap receipt:', receipt)
-        //             // setBidStatus(successStatus)
-        //             showTransferByStatus('successStatus')
-        //         })
-        //         .on('error', (err, receipt) => {
-        //             // setBidStatus(errorStatus)
-        //             showTransferByStatus('errorStatus')
-        //         })
-        // }
+        BounceFixedSwapNFT_CT.methods.cancel(poolId)
+            .send({ from: account })
+            .on('transactionHash', hash => {
+                // setBidStatus(pendingStatus)
+                showTransferByStatus('pendingStatus')
+            })
+            .on('receipt', async (_, receipt) => {
+                // console.log('bid fixed swap receipt:', receipt)
+                // setBidStatus(successStatus)
+                showTransferByStatus('successStatus')
+            })
+            .on('error', (err, receipt) => {
+                // setBidStatus(errorStatus)
+                showTransferByStatus('errorStatus')
+            })
     }
 
     const bidderClaim = async () => {
@@ -361,6 +356,18 @@ export default function NewIndex () {
                         onClick={handelBid}
                     >{btnText}</Button>
                 </div>
+
+                {poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
+                    < Button onClick={() => {
+                        handelFixedSwapCancel()
+                    }} width='100%' height='48px' marginTop={'12px'} >
+                        Cancel The Deity
+                    </Button>}
+
+                {poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
+                    < Button width='100%' height='48px' disabled marginTop={'12px'} >
+                        This transaction has been cancelled
+                    </Button>}
             </>
         } else if (aucType === 'english-auction') {
             return <>
@@ -408,7 +415,7 @@ export default function NewIndex () {
 
                 <div className="btn_group">
                     <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
-                        onClick={()=>{handelEnglishAuctionBid()}}
+                        onClick={() => { handelEnglishAuctionBid() }}
                     >{btnText}</Button>
                     {poolInfo.amountMax1 && <Button width='262px' disabled={isLoading || poolInfo.status !== 'Live'} height='48px' onClick={() => {
                         handelEnglishAuctionBid(poolInfo.amountMax1)
