@@ -123,8 +123,8 @@ export default function SettingAccountModal ({ open, setOpen }) {
 
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'My Account Settings', isClose: true }}>
-            <SettingAccountStyled className="setting-account-modal">
+        <Modal className="setting-account-modal" open={open} setOpen={setOpen} header={{ title: 'My Account Settings', isClose: true }}>
+            <SettingAccountStyled>
                 <div className='name_row'>
                     <TextInput
                         title='User Name'
