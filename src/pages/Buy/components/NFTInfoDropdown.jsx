@@ -4,7 +4,7 @@ import styled from "styled-components";
 import icon_pull from "./assets/pull.svg";
 
 const StyledDropdown = styled.div`
-	width: 416px;
+	width: 540px;
 
 	cursor: pointer;
 
@@ -24,7 +24,6 @@ const Top = styled.div`
 `;
 
 const Header = styled.div`
-	width: 416px;
 	display: grid;
 	grid-template-columns: 1fr 12px;
 	grid-template-areas: "title icon_arrow";
@@ -67,7 +66,7 @@ const Bottom = styled.div`
 
 export default function NFTInfoDropdown({ title, content, className }) {
 	// 这个组件的option 一定要传value属性
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(true);
 
 	function renderContent(open, content) {
 		if (open) return content;
