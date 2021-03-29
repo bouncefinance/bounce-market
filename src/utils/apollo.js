@@ -98,9 +98,23 @@ export const QueryBrand721 = gql`
   }
 `
 
-export const QueryActivities = gql`
+export const QueryFromActivities = gql`
   query queryActivitiesByAccount($user: Bytes!) {
-    activities(orderBy: timestamp, orderDirection: desc, where: {from: $user}) {
+    activities(where: {from: $user}) {
+      event
+      contract
+      from
+      to
+      tokenId
+      quantity
+      timestamp
+    }
+  }
+`
+
+export const QueryToActivities = gql`
+  query queryActivitiesByAccount($user: Bytes!) {
+    activities(where: {to: $user}) {
       event
       contract
       from
