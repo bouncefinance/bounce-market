@@ -33,6 +33,25 @@ export default function useToken() {
         }
     }
 
+    const exportArrayNftInfo = async (nftIdArray, category = '', channel = '') => {
+        if (!nftIdArray) {
+            // console.log('error, nftId is ' + nftId)
+            return {}
+        }
+        try {
+            const res = await sign_Axios.post('/api/v2/main/auth/getitemsbyfilter', { ids: nftIdArray, category, channel })
+            if (res.status === 200 && res.data.code === 1) {
+                return res.data.data
+            } else {
+                return {}
+            }
+        } catch (error) {
+            return {
+                error
+            }
+        }
+    }
+
     const isOwner_ERC_721 = async (tokenContract, nftId, accountAddr = account) => {
         const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, tokenContract)
         const balance = await BounceERC721WithSign_CT.methods.balanceOf(accountAddr).call()
@@ -127,6 +146,7 @@ export default function useToken() {
 
     return {
         exportNftInfo,
+        exportArrayNftInfo,
         hasApprove_ERC_721,
         hasApprove_ERC_1155,
         isOwner_ERC_721,

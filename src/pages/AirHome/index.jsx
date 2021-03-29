@@ -316,3 +316,4 @@ export function AirHome() {
     <UpdateTopBarImg open={openUpdateTopBarImg} setOpen={setOpenUpdateTopBarImg} run={run} />
   </AirHomeStyled>
 }
+

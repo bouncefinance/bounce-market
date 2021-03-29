@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
@@ -11,6 +11,11 @@ import img_example_1 from '@assets/images/example_1.svg'
 import img_alpaca_city from '@assets/images/alpaca_city.svg'
 import two_setting from './assets/two-setting.svg'
 import { Link } from 'react-router-dom'
+
+import { useQuery } from '@apollo/client'
+import { QueryTradePools } from '@/utils/apollo'
+import { useActiveWeb3React } from '@/web3'
+import useToken from '@/utils/useToken'
 
 const HomeStyled = styled.div`
   .banner{
@@ -137,7 +142,18 @@ const banner_Nav = [
   { name: 'Comic Books' },
 ]
 
-export default function Index () {
+export default function Index() {
+  const { data } = useQuery(QueryTradePools)
+  const { active } = useActiveWeb3React()
+  const { exportArrayNftInfo } = useToken()
+
+  useEffect(() => {
+    if (!active || !data) return
+    console.log(data)
+    // const dataList = [...data.tradeAuctions,]
+
+  }, [active, data])
+
   return (
     <HomeStyled>
       <div className="banner">
