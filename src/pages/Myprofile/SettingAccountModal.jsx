@@ -48,6 +48,7 @@ export default function SettingAccountModal ({ open, setOpen }) {
         // eslint-disable-next-line
     }, [active, userInfo])
 
+
     useEffect(() => {
         // console.log(formData, fileData)
         if ((fileData || formData.imgurl) && formData) {
@@ -122,10 +123,8 @@ export default function SettingAccountModal ({ open, setOpen }) {
 
 
     return (
-        <Modal onClick={(e) => {
-            window.event ? window.event.cancelBubble = true : e.stopPropagation()
-        }} open={open} setOpen={setOpen} header={{ title: 'My Account Settings', isClose: true }}>
-            <SettingAccountStyled>
+        <Modal open={open} setOpen={setOpen} header={{ title: 'My Account Settings', isClose: true }}>
+            <SettingAccountStyled className="setting-account-modal">
                 <div className='name_row'>
                     <TextInput
                         title='User Name'
