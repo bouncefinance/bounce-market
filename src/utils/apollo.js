@@ -2,8 +2,8 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 export const client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/id/Qmb2Lc5gJM3huSX54c6VtbNNmbfxNu6NGuFDgJ7Pkzoizz',
-    cache: new InMemoryCache(),
+  uri: 'https://api.thegraph.com/subgraphs/id/Qmb2Lc5gJM3huSX54c6VtbNNmbfxNu6NGuFDgJ7Pkzoizz',
+  cache: new InMemoryCache(),
 })
 
 export const QueryTradePools = gql`
@@ -15,6 +15,24 @@ export const QueryTradePools = gql`
       createTime
     }
     tradeAuctions {
+      tokenId
+      poolId
+      lastestBidAmount
+      amountMin1
+      createTime
+    }
+  }
+`
+
+export const QueryMyTradePools = gql`
+  query nftItems($user: String!) {
+    tradePools(where: {creator: $user}) {
+      tokenId
+      poolId
+      price
+      createTime
+    }
+    tradeAuctions(where: {creator: $user}) {
       tokenId
       poolId
       lastestBidAmount
@@ -66,7 +84,7 @@ export const QueryItemsIn1155Brand = gql`
   }
 `
 
-export const  QueryMyNFT = gql`
+export const QueryMyNFT = gql`
   query nftItems($user: String!) {
     nft721Items(where: {user: $user}) {
       tokenId

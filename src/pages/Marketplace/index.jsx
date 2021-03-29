@@ -151,7 +151,7 @@ export default function Marketplace() {
       // console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
-      console.log(list)
+      // console.log(list)
 
       setLength(list.length);
       setLoding(true)

@@ -121,7 +121,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem ({ cover, status, nftId, itemname, user }) {
+export function CardItem({ cover, status, nftId, itemname, poolInfo }) {
     const history = useHistory()
 
     return (
@@ -141,12 +141,12 @@ export function CardItem ({ cover, status, nftId, itemname, user }) {
                         <p className="type">{'Top bid'}</p>
                         <p className="_tag">{'#12345'}</p>
                     </div>
-                    <h4 className="price">{'Not on sale'}</h4>
+                    <h4 className="price">{poolInfo.price ? `${poolInfo.price} ETH` : 'Not on sale'}</h4>
                 </div>
-               {
+                {
                     status === 'Listed' ? <div className='button_group'>
                         <Button value={'Check Status'} primary onClick={() => {
-                            history.push(`/MyInventory/${nftId}`)
+                            history.push(`/Marketplace/Image/fixed-swap/${poolInfo.poolId}`)
                         }} />
                         <Button value={'Make Unlisted'} />
                     </div> : <div className='button_group'>
@@ -155,7 +155,7 @@ export function CardItem ({ cover, status, nftId, itemname, user }) {
                             primary
                             onClick={() => { history.push(`/MyInventory/${nftId}/Sell`) }}
                         />
-                        <Button value={'Make Listed'} />
+                        {/* <Button value={'Make Listed'} /> */}
                     </div>
                 }
             </div>
@@ -180,7 +180,7 @@ const AddCardItemStyle = styled.div`
     }
 `
 
-export function AddCardItem () {
+export function AddCardItem() {
     const [showGenrateModal, setShowGenrateModal] = useState(false)
 
     return (
