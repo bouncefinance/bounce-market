@@ -191,12 +191,12 @@ export default function Index() {
     const tradePools = data.tradePools.map(item => ({
       ...item,
       poolType: AUCTION_TYPE.FixedSwap
-    }));
+    })).filter(item => item.state !== 1)
     const tradeAuctions = data.tradeAuctions.map(item => ({
       ...item,
       price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
       poolType: AUCTION_TYPE.EnglishAuction
-    }));
+    })).filter(item => item.state !== 1)
 
     const pools = tradePools.concat(tradeAuctions);
     const list = pools.map(item => item.tokenId);
