@@ -166,7 +166,7 @@ export default function Marketplace () {
                 price: poolInfo.price ? Web3.utils.fromWei(poolInfo.price) : '--',
               }
             })
-            setTokenList(list.sort((a, b) => a.poolId - b.poolId));
+            setTokenList(list.sort((a, b) => b.poolId - a.poolId));
             setLoding(false)
           }
         })
