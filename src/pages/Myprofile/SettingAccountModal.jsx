@@ -30,7 +30,7 @@ const SettingAccountStyled = styled.div`
     }
 `
 
-export default function SettingAccountModal({ open, setOpen }) {
+export default function SettingAccountModal ({ open, setOpen }) {
     const { dispatch } = useContext(myContext);
     const { active, account } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
@@ -95,17 +95,17 @@ export default function SettingAccountModal({ open, setOpen }) {
                 username: formData.username,
                 fullname: formData.fullname,
                 imgurl: imgUrl,
-                email: formData.email||"",
-                bio: formData.bio||""
+                email: formData.email || "",
+                bio: formData.bio || ""
             }
 
             const updatedUer = await updateUserInfo(params)
             //console.log(JSON.stringify(updatedUer));
-            if(updatedUer.data.code === 0){
+            if (updatedUer.data.code === 0) {
                 dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: updatedUer.data.msg });
                 setBtnLock(false)
                 setInputDisable(false)
-            }else if (updatedUer.status === 200) {
+            } else if (updatedUer.status === 200) {
                 setOpen(false)
             }
 
@@ -122,7 +122,9 @@ export default function SettingAccountModal({ open, setOpen }) {
 
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'My Account Settings', isClose: true }}>
+        <Modal onClick={(e) => {
+            window.event ? window.event.cancelBubble = true : e.stopPropagation()
+        }} open={open} setOpen={setOpen} header={{ title: 'My Account Settings', isClose: true }}>
             <SettingAccountStyled>
                 <div className='name_row'>
                     <TextInput

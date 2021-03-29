@@ -37,7 +37,9 @@ const MyInventoryStyled = styled.div`
     }
 `
 
-export default function Index() {
+let topData
+
+export default function Index () {
   const { account, active } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
@@ -68,6 +70,7 @@ export default function Index() {
       variables: { user: String(account).toLowerCase() },
       onCompleted: () => {
         handleMyNFT(data);
+        topData = data
       }
     });
 
@@ -75,7 +78,11 @@ export default function Index() {
   useEffect(() => {
     if (!active) return;
     getMyNFT();
+    if (topData) {
+      handleMyNFT(topData);
+    }
 
+    // eslint-disable-next-line
   }, [active, account, getMyNFT]);
 
 

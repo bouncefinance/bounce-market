@@ -59,6 +59,7 @@ export default function UpdateTopBarImg (props) {
   const [image, setImage] = useState(defaultSrc)
   const [cropData, setCropData] = useState("#")
   const [cropper, setCropper] = useState()
+  // let cropperRef = useRef(null)
   const infoTip = [
     'Supports JPG, PNG, JPEG2000',
     `no more than 100MB, ${ratio[0]}*${ratio[1]} Reccomended`
@@ -133,12 +134,20 @@ export default function UpdateTopBarImg (props) {
           {image ? <div>
             <div className="step_title">Cropper</div>
             <Cropper
+              // ref={(ref) => cropperRef = ref}
               style={{ height: 200, width: "100%" }}
               viewMode={1}
               aspectRatio={1440 / 180}
               src={image}
+              autoCropArea={1}
+              minCanvasWidth={500}
               onInitialized={(instance) => {
+                // console.log('init---', cropperRef.cropper)
+                // cropperRef.cropper.cropper.move(1, -1).rotate(45).scale(1, -1)
                 setCropper(instance);
+              }}
+              ready={(e) => {
+                // console.log(e)
               }}
             />
             <div className="button_group">
