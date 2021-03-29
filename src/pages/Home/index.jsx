@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
@@ -8,9 +8,20 @@ import BrandsItem from './BrandsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
 import img_banner from '@assets/images/banner.svg'
 import img_example_1 from '@assets/images/example_1.svg'
-import img_alpaca_city from '@assets/images/alpaca_city.svg'
+// import img_alpaca_city from '@assets/images/alpaca_city.svg'
 import two_setting from './assets/two-setting.svg'
 import { Link } from 'react-router-dom'
+import useAxios from '@/utils/useAxios'
+import { useWeb3React } from '@web3-react/core'
+import { SkeletonBrandCards } from '../component/Skeleton/BrandItem'
+// import { myContext } from '@/redux/index.js';
+
+
+import { useQuery } from '@apollo/client'
+import { QueryTradePools } from '@/utils/apollo'
+import { useActiveWeb3React } from '@/web3'
+// import useToken from '@/utils/useToken'
+import { weiToNum } from '@/utils/useBigNumber'
 
 const HomeStyled = styled.div`
   .banner{
@@ -137,7 +148,80 @@ const banner_Nav = [
   { name: 'Comic Books' },
 ]
 
-export default function Index () {
+export default function Index() {
+  // const { state } = useContext(myContext);
+  const { sign_Axios } = useAxios()
+  const { account } = useWeb3React();
+  const [brands, setbrands] = useState([])
+  const { data } = useQuery(QueryTradePools)
+  const { active } = useActiveWeb3React()
+  // const { exportArrayNftInfo } = useToken()
+  const [loadingBrands, setLoadingBrands] = useState(false)
+
+  useEffect(() => {
+    if (!account) {
+      return
+    }
+
+    const init = async () => {
+      setLoadingBrands(true)
+      const brandsRes = await sign_Axios.post('/api/v2/main/auth/getpopularbrands', {})
+      setLoadingBrands(false)
+      if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
+        const brands = brandsRes.data.data
+        setbrands(brands)
+        // console.log('---brands----', brands)
+      } else {
+        // TODO ERROR SHOW
+        alert('error')
+      }
+    }
+
+    init()
+    // eslint-disable-next-line
+  }, [account])
+
+  useEffect(() => {
+    if (!active || !data) return
+    // console.log(data)
+    const tradeAuctions = data.tradeAuctions || []
+    const tradePools = data.tradePools || []
+
+    const pools = tradePools.concat(tradeAuctions);
+    const list = pools.map(item => item.tokenId);
+
+    sign_Axios.post('/api/v2/main/auth/getitemsbyfilter', {
+      ids: list,
+      category: '',
+      channel: ''
+    })
+      .then(res => {
+        if (res.status === 200 && res.data.code === 1) {
+          const list = res.data.data.map((item, index) => {
+            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            return {
+              ...item,
+              poolType: poolInfo.poolType,
+              poolId: poolInfo.poolId,
+              price: poolInfo.price ? weiToNum(poolInfo.price) : '--',
+              createTime: poolInfo.createTime
+            }
+          })
+          const list_2 = list.sort((a, b) => b.createTime - a.createTime)
+          console.log(list_2)
+          // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
+          // setTokenList();
+
+          // setLoding(false)
+        }
+      })
+      .catch(() => { })
+    // const dataList = [...data.tradeAuctions,]
+    // eslint-disable-next-line
+  }, [active, data])
+
+
+
   return (
     <HomeStyled>
       <div className="banner">
@@ -172,10 +256,11 @@ export default function Index () {
       </CardGroup>
       <div className="load_more">Load More</div>
 
-      <CardGroup title='Hotest Brands' link=''>
-        {[...new Array(4)].map((item, index) => {
-          return <BrandsItem key={index} src={img_alpaca_city} name='Alpaca City' />
+      <CardGroup title='Hotest Brands' link='/Brands'>
+        {brands.map((item, index) => {
+          return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
         })}
+        {loadingBrands && <SkeletonBrandCards n={4} />}
       </CardGroup>
 
       {/* <CardGroup title='Newest Requests' link=''>

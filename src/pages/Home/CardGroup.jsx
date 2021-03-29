@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import arrows_blue from '@assets/images/icon/arrows-blue.svg'
+import { Link } from 'react-router-dom'
 
 const CardGroupStyled = styled.div`
     width: 1100px;
@@ -17,7 +18,7 @@ const CardGroupStyled = styled.div`
             font-size: 28px;
         }
 
-        p{
+        a{
             color: rgba(18,78,235,1);
             font-size: 12px;
             img{
@@ -33,16 +34,14 @@ const CardGroupStyled = styled.div`
     }
 `
 
-export default function CardGroup({ marinTop, title, link, children }) {
+export default function CardGroup ({ marinTop, title, link, children }) {
     return (
         <CardGroupStyled marinTop={marinTop}>
             <div className="top">
                 <h4>{title}</h4>
-                <p onClick={()=>{
-                    alert(link)
-                }}>View All
+                <Link to={link}>View All
                     <img src={arrows_blue} alt="" />
-                </p>
+                </Link>
             </div>
 
             <div className='content'>

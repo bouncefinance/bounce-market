@@ -1,0 +1,143 @@
+type Bounce721Item @entity {
+  id: ID!
+  tokenId: Int!
+  supplys: Int!
+}
+
+type Bounce721Brand @entity {
+  id: ID!
+  owner: Bytes!
+  nft: Bytes!
+  tokenCnt: Int!
+  tokenList: [Bounce721Item]!
+}
+
+type Bounce1155Item @entity {
+  id: ID!
+  tokenId: Int!
+  supplys: Int!
+}
+
+type Bounce1155Brand @entity {
+  id: ID!
+  owner: Bytes!
+  nft: Bytes!
+  tokenCnt: Int!
+  tokenList: [Bounce1155Item]!
+}
+
+type NFT721Item @entity {
+  id: ID!
+  tokenId: Int!
+  balance: Int!
+  user: String!
+  createTime: Int!
+  updateTime: Int!
+}
+
+type NFT1155Item @entity {
+  id: ID!
+  tokenId: Int!
+  balance: Int!
+  user: String!
+  createTime: Int!
+  updateTime: Int!
+}
+
+type TradePool @entity {
+  id: ID!
+  creator: Bytes!
+  name: String!
+  token0: Bytes!
+  token1: Bytes!
+  tokenId: Int!
+  amountTotal0: BigInt!
+  amountTotal1: BigInt!
+  price: BigInt!
+  nftType: Int!
+  poolId: Int!
+  swapAmount: BigInt!
+  state: Int!
+  createTime: Int!
+}
+
+type PoolCreate @entity {
+  id: ID!
+  sender: Bytes!
+  poolId: Int!
+  timestamp: Int!
+}
+
+type PoolSwap @entity {
+  id: ID!
+  sender: Bytes!
+  poolId: Int!
+  swapAmount0: BigInt!
+  swapAmount1: BigInt!
+  timestamp: Int!
+}
+
+type PoolCancel @entity {
+  id: ID!
+  sender: Bytes!
+  poolId: Int!
+  unswappedAmount0: BigInt!
+  timestamp: Int!
+}
+
+type TradeAuction @entity {
+  id: ID!
+  creator: Bytes!
+  name: String!
+  token0: Bytes!
+  token1: Bytes!
+  tokenId: Int!
+  tokenAmount0: BigInt!
+  amountMax1: BigInt!
+  amountMin1: BigInt!
+  amountMinIncr1: BigInt!
+  duration: BigInt!
+  closeAt: BigInt!
+  nftType: Int!
+  poolId: Int!
+  lastestBidAmount: BigInt!
+  state: Int!
+  createTime: Int!
+  lastestBidTime: Int!
+}
+
+type AuctionCreate @entity {
+  id: ID!
+  sender: Bytes!
+  poolId: Int!
+  timestamp: Int!
+}
+
+type AuctionBid @entity {
+  id: ID!
+  sender: Bytes!
+  poolId: Int!
+  amount1: BigInt!
+  timestamp: Int!
+}
+
+type AuctionClaim @entity {
+  id: ID!
+  sender: Bytes!
+  poolId: Int!
+  tokenId: Int!
+  amount0: BigInt!
+  amount1: BigInt!
+  timestamp: Int!
+}
+
+type Activity @entity {
+  id: ID!
+  event: String!
+  contract: Bytes!
+  from: Bytes!
+  to: Bytes!
+  tokenId: Int!
+  quantity: BigInt!
+  timestamp: Int!
+}

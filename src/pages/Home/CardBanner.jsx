@@ -20,7 +20,7 @@ const CardBannerStyled = styled.ul`
 export default function CardBannerGroup () {
     return (
         <CardBannerStyled>
-            <Link to="/Brands">
+            <Link to="/Marketplace">
                 <CardBannerItem
                     title='Marketplace'
                     context='You can find your content here according to your taste'

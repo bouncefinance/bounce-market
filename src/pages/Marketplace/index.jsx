@@ -139,7 +139,6 @@ export default function Marketplace() {
     if (!active) return
 
     if (data) {
-      // console.log(data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: 'fixed-swap'
@@ -168,9 +167,10 @@ export default function Marketplace() {
                 poolType: poolInfo.poolType,
                 poolId: poolInfo.poolId,
                 price: poolInfo.price ? Web3.utils.fromWei(poolInfo.price) : '--',
+                createTime: poolInfo.createTime
               }
             })
-            setTokenList(list.sort((a, b) => a.poolId - b.poolId));
+            setTokenList(list.sort((a, b) => b.createTime - a.createTime));
             setLoding(false)
           }
         })

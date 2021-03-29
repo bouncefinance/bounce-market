@@ -148,7 +148,8 @@ export default function InfoBox ({ setIsShowInfo, username }) {
                         onMouseLeave={() => {
                             setCurItem(-1)
                         }}
-                        onClick={() => {
+                        onClick={(e) => {
+                            window.event ? window.event.cancelBubble = true : e.stopPropagation()
                             if (item.name === 'Account Settings') {
                                 return setIsSettingAccount(true)
                             }
