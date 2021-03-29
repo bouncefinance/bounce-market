@@ -121,8 +121,8 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         })
                         .on('receipt', async (_, receipt) => {
                             // console.log('bid fixed swap receipt:', receipt)
-                            // setBidStatus(successVotedStatus)
-                            showTransferByStatus('successVotedStatus')
+                            // setBidStatus(successStatus)
+                            showTransferByStatus('successStatus')
                             const brandAddress = await getCreatedBrand()
                             uploadData(imgUrl, brandAddress)
                         })
@@ -142,8 +142,8 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         })
                         .on('receipt', async (_, receipt) => {
                             // console.log('bid fixed swap receipt:', receipt)
-                            // setBidStatus(successVotedStatus)
-                            showTransferByStatus('successVotedStatus')
+                            // setBidStatus(successStatus)
+                            showTransferByStatus('successStatus')
                             const brandAddress = await getCreatedBrand()
                             uploadData(imgUrl, brandAddress)
                         })

@@ -21,6 +21,7 @@ import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import Web3 from 'web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
+// import { weiToNum } from '@/utils/useBigNumber'
 // import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const MarketplaceStyled = styled.div`
@@ -113,7 +114,7 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export default function Marketplace () {
+export default function Marketplace() {
   let { type } = useParams()
   const history = useHistory()
   const { active } = useActiveWeb3React()
@@ -138,14 +139,17 @@ export default function Marketplace () {
     if (!active) return
 
     if (data) {
+      // console.log(data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: 'fixed-swap'
       }));
       const tradeAuctions = data.tradeAuctions.map(item => ({
         ...item,
+        price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: 'english-auction'
       }));
+      // console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
       setLength(list.length);
