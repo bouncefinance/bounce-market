@@ -50,7 +50,7 @@ export default function Index () {
                 const brand_address = await Factory_CT.methods.brands(account).call()
 
                 return brand_address
-                
+
             } catch (error) {
                 return ''
             }
