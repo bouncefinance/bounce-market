@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
@@ -9,6 +10,14 @@ const PopularItemStyled = styled.div`
     margin-right: 17px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    margin-bottom: 32px;
+    cursor: pointer;
+    transition: all 200ms;
+    :hover{
+        transform: translateY(-10px);
+        box-shadow: 5px 5px 10px #ccc;
+    }
+
     &:nth-child(4n){
         margin-right: 0px;
     }
@@ -62,22 +71,26 @@ const PopularItemStyled = styled.div`
     
 `
 
-export default function PopularItem ({ style = {}, src, name, type = "Minimum bid", tag = "#12345", price }) {
+export default function PopularItem({ style = {}, itemInfo }) {
+    const history = useHistory()
+
     return (
-        <PopularItemStyled style={style}>
-            <AutoStretchBaseWidthOrHeightImg src={src} width={262} height={262} />
+        <PopularItemStyled style={style} onClick={() => {
+            history.push(`/Marketplace/Image/${itemInfo.poolType}/${itemInfo.poolId}`)
+        }}>
+            <AutoStretchBaseWidthOrHeightImg src={itemInfo.fileurl} width={262} height={262} />
             {/* <div className='info_box'>
                 <p>{name}</p>
                 <span>{price}</span>
             </div> */}
             <div className="infobox">
-                <h5 className="name">{name}</h5>
+                <h5 className="name">{itemInfo.itemname}</h5>
                 <div className="line"></div>
                 <div className="flex flex-space-x">
-                    <p className="type">{type}</p>
-                    <p className="tag">{tag}</p>
+                    <p className="type">Current Price</p>
+                    <p className="tag">{itemInfo.poolId}</p>
                 </div>
-                <h4 className="price">{price}</h4>
+                <h4 className="price">{itemInfo.price} ETH</h4>
             </div>
         </PopularItemStyled>
     )
