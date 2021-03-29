@@ -13,6 +13,7 @@ import two_setting from './assets/two-setting.svg'
 import { Link } from 'react-router-dom'
 import useAxios from '@/utils/useAxios'
 import { useWeb3React } from '@web3-react/core'
+import { SkeletonBrandCards } from '../component/Skeleton/BrandItem'
 // import { myContext } from '@/redux/index.js';
 
 
@@ -146,13 +147,16 @@ export default function Index () {
   const { sign_Axios } = useAxios()
   const { account } = useWeb3React();
   const [brands, setbrands] = useState([])
+  const [loadingBrands, setLoadingBrands] = useState(false)
 
   useEffect(() => {
     if (!account) {
       return
     }
     const init = async () => {
+      setLoadingBrands(true)
       const brandsRes = await sign_Axios.post('/api/v2/main/auth/getpopularbrands', {})
+      setLoadingBrands(false)
       if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
         const brands = brandsRes.data.data
         setbrands(brands)
@@ -201,8 +205,9 @@ export default function Index () {
 
       <CardGroup title='Hotest Brands' link='/Brands'>
         {brands.map((item, index) => {
-          return <BrandsItem key={index} src={item.imgurl} name={item.brandname} />
+          return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
         })}
+        {loadingBrands && <SkeletonBrandCards n={4} />}
       </CardGroup>
 
       {/* <CardGroup title='Newest Requests' link=''>
