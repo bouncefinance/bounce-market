@@ -202,6 +202,7 @@ export function AirHome() {
 
   const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
     variables: { tokenList: tokenList },
+    fetchPolicy:"network-only",
     onCompleted: () => {
       const tradePools = brandTradeItems.data.tradePools;
       const tradeAuctions = brandTradeItems.data.tradeAuctions;
@@ -218,6 +219,7 @@ export function AirHome() {
 
   const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
     variables: { owner: brandInfo.owneraddress },
+    fetchPolicy:"network-only",
     onCompleted: () => {
       handleBrandItems(brandItems.data);
     }

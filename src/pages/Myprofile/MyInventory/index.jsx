@@ -66,8 +66,12 @@ export default function Index() {
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
     {
       variables: { user: String(account).toLowerCase() },
+      fetchPolicy:"network-only",
       onCompleted: () => {
         handleMyNFT(data);
+      },
+      onError:(err) =>{
+        console.log('onerror', err);
       }
     });
 
@@ -75,7 +79,6 @@ export default function Index() {
   useEffect(() => {
     if (!active) return;
     getMyNFT();
-
   }, [active, account, getMyNFT]);
 
 

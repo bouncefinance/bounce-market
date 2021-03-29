@@ -302,6 +302,7 @@ export default function BrandsByType () {
 
     const [getBrandTradeItems, brandTradeItems ] = useLazyQuery(QueryBrandTradeItems, {
         variables: {tokenList:  tokenList},
+        fetchPolicy:"network-only",
         onCompleted: () => {
             const tradePools = brandTradeItems.data.tradePools;
             const tradeAuctions = brandTradeItems.data.tradeAuctions;
@@ -319,6 +320,7 @@ export default function BrandsByType () {
 
     const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
         variables: {owner: account ? account.toLowerCase() : account },
+        fetchPolicy:"network-only",
         onCompleted: () => {
           handleBrandItems(brandItems.data);
         }

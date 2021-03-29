@@ -113,7 +113,7 @@ export default function SettingAccountModal({ open, setOpen }) {
             setInputDisable(false)
             setBtnText('Save')
         } catch (error) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
             setBtnLock(false)
             setInputDisable(false)
             setBtnText('Save')
