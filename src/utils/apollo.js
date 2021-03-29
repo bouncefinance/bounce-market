@@ -2,7 +2,7 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 export const client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/id/Qmb2Lc5gJM3huSX54c6VtbNNmbfxNu6NGuFDgJ7Pkzoizz',
+    uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft',
     cache: new InMemoryCache(),
 })
 
@@ -142,6 +142,47 @@ export const QueryToActivities = gql`
       tokenId
       quantity
       timestamp
+    }
+  }
+`
+
+export const QueryPoolSwap = gql`
+  query queryPoolSwap($poolId: Int!) {
+    poolSwaps(where: {poolId: $poolId}) {
+      sender
+      swapAmount0
+      timestamp
+    }
+  }
+`
+
+export const queryFixedSwapPool = gql`
+  query fixedSwapPool($poolId: Int!) {
+    tradePools(where: {poolId: $poolId}) {
+      creator
+      price
+      amountTotal0
+    }
+    poolCreates(where: {poolId: $poolId}) {
+      timestamp
+    }
+    poolSwaps(where: {poolId: $poolId}) {
+      sender
+      swapAmount0
+      timestamp
+    }
+    poolCancels(where: {poolId: $poolId}) {
+      sender
+      unswappedAmount0
+      timestamp
+    }
+  }
+`
+
+export const QueryEnglishAuction  = gql`
+  query queryEnglishAuction($poolId: Int!) {
+    tradeAuctions(where: { poolId: $poolId })  {
+      id
     }
   }
 `

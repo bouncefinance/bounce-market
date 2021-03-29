@@ -17,6 +17,11 @@ import icon_altAvatar from './assets/icon_altAvatar.svg'
 import icon_time from './assets/icon_time.svg'
 import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
 import TradingHistory from './components/TradingHistory';
+import { useLazyQuery } from '@apollo/client';
+import { queryFixedSwapPool } from '@/utils/apollo';
+import { getEllipsisAddress } from '@/utils/utils';
+import Web3 from 'web3';
+import { formatDistanceToNow } from 'date-fns';
 
 
 const NewIndexStyled = styled.div`
@@ -440,6 +445,69 @@ export default function NewIndex () {
         }
     }
 
+    const [offerList, setOfferList] = useState([]);
+    const [history, setHistory] = useState([]);
+    const handleSwap = (data) => {
+        const tradePool = data.tradePools[0];
+        const creator = tradePool.creator;
+        const total  = tradePool.amountTotal0;
+        const price = Web3.utils.fromWei(tradePool.price);
+        const offerList = data.poolSwaps.map(item => ({
+            name: getEllipsisAddress(item.sender),
+            time: new Date(item.timestamp*1000).toLocaleString(),
+            amouont: item.swapAmount0,
+            price: price, 
+        }));
+        setOfferList(offerList);
+        const createList = data.poolCreates.map(item => ({
+            event: 'Created',
+            quantity: total,
+            price: price,
+            from: getEllipsisAddress('0x0000000000000000000000000000000000000000'),
+            to: getEllipsisAddress(creator),
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }));
+        const swapList = data.poolSwaps.map(item => ({
+            event: 'Transfer',
+            quantity: item.swapAmount0,
+            price: price,
+            from: getEllipsisAddress(creator),
+            to: getEllipsisAddress(item.sender),
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }));
+        const cancelList  = data.poolCancels.map(item => ({
+            event: 'Cancel',
+            price:  price,
+            quantity: item.unswappedAmount0,
+            from: getEllipsisAddress(item.sender),
+            to: '',
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }));
+        const list  =  createList.concat(swapList).concat(cancelList)
+            .sort((a, b) => b.timestamp - a.timestamp);
+        setHistory(list);
+    }
+
+    const [queryPoolSwap, { data } ] = useLazyQuery(queryFixedSwapPool, {
+        variables: { poolId: Number(poolId)},
+        onCompleted: () => {
+            handleSwap(data);
+        }
+    })
+
+    useEffect(() => {
+        if (poolId) {
+            if (aucType === 'fixed-swap') {
+                queryPoolSwap();
+            } else if (aucType === 'english-auction') {
+
+            }
+        }
+    }, [poolId, aucType, queryPoolSwap])
+
     return (
         <NewIndexStyled>
             <ul className='crumbs'>
@@ -481,20 +549,17 @@ export default function NewIndex () {
 
                             <NewPullDown open={true} title='Offers'>
                                 <OffersStyled>
-                                    <div className="Offers flex flex-space-x">
-                                        <div className="flex Offers-info">
-                                            <p className="name">@Scarlett_vfx0</p>
-                                            <p className="time">March 18, 2021 at 4:14am</p>
+                                    {offerList.map((item, index) => <div className="Offers flex flex-space-x" key={index}>
+                                    <div className="flex Offers-info">
+                                            <p className="name">{item.name}</p>
+                                            <p className="time">{item.time}</p>
+                                            <p className="amount">{item.amount}</p>
                                         </div>
-                                        <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
-                                    </div>
-                                    <div className="Offers flex flex-space-x">
-                                        <div className="flex Offers-info">
-                                            <p className="name">@Scarlett_vfx0</p>
-                                            <p className="time">March 18, 2021 at 4:14am</p>
+                                        <div className="Offers-price">
+                                            <span>{`${item.price} ETH`}</span>
+                                            <span></span>
                                         </div>
-                                        <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
-                                    </div>
+                                    </div>)}
                                 </OffersStyled>
                             </NewPullDown>
                             <NewPullDown open={false} title='Token Info'>
@@ -517,12 +582,16 @@ export default function NewIndex () {
                                 <div>--</div>
                             </NewPullDown>
                             <NewPullDown open={false} title='Trading History'>
-                                <TradingHistory rows={[
-                                    { Event: 'Buy', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vfaaaaa`, Date: `1 days ago` },
-                                    { Event: 'Bid', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vf`, Date: `1 days ago` },
-                                    { Event: 'Transfer', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
-                                    { Event: 'Created', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
-                                ]} />
+                                <TradingHistory rows={
+                                    history.map((item, index) => ({
+                                        Event: item.event,
+                                        Quantity: item.quantity,
+                                        Price: [`${item.price} ETH`, `($)`],
+                                        From: getEllipsisAddress(item.from),
+                                        To: getEllipsisAddress(item.to),
+                                        Date: item.date,
+                                    }))
+                                }/>
                             </NewPullDown>
                         </div>
                     </div>
@@ -549,6 +618,10 @@ line-height: 15px;
         }
         .time{
             margin-left: 27px;
+            color: rgba(0,0,0,.5);
+        }
+        .amount{
+            margin-left: 24px;
             color: rgba(0,0,0,.5);
         }
     }
