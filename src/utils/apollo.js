@@ -2,7 +2,7 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 export const client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/id/QmZjguTqcfqXWpGanVs3jSaC77W2Riw3rXXc8YaNpfRxZX',
+    uri: 'https://api.thegraph.com/subgraphs/id/Qmb2Lc5gJM3huSX54c6VtbNNmbfxNu6NGuFDgJ7Pkzoizz',
     cache: new InMemoryCache(),
 })
 
@@ -40,6 +40,26 @@ export const QueryBrands = gql`
     }
     bounce1155Brands {
       id
+    }
+  }
+`
+
+export const QueryItemsIn721Brand = gql`
+  query items($owner: Bytes!) {
+    bounce721Brands(where: {owner: $owner}) {
+      tokenList {
+        tokenId
+      }
+    }
+  }
+`
+
+export const QueryItemsIn1155Brand = gql`
+  query items($owner: Bytes!) {
+    bounce1155Brands(where: {owner: $owner}) {
+      tokenList {
+        tokenId
+      }
     }
   }
 `

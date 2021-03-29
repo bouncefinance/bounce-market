@@ -50,6 +50,7 @@ export default function Index () {
                 const brand_address = await Factory_CT.methods.brands(account).call()
 
                 return brand_address
+                
             } catch (error) {
                 return ''
             }
@@ -82,7 +83,7 @@ export default function Index () {
                             <CardItem
                                 cover={item.imgurl}
                                 name={item.brandname}
-                                count={'0'}
+                                standard={item.standard}
                             />
                         </li>
                     })}
