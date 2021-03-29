@@ -40,7 +40,7 @@ const MyInventoryStyled = styled.div`
 `
 
 
-export default function Index () {
+export default function Index() {
   const { account, active } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
@@ -98,14 +98,14 @@ export default function Index () {
         ...item,
         poolType: 'fixed-swap'
       }
-    });
+    }).filter(item => item.state !== 1)
     const tradeAuctions = myTradeData.tradeAuctions.map(item => {
       return {
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: 'english-auction'
       }
-    });
+    }).filter(item => item.state !== 1)
 
     const ids_list = nft721_ids.concat(nft1155Items_ids).concat(trade721_ids).concat(trade1155Items_ids)
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
@@ -136,7 +136,7 @@ export default function Index () {
         }
       })
       .catch(() => { })
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [myNftData, myTradeData, account])
 
 

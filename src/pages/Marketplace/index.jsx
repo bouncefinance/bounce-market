@@ -21,6 +21,7 @@ import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import Web3 from 'web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
+import { AUCTION_TYPE } from '@/utils/const'
 // import { weiToNum } from '@/utils/useBigNumber'
 // import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
@@ -141,12 +142,12 @@ export default function Marketplace() {
     if (data) {
       const tradePools = data.tradePools.map(item => ({
         ...item,
-        poolType: 'fixed-swap'
+        poolType: AUCTION_TYPE.FixedSwap
       }));
       const tradeAuctions = data.tradeAuctions.map(item => ({
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-        poolType: 'english-auction'
+        poolType: AUCTION_TYPE.EnglishAuction
       }));
       // console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);

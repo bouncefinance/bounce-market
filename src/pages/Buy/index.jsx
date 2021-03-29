@@ -26,6 +26,7 @@ import useTransferModal from "@/web3/useTransferModal";
 import useHook from "./use_FS_Hook";
 import { weiMul, weiToNum } from "@/utils/useBigNumber";
 import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
+import { AUCTION_TYPE } from "@/utils/const";
 
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
@@ -70,13 +71,8 @@ function Buy() {
 				})
 				.on("receipt", async (_, receipt) => {
 					// console.log('bid fixed swap receipt:', receipt)
-<<<<<<< HEAD
 					// setBidStatus(successStatus)
 					showTransferByStatus('successStatus')
-=======
-					// setBidStatus(successVotedStatus)
-					showTransferByStatus("successVotedStatus");
->>>>>>> 4149dbb15947b5a8e9d5d08f8933a3760a19281e
 				})
 				.on("error", (err, receipt) => {
 					// setBidStatus(errorStatus)
@@ -98,13 +94,8 @@ function Buy() {
 				})
 				.on("receipt", async (_, receipt) => {
 					// console.log('bid fixed swap receipt:', receipt)
-<<<<<<< HEAD
 					// setBidStatus(successStatus)
 					showTransferByStatus('successStatus')
-=======
-					// setBidStatus(successVotedStatus)
-					showTransferByStatus("successVotedStatus");
->>>>>>> 4149dbb15947b5a8e9d5d08f8933a3760a19281e
 				})
 				.on("error", (err, receipt) => {
 					// setBidStatus(errorStatus)
@@ -240,9 +231,7 @@ function Buy() {
 							/>
 						)}
 						{/* 英式拍 一口价 */}
-						{poolsInfo.poolType === "English-Auction" && (
-							<Button value="Buy New For 1 ETH ransfer" />
-						)}
+						{poolsInfo.poolType === AUCTION_TYPE.EnglishAuction && <Button value="Buy New For 1 ETH ransfer" />}
 					</div>
 
 					<div className="Gap"></div>

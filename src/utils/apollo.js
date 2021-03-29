@@ -2,8 +2,8 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 export const client = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/id/Qmb2Lc5gJM3huSX54c6VtbNNmbfxNu6NGuFDgJ7Pkzoizz',
-  cache: new InMemoryCache(),
+    uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft',
+    cache: new InMemoryCache(),
 })
 
 export const QueryTradePools = gql`
@@ -31,6 +31,7 @@ export const QueryMyTradePools = gql`
       poolId
       price
       createTime
+      state
     }
     tradeAuctions(where: {creator: $user}) {
       tokenId
@@ -38,6 +39,7 @@ export const QueryMyTradePools = gql`
       lastestBidAmount
       amountMin1
       createTime
+      state
     }
   }
 `
@@ -161,6 +163,52 @@ export const QueryToActivities = gql`
       to
       tokenId
       quantity
+      timestamp
+    }
+  }
+`
+
+export const QueryFixedSwapPool = gql`
+  query fixedSwapPool($poolId: Int!) {
+    tradePools(where: {poolId: $poolId}) {
+      creator
+      price
+      amountTotal0
+    }
+    poolCreates(where: {poolId: $poolId}) {
+      timestamp
+    }
+    poolSwaps(where: {poolId: $poolId}) {
+      sender
+      swapAmount0
+      timestamp
+    }
+    poolCancels(where: {poolId: $poolId}) {
+      sender
+      unswappedAmount0
+      timestamp
+    }
+  }
+`
+
+export const QueryEnglishAuction  = gql`
+  query queryEnglishAuction($poolId: Int!) {
+    tradeAuctions(where: { poolId: $poolId })  {
+      creator
+      tokenAmount0
+    }
+    auctionCreates(where:{poolId: $poolId}) {
+      timestamp
+    }
+    auctionBids(where:{poolId: $poolId}) {
+      sender
+      amount1
+      timestamp
+    }
+    auctionClaims(where:{poolId: $poolId}) {
+      sender	
+      amount0
+      amount1
       timestamp
     }
   }
