@@ -151,12 +151,16 @@ export default function Marketplace() {
       // console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
+      console.log(list)
+
       setLength(list.length);
       setLoding(true)
+      console.log(channel)
+      const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         category: type,
-        channel: channel
+        channel: channel_2
       })
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
@@ -170,6 +174,7 @@ export default function Marketplace() {
                 createTime: poolInfo.createTime
               }
             })
+
             setTokenList(list.sort((a, b) => b.createTime - a.createTime));
             setLoding(false)
           }
