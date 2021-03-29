@@ -9,6 +9,7 @@ import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
+import ConfirmCancelModal from './components/ConfirmCancelModal'
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
 import { NumberInput } from '@components/UI-kit'
@@ -60,6 +61,12 @@ const NewIndexStyled = styled.div`
 
         .container_right{
             width: 540px;
+            .row1 {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
             .seller{
                 display: flex;
                 flex-direction: column;
@@ -173,6 +180,7 @@ export default function NewIndex() {
     const [amount, setAmount] = useState(1)
     const [bidPrice, setBidPrice] = useState()
     const [minPrice, setMinPrice] = useState(0)
+    const [openModal, setOpenModal] = useState(false)
 
     useEffect(() => {
 
@@ -351,18 +359,10 @@ export default function NewIndex() {
                         onClick={handelBid}
                     >{btnText}</Button>
                 </div>
+                
+                
 
-                {poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
-                    < Button onClick={() => {
-                        handelFixedSwapCancel()
-                    }} width='100%' height='48px' marginTop={'12px'} >
-                        Cancel The Deity
-                    </Button>}
-
-                {poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
-                    < Button width='100%' height='48px' disabled marginTop={'12px'} >
-                        This transaction has been cancelled
-                    </Button>}
+                
             </>
         } else if (aucType === 'english-auction') {
             return <>
@@ -448,94 +448,123 @@ export default function NewIndex() {
     }
 
     return (
-        <NewIndexStyled>
-            <ul className='crumbs'>
-                <li><span>Marketplace</span></li>
-                <li><span>Fine Arts</span></li>
-                <li><span>Digital Image Name</span></li>
-            </ul>
-            <div className="container">
-                <div className="container_left">
-                    <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
-                    <div className="btn_group">
-                        <OtherButton type='share' value='Share' />
-                        <OtherButton type='like' value='Like' />
-                    </div>
-                </div>
-
-                <div className="container_right">
-                    <div className="sell_info">
-                        <h3>{nftInfo.itemname || 'Name Is Loading ...'}</h3>
-                        <div className="seller">
-                            <div className='info'>
-                                <img src={icon_altAvatar} alt="" />
-                                <p>Owned by <a href="http://">{nftInfo.ownername || 'Anonymity'}</a></p>
-
-                                {aucType === 'english-auction' && <div className="close_time">
-                                    <img src={icon_time} alt="" />
-                                    <span>{poolInfo.showTime}</span>
-                                </div>}
-                            </div>
-                            <div className="desc">
-                                <p>{nftInfo.description || 'description Is Loading ...'}</p>
-                                <span>Read more</span>
-
-                            </div>
+        <>
+            <NewIndexStyled>
+                <ul className='crumbs'>
+                    <li><span>Marketplace</span></li>
+                    <li><span>Fine Arts</span></li>
+                    <li><span>Digital Image Name</span></li>
+                </ul>
+                <div className="container">
+                    <div className="container_left">
+                        <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
+                        <div className="btn_group">
+                            <OtherButton type='share' value='Share' />
+                            <OtherButton type='like' value='Like' />
                         </div>
+                    </div>
+            
+                    <div className="container_right">
+                        <div className="sell_info">
+                            <div className="row1">
+                                <h3>{nftInfo.itemname || 'Name Is Loading ...'}</h3>
+            
+                                {/* Cancel按钮 */}
+                                {poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
+                                < Button onClick={
+                                    () => {
+                                        setOpenModal(true)
+                                    }}
+                                    height='30px'
+                                >
+                                    Cancel
+                                </Button>}
 
-                        {renderByAucType()}
-                        <div className="pullInfoBox">
-
-                            <NewPullDown open={true} title='Offers'>
-                                <OffersStyled>
-                                    <div className="Offers flex flex-space-x">
-                                        <div className="flex Offers-info">
-                                            <p className="name">@Scarlett_vfx0</p>
-                                            <p className="time">March 18, 2021 at 4:14am</p>
-                                        </div>
-                                        <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
-                                    </div>
-                                    <div className="Offers flex flex-space-x">
-                                        <div className="flex Offers-info">
-                                            <p className="name">@Scarlett_vfx0</p>
-                                            <p className="time">March 18, 2021 at 4:14am</p>
-                                        </div>
-                                        <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
-                                    </div>
-                                </OffersStyled>
-                            </NewPullDown>
-                            <NewPullDown open={false} title='Token Info'>
-                                <div className="token-info">
-                                    <div className="flex flex-space-x">
-                                        <p>Token Contact Address</p>
-                                        <p style={{ color: '#124EEB' }}>0x33a9b7ed8c71c...2976</p>
-                                    </div>
-                                    <div className="flex flex-space-x">
-                                        <p>Token Symbol</p>
-                                        <p>CKIE</p>
-                                    </div>
-                                    <div className="flex flex-space-x">
-                                        <p>Token ID</p>
-                                        <p>#123456</p>
-                                    </div>
+                                {/* Cancel按钮 */}
+                                {poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
+                                < Button onClick={
+                                    () => {
+                                        /* handelFixedSwapCancel() */
+                                        setOpenModal(true)
+                                    }}
+                                    height='30px'
+                                    disabled
+                                >
+                                    Canceled
+                                </Button>}
+                            </div>
+                            <div className="seller">
+                                <div className='info'>
+                                    <img src={icon_altAvatar} alt="" />
+                                    <p>Owned by <a href="http://">{nftInfo.ownername || 'Anonymity'}</a></p>
+            
+                                    {aucType === 'english-auction' && <div className="close_time">
+                                        <img src={icon_time} alt="" />
+                                        <span>{poolInfo.showTime}</span>
+                                    </div>}
                                 </div>
-                            </NewPullDown>
-                            <NewPullDown open={false} title='External link'>
-                                <div>--</div>
-                            </NewPullDown>
-                            <NewPullDown open={false} title='Trading History'>
-                                <TradingHistory rows={[
-                                    { Event: 'Buy', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vfaaaaa`, Date: `1 days ago` },
-                                    { Event: 'Bid', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vf`, Date: `1 days ago` },
-                                    { Event: 'Transfer', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
-                                    { Event: 'Created', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
-                                ]} />
-                            </NewPullDown>
+                                <div className="desc">
+                                    <p>{nftInfo.description || 'description Is Loading ...'}</p>
+                                    <span>Read more</span>
+            
+                                </div>
+                            </div>
+            
+                            {renderByAucType()}
+                            <div className="pullInfoBox">
+            
+                                <NewPullDown open={true} title='Offers'>
+                                    <OffersStyled>
+                                        <div className="Offers flex flex-space-x">
+                                            <div className="flex Offers-info">
+                                                <p className="name">@Scarlett_vfx0</p>
+                                                <p className="time">March 18, 2021 at 4:14am</p>
+                                            </div>
+                                            <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
+                                        </div>
+                                        <div className="Offers flex flex-space-x">
+                                            <div className="flex Offers-info">
+                                                <p className="name">@Scarlett_vfx0</p>
+                                                <p className="time">March 18, 2021 at 4:14am</p>
+                                            </div>
+                                            <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
+                                        </div>
+                                    </OffersStyled>
+                                </NewPullDown>
+                                <NewPullDown open={false} title='Token Info'>
+                                    <div className="token-info">
+                                        <div className="flex flex-space-x">
+                                            <p>Token Contact Address</p>
+                                            <p style={{ color: '#124EEB' }}>0x33a9b7ed8c71c...2976</p>
+                                        </div>
+                                        <div className="flex flex-space-x">
+                                            <p>Token Symbol</p>
+                                            <p>CKIE</p>
+                                        </div>
+                                        <div className="flex flex-space-x">
+                                            <p>Token ID</p>
+                                            <p>#123456</p>
+                                        </div>
+                                    </div>
+                                </NewPullDown>
+                                <NewPullDown open={false} title='External link'>
+                                    <div>--</div>
+                                </NewPullDown>
+                                <NewPullDown open={false} title='Trading History'>
+                                    <TradingHistory rows={[
+                                        { Event: 'Buy', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vfaaaaa`, Date: `1 days ago` },
+                                        { Event: 'Bid', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vf`, Date: `1 days ago` },
+                                        { Event: 'Transfer', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
+                                        { Event: 'Created', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
+                                    ]} />
+                                </NewPullDown>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </NewIndexStyled>
+            </NewIndexStyled>
+            <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />
+        </>
     )
 }
 

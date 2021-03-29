@@ -206,6 +206,7 @@ export default function CommonHeader () {
                                 <CopyToClipboard
                                     text={account}
                                     onCopy={() => {
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
                                     }}>
                                     <img src={icon_copy} alt="" />
                                 </CopyToClipboard>

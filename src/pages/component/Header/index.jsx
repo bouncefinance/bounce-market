@@ -168,14 +168,38 @@ export default function Index () {
         // eslint-disable-next-line
     }, [history])
 
+    const findTopElement = (e) => {
+        if (e.tagName === 'BODY') return false
+        // console.log(e, e.getAttribute('class'))
+        if (e.getAttribute('class')?.indexOf('setting-account-modal') >= 0) {
+            return true
+        } else {
+            if (e && e.parentNode) {
+                return findTopElement(e.parentNode)
+            } else {
+                return false
+            }
+        }
+
+    }
+    const eventShowInfo = (e) => {
+        try {
+            if ([...document.getElementsByClassName('setting-account-modal')].findIndex(t => t.contains(e.target)) !== -1) {
+                return
+            }
+        } catch (error) {
+            if (findTopElement(e.target)) return
+        }
+
+        // SettingAccountModal
+        setIsShowInfo(false)
+    }
+    const onBodyHandle = () => document.body.addEventListener('click', eventShowInfo)
+    const offBodyHandle = () => document.body.removeEventListener('click', eventShowInfo)
     useEffect(() => {
-        const eventShowInfo = () => {
-            setIsShowInfo(false)
-        }
-        document.body.addEventListener('click', eventShowInfo)
-        return () => {
-            document.body.removeEventListener('click', eventShowInfo)
-        }
+        onBodyHandle()
+        return offBodyHandle
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
@@ -233,7 +257,7 @@ export default function Index () {
                         }}>Connect Wallet</Button>}
 
                     </div>
-                    {isShowInfo && <InfoBox setIsShowInfo={setIsShowInfo} username={state.userInfo && state.userInfo.username} />}
+                    {isShowInfo && <InfoBox onBodyHandle={onBodyHandle} offBodyHandle={offBodyHandle} setIsShowInfo={setIsShowInfo} username={state.userInfo && state.userInfo.username} />}
                 </div>
             </HeaderStyled>
             <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />

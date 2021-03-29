@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
+
 // import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
 import GenerateNftModal from './GenerateNftModal'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
+import ConfirmCancelModal from '../../Buy//components/ConfirmCancelModal'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -123,46 +125,54 @@ const CardItemStyled = styled.div`
 
 export function CardItem({ cover, status, nftId, itemname, poolInfo }) {
     const history = useHistory()
+    const [openCancel, setOpenCancel] = useState(false)
+
+
 
     return (
-        <CardItemStyled>
-            <div className="img_wrapper">
-                <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />
-            </div>
-            <div className="content">
-                {/* <div className="info">
+        <>
+            <CardItemStyled>
+                <div className="img_wrapper">
+                    <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />
+                </div>
+                <div className="content">
+                    {/* <div className="info">
                     <p>{itemname}</p>
                     <span>{user}</span>
                 </div> */}
-                <div className="info-box">
-                    <h5 className="name">{itemname}</h5>
-                    <div className="line"></div>
-                    <div className="flex flex-space-x">
-                        <p className="type">{'Top bid'}</p>
-                        <p className="_tag">{'#12345'}</p>
+                    <div className="info-box">
+                        <h5 className="name">{itemname}</h5>
+                        <div className="line"></div>
+                        <div className="flex flex-space-x">
+                            <p className="type">{'Top bid'}</p>
+                            <p className="_tag">{'#12345'}</p>
+                        </div>
+                        <h4 className="price">{poolInfo.price ? `${poolInfo.price} ETH` : 'Not on sale'}</h4>
                     </div>
-                    <h4 className="price">{poolInfo.price ? `${poolInfo.price} ETH` : 'Not on sale'}</h4>
+                    {
+                        status === 'Listed' ? <div className='button_group'>
+                            <Button value={'Check Status'} primary onClick={() => {
+                                history.push(`/Marketplace/Image/fixed-swap/${poolInfo.poolId}`)
+                            }} />
+                            <Button value={'Make Unlisted'} onClick={() => {
+                                setOpenCancel(true)
+                            }} />
+                        </div> : <div className='button_group'>
+                            <Button
+                                value={'Sell'}
+                                primary
+                                onClick={() => { history.push(`/MyInventory/${nftId}/Sell`) }}
+                            />
+                            {/* <Button value={'Make Listed'} /> */}
+                        </div>
+                    }
                 </div>
-                {
-                    status === 'Listed' ? <div className='button_group'>
-                        <Button value={'Check Status'} primary onClick={() => {
-                            history.push(`/Marketplace/Image/fixed-swap/${poolInfo.poolId}`)
-                        }} />
-                        <Button value={'Make Unlisted'} />
-                    </div> : <div className='button_group'>
-                        <Button
-                            value={'Sell'}
-                            primary
-                            onClick={() => { history.push(`/MyInventory/${nftId}/Sell`) }}
-                        />
-                        {/* <Button value={'Make Listed'} /> */}
-                    </div>
-                }
-            </div>
-            { status === 'Listed' && <div className="tag">
-                {status}
-            </div>}
-        </CardItemStyled>
+                {status === 'Listed' && <div className="tag">
+                    {status}
+                </div>}
+            </CardItemStyled>
+            {poolInfo.poolId && <ConfirmCancelModal open={openCancel} setOpen={setOpenCancel} poolId={poolInfo.poolId} />}
+        </>
     )
 }
 
@@ -194,7 +204,7 @@ export function AddCardItem() {
                         setShowGenrateModal(true)
                     }} />
                 </div>
-            </AddCardItemStyle>
+            </AddCardItemStyle >
             <GenerateNftModal open={showGenrateModal} setOpen={setShowGenrateModal} />
         </>
     )

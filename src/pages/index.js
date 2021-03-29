@@ -11,10 +11,12 @@ import Marketplace from './Marketplace'
 import Buy from './Buy/newIndex'
 
 import Brands from './Brands'
+import Brands2 from './Brands/index2'
 import BrandGoods from './BrandGoods'
 import P2P from './P2P'
 import Factory from './Factory'
 import ListNFT from './ListNFT'
+import Page404 from './Page404'
 
 import MyInventory from './Myprofile/MyInventory'
 import MyNFT from './Myprofile/MyInventory/MyNFT'
@@ -49,6 +51,7 @@ export default function Index() {
                 <Route exact path='/Marketplace/:type/:aucType/:poolId' component={Buy} />
 
                 <Route exact path='/Brands' component={Brands} />
+                <Route exact path='/Brands2' component={Brands2} />
                 <Route exact path='/Brands/:brandId/:type' component={BrandGoods} />
                 <Route exact path='/BrandsGoods/' component={BrandGoods} />
 
@@ -71,6 +74,8 @@ export default function Index() {
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
 
                 <Route exact path='/AirHome/:id/:standard/:type' component={AirHome} />
+
+                <Route exact path='/404' component={Page404} />
 
                 <Footer />
                 {/* 交易状态模态框 */}

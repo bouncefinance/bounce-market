@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     // border: '2px solid #000',
     boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 3),
-    maxHeight:'100%',
+    maxHeight: '100%',
     overflowY: 'auto',
   },
 }));
@@ -44,7 +44,7 @@ const HeaderStyled = styled.div`
       }
 `
 
-export default function ModalBox({
+export default function ModalBox ({
   open,
   setOpen,
   children,
@@ -53,6 +53,7 @@ export default function ModalBox({
     // title: '',
     // isClose: false
   },
+  className = ''
   // width,
   // height
 }) {
@@ -72,7 +73,7 @@ export default function ModalBox({
         // height={height}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
+        className={[classes.modal, className].join(' ')}
         open={open}
         onClose={handleClose}
         closeAfterTransition

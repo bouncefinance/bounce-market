@@ -39,7 +39,8 @@ const MyInventoryStyled = styled.div`
     }
 `
 
-export default function Index() {
+
+export default function Index () {
   const { account, active } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
@@ -50,34 +51,6 @@ export default function Index() {
   const [myNftData, setMyNftData] = useState([])
   const [myTradeData, setMyTradeData] = useState([])
 
-  // const handleMyNFT = (data) => {
-  //   console.log(data)
-  //   const nft721Items = data.nft721Items.map(item => item.tokenId);
-  //   const nft1155Items = data.nft1155Items.map(item => item.tokenId);
-  //   const list = nft721Items.concat(nft1155Items);
-
-  //   const nft721ItemTar = data.nft721Items.map(item => {
-  //     return {
-  //       ...item,
-
-  //     }
-  //   });
-
-  //   console.log(nft721ItemTar)
-  //   // const list_2 = list.sort()
-  //   setLoading(true)
-  //   sign_Axios.post(Controller.items.getitemsbyfilter, {
-  //     ids: list,
-  //     category: type,
-  //     channel: ''
-  //   })
-  //     .then(res => {
-  //       if (res.status === 200 && res.data.code === 1) {
-  //         setItemList(res.data.data);
-  //       }
-  //       setLoading(false)
-  //     })
-  // }
 
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
     {
