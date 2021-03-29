@@ -77,8 +77,7 @@ export default function BasicTable() {
     const [fromData, setFromData] = useState([]);
 
     const [getToActivities, toData] = useLazyQuery(QueryToActivities, {
-        // variables: { user: account ? account.toLowerCase() : account},
-        variables: { user: "0x0000000000000000000000000000000000000000"},
+        variables: { user: account ? account.toLowerCase() : account},
         onCompleted: () => {
             const data = fromData.activities.concat(toData.data.activities);
             handleActivities(data);
@@ -110,7 +109,7 @@ export default function BasicTable() {
                         <TableCell className={classes.TableCell} >Event</TableCell>
                         <TableCell className={classes.TableCell} >Item</TableCell>
                         <TableCell className={classes.TableCell} >Quantity</TableCell>
-                        <TableCell className={classes.TableCell} >Status</TableCell>
+                        {/* <TableCell className={classes.TableCell} >Status</TableCell> */}
                         <TableCell className={classes.TableCell} >From</TableCell>
                         <TableCell className={classes.TableCell} >To</TableCell>
                         <TableCell className={classes.TableCell} >Date</TableCell>

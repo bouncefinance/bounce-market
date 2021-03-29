@@ -61,9 +61,9 @@ export default function TableItem({ row }) {
             <TableCell>
                 {row.quantity}
             </TableCell>
-            <TableCell>
+            {/* <TableCell>
                 {row.status}
-            </TableCell>
+            </TableCell> */}
             <TableCell>
                 {getEllipsisAddress(row.from)}
             </TableCell>
