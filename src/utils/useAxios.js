@@ -8,7 +8,7 @@ const host = window.location.host
 const Base_URL = host === 'localhost:3000' ? 'http://market-test.bounce.finance:11000' : 'https://market-test.bounce.finance'
 
 const signStr = 'Welcome to Bounce!'
-let isRequestLock = false
+let isRequestLock = false;
 
 export default function useAxios() {
     const { account, library } = useWeb3React();
@@ -19,7 +19,7 @@ export default function useAxios() {
         isRequestLock = true
         initSign()
         // eslint-disable-next-line
-    }, [account])
+    }, [account, isRequestLock])
 
     const initSign = async () => {
         // 判断授权是否过期
@@ -31,6 +31,7 @@ export default function useAxios() {
             JWT_TOKEN_V2[account] = token
             window.localStorage.setItem('JWT_TOKEN_V2', JSON.stringify(JWT_TOKEN_V2))
             dispatch({type: 'Token', authToken: token});
+            window.location.reload();
         }
     }
 
@@ -78,7 +79,14 @@ export default function useAxios() {
             ...option.config
         }
         let res = await axios.post(Base_URL + path, params, config)
-        // if (res.status === 200 && res.data.code === -1) {
+        if (res.status === 200 && res.data.code === -1) {
+            let timer;
+            if(timer){
+              clearTimeout(timer);
+            }
+            timer = setTimeout(() => {
+                isRequestLock = false;
+            }, 2000);
             // token 无效过期
             // return alert('授权失效，请刷新页面，重新授权签名')
             // config = {
@@ -89,7 +97,7 @@ export default function useAxios() {
             //     ...option.config
             // }
             // res = await axios.post(Base_URL + path, params, config)
-        // }
+        }
 
         return res
     }
