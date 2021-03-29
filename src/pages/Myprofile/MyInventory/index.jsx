@@ -74,6 +74,7 @@ export default function Index() {
 
   useEffect(() => {
     if (!active) return;
+    console.log(11111)
     getMyNFT();
 
   }, [active, account, getMyNFT]);
