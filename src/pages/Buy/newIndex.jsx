@@ -18,10 +18,12 @@ import icon_time from './assets/icon_time.svg'
 import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
 import TradingHistory from './components/TradingHistory';
 import { useLazyQuery } from '@apollo/client';
-import { queryFixedSwapPool } from '@/utils/apollo';
+import { QueryFixedSwapPool, QueryEnglishAuction } from '@/utils/apollo';
 import { getEllipsisAddress } from '@/utils/utils';
 import Web3 from 'web3';
 import { formatDistanceToNow } from 'date-fns';
+import { AUCTION_TYPE } from '@/utils/const';
+import { ZERO_ADDRESS } from '@/web3/address_list/token';
 
 
 const NewIndexStyled = styled.div`
@@ -172,7 +174,7 @@ export default function NewIndex() {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { showTransferByStatus } = useTransferModal()
-    const { nftInfo, poolInfo } = aucType === 'fixed-swap' ? use_FS_Hook(poolId) : use_EA_Hook(poolId)
+    const { nftInfo, poolInfo } = aucType === AUCTION_TYPE.FixedSwap ? use_FS_Hook(poolId) : use_EA_Hook(poolId)
     const [isLoading, setIsLoading] = useState(false)
     const [btnText, setBtnText] = useState('Place a bid')
     const [amount, setAmount] = useState(1)
@@ -322,7 +324,7 @@ export default function NewIndex() {
     }
 
     const renderByAucType = () => {
-        if (aucType === 'fixed-swap') {
+        if (aucType === AUCTION_TYPE.FixedSwap) {
             return <>
                 <NumberInput
                     className='input_amount'
@@ -369,7 +371,7 @@ export default function NewIndex() {
                         This transaction has been cancelled
                     </Button>}
             </>
-        } else if (aucType === 'english-auction') {
+        } else if (aucType === AUCTION_TYPE.EnglishAuction) {
             return <>
 
 
@@ -462,7 +464,7 @@ export default function NewIndex() {
         const offerList = data.poolSwaps.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: new Date(item.timestamp*1000).toLocaleString(),
-            amouont: item.swapAmount0,
+            amount: item.swapAmount0,
             price: price, 
         }));
         setOfferList(offerList);
@@ -470,7 +472,7 @@ export default function NewIndex() {
             event: 'Created',
             quantity: total,
             price: price,
-            from: getEllipsisAddress('0x0000000000000000000000000000000000000000'),
+            from: getEllipsisAddress(ZERO_ADDRESS),
             to: getEllipsisAddress(creator),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
@@ -498,22 +500,72 @@ export default function NewIndex() {
         setHistory(list);
     }
 
-    const [queryPoolSwap, { data } ] = useLazyQuery(queryFixedSwapPool, {
+    const [queryPoolSwap, poolSwap ] = useLazyQuery(QueryFixedSwapPool, {
         variables: { poolId: Number(poolId)},
         onCompleted: () => {
-            handleSwap(data);
+            handleSwap(poolSwap.data);
+        }
+    });
+
+    const handleAuction = (data) => {
+        const tradePool = data.tradeAuctions[0];
+        const creator = tradePool.creator;
+        const total = tradePool.tokenAmount0;
+        const offerLiist = data.auctionBids.map(item => ({
+            name: getEllipsisAddress(item.sender),
+            time: new Date(item.timestamp*1000).toLocaleString(),
+            amount: Web3.utils.fromWei(item.amount1),
+            price: '',  
+        }))
+        setOfferList(offerLiist);
+        const createList = data.auctionCreates.map(item => ({
+            event: 'Created',
+            quantity: total,
+            price: '',
+            from: getEllipsisAddress(ZERO_ADDRESS),
+            to: getEllipsisAddress(creator),
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }));
+        const bidList  = data.auctionBids.map(item => ({
+            event: 'Bid',
+            quantity: '',
+            price: Web3.utils.fromWei(item.amount1),
+            from: getEllipsisAddress(creator),
+            to: getEllipsisAddress(item.sender),
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }))
+        const claimList = data.auctionClaims.map(item => ({
+            event: 'Claim',
+            price:  '',
+            quantity: item.amount1,
+            from: getEllipsisAddress(item.sender),
+            to: '',
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }))
+        const list = createList.concat(bidList).concat(claimList)
+            .sort((a, b) => b.timestamp - a.timestamp);
+        setHistory(list);
+    }
+
+    const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
+        variables: { poolId: Number(poolId) },
+        onCompleted: () => {
+            handleAuction(auctionPool.data);
         }
     })
 
     useEffect(() => {
         if (poolId) {
-            if (aucType === 'fixed-swap') {
+            if (aucType === AUCTION_TYPE.FixedSwap) {
                 queryPoolSwap();
-            } else if (aucType === 'english-auction') {
-
+            } else if (aucType === AUCTION_TYPE.EnglishAuction) {
+                queryAuctionPool();
             }
         }
-    }, [poolId, aucType, queryPoolSwap])
+    }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
 
     return (
         <NewIndexStyled>
@@ -539,7 +591,7 @@ export default function NewIndex() {
                                 <img src={icon_altAvatar} alt="" />
                                 <p>Owned by <a href="http://">{nftInfo.ownername || 'Anonymity'}</a></p>
 
-                                {aucType === 'english-auction' && <div className="close_time">
+                                {aucType === AUCTION_TYPE.EnglishAuction && <div className="close_time">
                                     <img src={icon_time} alt="" />
                                     <span>{poolInfo.showTime}</span>
                                 </div>}

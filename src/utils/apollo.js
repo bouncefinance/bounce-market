@@ -148,17 +148,7 @@ export const QueryToActivities = gql`
   }
 `
 
-export const QueryPoolSwap = gql`
-  query queryPoolSwap($poolId: Int!) {
-    poolSwaps(where: {poolId: $poolId}) {
-      sender
-      swapAmount0
-      timestamp
-    }
-  }
-`
-
-export const queryFixedSwapPool = gql`
+export const QueryFixedSwapPool = gql`
   query fixedSwapPool($poolId: Int!) {
     tradePools(where: {poolId: $poolId}) {
       creator
@@ -184,7 +174,22 @@ export const queryFixedSwapPool = gql`
 export const QueryEnglishAuction  = gql`
   query queryEnglishAuction($poolId: Int!) {
     tradeAuctions(where: { poolId: $poolId })  {
-      id
+      creator
+      tokenAmount0
+    }
+    auctionCreates(where:{poolId: $poolId}) {
+      timestamp
+    }
+    auctionBids(where:{poolId: $poolId}) {
+      sender
+      amount1
+      timestamp
+    }
+    auctionClaims(where:{poolId: $poolId}) {
+      sender	
+      amount0
+      amount1
+      timestamp
     }
   }
 `

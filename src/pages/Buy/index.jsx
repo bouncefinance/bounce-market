@@ -19,6 +19,7 @@ import useTransferModal from "@/web3/useTransferModal";
 import useHook from "./use_FS_Hook";
 import { weiMul, weiToNum } from "@/utils/useBigNumber";
 import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
+import { AUCTION_TYPE } from "@/utils/const";
 
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
@@ -163,7 +164,7 @@ function Buy() {
 							onClick={handelBid}
 						/>}
 						{/* 英式拍 一口价 */}
-						{poolsInfo.poolType === 'English-Auction' && <Button value="Buy New For 1 ETH ransfer" />}
+						{poolsInfo.poolType === AUCTION_TYPE.EnglishAuction && <Button value="Buy New For 1 ETH ransfer" />}
 					</div>
 
 					<span className="str_Offers">Offers</span>
