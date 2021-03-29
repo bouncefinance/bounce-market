@@ -170,11 +170,7 @@ export default function Marketplace() {
                 createTime: poolInfo.createTime
               }
             })
-<<<<<<< HEAD
-            setTokenList(list.sort((a, b) => b.poolId - a.poolId));
-=======
             setTokenList(list.sort((a, b) => b.createTime - a.createTime));
->>>>>>> stage
             setLoding(false)
           }
         })

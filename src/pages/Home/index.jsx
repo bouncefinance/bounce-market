@@ -146,17 +146,20 @@ const banner_Nav = [
   { name: 'Comic Books' },
 ]
 
-<<<<<<< HEAD
 export default function Index () {
   // const { state } = useContext(myContext);
   const { sign_Axios } = useAxios()
   const { account } = useWeb3React();
   const [brands, setbrands] = useState([])
+  const { data } = useQuery(QueryTradePools)
+  const { active } = useActiveWeb3React()
+  const { exportArrayNftInfo } = useToken()
 
   useEffect(() => {
     if (!account) {
       return
     }
+
     const init = async () => {
       const brandsRes = await sign_Axios.post('/api/v2/main/auth/getpopularbrands', {})
       if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
@@ -168,14 +171,10 @@ export default function Index () {
         alert('error')
       }
     }
+    
     init()
     // eslint-disable-next-line
   }, [account])
-=======
-export default function Index() {
-  const { data } = useQuery(QueryTradePools)
-  const { active } = useActiveWeb3React()
-  const { exportArrayNftInfo } = useToken()
 
   useEffect(() => {
     if (!active || !data) return
@@ -184,7 +183,8 @@ export default function Index() {
 
   }, [active, data])
 
->>>>>>> stage
+
+ 
   return (
     <HomeStyled>
       <div className="banner">
