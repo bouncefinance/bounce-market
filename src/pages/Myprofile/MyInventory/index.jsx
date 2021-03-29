@@ -68,9 +68,13 @@ export default function Index () {
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
     {
       variables: { user: String(account).toLowerCase() },
+      fetchPolicy: "network-only",
       onCompleted: () => {
         handleMyNFT(data);
         topData = data
+      },
+      onError: (err) => {
+        console.log('onerror', err);
       }
     });
 
@@ -144,7 +148,7 @@ export default function Index () {
             </li>
           })}
         </ul>
-        {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
+        {loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
       </MyInventoryStyled>
     </>
   )

@@ -20,6 +20,8 @@ export default function useHook(poolIndex) {
         const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
         const pools = await BounceFixedSwapNFT_CT.methods.pools(poolIndex).call()
         const swappedAmount0P = await BounceFixedSwapNFT_CT.methods.swappedAmount0P(poolIndex).call()
+        const creatorCanceledP = await BounceFixedSwapNFT_CT.methods.creatorCanceledP(poolIndex).call()
+
 
         if (pools.tokenId) {
             const info = await exportNftInfo(pools.tokenId)
@@ -36,7 +38,8 @@ export default function useHook(poolIndex) {
             nftType: pools.nftType,
             tokenId: pools.tokenId,
             creator: pools.creator,
-            swappedAmount0P: swappedAmount0P
+            swappedAmount0P: swappedAmount0P,
+            creatorCanceledP: creatorCanceledP
         }
 
         if (swappedAmount0P < poolsObj.amountTotal0) {

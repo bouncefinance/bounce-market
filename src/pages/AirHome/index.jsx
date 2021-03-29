@@ -13,7 +13,8 @@ import { QueryBrandTradeItems, QueryOwnerBrandItems } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
-import Web3 from 'web3'
+// import Web3 from 'web3'
+import { weiToNum } from '@/utils/useBigNumber'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -178,23 +179,30 @@ export function AirHome() {
       category: type,
       channel: ''
     })
-    .then(res => {
-      if (res.status === 200 && res.data.code === 1) {
-        const list = res.data.data.map(item => {
-          const poolInfo = pools.find(pool => pool.tokenId === item.id);
-          return {
-            ...item,
-            poolId: poolInfo ? poolInfo.poolId : '--',
-            price: poolInfo ? Web3.utils.fromWei(poolInfo.price) : '--',
-          }
-        })
-        setItemList(list);
-      }
-    })
+      .then(res => {
+        if (res.status === 200 && res.data.code === 1) {
+          console.log(res)
+          const list = res.data.data.map(item => {
+            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            return {
+              ...item,
+              poolId: poolInfo ? poolInfo.poolId : null,
+              price: poolInfo ? weiToNum(poolInfo.price, 2) : '--',
+            }
+          })
+
+          const list_2 = list.filter(item => {
+            return item.poolId
+          })
+
+          setItemList(list_2);
+        }
+      })
   }
 
-  const [getBrandTradeItems, brandTradeItems ] = useLazyQuery(QueryBrandTradeItems, {
-    variables: {tokenList:  tokenList},
+  const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
+    variables: { tokenList: tokenList },
+    fetchPolicy:"network-only",
     onCompleted: () => {
       const tradePools = brandTradeItems.data.tradePools;
       const tradeAuctions = brandTradeItems.data.tradeAuctions;
@@ -208,28 +216,29 @@ export function AirHome() {
     setTokenList(tokenList);
     getBrandTradeItems();
   }
-  
+
   const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
-    variables: {owner:  brandInfo.owneraddress},
+    variables: { owner: brandInfo.owneraddress },
+    fetchPolicy:"network-only",
     onCompleted: () => {
       handleBrandItems(brandItems.data);
     }
   })
-  
+
   useEffect(() => {
     if (!active) return;
     sign_Axios.post(Controller.brands.getbrandbyid, {
       id: Number(id)
     })
-    .then(res => {
-      const data = res.data.data;
-      setBrandInfo(data);
-      getBrandItems();
-    })
-  // eslint-disable-next-line
+      .then(res => {
+        const data = res.data.data;
+        setBrandInfo(data);
+        getBrandItems();
+      })
+    // eslint-disable-next-line
   }, [active, id]);
 
-  
+
   const renderListByType = (type) => {
     switch (type) {
       case 'Image':
@@ -309,3 +318,4 @@ export function AirHome() {
     <UpdateTopBarImg open={openUpdateTopBarImg} setOpen={setOpenUpdateTopBarImg} run={run} />
   </AirHomeStyled>
 }
+

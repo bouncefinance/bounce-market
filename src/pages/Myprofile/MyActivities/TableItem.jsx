@@ -7,6 +7,7 @@ import icon_transfer from './assets/transfer.svg'
 import icon_create from './assets/create.svg'
 
 import default_img from './assets/default_img.svg'
+import { getEllipsisAddress } from '@/utils/utils';
 
 const TableItemStyled = styled(TableRow)`
     font-family: 'Helvetica Neue';
@@ -49,28 +50,28 @@ export default function TableItem({ row }) {
     return (
         <TableItemStyled>
             <TableCell className='event'>
-                {row.Event === 'Buy' && <img src={icon_transfer} alt="" />}
-                {row.Event === 'Created' && <img src={icon_create} alt="" />}
-                {row.Event}
-            </TableCell>
-            <TableCell>
-                {row.Quantity}
-            </TableCell>
-            <TableCell>
-                {row.Price}
+                {row.event === 'Buy' && <img src={icon_transfer} alt="" />}
+                {row.event === 'Created' && <img src={icon_create} alt="" />}
+                {row.event}
             </TableCell>
             <TableCell className='item'>
-                {row.Cover ? <img src={row.Cover} alt="" /> : <img src={default_img} alt="" />}
-                {row.Item}
+                {row.cover ? <img src={row.cover} alt="" /> : <img src={default_img} alt="" />}
+                {row.item}
             </TableCell>
             <TableCell>
-                {row.From}
+                {row.quantity}
+            </TableCell>
+            {/* <TableCell>
+                {row.status}
+            </TableCell> */}
+            <TableCell>
+                {getEllipsisAddress(row.from)}
             </TableCell>
             <TableCell>
-                {row.To}
+                {getEllipsisAddress(row.to)}
             </TableCell>
             <TableCell>
-                {row.Date}
+                {row.date}
             </TableCell>
         </TableItemStyled>
 

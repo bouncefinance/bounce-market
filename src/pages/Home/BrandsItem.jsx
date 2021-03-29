@@ -11,9 +11,10 @@ const BrandsItemStyled = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.2);
     overflow: hidden;
     cursor: pointer;
-    transition: all 500ms;
+    transition: all 200ms;
     :hover{
-        transform: translateY(-20px);
+        transform: translateY(-10px);
+        box-shadow: 5px 5px 10px #ccc;
     }
     &:nth-child(4n){
         margin-right: 0px;
