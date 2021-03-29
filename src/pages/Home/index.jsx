@@ -16,6 +16,11 @@ import { useWeb3React } from '@web3-react/core'
 // import { myContext } from '@/redux/index.js';
 
 
+import { useQuery } from '@apollo/client'
+import { QueryTradePools } from '@/utils/apollo'
+import { useActiveWeb3React } from '@/web3'
+import useToken from '@/utils/useToken'
+
 const HomeStyled = styled.div`
   .banner{
     display: flex;
@@ -141,6 +146,7 @@ const banner_Nav = [
   { name: 'Comic Books' },
 ]
 
+<<<<<<< HEAD
 export default function Index () {
   // const { state } = useContext(myContext);
   const { sign_Axios } = useAxios()
@@ -165,6 +171,20 @@ export default function Index () {
     init()
     // eslint-disable-next-line
   }, [account])
+=======
+export default function Index() {
+  const { data } = useQuery(QueryTradePools)
+  const { active } = useActiveWeb3React()
+  const { exportArrayNftInfo } = useToken()
+
+  useEffect(() => {
+    if (!active || !data) return
+    console.log(data)
+    // const dataList = [...data.tradeAuctions,]
+
+  }, [active, data])
+
+>>>>>>> stage
   return (
     <HomeStyled>
       <div className="banner">
