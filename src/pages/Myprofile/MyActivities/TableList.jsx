@@ -78,6 +78,7 @@ export default function BasicTable() {
 
     const [getToActivities, toData] = useLazyQuery(QueryToActivities, {
         variables: { user: account ? account.toLowerCase() : account},
+        fetchPolicy:"network-only",
         onCompleted: () => {
             const data = fromData.activities.concat(toData.data.activities);
             handleActivities(data);
@@ -90,6 +91,7 @@ export default function BasicTable() {
 
     const [getFromActivities, { data }] = useLazyQuery(QueryFromActivities, {
         variables: { user: account ? account.toLowerCase() : account},
+        fetchPolicy:"network-only",
         onCompleted: () => {
             setFromData(data);
             handleFromActivities();

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import icon_copy from '@assets/images/icon/copy.svg'
-
+import { myContext } from '@/redux/index.js'
 import inventory_white from './assets/inventory_white.svg'
 import inventory_black from './assets/inventory_black.svg'
 import brands_white from './assets/brands_white.svg'
@@ -119,12 +119,12 @@ const InfoList = [{
     route: ''
 }]
 
-export default function InfoBox ({ setIsShowInfo, username }) {
+export default function InfoBox ({ setIsShowInfo, username, onBodyHandle, offBodyHandle }) {
     const history = useHistory()
     const [curItem, setCurItem] = useState(-1)
     const { account } = useActiveWeb3React()
     const [isSettingAccount, setIsSettingAccount] = useState(false)
-
+    const { dispatch } = useContext(myContext);
     return (
         <InfoBoxStyled>
             <div className="top_info">
@@ -134,6 +134,7 @@ export default function InfoBox ({ setIsShowInfo, username }) {
                     <CopyToClipboard
                         text={account}
                         onCopy={() => {
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
                         }}>
                         <img src={icon_copy} alt="" />
                     </CopyToClipboard>
@@ -151,7 +152,9 @@ export default function InfoBox ({ setIsShowInfo, username }) {
                         onClick={(e) => {
                             window.event ? window.event.cancelBubble = true : e.stopPropagation()
                             if (item.name === 'Account Settings') {
-                                return setIsSettingAccount(true)
+                                offBodyHandle()
+                                setIsSettingAccount(true)
+                                return
                             }
                             if (item.route === '') return
                             history.push(item.route)
@@ -165,7 +168,12 @@ export default function InfoBox ({ setIsShowInfo, username }) {
 
             </ul>
 
-            <SettingAccountModal open={isSettingAccount} setOpen={setIsSettingAccount} />
+            <SettingAccountModal open={isSettingAccount} setOpen={(v) => {
+                if (v === false) {
+                    // onBodyHandle()
+                }
+                setIsSettingAccount(v)
+            }} />
         </InfoBoxStyled>
     )
 }
