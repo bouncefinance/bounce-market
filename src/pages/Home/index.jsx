@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
@@ -8,9 +8,13 @@ import BrandsItem from './BrandsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
 import img_banner from '@assets/images/banner.svg'
 import img_example_1 from '@assets/images/example_1.svg'
-import img_alpaca_city from '@assets/images/alpaca_city.svg'
+// import img_alpaca_city from '@assets/images/alpaca_city.svg'
 import two_setting from './assets/two-setting.svg'
 import { Link } from 'react-router-dom'
+import useAxios from '@/utils/useAxios'
+import { useWeb3React } from '@web3-react/core'
+// import { myContext } from '@/redux/index.js';
+
 
 const HomeStyled = styled.div`
   .banner{
@@ -138,6 +142,29 @@ const banner_Nav = [
 ]
 
 export default function Index () {
+  // const { state } = useContext(myContext);
+  const { sign_Axios } = useAxios()
+  const { account } = useWeb3React();
+  const [brands, setbrands] = useState([])
+
+  useEffect(() => {
+    if (!account) {
+      return
+    }
+    const init = async () => {
+      const brandsRes = await sign_Axios.post('/api/v2/main/auth/getpopularbrands', {})
+      if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
+        const brands = brandsRes.data.data
+        setbrands(brands)
+        // console.log('---brands----', brands)
+      } else {
+        // TODO ERROR SHOW
+        alert('error')
+      }
+    }
+    init()
+    // eslint-disable-next-line
+  }, [account])
   return (
     <HomeStyled>
       <div className="banner">
@@ -172,9 +199,9 @@ export default function Index () {
       </CardGroup>
       <div className="load_more">Load More</div>
 
-      <CardGroup title='Hotest Brands' link=''>
-        {[...new Array(4)].map((item, index) => {
-          return <BrandsItem key={index} src={img_alpaca_city} name='Alpaca City' />
+      <CardGroup title='Hotest Brands' link='/Brands'>
+        {brands.map((item, index) => {
+          return <BrandsItem key={index} src={item.imgurl} name={item.brandname} />
         })}
       </CardGroup>
 
