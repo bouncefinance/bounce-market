@@ -13,6 +13,7 @@ export const QueryTradePools = gql`
       poolId
       price
       createTime
+      state
     }
     tradeAuctions {
       tokenId
@@ -20,6 +21,7 @@ export const QueryTradePools = gql`
       lastestBidAmount
       amountMin1
       createTime
+      state
     }
   }
 `
