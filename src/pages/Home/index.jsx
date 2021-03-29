@@ -10,16 +10,17 @@ import img_banner from '@assets/images/banner.svg'
 import img_example_1 from '@assets/images/example_1.svg'
 // import img_alpaca_city from '@assets/images/alpaca_city.svg'
 import two_setting from './assets/two-setting.svg'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import useAxios from '@/utils/useAxios'
 import { useWeb3React } from '@web3-react/core'
 import { SkeletonBrandCards } from '../component/Skeleton/BrandItem'
+import { NewSkeletonNFTCards } from '../component/Skeleton/NFTCard'
 // import { myContext } from '@/redux/index.js';
 
 
 import { useQuery } from '@apollo/client'
 import { QueryTradePools } from '@/utils/apollo'
-import { useActiveWeb3React } from '@/web3'
+// import { useActiveWeb3React } from '@/web3'
 // import useToken from '@/utils/useToken'
 import { weiToNum } from '@/utils/useBigNumber'
 
@@ -151,12 +152,14 @@ const banner_Nav = [
 export default function Index() {
   // const { state } = useContext(myContext);
   const { sign_Axios } = useAxios()
-  const { account } = useWeb3React();
+  const { account, active } = useWeb3React();
+  const history = useHistory()
   const [brands, setbrands] = useState([])
   const { data } = useQuery(QueryTradePools)
-  const { active } = useActiveWeb3React()
+  const [itemList, setItemList] = useState()
   // const { exportArrayNftInfo } = useToken()
   const [loadingBrands, setLoadingBrands] = useState(false)
+  const [loadingItems, setLoadingItems] = useState(true)
 
   useEffect(() => {
     if (!account) {
@@ -183,9 +186,16 @@ export default function Index() {
 
   useEffect(() => {
     if (!active || !data) return
-    // console.log(data)
-    const tradeAuctions = data.tradeAuctions || []
-    const tradePools = data.tradePools || []
+    setLoadingItems(true)
+    const tradePools = data.tradePools.map(item => ({
+      ...item,
+      poolType: 'fixed-swap'
+    }));
+    const tradeAuctions = data.tradeAuctions.map(item => ({
+      ...item,
+      price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
+      poolType: 'english-auction'
+    }));
 
     const pools = tradePools.concat(tradeAuctions);
     const list = pools.map(item => item.tokenId);
@@ -207,11 +217,13 @@ export default function Index() {
               createTime: poolInfo.createTime
             }
           })
-          const list_2 = list.sort((a, b) => b.createTime - a.createTime)
-          console.log(list_2)
-          // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
-          // setTokenList();
 
+          const list_2 = list.sort((a, b) => b.createTime - a.createTime)
+          const list_3 = list_2.slice(0, 8)
+          // console.log(list_3)
+          // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
+          setItemList(list_3);
+          setLoadingItems(false)
           // setLoding(false)
         }
       })
@@ -249,12 +261,14 @@ export default function Index() {
 
       <CardBanner />
 
-      <CardGroup title='Most Popular Items' link='' marinTop='64px'>
-        {[...new Array(4)].map((item, index) => {
-          return <PopularItem key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
+      <CardGroup title='Most Popular Items' link='/Marketplace/Image' marinTop='64px'>
+        {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
+          return <PopularItem itemInfo={item} key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
         })}
       </CardGroup>
-      <div className="load_more">Load More</div>
+      <div className="load_more" onClick={() => {
+        history.push('/Marketplace/Image')
+      }}>Load More</div>
 
       <CardGroup title='Hotest Brands' link='/Brands'>
         {brands.map((item, index) => {

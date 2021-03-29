@@ -8,9 +8,9 @@ div{
   background-repeat: no-repeat;
   background-size: 63px;
   background-position: center;
-  background-color: rgba(0, 0, 0, 1);
+  /* background-color: rgba(0, 0, 0, 1); */
   img{
-    background-color: rgb(247, 247, 247);
+    /* background-color: rgb(247, 247, 247); */
     object-fit: contain;
   }
 }
