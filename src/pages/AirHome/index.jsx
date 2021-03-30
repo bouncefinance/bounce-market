@@ -13,8 +13,8 @@ import { QueryBrandTradeItems, QueryOwnerBrandItems } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
-// import Web3 from 'web3'
 import { weiToNum } from '@/utils/useBigNumber'
+import { AUCTION_TYPE } from '@/utils/const'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -185,15 +185,16 @@ export function AirHome() {
             const poolInfo = pools.find(pool => pool.tokenId === item.id);
             return {
               ...item,
+              poolType: poolInfo ? poolInfo.poolType : null,
               poolId: poolInfo ? poolInfo.poolId : null,
-              price: poolInfo ? weiToNum(poolInfo.price, 2) : '--',
+              price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
+              createTime: poolInfo && poolInfo.createTime
             }
           })
-          const list_2 = list.filter(item => {
+          const result = list.filter(item => {
             return item.poolId
-          })
-
-          setItemList(list_2);
+          }).sort((a, b) => b.createTime - a.createTime);
+          setItemList(result);
         }
       })
   }
@@ -202,8 +203,15 @@ export function AirHome() {
     variables: { tokenList: tokenList },
     fetchPolicy:"network-only",
     onCompleted: () => {
-      const tradePools = brandTradeItems.data.tradePools;
-      const tradeAuctions = brandTradeItems.data.tradeAuctions;
+      const tradePools = brandTradeItems.data.tradePools.map(item => ({
+        ...item,
+        poolType: AUCTION_TYPE.FixedSwap
+      }))
+      const tradeAuctions = brandTradeItems.data.tradeAuctions.map(item => ({
+        ...item,
+        price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
+        poolType: AUCTION_TYPE.EnglishAuction
+      }));
       handleBrandTradeItems(tradePools.concat(tradeAuctions));
     }
   })
@@ -244,6 +252,7 @@ export function AirHome() {
           {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem
+                poolType={item.poolType}
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.poolId}

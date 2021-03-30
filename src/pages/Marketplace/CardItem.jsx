@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const CardItemStyled = styled.div`
@@ -93,12 +93,11 @@ const CardItemStyled = styled.div`
 
 export function CardItem ({ cover, name, price, cardId, poolType }) {
     const history = useHistory()
+    const { type } = useParams();
     
     return (
         <CardItemStyled>
-            {/* <img src={cover} alt="" /> */}
             <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />
-            {/* <AutoStretchBaseWidthOrHeightImg src={'http://market-test.bounce.finance:11000/jpgfileget/%E6%B3%B0%E5%8B%923-1616501976.jpg'} width={216} height={216} /> */}
             <div className="item_wrapper">
                 <div className='info_wrapper'>
                     <div>
@@ -110,8 +109,7 @@ export function CardItem ({ cover, name, price, cardId, poolType }) {
 
                 <div className="button_group">{cardId !== '--' &&
                     <Button primary width={'162px'} onClick={() => {
-                        const pathname = window.location.pathname
-                        history.push(`${pathname}/${poolType}/${cardId}`)
+                        history.push(`/Marketplace/${type}/${poolType}/${cardId}`)
                     }}>Show More</Button>}
                 </div>
             </div>

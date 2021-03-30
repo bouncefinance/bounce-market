@@ -11,6 +11,7 @@ import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
 import { useThrottle } from '@/utils/useThrottle'
 import { myContext } from '@/redux'
+import { NFT_CATEGORY } from '@/utils/const'
 // import { numToWei } from '@/utils/useBigNumber'
 const DEBOUNCE = 500;
 const AddNewBrandstModalStyled = styled.div`
@@ -45,7 +46,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
     const [fileData, setFileData] = useState(null)
     const [formData, setFormData] = useState({
         Category: 'image',
-        Channel: 'Fine Arts',
+        Channel: NFT_CATEGORY.FineArts,
         Supply: 1
     })
     const { dispatch } = useContext(myContext);
@@ -209,12 +210,12 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                         }} />
 
                     <PullRadioBox title={'Channel'} marginTop='24px' width='150px' options={[{
-                        value: 'Fine Arts'
+                        value: NFT_CATEGORY.FineArts
                     }, {
-                        value: 'Sports'
+                        value: NFT_CATEGORY.Sports
                     }, {
                         value: 'Conicbooks'
-                    }]} defaultValue={defaultValue === 'Fine Arts'} inputDisable={inputDisable} onChange={(item) => {
+                    }]} defaultValue={defaultValue === NFT_CATEGORY.FineArts} inputDisable={inputDisable} onChange={(item) => {
                         setFormData({ ...formData, Channel: item.value })
                     }} />
 

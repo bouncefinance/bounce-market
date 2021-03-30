@@ -3,6 +3,12 @@ export const AUCTION_TYPE = {
   EnglishAuction: 'english-auction',
 }
 
+export const NFT_CATEGORY = {
+  FineArts: 'Fine Arts',
+  Sports: 'Sports',
+  ComicBooks: 'Comic Books',
+}
+
 export const ITEM_CATEGORY = {
   All: 'All',
   Image: 'Image',
