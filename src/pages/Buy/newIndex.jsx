@@ -120,7 +120,7 @@ const NewIndexStyled = styled.div`
                 display: flex;
                 justify-content: space-between;
                 margin-top: 32px;
-                div{
+                .topBid{
                     h5{
                         font-size: 13px;
                         color: rgba(0,0,0,.6);
@@ -135,6 +135,23 @@ const NewIndexStyled = styled.div`
                             font-weight: 500;
                             color: rgba(31,25,27,.4);
                         }
+                    }
+                }
+
+                .amount {
+                    /* align-items: end; */
+                    display: flex;
+                    align-items: flex-end;
+
+                    h3 {
+                        font-family: Helvetica Neue;
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 20px;
+                        line-height: 130.5%;
+                        text-align: right;
+                        color: #1F191B;
+                        opacity: 0.5;
                     }
                 }
             }
@@ -349,16 +366,16 @@ export default function NewIndex() {
                 />
 
                 <div className="bidInfo">
-                    <div>
+                    <div className="topBid">
                         <h5>Top Bid</h5>
                         <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
                     </div>
 
-                    <div>
-                        <h5>Amount</h5>
+                    <div className="amount">
+                        {/* <h5>Amount</h5> */}
                         <h3>{(poolInfo.amountTotal0 && poolInfo.swappedAmount0P) ?
-                            `${parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)} / ${poolInfo.amountTotal0}` : '0 / 0'}</h3>
+                            `${parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)} of ${poolInfo.amountTotal0}` : '0 of 0'}</h3>
                     </div>
                 </div>
 
