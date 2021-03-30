@@ -17,11 +17,12 @@ const GenerateNFTModalStyled = styled.div`
     width: 1100px;
     /* height: 690px; */
     box-sizing: border-box; 
-    padding: 32px 83px;
+    /* padding: 32px 83px; */
+    padding: 32px 83px 44px 83px;
     box-sizing: border-box;
 
     .button_group{
-        margin-top: 36px;
+        margin-top: 32px;
         button{
             margin-right: 16px;
         }
@@ -190,7 +191,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />
 
                 <div className="category_select">
-                    <PullRadioBox title={'Category'} marginTop='24px' width='150px' options={[{
+                    <PullRadioBox title={'Category'} marginTop='0' /* marginTop='24px' */ width='150px' options={[{
                         value: 'Images'
                     }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'}
                         inputDisable={inputDisable}
@@ -198,7 +199,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             setFormData({ ...formData, Category: item.value })
                         }} />
 
-                    <PullRadioBox title={'Channel'} marginTop='24px' width='150px' options={[{
+                    <PullRadioBox title={'Channel'} marginTop='0' /* marginTop='24px' */ width='150px' options={[{
                         value: 'Fine Arts'
                     }, {
                         value: 'Sports'
@@ -208,15 +209,21 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                         setFormData({ ...formData, Channel: item.value })
                     }} />
 
-                    <Radio title={'Standard'} options={[{
-                        name: 'ERC-721',
-                        value: '721'
-                    }, {
-                        name: 'ERC-1155',
-                        value: '1155'
-                    }]} defaultValue={'721'} onValChange={(item) => {
-                        setNftType(item.name)
-                    }} />
+                    <Radio
+                        title={'Standard'}
+                        marginTop="0"
+                        options={[{
+                            name: 'ERC-721',
+                            value: '721'
+                        }, {
+                            name: 'ERC-1155',
+                            value: '1155'
+                        }]}
+                        defaultValue={'721'}
+                        onValChange={(item) => {
+                            setNftType(item.name)
+                        }} 
+                    />
                 </div>
 
                 {nftType === 'ERC-1155' && <TextInput
@@ -236,7 +243,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     width='620px'
                     // defaultValue={`I’m keepi`}
                     required={true}
-                    marginTop={'24px'}
+                    marginTop={'17px'}
                     inputDisable={inputDisable}
                     onValChange={(val) => {
                         setFormData({ ...formData, Description: val })
@@ -245,7 +252,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
 
                 <Upload type='image' inputDisable={inputDisable}
                     width='200px'
-                    height='200px'
+                    /* height='200px' */
+                    height="100%"
                     lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
                         setFileData(formData)
                     }} />
