@@ -517,6 +517,7 @@ export default function NewIndex() {
 
     const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
         variables: { poolId: Number(poolId) },
+        fetchPolicy:"network-only",
         onCompleted: () => {
             handleSwap(poolSwap.data);
         }
@@ -567,6 +568,7 @@ export default function NewIndex() {
 
     const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
         variables: { poolId: Number(poolId) },
+        fetchPolicy:"network-only",
         onCompleted: () => {
             handleAuction(auctionPool.data);
         }

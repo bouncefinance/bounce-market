@@ -88,7 +88,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
-                    throw new Error('File upload failed,' + response.data.msg)
+                    setBtnText('Submit');
+                    setBtnLock(false)
+                    setInputDisable(false)
+                    // throw new Error('File upload failed,' + response.data.msg)
                 }
             }).then((imgUrl) => {
                 // 第二步 上传数据生成 json

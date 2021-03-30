@@ -4,8 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 // import { useUserInfo } from '../pages/Myprofile/useUserInfo'
 import { useEffect,useContext } from 'react';
 import { myContext } from '@/redux/index.js';
-const host = window.location.host
-const Base_URL = host === 'localhost:3000' ? 'http://market-test.bounce.finance:11000' : 'https://market-test.bounce.finance'
+const Base_URL = 'https://market-test.bounce.finance'
 
 const signStr = 'Welcome to Bounce!'
 let isRequestLock = false;
@@ -80,6 +79,7 @@ export default function useAxios() {
         }
         let res = await axios.post(Base_URL + path, params, config)
         if (res.status === 200 && res.data.code === -1) {
+            console.log("-----------1---------------")
             let timer;
             if(timer){
               clearTimeout(timer);

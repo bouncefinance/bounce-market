@@ -66,7 +66,7 @@ export default function SellNFT() {
 		},
 	];
 
-	const fees = "0.5";
+	const fees = "1";
 	const { exportNftInfo } = useNftInfo();
 	const { nftId } = useParams();
 	const { active } = useActiveWeb3React();

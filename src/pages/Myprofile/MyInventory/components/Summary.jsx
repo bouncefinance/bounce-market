@@ -384,7 +384,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					</div>
 				}
 				<div className="fees">
-					<p className="list"><span className="title">Fees.</span>To bounce </p>
+					<p className="list"><span className="title">Fees.</span>To Fangible </p>
 					<span className="text2 percentage">{fees}%</span>
 				</div>
 				<Button primary disabled={btnLock} onClick={handelSubmit}>Post your Listing</Button>
