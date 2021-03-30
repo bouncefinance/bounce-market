@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
 import icon_search from './assets/search.svg'
+import { useDebouncedValue } from '@/utils/useDebouncedValue'
+import { DEBOUNCE } from '@/utils/const'
 
 const SearchStyled = styled.div`
     position: relative;
@@ -40,18 +42,24 @@ const SearchStyled = styled.div`
 
 export default function Search ({ placeholder, value: defaultValue, onChange, width }) {
     const [isShowButton, setIsShowButton] = useState(false)
-    const [value, setValue] = useState(defaultValue || '')
+    const [search, setSearch] = useState(defaultValue || '')
+    const handleChange = (e) => {
+        const value = e.target.value && e.target.value.toLowerCase();
+        setSearch(value);
+    }
+
+    const debounceFilter = useDebouncedValue(search, DEBOUNCE)
 
     useEffect(() => {
-        onChange && onChange(value)
-        if (String(value).trim().length === 0) {
+        onChange && onChange(debounceFilter)
+        if (String(debounceFilter).trim().length === 0) {
             setIsShowButton(false)
         } else {
             setIsShowButton(true)
         }
-
         // eslint-disable-next-line
-    }, [value])
+    }, [debounceFilter])
+
 
     return (
         <SearchStyled width={width}>
@@ -59,10 +67,7 @@ export default function Search ({ placeholder, value: defaultValue, onChange, wi
                 type="text"
                 placeholder={placeholder}
                 defaultValue={defaultValue}
-                onChange={(e) => {
-                    const val = e.target.value
-                    setValue(val)
-                }}
+                onChange={handleChange}
             />
             {isShowButton && <Button primary width='120px' height='48px'>
                 Search

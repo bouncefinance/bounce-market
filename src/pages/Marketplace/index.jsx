@@ -19,11 +19,8 @@ import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
 import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
-// import Web3 from 'web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
-// import { weiToNum } from '@/utils/useBigNumber'
-// import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -124,8 +121,8 @@ export default function Marketplace() {
 
   const { data } = useQuery(QueryTradePools)
   const { sign_Axios } = useAxios();
-  // const [isSet, setIsSet] = useState(false);
   const [tokenList, setTokenList] = useState([]);
+  const [filterList, setFilterList] = useState([]);
   const [channel, setChannel] = useState(
     type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
       type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
@@ -179,8 +176,9 @@ export default function Marketplace() {
                 token1: poolInfo.token1
               }
             })
-
-            setTokenList(list.sort((a, b) => b.createTime - a.createTime));
+            .sort((a, b) => b.createTime - a.createTime);
+            setTokenList(list);
+            setFilterList(list);
             setLoding(false)
           }
         })
@@ -189,12 +187,17 @@ export default function Marketplace() {
     // eslint-disable-next-line
   }, [active, data, type, channel])
 
+  const handleChange = (filterSearch) => {
+    const list = tokenList.filter(item => item.itemname.toLowerCase().indexOf(filterSearch) > -1
+      || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
+    setFilterList(list);
+  }
 
   const renderListByType = (type) => {
     switch (type) {
       case 'Image':
         return <ul className={`list_wrapper ${type}`}>
-          {tokenList.map((item, index) => {
+          {filterList.map((item, index) => {
             return <li key={index}>
               <CardItem
                 cover={item.fileurl}
@@ -211,7 +214,7 @@ export default function Marketplace() {
 
       default:
         return <ul className={`list_wrapper ${type}`}>
-          {tokenList.map((item, index) => {
+          {filterList.map((item, index) => {
             return <li key={index}>
               <CardItem
                 cover={item.fileurl}
@@ -244,7 +247,6 @@ export default function Marketplace() {
       <ul className="nav_wrapper">
         {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
-            // setIsSet(false);
             setChannel(item.name)
           }}>
             <p className="flex flex-center-y"><img src={
@@ -258,7 +260,7 @@ export default function Marketplace() {
       </ul>
 
       <div className="filterBox">
-        <Search placeholder={'Search Items and Accounts'} />
+        <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
 
         <PullRadioBox prefix={'Gategory:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
           // console.log(item)

@@ -1,3 +1,5 @@
+export const DEBOUNCE = 300;
+
 export const AUCTION_TYPE = {
   FixedSwap: 'fixed-swap',
   EnglishAuction: 'english-auction',
