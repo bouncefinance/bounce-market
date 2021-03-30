@@ -14,6 +14,7 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import { numToWei, weiMul } from "@/utils/useBigNumber";
 import useNftInfo from "@/utils/useToken";
+import { ZERO_ADDRESS } from "@/web3/address_list/token";
 
 const SummaryWrapper = styled.div`
 	grid-area: Summary;
@@ -176,7 +177,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			// Fixswap NFT
 			const _name = nftInfo.itemname
 			const _token0 = nftInfo.contractaddress
-			const _token1 = '0x0000000000000000000000000000000000000000'
+			const _token1 = ZERO_ADDRESS
 			const _tokenId = nftInfo.id
 			const _amountTotal1 = numToWei(price, 18)
 			const _onlyBot = false
@@ -264,7 +265,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				// Fixswap NFT
 				const _name = nftInfo.itemname
 				const _token0 = nftInfo.contractaddress
-				const _token1 = '0x0000000000000000000000000000000000000000'
+				const _token1 = ZERO_ADDRESS
 				const _tokenId = nftInfo.id
 				const _amountMax1 = numToWei(maxPrice, 18)
 				const _amountMin1 = numToWei(minPrice, 18)
@@ -383,7 +384,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					</div>
 				}
 				<div className="fees">
-					<p className="list"><span className="title">Fees.</span>To bounce </p>
+					<p className="list"><span className="title">Fees.</span>To Fangible </p>
 					<span className="text2 percentage">{fees}%</span>
 				</div>
 				<Button primary disabled={btnLock} onClick={handelSubmit}>Post your Listing</Button>

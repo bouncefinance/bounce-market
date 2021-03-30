@@ -131,6 +131,7 @@ export default function Index() {
 	const { sign_Axios } = useAxios();
 
 	const [isSet, setIsSet] = useState(false);
+	// eslint-disable-next-line
 	const [list, setList] = useState([]);
 
 	const history = useHistory();

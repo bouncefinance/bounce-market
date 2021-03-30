@@ -50,15 +50,17 @@ export function CardItem ({ cover, name, standard }) {
 
     const [query721BrandItems, brand721Items] = useLazyQuery(QueryItemsIn721Brand, {
         variables: { owner: account ? account.toLowerCase() : account },
+        fetchPolicy:"network-only",
         onCompleted: () => {
-            setCount(brand721Items.data.bounce721Brands[0].tokenList.length);
+            setCount(brand721Items.data.bounce721Brands[0].tokenList?.length);
         }
     })
 
     const [query1155BrandItems, brand1155Items] = useLazyQuery(QueryItemsIn1155Brand, {
         variables: { owner: account ? account.toLowerCase() : account },
+        fetchPolicy:"network-only",
         onCompleted: () => {
-            setCount(brand1155Items.data.bounce1155Brands[0].tokenLiist.length)
+            setCount(brand1155Items.data.bounce1155Brands[0].tokenLiist?.length)
         }
     })
 

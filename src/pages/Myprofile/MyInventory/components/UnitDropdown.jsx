@@ -11,9 +11,10 @@ const PullRadioBoxStyled = styled.div`
 	border-left:1px solid rgba(0,0,0,0.2);
 	padding-left:12px;
 	.select {
-		width: ${({ width }) => {
+		/* width: ${({ width }) => {
 			return width || "262px";
-		}};
+		}}; */
+		width: 88px;
 		height: ${({ height }) => {
 			return height || "20px";
 		}};
@@ -62,6 +63,10 @@ const PullRadioBoxStyled = styled.div`
 			}
 		}
 
+		&>img.icon{
+			height: 22px;
+		}
+
 		&.disabled {
 			color: #000;
 			opacity: 0.4;
@@ -73,6 +78,8 @@ const PullRadioBoxStyled = styled.div`
 
 	ul.options {
 		position: absolute;
+		top: 37px;
+		left: 0px;
 		width: ${({ width }) => {
 			return width || "262px";
 		}};

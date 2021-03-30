@@ -41,6 +41,36 @@ export function getUSDTAddress(chainId) {
     }
 };
 
+export function getUSDCAddress(chainId) {
+    switch (chainId) {
+        case 1:
+            return ''
+        case 4:
+            return ''
+        case 97:
+            return ''
+        case 56:
+            return ''
+        default:
+            return ''
+    }
+};
+
+export function getBUSDAddress(chainId) {
+    switch (chainId) {
+        case 1:
+            return ''
+        case 4:
+            return ''
+        case 97:
+            return ''
+        case 56:
+            return '0xe9e7cea3dedca5984780bafc599bd69add087d56'
+        default:
+            return '0xe9e7cea3dedca5984780bafc599bd69add087d56'
+    }
+};
+
 
 export function getWBTCAddress(chainId) {
     switch (chainId) {

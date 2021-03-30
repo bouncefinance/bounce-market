@@ -24,6 +24,7 @@ import { QueryTradePools } from '@/utils/apollo'
 // import { useActiveWeb3React } from '@/web3'
 // import useToken from '@/utils/useToken'
 import { weiToNum } from '@/utils/useBigNumber'
+import { AUCTION_TYPE } from '@/utils/const'
 
 const HomeStyled = styled.div`
   .banner{
@@ -183,13 +184,13 @@ export default function Index() {
     setLoadingItems(true)
     const tradePools = data.tradePools.map(item => ({
       ...item,
-      poolType: 'fixed-swap'
-    }));
+      poolType: AUCTION_TYPE.FixedSwap
+    })).filter(item => item.state !== 1)
     const tradeAuctions = data.tradeAuctions.map(item => ({
       ...item,
       price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-      poolType: 'english-auction'
-    }));
+      poolType: AUCTION_TYPE.EnglishAuction
+    })).filter(item => item.state !== 1)
 
     const pools = tradePools.concat(tradeAuctions);
     const list = pools.map(item => item.tokenId);

@@ -134,7 +134,7 @@ export default function PullRadioBox({
     }, [checkVal])
 
     function bindBodyClick(e) {
-        if (e.target === inputRef.current) return;
+        if (e.target === inputRef.current || e.target?.outerHTML === inputRef.current?.children[0]?.children[0]?.outerHTML  || e.target?.outerHTML === inputRef.current?.children[1]?.outerHTML) return;
         setOpen(false);
     }
 
@@ -149,7 +149,7 @@ export default function PullRadioBox({
         <PullRadioBoxStyled style={style} width={width} marginTop={marginTop}>
             {title && <p className={`title`}>{title}</p>}
             <div  ref={inputRef} className={`select ${!disabled && open && 'open'} ${disabled && 'disabled'}`} onClick={() => {
-                if (disabled) return
+                if (disabled) return;
                 setOpen(!open)
             }}>
                 <div>

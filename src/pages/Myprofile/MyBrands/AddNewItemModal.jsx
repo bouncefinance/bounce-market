@@ -89,7 +89,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     setBtnLock(false)
                     setInputDisable(false)
                     setBtnText('Submit');
-                    throw new Error('File upload failed,' + response.data.msg)
+                    // throw new Error('File upload failed,' + response.data.msg)
                 }
             }).then((imgUrl) => {
                 // 第二步 上传数据生成 json

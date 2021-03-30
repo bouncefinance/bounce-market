@@ -2,6 +2,11 @@ import React from "react";
 import Modal from "./Modal";
 import styled from "styled-components";
 import { Button } from "@components/UI-kit";
+import useTransferModal from "@/web3/useTransferModal";
+
+import { getFixedSwapNFT } from "@/web3/address_list/contract";
+import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
+import { useActiveWeb3React, getContract } from "@/web3";
 
 const Wrapper = styled.div`
 	box-sizing: border-box;
@@ -23,7 +28,30 @@ const Wrapper = styled.div`
 	}
 `;
 
-function ConfirmCancelModal({ width, height, open, setOpen, onConfirm }) {
+function ConfirmCancelModal({ width, height, open, setOpen, onConfirm, poolId }) {
+	const { library, chainId, account } = useActiveWeb3React()
+	const { showTransferByStatus } = useTransferModal()
+
+	const handelFixedSwapCancel = async () => {
+		const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
+
+		BounceFixedSwapNFT_CT.methods.cancel(poolId)
+			.send({ from: account })
+			.on('transactionHash', hash => {
+				// setBidStatus(pendingStatus)
+				showTransferByStatus('pendingStatus')
+			})
+			.on('receipt', async (_, receipt) => {
+				// console.log('bid fixed swap receipt:', receipt)
+				// setBidStatus(successStatus)
+				showTransferByStatus('successStatus')
+			})
+			.on('error', (err, receipt) => {
+				// setBidStatus(errorStatus)
+				showTransferByStatus('errorStatus')
+			})
+	}
+
 	return (
 		<>
 			<Modal
@@ -42,7 +70,8 @@ function ConfirmCancelModal({ width, height, open, setOpen, onConfirm }) {
 							height="48px"
 							value="Yes"
 							onClick={() => {
-								onConfirm();
+								onConfirm && onConfirm();
+								!onConfirm && handelFixedSwapCancel()
 								setOpen(false);
 							}}
 						/>
