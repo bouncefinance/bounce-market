@@ -249,9 +249,8 @@ export default function NewIndex () {
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
-        // itemid: poolInfo.tokenId | 0,
+        itemid: poolInfo.tokenId | 0,
         poolid: poolId | 0,
-        // poolid: poolInfo.tokenId | 0,
     }
 
     const setLike = async () => {
