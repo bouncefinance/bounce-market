@@ -7,6 +7,9 @@ import styled from 'styled-components'
 import CommonHeader from '../CommonHeader'
 import MessageTips from '@/components/Modal/MessageTips';
 import { useActiveWeb3React } from '@/web3'
+import { useQuery } from '@apollo/client'
+import { QueryTradePools } from '@/utils/apollo'
+import { AUCTION_TYPE } from '@/utils/const'
 
 const MyLikedStyled = styled.div`
     width: 1100px;
@@ -34,14 +37,42 @@ export default function MyLiked () {
   const { sign_Axios } = useAxios()
   const { account, } = useActiveWeb3React()
   const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
+  const { data } = useQuery(QueryTradePools)
   useEffect(() => {
     const init = async () => {
       setLoding(true)
       // await new Promise((resolve,) => setTimeout(resolve, 600))
+      // console.log(data)
+      const tradePools = data.tradePools.map(item => ({
+        ...item,
+        poolType: AUCTION_TYPE.FixedSwap
+      })).filter(item => item.state !== 1)
+      const tradeAuctions = data.tradeAuctions.map(item => ({
+        ...item,
+        price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
+        poolType: AUCTION_TYPE.EnglishAuction
+      })).filter(item => item.state !== 1)
+      // console.log(tradeAuctions)
+      const pools = tradePools.concat(tradeAuctions);
+
       const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
       setLoding(false)
       if (res.data.code === 200 || res.data.code === 1) {
-        setlist(res.data.data)
+        setlist(res.data.data.map(item => {
+          const poolInfo = pools.find(pool => pool.tokenId === item.itemid);
+          if (!poolInfo) {
+            console.error('poolInfo error:', pools, item)
+            return {}
+          }
+          return {
+            ...item,
+            poolType: poolInfo.poolType,
+            poolId: poolInfo.poolId,
+            price: poolInfo.price,
+            createTime: poolInfo.createTime,
+            token1: poolInfo.token1
+          }
+        }))
       } else {
         setopenMessage({ open: true, message: res.data?.msg || 'error', severity: 'error' })
       }
@@ -54,9 +85,10 @@ export default function MyLiked () {
       //   , name: 'name' + i, price: i + 'E'
       // })))
     }
-    account && init()
+    account && data && init()
     // eslint-disable-next-line
-  }, [account])
+  }, [account, data])
+
   return <div>
     <CommonHeader />
     <MyLikedStyled>
@@ -64,10 +96,17 @@ export default function MyLiked () {
         {list.map((item, index) => {
           // <PopularItem style={{ marginTop: '17px' }} key={name} src={src} name={name} price={price} />
           return <CardItem
+            // cover={item.fileurl}
+            // name={item.itemname}
+            // cardId={item.poolId}
+            // price={!!item.price ? `${item.price} ETH` : `--`}
+            // poolType={item.poolType}
             cover={item.fileurl}
             name={item.itemname}
             cardId={item.poolId}
-            price={!!item.price ? `${item.price} ETH` : `--`}
+            nftId={item.id}
+            price={item.price}
+            token1={item.token1}
             poolType={item.poolType}
             key={index}
           />

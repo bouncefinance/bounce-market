@@ -243,7 +243,7 @@ export default function NewIndex () {
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
     const { sign_Axios } = useAxios()
-    const [loadingLoked, setLoadingLocked] = useState(false)
+    const [loadingLoked, setLoadingLocked] = useState(true)
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
 
     const updateParams = {
@@ -258,7 +258,9 @@ export default function NewIndex () {
         if (res.data.code === 200 || res.data.code === 1) {
             const list = res.data.data
             // console.log('---list----', list)
-            setIsLike(list.map((e) => e.accountaddress?.toLocaleLowerCase()).includes(account.toLocaleLowerCase()))
+            // setIsLike(list.map((e) => e.accountaddress?.toLocaleLowerCase()).includes(account.toLocaleLowerCase()))
+            setIsLike(list.map((e) => e.poolid | 0).includes(poolId | 0))
+            setLoadingLocked(false)
         }
     }
     useEffect(() => {
