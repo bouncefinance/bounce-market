@@ -13,6 +13,7 @@ import ConfirmCancelModal from './components/ConfirmCancelModal'
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
 import { NumberInput } from '@components/UI-kit'
+import BounceERC20 from '@/web3/abi/BounceERC20.json'
 
 import icon_altAvatar from './assets/icon_altAvatar.svg'
 import icon_time from './assets/icon_time.svg'
@@ -25,6 +26,7 @@ import Web3 from 'web3';
 import { formatDistanceToNow } from 'date-fns';
 import { AUCTION_TYPE } from '@/utils/const';
 import { ZERO_ADDRESS } from '@/web3/address_list/token';
+import useToken from '@/utils/useToken';
 
 
 const NewIndexStyled = styled.div`
@@ -187,6 +189,7 @@ const NewIndexStyled = styled.div`
 export default function NewIndex() {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
+    const { hasApprove_ERC_20 } = useToken()
     const { showTransferByStatus } = useTransferModal()
     const { nftInfo, poolInfo } = aucType === AUCTION_TYPE.FixedSwap ? use_FS_Hook(poolId) : use_EA_Hook(poolId)
     const [isLoading, setIsLoading] = useState(false)
@@ -204,10 +207,14 @@ export default function NewIndex() {
             setBtnText('loading ...')
             return
         }
-
+        
         if (poolInfo.status === 'Live') {
             setIsLoading(false)
-            setBtnText('Place a bid')
+            if(poolInfo.poolType==='FS'){
+                setBtnText('Buy Now')
+            }else{
+                setBtnText('Place a bid')
+            }
         } else {
             setBtnText('Sold Out')
         }
@@ -235,11 +242,26 @@ export default function NewIndex() {
 
     const handelBid = async () => {
         setIsLoading(true)
+        console.log(poolInfo)
         if (poolInfo.nftType === '0') {
             const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
+            let sendParams = { from: account }
+            let approveRes = true
+            if (poolInfo.token1 === ZERO_ADDRESS) {
+                sendParams.value = poolInfo.amountTotal1
+            } else {
+                const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
+                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+                if (!approveRes) {
+                    showTransferByStatus('approveStatus')
+                    approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
+                        .send({ from: account })
+                }
+            }
+            if (!approveRes) return showTransferByStatus('errorStatus')
 
             BounceFixedSwapNFT_CT.methods.swap(poolId, poolInfo.amountTotal0)
-                .send({ from: account, value: poolInfo.amountTotal1 })
+                .send(sendParams)
                 .on('transactionHash', hash => {
                     // setBidStatus(pendingStatus)
                     showTransferByStatus('pendingStatus')
@@ -259,10 +281,24 @@ export default function NewIndex() {
             const _amount0 = amount
             const _amount1 = numToWei(weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))
 
+            let sendParams = { from: account }
+            let approveRes = true
+            if (poolInfo.token1 === ZERO_ADDRESS) {
+                sendParams.value = _amount1
+            } else {
+                const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
+                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+                if (!approveRes) {
+                    showTransferByStatus('approveStatus')
+                    approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
+                        .send({ from: account })
+                }
+            }
+            if (!approveRes) return showTransferByStatus('errorStatus')
             // console.log(_amount0, _amount1)
 
             BounceFixedSwapNFT_CT.methods.swap(poolId, _amount0)
-                .send({ from: account, value: _amount1 })
+                .send(sendParams)
                 .on('transactionHash', hash => {
                     // setBidStatus(pendingStatus)
                     showTransferByStatus('pendingStatus')
@@ -362,7 +398,7 @@ export default function NewIndex() {
 
                 <div className="bidInfo">
                     <div>
-                        <h5>Top Bid</h5>
+                        <h5>Current price</h5>
                         <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
                     </div>
@@ -384,7 +420,7 @@ export default function NewIndex() {
                 <div className="Link_MakeOffer">
                     <StyledLink to="#">Make Offer</StyledLink>
                 </div>
-                
+
             </>
         } else if (aucType === AUCTION_TYPE.EnglishAuction) {
             return <>
@@ -517,7 +553,7 @@ export default function NewIndex() {
 
     const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
         variables: { poolId: Number(poolId) },
-        fetchPolicy:"network-only",
+        fetchPolicy: "network-only",
         onCompleted: () => {
             handleSwap(poolSwap.data);
         }
@@ -568,7 +604,7 @@ export default function NewIndex() {
 
     const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
         variables: { poolId: Number(poolId) },
-        fetchPolicy:"network-only",
+        fetchPolicy: "network-only",
         onCompleted: () => {
             handleAuction(auctionPool.data);
         }

@@ -7,7 +7,7 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import { equalAddress } from "./compareFun";
 import { ZERO_ADDRESS } from "@/web3/address_list/token";
 import Web3 from "web3";
-import { weiToNum } from "./useBigNumber";
+import { weiDiv, weiToNum } from "./useBigNumber";
 import axios from "axios";
 
 
@@ -111,6 +111,7 @@ export default function useToken() {
             const balanceOf = await web3.eth.getBalance(account)
             return {
                 chainId,
+                contract: tokenAddr,
                 decimals: 18,
                 symbol: chainId === 56 || chainId === 97 ? 'BNB' : 'ETH',
                 balanceOf,
@@ -122,16 +123,27 @@ export default function useToken() {
         const decimals = await BounceERC20_CT.methods.decimals().call()
         const symbol = await BounceERC20_CT.methods.symbol().call()
         const balanceOf = await BounceERC20_CT.methods.balanceOf(account).call()
-        const price = queryPrice(symbol)
+        const price = await queryPrice(symbol)
 
 
         return {
             chainId,
+            contract: tokenAddr,
             decimals: parseInt(decimals),
             symbol,
             balanceOf,
             balance: weiToNum(balanceOf, decimals),
             price
+        }
+    }
+
+    const hasApprove_ERC_20 = async (token, spender, amount = '1', accountAddr = account) => {
+        const BounceERC20_CT = getContract(library, BounceERC20.abi, token)
+        const allowance = await BounceERC20_CT.methods.allowance(accountAddr, spender).call()
+        if (parseFloat(weiDiv(allowance, amount)) < 1) {
+            return false
+        } else {
+            return true
         }
     }
 
@@ -154,57 +166,6 @@ export default function useToken() {
     }
 
 
-    // const tokenList = () => {
-    //     if (chainId !== 56) {
-    //         return [
-    //             {
-    //                 value: 'ETH',
-    //                 contract: '0x0000000000000000000000000000000000000000',
-    //                 icon: icon_ETH_new,
-    //                 decimals: 18
-    //             },
-    //             {
-    //                 value: "USDT",
-    //                 contract: getUSDTAddress(chainId),
-    //                 icon: icon_USDT,
-    //                 decimals: 6
-    //             },
-    //             {
-    //                 value: "USDC",
-    //                 contract: getUSDCAddress(chainId),
-    //                 icon: icon_USDC,
-    //                 decimals: 6
-    //             }
-    //         ]
-    //     } else {
-    //         return [
-    //             {
-    //                 value: 'BNB' ,
-    //                 contract: '0x0000000000000000000000000000000000000000',
-    //                 icon: icon_BNB,
-    //                 decimals: 18
-    //             }, {
-    //                 value: 'BUSD',
-    //                 contract: getBUSDAddress(chainId),
-    //                 icon: icon_BUSD,
-    //                 decimals: 18
-    //             },
-    //             {
-    //                 value: "USDT",
-    //                 contract: getUSDTAddress(chainId),
-    //                 icon: icon_USDT,
-    //                 decimals: 6
-    //             },
-    //             {
-    //                 value: "USDC",
-    //                 contract: getUSDCAddress(chainId),
-    //                 icon: icon_USDC,
-    //                 decimals: 18
-    //             }
-    //         ]
-    //     }
-    // }
-
     return {
         exportNftInfo,
         exportArrayNftInfo,
@@ -214,6 +175,7 @@ export default function useToken() {
         exportErc20Info,
         getBalance_ERC_1155,
         getBalance_ERC_721,
+        hasApprove_ERC_20
         // tokenList
     }
 }

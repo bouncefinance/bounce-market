@@ -41,10 +41,9 @@ export default function useHook(poolIndex) {
             swappedAmount0P: swappedAmount0P,
             creatorCanceledP: creatorCanceledP
         }
-
-        if (swappedAmount0P < poolsObj.amountTotal0) {
+        if (parseInt(swappedAmount0P) < parseInt(poolsObj.amountTotal0)) {
             poolsObj.status = 'Live'
-        } else if (swappedAmount0P === poolsObj.amountTotal0) {
+        } else if (parseInt(swappedAmount0P) === parseInt(poolsObj.amountTotal0)) {
             poolsObj.status = 'Filled'
         } else {
             poolsObj.status = 'Closed'

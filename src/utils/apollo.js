@@ -35,12 +35,14 @@ export const QueryMyTradePools = gql`
       tokenId
       poolId
       price
+      token1
       createTime
       state
     }
     tradeAuctions(where: {creator: $user}) {
       tokenId
       poolId
+      token1
       lastestBidAmount
       amountMin1
       createTime

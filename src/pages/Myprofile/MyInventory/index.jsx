@@ -11,7 +11,7 @@ import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { SkeletonNFTCards } from '@/pages/component/Skeleton/NFTCard'
-import { weiToNum } from '@/utils/useBigNumber'
+// import { weiToNum } from '@/utils/useBigNumber'
 
 const MyInventoryStyled = styled.div`
     width: 1100px;
@@ -112,6 +112,7 @@ export default function Index() {
         poolType: 'fixed-swap'
       }
     }).filter(item => item.state !== 1)
+    console.log(tradePools)
     const tradeAuctions = myTradeData.tradeAuctions.map(item => {
       return {
         ...item,
@@ -124,7 +125,7 @@ export default function Index() {
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
     // console.log(ids_list)
-    // console.log(pools)
+    console.log(pools)
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       category: '',
@@ -139,7 +140,8 @@ export default function Index() {
               ...poolInfo,
               poolType: item.poolType,
               poolId: item.poolId,
-              price: item.price && weiToNum(item.price),
+              price: item.price,
+              token1:item.token1,
               createTime: item.createTime
             }
           })

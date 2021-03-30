@@ -229,7 +229,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					console.log(amount, price)
 
 					const _amountTotal0 = amount
-					const _amountTotal1 = weiMul(numToWei(price), amount)
+					const _amountTotal1 = weiMul(numToWei(price, newUnit.decimals), amount)
 
 					showTransferByStatus('approveStatus')
 					let approveResult = await hasApprove_ERC_1155(_token0, getFixedSwapNFT(chainId), account)
