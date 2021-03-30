@@ -11,13 +11,11 @@ import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 
 function InputPrice({
 	className,
-	title,
 	price,
 	setPrice,
 	setUnit,
 	ifInputAmount = false,
 	setAmount,
-	notice,
 	gridArea,
 	options,
 	nftInfo
@@ -89,13 +87,11 @@ function InputPrice({
 
 	return (
 		<Wrapper className={className} gridArea={gridArea}>
-			{title && <span className="title">{title}</span>}
-			{notice && <span className="notice">{notice}</span>}
 			<InputRow>
 				<input
 					className="InputPrice"
 					type="text"
-					placeholder="Price"
+					placeholder="Enter Price"
 					maxLength={18}
 					value={priceValue}
 					onChange={checkInputPrice}
@@ -116,7 +112,6 @@ function InputPrice({
 				/>
 			</InputRow>
 			{ifInputAmount && <>
-				<span className="amount">Amount</span>
 				<AmounttRow>
 					<div className="Amount">
 						<input
@@ -147,41 +142,13 @@ const Wrapper = styled.div`
 
 	// display: grid;
 	// align-items: center;
-	// grid-template-rows: 15px 16px 15px 16px 52px 15px 16px 16px 1fr;
+	// grid-template-rows: 52px 15px 16px 16px 1fr;
 	// grid-template-areas:
-	// 	"title"
-	// 	"."
-	// 	"notice"
-	// 	"."
 	// 	"InputRow"
 	// 	"."
 	// 	"amount"
 	// 	"."
 	// 	"AmounttRow";
-
-	span.title {
-		font-family: Helvetica Neue;
-		font-style: normal;
-		font-weight: bold;
-		font-size: 12px;
-		line-height: 15px;
-		color: #1f191b;
-		opacity: 0.7;
-		display:block;
-		grid-area: title;
-	}
-	span.notice {
-		font-family: Helvetica Neue;
-		font-style: normal;
-		font-weight: normal;
-		font-size: 13px;
-		line-height: 15px;
-		color: #1f191b;
-		opacity: 0.5;
-		grid-area: notice;
-		margin: 6px 0 8px;
-		display:block;
-	}
 	
 	span.amount {
 		font-family: Helvetica Neue;
@@ -221,7 +188,7 @@ const Wrapper = styled.div`
 const InputRow = styled.div`
 	grid-area: InputRow;
 	display: grid;
-	grid-template-columns: 79% auto;
+	grid-template-columns: 288px auto;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 	align-items: center;
 	margin-bottom: 20px;
