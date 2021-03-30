@@ -1,4 +1,6 @@
-import React from 'react'
+import { weiToNum } from '@/utils/useBigNumber'
+import useToken from '@/utils/useToken'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
@@ -73,7 +75,20 @@ const PopularItemStyled = styled.div`
 
 export default function PopularItem({ style = {}, itemInfo }) {
     const history = useHistory()
+    const { exportErc20Info } = useToken()
+    const [newPrice, setNewPrice] = useState('Loading Price ...')
 
+    useEffect(() => {
+        getPriceByToken1(itemInfo.price, itemInfo.token1)
+        // eslint-disable-next-line
+    }, [])
+
+    const getPriceByToken1 = async (price, token1) => {
+        if (!price || !token1) return setNewPrice('--')
+        const tokenInfo = await exportErc20Info(token1)
+        const newPrice = weiToNum(price, tokenInfo.decimals)
+        setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
+    }
     return (
         <PopularItemStyled style={style} onClick={() => {
             history.push(`/Marketplace/Image/${itemInfo.poolType}/${itemInfo.poolId}`)
@@ -90,7 +105,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
                     <p className="type">Current Price</p>
                     <p className="tag">{itemInfo.poolId}</p>
                 </div>
-                <h4 className="price">{itemInfo.price} ETH</h4>
+                <h4 className="price">{newPrice}</h4>
             </div>
         </PopularItemStyled>
     )

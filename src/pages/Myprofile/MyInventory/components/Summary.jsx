@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
-
+import { useHistory } from "react-router-dom";
 import Button from "@components/UI-kit/Button/Button";
 
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
@@ -153,9 +153,10 @@ const SummaryWrapper = styled.div`
 function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
-	const [btnLock, setBtnLock] = useState(true)
+	const [btnLock, setBtnLock] = useState(true);
+	const history = useHistory();
 	const { hasApprove_ERC_721, hasApprove_ERC_1155, isOwner_ERC_721 } = useNftInfo()
-
+	
 	useEffect(() => {
 		if (auctionType === 'setPrice') {
 			if (price && nftInfo) {
@@ -164,13 +165,13 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				setBtnLock(true)
 			}
 		} else {
-			if (price && price && unit && duration && nftInfo) {
+			if (unit && duration && nftInfo && minPrice && price && maxPrice) {
 				setBtnLock(false)
 			} else {
 				setBtnLock(true)
 			}
 		}
-	}, [auctionType, price, unit, duration, fees, nftInfo])
+	}, [auctionType, price, unit, duration, fees, nftInfo,minPrice,maxPrice])
 
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
@@ -218,6 +219,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
+							history.push("/MyInventory");
 							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {
@@ -253,6 +255,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
+							history.push("/MyInventory");
 							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {
@@ -272,7 +275,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				const _amountMin1 = numToWei(minPrice, 18)
 				const _amountMinIncr1 = numToWei(minIncr, 18)
 				const _amountReserve1 = numToWei(price, 18)
-				const _duration = duration * 60
+				const _duration = duration * 60 * 60 * 24
 				const _onlyBot = false
 
 				console.log(_name, _token0, _token1, _tokenId,
@@ -311,7 +314,9 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
+							history.push("/MyInventory");
 							showTransferByStatus('successStatus')
+							
 						})
 						.on('error', (err, receipt) => {
 							// setBidStatus(errorStatus)
@@ -348,6 +353,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
+							history.push("/MyInventory");
 							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {

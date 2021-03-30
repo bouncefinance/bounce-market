@@ -105,10 +105,15 @@ export default function useToken() {
         return balance
     }
 
-    const exportErc20Info = async (tokenAddr) => {
+    const exportErc20Info = async (tokenAddr, flag) => {
+        let price = 0
+
         if (tokenAddr === ZERO_ADDRESS) {
             const web3 = new Web3(library?.provider)
             const balanceOf = await web3.eth.getBalance(account)
+            if (flag) {
+                price = chainId === 56 || chainId === 97 ? await queryPrice('BNB') : await queryPrice('ETH')
+            }
             return {
                 chainId,
                 contract: tokenAddr,
@@ -116,14 +121,16 @@ export default function useToken() {
                 symbol: chainId === 56 || chainId === 97 ? 'BNB' : 'ETH',
                 balanceOf,
                 balance: weiToNum(balanceOf),
-                price: chainId === 56 || chainId === 97 ? await queryPrice('BNB') : await queryPrice('ETH')
+                price
             }
         }
         const BounceERC20_CT = getContract(library, BounceERC20.abi, tokenAddr)
         const decimals = await BounceERC20_CT.methods.decimals().call()
         const symbol = await BounceERC20_CT.methods.symbol().call()
         const balanceOf = await BounceERC20_CT.methods.balanceOf(account).call()
-        const price = await queryPrice(symbol)
+        if (flag) {
+            price = await queryPrice(symbol)
+        }
 
 
         return {

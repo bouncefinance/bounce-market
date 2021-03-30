@@ -81,13 +81,7 @@ export default function SellNFT() {
 
 
 	const [fixedSwap_Unit, setFixedSwapUnit] = useState(unitOptions[0]);
-	// const [englishAuction_Unit, setEnglishAuctionUnit] = useState(unitOptions[0]);
-
-
 	const [minimumBid, set_MinimumBid] = useState(0);
-	// const [maxmumBid_Unit, set_MaxmumBid_Unit] = useState("ETH");
-	// const [maximumBid, set_MaximumBid] = useState(0);
-	// const [maximumBid_Unit, set_MaximumBid_Unit] = useState("ETH");
 	const [directPurchasePrice, set_DirectPurchasePrice] = useState(0);
 	const [reservePrice, set_ReservePrice] = useState(0);
 	const [duration, setDuration] = useState(0);
@@ -143,6 +137,7 @@ export default function SellNFT() {
 							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
 							gridArea="Price"
 							options={unitOptions}
+							fixedSwapUnit={fixedSwap_Unit}
 						/>
 
 						<InstructionsDropdown
@@ -186,31 +181,24 @@ export default function SellNFT() {
 								setPrice={set_MinimumBid}
 								unit={minimumBid_Unit}
 								setUnit={set_MinimumBid_Unit}
+								setNewUnit={setFixedSwapUnit}
 								notice="The price bidding starts at. It'll be publicly visible. You can manually accept bids above this value but below your reserve price if you want."
 								gridArea="Minimum_bid"
 								options={unitOptions}
+								fixedSwapUnit={fixedSwap_Unit}
 							/>
-							{/*<InputPrice
-							className="InputPrice Maximum_bid"
-							title="Minimum Increasing"
-							price={maximumBid}
-							setPrice={set_MaximumBid}
-							unit={maximumBid_Unit}
-							setUnit={set_MaximumBid_Unit}
-							notice="The Price Bidding Ends at. It'll Be Publicly Visible. You Can Manually Accept Bids Below This Value But Above Your Reserve Price If You Want."
-							gridArea="Maximum_bid"
-							options={unitOptions}
-						/> */}
 							<InputPrice
 								className="InputPrice Direct_purchase_price"
 								title="Direct purchase price"
 								price={directPurchasePrice}
 								setPrice={set_DirectPurchasePrice}
 								unit={directPurchasePrice_Unit}
+								setNewUnit={setFixedSwapUnit}
 								setUnit={set_directPurchasePrice_Unit}
 								notice="A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct tranaction price must be greater than Minimum Bid minimum starting price."
 								gridArea="Direct_purchase_price"
 								options={unitOptions}
+								fixedSwapUnit={fixedSwap_Unit}
 							/>
 							<InputPrice
 								className="InputPrice Reserve_price"
@@ -223,8 +211,10 @@ export default function SellNFT() {
 								gridArea="Reserve_price"
 								ifInputAmount={true}
 								options={unitOptions}
+								setNewUnit={setFixedSwapUnit}
 								nftInfo={nftInfo}
 								setAmount={setAmount}
+								fixedSwapUnit={fixedSwap_Unit}
 							/>
 							<SelectDuration
 								className="Expriration_Date"
@@ -258,13 +248,13 @@ export default function SellNFT() {
 							auctionType="EnglishAuction"
 							price={reservePrice}
 							unit={reservePrice_Unit}
-							// newUnit={englishAuction_Unit}
 							duration={duration}
 							fees={fees}
 							minPrice={minimumBid}
 							maxPrice={directPurchasePrice}
-							minIncr={minimumBid * 0.05}
+							minIncr={minimumBid * 0.01}
 							amount={amount || 1}
+							newUnit={fixedSwap_Unit}
 						/>
 					</>
 				);

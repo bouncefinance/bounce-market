@@ -35,7 +35,7 @@ const NFTName = "Digital Image Name";
 function Buy() {
 	// const history = useHistory();
 	const { poolId } = useParams();
-	const {hasApprove_ERC_20} = useToken()
+	const { hasApprove_ERC_20 } = useToken()
 	const { exportNftInfo } = useNftInfo();
 	const { showTransferByStatus } = useTransferModal();
 	const { active, library, account, chainId } = useActiveWeb3React();
@@ -223,11 +223,11 @@ function Buy() {
 								primary
 								value={
 									poolsInfo.status &&
-									poolsInfo.status === "Live"
+										poolsInfo.status === "Live"
 										? "Place Bid"
 										: poolsInfo.status === "Filled"
-										? "Sold Out"
-										: "Loading Status ..."
+											? "Sold Out"
+											: "Loading Status ..."
 								}
 								disabled={poolsInfo.status !== "Live"}
 								onClick={handelBid}
@@ -310,8 +310,8 @@ const PageMiddleLeft = styled.div`
 		opacity: 0.5;
 
 		grid-area: DescriptionTitle;
-        padding-top: 22px;
-        padding-bottom: 14px;
+		padding-top: 22px;
+		padding-bottom: 14px;
 	}
 
 	span.descriptionContent {
@@ -326,8 +326,8 @@ const PageMiddleLeft = styled.div`
 
 		grid-area: DescriptionContent;
 
-        padding-top: 12px;
-        padding-bottom: 21px;
+		padding-top: 12px;
+		padding-bottom: 21px;
 	}
 `; */
 

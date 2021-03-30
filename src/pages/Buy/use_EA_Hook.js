@@ -39,7 +39,7 @@ export default function useHook(poolIndex) {
             poolType: 'EA',
             name: pools.name,
             token0: pools.token0,
-            token1: await exportErc20Info(pools.token1),
+            token1: await exportErc20Info(pools.token1, true),
             tokenAmount0: pools.tokenAmount0,
             amountMax1: pools.amountMax1,
             amountMin1: pools.amountMin1,

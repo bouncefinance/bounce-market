@@ -6,7 +6,7 @@ import Fade from "@material-ui/core/Fade";
 import icon_close from "@assets/images/icon/close.svg";
 import styled from "styled-components";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme/* { theme, width, height } */) => ({
 	modal: {
 		display: "flex",
 		alignItems: "center",
@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
 		// padding: theme.spacing(2, 4, 3),
 		maxHeight: "100%",
 		overflowY: "auto",
+		/* width: { width },
+		height: { height }, */
 	},
 }));
 
@@ -27,7 +29,7 @@ const HeaderStyled = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 30px 32px 24px 52px;
+	padding: 30px 32px 24px 38px;
 
 	h3 {
 		font-size: 34px;
@@ -60,40 +62,40 @@ export default function ModalBox({
 	};
 
 	return (
-		<div>
-			<Modal
-				aria-labelledby="transition-modal-title"
-				aria-describedby="transition-modal-description"
-				className={classes.modal}
-				open={open}
-				onClose={handleClose}
-				closeAfterTransition
-				BackdropComponent={Backdrop}
-				BackdropProps={{
-					timeout: 500,
-				}}
-			>
-				<Fade in={open}>
-					<div className={classes.paper}>
-						{header !== {} && (
-							<HeaderStyled>
-								<h3>{header.title}</h3>
-								{header.isClose && (
-									<img
-										src={icon_close}
-										alt=""
-										onClick={() => {
-											setOpen && setOpen(false);
-										}}
-									/>
-								)}
-							</HeaderStyled>
-						)}
+		<Modal
+			aria-labelledby="transition-modal-title"
+			aria-describedby="transition-modal-description"
+			className={classes.modal}
+			open={open}
+			onClose={handleClose}
+			closeAfterTransition
+			BackdropComponent={Backdrop}
+			BackdropProps={{
+				timeout: 500,
+			}}
+			/* width={width}
+			height={height} */
+		>
+			<Fade in={open}>
+				<div className={classes.paper}>
+					{header !== {} && (
+						<HeaderStyled>
+							<h3>{header.title}</h3>
+							{header.isClose && (
+								<img
+									src={icon_close}
+									alt=""
+									onClick={() => {
+										setOpen && setOpen(false);
+									}}
+								/>
+							)}
+						</HeaderStyled>
+					)}
 
-						{children}
-					</div>
-				</Fade>
-			</Modal>
-		</div>
+					{children}
+				</div>
+			</Fade>
+		</Modal>
 	);
 }
