@@ -1,3 +1,4 @@
+import { useActiveWeb3React } from "@/web3";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
@@ -11,12 +12,13 @@ const PullRadioBoxStyled = styled.div`
 	border-left:1px solid rgba(0,0,0,0.2);
 	padding-left:12px;
 	.select {
-		width: ${({ width }) => {
-			return width || "262px";
-		}};
+		/* width: ${({ width }) => {
+		return width || "262px";
+	}}; */
+		width: 88px;
 		height: ${({ height }) => {
-			return height || "20px";
-		}};
+		return height || "20px";
+	}};
 		box-sizing: border-box;
 		display: flex;
 		justify-content: space-between;
@@ -62,6 +64,10 @@ const PullRadioBoxStyled = styled.div`
 			}
 		}
 
+		&>img.icon{
+			height: 22px;
+		}
+
 		&.disabled {
 			color: #000;
 			opacity: 0.4;
@@ -73,9 +79,11 @@ const PullRadioBoxStyled = styled.div`
 
 	ul.options {
 		position: absolute;
+		top: 37px;
+		left: 0px;
 		width: ${({ width }) => {
-			return width || "262px";
-		}};
+		return width || "262px";
+	}};
 		max-height: 220px;
 		box-sizing: border-box;
 		overflow-x: hidden;
@@ -135,11 +143,13 @@ export default function PullRadioBox({
 	icon,
 }) {
 	// 这个组件的option 一定要传value属性
+	const {chainId} = useActiveWeb3React()
 	const [open, setOpen] = useState(false);
 	const [checkVal, setCheckVal] = useState(defaultValue || options[0].value);
 	const [checkItem, setCheckItem] = useState(defaultItem || options[0]);
 
 	useEffect(() => {
+		// console.log(checkVal)
 		onChange && onChange(checkItem);
 		onValChange && onValChange(checkVal);
 		// eslint-disable-next-line
@@ -159,27 +169,25 @@ export default function PullRadioBox({
 						return (
 							<li
 								key={item.value + "_" + index}
-								className={`${
-									item.value === checkVal
+								className={`${item.value === checkVal
 										? "option check"
 										: "option"
-								}`}
+									}`}
 								onClick={() => {
 									setCheckVal(item.value);
 									setCheckItem(item);
 									setOpen(false);
 								}}
 							>
-								{item.value}
+								{(chainId === 56 && item.con === 'ETH') ? 'BNB' : item.value}
 							</li>
 						);
 					})}
 				</ul>
 			)}
 			<div
-				className={`select ${!disabled && open && "open"} ${
-					disabled && "disabled"
-				}`}
+				className={`select ${!disabled && open && "open"} ${disabled && "disabled"
+					}`}
 				onClick={() => {
 					if (disabled) return;
 					setOpen(!open);

@@ -11,7 +11,7 @@ import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { SkeletonNFTCards } from '@/pages/component/Skeleton/NFTCard'
-import { weiToNum } from '@/utils/useBigNumber'
+// import { weiToNum } from '@/utils/useBigNumber'
 
 const MyInventoryStyled = styled.div`
     width: 1100px;
@@ -78,11 +78,24 @@ export default function Index() {
       }
     });
 
+  // const [testQuery, { data: testData }] = useLazyQuery(TestQuery,
+  //   {
+  //     variables: { poolId: 1},
+  //     fetchPolicy: "network-only",
+  //     onCompleted: () => {
+  //       console.log('A_console', testData)
+  //     },
+  //     onError: (err) => {
+  //       console.log('onerror', err);
+  //     }
+  //   });
+
 
   useEffect(() => {
     if (!active) return;
     getMyNFT();
     getMyTradeNFT()
+    // testQuery()
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
 
@@ -99,6 +112,7 @@ export default function Index() {
         poolType: 'fixed-swap'
       }
     }).filter(item => item.state !== 1)
+    console.log(tradePools)
     const tradeAuctions = myTradeData.tradeAuctions.map(item => {
       return {
         ...item,
@@ -110,7 +124,7 @@ export default function Index() {
     const ids_list = nft721_ids.concat(nft1155Items_ids).concat(trade721_ids).concat(trade1155Items_ids)
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
-    console.log(ids_list)
+    // console.log(ids_list)
     console.log(pools)
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
@@ -126,7 +140,8 @@ export default function Index() {
               ...poolInfo,
               poolType: item.poolType,
               poolId: item.poolId,
-              price: item.price && weiToNum(item.price),
+              price: item.price,
+              token1:item.token1,
               createTime: item.createTime
             }
           })

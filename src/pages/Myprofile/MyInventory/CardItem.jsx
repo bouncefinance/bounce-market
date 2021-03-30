@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
@@ -8,6 +8,8 @@ import { Button } from '@components/UI-kit'
 import GenerateNftModal from './GenerateNftModal'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 import ConfirmCancelModal from '../../Buy//components/ConfirmCancelModal'
+import useToken from '@/utils/useToken'
+import { weiToNum } from '@/utils/useBigNumber'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -72,6 +74,14 @@ const CardItemStyled = styled.div`
             button{
                 font-size: 13px;
             }
+
+            &.btn_one{
+                justify-content: center;
+                button{
+                    width: 200px;
+                    font-size: 13px;
+                }
+            }
         }
 
         &:hover .info{
@@ -125,8 +135,24 @@ const CardItemStyled = styled.div`
 
 export function CardItem({ cover, status, nftId, itemname, poolInfo }) {
     const history = useHistory()
+    const {exportErc20Info} = useToken()
     const [openCancel, setOpenCancel] = useState(false)
 
+    const [newPrice, setNewPrice] = useState('--')
+
+    useEffect(() => {
+        // console.log(poolInfo)
+        getPriceByToken1(poolInfo.price, poolInfo.token1)
+        // eslint-disable-next-line
+    }, [])
+
+    const getPriceByToken1 = async (price, token1) => {
+        if (!price || !token1) return setNewPrice('--')
+        const tokenInfo = await exportErc20Info(token1)
+        const newPrice = weiToNum(price, tokenInfo.decimals)
+
+        setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
+    }
 
 
     return (
@@ -145,25 +171,29 @@ export function CardItem({ cover, status, nftId, itemname, poolInfo }) {
                         <div className="line"></div>
                         <div className="flex flex-space-x">
                             <p className="type">{'Top bid'}</p>
-                            <p className="_tag">{'#12345'}</p>
+                            <p className="_tag">{`# ${poolInfo.id}`}</p>
                         </div>
-                        <h4 className="price">{poolInfo.price ? `${poolInfo.price} ETH` : 'Not on sale'}</h4>
+                        <h4 className="price">{poolInfo.price ? newPrice : 'Not on sale'}</h4>
                     </div>
                     {
-                        status === 'Listed' ? <div className='button_group'>
-                            <Button value={'Check Status'} primary onClick={() => {
-                                history.push(`/Marketplace/Image/fixed-swap/${poolInfo.poolId}`)
-                            }} />
-                            <Button value={'Make Unlisted'} onClick={() => {
-                                setOpenCancel(true)
-                            }} />
-                        </div> : <div className='button_group'>
+                        status !== 'Listed' ? <div className='button_group btn_one'>
                             <Button
                                 value={'Sell'}
                                 primary
                                 onClick={() => { history.push(`/MyInventory/${nftId}/Sell`) }}
                             />
                             {/* <Button value={'Make Listed'} /> */}
+                        </div> : poolInfo.poolType === 'fixed-swap' ? <div className='button_group'>
+                            <Button value={'Check Status'} primary onClick={() => {
+                                history.push(`/Marketplace/Image/fixed-swap/${poolInfo.poolId}`)
+                            }} />
+                            <Button value={'Make Unlisted'} onClick={() => {
+                                setOpenCancel(true)
+                            }} />
+                        </div> : <div className='button_group btn_one'>
+                            <Button value={'Check Status'} primary onClick={() => {
+                                history.push(`/Marketplace/Image/fixed-swap/${poolInfo.poolId}`)
+                            }} />
                         </div>
                     }
                 </div>

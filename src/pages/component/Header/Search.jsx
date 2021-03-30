@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import icon_search from './assets/search.svg'
 
 const SearchStyled = styled.input`
-    width: 300px;
+    width: 250px;
     height: 36px;
     margin-left: 60px;
     box-sizing: border-box;

@@ -6,7 +6,7 @@ import upload_avatar from '@assets/images/upload_avatar.svg'
 import { myContext } from '@/redux/index.js'
 const UploadStyled = styled.div`
     display: flex;
-    margin-top: 22px;
+    /* margin-top: 22px; */
 
     .left_img{
         margin-right: 40px;

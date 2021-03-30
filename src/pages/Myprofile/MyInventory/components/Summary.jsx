@@ -150,7 +150,7 @@ const SummaryWrapper = styled.div`
 	}
 `;
 
-function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr }) {
+function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
 	const [btnLock, setBtnLock] = useState(true)
@@ -177,9 +177,10 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			// Fixswap NFT
 			const _name = nftInfo.itemname
 			const _token0 = nftInfo.contractaddress
-			const _token1 = ZERO_ADDRESS
+			// const _token1 = ZERO_ADDRESS
+			const _token1 = newUnit.contract
 			const _tokenId = nftInfo.id
-			const _amountTotal1 = numToWei(price, 18)
+			const _amountTotal1 = numToWei(price, newUnit.decimals)
 			const _onlyBot = false
 
 			const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
@@ -228,7 +229,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					console.log(amount, price)
 
 					const _amountTotal0 = amount
-					const _amountTotal1 = weiMul(numToWei(price), amount)
+					const _amountTotal1 = weiMul(numToWei(price, newUnit.decimals), amount)
 
 					showTransferByStatus('approveStatus')
 					let approveResult = await hasApprove_ERC_1155(_token0, getFixedSwapNFT(chainId), account)
@@ -271,7 +272,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				const _amountMin1 = numToWei(minPrice, 18)
 				const _amountMinIncr1 = numToWei(minIncr, 18)
 				const _amountReserve1 = numToWei(price, 18)
-				const _duration = duration * 60 * 60 * 24
+				const _duration = duration * 60
 				const _onlyBot = false
 
 				console.log(_name, _token0, _token1, _tokenId,

@@ -44,7 +44,8 @@ export default function Radio({
     defaultValue,
     onValChange,
     inputDisable,
-    disabled
+    disabled,
+    marginTop,
 }) {
     const [curSelect, setCurSelect] = useState(options && options[0])
 
@@ -65,7 +66,7 @@ export default function Radio({
     }, [])
 
     return (
-        <RadioStyled>
+        <RadioStyled marginTop={marginTop}>
             {title && <p className={`title`}>{title}</p>}
             <span className='description'>{description}</span>
             <ul className="select_box">

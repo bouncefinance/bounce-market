@@ -69,6 +69,10 @@ const HeaderStyled = styled.div`
                        }
                     }
                 }
+                
+                button {
+                        margin-right: 20px;
+                    }
             }
         }
     }
@@ -120,11 +124,11 @@ const Nav_list = [{
 //     route: '/P2P',
 //     enable: false,
 // },
-{
+/* {
     name: 'Factory',
     route: '/Factory',
     enable: true,
-}]
+} */]
 
 export default function Index () {
     const [isConnectWallect, setIsConnectWallect] = useState(false)
@@ -148,8 +152,8 @@ export default function Index () {
         if (
             pathName === '/MyInventory' ||
             pathName === '/MyActivities' ||
-            pathName === '/MyLiked' ||
-            pathName === '/MyBrands'
+            pathName === '/MyLiked' /* ||
+            pathName === '/MyBrands' */
         ) {
             setIsFangible(true)
         } else {
@@ -205,7 +209,7 @@ export default function Index () {
     useEffect(() => {
         if (!active) return
         if (chainId && chainId !== 4) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "请选择Rinkeby测试网络" });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network." /* "请选择Rinkeby测试网络" */ });
         }
         getUserInfo();
         // eslint-disable-next-line
@@ -250,6 +254,16 @@ export default function Index () {
                                 </li></Tooltip>
                             })}
                         </ul>
+
+                        <Button
+                            width="110px"
+                            height="36px"
+                            value="Create"
+                            onClick={() => {
+                                history.push("/Factory")
+                            }}
+                        />
+                        
                         {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
                             {state.userInfo && state.userInfo.imgurl ? <img src={state.userInfo && state.userInfo.imgurl} alt="" onClick={onHandleShowInfo} /> : <div className='avatar' onClick={onHandleShowInfo}></div>}
                         </div> : <Button className='connect_btn' primary onClick={() => {

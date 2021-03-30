@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router'
 import Search from '../component/Other/Search'
-import { CardItem, VideoCardItem, AudioCardItem } from './CardItem'
+import { CardItem } from './CardItem'
 import { PullRadioBox } from '@components/UI-kit'
 
 import nav_audio from '@assets/images/icon/nav_audio.svg'
@@ -19,9 +19,11 @@ import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
 import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
-import Web3 from 'web3'
+// import Web3 from 'web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE } from '@/utils/const'
+// import useToken from '@/utils/useToken'
+// import { weiToNum } from '@/utils/useBigNumber'
 // import { weiToNum } from '@/utils/useBigNumber'
 // import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
@@ -37,13 +39,13 @@ const MarketplaceStyled = styled.div`
         display: flex;
         padding-bottom: 16px;
         border-bottom: 2px solid rgba(0,0,0,.1);
+
         li{
-            width: 124px;
+            padding: 7px 20px;
             height: 48px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-right: 20px;
             cursor: pointer;
             user-select: none;
             opacity: .4;
@@ -119,6 +121,7 @@ export default function Marketplace() {
   let { type } = useParams()
   const history = useHistory()
   const { active } = useActiveWeb3React()
+  // const { exportErc20Info } = useToken()
 
   const { data } = useQuery(QueryTradePools)
   const { sign_Axios } = useAxios();
@@ -156,7 +159,7 @@ export default function Marketplace() {
 
       setLength(list.length);
       setLoding(true)
-      console.log(channel)
+      // console.log(channel)
       const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
@@ -167,12 +170,14 @@ export default function Marketplace() {
           if (res.status === 200 && res.data.code === 1) {
             const list = res.data.data.map((item, index) => {
               const poolInfo = pools.find(pool => pool.tokenId === item.id);
+
               return {
                 ...item,
                 poolType: poolInfo.poolType,
                 poolId: poolInfo.poolId,
-                price: poolInfo.price ? Web3.utils.fromWei(poolInfo.price) : '--',
-                createTime: poolInfo.createTime
+                price: poolInfo.price,
+                createTime: poolInfo.createTime,
+                token1: poolInfo.token1
               }
             })
 
@@ -196,70 +201,8 @@ export default function Marketplace() {
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.poolId}
-                price={!!item.price ? `${item.price} ETH` : `--`}
-                poolType={item.poolType}
-              />
-            </li>
-          })}
-        </ul>
-
-      case 'Video':
-        return <ul className={`list_wrapper ${type}`}>
-          {tokenList.map((item, index) => {
-            return <li key={index}>
-              <VideoCardItem
-                cover={item.fileurl}
-                name={item.itemname}
-                cardId={item.id}
-                price={!!item.price ? `${item.price} ETH` : '--'}
-                poolType={item.poolType}
-              />
-            </li>
-          })}
-        </ul>
-
-      case 'Audio':
-        return <ul className={`list_wrapper ${type}`}>
-          {tokenList.map((item, index) => {
-            return <li key={index}>
-              <AudioCardItem
-                cover={item.fileurl}
-                name={item.itemname}
-                cardId={item.id}
-                price={!!item.price ? `${item.price} ETH` : '--'}
-                describe={`Audio with a fun birthday song.
-                  Recorded using guitar and drums.
-                  Please enjoy`}
-                poolType={item.poolType}
-              />
-            </li>
-          })}
-        </ul>
-
-      case 'Games':
-        return <ul className={`list_wrapper ${type}`}>
-          {tokenList.map((item, index) => {
-            return <li key={index}>
-              <CardItem
-                cover={item.fileurl}
-                name={item.itemname}
-                cardId={item.id}
-                price={!!item.price ? `${item.price} ETH` : '--'}
-                poolType={item.poolType}
-              />
-            </li>
-          })}
-        </ul>
-
-      case 'Others':
-        return <ul className={`list_wrapper ${type}`}>
-          {tokenList.map((item, index) => {
-            return <li key={index}>
-              <CardItem
-                cover={item.fileurl}
-                name={item.itemname}
-                cardId={item.id}
-                price={!!item.price ? `${item.price} ETH` : '--'}
+                price={item.price}
+                token1={item.token1}
                 poolType={item.poolType}
               />
             </li>
@@ -274,7 +217,8 @@ export default function Marketplace() {
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.id}
-                price={!!item.price ? `${item.price} ETH` : '--'}
+                price={item.price}
+                token1={item.token1}
                 poolType={item.poolType}
               />
             </li>
@@ -282,6 +226,7 @@ export default function Marketplace() {
         </ul>
     }
   }
+
 
 
   return (

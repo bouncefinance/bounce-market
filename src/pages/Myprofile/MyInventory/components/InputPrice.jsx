@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import UnitDropdown from "./UnitDropdown";
-import icon_ETH from "./assets/icon_ETH.svg";
+// import icon_ETH from "./assets/icon_ETH.svg";
 import { useActiveWeb3React } from "@/web3";
 import useToken from "@/utils/useToken";
+
+import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
+// import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 
 
 function InputPrice({
@@ -17,23 +20,25 @@ function InputPrice({
 	notice,
 	gridArea,
 	options,
-	nftInfo
+	nftInfo,
+	setNewUnit
 }) {
-	const { active } = useActiveWeb3React();
+	const { active, chainId } = useActiveWeb3React();
 	const [priceValue, setpriceValue] = useState("");
 	const [balance, setBalance] = useState(0);
 	const [amountValue, setAmountValue] = useState(1);
-	const { getBalance_ERC_1155,getBalance_ERC_721 } = useToken()
+	const [selToken, setSelToken] = useState(options[0]);
+	const { getBalance_ERC_1155, getBalance_ERC_721 } = useToken()
 
 	useEffect(() => {
 		if (!active || !nftInfo || !nftInfo.standard) return;
-		let getBalance 
-		if(nftInfo.standard === 2){
+		let getBalance
+		if (nftInfo.standard === 2) {
 			getBalance = async () => {
 				const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
 				setBalance(balance)
 			}
-		}else if(nftInfo.standard === 1){
+		} else if (nftInfo.standard === 1) {
 			getBalance = async () => {
 				const balance = await getBalance_ERC_721(nftInfo.contractaddress, nftInfo.id)
 				setBalance(balance)
@@ -41,7 +46,7 @@ function InputPrice({
 		}
 		getBalance();
 		// eslint-disable-next-line
-	}, [active, nftInfo,ifInputAmount])
+	}, [active, nftInfo, ifInputAmount])
 	useEffect(() => {
 		if (!price) return;
 		setpriceValue(price)
@@ -70,13 +75,13 @@ function InputPrice({
 		}
 	};
 	const checkAmountVal = (e) => {
-		if(balance && parseFloat(balance) <  parseFloat(e.target.value)){
+		if (balance && parseFloat(balance) < parseFloat(e.target.value)) {
 			setAmount(balance);
 			setAmountValue(balance);
-		}else if(e.target.value > 0){
-			setAmount(e.target.value.replace(/\D/g,''));
-			setAmountValue(e.target.value.replace(/\D/g,''))
-		}else{
+		} else if (e.target.value > 0) {
+			setAmount(e.target.value.replace(/\D/g, ''));
+			setAmountValue(e.target.value.replace(/\D/g, ''))
+		} else {
 			setAmount("")
 			setAmountValue("")
 		}
@@ -97,13 +102,16 @@ function InputPrice({
 				/>
 				<UnitDropdown
 					className={className + "Unit"}
-					width="88px"
+					width="115px"
 					height="32px"
-					options={options}
-					icon={icon_ETH}
-					defaultValue="ETH"
-					disabled={true}
+					options={options.filter(item => item.isShow)}
+					icon={(chainId === 56 && selToken.value === 'ETH') ? icon_BNB : selToken.icon}
+					defaultValue={selToken.value}
+					// disabled={true}
 					onChange={(item) => {
+						console.log(item)
+						setSelToken(item)
+						setNewUnit(item)
 						setUnit && setUnit(item.value);
 					}}
 				/>
@@ -115,7 +123,6 @@ function InputPrice({
 						<input
 							className="InputAmount"
 							type="text"
-							defaultValue={1}
 							placeholder="Amount"
 							maxLength={18}
 							disabled={nftInfo && nftInfo.standard === 1}
@@ -124,9 +131,9 @@ function InputPrice({
 						/>
 						<span className="balance"> Balance: {balance}</span>
 					</div>
-				</AmounttRow>	
+				</AmounttRow>
 			</>}
-			
+
 		</Wrapper>
 	);
 }
@@ -158,7 +165,6 @@ const Wrapper = styled.div`
 		font-weight: bold;
 		font-size: 12px;
 		line-height: 15px;
-		text-transform: capitalize;
 		color: #1f191b;
 		opacity: 0.7;
 		display:block;
@@ -170,7 +176,6 @@ const Wrapper = styled.div`
 		font-weight: normal;
 		font-size: 13px;
 		line-height: 15px;
-		text-transform: capitalize;
 		color: #1f191b;
 		opacity: 0.5;
 		grid-area: notice;

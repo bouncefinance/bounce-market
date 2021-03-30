@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
 import { useHistory } from 'react-router'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
+import { weiToNum } from '@/utils/useBigNumber'
+import useToken from '@/utils/useToken'
 
 const CardItemStyled = styled.div`
     width: 262px;
-    height: 332px;
+    height: 408.6px;
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.2);
     overflow: hidden;
@@ -43,35 +45,97 @@ const CardItemStyled = styled.div`
     }
 
     .item_wrapper{
-        height: 67px;
-        padding: 14px 16px;
+        height: 140px;
+        padding: 21px 19px 24px 20px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         position: relative;
 
+        /* border-top: 1px solid rgba(0,0,0,0.2); */
+
         .info_wrapper{
-            display: flex;
-            flex-direction: column;
+            /* display: flex;
+            flex-direction: column; */
             transform-origin: center;
             transition-duration: 200ms;
             transition-property: transform, opacity;
             transition-timing-function: linear;
-            div{
-                font-size: 12px;
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 8px;
+            
+            
+            display: grid;
+            grid-template-rows: 42px 1fr;
+            row-gap: 12px;
+            grid-template-areas:
+                "info_top"
+                "info_bottom" ;
 
-                span{
-                    color: rgba(0,0,0,.4);
+            .info_top {
+                box-sizing: border-box;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+
+                grid-area: info_top;
+                
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+
+                span {
+                    font-family: Helvetica Neue;
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 130%;
+                    color: #000000;
+
+                    text-overflow: ellipsis;
                 }
             }
 
-            &>p{
-                font-size: 16px;
-                font-weight: 600;
+            .info_bottom {
+                grid-area: info_bottom;
+
+                display: grid;
+                grid-template-rows: 16px 22px;
+                row-gap: 4px;
+                justify-content: space-between;
+                grid-template-areas: 
+                    "type cardId"
+                    "price .";
+                
+                .type {
+                    font-family: Helvetica Neue;
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 13px;
+                    line-height: 16px;
+                    color: #000000;
+                    opacity: 0.5;
+
+                    grid-area: type;
+                }
+
+                .cardId {
+                    font-family: Helvetica Neue;
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 13px;
+                    line-height: 16px;
+                    color: #000000;
+                    opacity: 0.5;
+
+                    grid-area: cardId;
+                }
+
+                .price {
+                    font-family: Helvetica Neue;
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: #000000;
+                }
             }
         }
             
@@ -91,9 +155,26 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem ({ cover, name, price, cardId, poolType }) {
+export function CardItem({ cover, name, price, cardId, poolType, token1 }) {
     const history = useHistory()
-    
+    const {exportErc20Info} = useToken()
+    const [newPrice,setNewPrice] = useState('Loading Price ...')
+    // console.log(price, token1)
+
+    useEffect(() => {
+        getPriceByToken1(price, token1)
+        // eslint-disable-next-line
+    }, [])
+
+    const getPriceByToken1 = async (price, token1)=>{
+        if(!price || !token1) return setNewPrice('--')
+        const tokenInfo =await exportErc20Info(token1)
+        const newPrice = weiToNum(price, tokenInfo.decimals)
+
+        setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
+    }
+
+
     return (
         <CardItemStyled>
             {/* <img src={cover} alt="" /> */}
@@ -101,18 +182,33 @@ export function CardItem ({ cover, name, price, cardId, poolType }) {
             {/* <AutoStretchBaseWidthOrHeightImg src={'http://market-test.bounce.finance:11000/jpgfileget/%E6%B3%B0%E5%8B%923-1616501976.jpg'} width={216} height={216} /> */}
             <div className="item_wrapper">
                 <div className='info_wrapper'>
-                    <div>
+                    {/* <div>
                         <p>{name}</p>
                         <span># {cardId}</span>
                     </div>
-                    <p>{price}</p>
+                    <p>{price}</p> */}
+                    <div className="info_top">
+                        <span className="itemName">
+                            {name}
+                        </span>
+                    </div>
+                    <div className="info_bottom">
+                        <span className="type">Minimum bid</span>
+                        <span className="cardId"># {cardId}</span>
+                        <span className="price">{price}</span>
+                    </div>
                 </div>
 
                 <div className="button_group">{cardId !== '--' &&
-                    <Button primary width={'162px'} onClick={() => {
-                        const pathname = window.location.pathname
-                        history.push(`${pathname}/${poolType}/${cardId}`)
-                    }}>Show More</Button>}
+                    <Button
+                        primary
+                        width={'162px'}
+                        onClick={() => {
+                            const pathname = window.location.pathname
+                            history.push(`${pathname}/${poolType}/${cardId}`)
+                        }}
+                        marginTop="34px"
+                    >Show More</Button>}
                 </div>
             </div>
 
@@ -145,7 +241,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem ({ cover, name, price, cardId, poolType }) {
+export function VideoCardItem({ cover, name, price, cardId, poolType }) {
 
     return (
         <VideoCardItemStyled>
@@ -193,7 +289,7 @@ const AudioCardItemStyled = styled(CardItemStyled)`
        }
 `
 
-export function AudioCardItem ({ cover, name, price, cardId, describe, poolType }) {
+export function AudioCardItem({ cover, name, price, cardId, describe, poolType }) {
     return (
         <AudioCardItemStyled>
             <img src={cover} alt="" />

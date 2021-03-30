@@ -7,8 +7,17 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import { equalAddress } from "./compareFun";
 import { ZERO_ADDRESS } from "@/web3/address_list/token";
 import Web3 from "web3";
-import { weiToNum } from "./useBigNumber";
+import { weiDiv, weiToNum } from "./useBigNumber";
 import axios from "axios";
+
+
+// import { getUSDTAddress, getBUSDAddress, getUSDCAddress } from "@/web3/address_list/token";
+
+// import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
+// import icon_BUSD from '@assets/images/wallet/icon_BUSD.png'
+// import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
+// import icon_USDT from '@assets/images/wallet/icon_USDT.svg'
+// import icon_USDC from '@assets/images/wallet/icon_USDC.svg'
 
 export default function useToken() {
     const { library, account, chainId } = useActiveWeb3React()
@@ -59,7 +68,7 @@ export default function useToken() {
             // 拥有此 NFT某个id
         }
         const ownerAddress = await BounceERC721WithSign_CT.methods.ownerOf(parseInt(nftId)).call()
-        console.log(ownerAddress)
+        // console.log(ownerAddress)
         if (equalAddress(ownerAddress, accountAddr)) {
             return true
         } else {
@@ -102,6 +111,7 @@ export default function useToken() {
             const balanceOf = await web3.eth.getBalance(account)
             return {
                 chainId,
+                contract: tokenAddr,
                 decimals: 18,
                 symbol: chainId === 56 || chainId === 97 ? 'BNB' : 'ETH',
                 balanceOf,
@@ -113,16 +123,27 @@ export default function useToken() {
         const decimals = await BounceERC20_CT.methods.decimals().call()
         const symbol = await BounceERC20_CT.methods.symbol().call()
         const balanceOf = await BounceERC20_CT.methods.balanceOf(account).call()
-        const price = queryPrice(symbol)
+        const price = await queryPrice(symbol)
 
 
         return {
             chainId,
-            decimals,
+            contract: tokenAddr,
+            decimals: parseInt(decimals),
             symbol,
             balanceOf,
             balance: weiToNum(balanceOf, decimals),
             price
+        }
+    }
+
+    const hasApprove_ERC_20 = async (token, spender, amount = '1', accountAddr = account) => {
+        const BounceERC20_CT = getContract(library, BounceERC20.abi, token)
+        const allowance = await BounceERC20_CT.methods.allowance(accountAddr, spender).call()
+        if (parseFloat(weiDiv(allowance, amount)) < 1) {
+            return false
+        } else {
+            return true
         }
     }
 
@@ -144,6 +165,7 @@ export default function useToken() {
         return price
     }
 
+
     return {
         exportNftInfo,
         exportArrayNftInfo,
@@ -152,6 +174,8 @@ export default function useToken() {
         isOwner_ERC_721,
         exportErc20Info,
         getBalance_ERC_1155,
-        getBalance_ERC_721
+        getBalance_ERC_721,
+        hasApprove_ERC_20
+        // tokenList
     }
 }

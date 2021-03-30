@@ -27,6 +27,7 @@ import useHook from "./use_FS_Hook";
 import { weiMul, weiToNum } from "@/utils/useBigNumber";
 import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
 import { AUCTION_TYPE } from "@/utils/const";
+import useToken from "@/utils/useToken";
 
 const NFTType = "Images";
 const NFTName = "Digital Image Name";
@@ -34,6 +35,7 @@ const NFTName = "Digital Image Name";
 function Buy() {
 	// const history = useHistory();
 	const { poolId } = useParams();
+	const {hasApprove_ERC_20} = useToken()
 	const { exportNftInfo } = useNftInfo();
 	const { showTransferByStatus } = useTransferModal();
 	const { active, library, account, chainId } = useActiveWeb3React();
@@ -53,7 +55,7 @@ function Buy() {
 	};
 
 	const handelBid = async () => {
-		console.log(nftInfo, poolsInfo);
+		// console.log(nftInfo, poolsInfo);
 		setIsLoading(true);
 		if (poolsInfo.nftType === "0") {
 			const BounceFixedSwapNFT_CT = getContract(
@@ -61,6 +63,7 @@ function Buy() {
 				BounceFixedSwapNFT.abi,
 				getFixedSwapNFT(chainId)
 			);
+
 
 			BounceFixedSwapNFT_CT.methods
 				.swap(poolId, poolsInfo.amountTotal0)

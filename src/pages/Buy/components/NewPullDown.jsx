@@ -5,6 +5,9 @@ import { Collapse, ListItem, ListItemText } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
 const NewPullDownStyled = styled.div`
+    
+    border-bottom: 1px solid rgba(0,0,0,.1);
+
     .MuiListItem-button:hover{
         background-color: #fff!important;
     }
@@ -16,7 +19,7 @@ const NewPullDownStyled = styled.div`
         padding-right: 0px;
     }
     .nested{
-        /* padding: 0px 16px; */
+        padding-bottom: 16px;
     }
     .MuiTypography-displayBlock{
         color: rgba(31,25,27,0.5);

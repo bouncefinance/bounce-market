@@ -41,6 +41,36 @@ export function getUSDTAddress(chainId) {
     }
 };
 
+export function getUSDCAddress(chainId) {
+    switch (chainId) {
+        case 1:
+            return '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+        case 4:
+            return '0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b'
+        case 97:
+            return ''
+        case 56:
+            return '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d'
+        default:
+            return '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d'
+    }
+};
+
+export function getBUSDAddress(chainId) {
+    switch (chainId) {
+        case 1:
+            return ''
+        case 4:
+            return ''
+        case 97:
+            return ''
+        case 56:
+            return '0xe9e7cea3dedca5984780bafc599bd69add087d56'
+        default:
+            return '0xe9e7cea3dedca5984780bafc599bd69add087d56'
+    }
+};
+
 
 export function getWBTCAddress(chainId) {
     switch (chainId) {
