@@ -196,11 +196,12 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                         value: 'Images'
                     }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'}
                         inputDisable={inputDisable}
+                        
                         onChange={(item) => {
                             setFormData({ ...formData, Category: item.value })
                         }} />
 
-                    <PullRadioBox title={'Channel'} marginTop='24px' width='150px' options={[{
+                    <PullRadioBox title={'Channel'} marginTop='0px' width='150px' options={[{
                         value: NFT_CATEGORY.FineArts
                     }, {
                         value: NFT_CATEGORY.Sports
