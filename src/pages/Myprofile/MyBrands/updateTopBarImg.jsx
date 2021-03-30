@@ -11,6 +11,7 @@ import { ImgToUrl } from '@/utils/imgToUrl'
 import useAxios from '@/utils/useAxios'
 import { UploadStyle } from '@/components/UI-kit/Input/Upload'
 import { useParams } from 'react-router'
+import Slider from '@material-ui/core/Slider';
 
 const UpdateTopBarImgStyle = styled.div`
 width: 1100px;
@@ -59,7 +60,8 @@ export default function UpdateTopBarImg (props) {
   const [image, setImage] = useState(defaultSrc)
   const [cropData, setCropData] = useState("#")
   const [cropper, setCropper] = useState()
-  // let cropperRef = useRef(null)
+  const [corpperOriginZoomValue, setcorpperOriginZoomValue] = useState(10)
+  let [cropperRef, setCropperRef] = useState(null)
   const infoTip = [
     'Supports JPG, PNG, JPEG2000',
     `no more than 100MB, ${ratio[0]}*${ratio[1]} Reccomended`
@@ -84,6 +86,11 @@ export default function UpdateTopBarImg (props) {
       setCropData(cropper.getCroppedCanvas().toDataURL());
     }
   };
+  const onCorpperOriginZoomValueHandleChange = (_, newValue) => {
+    setcorpperOriginZoomValue(newValue)
+    cropperRef.zoomTo(newValue / 10)
+    // console.log(cropperRef)
+  }
 
 
   const handelSubmit = async () => {
@@ -125,7 +132,9 @@ export default function UpdateTopBarImg (props) {
     }
   }
 
-  useEffect(() => { }, [])
+  useEffect(() => {
+    // eslint-disable-next-line
+  }, [])
   return <Modal open={props.open} setOpen={props.setOpen} header={{ title: 'Change Theme Photo', isClose: true }}>
     <UpdateTopBarImgStyle>
       <div className="change_thene_box">
@@ -135,11 +144,12 @@ export default function UpdateTopBarImg (props) {
             <div className="step_title">Cropper</div>
             <Cropper
               // ref={(ref) => cropperRef = ref}
-              style={{ height: 200, width: "100%" }}
+              style={{ height: 500, width: "100%" }}
+              dragMode="move"
               viewMode={1}
               aspectRatio={1440 / 180}
               src={image}
-              autoCropArea={1}
+              autoCropArea={1.5}
               minCanvasWidth={500}
               onInitialized={(instance) => {
                 // console.log('init---', cropperRef.cropper)
@@ -147,9 +157,14 @@ export default function UpdateTopBarImg (props) {
                 setCropper(instance);
               }}
               ready={(e) => {
-                // console.log(e)
+                setCropperRef(e.currentTarget.cropper)
+                e.currentTarget.cropper.setCropBoxData({ width: 1000, })
+                // console.log(e.currentTarget.cropper)
+                // e.currentTarget.cropper.zoomTo(1.5)
+                // move
               }}
             />
+            <Slider value={corpperOriginZoomValue} onChange={onCorpperOriginZoomValueHandleChange} aria-labelledby="continuous-slider" />
             <div className="button_group">
               <Button height='48px' width='302px' onClick={() => {
                 setImage('')

@@ -155,10 +155,10 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId, poolType, token1,nftId }) {
+export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId }) {
     const history = useHistory()
-    const {exportErc20Info} = useToken()
-    const [newPrice,setNewPrice] = useState('Loading Price ...')
+    const { exportErc20Info } = useToken()
+    const [newPrice, setNewPrice] = useState('Loading Price ...')
     // console.log(price, token1)
 
     useEffect(() => {
@@ -166,9 +166,9 @@ export function CardItem({ cover, name, price, cardId, poolType, token1,nftId })
         // eslint-disable-next-line
     }, [])
 
-    const getPriceByToken1 = async (price, token1)=>{
-        if(!price || !token1) return setNewPrice('--')
-        const tokenInfo =await exportErc20Info(token1)
+    const getPriceByToken1 = async (price, token1) => {
+        if (!price || !token1) return setNewPrice('--')
+        const tokenInfo = await exportErc20Info(token1)
         const newPrice = weiToNum(price, tokenInfo.decimals)
 
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
@@ -204,8 +204,8 @@ export function CardItem({ cover, name, price, cardId, poolType, token1,nftId })
                         primary
                         width={'162px'}
                         onClick={() => {
-                            const pathname = window.location.pathname
-                            history.push(`${pathname}/${poolType}/${cardId}`)
+                            // const pathname = window.location.pathname
+                            history.push(`/Marketplace/Image/${poolType}/${cardId}`)
                         }}
                         marginTop="34px"
                     >Show More</Button>}
@@ -241,7 +241,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem({ cover, name, price, cardId, poolType }) {
+export function VideoCardItem ({ cover, name, price, cardId, poolType }) {
 
     return (
         <VideoCardItemStyled>
@@ -289,7 +289,7 @@ const AudioCardItemStyled = styled(CardItemStyled)`
        }
 `
 
-export function AudioCardItem({ cover, name, price, cardId, describe, poolType }) {
+export function AudioCardItem ({ cover, name, price, cardId, describe, poolType }) {
     return (
         <AudioCardItemStyled>
             <img src={cover} alt="" />
