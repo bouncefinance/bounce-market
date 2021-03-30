@@ -3,7 +3,7 @@ import CommonHeader from '../CommonHeader'
 import styled from 'styled-components'
 // import Search from './Search'
 import { PullRadioBox } from '@components/UI-kit'
-import { CardItem, AddCardItem } from './CardItem'
+import { CardItem, AddCardItem } from '../CardItem'
 import { useLazyQuery } from '@apollo/client';
 import { QueryMyNFT, QueryMyTradePools } from '@/utils/apollo'
 
@@ -12,6 +12,7 @@ import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { SkeletonNFTCards } from '@/pages/component/Skeleton/NFTCard'
 import { weiToNum } from '@/utils/useBigNumber'
+import { AUCTION_TYPE } from '@/utils/const'
 
 const MyInventoryStyled = styled.div`
     width: 1100px;
@@ -96,22 +97,20 @@ export default function Index() {
     const tradePools = myTradeData.tradePools.map(item => {
       return {
         ...item,
-        poolType: 'fixed-swap'
+        poolType: AUCTION_TYPE.FixedSwap
       }
     }).filter(item => item.state !== 1)
     const tradeAuctions = myTradeData.tradeAuctions.map(item => {
       return {
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-        poolType: 'english-auction'
+        poolType: AUCTION_TYPE.EnglishAuction
       }
     }).filter(item => item.state !== 1)
 
     const ids_list = nft721_ids.concat(nft1155Items_ids).concat(trade721_ids).concat(trade1155Items_ids)
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
-    console.log(ids_list)
-    console.log(pools)
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       category: '',
@@ -130,7 +129,6 @@ export default function Index() {
               createTime: item.createTime
             }
           })
-          // console.log(list)
           setItemList(list.sort((a, b) => b.createTime - a.createTime));
           setLoading(false)
         }

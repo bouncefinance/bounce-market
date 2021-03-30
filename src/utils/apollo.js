@@ -120,10 +120,14 @@ export const QueryBrandTradeItems = gql`
       tokenId
       poolId
       price
+      createTime
     }
     tradeAuctions(where: {tokenId_in: $tokenList}) {
       tokenId
       poolId
+      lastestBidAmount
+      amountMin1
+      createTime
     }
   }
 `

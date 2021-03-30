@@ -69,9 +69,10 @@ export default function SellNFT () {
 		setInitNftInfo(nftId);
 		// eslint-disable-next-line
 	}, [active]);
-
+	
 	const setInitNftInfo = async (nftId) => {
 		const info = await exportNftInfo(nftId);
+		
 		// console.log(info); 
 		setNftId(info);
 	};
@@ -238,7 +239,7 @@ export default function SellNFT () {
 				return;
 		}
 	};
-
+	
 	return (
 		<Page>
 			<BreadcrumbNav>

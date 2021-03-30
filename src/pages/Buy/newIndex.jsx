@@ -627,7 +627,7 @@ export default function NewIndex() {
                                 <img src={icon_altAvatar} alt="" />
                                 <p>Owned by <a href="http://">{nftInfo.ownername || 'Anonymity'}</a></p>
 
-                                {aucType === 'english-auction' && <div className="close_time">
+                                {aucType === AUCTION_TYPE.EnglishAuction && <div className="close_time">
                                     <img src={icon_time} alt="" />
                                     <span>{poolInfo.showTime}</span>
                                 </div>}

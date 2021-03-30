@@ -5,9 +5,10 @@ import { useHistory } from 'react-router-dom'
 
 // import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
-import GenerateNftModal from './GenerateNftModal'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
-import ConfirmCancelModal from '../../Buy//components/ConfirmCancelModal'
+import { AUCTION_TYPE } from '@/utils/const'
+import ConfirmCancelModal from '../Buy/components/ConfirmCancelModal'
+import GenerateNftModal from './MyInventory/GenerateNftModal'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -127,8 +128,6 @@ export function CardItem({ cover, status, nftId, itemname, poolInfo }) {
     const history = useHistory()
     const [openCancel, setOpenCancel] = useState(false)
 
-
-
     return (
         <>
             <CardItemStyled>
@@ -152,7 +151,7 @@ export function CardItem({ cover, status, nftId, itemname, poolInfo }) {
                     {
                         status === 'Listed' ? <div className='button_group'>
                             <Button value={'Check Status'} primary onClick={() => {
-                                history.push(`/Marketplace/Image/fixed-swap/${poolInfo.poolId}`)
+                                history.push(`/Marketplace/Image/${AUCTION_TYPE.FixedSwap}/${poolInfo.poolId}`)
                             }} />
                             <Button value={'Make Unlisted'} onClick={() => {
                                 setOpenCancel(true)

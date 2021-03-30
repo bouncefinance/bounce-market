@@ -181,7 +181,6 @@ export function AirHome() {
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          console.log(res)
           const list = res.data.data.map(item => {
             const poolInfo = pools.find(pool => pool.tokenId === item.id);
             return {
@@ -190,7 +189,6 @@ export function AirHome() {
               price: poolInfo ? weiToNum(poolInfo.price, 2) : '--',
             }
           })
-
           const list_2 = list.filter(item => {
             return item.poolId
           })
