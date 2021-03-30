@@ -165,13 +165,13 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				setBtnLock(true)
 			}
 		} else {
-			if (unit && duration && nftInfo && minPrice) {
+			if (unit && duration && nftInfo && minPrice && price && maxPrice) {
 				setBtnLock(false)
 			} else {
 				setBtnLock(true)
 			}
 		}
-	}, [auctionType, price, unit, duration, fees, nftInfo,minPrice])
+	}, [auctionType, price, unit, duration, fees, nftInfo,minPrice,maxPrice])
 
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {

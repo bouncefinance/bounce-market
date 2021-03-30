@@ -6,7 +6,7 @@ import { useActiveWeb3React } from "@/web3";
 import useToken from "@/utils/useToken";
 
 import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
-// import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
+import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 
 
 function InputPrice({
@@ -30,7 +30,18 @@ function InputPrice({
 	const [amountValue, setAmountValue] = useState(1);
 	const [selToken, setSelToken] = useState(options[0]);
 	const { getBalance_ERC_1155, getBalance_ERC_721 } = useToken()
-
+	const [currentChainId, setCurrentChainId] = useState("");
+	useEffect(() => {
+		if (!chainId) return;
+		setCurrentChainId(chainId);
+		setSelToken({
+			value: chainId === 56 ? 'BNB' : 'ETH',
+			contract: '0x0000000000000000000000000000000000000000',
+			icon: chainId === 56 ? icon_BNB : icon_ETH_new,
+			isShow: true,
+			decimals: 18
+		})
+	}, [chainId])
 	useEffect(() => {
 		if (!active || !nftInfo || !nftInfo.standard) return;
 		let getBalance
@@ -115,7 +126,7 @@ function InputPrice({
 					width="115px"
 					height="32px"
 					options={options.filter(item => item.isShow)}
-					icon={(chainId === 56 && selToken.value === 'ETH') ? icon_BNB : selToken.icon}
+					icon={(currentChainId === 56 && selToken.value === 'ETH') ? icon_BNB : selToken.icon}
 					fixedSwapUnitVal={selToken?.value}
 					onChange={(item) => {
 						console.log(item)
