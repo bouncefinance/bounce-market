@@ -78,11 +78,24 @@ export default function Index() {
       }
     });
 
+  // const [testQuery, { data: testData }] = useLazyQuery(TestQuery,
+  //   {
+  //     variables: { poolId: 1},
+  //     fetchPolicy: "network-only",
+  //     onCompleted: () => {
+  //       console.log('A_console', testData)
+  //     },
+  //     onError: (err) => {
+  //       console.log('onerror', err);
+  //     }
+  //   });
+
 
   useEffect(() => {
     if (!active) return;
     getMyNFT();
     getMyTradeNFT()
+    // testQuery()
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
 
@@ -110,8 +123,8 @@ export default function Index() {
     const ids_list = nft721_ids.concat(nft1155Items_ids).concat(trade721_ids).concat(trade1155Items_ids)
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
-    console.log(ids_list)
-    console.log(pools)
+    // console.log(ids_list)
+    // console.log(pools)
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       category: '',
