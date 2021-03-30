@@ -248,13 +248,13 @@ export default function SellNFT() {
 							auctionType="EnglishAuction"
 							price={reservePrice}
 							unit={reservePrice_Unit}
-							// newUnit={englishAuction_Unit}
 							duration={duration}
 							fees={fees}
 							minPrice={minimumBid}
 							maxPrice={directPurchasePrice}
 							minIncr={minimumBid * 0.01}
 							amount={amount || 1}
+							newUnit={fixedSwap_Unit}
 						/>
 					</>
 				);
