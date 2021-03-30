@@ -166,7 +166,6 @@ const Wrapper = styled.div`
 		font-weight: bold;
 		font-size: 12px;
 		line-height: 15px;
-		text-transform: capitalize;
 		color: #1f191b;
 		opacity: 0.7;
 		display:block;
@@ -178,7 +177,6 @@ const Wrapper = styled.div`
 		font-weight: normal;
 		font-size: 13px;
 		line-height: 15px;
-		text-transform: capitalize;
 		color: #1f191b;
 		opacity: 0.5;
 		grid-area: notice;

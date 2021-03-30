@@ -71,7 +71,7 @@ const HeaderStyled = styled.div`
                 }
                 
                 button {
-                        margin-right: 44px;
+                        margin-right: 20px;
                     }
             }
         }
@@ -209,7 +209,7 @@ export default function Index () {
     useEffect(() => {
         if (!active) return
         if (chainId && chainId !== 4) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "请选择Rinkeby测试网络" });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network." /* "请选择Rinkeby测试网络" */ });
         }
         getUserInfo();
         // eslint-disable-next-line
@@ -256,7 +256,7 @@ export default function Index () {
                         </ul>
 
                         <Button
-                            width="92px"
+                            width="110px"
                             height="36px"
                             value="Create"
                             onClick={() => {
