@@ -23,7 +23,7 @@ import { useQuery } from '@apollo/client'
 import { QueryTradePools } from '@/utils/apollo'
 // import { useActiveWeb3React } from '@/web3'
 // import useToken from '@/utils/useToken'
-import { weiToNum } from '@/utils/useBigNumber'
+// import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE } from '@/utils/const'
 
 const HomeStyled = styled.div`
@@ -208,7 +208,8 @@ export default function Index() {
               ...item,
               poolType: poolInfo.poolType,
               poolId: poolInfo.poolId,
-              price: poolInfo.price ? weiToNum(poolInfo.price) : '--',
+              price: poolInfo.price,
+              token1: poolInfo.token1,
               createTime: poolInfo.createTime
             }
           })

@@ -11,37 +11,23 @@ import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 
 function InputPrice({
 	className,
-	title,
 	price,
 	setPrice,
 	setUnit,
 	ifInputAmount = false,
 	setAmount,
-	notice,
 	gridArea,
 	options,
-	nftInfo,
-	setNewUnit,
-	fixedSwapUnit
+	nftInfo
 }) {
 	const { active, chainId } = useActiveWeb3React();
 	const [priceValue, setpriceValue] = useState("");
 	const [balance, setBalance] = useState(0);
 	const [amountValue, setAmountValue] = useState(1);
+	// eslint-disable-next-line
 	const [selToken, setSelToken] = useState(options[0]);
 	const { getBalance_ERC_1155, getBalance_ERC_721 } = useToken()
-	const [currentChainId, setCurrentChainId] = useState("");
-	useEffect(() => {
-		if (!chainId) return;
-		setCurrentChainId(chainId);
-		setSelToken({
-			value: chainId === 56 ? 'BNB' : 'ETH',
-			contract: '0x0000000000000000000000000000000000000000',
-			icon: chainId === 56 ? icon_BNB : icon_ETH_new,
-			isShow: true,
-			decimals: 18
-		})
-	}, [chainId])
+
 	useEffect(() => {
 		if (!active || !nftInfo || !nftInfo.standard) return;
 		let getBalance
@@ -59,15 +45,6 @@ function InputPrice({
 		getBalance();
 		// eslint-disable-next-line
 	}, [active, nftInfo, ifInputAmount])
-
-	useEffect(() => {
-		if (fixedSwapUnit){
-			setSelToken(fixedSwapUnit);
-			setUnit(fixedSwapUnit.value);
-		}
-	}, [fixedSwapUnit,setUnit])
-
-
 	useEffect(() => {
 		if (!price) return;
 		setpriceValue(price)
@@ -110,13 +87,11 @@ function InputPrice({
 
 	return (
 		<Wrapper className={className} gridArea={gridArea}>
-			{title && <span className="title">{title}</span>}
-			{notice && <span className="notice">{notice}</span>}
 			<InputRow>
 				<input
 					className="InputPrice"
 					type="text"
-					placeholder="Price"
+					placeholder="Enter Price"
 					maxLength={18}
 					value={priceValue}
 					onChange={checkInputPrice}
@@ -126,23 +101,23 @@ function InputPrice({
 					width="115px"
 					height="32px"
 					options={options.filter(item => item.isShow)}
-					icon={(currentChainId === 56 && selToken.value === 'ETH') ? icon_BNB : selToken.icon}
-					fixedSwapUnitVal={selToken?.value}
+					icon={chainId === 56 ? icon_BNB : icon_ETH_new}
+					defaultValue={chainId === 56 ? 'BNB' : 'ETH'}
+					// disabled={true}
 					onChange={(item) => {
 						console.log(item)
 						setSelToken(item)
-						setNewUnit&&setNewUnit(item)
 						setUnit && setUnit(item.value);
 					}}
 				/>
 			</InputRow>
 			{ifInputAmount && <>
-				<span className="amount">Amount</span>
 				<AmounttRow>
 					<div className="Amount">
 						<input
 							className="InputAmount"
 							type="text"
+							defaultValue={1}
 							placeholder="Amount"
 							maxLength={18}
 							disabled={nftInfo && nftInfo.standard === 1}
@@ -167,41 +142,13 @@ const Wrapper = styled.div`
 
 	// display: grid;
 	// align-items: center;
-	// grid-template-rows: 15px 16px 15px 16px 52px 15px 16px 16px 1fr;
+	// grid-template-rows: 52px 15px 16px 16px 1fr;
 	// grid-template-areas:
-	// 	"title"
-	// 	"."
-	// 	"notice"
-	// 	"."
 	// 	"InputRow"
 	// 	"."
 	// 	"amount"
 	// 	"."
 	// 	"AmounttRow";
-
-	span.title {
-		font-family: Helvetica Neue;
-		font-style: normal;
-		font-weight: bold;
-		font-size: 12px;
-		line-height: 15px;
-		color: #1f191b;
-		opacity: 0.7;
-		display:block;
-		grid-area: title;
-	}
-	span.notice {
-		font-family: Helvetica Neue;
-		font-style: normal;
-		font-weight: normal;
-		font-size: 13px;
-		line-height: 15px;
-		color: #1f191b;
-		opacity: 0.5;
-		grid-area: notice;
-		margin: 6px 0 8px;
-		display:block;
-	}
 	
 	span.amount {
 		font-family: Helvetica Neue;
@@ -241,7 +188,7 @@ const Wrapper = styled.div`
 const InputRow = styled.div`
 	grid-area: InputRow;
 	display: grid;
-	grid-template-columns: 79% auto;
+	grid-template-columns: 288px auto;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 	align-items: center;
 	margin-bottom: 20px;
