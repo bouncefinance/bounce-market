@@ -51,20 +51,25 @@ const StyledDropdown = styled.div`
 	}
 
 	ul {
+		padding: 12px 24px 19px 24px;
+		box-sizing: border-box;
+		border-left: 1px solid rgba(0, 0, 0, 0.2);
+		border-right: 1px solid rgba(0, 0, 0, 0.2);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+		
 		li {
 			font-family: Helvetica Neue;
 			font-style: normal;
 			font-weight: normal;
-			font-size: 16px;
-			line-height: 19px;
-			display: flex;
-			align-items: center;
-			color: #1f191b;
-			text-indent: 20px;
+			font-size: 14px;
+			line-height: 17px;
+			color: #111111;
+			opacity: 0.5;
+
 			margin-bottom: 7px;
 
 			&:last-child {
-				margin-bottom: 20px;
+				margin-bottom: 0;
 			}
 		}
 	}
@@ -77,7 +82,7 @@ export default function InstructionsDropdown({
 	className,
 }) {
 	// 这个组件的option 一定要传value属性
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(true);
 
 	return (
 		<StyledDropdown width={width} height={height} className={className}>

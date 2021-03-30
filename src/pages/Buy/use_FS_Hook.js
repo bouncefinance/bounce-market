@@ -32,7 +32,7 @@ export default function useHook(poolIndex) {
             poolType: 'FS',
             name: pools.name,
             token0: pools.token0,
-            token1: await exportErc20Info(pools.token1),
+            token1: await exportErc20Info(pools.token1, true),
             amountTotal0: pools.amountTotal0,
             amountTotal1: pools.amountTotal1,
             nftType: pools.nftType,

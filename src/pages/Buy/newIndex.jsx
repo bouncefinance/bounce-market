@@ -13,6 +13,8 @@ import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
+/* import PlaceBidModal from './components/PlaceBidModal' */
+
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
 import { NumberInput } from '@components/UI-kit'
@@ -252,6 +254,7 @@ export default function NewIndex () {
         itemid: poolInfo.tokenId | 0,
         poolid: poolId | 0,
     }
+    /* const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false) */
 
     const setLike = async () => {
         const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
@@ -514,8 +517,12 @@ export default function NewIndex () {
 
                 <div className="btn_group">
                     <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
-                        onClick={handelBid}
-                    >{btnText}</Button>
+                        onClick={
+                            handelBid
+                        }
+                    >
+                        {btnText}
+                    </Button>
                 </div>
 
                 <div className="Link_MakeOffer">
@@ -569,8 +576,14 @@ export default function NewIndex () {
 
                 <div className="btn_group">
                     <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
-                        onClick={() => { handelEnglishAuctionBid() }}
-                    >{btnText}</Button>
+                        onClick={() => {
+                            handelEnglishAuctionBid()
+                            /* setOpenPlaceBidModal(true) */
+                        }
+                        }
+                    >{btnText}
+                    </Button>
+
                     {poolInfo.amountMax1 && <Button width='262px' disabled={isLoading || poolInfo.status !== 'Live'} height='48px' onClick={() => {
                         handelEnglishAuctionBid(poolInfo.amountMax1)
                     }}>Buy now for {weiToNum(poolInfo.amountMax1)} ETH</Button>}
@@ -602,6 +615,8 @@ export default function NewIndex () {
                             You have successfully received {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                         </Button>}
                 </div>
+
+                {/* <PlaceBidModal open={openPlaceBidModal} setOpen={setOpenPlaceBidModal} title="Place a Bid" /> */}
             </>
         }
     }
