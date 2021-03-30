@@ -209,7 +209,7 @@ export default function Index () {
     useEffect(() => {
         if (!active) return
         if (chainId && chainId !== 4) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "请选择Rinkeby测试网络" });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network." /* "请选择Rinkeby测试网络" */ });
         }
         getUserInfo();
         // eslint-disable-next-line
