@@ -1,4 +1,5 @@
 import React from 'react'
+import LazyLoad from 'react-lazy-load';
 import styled from 'styled-components'
 import {Link, useHistory} from 'react-router-dom'
 import { Button } from '@components/UI-kit'
@@ -106,7 +107,7 @@ const StyledCard = styled.div`
 
 function BrandCard({img, brandName, profile, avatar, ownerName, id, standard}) {
     const history = useHistory();
-    return (
+    return (<LazyLoad height={332}>
         <StyledCard>
             <img src={img} width={540} height={332} alt=""/>
             <div className="right">
@@ -124,7 +125,7 @@ function BrandCard({img, brandName, profile, avatar, ownerName, id, standard}) {
                 </div>
             </div>
         </StyledCard>
-    )
+    </LazyLoad>)
 }
 
 export default BrandCard

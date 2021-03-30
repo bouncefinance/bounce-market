@@ -98,7 +98,6 @@ export default function Index () {
 
   return (
     <StyledBrandPage>
-
       <div className="row-1">
         <SearchBar placeholder={"Search Brand Name or Brand Creator"}
           onChange={handleChange} />

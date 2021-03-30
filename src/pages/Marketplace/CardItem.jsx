@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import LazyLoad from 'react-lazy-load';
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
 import { useHistory } from 'react-router'
@@ -155,7 +156,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId, poolType, token1,nftId }) {
+export function CardItem({cover, name, price, cardId, poolType, token1,nftId }) {
     const history = useHistory()
     const {exportErc20Info} = useToken()
     const [newPrice,setNewPrice] = useState('Loading Price ...')
@@ -174,12 +175,9 @@ export function CardItem({ cover, name, price, cardId, poolType, token1,nftId })
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
 
-
-    return (
+    return (<LazyLoad height={408}>
         <CardItemStyled>
-            {/* <img src={cover} alt="" /> */}
             <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />
-            {/* <AutoStretchBaseWidthOrHeightImg src={'http://market-test.bounce.finance:11000/jpgfileget/%E6%B3%B0%E5%8B%923-1616501976.jpg'} width={216} height={216} /> */}
             <div className="item_wrapper">
                 <div className='info_wrapper'>
                     {/* <div>
@@ -211,10 +209,8 @@ export function CardItem({ cover, name, price, cardId, poolType, token1,nftId })
                     >Show More</Button>}
                 </div>
             </div>
-
-
         </CardItemStyled>
-    )
+    </LazyLoad>)
 }
 
 const VideoCardItemStyled = styled(CardItemStyled)`
@@ -243,7 +239,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
 
 export function VideoCardItem({ cover, name, price, cardId, poolType }) {
 
-    return (
+    return (<LazyLoad height={408}>
         <VideoCardItemStyled>
             <img src={cover} alt="" />
             <div className="item_wrapper">
@@ -262,7 +258,7 @@ export function VideoCardItem({ cover, name, price, cardId, poolType }) {
 
 
         </VideoCardItemStyled>
-    )
+    </LazyLoad>)
 }
 
 const AudioCardItemStyled = styled(CardItemStyled)`
@@ -290,7 +286,7 @@ const AudioCardItemStyled = styled(CardItemStyled)`
 `
 
 export function AudioCardItem({ cover, name, price, cardId, describe, poolType }) {
-    return (
+    return (<LazyLoad height={408}>
         <AudioCardItemStyled>
             <img src={cover} alt="" />
 
@@ -315,5 +311,5 @@ export function AudioCardItem({ cover, name, price, cardId, describe, poolType }
 
 
         </AudioCardItemStyled>
-    )
+    </LazyLoad>)
 }
