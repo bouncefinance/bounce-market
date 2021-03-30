@@ -671,7 +671,10 @@ export default function NewIndex() {
 
                             <NewPullDown open={true} title='Offers'>
                                 <OffersStyled>
-                                    {offerList.map((item, index) => <div className="Offers flex flex-space-x" key={index}>
+                                    {
+                                    offerList.length > 0
+                                    ?
+                                    offerList.map((item, index) => <div className="Offers flex flex-space-x" key={index}>
                                         <div className="flex Offers-info">
                                             <p className="name">{item.name}</p>
                                             <p className="time">{item.time}</p>
@@ -681,7 +684,10 @@ export default function NewIndex() {
                                             <span>{`${item.price} ETH`}</span>
                                             <span></span>
                                         </div>
-                                    </div>)}
+                                    </div>)
+                                    :
+                                    <span>--</span>
+                                    }
                                 </OffersStyled>
                             </NewPullDown>
                             <NewPullDown open={false} title='Token Info'>
