@@ -9,6 +9,7 @@ import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
+import ConfirmCancelModal from './components/ConfirmCancelModal'
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
 import { NumberInput } from '@components/UI-kit'
@@ -17,6 +18,13 @@ import icon_altAvatar from './assets/icon_altAvatar.svg'
 import icon_time from './assets/icon_time.svg'
 import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
 import TradingHistory from './components/TradingHistory';
+import { useLazyQuery } from '@apollo/client';
+import { QueryFixedSwapPool, QueryEnglishAuction } from '@/utils/apollo';
+import { getEllipsisAddress } from '@/utils/utils';
+import Web3 from 'web3';
+import { formatDistanceToNow } from 'date-fns';
+import { AUCTION_TYPE } from '@/utils/const';
+import { ZERO_ADDRESS } from '@/web3/address_list/token';
 
 
 const NewIndexStyled = styled.div`
@@ -60,6 +68,12 @@ const NewIndexStyled = styled.div`
 
         .container_right{
             width: 540px;
+            .row1 {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
             .seller{
                 display: flex;
                 flex-direction: column;
@@ -167,16 +181,17 @@ export default function NewIndex() {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { showTransferByStatus } = useTransferModal()
-    const { nftInfo, poolInfo } = aucType === 'fixed-swap' ? use_FS_Hook(poolId) : use_EA_Hook(poolId)
+    const { nftInfo, poolInfo } = aucType === AUCTION_TYPE.FixedSwap ? use_FS_Hook(poolId) : use_EA_Hook(poolId)
     const [isLoading, setIsLoading] = useState(false)
     const [btnText, setBtnText] = useState('Place a bid')
     const [amount, setAmount] = useState(1)
     const [bidPrice, setBidPrice] = useState()
     const [minPrice, setMinPrice] = useState(0)
+    const [openModal, setOpenModal] = useState(false)
 
     useEffect(() => {
 
-        // console.log(nftInfo, poolInfo)
+        console.log(nftInfo, poolInfo)
         if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
             setBtnText('loading ...')
@@ -188,6 +203,11 @@ export default function NewIndex() {
             setBtnText('Place a bid')
         } else {
             setBtnText('Sold Out')
+        }
+
+        if (poolInfo.creatorCanceledP) {
+            setBtnText('Seller Canceled')
+            setIsLoading(true)
         }
         // eslint-disable-next-line
     }, [active, nftInfo, poolInfo])
@@ -317,7 +337,7 @@ export default function NewIndex() {
     }
 
     const renderByAucType = () => {
-        if (aucType === 'fixed-swap') {
+        if (aucType === AUCTION_TYPE.FixedSwap) {
             return <>
                 <NumberInput
                     className='input_amount'
@@ -352,19 +372,11 @@ export default function NewIndex() {
                     >{btnText}</Button>
                 </div>
 
-                {poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
-                    < Button onClick={() => {
-                        handelFixedSwapCancel()
-                    }} width='100%' height='48px' marginTop={'12px'} >
-                        Cancel The Deity
-                    </Button>}
 
-                {poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
-                    < Button width='100%' height='48px' disabled marginTop={'12px'} >
-                        This transaction has been cancelled
-                    </Button>}
+
+
             </>
-        } else if (aucType === 'english-auction') {
+        } else if (aucType === AUCTION_TYPE.EnglishAuction) {
             return <>
 
 
@@ -447,25 +459,167 @@ export default function NewIndex() {
         }
     }
 
-    return (
-        <NewIndexStyled>
-            <ul className='crumbs'>
-                <li><span>Marketplace</span></li>
-                <li><span>Fine Arts</span></li>
-                <li><span>Digital Image Name</span></li>
-            </ul>
-            <div className="container">
-                <div className="container_left">
-                    <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
-                    <div className="btn_group">
-                        <OtherButton type='share' value='Share' />
-                        <OtherButton type='like' value='Like' />
-                    </div>
-                </div>
+    const [offerList, setOfferList] = useState([]);
+    const [history, setHistory] = useState([]);
+    const handleSwap = (data) => {
+        const tradePool = data.tradePools[0];
+        const creator = tradePool.creator;
+        const total = tradePool.amountTotal0;
+        const price = Web3.utils.fromWei(tradePool.price);
+        const offerList = data.poolSwaps.map(item => ({
+            name: getEllipsisAddress(item.sender),
+            time: new Date(item.timestamp * 1000).toLocaleString(),
+            amount: item.swapAmount0,
+            price: price,
+        }));
+        setOfferList(offerList);
+        const createList = data.poolCreates.map(item => ({
+            event: 'Created',
+            quantity: total,
+            price: price,
+            from: getEllipsisAddress(ZERO_ADDRESS),
+            to: getEllipsisAddress(creator),
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }));
+        const swapList = data.poolSwaps.map(item => ({
+            event: 'Transfer',
+            quantity: item.swapAmount0,
+            price: price,
+            from: getEllipsisAddress(creator),
+            to: getEllipsisAddress(item.sender),
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }));
+        const cancelList = data.poolCancels.map(item => ({
+            event: 'Cancel',
+            price: price,
+            quantity: item.unswappedAmount0,
+            from: getEllipsisAddress(item.sender),
+            to: '',
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }));
+        const list = createList.concat(swapList).concat(cancelList)
+            .sort((a, b) => b.timestamp - a.timestamp);
+        setHistory(list);
+    }
 
-                <div className="container_right">
-                    <div className="sell_info">
-                        <h3>{nftInfo.itemname || 'Name Is Loading ...'}</h3>
+    const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
+        variables: { poolId: Number(poolId) },
+        onCompleted: () => {
+            handleSwap(poolSwap.data);
+        }
+    });
+
+    const handleAuction = (data) => {
+        const tradePool = data.tradeAuctions[0];
+        const creator = tradePool.creator;
+        const total = tradePool.tokenAmount0;
+        const offerLiist = data.auctionBids.map(item => ({
+            name: getEllipsisAddress(item.sender),
+            time: new Date(item.timestamp * 1000).toLocaleString(),
+            amount: Web3.utils.fromWei(item.amount1),
+            price: '',
+        }))
+        setOfferList(offerLiist);
+        const createList = data.auctionCreates.map(item => ({
+            event: 'Created',
+            quantity: total,
+            price: '',
+            from: getEllipsisAddress(ZERO_ADDRESS),
+            to: getEllipsisAddress(creator),
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }));
+        const bidList = data.auctionBids.map(item => ({
+            event: 'Bid',
+            quantity: '',
+            price: Web3.utils.fromWei(item.amount1),
+            from: getEllipsisAddress(creator),
+            to: getEllipsisAddress(item.sender),
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }))
+        const claimList = data.auctionClaims.map(item => ({
+            event: 'Claim',
+            price: '',
+            quantity: item.amount1,
+            from: getEllipsisAddress(item.sender),
+            to: '',
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }))
+        const list = createList.concat(bidList).concat(claimList)
+            .sort((a, b) => b.timestamp - a.timestamp);
+        setHistory(list);
+    }
+
+    const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
+        variables: { poolId: Number(poolId) },
+        onCompleted: () => {
+            handleAuction(auctionPool.data);
+        }
+    })
+
+    useEffect(() => {
+        if (poolId) {
+            if (aucType === AUCTION_TYPE.FixedSwap) {
+                queryPoolSwap();
+            } else if (aucType === AUCTION_TYPE.EnglishAuction) {
+                queryAuctionPool();
+            }
+        }
+    }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
+
+    return (
+        <>
+            <NewIndexStyled>
+                <ul className='crumbs'>
+                    <li><span>Marketplace</span></li>
+                    <li><span>Fine Arts</span></li>
+                    <li><span>Digital Image Name</span></li>
+                </ul>
+                <div className="container">
+                    <div className="container_left">
+                        <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
+                        <div className="btn_group">
+                            <OtherButton type='share' value='Share' />
+                            <OtherButton type='like' value='Like' />
+                        </div>
+                    </div>
+
+
+                    <div className="container_right">
+                        <div className="sell_info">
+                            <div className="row1">
+                                <h3>{nftInfo.itemname || 'Name Is Loading ...'}</h3>
+
+                                {/* Cancel按钮 */}
+                                {poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
+                                    < Button onClick={
+                                        () => {
+                                            setOpenModal(true)
+                                        }}
+                                        height='30px'
+                                    >
+                                        Cancel
+                                </Button>}
+
+                                {/* Cancel按钮 */}
+                                {poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
+                                    < Button onClick={
+                                        () => {
+                                            /* handelFixedSwapCancel() */
+                                            setOpenModal(true)
+                                        }}
+                                        height='30px'
+                                        disabled
+                                    >
+                                        Canceled
+                                </Button>}
+                            </div>
+                        </div>
                         <div className="seller">
                             <div className='info'>
                                 <img src={icon_altAvatar} alt="" />
@@ -488,20 +642,17 @@ export default function NewIndex() {
 
                             <NewPullDown open={true} title='Offers'>
                                 <OffersStyled>
-                                    <div className="Offers flex flex-space-x">
+                                    {offerList.map((item, index) => <div className="Offers flex flex-space-x" key={index}>
                                         <div className="flex Offers-info">
-                                            <p className="name">@Scarlett_vfx0</p>
-                                            <p className="time">March 18, 2021 at 4:14am</p>
+                                            <p className="name">{item.name}</p>
+                                            <p className="time">{item.time}</p>
+                                            <p className="amount">{item.amount}</p>
                                         </div>
-                                        <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
-                                    </div>
-                                    <div className="Offers flex flex-space-x">
-                                        <div className="flex Offers-info">
-                                            <p className="name">@Scarlett_vfx0</p>
-                                            <p className="time">March 18, 2021 at 4:14am</p>
+                                        <div className="Offers-price">
+                                            <span>{`${item.price} ETH`}</span>
+                                            <span></span>
                                         </div>
-                                        <div className="Offers-price"><span>1.0 ETH</span><span>($909.98)</span></div>
-                                    </div>
+                                    </div>)}
                                 </OffersStyled>
                             </NewPullDown>
                             <NewPullDown open={false} title='Token Info'>
@@ -524,18 +675,23 @@ export default function NewIndex() {
                                 <div>--</div>
                             </NewPullDown>
                             <NewPullDown open={false} title='Trading History'>
-                                <TradingHistory rows={[
-                                    { Event: 'Buy', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vfaaaaa`, Date: `1 days ago` },
-                                    { Event: 'Bid', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vfaaa`, To: `@Scarlett_vf`, Date: `1 days ago` },
-                                    { Event: 'Transfer', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
-                                    { Event: 'Created', Quantity: 159, Price: [`1.0 ETH`, `($909.98)`], From: `@Scarlett_vf`, To: `@Scarlett_vf`, Date: `1 days ago` },
-                                ]} />
+                                <TradingHistory rows={
+                                    history.map((item, index) => ({
+                                        Event: item.event,
+                                        Quantity: item.quantity,
+                                        Price: [`${item.price} ETH`, `($)`],
+                                        From: getEllipsisAddress(item.from),
+                                        To: getEllipsisAddress(item.to),
+                                        Date: item.date,
+                                    }))
+                                } />
                             </NewPullDown>
                         </div>
                     </div>
                 </div>
-            </div>
-        </NewIndexStyled>
+            </NewIndexStyled >
+            <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />
+        </>
     )
 }
 
@@ -556,6 +712,10 @@ line-height: 15px;
         }
         .time{
             margin-left: 27px;
+            color: rgba(0,0,0,.5);
+        }
+        .amount{
+            margin-left: 24px;
             color: rgba(0,0,0,.5);
         }
     }

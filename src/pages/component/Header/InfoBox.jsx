@@ -119,7 +119,7 @@ const InfoList = [{
     route: ''
 }]
 
-export default function InfoBox ({ setIsShowInfo, username }) {
+export default function InfoBox ({ setIsShowInfo, username, onBodyHandle, offBodyHandle }) {
     const history = useHistory()
     const [curItem, setCurItem] = useState(-1)
     const { account } = useActiveWeb3React()
@@ -152,7 +152,9 @@ export default function InfoBox ({ setIsShowInfo, username }) {
                         onClick={(e) => {
                             window.event ? window.event.cancelBubble = true : e.stopPropagation()
                             if (item.name === 'Account Settings') {
-                                return setIsSettingAccount(true)
+                                offBodyHandle()
+                                setIsSettingAccount(true)
+                                return
                             }
                             if (item.route === '') return
                             history.push(item.route)
@@ -166,7 +168,12 @@ export default function InfoBox ({ setIsShowInfo, username }) {
 
             </ul>
 
-            <SettingAccountModal open={isSettingAccount} setOpen={setIsSettingAccount} />
+            <SettingAccountModal open={isSettingAccount} setOpen={(v) => {
+                if (v === false) {
+                    // onBodyHandle()
+                }
+                setIsSettingAccount(v)
+            }} />
         </InfoBoxStyled>
     )
 }

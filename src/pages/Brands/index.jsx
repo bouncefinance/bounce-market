@@ -10,6 +10,7 @@ import { QueryBrands } from '@/utils/apollo'
 import useAxios from '@/utils/useAxios'
 import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
+import { SkeletonBrandRowCards } from '../component/Skeleton/Brandrow'
 
 const StyledBrandPage = styled.div`
     width: 1100px;
@@ -47,12 +48,13 @@ const StyledBrandPage = styled.div`
     }
 `
 
-export default function Index() {
+export default function Index () {
   const { data } = useQuery(QueryBrands);
   const { active } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
 
   const [list, setList] = useState([])
+  const [loding, setloding] = useState(true)
 
   useEffect(() => {
     if (!active) return;
@@ -60,29 +62,32 @@ export default function Index() {
       const bounce721Brands = data.bounce721Brands.map(item => item.id)
       const bounce1155Brands = data.bounce1155Brands.map(item => item.id)
       const list = bounce721Brands.concat(bounce1155Brands);
-      sign_Axios.post(Controller.brands.getbrandsbyfilter,  {
-        Brandcontractaddressess:  list
+      setloding(true)
+      sign_Axios.post(Controller.brands.getbrandsbyfilter, {
+        Brandcontractaddressess: list
       })
-      .then(res => {
-        if (res.status === 200 && res.data.code === 1) {
-          const itemList = res.data.data.map(item => ({
-            id: item.id,
-            img: item.imgurl,
-            brandName: item.brandname,
-            profile: item.description,
-            avatar: item.imgurl,
-            ownerName: item.ownername,
-            standard:  item.standard,
-          }))
-          setList(itemList);
-        }
-      })
+        .then(res => {
+          if (res.status === 200 && res.data.code === 1) {
+            const itemList = res.data.data.map(item => ({
+              id: item.id,
+              img: item.imgurl,
+              brandName: item.brandname,
+              profile: item.description,
+              avatar: item.imgurl,
+              ownerName: item.ownername,
+              standard: item.standard,
+            }))
+            setList(itemList);
+            setloding(false)
+          }
+        })
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [active, data]);
 
   return (
     <StyledBrandPage>
+
       <div className="row-1">
         <SearchBar placeholder={"Search Brand Name or Brand Creator"} />
         <DropDownMenu
@@ -98,6 +103,7 @@ export default function Index() {
           }}
         />
       </div>
+      {loding && <SkeletonBrandRowCards n={2} />}
       <div className="BrandCardList">
         {
           list.map(
