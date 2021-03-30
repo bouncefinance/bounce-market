@@ -54,6 +54,7 @@ export default function Index () {
   const { sign_Axios } = useAxios();
 
   const [list, setList] = useState([])
+  const [filterList, setFilterList] = useState([]);
   const [loding, setloding] = useState(true)
 
   useEffect(() => {
@@ -76,22 +77,31 @@ export default function Index () {
               avatar: item.imgurl,
               ownerName: item.ownername,
               standard: item.standard,
-              popularweight: item.popularweight
+              popularweight: item.popularweight,
+              owneraddress: item.owneraddress,
             }))
             .sort((a, b) => b.popularweight - a.popularweight);
             setList(itemList);
+            setFilterList(itemList);
             setloding(false)
           }
         })
     }
     // eslint-disable-next-line
   }, [active, data]);
+  
+  const handleChange = (filterSearch) => {
+    const result = list.filter(item => item.brandName.toLowerCase().indexOf(filterSearch) > -1
+      || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
+    setFilterList(result);
+  }
 
   return (
     <StyledBrandPage>
 
       <div className="row-1">
-        <SearchBar placeholder={"Search Brand Name or Brand Creator"} />
+        <SearchBar placeholder={"Search Brand Name or Brand Creator"}
+          onChange={handleChange} />
         <DropDownMenu
           width={"261px"}
           options={[{
@@ -108,7 +118,7 @@ export default function Index () {
       {loding && <SkeletonBrandRowCards n={2} />}
       <div className="BrandCardList">
         {
-          list.map(
+          filterList.map(
             (cardsInfo, index) => {
               return (
                 <BrandCard
