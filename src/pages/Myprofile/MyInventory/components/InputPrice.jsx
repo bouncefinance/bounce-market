@@ -111,7 +111,7 @@ function InputPrice({
 					onChange={(item) => {
 						console.log(item)
 						setSelToken(item)
-						setNewUnit(item)
+						setNewUnit&&setNewUnit(item)
 						setUnit && setUnit(item.value);
 					}}
 				/>
