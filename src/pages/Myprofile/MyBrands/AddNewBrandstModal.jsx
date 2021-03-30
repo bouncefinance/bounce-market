@@ -97,7 +97,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                     setBtnLock(false)
                     setInputDisable(false)
                     setBtnText('Save');
-                    throw new Error('File upload failed,' + response.data.msg)
+                    // throw new Error('File upload failed,' + response.data.msg)
                 }
             }).then((imgUrl) => {
                 setBtnLock(true)
