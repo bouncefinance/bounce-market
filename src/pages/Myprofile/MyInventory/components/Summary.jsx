@@ -150,7 +150,7 @@ const SummaryWrapper = styled.div`
 	}
 `;
 
-function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr }) {
+function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
 	const [btnLock, setBtnLock] = useState(true)
@@ -177,9 +177,10 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			// Fixswap NFT
 			const _name = nftInfo.itemname
 			const _token0 = nftInfo.contractaddress
-			const _token1 = ZERO_ADDRESS
+			// const _token1 = ZERO_ADDRESS
+			const _token1 = newUnit.contract
 			const _tokenId = nftInfo.id
-			const _amountTotal1 = numToWei(price, 18)
+			const _amountTotal1 = numToWei(price, newUnit.decimals)
 			const _onlyBot = false
 
 			const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))

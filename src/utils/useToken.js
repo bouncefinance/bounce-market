@@ -10,6 +10,15 @@ import Web3 from "web3";
 import { weiToNum } from "./useBigNumber";
 import axios from "axios";
 
+
+// import { getUSDTAddress, getBUSDAddress, getUSDCAddress } from "@/web3/address_list/token";
+
+// import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
+// import icon_BUSD from '@assets/images/wallet/icon_BUSD.png'
+// import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
+// import icon_USDT from '@assets/images/wallet/icon_USDT.svg'
+// import icon_USDC from '@assets/images/wallet/icon_USDC.svg'
+
 export default function useToken() {
     const { library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
@@ -59,7 +68,7 @@ export default function useToken() {
             // 拥有此 NFT某个id
         }
         const ownerAddress = await BounceERC721WithSign_CT.methods.ownerOf(parseInt(nftId)).call()
-        console.log(ownerAddress)
+        // console.log(ownerAddress)
         if (equalAddress(ownerAddress, accountAddr)) {
             return true
         } else {
@@ -118,7 +127,7 @@ export default function useToken() {
 
         return {
             chainId,
-            decimals,
+            decimals: parseInt(decimals),
             symbol,
             balanceOf,
             balance: weiToNum(balanceOf, decimals),
@@ -144,6 +153,58 @@ export default function useToken() {
         return price
     }
 
+
+    // const tokenList = () => {
+    //     if (chainId !== 56) {
+    //         return [
+    //             {
+    //                 value: 'ETH',
+    //                 contract: '0x0000000000000000000000000000000000000000',
+    //                 icon: icon_ETH_new,
+    //                 decimals: 18
+    //             },
+    //             {
+    //                 value: "USDT",
+    //                 contract: getUSDTAddress(chainId),
+    //                 icon: icon_USDT,
+    //                 decimals: 6
+    //             },
+    //             {
+    //                 value: "USDC",
+    //                 contract: getUSDCAddress(chainId),
+    //                 icon: icon_USDC,
+    //                 decimals: 6
+    //             }
+    //         ]
+    //     } else {
+    //         return [
+    //             {
+    //                 value: 'BNB' ,
+    //                 contract: '0x0000000000000000000000000000000000000000',
+    //                 icon: icon_BNB,
+    //                 decimals: 18
+    //             }, {
+    //                 value: 'BUSD',
+    //                 contract: getBUSDAddress(chainId),
+    //                 icon: icon_BUSD,
+    //                 decimals: 18
+    //             },
+    //             {
+    //                 value: "USDT",
+    //                 contract: getUSDTAddress(chainId),
+    //                 icon: icon_USDT,
+    //                 decimals: 6
+    //             },
+    //             {
+    //                 value: "USDC",
+    //                 contract: getUSDCAddress(chainId),
+    //                 icon: icon_USDC,
+    //                 decimals: 18
+    //             }
+    //         ]
+    //     }
+    // }
+
     return {
         exportNftInfo,
         exportArrayNftInfo,
@@ -152,6 +213,7 @@ export default function useToken() {
         isOwner_ERC_721,
         exportErc20Info,
         getBalance_ERC_1155,
-        getBalance_ERC_721
+        getBalance_ERC_721,
+        // tokenList
     }
 }

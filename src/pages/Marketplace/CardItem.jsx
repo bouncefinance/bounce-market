@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
 import { useHistory } from 'react-router'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
+import { weiToNum } from '@/utils/useBigNumber'
+import useToken from '@/utils/useToken'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -91,9 +93,26 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem ({ cover, name, price, cardId, poolType }) {
+export function CardItem({ cover, name, price, cardId, poolType, token1 }) {
     const history = useHistory()
-    
+    const {exportErc20Info} = useToken()
+    const [newPrice,setNewPrice] = useState('Loading Price ...')
+    // console.log(price, token1)
+
+    useEffect(() => {
+        getPriceByToken1(price, token1)
+        // eslint-disable-next-line
+    }, [])
+
+    const getPriceByToken1 = async (price, token1)=>{
+        if(!price || !token1) return setNewPrice('--')
+        const tokenInfo =await exportErc20Info(token1)
+        const newPrice = weiToNum(price, tokenInfo.decimals)
+
+        setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
+    }
+
+
     return (
         <CardItemStyled>
             {/* <img src={cover} alt="" /> */}
@@ -105,7 +124,7 @@ export function CardItem ({ cover, name, price, cardId, poolType }) {
                         <p>{name}</p>
                         <span># {cardId}</span>
                     </div>
-                    <p>{price}</p>
+                    <p>{newPrice}</p>
                 </div>
 
                 <div className="button_group">{cardId !== '--' &&
@@ -145,7 +164,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem ({ cover, name, price, cardId, poolType }) {
+export function VideoCardItem({ cover, name, price, cardId, poolType }) {
 
     return (
         <VideoCardItemStyled>
@@ -193,7 +212,7 @@ const AudioCardItemStyled = styled(CardItemStyled)`
        }
 `
 
-export function AudioCardItem ({ cover, name, price, cardId, describe, poolType }) {
+export function AudioCardItem({ cover, name, price, cardId, describe, poolType }) {
     return (
         <AudioCardItemStyled>
             <img src={cover} alt="" />

@@ -12,6 +12,7 @@ export const QueryTradePools = gql`
     tradePools {
       tokenId
       poolId
+      token1
       price
       createTime
       state
@@ -19,6 +20,7 @@ export const QueryTradePools = gql`
     tradeAuctions {
       tokenId
       poolId
+      token1
       lastestBidAmount
       amountMin1
       createTime

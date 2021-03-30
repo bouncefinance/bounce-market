@@ -6,7 +6,7 @@ import { useActiveWeb3React } from "@/web3";
 import useToken from "@/utils/useToken";
 
 import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
-import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
+// import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 
 
 function InputPrice({
@@ -20,13 +20,13 @@ function InputPrice({
 	notice,
 	gridArea,
 	options,
-	nftInfo
+	nftInfo,
+	setNewUnit
 }) {
 	const { active, chainId } = useActiveWeb3React();
 	const [priceValue, setpriceValue] = useState("");
 	const [balance, setBalance] = useState(0);
 	const [amountValue, setAmountValue] = useState(1);
-	// eslint-disable-next-line
 	const [selToken, setSelToken] = useState(options[0]);
 	const { getBalance_ERC_1155, getBalance_ERC_721 } = useToken()
 
@@ -105,12 +105,13 @@ function InputPrice({
 					width="115px"
 					height="32px"
 					options={options.filter(item => item.isShow)}
-					icon={chainId === 56 ? icon_BNB : icon_ETH_new}
-					defaultValue={chainId === 56 ? 'BNB' : 'ETH'}
+					icon={(chainId === 56 && selToken.value === 'ETH') ? icon_BNB : selToken.icon}
+					defaultValue={selToken.value}
 					// disabled={true}
 					onChange={(item) => {
 						console.log(item)
 						setSelToken(item)
+						setNewUnit(item)
 						setUnit && setUnit(item.value);
 					}}
 				/>

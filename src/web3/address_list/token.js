@@ -44,15 +44,15 @@ export function getUSDTAddress(chainId) {
 export function getUSDCAddress(chainId) {
     switch (chainId) {
         case 1:
-            return ''
+            return '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
         case 4:
-            return ''
+            return '0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b'
         case 97:
             return ''
         case 56:
-            return ''
+            return '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d'
         default:
-            return ''
+            return '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d'
     }
 };
 

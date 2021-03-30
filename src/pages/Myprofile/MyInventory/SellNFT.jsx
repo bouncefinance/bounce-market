@@ -78,6 +78,12 @@ export default function SellNFT() {
 	const [minimumBid_Unit, set_MinimumBid_Unit] = useState("ETH");
 	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState("ETH");
 	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
+
+
+	const [fixedSwap_Unit, setFixedSwapUnit] = useState(unitOptions[0]);
+	// const [englishAuction_Unit, setEnglishAuctionUnit] = useState(unitOptions[0]);
+
+
 	const [minimumBid, set_MinimumBid] = useState(0);
 	// const [maxmumBid_Unit, set_MaxmumBid_Unit] = useState("ETH");
 	// const [maximumBid, set_MaximumBid] = useState(0);
@@ -129,6 +135,7 @@ export default function SellNFT() {
 							title="Price"
 							setPrice={setPrice}
 							setUnit={set_PriceUnit}
+							setNewUnit={setFixedSwapUnit} // new 
 							nftInfo={nftInfo}
 							ifInputAmount={true}
 							setAmount={setAmount}
@@ -162,6 +169,7 @@ export default function SellNFT() {
 							price={price}
 							amount={amount || 1}
 							unit={priceUnit}
+							newUnit={fixedSwap_Unit}
 							fees={fees}
 						/>
 					</>
@@ -249,6 +257,7 @@ export default function SellNFT() {
 							auctionType="EnglishAuction"
 							price={reservePrice}
 							unit={reservePrice_Unit}
+							// newUnit={englishAuction_Unit}
 							duration={duration}
 							fees={fees}
 							minPrice={minimumBid}
