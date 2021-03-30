@@ -139,7 +139,7 @@ export default function Index () {
     const { getUserInfo } = useUserInfo()
     const history = useHistory()
     const { state } = useContext(myContext);
-    const { dispatch } = useContext(myContext);
+    // const { dispatch } = useContext(myContext);
     const [isFangible, setIsFangible] = useState(false)
 
     const updateActive = () => {
@@ -208,9 +208,9 @@ export default function Index () {
 
     useEffect(() => {
         if (!active) return
-        if (chainId && chainId !== 4) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network." /* "请选择Rinkeby测试网络" */ });
-        }
+        // if (chainId && chainId !== 4) {
+        //     dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network." /* "请选择Rinkeby测试网络" */ });
+        // }
         getUserInfo();
         // eslint-disable-next-line
     }, [account, chainId, active])

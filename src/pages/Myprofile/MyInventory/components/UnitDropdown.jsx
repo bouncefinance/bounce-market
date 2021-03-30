@@ -148,7 +148,6 @@ export default function PullRadioBox({
 	const [open, setOpen] = useState(false);
 	const [checkVal, setCheckVal] = useState(defaultValue || options[0].value);
 	const [checkItem, setCheckItem] = useState(defaultItem || options[0]);
-
 	useEffect(() => {
 		// console.log(checkVal)
 		onChange && onChange(checkItem);
