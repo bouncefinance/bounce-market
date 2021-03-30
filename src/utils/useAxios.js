@@ -12,6 +12,7 @@ let isRequestLock = false;
 export default function useAxios() {
     const { account, library } = useWeb3React();
     const {dispatch} = useContext(myContext);
+
     // const { getUserInfo } = useUserInfo()
     useEffect(() => {
         if (!account || isRequestLock) return
@@ -85,8 +86,8 @@ export default function useAxios() {
               clearTimeout(timer);
             }
             timer = setTimeout(() => {
-                isRequestLock = false;
-            }, 2000);
+                isRequestLock = true;
+            }, 3000);
             // token 无效过期
             // return alert('授权失效，请刷新页面，重新授权签名')
             // config = {

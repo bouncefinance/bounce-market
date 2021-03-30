@@ -101,7 +101,6 @@ function InputPrice({
 					height="32px"
 					options={options}
 					icon={icon_ETH}
-					defaultValue="ETH"
 					disabled={true}
 					onChange={(item) => {
 						setUnit && setUnit(item.value);
@@ -115,7 +114,6 @@ function InputPrice({
 						<input
 							className="InputAmount"
 							type="text"
-							defaultValue={1}
 							placeholder="Amount"
 							maxLength={18}
 							disabled={nftInfo && nftInfo.standard === 1}

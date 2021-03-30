@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useActiveWeb3React } from "@/web3";
 import { useHistory, useParams } from "react-router-dom";
 import useAxios from "@utils/useAxios.js";
-
+import { myContext } from '@/redux';
 import { Button } from "@components/UI-kit";
 import NFTInfo from "./components/NFTInfo";
 
@@ -208,7 +208,7 @@ function MyNFT() {
 	const [creator, setCreator] = useState();
 	const [externalLink, setExternalLink] = useState();
 	const [imgURL, setImgURL] = useState();
-
+	const { dispatch } = useContext(myContext);
 	/* const NFTInfoList = [
 		{ title: "Description", content: "An irreplaceable girl" },
 		{ title: "Supply", content: "114514" },
@@ -242,11 +242,11 @@ function MyNFT() {
 						setExternalLink(NFTInfoList.externallink);
 						setImgURL(NFTInfoList.fileurl);
 					} else {
-						alert("获取失败");
+						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
 					}
 				})
 				.catch((err) => {
-					alert("获取失败2");
+					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
 				});
 		};
 		if (!active || !nftId) return;
