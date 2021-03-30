@@ -86,18 +86,8 @@ export default function useAxios() {
               clearTimeout(timer);
             }
             timer = setTimeout(() => {
-                isRequestLock = true;
-            }, 3000);
-            // token 无效过期
-            // return alert('授权失效，请刷新页面，重新授权签名')
-            // config = {
-            //     headers: {
-            //         token: await getNewToken(),
-            //         "Content-Type": "application/x-www-from-urlencoded"
-            //     },
-            //     ...option.config
-            // }
-            // res = await axios.post(Base_URL + path, params, config)
+                isRequestLock = false;
+            }, 2000);
         }
 
         return res
