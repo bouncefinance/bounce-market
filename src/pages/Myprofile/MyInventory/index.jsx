@@ -79,11 +79,24 @@ export default function Index() {
       }
     });
 
+  // const [testQuery, { data: testData }] = useLazyQuery(TestQuery,
+  //   {
+  //     variables: { poolId: 1},
+  //     fetchPolicy: "network-only",
+  //     onCompleted: () => {
+  //       console.log('A_console', testData)
+  //     },
+  //     onError: (err) => {
+  //       console.log('onerror', err);
+  //     }
+  //   });
+
 
   useEffect(() => {
     if (!active) return;
     getMyNFT();
     getMyTradeNFT()
+    // testQuery()
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
 

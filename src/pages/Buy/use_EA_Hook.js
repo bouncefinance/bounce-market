@@ -69,7 +69,7 @@ export default function useHook(poolIndex) {
         } else {
             poolsObj.status = 'Live'
             if (diffTime >= 86400) {
-                const day = parseInt(diffTime % 86400)
+                const day = parseInt(diffTime / 86400)
                 const hour =parseInt( (diffTime / 3600) % 24)
                 poolsObj.showTime = `Sale ends in ${day} days ${hour} hours`
             } else {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components'
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
@@ -154,8 +154,15 @@ const NewIndexStyled = styled.div`
             }
 
 
+            .Link_MakeOffer {
+                margin-top: 15px;
+            }
+
             .pullInfoBox{
-                margin: 32px 0px;
+                margin-top: 15px;
+                margin-bottom: 80px;
+
+                border-top: 1px solid rgba(0,0,0,0.1);
             }
         }
         
@@ -366,15 +373,18 @@ export default function NewIndex() {
                             `${parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)} / ${poolInfo.amountTotal0}` : '0 / 0'}</h3>
                     </div>
                 </div>
+
+
                 <div className="btn_group">
                     <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
                         onClick={handelBid}
                     >{btnText}</Button>
                 </div>
 
-
-
-
+                <div className="Link_MakeOffer">
+                    <StyledLink to="#">Make Offer</StyledLink>
+                </div>
+                
             </>
         } else if (aucType === AUCTION_TYPE.EnglishAuction) {
             return <>
@@ -698,6 +708,22 @@ export default function NewIndex() {
 }
 
 
+
+
+const StyledLink = styled(Link)`
+    font-family: Helvetica Neue;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #0075FF;
+
+    height: auto;
+
+    margin-top: 50px;
+`
+
+
 const OffersStyled = styled.div`
 font-family: Helvetica Neue;
 line-height: 15px;
@@ -722,9 +748,26 @@ line-height: 15px;
         }
     }
     .Offers-price{
-        color: rgba(0,0,0,.5);
-        :nth-child(1){
+        .price_ETH {
+            font-family: Helvetica Neue;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 15px;
+            text-align: right;
             color: #1F191B;
+            opacity: 0.8;
+        }
+
+        .price_USD {
+            font-family: Helvetica Neue;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 14px;
+            text-align: right;
+            color: #1F191B;
+            opacity: 0.5;
         }
     }
 }
