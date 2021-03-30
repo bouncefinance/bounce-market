@@ -1,4 +1,6 @@
-import React from 'react'
+import { DEBOUNCE } from '@/utils/const';
+import { useDebouncedValue } from '@/utils/useDebouncedValue';
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import icon_search from './assets/search.svg'
 
@@ -29,11 +31,24 @@ const SearchStyled = styled.input`
 `
 
 export default function Search({ placeholder, value, onChange }) {
+    const [search, setSearch] = useState('');
+    const handleChange = (e) => {
+        const value = e.target.value && e.target.value.toLowerCase();
+        setSearch(value);
+    }
+
+    const debounceFilter = useDebouncedValue(search, DEBOUNCE);
+    
+    useEffect(() => {
+        onChange && onChange(debounceFilter);
+        // eslint-disable-next-line
+    }, [debounceFilter])
+
     return (
         <SearchStyled
             placeholder={placeholder}
             value={value}
-            onChange={onChange}
+            onChange={handleChange}
         />
     )
 }

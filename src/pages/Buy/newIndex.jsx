@@ -512,11 +512,10 @@ export default function NewIndex() {
 
                 <div className="btn_group">
                     <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
-                        onClick={() => 
-                            { 
-                                handelEnglishAuctionBid()
-                                /* setOpenPlaceBidModal(true) */
-                            }
+                        onClick={() => {
+                            handelEnglishAuctionBid()
+                            /* setOpenPlaceBidModal(true) */
+                        }
                         }
                     >{btnText}
                     </Button>
@@ -538,6 +537,20 @@ export default function NewIndex() {
                             You have successfully bid and claimed
                     </Button>}
 
+                    {poolInfo.status === 'Failed' && poolInfo.currentBidderP === account && !poolInfo.myClaimedP &&
+                        < Button onClick={() => {
+                            bidderClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'}>
+                            Deal failed, claim back {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                    </Button>}
+
+                    {poolInfo.status === 'Failed' && poolInfo.currentBidderP === account && poolInfo.myClaimedP &&
+                        < Button onClick={() => {
+                            bidderClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'} disabled>
+                            Deal failed, You have successfully Claim {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                    </Button>}
+
                     {poolInfo.status === 'Close' && poolInfo.creator === account && !poolInfo.creatorClaimedP &&
                         < Button onClick={() => {
                             creatorClaim()
@@ -551,8 +564,22 @@ export default function NewIndex() {
                         }} width='100%' height='48px' primary marginTop={'12px'} disabled>
                             You have successfully received {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                         </Button>}
+
+                    {poolInfo.status === 'Failed' && poolInfo.creator === account && !poolInfo.creatorClaimedP &&
+                        < Button onClick={() => {
+                            creatorClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'}>
+                            Deal failed, claim back NFT
+                        </Button>}
+
+                    {poolInfo.status === 'Failed' && poolInfo.creator === account && poolInfo.creatorClaimedP &&
+                        < Button onClick={() => {
+                            creatorClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'} disabled>
+                            Deal failed, You have successfully Claim NFT
+                        </Button>}
                 </div>
-                
+
                 {/* <PlaceBidModal open={openPlaceBidModal} setOpen={setOpenPlaceBidModal} title="Place a Bid" /> */}
             </>
         }
