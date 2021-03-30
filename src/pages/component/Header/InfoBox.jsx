@@ -29,12 +29,15 @@ const InfoBoxStyled = styled.div`
     display: flex;
     flex-direction: column;
     z-index: 2;
+
     .top_info{
 
         height: 70px;
-        padding: 24px 12px 18px;
+        padding: 12px 18px 12px 24px;
+        /* padding: 24px 12px 30px; */
         box-sizing: border-box;
-        margin-bottom: 12px;
+        /* margin-bottom: 12px; */
+        border-bottom: 1px solid rgba(3,3,3,0.1);
 
         span{
             font-size: 16px;

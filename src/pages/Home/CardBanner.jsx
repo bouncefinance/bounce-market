@@ -79,6 +79,13 @@ const CardBannerItemStyled = styled.li`
             color: rgba(31,25,27,.7)
         }
     }
+
+    .right {
+        margin-right: 36px;
+        img {
+            height: 106px;
+        }
+    }
 `
 
 function CardBannerItem ({ title, context, img }) {

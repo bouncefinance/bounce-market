@@ -15,6 +15,7 @@ import useAxios from '@/utils/useAxios'
 import { useWeb3React } from '@web3-react/core'
 import { SkeletonBrandCards } from '../component/Skeleton/BrandItem'
 import { NewSkeletonNFTCards } from '../component/Skeleton/NFTCard'
+import Button from '@/components/UI-kit/Button/Button'
 // import { myContext } from '@/redux/index.js';
 
 
@@ -123,31 +124,24 @@ const HomeStyled = styled.div`
         margin-right: 67px;
       }
   }
-  .load_more{
-    height: 48px;
-    line-height: 48px;
-    width: 280px;
-    border-radius: 0px;
-    background: #000000;
-    color: #fff;
-    font-size: 14px;
-    text-align: center;
-    margin: auto;
-    margin-top:32px;
-    cursor: pointer;
-    user-select: none;
+
+  .Button_LoadMore {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
   }
+
 `
 
-const banner_Nav = [
-  // ----sort----
+/* const banner_Nav = [
+  ----sort----
   { name: 'New' },
   { name: 'Popular' },
-  // ----channel----
+  ----channel----
   { name: 'Fine Arts' },
   { name: 'Sports' },
   { name: 'Comic Books' },
-]
+] */
 
 export default function Index() {
   // const { state } = useContext(myContext);
@@ -237,11 +231,11 @@ export default function Index() {
   return (
     <HomeStyled>
       <div className="banner">
-        <ul>
+        {/* <ul>
           {banner_Nav.map((item) => {
             return <li key={item.name}><Link to={`/Marketplace/${item.name}`}>{item.name}</Link></li>
           })}
-        </ul>
+        </ul> */}
         <div className="banner_wrapper">
           <div className='banner_img'>
             <div className='left'>
@@ -266,9 +260,21 @@ export default function Index() {
           return <PopularItem itemInfo={item} key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
         })}
       </CardGroup>
-      <div className="load_more" onClick={() => {
+
+      {/* <div className="load_more" onClick={() => {
         history.push('/Marketplace/Image')
-      }}>Load More</div>
+      }}>Load More</div> */}
+      <div className="Button_LoadMore">
+        <Button
+          width="280px"
+          height="48px"
+          value="Load More"
+          primary
+          onClick={() => {
+            history.push('/Marketplace/Image')
+          }}
+        />
+      </div>
 
       <CardGroup title='Hotest Brands' link='/Brands'>
         {brands.map((item, index) => {

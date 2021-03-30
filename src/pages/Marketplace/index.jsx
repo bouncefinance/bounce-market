@@ -36,13 +36,13 @@ const MarketplaceStyled = styled.div`
         display: flex;
         padding-bottom: 16px;
         border-bottom: 2px solid rgba(0,0,0,.1);
+
         li{
-            width: 124px;
+            padding: 7px 20px;
             height: 48px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-right: 20px;
             cursor: pointer;
             user-select: none;
             opacity: .4;

@@ -70,13 +70,8 @@ function Buy() {
 				})
 				.on("receipt", async (_, receipt) => {
 					// console.log('bid fixed swap receipt:', receipt)
-<<<<<<< HEAD
 					// setBidStatus(successStatus)
 					showTransferByStatus('successStatus')
-=======
-					// setBidStatus(successVotedStatus)
-					showTransferByStatus("successVotedStatus");
->>>>>>> 4149dbb15947b5a8e9d5d08f8933a3760a19281e
 				})
 				.on("error", (err, receipt) => {
 					// setBidStatus(errorStatus)
@@ -98,13 +93,8 @@ function Buy() {
 				})
 				.on("receipt", async (_, receipt) => {
 					// console.log('bid fixed swap receipt:', receipt)
-<<<<<<< HEAD
 					// setBidStatus(successStatus)
 					showTransferByStatus('successStatus')
-=======
-					// setBidStatus(successVotedStatus)
-					showTransferByStatus("successVotedStatus");
->>>>>>> 4149dbb15947b5a8e9d5d08f8933a3760a19281e
 				})
 				.on("error", (err, receipt) => {
 					// setBidStatus(errorStatus)
