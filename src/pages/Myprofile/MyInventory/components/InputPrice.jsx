@@ -123,7 +123,6 @@ function InputPrice({
 						<input
 							className="InputAmount"
 							type="text"
-							defaultValue={1}
 							placeholder="Amount"
 							maxLength={18}
 							disabled={nftInfo && nftInfo.standard === 1}

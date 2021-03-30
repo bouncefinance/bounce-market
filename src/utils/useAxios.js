@@ -12,25 +12,28 @@ let isRequestLock = false;
 export default function useAxios() {
     const { account, library } = useWeb3React();
     const {dispatch} = useContext(myContext);
+
     // const { getUserInfo } = useUserInfo()
     useEffect(() => {
         if (!account || isRequestLock) return
-        isRequestLock = true
         initSign()
         // eslint-disable-next-line
-    }, [account, isRequestLock])
+    }, [account])
 
     const initSign = async () => {
         // 判断授权是否过期
-        const res = await sign_Axios_Post('/api/v2/main/auth/getaccount', { accountaddress: account })
-        if (res.status === 200 && res.data.code === -1) {
-            // 重新授权
-            const token = await getNewToken();
-            const JWT_TOKEN_V2 = JSON.parse(window.localStorage.getItem('JWT_TOKEN_V2')) || {}
-            JWT_TOKEN_V2[account] = token
-            window.localStorage.setItem('JWT_TOKEN_V2', JSON.stringify(JWT_TOKEN_V2))
-            dispatch({type: 'Token', authToken: token});
-            window.location.reload();
+        if(!isRequestLock){
+            isRequestLock = true;
+            const res = await sign_Axios_Post('/api/v2/main/auth/getaccount', { accountaddress: account })
+            if (res.status === 200 && res.data.code === -1) {
+                // 重新授权
+                const token = await getNewToken();
+                const JWT_TOKEN_V2 = JSON.parse(window.localStorage.getItem('JWT_TOKEN_V2')) || {}
+                JWT_TOKEN_V2[account] = token
+                window.localStorage.setItem('JWT_TOKEN_V2', JSON.stringify(JWT_TOKEN_V2))
+                dispatch({type: 'Token', authToken: token});
+                window.location.reload();
+            }
         }
     }
 
@@ -65,11 +68,6 @@ export default function useAxios() {
         }
         const tokenObj = JSON.parse(window.localStorage.getItem('JWT_TOKEN_V2')) || {}
         const token = tokenObj[account]
-
-        // if (!token) {
-        //     token = await getNewToken()
-        // }
-
         let config = {
             headers: {
                 token: token,
@@ -79,24 +77,17 @@ export default function useAxios() {
         }
         let res = await axios.post(Base_URL + path, params, config)
         if (res.status === 200 && res.data.code === -1) {
-            console.log("-----------1---------------")
             let timer;
             if(timer){
               clearTimeout(timer);
             }
             timer = setTimeout(() => {
-                isRequestLock = false;
-            }, 2000);
-            // token 无效过期
-            // return alert('授权失效，请刷新页面，重新授权签名')
-            // config = {
-            //     headers: {
-            //         token: await getNewToken(),
-            //         "Content-Type": "application/x-www-from-urlencoded"
-            //     },
-            //     ...option.config
-            // }
-            // res = await axios.post(Base_URL + path, params, config)
+                console.log("-----------1---------------")
+                if(isRequestLock){
+                    isRequestLock = false;
+                    initSign();
+                }
+            }, 5000);
         }
 
         return res
