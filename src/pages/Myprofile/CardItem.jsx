@@ -5,11 +5,13 @@ import { useHistory } from 'react-router-dom'
 
 // import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
-import GenerateNftModal from './GenerateNftModal'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
-import ConfirmCancelModal from '../../Buy//components/ConfirmCancelModal'
+import ConfirmCancelModal from '../Buy/components/ConfirmCancelModal'
 import useToken from '@/utils/useToken'
+
 import { weiToNum } from '@/utils/useBigNumber'
+// import { AUCTION_TYPE } from '@/utils/const'
+import GenerateNftModal from './MyInventory/GenerateNftModal'
 
 const CardItemStyled = styled.div`
     width: 262px;

@@ -21,7 +21,8 @@ function InputPrice({
 	gridArea,
 	options,
 	nftInfo,
-	setNewUnit
+	setNewUnit,
+	fixedSwapUnit
 }) {
 	const { active, chainId } = useActiveWeb3React();
 	const [priceValue, setpriceValue] = useState("");
@@ -47,6 +48,15 @@ function InputPrice({
 		getBalance();
 		// eslint-disable-next-line
 	}, [active, nftInfo, ifInputAmount])
+
+	useEffect(() => {
+		if (fixedSwapUnit){
+			setSelToken(fixedSwapUnit);
+			setUnit(fixedSwapUnit.value);
+		}
+	}, [fixedSwapUnit,setUnit])
+
+
 	useEffect(() => {
 		if (!price) return;
 		setpriceValue(price)
@@ -106,12 +116,11 @@ function InputPrice({
 					height="32px"
 					options={options.filter(item => item.isShow)}
 					icon={(chainId === 56 && selToken.value === 'ETH') ? icon_BNB : selToken.icon}
-					defaultValue={selToken.value}
-					// disabled={true}
+					fixedSwapUnitVal={selToken?.value}
 					onChange={(item) => {
 						console.log(item)
 						setSelToken(item)
-						setNewUnit(item)
+						setNewUnit&&setNewUnit(item)
 						setUnit && setUnit(item.value);
 					}}
 				/>

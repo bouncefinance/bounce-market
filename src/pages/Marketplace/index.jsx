@@ -21,9 +21,7 @@ import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 // import Web3 from 'web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
-import { AUCTION_TYPE } from '@/utils/const'
-// import useToken from '@/utils/useToken'
-// import { weiToNum } from '@/utils/useBigNumber'
+import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 // import { weiToNum } from '@/utils/useBigNumber'
 // import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 
@@ -33,6 +31,7 @@ const MarketplaceStyled = styled.div`
     margin-bottom: 30px;
 
     .nav_wrapper{
+      
         width: 1100px;
         margin: 0 auto;
         margin-top: 50px;
@@ -128,9 +127,9 @@ export default function Marketplace() {
   // const [isSet, setIsSet] = useState(false);
   const [tokenList, setTokenList] = useState([]);
   const [channel, setChannel] = useState(
-    type === 'Sports' ? 'Sports' :
-      type === 'Comic Books' ? 'Comic Books' :
-        'Fine Arts');
+    type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
+      type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
+        NFT_CATEGORY.FineArts);
 
 
   const [loading, setLoding] = useState(true)
@@ -201,6 +200,7 @@ export default function Marketplace() {
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.poolId}
+                nftId={item.id}
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
@@ -248,9 +248,9 @@ export default function Marketplace() {
             setChannel(item.name)
           }}>
             <p className="flex flex-center-y"><img src={
-              item.name === 'Fine Arts' ? icon_arts :
-                item.name === 'Sports' ? icon_sport :
-                  item.name === 'Comic Books' ? icon_comics :
+              item.name === NFT_CATEGORY.FineArts ? icon_arts :
+                item.name === NFT_CATEGORY.Sports ? icon_sport :
+                  item.name === NFT_CATEGORY.ComicBooks ? icon_comics :
                     ''
             } alt="" />{item.name}</p>
           </li>

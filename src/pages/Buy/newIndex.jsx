@@ -458,6 +458,26 @@ export default function NewIndex () {
             })
     }
 
+    const creatorClaim = async () => {
+        const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
+        BounceEnglishAuctionNFT_CT.methods.creatorClaim(poolId)
+            .send({ from: account })
+            .on('transactionHash', hash => {
+                // setBidStatus(pendingStatus)
+                showTransferByStatus('pendingStatus')
+            })
+            .on('receipt', async (_, receipt) => {
+                // console.log('bid fixed swap receipt:', receipt)
+                // setBidStatus(successStatus)
+                showTransferByStatus('successStatus')
+            })
+            .on('error', (err, receipt) => {
+                // setBidStatus(errorStatus)
+                showTransferByStatus('errorStatus')
+            })
+    }
+
+
     const renderByAucType = () => {
         if (aucType === AUCTION_TYPE.FixedSwap) {
             return <>
@@ -476,8 +496,8 @@ export default function NewIndex () {
                 />
 
                 <div className="bidInfo">
-                    <div className="topBid">
-                        <h5>Top Bid</h5>
+                    <div>
+                        <h5>Current price</h5>
                         <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
                     </div>
@@ -568,14 +588,14 @@ export default function NewIndex () {
 
                     {poolInfo.status === 'Close' && poolInfo.creator === account && !poolInfo.creatorClaimedP &&
                         < Button onClick={() => {
-                            bidderClaim()
+                            creatorClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'}>
                             Claim {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                         </Button>}
 
                     {poolInfo.status === 'Close' && poolInfo.creator === account && poolInfo.creatorClaimedP &&
                         < Button onClick={() => {
-                            bidderClaim()
+                            creatorClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'} disabled>
                             You have successfully received {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                         </Button>}
@@ -588,6 +608,7 @@ export default function NewIndex () {
     const [history, setHistory] = useState([]);
     const handleSwap = (data) => {
         const tradePool = data.tradePools[0];
+        // if(!tradePool) return  setHistory([]);
         const creator = tradePool.creator;
         const total = tradePool.amountTotal0;
         const price = Web3.utils.fromWei(tradePool.price);
@@ -640,6 +661,7 @@ export default function NewIndex () {
 
     const handleAuction = (data) => {
         const tradePool = data.tradeAuctions[0];
+        // if(!tradePool) return  setHistory([]);
         const creator = tradePool.creator;
         const total = tradePool.tokenAmount0;
         const offerLiist = data.auctionBids.map(item => ({

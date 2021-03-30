@@ -141,6 +141,7 @@ export default function PullRadioBox({
 	height,
 	marginTop,
 	icon,
+	fixedSwapUnitVal,
 }) {
 	// 这个组件的option 一定要传value属性
 	const {chainId} = useActiveWeb3React()
@@ -154,6 +155,13 @@ export default function PullRadioBox({
 		onValChange && onValChange(checkVal);
 		// eslint-disable-next-line
 	}, [checkVal]);
+	// useEffect(() => {
+	// 	console.log(JSON.stringify(fixedSwapUnitVal))
+	// 	if(fixedSwapUnitVal){
+	// 		// setCheckVal(fixedSwapUnitVal.value);
+	// 	}
+	// }, [fixedSwapUnitVal]);
+	
 
 	return (
 		<PullRadioBoxStyled
@@ -196,7 +204,7 @@ export default function PullRadioBox({
 				{icon && <img className="icon" src={icon} alt="" />}
 				<div>
 					{prefix && <span className="prefix">{prefix}</span>}
-					<p className="value">{checkVal}</p>
+					<p className="value">{fixedSwapUnitVal || checkVal}</p>
 				</div>
 				<img src={icon_pull} className={open ? "up" : "down"} alt="" />
 			</div>
