@@ -71,7 +71,7 @@ const HeaderStyled = styled.div`
                 }
                 
                 button {
-                        margin-right: 44px;
+                        margin-right: 20px;
                     }
             }
         }
@@ -256,7 +256,7 @@ export default function Index () {
                         </ul>
 
                         <Button
-                            width="92px"
+                            width="110px"
                             height="36px"
                             value="Create"
                             onClick={() => {
