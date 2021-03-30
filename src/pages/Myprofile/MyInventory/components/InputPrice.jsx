@@ -118,7 +118,7 @@ function InputPrice({
 					icon={(chainId === 56 && selToken.value === 'ETH') ? icon_BNB : selToken.icon}
 					fixedSwapUnitVal={selToken?.value}
 					onChange={(item) => {
-						console.log(item)
+						// console.log(item)
 						setSelToken(item)
 						setNewUnit&&setNewUnit(item)
 						setUnit && setUnit(item.value);

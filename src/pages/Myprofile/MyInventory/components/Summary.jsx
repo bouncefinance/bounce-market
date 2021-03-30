@@ -265,6 +265,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				}
 			} catch (e) { console.log(e); showTransferByStatus('errorStatus') }
 		} else {
+			console.log(unit)
 			try {
 				// Fixswap NFT
 				const _name = nftInfo.itemname

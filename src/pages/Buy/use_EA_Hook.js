@@ -85,10 +85,12 @@ export default function useHook(poolIndex) {
             poolsObj.status = 'Close'
         } else if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) >= 1) {
             // 预期价成交
-            
+            poolsObj.showTime = 'This Tranding Closed'
+            poolsObj.status = 'Close'
         } else {
             // 流拍
-            
+            poolsObj.showTime = 'This Tranding Closed'
+            poolsObj.status = 'Failed'
         }
 
         // console.log(poolsObj)
