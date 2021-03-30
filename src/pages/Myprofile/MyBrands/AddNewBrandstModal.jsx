@@ -218,6 +218,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                     />
 
                     <Radio title={'Standard'} description={`Select a Standard for the created Brand,which is not changed,and the new Item under BRAN will also cast this SRANDARD.`}
+                        marginTop={'0'}
                         options={[{
                             name: 'ERC-721',
                             value: 'ERC-721'
@@ -234,7 +235,8 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         title='Symbol'
                         width='620px'
                         required={true}
-                        marginTop={'16px'}
+                        /* marginTop={'16px'} */
+                        marginTop={'5px'}
                         lockInput={inputDisable}
                         onValChange={(val) => {
                             setFormData({ ...formData, Symbol: val })
@@ -246,7 +248,8 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         width='620px'
                         placeholder={`Describe your brand`}
                         required={true}
-                        marginTop={'16px'}
+                        /* marginTop={'16px'} */
+                        marginTop={'5px'}
                         lockInput={inputDisable}
                         onValChange={(val) => {
                             setFormData({ ...formData, Description: val })
@@ -255,7 +258,8 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
 
                     <Upload type='image'
                         width='200px'
-                        height='200px'
+                        /* height='200px' */
+                        height="100%"
                         lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
                             setFileData(formData)
                         }} />
