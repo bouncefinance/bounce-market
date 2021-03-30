@@ -10,7 +10,6 @@ import arrows_left from '@assets/images/icon/arrows-left.svg'
 import edit_white from '@assets/images/icon/edit_white.svg'
 import edit_black from '@assets/images/icon/edit_black.svg'
 
-import { PullRadioBox } from '@components/UI-kit'
 import nav_all from '@assets/images/icon/nav_all.svg'
 // import nav_audio from '@assets/images/icon/nav_audio.svg'
 // import nav_game from '@assets/images/icon/nav_game.svg'
@@ -31,6 +30,7 @@ import { CardItem } from '../CardItem'
 import { AUCTION_TYPE } from '@/utils/const'
 import { SkeletonNFTCard } from '@/pages/component/Skeleton/NFTCard'
 import { weiToNum } from '@/utils/useBigNumber'
+import Category from '../Category'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -218,6 +218,7 @@ export default function BrandsByType () {
     const { brandId, type } = useParams()
     const history = useHistory()
     const [listData, setListData] = useState([])
+    const [statusList, setStatusList] = useState([]);
     const { brandInfo, run } = useBrandInfo(brandId)
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
@@ -302,7 +303,9 @@ export default function BrandsByType () {
                   createTime: poolInfo && poolInfo.createTime
               }
             })
-            setListData(list);
+            const result = list.sort((a, b) => b.createTime - a.createTime);
+            setListData(result);
+            setStatusList(result);
             setLoading(false);
           }
         })
@@ -404,29 +407,13 @@ export default function BrandsByType () {
                         <p>{item.name}</p>
                     </li>
                 })}</div>
-                <div className="flex">
-                <PullRadioBox prefix={'Items:'} options={[{
-                  value: 'All'
-                },]} defaultValue='All' onChange={(item) => {
-                  // setType(item.value);
-                }} />
-                <div style={{ width: '16px' }}></div>
-                <PullRadioBox prefix={'Status:'} options={[{
-                  value: 'All'
-                }, {
-                  value: 'On sale'
-                }, {
-                  value: 'Not on sale'
-                }]} defaultValue='All' onChange={(item) => {
-                  // console.log(item)
-                }} />
-              </div>
+                <Category onStatusChange={setStatusList} itemList={listData} />
             </div>
             <ul className="list_wrapper">
                 <li>
                     <AddCardItem type={type} nftType={brandInfo.standard} brandInfo={brandInfo} />
                 </li>
-                {listData.map((item, index) => {
+                {statusList.map((item, index) => {
                     return <li key={index}>
                         <CardItem 
                             nftId={item.id} 
