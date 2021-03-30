@@ -414,8 +414,8 @@ export default function NewIndex() {
                 />
 
                 <div className="bidInfo">
-                    <div className="topBid">
-                        <h5>Top Bid</h5>
+                    <div>
+                        <h5>Current price</h5>
                         <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
                     </div>
@@ -526,6 +526,7 @@ export default function NewIndex() {
     const [history, setHistory] = useState([]);
     const handleSwap = (data) => {
         const tradePool = data.tradePools[0];
+        if(!tradePool) return  setHistory([]);
         const creator = tradePool.creator;
         const total = tradePool.amountTotal0;
         const price = Web3.utils.fromWei(tradePool.price);
@@ -578,6 +579,7 @@ export default function NewIndex() {
 
     const handleAuction = (data) => {
         const tradePool = data.tradeAuctions[0];
+        if(!tradePool) return  setHistory([]);
         const creator = tradePool.creator;
         const total = tradePool.tokenAmount0;
         const offerLiist = data.auctionBids.map(item => ({

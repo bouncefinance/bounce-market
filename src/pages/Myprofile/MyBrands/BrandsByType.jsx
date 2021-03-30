@@ -5,7 +5,7 @@ import Modal from '@components/Modal/Modal'
 import { TextInput, TextAreaInput, Button, Upload } from '@components/UI-kit'
 import { myContext } from '@/redux'
 import useAxios from '@utils/useAxios.js'
-import { CardItem, AddCardItem } from './CardItem'
+import { AddCardItem } from './CardItem'
 import arrows_left from '@assets/images/icon/arrows-left.svg'
 import edit_white from '@assets/images/icon/edit_white.svg'
 import edit_black from '@assets/images/icon/edit_black.svg'
@@ -26,7 +26,11 @@ import { QueryOwnerBrandItems, QueryBrandTradeItems } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
-import Web3 from 'web3'
+import { CardItem } from '../CardItem'
+import { AUCTION_TYPE } from '@/utils/const'
+import { SkeletonNFTCard } from '@/pages/component/Skeleton/NFTCard'
+import { weiToNum } from '@/utils/useBigNumber'
+import Category from '../Category'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -214,6 +218,7 @@ export default function BrandsByType () {
     const { brandId, type } = useParams()
     const history = useHistory()
     const [listData, setListData] = useState([])
+    const [statusList, setStatusList] = useState([]);
     const { brandInfo, run } = useBrandInfo(brandId)
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
@@ -277,6 +282,7 @@ export default function BrandsByType () {
     }
 
     const { active, account } = useActiveWeb3React();
+    const [loading, setLoading] =  useState(true);
     const [tokenList, setTokenList] = useState([]);
 
     const handleBrandTradeItems = (pools) => {
@@ -290,12 +296,17 @@ export default function BrandsByType () {
             const list = res.data.data.map(item => {
               const poolInfo = pools.find(pool => pool.tokenId === item.id);
               return {
-                ...item,
-                poolId: poolInfo ? poolInfo.poolId : '--',
-                price: poolInfo ? Web3.utils.fromWei(poolInfo.price) : '--',
+                  ...item,
+                  poolType: poolInfo && poolInfo.poolType,
+                  poolId: poolInfo && poolInfo.poolId,
+                  price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
+                  createTime: poolInfo && poolInfo.createTime
               }
             })
-            setListData(list);
+            const result = list.sort((a, b) => b.createTime - a.createTime);
+            setListData(result);
+            setStatusList(result);
+            setLoading(false);
           }
         })
       }
@@ -304,32 +315,44 @@ export default function BrandsByType () {
         variables: {tokenList:  tokenList},
         fetchPolicy:"network-only",
         onCompleted: () => {
-            const tradePools = brandTradeItems.data.tradePools;
-            const tradeAuctions = brandTradeItems.data.tradeAuctions;
+            const tradePools = brandTradeItems.data.tradePools.map(item => ({
+                ...item,
+                poolType: AUCTION_TYPE.FixedSwap
+            }));
+            const tradeAuctions = brandTradeItems.data.tradeAuctions.map(item => ({
+                ...item,
+                price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
+                poolType: AUCTION_TYPE.EnglishAuction
+            }));
             handleBrandTradeItems(tradePools.concat(tradeAuctions));
         }
       })
 
-    const handleBrandItems = (data) => {
-        const brands = brandInfo.standard === 1 ? data.bounce721Brands[0] : data.bounce1155Brands[0];
-        if (!brands) return;
-        const tokenList = brands.tokenList.map(item => item.tokenId);
-        setTokenList(tokenList);
-        getBrandTradeItems();
-      }
-
-    const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
+    const [getBrandItems, {data: brandItems}] = useLazyQuery(QueryOwnerBrandItems, {
         variables: {owner: account ? account.toLowerCase() : account },
         fetchPolicy:"network-only",
         onCompleted: () => {
-          handleBrandItems(brandItems.data);
+            const brands = brandInfo.standard === 1 
+                ? brandItems.bounce721Brands[0] 
+                : brandItems.bounce1155Brands[0];
+            if (!brands) {
+                handleBrandTradeItems([]);
+            } else {
+                const tokenList = brands.tokenList.map(item => item.tokenId);
+                setTokenList(tokenList);
+            }
         }
       })
 
     useEffect(() => {
         if (!active) return;
-        getBrandItems();
-    }, [active, getBrandItems]);
+        if (!!brandInfo.standard) {
+            getBrandItems();
+        }
+        if (tokenList.length > 0) {
+            getBrandTradeItems()
+        }
+    }, [active, brandInfo.standard, getBrandItems, tokenList.length, getBrandTradeItems]);
 
     return (
         <BrandsByTypeStyled>
@@ -374,7 +397,8 @@ export default function BrandsByType () {
                 </div>
             </div>
 
-            <ul className="nav_wrapper">
+            <div className="nav_wrapper flex flex-space-x">
+                <div className="flex">
                 {nav_list.map((item) => {
                     return <li key={item.name} className={type === item.route ? 'active' : ''} onClick={() => {
                         history.push(`/MyBrands/${brandId}/${item.route}`)
@@ -382,24 +406,26 @@ export default function BrandsByType () {
                         <img src={item.icon} alt="" />
                         <p>{item.name}</p>
                     </li>
-                })}
-            </ul>
-
+                })}</div>
+                <Category onStatusChange={setStatusList} itemList={listData} />
+            </div>
             <ul className="list_wrapper">
                 <li>
                     <AddCardItem type={type} nftType={brandInfo.standard} brandInfo={brandInfo} />
                 </li>
-                {listData.map((item, index) => {
+                {statusList.map((item, index) => {
                     return <li key={index}>
                         <CardItem 
-                            type={item.type} 
+                            nftId={item.id} 
                             cover={item.fileurl} 
-                            name={item.itemname} 
-                            price={!!item.price ? `${item.price} ETH` : `--`}
-                            poolId={item.poolId}
+                            itemname={item.itemname} 
+                            user={item.ownername}
+                            status={item.poolId && 'Listed'}
+                            poolInfo={item}
                         />
                     </li>
                 })}
+                <li>{loading && <SkeletonNFTCard n={1}></SkeletonNFTCard>}</li>
             </ul>
 
             {/* EDIT */}

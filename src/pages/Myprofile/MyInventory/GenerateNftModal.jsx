@@ -11,6 +11,7 @@ import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
+import { NFT_CATEGORY } from '@/utils/const'
 // import { numToWei } from '@/utils/useBigNumber'
 
 const GenerateNFTModalStyled = styled.div`
@@ -48,7 +49,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const [nftType, setNftType] = useState('ERC-721')
     const [formData, setFormData] = useState({
         Category: 'image',
-        Channel: 'Fine Arts',
+        Channel: NFT_CATEGORY.FineArts,
         Supply: 1
     })
 
@@ -199,13 +200,13 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             setFormData({ ...formData, Category: item.value })
                         }} />
 
-                    <PullRadioBox title={'Channel'} marginTop='0' /* marginTop='24px' */ width='150px' options={[{
-                        value: 'Fine Arts'
+                    <PullRadioBox title={'Channel'} marginTop='24px' width='150px' options={[{
+                        value: NFT_CATEGORY.FineArts
                     }, {
-                        value: 'Sports'
+                        value: NFT_CATEGORY.Sports
                     }, {
                         value: 'Conicbooks'
-                    }]} defaultValue={defaultValue === 'Fine Arts'} inputDisable={inputDisable} onChange={(item) => {
+                    }]} defaultValue={defaultValue === NFT_CATEGORY.FineArts} inputDisable={inputDisable} onChange={(item) => {
                         setFormData({ ...formData, Channel: item.value })
                     }} />
 

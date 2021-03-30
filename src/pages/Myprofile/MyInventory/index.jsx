@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import CommonHeader from '../CommonHeader'
 import styled from 'styled-components'
 // import Search from './Search'
-import { PullRadioBox } from '@components/UI-kit'
-import { CardItem, AddCardItem } from './CardItem'
+import { CardItem, AddCardItem } from '../CardItem'
 import { useLazyQuery } from '@apollo/client';
 import { QueryMyNFT, QueryMyTradePools } from '@/utils/apollo'
 
@@ -12,6 +11,8 @@ import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { SkeletonNFTCards } from '@/pages/component/Skeleton/NFTCard'
 // import { weiToNum } from '@/utils/useBigNumber'
+import { AUCTION_TYPE } from '@/utils/const'
+import Category from '../Category'
 
 const MyInventoryStyled = styled.div`
     width: 1100px;
@@ -44,6 +45,8 @@ export default function Index() {
   const { account, active } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
+  const [statusList, setStatusList] = useState([]);
+
   // eslint-disable-next-line
   const [type, setType] = useState('image');
   const [loading, setLoading] = useState(true)
@@ -109,7 +112,7 @@ export default function Index() {
     const tradePools = myTradeData.tradePools.map(item => {
       return {
         ...item,
-        poolType: 'fixed-swap'
+        poolType: AUCTION_TYPE.FixedSwap
       }
     }).filter(item => item.state !== 1)
     console.log(tradePools)
@@ -117,15 +120,13 @@ export default function Index() {
       return {
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-        poolType: 'english-auction'
+        poolType: AUCTION_TYPE.EnglishAuction
       }
     }).filter(item => item.state !== 1)
 
     const ids_list = nft721_ids.concat(nft1155Items_ids).concat(trade721_ids).concat(trade1155Items_ids)
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
-    // console.log(ids_list)
-    console.log(pools)
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       category: '',
@@ -145,16 +146,16 @@ export default function Index() {
               createTime: item.createTime
             }
           })
-          // console.log(list)
-          setItemList(list.sort((a, b) => b.createTime - a.createTime));
+          const result = list.sort((a, b) => b.createTime - a.createTime)
+          setItemList(result);
+          setStatusList(result);
           setLoading(false)
         }
       })
       .catch(() => { })
     // eslint-disable-next-line
   }, [myNftData, myTradeData, account])
-
-
+  
   return (
     <>
       <CommonHeader />
@@ -162,24 +163,7 @@ export default function Index() {
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
           {/* <Search placeholder={'Search Items, Shops and Accounts'} /> */}
           <AddCardItem />
-
-          <div className="flex">
-            <PullRadioBox prefix={'Items:'} options={[{
-              value: 'All'
-            },]} defaultValue='All' onChange={(item) => {
-              // setType(item.value);
-            }} />
-            <div style={{ width: '16px' }}></div>
-            <PullRadioBox prefix={'Status:'} options={[{
-              value: 'All'
-            }, {
-              value: 'On sale'
-            }, {
-              value: 'Not on sale'
-            }]} defaultValue='All' onChange={(item) => {
-              // console.log(item)
-            }} />
-          </div>
+          <Category itemList={itemList} onStatusChange={setStatusList} />
 
           {/* <PullRadioBox prefix={'Categories:'} options={[{
             value: 'Image'
@@ -200,7 +184,7 @@ export default function Index() {
           {/* <li>
             <AddCardItem />
           </li> */}
-          {itemList.map((item, index) => {
+          {statusList.map((item, index) => {
             return <li key={index}>
               <CardItem
                 nftId={item.id}

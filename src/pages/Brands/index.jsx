@@ -76,7 +76,9 @@ export default function Index () {
               avatar: item.imgurl,
               ownerName: item.ownername,
               standard: item.standard,
+              popularweight: item.popularweight
             }))
+            .sort((a, b) => b.popularweight - a.popularweight);
             setList(itemList);
             setloding(false)
           }
