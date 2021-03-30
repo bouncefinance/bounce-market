@@ -62,7 +62,7 @@ export default function MyLiked () {
           const poolInfo = pools.find(pool => pool.tokenId === item.itemid);
           if (!poolInfo) {
             console.error('poolInfo error:', pools, item)
-            return {}
+            return null
           }
           return {
             ...item,
@@ -72,7 +72,7 @@ export default function MyLiked () {
             createTime: poolInfo.createTime,
             token1: poolInfo.token1
           }
-        }))
+        }).filter((e => e)))
       } else {
         setopenMessage({ open: true, message: res.data?.msg || 'error', severity: 'error' })
       }
@@ -101,7 +101,7 @@ export default function MyLiked () {
             // cardId={item.poolId}
             // price={!!item.price ? `${item.price} ETH` : `--`}
             // poolType={item.poolType}
-            cover={item.fileurl}
+            cover={item.imageurl}
             name={item.itemname}
             cardId={item.poolId}
             nftId={item.id}
