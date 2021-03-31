@@ -3,7 +3,8 @@ import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 
 export const client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft',
+    // uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft',
+    uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',
     // uri: 'http://54.254.179.26:8000/subgraphs/name/daniel-kung/bouncegraph/graphql',
     cache: new InMemoryCache(),
 })
