@@ -51,7 +51,7 @@ export default function TableItem({ row }) {
     return (
         <TableItemStyled>
             <TableCell className='event'>
-                {row.event === 'Buy' && <img src={icon_transfer} alt="" />}
+                {row.event === 'Transfer' && <img src={icon_transfer} alt="" />}
                 {row.event === 'Created' && <img src={icon_create} alt="" />}
                 {row.event}
             </TableCell>
@@ -75,7 +75,7 @@ export default function TableItem({ row }) {
                 {row.date}
             </TableCell>
             <TableCell>
-                {row.event === 'Transfer' && <Button>Detial</Button>}
+                {row.event === 'Transfer' && <Button>Detail</Button>}
             </TableCell>
         </TableItemStyled>
 

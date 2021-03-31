@@ -7,7 +7,7 @@ import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStr
 
 const CardItemStyled = styled.div`
     width: 262px;
-    height: 332px;
+    height: 397.32px;
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.2);
     overflow: hidden;
@@ -59,7 +59,7 @@ const AddCardItemStyled = styled(CardItemStyled)`
         width: 100%;
         text-align: center;
         button{
-            margin: 15px auto;
+            margin: 46px auto;
             cursor: pointer;
         }
     }
