@@ -5,6 +5,8 @@ import InstructionsDropdown from "./components/InstructionsDropdown";
 import InputPrice from "./components/InputPrice";
 import SelectDuration from "./components/SelectDuration";
 import Summary from "./components/Summary";
+import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
+
 import pic_NFT1 from "./assets/pic_NFT1.svg";
 import useNftInfo from "@/utils/useToken";
 import { useParams } from "react-router-dom";
@@ -87,6 +89,21 @@ export default function SellNFT() {
 	const [duration, setDuration] = useState(0);
 
 	const [nftInfo, setNftId] = useState();
+
+	const NavList = [
+		{
+			title: "My Inventory",
+			route: "/MyInventory",
+		},
+		{
+			title: ((nftInfo && nftInfo.itemname) || "Item name"),
+			route: "/MyInventory/" + nftId,
+		},
+		{
+			title: "Sell",
+			route: "/MyInventory/" + nftId + "/Sell",
+		},
+	];
 
 	useEffect(() => {
 		if (!active) return;
@@ -265,13 +282,8 @@ export default function SellNFT() {
 	
 	return (
 		<Page>
-			<BreadcrumbNav>
-				My Inventory / Digital Image Name /&nbsp;
-				<span>
-					Sell
-					{/* {NFTName} */}
-				</span>
-			</BreadcrumbNav>
+			<BreadcrumbNav marginTop={"24px"} NavList={NavList}/>
+
 			<PageBody>
 				<PageBodyLeft>
 					<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl || pic_NFT1)} />
@@ -329,7 +341,7 @@ const Page = styled.div`
 	display: grid;
 	grid-template-rows: 86px 1fr;
 `;
-
+/* 
 const BreadcrumbNav = styled.div`
 	font-family: IBM Plex Mono;
 	font-style: normal;
@@ -348,7 +360,7 @@ const BreadcrumbNav = styled.div`
 	span {
 		opacity: 0.4;
 	}
-`;
+`; */
 
 const PageBody = styled.div`
 	width: 1100px;

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react'
+import { /* Link,  */useParams } from 'react-router-dom';
 import styled from 'styled-components'
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
@@ -14,6 +14,8 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
 /* import PlaceBidModal from './components/PlaceBidModal' */
+import { myContext } from '@/redux'
+import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
@@ -36,6 +38,8 @@ import useAxios from '@/utils/useAxios';
 import MessageTips from '@/components/Modal/MessageTips';
 import useToken from '@/utils/useToken';
 
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import icon_copy from '@assets/images/icon/copy.svg'
 
 const NewIndexStyled = styled.div`
     width: 1100px;
@@ -97,7 +101,7 @@ const NewIndexStyled = styled.div`
                     p{
                         font-size: 14px;
                         color: rgba(31,25,27,.4);
-                        a{
+                        span{
                             color: rgba(18,78,235,.8);
                         }
                     }
@@ -155,6 +159,12 @@ const NewIndexStyled = styled.div`
                     }
                 }
 
+    .dollar{
+        display: block;
+        font-size: 20px;
+        color: #999999;
+    }
+
                 .amount {
                     /* align-items: end; */
                     display: flex;
@@ -197,7 +207,11 @@ const NewIndexStyled = styled.div`
 
     .token-info{
         >div{
+            width: 100%;
             margin-bottom: 12px;
+            &:last-child {
+                margin-bottom: 0;
+            }
             font-size: 12px;
             >p{
                 :first-child{
@@ -205,6 +219,17 @@ const NewIndexStyled = styled.div`
                 }
                 :last-child{
                     color: rgba(31,25,27,0.5);
+                }
+            }
+
+            .contractAddress {
+                display: flex;
+                justify-content: space-between;
+
+                p {
+                    overflow: hidden;
+                    text-overflow: ellipsis; 
+                    margin-right: 6px;
                 }
             }
         }
@@ -245,9 +270,15 @@ export default function NewIndex() {
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
     const { sign_Axios } = useAxios()
+
+    const [tokenContractAddress, setTokenContractAddress] = useState();
+    const [tokenSymbol, setTokenSymbol] = useState();
+    const [tokenID, setTokenID] = useState();
+    const [externalLink, setExternalLink] = useState();
+    const { dispatch } = useContext(myContext);
+
     const [loadingLoked, setLoadingLocked] = useState(true)
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
-
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
@@ -266,6 +297,7 @@ export default function NewIndex() {
             setLoadingLocked(false)
         }
     }
+
     useEffect(() => {
 
         // console.log(nftInfo, poolInfo)
@@ -311,6 +343,38 @@ export default function NewIndex() {
         // eslint-disable-next-line
     }, [poolInfo])
 
+    const nftId = poolInfo.tokenId
+
+    useEffect(() => {
+        const getNFTInfoList = async (nftId) => {
+            const params = {
+                id: parseInt(nftId),
+            };
+
+            sign_Axios
+                .post("/api/v2/main/auth/getoneitembyid", params)
+                .then((res) => {
+                    if (res.status === 200 && res.data.code === 1) {
+                        /* alert("获取成功"); */
+                        /* console.log(res); */
+                        let NFTInfoList = res.data.data;
+                        setTokenID(NFTInfoList.id);
+                        setTokenContractAddress(NFTInfoList.contractaddress);
+                        setTokenSymbol(NFTInfoList.itemsymbol);
+                        setExternalLink(NFTInfoList.externallink);
+                    } else {
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                    }
+                })
+                .catch((err) => {
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                });
+        };
+        if (!active || !nftId) return;
+        getNFTInfoList(nftId);
+        // eslint-disable-next-line
+    }, [active, nftId])
+
 
     const onLiked = async () => {
         setLoadingLocked(true)
@@ -324,18 +388,23 @@ export default function NewIndex() {
             setopenMessage({ open: true, message: res.data?.msg || 'error', severity: 'error' })
         }
     }
+
     const handelBid = async () => {
         setIsLoading(true)
-        console.log(poolInfo)
+        // console.log(poolInfo)
         if (poolInfo.nftType === '0') {
             const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
             let sendParams = { from: account }
             let approveRes = true
-            if (poolInfo.token1 === ZERO_ADDRESS) {
+
+            if (poolInfo.token1.contract === ZERO_ADDRESS) {
                 sendParams.value = poolInfo.amountTotal1
             } else {
                 const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
+
+                console.log(poolInfo.token1.contract)
+                console.log(approveRes)
                 if (!approveRes) {
                     showTransferByStatus('approveStatus')
                     approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
@@ -367,11 +436,11 @@ export default function NewIndex() {
 
             let sendParams = { from: account }
             let approveRes = true
-            if (poolInfo.token1 === ZERO_ADDRESS) {
+            if (poolInfo.token1.contract === ZERO_ADDRESS) {
                 sendParams.value = _amount1
             } else {
                 const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
                 if (!approveRes) {
                     showTransferByStatus('approveStatus')
                     approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
@@ -403,27 +472,26 @@ export default function NewIndex() {
     const handelEnglishAuctionBid = async (amountMax1) => {
         setIsLoading(true)
         const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
-
-        const _amount1 = amountMax1 || numToWei(bidPrice)
+        const _amount1 = amountMax1 || numToWei(bidPrice, poolInfo.token1.decimals)
         // console.log(_amount1)
 
         let sendParams = { from: account }
         let approveRes = true
-        if (poolInfo.token1 === ZERO_ADDRESS) {
+        if (poolInfo.token1.contract === ZERO_ADDRESS) {
             sendParams.value = _amount1
         } else {
             const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getEnglishAuctionNFT(chainId), poolInfo.amountTotal1, account)
             if (!approveRes) {
                 showTransferByStatus('approveStatus')
-                approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
+                approveRes = await BounceERC20_CT.methods.approve(getEnglishAuctionNFT(chainId), '0xffffffffffffffff')
                     .send({ from: account })
             }
         }
         if (!approveRes) return showTransferByStatus('errorStatus')
-
+        console.log(poolId, _amount1, sendParams)
         BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
-            .send({ from: account, value: _amount1 })
+            .send(sendParams)
             .on('transactionHash', hash => {
                 // setBidStatus(pendingStatus)
                 showTransferByStatus('pendingStatus')
@@ -519,7 +587,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Current price</h5>
                         <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
+                            <span>{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
 
                     <div className="amount">
@@ -540,9 +608,9 @@ export default function NewIndex() {
                     </Button>
                 </div>
 
-                <div className="Link_MakeOffer">
+                {/* <div className="Link_MakeOffer">
                     <StyledLink to="#">Make Offer</StyledLink>
-                </div>
+                </div> */}
 
             </>
         } else if (aucType === AUCTION_TYPE.EnglishAuction) {
@@ -553,7 +621,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Asking price</h5>
                         <h3>{poolInfo.token1 && weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals))} ) `}</span></h3>
+                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
 
                     <div>
@@ -566,7 +634,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Current Price</h5>
                         <h3>{poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals))} ) `}</span></h3>
+                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
 
                     <div>
@@ -601,7 +669,7 @@ export default function NewIndex() {
 
                     {poolInfo.amountMax1 && <Button width='262px' disabled={isLoading || poolInfo.status !== 'Live'} height='48px' onClick={() => {
                         handelEnglishAuctionBid(poolInfo.amountMax1)
-                    }}>Buy now for {weiToNum(poolInfo.amountMax1)} ETH</Button>}
+                    }}>Buy now for {weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)} {poolInfo.token1.symbol}</Button>}
                     {poolInfo.status === 'Close' && poolInfo.currentBidderP === account && !poolInfo.myClaimedP &&
                         < Button onClick={() => {
                             bidderClaim()
@@ -671,7 +739,7 @@ export default function NewIndex() {
         // if(!tradePool) return  setHistory([]);
         const creator = tradePool.creator;
         const total = tradePool.amountTotal0;
-        const price = Web3.utils.fromWei(tradePool.price);
+        const price = tradePool.price;
         const offerList = data.poolSwaps.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: new Date(item.timestamp * 1000).toLocaleString(),
@@ -727,9 +795,11 @@ export default function NewIndex() {
         const offerLiist = data.auctionBids.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: new Date(item.timestamp * 1000).toLocaleString(),
-            amount: Web3.utils.fromWei(item.amount1),
+            // amount: Web3.utils.fromWei(item.amount1),
+            amount: item.amount1,
             price: '',
         }))
+        // console.log(offerLiist)
         setOfferList(offerLiist);
         const createList = data.auctionCreates.map(item => ({
             event: 'Created',
@@ -781,14 +851,34 @@ export default function NewIndex() {
         }
     }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
 
+
+    const NavList = [
+        {
+            title: "MarketPlace",
+            route: "/MarketPlace",
+        },
+        {
+            title: "Fine Arts",
+            route: "/MarketPlace/FineArts",
+        },
+        {
+            title: (nftInfo.itemname || ""),
+            route: "/MarketPlace/FineArts/" + (aucType === AUCTION_TYPE.EnglishAuction ? "fixed-swap" : "english-auction") + poolId,
+        },
+    ];
+
     return (
         <>
             <NewIndexStyled>
-                <ul className='crumbs'>
+                {/* 面包屑导航栏 */}
+                {/* <ul className='crumbs'>
                     <li><span>Marketplace</span></li>
                     <li><span>Fine Arts</span></li>
                     <li><span>Digital Image Name</span></li>
-                </ul>
+                </ul> */}
+                <BreadcrumbNav marginTop="24px" NavList={NavList} />
+
+
                 <div className="container">
                     <div className="container_left">
                         <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
@@ -804,19 +894,19 @@ export default function NewIndex() {
                             <div className="row1">
                                 <h3>{nftInfo.itemname || 'Name Is Loading ...'}</h3>
 
-                                {/* Cancel按钮 */}
-                                {poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
+                                {/* Cancel */}
+                                {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
-                                            setOpenModal(true)
+                                            aucType === AUCTION_TYPE.EnglishAuction? dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "The auction bill can only be cancelled when it expires" }):setOpenModal(true)
                                         }}
                                         height='30px'
                                     >
                                         Cancel
                                 </Button>}
 
-                                {/* Cancel按钮 */}
-                                {poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
+                                {/* Cancel */}
+                                {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
                                             /* handelFixedSwapCancel() */
@@ -832,7 +922,7 @@ export default function NewIndex() {
                         <div className="seller">
                             <div className='info'>
                                 <img src={icon_altAvatar} alt="" />
-                                <p>Owned by <a href="http://">{nftInfo.ownername || 'Anonymity'}</a></p>
+                                <p>Owned by <span>{nftInfo.ownername || 'Anonymity'}</span></p>
 
                                 {aucType === 'english-auction' && <div className="close_time">
                                     <img src={icon_time} alt="" />
@@ -841,7 +931,7 @@ export default function NewIndex() {
                             </div>
                             <div className="desc">
                                 <p>{nftInfo.description || 'description Is Loading ...'}</p>
-                                <span>Read more</span>
+                                {/* <span>Read more</span> */}
 
                             </div>
                         </div>
@@ -858,10 +948,10 @@ export default function NewIndex() {
                                                 <div className="flex Offers-info">
                                                     <p className="name">{item.name}</p>
                                                     <p className="time">{item.time}</p>
-                                                    <p className="amount">{item.amount}</p>
+                                                    <p className="amount">{poolInfo.token1&&weiToNum(item.amount, poolInfo.token1.decimals)}</p>
                                                 </div>
                                                 <div className="Offers-price">
-                                                    <span>{`${item.price} ETH`}</span>
+                                                    <span>{poolInfo.token1 && `${poolInfo.token1.symbol}`}</span>
                                                     <span></span>
                                                 </div>
                                             </div>)
@@ -873,28 +963,37 @@ export default function NewIndex() {
                             <NewPullDown open={false} title='Token Info'>
                                 <div className="token-info">
                                     <div className="flex flex-space-x">
-                                        <p>Token Contact Address</p>
-                                        <p style={{ color: '#124EEB' }}>0x33a9b7ed8c71c...2976</p>
+                                        <p>Token Contract Address</p>
+                                        <div className="contractAddress">
+                                            <p style={{ color: 'rgba(31,25,27,0.5)', }}>{tokenContractAddress || ""}</p>
+                                            <CopyToClipboard
+                                                text={tokenContractAddress}
+                                                onCopy={() => {
+                                                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
+                                                }}>
+                                                <img src={icon_copy} alt="" />
+                                            </CopyToClipboard>
+                                        </div>
                                     </div>
                                     <div className="flex flex-space-x">
                                         <p>Token Symbol</p>
-                                        <p>CKIE</p>
+                                        <p>{tokenSymbol || ""}</p>
                                     </div>
                                     <div className="flex flex-space-x">
                                         <p>Token ID</p>
-                                        <p>#123456</p>
+                                        <p>#{tokenID || ""}</p>
                                     </div>
                                 </div>
                             </NewPullDown>
                             <NewPullDown open={false} title='External link'>
-                                <div>--</div>
+                                <div>{externalLink || "--"}</div>
                             </NewPullDown>
                             <NewPullDown open={false} title='Trading History'>
                                 <TradingHistory rows={
                                     history.map((item, index) => ({
                                         Event: item.event,
                                         Quantity: item.quantity,
-                                        Price: [`${item.price} ETH`, `($)`],
+                                        Price: [poolInfo.token1 && `${item.price} ${poolInfo.token1.symbol}`, `($)`],
                                         From: getEllipsisAddress(item.from),
                                         To: getEllipsisAddress(item.to),
                                         Date: item.date,
@@ -905,7 +1004,7 @@ export default function NewIndex() {
                     </div>
                 </div>
             </NewIndexStyled >
-            <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />
+            {aucType === AUCTION_TYPE.FixedSwap && <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />}
             <MessageTips open={openMessage} setopen={setopenMessage} />
         </>
     )
@@ -913,7 +1012,7 @@ export default function NewIndex() {
 
 
 
-
+/* 
 const StyledLink = styled(Link)`
     font-family: Helvetica Neue;
     font-style: normal;
@@ -926,7 +1025,7 @@ const StyledLink = styled(Link)`
 
     margin-top: 50px;
 `
-
+ */
 
 const OffersStyled = styled.div`
 font-family: Helvetica Neue;
@@ -950,6 +1049,7 @@ line-height: 15px;
             margin-left: 24px;
             color: rgba(0,0,0,.5);
         }
+        
     }
     .Offers-price{
         .price_ETH {

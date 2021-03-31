@@ -20,6 +20,7 @@ const CardItemStyled = styled.div`
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.2);
     position: relative;
+    cursor: pointer;
     
 
     .img_wrapper{
@@ -141,6 +142,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
     const [openCancel, setOpenCancel] = useState(false)
 
     const [newPrice, setNewPrice] = useState('--')
+    console.log(poolInfo)
 
     useEffect(() => {
         // console.log(poolInfo)
@@ -157,7 +159,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
     }
     return (
         <>
-            <CardItemStyled>
+            <CardItemStyled onClick={() => history.push("/MyInventory/" + nftId)}>
                 <div className="img_wrapper">
                     <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />
                 </div>

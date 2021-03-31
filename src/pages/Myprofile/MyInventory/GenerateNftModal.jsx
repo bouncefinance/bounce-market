@@ -11,7 +11,9 @@ import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
-import { NFT_CATEGORY } from '@/utils/const'
+import { NFT_CATEGORY } from '@/utils/const';
+import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
+import { useHistory } from 'react-router-dom'
 // import { numToWei } from '@/utils/useBigNumber'
 
 const GenerateNFTModalStyled = styled.div`
@@ -38,6 +40,7 @@ const GenerateNFTModalStyled = styled.div`
 `
 
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
+    const history = useHistory();
     const { active, library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
     const { state,dispatch } = useContext(myContext)
@@ -60,10 +63,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     useEffect(() => {
         // console.log(fileData, formData)
         if ((fileData || formData.imgurl) && formData) {
-            const requireArr = ['Name', 'Description']
+            const requireArr = ['Name', 'Description', 'Supply']
             let errorCount = 0
             requireArr.forEach(item => {
-                if (!checkInput(formData[item])) {
+                if (!checkInput(formData[item]) || (item === 'Supply' && !ErrorStatus.intNum.reg.test(formData[item]))) {
                     errorCount++
                 }
             })
@@ -109,7 +112,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     owneraddress: account,
                     ownername: state.username,
                     standard: nftType === 'ERC-721' ? 1 : 2,
-                    supply: nftType === 'ERC-721' ? 1 : formData.Supply
+                    supply: nftType === 'ERC-721' ? 1 : parseInt(formData.Supply)
                 }
                 // console.log(params)
                 sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {
@@ -130,8 +133,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        // setBidStatus(successStatus)
-                                        showTransferByStatus('successStatus')
+                                        showTransferByStatus('')
+                                        dispatch({ type: 'TransferModal', TransferModal: "" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
+                                        history.push("/MyInventory")
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -155,8 +160,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        // setBidStatus(successStatus)
-                                        showTransferByStatus('successStatus')
+                                        dispatch({ type: 'TransferModal', TransferModal: "" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
+                                        history.push("/MyInventory")
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -177,7 +183,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     }
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'Generate New Item', isClose: true }}>
+        <Modal open={open} setOpen={setOpen} header={{ title: 'Generate New NFT', isClose: true }}>
             <GenerateNFTModalStyled>
                 <TextInput
                     title='Name'
@@ -234,9 +240,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     defaultValue={1}
                     required={true}
                     marginTop={'24px'}
+                    inputType={'intNum'}
                     inputDisable={inputDisable}
                     onValChange={(val) => {
-                        setFormData({ ...formData, Supply: parseInt(val) })
+                        setFormData({ ...formData, Supply: val })
                     }}
                 />}
 

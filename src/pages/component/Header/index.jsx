@@ -6,7 +6,7 @@ import { Button } from '../../../components/UI-kit'
 import InfoBox from './InfoBox'
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
-import logo_bfangible from '@assets/images/logo/fangible.svg'
+/* import logo_bfangible from '@assets/images/logo/fangible.svg' */
 import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import { useActiveWeb3React } from '@/web3'
 import { useWalletConnect } from '@/web3/useWalletConnect'
@@ -84,8 +84,11 @@ const HeaderStyled = styled.div`
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
+        border-top: 2px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 
         &.open{
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
             border-bottom: 2px solid #124EEB;
         }
 
@@ -138,9 +141,9 @@ export default function Index () {
     const [isShowInfo, setIsShowInfo] = useState(!true)
     const { getUserInfo } = useUserInfo()
     const history = useHistory()
-    const { state } = useContext(myContext);
+    const { state,dispatch } = useContext(myContext);
     // const { dispatch } = useContext(myContext);
-    const [isFangible, setIsFangible] = useState(false)
+    /* const [isFangible, setIsFangible] = useState(false) */
 
     const updateActive = () => {
         const pathName = window.location.pathname
@@ -149,16 +152,16 @@ export default function Index () {
                 setCurNav(element.name)
             }
         })
-        if (
+        /* if (
             pathName === '/MyInventory' ||
             pathName === '/MyActivities' ||
-            pathName === '/MyLiked' /* ||
-            pathName === '/MyBrands' */
+            pathName === '/MyLiked' ||
+            pathName === '/MyBrands'
         ) {
             setIsFangible(true)
         } else {
             setIsFangible(false)
-        }
+        } */
     }
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
@@ -208,9 +211,9 @@ export default function Index () {
 
     useEffect(() => {
         if (!active) return
-        // if (chainId && chainId !== 4) {
-        //     dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network." /* "请选择Rinkeby测试网络" */ });
-        // }
+        if (chainId && chainId !== 4 && chainId !== 56) {
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network or BSC network." });
+        }
         getUserInfo();
         // eslint-disable-next-line
     }, [account, chainId, active])
@@ -226,11 +229,11 @@ export default function Index () {
                 <div className="wrapper">
                     <div className='left'>
                         <Link to="/">
-                            <img src={isFangible ? logo_bfangible : logo_bounce} alt=""></img>
+                            <img src={/* isFangible ? logo_bfangible : */ logo_bounce} alt=""></img>
                         </Link>
 
                         {/* <Search
-                            placeholder={'Search Items, Shops and Accounts'}
+                            placeholder={'Search items，Brands and Accounts'}
                         /> */}
                     </div>
                     <div className='right'>

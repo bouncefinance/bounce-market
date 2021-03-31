@@ -47,7 +47,7 @@ export default function Index() {
 
                 <Route exact path='/' render={() => { return <Redirect to='/Home' /> }} />
                 <Route exact path='/Home' component={Home} />
-                <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/Image' /> }} />
+                <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/FineArts' /> }} />
                 <Route exact path='/Marketplace/:type' component={Marketplace} />
                 <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket/Image' />}} />
                 <Route exact path='/MyMarket/:type' component={MyMarket} />
@@ -66,7 +66,7 @@ export default function Index() {
                 <Route exact path='/MyInventory' component={MyInventory} />
                 <Route exact path='/MyInventory/:nftId' component={MyNFT} />
                 <Route exact path='/MyInventory/:nftId/Sell' component={SellNFT} />
-                
+
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyBrands/:brandId/:type' component={BrandsByType} />
                 <Route exact path='/MyActivities' component={MyActivities} />

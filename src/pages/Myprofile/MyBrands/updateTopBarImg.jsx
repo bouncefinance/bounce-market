@@ -2,6 +2,8 @@ import Modal from '@components/Modal/Modal'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import React, { useState, useEffect } from 'react'
 import upload_img from '@assets/images/upload_img.svg'
+import icon_left_rotate from '@assets/images/left-rotate.svg'
+import icon_right_rotate from '@assets/images/right-rotate.svg'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
 import Cropper from 'react-cropper'
@@ -12,6 +14,7 @@ import useAxios from '@/utils/useAxios'
 import { UploadStyle } from '@/components/UI-kit/Input/Upload'
 import { useParams } from 'react-router'
 import Slider from '@material-ui/core/Slider';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const UpdateTopBarImgStyle = styled.div`
 width: 1100px;
@@ -66,6 +69,11 @@ export default function UpdateTopBarImg (props) {
     'Supports JPG, PNG, JPEG2000',
     `no more than 100MB, ${ratio[0]}*${ratio[1]} Reccomended`
   ]
+  let [rotate, _setRotate] = useState(0)
+  const setRotate = (v) => {
+    _setRotate(v)
+    cropperRef.rotateTo(v)
+  }
   const onChange = (e) => {
     e.preventDefault();
     let files;
@@ -159,12 +167,16 @@ export default function UpdateTopBarImg (props) {
               ready={(e) => {
                 setCropperRef(e.currentTarget.cropper)
                 e.currentTarget.cropper.setCropBoxData({ width: 1000, })
-                // console.log(e.currentTarget.cropper)
-                // e.currentTarget.cropper.zoomTo(1.5)
-                // move
               }}
             />
             <Slider value={corpperOriginZoomValue} onChange={onCorpperOriginZoomValueHandleChange} aria-labelledby="continuous-slider" />
+            <Tooltip title="rota -90°" aria-label="rota -90°">
+              <img width="20px" onClick={() => setRotate(rotate - 90)} src={icon_left_rotate} alt="" />
+            </Tooltip>
+            <div style={{ width: '20px', display: 'inline-block' }}></div>
+            <Tooltip title="rota 90°" aria-label="rota 90°">
+              <img width="20px" onClick={() => setRotate(rotate + 90)} src={icon_right_rotate} alt="" />
+            </Tooltip>
             <div className="button_group">
               <Button height='48px' width='302px' onClick={() => {
                 setImage('')

@@ -1,6 +1,7 @@
 
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
+
 export const client = new ApolloClient({
     uri: 'https://api.thegraph.com/subgraphs/id/QmNRFKSQSVgVbYe6fmJUV3hcZLh8ngMdGCht41wX3xq3Qv', // Rinkeby
     //uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2', //bsc
@@ -176,6 +177,7 @@ export const QueryBrand721 = gql`
 export const QueryFromActivities = gql`
   query queryActivitiesByAccount($user: Bytes!) {
     activities(where: {from: $user}) {
+      id
       event
       contract
       from
@@ -190,6 +192,7 @@ export const QueryFromActivities = gql`
 export const QueryToActivities = gql`
   query queryActivitiesByAccount($user: Bytes!) {
     activities(where: {to: $user}) {
+      id
       event
       contract
       from

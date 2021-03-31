@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
@@ -16,7 +16,7 @@ import { useWeb3React } from '@web3-react/core'
 import { SkeletonBrandCards } from '../component/Skeleton/BrandItem'
 import { NewSkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import Button from '@/components/UI-kit/Button/Button'
-// import { myContext } from '@/redux/index.js';
+import { myContext } from '@/redux'
 
 
 import { useQuery } from '@apollo/client'
@@ -155,7 +155,8 @@ export default function Index() {
   // const { exportArrayNftInfo } = useToken()
   const [loadingBrands, setLoadingBrands] = useState(false)
   const [loadingItems, setLoadingItems] = useState(true)
-
+  const { dispatch } = useContext(myContext)
+  
   useEffect(() => {
     if (!account) {
       return
@@ -171,7 +172,7 @@ export default function Index() {
         // console.log('---brands----', brands)
       } else {
         // TODO ERROR SHOW
-        alert('error')
+        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Oops! Something went wrong. Try again." });
       }
     }
 
@@ -257,14 +258,14 @@ export default function Index() {
 
       <CardBanner />
 
-      <CardGroup title='Most Popular Items' link='/Marketplace/Image' marinTop='64px'>
+      <CardGroup title='Most Popular Items' link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
           return <PopularItem itemInfo={item} key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
         })}
       </CardGroup>
 
       {/* <div className="load_more" onClick={() => {
-        history.push('/Marketplace/Image')
+        history.push('/Marketplace/FineArts')
       }}>Load More</div> */}
       <div className="Button_LoadMore">
         <Button
@@ -273,7 +274,7 @@ export default function Index() {
           value="Load More"
           primary
           onClick={() => {
-            history.push('/Marketplace/Image')
+            history.push('/Marketplace/FineArts')
           }}
         />
       </div>
@@ -302,7 +303,7 @@ It shouldn’t be longer then ~20-30 sec.'
 
         <Link to="/Factory">
           <div className="left">
-            <h3>Create your unique NFT on Bounce</h3>
+            <h3>Create your unique NFT on Fangible</h3>
             <img src={arrows_white} alt="" />
           </div>
         </Link>
