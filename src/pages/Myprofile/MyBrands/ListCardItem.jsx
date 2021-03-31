@@ -88,6 +88,7 @@ const AddCardItemStyled = styled.div`
     width: 224px;
     .create_wrapper{
         width: 100%;
+        
         text-align: center;
         button{
             width: 224px;

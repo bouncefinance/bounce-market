@@ -75,7 +75,7 @@ export default function TableItem({ row }) {
                 {row.date}
             </TableCell>
             <TableCell>
-                {row.event === 'Transfer' && <Button>Detial</Button>}
+                {row.event === 'Transfer' && <Button>Detail</Button>}
             </TableCell>
         </TableItemStyled>
 
