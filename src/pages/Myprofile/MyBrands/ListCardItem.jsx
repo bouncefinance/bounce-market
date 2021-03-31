@@ -52,6 +52,7 @@ export function CardItem ({ cover, name, standard }) {
         variables: { owner: String(account).toLowerCase() },
         fetchPolicy:"network-only",
         onCompleted: () => {
+            if(!brand721Items.data.bounce721Brands[0]) return
             setCount(brand721Items.data.bounce721Brands[0].tokenList?.length);
         }
     })
@@ -60,6 +61,7 @@ export function CardItem ({ cover, name, standard }) {
         variables: { owner: String(account).toLowerCase() },
         fetchPolicy:"network-only",
         onCompleted: () => {
+            if(!brand1155Items.data.bounce1155Brands[0]) return
             setCount(brand1155Items.data.bounce1155Brands[0].tokenLiist?.length)
         }
     })
