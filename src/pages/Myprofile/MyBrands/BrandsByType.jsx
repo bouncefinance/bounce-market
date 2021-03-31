@@ -391,9 +391,8 @@ export default function BrandsByType() {
                 : brandItems.nft1155Items;
             // console.log(brands)
             if (!brands) {
-                handleBrandTradeItems([]);
-
-                return []
+                // handleBrandTradeItems([]);
+                setTokenList([]);
             } else {
                 // const tokenList = brands.map(item => item.tokenId);
                 // console.log(brands)
