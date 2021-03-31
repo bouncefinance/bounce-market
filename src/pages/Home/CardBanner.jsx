@@ -23,14 +23,14 @@ export default function CardBannerGroup () {
             <Link to="/Marketplace">
                 <CardBannerItem
                     title='Marketplace'
-                    context='You can find your content here according to your taste'
+                    context='Fine Arts, Comics, Sports and others. You can find your content here according to your taste of brands'
                     img={banner_1}
                 />
             </Link>
             <Link to="/Brands">
                 <CardBannerItem
                     title='Brands'
-                    context='You can find your content here according to your taste'
+                    context='Fine Arts, Comics, Sports and others. You can find your content here according to your taste of brands'
                     img={banner_2}
                 />
             </Link>
@@ -38,7 +38,7 @@ export default function CardBannerGroup () {
                 <div style={{ opacity: 0.5, cursor: 'pointer' }}>
                     <CardBannerItem
                         title='Point-2-Point'
-                        context='You can find your content here according to your taste'
+                        context='Fine Arts, Comics, Sports and others. You can find your content here according to your taste of brands'
                         img={banner_3}
                     />
                 </div>
@@ -57,7 +57,7 @@ const CardBannerItemStyled = styled.li`
     justify-content: space-between;
     
     .left{
-        width: 171px;
+        width: 280px;
         height: 30px;
         margin-left: 28px;
         margin-top: 24px;

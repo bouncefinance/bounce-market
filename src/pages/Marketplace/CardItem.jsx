@@ -156,7 +156,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId }) {
+export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }) {
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const [newPrice, setNewPrice] = useState('Loading Price ...')
@@ -191,7 +191,7 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId 
                         </span>
                     </div>
                     <div className="info_bottom">
-                        <span className="type">Minimum bid</span>
+                        <span className="type">{poolType === 'fixed-swap' ? 'Price' : 'Top Bid'}</span>
                         <span className="cardId"># {nftId}</span>
                         <span className="price">{newPrice}</span>
                     </div>
@@ -237,7 +237,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem ({ cover, name, price, cardId, poolType }) {
+export function VideoCardItem({ cover, name, price, cardId, poolType }) {
 
     return (<LazyLoad height={408}>
         <VideoCardItemStyled>

@@ -67,7 +67,7 @@ const Wrapper = styled.div`
 function CreateBrandModal({ open, setOpen }) {
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'Create your Brand', isClose: true }}>
+        <Modal open={open} setOpen={setOpen} header={{ title: 'Build Your Brand', isClose: true }}>
             <Wrapper>
                 <TextInput
                     title='Brand Name'
