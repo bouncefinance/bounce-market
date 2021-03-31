@@ -271,6 +271,7 @@ export default function NewIndex() {
     const [isLike, setIsLike] = useState(false)
     const { sign_Axios } = useAxios()
 
+    const [supply, setSupply] = useState();
     const [tokenContractAddress, setTokenContractAddress] = useState();
     const [tokenSymbol, setTokenSymbol] = useState();
     const [tokenID, setTokenID] = useState();
@@ -358,6 +359,7 @@ export default function NewIndex() {
                         /* alert("获取成功"); */
                         /* console.log(res); */
                         let NFTInfoList = res.data.data;
+                        setSupply(NFTInfoList.supply)
                         setTokenID(NFTInfoList.id);
                         setTokenContractAddress(NFTInfoList.contractaddress);
                         setTokenSymbol(NFTInfoList.itemsymbol);
@@ -960,6 +962,13 @@ export default function NewIndex() {
                                     }
                                 </OffersStyled>
                             </NewPullDown>
+                            
+                            
+                            {supply &&
+                                <NewPullDown open={false} title='Supply'>
+                                    <div>{supply || "--"}</div>
+                                </NewPullDown>
+                            }
                             <NewPullDown open={false} title='Token Info'>
                                 <div className="token-info">
                                     <div className="flex flex-space-x">
