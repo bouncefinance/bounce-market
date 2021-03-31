@@ -10,8 +10,8 @@ import ConfirmCancelModal from '../Buy/components/ConfirmCancelModal'
 import useToken from '@/utils/useToken'
 
 import { weiToNum } from '@/utils/useBigNumber'
-// import { AUCTION_TYPE } from '@/utils/const'
 import GenerateNftModal from './MyInventory/GenerateNftModal'
+import { AUCTION_TYPE } from '@/utils/const'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -135,7 +135,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, status, nftId, itemname, poolInfo }) {
+export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo }) {
     const history = useHistory()
     const {exportErc20Info} = useToken()
     const [openCancel, setOpenCancel] = useState(false)
@@ -155,8 +155,6 @@ export function CardItem({ cover, status, nftId, itemname, poolInfo }) {
 
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
-
-
     return (
         <>
             <CardItemStyled>
@@ -185,16 +183,16 @@ export function CardItem({ cover, status, nftId, itemname, poolInfo }) {
                                 onClick={() => { history.push(`/MyInventory/${nftId}/Sell`) }}
                             />
                             {/* <Button value={'Make Listed'} /> */}
-                        </div> : poolInfo.poolType === 'fixed-swap' ? <div className='button_group'>
+                        </div> : poolInfo.poolType === AUCTION_TYPE.FixedSwap ? <div className='button_group'>
                             <Button value={'Check Status'} primary onClick={() => {
-                                history.push(`/Marketplace/Image/fixed-swap/${poolInfo.poolId}`)
+                                history.push(`/Marketplace/Image/${poolType}/${poolInfo.poolId}`)
                             }} />
                             <Button value={'Make Unlisted'} onClick={() => {
                                 setOpenCancel(true)
                             }} />
                         </div> : <div className='button_group btn_one'>
                             <Button value={'Check Status'} primary onClick={() => {
-                                history.push(`/Marketplace/Image/fixed-swap/${poolInfo.poolId}`)
+                                history.push(`/Marketplace/Image/${poolType}/${poolInfo.poolId}`)
                             }} />
                         </div>
                     }
