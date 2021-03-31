@@ -11,7 +11,8 @@ import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
-import { NFT_CATEGORY } from '@/utils/const'
+import { NFT_CATEGORY } from '@/utils/const';
+import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
 // import { numToWei } from '@/utils/useBigNumber'
 
 const GenerateNFTModalStyled = styled.div`
@@ -60,10 +61,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     useEffect(() => {
         // console.log(fileData, formData)
         if ((fileData || formData.imgurl) && formData) {
-            const requireArr = ['Name', 'Description']
+            const requireArr = ['Name', 'Description', 'Supply']
             let errorCount = 0
             requireArr.forEach(item => {
-                if (!checkInput(formData[item])) {
+                if (!checkInput(formData[item]) || (item === 'Supply' && !ErrorStatus.intNum.reg.test(formData[item]))) {
                     errorCount++
                 }
             })
@@ -234,9 +235,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     defaultValue={1}
                     required={true}
                     marginTop={'24px'}
+                    inputType={'intNum'}
                     inputDisable={inputDisable}
                     onValChange={(val) => {
-                        setFormData({ ...formData, Supply: parseInt(val) })
+                        setFormData({ ...formData, Supply: val })
                     }}
                 />}
 

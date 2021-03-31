@@ -11,6 +11,7 @@ import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
 import { useThrottle } from '@/utils/useThrottle'
 import { myContext } from '@/redux'
+import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
 // import { numToWei } from '@/utils/useBigNumber'
 const DEBOUNCE = 500;
 const AddNewBrandstModalStyled = styled.div`
@@ -56,10 +57,10 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
 
     useEffect(() => {
         if ((fileData || formData.imgurl) && formData) {
-            const requireArr = ['Name', 'Description']
+            const requireArr = ['Name', 'Description', 'Supply']
             let errorCount = 0
             requireArr.forEach(item => {
-                if (!checkInput(formData[item])) {
+                if (!checkInput(formData[item]) || (item === 'Supply' && !ErrorStatus.intNum.reg.test(formData[item]))) {
                     errorCount++
                 }
             })
@@ -236,7 +237,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     inputDisable={inputDisable}
                     inputType={'intNum'}
                     onValChange={(val) => {
-                        setFormData({ ...formData, Supply: parseInt(val) })
+                        setFormData({ ...formData, Supply: val })
                     }}
                 />}
 
