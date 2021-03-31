@@ -3,7 +3,10 @@ import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components'
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
-import { OtherButton, Button } from '@components/UI-kit'
+import { Button } from '@components/UI-kit'
+import icon_full_black from '@assets/images/icon/liked-full.svg'
+import icon_line_white from '@assets/images/icon/liked.svg'
+import icon_share from '@/components/UI-kit/assets/share.svg'
 import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchBaseWidthOrHeightImg";
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
@@ -28,6 +31,9 @@ import Web3 from 'web3';
 import { formatDistanceToNow } from 'date-fns';
 import { AUCTION_TYPE } from '@/utils/const';
 import { ZERO_ADDRESS } from '@/web3/address_list/token';
+import MaterialButton from '@material-ui/core/Button'
+import useAxios from '@/utils/useAxios';
+import MessageTips from '@/components/Modal/MessageTips';
 import useToken from '@/utils/useToken';
 
 
@@ -203,6 +209,26 @@ const NewIndexStyled = styled.div`
             }
         }
     }
+
+.material-button{
+    color: black;
+    background-color: white;
+    border-radius: 0px;
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: none;
+    padding: 8px 34px;
+    :hover{
+        /* background-color: rgb(51,51,51); */
+        background-color: #fff;
+        border-color: black;
+        box-shadow: none;
+    }
+    .button-icon{
+        width: 16px;
+        height: 16px;
+    }
+}
+    
 `
 
 export default function NewIndex() {
@@ -217,16 +243,42 @@ export default function NewIndex() {
     const [bidPrice, setBidPrice] = useState()
     const [minPrice, setMinPrice] = useState(0)
     const [openModal, setOpenModal] = useState(false)
+    const [isLike, setIsLike] = useState(false)
+    const { sign_Axios } = useAxios()
+    const [loadingLoked, setLoadingLocked] = useState(true)
+    const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
+
+    const updateParams = {
+        auctiontype: aucType | 0,
+        // brandid: nftInfo.brandid,
+        itemid: poolInfo.tokenId | 0,
+        poolid: poolId | 0,
+    }
     /* const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false) */
 
+    const setLike = async () => {
+        const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
+        if (res.data.code === 200 || res.data.code === 1) {
+            const list = res.data.data
+            // console.log('---list----', list)
+            // setIsLike(list.map((e) => e.accountaddress?.toLocaleLowerCase()).includes(account.toLocaleLowerCase()))
+            setIsLike(list.map((e) => e.poolid | 0).includes(poolId | 0))
+            setLoadingLocked(false)
+        }
+    }
     useEffect(() => {
 
-        console.log(nftInfo, poolInfo)
+        // console.log(nftInfo, poolInfo)
         if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
             setBtnText('loading ...')
             return
         }
+
+        // console.log(updateParams)
+        // console.log('---account---', account)
+        setLike()
+
 
         if (poolInfo.status === 'Live') {
             setIsLoading(false)
@@ -247,7 +299,7 @@ export default function NewIndex() {
     }, [active, nftInfo, poolInfo])
 
     useEffect(() => {
-        console.log(poolInfo)
+        // console.log(poolInfo)
         if (poolInfo.poolType === 'EA' && poolInfo.status === 'Live') {
             if (poolInfo.bidCountP === '0') {
                 setMinPrice(weiToNum(poolInfo.amountMin1))
@@ -260,6 +312,18 @@ export default function NewIndex() {
     }, [poolInfo])
 
 
+    const onLiked = async () => {
+        setLoadingLocked(true)
+        const res = await sign_Axios.post('/api/v2/main/auth/dealaccountlike', { ...updateParams, ifLike: isLike ? 0 : 1 })
+        setLoadingLocked(false)
+        if (res.data.code === 200 || res.data.code === 1) {
+            // console.log('-----res----', res.data)
+            setIsLike(!isLike)
+            setopenMessage({ open: true, message: 'success', severity: 'success' })
+        } else {
+            setopenMessage({ open: true, message: res.data?.msg || 'error', severity: 'error' })
+        }
+    }
     const handelBid = async () => {
         setIsLoading(true)
         console.log(poolInfo)
@@ -341,7 +405,22 @@ export default function NewIndex() {
         const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
 
         const _amount1 = amountMax1 || numToWei(bidPrice)
-        console.log(_amount1)
+        // console.log(_amount1)
+
+        let sendParams = { from: account }
+        let approveRes = true
+        if (poolInfo.token1 === ZERO_ADDRESS) {
+            sendParams.value = _amount1
+        } else {
+            const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
+            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+            if (!approveRes) {
+                showTransferByStatus('approveStatus')
+                approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
+                    .send({ from: account })
+            }
+        }
+        if (!approveRes) return showTransferByStatus('errorStatus')
 
         BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
             .send({ from: account, value: _amount1 })
@@ -542,14 +621,14 @@ export default function NewIndex() {
                             bidderClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'}>
                             Deal failed, claim back {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                    </Button>}
+                        </Button>}
 
                     {poolInfo.status === 'Failed' && poolInfo.currentBidderP === account && poolInfo.myClaimedP &&
                         < Button onClick={() => {
                             bidderClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'} disabled>
                             Deal failed, You have successfully Claim {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                    </Button>}
+                        </Button>}
 
                     {poolInfo.status === 'Close' && poolInfo.creator === account && !poolInfo.creatorClaimedP &&
                         < Button onClick={() => {
@@ -714,8 +793,8 @@ export default function NewIndex() {
                     <div className="container_left">
                         <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
                         <div className="btn_group">
-                            <OtherButton type='share' value='Share' />
-                            <OtherButton type='like' value='Like' />
+                            <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}>Share</MaterialButton>
+                            <MaterialButton disabled={loadingLoked} onClick={onLiked} variant="contained" className="material-button" startIcon={<img className="button-icon" src={isLike ? icon_full_black : icon_line_white} alt="" />}>Like</MaterialButton>
                         </div>
                     </div>
 
@@ -827,6 +906,7 @@ export default function NewIndex() {
                 </div>
             </NewIndexStyled >
             <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />
+            <MessageTips open={openMessage} setopen={setopenMessage} />
         </>
     )
 }
