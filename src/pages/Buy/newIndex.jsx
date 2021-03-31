@@ -920,7 +920,7 @@ export default function NewIndex() {
                             </div>
                             <div className="desc">
                                 <p>{nftInfo.description || 'description Is Loading ...'}</p>
-                                <span>Read more</span>
+                                {/* <span>Read more</span> */}
 
                             </div>
                         </div>
