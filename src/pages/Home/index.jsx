@@ -303,7 +303,7 @@ It shouldn’t be longer then ~20-30 sec.'
 
         <Link to="/Factory">
           <div className="left">
-            <h3>Create your unique NFT on Fangible</h3>
+            <h3>Create your unique NFT on Bounce Collectible</h3>
             <img src={arrows_white} alt="" />
           </div>
         </Link>
