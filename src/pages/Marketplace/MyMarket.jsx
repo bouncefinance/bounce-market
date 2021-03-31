@@ -16,13 +16,11 @@ import icon_sport from '@assets/images/icon/sport.svg'
 
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
-import { useQuery } from '@apollo/client'
-import { QueryTradePools } from '@/utils/apollo'
+import { useLazyQuery } from '@apollo/client'
+import { QueryMyTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
-import Button from '@/components/UI-kit/Button/Button'
-import { History } from '@material-ui/icons'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -37,7 +35,7 @@ const MarketplaceStyled = styled.div`
         display: flex;
         padding-bottom: 16px;
         border-bottom: 2px solid rgba(0,0,0,.1);
-        position: relative;
+
         li{
             padding: 7px 20px;
             height: 48px;
@@ -56,10 +54,6 @@ const MarketplaceStyled = styled.div`
                 opacity: 1;
             }
         }
-      .link {
-        position: absolute;
-        right: -20px;
-      }
     }
 
     .filterBox{
@@ -119,13 +113,11 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export default function Marketplace() {
+export default function MyMarket() {
   let { type } = useParams()
   const history = useHistory()
-  const { active } = useActiveWeb3React()
-  // const { exportErc20Info } = useToken()
-
-  const { data } = useQuery(QueryTradePools)
+  const { active, account } = useActiveWeb3React()
+  
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
@@ -135,63 +127,73 @@ export default function Marketplace() {
         NFT_CATEGORY.FineArts);
 
 
-  const [loading, setLoding] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   const [length, setLength] = useState(4);
 
   type = 'Image'
 
-  useEffect(() => {
-    if (!active) return
+  const handleTradeData = (tradeData) => {
 
-    if (data) {
-      const tradePools = data.tradePools.map(item => ({
+    const tradePools = tradeData.tradePools.map(item => {
+      return {
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
-      })).filter(item => item.state !== 1)
-      const tradeAuctions = data.tradeAuctions.map(item => ({
+      }
+    });
+    
+    const tradeAuctions = tradeData.tradeAuctions.map(item => {
+      return {
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
-      })).filter(item => item.state !== 1)
-      // console.log(tradeAuctions)
-      const pools = tradePools.concat(tradeAuctions);
-      const list = pools.map(item => item.tokenId);
-      // console.log(list)
+      }
+    });
 
-      setLength(list.length);
-      setLoding(true)
-      // console.log(channel)
-      const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel
-      sign_Axios.post(Controller.items.getitemsbyfilter, {
-        ids: list,
-        category: type,
-        channel: channel_2
+    const ids_list = tradePools.concat(tradeAuctions).map(item => item.tokenId);
+    setLength(ids_list.length);
+    const pools = tradePools.concat(tradeAuctions)
+    sign_Axios.post(Controller.items.getitemsbyfilter, {
+      ids: ids_list,
+      category: '',
+      channel: ''
+    })
+      .then(res => {
+        if (res.status === 200 && res.data.code === 1) {
+          const res_data = res.data.data
+          const list = pools.map((item, index) => {
+            const poolInfo = res_data.find(res => item.tokenId === res.id);
+            return {
+              ...poolInfo,
+              poolType: item.poolType,
+              poolId: item.poolId,
+              price: item.price,
+              token1:item.token1,
+              createTime: item.createTime
+            }
+          })
+          const result = list.sort((a, b) => b.createTime - a.createTime)
+          setTokenList(result);
+          setFilterList(result);
+          setLoading(false)
+        }
       })
-        .then(res => {
-          if (res.status === 200 && res.data.code === 1) {
-            const list = res.data.data.map((item, index) => {
-              const poolInfo = pools.find(pool => pool.tokenId === item.id);
+  }
 
-              return {
-                ...item,
-                poolType: poolInfo.poolType,
-                poolId: poolInfo.poolId,
-                price: poolInfo.price,
-                createTime: poolInfo.createTime,
-                token1: poolInfo.token1
-              }
-            })
-            .sort((a, b) => b.createTime - a.createTime);
-            setTokenList(list);
-            setFilterList(list);
-            setLoding(false)
-          }
-        })
-        .catch(() => { })
-    }
-    // eslint-disable-next-line
-  }, [active, data, type, channel])
+  const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
+    {
+      variables: { user: String(account).toLowerCase() },
+      fetchPolicy: "network-only",
+      onCompleted: () => {
+        handleTradeData(traddata || [])
+      },
+
+    })
+
+  useEffect(() => {
+    if (!active) return
+    getMyTradeNFT();
+  }, [active, getMyTradeNFT])
 
   const handleChange = (filterSearch) => {
     const list = tokenList.filter(item => item.itemname.toLowerCase().indexOf(filterSearch) > -1
@@ -263,8 +265,8 @@ export default function Marketplace() {
             } alt="" />{item.name}</p>
           </li>
         })}
-        <li className="link"><Button onClick={() => {history.push('/MyMarket/Image')}}>My Market</Button></li>
       </ul>
+
       <div className="filterBox">
         <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
 
