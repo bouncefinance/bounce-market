@@ -269,7 +269,7 @@ export default function SellNFT() {
 							fees={fees}
 							minPrice={minimumBid}
 							maxPrice={directPurchasePrice}
-							minIncr={minimumBid * 0.01}
+							minIncr={parseFloat(minimumBid * 0.05)}
 							amount={amount || 1}
 							newUnit={fixedSwap_Unit}
 						/>
