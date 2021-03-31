@@ -374,7 +374,7 @@ export default function NewIndex () {
 		if (!active || !nftId) return;
 		getNFTInfoList(nftId);
 		// eslint-disable-next-line
-	}, [active, nftId]);
+	}, [active, nftId])
 
 
     const onLiked = async () => {
@@ -389,6 +389,7 @@ export default function NewIndex () {
             setopenMessage({ open: true, message: res.data?.msg || 'error', severity: 'error' })
         }
     }
+
     const handelBid = async () => {
         setIsLoading(true)
         // console.log(poolInfo)
@@ -472,8 +473,7 @@ export default function NewIndex () {
     const handelEnglishAuctionBid = async (amountMax1) => {
         setIsLoading(true)
         const BounceEnglishAuctionNFT_CT = getContract(library, BounceEnglishAuctionNFT.abi, getEnglishAuctionNFT(chainId))
-
-        const _amount1 = amountMax1 || numToWei(bidPrice)
+        const _amount1 = amountMax1 || numToWei(bidPrice, poolInfo.token1.decimals)
         // console.log(_amount1)
 
         let sendParams = { from: account }
@@ -490,9 +490,9 @@ export default function NewIndex () {
             }
         }
         if (!approveRes) return showTransferByStatus('errorStatus')
-
+        console.log(poolId, _amount1,sendParams)
         BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
-            .send({ from: account, value: _amount1 })
+            .send(sendParams)
             .on('transactionHash', hash => {
                 // setBidStatus(pendingStatus)
                 showTransferByStatus('pendingStatus')
@@ -670,7 +670,7 @@ export default function NewIndex () {
 
                     {poolInfo.amountMax1 && <Button width='262px' disabled={isLoading || poolInfo.status !== 'Live'} height='48px' onClick={() => {
                         handelEnglishAuctionBid(poolInfo.amountMax1)
-                    }}>Buy now for {weiToNum(poolInfo.amountMax1)} ETH</Button>}
+                    }}>Buy now for {weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)} {poolInfo.token1.symbol}</Button>}
                     {poolInfo.status === 'Close' && poolInfo.currentBidderP === account && !poolInfo.myClaimedP &&
                         < Button onClick={() => {
                             bidderClaim()

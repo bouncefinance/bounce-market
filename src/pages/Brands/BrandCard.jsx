@@ -107,11 +107,7 @@ const StyledCard = styled.div`
 
 `
 
-<<<<<<< HEAD
-function BrandCard ({ img, brandName, profile, avatar, ownerName, id, standard }) {
-=======
 function BrandCard({img, brandName, profile, avatar, ownerName, id, standard, owneraddress}) {
->>>>>>> a2a0324bbb8052e73a29601a588758ce3ccff5c4
     const history = useHistory();
     return (<LazyLoad height={332}>
         <StyledCard>
