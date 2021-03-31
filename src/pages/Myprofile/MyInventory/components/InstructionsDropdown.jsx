@@ -61,7 +61,7 @@ const StyledDropdown = styled.div`
 			font-family: Helvetica Neue;
 			font-style: normal;
 			font-weight: normal;
-			font-size: 14px;
+			font-size: 13px;
 			line-height: 17px;
 			color: #111111;
 			opacity: 0.5;

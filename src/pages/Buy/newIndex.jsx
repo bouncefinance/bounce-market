@@ -632,7 +632,7 @@ export default function NewIndex() {
 
                 <div className="bidInfo">
                     <div>
-                        <h5>Current Price</h5>
+                        <h5>{aucType === AUCTION_TYPE.FixedSwap ? "Current Price" : "Top Bid" }</h5>
                         <h3>{poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
@@ -971,7 +971,7 @@ export default function NewIndex() {
                                                 onCopy={() => {
                                                     dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
                                                 }}>
-                                                <img src={icon_copy} alt="" />
+                                                <img src={icon_copy} style={{cursor: "pointer"}} title="Copy" alt="" />
                                             </CopyToClipboard>
                                         </div>
                                     </div>
