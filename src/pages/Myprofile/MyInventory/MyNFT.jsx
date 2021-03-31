@@ -280,7 +280,7 @@ function MyNFT() {
 					</span>*/}
 
 					<InfoDropdowns>
-						<NFTInfo title="Supply" content={supply?'ERC-1155':'ERC-721'} />
+						<NFTInfo title="Supply" content={supply} />
 						<NFTInfo title="Token ID" content={tokenID} />
 						<NFTInfo
 							title="Token Symbol"

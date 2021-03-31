@@ -211,7 +211,7 @@ export default function Index() {
               poolId: poolInfo.poolId,
               price: poolInfo.price,
               token1: poolInfo.token1,
-              createTime: poolInfo.createTime
+              createTime: poolInfo.createTime,
             }
           })
 
