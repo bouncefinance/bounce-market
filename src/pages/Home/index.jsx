@@ -171,7 +171,7 @@ export default function Index() {
         // console.log('---brands----', brands)
       } else {
         // TODO ERROR SHOW
-        alert('error')
+        // alert('error')
       }
     }
 
