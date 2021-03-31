@@ -15,7 +15,7 @@ import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
 /* import PlaceBidModal from './components/PlaceBidModal' */
 import { myContext } from '@/redux'
-import BreadcrumbNav from '../../components/UI-kit/NavBar/BreadcrumbNav'
+import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
