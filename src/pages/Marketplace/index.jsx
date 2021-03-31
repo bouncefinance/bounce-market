@@ -272,7 +272,7 @@ export default function Marketplace() {
           // console.log(item)
         }} />
 
-        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'ETH' }]} defaultValue='ETH' onChange={(item) => {
+        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'BNB' }]} defaultValue='BNB' onChange={(item) => {
           // console.log(item)
         }} />
 
