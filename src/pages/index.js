@@ -8,6 +8,7 @@ import Test from '../test'
 
 import Home from './Home'
 import Marketplace from './Marketplace'
+import MyMarket from './Marketplace/MyMarket'
 import Buy from './Buy/newIndex'
 
 import Brands from './Brands'
@@ -48,6 +49,8 @@ export default function Index() {
                 <Route exact path='/Home' component={Home} />
                 <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/Image' /> }} />
                 <Route exact path='/Marketplace/:type' component={Marketplace} />
+                <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket/Image' />}} />
+                <Route exact path='/MyMarket/:type' component={MyMarket} />
                 <Route exact path='/Marketplace/:type/:aucType/:poolId' component={Buy} />
 
                 <Route exact path='/Brands' component={Brands} />
