@@ -22,14 +22,14 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
 import { useLazyQuery } from '@apollo/client'
-import { QueryOwnerBrandItems, QueryBrandTradeItems } from '@/utils/apollo'
+import {  QueryBrandTradeItemsByBrand, QueryMyNFTByBrand } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 import { CardItem } from '../CardItem'
 import { AUCTION_TYPE } from '@/utils/const'
 import { SkeletonNFTCard } from '@/pages/component/Skeleton/NFTCard'
-import { weiToNum } from '@/utils/useBigNumber'
+// import { weiToNum } from '@/utils/useBigNumber'
 import Category from '../Category'
 
 const BrandsByTypeStyled = styled.div`
@@ -223,6 +223,7 @@ export default function BrandsByType() {
     const { state } = useContext(myContext)
     const { sign_Axios } = useAxios()
     const [fileData, setFileData] = useState(null)
+    const { account } = useActiveWeb3React();
 
     const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
     // ----edit----
@@ -236,12 +237,28 @@ export default function BrandsByType() {
     })
     const [editBtnText, setEditBtnText] = useState('Save')
     const [inputDisable, setInputDisable] = useState(false)
+    const [contract, setContract] = useState(null)
+
     const [btnLock, setBtnLock] = useState(false)
     // { open: Boolean, type: 'error' | 'success' }
     const [editSnackbar, setEditSnackbar] = useState({
         open: false,
         type: 'error',
     })
+
+
+    useEffect(() => {
+        if (!account) return
+        sign_Axios.post('/api/v2/main/auth/getbrandbyid', { id: parseInt(brandId) })
+            .then(res => {
+                // console.log(res)
+                if (res.status === 200 && res.data.code === 1) {
+                    setContract(res.data.data.contractaddress)
+                }
+            })
+        // eslint-disable-next-line
+    }, [account])
+
     const handelEditSubmit = async () => {
         if (!editFormData.brandname || !editFormData.description) {
             return
@@ -281,28 +298,44 @@ export default function BrandsByType() {
         }, 1000)
     }
 
-    const { active, account } = useActiveWeb3React();
     const [loading, setLoading] = useState(true);
-    const [tokenList, setTokenList] = useState([]);
+    const [tokenList, setTokenList] = useState();
+    const [tokenList_2, setTokenList_2] = useState();
+
+    useEffect(() => {
+        if (!account || !tokenList || !tokenList_2) return
+        // console.log(tokenList, tokenList_2)
+        const pools = tokenList.concat(tokenList_2)
+        handleBrandTradeItems(pools)
+        // eslint-disable-next-line
+    }, [account, tokenList, tokenList_2])
 
     const handleBrandTradeItems = (pools) => {
+        const ids = pools.map(item => item.tokenId)
+
         sign_Axios.post(Controller.items.getitemsbyfilter, {
-            ids: tokenList,
+            ids: ids,
             category: type.toLowerCase() === 'all' ? '' : type,
             channel: ''
         })
             .then(res => {
                 if (res.status === 200 && res.data.code === 1) {
-                    const list = res.data.data.map(item => {
-                        const poolInfo = pools.find(pool => pool.tokenId === item.id);
+                    console.log(pools)
+                    const list = pools.map(item => {
+                        const poolInfo = res.data.data.find(pool => item.tokenId === pool.id);
+                        
+                        // console.log(poolInfo)
                         return {
-                            ...item,
-                            poolType: poolInfo && poolInfo.poolType,
-                            poolId: poolInfo && poolInfo.poolId,
-                            price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
-                            createTime: poolInfo && poolInfo.createTime
+                            ...poolInfo,
+                            poolType: item && item.poolType,
+                            poolId: item && item.poolId,
+                            price: item && item.price,
+                            token1: item && item.token1,
+                            createTime: item && item.createTime
                         }
                     })
+
+                    // console.log(list)
                     const result = list.sort((a, b) => b.createTime - a.createTime);
                     setListData(result);
                     setStatusList(result);
@@ -310,11 +343,11 @@ export default function BrandsByType() {
                 }
             })
     }
-
-    const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
-        variables: { tokenList: tokenList },
+    // 16806 正在售卖
+    const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItemsByBrand, {
+        variables: { creator: account, token0: contract },
         fetchPolicy: "network-only",
-        onCompleted: () => {
+        onCompleted: async () => {
             const tradePools = brandTradeItems.data.tradePools.map(item => ({
                 ...item,
                 poolType: AUCTION_TYPE.FixedSwap
@@ -324,37 +357,60 @@ export default function BrandsByType() {
                 price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
                 poolType: AUCTION_TYPE.EnglishAuction
             })).filter(item => item.state !== 1)
+
             // console.log(tradePools.concat(tradeAuctions))
-            handleBrandTradeItems(tradePools.concat(tradeAuctions));
+            // handleBrandTradeItems(tradePools.concat(tradeAuctions));
+            setTokenList_2(tradePools.concat(tradeAuctions));
         }
     })
 
-    const [getBrandItems, { data: brandItems }] = useLazyQuery(QueryOwnerBrandItems, {
-        variables: { owner: account ? account.toLowerCase() : account },
+    // const [getBrandItems_2, { data: brandItems_2 }] = useLazyQuery(QueryOwnerBrandItems, {
+    //     variables: { owner: account ? account.toLowerCase() : account },
+    //     fetchPolicy: "network-only",
+    //     onCompleted: () => {
+    //         const brands = brandInfo.standard === 1
+    //             ? brandItems_2.bounce721Brands[0]
+    //             : brandItems_2.bounce1155Brands[0];
+    //         if (!brands) {
+    //             handleBrandTradeItems([]);
+    //         } else {
+    //             const tokenList = brands.tokenList.map(item => item.tokenId);
+    //             console.log(tokenList)
+    //             setTokenList_2(tokenList);
+    //         }
+    //     }
+    // })
+
+    // 16806 正在列表
+    const [getBrandItems, { data: brandItems }] = useLazyQuery(QueryMyNFTByBrand, {
+        variables: { user: account && account.toLowerCase(), contract: contract && contract.toLowerCase() },
         fetchPolicy: "network-only",
         onCompleted: () => {
             const brands = brandInfo.standard === 1
-                ? brandItems.bounce721Brands[0]
-                : brandItems.bounce1155Brands[0];
+                ? brandItems.nft721Items
+                : brandItems.nft1155Items;
+            // console.log(brands)
             if (!brands) {
                 handleBrandTradeItems([]);
+
+                return []
             } else {
-                const tokenList = brands.tokenList.map(item => item.tokenId);
-                console.log(tokenList)
-                setTokenList(tokenList);
+                // const tokenList = brands.map(item => item.tokenId);
+                // console.log(brands)
+                setTokenList(brands);
             }
         }
     })
 
     useEffect(() => {
-        if (!active) return;
+        if (!account || !contract) return;
         if (!!brandInfo.standard) {
-            getBrandItems();
-        }
-        if (tokenList.length > 0) {
+            getBrandItems()
+
             getBrandTradeItems()
+            // getBrandItems_2()
         }
-    }, [active, brandInfo.standard, getBrandItems, tokenList.length, getBrandTradeItems]);
+    }, [account, contract, brandInfo.standard, getBrandItems, getBrandTradeItems]);
 
     return (
         <BrandsByTypeStyled>

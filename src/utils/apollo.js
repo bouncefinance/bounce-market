@@ -3,9 +3,9 @@ import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 
 export const client = new ApolloClient({
-    // uri: 'https://api.thegraph.com/subgraphs/id/QmNRFKSQSVgVbYe6fmJUV3hcZLh8ngMdGCht41wX3xq3Qv',  // rinkby
-    uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc mian
-    cache: new InMemoryCache(),
+  // uri: 'https://api.thegraph.com/subgraphs/id/QmNRFKSQSVgVbYe6fmJUV3hcZLh8ngMdGCht41wX3xq3Qv',  // rinkby
+  uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc mian
+  cache: new InMemoryCache(),
 })
 
 export const QueryTradePools = gql`
@@ -127,6 +127,17 @@ export const QueryMyNFT = gql`
   }
 `
 
+export const QueryMyNFTByBrand = gql`
+  query nftItems($user: String!, $contract: String!) {
+    nft721Items(where: {user: $user, contract: $contract}) {
+      tokenId
+    }
+    nft1155Items(where: {user: $user}) {
+      tokenId
+    }
+  }
+`
+
 export const QueryOwnerBrandItems = gql`
   query nftItems($owner: String!) {
     bounce721Brands(where: {owner: $owner}) {
@@ -157,6 +168,28 @@ export const QueryBrandTradeItems = gql`
       lastestBidAmount
       amountMin1
       createTime
+      state
+    }
+  }
+`
+
+export const QueryBrandTradeItemsByBrand = gql`
+  query brandTradeItems($creator: String!, $token0: String!) {
+    tradePools(where: {creator: $creator ,token0:$token0}) {
+      tokenId
+      poolId
+      price
+      createTime
+      token1
+      state
+    }
+    tradeAuctions(where: {creator: $creator, token0:$token0}) {
+      tokenId
+      poolId
+      lastestBidAmount
+      amountMin1
+      createTime
+      token1
       state
     }
   }
@@ -229,7 +262,7 @@ export const QueryFixedSwapPool = gql`
   }
 `
 
-export const QueryEnglishAuction  = gql`
+export const QueryEnglishAuction = gql`
   query queryEnglishAuction($poolId: Int!) {
     tradeAuctions(where: { poolId: $poolId })  {
       creator
