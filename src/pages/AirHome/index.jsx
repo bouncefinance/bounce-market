@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import UpdateTopBarImg from '../Myprofile/MyBrands/updateTopBarImg'
@@ -8,13 +8,16 @@ import Search from '../component/Other/Search'
 import { useHistory, useParams } from 'react-router'
 import { CardItem } from '../Marketplace/CardItem'
 
+import icon_arts from '@assets/images/icon/image.svg'
+import icon_comics from '@assets/images/icon/comics.svg'
+import icon_sport from '@assets/images/icon/sport.svg'
 import { useLazyQuery } from '@apollo/client'
 import { QueryBrandTradeItems, QueryOwnerBrandItems } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { weiToNum } from '@/utils/useBigNumber'
-import { AUCTION_TYPE } from '@/utils/const'
+import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -83,12 +86,12 @@ const MarketplaceStyled = styled.div`
         padding-bottom: 16px;
         border-bottom: 2px solid rgba(0,0,0,.1);
         li{
+            padding: 7px 20px;
             width: 124px;
             height: 48px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-right: 20px;
             cursor: pointer;
             user-select: none;
             opacity: .4;
@@ -166,38 +169,41 @@ export function AirHome() {
   const run = () => { }
 
   const { active } = useActiveWeb3React();
-  const { id, standard, type } = useParams();
+  const { id, standard, channel, type } = useParams();
   const { sign_Axios } = useAxios();
 
   const [brandInfo, setBrandInfo] = useState({});
   const [tokenList, setTokenList] = useState([]);
   const [itemList, setItemList] = useState([]);
+  const [pools, setPools] = useState([]);
 
-  const handleBrandTradeItems = (pools) => {
+  const handleBrandTradeItems = useCallback((pools) => {
+    const chanel_2 =  channel === 'Comic Books' ? 'Conicbooks' : channel;
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
       category: type,
-      channel: ''
+      channel: chanel_2
     })
-      .then(res => {
-        if (res.status === 200 && res.data.code === 1) {
-          const list = res.data.data.map(item => {
-            const poolInfo = pools.find(pool => pool.tokenId === item.id);
-            return {
-              ...item,
-              poolType: poolInfo ? poolInfo.poolType : null,
-              poolId: poolInfo ? poolInfo.poolId : null,
-              price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
-              createTime: poolInfo && poolInfo.createTime
-            }
-          })
-          const result = list.filter(item => {
-            return item.poolId
-          }).sort((a, b) => b.createTime - a.createTime);
-          setItemList(result);
+    .then(res => {
+      if (res.status === 200 && res.data.code === 1) {
+        const list = res.data.data.map(item => {
+        const poolInfo = pools.find(pool => pool.tokenId === item.id);
+        return {
+          ...item,
+          poolType: poolInfo ? poolInfo.poolType : null,
+          poolId: poolInfo ? poolInfo.poolId : null,
+          price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
+          createTime: poolInfo && poolInfo.createTime
         }
       })
-  }
+      const result = list.filter(item => {
+        return item.poolId
+      }).sort((a, b) => b.createTime - a.createTime);
+        setItemList(result);
+      }
+    })
+    // eslint-disable-next-line
+  }, [channel, type, tokenList ]);
 
   const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
     variables: { tokenList: tokenList },
@@ -212,7 +218,9 @@ export function AirHome() {
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
       }));
-      handleBrandTradeItems(tradePools.concat(tradeAuctions));
+      const pools = tradePools.concat(tradeAuctions);
+      setPools(pools);
+      handleBrandTradeItems(pools);
     }
   })
 
@@ -240,10 +248,12 @@ export function AirHome() {
         const data = res.data.data;
         setBrandInfo(data);
         getBrandItems();
+        if(channel && tokenList.length > 0) {
+          handleBrandTradeItems(pools);
+        }
       })
     // eslint-disable-next-line
-  }, [active, id]);
-
+  }, [active, id, channel]);
 
   const renderListByType = (type) => {
     switch (type) {
@@ -292,10 +302,15 @@ export function AirHome() {
       </ul>}
       <ul className="nav_wrapper">
         {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
-          return <li key={item.name} className={type === item.name ? 'active' : ''} onClick={() => {
-            history.push(`/Marketplace/${item.name}`)
+          return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
+            history.push(`/AirHome/${id}/${standard}/${item.name}/Image`)
           }}>
-            <p>{item.name}</p>
+            <p className="flex flex-center-y"><img src={
+              item.name === NFT_CATEGORY.FineArts ? icon_arts :
+                item.name === NFT_CATEGORY.Sports ? icon_sport :
+                  item.name === NFT_CATEGORY.ComicBooks ? icon_comics :
+                    ''
+            } alt="" />{item.name}</p>
           </li>
         })}
       </ul>
@@ -307,7 +322,7 @@ export function AirHome() {
           // console.log(item)
         }} />
 
-        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'ETH' }]} defaultValue='ETH' onChange={(item) => {
+        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'BNB' }]} defaultValue='BNB' onChange={(item) => {
           // console.log(item)
         }} />
 

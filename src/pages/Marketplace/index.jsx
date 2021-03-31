@@ -22,7 +22,6 @@ import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import Button from '@/components/UI-kit/Button/Button'
-// import { History } from '@material-ui/icons'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -272,7 +271,7 @@ export default function Marketplace() {
           // console.log(item)
         }} />
 
-        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'ETH' }]} defaultValue='ETH' onChange={(item) => {
+        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'BNB' }]} defaultValue='BNB' onChange={(item) => {
           // console.log(item)
         }} />
 

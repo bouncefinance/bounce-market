@@ -175,7 +175,7 @@ export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
 
-    return (<LazyLoad height={408}>
+    return (<LazyLoad width={262} height={408}>
         <CardItemStyled>
             <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />
             <div className="item_wrapper">
@@ -239,7 +239,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
 
 export function VideoCardItem({ cover, name, price, cardId, poolType }) {
 
-    return (<LazyLoad height={408}>
+    return (<LazyLoad width={262} height={408}>
         <VideoCardItemStyled>
             <img src={cover} alt="" />
             <div className="item_wrapper">
@@ -286,7 +286,7 @@ const AudioCardItemStyled = styled(CardItemStyled)`
 `
 
 export function AudioCardItem({ cover, name, price, cardId, describe, poolType }) {
-    return (<LazyLoad height={408}>
+    return (<LazyLoad width={262} height={408}>
         <AudioCardItemStyled>
             <img src={cover} alt="" />
 

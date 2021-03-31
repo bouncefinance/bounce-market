@@ -52,6 +52,28 @@ export const QueryMyTradePools = gql`
   }
 `
 
+export const QueryMyPools = gql`
+  query myPools($user: String!) {
+    tradePools(where: {creator: $user}) {
+      tokenId
+      poolId
+      price
+      token1
+      createTime
+      state
+    }
+    tradeAuctions(where: {creator: $user}) {
+      tokenId
+      poolId
+      token1
+      lastestBidAmount
+      amountMin1
+      createTime
+      state
+    }
+  }
+`
+
 export const QueryItesms = gql`
   query {
     bounce721Items {
@@ -127,6 +149,7 @@ export const QueryBrandTradeItems = gql`
       poolId
       price
       createTime
+      state
     }
     tradeAuctions(where: {tokenId_in: $tokenList}) {
       tokenId
@@ -134,6 +157,7 @@ export const QueryBrandTradeItems = gql`
       lastestBidAmount
       amountMin1
       createTime
+      state
     }
   }
 `
