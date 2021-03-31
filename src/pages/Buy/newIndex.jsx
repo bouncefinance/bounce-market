@@ -30,7 +30,7 @@ import { useLazyQuery } from '@apollo/client';
 import { QueryFixedSwapPool, QueryEnglishAuction } from '@/utils/apollo';
 import { getEllipsisAddress } from '@/utils/utils';
 import Web3 from 'web3';
-import { formatDistanceToNow } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import { AUCTION_TYPE } from '@/utils/const';
 import { ZERO_ADDRESS } from '@/web3/address_list/token';
 import MaterialButton from '@material-ui/core/Button'
@@ -742,7 +742,7 @@ export default function NewIndex() {
         const price = tradePool.price;
         const offerList = data.poolSwaps.map(item => ({
             name: getEllipsisAddress(item.sender),
-            time: new Date(item.timestamp * 1000).toLocaleString(),
+            time: format(new Date(item.timestamp * 1000), 'PPPpp'),
             amount: item.swapAmount0,
             price: price,
         }));
@@ -794,7 +794,7 @@ export default function NewIndex() {
         const total = tradePool.tokenAmount0;
         const offerLiist = data.auctionBids.map(item => ({
             name: getEllipsisAddress(item.sender),
-            time: new Date(item.timestamp * 1000).toLocaleString(),
+            time: format(new Date(item.timestamp * 1000), 'PPPpp'),
             // amount: Web3.utils.fromWei(item.amount1),
             amount: item.amount1,
             price: '',
