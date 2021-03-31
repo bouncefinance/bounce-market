@@ -40,7 +40,7 @@ const AddNewItemModalStyled = styled.div`
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const { active, library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
-    const { state } = useContext(myContext)
+    const { state, dispatch } = useContext(myContext)
     const { showTransferByStatus } = useTransferModal()
     const [btnText, setBtnText] = useState('Submit')
     const [inputDisable, setInputDisable] = useState(false)
@@ -52,7 +52,6 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         Channel: NFT_CATEGORY.FineArts,
         Supply: 1
     })
-
     useEffect(() => {
         if (!active) return
     }, [active])
@@ -169,7 +168,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     }
 
                 }).catch(err => {
-                    alert('请求服务器出错')
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
                 })
             })
         // 第三步 调用合约生成 NFT
