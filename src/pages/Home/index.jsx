@@ -258,14 +258,14 @@ export default function Index() {
 
       <CardBanner />
 
-      <CardGroup title='Most Popular Items' link='/Marketplace/Image' marinTop='64px'>
+      <CardGroup title='Most Popular Items' link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
           return <PopularItem itemInfo={item} key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
         })}
       </CardGroup>
 
       {/* <div className="load_more" onClick={() => {
-        history.push('/Marketplace/Image')
+        history.push('/Marketplace/FineArts')
       }}>Load More</div> */}
       <div className="Button_LoadMore">
         <Button
@@ -274,7 +274,7 @@ export default function Index() {
           value="Load More"
           primary
           onClick={() => {
-            history.push('/Marketplace/Image')
+            history.push('/Marketplace/FineArts')
           }}
         />
       </div>

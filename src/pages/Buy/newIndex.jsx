@@ -14,6 +14,7 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
 /* import PlaceBidModal from './components/PlaceBidModal' */
+import BreadcrumbNav from '../../components/UI-kit/NavBar/BreadcrumbNav'
 
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
@@ -198,6 +199,9 @@ const NewIndexStyled = styled.div`
     .token-info{
         >div{
             margin-bottom: 12px;
+            &:last-child {
+                margin-bottom: 0;
+            }
             font-size: 12px;
             >p{
                 :first-child{
@@ -785,14 +789,34 @@ export default function NewIndex() {
         }
     }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
 
+    
+	const NavList = [
+		{
+			title: "MarketPlace",
+			route: "/MarketPlace",
+		},
+		{
+			title: "Fine Arts",
+			route: "/MarketPlace/FineArts",
+		},
+		{
+			title: (nftInfo.itemname || ""),
+			route: "/MarketPlace/FineArts/" + (aucType === AUCTION_TYPE.EnglishAuction ? "fixed-swap" : "english-auction") + poolId,
+		},
+	];
+
     return (
         <>
             <NewIndexStyled>
-                <ul className='crumbs'>
+                {/* 面包屑导航栏 */}
+                {/* <ul className='crumbs'>
                     <li><span>Marketplace</span></li>
                     <li><span>Fine Arts</span></li>
                     <li><span>Digital Image Name</span></li>
-                </ul>
+                </ul> */}
+                <BreadcrumbNav marginTop="24px" NavList={NavList} />
+
+
                 <div className="container">
                     <div className="container_left">
                         <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
@@ -809,7 +833,7 @@ export default function NewIndex() {
                                 <h3>{nftInfo.itemname || 'Name Is Loading ...'}</h3>
 
                                 {/* Cancel按钮 */}
-                                {poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
+                                {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
                                             setOpenModal(true)
@@ -820,7 +844,7 @@ export default function NewIndex() {
                                 </Button>}
 
                                 {/* Cancel按钮 */}
-                                {poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
+                                {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
                                             /* handelFixedSwapCancel() */
@@ -909,7 +933,7 @@ export default function NewIndex() {
                     </div>
                 </div>
             </NewIndexStyled >
-            <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />
+            {aucType === AUCTION_TYPE.FixedSwap && <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />}
             <MessageTips open={openMessage} setopen={setopenMessage} />
         </>
     )
@@ -954,6 +978,7 @@ line-height: 15px;
             margin-left: 24px;
             color: rgba(0,0,0,.5);
         }
+        
     }
     .Offers-price{
         .price_ETH {

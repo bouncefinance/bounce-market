@@ -105,8 +105,8 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     itemsymbol: brandInfo.brandsymbol,
                     owneraddress: brandInfo.owneraddress,
                     ownername: brandInfo.ownername,
-                    standard: brandInfo.standard,
-                    supply: formData.Supply
+                    standard: parseInt(brandInfo.standard),
+                    supply: parseInt(formData.Supply)
                 }
 
                 console.log(params)

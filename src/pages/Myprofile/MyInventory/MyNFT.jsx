@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import useAxios from "@utils/useAxios.js";
 import { myContext } from '@/redux';
 import { Button } from "@components/UI-kit";
+import BreadcrumbNav from '../../../components/UI-kit/NavBar/BreadcrumbNav'
 import NFTInfo from "./components/NFTInfo";
 
 import icon_copy from "@assets/images/icon/copy.svg";
@@ -64,28 +65,6 @@ const Page = styled.div`
 				column-gap: 16px;
 			}
 		}
-	}
-`;
-
-const BreadcrumbNav = styled.div`
-	font-family: IBM Plex Mono;
-	font-style: normal;
-	font-weight: 500;
-	font-size: 12px;
-	line-height: 16px;
-	display: flex;
-	align-items: center;
-	color: #1f191b;
-	opacity: 0.8;
-
-	box-sizing: border-box;
-	margin: 24px auto 0 0;
-
-	display: flex;
-	align-items: center;
-
-	span {
-		opacity: 0.4;
 	}
 `;
 
@@ -253,13 +232,21 @@ function MyNFT() {
 		getNFTInfoList(nftId);
 		// eslint-disable-next-line
 	}, [active, nftId]);
+
+	const NavList = [
+		{
+			title: "My Inventory",
+			route: "/MyInventory",
+		},
+		{
+			title: (NFTName || ""),
+			route: "/MyInventory/" + nftId,
+		},
+	];
 	
 	return (
 		<Page>
-			<BreadcrumbNav className="breadcrumb_Nav">
-				My Inventory&nbsp;/&nbsp;
-				<span className="NFTNameInNav">{NFTName}</span>
-			</BreadcrumbNav>
+			<BreadcrumbNav marginTop="24px" NavList={NavList} />
 			<PageBody className="sellNFT">
 				<img className="NFTImg" src={imgURL} alt="" />
 
