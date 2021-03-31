@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react'
+import { /* Link,  */useParams } from 'react-router-dom';
 import styled from 'styled-components'
+import { myContext } from '@/redux';
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
 import { Button } from '@components/UI-kit'
@@ -37,6 +38,8 @@ import useAxios from '@/utils/useAxios';
 import MessageTips from '@/components/Modal/MessageTips';
 import useToken from '@/utils/useToken';
 
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import icon_copy from '@assets/images/icon/copy.svg'
 
 const NewIndexStyled = styled.div`
     width: 1100px;
@@ -198,6 +201,7 @@ const NewIndexStyled = styled.div`
 
     .token-info{
         >div{
+            width: 100%;
             margin-bottom: 12px;
             &:last-child {
                 margin-bottom: 0;
@@ -209,6 +213,17 @@ const NewIndexStyled = styled.div`
                 }
                 :last-child{
                     color: rgba(31,25,27,0.5);
+                }
+            }
+
+            .contractAddress {
+                display: flex;
+                justify-content: space-between;
+
+                p {
+                    overflow: hidden;
+                    text-overflow: ellipsis; 
+                    margin-right: 6px;
                 }
             }
         }
@@ -249,6 +264,13 @@ export default function NewIndex() {
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
     const { sign_Axios } = useAxios()
+    
+	const [tokenContractAddress, setTokenContractAddress] = useState();
+	const [tokenSymbol, setTokenSymbol] = useState();
+	const [tokenID, setTokenID] = useState();
+	const [externalLink, setExternalLink] = useState();
+	const { dispatch } = useContext(myContext);
+
     const [loadingLoked, setLoadingLocked] = useState(true)
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
 
@@ -270,6 +292,7 @@ export default function NewIndex() {
             setLoadingLocked(false)
         }
     }
+
     useEffect(() => {
 
         // console.log(nftInfo, poolInfo)
@@ -314,6 +337,38 @@ export default function NewIndex() {
         }
         // eslint-disable-next-line
     }, [poolInfo])
+
+    const nftId = poolInfo.tokenId
+
+    useEffect(() => {
+		const getNFTInfoList = async (nftId) => {
+			const params = {
+				id: parseInt(nftId),
+			};
+
+			sign_Axios
+				.post("/api/v2/main/auth/getoneitembyid", params)
+				.then((res) => {
+					if (res.status === 200 && res.data.code === 1) {
+						/* alert("获取成功"); */
+						/* console.log(res); */
+						let NFTInfoList = res.data.data;
+						setTokenID(NFTInfoList.id);
+						setTokenContractAddress(NFTInfoList.contractaddress);
+						setTokenSymbol(NFTInfoList.itemsymbol);
+						setExternalLink(NFTInfoList.externallink);
+					} else {
+						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+					}
+				})
+				.catch((err) => {
+					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+				});
+		};
+		if (!active || !nftId) return;
+		getNFTInfoList(nftId);
+		// eslint-disable-next-line
+	}, [active, nftId]);
 
 
     const onLiked = async () => {
@@ -548,9 +603,9 @@ export default function NewIndex() {
                     </Button>
                 </div>
 
-                <div className="Link_MakeOffer">
+                {/* <div className="Link_MakeOffer">
                     <StyledLink to="#">Make Offer</StyledLink>
-                </div>
+                </div> */}
 
             </>
         } else if (aucType === AUCTION_TYPE.EnglishAuction) {
@@ -901,21 +956,30 @@ export default function NewIndex() {
                             <NewPullDown open={false} title='Token Info'>
                                 <div className="token-info">
                                     <div className="flex flex-space-x">
-                                        <p>Token Contact Address</p>
-                                        <p style={{ color: '#124EEB' }}>0x33a9b7ed8c71c...2976</p>
+                                        <p>Token Contract Address</p>
+                                        <div className="contractAddress">
+                                            <p style={{ color: 'rgba(31,25,27,0.5)',  }}>{tokenContractAddress || ""}</p>
+                                            <CopyToClipboard
+                                                text={tokenContractAddress}
+                                                onCopy={() => {
+                                                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
+                                                }}>
+                                                <img src={icon_copy} alt="" />
+                                            </CopyToClipboard>
+                                        </div>
                                     </div>
                                     <div className="flex flex-space-x">
                                         <p>Token Symbol</p>
-                                        <p>CKIE</p>
+                                        <p>{tokenSymbol || ""}</p>
                                     </div>
                                     <div className="flex flex-space-x">
                                         <p>Token ID</p>
-                                        <p>#123456</p>
+                                        <p>#{tokenID || ""}</p>
                                     </div>
                                 </div>
                             </NewPullDown>
                             <NewPullDown open={false} title='External link'>
-                                <div>--</div>
+                                <div>{externalLink || "--"}</div>
                             </NewPullDown>
                             <NewPullDown open={false} title='Trading History'>
                                 <TradingHistory rows={
@@ -941,7 +1005,7 @@ export default function NewIndex() {
 
 
 
-
+/* 
 const StyledLink = styled(Link)`
     font-family: Helvetica Neue;
     font-style: normal;
@@ -954,7 +1018,7 @@ const StyledLink = styled(Link)`
 
     margin-top: 50px;
 `
-
+ */
 
 const OffersStyled = styled.div`
 font-family: Helvetica Neue;
