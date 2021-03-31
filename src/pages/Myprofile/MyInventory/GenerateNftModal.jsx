@@ -133,8 +133,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        // setBidStatus(successStatus)
-                                        showTransferByStatus('successStatus')
+                                        showTransferByStatus('')
+                                        dispatch({ type: 'TransferModal', TransferModal: "" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
                                         history.push("/MyInventory")
                                     })
                                     .on('error', (err, receipt) => {
@@ -159,8 +160,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        // setBidStatus(successStatus)
-                                        showTransferByStatus('successStatus')
+                                        dispatch({ type: 'TransferModal', TransferModal: "" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
                                         history.push("/MyInventory")
                                     })
                                     .on('error', (err, receipt) => {

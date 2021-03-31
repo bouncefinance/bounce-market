@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { /* Link,  */useParams } from 'react-router-dom';
 import styled from 'styled-components'
-import { myContext } from '@/redux';
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
 import { Button } from '@components/UI-kit'
@@ -15,6 +14,7 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
 /* import PlaceBidModal from './components/PlaceBidModal' */
+import { myContext } from '@/redux'
 import BreadcrumbNav from '../../components/UI-kit/NavBar/BreadcrumbNav'
 
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
@@ -279,7 +279,6 @@ export default function NewIndex() {
 
     const [loadingLoked, setLoadingLocked] = useState(true)
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
-
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
@@ -899,7 +898,7 @@ export default function NewIndex() {
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
-                                            setOpenModal(true)
+                                            aucType === AUCTION_TYPE.EnglishAuction? dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "The auction bill can only be cancelled when it expires" }):setOpenModal(true)
                                         }}
                                         height='30px'
                                     >

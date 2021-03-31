@@ -126,8 +126,8 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        // setBidStatus(successStatus)
-                                        showTransferByStatus('successStatus')
+                                        dispatch({ type: 'TransferModal', TransferModal: "" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -155,8 +155,8 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        // setBidStatus(successStatus)
-                                        showTransferByStatus('successStatus')
+                                        dispatch({ type: 'TransferModal', TransferModal: "" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
                                     })
                                     .on('error', (err, receipt) => {
                                         setBtnLock(false);
