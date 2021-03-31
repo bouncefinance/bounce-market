@@ -161,7 +161,7 @@ export default function Index() {
       <CommonHeader />
       <MyInventoryStyled>
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
-          {/* <Search placeholder={'Search Items, Shops and Accounts'} /> */}
+          {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
           <AddCardItem />
           <Category itemList={itemList} onStatusChange={setStatusList} />
 
