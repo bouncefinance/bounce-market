@@ -29,6 +29,7 @@ export default function useHook(poolIndex) {
 
 
 
+
         // console.log(pools)
         if (pools.tokenId) {
             const info = await exportNftInfo(pools.tokenId)
@@ -54,23 +55,37 @@ export default function useHook(poolIndex) {
             myClaimedP,
             currentBidderP,
             creatorClaimedP,
+            reserveAmount1P
         }
 
 
         const curTime = parseInt(new Date().getTime() / 1000)
         const diffTime = parseInt(poolsObj.closeAt) - curTime
 
-        
+
 
         if (diffTime < 0) {
-            poolsObj.showTime = 'This Tranding Closed'
-            poolsObj.status = 'Close'
-            
+            if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) >= 1) {
+                // 预期价成交
+                poolsObj.showTime = 'This Tranding Closed'
+                poolsObj.status = 'Close'
+            } else if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) < 1) {
+                // 流拍
+                poolsObj.showTime = 'This Tranding Closed'
+                poolsObj.status = 'Failed'
+            } else {
+                // console.log(currentBidderAmount)
+
+                poolsObj.showTime = 'This Tranding Closed'
+                poolsObj.status = 'Close'
+            }
+
+
         } else {
             poolsObj.status = 'Live'
             if (diffTime >= 86400) {
                 const day = parseInt(diffTime / 86400)
-                const hour =parseInt( (diffTime / 3600) % 24)
+                const hour = parseInt((diffTime / 3600) % 24)
                 poolsObj.showTime = `Sale ends in ${day} days ${hour} hours`
             } else {
                 const hour = parseInt(diffTime / 3600)
@@ -83,12 +98,6 @@ export default function useHook(poolIndex) {
             // 一口价成交
             poolsObj.showTime = 'This Tranding Closed'
             poolsObj.status = 'Close'
-        } else if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) >= 1) {
-            // 预期价成交
-            
-        } else {
-            // 流拍
-            
         }
 
         // console.log(poolsObj)

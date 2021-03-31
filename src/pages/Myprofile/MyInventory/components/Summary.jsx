@@ -14,7 +14,7 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import { numToWei, weiMul } from "@/utils/useBigNumber";
 import useNftInfo from "@/utils/useToken";
-import { ZERO_ADDRESS } from "@/web3/address_list/token";
+// import { ZERO_ADDRESS } from "@/web3/address_list/token";
 
 const SummaryWrapper = styled.div`
 	grid-area: Summary;
@@ -165,13 +165,13 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				setBtnLock(true)
 			}
 		} else {
-			if (unit && duration && nftInfo && minPrice) {
+			if (unit && duration && nftInfo && minPrice && price && maxPrice) {
 				setBtnLock(false)
 			} else {
 				setBtnLock(true)
 			}
 		}
-	}, [auctionType, price, unit, duration, fees, nftInfo,minPrice])
+	}, [auctionType, price, unit, duration, fees, nftInfo,minPrice,maxPrice])
 
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
@@ -243,7 +243,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					}
 
 					if (!approveResult) return showTransferByStatus('errorStatus')
-					console.log(_name, _token0, _token1, _tokenId, _amountTotal0, _amountTotal1, _onlyBot)
+					// console.log(_name, _token0, _token1, _tokenId, _amountTotal0, _amountTotal1, _onlyBot)
 
 					BounceFixedSwapNFT_CT.methods.createErc1155(_name, _token0, _token1, _tokenId, _amountTotal0,
 						_amountTotal1, _onlyBot)
@@ -265,17 +265,19 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				}
 			} catch (e) { console.log(e); showTransferByStatus('errorStatus') }
 		} else {
+			// console.log(unit)
 			try {
 				// Fixswap NFT
 				const _name = nftInfo.itemname
 				const _token0 = nftInfo.contractaddress
-				const _token1 = ZERO_ADDRESS
+				const _token1 = newUnit.contract
 				const _tokenId = nftInfo.id
-				const _amountMax1 = numToWei(maxPrice, 18)
-				const _amountMin1 = numToWei(minPrice, 18)
-				const _amountMinIncr1 = numToWei(minIncr, 18)
-				const _amountReserve1 = numToWei(price, 18)
-				const _duration = duration * 60 * 60 * 24
+				const _amountMax1 = numToWei(maxPrice, newUnit.decimals)
+				const _amountMin1 = numToWei(minPrice, newUnit.decimals)
+				const _amountMinIncr1 = numToWei(minIncr, newUnit.decimals)
+				const _amountReserve1 = numToWei(price, newUnit.decimals)
+				// const _duration = duration * 60 * 60 * 24
+				const _duration = duration * 60
 				const _onlyBot = false
 
 				console.log(_name, _token0, _token1, _tokenId,

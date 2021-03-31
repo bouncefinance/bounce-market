@@ -231,7 +231,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex () {
+export default function NewIndex() {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { hasApprove_ERC_20 } = useToken()
@@ -406,6 +406,21 @@ export default function NewIndex () {
 
         const _amount1 = amountMax1 || numToWei(bidPrice)
         // console.log(_amount1)
+
+        let sendParams = { from: account }
+        let approveRes = true
+        if (poolInfo.token1 === ZERO_ADDRESS) {
+            sendParams.value = _amount1
+        } else {
+            const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
+            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+            if (!approveRes) {
+                showTransferByStatus('approveStatus')
+                approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
+                    .send({ from: account })
+            }
+        }
+        if (!approveRes) return showTransferByStatus('errorStatus')
 
         BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
             .send({ from: account, value: _amount1 })
@@ -601,6 +616,20 @@ export default function NewIndex () {
                             You have successfully bid and claimed
                     </Button>}
 
+                    {poolInfo.status === 'Failed' && poolInfo.currentBidderP === account && !poolInfo.myClaimedP &&
+                        < Button onClick={() => {
+                            bidderClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'}>
+                            Deal failed, claim back {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                        </Button>}
+
+                    {poolInfo.status === 'Failed' && poolInfo.currentBidderP === account && poolInfo.myClaimedP &&
+                        < Button onClick={() => {
+                            bidderClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'} disabled>
+                            Deal failed, You have successfully Claim {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                        </Button>}
+
                     {poolInfo.status === 'Close' && poolInfo.creator === account && !poolInfo.creatorClaimedP &&
                         < Button onClick={() => {
                             creatorClaim()
@@ -613,6 +642,20 @@ export default function NewIndex () {
                             creatorClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'} disabled>
                             You have successfully received {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                        </Button>}
+
+                    {poolInfo.status === 'Failed' && poolInfo.creator === account && !poolInfo.creatorClaimedP &&
+                        < Button onClick={() => {
+                            creatorClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'}>
+                            Deal failed, claim back NFT
+                        </Button>}
+
+                    {poolInfo.status === 'Failed' && poolInfo.creator === account && poolInfo.creatorClaimedP &&
+                        < Button onClick={() => {
+                            creatorClaim()
+                        }} width='100%' height='48px' primary marginTop={'12px'} disabled>
+                            Deal failed, You have successfully Claim NFT
                         </Button>}
                 </div>
 

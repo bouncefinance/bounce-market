@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { Link, useHistory } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
-import Search from './Search'
+// import Search from './Search'
 import InfoBox from './InfoBox'
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
@@ -139,7 +139,7 @@ export default function Index () {
     const { getUserInfo } = useUserInfo()
     const history = useHistory()
     const { state } = useContext(myContext);
-    const { dispatch } = useContext(myContext);
+    // const { dispatch } = useContext(myContext);
     const [isFangible, setIsFangible] = useState(false)
 
     const updateActive = () => {
@@ -208,9 +208,9 @@ export default function Index () {
 
     useEffect(() => {
         if (!active) return
-        if (chainId && chainId !== 4) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network." /* "请选择Rinkeby测试网络" */ });
-        }
+        // if (chainId && chainId !== 4) {
+        //     dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network." /* "请选择Rinkeby测试网络" */ });
+        // }
         getUserInfo();
         // eslint-disable-next-line
     }, [account, chainId, active])
@@ -229,9 +229,9 @@ export default function Index () {
                             <img src={isFangible ? logo_bfangible : logo_bounce} alt=""></img>
                         </Link>
 
-                        <Search
+                        {/* <Search
                             placeholder={'Search Items, Shops and Accounts'}
-                        />
+                        /> */}
                     </div>
                     <div className='right'>
                         <ul>
