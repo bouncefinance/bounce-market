@@ -13,6 +13,7 @@ import { myContext } from '@/redux'
 import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
 import { NFT_CATEGORY } from '@/utils/const';
 import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
+import { useHistory } from 'react-router-dom'
 // import { numToWei } from '@/utils/useBigNumber'
 
 const GenerateNFTModalStyled = styled.div`
@@ -39,6 +40,7 @@ const GenerateNFTModalStyled = styled.div`
 `
 
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
+    const history = useHistory();
     const { active, library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
     const { state,dispatch } = useContext(myContext)
@@ -133,6 +135,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         // setBidStatus(successStatus)
                                         showTransferByStatus('successStatus')
+                                        history.push("/MyInventory")
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -158,6 +161,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         // setBidStatus(successStatus)
                                         showTransferByStatus('successStatus')
+                                        history.push("/MyInventory")
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)

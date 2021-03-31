@@ -12,6 +12,7 @@ import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
 import { NFT_CATEGORY } from '@/utils/const'
+import { useHistory } from 'react-router-dom'
 // import { numToWei } from '@/utils/useBigNumber'
 
 const AddNewItemModalStyled = styled.div`
@@ -47,6 +48,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
     const [nftType, setNftType] = useState('ERC-721')
+    const history = useHistory();
     const [formData, setFormData] = useState({
         Category: 'image',
         Channel: NFT_CATEGORY.FineArts,
@@ -131,6 +133,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         // setBidStatus(successStatus)
                                         showTransferByStatus('successStatus')
+                                        history.push("/MyBrands")
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -156,6 +159,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         // setBidStatus(successStatus)
                                         showTransferByStatus('successStatus')
+                                        history.push("/MyBrands")
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
