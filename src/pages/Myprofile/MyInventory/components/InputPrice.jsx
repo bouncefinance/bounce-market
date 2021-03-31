@@ -88,7 +88,7 @@ function InputPrice({
 			setPrice(e.target.value);
 			setpriceValue(e.target.value);
 		} else if (e.target.value.match("^\\d+\\.[0-9]*0+$") != null) {
-			setPrice(parseFloat(e.target.value));
+			setPrice(e.target.value);
 			setpriceValue(e.target.value);
 		} else if (e.target.value.match("^\\d+\\.[0-9]*[1-9]+$") != null) {
 			setPrice(e.target.value);
