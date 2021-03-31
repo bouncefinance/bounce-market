@@ -12,6 +12,7 @@ import useTransferModal from '@/web3/useTransferModal'
 import { myContext } from '@/redux'
 import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
 import { NFT_CATEGORY } from '@/utils/const'
+import { useHistory } from 'react-router-dom'
 // import { numToWei } from '@/utils/useBigNumber'
 
 const AddNewItemModalStyled = styled.div`
@@ -40,19 +41,19 @@ const AddNewItemModalStyled = styled.div`
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const { active, library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
-    const { state } = useContext(myContext)
+    const { state, dispatch } = useContext(myContext)
     const { showTransferByStatus } = useTransferModal()
     const [btnText, setBtnText] = useState('Submit')
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
     const [nftType, setNftType] = useState('ERC-721')
+    const history = useHistory();
     const [formData, setFormData] = useState({
         Category: 'image',
         Channel: NFT_CATEGORY.FineArts,
         Supply: 1
     })
-
     useEffect(() => {
         if (!active) return
     }, [active])
@@ -132,6 +133,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         // setBidStatus(successStatus)
                                         showTransferByStatus('successStatus')
+                                        history.push("/MyBrands")
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -157,6 +159,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         // setBidStatus(successStatus)
                                         showTransferByStatus('successStatus')
+                                        history.push("/MyBrands")
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -169,7 +172,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     }
 
                 }).catch(err => {
-                    alert('请求服务器出错')
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
                 })
             })
         // 第三步 调用合约生成 NFT
