@@ -10,7 +10,8 @@ const injected = new InjectedConnector({
 const POLLING_INTERVAL = 12000;
 const RPC_URLS = {
     1: "https://mainnet.infura.io/v3/0b500c5f885b43a4ab192e8048f6fa88",
-    4: "https://rinkeby.infura.io/v3/8f6d3d5d7a1442a38d9e8050c31c1884"
+    4: "https://rinkeby.infura.io/v3/8f6d3d5d7a1442a38d9e8050c31c1884",
+    56: "https://bsc-dataseed4.binance.org"
 };
 
 const walletconnect = new WalletConnectConnector({
