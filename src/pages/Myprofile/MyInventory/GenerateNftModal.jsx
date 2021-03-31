@@ -182,7 +182,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     }
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'Generate New Item', isClose: true }}>
+        <Modal open={open} setOpen={setOpen} header={{ title: 'Generate New NFT', isClose: true }}>
             <GenerateNFTModalStyled>
                 <TextInput
                     title='Name'

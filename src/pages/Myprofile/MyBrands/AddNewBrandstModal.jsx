@@ -204,7 +204,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
 
     return (
         <>
-            <Modal open={open} setOpen={setOpen} header={{ title: 'Create your Brand', isClose: true }}>
+            <Modal open={open} setOpen={setOpen} header={{ title: 'Build Your Brand', isClose: true }}>
                 <AddNewBrandstModalStyled>
                     <TextInput
                         title='Brand Name'

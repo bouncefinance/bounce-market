@@ -107,7 +107,11 @@ const StyledCard = styled.div`
 
 `
 
+<<<<<<< HEAD
 function BrandCard ({ img, brandName, profile, avatar, ownerName, id, standard }) {
+=======
+function BrandCard({img, brandName, profile, avatar, ownerName, id, standard, owneraddress}) {
+>>>>>>> a2a0324bbb8052e73a29601a588758ce3ccff5c4
     const history = useHistory();
     return (<LazyLoad height={332}>
         <StyledCard>
@@ -120,7 +124,7 @@ function BrandCard ({ img, brandName, profile, avatar, ownerName, id, standard }
                     {/* <img src={avatar} className='avatar' alt="" /> */}
                     <HeadImgFit src={avatar} width={20} height={20} />
                     <span className="text">Owned by</span>
-                    <Link to={`/`}>{ownerName}</Link>
+                    <Link to={`/`}>{ownerName ? ownerName : owneraddress}</Link>
                 </div>
                 <div className="button_visit">
                     <Button primary width={'162px'} onClick={() => {

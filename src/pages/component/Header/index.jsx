@@ -84,8 +84,11 @@ const HeaderStyled = styled.div`
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
+        border-top: 2px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 
         &.open{
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
             border-bottom: 2px solid #124EEB;
         }
 
@@ -230,7 +233,7 @@ export default function Index () {
                         </Link>
 
                         {/* <Search
-                            placeholder={'Search Items, Shops and Accounts'}
+                            placeholder={'Search items，Brands and Accounts'}
                         /> */}
                     </div>
                     <div className='right'>
