@@ -422,6 +422,7 @@ export default function BrandsByType () {
                             user={item.ownername}
                             status={item.poolId && 'Listed'}
                             poolInfo={item}
+                            poolType={item.poolType}
                         />
                     </li>
                 })}

@@ -69,6 +69,7 @@ export default function BasicTable() {
                         item: item.itemname,
                     }
                 })
+                console.log(list)
                 setList(list.sort((a, b) => b.timestamp - a.timestamp));
             }
         })
@@ -115,6 +116,7 @@ export default function BasicTable() {
                         <TableCell className={classes.TableCell} >From</TableCell>
                         <TableCell className={classes.TableCell} >To</TableCell>
                         <TableCell className={classes.TableCell} >Date</TableCell>
+                        <TableCell className={classes.TableCell} >operation</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

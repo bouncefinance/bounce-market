@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { /* Link,  */useParams } from 'react-router-dom';
 import styled from 'styled-components'
-import { myContext } from '@/redux';
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
 import { Button } from '@components/UI-kit'
@@ -15,6 +14,7 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
 /* import PlaceBidModal from './components/PlaceBidModal' */
+import { myContext } from '@/redux'
 import BreadcrumbNav from '../../components/UI-kit/NavBar/BreadcrumbNav'
 
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
@@ -159,6 +159,12 @@ const NewIndexStyled = styled.div`
                     }
                 }
 
+    .dollar{
+        display: block;
+        font-size: 20px;
+        color: #999999;
+    }
+
                 .amount {
                     /* align-items: end; */
                     display: flex;
@@ -250,7 +256,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex() {
+export default function NewIndex () {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { hasApprove_ERC_20 } = useToken()
@@ -273,7 +279,6 @@ export default function NewIndex() {
 
     const [loadingLoked, setLoadingLocked] = useState(true)
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
-
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
@@ -385,16 +390,20 @@ export default function NewIndex() {
     }
     const handelBid = async () => {
         setIsLoading(true)
-        console.log(poolInfo)
+        // console.log(poolInfo)
         if (poolInfo.nftType === '0') {
             const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
             let sendParams = { from: account }
             let approveRes = true
-            if (poolInfo.token1 === ZERO_ADDRESS) {
+
+            if (poolInfo.token1.contract === ZERO_ADDRESS) {
                 sendParams.value = poolInfo.amountTotal1
             } else {
                 const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
+
+                console.log(poolInfo.token1.contract)
+                console.log(approveRes)
                 if (!approveRes) {
                     showTransferByStatus('approveStatus')
                     approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
@@ -426,11 +435,11 @@ export default function NewIndex() {
 
             let sendParams = { from: account }
             let approveRes = true
-            if (poolInfo.token1 === ZERO_ADDRESS) {
+            if (poolInfo.token1.contract === ZERO_ADDRESS) {
                 sendParams.value = _amount1
             } else {
                 const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
                 if (!approveRes) {
                     showTransferByStatus('approveStatus')
                     approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
@@ -468,11 +477,11 @@ export default function NewIndex() {
 
         let sendParams = { from: account }
         let approveRes = true
-        if (poolInfo.token1 === ZERO_ADDRESS) {
+        if (poolInfo.token1.contract === ZERO_ADDRESS) {
             sendParams.value = _amount1
         } else {
             const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
             if (!approveRes) {
                 showTransferByStatus('approveStatus')
                 approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
@@ -578,7 +587,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Current price</h5>
                         <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
+                            <span>{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
 
                     <div className="amount">
@@ -612,7 +621,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Asking price</h5>
                         <h3>{poolInfo.token1 && weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals))} ) `}</span></h3>
+                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
 
                     <div>
@@ -625,7 +634,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Current Price</h5>
                         <h3>{poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals))} ) `}</span></h3>
+                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
 
                     <div>
@@ -887,7 +896,7 @@ export default function NewIndex() {
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
-                                            setOpenModal(true)
+                                            aucType === AUCTION_TYPE.EnglishAuction? dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "The auction bill can only be cancelled when it expires" }):setOpenModal(true)
                                         }}
                                         height='30px'
                                     >

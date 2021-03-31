@@ -60,7 +60,6 @@ export default function Index() {
       variables: { user: String(account).toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: async () => {
-        // handleMyNFT(data);
         setMyNftData(data || [])
       },
       onError: (err) => {
@@ -73,32 +72,18 @@ export default function Index() {
       variables: { user: String(account).toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: () => {
-        // handleMyNFT(data);
         setMyTradeData(traddata || [])
       },
       onError: (err) => {
         console.log('onerror', err);
       }
-    });
-
-  // const [testQuery, { data: testData }] = useLazyQuery(TestQuery,
-  //   {
-  //     variables: { poolId: 1},
-  //     fetchPolicy: "network-only",
-  //     onCompleted: () => {
-  //       console.log('A_console', testData)
-  //     },
-  //     onError: (err) => {
-  //       console.log('onerror', err);
-  //     }
-  //   });
+    })
 
 
   useEffect(() => {
     if (!active) return;
     getMyNFT();
     getMyTradeNFT()
-    // testQuery()
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
 
@@ -114,15 +99,15 @@ export default function Index() {
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
       }
-    }).filter(item => item.state !== 1)
-    console.log(tradePools)
+    }).filter(item => item.state !== 1);
+    
     const tradeAuctions = myTradeData.tradeAuctions.map(item => {
       return {
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
       }
-    }).filter(item => item.state !== 1)
+    }).filter(item => item.state !== 1);
 
     const ids_list = nft721_ids.concat(nft1155Items_ids).concat(trade721_ids).concat(trade1155Items_ids)
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
@@ -192,6 +177,7 @@ export default function Index() {
                 itemname={item.itemname}
                 user={item.ownername}
                 status={item.poolId && 'Listed'}
+                poolType={item.poolType}
                 //  status={index % 2 === 0 ? 'Listed' : ''} 
                 poolInfo={item}
               />

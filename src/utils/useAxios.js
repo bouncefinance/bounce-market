@@ -2,17 +2,17 @@ import axios from 'axios'
 import Web3 from 'web3'
 import { useWeb3React } from '@web3-react/core'
 // import { useUserInfo } from '../pages/Myprofile/useUserInfo'
-import { useEffect,useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { myContext } from '@/redux/index.js';
 const host = window.location.host
-const Base_URL = host === 'localhost:8888' ? 'http://market-test.bounce.finance:11000' : 'https://market-test.bounce.finance'
+const Base_URL = host.indexOf('localhost') !== -1 ? 'http://market-test.bounce.finance:11000' : 'https://market-test.bounce.finance'
 
 const signStr = 'Welcome to Bounce!'
 let isRequestLock = false
 
 export default function useAxios() {
     const { account, library } = useWeb3React();
-    const {dispatch} = useContext(myContext);
+    const { dispatch } = useContext(myContext);
     // const { getUserInfo } = useUserInfo()
     useEffect(() => {
         if (!account || isRequestLock) return
@@ -30,7 +30,7 @@ export default function useAxios() {
             const JWT_TOKEN_V2 = JSON.parse(window.localStorage.getItem('JWT_TOKEN_V2')) || {}
             JWT_TOKEN_V2[account] = token
             window.localStorage.setItem('JWT_TOKEN_V2', JSON.stringify(JWT_TOKEN_V2))
-            dispatch({type: 'Token', authToken: token});
+            dispatch({ type: 'Token', authToken: token });
             window.location.reload();
         }
     }
@@ -80,16 +80,16 @@ export default function useAxios() {
         }
         let res = await axios.post(Base_URL + path, params, config)
         // if (res.status === 200 && res.data.code === -1) {
-            // token 无效过期
-            // return alert('授权失效，请刷新页面，重新授权签名')
-            // config = {
-            //     headers: {
-            //         token: await getNewToken(),
-            //         "Content-Type": "application/x-www-from-urlencoded"
-            //     },
-            //     ...option.config
-            // }
-            // res = await axios.post(Base_URL + path, params, config)
+        // token 无效过期
+        // return alert('授权失效，请刷新页面，重新授权签名')
+        // config = {
+        //     headers: {
+        //         token: await getNewToken(),
+        //         "Content-Type": "application/x-www-from-urlencoded"
+        //     },
+        //     ...option.config
+        // }
+        // res = await axios.post(Base_URL + path, params, config)
         // }
 
         return res
