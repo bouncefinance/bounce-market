@@ -147,6 +147,7 @@ export default function useToken() {
     const hasApprove_ERC_20 = async (token, spender, amount = '1', accountAddr = account) => {
         const BounceERC20_CT = getContract(library, BounceERC20.abi, token)
         const allowance = await BounceERC20_CT.methods.allowance(accountAddr, spender).call()
+        console.log(allowance)
         if (parseFloat(weiDiv(allowance, amount)) < 1) {
             return false
         } else {

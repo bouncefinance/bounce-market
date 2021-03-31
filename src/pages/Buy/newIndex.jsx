@@ -101,7 +101,7 @@ const NewIndexStyled = styled.div`
                     p{
                         font-size: 14px;
                         color: rgba(31,25,27,.4);
-                        a{
+                        span{
                             color: rgba(18,78,235,.8);
                         }
                     }
@@ -256,7 +256,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex () {
+export default function NewIndex() {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { hasApprove_ERC_20 } = useToken()
@@ -270,12 +270,12 @@ export default function NewIndex () {
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
     const { sign_Axios } = useAxios()
-    
-	const [tokenContractAddress, setTokenContractAddress] = useState();
-	const [tokenSymbol, setTokenSymbol] = useState();
-	const [tokenID, setTokenID] = useState();
-	const [externalLink, setExternalLink] = useState();
-	const { dispatch } = useContext(myContext);
+
+    const [tokenContractAddress, setTokenContractAddress] = useState();
+    const [tokenSymbol, setTokenSymbol] = useState();
+    const [tokenID, setTokenID] = useState();
+    const [externalLink, setExternalLink] = useState();
+    const { dispatch } = useContext(myContext);
 
     const [loadingLoked, setLoadingLocked] = useState(true)
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
@@ -347,34 +347,34 @@ export default function NewIndex () {
     const nftId = poolInfo.tokenId
 
     useEffect(() => {
-		const getNFTInfoList = async (nftId) => {
-			const params = {
-				id: parseInt(nftId),
-			};
+        const getNFTInfoList = async (nftId) => {
+            const params = {
+                id: parseInt(nftId),
+            };
 
-			sign_Axios
-				.post("/api/v2/main/auth/getoneitembyid", params)
-				.then((res) => {
-					if (res.status === 200 && res.data.code === 1) {
-						/* alert("获取成功"); */
-						/* console.log(res); */
-						let NFTInfoList = res.data.data;
-						setTokenID(NFTInfoList.id);
-						setTokenContractAddress(NFTInfoList.contractaddress);
-						setTokenSymbol(NFTInfoList.itemsymbol);
-						setExternalLink(NFTInfoList.externallink);
-					} else {
-						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
-					}
-				})
-				.catch((err) => {
-					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
-				});
-		};
-		if (!active || !nftId) return;
-		getNFTInfoList(nftId);
-		// eslint-disable-next-line
-	}, [active, nftId])
+            sign_Axios
+                .post("/api/v2/main/auth/getoneitembyid", params)
+                .then((res) => {
+                    if (res.status === 200 && res.data.code === 1) {
+                        /* alert("获取成功"); */
+                        /* console.log(res); */
+                        let NFTInfoList = res.data.data;
+                        setTokenID(NFTInfoList.id);
+                        setTokenContractAddress(NFTInfoList.contractaddress);
+                        setTokenSymbol(NFTInfoList.itemsymbol);
+                        setExternalLink(NFTInfoList.externallink);
+                    } else {
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                    }
+                })
+                .catch((err) => {
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                });
+        };
+        if (!active || !nftId) return;
+        getNFTInfoList(nftId);
+        // eslint-disable-next-line
+    }, [active, nftId])
 
 
     const onLiked = async () => {
@@ -482,15 +482,15 @@ export default function NewIndex () {
             sendParams.value = _amount1
         } else {
             const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
+            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getEnglishAuctionNFT(chainId), poolInfo.amountTotal1, account)
             if (!approveRes) {
                 showTransferByStatus('approveStatus')
-                approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
+                approveRes = await BounceERC20_CT.methods.approve(getEnglishAuctionNFT(chainId), '0xffffffffffffffff')
                     .send({ from: account })
             }
         }
         if (!approveRes) return showTransferByStatus('errorStatus')
-        console.log(poolId, _amount1,sendParams)
+        console.log(poolId, _amount1, sendParams)
         BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
             .send(sendParams)
             .on('transactionHash', hash => {
@@ -740,7 +740,7 @@ export default function NewIndex () {
         // if(!tradePool) return  setHistory([]);
         const creator = tradePool.creator;
         const total = tradePool.amountTotal0;
-        const price = Web3.utils.fromWei(tradePool.price);
+        const price = tradePool.price;
         const offerList = data.poolSwaps.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: new Date(item.timestamp * 1000).toLocaleString(),
@@ -796,9 +796,11 @@ export default function NewIndex () {
         const offerLiist = data.auctionBids.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: new Date(item.timestamp * 1000).toLocaleString(),
-            amount: Web3.utils.fromWei(item.amount1),
+            // amount: Web3.utils.fromWei(item.amount1),
+            amount: item.amount1,
             price: '',
         }))
+        // console.log(offerLiist)
         setOfferList(offerLiist);
         const createList = data.auctionCreates.map(item => ({
             event: 'Created',
@@ -850,21 +852,21 @@ export default function NewIndex () {
         }
     }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
 
-    
-	const NavList = [
-		{
-			title: "MarketPlace",
-			route: "/MarketPlace",
-		},
-		{
-			title: "Fine Arts",
-			route: "/MarketPlace/FineArts",
-		},
-		{
-			title: (nftInfo.itemname || ""),
-			route: "/MarketPlace/FineArts/" + (aucType === AUCTION_TYPE.EnglishAuction ? "fixed-swap" : "english-auction") + poolId,
-		},
-	];
+
+    const NavList = [
+        {
+            title: "MarketPlace",
+            route: "/MarketPlace",
+        },
+        {
+            title: "Fine Arts",
+            route: "/MarketPlace/FineArts",
+        },
+        {
+            title: (nftInfo.itemname || ""),
+            route: "/MarketPlace/FineArts/" + (aucType === AUCTION_TYPE.EnglishAuction ? "fixed-swap" : "english-auction") + poolId,
+        },
+    ];
 
     return (
         <>
@@ -921,7 +923,7 @@ export default function NewIndex () {
                         <div className="seller">
                             <div className='info'>
                                 <img src={icon_altAvatar} alt="" />
-                                <p>Owned by <a href="http://">{nftInfo.ownername || 'Anonymity'}</a></p>
+                                <p>Owned by <span>{nftInfo.ownername || 'Anonymity'}</span></p>
 
                                 {aucType === 'english-auction' && <div className="close_time">
                                     <img src={icon_time} alt="" />
@@ -947,10 +949,10 @@ export default function NewIndex () {
                                                 <div className="flex Offers-info">
                                                     <p className="name">{item.name}</p>
                                                     <p className="time">{item.time}</p>
-                                                    <p className="amount">{item.amount}</p>
+                                                    <p className="amount">{poolInfo.token1&&weiToNum(item.amount, poolInfo.token1.decimals)}</p>
                                                 </div>
                                                 <div className="Offers-price">
-                                                    <span>{`${item.price} ETH`}</span>
+                                                    <span>{poolInfo.token1 && `${poolInfo.token1.symbol}`}</span>
                                                     <span></span>
                                                 </div>
                                             </div>)
@@ -964,7 +966,7 @@ export default function NewIndex () {
                                     <div className="flex flex-space-x">
                                         <p>Token Contract Address</p>
                                         <div className="contractAddress">
-                                            <p style={{ color: 'rgba(31,25,27,0.5)',  }}>{tokenContractAddress || ""}</p>
+                                            <p style={{ color: 'rgba(31,25,27,0.5)', }}>{tokenContractAddress || ""}</p>
                                             <CopyToClipboard
                                                 text={tokenContractAddress}
                                                 onCopy={() => {
@@ -992,7 +994,7 @@ export default function NewIndex () {
                                     history.map((item, index) => ({
                                         Event: item.event,
                                         Quantity: item.quantity,
-                                        Price: [`${item.price} ETH`, `($)`],
+                                        Price: [poolInfo.token1 && `${item.price} ${poolInfo.token1.symbol}`, `($)`],
                                         From: getEllipsisAddress(item.from),
                                         To: getEllipsisAddress(item.to),
                                         Date: item.date,
