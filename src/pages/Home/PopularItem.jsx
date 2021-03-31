@@ -102,7 +102,9 @@ export default function PopularItem({ style = {}, itemInfo }) {
                 <h5 className="name">{itemInfo.itemname}</h5>
                 <div className="line"></div>
                 <div className="flex flex-space-x">
-                    <p className="type">Current Price</p>
+                    <p className="type">
+                        {itemInfo.poolType && (itemInfo.poolType === "english-auction" ? "Top Bid" : "Price")}
+                    </p>
                     <p className="tag">{itemInfo.poolId}</p>
                 </div>
                 <h4 className="price">{newPrice}</h4>
