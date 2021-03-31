@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import styled from 'styled-components'
-import errorImg from '../../../assets/images/loading/3.svg'
+// import errorImg from '../../../assets/images/loading/3.svg'
 
 const AutoStretchBaseWidthOrHeightImgStyled = styled.div`
 div{

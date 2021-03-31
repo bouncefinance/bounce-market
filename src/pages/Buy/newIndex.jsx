@@ -326,16 +326,20 @@ export default function NewIndex() {
     }
     const handelBid = async () => {
         setIsLoading(true)
-        console.log(poolInfo)
+        // console.log(poolInfo)
         if (poolInfo.nftType === '0') {
             const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
             let sendParams = { from: account }
             let approveRes = true
-            if (poolInfo.token1 === ZERO_ADDRESS) {
+
+            if (poolInfo.token1.contract === ZERO_ADDRESS) {
                 sendParams.value = poolInfo.amountTotal1
             } else {
                 const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
+
+                console.log(poolInfo.token1.contract)
+                console.log(approveRes)
                 if (!approveRes) {
                     showTransferByStatus('approveStatus')
                     approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
@@ -367,11 +371,11 @@ export default function NewIndex() {
 
             let sendParams = { from: account }
             let approveRes = true
-            if (poolInfo.token1 === ZERO_ADDRESS) {
+            if (poolInfo.token1.contract === ZERO_ADDRESS) {
                 sendParams.value = _amount1
             } else {
                 const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+                approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
                 if (!approveRes) {
                     showTransferByStatus('approveStatus')
                     approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
@@ -409,11 +413,11 @@ export default function NewIndex() {
 
         let sendParams = { from: account }
         let approveRes = true
-        if (poolInfo.token1 === ZERO_ADDRESS) {
+        if (poolInfo.token1.contract === ZERO_ADDRESS) {
             sendParams.value = _amount1
         } else {
             const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
-            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), account)
+            approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
             if (!approveRes) {
                 showTransferByStatus('approveStatus')
                 approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
