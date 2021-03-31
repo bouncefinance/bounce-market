@@ -203,7 +203,7 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId 
                         width={'162px'}
                         onClick={() => {
                             // const pathname = window.location.pathname
-                            history.push(`/Marketplace/Image/${poolType}/${cardId}`)
+                            history.push(`/Marketplace/FineArts/${poolType}/${cardId}`)
                         }}
                         marginTop="34px"
                     >Show More</Button>}

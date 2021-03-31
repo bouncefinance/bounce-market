@@ -154,6 +154,7 @@ export const QueryBrand721 = gql`
 export const QueryFromActivities = gql`
   query queryActivitiesByAccount($user: Bytes!) {
     activities(where: {from: $user}) {
+      id
       event
       contract
       from
@@ -168,6 +169,7 @@ export const QueryFromActivities = gql`
 export const QueryToActivities = gql`
   query queryActivitiesByAccount($user: Bytes!) {
     activities(where: {to: $user}) {
+      id
       event
       contract
       from

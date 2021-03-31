@@ -91,7 +91,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
     }
     return (
         <PopularItemStyled style={style} onClick={() => {
-            history.push(`/Marketplace/Image/${itemInfo.poolType}/${itemInfo.poolId}`)
+            history.push(`/Marketplace/FineArts/${itemInfo.poolType}/${itemInfo.poolId}`)
         }}>
             <AutoStretchBaseWidthOrHeightImg src={itemInfo.fileurl} width={262} height={262} />
             {/* <div className='info_box'>
