@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 
-import BreadcrumbNav from "./components/BreadcrumbNav";
 import { Button } from "@components/UI-kit";
 import NFTInfoDropdown from "./components/NFTInfoDropdown";
 import {
