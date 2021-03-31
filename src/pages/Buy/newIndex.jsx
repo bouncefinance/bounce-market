@@ -894,7 +894,7 @@ export default function NewIndex() {
                             <div className="row1">
                                 <h3>{nftInfo.itemname || 'Name Is Loading ...'}</h3>
 
-                                {/* Cancel按钮 */}
+                                {/* Cancel */}
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
@@ -905,7 +905,7 @@ export default function NewIndex() {
                                         Cancel
                                 </Button>}
 
-                                {/* Cancel按钮 */}
+                                {/* Cancel */}
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
