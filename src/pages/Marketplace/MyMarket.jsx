@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router'
 import Search from '../component/Other/Search'
@@ -17,10 +17,11 @@ import icon_sport from '@assets/images/icon/sport.svg'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { useLazyQuery } from '@apollo/client'
-import { QueryMyTradePools } from '@/utils/apollo'
+import { QueryMyPools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
+import Button from '@/components/UI-kit/Button/Button'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -35,7 +36,7 @@ const MarketplaceStyled = styled.div`
         display: flex;
         padding-bottom: 16px;
         border-bottom: 2px solid rgba(0,0,0,.1);
-
+        position: relative;
         li{
             padding: 7px 20px;
             height: 48px;
@@ -53,6 +54,10 @@ const MarketplaceStyled = styled.div`
                 background-color: rgba(0,0,0,.1);
                 opacity: 1;
             }
+        }
+        .link {
+          position: absolute;
+          right: -20px;
         }
     }
 
@@ -126,50 +131,47 @@ export default function MyMarket() {
       type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
         NFT_CATEGORY.FineArts);
 
-
   const [loading, setLoading] = useState(true)
-
   const [length, setLength] = useState(4);
+  const [tradeData, setTradeData]  = useState(null);
 
   type = 'Image'
 
-  const handleTradeData = (tradeData) => {
-
-    const tradePools = tradeData.tradePools.map(item => {
-      return {
+  const handleTradeData = useCallback(() => {
+    const tradePools = tradeData.tradePools.map(item => ({
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
-      }
-    });
+    }));
     
-    const tradeAuctions = tradeData.tradeAuctions.map(item => {
-      return {
+    const tradeAuctions = tradeData.tradeAuctions.map(item => ({
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
-      }
-    });
+    }));
 
-    const ids_list = tradePools.concat(tradeAuctions).map(item => item.tokenId);
+    const ids_list = tradePools
+      .concat(tradeAuctions)
+      .map(item => item.tokenId);
     setLength(ids_list.length);
+    const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel
     const pools = tradePools.concat(tradeAuctions)
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
-      category: '',
-      channel: ''
+      category: type,
+      channel: channel_2
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
           const res_data = res.data.data
-          const list = pools.map((item, index) => {
-            const poolInfo = res_data.find(res => item.tokenId === res.id);
+          const list = res_data.map((item) => {
+            const poolInfo = pools.find(pool => item.tokenId === pool.id);
             return {
-              ...poolInfo,
-              poolType: item.poolType,
-              poolId: item.poolId,
-              price: item.price,
-              token1:item.token1,
-              createTime: item.createTime
+              ...item,
+              poolType: poolInfo.poolType,
+              poolId: poolInfo.poolId,
+              price: poolInfo.price,
+              token1:poolInfo.token1,
+              createTime: poolInfo.createTime
             }
           })
           const result = list.sort((a, b) => b.createTime - a.createTime)
@@ -178,14 +180,14 @@ export default function MyMarket() {
           setLoading(false)
         }
       })
-  }
+       // eslint-disable-next-line
+  },  [channel, tradeData, type]);
 
-  const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
-    {
+  const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyPools, {
       variables: { user: String(account).toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: () => {
-        handleTradeData(traddata || [])
+        setTradeData(traddata)
       },
 
     })
@@ -193,14 +195,17 @@ export default function MyMarket() {
   useEffect(() => {
     if (!active) return
     getMyTradeNFT();
-  }, [active, getMyTradeNFT])
+    if (tradeData)  {
+      handleTradeData();
+    }
+  }, [active, tradeData, getMyTradeNFT, handleTradeData])
 
   const handleChange = (filterSearch) => {
     const list = tokenList.filter(item => item.itemname.toLowerCase().indexOf(filterSearch) > -1
       || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
     setFilterList(list);
   }
-
+  
   const renderListByType = (type) => {
     switch (type) {
       case 'Image':
@@ -265,6 +270,7 @@ export default function MyMarket() {
             } alt="" />{item.name}</p>
           </li>
         })}
+        <li className="link"><Button onClick={() => {history.push('/Marketplace/Image')}}>Marketplace</Button></li>
       </ul>
 
       <div className="filterBox">
