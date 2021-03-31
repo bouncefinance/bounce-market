@@ -57,7 +57,7 @@ const CardBannerItemStyled = styled.li`
     justify-content: space-between;
     
     .left{
-        width: 171px;
+        width: 250px;
         height: 30px;
         margin-left: 28px;
         margin-top: 24px;
