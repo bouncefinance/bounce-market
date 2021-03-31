@@ -6,7 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import useAxios from "@utils/useAxios.js";
 import { myContext } from '@/redux';
 import { Button } from "@components/UI-kit";
-import BreadcrumbNav from '../../../components/UI-kit/NavBar/BreadcrumbNav'
+import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 import NFTInfo from "./components/NFTInfo";
 
 import icon_copy from "@assets/images/icon/copy.svg";

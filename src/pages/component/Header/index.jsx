@@ -141,7 +141,7 @@ export default function Index () {
     const [isShowInfo, setIsShowInfo] = useState(!true)
     const { getUserInfo } = useUserInfo()
     const history = useHistory()
-    const { state } = useContext(myContext);
+    const { state,dispatch } = useContext(myContext);
     // const { dispatch } = useContext(myContext);
     /* const [isFangible, setIsFangible] = useState(false) */
 
@@ -211,9 +211,9 @@ export default function Index () {
 
     useEffect(() => {
         if (!active) return
-        // if (chainId && chainId !== 4) {
-        //     dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network." /* "请选择Rinkeby测试网络" */ });
-        // }
+        if (chainId && chainId !== 4 && chainId !== 56) {
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network or BSC network." });
+        }
         getUserInfo();
         // eslint-disable-next-line
     }, [account, chainId, active])

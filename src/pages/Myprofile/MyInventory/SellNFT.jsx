@@ -5,7 +5,7 @@ import InstructionsDropdown from "./components/InstructionsDropdown";
 import InputPrice from "./components/InputPrice";
 import SelectDuration from "./components/SelectDuration";
 import Summary from "./components/Summary";
-import BreadcrumbNav from '../../../components/UI-kit/NavBar/BreadcrumbNav'
+import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 
 import pic_NFT1 from "./assets/pic_NFT1.svg";
 import useNftInfo from "@/utils/useToken";

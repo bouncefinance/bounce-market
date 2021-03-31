@@ -1,8 +1,9 @@
 import React from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.p`
 	font-family: Helvetica Neue;
 	font-style: normal;
 	font-weight: normal;
@@ -12,13 +13,14 @@ const StyledLink = styled(Link)`
 	align-items: center;
 	color: #1f191b;
 	opacity: 0.8;
+	cursor: pointer;
 
 	/* &:last-child {
 		opacity: 0.4;
 	} */
 `;
 
-const LastLink = styled(Link)`
+const LastLink = styled.span`
 	font-family: Helvetica Neue;
 	font-style: normal;
 	font-weight: normal;
@@ -42,15 +44,20 @@ const NavBar = styled.div`
 `;
 
 function BreadcrumbNav({ marginTop, marginBottom, NavList }) {
+	const history = useHistory()
+
+
 	return (
 		<NavBar marginTop={marginTop} marginBottom={marginBottom}>
-			{NavList.slice(0, -1).map((nav) => {
+			{NavList.slice(0, -1).map((nav, index) => {
 				return (
-					<StyledLink to={nav.route}>{nav.title} /&nbsp;</StyledLink>
+					<StyledLink key={index} onClick={()=>{
+						history.push(nav.rout)
+					}}>{nav.title} /&nbsp;</StyledLink>
 				);
 			})}
 
-			<LastLink>{NavList[NavList.length-1].title}</LastLink>
+			<LastLink>{NavList[NavList.length - 1].title}</LastLink>
 		</NavBar>
 	);
 }
