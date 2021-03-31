@@ -142,7 +142,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
     const [openCancel, setOpenCancel] = useState(false)
 
     const [newPrice, setNewPrice] = useState('--')
-    console.log(poolInfo)
+    // console.log(poolInfo)
 
     useEffect(() => {
         // console.log(poolInfo)
@@ -172,7 +172,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                         <h5 className="name">{itemname}</h5>
                         <div className="line"></div>
                         <div className="flex flex-space-x">
-                            <p className="type">{'Top bid'}</p>
+                            <p className="type">{poolType  && (poolType === "english-auction" ? "Top Bid" : "Price")}</p>
                             <p className="_tag">{`# ${poolInfo.id}`}</p>
                         </div>
                         <h4 className="price">{poolInfo.price ? newPrice : 'Not on sale'}</h4>

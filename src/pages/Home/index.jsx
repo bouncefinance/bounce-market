@@ -211,7 +211,7 @@ export default function Index() {
               poolId: poolInfo.poolId,
               price: poolInfo.price,
               token1: poolInfo.token1,
-              createTime: poolInfo.createTime
+              createTime: poolInfo.createTime,
             }
           })
 
@@ -303,7 +303,7 @@ It shouldn’t be longer then ~20-30 sec.'
 
         <Link to="/Factory">
           <div className="left">
-            <h3>Create your unique NFT on Fangible</h3>
+            <h3>Create your unique NFT on Bounce Collectible</h3>
             <img src={arrows_white} alt="" />
           </div>
         </Link>
