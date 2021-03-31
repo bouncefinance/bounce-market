@@ -198,6 +198,9 @@ const NewIndexStyled = styled.div`
     .token-info{
         >div{
             margin-bottom: 12px;
+            &:last-child {
+                margin-bottom: 0;
+            }
             font-size: 12px;
             >p{
                 :first-child{
@@ -950,6 +953,7 @@ line-height: 15px;
             margin-left: 24px;
             color: rgba(0,0,0,.5);
         }
+        
     }
     .Offers-price{
         .price_ETH {
