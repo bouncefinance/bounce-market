@@ -100,7 +100,7 @@ export default function Index() {
         poolType: AUCTION_TYPE.FixedSwap
       }
     }).filter(item => item.state !== 1);
-    
+
     const tradeAuctions = myTradeData.tradeAuctions.map(item => {
       return {
         ...item,
@@ -127,7 +127,7 @@ export default function Index() {
               poolType: item.poolType,
               poolId: item.poolId,
               price: item.price,
-              token1:item.token1,
+              token1: item.token1,
               createTime: item.createTime
             }
           })
@@ -140,7 +140,7 @@ export default function Index() {
       .catch(() => { })
     // eslint-disable-next-line
   }, [myNftData, myTradeData, account])
-  
+
   return (
     <>
       <CommonHeader />
@@ -176,7 +176,7 @@ export default function Index() {
                 cover={item.fileurl}
                 itemname={item.itemname}
                 user={item.ownername}
-                status={item.poolId && 'Listed'}
+                status={parseInt(item.poolId) >= 0 && 'Listed'}
                 poolType={item.poolType}
                 //  status={index % 2 === 0 ? 'Listed' : ''} 
                 poolInfo={item}
