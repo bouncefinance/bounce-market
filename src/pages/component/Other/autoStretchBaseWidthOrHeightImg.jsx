@@ -1,7 +1,8 @@
 import React, { useState } from "react"
 import styled from 'styled-components'
 // G: \bounce - market\src\assets\images\loading\2.svg
-import errorImg from '../../../assets/images/loading/2.svg'
+// import errorImg from '../../../assets/images/loading/2.svg'
+import errorImg from '../../../assets/images/loading/3.svg'
 
 const AutoStretchBaseWidthOrHeightImgStyled = styled.div`
 div{
@@ -9,8 +10,10 @@ div{
   background-size: 63px;
   background-position: center;
   /* background-color: rgba(0, 0, 0, 1); */
+  background-color: rgb(224,224,224);
   img{
     /* background-color: rgb(247, 247, 247); */
+    background-color: white;
     object-fit: contain;
   }
 }

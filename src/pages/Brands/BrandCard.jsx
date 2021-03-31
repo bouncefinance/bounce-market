@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Link, useHistory} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Button } from '@components/UI-kit'
+import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
+import { HeadImgFit } from '../component/Other/headImgFit'
 
 const StyledCard = styled.div`
     box-sizing: border-box;
@@ -104,16 +106,18 @@ const StyledCard = styled.div`
 
 `
 
-function BrandCard({img, brandName, profile, avatar, ownerName, id, standard}) {
+function BrandCard ({ img, brandName, profile, avatar, ownerName, id, standard }) {
     const history = useHistory();
     return (
         <StyledCard>
-            <img src={img} width={540} height={332} alt=""/>
+            {/* <img src={img} width={540} height={332} alt="" /> */}
+            <AutoStretchBaseWidthOrHeightImg src={img} width={540} height={332} />
             <div className="right">
                 <span className="brandName">{brandName}</span>
                 <p className="profile">{profile}</p>
                 <div className="owner">
-                    <img src={avatar} className='avatar' alt=""/>
+                    {/* <img src={avatar} className='avatar' alt="" /> */}
+                    <HeadImgFit src={avatar} width={20} height={20} />
                     <span className="text">Owned by</span>
                     <Link to={`/`}>{ownerName}</Link>
                 </div>
