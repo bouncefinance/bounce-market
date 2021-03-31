@@ -1,28 +1,30 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React, getContract } from '@/web3'
 import { TextInput, TextAreaInput, Button, PullRadioBox, Radio, Upload } from '@components/UI-kit'
 import { useState } from 'react'
 import { checkInput } from '@/utils/compareFun'
-import BounceERC721 from '@/web3/abi/BounceERC721.json'
-import BounceERC1155 from '@/web3/abi/BounceERC1155.json'
+import BounceERC721WithSign from '@/web3/abi/BounceERC721WithSign.json'
+import BounceERC1155WithSign from '@/web3/abi/BounceERC1155WithSign.json'
 import useAxios from '@/utils/useAxios'
 import useTransferModal from '@/web3/useTransferModal'
-import { useThrottle } from '@/utils/useThrottle'
 import { myContext } from '@/redux'
-import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
+import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/address_list/contract'
+import { NFT_CATEGORY } from '@/utils/const'
+import { useHistory } from 'react-router-dom'
 // import { numToWei } from '@/utils/useBigNumber'
-const DEBOUNCE = 500;
-const AddNewBrandstModalStyled = styled.div`
+
+const AddNewItemModalStyled = styled.div`
     width: 1100px;
     /* height: 690px; */
     box-sizing: border-box; 
-    padding: 32px 83px;
+    /* padding: 32px 83px; */
+    padding: 32px 83px 44px 83px;
     box-sizing: border-box;
 
     .button_group{
-        margin-top: 36px;
+        margin-top: 32px;
         button{
             margin-right: 16px;
         }
@@ -36,31 +38,33 @@ const AddNewBrandstModalStyled = styled.div`
 
 `
 
-export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandInfo = {} }) {
-    const { active, library, account } = useActiveWeb3React()
+export default function GenerateNftModal({ open, setOpen, defaultValue }) {
+    const { active, library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
+    const { state, dispatch } = useContext(myContext)
     const { showTransferByStatus } = useTransferModal()
     const [btnText, setBtnText] = useState('Submit')
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
+    const [nftType, setNftType] = useState('ERC-721')
+    const history = useHistory();
     const [formData, setFormData] = useState({
         Category: 'image',
-        Channel: 'Fine Arts',
+        Channel: NFT_CATEGORY.FineArts,
         Supply: 1
     })
-    const { dispatch } = useContext(myContext);
-
     useEffect(() => {
         if (!active) return
     }, [active])
 
     useEffect(() => {
+        // console.log(fileData, formData)
         if ((fileData || formData.imgurl) && formData) {
-            const requireArr = ['Name', 'Description', 'Supply']
+            const requireArr = ['Name', 'Description']
             let errorCount = 0
             requireArr.forEach(item => {
-                if (!checkInput(formData[item]) || (item === 'Supply' && !ErrorStatus.intNum.reg.test(formData[item]))) {
+                if (!checkInput(formData[item])) {
                     errorCount++
                 }
             })
@@ -74,11 +78,12 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
         }
     }, [formData, fileData])
 
-    
+
     const handelSubmit = () => {
         // 第一步 上传图片
-        setInputDisable(false);
+        setInputDisable(true)
         setBtnLock(true)
+
         sign_Axios
             .post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
             .then(function (response) {
@@ -86,37 +91,39 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                    setBtnText('Submit');
                     setBtnLock(false)
                     setInputDisable(false)
-                    setBtnText('Submit');
                     // throw new Error('File upload failed,' + response.data.msg)
                 }
             }).then((imgUrl) => {
                 // 第二步 上传数据生成 json
                 const params = {
-                    brandid: brandInfo.id,
+                    brandid: nftType === 'ERC-721' ? 10 : 11,
                     category: formData.Category,
                     channel: formData.Channel,
-                    contractaddress: brandInfo.contractaddress,
+                    contractaddress: nftType === 'ERC-721' ? getBounceERC721WithSign(chainId) : getBounceERC1155WithSign(chainId),
                     description: formData.Description,
                     fileurl: imgUrl,
                     itemname: formData.Name,
-                    itemsymbol: brandInfo.brandsymbol,
-                    owneraddress: brandInfo.owneraddress,
-                    ownername: brandInfo.ownername,
-                    standard: brandInfo.standard,
-                    supply: formData.Supply
+                    itemsymbol: 'BOUNCE',
+                    owneraddress: account,
+                    ownername: state.username,
+                    standard: nftType === 'ERC-721' ? 1 : 2,
+                    supply: nftType === 'ERC-721' ? 1 : formData.Supply
                 }
-                console.log(params)
+                // console.log(params)
                 sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {
-                    const nftId = res.data.data.id
+                    const _nftId = res.data.data.id
+                    const _sign = res.data.data.signaturestr
+                    const _expiredtime = res.data.data.expiredtime
                     if (res.data.code === 1) {
-                        console.log(nftId, brandInfo.standard)
-                        if (brandInfo.standard === 1) {
-                            const BounceERC721_CT = getContract(library, BounceERC721.abi, brandInfo.contractaddress)
+                        if (nftType === 'ERC-721') {
+                            const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, getBounceERC721WithSign(chainId))
+                            console.log(_nftId, _sign, _expiredtime)
                             try {
-                                BounceERC721_CT.methods.mint(account, nftId).send({ from: account })
+
+                                BounceERC721WithSign_CT.methods.mintUser(_nftId, _sign, _expiredtime).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
@@ -126,26 +133,23 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                         // console.log('bid fixed swap receipt:', receipt)
                                         // setBidStatus(successStatus)
                                         showTransferByStatus('successStatus')
+                                        history.push("/MyBrands")
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
-                                        // showTransferByStatus('errorStatus')
-                                        setBtnLock(false);
-                                        setBtnText("Submit");
-                                        setInputDisable(false);
+                                        showTransferByStatus('errorStatus')
                                     })
                             } catch (error) {
-                                setBtnLock(false);
-                                setBtnText("Submit");
-                                console.log('BounceERC721_CT.methods.mint', error);
+                                console.log('BounceERC721_CT.methods.mintUser', error)
                             }
 
                         } else {
-                            const BounceERC1155_CT = getContract(library, BounceERC1155.abi, brandInfo.contractaddress)
+                            const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
                             const _amount = formData.Supply
-                            const _data = 0
+                            const _data = 0 
+                            // console.log(_nftId, _amount, _data, _sign,_expiredtime)
                             try {
-                                BounceERC1155_CT.methods.mint(account, nftId, _amount, _data).send({ from: account })
+                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign,_expiredtime).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
@@ -155,39 +159,29 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                         // console.log('bid fixed swap receipt:', receipt)
                                         // setBidStatus(successStatus)
                                         showTransferByStatus('successStatus')
+                                        history.push("/MyBrands")
                                     })
                                     .on('error', (err, receipt) => {
-                                        setBtnLock(false);
-                                        setBtnText("Submit");
-                                        setInputDisable(false);
                                         // setBidStatus(errorStatus)
-                                        // showTransferByStatus('errorStatus')
+                                        showTransferByStatus('errorStatus')
                                     })
                             } catch (error) {
-                                setBtnLock(false);
-                                setBtnText("Submit");
-                                console.log('BounceERC1155_CT.methods.mint', error)
+                                console.log('BounceERC1155_CT.methods.mintUser', error)
                             }
                         }
                     }
 
                 }).catch(err => {
                     dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
-                    setBtnLock(false)
-                    setInputDisable(false)
-                    setBtnText('Submit')
                 })
             })
         // 第三步 调用合约生成 NFT
+        // const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
     }
-
-    const debounce = useThrottle(() => {
-        handelSubmit && handelSubmit();
-    }, DEBOUNCE);
 
     return (
         <Modal open={open} setOpen={setOpen} header={{ title: 'Add New Item', isClose: true }}>
-            <AddNewBrandstModalStyled>
+            <AddNewItemModalStyled>
                 <TextInput
                     title='Name'
                     width='620px'
@@ -201,7 +195,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                 />
 
                 <div className="category_select">
-                    <PullRadioBox title={'Category'} marginTop='24px' width='150px' options={[{
+                    <PullRadioBox title={'Category'} marginTop='0' /* marginTop='24px' */ width='150px' options={[{
                         value: 'Images'
                     }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'}
                         inputDisable={inputDisable}
@@ -209,35 +203,42 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                             setFormData({ ...formData, Category: item.value })
                         }} />
 
-                    <PullRadioBox title={'Channel'} marginTop='24px' width='150px' options={[{
-                        value: 'Fine Arts'
+                    <PullRadioBox title={'Channel'} marginTop='0' width='150px' options={[{
+                        value: NFT_CATEGORY.FineArts
                     }, {
-                        value: 'Sports'
+                        value: NFT_CATEGORY.Sports
                     }, {
                         value: 'Conicbooks'
-                    }]} defaultValue={defaultValue === 'Fine Arts'} inputDisable={inputDisable} onChange={(item) => {
+                    }]} defaultValue={defaultValue === NFT_CATEGORY.FineArts} inputDisable={inputDisable} onChange={(item) => {
                         setFormData({ ...formData, Channel: item.value })
                     }} />
 
-                    <Radio title={'Standard'} options={[{
-                        name: 'ERC-721',
-                        value: '721'
-                    }, {
-                        name: 'ERC-1155',
-                        value: '1155'
-                    }]} defaultValue={brandInfo.standard === 1 ? '721' : '1155'} disabled />
+                    <Radio
+                        title={'Standard'}
+                        marginTop="0"
+                        options={[{
+                            name: 'ERC-721',
+                            value: '721'
+                        }, {
+                            name: 'ERC-1155',
+                            value: '1155'
+                        }]}
+                        defaultValue={'721'}
+                        onValChange={(item) => {
+                            setNftType(item.name)
+                        }} 
+                    />
                 </div>
 
-                {brandInfo.standard === 2 && <TextInput
+                {nftType === 'ERC-1155' && <TextInput
                     title='Supply'
                     width='620px'
                     defaultValue={1}
                     required={true}
                     marginTop={'24px'}
                     inputDisable={inputDisable}
-                    inputType={'intNum'}
                     onValChange={(val) => {
-                        setFormData({ ...formData, Supply: val })
+                        setFormData({ ...formData, Supply: parseInt(val) })
                     }}
                 />}
 
@@ -246,7 +247,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     width='620px'
                     // defaultValue={`I’m keepi`}
                     required={true}
-                    marginTop={'24px'}
+                    marginTop={'17px'}
                     inputDisable={inputDisable}
                     onValChange={(val) => {
                         setFormData({ ...formData, Description: val })
@@ -255,7 +256,8 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
 
                 <Upload type='image' inputDisable={inputDisable}
                     width='200px'
-                    height='200px'
+                    /* height='200px' */
+                    height="100%"
                     lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
                         setFileData(formData)
                     }} />
@@ -264,9 +266,9 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)
                     }}>Cancel</Button>
-                    <Button disabled={btnLock} height='48px' width='302px' primary onClick={debounce}>{btnText}</Button>
+                    <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
                 </div>
-            </AddNewBrandstModalStyled>
+            </AddNewItemModalStyled>
         </Modal >
     )
 }

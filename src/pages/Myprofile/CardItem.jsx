@@ -141,6 +141,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
     const [openCancel, setOpenCancel] = useState(false)
 
     const [newPrice, setNewPrice] = useState('--')
+    console.log(poolInfo)
 
     useEffect(() => {
         // console.log(poolInfo)
