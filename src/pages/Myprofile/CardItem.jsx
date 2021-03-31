@@ -20,12 +20,12 @@ const CardItemStyled = styled.div`
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.2);
     position: relative;
-    cursor: pointer;
     
 
     .img_wrapper{
         width: 262px;
         height: 262px;
+        cursor: pointer;
         img{
             width: 100%;
             height: 100%;
@@ -109,6 +109,7 @@ const CardItemStyled = styled.div`
     }
     .info-box{
         padding: 20px;
+        cursor: pointer;
         .name{
             font-size: 16px;
         }
@@ -159,8 +160,8 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
     }
     return (
         <>
-            <CardItemStyled onClick={() => history.push("/MyInventory/" + nftId)}>
-                <div className="img_wrapper">
+            <CardItemStyled>
+                <div className="img_wrapper" onClick={() => history.push("/MyInventory/" + nftId)}>
                     <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />
                 </div>
                 <div className="content">
@@ -168,7 +169,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                     <p>{itemname}</p>
                     <span>{user}</span>
                 </div> */}
-                    <div className="info-box">
+                    <div className="info-box" onClick={() => history.push("/MyInventory/" + nftId)}>
                         <h5 className="name">{itemname}</h5>
                         <div className="line"></div>
                         <div className="flex flex-space-x">

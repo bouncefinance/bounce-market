@@ -969,6 +969,7 @@ export default function NewIndex() {
                                     <div>{supply || "--"}</div>
                                 </NewPullDown>
                             }
+                            
                             <NewPullDown open={false} title='Token Info'>
                                 <div className="token-info">
                                     <div className="flex flex-space-x">
