@@ -233,7 +233,7 @@ export default function Index () {
                         </Link>
 
                         {/* <Search
-                            placeholder={'Search Items, Shops and Accounts'}
+                            placeholder={'Search items，Brands and Accounts'}
                         /> */}
                     </div>
                     <div className='right'>
