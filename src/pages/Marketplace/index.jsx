@@ -268,7 +268,7 @@ export default function Marketplace() {
       <div className="filterBox">
         <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
 
-        <PullRadioBox prefix={'Gategory:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
+        <PullRadioBox prefix={'Category:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
           // console.log(item)
         }} />
 

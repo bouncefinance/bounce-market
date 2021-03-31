@@ -29,7 +29,7 @@ const defaultOptions = {
 
 export const approveStatus = { status: 1, title: 'Bounce Requests Approval', content: 'Please enable Bounce to access your tokens' }
 export const confirmStatus = { status: 2, title: 'Waiting for confirmation', content: 'Confirm this transaction in your wallet' }
-export const pendingStatus = { status: 3, title: 'Pendding Bounce Finance', content: 'Please wait a Little' }
+export const pendingStatus = { status: 3, title: 'Loading', content: 'Please wait a little' }
 export const successStakeStatus = { status: 4, title: 'Your BOT was Staked', content: 'You can claim your principle' }
 export const successUnStakeStatus = { status: 5, title: 'Your BOT was Unstaked', content: 'You successfully unstake your token' }
 
