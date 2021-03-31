@@ -214,7 +214,7 @@ const nav_list = [{
 }*/]
 
 
-export default function BrandsByType () {
+export default function BrandsByType() {
     const { brandId, type } = useParams()
     const history = useHistory()
     const [listData, setListData] = useState([])
@@ -251,7 +251,7 @@ export default function BrandsByType () {
         setBtnLock(true)
         setInputDisable(true)
         setEditBtnText('Submitting ...')
-        
+
         const response = await sign_Axios.post(Controller.brands.updatebrandbyid, { ...editFormData, imgurl })
         setBtnLock(false)
         setInputDisable(false)
@@ -282,67 +282,69 @@ export default function BrandsByType () {
     }
 
     const { active, account } = useActiveWeb3React();
-    const [loading, setLoading] =  useState(true);
+    const [loading, setLoading] = useState(true);
     const [tokenList, setTokenList] = useState([]);
 
     const handleBrandTradeItems = (pools) => {
         sign_Axios.post(Controller.items.getitemsbyfilter, {
-          ids: tokenList,
-          category: type.toLowerCase() === 'all' ? '' : type,
-          channel: ''
+            ids: tokenList,
+            category: type.toLowerCase() === 'all' ? '' : type,
+            channel: ''
         })
-        .then(res => {
-          if (res.status === 200 && res.data.code === 1) {
-            const list = res.data.data.map(item => {
-              const poolInfo = pools.find(pool => pool.tokenId === item.id);
-              return {
-                  ...item,
-                  poolType: poolInfo && poolInfo.poolType,
-                  poolId: poolInfo && poolInfo.poolId,
-                  price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
-                  createTime: poolInfo && poolInfo.createTime
-              }
+            .then(res => {
+                if (res.status === 200 && res.data.code === 1) {
+                    const list = res.data.data.map(item => {
+                        const poolInfo = pools.find(pool => pool.tokenId === item.id);
+                        return {
+                            ...item,
+                            poolType: poolInfo && poolInfo.poolType,
+                            poolId: poolInfo && poolInfo.poolId,
+                            price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
+                            createTime: poolInfo && poolInfo.createTime
+                        }
+                    })
+                    const result = list.sort((a, b) => b.createTime - a.createTime);
+                    setListData(result);
+                    setStatusList(result);
+                    setLoading(false);
+                }
             })
-            const result = list.sort((a, b) => b.createTime - a.createTime);
-            setListData(result);
-            setStatusList(result);
-            setLoading(false);
-          }
-        })
-      }
+    }
 
-    const [getBrandTradeItems, brandTradeItems ] = useLazyQuery(QueryBrandTradeItems, {
-        variables: {tokenList:  tokenList},
-        fetchPolicy:"network-only",
+    const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
+        variables: { tokenList: tokenList },
+        fetchPolicy: "network-only",
         onCompleted: () => {
             const tradePools = brandTradeItems.data.tradePools.map(item => ({
                 ...item,
                 poolType: AUCTION_TYPE.FixedSwap
-            }));
+            })).filter(item => item.state !== 1)
             const tradeAuctions = brandTradeItems.data.tradeAuctions.map(item => ({
                 ...item,
                 price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
                 poolType: AUCTION_TYPE.EnglishAuction
-            }));
+            })).filter(item => item.state !== 1)
+            // console.log(tradePools.concat(tradeAuctions))
             handleBrandTradeItems(tradePools.concat(tradeAuctions));
         }
-      })
+    })
 
-    const [getBrandItems, {data: brandItems}] = useLazyQuery(QueryOwnerBrandItems, {
-        variables: {owner: account ? account.toLowerCase() : account },
-        fetchPolicy:"network-only",
+    const [getBrandItems, { data: brandItems }] = useLazyQuery(QueryOwnerBrandItems, {
+        variables: { owner: account ? account.toLowerCase() : account },
+        fetchPolicy: "network-only",
         onCompleted: () => {
-            const brands = brandInfo.standard === 1 
-                ? brandItems.bounce721Brands[0] 
+            const brands = brandInfo.standard === 1
+                ? brandItems.bounce721Brands[0]
                 : brandItems.bounce1155Brands[0];
             if (!brands) {
                 handleBrandTradeItems([]);
             } else {
                 const tokenList = brands.tokenList.map(item => item.tokenId);
+                console.log(tokenList)
                 setTokenList(tokenList);
             }
         }
-      })
+    })
 
     useEffect(() => {
         if (!active) return;
@@ -399,14 +401,14 @@ export default function BrandsByType () {
 
             <div className="nav_wrapper flex flex-space-x">
                 <div className="flex">
-                {nav_list.map((item) => {
-                    return <li key={item.name} className={type === item.route ? 'active' : ''} onClick={() => {
-                        history.push(`/MyBrands/${brandId}/${item.route}`)
-                    }}>
-                        <img src={item.icon} alt="" />
-                        <p>{item.name}</p>
-                    </li>
-                })}</div>
+                    {nav_list.map((item) => {
+                        return <li key={item.name} className={type === item.route ? 'active' : ''} onClick={() => {
+                            history.push(`/MyBrands/${brandId}/${item.route}`)
+                        }}>
+                            <img src={item.icon} alt="" />
+                            <p>{item.name}</p>
+                        </li>
+                    })}</div>
                 <Category onStatusChange={setStatusList} itemList={listData} />
             </div>
             <ul className="list_wrapper">
@@ -415,10 +417,10 @@ export default function BrandsByType () {
                 </li>
                 {statusList.map((item, index) => {
                     return <li key={index}>
-                        <CardItem 
-                            nftId={item.id} 
-                            cover={item.fileurl} 
-                            itemname={item.itemname} 
+                        <CardItem
+                            nftId={item.id}
+                            cover={item.fileurl}
+                            itemname={item.itemname}
                             user={item.ownername}
                             status={item.poolId && 'Listed'}
                             poolInfo={item}
