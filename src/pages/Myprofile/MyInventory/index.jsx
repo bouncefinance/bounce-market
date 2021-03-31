@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import CommonHeader from '../CommonHeader'
 import styled from 'styled-components'
 // import Search from './Search'
 import { CardItem, AddCardItem } from '../CardItem'
 import { useLazyQuery } from '@apollo/client';
 import { QueryMyNFT, QueryMyTradePools } from '@/utils/apollo'
-
+import { myContext } from '@/redux'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
@@ -46,7 +46,7 @@ export default function Index() {
   const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
-
+  const { state } = useContext(myContext)
   // eslint-disable-next-line
   const [type, setType] = useState('image');
   const [loading, setLoading] = useState(true)
@@ -86,6 +86,11 @@ export default function Index() {
     getMyTradeNFT()
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
+  useEffect(() => {
+    if(state.showMessageModal){
+      window.location.reload();
+    }
+  }, [state.showMessageModal]);
 
   useEffect(() => {
     if (!account || myTradeData.length === 0 || myNftData.length === 0) return
