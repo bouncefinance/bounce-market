@@ -138,7 +138,7 @@ const CardItemStyled = styled.div`
 
 export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo }) {
     const history = useHistory()
-    const {exportErc20Info} = useToken()
+    const { exportErc20Info } = useToken()
     const [openCancel, setOpenCancel] = useState(false)
 
     const [newPrice, setNewPrice] = useState('--')
@@ -172,7 +172,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                         <h5 className="name">{itemname}</h5>
                         <div className="line"></div>
                         <div className="flex flex-space-x">
-                            <p className="type">{poolType  && (poolType === "english-auction" ? "Top Bid" : "Price")}</p>
+                            <p className="type">{poolType && (poolType === "english-auction" ? "Top Bid" : "Price")}</p>
                             <p className="_tag">{`# ${poolInfo.id}`}</p>
                         </div>
                         <h4 className="price">{poolInfo.price ? newPrice : 'Not on sale'}</h4>
@@ -203,7 +203,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                     {status}
                 </div>}
             </CardItemStyled>
-            {poolInfo.poolId && <ConfirmCancelModal open={openCancel} setOpen={setOpenCancel} poolId={poolInfo.poolId} />}
+            {parseInt(poolInfo.poolId) >= 0 && <ConfirmCancelModal open={openCancel} setOpen={setOpenCancel} poolId={poolInfo.poolId} />}
         </>
     )
 }
