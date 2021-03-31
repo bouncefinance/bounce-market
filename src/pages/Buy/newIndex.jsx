@@ -155,6 +155,12 @@ const NewIndexStyled = styled.div`
                     }
                 }
 
+    .dollar{
+        display: block;
+        font-size: 20px;
+        color: #999999;
+    }
+
                 .amount {
                     /* align-items: end; */
                     display: flex;
@@ -231,7 +237,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex() {
+export default function NewIndex () {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { hasApprove_ERC_20 } = useToken()
@@ -519,7 +525,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Current price</h5>
                         <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) `}</span></h3>
+                            <span>{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
 
                     <div className="amount">
@@ -553,7 +559,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Asking price</h5>
                         <h3>{poolInfo.token1 && weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals))} ) `}</span></h3>
+                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
 
                     <div>
@@ -566,7 +572,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Current Price</h5>
                         <h3>{poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals))} ) `}</span></h3>
+                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
                     </div>
 
                     <div>
