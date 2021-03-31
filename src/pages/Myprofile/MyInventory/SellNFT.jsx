@@ -163,15 +163,15 @@ export default function SellNFT() {
 							layDownItems={[
 								{
 									value:
-										"Bounce is decentralized,so it will never host your items...",
+										"Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:",
 								},
 								{
 									value:
-										"Bounce is decentralized,so it will never host your items...",
+										"To initialize your account for making sell orders, which only needs to be done once for your account.",
 								},
 								{
 									value:
-										"Bounce is decentralized,so it will never host your items...",
+										"To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.",
 								},
 							]}
 						/>

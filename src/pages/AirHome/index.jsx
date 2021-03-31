@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import UpdateTopBarImg from '../Myprofile/MyBrands/updateTopBarImg'
@@ -15,6 +15,8 @@ import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE } from '@/utils/const'
+
+import { myContext } from '@/redux';
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -173,6 +175,29 @@ export function AirHome() {
   const [tokenList, setTokenList] = useState([]);
   const [itemList, setItemList] = useState([]);
 
+	const { dispatch } = useContext(myContext);
+
+  useEffect(() => {
+		const getOwnerInfo = async (owneraddress) => {
+			sign_Axios
+				.post("/api/v2/main/auth/getaccount", { accountaddress: owneraddress })
+				.then((res) => {
+					if (/* res.status === 200 &&  */res.data.code === 1) {
+						let OwnerInfo = res.data.data;
+            console.log(OwnerInfo)
+					} else {
+						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+					}
+				})
+				.catch((err) => {
+					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+				});
+		};
+		if (!active || !brandInfo.owneraddress) return;
+		getOwnerInfo(brandInfo.owneraddress);
+		// eslint-disable-next-line
+	}, [active, brandInfo.owneraddress]);
+
   const handleBrandTradeItems = (pools) => {
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
@@ -274,7 +299,7 @@ export function AirHome() {
         </button>
       </div>
       <div className="userinfo">
-        <img src={brandInfo.bandimgurl} alt="" />
+        <img src={/* brandInfo.bandimgurl */brandInfo.imgurl} alt="" />
         <h2>{brandInfo.ownername}</h2>
         <p>{brandInfo.contractaddress}</p>
       </div>
