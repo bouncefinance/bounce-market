@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { /* Link,  */useParams } from 'react-router-dom';
 import styled from 'styled-components'
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
@@ -544,9 +544,9 @@ export default function NewIndex() {
                     </Button>
                 </div>
 
-                <div className="Link_MakeOffer">
+                {/* <div className="Link_MakeOffer">
                     <StyledLink to="#">Make Offer</StyledLink>
-                </div>
+                </div> */}
 
             </>
         } else if (aucType === AUCTION_TYPE.EnglishAuction) {
@@ -937,7 +937,7 @@ export default function NewIndex() {
 
 
 
-
+/* 
 const StyledLink = styled(Link)`
     font-family: Helvetica Neue;
     font-style: normal;
@@ -950,7 +950,7 @@ const StyledLink = styled(Link)`
 
     margin-top: 50px;
 `
-
+ */
 
 const OffersStyled = styled.div`
 font-family: Helvetica Neue;
