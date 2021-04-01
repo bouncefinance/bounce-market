@@ -27,7 +27,7 @@ import icon_time from './assets/icon_time.svg'
 import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
 import TradingHistory from './components/TradingHistory';
 import { useLazyQuery } from '@apollo/client';
-import { QueryFixedSwapPool, QueryEnglishAuction } from '@/utils/apollo';
+import { QueryFixedSwapPool, QueryEnglishAuction, querylastestBidAmount } from '@/utils/apollo';
 import { getEllipsisAddress } from '@/utils/utils';
 import Web3 from 'web3';
 import { format, formatDistanceToNow } from 'date-fns';
@@ -287,6 +287,19 @@ export default function NewIndex() {
         poolid: poolId | 0,
     }
     /* const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false) */
+
+    const [queryLastbid, { data: bidData }] = useLazyQuery(querylastestBidAmount, {
+        variables: { poolId: Number(poolId) },
+        onCompleted: () => {
+            console.log(bidData);
+        }
+    })
+
+    useEffect(() => {
+        if (poolId) {
+            queryLastbid();
+        }
+    }, [poolId, queryLastbid])
 
     const setLike = async () => {
         const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
