@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 // import { useUserInfo } from '../pages/Myprofile/useUserInfo'
 import { useEffect, useContext } from 'react';
 import { myContext } from '@/redux/index.js';
-// const host = window.location.host
+const host = window.location.host
 const Base_URL = host.indexOf('localhost') !== -1 ? 'http://market-test.bounce.finance:11000' : 'https://market-test.bounce.finance'
 // const Base_URL = 'https://bounce-market.bounce.finance'
 
