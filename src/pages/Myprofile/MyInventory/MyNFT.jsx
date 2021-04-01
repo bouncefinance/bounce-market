@@ -270,7 +270,7 @@ function MyNFT() {
 								// history.push("/MyInventory/Sell");
 							}}
 						/>
-						<Button width="200px" value="Transfer" />
+						{/* <Button width="200px" value="Transfer" /> */}
 					</div>
 
 					<span className="description">Description</span>

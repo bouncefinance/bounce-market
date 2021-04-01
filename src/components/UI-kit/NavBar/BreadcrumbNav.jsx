@@ -52,7 +52,7 @@ function BreadcrumbNav({ marginTop, marginBottom, NavList }) {
 			{NavList.slice(0, -1).map((nav, index) => {
 				return (
 					<StyledLink key={index} onClick={()=>{
-						history.push(nav.rout)
+						history.push(nav.route)
 					}}>{nav.title} /&nbsp;</StyledLink>
 				);
 			})}

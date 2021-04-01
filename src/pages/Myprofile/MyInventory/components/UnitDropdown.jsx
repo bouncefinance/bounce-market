@@ -176,7 +176,7 @@ export default function PullRadioBox({
 						return (
 							<li
 								key={item.value + "_" + index}
-								className={`${item.value === checkVal
+								className={`${item.value === (fixedSwapUnitVal || checkVal)
 										? "option check"
 										: "option"
 									}`}
