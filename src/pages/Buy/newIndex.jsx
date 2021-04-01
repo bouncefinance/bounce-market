@@ -650,7 +650,7 @@ export default function NewIndex() {
                     title={`I'll make an offer`}
                     width='100%'
                     maxVal={poolInfo.token1 && poolInfo.token1.balance}
-                    // minVal={minPrice}
+                    minVal={minPrice}
                     defaultValue={minPrice}
                     onValChange={(val) => {
                         setBidPrice(val)
