@@ -172,7 +172,7 @@ export default function Index() {
         // console.log('---brands----', brands)
       } else {
         // TODO ERROR SHOW
-        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Oops! Something went wrong. Try again." });
+        // dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Oops! Something went wrong. Try again." });
       }
     }
 

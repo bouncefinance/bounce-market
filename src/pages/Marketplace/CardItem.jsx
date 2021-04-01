@@ -19,9 +19,10 @@ const CardItemStyled = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
+    transition: all 200ms;
     &:hover{
-        box-shadow:0 0 16px rgba(48,69,114,0.2)
+        transform: translateY(-10px);
+        box-shadow: 5px 5px 10px #ccc;
     }
     &:hover .info_wrapper{
         opacity: 0;

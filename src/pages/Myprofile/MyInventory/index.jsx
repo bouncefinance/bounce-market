@@ -124,7 +124,9 @@ export default function Index() {
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          const res_data = res.data.data
+          console.log(res.data.data);
+          console.log(pools);
+          const res_data = res.data.data;
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => item.tokenId === res.id);
             return {
