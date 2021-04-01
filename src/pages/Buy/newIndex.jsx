@@ -301,7 +301,8 @@ export default function NewIndex() {
 
     useEffect(() => {
 
-        // console.log(nftInfo, poolInfo)
+        console.log(nftInfo, poolInfo)
+        // console.log(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))
         if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
             setBtnText('loading ...')
@@ -589,7 +590,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Current price</h5>
                         <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)) | 0).toFixed(2)} ) `}</span></h3>
+                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price,weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals),poolInfo.amountTotal0))} ) `}</span></h3>
                     </div>
 
                     <div className="amount">
@@ -636,7 +637,7 @@ export default function NewIndex() {
                     <div>
                         <h5>{aucType === AUCTION_TYPE.FixedSwap ? "Current Price" : "Top Bid" }</h5>
                         <h3>{poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
+                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)) )} ) `}</span></h3>
                     </div>
 
                     <div>
