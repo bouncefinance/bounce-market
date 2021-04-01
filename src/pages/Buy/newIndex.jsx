@@ -590,7 +590,7 @@ export default function NewIndex() {
                     <div>
                         <h5>Current price</h5>
                         <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price,weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals),poolInfo.amountTotal0))} ) `}</span></h3>
+                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))} ) `}</span></h3>
                     </div>
 
                     <div className="amount">
@@ -621,30 +621,30 @@ export default function NewIndex() {
 
 
                 <div className="bidInfo">
-                    <div>
+                    {/* <div>
                         <h5>Asking price</h5>
                         <h3>{poolInfo.token1 && weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
+                    </div> */}
+                    <div>
+                        <h5>{aucType === AUCTION_TYPE.FixedSwap ? "Current Price" : "Top Bid"}</h5>
+                        <h3>{poolInfo.showPrice && weiToNum(poolInfo.showPrice, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.showPrice, poolInfo.token1.decimals)))} ) `}</span></h3>
                     </div>
 
                     <div>
+                        {/* <span>{poolInfo.tokenAmount0 && `${poolInfo.tokenAmount0} of ${poolInfo.amountTotal0}`}</span> */}
                         <h5>Total Amount</h5>
                         <h3>{poolInfo.tokenAmount0 && `${poolInfo.tokenAmount0}`}</h3>
                     </div>
                 </div>
 
-                <div className="bidInfo">
-                    <div>
-                        <h5>{aucType === AUCTION_TYPE.FixedSwap ? "Current Price" : "Top Bid" }</h5>
-                        <h3>{poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)) )} ) `}</span></h3>
-                    </div>
-
-                    <div>
+                {/* <div className="bidInfo">
+                     <div>
                         <h5>Current Round</h5>
                         <h3>{poolInfo.bidCountP && `${poolInfo.bidCountP}`}</h3>
-                    </div>
-                </div>
+                    </div> 
+                </div> */}
 
                 <NumberInput
                     className='input_amount'
@@ -901,7 +901,7 @@ export default function NewIndex() {
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
-                                            aucType === AUCTION_TYPE.EnglishAuction? dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "The auction bill can only be cancelled when it expires" }):setOpenModal(true)
+                                            aucType === AUCTION_TYPE.EnglishAuction ? dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "The auction bill can only be cancelled when it expires" }) : setOpenModal(true)
                                         }}
                                         height='30px'
                                     >
@@ -925,7 +925,7 @@ export default function NewIndex() {
                         <div className="seller">
                             <div className='info'>
                                 <img src={icon_altAvatar} alt="" />
-                                <p>Owned by <span>{nftInfo.ownername || 'Anonymity'}</span></p>
+                                <p>Owned by <span>{nftInfo.owneraddress && `${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)} ${nftInfo.ownername && '(' + nftInfo.ownername + ')'}`}</span></p>
 
                                 {aucType === 'english-auction' && <div className="close_time">
                                     <img src={icon_time} alt="" />
@@ -951,7 +951,7 @@ export default function NewIndex() {
                                                 <div className="flex Offers-info">
                                                     <p className="name">{item.name}</p>
                                                     <p className="time">{item.time}</p>
-                                                    <p className="amount">{poolInfo.token1&&weiToNum(item.amount, poolInfo.token1.decimals)}</p>
+                                                    <p className="amount">{poolInfo.token1 && weiToNum(item.amount, poolInfo.token1.decimals)}</p>
                                                 </div>
                                                 <div className="Offers-price">
                                                     <span>{poolInfo.token1 && `${poolInfo.token1.symbol}`}</span>
@@ -963,14 +963,14 @@ export default function NewIndex() {
                                     }
                                 </OffersStyled>
                             </NewPullDown>
-                            
-                            
+
+
                             {supply &&
                                 <NewPullDown open={false} title='Supply'>
                                     <div>{supply || "--"}</div>
                                 </NewPullDown>
                             }
-                            
+
                             <NewPullDown open={false} title='Token Info'>
                                 <div className="token-info">
                                     <div className="flex flex-space-x">
@@ -982,7 +982,7 @@ export default function NewIndex() {
                                                 onCopy={() => {
                                                     dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
                                                 }}>
-                                                <img src={icon_copy} style={{cursor: "pointer"}} title="Copy" alt="" />
+                                                <img src={icon_copy} style={{ cursor: "pointer" }} title="Copy" alt="" />
                                             </CopyToClipboard>
                                         </div>
                                     </div>

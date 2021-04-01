@@ -22,7 +22,7 @@ export default function useHook(poolIndex) {
         const swappedAmount0P = await BounceFixedSwapNFT_CT.methods.swappedAmount0P(poolIndex).call()
         const creatorCanceledP = await BounceFixedSwapNFT_CT.methods.creatorCanceledP(poolIndex).call()
 
-
+        
         if (pools.tokenId) {
             const info = await exportNftInfo(pools.tokenId)
             setNftInfo(info)
