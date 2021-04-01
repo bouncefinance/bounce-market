@@ -129,15 +129,19 @@ export default function Index() {
           const res_data = res.data.data;
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => item.tokenId === res.id);
-            return {
-              ...poolInfo,
-              poolType: item.poolType,
-              poolId: item.poolId,
-              price: item.price,
-              token1:item.token1,
-              createTime: item.createTime
-            }
           })
+
+          // const list = pools.map((item, index) => {
+          //   const poolInfo = res_data.find(res => item.tokenId === res.id);
+          //   return {
+          //     ...poolInfo,
+          //     poolType: item.poolType,
+          //     poolId: item.poolId,
+          //     price: item.price,
+          //     token1:item.token1,
+          //     createTime: item.createTime
+          //   }
+          // })
           const result = list.sort((a, b) => b.createTime - a.createTime)
           setItemList(result);
           setStatusList(result);
