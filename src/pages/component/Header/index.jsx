@@ -211,8 +211,8 @@ export default function Index () {
 
     useEffect(() => {
         if (!active) return
-        if (chainId && chainId !== 4 && chainId !== 56) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select Rinkeby network or BSC network." });
+        if (chainId && chainId !== 56) {
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select or BSC network." });
         }
         getUserInfo();
         // eslint-disable-next-line
