@@ -320,7 +320,7 @@ export default function Marketplace () {
             } alt="" />{nav.title}</p>
           </li>
         })}
-        <li className="link"><Button onClick={() => { history.push('/MyMarket/Image') }}>My Market</Button></li>
+        <li className="link"><Button onClick={() => { history.push('/MyMarket') }}>My Market</Button></li>
       </ul>
       <div className="filterBox">
         <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
