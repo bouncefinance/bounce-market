@@ -111,9 +111,10 @@ export default function NumberInput({
     const [value, setValue] = useState(defaultValue || '')
 
     useEffect(() => {
-        onValChange && onValChange(defaultValue)
+        setValue(minVal)
+        onValChange && onValChange(minVal)
         // eslint-disable-next-line
-    }, [])
+    }, [minVal])
 
     const handelChange = (e) => {
         onChange && onChange(e)
@@ -138,9 +139,7 @@ export default function NumberInput({
             val = parseInt(val)
         }
 
-        if (maxVal && parseFloat(val) > parseFloat(maxVal)) {
-            val = maxVal
-        } else if (minVal && parseFloat(val) < parseFloat(minVal)) {
+        if (minVal && parseFloat(val) < parseFloat(minVal)) {
             val = minVal
         }
         setValue(val)

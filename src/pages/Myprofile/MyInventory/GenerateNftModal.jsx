@@ -136,7 +136,11 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         showTransferByStatus('')
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
-                                        history.push("/MyInventory")
+                                        if(window.location.pathname === "/MyInventory"){
+                                            window.location.reload()
+                                        }else{
+                                            history.push("/MyInventory")
+                                        }
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -162,7 +166,12 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
-                                        history.push("/MyInventory")
+                                        if(window.location.pathname === "/MyInventory"){
+                                            window.location.reload()
+                                        }else{
+                                            history.push("/MyInventory")
+                                        }
+                                        
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)

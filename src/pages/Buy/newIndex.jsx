@@ -286,8 +286,9 @@ export default function NewIndex () {
     const [externalLink, setExternalLink] = useState();
     const { dispatch } = useContext(myContext);
     const [lastestBidAmount,setLastestBidAmount] = useState("0");
-    const [loadingLoked, setLoadingLocked] = useState(true)
+    const [loadingLoked, setLoadingLocked] = useState(true);
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
+    const [inputMinPrice, setInputMinPrice] = useState();
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
@@ -591,6 +592,17 @@ export default function NewIndex () {
                 showTransferByStatus('errorStatus')
             })
     }
+    
+    useEffect(() => {
+        if(minPrice){
+            setInputMinPrice(minPrice);
+        }
+        if(lastestBidAmount && minPrice && poolInfo.token1 ){
+            setInputMinPrice(parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + parseFloat(minPrice)*0.05);
+        }
+        // poolInfo.token1.balance
+    }, [ poolInfo.token1,minPrice,lastestBidAmount])
+
 
 
     const renderByAucType = () => {
@@ -674,9 +686,8 @@ export default function NewIndex () {
                     className='input_amount'
                     title={`I'll make an offer`}
                     width='100%'
-                    maxVal={poolInfo.token1 && ((parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + minPrice*0.05) < parseFloat(poolInfo.token1.balance && minPrice < (parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + minPrice*0.05)) ? (parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + minPrice*0.05):poolInfo.token1.balance )}
-                    minVal={poolInfo.token1 && (parseFloat(minPrice) < parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) ? weiToNum(lastestBidAmount,poolInfo.token1.decimals) : minPrice)}
-                    defaultValue={minPrice}
+                    minVal={inputMinPrice}
+                    defaultValue={inputMinPrice}
                     onValChange={(val) => {
                         setBidPrice(val)
                     }}
