@@ -119,17 +119,17 @@ const nav_list = [{
 }]
 
 export default function MyMarket() {
-  let { type } = useParams()
+  let { type, channel } = useParams()
   const history = useHistory()
   const { active, account } = useActiveWeb3React()
   
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
-  const [channel, setChannel] = useState(
+  /* const [channel, setChannel] = useState(
     type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
       type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
-        NFT_CATEGORY.FineArts);
+        NFT_CATEGORY.FineArts); */
 
   const [loading, setLoading] = useState(true)
   const [length, setLength] = useState(4);
@@ -139,7 +139,28 @@ export default function MyMarket() {
 
   type = 'Image'
 
+  const NavList = [
+    {
+      title: "Fine Arts",
+      route: "FineArts",
+      channelRequestParam: "Fine Arts",
+    },
+    {
+      title: "Sports",
+      route: "Sports",
+      channelRequestParam: "Sports",
+    },
+    {
+      title: "Comic Books",
+      route: "Comics",
+      channelRequestParam: "Conicbooks",
+    },
+  ]
 
+  const [channelRequestParam, setChannelRequestParam] = useState(
+    channel === NavList[0].route ? NavList[0].channelRequestParam :
+      channel === NavList[1].route ? NavList[1].channelRequestParam :
+        NavList[2].channelRequestParam);
 
   const handleTradeData = useCallback((tradeInfo) => {
     const tradePools = tradeData.tradePools.map(item => ({
@@ -177,11 +198,12 @@ export default function MyMarket() {
     .concat(auctionBids)
     const ids_list = poolData.map(item => item.tokenId);
     setLength(ids_list.length);
-    const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel
+    /* const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel */
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       category: type,
-      channel: channel_2
+      /* channel: channel_2 */
+      channel: channelRequestParam
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
@@ -293,7 +315,7 @@ export default function MyMarket() {
         })}
       </ul>}
       <ul className="nav_wrapper">
-        {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
+        {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
             setChannel(item.name)
           }}>
@@ -303,6 +325,21 @@ export default function MyMarket() {
                   item.name === NFT_CATEGORY.ComicBooks ? icon_comics :
                     ''
             } alt="" />{item.name}</p>
+          </li>
+        })} */}
+        {NavList.map(nav => {
+          return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
+            () => {
+              setChannelRequestParam(nav.channelRequestParam)
+              history.push('/MyMarket/' + nav.route)
+              // setChannelRequestParam(item.name)
+            }}>
+            <p className="flex flex-center-y"><img src={
+              nav.title === NFT_CATEGORY.FineArts ? icon_arts :
+                nav.title === NFT_CATEGORY.Sports ? icon_sport :
+                  nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
+                    ''
+            } alt="" />{nav.title}</p>
           </li>
         })}
         <li className="link"><Button onClick={() => {history.push('/Marketplace/Image')}}>Marketplace</Button></li>

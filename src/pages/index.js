@@ -49,7 +49,7 @@ export default function Index() {
                 <Route exact path='/Home' component={Home} />
                 <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/FineArts' /> }} />
                 <Route exact path='/Marketplace/:channel' component={Marketplace} />
-                <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket' />}} />
+                <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket/FineArts' />}} />
                 <Route exact path='/MyMarket/:channel' component={MyMarket} />
                 <Route exact path='/Marketplace/:type/:aucType/:poolId' component={Buy} />
 
