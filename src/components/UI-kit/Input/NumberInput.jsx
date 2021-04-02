@@ -117,12 +117,22 @@ export default function NumberInput({
 
     const handelChange = (e) => {
         onChange && onChange(e)
-
-
         let val = e.target.value
+        setValue(val)
+        if (!onValChange) return
+        onValChange(val)
+    }
 
-        if (val === '') {
-            val = 0
+    const handelBlur = (e) => {
+        onBlur && onBlur(e)
+        let val = e.target.value
+        if (required && val === '') {
+            setError(true)
+            setErrMsg(ErrorStatus.required.tip)
+        }
+
+        if(val === ""){
+            val = minVal;
         }
         if (isInteger) {
             val = parseInt(val)
@@ -133,28 +143,9 @@ export default function NumberInput({
         } else if (minVal && parseFloat(val) < parseFloat(minVal)) {
             val = minVal
         }
-
-
         setValue(val)
-        // console.log(val, minVal, maxVal)
-
         if (!onValChange) return
-
-        // if (required && val === '') {
-        //     return onValChange(ErrorStatus.required, val)
-        // }
-
-        // onValChange(null, val)
         onValChange(val)
-    }
-
-    const handelBlur = (e) => {
-        onBlur && onBlur(e)
-        const val = e.target.value
-        if (required && val === '') {
-            setError(true)
-            setErrMsg(ErrorStatus.required.tip)
-        }
     }
 
     const handelFocus = () => {

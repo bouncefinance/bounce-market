@@ -27,7 +27,7 @@ import icon_time from './assets/icon_time.svg'
 import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
 import TradingHistory from './components/TradingHistory';
 import { useLazyQuery } from '@apollo/client';
-import { QueryFixedSwapPool, QueryEnglishAuction } from '@/utils/apollo';
+import { QueryFixedSwapPool, QueryEnglishAuction, querylastestBidAmount } from '@/utils/apollo';
 import { getEllipsisAddress } from '@/utils/utils';
 import Web3 from 'web3';
 import { format, formatDistanceToNow } from 'date-fns';
@@ -282,7 +282,7 @@ export default function NewIndex () {
     const [tokenID, setTokenID] = useState();
     const [externalLink, setExternalLink] = useState();
     const { dispatch } = useContext(myContext);
-
+    const [lastestBidAmount,setLastestBidAmount] = useState("0");
     const [loadingLoked, setLoadingLocked] = useState(true)
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
     const updateParams = {
@@ -292,6 +292,22 @@ export default function NewIndex () {
         poolid: poolId | 0,
     }
     /* const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false) */
+
+    const [queryLastbid, { data: bidData }] = useLazyQuery(querylastestBidAmount, {
+        variables: { poolId: Number(poolId) },
+        fetchPolicy: "network-only",
+        onCompleted: () => {
+            if(bidData.tradeAuctions.length > 0){
+                setLastestBidAmount(bidData.tradeAuctions[0].lastestBidAmount);
+            }
+        }
+    })
+
+    useEffect(() => {
+        if (poolId) {
+            queryLastbid();
+        }
+    }, [poolId, queryLastbid])
 
     const setLike = async () => {
         const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
@@ -655,8 +671,8 @@ export default function NewIndex () {
                     className='input_amount'
                     title={`I'll make an offer`}
                     width='100%'
-                    maxVal={poolInfo.token1 && poolInfo.token1.balance}
-                    // minVal={minPrice}
+                    maxVal={poolInfo.token1 && ((parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + minPrice*0.05) < parseFloat(poolInfo.token1.balance && minPrice < (parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + minPrice*0.05)) ? (parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + minPrice*0.05):poolInfo.token1.balance )}
+                    minVal={poolInfo.token1 && (parseFloat(minPrice) < parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) ? weiToNum(lastestBidAmount,poolInfo.token1.decimals) : minPrice)}
                     defaultValue={minPrice}
                     onValChange={(val) => {
                         setBidPrice(val)
