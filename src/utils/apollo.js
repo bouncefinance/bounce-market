@@ -3,8 +3,8 @@ import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 
 export const client = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/id/QmNRFKSQSVgVbYe6fmJUV3hcZLh8ngMdGCht41wX3xq3Qv',  // rinkby
-  // uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc mian
+  // uri: 'https://api.thegraph.com/subgraphs/id/QmNRFKSQSVgVbYe6fmJUV3hcZLh8ngMdGCht41wX3xq3Qv',  // rinkby
+  uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc mian
   cache: new InMemoryCache(),
 })
 
@@ -31,6 +31,27 @@ export const QueryTradePools = gql`
   }
 `
 
+export const QueryMarketTradePools= gql`
+  query xx($contract: String!){
+    tradePools (where: {token1: $contract}){
+      tokenId
+      poolId
+      token1
+      price
+      createTime
+      state
+    }
+    tradeAuctions (where: {token1: $contract}){
+      tokenId
+      poolId
+      token1
+      lastestBidAmount
+      amountMin1
+      createTime
+      state
+    }
+  }
+`
 export const QueryMyTradePools = gql`
   query nftItems($user: String!) {
     tradePools(where: {creator: $user}) {

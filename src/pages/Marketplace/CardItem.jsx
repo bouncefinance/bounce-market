@@ -157,7 +157,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }) {
+export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId }) {
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const [newPrice, setNewPrice] = useState('Loading Price ...')
@@ -166,7 +166,7 @@ export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }
     useEffect(() => {
         getPriceByToken1(price, token1)
         // eslint-disable-next-line
-    }, [])
+    }, [price, token1])
 
     const getPriceByToken1 = async (price, token1) => {
         if (!price || !token1) return setNewPrice('--')
@@ -238,7 +238,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem({ cover, name, price, cardId, poolType }) {
+export function VideoCardItem ({ cover, name, price, cardId, poolType }) {
 
     return (<LazyLoad width={262} height={408}>
         <VideoCardItemStyled>
@@ -286,7 +286,7 @@ const AudioCardItemStyled = styled(CardItemStyled)`
        }
 `
 
-export function AudioCardItem({ cover, name, price, cardId, describe, poolType }) {
+export function AudioCardItem ({ cover, name, price, cardId, describe, poolType }) {
     return (<LazyLoad width={262} height={408}>
         <AudioCardItemStyled>
             <img src={cover} alt="" />
