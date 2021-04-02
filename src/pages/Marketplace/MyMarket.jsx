@@ -164,7 +164,7 @@ export default function MyMarket() {
         if (res.status === 200 && res.data.code === 1) {
           const res_data = res.data.data
           const list = res_data.map((item) => {
-            const poolInfo = pools.find(pool => item.tokenId === pool.id);
+            const poolInfo = pools.find(pool => item.id === pool.tokenId);
             return {
               ...item,
               poolType: poolInfo.poolType,
