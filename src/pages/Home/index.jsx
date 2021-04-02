@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
@@ -16,7 +16,7 @@ import { useWeb3React } from '@web3-react/core'
 import { SkeletonBrandCards } from '../component/Skeleton/BrandItem'
 import { NewSkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import Button from '@/components/UI-kit/Button/Button'
-import { myContext } from '@/redux'
+// import { myContext } from '@/redux'
 
 
 import { useQuery } from '@apollo/client'
@@ -155,7 +155,7 @@ export default function Index() {
   // const { exportArrayNftInfo } = useToken()
   const [loadingBrands, setLoadingBrands] = useState(false)
   const [loadingItems, setLoadingItems] = useState(true)
-  const { dispatch } = useContext(myContext)
+  // const { dispatch } = useContext(myContext)
   
   useEffect(() => {
     if (!account) {
@@ -172,7 +172,7 @@ export default function Index() {
         // console.log('---brands----', brands)
       } else {
         // TODO ERROR SHOW
-        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Oops! Something went wrong. Try again." });
+        // dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Oops! Something went wrong. Try again." });
       }
     }
 

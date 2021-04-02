@@ -119,9 +119,9 @@ export default function SellNFT() {
 	};
 
 	useEffect(() => {
-		if ((directPurchasePrice && (directPurchasePrice.charAt(directPurchasePrice.length - 1) === '.')) ||
-			(reservePrice && (reservePrice.charAt(reservePrice.length - 1) === '.')) ||
-			(minimumBid && (minimumBid.charAt(minimumBid.length - 1) === '.'))) {
+		if ((directPurchasePrice && ((directPurchasePrice.charAt(directPurchasePrice.length - 1) === '.' ) || (parseInt(directPurchasePrice) === 0 && directPurchasePrice.charAt(directPurchasePrice.length - 1) === '0'))) ||
+			(reservePrice && ((reservePrice.charAt(reservePrice.length - 1) === '.') || (parseInt(reservePrice) === 0 && reservePrice.charAt(reservePrice.length - 1) === '0'))) ||
+			(minimumBid && ((minimumBid.charAt(minimumBid.length - 1) === '.' ) || (parseInt(minimumBid) === 0 && minimumBid.charAt(minimumBid.length - 1) === '0')))) {
 			return false;
 		}
 
