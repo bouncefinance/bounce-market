@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useContext } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import UpdateTopBarImg from '../Myprofile/MyBrands/updateTopBarImg'
@@ -18,7 +18,6 @@ import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
-import { myContext } from '@/redux'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -116,6 +115,7 @@ const MarketplaceStyled = styled.div`
 
     .list_wrapper{
         width: 1100px;
+        min-height: 200px;
         margin: 0 auto;
         display: flex;
         flex-wrap: wrap;
@@ -177,30 +177,6 @@ export function AirHome() {
   const [tokenList, setTokenList] = useState([]);
   const [itemList, setItemList] = useState([]);
   const [pools, setPools] = useState([]);
-  
-  const { dispatch } = useContext(myContext);
-
-  
-  useEffect(() => {
-		const getOwnerInfo = async (owneraddress) => {
-			sign_Axios
-				.post("/api/v2/main/auth/getaccount", { accountaddress: owneraddress })
-				.then((res) => {
-					if (/* res.status === 200 &&  */res.data.code === 1) {
-						let OwnerInfo = res.data.data;
-            console.log(OwnerInfo)
-					} else {
-						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
-					}
-				})
-				.catch((err) => {
-					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
-				});
-		};
-		if (!active || !brandInfo.owneraddress) return;
-		getOwnerInfo(brandInfo.owneraddress);
-		// eslint-disable-next-line
-	}, [active, brandInfo.owneraddress]);
 
   const type = "Image"
 
@@ -221,7 +197,7 @@ export function AirHome() {
       channelRequestParam: "Conicbooks",
     },
   ]
-
+  
   const [channelRequestParam, setChannelRequestParam] = useState(
     channel === NavList[0].route ? NavList[0].channelRequestParam :
     channel === NavList[1].route ? NavList[1].channelRequestParam :
@@ -232,7 +208,7 @@ export function AirHome() {
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
       category: type,
-      channel: channelRequestParam
+      channel: channelRequestParam,
     })
     .then(res => {
       if (res.status === 200 && res.data.code === 1) {
