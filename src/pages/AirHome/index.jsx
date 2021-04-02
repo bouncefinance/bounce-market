@@ -170,7 +170,7 @@ export function AirHome() {
   const run = () => { }
 
   const { active } = useActiveWeb3React();
-  const { id, standard, channel, type } = useParams();
+  const { id, standard, channel, /* type */ } = useParams();
   const { sign_Axios } = useAxios();
 
   const [brandInfo, setBrandInfo] = useState({});
@@ -201,6 +201,8 @@ export function AirHome() {
 		getOwnerInfo(brandInfo.owneraddress);
 		// eslint-disable-next-line
 	}, [active, brandInfo.owneraddress]);
+
+  const type = "Image"
 
   const handleBrandTradeItems = useCallback((pools) => {
     const chanel_2 =  channel === 'Comic Books' ? 'Conicbooks' : channel;
