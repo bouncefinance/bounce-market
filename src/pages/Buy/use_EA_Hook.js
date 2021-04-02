@@ -26,9 +26,11 @@ export default function useHook(poolIndex) {
         const creatorClaimedP = await BounceEnglishAuctionNFT_CT.methods.creatorClaimedP(poolIndex).call()
         const reserveAmount1P = await BounceEnglishAuctionNFT_CT.methods.reserveAmount1P(poolIndex).call()
         const currentBidderP = await BounceEnglishAuctionNFT_CT.methods.currentBidderP(poolIndex).call()
+        let showPrice = pools.amountMin1
 
-
-
+        if(currentBidderAmount!=='0'){
+            showPrice = currentBidderAmount
+        }
 
         // console.log(pools)
         if (pools.tokenId) {
@@ -55,7 +57,8 @@ export default function useHook(poolIndex) {
             myClaimedP,
             currentBidderP,
             creatorClaimedP,
-            reserveAmount1P
+            reserveAmount1P,
+            showPrice
         }
 
 

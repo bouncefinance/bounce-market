@@ -133,7 +133,7 @@ const Nav_list = [{
     enable: true,
 } */]
 
-export default function Index () {
+export default function Index() {
     const [isConnectWallect, setIsConnectWallect] = useState(false)
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState('Home')
@@ -141,7 +141,7 @@ export default function Index () {
     const [isShowInfo, setIsShowInfo] = useState(!true)
     const { getUserInfo } = useUserInfo()
     const history = useHistory()
-    const { state,dispatch } = useContext(myContext);
+    const { state, dispatch } = useContext(myContext);
     // const { dispatch } = useContext(myContext);
     /* const [isFangible, setIsFangible] = useState(false) */
 
@@ -211,7 +211,7 @@ export default function Index () {
 
     useEffect(() => {
         if (!active) return
-        if (chainId && chainId !== 56) {
+        if (chainId && (chainId !== 56 && chainId !== 4)) {
             dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select or BSC network." });
         }
         getUserInfo();
@@ -266,7 +266,7 @@ export default function Index () {
                                 history.push("/Factory")
                             }}
                         />
-                        
+
                         {active ? <div className={`avatar_box ${isShowInfo ? 'open' : ''}`}>
                             {state.userInfo && state.userInfo.imgurl ? <img src={state.userInfo && state.userInfo.imgurl} alt="" onClick={onHandleShowInfo} /> : <div className='avatar' onClick={onHandleShowInfo}></div>}
                         </div> : <Button className='connect_btn' primary onClick={() => {

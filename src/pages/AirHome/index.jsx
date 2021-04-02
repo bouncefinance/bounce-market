@@ -328,7 +328,7 @@ export function AirHome() {
       <ul className="nav_wrapper">
         {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
-            history.push(`/AirHome/${id}/${standard}/${item.name}/Image`)
+            history.push(`/AirHome/${id}/${standard}/${item.name}`)
           }}>
             <p className="flex flex-center-y"><img src={
               item.name === NFT_CATEGORY.FineArts ? icon_arts :
