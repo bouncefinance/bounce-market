@@ -30,7 +30,7 @@ import MyP2P from './Myprofile/Point-2-Point'
 import TransferStatusModal from '@components/Modal/TransferStatusModal'
 import ModalMessage from '@components/Modal/ModalMessage'
 import ErrorNotification from '@components/Modal/ErrorNotification'
-import { AirHome } from './AirHome'
+import { AirHome } from './AirHome/index2'
 import MyLiked from './Myprofile/MyLiked'
 
 export default function Index() {
