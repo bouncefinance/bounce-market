@@ -115,6 +115,7 @@ const MarketplaceStyled = styled.div`
 
     .list_wrapper{
         width: 1100px;
+        min-height: 200px;
         margin: 0 auto;
         display: flex;
         flex-wrap: wrap;
@@ -196,7 +197,7 @@ export function AirHome() {
       channelRequestParam: "Conicbooks",
     },
   ]
-
+  
   const [channelRequestParam, setChannelRequestParam] = useState(
     channel === NavList[0].route ? NavList[0].channelRequestParam :
     channel === NavList[1].route ? NavList[1].channelRequestParam :
@@ -207,7 +208,7 @@ export function AirHome() {
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
       category: type,
-      channel: channelRequestParam
+      channel: channelRequestParam,
     })
     .then(res => {
       if (res.status === 200 && res.data.code === 1) {
@@ -328,7 +329,7 @@ export function AirHome() {
       <ul className="nav_wrapper">
         {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
-            history.push(`/AirHome/${id}/${standard}/${item.name}`)
+            history.push(`/AirHome/${id}/${standard}/${item.name}/Image`)
           }}>
             <p className="flex flex-center-y"><img src={
               item.name === NFT_CATEGORY.FineArts ? icon_arts :

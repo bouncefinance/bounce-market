@@ -30,7 +30,7 @@ import MyP2P from './Myprofile/Point-2-Point'
 import TransferStatusModal from '@components/Modal/TransferStatusModal'
 import ModalMessage from '@components/Modal/ModalMessage'
 import ErrorNotification from '@components/Modal/ErrorNotification'
-import { AirHome } from './AirHome'
+import { AirHome } from './AirHome/index'
 import MyLiked from './Myprofile/MyLiked'
 
 export default function Index() {
@@ -49,8 +49,8 @@ export default function Index() {
                 <Route exact path='/Home' component={Home} />
                 <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/FineArts' /> }} />
                 <Route exact path='/Marketplace/:channel' component={Marketplace} />
-                <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket/Image' />}} />
-                <Route exact path='/MyMarket/:type' component={MyMarket} />
+                <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket/FineArts' />}} />
+                <Route exact path='/MyMarket/:channel' component={MyMarket} />
                 <Route exact path='/Marketplace/:type/:aucType/:poolId' component={Buy} />
 
                 <Route exact path='/Brands' component={Brands} />
