@@ -342,7 +342,7 @@ export default function MyMarket() {
             } alt="" />{nav.title}</p>
           </li>
         })}
-        <li className="link"><Button onClick={() => {history.push('/Marketplace/Image')}}>Marketplace</Button></li>
+        <li className="link"><Button onClick={() => {history.push('/Marketplace/FineArts')}}>Marketplace</Button></li>
       </ul>
 
       <div className="filterBox">
