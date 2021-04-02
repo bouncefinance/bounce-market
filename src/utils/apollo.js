@@ -30,6 +30,27 @@ export const QueryTradePools = gql`
   }
 `
 
+export const QueryMarketTradePools= gql`
+  query xx($contract: String!){
+    tradePools (where: {token1: $contract}){
+      tokenId
+      poolId
+      token1
+      price
+      createTime
+      state
+    }
+    tradeAuctions (where: {token1: $contract}){
+      tokenId
+      poolId
+      token1
+      lastestBidAmount
+      amountMin1
+      createTime
+      state
+    }
+  }
+`
 export const QueryMyTradePools = gql`
   query nftItems($user: String!) {
     tradePools(where: {creator: $user}) {

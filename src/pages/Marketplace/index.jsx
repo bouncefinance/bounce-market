@@ -17,11 +17,12 @@ import icon_sport from '@assets/images/icon/sport.svg'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
-import { QueryTradePools } from '@/utils/apollo'
+import { QueryMarketTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import Button from '@/components/UI-kit/Button/Button'
+import { getCoinList } from '@/utils/coin'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -118,13 +119,20 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export default function Marketplace() {
+export default function Marketplace () {
   let { type } = useParams()
   const history = useHistory()
-  const { active } = useActiveWeb3React()
+  const { active, chainId } = useActiveWeb3React()
   // const { exportErc20Info } = useToken()
 
-  const { data } = useQuery(QueryTradePools)
+  const [getpollsVariables, _setGetPollsVariables] = useState({ contract: '0x0000000000000000000000000000000000000000' })
+  const setGetPollsVariables = (v) => {
+    console.log(v)
+    _setGetPollsVariables(v)
+  }
+  const { data } = useQuery(QueryMarketTradePools, { variables: getpollsVariables })
+
+
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
@@ -137,13 +145,20 @@ export default function Marketplace() {
   const [loading, setLoding] = useState(true)
 
   const [length, setLength] = useState(4);
+  const [coinList, setCoinList] = useState([])
 
   type = 'Image'
+
 
   useEffect(() => {
     if (!active) return
 
+    if (chainId) {
+      // console.log(getCoinList(chainId))
+      setCoinList(getCoinList(chainId))
+    }
     if (data) {
+      // console.log(data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
@@ -156,7 +171,7 @@ export default function Marketplace() {
       // console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
-      // console.log(list)
+      // console.log(pools)
 
       setLength(list.length);
       setLoding(true)
@@ -181,10 +196,11 @@ export default function Marketplace() {
                 token1: poolInfo.token1
               }
             })
-            .sort((a, b) => b.createTime - a.createTime);
+              .sort((a, b) => b.createTime - a.createTime);
             setTokenList(list);
             setFilterList(list);
             setLoding(false)
+            // console.log('---setFilterList---', list)
           }
         })
         .catch(() => { })
@@ -262,7 +278,7 @@ export default function Marketplace() {
             } alt="" />{item.name}</p>
           </li>
         })}
-        <li className="link"><Button onClick={() => {history.push('/MyMarket/Image')}}>My Market</Button></li>
+        <li className="link"><Button onClick={() => { history.push('/MyMarket/Image') }}>My Market</Button></li>
       </ul>
       <div className="filterBox">
         <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
@@ -271,8 +287,11 @@ export default function Marketplace() {
           // console.log(item)
         }} />
 
-        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'BNB' }]} defaultValue='BNB' onChange={(item) => {
+        <PullRadioBox prefix={'Currency:'} width={'205px'} options={coinList} defaultValue={'ETH'} onChange={(item) => {
           // console.log(item)
+          if (item) {
+            setGetPollsVariables({ contract: item.contract })
+          }
         }} />
 
         <PullRadioBox prefix={'Sort by:'} width={'204px'} options={[{ value: 'New' }, { value: 'Popular' }]} defaultValue='New' onChange={(item) => {
