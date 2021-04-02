@@ -3,8 +3,8 @@ import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 
 export const client = new ApolloClient({
-  // uri: 'https://api.thegraph.com/subgraphs/id/QmNRFKSQSVgVbYe6fmJUV3hcZLh8ngMdGCht41wX3xq3Qv',  // rinkby
-  uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc mian
+  uri: 'https://api.thegraph.com/subgraphs/id/QmNRFKSQSVgVbYe6fmJUV3hcZLh8ngMdGCht41wX3xq3Qv',  // rinkby
+  // uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc mian
   cache: new InMemoryCache(),
 })
 

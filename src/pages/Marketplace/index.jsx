@@ -329,7 +329,7 @@ export default function Marketplace () {
           // console.log(item)
         }} />
 
-        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'} width={'205px'} options={coinList} defaultValue={chainId == 56 ? 'BNB' : 'ETH'} onChange={(item) => {
+        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'} width={'205px'} options={coinList} defaultValue={chainId === 56 ? 'BNB' : 'ETH'} onChange={(item) => {
           // console.log(item)
           if (item) {
             setLoding(false)
