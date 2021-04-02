@@ -286,6 +286,14 @@ export const QueryEnglishAuction = gql`
   }
 `
 
+export const querylastestBidAmount = gql`
+  query querylastestBidAmount($poolId: Int!) {
+    tradeAuctions(where:{poolId: $poolId}) {
+      lastestBidAmount
+    }
+  }
+`
+
 export const TestQuery = gql`
   query fixedSwapPool($poolId: Int!) {
     poolCreates(where: {poolId: $poolId}) {
