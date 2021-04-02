@@ -55,17 +55,14 @@ export default function SellNFT() {
 
 	const duration_Options = [
 		{
+			value: 3,
+		},
+		{
 			value: 5,
 		},
 		{
-			value: 15,
-		},
-		{
-			value: 30,
-		},
-		{
-			value: 90,
-		},
+			value: 7,
+		}
 	];
 
 	const fees = "1";
