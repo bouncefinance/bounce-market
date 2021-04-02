@@ -179,12 +179,35 @@ export function AirHome() {
 
   const type = "Image"
 
+  const NavList = [
+    {
+      title: "Fine Arts",
+      route: "FineArts",
+      channelRequestParam: "Fine Arts",
+    },
+    {
+      title: "Sports",
+      route: "Sports",
+      channelRequestParam: "Sports",
+    },
+    {
+      title: "Comic Books",
+      route: "Comics",
+      channelRequestParam: "Conicbooks",
+    },
+  ]
+
+  const [channelRequestParam, setChannelRequestParam] = useState(
+    channel === NavList[0].route ? NavList[0].channelRequestParam :
+    channel === NavList[1].route ? NavList[1].channelRequestParam :
+    NavList[2].channelRequestParam);
+
   const handleBrandTradeItems = useCallback((pools) => {
-    const chanel_2 =  channel === 'Comic Books' ? 'Conicbooks' : channel;
+    /* const chanel_2 =  channel === 'Comic Books' ? 'Conicbooks' : channel; */
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
       category: type,
-      channel: chanel_2
+      channel: channelRequestParam
     })
     .then(res => {
       if (res.status === 200 && res.data.code === 1) {
@@ -205,7 +228,7 @@ export function AirHome() {
       }
     })
     // eslint-disable-next-line
-  }, [channel, type, tokenList ]);
+  }, [channel, type, tokenList, channelRequestParam ]);
 
   const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
     variables: { tokenList: tokenList },
@@ -303,7 +326,7 @@ export function AirHome() {
         })}
       </ul>}
       <ul className="nav_wrapper">
-        {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
+        {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
             history.push(`/AirHome/${id}/${standard}/${item.name}/Image`)
           }}>
@@ -313,6 +336,21 @@ export function AirHome() {
                   item.name === NFT_CATEGORY.ComicBooks ? icon_comics :
                     ''
             } alt="" />{item.name}</p>
+          </li>
+        })} */}
+        {NavList.map( nav =>  {
+          return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
+            () => {
+              setChannelRequestParam(nav.channelRequestParam)
+              history.push(`/AirHome/${id}/${standard}/${nav.route}`)
+            // setChannelRequestParam(item.name)
+          }}>
+            <p className="flex flex-center-y"><img src={
+              nav.title === NFT_CATEGORY.FineArts ? icon_arts :
+              nav.title === NFT_CATEGORY.Sports ? icon_sport :
+              nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
+                    ''
+            } alt="" />{nav.title}</p>
           </li>
         })}
       </ul>
