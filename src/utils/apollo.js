@@ -3,8 +3,8 @@ import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 
 
 export const client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/id/QmNRFKSQSVgVbYe6fmJUV3hcZLh8ngMdGCht41wX3xq3Qv',  // Rinkeby
-    // uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc mian
+    uri: 'https://api.thegraph.com/subgraphs/id/QmVmjKqweEVBPG2qqyP6GUQCt2mieSH9YA56vYyQ8Ur1ao',  // Rinkeby
+    // uri: 'https://api.thegraph.com/subgraphs/id/QmNwniL4Jy6HausWgnqECJTUeSocp9MoZkTEQDRjhhzKy2',     // bsc main
     cache: new InMemoryCache(),
 })
 
@@ -60,7 +60,6 @@ export const QueryMyPools = gql`
       price
       token1
       createTime
-      state
     }
     tradeAuctions(where: {creator: $user}) {
       tokenId
@@ -69,7 +68,33 @@ export const QueryMyPools = gql`
       lastestBidAmount
       amountMin1
       createTime
-      state
+    }
+    poolSwaps(where: {sender: $user}) {
+      tokenId
+      poolId
+      swapAmount1
+      timestamp
+    }
+    auctionBids(where: {sender: $user}) {
+      tokenId
+      poolId
+      amount1
+      timestamp
+    }
+  }
+`
+
+export const queryTradeInfo = gql`
+  query queryTradeInfo($poolIdList: [Int!]!) {
+    tradePools(where: {poolId_in: $poolIdList}) {
+      poolId
+      token1
+    }
+    tradeAuctions(where: {poolId_in: $poolIdList}) {
+      poolId
+      token1
+      lastestBidAmount
+      amountMin1
     }
   }
 `
