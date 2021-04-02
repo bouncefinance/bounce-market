@@ -31,6 +31,7 @@ type NFT721Item @entity {
   tokenId: Int!
   balance: Int!
   user: String!
+  contract: Bytes!
   createTime: Int!
   updateTime: Int!
 }
@@ -40,6 +41,7 @@ type NFT1155Item @entity {
   tokenId: Int!
   balance: Int!
   user: String!
+  contract: Bytes!
   createTime: Int!
   updateTime: Int!
 }
@@ -52,7 +54,7 @@ type TradePool @entity {
   token1: Bytes!
   tokenId: Int!
   amountTotal0: BigInt!
-  amountTotal1: BigInt!
+  amountTotal1: BigInt! 
   price: BigInt!
   nftType: Int!
   poolId: Int!
@@ -72,9 +74,10 @@ type PoolSwap @entity {
   id: ID!
   sender: Bytes!
   poolId: Int!
-  swapAmount0: BigInt!
+  swapAmount0: BigInt! 
   swapAmount1: BigInt!
   timestamp: Int!
+  tokenId: Int!
 }
 
 type PoolCancel @entity {
@@ -119,6 +122,7 @@ type AuctionBid @entity {
   poolId: Int!
   amount1: BigInt!
   timestamp: Int!
+  tokenId: Int!
 }
 
 type AuctionClaim @entity {
