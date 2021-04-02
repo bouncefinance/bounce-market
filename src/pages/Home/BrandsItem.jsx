@@ -44,7 +44,7 @@ export default function BrandsItem ({ src, name, id, standard }) {
     }
     const history = useHistory()
     return (
-        <BrandsItemStyled onClick={() => { history.push(`/AirHome/${id}/${standard}/Image`) }}>
+        <BrandsItemStyled onClick={() => { history.push(`/AirHome/${id}/${standard}/Fine Arts`) }}>
             <AutoStretchBaseWidthOrHeightImg src={src} width={262} height={180} />
             <div className='info_box'>
                 <span>{name}</span>

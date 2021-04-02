@@ -124,7 +124,7 @@ function BrandCard({img, brandName, profile, avatar, ownerName, id, standard, ow
                 </div>
                 <div className="button_visit">
                     <Button primary width={'162px'} onClick={() => {
-                        history.push(`/AirHome/${id}/${standard}/Fine Arts/Image`)
+                        history.push(`/AirHome/${id}/${standard}/Fine Arts`)
                     }}>Visit Store</Button>
                 </div>
             </div>
