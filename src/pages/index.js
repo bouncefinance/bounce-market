@@ -7,7 +7,7 @@ import UIkit from '../test/UIkit'
 import Test from '../test'
 
 import Home from './Home'
-import Marketplace from './Marketplace'
+import Marketplace from './Marketplace/index2'
 import MyMarket from './Marketplace/MyMarket'
 import Buy from './Buy/newIndex'
 
@@ -48,7 +48,7 @@ export default function Index() {
                 <Route exact path='/' render={() => { return <Redirect to='/Home' /> }} />
                 <Route exact path='/Home' component={Home} />
                 <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/FineArts' /> }} />
-                <Route exact path='/Marketplace/:type' component={Marketplace} />
+                <Route exact path='/Marketplace/:channel' component={Marketplace} />
                 <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket/Image' />}} />
                 <Route exact path='/MyMarket/:type' component={MyMarket} />
                 <Route exact path='/Marketplace/:type/:aucType/:poolId' component={Buy} />
