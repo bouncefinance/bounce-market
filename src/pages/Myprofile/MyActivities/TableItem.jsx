@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { Button } from '@components/UI-kit'
+// import { Button } from '@components/UI-kit'
 
 import icon_transfer from './assets/transfer.svg'
 import icon_create from './assets/create.svg'
@@ -74,9 +74,9 @@ export default function TableItem({ row }) {
             <TableCell>
                 {row.date}
             </TableCell>
-            <TableCell>
+            {/* <TableCell>
                 {row.event === 'Transfer' && <Button>Detail</Button>}
-            </TableCell>
+            </TableCell> */}
         </TableItemStyled>
 
     )
