@@ -77,6 +77,24 @@ export default function TradingHistory ({ rows = [] }) {
 
 const TradingHistoryStyled = styled.div`
 font-family: Helvetica Neue;
+position: relative;
+&::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #fff;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+.MuiTableContainer-root{
+  box-shadow: none!important;
+  border-radius: 0px!important;
+}
+.nested{
+  padding-bottom: 0px!important;
+}
 .event_icon{
   margin-right: 6px;
 }

@@ -200,6 +200,11 @@ const NewIndexStyled = styled.div`
                 margin-bottom: 80px;
 
                 border-top: 1px solid rgba(0,0,0,0.1);
+                >div{
+                    :last-child{
+                        border-bottom-width: 0px;
+                    }
+                }
             }
         }
         
@@ -256,7 +261,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex() {
+export default function NewIndex () {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { hasApprove_ERC_20 } = useToken()
