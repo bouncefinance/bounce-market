@@ -156,7 +156,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 	const [btnLock, setBtnLock] = useState(true);
 	const history = useHistory();
 	const { hasApprove_ERC_721, hasApprove_ERC_1155, isOwner_ERC_721 } = useNftInfo()
-	
+
 	useEffect(() => {
 		if (auctionType === 'setPrice') {
 			if (price && nftInfo) {
@@ -171,7 +171,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				setBtnLock(true)
 			}
 		}
-	}, [auctionType, price, unit, duration, fees, nftInfo,minPrice,maxPrice])
+	}, [auctionType, price, unit, duration, fees, nftInfo, minPrice, maxPrice])
 
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
@@ -276,7 +276,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				const _amountMin1 = numToWei(minPrice, newUnit.decimals)
 				const _amountMinIncr1 = numToWei(minIncr, newUnit.decimals)
 				const _amountReserve1 = numToWei(price, newUnit.decimals)
-				const _duration = duration * 60 * 60 * 24
+				const _duration = chainId === 4 ? duration * 60 : duration * 60 * 60 * 24
 				// const _duration = duration * 60
 				const _onlyBot = false
 
@@ -318,7 +318,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 							// setBidStatus(successStatus)
 							history.push("/MyInventory");
 							showTransferByStatus('successStatus')
-							
+
 						})
 						.on('error', (err, receipt) => {
 							// setBidStatus(errorStatus)

@@ -133,7 +133,7 @@ const Nav_list = [{
     enable: true,
 } */]
 
-export default function Index () {
+export default function Index() {
     const [isConnectWallect, setIsConnectWallect] = useState(false)
     const { onConnect } = useWalletConnect()
     const [curNav, setCurNav] = useState('Home')
@@ -211,8 +211,8 @@ export default function Index () {
 
     useEffect(() => {
         if (!active) return
-        if (chainId && chainId !== 56) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select BSC network." });
+        if (chainId && (chainId !== 56 && chainId !== 4)) {
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select or BSC network." });
         }
         getUserInfo();
         // eslint-disable-next-line
