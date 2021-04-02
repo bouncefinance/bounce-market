@@ -8,6 +8,7 @@ export const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+
 export const QueryTradePools = gql`
   query {
     tradePools {

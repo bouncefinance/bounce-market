@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router'
 import Search from '../component/Other/Search'
@@ -16,12 +16,13 @@ import icon_sport from '@assets/images/icon/sport.svg'
 
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
-import { useLazyQuery } from '@apollo/client'
-import { QueryMyPools } from '@/utils/apollo'
+import { useQuery } from '@apollo/client'
+import { QueryTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import Button from '@/components/UI-kit/Button/Button'
+// import { History } from '@material-ui/icons'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -55,10 +56,10 @@ const MarketplaceStyled = styled.div`
                 opacity: 1;
             }
         }
-        .link {
-          position: absolute;
-          right: -20px;
-        }
+      .link {
+        position: absolute;
+        right: -20px;
+      }
     }
 
     .filterBox{
@@ -118,94 +119,107 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export default function MyMarket() {
-  let { type } = useParams()
+export default function Marketplace() {
+  let { channel } = useParams()
   const history = useHistory()
-  const { active, account } = useActiveWeb3React()
+  const { active } = useActiveWeb3React()
+  // const { exportErc20Info } = useToken()
+
   
+  const NavList = [
+    {
+      title: "Fine Arts",
+      route: "FineArts",
+      channelRequestParam: "Fine Arts",
+    },
+    {
+      title: "Sports",
+      route: "Sports",
+      channelRequestParam: "Sports",
+    },
+    {
+      title: "Comic Books",
+      route: "Comics",
+      channelRequestParam: "Conicbooks",
+    },
+  ]
+
+  const { data } = useQuery(QueryTradePools)
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
-  const [channel, setChannel] = useState(
-    type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
-      type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
-        NFT_CATEGORY.FineArts);
+  const [channelRequestParam, setChannelRequestParam] = useState(
+    channel === NavList[0].route ? NavList[0].channelRequestParam :
+    channel === NavList[1].route ? NavList[1].channelRequestParam :
+    NavList[2].channelRequestParam);
 
-  const [loading, setLoading] = useState(true)
+
+  const [loading, setLoding] = useState(true)
+
   const [length, setLength] = useState(4);
-  const [tradeData, setTradeData]  = useState(null);
 
-  type = 'Image'
-
-  const handleTradeData = useCallback(() => {
-    const tradePools = tradeData.tradePools.map(item => ({
-        ...item,
-        poolType: AUCTION_TYPE.FixedSwap
-    }));
-    
-    const tradeAuctions = tradeData.tradeAuctions.map(item => ({
-        ...item,
-        price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-        poolType: AUCTION_TYPE.EnglishAuction
-    }));
-
-    const ids_list = tradePools
-      .concat(tradeAuctions)
-      .map(item => item.tokenId);
-    setLength(ids_list.length);
-    const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel
-    const pools = tradePools.concat(tradeAuctions)
-    sign_Axios.post(Controller.items.getitemsbyfilter, {
-      ids: ids_list,
-      category: type,
-      channel: channel_2
-    })
-      .then(res => {
-        if (res.status === 200 && res.data.code === 1) {
-          const res_data = res.data.data
-          const list = res_data.map((item) => {
-            const poolInfo = pools.find(pool => item.id === pool.tokenId);
-            return {
-              ...item,
-              poolType: poolInfo.poolType,
-              poolId: poolInfo.poolId,
-              price: poolInfo.price,
-              token1:poolInfo.token1,
-              createTime: poolInfo.createTime
-            }
-          })
-          const result = list.sort((a, b) => b.createTime - a.createTime)
-          setTokenList(result);
-          setFilterList(result);
-          setLoading(false)
-        }
-      })
-       // eslint-disable-next-line
-  },  [channel, tradeData, type]);
-
-  const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyPools, {
-      variables: { user: String(account).toLowerCase() },
-      fetchPolicy: "network-only",
-      onCompleted: () => {
-        setTradeData(traddata)
-      },
-
-    })
+  let type = 'Image'
 
   useEffect(() => {
     if (!active) return
-    getMyTradeNFT();
-    if (tradeData)  {
-      handleTradeData();
+
+    /* console.log("channelRequestParam", channelRequestParam) */
+
+    if (data) {
+      const tradePools = data.tradePools.map(item => ({
+        ...item,
+        poolType: AUCTION_TYPE.FixedSwap
+      })).filter(item => item.state !== 1)
+      const tradeAuctions = data.tradeAuctions.map(item => ({
+        ...item,
+        price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
+        poolType: AUCTION_TYPE.EnglishAuction
+      })).filter(item => item.state !== 1)
+      // console.log(tradeAuctions)
+      const pools = tradePools.concat(tradeAuctions);
+      const list = pools.map(item => item.tokenId);
+      // console.log(list)
+
+      setLength(list.length);
+      setLoding(true)
+      // console.log(channel)
+      /* const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel */
+      sign_Axios.post(Controller.items.getitemsbyfilter, {
+        ids: list,
+        category: type,
+        channel: channelRequestParam
+      })
+        .then(res => {
+          if (res.status === 200 && res.data.code === 1) {
+            const list = res.data.data.map((item, index) => {
+              const poolInfo = pools.find(pool => pool.tokenId === item.id);
+
+              return {
+                ...item,
+                poolType: poolInfo.poolType,
+                poolId: poolInfo.poolId,
+                price: poolInfo.price,
+                createTime: poolInfo.createTime,
+                token1: poolInfo.token1
+              }
+            })
+            .sort((a, b) => b.createTime - a.createTime);
+            setTokenList(list);
+            setFilterList(list);
+            setLoding(false)
+          }
+        })
+        .catch(() => { })
     }
-  }, [active, tradeData, getMyTradeNFT, handleTradeData])
+    // eslint-disable-next-line
+  }, [active, data, type, channelRequestParam, channel])
 
   const handleChange = (filterSearch) => {
     const list = tokenList.filter(item => item.itemname.toLowerCase().indexOf(filterSearch) > -1
       || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
     setFilterList(list);
   }
-  
+
   const renderListByType = (type) => {
     switch (type) {
       case 'Image':
@@ -244,7 +258,6 @@ export default function MyMarket() {
   }
 
 
-
   return (
     <MarketplaceStyled>
       {false && <ul className="nav_wrapper">
@@ -257,30 +270,34 @@ export default function MyMarket() {
           </li>
         })}
       </ul>}
+
       <ul className="nav_wrapper">
-        {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
-          return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
-            setChannel(item.name)
+        {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => { */}
+        {NavList.map( nav =>  {
+          return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
+            () => {
+              setChannelRequestParam(nav.channelRequestParam)
+              history.push('/Marketplace/'+nav.route)
+            // setChannelRequestParam(item.name)
           }}>
             <p className="flex flex-center-y"><img src={
-              item.name === NFT_CATEGORY.FineArts ? icon_arts :
-                item.name === NFT_CATEGORY.Sports ? icon_sport :
-                  item.name === NFT_CATEGORY.ComicBooks ? icon_comics :
+              nav.title === NFT_CATEGORY.FineArts ? icon_arts :
+              nav.title === NFT_CATEGORY.Sports ? icon_sport :
+              nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
                     ''
-            } alt="" />{item.name}</p>
+            } alt="" />{nav.title}</p>
           </li>
         })}
-        <li className="link"><Button onClick={() => {history.push('/Marketplace/Image')}}>Marketplace</Button></li>
+        <li className="link"><Button onClick={() => {history.push('/MyMarket/Image')}}>My Market</Button></li>
       </ul>
-
       <div className="filterBox">
         <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
 
-        <PullRadioBox prefix={'Gategory:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
+        <PullRadioBox prefix={'Category:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
           // console.log(item)
         }} />
 
-        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'BNB' }]} defaultValue='BNB' onChange={(item) => {
+        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'ETH' }]} defaultValue='ETH' onChange={(item) => {
           // console.log(item)
         }} />
 

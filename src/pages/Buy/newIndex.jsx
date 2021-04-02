@@ -246,7 +246,10 @@ const NewIndexStyled = styled.div`
     border-radius: 0px;
     border: 1px solid rgba(0,0,0,0.2);
     box-shadow: none;
-    padding: 8px 34px;
+    /* padding: 8px 34px; */
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 122px;
     :hover{
         /* background-color: rgb(51,51,51); */
         background-color: #fff;
