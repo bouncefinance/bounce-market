@@ -130,17 +130,17 @@ export default function Marketplace() {
     {
       title: "Fine Arts",
       route: "FineArts",
-      channelParam: "Fine Arts",
+      channelRequestParam: "Fine Arts",
     },
     {
       title: "Sports",
       route: "Sports",
-      channelParam: "Sports",
+      channelRequestParam: "Sports",
     },
     {
       title: "Comic Books",
       route: "Comics",
-      channelParam: "Conicbooks",
+      channelRequestParam: "Conicbooks",
     },
   ]
 
@@ -148,10 +148,10 @@ export default function Marketplace() {
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
-  const [channelRP, setChannelRP] = useState(
-    channel === NavList[0].route ? NavList[0].channelParam :
-    channel === NavList[1].route ? NavList[1].channelParam :
-    NavList[2].channelParam);
+  const [channelRequestParam, setChannelRequestParam] = useState(
+    channel === NavList[0].route ? NavList[0].channelRequestParam :
+    channel === NavList[1].route ? NavList[1].channelRequestParam :
+    NavList[2].channelRequestParam);
 
 
   const [loading, setLoding] = useState(true)
@@ -162,6 +162,8 @@ export default function Marketplace() {
 
   useEffect(() => {
     if (!active) return
+
+    /* console.log("channelRequestParam", channelRequestParam) */
 
     if (data) {
       const tradePools = data.tradePools.map(item => ({
@@ -185,7 +187,7 @@ export default function Marketplace() {
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         category: type,
-        channel: channelRP
+        channel: channelRequestParam
       })
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
@@ -210,7 +212,7 @@ export default function Marketplace() {
         .catch(() => { })
     }
     // eslint-disable-next-line
-  }, [active, data, type, channelRP, channel])
+  }, [active, data, type, channelRequestParam, channel])
 
   const handleChange = (filterSearch) => {
     const list = tokenList.filter(item => item.itemname.toLowerCase().indexOf(filterSearch) > -1
@@ -274,9 +276,9 @@ export default function Marketplace() {
         {NavList.map( nav =>  {
           return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
             () => {
-              setChannelRP(nav.channelParam)
+              setChannelRequestParam(nav.channelRequestParam)
               history.push('/Marketplace/'+nav.route)
-            // setChannelRP(item.name)
+            // setChannelRequestParam(item.name)
           }}>
             <p className="flex flex-center-y"><img src={
               nav.title === NFT_CATEGORY.FineArts ? icon_arts :
