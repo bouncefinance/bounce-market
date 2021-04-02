@@ -7,7 +7,7 @@ import UIkit from '../test/UIkit'
 import Test from '../test'
 
 import Home from './Home'
-import Marketplace from './Marketplace/index2'
+import Marketplace from './Marketplace/index'
 import MyMarket from './Marketplace/MyMarket'
 import Buy from './Buy/newIndex'
 

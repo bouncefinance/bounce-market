@@ -22,7 +22,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
 import { useLazyQuery } from '@apollo/client'
-import {  QueryBrandTradeItemsByBrand, QueryMyNFTByBrand } from '@/utils/apollo'
+import { QueryBrandTradeItemsByBrand, QueryMyNFTByBrand } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
@@ -214,7 +214,7 @@ const nav_list = [{
 }*/]
 
 
-export default function BrandsByType() {
+export default function BrandsByType () {
     const { brandId, type } = useParams()
     const history = useHistory()
     const [listData, setListData] = useState([])
@@ -323,7 +323,7 @@ export default function BrandsByType() {
                     console.log(pools)
                     const list = pools.map(item => {
                         const poolInfo = res.data.data.find(pool => item.tokenId === pool.id);
-                        
+
                         // console.log(poolInfo)
                         return {
                             ...poolInfo,

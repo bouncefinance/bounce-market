@@ -117,7 +117,7 @@ const PullRadioBoxStyled = styled.div`
     }
 `
 
-export default function PullRadioBox({
+export default function PullRadioBox ({
     options, defaultValue, defaultItem, onChange,
     onValChange, disabled, prefix, style, width,
     marginTop, title }) {
@@ -133,8 +133,8 @@ export default function PullRadioBox({
         // eslint-disable-next-line
     }, [checkVal])
 
-    function bindBodyClick(e) {
-        if (e.target === inputRef.current || e.target?.outerHTML === inputRef.current?.children[0]?.children[0]?.outerHTML  || e.target?.outerHTML === inputRef.current?.children[1]?.outerHTML) return;
+    function bindBodyClick (e) {
+        if (e.target === inputRef.current || e.target?.outerHTML === inputRef.current?.children[0]?.children[0]?.outerHTML || e.target?.outerHTML === inputRef.current?.children[1]?.outerHTML) return;
         setOpen(false);
     }
 
@@ -148,7 +148,7 @@ export default function PullRadioBox({
     return (
         <PullRadioBoxStyled style={style} width={width} marginTop={marginTop}>
             {title && <p className={`title`}>{title}</p>}
-            <div  ref={inputRef} className={`select ${!disabled && open && 'open'} ${disabled && 'disabled'}`} onClick={() => {
+            <div ref={inputRef} className={`select ${!disabled && open && 'open'} ${disabled && 'disabled'}`} onClick={() => {
                 if (disabled) return;
                 setOpen(!open)
             }}>

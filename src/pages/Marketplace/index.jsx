@@ -23,9 +23,11 @@ import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import Button from '@/components/UI-kit/Button/Button'
 import { getCoinList } from '@/utils/coin'
+import { ZERO_ADDRESS } from "@/web3/address_list/token"
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
+    min-height: 650px;
     margin: 0 auto;
     margin-bottom: 30px;
 
@@ -120,14 +122,31 @@ const nav_list = [{
 }]
 
 export default function Marketplace () {
-  let { type } = useParams()
+  const NavList = [
+    {
+      title: "Fine Arts",
+      route: "FineArts",
+      channelRequestParam: "Fine Arts",
+    },
+    {
+      title: "Sports",
+      route: "Sports",
+      channelRequestParam: "Sports",
+    },
+    {
+      title: "Comic Books",
+      route: "Comics",
+      channelRequestParam: "Conicbooks",
+    },
+  ]
+  let { type, channel } = useParams()
   const history = useHistory()
   const { active, chainId } = useActiveWeb3React()
   // const { exportErc20Info } = useToken()
 
-  const [getpollsVariables, _setGetPollsVariables] = useState({ contract: '0x0000000000000000000000000000000000000000' })
+  const [getpollsVariables, _setGetPollsVariables] = useState({ contract: ZERO_ADDRESS })
   const setGetPollsVariables = (v) => {
-    console.log(v)
+    // console.log(v)
     _setGetPollsVariables(v)
   }
   const { data } = useQuery(QueryMarketTradePools, { variables: getpollsVariables })
@@ -136,16 +155,22 @@ export default function Marketplace () {
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
-  const [channel, setChannel] = useState(
-    type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
-      type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
-        NFT_CATEGORY.FineArts);
+  // const [channel, setChannel] = useState(
+  //   type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
+  //     type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
+  //       NFT_CATEGORY.FineArts);
+
 
 
   const [loading, setLoding] = useState(true)
 
   const [length, setLength] = useState(4);
   const [coinList, setCoinList] = useState([])
+  const [channelRequestParam, setChannelRequestParam] = useState(
+    channel === NavList[0].route ? NavList[0].channelRequestParam :
+      channel === NavList[1].route ? NavList[1].channelRequestParam :
+        NavList[2].channelRequestParam);
+
 
   type = 'Image'
 
@@ -154,8 +179,8 @@ export default function Marketplace () {
     if (!active) return
 
     if (chainId) {
-      // console.log(getCoinList(chainId))
-      setCoinList(getCoinList(chainId))
+      console.log(getCoinList(chainId))
+      setCoinList(getCoinList(chainId).filter(item => item.contract))
     }
     if (data) {
       // console.log(data)
@@ -176,11 +201,11 @@ export default function Marketplace () {
       setLength(list.length);
       setLoding(true)
       // console.log(channel)
-      const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel
+      // const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         category: type,
-        channel: channel_2
+        channel: channelRequestParam
       })
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
@@ -203,7 +228,9 @@ export default function Marketplace () {
             // console.log('---setFilterList---', list)
           }
         })
-        .catch(() => { })
+        .catch(() => {
+          setLoding(false)
+        })
     }
     // eslint-disable-next-line
   }, [active, data, type, channel])
@@ -266,7 +293,7 @@ export default function Marketplace () {
         })}
       </ul>}
       <ul className="nav_wrapper">
-        {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
+        {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
             setChannel(item.name)
           }}>
@@ -276,6 +303,21 @@ export default function Marketplace () {
                   item.name === NFT_CATEGORY.ComicBooks ? icon_comics :
                     ''
             } alt="" />{item.name}</p>
+          </li>
+        })} */}
+        {NavList.map(nav => {
+          return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
+            () => {
+              setChannelRequestParam(nav.channelRequestParam)
+              history.push('/Marketplace/' + nav.route)
+              // setChannelRequestParam(item.name)
+            }}>
+            <p className="flex flex-center-y"><img src={
+              nav.title === NFT_CATEGORY.FineArts ? icon_arts :
+                nav.title === NFT_CATEGORY.Sports ? icon_sport :
+                  nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
+                    ''
+            } alt="" />{nav.title}</p>
           </li>
         })}
         <li className="link"><Button onClick={() => { history.push('/MyMarket/Image') }}>My Market</Button></li>
@@ -287,12 +329,13 @@ export default function Marketplace () {
           // console.log(item)
         }} />
 
-        <PullRadioBox prefix={'Currency:'} width={'205px'} options={coinList} defaultValue={'ETH'} onChange={(item) => {
+        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'} width={'205px'} options={coinList} defaultValue={chainId == 56 ? 'BNB' : 'ETH'} onChange={(item) => {
           // console.log(item)
           if (item) {
+            setLoding(false)
             setGetPollsVariables({ contract: item.contract })
           }
-        }} />
+        }} />}
 
         <PullRadioBox prefix={'Sort by:'} width={'204px'} options={[{ value: 'New' }, { value: 'Popular' }]} defaultValue='New' onChange={(item) => {
           // console.log(item)
