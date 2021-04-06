@@ -141,7 +141,7 @@ const HomeStyled = styled.div`
   ----channel----
   { name: 'Fine Arts' },
   { name: 'Sports' },
-  { name: 'Comic Books' },
+  { name: 'Comics' },
 ] */
 
 export default function Index() {
