@@ -158,13 +158,13 @@ export default function Index() {
   // const { dispatch } = useContext(myContext)
 
   useEffect(() => {
-    if (!account) {
-      return
-    }
+    // if (!account) {
+    //   return
+    // }
 
     const init = async () => {
       setLoadingBrands(true)
-      const brandsRes = await sign_Axios.post('/api/v2/main/auth/getpopularbrands', {})
+      const brandsRes = await sign_Axios.post('/api/v2/main/getpopularbrands', {})
       setLoadingBrands(false)
       if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
         const brands = brandsRes.data.data
@@ -184,7 +184,8 @@ export default function Index() {
   }, [account])
 
   useEffect(() => {
-    if (!active || !data) return
+    // if (!active || !data) return
+    if (!data) return
     setLoadingItems(true)
     const tradePools = data.tradePools.map(item => ({
       ...item,
@@ -199,7 +200,7 @@ export default function Index() {
     const pools = tradePools.concat(tradeAuctions);
     const list = pools.map(item => item.tokenId);
 
-    sign_Axios.post('/api/v2/main/auth/getitemsbyfilter', {
+    sign_Axios.post('/api/v2/main/getitemsbyfilter', {
       ids: list,
       category: '',
       channel: ''
@@ -224,11 +225,10 @@ export default function Index() {
           // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
           setItemList(list_3);
           setLoadingItems(false)
-          // setLoding(false)
         }
       })
       .catch(() => { })
-    // const dataList = [...data.tradeAuctions,]
+
     // eslint-disable-next-line
   }, [active, data])
 
@@ -263,7 +263,7 @@ export default function Index() {
 
       <CardGroup title='Most Popular Items' link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
-          return <PopularItem itemInfo={item} key={index} src={img_example_1} name='Digital Image Name' price='0,9931 ETH' />
+          return <PopularItem itemInfo={item} key={index} src={img_example_1} />
         })}
       </CardGroup>
 
