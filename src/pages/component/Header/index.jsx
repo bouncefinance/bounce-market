@@ -211,8 +211,8 @@ export default function Index() {
 
     useEffect(() => {
         if (!active) return
-        if (chainId && (chainId !== 56 && chainId !== 4)) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select or BSC network.", modelUrlMessage:"How to connecting MetaMask to BSC.",modelOpenUrl:"https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain",modelTimer:15000 });
+        if (chainId && (chainId !== 56)) {
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select BSC network.", modelUrlMessage:"How to connecting MetaMask to BSC.",modelOpenUrl:"https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain",modelTimer:15000 });
         }
         getUserInfo();
         // eslint-disable-next-line
