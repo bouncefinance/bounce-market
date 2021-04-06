@@ -276,8 +276,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				const _amountMin1 = numToWei(minPrice, newUnit.decimals)
 				const _amountMinIncr1 = numToWei(minIncr, newUnit.decimals)
 				const _amountReserve1 = numToWei(price, newUnit.decimals)
-				const _duration = chainId === 4 ? duration * 60 : duration * 60 * 60 * 24
-				// const _duration = duration * 60
+				// const _duration = chainId === 4 ? duration * 60 : duration * 60 * 60 * 24
+				const _duration = duration * 60
 				const _onlyBot = false
 
 				console.log(_name, _token0, _token1, _tokenId,
