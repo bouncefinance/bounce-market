@@ -176,7 +176,8 @@ export default function Marketplace () {
 
 
   useEffect(() => {
-    if (!active) return
+    // if (!active) return
+    console.log(chainId)
 
     if (chainId) {
       console.log(getCoinList(chainId))

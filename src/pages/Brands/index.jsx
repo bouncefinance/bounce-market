@@ -58,7 +58,7 @@ export default function Index () {
   const [loding, setloding] = useState(true)
 
   useEffect(() => {
-    if (!active) return;
+    // if (!active) return;
     if (data) {
       const bounce721Brands = data.bounce721Brands.map(item => item.id)
       const bounce1155Brands = data.bounce1155Brands.map(item => item.id)
