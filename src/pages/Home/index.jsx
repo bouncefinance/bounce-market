@@ -151,6 +151,7 @@ export default function Index() {
   const history = useHistory()
   const [brands, setbrands] = useState([])
   const { data } = useQuery(QueryTradePools)
+  // const { data } = []
   const [itemList, setItemList] = useState()
   // const { exportArrayNftInfo } = useToken()
   const [loadingBrands, setLoadingBrands] = useState(false)
