@@ -107,7 +107,6 @@ export default function useToken() {
 
     const exportErc20Info = async (tokenAddr, flag) => {
         let price = 0
-
         if (tokenAddr === ZERO_ADDRESS) {
             const web3 = new Web3(library?.provider)
             const balanceOf = await web3.eth.getBalance(account)
@@ -124,7 +123,8 @@ export default function useToken() {
                 price
             }
         }
-        const BounceERC20_CT = getContract(library, BounceERC20.abi, tokenAddr)
+        let BounceERC20_CT =  getContract(library, BounceERC20.abi, tokenAddr)
+        
         const decimals = await BounceERC20_CT.methods.decimals().call()
         const symbol = await BounceERC20_CT.methods.symbol().call()
         const balanceOf = await BounceERC20_CT.methods.balanceOf(account).call()
