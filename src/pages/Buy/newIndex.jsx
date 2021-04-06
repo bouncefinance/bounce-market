@@ -274,6 +274,7 @@ export default function NewIndex () {
     const [btnText, setBtnText] = useState('Place a bid')
     const [amount, setAmount] = useState(1)
     const [bidPrice, setBidPrice] = useState()
+    // eslint-disable-next-line
     const [minPrice, setMinPrice] = useState(0)
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
@@ -616,7 +617,6 @@ export default function NewIndex () {
                     isInteger={true}
                     minVal={inputMinPrice}
                     maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
-                    minVal={1}
                     defaultValue={1}
                     onValChange={(val) => {
                         setAmount(val)
