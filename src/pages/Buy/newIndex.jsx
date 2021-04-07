@@ -13,7 +13,7 @@ import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
-/* import PlaceBidModal from './components/PlaceBidModal' */
+import PlaceBidModal from './components/PlaceBidModal'
 import { myContext } from '@/redux'
 import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 
@@ -290,6 +290,9 @@ export default function NewIndex() {
     const [loadingLoked, setLoadingLocked] = useState(true);
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
     const [inputMinPrice, setInputMinPrice] = useState();
+
+    const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false);
+
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
@@ -685,7 +688,7 @@ export default function NewIndex() {
                     </div> 
                 </div> */}
 
-                <NumberInput
+                {/* <NumberInput
                     className='input_amount'
                     title={`I'll make an offer`}
                     width='100%'
@@ -696,13 +699,13 @@ export default function NewIndex() {
                     }}
                     afterFix={poolInfo.token1 && `Balance: ${poolInfo.token1.balance} ${poolInfo.token1.symbol}`}
                     disabled={isLoading || poolInfo.status !== 'Live'}
-                />
+                /> */}
 
                 <div className="btn_group">
                     <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
                         onClick={() => {
-                            handelEnglishAuctionBid()
-                            /* setOpenPlaceBidModal(true) */
+                            /* handelEnglishAuctionBid() */
+                            setOpenPlaceBidModal(true)
                         }
                         }
                     >{btnText}
@@ -1054,6 +1057,19 @@ export default function NewIndex() {
             </NewIndexStyled >
             {aucType === AUCTION_TYPE.FixedSwap && <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />}
             <MessageTips open={openMessage} setopen={setopenMessage} />
+            <PlaceBidModal
+                open={openPlaceBidModal}
+                setOpen={setOpenPlaceBidModal}
+                title="Place A Bid"
+                inputMinPrice={inputMinPrice}
+                poolInfo={poolInfo}
+                isLoading={isLoading}
+                onClick={() => {
+                    handelEnglishAuctionBid()
+                }}
+                bidPrice={bidPrice}
+                setBidPrice={setBidPrice}
+            />
         </>
     )
 }

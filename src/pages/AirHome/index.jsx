@@ -116,7 +116,7 @@ const MarketplaceStyled = styled.div`
         width: 1100px;
         min-height: 260px;
         flex: 1;
-        margin: 0 auto;
+        margin: 0 auto 32px auto;
         display: flex;
         flex-wrap: wrap;
 
