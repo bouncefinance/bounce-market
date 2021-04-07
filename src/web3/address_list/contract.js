@@ -27,7 +27,7 @@ export const getBounceERC721WithSign = (chainID) => {
             return '0xD9b73E3f331420C8bCBa26c98Fb7fbbCd2A682E7'
         case 56:
             if (hostname.indexOf('market.bounce.finance') !== -1) {
-                return ''
+                return '0xbf4f70215e8f99e384afdf641e55181155714163'
             }
             return '0x479FCe86f116665b8a4d07165a0eB7799A4AEb30'
 
