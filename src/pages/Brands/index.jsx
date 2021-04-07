@@ -108,7 +108,7 @@ export default function Index () {
         />
       </div>
       {loding && <SkeletonBrandRowCards n={2} />}
-      <div className="BrandCardList">
+      <div className="BrandCardList" style={{marginBottom: 30}}>
         {
           filterList.map(
             (cardsInfo, index) => {

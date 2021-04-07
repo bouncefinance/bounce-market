@@ -286,7 +286,7 @@ export function AirHome() {
   const renderListByType = (type) => {
     switch (type) {
       case 'FineArts':
-        return <ul className={`list_wrapper ${type}`}>
+        return <ul className={`list_wrapper ${type}`} style={{marginBottom: 30}}>
           {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem
@@ -300,7 +300,7 @@ export function AirHome() {
           })}
         </ul>
       default:
-        return <ul className={`list_wrapper ${type}`}>
+        return <ul className={`list_wrapper ${type}`}  style={{marginBottom: 30}}>
           {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem
