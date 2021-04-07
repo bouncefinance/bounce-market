@@ -3,7 +3,7 @@ import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 const hostname = window.location.hostname
 
 export const client = new ApolloClient({
-  uri: hostname.includes('market.bounce.finance') ?
+  uri: hostname.includes('market.bounce.finance') || hostname.includes('127.0.0.1') ?
     'https://thegraph.com/explorer/subgraph/winless/bouncenft' :      // bsc main
     'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc test
   cache: new InMemoryCache(),
