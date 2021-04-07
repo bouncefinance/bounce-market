@@ -36,6 +36,8 @@ const StyledBrandPage = styled.div`
 
     .BrandCardList {
         margin-top: 32px;
+        margin-bottom: 32px;
+        min-height: 336px;
         display: grid;
         grid-gap: 32px;
     }
