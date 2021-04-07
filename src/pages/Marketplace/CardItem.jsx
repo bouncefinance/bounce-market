@@ -158,7 +158,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }) {
+export function CardItem({ cover, name, price, cardId, poolType, token1 }) {
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const { active } = useActiveWeb3React()

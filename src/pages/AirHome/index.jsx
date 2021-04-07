@@ -16,7 +16,7 @@ import { QueryBrandTradeItems, QueryOwnerBrandItems } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
-import { weiToNum } from '@/utils/useBigNumber'
+// import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 
 const AirHomeStyled = styled.div`
@@ -218,8 +218,9 @@ export function AirHome() {
               ...item,
               poolType: poolInfo ? poolInfo.poolType : null,
               poolId: poolInfo ? poolInfo.poolId : null,
-              price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
-              createTime: poolInfo && poolInfo.createTime
+              price: poolInfo.price,
+              createTime: poolInfo && poolInfo.createTime,
+              token1: poolInfo.token1
             }
           })
 
@@ -286,7 +287,7 @@ export function AirHome() {
   const renderListByType = (type) => {
     switch (type) {
       case 'FineArts':
-        return <ul className={`list_wrapper ${type}`} style={{marginBottom: 30}}>
+        return <ul className={`list_wrapper ${type}`} style={{ marginBottom: 30 }}>
           {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem
@@ -294,13 +295,14 @@ export function AirHome() {
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.poolId}
-                price={!!item.price ? `${item.price} ETH` : `--`}
+                price={item.price}
+                token1={item.token1}
               />
             </li>
           })}
         </ul>
       default:
-        return <ul className={`list_wrapper ${type}`}  style={{marginBottom: 30}}>
+        return <ul className={`list_wrapper ${type}`} style={{ marginBottom: 30 }}>
           {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem
@@ -308,7 +310,8 @@ export function AirHome() {
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.poolId}
-                price={!!item.price ? `${item.price} ETH` : `--`}
+                price={item.price}
+                token1={item.token1}
               />
             </li>
           })}
@@ -318,7 +321,7 @@ export function AirHome() {
   return <AirHomeStyled>
     <div className="top_bar">
       <div className='bg_wrapper' style={brandInfo ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
-        {brandInfo?.owneraddress && brandInfo.owneraddress === account  && <button onClick={() => setOpenUpdateTopBarImg(true)}>
+        {brandInfo?.owneraddress && String(brandInfo.owneraddress).toLowerCase() === String(account).toLowerCase() && <button onClick={() => setOpenUpdateTopBarImg(true)}>
           <img src={edit_white} alt="" />
           <p>Change</p>
         </button>}

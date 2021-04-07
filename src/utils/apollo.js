@@ -209,6 +209,7 @@ export const QueryBrandTradeItems = gql`
       price
       createTime
       state
+      token1
     }
     tradeAuctions(where: {tokenId_in: $tokenList}) {
       tokenId
@@ -217,6 +218,7 @@ export const QueryBrandTradeItems = gql`
       amountMin1
       createTime
       state
+      token1
     }
   }
 `
