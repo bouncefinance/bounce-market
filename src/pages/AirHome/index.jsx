@@ -169,7 +169,7 @@ export function AirHome() {
   const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
   const run = () => { }
 
-  const { active } = useActiveWeb3React();
+  const { account, active } = useActiveWeb3React();
   const { id, standard, channel, /* type */ } = useParams();
   const { sign_Axios } = useAxios();
 
@@ -318,10 +318,10 @@ export function AirHome() {
   return <AirHomeStyled>
     <div className="top_bar">
       <div className='bg_wrapper' style={brandInfo ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
-        <button onClick={() => setOpenUpdateTopBarImg(true)}>
+        {brandInfo?.owneraddress && brandInfo.owneraddress === account  && <button onClick={() => setOpenUpdateTopBarImg(true)}>
           <img src={edit_white} alt="" />
           <p>Change</p>
-        </button>
+        </button>}
       </div>
       <div className="userinfo">
         <img src={/* brandInfo.bandimgurl */brandInfo.imgurl} alt="" />

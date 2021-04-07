@@ -14,11 +14,12 @@ import { myContext } from '@/redux/index.js'
 import SettingAccountModal from './SettingAccountModal'
 import UpdateTopBarImg from './MyBrands/updateTopBarImg'
 import edit_white from '@assets/images/icon/edit_white.svg'
+import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
 
 
 const CommonHeaderStyled = styled.div`
     .top-bg{
-        background: url('https://market-test.bounce.finance/pngfileget/e873aef2157d78c3f1d04b773bedb82c-1616836587.png') center center no-repeat;
+        background: url(${themeBgImg}) center center no-repeat;
         height: 180px;
         background-size: 100%!important;
         position: relative;
