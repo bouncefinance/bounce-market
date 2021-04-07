@@ -1,3 +1,4 @@
 {
-    "ERC_1155_BaseRui": "http://market-test.bounce.finance:11000"
+    "ERC_1155_BaseRui": "http://market.bounce.finance",
+    "productionEnvironment": true
 }

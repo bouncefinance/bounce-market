@@ -42,7 +42,7 @@ const AddNewBrandstModalStyled = styled.div`
 
 export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAddress, open, setOpen }) {
     const { active, library, chainId, account } = useActiveWeb3React()
-    const { state,dispatch } = useContext(myContext);
+    const { state, dispatch } = useContext(myContext);
     const { sign_Axios } = useAxios()
     const [fileData, setFileData] = useState(null)
     const [formData, setFormData] = useState({})
@@ -111,9 +111,12 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                 const _name = formData.Brand_Name
                 const _symbol = formData.Symbol
                 const _uri = require('@/config.json').ERC_1155_BaseRui
+                const _mode = 0
+                const bytecode_721 = require('@/web3/abi/BounceERC721.json').bytecode
+                const bytecode_1155 = require('@/web3/abi/BounceERC1155.json').bytecode
 
                 if (nftType === 'ERC-721') {
-                    Factory_CT.methods.createBrand721(_name, _symbol).send({ from: account })
+                    Factory_CT.methods.createBrand721(bytecode_721, _name, _symbol, _mode).send({ from: account })
                         .on('transactionHash', hash => {
                             setOpen(false)
                             // setBidStatus(pendingStatus)
@@ -134,7 +137,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                             // showTransferByStatus('errorStatus')
                         })
                 } else if (nftType === 'ERC-1155') {
-                    Factory_CT.methods.createBrand1155(_uri).send({ from: account })
+                    Factory_CT.methods.createBrand1155(bytecode_1155, _uri, _mode).send({ from: account })
                         .on('transactionHash', hash => {
                             setOpen(false)
                             // setBidStatus(pendingStatus)
