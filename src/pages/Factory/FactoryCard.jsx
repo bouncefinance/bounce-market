@@ -7,7 +7,7 @@ const StyledCard = styled.div`
     justify-content: space-between;
 
     width: 354px;
-    height: 470px;
+    height: 480px;
 
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -30,7 +30,7 @@ const StyledCard = styled.div`
 
     .bottom {
         margin: 32px 28px;
-        height: 181px;
+        height: 191px;
 
         display: flex;
             flex-direction: column;
@@ -80,7 +80,7 @@ function FactoryCard({ img, title, description, button}) {
                 <div className="bottom">
                     <div className="text">
                         <span className="title">{title}</span>
-                        <p className="description">{description}</p>
+                        {description}
                     </div>
                     {button}
                 </div>
