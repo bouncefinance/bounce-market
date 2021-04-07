@@ -70,7 +70,7 @@ export default function Index () {
 
             <BrandsStyled>
                 <AddCardItem run={getBrandList} hasAddressButNotBrand={hasAddressButNotBrand} brandAddress={brandAddress} isCreate={hasAddressButNotBrand ? true : !brandAddContract} />
-                <ul className="list_wrapper">
+                {<ul className="list_wrapper">
                     {/* <li>
                         <button onClick={()=>{
                             setModalStatus(approveStatus)
@@ -87,7 +87,7 @@ export default function Index () {
                             />
                         </li>
                     })}
-                </ul>
+                </ul>}
 
             </BrandsStyled>
             {/* <TransferStatusModal modalStatus={modalStatus} onDismiss={() => {

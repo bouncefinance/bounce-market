@@ -118,7 +118,7 @@ function ListNFT() {
                     </div>
                 </StyledButton>
                 <StyledButton 
-                    className="Prototyp"
+                    className="Prototype"
                     onClick={
                         () => {
                             setOpen(true)
@@ -128,7 +128,7 @@ function ListNFT() {
                 >
                     <div className="content">
                         <span className="title">Not developed</span>
-                        <p className="description">We have an idea and a prototype</p>
+                        <p className="description">We have an idea and a Prototypee</p>
                     </div>
                 </StyledButton>
             </CardList>

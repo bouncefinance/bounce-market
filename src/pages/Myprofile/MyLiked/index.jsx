@@ -12,6 +12,7 @@ import { QueryTradePools } from '@/utils/apollo'
 import { AUCTION_TYPE } from '@/utils/const'
 
 const MyLikedStyled = styled.div`
+    flex: 1;
     width: 1100px;
     margin: 0 auto;
     padding-bottom: 20px;
@@ -89,7 +90,7 @@ export default function MyLiked () {
     // eslint-disable-next-line
   }, [account, data])
 
-  return <div>
+  return <>
     <CommonHeader />
     <MyLikedStyled>
       <div className="con">
@@ -115,5 +116,5 @@ export default function MyLiked () {
       {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
       <MessageTips open={openMessage} setopen={setopenMessage} />
     </MyLikedStyled>
-  </div>
+  </>
 }

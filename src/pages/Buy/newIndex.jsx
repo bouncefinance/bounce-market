@@ -989,11 +989,10 @@ export default function NewIndex() {
                                                 <div className="flex Offers-info">
                                                     <p className="name">{item.name}</p>
                                                     <p className="time">{item.time}</p>
-                                                    <p className="amount">{poolInfo.token1 && weiToNum(item.amount, poolInfo.token1.decimals)}</p>
                                                 </div>
                                                 <div className="Offers-price">
+                                                    <p className="amount">{poolInfo.token1 && weiToNum(item.amount, poolInfo.token1.decimals)}</p>
                                                     <span>{poolInfo.token1 && `${poolInfo.token1.symbol}`}</span>
-                                                    <span></span>
                                                 </div>
                                             </div>)
                                             :
@@ -1094,13 +1093,15 @@ line-height: 15px;
             margin-left: 27px;
             color: rgba(0,0,0,.5);
         }
-        .amount{
-            margin-left: 24px;
-            color: rgba(0,0,0,.5);
-        }
         
     }
     .Offers-price{
+        display: flex;
+        
+        .amount{
+            margin-right: 4px;
+            color: rgba(0,0,0,.5);
+        }
         .price_ETH {
             font-family: Helvetica Neue;
             font-style: normal;

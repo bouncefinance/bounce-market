@@ -27,7 +27,7 @@ import { ZERO_ADDRESS } from "@/web3/address_list/token"
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
-    min-height: 650px;
+    flex: 1;
     margin: 0 auto;
     margin-bottom: 30px;
 

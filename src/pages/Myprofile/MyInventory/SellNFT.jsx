@@ -62,6 +62,12 @@ export default function SellNFT() {
 		},
 		{
 			value: 7,
+		},
+		{
+			value: 14,
+		},
+		{
+			value: 30,
 		}
 	];
 
@@ -107,18 +113,18 @@ export default function SellNFT() {
 		setInitNftInfo(nftId);
 		// eslint-disable-next-line
 	}, [active]);
-	
+
 	const setInitNftInfo = async (nftId) => {
 		const info = await exportNftInfo(nftId);
-		
+
 		// console.log(info); 
 		setNftId(info);
 	};
 
 	useEffect(() => {
-		if ((directPurchasePrice && ((directPurchasePrice.charAt(directPurchasePrice.length - 1) === '.' ) || (parseInt(directPurchasePrice) === 0 && directPurchasePrice.charAt(directPurchasePrice.length - 1) === '0'))) ||
+		if ((directPurchasePrice && ((directPurchasePrice.charAt(directPurchasePrice.length - 1) === '.') || (parseInt(directPurchasePrice) === 0 && directPurchasePrice.charAt(directPurchasePrice.length - 1) === '0'))) ||
 			(reservePrice && ((reservePrice.charAt(reservePrice.length - 1) === '.') || (parseInt(reservePrice) === 0 && reservePrice.charAt(reservePrice.length - 1) === '0'))) ||
-			(minimumBid && ((minimumBid.charAt(minimumBid.length - 1) === '.' ) || (parseInt(minimumBid) === 0 && minimumBid.charAt(minimumBid.length - 1) === '0')))) {
+			(minimumBid && ((minimumBid.charAt(minimumBid.length - 1) === '.') || (parseInt(minimumBid) === 0 && minimumBid.charAt(minimumBid.length - 1) === '0')))) {
 			return false;
 		}
 
@@ -214,7 +220,7 @@ export default function SellNFT() {
 								options={unitOptions}
 								fixedSwapUnit={fixedSwap_Unit}
 							/>
-							
+
 							<InputPrice
 								className="InputPrice Reserve_price"
 								title="Reserve price"
@@ -243,19 +249,19 @@ export default function SellNFT() {
 								className="Instructions"
 								width="540px"
 								layDownItems={[
-								{
-									value:
-										"Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:",
-								},
-								{
-									value:
-										"To initialize your account for making sell orders, which only needs to be done once for your account.",
-								},
-								{
-									value:
-										"To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.",
-								},
-							]}
+									{
+										value:
+											"Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:",
+									},
+									{
+										value:
+											"To initialize your account for making sell orders, which only needs to be done once for your account.",
+									},
+									{
+										value:
+											"To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.",
+									},
+								]}
 							/>
 						</RightItemsOnEnglishAuction>
 						<Summary
@@ -277,10 +283,10 @@ export default function SellNFT() {
 				return;
 		}
 	};
-	
+
 	return (
 		<Page>
-			<BreadcrumbNav marginTop={"24px"} NavList={NavList}/>
+			<BreadcrumbNav marginTop={"24px"} NavList={NavList} />
 
 			<PageBody>
 				<PageBodyLeft>
