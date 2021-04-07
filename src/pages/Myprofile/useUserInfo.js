@@ -37,9 +37,9 @@ export function useUserInfo() {
         }
         return await sign_Axios.post(requireUrl, params).then(res => {
             if (res.status === 200 && res.data.code === 1) {
-                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"信息上传更新成功"});
+                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"Message upload success!"});
             }else{
-                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"信息上传更新成功"});
+                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"Message upload success!"});
             }
             getUserInfo();
             return res;

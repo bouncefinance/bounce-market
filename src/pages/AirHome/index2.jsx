@@ -192,7 +192,7 @@ export function AirHome() {
       channelRequestParam: "Sports",
     },
     {
-      title: "Comic Books",
+      title: "Comics",
       route: "Comics",
       channelRequestParam: "Conicbooks",
     },
@@ -204,7 +204,7 @@ export function AirHome() {
     NavList[2].channelRequestParam);
 
   const handleBrandTradeItems = useCallback((pools) => {
-    /* const chanel_2 =  channel === 'Comic Books' ? 'Conicbooks' : channel; */
+    /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
       category: type,
@@ -327,7 +327,7 @@ export function AirHome() {
         })}
       </ul>}
       <ul className="nav_wrapper">
-        {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
+        {/* {'Fine Arts、Sports、Comics'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
             history.push(`/AirHome/${id}/${standard}/${item.name}/Image`)
           }}>

@@ -134,7 +134,7 @@ export default function Marketplace () {
       channelRequestParam: "Sports",
     },
     {
-      title: "Comic Books",
+      title: "Comics",
       route: "Comics",
       channelRequestParam: "Conicbooks",
     },
@@ -176,7 +176,7 @@ export default function Marketplace () {
 
 
   useEffect(() => {
-    if (!active) return
+    // if (!active) return
 
     if (chainId) {
       console.log(getCoinList(chainId))
@@ -201,7 +201,7 @@ export default function Marketplace () {
       setLength(list.length);
       setLoding(true)
       // console.log(channel)
-      // const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel
+      // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         category: type,

@@ -139,7 +139,9 @@ export default function NumberInput({
             val = parseInt(val)
         }
 
-        if (minVal && parseFloat(val) < parseFloat(minVal)) {
+        if (maxVal && parseFloat(val) > parseFloat(maxVal)) {
+            val = maxVal
+        } else if (minVal && parseFloat(val) < parseFloat(minVal)) {
             val = minVal
         }
         setValue(val)

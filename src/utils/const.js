@@ -8,7 +8,7 @@ export const AUCTION_TYPE = {
 export const NFT_CATEGORY = {
   FineArts: 'Fine Arts',
   Sports: 'Sports',
-  ComicBooks: 'Comic Books',
+  ComicBooks: 'Comics',
 }
 
 export const ITEM_CATEGORY = {

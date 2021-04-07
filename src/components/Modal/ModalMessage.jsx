@@ -1,4 +1,4 @@
-import React,{useContext} from 'react';
+import React,{useEffect, useState, useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import IconButton from '@material-ui/core/IconButton';
@@ -44,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
     },
     close: {
         color:'#fff'
+    },
+    links:{
+      textDecoration:'underline',
+      cursor: 'pointer',
+      marginLeft:'10px'
     }
 }));
 // modelType:'info'/'success'/'error'/'warning'
@@ -51,6 +56,12 @@ const useStyles = makeStyles((theme) => ({
 export default function ModalMessage() {
   const classes = useStyles();
   const {state, dispatch} = useContext(myContext);
+  const [closeTime, setCloseTime] = useState(5000)
+  useEffect(() => {
+    if (state.modelTimer) {
+      setCloseTime(parseFloat(state.modelTimer));
+    }
+  }, [state])
   let timer;
   if(timer){
     clearTimeout(timer);
@@ -59,7 +70,12 @@ export default function ModalMessage() {
     if(state.showMessageModal){
       dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:""});
     }
-  }, 4000);
+  }, closeTime);
+  const openNewWeb= ()=>{
+    if(state.modelOpenUrl){
+      window.open(state.modelOpenUrl);
+    }
+  }
   return (
     <div className={classes.root}>
       <Collapse in={state.showMessageModal}>
@@ -81,6 +97,12 @@ export default function ModalMessage() {
           }
         >
           {state.modelMessage ||"Info"}
+          <span className={classes.links} onClick={() => {
+            openNewWeb()
+        }}
+        >
+        {state.modelUrlMessage}
+        </span>
         </Alert>
       </Collapse>
     </div>

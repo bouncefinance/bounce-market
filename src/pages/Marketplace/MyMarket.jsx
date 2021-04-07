@@ -151,7 +151,7 @@ export default function MyMarket() {
       channelRequestParam: "Sports",
     },
     {
-      title: "Comic Books",
+      title: "Comics",
       route: "Comics",
       channelRequestParam: "Conicbooks",
     },
@@ -198,7 +198,7 @@ export default function MyMarket() {
     .concat(auctionBids)
     const ids_list = poolData.map(item => item.tokenId);
     setLength(ids_list.length);
-    /* const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel */
+    /* const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel */
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       category: type,
@@ -315,7 +315,7 @@ export default function MyMarket() {
         })}
       </ul>}
       <ul className="nav_wrapper">
-        {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
+        {/* {'Fine Arts、Sports、Comics'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
             setChannel(item.name)
           }}>

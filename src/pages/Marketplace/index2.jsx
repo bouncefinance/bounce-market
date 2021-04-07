@@ -138,7 +138,7 @@ export default function Marketplace() {
       channelRequestParam: "Sports",
     },
     {
-      title: "Comic Books",
+      title: "Comics",
       route: "Comics",
       channelRequestParam: "Conicbooks",
     },
@@ -183,7 +183,7 @@ export default function Marketplace() {
       setLength(list.length);
       setLoding(true)
       // console.log(channel)
-      /* const channel_2 = channel === 'Comic Books' ? 'Conicbooks' : channel */
+      /* const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel */
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         category: type,
@@ -272,7 +272,7 @@ export default function Marketplace() {
       </ul>}
 
       <ul className="nav_wrapper">
-        {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => { */}
+        {/* {'Fine Arts、Sports、Comics'.split('、').map(e => ({ name: e })).map((item) => { */}
         {NavList.map( nav =>  {
           return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
             () => {

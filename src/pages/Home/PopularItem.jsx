@@ -1,5 +1,6 @@
 import { weiToNum } from '@/utils/useBigNumber'
 import useToken from '@/utils/useToken'
+import { useActiveWeb3React } from '@/web3'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
@@ -75,13 +76,15 @@ const PopularItemStyled = styled.div`
 
 export default function PopularItem({ style = {}, itemInfo }) {
     const history = useHistory()
+    const { active } = useActiveWeb3React()
     const { exportErc20Info } = useToken()
     const [newPrice, setNewPrice] = useState('Loading Price ...')
 
     useEffect(() => {
+        if(!active) return
         getPriceByToken1(itemInfo.price, itemInfo.token1)
         // eslint-disable-next-line
-    }, [])
+    }, [active])
 
     const getPriceByToken1 = async (price, token1) => {
         if (!price || !token1) return setNewPrice('--')

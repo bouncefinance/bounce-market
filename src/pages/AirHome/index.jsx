@@ -191,7 +191,7 @@ export function AirHome() {
       channelRequestParam: "Sports",
     },
     {
-      title: "Comic Books",
+      title: "Comics",
       route: "Comics",
       channelRequestParam: "Conicbooks",
     },
@@ -203,7 +203,7 @@ export function AirHome() {
     NavList[2].channelRequestParam);
 
   const handleBrandTradeItems = useCallback((pools) => {
-    /* const chanel_2 =  channel === 'Comic Books' ? 'Conicbooks' : channel; */
+    /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
       category: type,

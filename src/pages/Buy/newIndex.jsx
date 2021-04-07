@@ -274,6 +274,7 @@ export default function NewIndex () {
     const [btnText, setBtnText] = useState('Place a bid')
     const [amount, setAmount] = useState(1)
     const [bidPrice, setBidPrice] = useState()
+    // eslint-disable-next-line
     const [minPrice, setMinPrice] = useState(0)
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
@@ -594,14 +595,15 @@ export default function NewIndex () {
     }
     
     useEffect(() => {
-        if(minPrice){
-            setInputMinPrice(minPrice);
+        if(poolInfo.amountMin1){
+            setInputMinPrice(parseFloat(weiToNum(poolInfo.amountMin1,poolInfo.token1.decimals)));
         }
-        if(lastestBidAmount && minPrice && poolInfo.token1 ){
-            setInputMinPrice(parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + parseFloat(minPrice)*0.05);
+        if(lastestBidAmount > 0 && poolInfo.token1 ){
+            console.log(parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)));
+            console.log(parseFloat(weiToNum(poolInfo.amountMin1,poolInfo.token1.decimals))*0.05);
+            setInputMinPrice(parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + parseFloat(weiToNum(poolInfo.amountMin1,poolInfo.token1.decimals))*0.05);
         }
-        // poolInfo.token1.balance
-    }, [ poolInfo.token1,minPrice,lastestBidAmount])
+    }, [ poolInfo.token1,poolInfo.amountMin1,lastestBidAmount])
 
 
 
@@ -613,8 +615,8 @@ export default function NewIndex () {
                     title='Buy Amount'
                     width='100%'
                     isInteger={true}
+                    minVal={inputMinPrice}
                     maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
-                    minVal={1}
                     defaultValue={1}
                     onValChange={(val) => {
                         setAmount(val)
