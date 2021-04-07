@@ -115,6 +115,8 @@ const MarketplaceStyled = styled.div`
 
     .list_wrapper{
         width: 1100px;
+        min-height: 260px;
+        flex: 1;
         margin: 0 auto;
         display: flex;
         flex-wrap: wrap;

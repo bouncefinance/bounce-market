@@ -6,4 +6,6 @@ export const LayoutStyled = styled.div`
     box-sizing: border-box;
     background-color: #fff;
     position: relative;
+    display: flex;
+    flex-direction: column;
 `
