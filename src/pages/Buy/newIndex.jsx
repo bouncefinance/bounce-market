@@ -264,7 +264,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex () {
+export default function NewIndex() {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { hasApprove_ERC_20 } = useToken()
@@ -286,7 +286,7 @@ export default function NewIndex () {
     const [tokenID, setTokenID] = useState();
     const [externalLink, setExternalLink] = useState();
     const { dispatch } = useContext(myContext);
-    const [lastestBidAmount,setLastestBidAmount] = useState("0");
+    const [lastestBidAmount, setLastestBidAmount] = useState("0");
     const [loadingLoked, setLoadingLocked] = useState(true);
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
     const [inputMinPrice, setInputMinPrice] = useState();
@@ -302,7 +302,7 @@ export default function NewIndex () {
         variables: { poolId: Number(poolId) },
         fetchPolicy: "network-only",
         onCompleted: () => {
-            if(bidData.tradeAuctions.length > 0){
+            if (bidData.tradeAuctions.length > 0) {
                 setLastestBidAmount(bidData.tradeAuctions[0].lastestBidAmount);
             }
         }
@@ -593,17 +593,17 @@ export default function NewIndex () {
                 showTransferByStatus('errorStatus')
             })
     }
-    
+
     useEffect(() => {
-        if(poolInfo.amountMin1){
-            setInputMinPrice(parseFloat(weiToNum(poolInfo.amountMin1,poolInfo.token1.decimals)));
+        if (poolInfo.amountMin1) {
+            setInputMinPrice(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)));
         }
-        if(lastestBidAmount > 0 && poolInfo.token1 ){
-            console.log(parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)));
-            console.log(parseFloat(weiToNum(poolInfo.amountMin1,poolInfo.token1.decimals))*0.05);
-            setInputMinPrice(parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + parseFloat(weiToNum(poolInfo.amountMin1,poolInfo.token1.decimals))*0.05);
+        if (lastestBidAmount > 0 && poolInfo.token1) {
+            console.log(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals)));
+            console.log(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) * 0.05);
+            setInputMinPrice(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals)) + parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) * 0.05);
         }
-    }, [ poolInfo.token1,poolInfo.amountMin1,lastestBidAmount])
+    }, [poolInfo.token1, poolInfo.amountMin1, lastestBidAmount])
 
 
 
@@ -619,6 +619,7 @@ export default function NewIndex () {
                     maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
                     defaultValue={1}
                     onValChange={(val) => {
+                        if(!val) return
                         setAmount(val)
                     }}
                     disabled={poolInfo.nftType === '1' && false}
@@ -627,8 +628,8 @@ export default function NewIndex () {
                 <div className="bidInfo">
                     <div>
                         <h5>Current price</h5>
-                        <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))} ) `}</span></h3>
+                        <h3>{poolInfo.token1 && amount && poolInfo.amountTotal1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
+                            <span>{poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} ) ${amount}`}</span></h3>
                     </div>
 
                     <div className="amount">
