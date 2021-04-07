@@ -44,7 +44,7 @@ export const useBrandInfo = (brandId) => {
     }, [brandId,account])
 
     const getBrandInfoById = () => {
-        sign_Axios.post(`/api/v2/main/auth/getbrandbyid`, { id: parseInt(brandId), accountaddress: account })
+        sign_Axios.post(`/api/v2/main/getbrandbyid`, { id: parseInt(brandId), accountaddress: account })
             .then(res => {
                 if (res.status === 200 && res.data.code === 1) {
                     setBrandInfo(res.data.data)
