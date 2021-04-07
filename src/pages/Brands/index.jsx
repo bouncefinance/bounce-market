@@ -15,9 +15,6 @@ import { SkeletonBrandRowCards } from '../component/Skeleton/Brandrow'
 const StyledBrandPage = styled.div`
     width: 1100px;
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 
     margin: 40px auto 0 auto;
 
