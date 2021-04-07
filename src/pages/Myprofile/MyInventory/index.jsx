@@ -16,6 +16,7 @@ import Category from '../Category'
 const MyInventoryStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
+    flex: 1;
     .filterBox{
         margin-top: 32px;
         /* margin-bottom: 50px; */

@@ -87,7 +87,6 @@ const MarketplaceStyled = styled.div`
         border-bottom: 2px solid rgba(0,0,0,.1);
         li{
             padding: 7px 20px;
-            width: 124px;
             height: 48px;
             display: flex;
             justify-content: center;
@@ -115,6 +114,8 @@ const MarketplaceStyled = styled.div`
 
     .list_wrapper{
         width: 1100px;
+        min-height: 260px;
+        flex: 1;
         margin: 0 auto;
         display: flex;
         flex-wrap: wrap;

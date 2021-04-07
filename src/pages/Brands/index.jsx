@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import SearchBar from '../component/Header/Search'
+import SearchBar from './SearchBar'
 import { PullRadioBox as DropDownMenu } from '../../components/UI-kit'
 import BrandCard from './BrandCard'
 
@@ -14,9 +14,7 @@ import { SkeletonBrandRowCards } from '../component/Skeleton/Brandrow'
 
 const StyledBrandPage = styled.div`
     width: 1100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex: 1;
 
     margin: 40px auto 0 auto;
 
@@ -27,22 +25,17 @@ const StyledBrandPage = styled.div`
         input {
             width: 821px;
             height: 48px;
-            font-family: Optima;
+            font-family: Helvetica Neue;
             font-style: normal;
-            font-weight: bold;
+            font-weight: 500;
             font-size: 16px;
-            line-height: 19px;
-            text-transform: capitalize;
-            color: #000000;
-            opacity: 0.4;
-            
+            line-height: 20px;
             margin-left: 0;
         }
     }
 
     .BrandCardList {
         margin-top: 32px;
-
         display: grid;
         grid-gap: 32px;
     }

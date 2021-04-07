@@ -5,13 +5,16 @@ import FactoryCard from './FactoryCard'
 import GenerateNFTModal from '../Myprofile/MyInventory/GenerateNftModal'
 import CreateBrandModal from '../Myprofile/MyBrands/AddNewBrandstModal'
 import AddNewItemModal from './AddNewItemModal'
-import LinkButton from '@/components/UI-kit/Button/LinkButton'
+import ListNFTModal from './ListNFTModal'
+
 import Button from '@/components/UI-kit/Button/Button'
 
 
 import pic_Generate from './assets/pic_Generate.svg'
 import pic_Build from './assets/pic_Build.svg'
 import pic_List from './assets/pic_List.svg'
+
+import img1 from './assets/img1.svg'
 
 const CardList = styled.div`
     width: 1100px;
@@ -25,10 +28,25 @@ const CardList = styled.div`
     row-gap: 25px;
 `
 
+const dataList = {
+    img1: img1,
+    img2: img1,
+    img3: img1,
+    leftImgAmount: 12,
+    tableInfoList: {
+        contractAddress: '0x33a9b7ed8c71c6910fb4a9bc41de...74c2976',
+        contractName: 'Cindy Yi',
+        contactSymbol: 'CKIE',
+        totalSupply: '10',
+    },
+}
+
 function Factory() {
     const [openGenerateNFTModal, setOpenGenerateNFTModal] = useState(false)
     const [openCreateBrandModal, setCreateBrandModal] = useState(false)
     const [openAddNewItemModal, setAddNewItemModal] = useState(false)
+    const [Open, setOpen] = useState("0")
+    const [Step, setStep] = useState("0")
 
     const GenerateButton = () => {
         return (
@@ -54,9 +72,17 @@ function Factory() {
 
     const ListButton = () => {
         return (
-            <LinkButton to="/ListNFT" primary>
+            <Button
+                primary
+                onClick={
+                    () => {
+                        setOpen(true)
+                        setStep("1")
+                    }
+                }
+            >
                 List
-            </LinkButton>
+            </Button>
         )
     }
 
@@ -66,19 +92,20 @@ function Factory() {
                 <FactoryCard
                     img={pic_Generate}
                     title="Generate your NFT"
-                    description="You can turn contents in to NFTs without creating your own store or brand"
+                    description={<p className="description">You can turn contents in to NFTs without creating your own store or brand</p>}
                     button={<GenerateButton />}
                 />
                 <FactoryCard
                     img={pic_Build}
                     title="Build your brand"
-                    description="You can create a contract and produce unlimited amount of NFTs under your own contract"
+                    description={<p className="description">You can create a contract and produce unlimited amount of NFTs under your own contract</p>}
                     button={<BuildButton />}
                 />
                 <FactoryCard
                     img={pic_List}
                     title="List your NFT"
-                    description="If you already have a token contract set up and you just want to set up a space to sell them, use our get-listed flow instead"
+                    description={<p className="description">If you already have a token contract set up and you just want to set up a space to sell them, use our get-listed flow instead.
+                    <br/>Only for live on mainnet.</p>}
                     button={<ListButton />}
                 />
             </CardList>
@@ -86,6 +113,7 @@ function Factory() {
             <GenerateNFTModal open={openGenerateNFTModal} setOpen={setOpenGenerateNFTModal} />
             <CreateBrandModal open={openCreateBrandModal} setOpen={setCreateBrandModal} />
             <AddNewItemModal open={openAddNewItemModal} setOpen={setAddNewItemModal} />
+            <ListNFTModal open={Open} Step={Step} setOpen={setOpen} setStep={setStep} dataList={dataList} />
         </>
     )
 }
