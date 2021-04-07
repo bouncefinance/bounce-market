@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import SearchBar from '../component/Header/Search'
+import SearchBar from './SearchBar'
 import { PullRadioBox as DropDownMenu } from '../../components/UI-kit'
 import BrandCard from './BrandCard'
 
@@ -27,15 +27,11 @@ const StyledBrandPage = styled.div`
         input {
             width: 821px;
             height: 48px;
-            font-family: Optima;
+            font-family: Helvetica Neue;
             font-style: normal;
-            font-weight: bold;
+            font-weight: 500;
             font-size: 16px;
-            line-height: 19px;
-            text-transform: capitalize;
-            color: #000000;
-            opacity: 0.4;
-            
+            line-height: 20px;
             margin-left: 0;
         }
     }
