@@ -6,6 +6,7 @@ import errorImg from '../../../assets/images/loading/3.svg'
 
 const AutoStretchBaseWidthOrHeightImgStyled = styled.div`
 div{
+  position: relative;
   background-repeat: no-repeat;
   background-size: 63px;
   background-position: center;
@@ -16,13 +17,28 @@ div{
     background-color: white;
     object-fit: contain;
   }
+  .img-loading{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: rgb(234, 234, 234);
+    width: 100%;
+    height: 100%;
+  }
 }
 `
 export function AutoStretchBaseWidthOrHeightImg ({ src, width, height }) {
   const [imgShow, setImgShow] = useState(true)
+  const [imgLoding, setImgLoding] = useState(true)
   return <AutoStretchBaseWidthOrHeightImgStyled>
     <div style={{ width: `${width}px`, height: `${height}px`, backgroundImage: `url(${errorImg})` }}>
-      {imgShow && <img width={width} height={height} src={src} alt="" onError={() => setImgShow(false)} />}
+      {imgShow && <img width={width} height={height} src={src} alt="" onError={() => {
+        setImgShow(false)
+        setImgLoding(false)
+      }} onLoad={() => {
+        setImgLoding(false)
+      }} />}
+      {imgLoding && <div className="img-loading"></div>}
     </div>
   </AutoStretchBaseWidthOrHeightImgStyled>
 }
