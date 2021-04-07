@@ -7,7 +7,7 @@ const StyledCard = styled.div`
     justify-content: space-between;
 
     width: 354px;
-    height: 446px;
+    height: 470px;
 
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -30,7 +30,7 @@ const StyledCard = styled.div`
 
     .bottom {
         margin: 32px 28px;
-        height: 162px;
+        height: 181px;
 
         display: flex;
             flex-direction: column;
