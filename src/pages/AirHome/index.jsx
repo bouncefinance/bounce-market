@@ -199,8 +199,8 @@ export function AirHome() {
 
   const [channelRequestParam, setChannelRequestParam] = useState(
     channel === NavList[0].route ? NavList[0].channelRequestParam :
-    channel === NavList[1].route ? NavList[1].channelRequestParam :
-    NavList[2].channelRequestParam);
+      channel === NavList[1].route ? NavList[1].channelRequestParam :
+        NavList[2].channelRequestParam);
 
   const handleBrandTradeItems = useCallback((pools) => {
     /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
@@ -209,30 +209,32 @@ export function AirHome() {
       category: type,
       channel: channelRequestParam
     })
-    .then(res => {
-      if (res.status === 200 && res.data.code === 1) {
-        const list = res.data.data.map(item => {
-        const poolInfo = pools.find(pool => pool.tokenId === item.id);
-        return {
-          ...item,
-          poolType: poolInfo ? poolInfo.poolType : null,
-          poolId: poolInfo ? poolInfo.poolId : null,
-          price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
-          createTime: poolInfo && poolInfo.createTime
+      .then(res => {
+        if (res.status === 200 && res.data.code === 1) {
+          const list = res.data.data.map(item => {
+            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            return {
+              ...item,
+              poolType: poolInfo ? poolInfo.poolType : null,
+              poolId: poolInfo ? poolInfo.poolId : null,
+              price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
+              createTime: poolInfo && poolInfo.createTime
+            }
+          })
+
+          console.log(list)
+          const result = list.filter(item => {
+            return item.poolId || item.poolId === 0
+          }).sort((a, b) => b.createTime - a.createTime);
+          setItemList(result);
         }
       })
-      const result = list.filter(item => {
-        return item.poolId
-      }).sort((a, b) => b.createTime - a.createTime);
-        setItemList(result);
-      }
-    })
     // eslint-disable-next-line
-  }, [channel, type, tokenList, channelRequestParam ]);
+  }, [channel, type, tokenList, channelRequestParam]);
 
   const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
     variables: { tokenList: tokenList },
-    fetchPolicy:"network-only",
+    fetchPolicy: "network-only",
     onCompleted: () => {
       const tradePools = brandTradeItems.data.tradePools.map(item => ({
         ...item,
@@ -258,7 +260,7 @@ export function AirHome() {
 
   const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
     variables: { owner: brandInfo.owneraddress },
-    fetchPolicy:"network-only",
+    fetchPolicy: "network-only",
     onCompleted: () => {
       handleBrandItems(brandItems.data);
     }
@@ -273,7 +275,7 @@ export function AirHome() {
         const data = res.data.data;
         setBrandInfo(data);
         getBrandItems();
-        if(channel && tokenList.length > 0) {
+        if (channel && tokenList.length > 0) {
           handleBrandTradeItems(pools);
         }
       })
@@ -282,7 +284,7 @@ export function AirHome() {
 
   const renderListByType = (type) => {
     switch (type) {
-      case 'Image':
+      case 'FineArts':
         return <ul className={`list_wrapper ${type}`}>
           {itemList.map((item, index) => {
             return <li key={index}>
@@ -297,7 +299,19 @@ export function AirHome() {
           })}
         </ul>
       default:
-        return
+        return <ul className={`list_wrapper ${type}`}>
+          {itemList.map((item, index) => {
+            return <li key={index}>
+              <CardItem
+                poolType={item.poolType}
+                cover={item.fileurl}
+                name={item.itemname}
+                cardId={item.poolId}
+                price={!!item.price ? `${item.price} ETH` : `--`}
+              />
+            </li>
+          })}
+        </ul>
     }
   }
   return <AirHomeStyled>
@@ -338,17 +352,17 @@ export function AirHome() {
             } alt="" />{item.name}</p>
           </li>
         })} */}
-        {NavList.map( nav =>  {
+        {NavList.map(nav => {
           return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
             () => {
               setChannelRequestParam(nav.channelRequestParam)
               history.push(`/AirHome/${id}/${standard}/${nav.route}`)
-            // setChannelRequestParam(item.name)
-          }}>
+              // setChannelRequestParam(item.name)
+            }}>
             <p className="flex flex-center-y"><img src={
               nav.title === NFT_CATEGORY.FineArts ? icon_arts :
-              nav.title === NFT_CATEGORY.Sports ? icon_sport :
-              nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
+                nav.title === NFT_CATEGORY.Sports ? icon_sport :
+                  nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
                     ''
             } alt="" />{nav.title}</p>
           </li>
