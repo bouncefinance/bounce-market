@@ -602,8 +602,8 @@ export default function NewIndex() {
             setInputMinPrice(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)));
         }
         if (lastestBidAmount > 0 && poolInfo.token1) {
-            const minNum =  new BigNumber(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals))).multipliedBy(0.05)  
-            setInputMinPrice( new BigNumber(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals))).plus(minNum) );
+            const minNum = new BigNumber(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals))).multipliedBy(0.05)
+            setInputMinPrice(new BigNumber(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals))).plus(minNum));
         }
     }, [poolInfo.token1, poolInfo.amountMin1, lastestBidAmount])
 
@@ -616,11 +616,11 @@ export default function NewIndex() {
                     title='Buy Amount'
                     width='100%'
                     isInteger={true}
-                    minVal={inputMinPrice}
+                    // minVal={inputMinPrice}
                     maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
-                    defaultValue={1}
+                    defaultValue={amount}
                     onValChange={(val) => {
-                        if(!val) return
+                        if (!val) return
                         setAmount(val)
                     }}
                     disabled={poolInfo.nftType === '1' && false}
@@ -789,6 +789,7 @@ export default function NewIndex() {
             amount: item.swapAmount0,
             price: price,
         }));
+        // console.log(offerList)
         setOfferList(offerList);
         const createList = data.poolCreates.map(item => ({
             event: 'Created',
@@ -993,8 +994,8 @@ export default function NewIndex() {
                                                     <p className="time">{item.time}</p>
                                                 </div>
                                                 <div className="Offers-price">
-                                                    <p className="amount">{poolInfo.token1 && weiToNum(item.amount, poolInfo.token1.decimals)}</p>
-                                                    <span>{poolInfo.token1 && `${poolInfo.token1.symbol}`}</span>
+                                                    <span>{poolInfo.token1 && `${poolInfo.token1 && weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`}</span>
+                                                    <p className="amount">{poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}</p>
                                                 </div>
                                             </div>)
                                             :
