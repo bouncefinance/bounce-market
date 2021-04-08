@@ -179,7 +179,7 @@ export default function Marketplace() {
     // if (!active) return
 
     if (chainId) {
-      console.log(getCoinList(chainId))
+      // console.log(getCoinList(chainId))
       setCoinList(getCoinList(chainId).filter(item => item.contract))
     }
     if (data) {
@@ -192,8 +192,10 @@ export default function Marketplace() {
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
-      })).filter(item => item.state !== 1 && item.poolId !== 0)
-      // console.log(tradeAuctions)
+      }))
+      .filter(item => item.state !== 1 && item.poolId !== 0)
+
+      console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
       // console.log(pools)
