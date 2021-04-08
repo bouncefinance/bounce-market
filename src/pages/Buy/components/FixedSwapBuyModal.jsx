@@ -1,4 +1,4 @@
-import { React, /* useState */ } from "react";
+import { React, useEffect /* useState */ } from "react";
 import styled from "styled-components";
 
 import { makeStyles, /* withStyles */ } from "@material-ui/core/styles";
@@ -11,6 +11,10 @@ import { Button } from "@components/UI-kit";
 import AmountInput from './AmountInput'
 
 import icon_close from "@assets/images/icon/close.svg";
+
+import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
+import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
+
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -103,16 +107,25 @@ export default function ModalBox({
 	open,
 	setOpen,
 	title,
-	inputMinPrice,
+	inputMin,
 	poolInfo,
 	isLoading,
 	onClick,
-	bidPrice,
-	setBidPrice,
+	amount,
+	setAmount,
+	USD_Price,
 }) {
 	const classes = useStyles();
 
 	/* const [agree, setAgree] = useState(false); */
+
+	useEffect(() => {
+		/* console.log("inputMin", inputMin)
+		console.log("poolInfo", poolInfo)
+		console.log("maxVal", parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)) */
+		
+	}, [poolInfo, inputMin])
+
 
 	return (
 		<Modal
@@ -146,16 +159,21 @@ export default function ModalBox({
 					<ModalContent>
 						<AmountInput
 							className="input_amount"
-							title="Enter Amount"
+							title="Buy Amount"
 							width="100%"
 							height="68px"
 							marginTop="0"
-							minVal={inputMinPrice}
-							defaultValue={inputMinPrice}
+							isInteger={true}
+							minVal={inputMin}
+							maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
+							defaultValue={"1"}
 							onValChange={(val) => {
-								setBidPrice(val);
+								if(!val) return
+								setAmount(val);
 							}}
-							disabled={isLoading || poolInfo.status !== "Live"}
+							disabled={poolInfo.nftType === '1' && false}
+							afterFix={poolInfo.token1 && poolInfo.token1.symbol}
+							USD_Price={USD_Price}
 						/>
 
 						{/* <CheckAgree className="checkAgree">
@@ -192,8 +210,8 @@ export default function ModalBox({
 								width="200px"
 								height="48px"
 								primary="primary"
-								value="Place a bid"
-								disabled={isLoading || poolInfo.status !== 'Live' /* || !agree */ || parseFloat(bidPrice) < parseFloat(inputMinPrice)}
+								value="Checkout"
+								disabled={isLoading || poolInfo.status !== 'Live' || amount === '0' /* || !agree */}
 								onClick={() => {
 									onClick()
 									/* setAgree(false); */

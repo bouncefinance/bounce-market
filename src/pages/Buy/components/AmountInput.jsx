@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ErrorStatus } from './error_config'
+import { useActiveWeb3React } from "@/web3";
+
+
+import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
+import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 
 const InputStyled = styled.div`
     margin-top: ${({ marginTop }) => { return marginTop }};
@@ -20,9 +25,15 @@ const InputStyled = styled.div`
     
 
     .input_box{
+        /* display: grid;
+        grid-template-columns: 1fr max-content;
+        grid-template-areas: "input afterFix"; */
+
         position: relative;
 
         input{
+            /* grid-area: input; */
+
             width: ${({ width }) => { return width }};
             height:${({ height }) => { return height }};
             border: 1px solid rgba(0,0,0,.2);
@@ -32,10 +43,6 @@ const InputStyled = styled.div`
             font-size: 16px;
             padding: 0 20px;
 
-            
-            &::placeholder{
-                color: red;
-            }
 
             &:hover{
                 border: 1px solid rgba(0,0,0,.6);
@@ -61,8 +68,33 @@ const InputStyled = styled.div`
                 border: 1px solid #E43F29;
                 color:  #E43F29;
             }
+        }
 
-            
+        .USD_Price {
+            position: absolute;
+            height: 100%;
+            line-height: 68px;
+            top: 0px;
+            right: 100px;
+        }
+
+        .afterFix{
+            /* grid-area: afterFix; */
+            display: flex;
+            align-items: center;
+            position: absolute;
+            height: 100%;
+            line-height: 68px;
+            top: 0px;
+            right: 10px;
+            padding-left: 10px;
+            border-left: 1px solid rgba(0,0,0,.2);
+
+            img {
+                width: 32px;
+                height: 32px;
+                margin-right: 5px;
+            }
         }
     }
 
@@ -101,7 +133,10 @@ export default function AmountInput({
     minVal,
     lockInput,
     isInteger,
+    afterFix,
+    USD_Price,
 }) {
+    const { chainId } = useActiveWeb3React()
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
     const [value, setValue] = useState(defaultValue || '')
@@ -109,13 +144,35 @@ export default function AmountInput({
     useEffect(() => {
         setValue(minVal)
         onValChange && onValChange(minVal)
+        console.log("minVal", minVal)
         // eslint-disable-next-line
     }, [minVal])
+
+    useEffect(() => {
+        console.log("value", value)
+    }, [value])
 
     const handelChange = (e) => {
         onChange && onChange(e)
         let val = e.target.value
-        setValue(val)
+
+        if (required && val === '') {
+            setError(true)
+            setErrMsg(ErrorStatus.required.tip)
+        }
+        if(val === ""){
+            val = minVal;
+        }
+        if (isInteger) {
+            val = parseInt(val)
+        }
+        if (maxVal && parseFloat(val) > parseFloat(maxVal)) {
+            val = maxVal
+        } else if (minVal && parseFloat(val) < parseFloat(minVal)) {
+            val = minVal
+        }
+
+        val ? setValue(val) : setValue(minVal)
         if (!onValChange) return
         onValChange(val)
     }
@@ -140,7 +197,7 @@ export default function AmountInput({
         } else if (minVal && parseFloat(val) < parseFloat(minVal)) {
             val = minVal
         }
-        setValue(val)
+        val && setValue(val)
         if (!onValChange) return
         onValChange(val)
     }
@@ -162,8 +219,18 @@ export default function AmountInput({
                     onBlur={handelBlur}
                     onFocus={handelFocus}
                     required={required}
-                    value={value}
+                    value={value || ''}
                 />
+                {value!='' && USD_Price && <span className="USD_Price">{USD_Price}</span>}
+                {
+                    afterFix
+                    &&
+                    <p className='afterFix'>
+                        <img src={chainId === 56 ? icon_BNB : icon_ETH_new} alt=""/>
+                        {afterFix}
+                    </p>
+
+                }
             </div>
             {error && <p className='err_msg'>{errMsg}</p>}
         </InputStyled>
