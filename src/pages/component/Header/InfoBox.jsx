@@ -5,8 +5,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import icon_copy from '@assets/images/icon/copy.svg'
 import { myContext } from '@/redux/index.js'
-import inventory_white from './assets/inventory_white.svg'
-import inventory_black from './assets/inventory_black.svg'
+import gallery_white from './assets/Gallery_white.svg'
+import gallery_black from './assets/Gallery_black.svg'
 import brands_white from './assets/brands_white.svg'
 import brands_black from './assets/brands_black.svg'
 import activities_white from './assets/activities_white.svg'
@@ -90,10 +90,10 @@ const InfoBoxStyled = styled.div`
 `
 
 const InfoList = [{
-    name: 'My Inventory',
-    img_white: inventory_white,
-    img_black: inventory_black,
-    route: '/MyInventory'
+    name: 'My Gallery',
+    img_white: gallery_white,
+    img_black: gallery_black,
+    route: '/MyGallery'
 }, {
     name: 'My Brands',
     img_white: brands_white,

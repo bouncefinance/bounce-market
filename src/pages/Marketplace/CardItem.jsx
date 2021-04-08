@@ -81,17 +81,14 @@ const CardItemStyled = styled.div`
                 grid-area: info_top;
                 
                 display: flex;
-                justify-content: center;
+                /* justify-content: center; */
                 align-items: flex-start;
 
                 span {
                     font-family: Helvetica Neue;
                     font-style: normal;
-                    font-weight: 500;
-                    font-size: 16px;
-                    line-height: 130%;
+                    font-weight: 700;
                     color: #000000;
-
                     text-overflow: ellipsis;
                 }
             }
@@ -169,7 +166,7 @@ export function CardItem({ cover, name, price, cardId, poolType, token1 }) {
         if (!active) return
         getPriceByToken1(price, token1)
         // eslint-disable-next-line
-    }, [active])
+    }, [active, token1, price])
 
     const getPriceByToken1 = async (price, token1) => {
         if (!price || !token1) return setNewPrice('--')

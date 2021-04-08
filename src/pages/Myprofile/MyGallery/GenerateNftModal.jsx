@@ -136,15 +136,18 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         showTransferByStatus('')
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
-                                        if(window.location.pathname === "/MyInventory"){
+                                        if(window.location.pathname === "/MyGallery"){
                                             window.location.reload()
                                         }else{
-                                            history.push("/MyInventory")
+                                            history.push("/MyGallery")
                                         }
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
-                                        showTransferByStatus('errorStatus')
+                                        setBtnLock(false);
+                                        setBtnText("Try Again");
+                                        setInputDisable(false);
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                                     })
                             } catch (error) {
                                 console.log('BounceERC721_CT.methods.mintUser', error)
@@ -166,16 +169,20 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
-                                        if(window.location.pathname === "/MyInventory"){
+                                        if(window.location.pathname === "/MyGallery"){
                                             window.location.reload()
                                         }else{
-                                            history.push("/MyInventory")
+                                            history.push("/MyGallery")
                                         }
                                         
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
-                                        showTransferByStatus('errorStatus')
+                                        // showTransferByStatus('errorStatus')
+                                        setBtnLock(false);
+                                        setBtnText("Try Again");
+                                        setInputDisable(false);
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                                     })
                             } catch (error) {
                                 console.log('BounceERC1155_CT.methods.mintUser', error)
@@ -184,7 +191,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     }
 
                 }).catch(err => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Error requesting the server, please try again" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                 })
             })
         // 第三步 调用合约生成 NFT

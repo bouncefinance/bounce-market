@@ -7,7 +7,7 @@ import { useActiveWeb3React } from '@/web3'
 
 import activities_black from '../component/Header/assets/activities_black.svg'
 import brands_black from '../component/Header/assets/brands_black.svg'
-import inventory_black from '../component/Header/assets/inventory_black.svg'
+import gallery_black from '../component/Header/assets/Gallery_black.svg'
 import icon_copy from '@assets/images/icon/copy.svg'
 import icon_liked from '@assets/images/icon/liked.svg'
 import { myContext } from '@/redux/index.js'
@@ -143,9 +143,9 @@ const CommonHeaderStyled = styled.div`
 `
 
 const ItemList = [{
-    name: 'My Inventory',
-    img_black: inventory_black,
-    route: '/MyInventory'
+    name: 'My Gallery',
+    img_black: gallery_black,
+    route: '/MyGallery'
 }, {
     name: 'My Brands',
     img_black: brands_black,
@@ -165,7 +165,7 @@ const ItemList = [{
 }*/]
 
 export default function CommonHeader () {
-    const [curItem, setCurItem] = useState('/MyInventory')
+    const [curItem, setCurItem] = useState('/MyGallery')
     const history = useHistory()
     const { account } = useActiveWeb3React()
     const [isSettingAccount, setIsSettingAccount] = useState(false)

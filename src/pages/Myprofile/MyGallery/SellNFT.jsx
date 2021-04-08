@@ -95,16 +95,16 @@ export default function SellNFT() {
 
 	const NavList = [
 		{
-			title: "My Inventory",
-			route: "/MyInventory",
+			title: "My Gallery",
+			route: "/MyGallery",
 		},
 		{
 			title: ((nftInfo && nftInfo.itemname) || "Item name"),
-			route: "/MyInventory/" + nftId,
+			route: "/MyGallery/" + nftId,
 		},
 		{
 			title: "Sell",
-			route: "/MyInventory/" + nftId + "/Sell",
+			route: "/MyGallery/" + nftId + "/Sell",
 		},
 	];
 
@@ -215,7 +215,7 @@ export default function SellNFT() {
 								unit={directPurchasePrice_Unit}
 								setNewUnit={setFixedSwapUnit}
 								setUnit={set_directPurchasePrice_Unit}
-								notice="A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct tranaction price must be greater than Minimum Bid minimum starting price."
+								notice="A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price."
 								gridArea="Direct_purchase_price"
 								options={unitOptions}
 								fixedSwapUnit={fixedSwap_Unit}
@@ -308,9 +308,9 @@ export default function SellNFT() {
 								setauctionType("setPrice");
 							}}
 						>
-							<span className="auctionType">Set Price</span>
+							<span className="auctionType">Instant sale</span>
 							<span className="saleFeature">
-								Enter the price for which the item will be instantly sold
+								Claim your value and set the price you know you’re worth
 							</span>
 						</button>
 
@@ -326,7 +326,7 @@ export default function SellNFT() {
 						>
 							<span className="auctionType">English Auction</span>
 							<span className="saleFeature">
-								Sell at a highest bid at an auction for the selected time period
+								Sell to the highest bidder for the selected period of time
 							</span>
 						</button>
 					</ButtonGroup>
@@ -375,7 +375,7 @@ const PageBody = styled.div`
 
 const PageBodyRight = styled.div`
 	display: grid;
-	grid-template-rows: 60px 90px 1fr;
+	// grid-template-rows: 60px 90px 1fr;
 	grid-template-areas:
 		"str_SelectSellMethod"
 		"ButtonGroup"
@@ -390,7 +390,7 @@ const PageBodyRight = styled.div`
 		font-size: 34px;
 		text-transform: capitalize;
 		color: #1f191b;
-
+		margin-bottom: 10px;
 		grid-area: str_SelectSellMethod;
 	}
 `;

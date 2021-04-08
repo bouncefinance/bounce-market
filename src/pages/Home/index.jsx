@@ -184,7 +184,7 @@ export default function Index() {
       if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
         const brands = brandsRes.data.data
         const brands_2 = brands.filter(item => {
-          return item.id !== 10 && item.id !== 11
+          return item.id !== 10 && item.id !== 11&& item.id !== 117
         }).slice(0, 4)
         setbrands(brands_2)
         // console.log('---brands----', brands_2)
@@ -222,15 +222,15 @@ export default function Index() {
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          const list = res.data.data.map((item, index) => {
-            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+          const list = pools.map((pool, index) => {
+            const poolInfo = res.data.data.find(item => pool.tokenId === item.id);
             return {
-              ...item,
-              poolType: poolInfo.poolType,
-              poolId: poolInfo.poolId,
-              price: poolInfo.price,
-              token1: poolInfo.token1,
-              createTime: poolInfo.createTime,
+              ...poolInfo,
+              poolType: pool.poolType,
+              poolId: pool.poolId,
+              price: pool.price,
+              createTime: pool.createTime,
+              token1: pool.token1
             }
           })
 
@@ -267,7 +267,7 @@ export default function Index() {
 
       <CardBanner />
 
-      <CardGroup title='Most Popular Items' link='/Marketplace/FineArts' marinTop='64px'>
+      <CardGroup title='Fast movers' link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
           return <PopularItem itemInfo={item} key={index} src={img_example_1} />
         })}
@@ -288,7 +288,7 @@ export default function Index() {
         />
       </div>
 
-      <CardGroup title='Hotest Brands' link='/Brands'>
+      <CardGroup title='Name droppers' link='/Brands'>
         {brands.map((item, index) => {
           return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
         })}

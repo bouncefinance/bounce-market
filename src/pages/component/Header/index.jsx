@@ -153,7 +153,7 @@ export default function Index() {
             }
         })
         /* if (
-            pathName === '/MyInventory' ||
+            pathName === '/MyGallery' ||
             pathName === '/MyActivities' ||
             pathName === '/MyLiked' ||
             pathName === '/MyBrands'
@@ -248,12 +248,12 @@ export default function Index() {
                                     }}
                                 >
                                     <Link to={item.route}>
-                                        <h5>/ {item.name}</h5>
+                                        <h5>{item.name}</h5>
                                     </Link>
                                 </li> : <Tooltip key={item.name} title="Coming soon"><li
                                     style={{ opacity: 0.5 }}
                                 >
-                                    <h5>/ {item.name}</h5>
+                                    <h5>{item.name}</h5>
                                 </li></Tooltip>
                             })}
                         </ul>
