@@ -12,16 +12,15 @@ import MyMarket from './Marketplace/MyMarket'
 import Buy from './Buy/newIndex'
 
 import Brands from './Brands'
-import Brands2 from './Brands/index2'
 import BrandGoods from './BrandGoods'
 import P2P from './P2P'
 import Factory from './Factory'
 import ListNFT from './ListNFT'
 import Page404 from './Page404'
 
-import MyInventory from './Myprofile/MyInventory'
-import MyNFT from './Myprofile/MyInventory/MyNFT'
-import SellNFT from './Myprofile/MyInventory/SellNFT'
+import MyGallery from './Myprofile/MyGallery'
+import MyNFT from './Myprofile/MyGallery/MyNFT'
+import SellNFT from './Myprofile/MyGallery/SellNFT'
 
 import MyBrands from './Myprofile/MyBrands'
 import BrandsByType from './Myprofile/MyBrands/BrandsByType'
@@ -54,7 +53,6 @@ export default function Index() {
                 <Route exact path='/Marketplace/:type/:aucType/:poolId' component={Buy} />
 
                 <Route exact path='/Brands' component={Brands} />
-                <Route exact path='/Brands2' component={Brands2} />
                 <Route exact path='/Brands/:brandId/:type' component={BrandGoods} />
                 <Route exact path='/BrandsGoods/' component={BrandGoods} />
 
@@ -63,9 +61,9 @@ export default function Index() {
                 <Route exact path='/Factory' component={Factory} />
                 <Route exact path='/ListNFT' component={ListNFT} />
 
-                <Route exact path='/MyInventory' component={MyInventory} />
-                <Route exact path='/MyInventory/:nftId' component={MyNFT} />
-                <Route exact path='/MyInventory/:nftId/Sell' component={SellNFT} />
+                <Route exact path='/MyGallery' component={MyGallery} />
+                <Route exact path='/MyGallery/:nftId' component={MyNFT} />
+                <Route exact path='/MyGallery/:nftId/Sell' component={SellNFT} />
 
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyBrands/:brandId/:type' component={BrandsByType} />

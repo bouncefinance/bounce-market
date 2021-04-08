@@ -7,18 +7,19 @@ import { useActiveWeb3React } from '@/web3'
 
 import activities_black from '../component/Header/assets/activities_black.svg'
 import brands_black from '../component/Header/assets/brands_black.svg'
-import inventory_black from '../component/Header/assets/inventory_black.svg'
+import gallery_black from '../component/Header/assets/Gallery_black.svg'
 import icon_copy from '@assets/images/icon/copy.svg'
 import icon_liked from '@assets/images/icon/liked.svg'
 import { myContext } from '@/redux/index.js'
 import SettingAccountModal from './SettingAccountModal'
 import UpdateTopBarImg from './MyBrands/updateTopBarImg'
 import edit_white from '@assets/images/icon/edit_white.svg'
+import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
 
 
 const CommonHeaderStyled = styled.div`
     .top-bg{
-        background: url('https://market-test.bounce.finance/pngfileget/e873aef2157d78c3f1d04b773bedb82c-1616836587.png') center center no-repeat;
+        background: url(${themeBgImg}) center center no-repeat;
         height: 180px;
         background-size: 100%!important;
         position: relative;
@@ -142,9 +143,9 @@ const CommonHeaderStyled = styled.div`
 `
 
 const ItemList = [{
-    name: 'My Inventory',
-    img_black: inventory_black,
-    route: '/MyInventory'
+    name: 'My Gallery',
+    img_black: gallery_black,
+    route: '/MyGallery'
 }, {
     name: 'My Brands',
     img_black: brands_black,
@@ -163,8 +164,8 @@ const ItemList = [{
     route: '/MyP2P'
 }*/]
 
-export default function CommonHeader () {
-    const [curItem, setCurItem] = useState('/MyInventory')
+export default function CommonHeader() {
+    const [curItem, setCurItem] = useState('/MyGallery')
     const history = useHistory()
     const { account } = useActiveWeb3React()
     const [isSettingAccount, setIsSettingAccount] = useState(false)
@@ -217,7 +218,7 @@ export default function CommonHeader () {
                         <OtherButton type='setting' value={'Settings'} onClick={() => {
                             setIsSettingAccount(true)
                         }} />
-                        <OtherButton type='share' value={'Share'} />
+                        {false && <OtherButton type='share' value={'Share'} />}
                     </div>
 
                 </div>

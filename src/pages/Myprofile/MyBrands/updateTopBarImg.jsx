@@ -53,7 +53,7 @@ export default function UpdateTopBarImg (props) {
   const ratio = [1440, 180]
   const [btnLock, setBtnLock] = useState(false)
   const [inputDisable, setInputDisable] = useState(false)
-  const defaultBthText = 'Save And application'
+  const defaultBthText = 'Apply and Save'
   const [btnText, setBtnText] = useState(defaultBthText)
   const [preview, setPreview] = useState(false)
   const { sign_Axios } = useAxios()
@@ -159,6 +159,7 @@ export default function UpdateTopBarImg (props) {
               src={image}
               autoCropArea={1.5}
               minCanvasWidth={500}
+              checkOrientation={false}
               onInitialized={(instance) => {
                 // console.log('init---', cropperRef.cropper)
                 // cropperRef.cropper.cropper.move(1, -1).rotate(45).scale(1, -1)
@@ -214,7 +215,7 @@ export default function UpdateTopBarImg (props) {
           <Button height='48px' width='302px' onClick={() => {
             // setOpen(false)
             setPreview(false)
-          }}>again cropper</Button>
+          }}>Crop again</Button>
           <div className="wrap">
             <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
             {inputDisable && <CircularProgress className="buttonProgress" />}

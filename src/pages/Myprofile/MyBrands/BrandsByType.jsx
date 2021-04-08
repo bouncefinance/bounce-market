@@ -249,7 +249,7 @@ export default function BrandsByType () {
 
     useEffect(() => {
         if (!account) return
-        sign_Axios.post('/api/v2/main/auth/getbrandbyid', { id: parseInt(brandId) })
+        sign_Axios.post('/api/v2/main/getbrandbyid', { id: parseInt(brandId) })
             .then(res => {
                 // console.log(res)
                 if (res.status === 200 && res.data.code === 1) {

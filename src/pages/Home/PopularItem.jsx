@@ -84,7 +84,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
         if(!active) return
         getPriceByToken1(itemInfo.price, itemInfo.token1)
         // eslint-disable-next-line
-    }, [active])
+    }, [active, itemInfo])
 
     const getPriceByToken1 = async (price, token1) => {
         if (!price || !token1) return setNewPrice('--')

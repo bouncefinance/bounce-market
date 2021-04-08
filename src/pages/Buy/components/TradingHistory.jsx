@@ -12,15 +12,28 @@ const useStyles = makeStyles({
   },
 });
 
-const StyledTableCell = withStyles((theme) => ({
+const StyledHeaderCell = withStyles((theme) => ({
   head: {
     backgroundColor: 'rgba(0,0,0,0.06)',
     color: '#1F191B',
+    opacity: 0.5,
+    borderBottom: 0,
   },
   body: {
     fontSize: 14,
   },
 }))(TableCell)
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    color: '#1F191B',
+    opacity: 0.8,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell)
+
 const StyledTableRow = withStyles((theme) => ({
   root: {
     // '&:nth-of-type(odd)': {
@@ -37,12 +50,12 @@ export default function TradingHistory ({ rows = [] }) {
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Event</StyledTableCell>
-            <StyledTableCell>Quantity</StyledTableCell>
-            <StyledTableCell>Price</StyledTableCell>
-            <StyledTableCell>From</StyledTableCell>
-            <StyledTableCell>To</StyledTableCell>
-            <StyledTableCell>Date</StyledTableCell>
+            <StyledHeaderCell>Event</StyledHeaderCell>
+            <StyledHeaderCell>Quantity</StyledHeaderCell>
+            <StyledHeaderCell>Price</StyledHeaderCell>
+            <StyledHeaderCell>From</StyledHeaderCell>
+            <StyledHeaderCell>To</StyledHeaderCell>
+            <StyledHeaderCell>Date</StyledHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>

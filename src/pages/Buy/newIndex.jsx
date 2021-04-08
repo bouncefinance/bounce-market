@@ -13,10 +13,10 @@ import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getContract, useActiveWeb3React } from "@/web3";
 import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
-/* import PlaceBidModal from './components/PlaceBidModal' */
+import PlaceBidModal from './components/PlaceBidModal'
 import { myContext } from '@/redux'
 import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
-
+import { BigNumber } from 'bignumber.js';
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
 import { NumberInput } from '@components/UI-kit'
@@ -264,7 +264,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex () {
+export default function NewIndex() {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { hasApprove_ERC_20 } = useToken()
@@ -286,10 +286,13 @@ export default function NewIndex () {
     const [tokenID, setTokenID] = useState();
     const [externalLink, setExternalLink] = useState();
     const { dispatch } = useContext(myContext);
-    const [lastestBidAmount,setLastestBidAmount] = useState("0");
+    const [lastestBidAmount, setLastestBidAmount] = useState("0");
     const [loadingLoked, setLoadingLocked] = useState(true);
     const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
     const [inputMinPrice, setInputMinPrice] = useState();
+
+    const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false);
+
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
@@ -302,7 +305,7 @@ export default function NewIndex () {
         variables: { poolId: Number(poolId) },
         fetchPolicy: "network-only",
         onCompleted: () => {
-            if(bidData.tradeAuctions.length > 0){
+            if (bidData.tradeAuctions.length > 0) {
                 setLastestBidAmount(bidData.tradeAuctions[0].lastestBidAmount);
             }
         }
@@ -593,18 +596,16 @@ export default function NewIndex () {
                 showTransferByStatus('errorStatus')
             })
     }
-    
-    useEffect(() => {
-        if(poolInfo.amountMin1){
-            setInputMinPrice(parseFloat(weiToNum(poolInfo.amountMin1,poolInfo.token1.decimals)));
-        }
-        if(lastestBidAmount > 0 && poolInfo.token1 ){
-            console.log(parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)));
-            console.log(parseFloat(weiToNum(poolInfo.amountMin1,poolInfo.token1.decimals))*0.05);
-            setInputMinPrice(parseFloat(weiToNum(lastestBidAmount,poolInfo.token1.decimals)) + parseFloat(weiToNum(poolInfo.amountMin1,poolInfo.token1.decimals))*0.05);
-        }
-    }, [ poolInfo.token1,poolInfo.amountMin1,lastestBidAmount])
 
+    useEffect(() => {
+        if (poolInfo.amountMin1) {
+            setInputMinPrice(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)));
+        }
+        if (lastestBidAmount > 0 && poolInfo.token1) {
+            const minNum = new BigNumber(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals))).multipliedBy(0.05)
+            setInputMinPrice(new BigNumber(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals))).plus(minNum));
+        }
+    }, [poolInfo.token1, poolInfo.amountMin1, lastestBidAmount])
 
 
     const renderByAucType = () => {
@@ -615,10 +616,11 @@ export default function NewIndex () {
                     title='Buy Amount'
                     width='100%'
                     isInteger={true}
-                    minVal={inputMinPrice}
+                    // minVal={inputMinPrice}
                     maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
-                    defaultValue={1}
+                    defaultValue={amount}
                     onValChange={(val) => {
+                        if (!val) return
                         setAmount(val)
                     }}
                     disabled={poolInfo.nftType === '1' && false}
@@ -627,8 +629,8 @@ export default function NewIndex () {
                 <div className="bidInfo">
                     <div>
                         <h5>Current price</h5>
-                        <h3>{poolInfo.token1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && ` ( $ ${weiMul(poolInfo.token1.price, weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))} ) `}</span></h3>
+                        <h3>{poolInfo.token1 && amount && poolInfo.amountTotal1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
+                            <span>{poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}</span></h3>
                     </div>
 
                     <div className="amount">
@@ -684,7 +686,7 @@ export default function NewIndex () {
                     </div> 
                 </div> */}
 
-                <NumberInput
+                {/* <NumberInput
                     className='input_amount'
                     title={`I'll make an offer`}
                     width='100%'
@@ -695,13 +697,13 @@ export default function NewIndex () {
                     }}
                     afterFix={poolInfo.token1 && `Balance: ${poolInfo.token1.balance} ${poolInfo.token1.symbol}`}
                     disabled={isLoading || poolInfo.status !== 'Live'}
-                />
+                /> */}
 
                 <div className="btn_group">
                     <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
                         onClick={() => {
-                            handelEnglishAuctionBid()
-                            /* setOpenPlaceBidModal(true) */
+                            /* handelEnglishAuctionBid() */
+                            setOpenPlaceBidModal(true)
                         }
                         }
                     >{btnText}
@@ -780,12 +782,14 @@ export default function NewIndex () {
         const creator = tradePool.creator;
         const total = tradePool.amountTotal0;
         const price = tradePool.price;
+        // console.log(price)
         const offerList = data.poolSwaps.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: format(new Date(item.timestamp * 1000), 'PPPpp'),
             amount: item.swapAmount0,
             price: price,
         }));
+        // console.log(offerList)
         setOfferList(offerList);
         const createList = data.poolCreates.map(item => ({
             event: 'Created',
@@ -816,6 +820,7 @@ export default function NewIndex () {
         }));
         const list = createList.concat(swapList).concat(cancelList)
             .sort((a, b) => b.timestamp - a.timestamp);
+            // console.log(price)
         setHistory(list);
     }
 
@@ -923,7 +928,7 @@ export default function NewIndex () {
                     <div className="container_left">
                         <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
                         <div className="btn_group">
-                            <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}>Share</MaterialButton>
+                            {false&&<MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}>Share</MaterialButton>}
                             <MaterialButton disabled={loadingLoked} onClick={onLiked} variant="contained" className="material-button" startIcon={<img className="button-icon" src={isLike ? icon_full_black : icon_line_white} alt="" />}>Like</MaterialButton>
                         </div>
                     </div>
@@ -988,11 +993,10 @@ export default function NewIndex () {
                                                 <div className="flex Offers-info">
                                                     <p className="name">{item.name}</p>
                                                     <p className="time">{item.time}</p>
-                                                    <p className="amount">{poolInfo.token1 && weiToNum(item.amount, poolInfo.token1.decimals)}</p>
                                                 </div>
                                                 <div className="Offers-price">
-                                                    <span>{poolInfo.token1 && `${poolInfo.token1.symbol}`}</span>
-                                                    <span></span>
+                                                    <span>{poolInfo.token1 && `${poolInfo.token1 && weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`}</span>
+                                                    <p className="amount">{poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}</p>
                                                 </div>
                                             </div>)
                                             :
@@ -1041,7 +1045,7 @@ export default function NewIndex () {
                                     history.map((item, index) => ({
                                         Event: item.event,
                                         Quantity: item.quantity,
-                                        Price: [poolInfo.token1 && `${item.price} ${poolInfo.token1.symbol}`, `($)`],
+                                        Price: [item.price?(poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`):'--', `($)`],
                                         From: getEllipsisAddress(item.from),
                                         To: getEllipsisAddress(item.to),
                                         Date: item.date,
@@ -1054,6 +1058,19 @@ export default function NewIndex () {
             </NewIndexStyled >
             {aucType === AUCTION_TYPE.FixedSwap && <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />}
             <MessageTips open={openMessage} setopen={setopenMessage} />
+            <PlaceBidModal
+                open={openPlaceBidModal}
+                setOpen={setOpenPlaceBidModal}
+                title="Place A Bid"
+                inputMinPrice={inputMinPrice}
+                poolInfo={poolInfo}
+                isLoading={isLoading}
+                onClick={() => {
+                    handelEnglishAuctionBid()
+                }}
+                bidPrice={bidPrice}
+                setBidPrice={setBidPrice}
+            />
         </>
     )
 }
@@ -1093,13 +1110,15 @@ line-height: 15px;
             margin-left: 27px;
             color: rgba(0,0,0,.5);
         }
-        .amount{
-            margin-left: 24px;
-            color: rgba(0,0,0,.5);
-        }
         
     }
     .Offers-price{
+        display: flex;
+        
+        .amount{
+            margin-right: 4px;
+            color: rgba(0,0,0,.5);
+        }
         .price_ETH {
             font-family: Helvetica Neue;
             font-style: normal;

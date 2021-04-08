@@ -1,10 +1,11 @@
 
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
-
+const hostname = window.location.hostname
 
 export const client = new ApolloClient({
-  // uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft',  // rinkby
-  uri: 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc mian
+  uri: hostname.includes('market.bounce.finance') || hostname.includes('127.0.0.1') ?
+    'https://api.thegraph.com/subgraphs/name/winless/bouncenft' :      // bsc main
+    'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc test
   cache: new InMemoryCache(),
 })
 
@@ -31,7 +32,7 @@ export const QueryTradePools = gql`
   }
 `
 
-export const QueryMarketTradePools= gql`
+export const QueryMarketTradePools = gql`
   query xx($contract: String!){
     tradePools (where: {token1: $contract}){
       tokenId
@@ -208,6 +209,7 @@ export const QueryBrandTradeItems = gql`
       price
       createTime
       state
+      token1
     }
     tradeAuctions(where: {tokenId_in: $tokenList}) {
       tokenId
@@ -216,6 +218,7 @@ export const QueryBrandTradeItems = gql`
       amountMin1
       createTime
       state
+      token1
     }
   }
 `

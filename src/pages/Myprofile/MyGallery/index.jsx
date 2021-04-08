@@ -13,9 +13,10 @@ import { SkeletonNFTCards } from '@/pages/component/Skeleton/NFTCard'
 import { AUCTION_TYPE } from '@/utils/const'
 import Category from '../Category'
 
-const MyInventoryStyled = styled.div`
+const MyGalleryStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
+    flex: 1;
     .filterBox{
         margin-top: 32px;
         /* margin-bottom: 50px; */
@@ -46,7 +47,7 @@ export default function Index() {
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
   // eslint-disable-next-line
-  const [type, setType] = useState('image');
+  // const [type, setType] = useState('image');
   const [loading, setLoading] = useState(true)
   // const { tradeData } = useQuery(QueryTradePools)
   const [myNftData, setMyNftData] = useState([])
@@ -141,7 +142,7 @@ export default function Index() {
   return (
     <>
       <CommonHeader />
-      <MyInventoryStyled>
+      <MyGalleryStyled>
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
           {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
           <AddCardItem />
@@ -182,7 +183,7 @@ export default function Index() {
           })}
         </ul>
         {loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
-      </MyInventoryStyled>
+      </MyGalleryStyled>
     </>
   )
 }

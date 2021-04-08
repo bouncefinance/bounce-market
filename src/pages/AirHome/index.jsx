@@ -16,8 +16,9 @@ import { QueryBrandTradeItems, QueryOwnerBrandItems } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
-import { weiToNum } from '@/utils/useBigNumber'
+// import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
+import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -25,7 +26,8 @@ const AirHomeStyled = styled.div`
     .bg_wrapper{
         width: 100%;
         height: 180px;
-        background: linear-gradient(154.16deg, #306AFF 6.12%, #3E74FE 49.44%, #003BD3 89.29%);
+        /* background: linear-gradient(154.16deg, #306AFF 6.12%, #3E74FE 49.44%, #003BD3 89.29%); */
+        background: url(${themeBgImg}) center center no-repeat;
         position: relative;
         background-size: 100%!important;
         button{
@@ -87,7 +89,6 @@ const MarketplaceStyled = styled.div`
         border-bottom: 2px solid rgba(0,0,0,.1);
         li{
             padding: 7px 20px;
-            width: 124px;
             height: 48px;
             display: flex;
             justify-content: center;
@@ -115,7 +116,9 @@ const MarketplaceStyled = styled.div`
 
     .list_wrapper{
         width: 1100px;
-        margin: 0 auto;
+        min-height: 260px;
+        flex: 1;
+        margin: 0 auto 32px auto;
         display: flex;
         flex-wrap: wrap;
 
@@ -168,7 +171,7 @@ export function AirHome() {
   const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
   const run = () => { }
 
-  const { active } = useActiveWeb3React();
+  const { account, active } = useActiveWeb3React();
   const { id, standard, channel, /* type */ } = useParams();
   const { sign_Axios } = useAxios();
 
@@ -199,8 +202,8 @@ export function AirHome() {
 
   const [channelRequestParam, setChannelRequestParam] = useState(
     channel === NavList[0].route ? NavList[0].channelRequestParam :
-    channel === NavList[1].route ? NavList[1].channelRequestParam :
-    NavList[2].channelRequestParam);
+      channel === NavList[1].route ? NavList[1].channelRequestParam :
+        NavList[2].channelRequestParam);
 
   const handleBrandTradeItems = useCallback((pools) => {
     /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
@@ -209,30 +212,33 @@ export function AirHome() {
       category: type,
       channel: channelRequestParam
     })
-    .then(res => {
-      if (res.status === 200 && res.data.code === 1) {
-        const list = res.data.data.map(item => {
-        const poolInfo = pools.find(pool => pool.tokenId === item.id);
-        return {
-          ...item,
-          poolType: poolInfo ? poolInfo.poolType : null,
-          poolId: poolInfo ? poolInfo.poolId : null,
-          price: poolInfo && poolInfo.price && weiToNum(poolInfo.price),
-          createTime: poolInfo && poolInfo.createTime
+      .then(res => {
+        if (res.status === 200 && res.data.code === 1) {
+          const list = res.data.data.map(item => {
+            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            return {
+              ...item,
+              poolType: poolInfo ? poolInfo.poolType : null,
+              poolId: poolInfo ? poolInfo.poolId : null,
+              price: poolInfo && poolInfo.price,
+              createTime: poolInfo && poolInfo.createTime,
+              token1: poolInfo && poolInfo.token1
+            }
+          })
+
+          console.log(list)
+          const result = list.filter(item => {
+            return item.poolId || item.poolId === 0
+          }).sort((a, b) => b.createTime - a.createTime);
+          setItemList(result);
         }
       })
-      const result = list.filter(item => {
-        return item.poolId
-      }).sort((a, b) => b.createTime - a.createTime);
-        setItemList(result);
-      }
-    })
     // eslint-disable-next-line
-  }, [channel, type, tokenList, channelRequestParam ]);
+  }, [channel, type, tokenList, channelRequestParam]);
 
   const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
     variables: { tokenList: tokenList },
-    fetchPolicy:"network-only",
+    fetchPolicy: "network-only",
     onCompleted: () => {
       const tradePools = brandTradeItems.data.tradePools.map(item => ({
         ...item,
@@ -258,7 +264,7 @@ export function AirHome() {
 
   const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
     variables: { owner: brandInfo.owneraddress },
-    fetchPolicy:"network-only",
+    fetchPolicy: "network-only",
     onCompleted: () => {
       handleBrandItems(brandItems.data);
     }
@@ -273,7 +279,7 @@ export function AirHome() {
         const data = res.data.data;
         setBrandInfo(data);
         getBrandItems();
-        if(channel && tokenList.length > 0) {
+        if (channel && tokenList.length > 0) {
           handleBrandTradeItems(pools);
         }
       })
@@ -282,8 +288,8 @@ export function AirHome() {
 
   const renderListByType = (type) => {
     switch (type) {
-      case 'Image':
-        return <ul className={`list_wrapper ${type}`}>
+      case 'FineArts':
+        return <ul className={`list_wrapper ${type}`} style={{ marginBottom: 30 }}>
           {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem
@@ -291,22 +297,36 @@ export function AirHome() {
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.poolId}
-                price={!!item.price ? `${item.price} ETH` : `--`}
+                price={item.price}
+                token1={item.token1}
               />
             </li>
           })}
         </ul>
       default:
-        return
+        return <ul className={`list_wrapper ${type}`} style={{ marginBottom: 30 }}>
+          {itemList.map((item, index) => {
+            return <li key={index}>
+              <CardItem
+                poolType={item.poolType}
+                cover={item.fileurl}
+                name={item.itemname}
+                cardId={item.poolId}
+                price={item.price}
+                token1={item.token1}
+              />
+            </li>
+          })}
+        </ul>
     }
   }
   return <AirHomeStyled>
     <div className="top_bar">
-      <div className='bg_wrapper' style={brandInfo ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
-        <button onClick={() => setOpenUpdateTopBarImg(true)}>
+      <div className='bg_wrapper' style={brandInfo?.bandimgurl ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
+        {brandInfo?.owneraddress && String(brandInfo.owneraddress).toLowerCase() === String(account).toLowerCase() && <button onClick={() => setOpenUpdateTopBarImg(true)}>
           <img src={edit_white} alt="" />
           <p>Change</p>
-        </button>
+        </button>}
       </div>
       <div className="userinfo">
         <img src={/* brandInfo.bandimgurl */brandInfo.imgurl} alt="" />
@@ -338,17 +358,17 @@ export function AirHome() {
             } alt="" />{item.name}</p>
           </li>
         })} */}
-        {NavList.map( nav =>  {
+        {NavList.map(nav => {
           return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
             () => {
               setChannelRequestParam(nav.channelRequestParam)
               history.push(`/AirHome/${id}/${standard}/${nav.route}`)
-            // setChannelRequestParam(item.name)
-          }}>
+              // setChannelRequestParam(item.name)
+            }}>
             <p className="flex flex-center-y"><img src={
               nav.title === NFT_CATEGORY.FineArts ? icon_arts :
-              nav.title === NFT_CATEGORY.Sports ? icon_sport :
-              nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
+                nav.title === NFT_CATEGORY.Sports ? icon_sport :
+                  nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
                     ''
             } alt="" />{nav.title}</p>
           </li>

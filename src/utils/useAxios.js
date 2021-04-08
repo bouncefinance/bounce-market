@@ -5,7 +5,14 @@ import { useWeb3React } from '@web3-react/core'
 import { useEffect, useContext } from 'react';
 import { myContext } from '@/redux/index.js';
 const host = window.location.host
-const Base_URL = host.indexOf('localhost') !== -1 ? 'http://market-test.bounce.finance:11000' : 'https://market-test.bounce.finance'
+const Base_URL =
+    host.includes('market.bounce.finance') ?
+        'https://bounce-market.bounce.finance' :    // BSC Main
+        host.includes('market-stage.bounce.finance') ?
+            'https://market-test.bounce.finance' :  // BSC Test https
+            host.includes('127.0.0.1') ?
+                'https://bounce-market.bounce.finance' :    // BSC Main
+                'http://market-test.bounce.finance:11000'   // BSC Test http 
 // const Base_URL = 'https://bounce-market.bounce.finance'
 
 const signStr = 'Welcome to Bounce!'

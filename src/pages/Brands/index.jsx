@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-import SearchBar from '../component/Header/Search'
+import SearchBar from './SearchBar'
 import { PullRadioBox as DropDownMenu } from '../../components/UI-kit'
 import BrandCard from './BrandCard'
 
@@ -14,9 +14,7 @@ import { SkeletonBrandRowCards } from '../component/Skeleton/Brandrow'
 
 const StyledBrandPage = styled.div`
     width: 1100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex: 1;
 
     margin: 40px auto 0 auto;
 
@@ -27,28 +25,25 @@ const StyledBrandPage = styled.div`
         input {
             width: 821px;
             height: 48px;
-            font-family: Optima;
+            font-family: Helvetica Neue;
             font-style: normal;
-            font-weight: bold;
+            font-weight: 500;
             font-size: 16px;
-            line-height: 19px;
-            text-transform: capitalize;
-            color: #000000;
-            opacity: 0.4;
-            
+            line-height: 20px;
             margin-left: 0;
         }
     }
 
     .BrandCardList {
         margin-top: 32px;
-
+        margin-bottom: 32px;
+        min-height: 336px;
         display: grid;
         grid-gap: 32px;
     }
 `
 
-export default function Index () {
+export default function Index() {
   const { data } = useQuery(QueryBrands);
   const { active } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
@@ -74,13 +69,13 @@ export default function Index () {
               img: item.imgurl,
               brandName: item.brandname,
               profile: item.description,
-              avatar: item.imgurl,
+              avatar: item.ownerimg,
               ownerName: item.ownername,
               standard: item.standard,
               popularweight: item.popularweight,
               owneraddress: item.owneraddress,
-            }))
-            .sort((a, b) => b.popularweight - a.popularweight);
+            })).filter(item => item.id !== 117)
+              .sort((a, b) => b.popularweight - a.popularweight);
             setList(itemList);
             setFilterList(itemList);
             setloding(false)
@@ -89,7 +84,7 @@ export default function Index () {
     }
     // eslint-disable-next-line
   }, [active, data]);
-  
+
   const handleChange = (filterSearch) => {
     const result = list.filter(item => item.brandName.toLowerCase().indexOf(filterSearch) > -1
       || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
@@ -115,7 +110,7 @@ export default function Index () {
         />
       </div>
       {loding && <SkeletonBrandRowCards n={2} />}
-      <div className="BrandCardList">
+      <div className="BrandCardList" style={{ marginBottom: 30 }}>
         {
           filterList.map(
             (cardsInfo, index) => {

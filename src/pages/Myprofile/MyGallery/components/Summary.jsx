@@ -92,9 +92,13 @@ const SummaryWrapper = styled.div`
 			margin-bottom:16px;
 		}
 		.title{
-			font-weight: 500;
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 13px;
+			line-height: 16px;
+			color: #000000;
 			opacity: 0.7;
-			margin-right:4px;
 		}
 		.list{
 			font-family: Helvetica Neue;
@@ -156,7 +160,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 	const [btnLock, setBtnLock] = useState(true);
 	const history = useHistory();
 	const { hasApprove_ERC_721, hasApprove_ERC_1155, isOwner_ERC_721 } = useNftInfo()
-	
+
 	useEffect(() => {
 		if (auctionType === 'setPrice') {
 			if (price && nftInfo) {
@@ -171,7 +175,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				setBtnLock(true)
 			}
 		}
-	}, [auctionType, price, unit, duration, fees, nftInfo,minPrice,maxPrice])
+	}, [auctionType, price, unit, duration, fees, nftInfo, minPrice, maxPrice])
 
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
@@ -219,7 +223,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
-							history.push("/MyInventory");
+							history.push("/MyGallery");
 							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {
@@ -255,7 +259,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
-							history.push("/MyInventory");
+							history.push("/MyGallery");
 							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {
@@ -276,7 +280,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				const _amountMin1 = numToWei(minPrice, newUnit.decimals)
 				const _amountMinIncr1 = numToWei(minIncr, newUnit.decimals)
 				const _amountReserve1 = numToWei(price, newUnit.decimals)
-				const _duration = duration * 60 * 60 * 24
+				const _duration = window.location.hostname.includes('market.bounce.finance') ? duration * 60 * 60 * 24 : duration * 60
 				// const _duration = duration * 60
 				const _onlyBot = false
 
@@ -316,9 +320,9 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
-							history.push("/MyInventory");
+							history.push("/MyGallery");
 							showTransferByStatus('successStatus')
-							
+
 						})
 						.on('error', (err, receipt) => {
 							// setBidStatus(errorStatus)
@@ -355,7 +359,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
-							history.push("/MyInventory");
+							history.push("/MyGallery");
 							showTransferByStatus('successStatus')
 						})
 						.on('error', (err, receipt) => {
@@ -374,12 +378,13 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			</div>
 			<div className="listing">
 				<div className="listingDetail">
-					<p className="list"><span className="title">Listing.</span>
+					<p className="list">
+						<span className="title">Listing.&nbsp;</span>
 						{auctionType === "setPrice" &&
-							<span>Your item will be listed for</span>
+							<span>Your item will be listed for</span>	
 						}
 						{auctionType === "EnglishAuction" &&
-							<span>Your item will be auctioned. The highest bidder will win it as long as their bid is at least 2ETH.</span>
+							<span>Your item will be auctioned. The highest bidder will win it as long as their bid is at least {maxPrice} {unit}.</span>
 						}
 					</p>
 					<span className="listingVal">{price || "0"} {unit}</span>
@@ -393,7 +398,10 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					</div>
 				}
 				<div className="fees">
-					<p className="list"><span className="title">Fees.</span>To Fangible </p>
+					<p className="list">
+						<span className="title">Fees.&nbsp;</span>
+						To Fangible
+					</p>
 					<span className="text2 percentage">{fees}%</span>
 				</div>
 				<Button primary disabled={btnLock} onClick={handelSubmit}>Post your Listing</Button>
