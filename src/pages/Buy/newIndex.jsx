@@ -784,6 +784,7 @@ export default function NewIndex() {
         const creator = tradePool.creator;
         const total = tradePool.amountTotal0;
         const price = tradePool.price;
+        // console.log(price)
         const offerList = data.poolSwaps.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: format(new Date(item.timestamp * 1000), 'PPPpp'),
@@ -1044,7 +1045,7 @@ export default function NewIndex() {
                                     history.map((item, index) => ({
                                         Event: item.event,
                                         Quantity: item.quantity,
-                                        Price: [poolInfo.token1 && `${item.price} ${poolInfo.token1.symbol}`, `($)`],
+                                        Price: [poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`, `($)`],
                                         From: getEllipsisAddress(item.from),
                                         To: getEllipsisAddress(item.to),
                                         Date: item.date,
