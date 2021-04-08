@@ -159,6 +159,7 @@ export default function UpdateTopBarImg (props) {
               src={image}
               autoCropArea={1.5}
               minCanvasWidth={500}
+              checkOrientation={false}
               onInitialized={(instance) => {
                 // console.log('init---', cropperRef.cropper)
                 // cropperRef.cropper.cropper.move(1, -1).rotate(45).scale(1, -1)
