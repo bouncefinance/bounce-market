@@ -215,7 +215,7 @@ export default function SellNFT() {
 								unit={directPurchasePrice_Unit}
 								setNewUnit={setFixedSwapUnit}
 								setUnit={set_directPurchasePrice_Unit}
-								notice="A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct tranaction price must be greater than Minimum Bid minimum starting price."
+								notice="A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price."
 								gridArea="Direct_purchase_price"
 								options={unitOptions}
 								fixedSwapUnit={fixedSwap_Unit}
@@ -375,7 +375,7 @@ const PageBody = styled.div`
 
 const PageBodyRight = styled.div`
 	display: grid;
-	grid-template-rows: 60px 90px 1fr;
+	// grid-template-rows: 60px 90px 1fr;
 	grid-template-areas:
 		"str_SelectSellMethod"
 		"ButtonGroup"
@@ -390,7 +390,7 @@ const PageBodyRight = styled.div`
 		font-size: 34px;
 		text-transform: capitalize;
 		color: #1f191b;
-
+		margin-bottom: 10px;
 		grid-area: str_SelectSellMethod;
 	}
 `;
