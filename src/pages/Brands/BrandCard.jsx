@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { Button } from '@components/UI-kit'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 import { HeadImgFit } from '../component/Other/headImgFit'
+import { ImgFitCover } from '../component/Other/autoStretchBaseWidthOrHeightImg';
 
 const StyledCard = styled.div`
     box-sizing: border-box;
@@ -112,7 +113,7 @@ function BrandCard({img, brandName, profile, avatar, ownerName, id, standard, ow
     return (<LazyLoad height={332}>
         <StyledCard>
             {/* <img src={img} width={540} height={332} alt="" /> */}
-            <AutoStretchBaseWidthOrHeightImg src={img} width={540} height={332} />
+            <ImgFitCover src={img} width={483} height={332} />
             <div className="right">
                 <span className="brandName">{brandName}</span>
                 <p className="profile">{profile}</p>

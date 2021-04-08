@@ -69,7 +69,7 @@ export default function Index () {
               img: item.imgurl,
               brandName: item.brandname,
               profile: item.description,
-              avatar: item.imgurl,
+              avatar: item.ownerimg,
               ownerName: item.ownername,
               standard: item.standard,
               popularweight: item.popularweight,
