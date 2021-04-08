@@ -261,7 +261,7 @@ export default function Index() {
 
       <CardBanner />
 
-      <CardGroup title='Most Popular Items' link='/Marketplace/FineArts' marinTop='64px'>
+      <CardGroup title='Fast movers' link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
           return <PopularItem itemInfo={item} key={index} src={img_example_1} />
         })}
@@ -282,7 +282,7 @@ export default function Index() {
         />
       </div>
 
-      <CardGroup title='Hotest Brands' link='/Brands'>
+      <CardGroup title='Name droppers' link='/Brands'>
         {brands.map((item, index) => {
           return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
         })}

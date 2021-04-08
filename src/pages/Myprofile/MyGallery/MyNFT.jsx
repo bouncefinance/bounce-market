@@ -236,12 +236,12 @@ function MyNFT() {
 
 	const NavList = [
 		{
-			title: "My Inventory",
-			route: "/MyInventory",
+			title: "My Gallery",
+			route: "/MyGallery",
 		},
 		{
 			title: (NFTName || ""),
-			route: "/MyInventory/" + nftId,
+			route: "/MyGallery/" + nftId,
 		},
 	];
 	
@@ -267,8 +267,8 @@ function MyNFT() {
 							width="200px"
 							value="Sell"
 							onClick={() => {
-								 history.push(`/MyInventory/${nftId}/Sell`)
-								// history.push("/MyInventory/Sell");
+								 history.push(`/MyGallery/${nftId}/Sell`)
+								// history.push("/MyGallery/Sell");
 							}}
 						/>
 						{/* <Button width="200px" value="Transfer" /> */}

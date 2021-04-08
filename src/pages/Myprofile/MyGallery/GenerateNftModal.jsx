@@ -136,10 +136,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         showTransferByStatus('')
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
-                                        if(window.location.pathname === "/MyInventory"){
+                                        if(window.location.pathname === "/MyGallery"){
                                             window.location.reload()
                                         }else{
-                                            history.push("/MyInventory")
+                                            history.push("/MyGallery")
                                         }
                                     })
                                     .on('error', (err, receipt) => {
@@ -166,10 +166,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
-                                        if(window.location.pathname === "/MyInventory"){
+                                        if(window.location.pathname === "/MyGallery"){
                                             window.location.reload()
                                         }else{
-                                            history.push("/MyInventory")
+                                            history.push("/MyGallery")
                                         }
                                         
                                     })

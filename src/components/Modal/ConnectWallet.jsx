@@ -85,7 +85,7 @@ export default function ConnectWallet({ open, setOpen }) {
                     <img src={loading_dots} alt="" />
                     <p>Please wait a little...</p>
                 </div> : <div className="content">
-                    <p>To participate in Bounce you first need to connect a wallet. Please select an option below. You can also connect a Ledger via your Metamask.</p>
+                    <p>To get started, connect a wallet. Select an option below or hook in via your Metamask. Don’t have a clue what we’re talking about? Don’t worry. Click here to learn.</p>
                     <ul>
                         <li onClick={() => {
                             onConnect('MetaMask', setIsLoading)
