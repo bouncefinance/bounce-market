@@ -169,7 +169,7 @@ export function CardItem({ cover, name, price, cardId, poolType, token1 }) {
         if (!active) return
         getPriceByToken1(price, token1)
         // eslint-disable-next-line
-    }, [active])
+    }, [active, token1, price])
 
     const getPriceByToken1 = async (price, token1) => {
         if (!price || !token1) return setNewPrice('--')

@@ -218,13 +218,13 @@ export function AirHome() {
               ...item,
               poolType: poolInfo ? poolInfo.poolType : null,
               poolId: poolInfo ? poolInfo.poolId : null,
-              price: poolInfo.price,
+              price: poolInfo && poolInfo.price,
               createTime: poolInfo && poolInfo.createTime,
-              token1: poolInfo.token1
+              token1: poolInfo && poolInfo.token1
             }
           })
 
-          console.log(list)
+          // console.log(list)
           const result = list.filter(item => {
             return item.poolId || item.poolId === 0
           }).sort((a, b) => b.createTime - a.createTime);

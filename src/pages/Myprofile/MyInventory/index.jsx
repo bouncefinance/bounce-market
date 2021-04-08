@@ -47,7 +47,7 @@ export default function Index() {
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
   // eslint-disable-next-line
-  const [type, setType] = useState('image');
+  // const [type, setType] = useState('image');
   const [loading, setLoading] = useState(true)
   // const { tradeData } = useQuery(QueryTradePools)
   const [myNftData, setMyNftData] = useState([])
