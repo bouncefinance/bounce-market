@@ -121,7 +121,7 @@ const nav_list = [{
   route: 'Others'
 }]
 
-export default function Marketplace () {
+export default function Marketplace() {
   const NavList = [
     {
       title: "Fine Arts",
@@ -192,7 +192,7 @@ export default function Marketplace () {
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
-      })).filter(item => item.state !== 1)
+      })).filter(item => item.state !== 1 && item.poolId !== 0)
       // console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);

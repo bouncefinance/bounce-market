@@ -42,7 +42,7 @@ export default function SellNFT() {
 			contract: getUSDTAddress(chainId),
 			icon: icon_USDT,
 			isShow: true,
-			decimals: 6
+			decimals: chainId === 56 ? 18 : 6,
 		},
 		{
 			value: "USDC",
