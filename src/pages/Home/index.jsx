@@ -214,18 +214,21 @@ export default function Index() {
 
     const pools = tradePools.concat(tradeAuctions);
     const list = pools.map(item => item.tokenId);
-
-    sign_Axios.post('/api/v2/main/getitemsbyfilter', {
+    // console.log(list)
+    sign_Axios.post('/api/v2/main/getitemsbyids', {
       ids: list,
-      category: '',
-      channel: ''
+      // category: '',
+      // channel: ''
     })
       .then(res => {
+        
+        // console.log(res.data.data)
         if (res.status === 200 && res.data.code === 1) {
           const list = pools.map((pool, index) => {
             const poolInfo = res.data.data.find(item => pool.tokenId === item.id);
             return {
               ...poolInfo,
+              tokenId: pool.tokenId,
               poolType: pool.poolType,
               poolId: pool.poolId,
               price: pool.price,
@@ -234,6 +237,7 @@ export default function Index() {
             }
           })
 
+          // console.log(list)
           const list_2 = list.sort((a, b) => b.createTime - a.createTime)
           const list_3 = list_2.slice(0, 8)
           // console.log(list_3)
