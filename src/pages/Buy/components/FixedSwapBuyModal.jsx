@@ -12,10 +12,6 @@ import AmountInput from './AmountInput'
 
 import icon_close from "@assets/images/icon/close.svg";
 
-import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
-import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
-
-
 const useStyles = makeStyles((theme) => ({
 	modal: {
 		display: "flex",
@@ -38,7 +34,7 @@ const HeaderStyled = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 30px 32px 24px 38px;
+	padding: 30px 32px 24px 50px;
 
 	h3 {
 		font-size: 34px;

@@ -83,9 +83,10 @@ const InputStyled = styled.div`
             display: flex;
             align-items: center;
             position: absolute;
-            height: 100%;
+            /* height: 100%; */
+            height: 44px;
             line-height: 68px;
-            top: 0px;
+            top: 12px;
             right: 10px;
             padding-left: 10px;
             border-left: 1px solid rgba(0,0,0,.2);
@@ -221,7 +222,7 @@ export default function AmountInput({
                     required={required}
                     value={value || ''}
                 />
-                {value!='' && USD_Price && <span className="USD_Price">{USD_Price}</span>}
+                {value!=='' && USD_Price && <span className="USD_Price">{USD_Price}</span>}
                 {
                     afterFix
                     &&

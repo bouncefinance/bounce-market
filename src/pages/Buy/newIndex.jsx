@@ -11,10 +11,13 @@ import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchB
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getContract, useActiveWeb3React } from "@/web3";
+
 import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
 import PlaceBidModal from './components/PlaceBidModal'
 import FixedSwapBuyModal from './components/FixedSwapBuyModal'
+import BuyNowModal from './components/BuyNowModal'
+
 import { myContext } from '@/redux'
 import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 
@@ -293,6 +296,7 @@ export default function NewIndex() {
     const [inputMinPrice, setInputMinPrice] = useState();
 
     const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false);
+    const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
     const [openFixedSwapBuyModal, setOpenFixedSwapBuyModal] = useState(false);
 
     const updateParams = {
@@ -705,7 +709,7 @@ export default function NewIndex() {
                     </div> 
                 </div> */}
 
-                {/* <NumberInput
+                <NumberInput
                     className='input_amount'
                     title={`I'll make an offer`}
                     width='100%'
@@ -716,7 +720,7 @@ export default function NewIndex() {
                     }}
                     afterFix={poolInfo.token1 && `Balance: ${poolInfo.token1.balance} ${poolInfo.token1.symbol}`}
                     disabled={isLoading || poolInfo.status !== 'Live'}
-                /> */}
+                />
 
                 <div className="btn_group">
                     <Button
@@ -740,7 +744,8 @@ export default function NewIndex() {
                             disabled={isLoading || poolInfo.status !== 'Live'}
                             height='48px'
                             onClick={() => {
-                                handelEnglishAuctionBid(poolInfo.amountMax1)
+                                /* handelEnglishAuctionBid(poolInfo.amountMax1) */
+                                setOpenBuyNowModal(true)
                             }}
                         >
                             Buy now for {weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)} {poolInfo.token1.symbol}
@@ -1102,7 +1107,21 @@ export default function NewIndex() {
                 }}
                 bidPrice={bidPrice}
                 setBidPrice={setBidPrice}
+                USD_Price={poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}
             />
+
+            <BuyNowModal
+                open={openBuyNowModal}
+                setOpen={setOpenBuyNowModal}
+                title="Checkout"
+                poolInfo={poolInfo}
+                nftInfo={nftInfo}
+                isLoading={isLoading}
+                onClick={() => {
+                    handelEnglishAuctionBid(poolInfo.amountMax1)
+                }}
+            />
+
             <FixedSwapBuyModal
                 open={openFixedSwapBuyModal}
                 setOpen={setOpenFixedSwapBuyModal}
@@ -1115,7 +1134,6 @@ export default function NewIndex() {
                 }}
                 amount={amount}
                 setAmount={setAmount}
-                USD_Price={poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}
             />
         </>
     )
