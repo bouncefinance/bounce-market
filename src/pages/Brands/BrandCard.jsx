@@ -3,7 +3,7 @@ import LazyLoad from 'react-lazy-load';
 import styled from 'styled-components'
 import { Link, useHistory } from 'react-router-dom'
 import { Button } from '@components/UI-kit'
-import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
+// import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 import { HeadImgFit } from '../component/Other/headImgFit'
 import { ImgFitCover } from '../component/Other/autoStretchBaseWidthOrHeightImg';
 
