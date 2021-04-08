@@ -820,6 +820,7 @@ export default function NewIndex() {
         }));
         const list = createList.concat(swapList).concat(cancelList)
             .sort((a, b) => b.timestamp - a.timestamp);
+            // console.log(price)
         setHistory(list);
     }
 
@@ -927,7 +928,7 @@ export default function NewIndex() {
                     <div className="container_left">
                         <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
                         <div className="btn_group">
-                            <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}>Share</MaterialButton>
+                            {false&&<MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}>Share</MaterialButton>}
                             <MaterialButton disabled={loadingLoked} onClick={onLiked} variant="contained" className="material-button" startIcon={<img className="button-icon" src={isLike ? icon_full_black : icon_line_white} alt="" />}>Like</MaterialButton>
                         </div>
                     </div>
@@ -1044,7 +1045,7 @@ export default function NewIndex() {
                                     history.map((item, index) => ({
                                         Event: item.event,
                                         Quantity: item.quantity,
-                                        Price: [poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`, `($)`],
+                                        Price: [item.price?(poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`):'--', `($)`],
                                         From: getEllipsisAddress(item.from),
                                         To: getEllipsisAddress(item.to),
                                         Date: item.date,

@@ -226,7 +226,7 @@ export function AirHome() {
             }
           })
 
-          // console.log(list)
+          console.log(list)
           const result = list.filter(item => {
             return item.poolId || item.poolId === 0
           }).sort((a, b) => b.createTime - a.createTime);
