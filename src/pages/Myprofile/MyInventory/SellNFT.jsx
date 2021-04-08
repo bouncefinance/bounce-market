@@ -7,7 +7,7 @@ import SelectDuration from "./components/SelectDuration";
 import Summary from "./components/Summary";
 import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 
-import pic_NFT1 from "./assets/pic_NFT1.svg";
+// import pic_NFT1 from "./assets/pic_NFT1.svg";
 import useNftInfo from "@/utils/useToken";
 import { useParams } from "react-router-dom";
 import { useActiveWeb3React } from "@/web3";
@@ -290,7 +290,7 @@ export default function SellNFT() {
 
 			<PageBody>
 				<PageBodyLeft>
-					<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl || pic_NFT1)} />
+					<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl)} />
 				</PageBodyLeft>
 				<PageBodyRight>
 					<span className="str_SelectSellMethod">

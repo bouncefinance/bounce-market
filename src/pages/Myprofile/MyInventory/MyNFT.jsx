@@ -10,6 +10,7 @@ import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 import NFTInfo from "./components/NFTInfo";
 
 import icon_copy from "@assets/images/icon/copy.svg";
+import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
 /* import pic_NFT1 from "./assets/pic_NFT1.svg"; */
 
 const Page = styled.div`
@@ -248,7 +249,7 @@ function MyNFT() {
 		<Page>
 			<BreadcrumbNav marginTop="24px" NavList={NavList} />
 			<PageBody className="sellNFT">
-				<img className="NFTImg" src={imgURL} alt="" />
+				<AutoStretchBaseWidthOrHeightImg src={ imgURL } width={400} height={400} />
 
 				<PageBodyRight className="right">
 					<span className="NFTName">{NFTName}</span>
