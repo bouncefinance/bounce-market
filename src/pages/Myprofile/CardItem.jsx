@@ -10,7 +10,7 @@ import ConfirmCancelModal from '../Buy/components/ConfirmCancelModal'
 import useToken from '@/utils/useToken'
 
 import { weiToNum } from '@/utils/useBigNumber'
-import GenerateNftModal from './MyInventory/GenerateNftModal'
+import GenerateNftModal from './MyGallery/GenerateNftModal'
 import { AUCTION_TYPE } from '@/utils/const'
 
 const CardItemStyled = styled.div`
@@ -161,7 +161,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
     return (
         <>
             <CardItemStyled>
-                <div className="img_wrapper" onClick={() => history.push("/MyInventory/" + nftId)}>
+                <div className="img_wrapper" onClick={() => history.push("/MyGallery/" + nftId)}>
                     <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />
                 </div>
                 <div className="content">
@@ -169,7 +169,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                     <p>{itemname}</p>
                     <span>{user}</span>
                 </div> */}
-                    <div className="info-box" onClick={() => history.push("/MyInventory/" + nftId)}>
+                    <div className="info-box" onClick={() => history.push("/MyGallery/" + nftId)}>
                         <h5 className="name">{itemname}</h5>
                         <div className="line"></div>
                         <div className="flex flex-space-x">
@@ -183,7 +183,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                             <Button
                                 value={'Sell'}
                                 primary
-                                onClick={() => { history.push(`/MyInventory/${nftId}/Sell`) }}
+                                onClick={() => { history.push(`/MyGallery/${nftId}/Sell`) }}
                             />
                             {/* <Button value={'Make Listed'} /> */}
                         </div> : poolInfo.poolType === AUCTION_TYPE.FixedSwap ? <div className='button_group'>

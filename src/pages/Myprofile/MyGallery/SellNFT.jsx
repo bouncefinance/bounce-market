@@ -95,16 +95,16 @@ export default function SellNFT() {
 
 	const NavList = [
 		{
-			title: "My Inventory",
-			route: "/MyInventory",
+			title: "My Gallery",
+			route: "/MyGallery",
 		},
 		{
 			title: ((nftInfo && nftInfo.itemname) || "Item name"),
-			route: "/MyInventory/" + nftId,
+			route: "/MyGallery/" + nftId,
 		},
 		{
 			title: "Sell",
-			route: "/MyInventory/" + nftId + "/Sell",
+			route: "/MyGallery/" + nftId + "/Sell",
 		},
 	];
 
@@ -308,9 +308,9 @@ export default function SellNFT() {
 								setauctionType("setPrice");
 							}}
 						>
-							<span className="auctionType">Set Price</span>
+							<span className="auctionType">Instant sale</span>
 							<span className="saleFeature">
-								Enter the price for which the item will be instantly sold
+								Claim your value and set the price you know you’re worth
 							</span>
 						</button>
 
@@ -326,7 +326,7 @@ export default function SellNFT() {
 						>
 							<span className="auctionType">English Auction</span>
 							<span className="saleFeature">
-								Sell at a highest bid at an auction for the selected time period
+								Sell to the highest bidder for the selected period of time
 							</span>
 						</button>
 					</ButtonGroup>

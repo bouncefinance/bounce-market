@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import FactoryCard from './FactoryCard'
-import GenerateNFTModal from '../Myprofile/MyInventory/GenerateNftModal'
+import GenerateNFTModal from '../Myprofile/MyGallery/GenerateNftModal'
 import CreateBrandModal from '../Myprofile/MyBrands/AddNewBrandstModal'
 import AddNewItemModal from './AddNewItemModal'
 import ListNFTModal from './ListNFTModal'
@@ -92,7 +92,7 @@ function Factory() {
                 <FactoryCard
                     img={pic_Generate}
                     title="Generate your NFT"
-                    description={<p className="description">You can turn contents in to NFTs without creating your own store or brand</p>}
+                    description={<p className="description">You don’t need a store or brand to get started. Generate NFTs and go from there.</p>}
                     button={<GenerateButton />}
                 />
                 <FactoryCard

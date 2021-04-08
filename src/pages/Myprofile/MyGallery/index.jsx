@@ -13,7 +13,7 @@ import { SkeletonNFTCards } from '@/pages/component/Skeleton/NFTCard'
 import { AUCTION_TYPE } from '@/utils/const'
 import Category from '../Category'
 
-const MyInventoryStyled = styled.div`
+const MyGalleryStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
     flex: 1;
@@ -142,7 +142,7 @@ export default function Index() {
   return (
     <>
       <CommonHeader />
-      <MyInventoryStyled>
+      <MyGalleryStyled>
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
           {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
           <AddCardItem />
@@ -183,7 +183,7 @@ export default function Index() {
           })}
         </ul>
         {loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
-      </MyInventoryStyled>
+      </MyGalleryStyled>
     </>
   )
 }
