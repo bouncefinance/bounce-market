@@ -1120,6 +1120,7 @@ export default function NewIndex() {
                 onClick={() => {
                     handelEnglishAuctionBid(poolInfo.amountMax1)
                 }}
+                price={weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)}
             />
 
             <FixedSwapBuyModal

@@ -90,13 +90,18 @@ const ModalContent = styled.div`
 	}
 
 	.img_n_price {
-		opacity: 0.2;
-		border: 1px solid #000000;
+		border: 1px solid rgba(0,0,0,0.2);
 		box-sizing: border-box;
 		height: 68px;
 		padding: 12px 20px 12px 20px;
 
+		display: flex;
+		justify-content: space-between;
+
 		.left {
+			display: flex;
+			align-items: center;
+
 			.NFTName {
 				font-family: Helvetica Neue;
 				font-style: normal;
@@ -104,10 +109,15 @@ const ModalContent = styled.div`
 				font-size: 16px;
 				line-height: 130.5%;
 				color: #1f191b;
+
+				margin-left: 12px;
 			}
 		}
 
 		.right {
+			display: flex;
+			align-items: center;
+
 			font-family: Helvetica Neue;
 			font-style: normal;
 			font-weight: normal;
@@ -116,6 +126,7 @@ const ModalContent = styled.div`
 
 			.NFTPrice {
 				font-size: 16px;
+				margin-right: 8px;
 			}
 
 			.NFTUSDPrice {
@@ -171,6 +182,7 @@ export default function ModalBox({
 	nftInfo,
 	isLoading,
 	onClick,
+	price,
 }) {
 	const classes = useStyles();
 
@@ -228,7 +240,7 @@ export default function ModalBox({
 								</span>
 							</div>
 							<div className="right">
-								<span className="NFTPrice">0,0799 ETH</span>
+								<span className="NFTPrice">{price} {poolInfo.token1.symbol}</span>
 								<span className="NFTUSDPrice">($10,24)</span>
 							</div>
 						</div>
