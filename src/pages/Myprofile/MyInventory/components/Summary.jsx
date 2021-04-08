@@ -92,9 +92,13 @@ const SummaryWrapper = styled.div`
 			margin-bottom:16px;
 		}
 		.title{
-			font-weight: 500;
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 13px;
+			line-height: 16px;
+			color: #000000;
 			opacity: 0.7;
-			margin-right:4px;
 		}
 		.list{
 			font-family: Helvetica Neue;
@@ -374,12 +378,13 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			</div>
 			<div className="listing">
 				<div className="listingDetail">
-					<p className="list"><span className="title">Listing.</span>
+					<p className="list">
+						<span className="title">Listing.&nbsp;</span>
 						{auctionType === "setPrice" &&
-							<span>Your item will be listed for</span>
+							<span>Your item will be listed for</span>	
 						}
 						{auctionType === "EnglishAuction" &&
-							<span>Your item will be auctioned. The highest bidder will win it as long as their bid is at least 2ETH.</span>
+							<span>Your item will be auctioned. The highest bidder will win it as long as their bid is at least {maxPrice} {unit}.</span>
 						}
 					</p>
 					<span className="listingVal">{price || "0"} {unit}</span>
@@ -393,7 +398,10 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					</div>
 				}
 				<div className="fees">
-					<p className="list"><span className="title">Fees.</span>To Fangible </p>
+					<p className="list">
+						<span className="title">Fees.&nbsp;</span>
+						To Fangible
+					</p>
 					<span className="text2 percentage">{fees}%</span>
 				</div>
 				<Button primary disabled={btnLock} onClick={handelSubmit}>Post your Listing</Button>
