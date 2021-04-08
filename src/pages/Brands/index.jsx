@@ -43,7 +43,7 @@ const StyledBrandPage = styled.div`
     }
 `
 
-export default function Index () {
+export default function Index() {
   const { data } = useQuery(QueryBrands);
   const { active } = useActiveWeb3React();
   const { sign_Axios } = useAxios();
@@ -69,13 +69,13 @@ export default function Index () {
               img: item.imgurl,
               brandName: item.brandname,
               profile: item.description,
-              avatar: item.imgurl,
+              avatar: item.ownerimg,
               ownerName: item.ownername,
               standard: item.standard,
               popularweight: item.popularweight,
               owneraddress: item.owneraddress,
-            }))
-            .sort((a, b) => b.popularweight - a.popularweight);
+            })).filter(item => item.id !== 117)
+              .sort((a, b) => b.popularweight - a.popularweight);
             setList(itemList);
             setFilterList(itemList);
             setloding(false)
@@ -84,7 +84,7 @@ export default function Index () {
     }
     // eslint-disable-next-line
   }, [active, data]);
-  
+
   const handleChange = (filterSearch) => {
     const result = list.filter(item => item.brandName.toLowerCase().indexOf(filterSearch) > -1
       || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
@@ -110,7 +110,7 @@ export default function Index () {
         />
       </div>
       {loding && <SkeletonBrandRowCards n={2} />}
-      <div className="BrandCardList" style={{marginBottom: 30}}>
+      <div className="BrandCardList" style={{ marginBottom: 30 }}>
         {
           filterList.map(
             (cardsInfo, index) => {

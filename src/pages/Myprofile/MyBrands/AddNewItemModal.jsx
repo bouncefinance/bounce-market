@@ -126,6 +126,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
+                                        window.location.reload();
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
                                     })
@@ -155,6 +156,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
+                                        window.location.reload();
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
                                     })

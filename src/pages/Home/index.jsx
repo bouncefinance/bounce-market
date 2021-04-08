@@ -6,7 +6,7 @@ import PopularItem from './PopularItem'
 import BrandsItem from './BrandsItem'
 // import RequestsItem from './RequestsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
-import img_banner from '@assets/images/banner.svg'
+import img_banner from '@assets/images/banner2.png'
 import img_example_1 from '@assets/images/example_1.svg'
 // import img_alpaca_city from '@assets/images/alpaca_city.svg'
 import two_setting from './assets/two-setting.svg'
@@ -56,6 +56,7 @@ const HomeStyled = styled.div`
       height: 280px;
       box-sizing: border-box;
       background-color: #000;
+      position: relative;
 
       .banner_img{
         width: 1100px;
@@ -64,8 +65,17 @@ const HomeStyled = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-
+      .content{
+          margin: auto;
+          position: relative;
+          z-index: 1;
+          text-align: center;
+        }
+        .bg{
+          position: absolute;
+          left: 0px;
+          top: 0px;
+        }
         h1{
           width: 517px;
           color: #fff;
@@ -80,7 +90,7 @@ const HomeStyled = styled.div`
           border: 1px solid #FFFFFF;
           font-weight: 700;
           color: #fff;
-          background-color:#000;
+          background-color:rgba(0,0,0,0);
           cursor: pointer;
           margin-top: 24px;
           a{
@@ -89,6 +99,11 @@ const HomeStyled = styled.div`
         }
       }
     }
+      @media screen and (min-width: 1500px){
+        .banner_wrapper{
+          background-size: 100%!important;
+        }
+      }
   }
 
   .bottom_banner{
@@ -169,7 +184,7 @@ export default function Index() {
       if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
         const brands = brandsRes.data.data
         const brands_2 = brands.filter(item => {
-          return item.id !== 10 && item.id !== 11
+          return item.id !== 10 && item.id !== 11&& item.id !== 117
         }).slice(0, 4)
         setbrands(brands_2)
         // console.log('---brands----', brands_2)
@@ -207,15 +222,15 @@ export default function Index() {
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          const list = res.data.data.map((item, index) => {
-            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+          const list = pools.map((pool, index) => {
+            const poolInfo = res.data.data.find(item => pool.tokenId === item.id);
             return {
-              ...item,
-              poolType: poolInfo.poolType,
-              poolId: poolInfo.poolId,
-              price: poolInfo.price,
-              token1: poolInfo.token1,
-              createTime: poolInfo.createTime,
+              ...poolInfo,
+              poolType: pool.poolType,
+              poolId: pool.poolId,
+              price: pool.price,
+              createTime: pool.createTime,
+              token1: pool.token1
             }
           })
 
@@ -237,23 +252,14 @@ export default function Index() {
   return (
     <HomeStyled>
       <div className="banner">
-        {/* <ul>
-          {banner_Nav.map((item) => {
-            return <li key={item.name}><Link to={`/Marketplace/${item.name}`}>{item.name}</Link></li>
-          })}
-        </ul> */}
-        <div className="banner_wrapper">
+        <div className="banner_wrapper" style={{ background: `url(${img_banner}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', }}>
           <div className='banner_img'>
-            <div className='left'>
-              <h1>On Bounce you will find
-                    unique content for every taste</h1>
+            <div className='content'>
+              <h1>Create and Find
+                  unique content with Fangible</h1>
               <button>
                 <Link to="/Marketplace">Explore</Link>
               </button>
-            </div>
-
-            <div className="right">
-              <img src={img_banner} alt="" />
             </div>
           </div>
         </div>
@@ -261,7 +267,7 @@ export default function Index() {
 
       <CardBanner />
 
-      <CardGroup title='Most Popular Items' link='/Marketplace/FineArts' marinTop='64px'>
+      <CardGroup title='Fast movers' link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
           return <PopularItem itemInfo={item} key={index} src={img_example_1} />
         })}
@@ -282,7 +288,7 @@ export default function Index() {
         />
       </div>
 
-      <CardGroup title='Hotest Brands' link='/Brands'>
+      <CardGroup title='Name droppers' link='/Brands'>
         {brands.map((item, index) => {
           return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
         })}

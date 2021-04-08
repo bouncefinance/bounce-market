@@ -31,7 +31,7 @@ const Page = styled.div`
 
 		.right {
 			display: grid;
-			grid-template-rows: 44px 56px 100px 28px 37px 1fr;
+			// grid-template-rows: 44px 56px 70px 28px 37px 1fr;
 			align-items: start;
 
 			.NFTName {
@@ -41,13 +41,14 @@ const Page = styled.div`
 				font-size: 34px;
 				line-height: 41px;
 				color: #000000;
+				margin-bottom:10px;
 			}
 
 			.account {
 				display: flex;
 				align-items: center;
 				margin-top: 5px;
-
+				margin-bottom:20px;
 				p {
 					font-size: 16px;
 					line-height: 20.88px;
@@ -87,7 +88,7 @@ const PageBody = styled.div`
 
 const PageBodyRight = styled.div`
 	display: grid;
-	grid-template-rows: 44px 56px 100px 28px 37px 1fr;
+	// grid-template-rows: 44px 56px 100px 28px 37px 1fr;
 	align-items: start;
 	grid-template-areas:
 		"ImgName"
@@ -149,7 +150,7 @@ const PageBodyRight = styled.div`
 		align-items: center;
 		color: #1f191b;
 		opacity: 0.5;
-
+		margin: 20px 0;
 		grid-area: DescriptionTitle;
 	}
 
@@ -188,6 +189,7 @@ function MyNFT() {
 	const [creator, setCreator] = useState();
 	const [externalLink, setExternalLink] = useState();
 	const [imgURL, setImgURL] = useState();
+	const [description, setDescription] = useState();
 	const { dispatch } = useContext(myContext);
 	/* const NFTInfoList = [
 		{ title: "Description", content: "An irreplaceable girl" },
@@ -221,6 +223,7 @@ function MyNFT() {
 						setCreator(NFTInfoList.owneraddress);
 						setExternalLink(NFTInfoList.externallink);
 						setImgURL(NFTInfoList.fileurl);
+						setDescription(NFTInfoList.description || "")
 					} else {
 						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
 					}
@@ -236,12 +239,12 @@ function MyNFT() {
 
 	const NavList = [
 		{
-			title: "My Inventory",
-			route: "/MyInventory",
+			title: "My Gallery",
+			route: "/MyGallery",
 		},
 		{
 			title: (NFTName || ""),
-			route: "/MyInventory/" + nftId,
+			route: "/MyGallery/" + nftId,
 		},
 	];
 	
@@ -267,14 +270,14 @@ function MyNFT() {
 							width="200px"
 							value="Sell"
 							onClick={() => {
-								 history.push(`/MyInventory/${nftId}/Sell`)
-								// history.push("/MyInventory/Sell");
+								 history.push(`/MyGallery/${nftId}/Sell`)
+								// history.push("/MyGallery/Sell");
 							}}
 						/>
 						{/* <Button width="200px" value="Transfer" /> */}
 					</div>
 
-					<span className="description">Description</span>
+					<span className="description">{description}</span>
 
 					{/*<span className="descriptionContent">
 						{descriptionContent}

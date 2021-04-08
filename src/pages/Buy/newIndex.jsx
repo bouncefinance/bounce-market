@@ -20,7 +20,7 @@ import BuyNowModal from './components/BuyNowModal'
 
 import { myContext } from '@/redux'
 import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
-
+import { BigNumber } from 'bignumber.js';
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
 import { NumberInput } from '@components/UI-kit'
@@ -613,12 +613,10 @@ export default function NewIndex() {
             setInputMinPrice(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)));
         }
         if (lastestBidAmount > 0 && poolInfo.token1) {
-            console.log(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals)));
-            console.log(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) * 0.05);
-            setInputMinPrice(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals)) + parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) * 0.05);
+            const minNum = new BigNumber(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals))).multipliedBy(0.05)
+            setInputMinPrice(new BigNumber(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals))).plus(minNum));
         }
     }, [poolInfo.token1, poolInfo.amountMin1, lastestBidAmount])
-
 
 
     const renderByAucType = () => {
@@ -629,11 +627,11 @@ export default function NewIndex() {
                     title='Buy Amount'
                     width='100%'
                     isInteger={true}
-                    minVal={inputMinPrice}
+                    // minVal={inputMinPrice}
                     maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
-                    defaultValue={1}
+                    defaultValue={amount}
                     onValChange={(val) => {
-                        if(!val) return
+                        if (!val) return
                         setAmount(val)
                     }}
                     disabled={poolInfo.nftType === '1' && false}
@@ -822,12 +820,14 @@ export default function NewIndex() {
         const creator = tradePool.creator;
         const total = tradePool.amountTotal0;
         const price = tradePool.price;
+        // console.log(price)
         const offerList = data.poolSwaps.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: format(new Date(item.timestamp * 1000), 'PPPpp'),
             amount: item.swapAmount0,
             price: price,
         }));
+        // console.log(offerList)
         setOfferList(offerList);
         const createList = data.poolCreates.map(item => ({
             event: 'Created',
@@ -1032,8 +1032,8 @@ export default function NewIndex() {
                                                     <p className="time">{item.time}</p>
                                                 </div>
                                                 <div className="Offers-price">
-                                                    <p className="amount">{poolInfo.token1 && weiToNum(item.amount, poolInfo.token1.decimals)}</p>
-                                                    <span>{poolInfo.token1 && `${poolInfo.token1.symbol}`}</span>
+                                                    <span>{poolInfo.token1 && `${poolInfo.token1 && weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`}</span>
+                                                    <p className="amount">{poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}</p>
                                                 </div>
                                             </div>)
                                             :
@@ -1082,7 +1082,7 @@ export default function NewIndex() {
                                     history.map((item, index) => ({
                                         Event: item.event,
                                         Quantity: item.quantity,
-                                        Price: [poolInfo.token1 && `${item.price} ${poolInfo.token1.symbol}`, `($)`],
+                                        Price: [poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`, `($)`],
                                         From: getEllipsisAddress(item.from),
                                         To: getEllipsisAddress(item.to),
                                         Date: item.date,

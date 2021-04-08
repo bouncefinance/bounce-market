@@ -193,16 +193,15 @@ export default function Marketplace() {
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
       }))
-      .filter(item => item.state !== 1 && item.poolId !== 0)
+        .filter(item => item.state !== 1 && item.poolId !== 0)
 
-      console.log(tradeAuctions)
       const pools = tradePools.concat(tradeAuctions);
       const list = pools.map(item => item.tokenId);
       // console.log(pools)
 
       setLength(list.length);
       setLoding(true)
-      // console.log(channel)
+      // console.log(list)
       // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
@@ -211,9 +210,10 @@ export default function Marketplace() {
       })
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
+
+            console.log(res.data.data)
             const list = res.data.data.map((item, index) => {
               const poolInfo = pools.find(pool => pool.tokenId === item.id);
-
               return {
                 ...item,
                 poolType: poolInfo.poolType,
@@ -245,7 +245,7 @@ export default function Marketplace() {
 
   const renderListByType = (type) => {
     switch (type) {
-      case 'Image':
+      case 'FineArts':
         return <ul className={`list_wrapper ${type}`}>
           {filterList.map((item, index) => {
             return <li key={index}>
@@ -269,7 +269,8 @@ export default function Marketplace() {
               <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
-                cardId={item.id}
+                cardId={item.poolId}
+                nftId={item.id}
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}

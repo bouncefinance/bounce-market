@@ -18,6 +18,7 @@ import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 // import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
+import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -25,7 +26,8 @@ const AirHomeStyled = styled.div`
     .bg_wrapper{
         width: 100%;
         height: 180px;
-        background: linear-gradient(154.16deg, #306AFF 6.12%, #3E74FE 49.44%, #003BD3 89.29%);
+        /* background: linear-gradient(154.16deg, #306AFF 6.12%, #3E74FE 49.44%, #003BD3 89.29%); */
+        background: url(${themeBgImg}) center center no-repeat;
         position: relative;
         background-size: 100%!important;
         button{
@@ -320,7 +322,7 @@ export function AirHome() {
   }
   return <AirHomeStyled>
     <div className="top_bar">
-      <div className='bg_wrapper' style={brandInfo ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
+      <div className='bg_wrapper' style={brandInfo?.bandimgurl ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
         {brandInfo?.owneraddress && String(brandInfo.owneraddress).toLowerCase() === String(account).toLowerCase() && <button onClick={() => setOpenUpdateTopBarImg(true)}>
           <img src={edit_white} alt="" />
           <p>Change</p>
