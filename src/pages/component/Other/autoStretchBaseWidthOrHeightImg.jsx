@@ -27,7 +27,7 @@ div{
   }
 }
 `
-export function AutoStretchBaseWidthOrHeightImg ({ src='', width, height }) {
+export function AutoStretchBaseWidthOrHeightImg({ src, width, height }) {
   const [imgShow, setImgShow] = useState(true)
   const [imgLoding, setImgLoding] = useState(true)
   return <AutoStretchBaseWidthOrHeightImgStyled>
@@ -43,7 +43,7 @@ export function AutoStretchBaseWidthOrHeightImg ({ src='', width, height }) {
   </AutoStretchBaseWidthOrHeightImgStyled>
 }
 
-export function ImgFitCover ({ src='', width, height }) {
+export function ImgFitCover({ src, width, height }) {
   const [imgShow, setImgShow] = useState(true)
   const [imgLoding, setImgLoding] = useState(true)
   return <AutoStretchBaseWidthOrHeightImgStyled>
