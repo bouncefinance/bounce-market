@@ -56,7 +56,7 @@ const HomeStyled = styled.div`
       height: 280px;
       box-sizing: border-box;
       background-color: #000;
-      position: relative;
+      /* position: relative; */
 
       .banner_img{
         width: 1100px;
@@ -77,7 +77,7 @@ const HomeStyled = styled.div`
           top: 0px;
         }
         h1{
-          width: 517px;
+          /* width: 517px; */
           color: #fff;
           font-size: 38px;
           line-height: 46.13px;
@@ -255,8 +255,10 @@ export default function Index() {
         <div className="banner_wrapper" style={{ background: `url(${img_banner}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', }}>
           <div className='banner_img'>
             <div className='content'>
-              <h1>Create and Find
-                  unique content with Fangible</h1>
+              <h1>
+                <p>We make it easy to trade in creativity.</p>
+                <p>For fans, artists and collectors.</p>
+                  </h1>
               <button>
                 <Link to="/Marketplace">Explore</Link>
               </button>
