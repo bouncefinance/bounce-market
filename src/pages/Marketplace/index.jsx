@@ -201,7 +201,7 @@ export default function Marketplace() {
 
       setLength(list.length);
       setLoding(true)
-      // console.log(channel)
+      // console.log(list)
       // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
@@ -211,16 +211,16 @@ export default function Marketplace() {
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
 
-
-            const list = pools.map((pool, index) => {
-              const poolInfo = res.data.data.find(item => pool.tokenId === item.id);
+            console.log(res.data.data)
+            const list = res.data.data.map((item, index) => {
+              const poolInfo = pools.find(pool => pool.tokenId === item.id);
               return {
-                ...poolInfo,
-                poolType: pool.poolType,
-                poolId: pool.poolId,
-                price: pool.price,
-                createTime: pool.createTime,
-                token1: pool.token1
+                ...item,
+                poolType: poolInfo.poolType,
+                poolId: poolInfo.poolId,
+                price: poolInfo.price,
+                createTime: poolInfo.createTime,
+                token1: poolInfo.token1
               }
             })
               .sort((a, b) => b.createTime - a.createTime);

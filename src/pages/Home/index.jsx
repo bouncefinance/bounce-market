@@ -184,7 +184,7 @@ export default function Index() {
       if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
         const brands = brandsRes.data.data
         const brands_2 = brands.filter(item => {
-          return item.id !== 10 && item.id !== 11
+          return item.id !== 10 && item.id !== 11&& item.id !== 117
         }).slice(0, 4)
         setbrands(brands_2)
         // console.log('---brands----', brands_2)
