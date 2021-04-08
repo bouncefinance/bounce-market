@@ -16,7 +16,7 @@ import ConfirmCancelModal from './components/ConfirmCancelModal'
 import PlaceBidModal from './components/PlaceBidModal'
 import { myContext } from '@/redux'
 import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
-
+import { BigNumber } from 'bignumber.js';
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
 import { NumberInput } from '@components/UI-kit'
@@ -602,12 +602,10 @@ export default function NewIndex() {
             setInputMinPrice(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)));
         }
         if (lastestBidAmount > 0 && poolInfo.token1) {
-            console.log(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals)));
-            console.log(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) * 0.05);
-            setInputMinPrice(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals)) + parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) * 0.05);
+            const minNum =  new BigNumber(parseFloat(weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals))).multipliedBy(0.05)  
+            setInputMinPrice( new BigNumber(parseFloat(weiToNum(lastestBidAmount, poolInfo.token1.decimals))).plus(minNum) );
         }
     }, [poolInfo.token1, poolInfo.amountMin1, lastestBidAmount])
-
 
 
     const renderByAucType = () => {
