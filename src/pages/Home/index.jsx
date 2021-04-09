@@ -238,9 +238,10 @@ export default function Index() {
             }
           })
 
-          // console.log(list)
           const list_2 = list.sort((a, b) => b.createTime - a.createTime)
           const list_3 = list_2.slice(0, 8)
+          
+          console.log(list_3)
           // console.log(list_3)
           // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
           setItemList(list_3);

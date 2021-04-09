@@ -180,7 +180,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
 			// Fixswap NFT
-			const _name = nftInfo.itemname
+			const _name = String(nftInfo.itemname).substr(0,30)
 			const _token0 = nftInfo.contractaddress
 			// const _token1 = ZERO_ADDRESS
 			const _token1 = newUnit.contract
@@ -232,7 +232,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 						})
 				} else if (nftInfo.standard === 2) {
 					// approve
-					console.log(amount, price)
+					// console.log(amount, price)
 
 					const _amountTotal0 = amount
 					const _amountTotal1 = weiMul(numToWei(price, newUnit.decimals), amount)
@@ -272,7 +272,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			// console.log(unit)
 			try {
 				// Fixswap NFT
-				const _name = nftInfo.itemname
+				const _name = String(nftInfo.itemname).substr(0,30)
 				const _token0 = nftInfo.contractaddress
 				const _token1 = newUnit.contract
 				const _tokenId = nftInfo.id

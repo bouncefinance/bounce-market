@@ -17,7 +17,7 @@ import icon_sport from '@assets/images/icon/sport.svg'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
-import { QueryMarketTradePools } from '@/utils/apollo'
+import { QueryMarketTradePools,QueryMarketTradePools_0 } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
@@ -145,11 +145,18 @@ export default function Marketplace() {
   // const { exportErc20Info } = useToken()
 
   const [getpollsVariables, _setGetPollsVariables] = useState({ contract: ZERO_ADDRESS })
+  const [getpollsMethods, _setGetPollsMethods] = useState(QueryMarketTradePools)
+
   const setGetPollsVariables = (v) => {
     // console.log(v)
+    if(!v.contract){
+      _setGetPollsMethods(QueryMarketTradePools_0)
+    }else{
+      _setGetPollsMethods(QueryMarketTradePools)
+    }
     _setGetPollsVariables(v)
   }
-  const { data } = useQuery(QueryMarketTradePools, { variables: getpollsVariables })
+  const { data } = useQuery(getpollsMethods, { variables: getpollsVariables })
 
 
   const { sign_Axios } = useAxios();
@@ -180,7 +187,9 @@ export default function Marketplace() {
 
     if (chainId) {
       // console.log(getCoinList(chainId))
-      setCoinList(getCoinList(chainId).filter(item => item.contract))
+      setCoinList([{
+        value: 'All'
+      }, ...getCoinList(chainId).filter(item => item.contract)])
     }
     if (data) {
       // console.log(data)
@@ -201,7 +210,7 @@ export default function Marketplace() {
 
       setLength(list.length);
       setLoding(true)
-      // console.log(list)
+      // console.log(pools)
       // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
@@ -210,19 +219,29 @@ export default function Marketplace() {
       })
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
+            // const list = res.data.data.map((item, index) => {
+            //   const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            //   return {
+            //     ...item,
+            //     poolType: poolInfo.poolType,
+            //     poolId: poolInfo.poolId,
+            //     price: poolInfo.price,
+            //     createTime: poolInfo.createTime,
+            //     token1: poolInfo.token1
+            //   }
+            // })
 
-            console.log(res.data.data)
-            const list = res.data.data.map((item, index) => {
-              const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            const list = pools.map((item, index) => {
+              const poolInfo = res.data.data.find(r => item.tokenId === r.id);
               return {
-                ...item,
-                poolType: poolInfo.poolType,
-                poolId: poolInfo.poolId,
-                price: poolInfo.price,
-                createTime: poolInfo.createTime,
-                token1: poolInfo.token1
+                ...poolInfo,
+                poolType: item.poolType,
+                poolId: item.poolId,
+                price: item.price,
+                createTime: item.createTime,
+                token1: item.token1
               }
-            })
+            }).filter(item => item.fileurl)
               .sort((a, b) => b.createTime - a.createTime);
             setTokenList(list);
             setFilterList(list);
@@ -332,7 +351,11 @@ export default function Marketplace() {
           // console.log(item)
         }} />
 
-        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'} width={'205px'} options={coinList} defaultValue={chainId === 56 ? 'BNB' : 'ETH'} onChange={(item) => {
+        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'} 
+        width={'205px'} options={coinList} 
+        // defaultValue={chainId === 56 ? 'BNB' : 'ETH'} 
+        defaultValue={'All'} 
+        onChange={(item) => {
           // console.log(item)
           if (item) {
             setLoding(false)
