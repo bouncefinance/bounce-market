@@ -123,11 +123,12 @@ export default function useToken() {
                 price
             }
         }
-        let BounceERC20_CT =  getContract(library, BounceERC20.abi, tokenAddr)
-        
+        let BounceERC20_CT = getContract(library, BounceERC20.abi, tokenAddr)
+
         const decimals = await BounceERC20_CT.methods.decimals().call()
         const symbol = await BounceERC20_CT.methods.symbol().call()
         const balanceOf = await BounceERC20_CT.methods.balanceOf(account).call()
+
         if (flag) {
             price = await queryPrice(symbol)
         }
@@ -164,6 +165,8 @@ export default function useToken() {
             code = 'auction'
         } else if (String(tokenSymbol).toLowerCase() === 'btc') {
             code = 'bitcoin'
+        } else if (String(tokenSymbol).toLowerCase() === 'usdt' || String(tokenSymbol).toLowerCase() === 'busd' || String(tokenSymbol).toLowerCase() === 'usdc') {
+            return 1
         }
         const res = await axios.get('https://dncapi.bqrank.net/api/v2/Coin/market_ticker?page=1&pagesize=1&code=' + code)
         if (res.data.code === 200) {

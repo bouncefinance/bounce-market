@@ -27,9 +27,10 @@ div{
   }
 }
 `
-export function AutoStretchBaseWidthOrHeightImg ({ src, width, height }) {
+export function AutoStretchBaseWidthOrHeightImg({ src, width, height }) {
   const [imgShow, setImgShow] = useState(true)
   const [imgLoding, setImgLoding] = useState(true)
+
   return <AutoStretchBaseWidthOrHeightImgStyled>
     <div style={{ width: `${width}px`, height: `${height}px`, backgroundImage: `url(${errorImg})` }}>
       {imgShow && <img width={width} height={height} src={src} alt="" onError={() => {
@@ -43,6 +44,21 @@ export function AutoStretchBaseWidthOrHeightImg ({ src, width, height }) {
   </AutoStretchBaseWidthOrHeightImgStyled>
 }
 
+export function ImgFitCover({ src, width, height }) {
+  const [imgShow, setImgShow] = useState(true)
+  const [imgLoding, setImgLoding] = useState(true)
+  return <AutoStretchBaseWidthOrHeightImgStyled>
+    <div style={{ width: `${width}px`, height: `${height}px`, backgroundImage: `url(${errorImg})` }}>
+      {imgShow && <img style={{ objectFit: 'cover' }} width={width} height={height} src={src} alt="" onError={() => {
+        setImgShow(false)
+        setImgLoding(false)
+      }} onLoad={() => {
+        setImgLoding(false)
+      }} />}
+      {imgLoding && <div className="img-loading"></div>}
+    </div>
+  </AutoStretchBaseWidthOrHeightImgStyled>
+}
 
 // export function AutoStretchBaseWidthOrHeightImg ({ src, width, height }) {
 //   const [imgWidth, setImgWidth] = useState('auto')
