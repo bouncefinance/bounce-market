@@ -108,7 +108,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
                     <p className="type">
                         {itemInfo.poolType && (itemInfo.poolType === "english-auction" ? "Top Bid" : "Price")}
                     </p>
-                    <p className="tag">{itemInfo.poolId}</p>
+                    <p className="tag">{`# ${itemInfo.id}`}</p>
                 </div>
                 <h4 className="price">{newPrice}</h4>
             </div>
