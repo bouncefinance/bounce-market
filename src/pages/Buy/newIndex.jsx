@@ -85,6 +85,7 @@ const NewIndexStyled = styled.div`
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                word-break: break-all;
             }
 
             .seller{
@@ -394,11 +395,11 @@ export default function NewIndex () {
                         setTokenSymbol(NFTInfoList.itemsymbol);
                         setExternalLink(NFTInfoList.externallink);
                     } else {
-                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                     }
                 })
                 .catch((err) => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                 });
         };
         if (!active || !nftId) return;
