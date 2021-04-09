@@ -494,6 +494,7 @@ export default function BrandsByType () {
                         width='620px'
                         required={true}
                         marginTop={0}
+                        maxLength={32}
                         lockInput={inputDisable}
                         defaultValue={editFormData.brandname}
                         onValChange={(brandname) => {

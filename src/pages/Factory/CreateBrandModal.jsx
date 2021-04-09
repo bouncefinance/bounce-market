@@ -74,6 +74,7 @@ function CreateBrandModal({ open, setOpen }) {
                     width='620px'
                     required={true}
                     marginTop={0}
+                    maxLength={32}
                 />
 
                 <TextInput
