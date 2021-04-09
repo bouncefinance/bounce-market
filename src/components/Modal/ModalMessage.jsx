@@ -1,4 +1,4 @@
-import React,{useEffect, useState, useContext} from 'react';
+import React,{ useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import IconButton from '@material-ui/core/IconButton';
@@ -56,21 +56,25 @@ const useStyles = makeStyles((theme) => ({
 export default function ModalMessage() {
   const classes = useStyles();
   const {state, dispatch} = useContext(myContext);
-  const [closeTime, setCloseTime] = useState(5000)
-  useEffect(() => {
-    if (state.modelTimer) {
-      setCloseTime(parseFloat(state.modelTimer));
-    }
-  }, [state])
   let timer;
   if(timer){
     clearTimeout(timer);
   }
-  timer = setTimeout(() => {
-    if(state.showMessageModal){
-      dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:""});
-    }
-  }, closeTime);
+  if(state.modelTimer){
+    timer = setTimeout(() => {
+      if(state.showMessageModal){
+        dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:"",modelTimer:5000});
+      }
+    }, state.modelTimer);
+  }else{
+    timer = setTimeout(() => {
+      if(state.showMessageModal){
+        dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:"",modelTimer:5000});
+      }
+    }, 5000);
+  }
+  
+
   const openNewWeb= ()=>{
     if(state.modelOpenUrl){
       window.open(state.modelOpenUrl);
@@ -89,7 +93,7 @@ export default function ModalMessage() {
                 color="inherit"
                 size="small"
                 onClick={() => {
-                    dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:""});
+                    dispatch({type: 'Modal_Message', showMessageModal: false,modelType:'',modelMessage:"",modelTimer:5000});
                 }}
                 >
                 <CloseIcon className={classes.close} fontSize="inherit"  />

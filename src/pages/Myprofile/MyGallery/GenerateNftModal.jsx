@@ -135,7 +135,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         showTransferByStatus('')
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Congratulations. Your NFTs have been generated." });
                                         if(window.location.pathname === "/MyGallery"){
                                             window.location.reload()
                                         }else{
@@ -168,7 +168,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Congratulations. Your NFTs have been generated." });
                                         if(window.location.pathname === "/MyGallery"){
                                             window.location.reload()
                                         }else{
@@ -208,6 +208,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     required={true}
                     marginTop={0}
                     inputDisable={inputDisable}
+                    maxLength={32}
                     onValChange={(val) => {
                         setFormData({ ...formData, Name: val })
                     }}

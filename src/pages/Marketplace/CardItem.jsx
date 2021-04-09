@@ -81,15 +81,16 @@ const CardItemStyled = styled.div`
                 grid-area: info_top;
                 width: 228px;
                 display: flex;
-                /* justify-content: center; */
+                justify-content: center;
                 align-items: flex-start;
 
                 span {
                     font-family: Helvetica Neue;
                     font-style: normal;
-                    font-weight: 700;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 130%;
                     color: #000000;
-
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -241,7 +242,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem({ cover, name, price, cardId, poolType }) {
+export function VideoCardItem({ cover, name, price, cardId, poolType,nftId }) {
 
     return (<LazyLoad width={262} height={408}>
         <VideoCardItemStyled>

@@ -215,6 +215,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         required={true}
                         marginTop={0}
                         lockInput={inputDisable}
+                        maxLength={32}
                         onValChange={(val) => {
                             setFormData({ ...formData, Brand_Name: val })
                         }}

@@ -89,6 +89,7 @@ const NewIndexStyled = styled.div`
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                word-break: break-all;
             }
 
             .seller{
@@ -400,11 +401,11 @@ export default function NewIndex () {
                         setTokenSymbol(NFTInfoList.itemsymbol);
                         setExternalLink(NFTInfoList.externallink);
                     } else {
-                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                     }
                 })
                 .catch((err) => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                 });
         };
         if (!active || !nftId) return;
@@ -822,7 +823,8 @@ export default function NewIndex () {
         }));
         setOfferList(offerList);
         const createList = data.poolCreates.map(item => ({
-            event: 'Created',
+            // event: 'Created',
+            event: 'List',
             quantity: total,
             price: price,
             from: getEllipsisAddress(ZERO_ADDRESS),
@@ -865,8 +867,11 @@ export default function NewIndex () {
     const handleAuction = (data) => {
         const tradePool = data.tradeAuctions[0];
         // if(!tradePool) return  setHistory([]);
+        
+        console.log('auctionCreates',tradePool)
         const creator = tradePool.creator;
         const total = tradePool.tokenAmount0;
+        const price = tradePool.amountMin1;
         const offerLiist = data.auctionBids.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: format(new Date(item.timestamp * 1000), 'PPPpp'),
@@ -877,9 +882,10 @@ export default function NewIndex () {
         // console.log(offerLiist)
         setOfferList(offerLiist);
         const createList = data.auctionCreates.map(item => ({
-            event: 'Created',
+            // event: 'Created',
+            event: 'List',
             quantity: total,
-            price: '',
+            price: price,
             from: getEllipsisAddress(ZERO_ADDRESS),
             to: getEllipsisAddress(creator),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
