@@ -17,7 +17,7 @@ import icon_sport from '@assets/images/icon/sport.svg'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
-import { QueryMarketTradePools } from '@/utils/apollo'
+import { QueryMarketTradePools,QueryMarketTradePools_0 } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
@@ -145,11 +145,18 @@ export default function Marketplace() {
   // const { exportErc20Info } = useToken()
 
   const [getpollsVariables, _setGetPollsVariables] = useState({ contract: ZERO_ADDRESS })
+  const [getpollsMethods, _setGetPollsMethods] = useState(QueryMarketTradePools)
+
   const setGetPollsVariables = (v) => {
     // console.log(v)
+    if(!v.contract){
+      _setGetPollsMethods(QueryMarketTradePools_0)
+    }else{
+      _setGetPollsMethods(QueryMarketTradePools)
+    }
     _setGetPollsVariables(v)
   }
-  const { data } = useQuery(QueryMarketTradePools, { variables: getpollsVariables })
+  const { data } = useQuery(getpollsMethods, { variables: getpollsVariables })
 
 
   const { sign_Axios } = useAxios();
@@ -180,7 +187,9 @@ export default function Marketplace() {
 
     if (chainId) {
       // console.log(getCoinList(chainId))
-      setCoinList(getCoinList(chainId).filter(item => item.contract))
+      setCoinList([{
+        value: 'All'
+      }, ...getCoinList(chainId).filter(item => item.contract)])
     }
     if (data) {
       // console.log(data)
@@ -342,7 +351,11 @@ export default function Marketplace() {
           // console.log(item)
         }} />
 
-        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'} width={'205px'} options={coinList} defaultValue={chainId === 56 ? 'BNB' : 'ETH'} onChange={(item) => {
+        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'} 
+        width={'205px'} options={coinList} 
+        // defaultValue={chainId === 56 ? 'BNB' : 'ETH'} 
+        defaultValue={'All'} 
+        onChange={(item) => {
           // console.log(item)
           if (item) {
             setLoding(false)

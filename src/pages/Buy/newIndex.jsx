@@ -866,8 +866,11 @@ export default function NewIndex () {
     const handleAuction = (data) => {
         const tradePool = data.tradeAuctions[0];
         // if(!tradePool) return  setHistory([]);
+        
+        console.log('auctionCreates',tradePool)
         const creator = tradePool.creator;
         const total = tradePool.tokenAmount0;
+        const price = tradePool.amountMin1;
         const offerLiist = data.auctionBids.map(item => ({
             name: getEllipsisAddress(item.sender),
             time: format(new Date(item.timestamp * 1000), 'PPPpp'),
@@ -881,7 +884,7 @@ export default function NewIndex () {
             // event: 'Created',
             event: 'List',
             quantity: total,
-            price: '',
+            price: price,
             from: getEllipsisAddress(ZERO_ADDRESS),
             to: getEllipsisAddress(creator),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
