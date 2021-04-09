@@ -7,7 +7,7 @@ import SelectDuration from "./components/SelectDuration";
 import Summary from "./components/Summary";
 import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 
-// import pic_NFT1 from "./assets/pic_NFT1.svg";
+import pic_NFT1 from "./assets/pic_NFT1.svg";
 import useNftInfo from "@/utils/useToken";
 import { useParams } from "react-router-dom";
 import { useActiveWeb3React } from "@/web3";
@@ -42,7 +42,7 @@ export default function SellNFT() {
 			contract: getUSDTAddress(chainId),
 			icon: icon_USDT,
 			isShow: true,
-			decimals: chainId === 56 ? 18 : 6,
+			decimals: 6
 		},
 		{
 			value: "USDC",
@@ -55,20 +55,17 @@ export default function SellNFT() {
 
 	const duration_Options = [
 		{
-			value: 3,
-		},
-		{
 			value: 5,
 		},
 		{
-			value: 7,
-		},
-		{
-			value: 14,
+			value: 15,
 		},
 		{
 			value: 30,
-		}
+		},
+		{
+			value: 90,
+		},
 	];
 
 	const fees = "1";
@@ -95,16 +92,16 @@ export default function SellNFT() {
 
 	const NavList = [
 		{
-			title: "My Gallery",
-			route: "/MyGallery",
+			title: "My Inventory",
+			route: "/MyInventory",
 		},
 		{
 			title: ((nftInfo && nftInfo.itemname) || "Item name"),
-			route: "/MyGallery/" + nftId,
+			route: "/MyInventory/" + nftId,
 		},
 		{
 			title: "Sell",
-			route: "/MyGallery/" + nftId + "/Sell",
+			route: "/MyInventory/" + nftId + "/Sell",
 		},
 	];
 
@@ -113,18 +110,18 @@ export default function SellNFT() {
 		setInitNftInfo(nftId);
 		// eslint-disable-next-line
 	}, [active]);
-
+	
 	const setInitNftInfo = async (nftId) => {
 		const info = await exportNftInfo(nftId);
-
+		
 		// console.log(info); 
 		setNftId(info);
 	};
 
 	useEffect(() => {
-		if ((directPurchasePrice && ((directPurchasePrice.charAt(directPurchasePrice.length - 1) === '.') || (parseInt(directPurchasePrice) === 0 && directPurchasePrice.charAt(directPurchasePrice.length - 1) === '0'))) ||
+		if ((directPurchasePrice && ((directPurchasePrice.charAt(directPurchasePrice.length - 1) === '.' ) || (parseInt(directPurchasePrice) === 0 && directPurchasePrice.charAt(directPurchasePrice.length - 1) === '0'))) ||
 			(reservePrice && ((reservePrice.charAt(reservePrice.length - 1) === '.') || (parseInt(reservePrice) === 0 && reservePrice.charAt(reservePrice.length - 1) === '0'))) ||
-			(minimumBid && ((minimumBid.charAt(minimumBid.length - 1) === '.') || (parseInt(minimumBid) === 0 && minimumBid.charAt(minimumBid.length - 1) === '0')))) {
+			(minimumBid && ((minimumBid.charAt(minimumBid.length - 1) === '.' ) || (parseInt(minimumBid) === 0 && minimumBid.charAt(minimumBid.length - 1) === '0')))) {
 			return false;
 		}
 
@@ -215,12 +212,12 @@ export default function SellNFT() {
 								unit={directPurchasePrice_Unit}
 								setNewUnit={setFixedSwapUnit}
 								setUnit={set_directPurchasePrice_Unit}
-								notice="A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price."
+								notice="A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct tranaction price must be greater than Minimum Bid minimum starting price."
 								gridArea="Direct_purchase_price"
 								options={unitOptions}
 								fixedSwapUnit={fixedSwap_Unit}
 							/>
-
+							
 							<InputPrice
 								className="InputPrice Reserve_price"
 								title="Reserve price"
@@ -249,19 +246,19 @@ export default function SellNFT() {
 								className="Instructions"
 								width="540px"
 								layDownItems={[
-									{
-										value:
-											"Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:",
-									},
-									{
-										value:
-											"To initialize your account for making sell orders, which only needs to be done once for your account.",
-									},
-									{
-										value:
-											"To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.",
-									},
-								]}
+								{
+									value:
+										"Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:",
+								},
+								{
+									value:
+										"To initialize your account for making sell orders, which only needs to be done once for your account.",
+								},
+								{
+									value:
+										"To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.",
+								},
+							]}
 							/>
 						</RightItemsOnEnglishAuction>
 						<Summary
@@ -283,17 +280,17 @@ export default function SellNFT() {
 				return;
 		}
 	};
-
+	
 	return (
 		<Page>
-			<BreadcrumbNav marginTop={"24px"} NavList={NavList} />
+			<BreadcrumbNav marginTop={"24px"} NavList={NavList}/>
 
 			<PageBody>
 				<PageBodyLeft>
-					<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl)} />
+					<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl || pic_NFT1)} />
 				</PageBodyLeft>
 				<PageBodyRight>
-					<span className="itemName">
+					<span className="str_SelectSellMethod">
 						{nftInfo && (nftInfo.itemname || 'Select your sell method')}
 					</span>
 
@@ -308,9 +305,9 @@ export default function SellNFT() {
 								setauctionType("setPrice");
 							}}
 						>
-							<span className="auctionType">Instant sale</span>
+							<span className="auctionType">Set Price</span>
 							<span className="saleFeature">
-								Claim your value and set the price you know you’re worth
+								Enter the price for which the item will be instantly sold
 							</span>
 						</button>
 
@@ -326,7 +323,7 @@ export default function SellNFT() {
 						>
 							<span className="auctionType">English Auction</span>
 							<span className="saleFeature">
-								Sell to the highest bidder for the selected period of time
+								Sell at a highest bid at an auction for the selected time period
 							</span>
 						</button>
 					</ButtonGroup>
@@ -375,25 +372,23 @@ const PageBody = styled.div`
 
 const PageBodyRight = styled.div`
 	display: grid;
-	// grid-template-rows: 60px 90px 1fr;
+	grid-template-rows: 60px 90px 1fr;
 	grid-template-areas:
-		"itemName"
+		"str_SelectSellMethod"
 		"ButtonGroup"
 		"RightItemsOnSetPrice"
 		"Summary"
 		;
 
-	span.itemName {
+	span.str_SelectSellMethod {
 		font-family: Helvetica Neue;
 		font-style: normal;
 		font-weight: 700;
 		font-size: 34px;
+		text-transform: capitalize;
 		color: #1f191b;
-		margin-bottom: 10px;
-		grid-area: itemName;
-		width: 500px;
-		overflow: hidden;
-		text-overflow: ellipsis;
+
+		grid-area: str_SelectSellMethod;
 	}
 `;
 
