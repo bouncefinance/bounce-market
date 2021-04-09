@@ -3,12 +3,12 @@ import { ConnectedRouter } from 'connected-react-router';
 import intl from 'react-intl-universal';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { locales } from '../../../locales';
+import { locales } from '../../../i18n';
 import { QueryLoadingAbsolute } from '../QueryLoading/QueryLoading';
 import { ReactReduxContext } from 'react-redux';
 import { mainTheme } from '../../../themes/mainTheme';
 import { historyInstance } from '../../../common/utils/historyInstance';
-import { useLocale } from '../../../locales/utils/useLocale';
+import { useLocale } from '../../../i18n/utils/useLocale';
 
 interface IAppBaseProps {
   children: ReactNode;

@@ -1,5 +1,5 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { Locale } from '../../modules/locales/types/locale';
+import { Locale } from '../../modules/i18n/types/locale';
 import {
   Payload,
   createActionPayload,

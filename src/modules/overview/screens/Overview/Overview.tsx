@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Typography } from '@material-ui/core';
-import { t } from '../../../locales/utils/intl';
+import { t } from '../../../i18n/utils/intl';
 
 export const Overview = () => {
   return (

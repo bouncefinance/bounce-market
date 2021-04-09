@@ -1,4 +1,4 @@
-import { Locale } from '../../modules/locales/types/locale';
+import { Locale } from '../../modules/i18n/types/locale';
 import { createReducer } from 'redux-smart-actions';
 import { ISetLocalePayload, UserActions } from '../actions/UserActions';
 import { PayloadAction } from '../../modules/common/types/action';
