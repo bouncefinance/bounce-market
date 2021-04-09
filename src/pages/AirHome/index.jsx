@@ -257,9 +257,11 @@ export function AirHome() {
 
   const handleBrandItems = (data) => {
     const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
-    const tokenList = brands.tokenList.map(item => item.tokenId);
-    setTokenList(tokenList);
-    getBrandTradeItems();
+    if(brands && brands.tokenList){
+      const tokenList = brands.tokenList.map(item => item.tokenId);
+      setTokenList(tokenList);
+      getBrandTradeItems();
+     }
   }
 
   const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
