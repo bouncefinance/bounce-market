@@ -392,6 +392,9 @@ const PageBodyRight = styled.div`
 		color: #1f191b;
 		margin-bottom: 10px;
 		grid-area: str_SelectSellMethod;
+		width: 500px;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 `;
 
