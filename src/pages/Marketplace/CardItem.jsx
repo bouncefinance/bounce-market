@@ -158,7 +158,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId, poolType, token1 }) {
+export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }) {
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const { active } = useActiveWeb3React()
@@ -196,7 +196,7 @@ export function CardItem({ cover, name, price, cardId, poolType, token1 }) {
                     </div>
                     <div className="info_bottom">
                         <span className="type">{poolType === 'fixed-swap' ? 'Price' : 'Top Bid'}</span>
-                        <span className="cardId"># {cardId}</span>
+                        <span className="cardId"># {nftId}</span>
                         <span className="price">{newPrice}</span>
                     </div>
                 </div>

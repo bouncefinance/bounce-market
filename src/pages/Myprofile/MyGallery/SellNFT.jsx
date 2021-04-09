@@ -390,12 +390,10 @@ const PageBodyRight = styled.div`
 		font-size: 34px;
 		color: #1f191b;
 		margin-bottom: 10px;
-
-		white-space: nowrap;
+		grid-area: itemName;
+		width: 500px;
 		overflow: hidden;
 		text-overflow: ellipsis;
-
-		grid-area: itemName;
 	}
 `;
 
