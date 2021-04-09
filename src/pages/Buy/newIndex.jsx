@@ -790,7 +790,8 @@ export default function NewIndex () {
         }));
         setOfferList(offerList);
         const createList = data.poolCreates.map(item => ({
-            event: 'Created',
+            // event: 'Created',
+            event: 'List',
             quantity: total,
             price: price,
             from: getEllipsisAddress(ZERO_ADDRESS),
@@ -845,7 +846,8 @@ export default function NewIndex () {
         // console.log(offerLiist)
         setOfferList(offerLiist);
         const createList = data.auctionCreates.map(item => ({
-            event: 'Created',
+            // event: 'Created',
+            event: 'List',
             quantity: total,
             price: '',
             from: getEllipsisAddress(ZERO_ADDRESS),

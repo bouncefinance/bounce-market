@@ -210,19 +210,29 @@ export default function Marketplace() {
       })
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
+            // const list = res.data.data.map((item, index) => {
+            //   const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            //   return {
+            //     ...item,
+            //     poolType: poolInfo.poolType,
+            //     poolId: poolInfo.poolId,
+            //     price: poolInfo.price,
+            //     createTime: poolInfo.createTime,
+            //     token1: poolInfo.token1
+            //   }
+            // })
 
-            
-            const list = res.data.data.map((item, index) => {
-              const poolInfo = pools.find(pool => pool.tokenId === item.id);
+            const list = pools.map((item, index) => {
+              const poolInfo = res.data.data.find(r => item.tokenId === r.id);
               return {
-                ...item,
-                poolType: poolInfo.poolType,
-                poolId: poolInfo.poolId,
-                price: poolInfo.price,
-                createTime: poolInfo.createTime,
-                token1: poolInfo.token1
+                ...poolInfo,
+                poolType: item.poolType,
+                poolId: item.poolId,
+                price: item.price,
+                createTime: item.createTime,
+                token1: item.token1
               }
-            })
+            }).filter(item => item.fileurl)
               .sort((a, b) => b.createTime - a.createTime);
             setTokenList(list);
             setFilterList(list);
