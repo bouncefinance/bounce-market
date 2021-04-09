@@ -28,11 +28,20 @@ const TableItemStyled = styled(TableRow)`
     .item{
         display: flex;
         align-items: center;
+
+        width: 260px;
+
         img{
             width: 44px;
             height: 44px;
             box-sizing: border-box;
             margin-right: 12px;
+        }
+
+        .itemName {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 
@@ -57,7 +66,7 @@ export default function TableItem({ row }) {
             </TableCell>
             <TableCell className='item'>
                 {row.cover ? <img src={row.cover} alt="" /> : <img src={default_img} alt="" />}
-                {row.item}
+                <span className="itemName">{row.item}</span>
             </TableCell>
             <TableCell>
                 {row.quantity}
