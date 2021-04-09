@@ -412,12 +412,6 @@ export default function NewIndex () {
         // eslint-disable-next-line
     }, [active, nftId])
 
-    
-	useEffect(() => {
-		console.log("amount", amount)
-	}, [amount])
-
-
     const onLiked = async () => {
         setLoadingLocked(true)
         const res = await sign_Axios.post('/api/v2/main/auth/dealaccountlike', { ...updateParams, ifLike: isLike ? 0 : 1 })
@@ -933,9 +927,9 @@ export default function NewIndex () {
         }
     }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log("poolInfo", poolInfo)
-    }, [poolInfo])
+    }, [poolInfo]) */
 
     const NavList = [
         {

@@ -145,13 +145,13 @@ export default function AmountInput({
     useEffect(() => {
         setValue(minVal)
         onValChange && onValChange(minVal)
-        console.log("minVal", minVal)
+        /* console.log("minVal", minVal) */
         // eslint-disable-next-line
     }, [minVal])
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log("value", value)
-    }, [value])
+    }, [value]) */
 
     const handelChange = (e) => {
         onChange && onChange(e)
