@@ -81,7 +81,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
     const [newPrice, setNewPrice] = useState('Loading Price ...')
 
     useEffect(() => {
-        if(!active) return
+        if (!active) return
         getPriceByToken1(itemInfo.price, itemInfo.token1)
         // eslint-disable-next-line
     }, [active, itemInfo])
@@ -108,7 +108,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
                     <p className="type">
                         {itemInfo.poolType && (itemInfo.poolType === "english-auction" ? "Top Bid" : "Price")}
                     </p>
-                    <p className="tag">{itemInfo.poolId}</p>
+                    <p className="tag">{`# ${itemInfo.id}`}</p>
                 </div>
                 <h4 className="price">{newPrice}</h4>
             </div>
