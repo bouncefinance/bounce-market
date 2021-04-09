@@ -149,9 +149,12 @@ export default function AmountInput({
         // eslint-disable-next-line
     }, [minVal])
 
-    /* useEffect(() => {
-        console.log("value", value)
-    }, [value]) */
+    useEffect(() => {
+        if (!defaultValue) return
+        setValue(defaultValue)
+        onValChange(defaultValue)
+        // eslint-disable-next-line
+    }, [defaultValue])
 
     const handelChange = (e) => {
         onChange && onChange(e)
@@ -161,7 +164,7 @@ export default function AmountInput({
             setError(true)
             setErrMsg(ErrorStatus.required.tip)
         }
-        if(val === ""){
+        if (val === "") {
             val = minVal;
         }
         if (isInteger) {
@@ -186,7 +189,7 @@ export default function AmountInput({
             setErrMsg(ErrorStatus.required.tip)
         }
 
-        if(val === ""){
+        if (val === "") {
             val = minVal;
         }
         if (isInteger) {
@@ -222,12 +225,12 @@ export default function AmountInput({
                     required={required}
                     value={value || ''}
                 />
-                {value!=='' && USD_Price && <span className="USD_Price">{USD_Price}</span>}
+                {value !== '' && USD_Price && <span className="USD_Price">{USD_Price}</span>}
                 {
                     afterFix
                     &&
                     <p className='afterFix'>
-                        <img src={chainId === 56 ? icon_BNB : icon_ETH_new} alt=""/>
+                        <img src={chainId === 56 ? icon_BNB : icon_ETH_new} alt="" />
                         {afterFix}
                     </p>
 

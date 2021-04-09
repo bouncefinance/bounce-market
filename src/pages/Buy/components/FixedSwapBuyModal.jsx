@@ -1,4 +1,7 @@
-import { React, useEffect /* useState */ } from "react";
+import {
+	React, useEffect, /* useState */
+	useState
+} from "react";
 import styled from "styled-components";
 
 import { makeStyles, /* withStyles */ } from "@material-ui/core/styles";
@@ -108,18 +111,33 @@ export default function ModalBox({
 	onClick,
 	amount,
 	setAmount,
-	USD_Price,
+	// USD_Price,
 }) {
 	const classes = useStyles();
-
+	// console.log(poolInfo)
+	const [isDisabled, setIsDisabled] = useState(false)
 	/* const [agree, setAgree] = useState(false); */
 
 	useEffect(() => {
 		/* console.log("inputMin", inputMin)
 		console.log("poolInfo", poolInfo)
 		console.log("maxVal", parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)) */
-		
+// eslint-disable-next-line
 	}, [poolInfo, inputMin])
+
+	useEffect(() => {
+		if (!poolInfo) return
+		/* console.log("inputMin", inputMin)
+		console.log("poolInfo", poolInfo)
+		console.log("maxVal", parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)) */
+		if (poolInfo.poolType === 'FS' && poolInfo.nftType === '0') {
+			setIsDisabled(true)
+		} else {
+			setIsDisabled(false)
+		}
+		// eslint-disable-next-line
+	}, [poolInfo])
+
 
 
 	return (
@@ -134,7 +152,7 @@ export default function ModalBox({
 				timeout: 500,
 			}}
 			title={title}
-			/* isClose={isClose} */
+		/* isClose={isClose} */
 		>
 			<Fade in={open}>
 				<div className={classes.paper}>
@@ -162,13 +180,15 @@ export default function ModalBox({
 							minVal={inputMin}
 							maxVal={parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)}
 							defaultValue={"1"}
+
 							onValChange={(val) => {
-								if(!val) return
-								setAmount(val);
+								console.log(val)
+								if (!val) return
+								setAmount(parseInt(val))
 							}}
-							disabled={poolInfo.nftType === '1' && false}
-							afterFix={poolInfo.token1 && poolInfo.token1.symbol}
-							USD_Price={USD_Price}
+							disabled={isDisabled}
+						// afterFix={poolInfo.token1 && poolInfo.token1.symbol}
+						// USD_Price={USD_Price}
 						/>
 
 						{/* <CheckAgree className="checkAgree">

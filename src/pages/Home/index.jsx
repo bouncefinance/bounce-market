@@ -25,6 +25,7 @@ import { QueryTradePools } from '@/utils/apollo'
 // import useToken from '@/utils/useToken'
 // import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE } from '@/utils/const'
+import { Controller } from '@/utils/controller'
 
 const HomeStyled = styled.div`
   .banner{
@@ -185,7 +186,7 @@ export default function Index() {
       if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
         const brands = brandsRes.data.data
         const brands_2 = brands.filter(item => {
-          return item.id !== 10 && item.id !== 11&& item.id !== 117
+          return item.id !== 10 && item.id !== 11 && item.id !== 117
         }).slice(0, 4)
         setbrands(brands_2)
         // console.log('---brands----', brands_2)
@@ -213,42 +214,65 @@ export default function Index() {
       poolType: AUCTION_TYPE.EnglishAuction
     })).filter(item => item.state !== 1 && item.poolId !== 0)
 
-    const pools = tradePools.concat(tradeAuctions);
-    const list = pools.map(item => item.tokenId);
-    // console.log(list)
-    sign_Axios.post('/api/v2/main/getitemsbyids', {
-      ids: list,
-      // category: '',
-      // channel: ''
+    const pools = tradePools.concat(tradeAuctions)
+    const list = pools.map(item => item.tokenId)
+    const poolIds = pools.map(item => {
+      return item.poolId
     })
-      .then(res => {
-        
-        // console.log(res.data.data)
-        if (res.status === 200 && res.data.code === 1) {
-          const list = pools.map((pool, index) => {
-            const poolInfo = res.data.data.find(item => pool.tokenId === item.id);
-            return {
-              ...poolInfo,
-              tokenId: pool.tokenId,
-              poolType: pool.poolType,
-              poolId: pool.poolId,
-              price: pool.price,
-              createTime: pool.createTime,
-              token1: pool.token1
-            }
-          })
+    const standards = pools.map(item => {
+      if (item.poolType === 'fixed-swap') {
+        return 1
+      } else {
+        return 2
+      }
+    })
 
-          const list_2 = list.sort((a, b) => b.createTime - a.createTime)
-          const list_3 = list_2.slice(0, 8)
-          
-          console.log(list_3)
-          // console.log(list_3)
-          // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
-          setItemList(list_3);
-          setLoadingItems(false)
-        }
+    // console.log(standards)
+
+    sign_Axios.post(Controller.pools.getpoolsinfo, {
+      poolids: poolIds,
+      standards: standards
+    }).then(stardRes => {
+      sign_Axios.post(Controller.items.getitemsbyids, {
+        ids: list,
+        // category: '',
+        // channel: ''
       })
-      .catch(() => { })
+        .then(res => {
+
+          // console.log(res.data.data)
+          if (res.status === 200 && res.data.code === 1) {
+            const list = pools.map((pool, index) => {
+              const poolInfo = res.data.data.find(item => pool.tokenId === item.id);
+              const standardInfo = stardRes.data.data.find(item => pool.poolId === item.poolid);
+
+              return {
+                ...poolInfo,
+                poolweight: 1,
+                ...standardInfo,
+                tokenId: pool.tokenId,
+                poolType: pool.poolType,
+                poolId: pool.poolId,
+                price: pool.price,
+                createTime: pool.createTime,
+                token1: pool.token1
+              }
+            })
+            console.log(list)
+            const list_2 = list.sort((a, b) => b.poolweight - a.poolweight)
+            const list_3 = list_2.slice(0, 8)
+
+            // console.log(list_3)
+            // console.log(list_3)
+            // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
+            setItemList(list_3);
+            setLoadingItems(false)
+          }
+        })
+        .catch(() => { })
+    })
+
+
 
     // eslint-disable-next-line
   }, [active, data])
@@ -264,10 +288,10 @@ export default function Index() {
               <h1>
                 <p>We make it easy to trade in creativity.</p>
                 <p>For fans, artists and collectors.</p>
-                  </h1>
-                <Link to="/Marketplace">
-                  <button>Explore</button>
-                </Link>
+              </h1>
+              <Link to="/Marketplace">
+                <button>Explore</button>
+              </Link>
             </div>
           </div>
         </div>
