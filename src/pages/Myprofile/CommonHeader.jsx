@@ -164,7 +164,7 @@ const ItemList = [{
     route: '/MyP2P'
 }*/]
 
-export default function CommonHeader () {
+export default function CommonHeader() {
     const [curItem, setCurItem] = useState('/MyGallery')
     const history = useHistory()
     const { account } = useActiveWeb3React()
@@ -218,7 +218,7 @@ export default function CommonHeader () {
                         <OtherButton type='setting' value={'Settings'} onClick={() => {
                             setIsSettingAccount(true)
                         }} />
-                        <OtherButton type='share' value={'Share'} />
+                        {false && <OtherButton type='share' value={'Share'} />}
                     </div>
 
                 </div>

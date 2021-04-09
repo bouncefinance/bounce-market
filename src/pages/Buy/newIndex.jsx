@@ -33,7 +33,6 @@ import TradingHistory from './components/TradingHistory';
 import { useLazyQuery } from '@apollo/client';
 import { QueryFixedSwapPool, QueryEnglishAuction, querylastestBidAmount } from '@/utils/apollo';
 import { getEllipsisAddress } from '@/utils/utils';
-import Web3 from 'web3';
 import { format, formatDistanceToNow } from 'date-fns';
 import { AUCTION_TYPE } from '@/utils/const';
 import { ZERO_ADDRESS } from '@/web3/address_list/token';
@@ -268,7 +267,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex() {
+export default function NewIndex () {
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { hasApprove_ERC_20 } = useToken()
@@ -336,7 +335,7 @@ export default function NewIndex() {
 
     useEffect(() => {
 
-        console.log(nftInfo, poolInfo)
+        // console.log(nftInfo, poolInfo)
         // console.log(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))
         if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
@@ -827,7 +826,6 @@ export default function NewIndex() {
             amount: item.swapAmount0,
             price: price,
         }));
-        // console.log(offerList)
         setOfferList(offerList);
         const createList = data.poolCreates.map(item => ({
             event: 'Created',
@@ -858,6 +856,7 @@ export default function NewIndex() {
         }));
         const list = createList.concat(swapList).concat(cancelList)
             .sort((a, b) => b.timestamp - a.timestamp);
+        // console.log(price)
         setHistory(list);
     }
 
@@ -879,7 +878,7 @@ export default function NewIndex() {
             time: format(new Date(item.timestamp * 1000), 'PPPpp'),
             // amount: Web3.utils.fromWei(item.amount1),
             amount: item.amount1,
-            price: '',
+            price: item.amount1,
         }))
         // console.log(offerLiist)
         setOfferList(offerLiist);
@@ -895,7 +894,7 @@ export default function NewIndex() {
         const bidList = data.auctionBids.map(item => ({
             event: 'Bid',
             quantity: '',
-            price: Web3.utils.fromWei(item.amount1),
+            price: item.amount1,
             from: getEllipsisAddress(creator),
             to: getEllipsisAddress(item.sender),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
@@ -912,6 +911,7 @@ export default function NewIndex() {
         }))
         const list = createList.concat(bidList).concat(claimList)
             .sort((a, b) => b.timestamp - a.timestamp);
+        console.log(list)
         setHistory(list);
     }
 
@@ -965,7 +965,7 @@ export default function NewIndex() {
                     <div className="container_left">
                         <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
                         <div className="btn_group">
-                            <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}>Share</MaterialButton>
+                            {false && <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}>Share</MaterialButton>}
                             <MaterialButton disabled={loadingLoked} onClick={onLiked} variant="contained" className="material-button" startIcon={<img className="button-icon" src={isLike ? icon_full_black : icon_line_white} alt="" />}>Like</MaterialButton>
                         </div>
                     </div>
@@ -1033,7 +1033,7 @@ export default function NewIndex() {
                                                 </div>
                                                 <div className="Offers-price">
                                                     <span>{poolInfo.token1 && `${poolInfo.token1 && weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`}</span>
-                                                    <p className="amount">{poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}</p>
+                                                    <p className="amount">{poolInfo.token1 && amount && `( $ ${weiMul(poolInfo.token1.price, weiToNum(item.price, poolInfo.token1.decimals))} )`}</p>
                                                 </div>
                                             </div>)
                                             :
@@ -1082,7 +1082,7 @@ export default function NewIndex() {
                                     history.map((item, index) => ({
                                         Event: item.event,
                                         Quantity: item.quantity,
-                                        Price: [poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`, `($)`],
+                                        Price: [item.price ? (poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`) : '--', `($)`],
                                         From: getEllipsisAddress(item.from),
                                         To: getEllipsisAddress(item.to),
                                         Date: item.date,

@@ -56,7 +56,7 @@ const HomeStyled = styled.div`
       height: 280px;
       box-sizing: border-box;
       background-color: #000;
-      position: relative;
+      /* position: relative; */
 
       .banner_img{
         width: 1100px;
@@ -77,7 +77,7 @@ const HomeStyled = styled.div`
           top: 0px;
         }
         h1{
-          width: 517px;
+          /* width: 517px; */
           color: #fff;
           font-size: 38px;
           line-height: 46.13px;
@@ -166,6 +166,7 @@ export default function Index() {
   const history = useHistory()
   const [brands, setbrands] = useState([])
   const { data } = useQuery(QueryTradePools)
+  // const { data } = []
   const [itemList, setItemList] = useState()
   // const { exportArrayNftInfo } = useToken()
   const [loadingBrands, setLoadingBrands] = useState(false)
@@ -214,18 +215,21 @@ export default function Index() {
 
     const pools = tradePools.concat(tradeAuctions);
     const list = pools.map(item => item.tokenId);
-
-    sign_Axios.post('/api/v2/main/getitemsbyfilter', {
+    // console.log(list)
+    sign_Axios.post('/api/v2/main/getitemsbyids', {
       ids: list,
-      category: '',
-      channel: ''
+      // category: '',
+      // channel: ''
     })
       .then(res => {
+        
+        // console.log(res.data.data)
         if (res.status === 200 && res.data.code === 1) {
           const list = pools.map((pool, index) => {
             const poolInfo = res.data.data.find(item => pool.tokenId === item.id);
             return {
               ...poolInfo,
+              tokenId: pool.tokenId,
               poolType: pool.poolType,
               poolId: pool.poolId,
               price: pool.price,
@@ -234,6 +238,7 @@ export default function Index() {
             }
           })
 
+          // console.log(list)
           const list_2 = list.sort((a, b) => b.createTime - a.createTime)
           const list_3 = list_2.slice(0, 8)
           // console.log(list_3)
@@ -255,8 +260,10 @@ export default function Index() {
         <div className="banner_wrapper" style={{ background: `url(${img_banner}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', }}>
           <div className='banner_img'>
             <div className='content'>
-              <h1>Create and Find
-                  unique content with Fangible</h1>
+              <h1>
+                <p>We make it easy to trade in creativity.</p>
+                <p>For fans, artists and collectors.</p>
+                  </h1>
               <button>
                 <Link to="/Marketplace">Explore</Link>
               </button>
@@ -312,7 +319,7 @@ It shouldn’t be longer then ~20-30 sec.'
 
         <Link to="/Factory">
           <div className="left">
-            <h3>Create your unique NFT on Bounce Collectible</h3>
+            <h3>Create your unique NFT on Fangible</h3>
             <img src={arrows_white} alt="" />
           </div>
         </Link>
