@@ -48,6 +48,10 @@ const PopularItemStyled = styled.div`
         padding: 20px;
         .name{
             font-size: 16px;
+            
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .line{
             margin-top: 20px;
@@ -81,7 +85,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
     const [newPrice, setNewPrice] = useState('Loading Price ...')
 
     useEffect(() => {
-        if(!active) return
+        if (!active) return
         getPriceByToken1(itemInfo.price, itemInfo.token1)
         // eslint-disable-next-line
     }, [active, itemInfo])

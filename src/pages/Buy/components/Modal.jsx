@@ -29,7 +29,7 @@ const HeaderStyled = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 30px 32px 24px 38px;
+	padding: 30px 32px 24px 50px;
 
 	h3 {
 		font-size: 34px;
