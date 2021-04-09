@@ -238,6 +238,7 @@ export default function MyMarket() {
     const ids_list = poolData.map(item => item.tokenId);
     setLength(ids_list.length);
     /* const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel */
+
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       category: type,
@@ -256,7 +257,8 @@ export default function MyMarket() {
               token1: pool.token1,
               createTime: pool.createTime
             }
-          })
+          }).filter(item => item.fileurl)
+
           const soldList = soldPoolData.map(pool => {
             const item = res.data.data.find(r => r.id === pool.tokenId);
             return {
@@ -411,7 +413,7 @@ export default function MyMarket() {
           // console.log(item)
         }} />
 
-        <PullRadioBox prefix={'Claim state: '} width={'210px'} options={[{ value: 'UnClaim'}, {value: 'Claimed'}]} defaultValue='UnClaim' onChange={item => {
+        <PullRadioBox prefix={'Claim state: '} width={'210px'} options={[{ value: 'UnClaim' }, { value: 'Claimed' }]} defaultValue='UnClaim' onChange={item => {
           if (item.value === 'UnClaim') {
             setTokenList(claimList);
             setFilterList(claimList);
