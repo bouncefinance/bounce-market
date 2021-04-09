@@ -23,7 +23,7 @@ import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 import { BigNumber } from 'bignumber.js';
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
-import { NumberInput } from '@components/UI-kit'
+/* import { NumberInput } from '@components/UI-kit' */
 import BounceERC20 from '@/web3/abi/BounceERC20.json'
 
 import icon_altAvatar from './assets/icon_altAvatar.svg'
@@ -706,7 +706,7 @@ export default function NewIndex () {
                     </div> 
                 </div> */}
 
-                <NumberInput
+                {/* <NumberInput
                     className='input_amount'
                     title={`I'll make an offer`}
                     width='100%'
@@ -717,7 +717,7 @@ export default function NewIndex () {
                     }}
                     afterFix={poolInfo.token1 && `Balance: ${poolInfo.token1.balance} ${poolInfo.token1.symbol}`}
                     disabled={isLoading || poolInfo.status !== 'Live'}
-                />
+                /> */}
 
                 <div className="btn_group">
                     <Button
@@ -933,6 +933,9 @@ export default function NewIndex () {
         }
     }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
 
+    useEffect(() => {
+        console.log("poolInfo", poolInfo)
+    }, [poolInfo])
 
     const NavList = [
         {
@@ -1110,18 +1113,23 @@ export default function NewIndex () {
                 USD_Price={poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}
             />
 
-            <BuyNowModal
-                open={openBuyNowModal}
-                setOpen={setOpenBuyNowModal}
-                title="Checkout"
-                poolInfo={poolInfo}
-                nftInfo={nftInfo}
-                isLoading={isLoading}
-                onClick={() => {
-                    handelEnglishAuctionBid(poolInfo.amountMax1)
-                }}
-                price={weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)}
-            />
+            {
+                poolInfo.amountMax1
+                &&
+                <BuyNowModal
+                    open={openBuyNowModal}
+                    setOpen={setOpenBuyNowModal}
+                    title="Checkout"
+                    poolInfo={poolInfo}
+                    nftInfo={nftInfo}
+                    isLoading={isLoading}
+                    onClick={() => {
+                        handelEnglishAuctionBid(poolInfo.amountMax1)
+                    }}
+                    price={weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)}
+                    USD_Price={poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals))).substr(0,6)} ) `}
+                />
+            }
 
             <FixedSwapBuyModal
                 open={openFixedSwapBuyModal}

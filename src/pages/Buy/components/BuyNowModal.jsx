@@ -23,9 +23,8 @@ const useStyles = makeStyles((theme) => ({
 		boxShadow: theme.shadows[5],
 		maxHeight: "100%",
 		overflowY: "auto",
-		width: 520,
-		/* height: 368, */
-		height: 350,
+		/* width: 520,
+		height: 340, */
 	},
 }));
 
@@ -48,7 +47,7 @@ const HeaderStyled = styled.div`
 
 const ModalContent = styled.div`
 	box-sizing: border-box;
-	padding: 40px 52px 44px 52px;
+	padding: 30px 52px 36px 52px;
 
 	display: grid;
 	grid-template-rows: 22px 88px /* 50px */ 48px;
@@ -183,6 +182,7 @@ export default function ModalBox({
 	isLoading,
 	onClick,
 	price,
+	USD_Price,
 }) {
 	const classes = useStyles();
 
@@ -224,7 +224,7 @@ export default function ModalBox({
 							</span>
 							<span className="balance">
 								Your Balance:&nbsp;
-								<span className="balanceValue">100ETH</span>
+								<span className="balanceValue">{(poolInfo.token1.balance).substr(0,6)} {poolInfo.token1.symbol}</span>
 							</span>
 						</div>
 
@@ -241,7 +241,10 @@ export default function ModalBox({
 							</div>
 							<div className="right">
 								<span className="NFTPrice">{price} {poolInfo.token1.symbol}</span>
-								<span className="NFTUSDPrice">($10,24)</span>
+								<span className="NFTUSDPrice">
+									{/* ($10,24) */}
+									{USD_Price}
+								</span>
 							</div>
 						</div>
 

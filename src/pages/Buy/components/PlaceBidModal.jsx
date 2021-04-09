@@ -23,9 +23,8 @@ const useStyles = makeStyles((theme) => ({
 		boxShadow: theme.shadows[5],
 		maxHeight: "100%",
 		overflowY: "auto",
-		width: 520,
-		/* height: 368, */
-		height: 350,
+		/* width: 520,
+		height: 340, */
 	},
 }));
 
@@ -48,7 +47,7 @@ const HeaderStyled = styled.div`
 
 const ModalContent = styled.div`
 	box-sizing: border-box;
-	padding: 40px 52px 44px 52px;
+	padding: 30px 52px 36px 52px;
 
 	display: grid;
 	grid-template-rows: 120px /* 50px */ 48px;
