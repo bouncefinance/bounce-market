@@ -1,25 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Provider, ReactReduxContext } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './store';
+import { QueryLoadingAbsolute } from './modules/layout/components/QueryLoading/QueryLoading';
+import { AppBase } from './modules/layout/components/AppBase/AppBase';
+import { Routes } from './Routes';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store} context={ReactReduxContext}>
+      <PersistGate loading={<QueryLoadingAbsolute />} persistor={persistor}>
+        <AppBase>
+          <Routes />
+        </AppBase>
+      </PersistGate>
+    </Provider>
   );
 }
 
