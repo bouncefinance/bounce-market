@@ -66,7 +66,7 @@ const CardItemStyled = styled.div`
             transition-property: transform, opacity;
             transition-timing-function: linear;
             
-            
+            /* width: 228px; */
             display: grid;
             grid-template-rows: 42px 1fr;
             row-gap: 12px;
@@ -79,7 +79,7 @@ const CardItemStyled = styled.div`
                 border-bottom: 1px solid rgba(0,0,0,0.1);
 
                 grid-area: info_top;
-                
+                width: 228px;
                 display: flex;
                 /* justify-content: center; */
                 align-items: flex-start;
@@ -89,6 +89,9 @@ const CardItemStyled = styled.div`
                     font-style: normal;
                     font-weight: 700;
                     color: #000000;
+
+                    white-space: nowrap;
+                    overflow: hidden;
                     text-overflow: ellipsis;
                 }
             }
@@ -155,7 +158,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId, poolType, token1 }) {
+export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }) {
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const { active } = useActiveWeb3React()
@@ -193,7 +196,7 @@ export function CardItem({ cover, name, price, cardId, poolType, token1 }) {
                     </div>
                     <div className="info_bottom">
                         <span className="type">{poolType === 'fixed-swap' ? 'Price' : 'Top Bid'}</span>
-                        <span className="cardId"># {cardId}</span>
+                        <span className="cardId"># {nftId}</span>
                         <span className="price">{newPrice}</span>
                     </div>
                 </div>

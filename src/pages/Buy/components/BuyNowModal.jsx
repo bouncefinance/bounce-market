@@ -1,14 +1,14 @@
-import { React, /* useState */ } from "react";
+import { React /* useState */ } from "react";
 import styled from "styled-components";
 
-import { makeStyles, /* withStyles */ } from "@material-ui/core/styles";
+import { makeStyles /* withStyles */ } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
+import { AutoStretchBaseWidthOrHeightImg } from "../../component/Other/autoStretchBaseWidthOrHeightImg";
 /* import Checkbox from "@material-ui/core/Checkbox"; */
 
 import { Button } from "@components/UI-kit";
-import AmountInput from './AmountInput'
 
 import icon_close from "@assets/images/icon/close.svg";
 
@@ -50,14 +50,89 @@ const ModalContent = styled.div`
 	padding: 30px 52px 36px 52px;
 
 	display: grid;
-	grid-template-rows: 120px /* 50px */ 48px;
+	grid-template-rows: 22px 88px /* 50px */ 48px;
 	grid-template-areas:
-		"inputAmount"
+		"title_n_balance"
+		"img_n_price"
 		/* "checkAgree" */
 		"button_group";
 
-	.input_amount {
-		grid-area: inputAmount;
+	.title_n_balance {
+		grid-area: title_n_balance;
+		display: flex;
+		justify-content: space-between;
+
+		.str_CurrentPrice {
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: bold;
+			font-size: 13px;
+			line-height: 16px;
+			color: #000000;
+			opacity: 0.6;
+		}
+
+		.balance {
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: normal;
+			font-size: 12px;
+			line-height: 130.5%;
+			text-align: right;
+			color: #1f191b;
+			opacity: 0.6;
+
+			.balanceValue {
+				font-weight: 500;
+			}
+		}
+	}
+
+	.img_n_price {
+		border: 1px solid rgba(0,0,0,0.2);
+		box-sizing: border-box;
+		height: 68px;
+		padding: 12px 20px 12px 20px;
+
+		display: flex;
+		justify-content: space-between;
+
+		.left {
+			display: flex;
+			align-items: center;
+
+			.NFTName {
+				font-family: Helvetica Neue;
+				font-style: normal;
+				font-weight: normal;
+				font-size: 16px;
+				line-height: 130.5%;
+				color: #1f191b;
+
+				margin-left: 12px;
+			}
+		}
+
+		.right {
+			display: flex;
+			align-items: center;
+
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: normal;
+			color: #1f191b;
+			line-height: 130.5%;
+
+			.NFTPrice {
+				font-size: 16px;
+				margin-right: 8px;
+			}
+
+			.NFTUSDPrice {
+				font-size: 13px;
+				opacity: 0.4;
+			}
+		}
 	}
 
 	.button_group {
@@ -102,12 +177,11 @@ export default function ModalBox({
 	open,
 	setOpen,
 	title,
-	inputMinPrice,
 	poolInfo,
+	nftInfo,
 	isLoading,
 	onClick,
-	bidPrice,
-	setBidPrice,
+	price,
 	USD_Price,
 }) {
 	const classes = useStyles();
@@ -144,20 +218,35 @@ export default function ModalBox({
 					</HeaderStyled>
 
 					<ModalContent>
-						<AmountInput
-							className="input_amount"
-							title="Enter Amount"
-							width="100%"
-							height="68px"
-							marginTop="0"
-							minVal={inputMinPrice}
-							defaultValue={inputMinPrice}
-							onValChange={(val) => {
-								setBidPrice(val);
-							}}
-							disabled={isLoading || poolInfo.status !== "Live"}
-							afterFix={poolInfo.token1 && poolInfo.token1.symbol}
-						/>
+						<div className="title_n_balance">
+							<span className="str_CurrentPrice">
+								Current price
+							</span>
+							<span className="balance">
+								Your Balance:&nbsp;
+								<span className="balanceValue">{(poolInfo.token1.balance).substr(0,6)} {poolInfo.token1.symbol}</span>
+							</span>
+						</div>
+
+						<div className="img_n_price">
+							<div className="left">
+								<AutoStretchBaseWidthOrHeightImg
+									src={nftInfo && nftInfo.fileurl}
+									width={44}
+									height={44}
+								/>
+								<span className="NFTName">
+									{nftInfo.itemname || "Name Is Loading ..."}
+								</span>
+							</div>
+							<div className="right">
+								<span className="NFTPrice">{price} {poolInfo.token1.symbol}</span>
+								<span className="NFTUSDPrice">
+									{/* ($10,24) */}
+									{USD_Price}
+								</span>
+							</div>
+						</div>
 
 						{/* <CheckAgree className="checkAgree">
 							<MyCheckbox
@@ -183,7 +272,9 @@ export default function ModalBox({
 								width="200px"
 								height="48px"
 								value="Cancel"
-								disabled={isLoading || poolInfo.status !== 'Live'}
+								disabled={
+									isLoading || poolInfo.status !== "Live"
+								}
 								onClick={() => {
 									setOpen(false);
 									/* setAgree(false); */
@@ -193,10 +284,13 @@ export default function ModalBox({
 								width="200px"
 								height="48px"
 								primary="primary"
-								value="Place a bid"
-								disabled={isLoading || poolInfo.status !== 'Live' /* || !agree */ || parseFloat(bidPrice) < parseFloat(inputMinPrice)}
+								value="Checkout"
+								disabled={
+									isLoading ||
+									poolInfo.status !== "Live" /* || !agree */
+								}
 								onClick={() => {
-									onClick()
+									onClick();
 									/* setAgree(false); */
 									setOpen(false);
 								}}

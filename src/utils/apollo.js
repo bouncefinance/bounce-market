@@ -83,6 +83,7 @@ export const QueryMyPools = gql`
       price
       token1
       createTime
+      state
     }
     tradeAuctions(where: {creator: $user}) {
       tokenId
@@ -90,13 +91,12 @@ export const QueryMyPools = gql`
       token1
       lastestBidAmount
       amountMin1
+      amountMax1
       createTime
-    }
-    poolSwaps(where: {sender: $user}) {
-      tokenId
-      poolId
-      swapAmount1
-      timestamp
+      createrClaimed
+      bidderClaimed
+      creator
+      state
     }
     auctionBids(where: {sender: $user}) {
       tokenId
@@ -115,9 +115,13 @@ export const queryTradeInfo = gql`
     }
     tradeAuctions(where: {poolId_in: $poolIdList}) {
       poolId
+      creator
       token1
       lastestBidAmount
       amountMin1
+      amountMax1
+      createrClaimed
+      bidderClaimed
     }
   }
 `
