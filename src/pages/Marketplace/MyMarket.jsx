@@ -28,6 +28,8 @@ const MarketplaceStyled = styled.div`
     margin: 0 auto;
     margin-bottom: 30px;
 
+    flex: 1;
+
     .nav_wrapper{
       
         width: 1100px;

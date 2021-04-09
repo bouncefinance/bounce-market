@@ -22,6 +22,10 @@ const WalletModalStyled = styled.div`
             font-weight: 400;
             color: rgba(31,25,27,.6);
             line-height: 20.8px;
+
+            a {
+                color: #124EEB;
+            }
         }
 
         ul{
@@ -81,26 +85,36 @@ export default function ConnectWallet({ open, setOpen }) {
     return (
         <Modal open={open} setOpen={setOpen} header={{ title: 'Connect to a wallet', isClose: true }}>
             <WalletModalStyled>
-                {isLoading ? <div className='loading'>
-                    <img src={loading_dots} alt="" />
-                    <p>Please wait a little...</p>
-                </div> : <div className="content">
-                    <p>To get started, connect a wallet. Select an option below or hook in via your Metamask. Don’t have a clue what we’re talking about? Don’t worry. Click here to learn.</p>
-                    <ul>
-                        <li onClick={() => {
-                            onConnect('MetaMask', setIsLoading)
-                        }}>
-                            <img src={icon_matemask} alt="" />
-                            <h5>MetaMask</h5>
-                        </li>
-                        <li onClick={() => {
-                            onConnect('WalletConnect', setIsLoading)
-                        }}>
-                            <img src={icon_walletconnect} alt="" />
-                            <h5>WalletConnect</h5>
-                        </li>
-                    </ul>
-                </div>}
+                {
+                    isLoading
+                    ?
+                    <div className='loading'>
+                        <img src={loading_dots} alt="" />
+                        <p>Please wait a little...</p>
+                    </div>
+                    :
+                    <div className="content">
+                        <p>
+                            To get started, connect a wallet. Select an option below or hook in via your Metamask. Don’t have a clue what we’re talking about? Don’t worry. Click&nbsp;
+                            <a target="_blank" href="www.baidu.com">here</a>
+                            &nbsp;to learn.
+                        </p>
+                        <ul>
+                            <li onClick={() => {
+                                onConnect('MetaMask', setIsLoading)
+                            }}>
+                                <img src={icon_matemask} alt="" />
+                                <h5>MetaMask</h5>
+                            </li>
+                            <li onClick={() => {
+                                onConnect('WalletConnect', setIsLoading)
+                            }}>
+                                <img src={icon_walletconnect} alt="" />
+                                <h5>WalletConnect</h5>
+                            </li>
+                        </ul>
+                    </div>
+                }
             </WalletModalStyled>
         </Modal >
     )

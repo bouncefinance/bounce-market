@@ -293,7 +293,7 @@ export default function SellNFT() {
 					<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl)} />
 				</PageBodyLeft>
 				<PageBodyRight>
-					<span className="str_SelectSellMethod">
+					<span className="itemName">
 						{nftInfo && (nftInfo.itemname || 'Select your sell method')}
 					</span>
 
@@ -377,21 +377,20 @@ const PageBodyRight = styled.div`
 	display: grid;
 	// grid-template-rows: 60px 90px 1fr;
 	grid-template-areas:
-		"str_SelectSellMethod"
+		"itemName"
 		"ButtonGroup"
 		"RightItemsOnSetPrice"
 		"Summary"
 		;
 
-	span.str_SelectSellMethod {
+	span.itemName {
 		font-family: Helvetica Neue;
 		font-style: normal;
 		font-weight: 700;
 		font-size: 34px;
-		text-transform: capitalize;
 		color: #1f191b;
 		margin-bottom: 10px;
-		grid-area: str_SelectSellMethod;
+		grid-area: itemName;
 		width: 500px;
 		overflow: hidden;
 		text-overflow: ellipsis;

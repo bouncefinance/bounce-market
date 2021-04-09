@@ -11,15 +11,19 @@ import { AutoStretchBaseWidthOrHeightImg } from "../component/Other/autoStretchB
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getContract, useActiveWeb3React } from "@/web3";
+
 import useTransferModal from "@/web3/useTransferModal";
 import ConfirmCancelModal from './components/ConfirmCancelModal'
 import PlaceBidModal from './components/PlaceBidModal'
+import FixedSwapBuyModal from './components/FixedSwapBuyModal'
+import BuyNowModal from './components/BuyNowModal'
+
 import { myContext } from '@/redux'
 import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 import { BigNumber } from 'bignumber.js';
 import { getFixedSwapNFT, getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import NewPullDown from './components/NewPullDown'
-import { NumberInput } from '@components/UI-kit'
+/* import { NumberInput } from '@components/UI-kit' */
 import BounceERC20 from '@/web3/abi/BounceERC20.json'
 
 import icon_altAvatar from './assets/icon_altAvatar.svg'
@@ -291,6 +295,8 @@ export default function NewIndex () {
     const [inputMinPrice, setInputMinPrice] = useState();
 
     const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false);
+    const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
+    const [openFixedSwapBuyModal, setOpenFixedSwapBuyModal] = useState(false);
 
     const updateParams = {
         auctiontype: aucType | 0,
@@ -405,7 +411,6 @@ export default function NewIndex () {
         getNFTInfoList(nftId);
         // eslint-disable-next-line
     }, [active, nftId])
-
 
     const onLiked = async () => {
         setLoadingLocked(true)
@@ -610,7 +615,7 @@ export default function NewIndex () {
     const renderByAucType = () => {
         if (aucType === AUCTION_TYPE.FixedSwap) {
             return <>
-                <NumberInput
+                {/* <NumberInput
                     className='input_amount'
                     title='Buy Amount'
                     width='100%'
@@ -623,13 +628,17 @@ export default function NewIndex () {
                         setAmount(val)
                     }}
                     disabled={poolInfo.nftType === '1' && false}
-                />
+                /> */}
 
                 <div className="bidInfo">
                     <div>
                         <h5>Current price</h5>
-                        <h3>{poolInfo.token1 && amount && poolInfo.amountTotal1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
-                            <span>{poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}</span></h3>
+                        <h3>
+                            {poolInfo.token1 && amount && poolInfo.amountTotal1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
+                            <span>
+                                {poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}
+                            </span>
+                        </h3>
                     </div>
 
                     <div className="amount">
@@ -641,9 +650,15 @@ export default function NewIndex () {
 
 
                 <div className="btn_group">
-                    <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
+                    <Button
+                        primary width='262px'
+                        height='48px'
+                        disabled={isLoading || poolInfo.status !== 'Live'}
                         onClick={
-                            handelBid
+                            /* handelBid */
+                            () => {
+                                setOpenFixedSwapBuyModal(true)
+                            }
                         }
                     >
                         {btnText}
@@ -699,18 +714,35 @@ export default function NewIndex () {
                 /> */}
 
                 <div className="btn_group">
-                    <Button primary width='262px' height='48px' disabled={isLoading || poolInfo.status !== 'Live'}
+                    <Button
+                        primary
+                        width='262px'
+                        height='48px'
+                        disabled={isLoading || poolInfo.status !== 'Live'}
                         onClick={() => {
                             /* handelEnglishAuctionBid() */
                             setOpenPlaceBidModal(true)
-                        }
-                        }
-                    >{btnText}
+                        }}
+                    >
+                        {btnText}
                     </Button>
 
-                    {poolInfo.amountMax1 && <Button width='262px' disabled={isLoading || poolInfo.status !== 'Live'} height='48px' onClick={() => {
-                        handelEnglishAuctionBid(poolInfo.amountMax1)
-                    }}>Buy now for {weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)} {poolInfo.token1.symbol}</Button>}
+                    {
+                        poolInfo.amountMax1
+                        &&
+                        <Button
+                            width='262px'
+                            disabled={isLoading || poolInfo.status !== 'Live'}
+                            height='48px'
+                            onClick={() => {
+                                /* handelEnglishAuctionBid(poolInfo.amountMax1) */
+                                setOpenBuyNowModal(true)
+                            }}
+                        >
+                            Buy now for {weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)} {poolInfo.token1.symbol}
+                        </Button>
+                    
+                    }
                     {poolInfo.status === 'Close' && poolInfo.currentBidderP === account && !poolInfo.myClaimedP &&
                         < Button onClick={() => {
                             bidderClaim()
@@ -897,6 +929,9 @@ export default function NewIndex () {
         }
     }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
 
+    /* useEffect(() => {
+        console.log("poolInfo", poolInfo)
+    }, [poolInfo]) */
 
     const NavList = [
         {
@@ -1071,6 +1106,39 @@ export default function NewIndex () {
                 }}
                 bidPrice={bidPrice}
                 setBidPrice={setBidPrice}
+                USD_Price={poolInfo.token1 && amount && ` ( $ ${weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount))} )`}
+            />
+
+            {
+                poolInfo.amountMax1
+                &&
+                <BuyNowModal
+                    open={openBuyNowModal}
+                    setOpen={setOpenBuyNowModal}
+                    title="Checkout"
+                    poolInfo={poolInfo}
+                    nftInfo={nftInfo}
+                    isLoading={isLoading}
+                    onClick={() => {
+                        handelEnglishAuctionBid(poolInfo.amountMax1)
+                    }}
+                    price={weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)}
+                    USD_Price={poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals))).substr(0,6)} ) `}
+                />
+            }
+
+            <FixedSwapBuyModal
+                open={openFixedSwapBuyModal}
+                setOpen={setOpenFixedSwapBuyModal}
+                title="Buy Now"
+                inputMin={""}
+                poolInfo={poolInfo}
+                isLoading={isLoading}
+                onClick={() => {
+                    handelBid()
+                }}
+                amount={amount}
+                setAmount={setAmount}
             />
         </>
     )
