@@ -122,9 +122,11 @@ export default function MyMarket() {
   let { type, channel } = useParams()
   const history = useHistory()
   const { active, account } = useActiveWeb3React()
-  
+
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
+  const [claimList, setClaimList] = useState([]);
+  const [soldList, setSoldList] = useState([]);
   const [filterList, setFilterList] = useState([]);
   /* const [channel, setChannel] = useState(
     type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
@@ -133,9 +135,9 @@ export default function MyMarket() {
 
   const [loading, setLoading] = useState(true)
   const [length, setLength] = useState(4);
-  const [tradeData, setTradeData]  = useState(null);
+  const [tradeData, setTradeData] = useState(null);
   const [poolIdList, setPoolIdList] = useState(null);
-  const [tradeInfo,  setTradeInfo] = useState(null);
+  const [tradeInfo, setTradeInfo] = useState(null);
 
   type = 'Image'
 
@@ -167,21 +169,32 @@ export default function MyMarket() {
       ...item,
       poolType: AUCTION_TYPE.FixedSwap
     }));
+
+    const claimTradePools = tradePools
+      .filter(item => item.state === 0);
+
+    const soldTradePools = tradePools
+      .filter(item => !claimTradePools.includes(item))
+
     const tradeAuctions = tradeData.tradeAuctions.map(item => ({
       ...item,
       price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
       poolType: AUCTION_TYPE.EnglishAuction
     }));
-    
-    const poolSwaps = tradeData.poolSwaps.map(item => {
-      const poolInfo = tradeInfo.tradePools.find(pool => pool.poolId === item.poolId);
-      return {
-        ...item,
-        poolType: AUCTION_TYPE.FixedSwap,
-        price: item.swapAmount1,
-        token1: poolInfo && poolInfo.token1,
-        createTime: item.timestamp}
-    })
+
+    const claimTradeAuctions = tradeAuctions
+      .filter(item => {
+        if (String(account).toLowerCase() === item.creator) {
+          return item.createrClaimed === 0
+        } else {
+          return item.bidderClaimed === 0
+        }
+      })
+      .filter(item => item.lastestBidAmount !== item.amountMax1);
+    const soldTradeAuctions = tradeAuctions
+      .filter(item => !claimTradeAuctions.includes(item))
+
+
     const auctionBids = tradeData.auctionBids.map(item => {
       const poolInfo = tradeInfo.tradeAuctions.find(pool => pool.poolId === item.poolId);
       return {
@@ -189,13 +202,39 @@ export default function MyMarket() {
         poolType: AUCTION_TYPE.EnglishAuction,
         price: poolInfo && (poolInfo.lastestBidAmount !== '0' ? poolInfo.lastestBidAmount : poolInfo.amountMin1),
         token1: poolInfo && poolInfo.token1,
-        createTime: item.timestamp,}
+        createTime: item.timestamp,
+        creator: poolInfo && poolInfo.creator,
+        lastestBidAmount: poolInfo && poolInfo.lastestBidAmount,
+        amountMax1: poolInfo && poolInfo.amountMax1,
+        createrClaimed: poolInfo && poolInfo.createrClaimed,
+        bidderClaimed: poolInfo && poolInfo.bidderClaimed
+      }
     });
+    const claimAuctionBids = auctionBids
+      .filter(item => {
+        if (String(account).toLowerCase() === item.creator) {
+          return item.createrClaimed === 0
+        } else {
+          return item.bidderClaimed === 0
+        }
+      })
+      .filter(item => item.lastestBidAmount !== item.amountMax1)
+      .filter(item => item.lastestBidAmount === item.amount1)
+    const soldAuctionBids = auctionBids
+      .filter(item => !claimAuctionBids.includes(item))
 
     const poolData = tradePools
-    .concat(tradeAuctions)
-    .concat(poolSwaps)
-    .concat(auctionBids)
+      .concat(tradeAuctions)
+      .concat(auctionBids)
+
+    const claimPoolData = claimTradePools
+      .concat(claimTradeAuctions)
+      .concat(claimAuctionBids)
+
+    const soldPoolData = soldTradePools
+      .concat(soldTradeAuctions)
+      .concat(soldAuctionBids)
+
     const ids_list = poolData.map(item => item.tokenId);
     setLength(ids_list.length);
     /* const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel */
@@ -207,49 +246,61 @@ export default function MyMarket() {
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          const res_data = res.data.data
-          const list = res_data.map((item) => {
-            const poolInfo = poolData.find(pool => item.id === pool.tokenId);
+          const claimList = claimPoolData.map(pool => {
+            const item = res.data.data.find(r => r.id === pool.tokenId);
             return {
               ...item,
-              poolType: poolInfo.poolType,
-              poolId: poolInfo.poolId,
-              price: poolInfo.price,
-              token1:poolInfo.token1,
-              createTime: poolInfo.createTime
+              poolType: pool.poolType,
+              poolId: pool.poolId,
+              price: pool.price,
+              token1: pool.token1,
+              createTime: pool.createTime
             }
           })
-          const result = list.sort((a, b) => b.createTime - a.createTime)
-          setTokenList(result);
-          setFilterList(result);
+          const soldList = soldPoolData.map(pool => {
+            const item = res.data.data.find(r => r.id === pool.tokenId);
+            return {
+              ...item,
+              poolType: pool.poolType,
+              poolId: pool.poolId,
+              price: pool.price,
+              token1: pool.token1,
+              createTime: pool.createTime
+            }
+          })
+          const claimResult = claimList.sort((a, b) => b.createTime - a.createTime)
+          const soldResult = soldList.sort((a, b) => b.createTime - a.createTime)
+          setTokenList(claimResult);
+          setSoldList(soldResult);
+          setClaimList(claimResult);
+          setFilterList(claimResult);
           setLoading(false)
         }
       })
-       // eslint-disable-next-line
-  },  [channel, tradeData, type]);
+    // eslint-disable-next-line
+  }, [channel, tradeData, type]);
 
-  const [getTradeInfo, {data }] = useLazyQuery(queryTradeInfo, {
-    variables: { poolIdList: poolIdList},
+  const [getTradeInfo, { data }] = useLazyQuery(queryTradeInfo, {
+    variables: { poolIdList: poolIdList },
     onCompleted: () => {
       setTradeInfo(data);
     }
   })
 
   const [getMyTradeNFT, { data: myTrade }] = useLazyQuery(QueryMyPools, {
-      variables: { user: String(account).toLowerCase() },
-      fetchPolicy: "network-only",
-      onCompleted: () => {
-        const tradeAuctions = myTrade.poolSwaps.map(item => Number(item.poolId));
-        const auctionBids = myTrade.auctionBids.map(item => Number(item.poolId));
-        setPoolIdList(tradeAuctions.concat(auctionBids))
-        setTradeData(myTrade)
-      },
-    })
+    variables: { user: String(account).toLowerCase() },
+    fetchPolicy: "network-only",
+    onCompleted: () => {
+      const auctionBids = myTrade.auctionBids.map(item => Number(item.poolId));
+      setPoolIdList(auctionBids)
+      setTradeData(myTrade)
+    },
+  })
 
   useEffect(() => {
     if (!active) return
     getMyTradeNFT()
-    if (tradeData)  {
+    if (tradeData) {
       getTradeInfo();
     }
     if (tradeInfo) {
@@ -262,7 +313,7 @@ export default function MyMarket() {
       || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
     setFilterList(list);
   }
-  
+
   const renderListByType = (type) => {
     switch (type) {
       case 'Image':
@@ -342,22 +393,32 @@ export default function MyMarket() {
             } alt="" />{nav.title}</p>
           </li>
         })}
-        <li className="link"><Button onClick={() => {history.push('/Marketplace/FineArts')}}>Marketplace</Button></li>
+        <li className="link"><Button onClick={() => { history.push('/Marketplace/FineArts') }}>Marketplace</Button></li>
       </ul>
 
       <div className="filterBox">
         <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
 
-        <PullRadioBox prefix={'Gategory:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
+        {/* <PullRadioBox prefix={'Gategory:'} width={'160px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
+          // console.log(item)
+        }} /> */}
+
+        <PullRadioBox prefix={'Currency:'} width={'190px'} options={[{ value: 'BNB' }]} defaultValue='BNB' onChange={(item) => {
           // console.log(item)
         }} />
 
-        <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'BNB' }]} defaultValue='BNB' onChange={(item) => {
+        <PullRadioBox prefix={'Sort by:'} width={'190px'} options={[{ value: 'New' }, { value: 'Popular' }]} defaultValue='New' onChange={(item) => {
           // console.log(item)
         }} />
 
-        <PullRadioBox prefix={'Sort by:'} width={'204px'} options={[{ value: 'New' }, { value: 'Popular' }]} defaultValue='New' onChange={(item) => {
-          // console.log(item)
+        <PullRadioBox prefix={'Claim state: '} width={'210px'} options={[{ value: 'UnClaim'}, {value: 'Claimed'}]} defaultValue='UnClaim' onChange={item => {
+          if (item.value === 'UnClaim') {
+            setTokenList(claimList);
+            setFilterList(claimList);
+          } else if (item.value === 'Claimed') {
+            setTokenList(soldList);
+            setFilterList(soldList)
+          }
         }} />
       </div>
 

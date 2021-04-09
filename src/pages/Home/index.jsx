@@ -264,9 +264,9 @@ export default function Index() {
                 <p>We make it easy to trade in creativity.</p>
                 <p>For fans, artists and collectors.</p>
                   </h1>
-              <button>
-                <Link to="/Marketplace">Explore</Link>
-              </button>
+                <Link to="/Marketplace">
+                  <button>Explore</button>
+                </Link>
             </div>
           </div>
         </div>
