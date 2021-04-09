@@ -112,6 +112,10 @@ const CardItemStyled = styled.div`
         cursor: pointer;
         .name{
             font-size: 16px;
+            
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .line{
             margin-top: 20px;
