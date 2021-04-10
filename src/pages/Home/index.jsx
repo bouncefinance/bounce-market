@@ -159,7 +159,8 @@ const HomeStyled = styled.div`
   { name: 'Sports' },
   { name: 'Comics' },
 ] */
-
+let weightMap = new Map()
+const getStandardTypeValue = (e) => e === 2 ? 'english-auction' : 'fixed-swap'
 export default function Index() {
   // const { state } = useContext(myContext);
   const { sign_Axios } = useAxios()
@@ -228,7 +229,7 @@ export default function Index() {
     })
 
     // console.log(standards)
-
+    /*
     sign_Axios.post(Controller.pools.getpoolsinfo, {
       poolids: poolIds,
       standards: standards
@@ -271,6 +272,48 @@ export default function Index() {
         })
         .catch(() => { })
     })
+    */
+
+    sign_Axios.post(Controller.items.getitemsbyids, {ids: list})
+    .then(res => {
+      // .filter((_) => _.id).slice(0, 8)
+      const _list = res.data.data.map((item, index) => {
+        const poolInfo = pools.find((pool) => pool.tokenId === item.id);
+        return {
+          ...item,
+          tokenId: poolInfo.tokenId,
+          poolType: poolInfo.poolType,
+          poolId: poolInfo.poolId,
+          price: poolInfo.price,
+          createTime: poolInfo.createTime,
+          token1: poolInfo.token1
+        }
+      }).sort((a, b) => b.createTime - a.createTime);
+      getPoolsWeight(_list)
+    })
+    const getPoolsWeight = async (list) => {
+      weightMap = new Map()
+      const _res = await sign_Axios.post(Controller.pools.getpoolsinfo, {
+        poolids: poolIds,
+        standards: standards
+      })
+      const res = _res.data
+      if (res.code === 1) {
+        res.data.map((item) => {
+          weightMap.set(`${item.poolid}_${getStandardTypeValue(item.standard)}`, item.poolweight)
+        })
+        const _list = list.map((item) => {
+          return {
+            ...item,
+            defaultWeight: weightMap.get(`${item.poolId}_${item.poolType}`) ?? 0
+          }
+        })
+          .sort((a, b) => b.defaultWeight - a.defaultWeight)
+        // console.log(_list, weightMap)
+        setItemList(_list.filter((_) => _.id).slice(0, 8));
+        setLoadingItems(false)
+      }
+    }
 
 
 
