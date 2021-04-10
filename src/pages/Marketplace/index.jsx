@@ -5,11 +5,6 @@ import Search from '../component/Other/Search'
 import { CardItem } from './CardItem'
 import { PullRadioBox } from '@components/UI-kit'
 
-import nav_audio from '@assets/images/icon/nav_audio.svg'
-import nav_game from '@assets/images/icon/nav_game.svg'
-import nav_image from '@assets/images/icon/nav_image.svg'
-import nav_other from '@assets/images/icon/nav_other.svg'
-import nav_video from '@assets/images/icon/nav_video.svg'
 import icon_arts from '@assets/images/icon/image.svg'
 import icon_comics from '@assets/images/icon/comics.svg'
 import icon_sport from '@assets/images/icon/sport.svg'
@@ -17,13 +12,14 @@ import icon_sport from '@assets/images/icon/sport.svg'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
-import { QueryMarketTradePools,QueryMarketTradePools_0 } from '@/utils/apollo'
+import { QueryMarketTradePools, QueryMarketTradePools_0 } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import Button from '@/components/UI-kit/Button/Button'
 import { getCoinList } from '@/utils/coin'
 import { ZERO_ADDRESS } from "@/web3/address_list/token"
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -99,46 +95,29 @@ const MarketplaceStyled = styled.div`
     }
 `
 
-const nav_list = [{
-  name: 'Images',
-  icon: nav_image,
-  route: 'Images'
-}, {
-  name: 'Video',
-  icon: nav_video,
-  route: 'Video'
-}, {
-  name: 'Audios',
-  icon: nav_audio,
-  route: 'Audio'
-}, {
-  name: 'Game',
-  icon: nav_game,
-  route: 'Games'
-}, {
-  name: 'Others',
-  icon: nav_other,
-  route: 'Others'
-}]
-
 export default function Marketplace() {
+  const { wrapperIntl } = useWrapperIntl()
+
+
+
   const NavList = [
     {
-      title: "Fine Arts",
+      title: wrapperIntl('market.fineArts'),
       route: "FineArts",
       channelRequestParam: "Fine Arts",
     },
     {
-      title: "Sports",
+      title: wrapperIntl('market.sports'),
       route: "Sports",
       channelRequestParam: "Sports",
     },
     {
-      title: "Comics",
+      title: wrapperIntl('market.comics'),
       route: "Comics",
       channelRequestParam: "Conicbooks",
     },
   ]
+ 
   let { type, channel } = useParams()
   const history = useHistory()
   const { active, chainId } = useActiveWeb3React()
@@ -149,9 +128,9 @@ export default function Marketplace() {
 
   const setGetPollsVariables = (v) => {
     // console.log(v)
-    if(!v.contract){
+    if (!v.contract) {
       _setGetPollsMethods(QueryMarketTradePools_0)
-    }else{
+    } else {
       _setGetPollsMethods(QueryMarketTradePools)
     }
     _setGetPollsVariables(v)
@@ -177,6 +156,7 @@ export default function Marketplace() {
     channel === NavList[0].route ? NavList[0].channelRequestParam :
       channel === NavList[1].route ? NavList[1].channelRequestParam :
         NavList[2].channelRequestParam);
+  
 
 
   type = 'Image'
@@ -304,16 +284,6 @@ export default function Marketplace() {
 
   return (
     <MarketplaceStyled>
-      {false && <ul className="nav_wrapper">
-        {nav_list.map((item) => {
-          return <li key={item.name} className={type === item.route ? 'active' : ''} onClick={() => {
-            history.push(`/Marketplace/${item.route}`)
-          }}>
-            <img src={item.icon} alt="" />
-            <p>{item.name}</p>
-          </li>
-        })}
-      </ul>}
       <ul className="nav_wrapper">
         {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
@@ -342,7 +312,7 @@ export default function Marketplace() {
             } alt="" />{nav.title}</p>
           </li>
         })}
-        <li className="link"><Button onClick={() => { history.push('/MyMarket') }}>My Market</Button></li>
+        <li className="link"><Button onClick={() => { history.push('/MyMarket') }}>{wrapperIntl('market.myMarket')}</Button></li>
       </ul>
       <div className="filterBox">
         <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
@@ -351,17 +321,17 @@ export default function Marketplace() {
           // console.log(item)
         }} />
 
-        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'} 
-        width={'205px'} options={coinList} 
-        // defaultValue={chainId === 56 ? 'BNB' : 'ETH'} 
-        defaultValue={'All'} 
-        onChange={(item) => {
-          // console.log(item)
-          if (item) {
-            setLoding(false)
-            setGetPollsVariables({ contract: item.contract })
-          }
-        }} />}
+        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'}
+          width={'205px'} options={coinList}
+          // defaultValue={chainId === 56 ? 'BNB' : 'ETH'} 
+          defaultValue={'All'}
+          onChange={(item) => {
+            // console.log(item)
+            if (item) {
+              setLoding(false)
+              setGetPollsVariables({ contract: item.contract })
+            }
+          }} />}
 
         <PullRadioBox prefix={'Sort by:'} width={'204px'} options={[{ value: 'New' }, { value: 'Popular' }]} defaultValue='New' onChange={(item) => {
           // console.log(item)

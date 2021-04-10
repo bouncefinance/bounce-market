@@ -310,7 +310,7 @@ export default function Index() {
 
       <CardBanner />
 
-      <CardGroup title='Fast movers' link='/Marketplace/FineArts' marinTop='64px'>
+      <CardGroup title={wrapperIntl('home.fast')} link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
           return <PopularItem itemInfo={item} key={index} src={img_example_1} />
         })}
@@ -323,7 +323,7 @@ export default function Index() {
         <Button
           width="280px"
           height="48px"
-          value="Load More"
+          value={wrapperIntl('home.more')}
           primary
           onClick={() => {
             history.push('/Marketplace/FineArts')
@@ -331,7 +331,7 @@ export default function Index() {
         />
       </div>
 
-      <CardGroup title='Name droppers' link='/Brands'>
+      <CardGroup title={wrapperIntl('home.brand')} link='/Brands'>
         {brands.map((item, index) => {
           return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
         })}
@@ -355,7 +355,7 @@ It shouldn’t be longer then ~20-30 sec.'
 
         <Link to="/Factory">
           <div className="left">
-            <h3>Create your unique NFT on Fangible</h3>
+            <h3>{wrapperIntl('home.footerBanner')}</h3>
             <img src={arrows_white} alt="" />
           </div>
         </Link>
