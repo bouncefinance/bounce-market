@@ -164,19 +164,21 @@ export default function AmountInput({
             setError(true)
             setErrMsg(ErrorStatus.required.tip)
         }
-        if (val === "") {
-            val = minVal;
-        }
-        if (isInteger) {
-            val = parseInt(val)
-        }
-        if (maxVal && parseFloat(val) > parseFloat(maxVal)) {
-            val = maxVal
-        } else if (minVal && parseFloat(val) < parseFloat(minVal)) {
-            val = minVal
-        }
+        // if (val === "") {
+        //     val = minVal;
+        // }
+        // if (isInteger) {
+        //     val = parseInt(val)
+        // }
+        // if (maxVal && parseFloat(val) > parseFloat(maxVal)) {
+        //     val = maxVal
+        // } else if (minVal && parseFloat(val) < parseFloat(minVal)) {
+        //     val = minVal
+        // }
 
-        val ? setValue(val) : setValue(minVal)
+        // val ? 
+        setValue(val) 
+        // : setValue(minVal)
         if (!onValChange) return
         onValChange(val)
     }
@@ -190,7 +192,7 @@ export default function AmountInput({
         }
 
         if (val === "") {
-            val = minVal;
+            val = minVal||defaultValue;
         }
         if (isInteger) {
             val = parseInt(val)
@@ -200,6 +202,8 @@ export default function AmountInput({
             val = maxVal
         } else if (minVal && parseFloat(val) < parseFloat(minVal)) {
             val = minVal
+        }else if(defaultValue && parseFloat(val) < parseFloat(defaultValue)){
+            val = defaultValue
         }
         val && setValue(val)
         if (!onValChange) return
