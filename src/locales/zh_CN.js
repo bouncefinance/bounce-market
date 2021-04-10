@@ -1,4 +1,12 @@
 const zh_CN = {
+    
+    CheckStatus: '查看状态',
+    MakeUnlisted: '下架',
+    Sell: '出售',
+    All: '全部',
+    OnSale: '售卖中',
+    NotOnSale: '非卖品',
+
     header: {
         home: '首页',
         marketplace: '市场',
@@ -15,6 +23,10 @@ const zh_CN = {
         AddCardItem: {
             AddNewNFT: '+ 添加NFT',
         },
+        Category: {
+            Items: '类别',
+            Status: '状态',
+        }
     },
 
 }

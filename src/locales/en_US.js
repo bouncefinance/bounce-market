@@ -3,6 +3,13 @@ const en_US = {
     Brands: 'My Brands',
     Activities: 'My Activities',
     Liked: 'My Liked',
+    CheckStatus: '',
+    MakeUnlisted: '',
+    Sell: '',
+    All: '',
+    OnSale: '',
+    NotOnSale: '',
+
     home: {
         banner1: 'We make it easy to trade in creativity.',
         banner2: 'For fans, artists and collectors.',
@@ -43,6 +50,26 @@ const en_US = {
         AddCardItem: {
             AddNewNFT: '+ Add new NFT',
         },
+        Category: {
+            Items: 'Items',
+            Status: 'Status',
+        },
+        MyGallery: {
+            GenerateNewNFTModal: {
+                GenerateNewNFT: '',
+                Name: '',
+                Category: '',
+                Channel: '',
+                Standard: '',
+                Description: '',
+                RequiredAlert: '',
+                browseBrandPhoto: '',
+                PhotoDemandsText: '',
+                Cancel: '',
+                Submit: '',
+                Supply: '',
+            }
+        }
     },
 }
 
