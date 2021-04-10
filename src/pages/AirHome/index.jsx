@@ -256,7 +256,8 @@ export function AirHome() {
   })
 
   const handleBrandItems = (data) => {
-    const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
+    // const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
+    const brands = [].concat(data.bounce721Brands[0], data.bounce1155Brands[0])
     if(brands && brands.tokenList){
       const tokenList = brands.tokenList.map(item => item.tokenId);
       setTokenList(tokenList);

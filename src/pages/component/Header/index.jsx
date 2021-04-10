@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { Link, useHistory } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
-// import Search from './Search'
+import Search from './Search'
 import InfoBox from './InfoBox'
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
@@ -236,7 +236,7 @@ export default function Index() {
                         </Link>
 
                         {/* <Search
-                            placeholder={'Search items，Brands and Accounts'}
+                            placeholder={'Search objects, items, art'}
                         /> */}
                     </div>
                     <div className='right'>
