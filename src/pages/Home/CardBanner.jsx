@@ -33,7 +33,7 @@ export default function CardBannerGroup () {
                 <CardBannerItem
                     className="CardBanner_Marketplace"
                     title='Marketplace'
-                    context='Fine Arts, Comics, Sports and others.'
+                    context='A full colour marketplace of art, comics, sports and collectibles'
                     img={banner_1}
                     img_marginRight="10px"
                 />
@@ -45,7 +45,7 @@ export default function CardBannerGroup () {
                 <CardBannerItem
                     className="CardBanner_Brands"
                     title='Brands'
-                    context='Many different brands with Fangible'
+                    context='Explore different brands with Fangible'
                     img={banner_2}
                 />
             </Link>

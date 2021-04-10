@@ -28,7 +28,7 @@ const wallets = {
 
 export const useWalletConnect = () => {
     const {
-        activate
+        activate, deactivate
     } = useWeb3React()
 
 
@@ -40,5 +40,11 @@ export const useWalletConnect = () => {
         })
     }
 
-    return { onConnect }
+    function onDisconnect(setIsLoading) {
+        window && window.localStorage.removeItem('BOUNCE_SELECT_WALLET')
+        setIsLoading && setIsLoading(true)
+        deactivate()
+        setIsLoading && setIsLoading(false)
+    }
+    return { onConnect, onDisconnect }
 }
