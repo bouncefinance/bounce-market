@@ -13,9 +13,21 @@ const en_US = {
         marketplace: 'MarketPlace',
         brands: 'Brands',
         create: 'Create',
-        connect: 'Connect Wallet',
-        setting: 'Account Settings',
-    }
+        connect: 'Connect Wallet'
+    },
+    MyProfile: {
+        CommonHeader: {
+            MyGallery: 'My Gallery', 
+            MyBrands: 'My Brands', 
+            MyLiked: 'My Liked',
+            MyActivities: 'My Activities', 
+            Settings: 'Settings',
+            setting: 'Account Settings',
+        },
+        AddCardItem: {
+            AddNewNFT: '+ Add new NFT',
+        },
+    },
 }
 
 export default en_US
