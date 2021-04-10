@@ -56,7 +56,7 @@ const HomeStyled = styled.div`
       height: 280px;
       box-sizing: border-box;
       background-color: #000;
-      /* position: relative; */
+      position: relative;
 
       .banner_img{
         width: 1100px;
@@ -65,17 +65,20 @@ const HomeStyled = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-      .content{
+
+        .content{
           margin: auto;
           position: relative;
           z-index: 1;
           text-align: center;
         }
+
         .bg{
           position: absolute;
           left: 0px;
           top: 0px;
         }
+
         h1{
           /* width: 517px; */
           color: #fff;
@@ -258,16 +261,19 @@ export default function Index() {
   return (
     <HomeStyled>
       <div className="banner">
+        {/* <ul>
+          {banner_Nav.map((item) => {
+            return <li key={item.name}><Link to={`/Marketplace/${item.name}`}>{item.name}</Link></li>
+          })}
+        </ul> */}
         <div className="banner_wrapper" style={{ background: `url(${img_banner}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', }}>
           <div className='banner_img'>
             <div className='content'>
-              <h1>
-                <p>We make it easy to trade in creativity.</p>
-                <p>For fans, artists and collectors.</p>
-                  </h1>
-                <Link to="/Marketplace">
-                  <button>Explore</button>
-                </Link>
+              <h1>Create and Find
+                  unique content with Fangible</h1>
+              <button>
+                <Link to="/Marketplace">Explore</Link>
+              </button>
             </div>
           </div>
         </div>
