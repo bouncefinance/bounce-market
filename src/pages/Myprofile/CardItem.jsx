@@ -14,6 +14,8 @@ import { weiToNum } from '@/utils/useBigNumber'
 import GenerateNftModal from './MyGallery/GenerateNftModal'
 import { AUCTION_TYPE } from '@/utils/const'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const CardItemStyled = styled.div`
     width: 262px;
     /* height: 332px; */
@@ -149,6 +151,8 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
 
     const [newPrice, setNewPrice] = useState('--')
     // console.log(poolInfo)
+    
+    const { wrapperIntl } = useWrapperIntl()
 
     useEffect(() => {
         // console.log(poolInfo)
@@ -187,20 +191,20 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                     {
                         status !== 'Listed' ? <div className='button_group btn_one'>
                             <Button
-                                value={'Sell'}
+                                value={wrapperIntl('Sell')}
                                 primary
                                 onClick={() => { history.push(`/MyGallery/${nftId}/Sell`) }}
                             />
                             {/* <Button value={'Make Listed'} /> */}
                         </div> : poolInfo.poolType === AUCTION_TYPE.FixedSwap ? <div className='button_group'>
-                            <Button value={'Check Status'} primary onClick={() => {
+                            <Button value={wrapperIntl('CheckStatus')} primary onClick={() => {
                                 history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
-                            <Button value={'Make Unlisted'} onClick={() => {
+                            <Button value={wrapperIntl('MakeUnlisted')} onClick={() => {
                                 setOpenCancel(true)
                             }} />
                         </div> : <div className='button_group btn_one'>
-                            <Button value={'Check Status'} primary onClick={() => {
+                            <Button value={wrapperIntl('CheckStatus')} primary onClick={() => {
                                 history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
                         </div>

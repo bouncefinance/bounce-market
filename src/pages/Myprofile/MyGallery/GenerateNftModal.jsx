@@ -14,6 +14,8 @@ import { getBounceERC721WithSign, getBounceERC1155WithSign } from '@/web3/addres
 import { NFT_CATEGORY } from '@/utils/const';
 import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
 import { useHistory } from 'react-router-dom'
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 // import { numToWei } from '@/utils/useBigNumber'
 
 const GenerateNFTModalStyled = styled.div`
@@ -55,6 +57,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         Channel: NFT_CATEGORY.FineArts,
         Supply: 1
     })
+    const { wrapperIntl } = useWrapperIntl()
+
 
     useEffect(() => {
         if (!active) return
@@ -199,10 +203,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     }
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'Generate New NFT', isClose: true }}>
+        <Modal open={open} setOpen={setOpen} header={{ title: wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.GenerateNewNFT'), isClose: true }}>
             <GenerateNFTModalStyled>
                 <TextInput
-                    title='Name'
+                    title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Name')}
                     width='620px'
                     // defaultValue={'Cookie N1'}
                     required={true}
@@ -215,7 +219,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />
 
                 <div className="category_select">
-                    <PullRadioBox title={'Category'} marginTop='0' /* marginTop='24px' */ width='150px' options={[{
+                    <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Category')} marginTop='0' /* marginTop='24px' */ width='150px' options={[{
                         value: 'Images'
                     }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'}
                         inputDisable={inputDisable}
@@ -224,7 +228,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             setFormData({ ...formData, Category: item.value })
                         }} />
 
-                    <PullRadioBox title={'Channel'} marginTop='0px' width='150px' options={[{
+                    <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Channel')} marginTop='0px' width='150px' options={[{
                         value: NFT_CATEGORY.FineArts
                     }, {
                         value: NFT_CATEGORY.Sports
@@ -235,7 +239,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     }} />
 
                     <Radio
-                        title={'Standard'}
+                        title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Standard')}
                         marginTop="0"
                         options={[{
                             name: 'ERC-721',
@@ -252,7 +256,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 </div>
 
                 {nftType === 'ERC-1155' && <TextInput
-                    title='Supply'
+                    title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Supply')}
                     width='620px'
                     defaultValue={1}
                     required={true}
