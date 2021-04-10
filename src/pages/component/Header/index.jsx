@@ -13,6 +13,7 @@ import { useWalletConnect } from '@/web3/useWalletConnect'
 import { useUserInfo } from '../../Myprofile/useUserInfo'
 import { Tooltip } from '@material-ui/core'
 import { myContext } from '@/redux/index.js';
+import useIntl from '@/locales/useIntl'
 
 const HeaderStyled = styled.div`
     height: 76px;
@@ -109,19 +110,6 @@ const HeaderStyled = styled.div`
     } 
 `
 
-const Nav_list = [{
-    name: 'Home',
-    route: '/Home',
-    enable: true,
-}, {
-    name: 'Marketplace',
-    route: '/Marketplace',
-    enable: true,
-}, {
-    name: 'Brands',
-    route: '/Brands',
-    enable: true,
-},
 //  {
 //     name: 'P2P',
 //     route: '/P2P',
@@ -131,7 +119,7 @@ const Nav_list = [{
     name: 'Factory',
     route: '/Factory',
     enable: true,
-} */]
+} */
 
 export default function Index() {
     const [isConnectWallect, setIsConnectWallect] = useState(false)
@@ -144,6 +132,24 @@ export default function Index() {
     const { state, dispatch } = useContext(myContext);
     // const { dispatch } = useContext(myContext);
     /* const [isFangible, setIsFangible] = useState(false) */
+    const { wapperIntl } = useIntl()
+
+
+    const Nav_list = [{
+        name: wapperIntl('header.home'),
+        route: '/Home',
+        enable: true,
+    }, {
+        name: wapperIntl('header.marketplace'),
+        route: '/Marketplace',
+        enable: true,
+    }, {
+        name: wapperIntl('header.brands'),
+        route: '/Brands',
+        enable: true,
+    }]
+
+
 
     const updateActive = () => {
         const pathName = window.location.pathname
@@ -211,11 +217,11 @@ export default function Index() {
 
     useEffect(() => {
         if (!active) return
-        console.log("chainId:"+chainId)
+        console.log("chainId:" + chainId)
         if (chainId && (chainId !== 56)) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select BSC network.", modelUrlMessage:"How to connecting MetaMask to BSC.",modelOpenUrl:"https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain",modelTimer:24*60*60*1000 });
-        }else{
-            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage:""});
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select BSC network.", modelUrlMessage: "How to connecting MetaMask to BSC.", modelOpenUrl: "https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain", modelTimer: 24 * 60 * 60 * 1000 });
+        } else {
+            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
         }
         getUserInfo();
         // eslint-disable-next-line
@@ -240,6 +246,25 @@ export default function Index() {
                         /> */}
                     </div>
                     <div className='right'>
+                        {window.location.hostname.includes('localhost') && <Button
+                            width="100px"
+                            height="36px"
+                            value="中文"
+                            onClick={() => {
+                                window.localStorage.setItem('Language', 'zh-CN')
+                                window.location.reload()
+                            }}
+                        />}
+
+                        {window.location.hostname.includes('localhost') && <Button
+                            width="100px"
+                            height="36px"
+                            value="English"
+                            onClick={() => {
+                                window.localStorage.setItem('Language', 'en-US')
+                                window.location.reload()
+                            }}
+                        />}
                         <ul>
                             {Nav_list.map(item => {
                                 return item.enable ? <li
@@ -264,7 +289,7 @@ export default function Index() {
                         <Button
                             width="110px"
                             height="36px"
-                            value="Create"
+                            value={wapperIntl('header.create')}
                             onClick={() => {
                                 history.push("/Factory")
                             }}
@@ -274,7 +299,7 @@ export default function Index() {
                             {state.userInfo && state.userInfo.imgurl ? <img src={state.userInfo && state.userInfo.imgurl} alt="" onClick={onHandleShowInfo} /> : <div className='avatar' onClick={onHandleShowInfo}></div>}
                         </div> : <Button className='connect_btn' primary onClick={() => {
                             setIsConnectWallect(true)
-                        }}>Connect Wallet</Button>}
+                        }}>{wapperIntl('header.connect')}</Button>}
 
                     </div>
                     {isShowInfo && <InfoBox onBodyHandle={onBodyHandle} offBodyHandle={offBodyHandle} setIsShowInfo={setIsShowInfo} username={state.userInfo && state.userInfo.username} />}
