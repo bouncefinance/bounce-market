@@ -16,6 +16,8 @@ import UpdateTopBarImg from './MyBrands/updateTopBarImg'
 import edit_white from '@assets/images/icon/edit_white.svg'
 import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
 
+import useIntl from '@/locales/useIntl'
+
 
 const CommonHeaderStyled = styled.div`
     .top-bg{
@@ -142,27 +144,6 @@ const CommonHeaderStyled = styled.div`
     }
 `
 
-const ItemList = [{
-    name: 'My Gallery',
-    img_black: gallery_black,
-    route: '/MyGallery'
-}, {
-    name: 'My Brands',
-    img_black: brands_black,
-    route: '/MyBrands'
-}, {
-    name: 'My Liked',
-    img_black: icon_liked,
-    route: '/MyLiked'
-}, {
-    name: 'My Activities',
-    img_black: activities_black,
-    route: '/MyActivities'
-},/*{
-    name: 'Point-2-Point',
-    img_black: p2p_black,
-    route: '/MyP2P'
-}*/]
 
 export default function CommonHeader() {
     const [curItem, setCurItem] = useState('/MyGallery')
@@ -171,6 +152,30 @@ export default function CommonHeader() {
     const [isSettingAccount, setIsSettingAccount] = useState(false)
     const { state, dispatch } = useContext(myContext);
     const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
+    
+    const { wapperIntl } = useIntl()
+
+    const ItemList = [{
+        name: wapperIntl('MyProfile_CommonHeader.MyGallery'),
+        img_black: gallery_black,
+        route: '/MyGallery'
+    }, {
+        name: wapperIntl('MyProfile_CommonHeader.MyBrands'),
+        img_black: brands_black,
+        route: '/MyBrands'
+    }, {
+        name: wapperIntl('MyProfile_CommonHeader.MyLiked'),
+        img_black: icon_liked,
+        route: '/MyLiked'
+    }, {
+        name: wapperIntl('MyProfile_CommonHeader.MyActivities'),
+        img_black: activities_black,
+        route: '/MyActivities'
+    },/*{
+        name: 'Point-2-Point',
+        img_black: p2p_black,
+        route: '/MyP2P'
+    }*/]
 
     useEffect(() => {
         const pathName = window.location.pathname
