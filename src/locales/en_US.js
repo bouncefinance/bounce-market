@@ -1,15 +1,20 @@
 const en_US = {
+    Gallery: 'My Gallery',
+    Brands: 'My Brands',
+    Activities: 'My Activities',
+    Liked: 'My Liked',
+    home:{
+        banner1: 'We make it easy to trade in creativity.',
+        banner2: 'For fans, artists and collectors.',
+        Explore: 'Explore',
+    },
     header: {
         home: 'Home',
         marketplace: 'MarketPlace',
         brands: 'Brands',
         create: 'Create',
-        connect: 'Connect Wallet'
-    },
-    h1: {
-        h2: {
-            h3: '111'
-        }
+        connect: 'Connect Wallet',
+        setting: 'Account Settings',
     }
 }
 

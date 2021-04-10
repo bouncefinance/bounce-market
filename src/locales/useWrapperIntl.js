@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl'
 
-export default function UseIntl() {
+export default function useWrapperIntl() {
     const intl = useIntl()
 
     const wrapperIntl = (id, option) => {

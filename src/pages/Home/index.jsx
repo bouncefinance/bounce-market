@@ -26,6 +26,8 @@ import { QueryTradePools } from '@/utils/apollo'
 // import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE } from '@/utils/const'
 import { Controller } from '@/utils/controller'
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 
 const HomeStyled = styled.div`
   .banner{
@@ -173,6 +175,7 @@ export default function Index() {
   const [loadingBrands, setLoadingBrands] = useState(false)
   const [loadingItems, setLoadingItems] = useState(true)
   // const { dispatch } = useContext(myContext)
+  const { wrapperIntl } = useWrapperIntl()
 
   useEffect(() => {
     // if (!account) {
@@ -286,11 +289,11 @@ export default function Index() {
           <div className='banner_img'>
             <div className='content'>
               <h1>
-                <p>We make it easy to trade in creativity.</p>
-                <p>For fans, artists and collectors.</p>
+                <p>{wrapperIntl('home.banner1')}</p>
+                <p>{wrapperIntl('home.banner2')}</p>
               </h1>
               <Link to="/Marketplace">
-                <button>Explore</button>
+                <button>{wrapperIntl('home.Explore')}</button>
               </Link>
             </div>
           </div>

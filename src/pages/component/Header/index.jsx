@@ -13,7 +13,7 @@ import { useWalletConnect } from '@/web3/useWalletConnect'
 import { useUserInfo } from '../../Myprofile/useUserInfo'
 import { Tooltip } from '@material-ui/core'
 import { myContext } from '@/redux/index.js';
-import useIntl from '@/locales/useIntl'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const HeaderStyled = styled.div`
     height: 76px;
@@ -110,17 +110,6 @@ const HeaderStyled = styled.div`
     } 
 `
 
-//  {
-//     name: 'P2P',
-//     route: '/P2P',
-//     enable: false,
-// },
-/* {
-    name: 'Factory',
-    route: '/Factory',
-    enable: true,
-} */
-
 export default function Index() {
     const [isConnectWallect, setIsConnectWallect] = useState(false)
     const { onConnect } = useWalletConnect()
@@ -132,7 +121,7 @@ export default function Index() {
     const { state, dispatch } = useContext(myContext);
     // const { dispatch } = useContext(myContext);
     /* const [isFangible, setIsFangible] = useState(false) */
-    const { wrapperIntl } = useIntl()
+    const { wrapperIntl } = useWrapperIntl()
 
 
     const Nav_list = [{
