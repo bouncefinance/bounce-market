@@ -10,16 +10,16 @@ import { client } from './utils/apollo'
 import zh_CN from './locales/zh_CN';
 import en_US from './locales/en_US';
 
-const compile = function loop(msgs, pid) {
+const compile = function loop(msgs, pids) {
   let results = {}
   for (const [id, msg] of Object.entries(msgs)) {
     if (typeof msg === 'object') {
       results = {
         ...results,
-        ...loop(msg, id)
+        ...loop(msg, pids ? [pids, id] : id)
       }
     } else {
-      results[pid ? [pid, id].join('.') : id] = msg
+      results[pids ? [...(typeof (pids) === 'string' ? [pids] : pids), id].join('.') : id] = msg
     }
 
   }

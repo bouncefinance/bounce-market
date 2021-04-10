@@ -5,6 +5,11 @@ const en_US = {
         brands: 'Brands',
         create: 'Create',
         connect: 'Connect Wallet'
+    },
+    h1: {
+        h2: {
+            h3: '111'
+        }
     }
 }
 
