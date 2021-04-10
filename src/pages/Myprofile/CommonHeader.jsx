@@ -16,7 +16,7 @@ import UpdateTopBarImg from './MyBrands/updateTopBarImg'
 import edit_white from '@assets/images/icon/edit_white.svg'
 import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
 
-import useIntl from '@/locales/useIntl'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 
 const CommonHeaderStyled = styled.div`
@@ -144,6 +144,8 @@ const CommonHeaderStyled = styled.div`
     }
 `
 
+    
+
 
 export default function CommonHeader() {
     const [curItem, setCurItem] = useState('/MyGallery')
@@ -152,23 +154,24 @@ export default function CommonHeader() {
     const [isSettingAccount, setIsSettingAccount] = useState(false)
     const { state, dispatch } = useContext(myContext);
     const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
-    
-    const { wapperIntl } = useIntl()
 
+    
+    const { wrapperIntl } = useWrapperIntl()
+    
     const ItemList = [{
-        name: wapperIntl('MyProfile_CommonHeader.MyGallery'),
+        name: wrapperIntl('MyProfile.CommonHeader.MyGallery'),
         img_black: gallery_black,
         route: '/MyGallery'
     }, {
-        name: wapperIntl('MyProfile_CommonHeader.MyBrands'),
+        name: wrapperIntl('MyProfile.CommonHeader.MyBrands'),
         img_black: brands_black,
         route: '/MyBrands'
     }, {
-        name: wapperIntl('MyProfile_CommonHeader.MyLiked'),
+        name: wrapperIntl('MyProfile.CommonHeader.MyLiked'),
         img_black: icon_liked,
         route: '/MyLiked'
     }, {
-        name: wapperIntl('MyProfile_CommonHeader.MyActivities'),
+        name: wrapperIntl('MyProfile.CommonHeader.MyActivities'),
         img_black: activities_black,
         route: '/MyActivities'
     },/*{
@@ -184,7 +187,9 @@ export default function CommonHeader() {
                 setCurItem(element.route)
             }
         });
+        // eslint-disable-next-line
     }, [])
+
 
     return (
         <CommonHeaderStyled>
@@ -220,7 +225,7 @@ export default function CommonHeader() {
                         </div>
                     </div>
                     <div className="right">
-                        <OtherButton type='setting' value={'Settings'} onClick={() => {
+                        <OtherButton type='setting' value={wrapperIntl('MyProfile.CommonHeader.Settings')} onClick={() => {
                             setIsSettingAccount(true)
                         }} />
                         {false && <OtherButton type='share' value={'Share'} />}

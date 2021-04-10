@@ -13,7 +13,7 @@ import { useWalletConnect } from '@/web3/useWalletConnect'
 import { useUserInfo } from '../../Myprofile/useUserInfo'
 import { Tooltip } from '@material-ui/core'
 import { myContext } from '@/redux/index.js';
-import useIntl from '@/locales/useIntl'
+import useIntl from '@/locales/useWrapperIntl'
 
 const HeaderStyled = styled.div`
     height: 76px;
@@ -132,19 +132,19 @@ export default function Index() {
     const { state, dispatch } = useContext(myContext);
     // const { dispatch } = useContext(myContext);
     /* const [isFangible, setIsFangible] = useState(false) */
-    const { wapperIntl } = useIntl()
+    const { wrapperIntl } = useIntl()
 
 
     const Nav_list = [{
-        name: wapperIntl('header.home'),
+        name: wrapperIntl('header.home'),
         route: '/Home',
         enable: true,
     }, {
-        name: wapperIntl('header.marketplace'),
+        name: wrapperIntl('header.marketplace'),
         route: '/Marketplace',
         enable: true,
     }, {
-        name: wapperIntl('header.brands'),
+        name: wrapperIntl('header.brands'),
         route: '/Brands',
         enable: true,
     }]
@@ -289,7 +289,7 @@ export default function Index() {
                         <Button
                             width="110px"
                             height="36px"
-                            value={wapperIntl('header.create')}
+                            value={wrapperIntl('header.create')}
                             onClick={() => {
                                 history.push("/Factory")
                             }}
@@ -299,7 +299,7 @@ export default function Index() {
                             {state.userInfo && state.userInfo.imgurl ? <img src={state.userInfo && state.userInfo.imgurl} alt="" onClick={onHandleShowInfo} /> : <div className='avatar' onClick={onHandleShowInfo}></div>}
                         </div> : <Button className='connect_btn' primary onClick={() => {
                             setIsConnectWallect(true)
-                        }}>{wapperIntl('header.connect')}</Button>}
+                        }}>{wrapperIntl('header.connect')}</Button>}
 
                     </div>
                     {isShowInfo && <InfoBox onBodyHandle={onBodyHandle} offBodyHandle={offBodyHandle} setIsShowInfo={setIsShowInfo} username={state.userInfo && state.userInfo.username} />}

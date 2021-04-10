@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
-import useIntl from '@/locales/useIntl'
+import useIntl from '@/locales/useWrapperIntl'
 
 // import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
@@ -232,7 +232,7 @@ const AddCardItemStyle = styled.div`
 export function AddCardItem() {
     const [showGenrateModal, setShowGenrateModal] = useState(false)
 
-    const { wapperIntl } = useIntl()
+    const { wrapperIntl } = useIntl()
 
     return (
         <>
@@ -241,7 +241,7 @@ export function AddCardItem() {
                     <img src={img_addItem} alt="" />
                 </div> */}
                 <div className="content">
-                    <Button value={wapperIntl('+ Add new NFT')} onClick={() => {
+                    <Button value={wrapperIntl('MyProfile.AddCardItem.AddNewNFT')} onClick={() => {
                         setShowGenrateModal(true)
                     }} />
                 </div>

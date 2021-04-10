@@ -6,24 +6,18 @@ const en_US = {
         create: 'Create',
         connect: 'Connect Wallet'
     },
-    /* MyProfile: {
+    MyProfile: {
         CommonHeader: {
             MyGallery: 'My Gallery', 
             MyBrands: 'My Brands', 
             MyLiked: 'My Liked',
             MyActivities: 'My Activities', 
+            Settings: 'Settings',
         },
-    }, */
-    MyProfile_CommonHeader: {
-        MyGallery: 'My Gallery', 
-        MyBrands: 'My Brands', 
-        MyLiked: 'My Liked',
-        MyActivities: 'My Activities', 
+        AddCardItem: {
+            AddNewNFT: '+ Add new NFT',
+        },
     },
-
-    MyProfile_AddCardItem: {
-        AddNewNFT: '+ Add new NFT',
-    }
 }
 
 export default en_US
