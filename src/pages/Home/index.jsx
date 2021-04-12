@@ -299,7 +299,7 @@ export default function Index() {
       })
       const res = _res.data
       if (res.code === 1) {
-        res.data.map((item) => {
+        res.data?.forEach((item) => {
           weightMap.set(`${item.poolid}_${getStandardTypeValue(item.standard)}`, item.poolweight)
         })
         const _list = list.map((item) => {

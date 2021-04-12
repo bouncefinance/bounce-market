@@ -19,7 +19,7 @@ export default function Search ({ placeholder, value, onChange }) {
     const [inSearch, setInSearch] = useState('')
     const [searchLoding, setSearchLoding] = useState(!false)
     const [data, setdata] = useState({})
-    const { loading, poolData } = useQuery(QueryTradePools)
+    const { poolData } = useQuery(QueryTradePools)
     const handleChange = (e) => {
         const value = e.target.value && e.target.value.toLowerCase();
         search = value
@@ -50,7 +50,7 @@ export default function Search ({ placeholder, value, onChange }) {
     }
     
     const getPools = () => {
-        console.log('poolData', poolData)
+        // console.log('poolData', poolData)
         const data = poolData
         const tradePools = data.tradePools.map((item) => ({
             ...item,
@@ -67,10 +67,10 @@ export default function Search ({ placeholder, value, onChange }) {
     }
     const debounceFilter = useDebouncedValue(search, DEBOUNCE);
     
-    useEffect(() => {
-        // if (!loading) return
-        console.log('poolData', poolData)
-     }, [loading])
+    // useEffect(() => {
+    //     // if (!loading) return
+    //     console.log('poolData', poolData)
+    //  }, [loading])
     
     useEffect(() => {
         onChange && onChange(debounceFilter);
@@ -89,6 +89,7 @@ export default function Search ({ placeholder, value, onChange }) {
         return () => {
             document.removeEventListener('keyup', onEnter)
         }
+        // eslint-disable-next-line
     }, [])
 
     return (<SearchBoxStyled className={'flex flex-center-y'}>
