@@ -323,6 +323,16 @@ export default function NewIndex () {
         }
     }, [poolId, queryLastbid])
 
+
+    useEffect(() => {
+        console.log(amount.toString().replace(/[^0-9]/ig,""))
+        if (parseInt(amount) < 1 || amount.toString().replace(/[^0-9]/ig,"") === "" || parseInt(amount)>(parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P))) {
+            setIsLoading(true);
+        }else{
+            setIsLoading(false);
+        }
+    }, [amount, poolInfo.amountTotal0, poolInfo.swappedAmount0P])
+
     const setLike = async () => {
         const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
         if (res.data.code === 200 || res.data.code === 1) {

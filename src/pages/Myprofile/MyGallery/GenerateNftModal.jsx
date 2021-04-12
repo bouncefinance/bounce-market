@@ -141,7 +141,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Congratulations. Your NFTs have been generated." });
                                         if(window.location.pathname === "/MyGallery"){
-                                            window.location.reload()
+                                            setTimeout(function(){
+                                                window.location.reload()
+                                            },1000)
                                         }else{
                                             history.push("/MyGallery")
                                         }
@@ -174,7 +176,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Congratulations. Your NFTs have been generated." });
                                         if(window.location.pathname === "/MyGallery"){
-                                            window.location.reload()
+                                            setTimeout(function(){
+                                                window.location.reload()
+                                            },1000)
                                         }else{
                                             history.push("/MyGallery")
                                         }
@@ -192,6 +196,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                 console.log('BounceERC1155_CT.methods.mintUser', error)
                             }
                         }
+                    }else{
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                     }
 
                 }).catch(err => {

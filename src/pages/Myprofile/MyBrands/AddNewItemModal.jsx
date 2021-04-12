@@ -126,9 +126,11 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        window.location.reload();
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
+                                        setTimeout(function(){
+                                            window.location.reload()
+                                        },1000)
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -156,9 +158,11 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        window.location.reload();
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
+                                        setTimeout(function(){
+                                            window.location.reload()
+                                        },1000)
                                     })
                                     .on('error', (err, receipt) => {
                                         setBtnLock(false);
@@ -173,10 +177,12 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                                 console.log('BounceERC1155_CT.methods.mint', error)
                             }
                         }
+                    }else{
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                     }
 
                 }).catch(err => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                     setBtnLock(false)
                     setInputDisable(false)
                     setBtnText('Submit')

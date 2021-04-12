@@ -118,12 +118,12 @@ export default function ModalBox({
 	const [isDisabled, setIsDisabled] = useState(false)
 	/* const [agree, setAgree] = useState(false); */
 
-	useEffect(() => {
+	// useEffect(() => {
 		/* console.log("inputMin", inputMin)
 		console.log("poolInfo", poolInfo)
 		console.log("maxVal", parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)) */
 // eslint-disable-next-line
-	}, [poolInfo, inputMin])
+	// }, [poolInfo, inputMin])
 
 	useEffect(() => {
 		if (!poolInfo) return
@@ -182,8 +182,6 @@ export default function ModalBox({
 							defaultValue={"1"}
 
 							onValChange={(val) => {
-								console.log(val)
-								if (!val) return
 								setAmount(parseInt(val))
 							}}
 							disabled={isDisabled}
