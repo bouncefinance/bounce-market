@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { Link, useHistory } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
-// import Search from './Search'
+import Search from './Search'
 import InfoBox from './InfoBox'
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
@@ -235,9 +235,9 @@ export default function Index() {
                             <img src={/* isFangible ? logo_bfangible : */ logo_bounce} alt=""></img>
                         </Link>
 
-                        {/* <Search
+                        <Search
                             placeholder={'Search objects, items, art'}
-                        /> */}
+                        />
                     </div>
                     <div className='right'>
                         <ul>

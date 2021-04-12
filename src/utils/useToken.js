@@ -176,6 +176,12 @@ export default function useToken() {
         return price
     }
 
+    const getPriceByToken1 = async (_price, token1) => {
+        if (!_price || !token1) return {}
+        const {symbol, decimals} = await exportErc20Info(token1)
+        const price = weiToNum(_price, decimals)
+        return {price, symbol}
+    }
 
     return {
         exportNftInfo,
@@ -186,7 +192,9 @@ export default function useToken() {
         exportErc20Info,
         getBalance_ERC_1155,
         getBalance_ERC_721,
-        hasApprove_ERC_20
+        hasApprove_ERC_20,
+        getPriceByToken1,
+        queryPrice,
         // tokenList
     }
 }

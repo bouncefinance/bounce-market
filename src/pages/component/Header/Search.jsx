@@ -11,20 +11,24 @@ import icon_search from './assets/search.svg'
 import { useQuery } from '@apollo/client';
 import { QueryTradePools } from '@/utils/apollo'
 import { AUCTION_TYPE } from '@/utils/const'
+import useToken from '@/utils/useToken';
 
-const getStandardTypeValue = (e) => e === 2 ? 'english-auction' : 'fixed-swap'
 let search = ''
+let inputTarget
 export default function Search ({ placeholder, value, onChange }) {
-    const {sign_Axios} = useAxios()
+    const { sign_Axios } = useAxios()
+    const { getPriceByToken1, queryPrice } = useToken()
     const [inSearch, setInSearch] = useState('')
     const [searchLoding, setSearchLoding] = useState(!false)
     const [data, setdata] = useState({})
-    const { poolData } = useQuery(QueryTradePools)
+    const poolDataRes = useQuery(QueryTradePools)
     const handleChange = (e) => {
+        inputTarget = e.target
         const value = e.target.value && e.target.value.toLowerCase();
         search = value
     }
     const onSearch = async () => {
+        // console.log('---search--', search)
         setInSearch(search)
         // TODO 去头尾空
         if (!search) return
@@ -32,26 +36,62 @@ export default function Search ({ placeholder, value, onChange }) {
         try {
             const res = await sign_Axios.post(`/api/v2/main/getbylikestr`, { likestr: search })
             if (res.data.code === 1) {
+                const clone = (e) => {
+                    return e ? JSON.parse(JSON.stringify(e)) : null
+                }
                 const data = res.data.data
-                console.log(data)
-                console.log('---getPools---')
-                console.log(getPools())
-                data.items = data.items.filter((_, i) => i < 3)
+                // <tokenId, pool>
+                let map = new Map()
+                const pools = getPools()
+                // console.log('data', clone(data))
+                // console.log('---getPools---', pools)
+                for (let pool of pools) {
+                    map.set(pool.tokenId, pool)
+                }
+                data.items = data.items
+                    .map(item => ({ item, pool: clone(map.get(item.id)) }))
+                    .filter((e) => e.pool)
+                    .filter((_, i) => i < 3)
                 data.brands = data.brands.filter((_, i) => i < 3)
                 data.account = data.account.filter((_, i) => i < 3)
+                let i = 0
+                for (let { accountaddress } of data.account) {
+                    const isAccountBrandRes = await sign_Axios.post('/api/v2/main/ifaccounthavebrands', { accountaddress })
+                    if (isAccountBrandRes.data.code === 1) {
+                        data.account[i].hasBrand = true
+                    }
+                    i ++
+                }
+                for (let item of data.items) {
+                    const pool = item.pool
+                    const { price, token1 } = pool
+                    item.pool = { ...pool, ...await getPriceByToken1(price, token1) }
+                    item.pool = { ...item.pool, usdtPrice: parseFloat(await queryPrice(item.pool.price) * item.pool.price).toFixed(2)}
+                }
+                // console.log(data.items, map)
                 setdata(data)
                 setSearchLoding(false)
             } else {
                 setSearchLoding(false)
             }
         } catch (error) {
+            console.log(error)
             setSearchLoding(false)
         }
     }
+    const onItem = (e) => {
+        // console.log(e?.target)
+        if (e?.target?.innerText === 'Search' || e?.target?.className?.includes('search-input')) {
+            return
+        }
+        if (inputTarget) inputTarget.value = ''
+        search = ''
+        onSearch()
+    }
     
     const getPools = () => {
-        // console.log('poolData', poolData)
-        const data = poolData
+        const data = poolDataRes.data
+        // console.log('poolData', data)
         const tradePools = data.tradePools.map((item) => ({
             ...item,
             poolType: AUCTION_TYPE.FixedSwap
@@ -63,7 +103,7 @@ export default function Search ({ placeholder, value, onChange }) {
         }))
             .filter((item) => item.state !== 1 && item.poolId !== 0)
 
-        return tradePools.concat(tradeAuctions);
+        return [].concat(tradePools, tradeAuctions)
     }
     const debounceFilter = useDebouncedValue(search, DEBOUNCE);
     
@@ -86,15 +126,18 @@ export default function Search ({ placeholder, value, onChange }) {
             }
         })
         document.addEventListener('keyup', onEnter)
+        document.addEventListener('click', onItem)
         return () => {
             document.removeEventListener('keyup', onEnter)
+            document.removeEventListener('click', onItem)
         }
         // eslint-disable-next-line
-    }, [])
+    }, [poolDataRes, getPools])
 
     return (<SearchBoxStyled className={'flex flex-center-y'}>
         <SearchStyled
             placeholder={placeholder}
+            className="search-input"
             value={value}
             onChange={handleChange}
         />
@@ -104,28 +147,29 @@ export default function Search ({ placeholder, value, onChange }) {
                 
                 <div className="search-result-title">Items</div>
                 {searchLoding ? <Loding /> : <div className="row-box">
-                    {data.items?.map((item, key) => <Link key={key} to={`/Marketplace/FineArts/${getStandardTypeValue(item.standard)}/${item.id}`} className="search-result-item-row flex">
+                    {data.items?.map(({ item, pool }, key) => <Link key={key} onClick={() => onItem()} to={`/Marketplace/FineArts/${pool.poolType}/${pool.poolId}`} className="search-result-item-row flex">
                         <AutoStretchBaseWidthOrHeightImg width={41} height={41} src={item.fileurl} />
                         <div className="row-right">
                             <p className="item-name">{item.itemname}</p>
                             <p>
-                                <span className="coin">-- BNB</span>
-                                <span className="price">(--$)</span>
+                                <span className="coin">{pool.price} {pool.symbol}</span>
+                                <span className="price">({pool.usdtPrice}$)</span>
                             </p>
                         </div>
                     </Link>)}
+                    {data.items?.length === 0 && <DataNull />}
                 </div>}
                 <div className="search-result-title">Brands</div>
                 {searchLoding ? <Loding /> : <div className="row-box">
-                    {data.brands?.map((item, key) => <Link key = { key } to={`/AirHome/${item.id}/${item.standard}/FineArts`} className="search-result-brands-row flex flex-center-y">
+                    {data.brands?.map((item, key) => <Link key={key} onClick={() => onItem()} to={`/AirHome/${item.id}/${item.standard}/FineArts`} className="search-result-brands-row flex flex-center-y">
                         <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl} />
                         <div className="brand-name">{item.brandname}</div>
                     </Link>)}
+                    {data.brands?.length === 0 && <DataNull />}
                 </div>}
                 <div className="search-result-title">Users</div>
                 {searchLoding ? <Loding /> : <div className="row-box">
-                    {/* TODO  没有brand 提示 */}
-                    {data.account?.map((item, key) => <Link key={key} to={`/AirHome/${item.id}/1/FineArts`} className="search-result-users-row flex">
+                    {data.account?.map((item, key) => <Link key={key} onClick={() => onItem()} style={item?.hasBrand ? { opacity: '1' } : { opacity: '0.5', cursor: 'default' }} to={item?.hasBrand ? `/AirHome/${item.id}/1/FineArts` : void 0} className="search-result-users-row flex">
                         <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl } />
                         <div className="row-right">
                             <p className="user-name">{item.username}</p>
@@ -134,6 +178,7 @@ export default function Search ({ placeholder, value, onChange }) {
                             </p>
                         </div>
                     </Link>)}
+                    {data.account?.length === 0 && <DataNull />}
                 </div>}
             </div>
         </div>
@@ -144,6 +189,13 @@ export default function Search ({ placeholder, value, onChange }) {
 const Loding = () => {
     return <>
         <Skeleton variant="rect" width={210} height={118} />
+    </>
+}
+const DataNull = () => {
+    return <>
+        <div style={
+            { color: '#000000', opacity: '0.3', fontSize: '14px', textAlign: 'center', padding: '10px 0px' }
+        }>data null</div>
     </>
 }
 
