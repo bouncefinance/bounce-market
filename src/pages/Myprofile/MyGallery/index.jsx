@@ -128,7 +128,7 @@ export default function Index() {
               token1: item.token1,
               createTime: item.createTime
             }
-          })
+          }).filter(item => item.fileurl)
           const result = list.sort((a, b) => b.createTime - a.createTime)
           setItemList(result);
           setStatusList(result);

@@ -34,7 +34,7 @@ console.log(compile(en_US))
 
 // const languages = navigator.languages;
 const Language = window.localStorage.getItem('Language')
-const currentLang = Language ? Language : 'zh-CN';     // en-US
+const currentLang = Language ? Language : 'en-US';     // en-US
 
 function App() {
   const getLibrary = (provider, _connector) => {
