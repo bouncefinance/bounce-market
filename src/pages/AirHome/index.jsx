@@ -263,7 +263,6 @@ export function AirHome() {
 
     // const brands = [].concat(data.bounce721Brands[0], data.bounce1155Brands[0])
     const brands = { tokenList: brand1.concat(brand2) }
-    console.log(brands)
 
     if (brands && brands.tokenList) {
       const tokenList = brands.tokenList.map(item => item.tokenId);

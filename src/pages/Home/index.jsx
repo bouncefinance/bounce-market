@@ -283,18 +283,19 @@ export default function Index() {
     sign_Axios.post(Controller.items.getitemsbyids, {ids: list})
     .then(res => {
       // .filter((_) => _.id).slice(0, 8)
-      const _list = res.data.data.map((item, index) => {
-        const poolInfo = pools.find((pool) => pool.tokenId === item.id);
+      const _list = pools.map((pool, index) => {
+        const poolInfo = res.data.data.find((item) => pool.tokenId === item.id);
         return {
-          ...item,
-          tokenId: poolInfo.tokenId,
-          poolType: poolInfo.poolType,
-          poolId: poolInfo.poolId,
-          price: poolInfo.price,
-          createTime: poolInfo.createTime,
-          token1: poolInfo.token1
+          ...poolInfo,
+          tokenId: pool.tokenId,
+          poolType: pool.poolType,
+          poolId: pool.poolId,
+          price: pool.price,
+          createTime: pool.createTime,
+          token1: pool.token1
         }
-      }).sort((a, b) => b.createTime - a.createTime);
+      })
+      .sort((a, b) => b.createTime - a.createTime);
       getPoolsWeight(_list)
     })
     const getPoolsWeight = async (list) => {
