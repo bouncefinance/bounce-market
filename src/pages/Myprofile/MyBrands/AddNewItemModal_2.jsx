@@ -169,10 +169,12 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                 console.log('BounceERC1155_CT.methods.mintUser', error)
                             }
                         }
+                    }else{
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                     }
 
                 }).catch(err => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                 })
             })
         // 第三步 调用合约生成 NFT

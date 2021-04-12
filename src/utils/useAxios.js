@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 // import { useUserInfo } from '../pages/Myprofile/useUserInfo'
 import { useEffect, useContext } from 'react';
 import { myContext } from '@/redux/index.js';
+import { useHistory } from 'react-router-dom'
 const host = window.location.host
 const Base_URL =
     host.includes('market.bounce.finance') ?
@@ -21,6 +22,7 @@ let isRequestLock = false
 export default function useAxios() {
     const { account, library } = useWeb3React();
     const { dispatch } = useContext(myContext);
+    const history = useHistory();
     // const { getUserInfo } = useUserInfo()
     useEffect(() => {
         if (!account || isRequestLock) return
@@ -39,7 +41,8 @@ export default function useAxios() {
             JWT_TOKEN_V2[account] = token
             window.localStorage.setItem('JWT_TOKEN_V2', JSON.stringify(JWT_TOKEN_V2))
             dispatch({ type: 'Token', authToken: token });
-            window.location.reload();
+            // window.location.reload();
+            history.push("/Home")
         }
     }
 
