@@ -17,6 +17,25 @@ const en_US = {
         "PopularItem.TopBid": "Top Bid",
     },
 
+    home: {
+        banner1: 'We make it easy to trade in creativity.',
+        banner2: 'For fans, artists and collectors.',
+        Explore: 'Explore',
+        fast: 'Fast movers',
+        brand: 'Name droppers',
+        footerBanner: 'Create your unique NFT on Fangible',
+        more: 'Load More',
+        view: 'View All',
+        cardTitle1: 'Marketplace',
+        cardContent1: 'A full colour marketplace of art, comics, sports and collectibles',
+        cardTitle2: 'Brands',
+        cardContent2: 'Discover our artists, movers, makers and creators',
+
+        "PopularItem.LoadingPrice": "Loading price ...",
+        "PopularItem.Price": "Price",
+        "PopularItem.TopBid": "Top Bid",
+    },
+
     "UIKit.Input.Upload.infoTip.uploadImage": 'upload Image',
     "UIKit.Input.Upload.infoTip.requirement1": 'Supports JPG, PNG, JPEG2000',
     "UIKit.Input.Upload.infoTip.requirement2": 'no more than 100MB, 262*262 Reccomended',
