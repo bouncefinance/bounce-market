@@ -33,7 +33,7 @@ messages["zh-CN"] = compile(zh_CN);
 // console.log(compile(en_US))
 
 // const languages = navigator.languages;
-let Language = window.localStorage.getItem('Language')
+let Language = window.localStorage.getItem('Language') || 'en-US'
 const host = window.location.host
 if (host.includes('cnmarket.bounce.finance') || host.includes('192.168.')) {
   Language = 'zh-CN'
