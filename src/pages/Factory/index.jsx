@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import FactoryCard from './FactoryCard'
 import GenerateNFTModal from '../Myprofile/MyGallery/GenerateNftModal'
-import CreateBrandModal from '../Myprofile/MyBrands/AddNewBrandstModal'
+import CreateBrandModal from '../Myprofile/MyBrands/AddNewBrandsModal'
 import AddNewItemModal from './AddNewItemModal'
 import ListNFTModal from './ListNFTModal'
 

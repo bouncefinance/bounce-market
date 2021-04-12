@@ -14,7 +14,7 @@ import { myContext } from '@/redux'
 import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
 // import { numToWei } from '@/utils/useBigNumber'
 const DEBOUNCE = 500;
-const AddNewBrandstModalStyled = styled.div`
+const AddNewBrandsModalStyled = styled.div`
     width: 1100px;
     /* height: 690px; */
     box-sizing: border-box; 
@@ -36,7 +36,7 @@ const AddNewBrandstModalStyled = styled.div`
 
 `
 
-export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandInfo = {} }) {
+export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandInfo = {} }) {
     const { active, library, account } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
     const { showTransferByStatus } = useTransferModal()
@@ -191,7 +191,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
 
     return (
         <Modal open={open} setOpen={setOpen} header={{ title: 'Add New Item', isClose: true }}>
-            <AddNewBrandstModalStyled>
+            <AddNewBrandsModalStyled>
                 <TextInput
                     title='Name'
                     width='620px'
@@ -270,7 +270,7 @@ export default function AddNewBrandstModal({ open, setOpen, defaultValue, brandI
                     }}>Cancel</Button>
                     <Button disabled={btnLock} height='48px' width='302px' primary onClick={debounce}>{btnText}</Button>
                 </div>
-            </AddNewBrandstModalStyled>
+            </AddNewBrandsModalStyled>
         </Modal >
     )
 }

@@ -7,6 +7,7 @@ import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchB
 import { weiToNum } from '@/utils/useBigNumber'
 import useToken from '@/utils/useToken'
 import { useActiveWeb3React } from '@/web3';
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -160,10 +161,12 @@ const CardItemStyled = styled.div`
 `
 
 export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }) {
+    const { wrapperIntl } = useWrapperIntl()
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const { active } = useActiveWeb3React()
-    const [newPrice, setNewPrice] = useState('Loading Price ...')
+    /* const [newPrice, setNewPrice] = useState('Loading Price ...') */
+    const [newPrice, setNewPrice] = useState(wrapperIntl("MarketPlace.CardItem.LoadingPrice"))
     // console.log(price, token1)
 
     useEffect(() => {
@@ -196,7 +199,7 @@ export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }
                         </span>
                     </div>
                     <div className="info_bottom">
-                        <span className="type">{poolType === 'fixed-swap' ? 'Price' : 'Top Bid'}</span>
+                        <span className="type">{poolType === 'fixed-swap' ? wrapperIntl("MarketPlace.CardItem.Price") : wrapperIntl("MarketPlace.CardItem.TopBid")}</span>
                         <span className="cardId"># {nftId}</span>
                         <span className="price">{newPrice}</span>
                     </div>
@@ -211,7 +214,7 @@ export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }
                             history.push(`/Marketplace/FineArts/${poolType}/${cardId}`)
                         }}
                         marginTop="34px"
-                    >Show More</Button>}
+                    >{wrapperIntl("MarketPlace.CardItem.ShowMore")}</Button>}
                 </div>
             </div>
         </CardItemStyled>
@@ -243,7 +246,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
 `
 
 export function VideoCardItem({ cover, name, price, cardId, poolType,nftId }) {
-
+    const { wrapperIntl } = useWrapperIntl()
     return (<LazyLoad width={262} height={408}>
         <VideoCardItemStyled>
             <img src={cover} alt="" />
@@ -257,7 +260,7 @@ export function VideoCardItem({ cover, name, price, cardId, poolType,nftId }) {
                 </div>
 
                 <div className="button_group">
-                    <Button primary width={'162px'}>Play Video</Button>
+                    <Button primary width={'162px'}>{wrapperIntl("MarketPlace.CardItem.PlayVideo")}</Button>
                 </div>
             </div>
 
@@ -291,6 +294,7 @@ const AudioCardItemStyled = styled(CardItemStyled)`
 `
 
 export function AudioCardItem({ cover, name, price, cardId, describe, poolType }) {
+    const { wrapperIntl } = useWrapperIntl()
     return (<LazyLoad width={262} height={408}>
         <AudioCardItemStyled>
             <img src={cover} alt="" />
@@ -306,7 +310,7 @@ export function AudioCardItem({ cover, name, price, cardId, describe, poolType }
                 </div>
 
                 <div className="button_group">
-                    <Button primary width={'162px'}>Listen Audio</Button>
+                    <Button primary width={'162px'}>{wrapperIntl("MarketPlace.CardItem.ListenAudio")}</Button>
                 </div>
             </div>
 

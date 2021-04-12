@@ -15,6 +15,7 @@ import { UploadStyle } from '@/components/UI-kit/Input/Upload'
 import { useParams } from 'react-router'
 import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const UpdateTopBarImgStyle = styled.div`
 width: 1100px;
@@ -49,11 +50,12 @@ const defaultSrc =
   "";
 
 export default function UpdateTopBarImg (props) {
+  const { wrapperIntl } = useWrapperIntl()
   const { brandId } = useParams()
   const ratio = [1440, 180]
   const [btnLock, setBtnLock] = useState(false)
   const [inputDisable, setInputDisable] = useState(false)
-  const defaultBthText = 'Apply and Save'
+  const defaultBthText = wrapperIntl('MyProfile.MyBrands.updateTopBarImg.ApplyAndSave')
   const [btnText, setBtnText] = useState(defaultBthText)
   const [preview, setPreview] = useState(false)
   const { sign_Axios } = useAxios()
@@ -66,8 +68,10 @@ export default function UpdateTopBarImg (props) {
   const [corpperOriginZoomValue, setcorpperOriginZoomValue] = useState(10)
   let [cropperRef, setCropperRef] = useState(null)
   const infoTip = [
-    'Supports JPG, PNG, JPEG2000',
-    `no more than 100MB, ${ratio[0]}*${ratio[1]} Reccomended`
+    /* 'Supports JPG, PNG, JPEG2000', */
+    wrapperIntl('MyProfile.MyBrands.updateTopBarImg.infoTip1'),
+    /* `no more than 100MB, ${ratio[0]}*${ratio[1]} Reccomended` */
+    `${wrapperIntl('MyProfile.MyBrands.updateTopBarImg.infoTip2')} ${ratio[0]}*${ratio[1]} ${wrapperIntl('MyProfile.MyBrands.updateTopBarImg.infoTip3')}`
   ]
   let [rotate, _setRotate] = useState(0)
   const setRotate = (v) => {
@@ -104,7 +108,8 @@ export default function UpdateTopBarImg (props) {
   const handelSubmit = async () => {
     setBtnLock(true)
     setInputDisable(true)
-    setBtnText('Uploading File ...')
+    /* setBtnText('Uploading File ...') */
+    setBtnText(wrapperIntl('MyProfile.MyBrands.updateTopBarImg.UploadingFile'))
     const unlock = () => {
       setBtnLock(false)
       setInputDisable(false)
@@ -135,7 +140,8 @@ export default function UpdateTopBarImg (props) {
       // close popup
     } catch (error) {
       setInputDisable(false)
-      setBtnText('Upload Error!')
+      /* setBtnText('Upload Error!') */
+      setBtnText(wrapperIntl('MyProfile.MyBrands.updateTopBarImg.UploadError'))
       setTimeout(unlock, 2000)
     }
   }
@@ -143,7 +149,7 @@ export default function UpdateTopBarImg (props) {
   useEffect(() => {
     // eslint-disable-next-line
   }, [])
-  return <Modal open={props.open} setOpen={props.setOpen} header={{ title: 'Change Theme Photo', isClose: true }}>
+  return <Modal open={props.open} setOpen={props.setOpen} header={{ title: wrapperIntl("MyProfile.MyBrands.updateTopBarImg.ChangeThemePhoto")/* 'Change Theme Photo' */, isClose: true }}>
     <UpdateTopBarImgStyle>
       <div className="change_thene_box">
 
@@ -181,13 +187,13 @@ export default function UpdateTopBarImg (props) {
             <div className="button_group">
               <Button height='48px' width='302px' onClick={() => {
                 setImage('')
-              }}>Reselect</Button>
+              }}>{wrapperIntl('MyProfile.MyBrands.updateTopBarImg.Reselect')}</Button>
               <div className="wrap">
                 <Button height='48px' width='302px' primary onClick={() => {
                   setPreview(true)
                   getCropData()
                   // console.log('cropData:', cropData)
-                }}>preview</Button>
+                }}>{wrapperIntl('MyProfile.MyBrands.updateTopBarImg.preview')}</Button>
               </div>
             </div>
           </div> : <div>

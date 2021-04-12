@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { checkInput } from '@/utils/compareFun'
 import useAxios from '@/utils/useAxios'
 import { myContext } from '@/redux/index.js'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const SettingAccountStyled = styled.div`
     width: 1100px;
@@ -33,13 +34,14 @@ const SettingAccountStyled = styled.div`
 export default function SettingAccountModal ({ open, setOpen }) {
     const { dispatch } = useContext(myContext);
     const { active, account } = useActiveWeb3React()
+    const { wrapperIntl } = useWrapperIntl()
     const { sign_Axios } = useAxios()
     const { userInfo, updateUserInfo } = useUserInfo()
     const [fileData, setFileData] = useState(null)
     const [formData, setFormData] = useState({})
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
-    const [btnText, setBtnText] = useState('Save')
+    const [btnText, setBtnText] = useState(wrapperIntl('MyProfile.SettingAccountModal.Save'))
 
     useEffect(() => {
         if (!active) return
@@ -78,19 +80,20 @@ export default function SettingAccountModal ({ open, setOpen }) {
             let imgUrl = formData.imgurl
             if (fileData) {
                 // 如果没上传图片则先上传图片
-                setBtnText('Uploading File ...')
+                setBtnText(wrapperIntl('MyProfile.SettingAccountModal.UploadingFile'))
                 const res = await sign_Axios.post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
                 if (res.data.code === 200) {
                     imgUrl = res.data.result.path
                 } else {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl('MyProfile.SettingAccountModal.OnlySupports') });
                     setBtnLock(false)
                     setInputDisable(false)
-                    setBtnText('Save')
+                    setBtnText(wrapperIntl('MyProfile.SettingAccountModal.Save'))
                     throw new Error('File upload failed,' + res.data.msg)
                 }
             }
-            setBtnText('Uploading Data ...')
+            /* setBtnText('Uploading Data ...') */
+            setBtnText(wrapperIntl('MyProfile.SettingAccountModal.UploadingData'))
             const params = {
                 accountaddress: account,
                 username: formData.username,
@@ -112,22 +115,24 @@ export default function SettingAccountModal ({ open, setOpen }) {
 
             setBtnLock(false)
             setInputDisable(false)
-            setBtnText('Save')
+            /* setBtnText('Save') */
+            setBtnText(wrapperIntl('MyProfile.SettingAccountModal.Save'))
         } catch (error) {
             dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
             setBtnLock(false)
             setInputDisable(false)
-            setBtnText('Save')
+            /* setBtnText('Save') */
+            setBtnText(wrapperIntl('MyProfile.SettingAccountModal.Save'))
         }
     }
 
 
     return (
-        <Modal className="setting-account-modal" open={open} setOpen={setOpen} header={{ title: 'My Account Settings', isClose: true }}>
+        <Modal className="setting-account-modal" open={open} setOpen={setOpen} header={{ title: wrapperIntl("MyProfile.SettingAccountModal.MyAccountSettings"), isClose: true }}>
             <SettingAccountStyled>
                 <div className='name_row'>
                     <TextInput
-                        title='User Name'
+                        title={wrapperIntl('MyProfile.SettingAccountModal.UserName')}
                         width='300px'
                         defaultValue={userInfo.username}
                         required={true}
@@ -139,7 +144,7 @@ export default function SettingAccountModal ({ open, setOpen }) {
                     />
 
                     <TextInput
-                        title='Full Name'
+                        title={wrapperIntl('MyProfile.SettingAccountModal.FullName')}
                         width='300px'
                         defaultValue={userInfo.fullname}
                         required={true}
@@ -153,7 +158,8 @@ export default function SettingAccountModal ({ open, setOpen }) {
                 </div>
 
                 <TextInput
-                    title='Bounce ID'
+                    /* title='Bounce ID' */
+                    title={wrapperIntl('MyProfile.SettingAccountModal.BounceID')}
                     width='620px'
                     defaultValue={account}
                     required={true}
@@ -166,9 +172,11 @@ export default function SettingAccountModal ({ open, setOpen }) {
                 />
 
                 <TextInput
-                    title='Email (Optional)'
+                    /* title='Email (Optional)' */
+                    title={wrapperIntl('MyProfile.SettingAccountModal.Email')}
                     width='620px'
-                    placeholder={'Enter your email'}
+                    /* placeholder={'Enter your email'} */
+                    placeholder={wrapperIntl('MyProfile.SettingAccountModal.EmailPlaceholder')}
                     defaultValue={userInfo.email}
                     required={false}
                     marginTop={'24px'}
@@ -180,9 +188,11 @@ export default function SettingAccountModal ({ open, setOpen }) {
                 />
 
                 <TextInput
-                    title='Short Bio (Optional)'
+                    /* title='Short Bio (Optional)' */
+                    title={wrapperIntl('MyProfile.SettingAccountModal.ShortBio')}
                     width='620px'
-                    placeholder={'Describe your bio'}
+                    /* placeholder={'Describe your bio'} */
+                    placeholder={wrapperIntl('MyProfile.SettingAccountModal.ShortBioPlaceholder')}
                     defaultValue={userInfo.bio}
                     required={false}
                     marginTop={'24px'}
@@ -199,7 +209,7 @@ export default function SettingAccountModal ({ open, setOpen }) {
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)
-                    }}>Cancel</Button>
+                    }}>{wrapperIntl('MyProfile.SettingAccountModal.Cancel')}</Button>
                     <Button onClick={submitSave} disabled={btnLock} height='48px' width='302px' primary>{btnText}</Button>
                 </div>
             </SettingAccountStyled>

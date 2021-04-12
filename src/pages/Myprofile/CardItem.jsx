@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
-import useIntl from '@/locales/useWrapperIntl'
-
 // import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
@@ -186,25 +184,25 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                             <p className="type">{poolType && (poolType === "english-auction" ? "Top Bid" : "Price")}</p>
                             <p className="_tag">{`# ${poolInfo.id}`}</p>
                         </div>
-                        <h4 className="price">{poolInfo.price ? newPrice : 'Not on sale'}</h4>
+                        <h4 className="price">{poolInfo.price ? newPrice : wrapperIntl('MyProfile.CardItem.NotOnSale')}</h4>
                     </div>
                     {
                         status !== 'Listed' ? <div className='button_group btn_one'>
                             <Button
-                                value={wrapperIntl('Sell')}
+                                value={wrapperIntl('MyProfile.CardItem.Sell')}
                                 primary
                                 onClick={() => { history.push(`/MyGallery/${nftId}/Sell`) }}
                             />
                             {/* <Button value={'Make Listed'} /> */}
                         </div> : poolInfo.poolType === AUCTION_TYPE.FixedSwap ? <div className='button_group'>
-                            <Button value={wrapperIntl('CheckStatus')} primary onClick={() => {
+                            <Button value={wrapperIntl('MyProfile.CardItem.CheckStatus')} primary onClick={() => {
                                 history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
-                            <Button value={wrapperIntl('MakeUnlisted')} onClick={() => {
+                            <Button value={wrapperIntl('MyProfile.CardItem.MakeUnlisted')} onClick={() => {
                                 setOpenCancel(true)
                             }} />
                         </div> : <div className='button_group btn_one'>
-                            <Button value={wrapperIntl('CheckStatus')} primary onClick={() => {
+                            <Button value={wrapperIntl('MyProfile.CardItem.CheckStatus')} primary onClick={() => {
                                 history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
                         </div>
@@ -236,7 +234,7 @@ const AddCardItemStyle = styled.div`
 export function AddCardItem() {
     const [showGenrateModal, setShowGenrateModal] = useState(false)
 
-    const { wrapperIntl } = useIntl()
+    const { wrapperIntl } = useWrapperIntl()
 
     return (
         <>

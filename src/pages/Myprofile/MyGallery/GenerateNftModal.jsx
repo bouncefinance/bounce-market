@@ -42,12 +42,14 @@ const GenerateNFTModalStyled = styled.div`
 `
 
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
+    const { wrapperIntl } = useWrapperIntl()
     const history = useHistory();
     const { active, library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
     const { state,dispatch } = useContext(myContext)
     const { showTransferByStatus } = useTransferModal()
-    const [btnText, setBtnText] = useState('Submit')
+    /* const [btnText, setBtnText] = useState('Submit') */
+    const [btnText, setBtnText] = useState(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Submit"))
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
@@ -57,7 +59,6 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         Channel: NFT_CATEGORY.FineArts,
         Supply: 1
     })
-    const { wrapperIntl } = useWrapperIntl()
 
 
     useEffect(() => {
@@ -68,7 +69,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         // console.log(fileData, formData)
         if ((fileData || formData.imgurl) && formData) {
             const requireArr = ['Name', 'Description', 'Supply']
-            let errorCount = 0
+/*             const requireArr = [wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Name"), wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Description"), wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Supply")]
+ */            let errorCount = 0
             requireArr.forEach(item => {
                 if (!checkInput(formData[item]) || (item === 'Supply' && !ErrorStatus.intNum.reg.test(formData[item]))) {
                     errorCount++
@@ -93,11 +95,13 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         sign_Axios
             .post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
             .then(function (response) {
-                setBtnText('Uploading Data ...')
+                /* setBtnText('Uploading Data ...') */
+                setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.UploadingData"));
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
-                    setBtnText('Submit');
+                    /* setBtnText('Submit'); */
+                    setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Submit"));
                     setBtnLock(false)
                     setInputDisable(false)
                     // throw new Error('File upload failed,' + response.data.msg)
@@ -149,7 +153,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
                                         setBtnLock(false);
-                                        setBtnText("Try Again");
+                                        /* setBtnText("Try Again"); */
+                                        setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgain"));
                                         setInputDisable(false);
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                                     })
@@ -184,7 +189,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // setBidStatus(errorStatus)
                                         // showTransferByStatus('errorStatus')
                                         setBtnLock(false);
-                                        setBtnText("Try Again");
+                                        /* setBtnText("Try Again"); */
+                                        setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgain"));
                                         setInputDisable(false);
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
                                     })
@@ -269,7 +275,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />}
 
                 <TextAreaInput
-                    title='Description'
+                    title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Description')}
                     width='620px'
                     // defaultValue={`I’m keepi`}
                     required={true}
@@ -284,14 +290,14 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     width='200px'
                     /* height='200px' */
                     height="100%"
-                    lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
+                    lockInput={inputDisable} infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')} onFileChange={(formData) => {
                         setFileData(formData)
                     }} />
 
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)
-                    }}>Cancel</Button>
+                    }}>{wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Cancel')}</Button>
                     <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
                 </div>
             </GenerateNFTModalStyled>

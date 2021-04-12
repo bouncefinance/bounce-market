@@ -4,6 +4,8 @@ import upload_img from '@assets/images/upload_img.svg'
 import upload_video from '@assets/images/upload_video.svg'
 import upload_avatar from '@assets/images/upload_avatar.svg'
 import { myContext } from '@/redux/index.js'
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const UploadStyled = styled.div`
     display: flex;
     /* margin-top: 22px; */
@@ -61,7 +63,7 @@ const UploadStyled = styled.div`
 
 export default function Upload ({
     type = 'image',
-    infoTitle: defaltInfoTitle = 'upload Image',
+    /* infoTitle: defaltInfoTitle = 'upload Image', */
     onFileChange,
     defaultValue,
     disabled,
@@ -70,22 +72,28 @@ export default function Upload ({
     height = '160px',
 }) {
     const { dispatch } = useContext(myContext);
+    
+    const { wrapperIntl } = useWrapperIntl()
+    
     const [coverSrc, setCoverSrc] = useState(upload_img)
-    const [infoTitle, setInfoTitle] = useState(defaltInfoTitle)
+    /* const [infoTitle, setInfoTitle] = useState(defaltInfoTitle) */
+    const [infoTitle, setInfoTitle] = useState(wrapperIntl("UIKit.Input.Upload.infoTip.uploadImage"))
     const [infoTip, setInfoTip] = useState([
-        'Supports JPG, PNG, JPEG2000',
-        'no more than 100MB, 262*262 Reccomended'
+        wrapperIntl("UIKit.Input.Upload.infoTip.requirement1"),
+        wrapperIntl("UIKit.Input.Upload.infoTip.requirement2"),
     ])
     const [fileLimit, setFileLimit] = useState('image/*')
+
 
     useEffect(() => {
         switch (type) {
             case 'image':
                 setCoverSrc(defaultValue || upload_img)
-                setInfoTitle(infoTitle || 'upload Image')
+                setInfoTitle(infoTitle || 
+                    wrapperIntl("UIKit.Input.Upload.infoTip.uploadImage"))
                 setInfoTip([
-                    'Supports JPG, PNG, JPEG2000',
-                    'no more than 100MB, 262*262 Reccomended'
+                    wrapperIntl("UIKit.Input.Upload.infoTip.image.requirement1"),
+                    wrapperIntl("UIKit.Input.Upload.infoTip.image.requirement2"),
                 ])
                 setFileLimit('image/*')
                 break;
@@ -100,10 +108,10 @@ export default function Upload ({
                 break;
             case 'avatar':
                 setCoverSrc(defaultValue || upload_avatar)
-                setInfoTitle(infoTitle || 'Change Profile Photo')
+                setInfoTitle(infoTitle || wrapperIntl("UIKit.Input.Upload.infoTip.ChangeProfilePhoto"))
                 setInfoTip([
-                    'Supports JPG, PNG, JPEG2000',
-                    'no more than 100MB, 262*262 Reccomended'
+                    wrapperIntl('UIKit.Input.Upload.infoTip.avatar.requirement1'),
+                    wrapperIntl('UIKit.Input.Upload.infoTip.avatar.requirement2'),
                 ])
                 setFileLimit('image/*')
                 break;
