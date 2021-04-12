@@ -32,13 +32,13 @@ export default function Search ({ placeholder, value, onChange }) {
         if (inputTarget) {
             search = inputTarget.value
         }
-        console.log('---search--', inputTarget, search)
+        // console.log('---search--', inputTarget, search)
         setInSearch(search)
         // TODO 去头尾空
         if (!search) return
         setSearchLoding(true)
         try {
-            debugger
+            // console.log('---search--', inputTarget, search)
             const res = await sign_Axios.post(`/api/v2/main/getbylikestr`, { likestr: search })
             if (res.data.code === 1) {
                 const clone = (e) => {
@@ -122,6 +122,7 @@ export default function Search ({ placeholder, value, onChange }) {
         // eslint-disable-next-line
     }, [debounceFilter])
     useEffect(() => {
+        if (poolDataRes.loading) return
         search = ''
         const onEnter = (function (e) {
             var event = e || window.event;
@@ -137,7 +138,7 @@ export default function Search ({ placeholder, value, onChange }) {
             document.removeEventListener('click', onItem)
         }
         // eslint-disable-next-line
-    }, [poolDataRes, getPools ])
+    }, [poolDataRes, poolDataRes.loading ])
 
     return (<SearchBoxStyled className={'flex flex-center-y'}>
         <SearchStyled
