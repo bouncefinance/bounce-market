@@ -231,7 +231,7 @@ export default function Index() {
                         </Link>
 
                         <Search
-                            placeholder={'Search objects, items, art'}
+                            placeholder={wrapperIntl('header.search_p')}
                         />
                     </div>
                     <div className='right'>

@@ -12,16 +12,18 @@ import { useQuery } from '@apollo/client';
 import { QueryTradePools } from '@/utils/apollo'
 import { AUCTION_TYPE } from '@/utils/const'
 import useToken from '@/utils/useToken';
+import useWrapperIntl from '@/locales/useWrapperIntl';
 
 let search = ''
 let inputTarget
-export default function Search ({ placeholder, value, onChange }) {
+export default function Search({ placeholder, value, onChange }) {
     const { sign_Axios } = useAxios()
     const { getPriceByToken1, queryPrice } = useToken()
     const [inSearch, setInSearch] = useState('')
     const [searchLoding, setSearchLoding] = useState(!false)
     const [data, setdata] = useState({})
     const poolDataRes = useQuery(QueryTradePools)
+    const {wrapperIntl} = useWrapperIntl()
     const handleChange = (e) => {
         inputTarget = e.target
         const value = e.target.value && e.target.value.toLowerCase();
@@ -81,14 +83,14 @@ export default function Search ({ placeholder, value, onChange }) {
     }
     const onItem = (e) => {
         // console.log(e?.target)
-        if (e?.target?.innerText === 'Search' || e?.target?.className?.includes('search-input')) {
+        if (e?.target?.innerText === 'Search' || e?.target?.innerText === '搜索' || e?.target?.className?.includes('search-input')) {
             return
         }
         if (inputTarget) inputTarget.value = ''
         search = ''
         onSearch()
     }
-    
+
     const getPools = () => {
         const data = poolDataRes.data
         // console.log('poolData', data)
@@ -106,12 +108,12 @@ export default function Search ({ placeholder, value, onChange }) {
         return [].concat(tradePools, tradeAuctions)
     }
     const debounceFilter = useDebouncedValue(search, DEBOUNCE);
-    
+
     // useEffect(() => {
     //     // if (!loading) return
     //     console.log('poolData', poolData)
     //  }, [loading])
-    
+
     useEffect(() => {
         onChange && onChange(debounceFilter);
         // eslint-disable-next-line
@@ -133,7 +135,7 @@ export default function Search ({ placeholder, value, onChange }) {
             document.removeEventListener('click', onItem)
         }
         // eslint-disable-next-line
-    }, [poolDataRes, poolDataRes.loading ])
+    }, [poolDataRes, poolDataRes.loading])
 
     return (<SearchBoxStyled className={'flex flex-center-y'}>
         <SearchStyled
@@ -142,10 +144,10 @@ export default function Search ({ placeholder, value, onChange }) {
             value={value}
             onChange={handleChange}
         />
-        <Button onClick={onSearch} primary={true}>Search</Button>
+        <Button onClick={onSearch} primary={true}>{wrapperIntl('header.search')}</Button>
         <div className="search-inner">
             <div style={inSearch.length <= 0 ? { minHeight: '0px', height: '0px', width: '0px', padding: '0px', opacity: 0, overflow: 'hidden' } : { minHeight: '100px', width: '483px' }} className="search-info">
-                
+
                 <div className="search-result-title">Items</div>
                 {searchLoding ? <Loding /> : <div className="row-box">
                     {data.items?.map(({ item, pool }, key) => <Link key={key} onClick={() => onItem()} to={`/Marketplace/FineArts/${pool.poolType}/${pool.poolId}`} className="search-result-item-row flex">
@@ -171,7 +173,7 @@ export default function Search ({ placeholder, value, onChange }) {
                 <div className="search-result-title">Users</div>
                 {searchLoding ? <Loding /> : <div className="row-box">
                     {data.account?.map((item, key) => <Link key={key} onClick={() => onItem()} style={item?.hasBrand ? { opacity: '1' } : { opacity: '0.5', cursor: 'default' }} to={item?.hasBrand ? `/AirHome/${item.id}/1/FineArts` : void 0} className="search-result-users-row flex">
-                        <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl } />
+                        <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl} />
                         <div className="row-right">
                             <p className="user-name">{item.username}</p>
                             <p>

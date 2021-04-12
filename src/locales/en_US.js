@@ -11,10 +11,13 @@ const en_US = {
         create: 'Create',
         connect: 'Connect Wallet',
         setting: 'Account Settings',
+        search: 'Search',
+        search_p: 'Search objects, items, art',
 
         "PopularItem.LoadingPrice": "Loading Price ...",
         "PopularItem.Price": "Price",
         "PopularItem.TopBid": "Top Bid",
+        
     },
     'pages.buy.Share': 'Share',
     'pages.buy.Like': 'Like',
