@@ -206,6 +206,7 @@ export function AirHome() {
         NavList[2].channelRequestParam);
 
   const handleBrandTradeItems = useCallback((pools) => {
+    console.log(pools)
     /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
@@ -257,12 +258,18 @@ export function AirHome() {
 
   const handleBrandItems = (data) => {
     // const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
-    const brands = [].concat(data.bounce721Brands[0], data.bounce1155Brands[0])
-    if(brands && brands.tokenList){
+    const brand1 = data.bounce721Brands[0] ? data.bounce721Brands[0].tokenList : []
+    const brand2 = data.bounce1155Brands[0] ? data.bounce1155Brands[0].tokenList : []
+
+    // const brands = [].concat(data.bounce721Brands[0], data.bounce1155Brands[0])
+    const brands = { tokenList: brand1.concat(brand2) }
+    console.log(brands)
+
+    if (brands && brands.tokenList) {
       const tokenList = brands.tokenList.map(item => item.tokenId);
       setTokenList(tokenList);
       getBrandTradeItems();
-     }
+    }
   }
 
   const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
@@ -282,6 +289,7 @@ export function AirHome() {
         const data = res.data.data;
         setBrandInfo(data);
         getBrandItems();
+        console.log(channel, tokenList)
         if (channel && tokenList.length > 0) {
           handleBrandTradeItems(pools);
         }

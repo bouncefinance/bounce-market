@@ -57,6 +57,7 @@ export default function Index() {
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
     {
       variables: { user: String(account).toLowerCase() },
+      // variables: { user: String('0x2d3fff58da3346dce601f6db8eec57906cdb17be').toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: async () => {
         setMyNftData(data || [])
@@ -69,6 +70,7 @@ export default function Index() {
   const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
     {
       variables: { user: String(account).toLowerCase() },
+      // variables: { user: String('0x2d3fff58da3346dce601f6db8eec57906cdb17be').toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: () => {
         setMyTradeData(traddata || [])
