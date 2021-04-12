@@ -235,7 +235,7 @@ export default function Index() {
                         />
                     </div>
                     <div className='right'>
-                        {window.location.hostname.includes('localhost') && <Button
+                        {false && window.location.hostname.includes('localhost') && <Button
                             width="100px"
                             height="36px"
                             value="中文"
@@ -245,7 +245,7 @@ export default function Index() {
                             }}
                         />}
 
-                        {window.location.hostname.includes('localhost') && <Button
+                        {false && window.location.hostname.includes('localhost') && <Button
                             width="100px"
                             height="36px"
                             value="English"

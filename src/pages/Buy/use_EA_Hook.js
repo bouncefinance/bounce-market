@@ -4,12 +4,14 @@ import { getContract, useActiveWeb3React } from "@/web3"
 import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import { useEffect, useState } from "react";
+import { useIntl } from "react-intl";
 
 export default function useHook(poolIndex) {
     const { active, chainId, library, account } = useActiveWeb3React()
     const { exportErc20Info, exportNftInfo } = useToken()
     const [poolInfo, setPoolInfo] = useState({})
     const [nftInfo, setNftInfo] = useState({})
+    const intl = useIntl()
 
     useEffect(() => {
         if (!active) return
@@ -70,16 +72,16 @@ export default function useHook(poolIndex) {
         if (diffTime < 0) {
             if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) >= 1) {
                 // 预期价成交
-                poolsObj.showTime = 'This Tranding Closed'
+                poolsObj.showTime = intl.formatMessage({id: 'pages.buy.ThisTrandingClosed'})
                 poolsObj.status = 'Close'
             } else if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) < 1) {
                 // 流拍
-                poolsObj.showTime = 'This Tranding Closed'
+                poolsObj.showTime = intl.formatMessage({id: 'pages.buy.ThisTrandingClosed'})
                 poolsObj.status = 'Failed'
             } else {
                 // console.log(currentBidderAmount)
 
-                poolsObj.showTime = 'This Tranding Closed'
+                poolsObj.showTime = intl.formatMessage({id: 'pages.buy.ThisTrandingClosed'})
                 poolsObj.status = 'Close'
             }
 

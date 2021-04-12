@@ -288,12 +288,16 @@ export function AirHome() {
       id: Number(id)
     })
       .then(res => {
-        const data = res.data.data;
-        setBrandInfo(data);
-        getBrandItems();
-        console.log(channel, tokenList)
-        if (channel && tokenList.length > 0) {
-          handleBrandTradeItems(pools);
+        if (res.status === 200 && res.data.code === 1) {
+          const data = res.data.data;
+          // console.log(data)
+          setBrandInfo(data);
+          getBrandItems();
+          if (channel && tokenList.length > 0) {
+            handleBrandTradeItems(pools);
+          }
+        } else {
+          
         }
       })
     // eslint-disable-next-line
