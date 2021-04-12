@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const PopularItemStyled = styled.div`
     width: 262px;
@@ -80,9 +81,13 @@ const PopularItemStyled = styled.div`
 
 export default function PopularItem({ style = {}, itemInfo }) {
     const history = useHistory()
+
+    const { wrapperIntl } = useWrapperIntl()
+
     const { active } = useActiveWeb3React()
     const { exportErc20Info } = useToken()
-    const [newPrice, setNewPrice] = useState('Loading Price ...')
+    /* const [newPrice, setNewPrice] = useState('Loading Price ...') */
+    const [newPrice, setNewPrice] = useState(wrapperIntl("home.PopularItem.LoadingPrice"))
 
     useEffect(() => {
         if (!active) return
@@ -110,7 +115,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
                 <div className="line"></div>
                 <div className="flex flex-space-x">
                     <p className="type">
-                        {itemInfo.poolType && (itemInfo.poolType === "english-auction" ? "Top Bid" : "Price")}
+                        {itemInfo.poolType && (itemInfo.poolType === "english-auction" ? wrapperIntl("home.PopularItem.Price") : wrapperIntl("home.PopularItem.TopBid"))}
                     </p>
                     <p className="tag">{`# ${itemInfo.id}`}</p>
                 </div>

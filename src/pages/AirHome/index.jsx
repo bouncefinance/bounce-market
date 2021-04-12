@@ -19,6 +19,7 @@ import { Controller } from '@/utils/controller'
 // import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -180,21 +181,23 @@ export function AirHome() {
   const [itemList, setItemList] = useState([]);
   const [pools, setPools] = useState([]);
 
+  const { wrapperIntl } = useWrapperIntl()
+
   const type = "Image"
 
   const NavList = [
     {
-      title: "Fine Arts",
+      title: wrapperIntl("AirHome.fineArts"),
       route: "FineArts",
       channelRequestParam: "Fine Arts",
     },
     {
-      title: "Sports",
+      title: wrapperIntl("AirHome.sports"),
       route: "Sports",
       channelRequestParam: "Sports",
     },
     {
-      title: "Comics",
+      title: wrapperIntl("AirHome.comics"),
       route: "Comics",
       channelRequestParam: "Conicbooks",
     },
@@ -327,7 +330,7 @@ export function AirHome() {
       <div className='bg_wrapper' style={brandInfo?.bandimgurl ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
         {brandInfo?.owneraddress && String(brandInfo.owneraddress).toLowerCase() === String(account).toLowerCase() && <button onClick={() => setOpenUpdateTopBarImg(true)}>
           <img src={edit_white} alt="" />
-          <p>Change</p>
+          <p>{wrapperIntl("AirHome.Change")}</p>
         </button>}
       </div>
       <div className="userinfo">
@@ -378,7 +381,7 @@ export function AirHome() {
       </ul>
 
       <div className="filterBox">
-        <Search placeholder={'Search Items and Accounts'} />
+        <Search placeholder={ wrapperIntl("AirHome.placeholder")} />
 
         <PullRadioBox prefix={'Category:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
           // console.log(item)

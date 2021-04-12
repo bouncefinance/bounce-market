@@ -315,7 +315,7 @@ export default function Marketplace() {
         <li className="link"><Button onClick={() => { history.push('/MyMarket') }}>{wrapperIntl('market.myMarket')}</Button></li>
       </ul>
       <div className="filterBox">
-        <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
+        <Search placeholder={wrapperIntl('market.placeholder')} onChange={handleChange} />
 
         <PullRadioBox prefix={'Category:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
           // console.log(item)

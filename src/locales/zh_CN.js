@@ -1,9 +1,16 @@
 const zh_CN = {
+    MyGallery: '我的展厅',
+    MyBrands: '我的品牌',
+    MyActivities: '我的活动记录',
+    MyLiked: '我的收藏',
 
     header: {
         home: '首页',
         marketplace: '市场',
         brands: '品牌',
+        create: '创造',
+        connect: '连接钱包',
+        setting: '账户设置',
     },
 
     
@@ -18,7 +25,35 @@ const zh_CN = {
     "UIKit.Input.Upload.infoTip.avatar.ChangeProfilePhoto": '更改用户头像',
     "UIKit.Input.Upload.infoTip.avatar.requirement1": '支持 JPG, PNG, JPEG2000 格式',
     "UIKit.Input.Upload.infoTip.avatar.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
-    
+
+    home: {
+        banner1: '我们让创意更易于交易。',
+        banner2: '一切为了粉丝，艺术家和收藏家。',
+        Explore: '浏览',
+        fast: '热门NFT',
+        brand: '热门品牌',
+        footerBanner: '在Fangible创建您独一无二的NFT',
+        more: '查看更多',
+        view: '浏览所有',
+        cardTitle1: '市场',
+        cardContent1: '艺术品、动漫、运动纪念品及其它NFT。',
+        cardTitle2: '品牌',
+        cardContent2: '众多品牌尽在 Fangible',
+
+        "PopularItem.LoadingPrice": "正在加载价格 ...",
+        "PopularItem.Price": "价格",
+        "PopularItem.TopBid": "最高出价",
+    },
+
+    market: {
+        myMarket: '我的市场',
+        fineArts: '艺术品',
+        sports: '运动纪念品',
+        comics: '动漫',
+        placeholder: "搜索物品或账户",
+        Marketplace: "市场",
+    },
+
     MarketPlace: {
         /* wrapperIntl("MarketPlace.CardItem.ListenAudio") */
         "CardItem.LoadingPrice": "正在加载价格",
@@ -27,6 +62,34 @@ const zh_CN = {
         "CardItem.ShowMore": "显示更多信息",
         "CardItem.PlayVideo": "播放视频",
         "CardItem.ListenAudio": "播放音频",
+    },
+
+    Factory: {
+        /* wrapperIntl("Factory.Generate") */
+        "Generate": "创建NFT",
+        "Build": "创建品牌",
+        "List": "上架NFT",
+        "GenerateYourNFT": "创建您的NFT",
+        "GenerateDescription": "您不需要提前拥有一个商店或品牌，从此处即可开始创建您的NFT。",
+        "BuildYourBrand": "创建您的品牌",
+        "BuildDescription": "您可以创建一个合约，并根据该合约生成无限的NFT。",
+        "ListYourNFT": "上架您的NFT",
+        "ListDescription1": "如果您已经拥有就绪的代币合约，您可以直接点击此处售卖它们。",
+        "ListDescription2": "仅可用于主网",
+    },
+
+    AirHome: {
+        fineArts: '艺术品',
+        sports: '运动纪念品',
+        comics: '动漫',
+        placeholder: "搜索物品、品牌或账户",
+        Change: "更改品牌封面",
+    },
+
+    Brands: {
+        placeholder: "搜索品牌名或品牌拥有者",
+        "BrandCard.Ownedby": "拥有者：",
+        "BrandCard.VisitStore": "浏览品牌商店",
     },
     
     MyProfile: {
@@ -89,6 +152,47 @@ const zh_CN = {
         'MyGallery.GenerateNewNFTModal.UploadingData': '正在上传数据...',
         'MyGallery.Name': '',
         'MyGallery.Category': '',
+
+        /* wrapperIntl('MyProfile.MyGallery.SellNFT.EnglishAuction') */
+        'MyGallery.SellNFT.MyGallery': '我的展厅',
+        'MyGallery.SellNFT.ItemName': '物品名称',
+        'MyGallery.SellNFT.Sell': '出售',
+        'MyGallery.SellNFT.Price': '价格',
+        'MyGallery.SellNFT.PriceNotice': "该NFT将持续出售直到您将其转移或取消本次售卖。",
+        'MyGallery.SellNFT.Instructions1': "Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:",
+        'MyGallery.SellNFT.Instructions2': "To initialize your account for making sell orders, which only needs to be done once for your account.",
+        'MyGallery.SellNFT.Instructions3': "To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.",
+        'MyGallery.SellNFT.Minimumbid': '起拍价',
+        'MyGallery.SellNFT.MinimumbidNotice': "起拍价对所有用户可见，您可以选择接受低于保留价但高于起拍价的出价。",
+        'MyGallery.SellNFT.DirectPurchasePrice': '一口价',
+        'MyGallery.SellNFT.DirectPurchaseNotice': "竞拍者可以以一口价直接购得该拍卖品。一口价必须高于起拍价和保留价。",
+        'MyGallery.SellNFT.ReservePrice': '保留价',
+        'MyGallery.SellNFT.ReservePriceNotice': "设定保留价会生成一个隐藏的限制，如果您没有收到等于或高于保留价的出价，您的拍卖品将不会售出。",
+        'MyGallery.SellNFT.ExprirationDate': '有效期',
+        'MyGallery.SellNFT.SelectMethod': '请选择您的售卖方法',
+        'MyGallery.SellNFT.SetPriceFeature': "定价为您认可的价格",
+        'MyGallery.SellNFT.EnglishAcutionFeature': "在您选择的时间内出售给出价最高者。",
+        'MyGallery.SellNFT.InstantSale': "一口价出售",
+        'MyGallery.SellNFT.EnglishAuction': "英式拍卖",
+
+        /* wrapperIntl('MyProfile.MyGallery.Summary.ToFangible') */
+        'MyGallery.Summary.Summary': "统计",
+        'MyGallery.Summary.Listing': "挂单",
+        'MyGallery.Summary.setPriceListingText': "您的物品将保持上架",
+        'MyGallery.Summary.EnglishAuctionListingText': "您的物品将被拍卖，出价最高者将拍得您的物品",
+        'MyGallery.Summary.days': "天",
+        'MyGallery.Summary.Fees': "费用",
+        'MyGallery.Summary.ToFangible': "给 Fangible",
+        'MyGallery.Summary.PostYourListing': "提交您的挂单",
+
+        'MyGallery.InputPrice.Price': "价格",
+        'MyGallery.InputPrice.Amount': "数量",
+        'MyGallery.InputPrice.Balance': "保有量",
+
+        'MyGallery.InstructionsDropdown.Instructions': "声明",
+
+        'MyGallery.DurationDropdown.str1': " ",
+        'MyGallery.DurationDropdown.str2': "天",
 
         'MyBrands.ListCardItem.Create': "创建",
 

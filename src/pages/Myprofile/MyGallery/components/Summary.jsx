@@ -16,6 +16,8 @@ import { numToWei, weiMul } from "@/utils/useBigNumber";
 import useNftInfo from "@/utils/useToken";
 // import { ZERO_ADDRESS } from "@/web3/address_list/token";
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const SummaryWrapper = styled.div`
 	grid-area: Summary;
 	align-self: start;
@@ -160,6 +162,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 	const [btnLock, setBtnLock] = useState(true);
 	const history = useHistory();
 	const { hasApprove_ERC_721, hasApprove_ERC_1155, isOwner_ERC_721 } = useNftInfo()
+
+	const { wrapperIntl } = useWrapperIntl()
 
 	useEffect(() => {
 		if (auctionType === 'setPrice') {
@@ -374,17 +378,18 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 	return (
 		<SummaryWrapper>
 			<div className="summaryHeader">
-				<span className="title">Summary</span>
+				<span className="title">{wrapperIntl('MyProfile.MyGallery.Summary.Summary')}</span>
 			</div>
 			<div className="listing">
 				<div className="listingDetail">
 					<p className="list">
-						<span className="title">Listing.&nbsp;</span>
+						{/* <span className="title">Listing.&nbsp;</span> */}
+						<span className="title">{wrapperIntl('MyProfile.MyGallery.Summary.Listing')}.&nbsp;</span>
 						{auctionType === "setPrice" &&
-							<span>Your item will be listed for</span>	
+							<span>{wrapperIntl('MyProfile.MyGallery.Summary.setPriceListingText')}</span>
 						}
 						{auctionType === "EnglishAuction" &&
-							<span>Your item will be auctioned. The highest bidder will win it as long as their bid is at least {maxPrice} {unit}.</span>
+							<span>{wrapperIntl('MyProfile.MyGallery.Summary.EnglishAuctionListingText')} {maxPrice} {unit}.</span>
 						}
 					</p>
 					<span className="listingVal">{price || "0"} {unit}</span>
@@ -393,18 +398,18 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					<div className="listingDetail">
 						<p className="list"><span className="title">Expiration Date</span></p>
 						<span className="text2 percentage">{moment()
-							.add(duration, "days")
+							.add(duration, wrapperIntl('MyProfile.MyGallery.Summary.days'))
 							.format("ha on MMMM DD,YYYY")}</span>
 					</div>
 				}
 				<div className="fees">
 					<p className="list">
-						<span className="title">Fees.&nbsp;</span>
-						To Fangible
+						<span className="title">{wrapperIntl('MyProfile.MyGallery.Summary.Fees')}.&nbsp;</span>
+						{wrapperIntl('MyProfile.MyGallery.Summary.ToFangible')}
 					</p>
 					<span className="text2 percentage">{fees}%</span>
 				</div>
-				<Button primary disabled={btnLock} onClick={handelSubmit}>Post your Listing</Button>
+				<Button primary disabled={btnLock} onClick={handelSubmit}>{wrapperIntl('MyProfile.MyGallery.Summary.PostYourListing')}</Button>
 			</div>
 		</SummaryWrapper>
 	);

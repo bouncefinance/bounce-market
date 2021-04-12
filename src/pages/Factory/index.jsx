@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 import FactoryCard from './FactoryCard'
 import GenerateNFTModal from '../Myprofile/MyGallery/GenerateNftModal'
 import CreateBrandModal from '../Myprofile/MyBrands/AddNewBrandsModal'
@@ -48,13 +50,15 @@ function Factory() {
     const [Open, setOpen] = useState("0")
     const [Step, setStep] = useState("0")
 
+    const { wrapperIntl } = useWrapperIntl()
+
     const GenerateButton = () => {
         return (
             <Button
                 primary
                 onClick={() => setOpenGenerateNFTModal(true)}
             >
-                Generate
+                {wrapperIntl("Factory.Generate")}
             </Button>
         )
     }
@@ -65,7 +69,7 @@ function Factory() {
                 primary
                 onClick={() => setCreateBrandModal(true)}
             >
-                Build
+                {wrapperIntl("Factory.Build")}
             </Button>
         )
     }
@@ -81,7 +85,7 @@ function Factory() {
                     }
                 }
             >
-                List
+                {wrapperIntl("Factory.List")}
             </Button>
         )
     }
@@ -91,21 +95,26 @@ function Factory() {
             <CardList>
                 <FactoryCard
                     img={pic_Generate}
-                    title="Generate your NFT"
-                    description={<p className="description">You don’t need a store or brand to get started. Generate NFTs and go from there.</p>}
+                    title={wrapperIntl("Factory.GenerateYourNFT")}
+                    description={<p className="description">{wrapperIntl("Factory.GenerateDescription")}</p>}
                     button={<GenerateButton />}
                 />
                 <FactoryCard
                     img={pic_Build}
-                    title="Build your brand"
-                    description={<p className="description">You can create a contract and produce unlimited amount of NFTs under your own contract</p>}
+                    title={wrapperIntl("Factory.BuildYourBrand")}
+                    description={<p className="description">{wrapperIntl("Factory.BuildDescription")}</p>}
                     button={<BuildButton />}
                 />
                 <FactoryCard
                     img={pic_List}
-                    title="List your NFT"
-                    description={<p className="description">If you already have a token contract set up and you just want to set up a space to sell them, use our get-listed flow instead.
-                    <br/>Only for live on mainnet.</p>}
+                    title={wrapperIntl("Factory.ListYourNFT")}
+                    description={
+                        <p className="description">
+                            {wrapperIntl("Factory.ListDescription1")}
+                            <br/>
+                            {wrapperIntl("Factory.ListDescription2")}
+                        </p>
+                    }
                     button={<ListButton />}
                 />
             </CardList>

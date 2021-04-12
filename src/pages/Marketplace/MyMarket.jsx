@@ -23,6 +23,8 @@ import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import Button from '@/components/UI-kit/Button/Button'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const MarketplaceStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
@@ -122,6 +124,8 @@ const nav_list = [{
 
 export default function MyMarket() {
   let { type, channel } = useParams()
+  const { wrapperIntl } = useWrapperIntl()
+
   const history = useHistory()
   const { active, account } = useActiveWeb3React()
 
@@ -145,17 +149,20 @@ export default function MyMarket() {
 
   const NavList = [
     {
-      title: "Fine Arts",
+      /* title: "Fine Arts", */
+      title: wrapperIntl("market.fineArts"),
       route: "FineArts",
       channelRequestParam: "Fine Arts",
     },
     {
-      title: "Sports",
+      /* title: "Sports", */
+      title: wrapperIntl("market.sports"),
       route: "Sports",
       channelRequestParam: "Sports",
     },
     {
-      title: "Comics",
+      /* title: "Comics", */
+      title: wrapperIntl("market.comics"),
       route: "Comics",
       channelRequestParam: "Conicbooks",
     },
@@ -397,11 +404,11 @@ export default function MyMarket() {
             } alt="" />{nav.title}</p>
           </li>
         })}
-        <li className="link"><Button onClick={() => { history.push('/Marketplace/FineArts') }}>Marketplace</Button></li>
+        <li className="link"><Button onClick={() => { history.push('/Marketplace/FineArts') }}>{wrapperIntl("market.Marketplace")}</Button></li>
       </ul>
 
       <div className="filterBox">
-        <Search placeholder={'Search Items and Accounts'} onChange={handleChange} />
+        <Search placeholder={wrapperIntl("market.placeholder")} onChange={handleChange} />
 
         {/* <PullRadioBox prefix={'Gategory:'} width={'160px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
           // console.log(item)
