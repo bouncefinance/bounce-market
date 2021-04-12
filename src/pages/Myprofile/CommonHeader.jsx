@@ -202,7 +202,7 @@ export default function CommonHeader() {
             <div className="top-bg" style={state.userInfo.bandimgurl ? { background: `url(${state.userInfo.bandimgurl}) center center no-repeat` } : {}}>
                 <button onClick={() => setOpenUpdateTopBarImg(true)}>
                     <img src={edit_white} alt="" />
-                    <p>Change</p>
+                    <p>{wrapperIntl('MyProfile.CommonHeader.Change')}</p>
                 </button>
             </div>
             <div className="wrapper">

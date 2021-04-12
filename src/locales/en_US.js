@@ -62,6 +62,7 @@ const en_US = {
             MyActivities: 'My Activities',
             Settings: 'Settings',
             setting: 'Account Settings',
+            Change: "Change",
         },
         AddCardItem: {
             AddNewNFT: '+ Add new NFT',
@@ -111,7 +112,7 @@ const en_US = {
 
         'MyBrands.ListCardItem.Create': "Create",
 
-        /* wrapperIntl('MyProfile.MyBrands.updateTopBarImg.preview') */
+        /* wrapperIntl('MyProfile.MyBrands.updateTopBarImg.uploadImage') */
         'MyBrands.updateTopBarImg.ChangeThemePhoto': "Change Theme Photo",
         'MyBrands.updateTopBarImg.infoTip1': "Supports JPG, PNG, JPEG2000",
         'MyBrands.updateTopBarImg.infoTip2': "no more than 100MB,",
@@ -119,6 +120,7 @@ const en_US = {
         'MyBrands.updateTopBarImg.ApplyAndSave': "Apply and Save",
         'MyBrands.updateTopBarImg.UploadingFile': "Uploading File ...",
         'MyBrands.updateTopBarImg.UploadError': "Upload Error!",
+        'MyBrands.updateTopBarImg.uploadImage': "upload Image",
         'MyBrands.updateTopBarImg.Reselect': "Reselect",
         'MyBrands.updateTopBarImg.preview': "preview",
         'MyBrands.updateTopBarImg.CropAgain': "Crop again",
@@ -146,8 +148,9 @@ const en_US = {
         "MyActivities.TableList.Date": "Date",
         "MyActivities.TableItem.Transfer": "Transfer",
         "MyActivities.TableItem.Created": "Created",
-        "MyActivities.TableItem.mimutes": "mimutes",
-        "MyActivities.TableItem.mimute": "mimute",
+        "MyActivities.TableItem.about": "about",
+        "MyActivities.TableItem.minutes": "minutes",
+        "MyActivities.TableItem.minute": "minute",
         "MyActivities.TableItem.hours": "hours",
         "MyActivities.TableItem.hour": "hour",
         "MyActivities.TableItem.days": "days",

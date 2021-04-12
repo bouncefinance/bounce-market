@@ -205,7 +205,8 @@ export default function UpdateTopBarImg (props) {
               </div>
 
               <div className="right_info">
-                <p>{'upload Image'}</p>
+                {/* <p>{'upload Image'}</p> */}
+                <p>{wrapperIntl('MyProfile.MyBrands.updateTopBarImg.uploadImage')}</p>
                 <span>{infoTip[0]}</span>
                 <span>{infoTip[1]}</span>
               </div>

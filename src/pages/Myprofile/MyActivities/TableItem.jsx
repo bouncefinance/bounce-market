@@ -56,6 +56,60 @@ const TableItemStyled = styled(TableRow)`
     }
 `
 
+const ModifyDate = (date) => {
+    const { wrapperIntl } = useWrapperIntl()
+
+    /* about */
+    date = (
+        date.search("about") !== -1
+        ?
+        date.replace("about", wrapperIntl("MyProfile.MyActivities.TableItem.about"))
+        :
+        date
+    )
+
+        /* minute */
+    date = (
+        date.search("minutes") !== -1
+        ?
+        date.replace("minutes", wrapperIntl("MyProfile.MyActivities.TableItem.minutes"))
+        :
+        date.search("minute") !== -1
+        ?
+        date.replace("minute", wrapperIntl("MyProfile.MyActivities.TableItem.minute"))
+        :
+        date
+    )
+
+    /* hour */
+    date = (
+        date.search("hours") !== -1
+        ?
+        date.replace("hours", wrapperIntl("MyProfile.MyActivities.TableItem.hours"))
+        :
+        date.search("hour") !== -1
+        ?
+        date.replace("hour", wrapperIntl("MyProfile.MyActivities.TableItem.hour"))
+        :
+        date
+    )
+
+        /* day */
+    date = (
+        date.search("days") !== -1
+        ?
+        date.replace("days", wrapperIntl("MyProfile.MyActivities.TableItem.days"))
+        :
+        date.search("day") !== -1
+        ?
+        date.replace("day", wrapperIntl("MyProfile.MyActivities.TableItem.day"))
+        :
+        date
+    )
+
+    return date
+}
+
 export default function TableItem({ row }) {
     const { wrapperIntl } = useWrapperIntl()
     // console.log(row)
@@ -91,31 +145,7 @@ export default function TableItem({ row }) {
             <TableCell>
                 {/* {row.date} */}
                 {
-                    row.date.search("minutes") !== -1
-                    ?
-                    row.date.replace("minutes", wrapperIntl("MyProfile.MyActivities.TableItem.mimutes"))
-                    :
-                    row.date.search("minute") !== -1
-                    ?
-                    row.date.replace("minute", wrapperIntl("MyProfile.MyActivities.TableItem.mimute"))
-                    :
-                    row.date.search("hour") !== -1
-                    ?
-                    row.date.replace("hour", wrapperIntl("MyProfile.MyActivities.TableItemhours"))
-                    :
-                    row.date.search("hour") !== -1
-                    ?
-                    row.date.replace("hour", wrapperIntl("MyProfile.MyActivities.TableItemhour"))
-                    :
-                    row.date.search("days") !== -1
-                    ?
-                    row.date.replace("days", wrapperIntl("MyProfile.MyActivities.TableItem.days"))
-                    :
-                    row.date.search("day") !== -1
-                    ?
-                    row.date.replace("days", wrapperIntl("MyProfile.MyActivities.TableItem.day"))
-                    :
-                    row.date
+                    ModifyDate(row.date)
                 }
             </TableCell>
             {/* <TableCell>

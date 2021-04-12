@@ -36,6 +36,7 @@ const zh_CN = {
             MyLiked: '我的收藏',
             MyActivities: '我的活动记录', 
             Settings: '设置',
+            Change: "更改封面",
         },
         AddCardItem: {
             AddNewNFT: '+ 添加NFT',
@@ -91,7 +92,17 @@ const zh_CN = {
 
         'MyBrands.ListCardItem.Create': "创建",
 
-        'MyBrands.updateTopBarImg.Create': "创建",
+        /* wrapperIntl('MyProfile.MyBrands.updateTopBarImg.preview') */
+        'MyBrands.updateTopBarImg.ChangeThemePhoto': "更改背景图片  ",
+        'MyBrands.updateTopBarImg.infoTip1': "支持 JPG, PNG, JPEG2000 格式",
+        'MyBrands.updateTopBarImg.infoTip2': "文件不大于 100MB,",
+        'MyBrands.updateTopBarImg.infoTip3': "最佳",
+        'MyBrands.updateTopBarImg.ApplyAndSave': "应用并保存",
+        'MyBrands.updateTopBarImg.UploadingFile': "正在上传文件 ...",
+        'MyBrands.updateTopBarImg.UploadError': "上传错误!",
+        'MyBrands.updateTopBarImg.Reselect': "重新选择",
+        'MyBrands.updateTopBarImg.preview': "预览",
+        'MyBrands.updateTopBarImg.CropAgain': "请重新裁剪",
 
         "MyBrands.AddNewBrandsModal.Save": "保存",
         "MyBrands.AddNewBrandsModal.Cancel": "取消",
@@ -116,8 +127,9 @@ const zh_CN = {
         "MyActivities.TableList.Date": "日期",
         "MyActivities.TableItem.Transfer": "转移",
         "MyActivities.TableItem.Created": "创建",
-        "MyActivities.TableItem.mimutes": "分钟",
-        "MyActivities.TableItem.mimute": "分钟",
+        "MyActivities.TableItem.about": "约",
+        "MyActivities.TableItem.minutes": "分钟",
+        "MyActivities.TableItem.minute": "分钟",
         "MyActivities.TableItem.hours": "小时",
         "MyActivities.TableItem.hour": "小时",
         "MyActivities.TableItem.days": "天",
