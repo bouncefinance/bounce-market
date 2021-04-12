@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import icon_pull from "./assets/pull.svg";
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const PullRadioBoxStyled = styled.div`
 	cursor: pointer;
@@ -141,6 +142,8 @@ export default function PullRadioBox({
 		// eslint-disable-next-line
 	}, [checkVal]);
 
+	const { wrapperIntl } = useWrapperIntl()
+
 	return (
 		<PullRadioBoxStyled
 			style={style}
@@ -159,7 +162,7 @@ export default function PullRadioBox({
 			>
 				<div>
 					{prefix && <span className="prefix">{prefix}</span>}
-					<p className="value">in {checkVal} days</p>
+					<p className="value">{`${wrapperIntl("MyProfile.MyGallery.DurationDropdown.str1")} ${checkVal} ${wrapperIntl("MyProfile.MyGallery.DurationDropdown.str2")}`}</p>
 				</div>
 				<img src={icon_pull} className={open ? "up" : "down"} alt="" />
 			</div>
@@ -181,7 +184,7 @@ export default function PullRadioBox({
 									setOpen(false);
 								}}
 							>
-								In {item.value} days
+								{`${wrapperIntl("MyProfile.MyGallery.DurationDropdown.str1")} ${item.value} ${wrapperIntl("MyProfile.MyGallery.DurationDropdown.str2")}`}
 							</li>
 						);
 					})}

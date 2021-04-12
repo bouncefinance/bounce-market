@@ -102,23 +102,23 @@ export default function InfoBox({ setIsShowInfo, username, onBodyHandle, offBody
 
 
     const InfoList = [{
-        name: wrapperIntl('Gallery'),
+        name: wrapperIntl('MyGallery'),
         img_white: gallery_white,
         img_black: gallery_black,
         route: '/MyGallery'
     }, {
-        name: wrapperIntl('Brands'),
+        name: wrapperIntl('MyBrands'),
         img_white: brands_white,
         img_black: brands_black,
         route: '/MyBrands'
     }, {
-        name: wrapperIntl('Activities'),
+        name: wrapperIntl('MyActivities'),
         img_white: activities_white,
         img_black: activities_black,
         route: '/MyActivities'
     },
     {
-        name: wrapperIntl('Liked'),
+        name: wrapperIntl('MyLiked'),
         img_white: icon_liked_black,
         img_black: icon_liked,
         route: '/MyLiked'
@@ -156,7 +156,7 @@ export default function InfoBox({ setIsShowInfo, username, onBodyHandle, offBody
                         }}
                         onClick={(e) => {
                             window.event ? window.event.cancelBubble = true : e.stopPropagation()
-                            if (item.name === 'Account Settings') {
+                            if (item.name === wrapperIntl('header.setting') && item.name !== "loading"/* 'Account Settings' */) {
                                 offBodyHandle()
                                 setIsSettingAccount(true)
                                 return

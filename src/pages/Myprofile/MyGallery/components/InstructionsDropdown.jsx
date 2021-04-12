@@ -4,6 +4,8 @@ import styled from "styled-components";
 import icon_pull from "./assets/pull.svg";
 import icon_instructions from "./assets/icon_instructions.svg";
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const StyledDropdown = styled.div`
 	cursor: pointer;
 	box-sizing: border-box;
@@ -83,6 +85,8 @@ export default function InstructionsDropdown({
 }) {
 	// 这个组件的option 一定要传value属性
 	const [open, setOpen] = useState(true);
+	
+	const { wrapperIntl } = useWrapperIntl()
 
 	return (
 		<StyledDropdown width={width} height={height} className={className}>
@@ -97,7 +101,7 @@ export default function InstructionsDropdown({
 					src={icon_instructions}
 					alt=""
 				/>
-				<span className="str_Instructions">Instructions</span>
+				<span className="str_Instructions">{wrapperIntl('MyProfile.MyGallery.InstructionsDropdown.Instructions')}</span>
 				<img
 					className={`icon_arrow ${open ? "up" : "down"}`}
 					src={icon_pull}

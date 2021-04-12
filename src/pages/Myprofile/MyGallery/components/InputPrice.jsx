@@ -8,6 +8,8 @@ import useToken from "@/utils/useToken";
 import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
 import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 
 function InputPrice({
 	className,
@@ -108,6 +110,8 @@ function InputPrice({
 		}
 	};
 
+	const { wrapperIntl } = useWrapperIntl()
+
 	return (
 		<Wrapper className={className} gridArea={gridArea}>
 			{title && <span className="title">{title}</span>}
@@ -116,7 +120,8 @@ function InputPrice({
 				<input
 					className="InputPrice"
 					type="text"
-					placeholder="Price"
+					/* placeholder="Price" */
+					placeholder={wrapperIntl("MyProfile.MyGallery.InputPrice.Price")}
 					maxLength={18}
 					value={priceValue}
 					onChange={checkInputPrice}
@@ -137,19 +142,20 @@ function InputPrice({
 				/>
 			</InputRow>
 			{ifInputAmount && <>
-				<span className="amount">Amount</span>
+				<span className="amount">{wrapperIntl("MyProfile.MyGallery.InputPrice.Amount")}</span>
 				<AmounttRow>
 					<div className="Amount">
 						<input
 							className="InputAmount"
 							type="text"
-							placeholder="Amount"
+							/* placeholder="Amount" */
+							placeholder={wrapperIntl("MyProfile.MyGallery.InputPrice.Amount")}
 							maxLength={18}
 							disabled={nftInfo && nftInfo.standard === 1}
 							value={amountValue}
 							onChange={checkAmountVal}
 						/>
-						<span className="balance"> Balance: {balance}</span>
+						<span className="balance"> {wrapperIntl("MyProfile.MyGallery.InputPrice.Balance")}: {balance}</span>
 					</div>
 				</AmounttRow>
 			</>}

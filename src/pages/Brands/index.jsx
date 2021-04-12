@@ -12,6 +12,8 @@ import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
 import { SkeletonBrandRowCards } from '../component/Skeleton/Brandrow'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const StyledBrandPage = styled.div`
     width: 1100px;
     flex: 1;
@@ -51,6 +53,8 @@ export default function Index() {
   const [list, setList] = useState([])
   const [filterList, setFilterList] = useState([]);
   const [loding, setloding] = useState(true)
+
+  const { wrapperIntl } = useWrapperIntl()
 
   useEffect(() => {
     // if (!active) return;
@@ -94,7 +98,7 @@ export default function Index() {
   return (
     <StyledBrandPage>
       <div className="row-1">
-        <SearchBar placeholder={"Search Brand Name or Brand Creator"}
+        <SearchBar placeholder={wrapperIntl("Brands.placeholder")}
           onChange={handleChange} />
         <DropDownMenu
           width={"261px"}

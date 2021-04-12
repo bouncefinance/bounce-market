@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
-import AddNewBrandstModal from './AddNewBrandstModal'
+import AddNewBrandsModal from './AddNewBrandsModal'
 // import img_addItem from './assets/addItem_img.png'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 import { useLazyQuery } from '@apollo/client'
 import { QueryItemsIn1155Brand, QueryItemsIn721Brand } from '@/utils/apollo'
 import { useInitEffect } from '@/utils/useInitEffect'
 import { useActiveWeb3React } from '@/web3'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -105,19 +106,21 @@ const AddCardItemStyled = styled.div`
 export function AddCardItem ({ run, hasAddressButNotBrand, brandAddress, isCreate }) {
     const [showCreateModal, setShowCreateModal] = useState(false)
 
+    const { wrapperIntl } = useWrapperIntl()
+    
     return (
         <>
             <AddCardItemStyled>
                 {/* <AutoStretchBaseWidthOrHeightImg src={img_addItem} widgth={262} height={180} /> */}
                 <div className="create_wrapper">
-                    {isCreate ? <Button value='Create' onClick={() => {
+                    {isCreate ? <Button value={wrapperIntl('MyProfile.MyBrands.ListCardItem.Create')} onClick={() => {
                         setShowCreateModal(true)
                     }} /> : <div style={{ opacity: 0.5 }}>
-                        <Button value='Create' />
+                        <Button value={wrapperIntl('MyProfile.MyBrands.ListCardItem.Create')} />
                     </div>}
                 </div>
             </AddCardItemStyled>
-            <AddNewBrandstModal run={run} hasAddressButNotBrand={hasAddressButNotBrand} brandAddress={brandAddress} open={showCreateModal} setOpen={setShowCreateModal} />
+            <AddNewBrandsModal run={run} hasAddressButNotBrand={hasAddressButNotBrand} brandAddress={brandAddress} open={showCreateModal} setOpen={setShowCreateModal} />
         </>
     )
 }
