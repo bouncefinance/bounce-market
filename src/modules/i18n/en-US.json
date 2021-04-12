@@ -1,3 +1,24 @@
 {
-  "foobar": "Foobar"
+  "connect-wallet": {
+    "custom-binancewallet": {
+      "name": "Binance Chain",
+      "description": "Binance Chain & Smart Chain Wallet"
+    },
+    "custom-imtoken": {
+      "name": "imToken",
+      "description": "Easy and secure digital wallet trusted by millions"
+    },
+    "custom-math": {
+      "name": "Math Wallet",
+      "description": "Gateway to the World of Blockchain"
+    },
+    "custom-trust": {
+      "name": "Trust Wallet",
+      "description": "The most trusted & secure crypto wallet"
+    },
+    "custom-huobi": {
+      "name": "Huobi Wallet",
+      "description": "Multi-currency support, practical and convenient"
+    }
+  }
 }
