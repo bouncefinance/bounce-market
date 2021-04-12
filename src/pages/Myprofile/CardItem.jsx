@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
+import useIntl from '@/locales/useWrapperIntl'
 
 // import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
@@ -12,6 +13,8 @@ import useToken from '@/utils/useToken'
 import { weiToNum } from '@/utils/useBigNumber'
 import GenerateNftModal from './MyGallery/GenerateNftModal'
 import { AUCTION_TYPE } from '@/utils/const'
+
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -148,6 +151,8 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
 
     const [newPrice, setNewPrice] = useState('--')
     // console.log(poolInfo)
+    
+    const { wrapperIntl } = useWrapperIntl()
 
     useEffect(() => {
         // console.log(poolInfo)
@@ -162,6 +167,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
 
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
+
     return (
         <>
             <CardItemStyled>
@@ -185,20 +191,20 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                     {
                         status !== 'Listed' ? <div className='button_group btn_one'>
                             <Button
-                                value={'Sell'}
+                                value={wrapperIntl('Sell')}
                                 primary
                                 onClick={() => { history.push(`/MyGallery/${nftId}/Sell`) }}
                             />
                             {/* <Button value={'Make Listed'} /> */}
                         </div> : poolInfo.poolType === AUCTION_TYPE.FixedSwap ? <div className='button_group'>
-                            <Button value={'Check Status'} primary onClick={() => {
+                            <Button value={wrapperIntl('CheckStatus')} primary onClick={() => {
                                 history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
-                            <Button value={'Make Unlisted'} onClick={() => {
+                            <Button value={wrapperIntl('MakeUnlisted')} onClick={() => {
                                 setOpenCancel(true)
                             }} />
                         </div> : <div className='button_group btn_one'>
-                            <Button value={'Check Status'} primary onClick={() => {
+                            <Button value={wrapperIntl('CheckStatus')} primary onClick={() => {
                                 history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
                         </div>
@@ -230,6 +236,8 @@ const AddCardItemStyle = styled.div`
 export function AddCardItem() {
     const [showGenrateModal, setShowGenrateModal] = useState(false)
 
+    const { wrapperIntl } = useIntl()
+
     return (
         <>
             <AddCardItemStyle>
@@ -237,7 +245,7 @@ export function AddCardItem() {
                     <img src={img_addItem} alt="" />
                 </div> */}
                 <div className="content">
-                    <Button value={'+ Add new NFT'} onClick={() => {
+                    <Button value={wrapperIntl('MyProfile.AddCardItem.AddNewNFT')} onClick={() => {
                         setShowGenrateModal(true)
                     }} />
                 </div>

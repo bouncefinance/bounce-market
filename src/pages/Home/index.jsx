@@ -26,6 +26,8 @@ import { QueryTradePools } from '@/utils/apollo'
 // import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE } from '@/utils/const'
 import { Controller } from '@/utils/controller'
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 
 const HomeStyled = styled.div`
   .banner{
@@ -57,7 +59,7 @@ const HomeStyled = styled.div`
       height: 280px;
       box-sizing: border-box;
       background-color: #000;
-      /* position: relative; */
+      position: relative;
 
       .banner_img{
         width: 1100px;
@@ -66,17 +68,20 @@ const HomeStyled = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-      .content{
+
+        .content{
           margin: auto;
           position: relative;
           z-index: 1;
           text-align: center;
         }
+
         .bg{
           position: absolute;
           left: 0px;
           top: 0px;
         }
+
         h1{
           /* width: 517px; */
           color: #fff;
@@ -174,6 +179,7 @@ export default function Index() {
   const [loadingBrands, setLoadingBrands] = useState(false)
   const [loadingItems, setLoadingItems] = useState(true)
   // const { dispatch } = useContext(myContext)
+  const { wrapperIntl } = useWrapperIntl()
 
   useEffect(() => {
     // if (!account) {
@@ -325,15 +331,20 @@ export default function Index() {
   return (
     <HomeStyled>
       <div className="banner">
+        {/* <ul>
+          {banner_Nav.map((item) => {
+            return <li key={item.name}><Link to={`/Marketplace/${item.name}`}>{item.name}</Link></li>
+          })}
+        </ul> */}
         <div className="banner_wrapper" style={{ background: `url(${img_banner}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', }}>
           <div className='banner_img'>
             <div className='content'>
               <h1>
-                <p>We make it easy to trade in creativity.</p>
-                <p>For fans, artists and collectors.</p>
+                <p>{wrapperIntl('home.banner1')}</p>
+                <p>{wrapperIntl('home.banner2')}</p>
               </h1>
               <Link to="/Marketplace">
-                <button>Explore</button>
+                <button>{wrapperIntl('home.Explore')}</button>
               </Link>
             </div>
           </div>
@@ -342,7 +353,7 @@ export default function Index() {
 
       <CardBanner />
 
-      <CardGroup title='Fast movers' link='/Marketplace/FineArts' marinTop='64px'>
+      <CardGroup title={wrapperIntl('home.fast')} link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
           return <PopularItem itemInfo={item} key={index} src={img_example_1} />
         })}
@@ -355,7 +366,7 @@ export default function Index() {
         <Button
           width="280px"
           height="48px"
-          value="Load More"
+          value={wrapperIntl('home.more')}
           primary
           onClick={() => {
             history.push('/Marketplace/FineArts')
@@ -363,7 +374,7 @@ export default function Index() {
         />
       </div>
 
-      <CardGroup title='Name droppers' link='/Brands'>
+      <CardGroup title={wrapperIntl('home.brand')} link='/Brands'>
         {brands.map((item, index) => {
           return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
         })}
@@ -387,7 +398,7 @@ It shouldn’t be longer then ~20-30 sec.'
 
         <Link to="/Factory">
           <div className="left">
-            <h3>Create your unique NFT on Fangible</h3>
+            <h3>{wrapperIntl('home.footerBanner')}</h3>
             <img src={arrows_white} alt="" />
           </div>
         </Link>

@@ -1,11 +1,40 @@
 import './stastic/css/Font.css'
 import './stastic/css/App.css'
 import Page from './pages'
+import { IntlProvider } from 'react-intl';
 import { Reducer } from './redux'
 import { Web3Provider } from "@ethersproject/providers"
 import { Web3ReactProvider } from "@web3-react/core"
 import { ApolloProvider } from '@apollo/client';
 import { client } from './utils/apollo'
+import zh_CN from './locales/zh_CN';
+import en_US from './locales/en_US';
+
+const compile = function loop(msgs, pids) {
+  let results = {}
+  for (const [id, msg] of Object.entries(msgs)) {
+    if (typeof msg === 'object') {
+      results = {
+        ...results,
+        ...loop(msg, pids ? [pids, id] : id)
+      }
+    } else {
+      results[pids ? [...(typeof (pids) === 'string' ? [pids] : pids), id].join('.') : id] = msg
+    }
+
+  }
+  return results
+}
+
+
+let messages = {};
+messages["en-US"] = compile(en_US);
+messages["zh-CN"] = compile(zh_CN);
+// console.log(compile(en_US))
+
+// const languages = navigator.languages;
+const Language = window.localStorage.getItem('Language')
+const currentLang = Language ? Language : 'en-US';     // en-US
 
 function App() {
   const getLibrary = (provider, _connector) => {
@@ -14,12 +43,15 @@ function App() {
     return library;
   }
 
+
   return (
     <div className="App">
       <ApolloProvider client={client}>
         <Web3ReactProvider getLibrary={getLibrary}>
           <Reducer>
-            <Page />
+            <IntlProvider locale={currentLang} messages={messages[currentLang]}>
+              <Page />
+            </IntlProvider>
           </Reducer>
         </Web3ReactProvider>
       </ApolloProvider>

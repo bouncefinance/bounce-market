@@ -16,6 +16,8 @@ import UpdateTopBarImg from './MyBrands/updateTopBarImg'
 import edit_white from '@assets/images/icon/edit_white.svg'
 import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 
 const CommonHeaderStyled = styled.div`
     .top-bg{
@@ -142,27 +144,8 @@ const CommonHeaderStyled = styled.div`
     }
 `
 
-const ItemList = [{
-    name: 'My Gallery',
-    img_black: gallery_black,
-    route: '/MyGallery'
-}, {
-    name: 'My Brands',
-    img_black: brands_black,
-    route: '/MyBrands'
-}, {
-    name: 'My Liked',
-    img_black: icon_liked,
-    route: '/MyLiked'
-}, {
-    name: 'My Activities',
-    img_black: activities_black,
-    route: '/MyActivities'
-},/*{
-    name: 'Point-2-Point',
-    img_black: p2p_black,
-    route: '/MyP2P'
-}*/]
+    
+
 
 export default function CommonHeader() {
     const [curItem, setCurItem] = useState('/MyGallery')
@@ -172,6 +155,31 @@ export default function CommonHeader() {
     const { state, dispatch } = useContext(myContext);
     const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
 
+    
+    const { wrapperIntl } = useWrapperIntl()
+    
+    const ItemList = [{
+        name: wrapperIntl('MyProfile.CommonHeader.MyGallery'),
+        img_black: gallery_black,
+        route: '/MyGallery'
+    }, {
+        name: wrapperIntl('MyProfile.CommonHeader.MyBrands'),
+        img_black: brands_black,
+        route: '/MyBrands'
+    }, {
+        name: wrapperIntl('MyProfile.CommonHeader.MyLiked'),
+        img_black: icon_liked,
+        route: '/MyLiked'
+    }, {
+        name: wrapperIntl('MyProfile.CommonHeader.MyActivities'),
+        img_black: activities_black,
+        route: '/MyActivities'
+    },/*{
+        name: 'Point-2-Point',
+        img_black: p2p_black,
+        route: '/MyP2P'
+    }*/]
+
     useEffect(() => {
         const pathName = window.location.pathname
         ItemList.forEach(element => {
@@ -179,7 +187,9 @@ export default function CommonHeader() {
                 setCurItem(element.route)
             }
         });
+        // eslint-disable-next-line
     }, [])
+
 
     return (
         <CommonHeaderStyled>
@@ -215,7 +225,7 @@ export default function CommonHeader() {
                         </div>
                     </div>
                     <div className="right">
-                        <OtherButton type='setting' value={'Settings'} onClick={() => {
+                        <OtherButton type='setting' value={wrapperIntl('MyProfile.CommonHeader.Settings')} onClick={() => {
                             setIsSettingAccount(true)
                         }} />
                         {false && <OtherButton type='share' value={'Share'} />}

@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import arrows_blue from '@assets/images/icon/arrows-blue.svg'
-import banner_1 from './assets/banner_1.svg'
-import banner_2 from './assets/banner_2.svg'
+/* import arrows_blue from '@assets/images/icon/arrows-blue.svg' */
+import banner_1 from './assets/banner_1.2.svg'
+import banner_2 from './assets/banner_2.2.svg'
 // import banner_3 from './assets/banner_3.svg'
 // import { Tooltip } from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const CardBannerStyled = styled.ul`
     width: 1100px;
@@ -14,23 +15,40 @@ const CardBannerStyled = styled.ul`
     margin-top: 52px;
     display: flex;
     justify-content: space-between;
+
+    &:nth-child(1) {
+        img {
+            margin-right: 10px;
+        }
+    }
 `
 
 
-export default function CardBannerGroup () {
+export default function CardBannerGroup() {
+    const { wrapperIntl } = useWrapperIntl()
+
     return (
         <CardBannerStyled>
-            <Link to="/Marketplace">
+            <Link to="/Marketplace" style={{
+                background: 'linear-gradient(259.9deg, #A9C261 20.66%, #009E78 57.56%)',
+                borderRadius: '9px'
+            }}>
                 <CardBannerItem
-                    title='Marketplace'
-                    context='Fine Arts, Comics, Sports and others. You can find your content here according to your taste of brands'
+                    className="CardBanner_Marketplace"
+                    title={wrapperIntl('home.cardTitle1')}
+                    context={wrapperIntl('home.cardContent1')}
                     img={banner_1}
+                    img_marginRight="10px"
                 />
             </Link>
-            <Link to="/Brands">
+            <Link to="/Brands" style={{
+                background: 'linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)',
+                borderRadius: '9px'
+            }}>
                 <CardBannerItem
-                    title='Brands'
-                    context='Fine Arts, Comics, Sports and others. You can find your content here according to your taste of brands'
+                    className="CardBanner_Brands"
+                    title={wrapperIntl('home.cardTitle2')}
+                    context={wrapperIntl('home.cardContent2')}
                     img={banner_2}
                 />
             </Link>
@@ -52,9 +70,10 @@ const CardBannerItemStyled = styled.li`
     width: 540px;
     height: 110px;
     box-sizing: border-box;
-    border: 2px solid #000000;
+    /* border: 2px solid #000000; */
     display: flex;
     justify-content: space-between;
+    color: #fff;
     
     .left{
         width: 280px;
@@ -74,27 +93,28 @@ const CardBannerItemStyled = styled.li`
         }
         .bottom{
             margin-top: 8px;
-            font-size: 12px;
+            font-size: 14px;
             line-height: 14.88px;
-            color: rgba(31,25,27,.7)
+            /* color: rgba(31,25,27,.7) */
+            color: #fff;
         }
     }
 
     .right {
-        margin-right: 36px;
+        margin-right: ${({ img_marginRight }) => { return (img_marginRight || '0') }};
         img {
-            height: 106px;
+            height: 100%;
         }
     }
 `
 
-function CardBannerItem ({ title, context, img }) {
+function CardBannerItem({ title, context, img, img_marginRight }) {
     return (
-        <CardBannerItemStyled>
+        <CardBannerItemStyled img_marginRight={img_marginRight}>
             <div className="left">
                 <div className="top">
                     <h5>{title}</h5>
-                    <img src={arrows_blue} alt="" />
+                    {/* <img src={arrows_blue} alt="" /> */}
                 </div>
                 <div className="bottom">
                     <p>{context}</p>
@@ -107,4 +127,3 @@ function CardBannerItem ({ title, context, img }) {
         </CardBannerItemStyled>
     )
 }
-
