@@ -5,6 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useEffect, useContext } from 'react';
 import { myContext } from '@/redux/index.js';
 const host = window.location.host
+// const host = 'market.bounce.finance'
 const Base_URL =
     host.includes('market.bounce.finance') ?
         'https://bounce-market.bounce.finance' :    // BSC Main
