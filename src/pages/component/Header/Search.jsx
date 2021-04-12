@@ -29,11 +29,16 @@ export default function Search ({ placeholder, value, onChange }) {
     }
     const onSearch = async () => {
         // console.log('---search--', search)
+        if (inputTarget) {
+            search = inputTarget.value
+        }
+        console.log('---search--', inputTarget, search)
         setInSearch(search)
         // TODO 去头尾空
         if (!search) return
         setSearchLoding(true)
         try {
+            debugger
             const res = await sign_Axios.post(`/api/v2/main/getbylikestr`, { likestr: search })
             if (res.data.code === 1) {
                 const clone = (e) => {
@@ -132,7 +137,7 @@ export default function Search ({ placeholder, value, onChange }) {
             document.removeEventListener('click', onItem)
         }
         // eslint-disable-next-line
-    }, [poolDataRes, getPools])
+    }, [poolDataRes, getPools ])
 
     return (<SearchBoxStyled className={'flex flex-center-y'}>
         <SearchStyled
