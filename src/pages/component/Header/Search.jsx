@@ -32,13 +32,10 @@ export default function Search ({ placeholder, value, onChange }) {
         if (inputTarget) {
             search = inputTarget.value
         }
-        // console.log('---search--', inputTarget, search)
         setInSearch(search)
-        // TODO 去头尾空
         if (!search) return
         setSearchLoding(true)
         try {
-            // console.log('---search--', inputTarget, search)
             const res = await sign_Axios.post(`/api/v2/main/getbylikestr`, { likestr: search })
             if (res.data.code === 1) {
                 const clone = (e) => {
@@ -48,15 +45,14 @@ export default function Search ({ placeholder, value, onChange }) {
                 // <tokenId, pool>
                 let map = new Map()
                 const pools = getPools()
-                // console.log('data', clone(data))
-                // console.log('---getPools---', pools)
-                for (let pool of pools) {
-                    map.set(pool.tokenId, pool)
+                for (let item of data.items) {
+                    map.set(item.id, item)
                 }
-                data.items = data.items
-                    .map(item => ({ item, pool: clone(map.get(item.id)) }))
-                    .filter((e) => e.pool)
+                let items = pools
+                    .map(pool => ({ pool, item: clone(map.get(pool.tokenId)) }))
+                    .filter((e) => e.item)
                     .filter((_, i) => i < 3)
+                data.items = items
                 data.brands = data.brands.filter((_, i) => i < 3)
                 data.account = data.account.filter((_, i) => i < 3)
                 let i = 0
@@ -65,15 +61,14 @@ export default function Search ({ placeholder, value, onChange }) {
                     if (isAccountBrandRes.data.code === 1) {
                         data.account[i].hasBrand = true
                     }
-                    i ++
+                    i++
                 }
-                for (let item of data.items) {
+                for (let item of items) {
                     const pool = item.pool
                     const { price, token1 } = pool
                     item.pool = { ...pool, ...await getPriceByToken1(price, token1) }
-                    item.pool = { ...item.pool, usdtPrice: parseFloat(await queryPrice(item.pool.price) * item.pool.price).toFixed(2)}
+                    item.pool = { ...item.pool, usdtPrice: parseFloat(await queryPrice(item.pool.price) * item.pool.price).toFixed(2) }
                 }
-                // console.log(data.items, map)
                 setdata(data)
                 setSearchLoding(false)
             } else {
