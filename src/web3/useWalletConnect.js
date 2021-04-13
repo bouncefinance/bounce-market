@@ -42,6 +42,7 @@ export const useWalletConnect = () => {
             getMetaMskAccount().then((account) => {
                 if (account) {
                     setItem(name)
+                    window.location.reload()
                 }
                 close()
             })
