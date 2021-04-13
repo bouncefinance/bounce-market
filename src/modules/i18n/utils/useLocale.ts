@@ -1,11 +1,7 @@
-import { useSelector } from 'react-redux';
-import { Locale } from '../types/locale';
-import { IStoreState } from '../../../store/reducers';
+import { useAppSelector } from '../../../store/useAppSelector';
 
 export function useLocale() {
-  return useSelector<IStoreState, { locale: Locale }>(
-    ({ user: { locale } }) => {
-      return { locale };
-    },
-  );
+  return useAppSelector(({ i18n: { locale } }) => {
+    return { locale };
+  });
 }

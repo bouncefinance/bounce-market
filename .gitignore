@@ -3,3 +3,4 @@ node_modules
 .vscode
 build
 xw
+.DS_Store
