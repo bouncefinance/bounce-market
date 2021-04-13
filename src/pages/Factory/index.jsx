@@ -17,6 +17,7 @@ import pic_Build from './assets/pic_Build.svg'
 import pic_List from './assets/pic_List.svg'
 
 import img1 from './assets/img1.svg'
+import { useWalletConnect } from '@/web3/useWalletConnect'
 
 const CardList = styled.div`
     width: 1100px;
@@ -43,7 +44,8 @@ const dataList = {
     },
 }
 
-function Factory() {
+function Factory () {
+    const { onConnect } = useWalletConnect()
     const [openGenerateNFTModal, setOpenGenerateNFTModal] = useState(false)
     const [openCreateBrandModal, setCreateBrandModal] = useState(false)
     const [openAddNewItemModal, setAddNewItemModal] = useState(false)
@@ -56,7 +58,10 @@ function Factory() {
         return (
             <Button
                 primary
-                onClick={() => setOpenGenerateNFTModal(true)}
+                onClick={() => {
+                    onConnect()
+                    setOpenGenerateNFTModal(true)
+                }}
             >
                 {wrapperIntl("Factory.Generate")}
             </Button>
@@ -67,7 +72,10 @@ function Factory() {
         return (
             <Button
                 primary
-                onClick={() => setCreateBrandModal(true)}
+                onClick={() => {
+                    onConnect()
+                    setCreateBrandModal(true)
+                }}
             >
                 {wrapperIntl("Factory.Build")}
             </Button>
@@ -80,6 +88,7 @@ function Factory() {
                 primary
                 onClick={
                     () => {
+                        onConnect()
                         setOpen(true)
                         setStep("1")
                     }

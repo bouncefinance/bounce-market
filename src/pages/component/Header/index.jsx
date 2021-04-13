@@ -165,7 +165,16 @@ export default function Index() {
         }
 
         updateActive()
-        history.listen(historyLocation => updateActive())
+        history.listen(historyLocation => {
+            const match = [
+                '/Marketplace/FineArts/english-auction/',
+                '/Marketplace/FineArts/fixed-swap/',
+            ]
+            if (match.some(path => historyLocation.pathname.substring(0, path.length) === path)) {
+                onConnect(type)
+            }
+            updateActive()
+        })
 
         // eslint-disable-next-line
     }, [history])

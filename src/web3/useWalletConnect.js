@@ -32,7 +32,7 @@ export const useWalletConnect = () => {
     } = useWeb3React()
 
 
-    function onConnect(name, setIsLoading) {
+    function onConnect(name = 'MetaMask', setIsLoading) {
         window && window.localStorage.setItem('BOUNCE_SELECT_WALLET', name)
         setIsLoading && setIsLoading(true)
         activate(wallets[name]).finally(() => {
