@@ -43,6 +43,9 @@ import useToken from '@/utils/useToken';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import icon_copy from '@assets/images/icon/copy.svg'
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const NewIndexStyled = styled.div`
     width: 1100px;
@@ -269,6 +272,7 @@ const NewIndexStyled = styled.div`
 `
 
 export default function NewIndex () {
+    const intl = useIntl()
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
     const { hasApprove_ERC_20 } = useToken()
@@ -298,6 +302,7 @@ export default function NewIndex () {
     const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false);
     const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
     const [openFixedSwapBuyModal, setOpenFixedSwapBuyModal] = useState(false);
+    const { wrapperIntl } = useWrapperIntl()
 
     const updateParams = {
         auctiontype: aucType | 0,
@@ -323,6 +328,16 @@ export default function NewIndex () {
         }
     }, [poolId, queryLastbid])
 
+
+    useEffect(() => {
+        console.log(amount.toString().replace(/[^0-9]/ig,""))
+        if (parseInt(amount) < 1 || amount.toString().replace(/[^0-9]/ig,"") === "" || parseInt(amount)>(parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P))) {
+            setIsLoading(true);
+        }else{
+            setIsLoading(false);
+        }
+    }, [amount, poolInfo.amountTotal0, poolInfo.swappedAmount0P])
+
     const setLike = async () => {
         const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
         if (res.data.code === 200 || res.data.code === 1) {
@@ -340,7 +355,7 @@ export default function NewIndex () {
         // console.log(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))
         if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
-            setBtnText('loading ...')
+            setBtnText(intl.formatMessage({ id: 'pages.buy.loading'}))
             return
         }
 
@@ -352,12 +367,12 @@ export default function NewIndex () {
         if (poolInfo.status === 'Live') {
             setIsLoading(false)
             if (poolInfo.poolType === 'FS') {
-                setBtnText('Buy Now')
+                setBtnText(intl.formatMessage({ id: 'pages.buy.BuyNow'}))
             } else {
-                setBtnText('Place a bid')
+                setBtnText(intl.formatMessage({ id: 'pages.buy.PlaceABid'}))
             }
         } else {
-            setBtnText('Sold Out')
+            setBtnText(intl.formatMessage({ id: 'pages.buy.SoldOut'}))
         }
 
         if (poolInfo.creatorCanceledP) {
@@ -401,11 +416,11 @@ export default function NewIndex () {
                         setTokenSymbol(NFTInfoList.itemsymbol);
                         setExternalLink(NFTInfoList.externallink);
                     } else {
-                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain")});
                     }
                 })
                 .catch((err) => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain")});
                 });
         };
         if (!active || !nftId) return;
@@ -633,7 +648,7 @@ export default function NewIndex () {
 
                 <div className="bidInfo">
                     <div>
-                        <h5>Current price</h5>
+                        <h5><FormattedMessage id="pages.buy.CurrentPrice"/></h5>
                         <h3>
                             {poolInfo.token1 && amount && poolInfo.amountTotal1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span>
@@ -682,14 +697,14 @@ export default function NewIndex () {
                             <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
                     </div> */}
                     <div>
-                        <h5>{aucType === AUCTION_TYPE.FixedSwap ? "Current Price" : "Top Bid"}</h5>
+                        <h5>{aucType === AUCTION_TYPE.FixedSwap ? intl.formatMessage({id: 'pages.buy.CurrentPrice'}) : intl.formatMessage({ id: 'pages.buy.TopBid'})}</h5>
                         <h3>{poolInfo.showPrice && weiToNum(poolInfo.showPrice, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.showPrice, poolInfo.token1.decimals)))} ) `}</span></h3>
                     </div>
 
                     <div>
                         {/* <span>{poolInfo.tokenAmount0 && `${poolInfo.tokenAmount0} of ${poolInfo.amountTotal0}`}</span> */}
-                        <h5>Total Amount</h5>
+                        <h5><FormattedMessage id="pages.buy.TotalAmount"/></h5>
                         <h3>{poolInfo.tokenAmount0 && `${poolInfo.tokenAmount0}`}</h3>
                     </div>
                 </div>
@@ -740,7 +755,7 @@ export default function NewIndex () {
                                 setOpenBuyNowModal(true)
                             }}
                         >
-                            Buy now for {weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)} {poolInfo.token1.symbol}
+                            <FormattedMessage id="pages.buy.BuyNowFor"/> {weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)} {poolInfo.token1.symbol}
                         </Button>
                     
                     }
@@ -748,28 +763,30 @@ export default function NewIndex () {
                         < Button onClick={() => {
                             bidderClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'}>
-                            Claim Bid NFT
+                            {/* Claim Bid NFT */}
+                            {wrapperIntl("pages.buy.ClaimBidNFT")}
                     </Button>}
 
                     {poolInfo.status === 'Close' && poolInfo.currentBidderP === account && poolInfo.myClaimedP &&
                         < Button onClick={() => {
                             bidderClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'} disabled>
-                            You have successfully bid and claimed
+                            {/* You have successfully bid and claimed */}
+                            {wrapperIntl("pages.buy.BidAndClaimed")}
                     </Button>}
 
                     {poolInfo.status === 'Failed' && poolInfo.currentBidderP === account && !poolInfo.myClaimedP &&
                         < Button onClick={() => {
                             bidderClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'}>
-                            Deal failed, claim back {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                            {wrapperIntl("pages.buy.DealFailed")} {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                         </Button>}
 
                     {poolInfo.status === 'Failed' && poolInfo.currentBidderP === account && poolInfo.myClaimedP &&
                         < Button onClick={() => {
                             bidderClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'} disabled>
-                            Deal failed, You have successfully Claim {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
+                            {wrapperIntl("pages.buy.SuccessfullyClaim")} {poolInfo.currentBidderAmount && weiToNum(poolInfo.currentBidderAmount, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                         </Button>}
 
                     {poolInfo.status === 'Close' && poolInfo.creator === account && !poolInfo.creatorClaimedP &&
@@ -790,14 +807,14 @@ export default function NewIndex () {
                         < Button onClick={() => {
                             creatorClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'}>
-                            Deal failed, claim back NFT
+                            {wrapperIntl("pages.buy.DealFailed")}
                         </Button>}
 
                     {poolInfo.status === 'Failed' && poolInfo.creator === account && poolInfo.creatorClaimedP &&
                         < Button onClick={() => {
                             creatorClaim()
                         }} width='100%' height='48px' primary marginTop={'12px'} disabled>
-                            Deal failed, You have successfully Claim NFT
+                            {wrapperIntl("pages.buy.SuccessfullyClaim")}
                         </Button>}
                 </div>
 
@@ -939,11 +956,11 @@ export default function NewIndex () {
 
     const NavList = [
         {
-            title: "MarketPlace",
+            title: wrapperIntl("pages.buy.MarketPlace"),
             route: "/MarketPlace",
         },
         {
-            title: "Fine Arts",
+            title: wrapperIntl("pages.buy.FineArts"),
             route: "/MarketPlace/FineArts",
         },
         {
@@ -968,8 +985,8 @@ export default function NewIndex () {
                     <div className="container_left">
                         <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
                         <div className="btn_group">
-                            {false && <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}>Share</MaterialButton>}
-                            <MaterialButton disabled={loadingLoked} onClick={onLiked} variant="contained" className="material-button" startIcon={<img className="button-icon" src={isLike ? icon_full_black : icon_line_white} alt="" />}>Like</MaterialButton>
+                            {false && <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}><FormattedMessage id="pages.buy.Share" /></MaterialButton>}
+                            <MaterialButton disabled={loadingLoked} onClick={onLiked} variant="contained" className="material-button" startIcon={<img className="button-icon" src={isLike ? icon_full_black : icon_line_white} alt="" />}><FormattedMessage id="pages.buy.Like" /></MaterialButton>
                         </div>
                     </div>
 
@@ -977,7 +994,7 @@ export default function NewIndex () {
                     <div className="container_right">
                         <div className="sell_info">
                             <div className="row1">
-                                <h3>{nftInfo.itemname || 'Name Is Loading ...'}</h3>
+                                <h3>{nftInfo.itemname || wrapperIntl("pages.buy.NameLoading")}</h3>
 
                                 {/* Cancel */}
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
@@ -987,7 +1004,7 @@ export default function NewIndex () {
                                         }}
                                         height='30px'
                                     >
-                                        Cancel
+                                        {wrapperIntl("pages.buy.Cancel")}
                                 </Button>}
 
                                 {/* Cancel */}
@@ -1000,14 +1017,14 @@ export default function NewIndex () {
                                         height='30px'
                                         disabled
                                     >
-                                        Canceled
+                                    <FormattedMessage id="pages.buy.Canceled" />
                                 </Button>}
                             </div>
                         </div>
                         <div className="seller">
                             <div className='info'>
                                 <img src={icon_altAvatar} alt="" />
-                                <p>Owned by <span>{nftInfo.owneraddress && `${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)} ${nftInfo.ownername && '(' + nftInfo.ownername + ')'}`}</span></p>
+                                <p><FormattedMessage id="pages.buy.OwnedBy" /> <span>{nftInfo.owneraddress && `${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)} ${nftInfo.ownername && '(' + nftInfo.ownername + ')'}`}</span></p>
 
                                 {aucType === 'english-auction' && <div className="close_time">
                                     <img src={icon_time} alt="" />
@@ -1015,7 +1032,7 @@ export default function NewIndex () {
                                 </div>}
                             </div>
                             <div className="desc">
-                                <p>{nftInfo.description || 'description Is Loading ...'}</p>
+                                <p>{nftInfo.description || wrapperIntl("pages.buy.descriptionLoading")}</p>
                                 {/* <span>Read more</span> */}
 
                             </div>
@@ -1024,7 +1041,7 @@ export default function NewIndex () {
                         {renderByAucType()}
                         <div className="pullInfoBox">
 
-                            <NewPullDown open={true} title='Offers'>
+                            <NewPullDown open={true} title={intl.formatMessage({ id: 'pages.buy.Offers'})}>
                                 <OffersStyled>
                                     {
                                         offerList.length > 0
@@ -1047,40 +1064,40 @@ export default function NewIndex () {
 
 
                             {supply &&
-                                <NewPullDown open={false} title='Supply'>
+                                <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.Supply'})}>
                                     <div>{supply || "--"}</div>
                                 </NewPullDown>
                             }
 
-                            <NewPullDown open={false} title='Token Info'>
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TokenInfo'})}>
                                 <div className="token-info">
                                     <div className="flex flex-space-x">
-                                        <p>Token Contract Address</p>
+                                        <p><FormattedMessage id="pages.buy.TokenContractAddress" /></p>
                                         <div className="contractAddress">
                                             <p style={{ color: 'rgba(31,25,27,0.5)', }}>{tokenContractAddress || ""}</p>
                                             <CopyToClipboard
                                                 text={tokenContractAddress}
                                                 onCopy={() => {
-                                                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
+                                                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: intl.formatMessage({ id: 'CopySuccessful'}) });
                                                 }}>
                                                 <img src={icon_copy} style={{ cursor: "pointer" }} title="Copy" alt="" />
                                             </CopyToClipboard>
                                         </div>
                                     </div>
                                     <div className="flex flex-space-x">
-                                        <p>Token Symbol</p>
+                                        <p><FormattedMessage id="pages.buy.TokenSymbol" /></p>
                                         <p>{tokenSymbol || ""}</p>
                                     </div>
                                     <div className="flex flex-space-x">
-                                        <p>Token ID</p>
+                                        <p><FormattedMessage id="pages.buy.TokenID" /></p>
                                         <p>#{tokenID || ""}</p>
                                     </div>
                                 </div>
                             </NewPullDown>
-                            <NewPullDown open={false} title='External link'>
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.ExternalLink'})}>
                                 <div>{externalLink || "--"}</div>
                             </NewPullDown>
-                            <NewPullDown open={false} title='Trading History'>
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TradingHistory'})}>
                                 <TradingHistory rows={
                                     history.map((item, index) => ({
                                         Event: item.event,
@@ -1101,7 +1118,7 @@ export default function NewIndex () {
             <PlaceBidModal
                 open={openPlaceBidModal}
                 setOpen={setOpenPlaceBidModal}
-                title="Place A Bid"
+                title={wrapperIntl("PlaceBidModal.PlaceAbid")}
                 inputMinPrice={inputMinPrice}
                 poolInfo={poolInfo}
                 isLoading={isLoading}
@@ -1119,7 +1136,7 @@ export default function NewIndex () {
                 <BuyNowModal
                     open={openBuyNowModal}
                     setOpen={setOpenBuyNowModal}
-                    title="Checkout"
+                    title={wrapperIntl("PlaceBidModal.Checkout")}
                     poolInfo={poolInfo}
                     nftInfo={nftInfo}
                     isLoading={isLoading}
@@ -1134,7 +1151,7 @@ export default function NewIndex () {
             <FixedSwapBuyModal
                 open={openFixedSwapBuyModal}
                 setOpen={setOpenFixedSwapBuyModal}
-                title="Buy Now"
+                title={wrapperIntl("PlaceBidModal.BuyNow")}
                 inputMin={""}
                 poolInfo={poolInfo}
                 isLoading={isLoading}

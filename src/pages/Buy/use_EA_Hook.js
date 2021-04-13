@@ -4,12 +4,16 @@ import { getContract, useActiveWeb3React } from "@/web3"
 import BounceEnglishAuctionNFT from '@/web3/abi/BounceEnglishAuctionNFT.json'
 import { getEnglishAuctionNFT } from "@/web3/address_list/contract";
 import { useEffect, useState } from "react";
+import { useIntl } from "react-intl";
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 export default function useHook(poolIndex) {
     const { active, chainId, library, account } = useActiveWeb3React()
     const { exportErc20Info, exportNftInfo } = useToken()
     const [poolInfo, setPoolInfo] = useState({})
     const [nftInfo, setNftInfo] = useState({})
+    const intl = useIntl()
+    const { wrapperIntl } = useWrapperIntl()
 
     useEffect(() => {
         if (!active) return
@@ -70,16 +74,16 @@ export default function useHook(poolIndex) {
         if (diffTime < 0) {
             if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) >= 1) {
                 // 预期价成交
-                poolsObj.showTime = 'This Tranding Closed'
+                poolsObj.showTime = intl.formatMessage({id: 'pages.buy.ThisTrandingClosed'})
                 poolsObj.status = 'Close'
             } else if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) < 1) {
                 // 流拍
-                poolsObj.showTime = 'This Tranding Closed'
+                poolsObj.showTime = intl.formatMessage({id: 'pages.buy.ThisTrandingClosed'})
                 poolsObj.status = 'Failed'
             } else {
                 // console.log(currentBidderAmount)
 
-                poolsObj.showTime = 'This Tranding Closed'
+                poolsObj.showTime = intl.formatMessage({id: 'pages.buy.ThisTrandingClosed'})
                 poolsObj.status = 'Close'
             }
 
@@ -89,11 +93,11 @@ export default function useHook(poolIndex) {
             if (diffTime >= 86400) {
                 const day = parseInt(diffTime / 86400)
                 const hour = parseInt((diffTime / 3600) % 24)
-                poolsObj.showTime = `Sale ends in ${day} days ${hour} hours`
+                poolsObj.showTime = `${wrapperIntl("PlaceBidModal.SaleEndsIn")} ${day} ${wrapperIntl("PlaceBidModal.days")} ${hour} ${wrapperIntl("PlaceBidModal.hours")}`
             } else {
                 const hour = parseInt(diffTime / 3600)
                 const minute = parseInt((diffTime / 60) % 60)
-                poolsObj.showTime = `Sale ends in ${hour} hours ${minute} minutes`
+                poolsObj.showTime = `${wrapperIntl("PlaceBidModal.SaleEndsIn")} ${hour} ${wrapperIntl("PlaceBidModal.hours")} ${minute} ${wrapperIntl("PlaceBidModal.minutes")}`
             }
         }
 

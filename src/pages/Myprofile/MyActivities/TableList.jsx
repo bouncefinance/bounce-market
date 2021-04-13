@@ -14,6 +14,7 @@ import { useActiveWeb3React } from '@/web3';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import useAxios from '@/utils/useAxios';
 import { Controller } from '@/utils/controller';
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const useStyles = makeStyles({
     table: {
@@ -51,7 +52,7 @@ export default function BasicTable() {
         const activities = data.map(item => ({
             ...item,
             date: formatDistanceToNow(item.timestamp * 1000),
-            status: item.event === 'Cancel' || item.event === 'Claim' ? 'Unlisted' : 'Listed',
+            status: item.event === 'Cancel' || item.event === 'Claim' ? wrapperIntl("Unlisted") : wrapperIntl("Listed"),
         }));
         const tokenList = activities.map(item => item.tokenId);
         sign_Axios.post(Controller.items.getitemsbyids, {
@@ -103,18 +104,20 @@ export default function BasicTable() {
         getFromActivities();
     }, [active, getFromActivities]);
 
+    const { wrapperIntl } = useWrapperIntl()
+
     return (
         <TableContainer>
             <Table className={classes.table} aria-label="simple table">
                 <TableHead className={classes.TableHead}>
                     <TableRow>
-                        <TableCell className={classes.TableCell} >Event</TableCell>
-                        <TableCell className={classes.TableCell} >Item</TableCell>
-                        <TableCell className={classes.TableCell} >Quantity</TableCell>
+                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Event")}</TableCell>
+                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Item")}</TableCell>
+                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Quantity")}</TableCell>
                         {/* <TableCell className={classes.TableCell} >Status</TableCell> */}
-                        <TableCell className={classes.TableCell} >From</TableCell>
-                        <TableCell className={classes.TableCell} >To</TableCell>
-                        <TableCell className={classes.TableCell} >Date</TableCell>
+                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.From")}</TableCell>
+                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.To")}</TableCell>
+                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Date")}</TableCell>
                         {/* <TableCell className={classes.TableCell} >operation</TableCell> */}
                     </TableRow>
                 </TableHead>

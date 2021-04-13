@@ -10,16 +10,16 @@ import { client } from './utils/apollo'
 import zh_CN from './locales/zh_CN';
 import en_US from './locales/en_US';
 
-const compile = function loop(msgs, pid) {
+const compile = function loop(msgs, pids) {
   let results = {}
   for (const [id, msg] of Object.entries(msgs)) {
     if (typeof msg === 'object') {
       results = {
         ...results,
-        ...loop(msg, id)
+        ...loop(msg, pids ? [pids, id] : id)
       }
     } else {
-      results[pid ? [pid, id].join('.') : id] = msg
+      results[pids ? [...(typeof (pids) === 'string' ? [pids] : pids), id].join('.') : id] = msg
     }
 
   }
@@ -30,11 +30,16 @@ const compile = function loop(msgs, pid) {
 let messages = {};
 messages["en-US"] = compile(en_US);
 messages["zh-CN"] = compile(zh_CN);
-console.log(compile(en_US))
+// console.log(compile(en_US))
 
 // const languages = navigator.languages;
-const Language = window.localStorage.getItem('Language')
-const currentLang = Language ? Language : 'zh-CN';     // en-US
+let Language = window.localStorage.getItem('Language') || 'en-US'
+const host = window.location.host
+if (host.includes('cnmarket.bounce.finance') || host.includes('192.168.')) {
+  Language = 'zh-CN'
+}
+const currentLang = Language;     // en-US
+// const currentLang = 'en-US'      // en-US
 
 function App() {
   const getLibrary = (provider, _connector) => {

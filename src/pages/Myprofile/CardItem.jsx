@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
-
 // import img_addItem from './assets/addItem.svg'
 import { Button } from '@components/UI-kit'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
@@ -12,6 +11,8 @@ import useToken from '@/utils/useToken'
 import { weiToNum } from '@/utils/useBigNumber'
 import GenerateNftModal from './MyGallery/GenerateNftModal'
 import { AUCTION_TYPE } from '@/utils/const'
+
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -148,6 +149,8 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
 
     const [newPrice, setNewPrice] = useState('--')
     // console.log(poolInfo)
+    
+    const { wrapperIntl } = useWrapperIntl()
 
     useEffect(() => {
         // console.log(poolInfo)
@@ -162,6 +165,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
 
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
+
     return (
         <>
             <CardItemStyled>
@@ -177,34 +181,34 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                         <h5 className="name">{itemname}</h5>
                         <div className="line"></div>
                         <div className="flex flex-space-x">
-                            <p className="type">{poolType && (poolType === "english-auction" ? "Top Bid" : "Price")}</p>
+                            <p className="type">{poolType && (poolType === "english-auction" ? wrapperIntl('MyProfile.CardItem.TopBid') : wrapperIntl('MyProfile.CardItem.TopBid'))}</p>
                             <p className="_tag">{`# ${poolInfo.id}`}</p>
                         </div>
-                        <h4 className="price">{poolInfo.price ? newPrice : 'Not on sale'}</h4>
+                        <h4 className="price">{poolInfo.price ? newPrice : wrapperIntl('MyProfile.CardItem.NotOnSale')}</h4>
                     </div>
                     {
-                        status !== 'Listed' ? <div className='button_group btn_one'>
+                        status !== wrapperIntl("Listed") ? <div className='button_group btn_one'>
                             <Button
-                                value={'Sell'}
+                                value={wrapperIntl('MyProfile.CardItem.Sell')}
                                 primary
                                 onClick={() => { history.push(`/MyGallery/${nftId}/Sell`) }}
                             />
                             {/* <Button value={'Make Listed'} /> */}
                         </div> : poolInfo.poolType === AUCTION_TYPE.FixedSwap ? <div className='button_group'>
-                            <Button value={'Check Status'} primary onClick={() => {
+                            <Button value={wrapperIntl('MyProfile.CardItem.CheckStatus')} primary onClick={() => {
                                 history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
-                            <Button value={'Make Unlisted'} onClick={() => {
+                            <Button value={wrapperIntl('MyProfile.CardItem.MakeUnlisted')} onClick={() => {
                                 setOpenCancel(true)
                             }} />
                         </div> : <div className='button_group btn_one'>
-                            <Button value={'Check Status'} primary onClick={() => {
+                            <Button value={wrapperIntl('MyProfile.CardItem.CheckStatus')} primary onClick={() => {
                                 history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
                         </div>
                     }
                 </div>
-                {status === 'Listed' && <div className="tag">
+                {status === wrapperIntl("Listed") && <div className="tag">
                     {status}
                 </div>}
             </CardItemStyled>
@@ -230,6 +234,8 @@ const AddCardItemStyle = styled.div`
 export function AddCardItem() {
     const [showGenrateModal, setShowGenrateModal] = useState(false)
 
+    const { wrapperIntl } = useWrapperIntl()
+
     return (
         <>
             <AddCardItemStyle>
@@ -237,7 +243,7 @@ export function AddCardItem() {
                     <img src={img_addItem} alt="" />
                 </div> */}
                 <div className="content">
-                    <Button value={'+ Add new NFT'} onClick={() => {
+                    <Button value={wrapperIntl('MyProfile.AddCardItem.AddNewNFT')} onClick={() => {
                         setShowGenrateModal(true)
                     }} />
                 </div>

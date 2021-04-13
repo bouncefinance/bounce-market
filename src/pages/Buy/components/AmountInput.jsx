@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { ErrorStatus } from './error_config'
+/* import { ErrorStatus } from './error_config' */
 import { useActiveWeb3React } from "@/web3";
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
 import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
@@ -141,6 +142,7 @@ export default function AmountInput({
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
     const [value, setValue] = useState(defaultValue || '')
+    const { wrapperIntl } = useWrapperIntl()
 
     useEffect(() => {
         setValue(minVal)
@@ -162,7 +164,8 @@ export default function AmountInput({
 
         if (required && val === '') {
             setError(true)
-            setErrMsg(ErrorStatus.required.tip)
+            /* setErrMsg(ErrorStatus.required.tip) */
+            setErrMsg(wrapperIntl("ErrorMsg.required"));
         }
         // if (val === "") {
         //     val = minVal;
@@ -188,7 +191,8 @@ export default function AmountInput({
         let val = e.target.value
         if (required && val === '') {
             setError(true)
-            setErrMsg(ErrorStatus.required.tip)
+            /* setErrMsg(ErrorStatus.required.tip) */
+            setErrMsg(wrapperIntl("ErrorMsg.required"));
         }
 
         if (val === "") {

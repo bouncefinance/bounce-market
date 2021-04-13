@@ -19,6 +19,7 @@ import { Controller } from '@/utils/controller'
 // import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -180,21 +181,23 @@ export function AirHome() {
   const [itemList, setItemList] = useState([]);
   const [pools, setPools] = useState([]);
 
+  const { wrapperIntl } = useWrapperIntl()
+
   const type = "Image"
 
   const NavList = [
     {
-      title: "Fine Arts",
+      title: wrapperIntl("AirHome.fineArts"),
       route: "FineArts",
       channelRequestParam: "Fine Arts",
     },
     {
-      title: "Sports",
+      title: wrapperIntl("AirHome.sports"),
       route: "Sports",
       channelRequestParam: "Sports",
     },
     {
-      title: "Comics",
+      title: wrapperIntl("AirHome.comics"),
       route: "Comics",
       channelRequestParam: "Conicbooks",
     },
@@ -206,6 +209,7 @@ export function AirHome() {
         NavList[2].channelRequestParam);
 
   const handleBrandTradeItems = useCallback((pools) => {
+    console.log(pools)
     /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
@@ -256,12 +260,18 @@ export function AirHome() {
   })
 
   const handleBrandItems = (data) => {
-    const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
-    if(brands && brands.tokenList){
+    // const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
+    const brand1 = data.bounce721Brands[0] ? data.bounce721Brands[0].tokenList : []
+    const brand2 = data.bounce1155Brands[0] ? data.bounce1155Brands[0].tokenList : []
+
+    // const brands = [].concat(data.bounce721Brands[0], data.bounce1155Brands[0])
+    const brands = { tokenList: brand1.concat(brand2) }
+
+    if (brands && brands.tokenList) {
       const tokenList = brands.tokenList.map(item => item.tokenId);
       setTokenList(tokenList);
       getBrandTradeItems();
-     }
+    }
   }
 
   const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
@@ -278,11 +288,16 @@ export function AirHome() {
       id: Number(id)
     })
       .then(res => {
-        const data = res.data.data;
-        setBrandInfo(data);
-        getBrandItems();
-        if (channel && tokenList.length > 0) {
-          handleBrandTradeItems(pools);
+        if (res.status === 200 && res.data.code === 1) {
+          const data = res.data.data;
+          // console.log(data)
+          setBrandInfo(data);
+          getBrandItems();
+          if (channel && tokenList.length > 0) {
+            handleBrandTradeItems(pools);
+          }
+        } else {
+          
         }
       })
     // eslint-disable-next-line
@@ -327,7 +342,7 @@ export function AirHome() {
       <div className='bg_wrapper' style={brandInfo?.bandimgurl ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
         {brandInfo?.owneraddress && String(brandInfo.owneraddress).toLowerCase() === String(account).toLowerCase() && <button onClick={() => setOpenUpdateTopBarImg(true)}>
           <img src={edit_white} alt="" />
-          <p>Change</p>
+          <p>{wrapperIntl("AirHome.Change")}</p>
         </button>}
       </div>
       <div className="userinfo">
@@ -378,7 +393,7 @@ export function AirHome() {
       </ul>
 
       <div className="filterBox">
-        <Search placeholder={'Search Items and Accounts'} />
+        <Search placeholder={ wrapperIntl("AirHome.placeholder")} />
 
         <PullRadioBox prefix={'Category:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
           // console.log(item)

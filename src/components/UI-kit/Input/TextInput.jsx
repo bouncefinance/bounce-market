@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ErrorStatus } from "./error_config";
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const InputStyled = styled.div`
 	margin-top: ${({ marginTop }) => {
 		return marginTop;
@@ -96,6 +98,7 @@ export default function TextInput({
 }) {
 	const [error, setError] = useState(false);
 	const [errMsg, setErrMsg] = useState(null);
+	const { wrapperIntl } = useWrapperIntl()
 
 	useEffect(() => {
 		onValChange && onValChange(defaultValue);
@@ -115,16 +118,20 @@ export default function TextInput({
 		const val = e.target.value;
 		if (required && val.trim() === "") {
 			setError(true);
-			setErrMsg(ErrorStatus.required.tip);
+			/* setErrMsg(ErrorStatus.required.tip); */
+			setErrMsg(wrapperIntl("ErrorMsg.required"));
 		}else if(inputType ==="email" && (required || val.trim() !== "")  && !ErrorStatus.email.reg.test(val)){
 			setError(true);
-			setErrMsg(ErrorStatus.email.tip);
+			/* setErrMsg(ErrorStatus.email.tip); */
+			setErrMsg(wrapperIntl("ErrorMsg.email"));
 		}else if(inputType ==="url" && (required || val.trim() !== "") && !ErrorStatus.url.reg.test(val)){
 			setError(true);
-			setErrMsg(ErrorStatus.url.tip);
+			/* setErrMsg(ErrorStatus.url.tip); */
+			setErrMsg(wrapperIntl("ErrorMsg.url"));
 		}else if(inputType ==="intNum" && (required || val.trim() !== "") && !ErrorStatus.intNum.reg.test(val)){
 			setError(true);
-			setErrMsg(ErrorStatus.intNum.tip);
+			/* setErrMsg(ErrorStatus.intNum.tip); */
+			setErrMsg(wrapperIntl("ErrorMsg.intNum "));
 		}
 	};
 

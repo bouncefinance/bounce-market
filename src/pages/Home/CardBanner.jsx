@@ -6,6 +6,7 @@ import banner_2 from './assets/banner_2.2.svg'
 // import banner_3 from './assets/banner_3.svg'
 // import { Tooltip } from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const CardBannerStyled = styled.ul`
     width: 1100px;
@@ -23,17 +24,19 @@ const CardBannerStyled = styled.ul`
 `
 
 
-export default function CardBannerGroup () {
+export default function CardBannerGroup() {
+    const { wrapperIntl } = useWrapperIntl()
+
     return (
         <CardBannerStyled>
             <Link to="/Marketplace" style={{
-                        background: 'linear-gradient(259.9deg, #A9C261 20.66%, #009E78 57.56%)',
-                        borderRadius: '9px'
-                    }}>
+                background: 'linear-gradient(259.9deg, #A9C261 20.66%, #009E78 57.56%)',
+                borderRadius: '9px'
+            }}>
                 <CardBannerItem
                     className="CardBanner_Marketplace"
-                    title='Marketplace'
-                    context='A full colour marketplace of art, comics, sports and collectibles'
+                    title={wrapperIntl('home.cardTitle1')}
+                    context={wrapperIntl('home.cardContent1')}
                     img={banner_1}
                     img_marginRight="10px"
                 />
@@ -44,8 +47,8 @@ export default function CardBannerGroup () {
             }}>
                 <CardBannerItem
                     className="CardBanner_Brands"
-                    title='Brands'
-                    context='Explore different brands with Fangible'
+                    title={wrapperIntl('home.cardTitle2')}
+                    context={wrapperIntl('home.cardContent2')}
                     img={banner_2}
                 />
             </Link>
@@ -98,14 +101,14 @@ const CardBannerItemStyled = styled.li`
     }
 
     .right {
-        margin-right: ${({img_marginRight})=>{return (img_marginRight || '0')}};
+        margin-right: ${({ img_marginRight }) => { return (img_marginRight || '0') }};
         img {
             height: 100%;
         }
     }
 `
 
-function CardBannerItem ({ title, context, img, img_marginRight }) {
+function CardBannerItem({ title, context, img, img_marginRight }) {
     return (
         <CardBannerItemStyled img_marginRight={img_marginRight}>
             <div className="left">

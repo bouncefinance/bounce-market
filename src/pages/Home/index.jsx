@@ -26,6 +26,8 @@ import { QueryTradePools } from '@/utils/apollo'
 // import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE } from '@/utils/const'
 import { Controller } from '@/utils/controller'
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 
 const HomeStyled = styled.div`
   .banner{
@@ -162,7 +164,8 @@ const HomeStyled = styled.div`
   { name: 'Sports' },
   { name: 'Comics' },
 ] */
-
+let weightMap = new Map()
+const getStandardTypeValue = (e) => e === 2 ? 'english-auction' : 'fixed-swap'
 export default function Index() {
   // const { state } = useContext(myContext);
   const { sign_Axios } = useAxios()
@@ -176,6 +179,7 @@ export default function Index() {
   const [loadingBrands, setLoadingBrands] = useState(false)
   const [loadingItems, setLoadingItems] = useState(true)
   // const { dispatch } = useContext(myContext)
+  const { wrapperIntl } = useWrapperIntl()
 
   useEffect(() => {
     // if (!account) {
@@ -231,7 +235,7 @@ export default function Index() {
     })
 
     // console.log(standards)
-
+    /*
     sign_Axios.post(Controller.pools.getpoolsinfo, {
       poolids: poolIds,
       standards: standards
@@ -274,6 +278,50 @@ export default function Index() {
         })
         .catch(() => { })
     })
+    */
+
+    sign_Axios.post(Controller.items.getitemsbyids, {ids: list})
+    .then(res => {
+      // .filter((_) => _.id).slice(0, 8)
+      const _list = pools.map((pool, index) => {
+        const poolInfo = res.data.data.find((item) => pool.tokenId === item.id);
+        return {
+          ...poolInfo,
+          tokenId: pool.tokenId,
+          poolType: pool.poolType,
+          poolId: pool.poolId,
+          price: pool.price,
+          createTime: pool.createTime,
+          token1: pool.token1
+        }
+        
+      })
+      .sort((a, b) => b.createTime - a.createTime);
+      getPoolsWeight(_list)
+    })
+    const getPoolsWeight = async (list) => {
+      weightMap = new Map()
+      const _res = await sign_Axios.post(Controller.pools.getpoolsinfo, {
+        poolids: poolIds,
+        standards: standards
+      })
+      const res = _res.data
+      if (res.code === 1) {
+        res.data?.forEach((item) => {
+          weightMap.set(`${item.poolid}_${getStandardTypeValue(item.standard)}`, item.poolweight)
+        })
+        const _list = list.map((item) => {
+          return {
+            ...item,
+            defaultWeight: weightMap.get(`${item.poolId}_${item.poolType}`) ?? 0
+          }
+        })
+          .sort((a, b) => b.defaultWeight - a.defaultWeight)
+        // console.log(_list, weightMap)
+        setItemList(_list.filter((_) => _.id).slice(0, 8));
+        setLoadingItems(false)
+      }
+    }
 
 
 
@@ -294,11 +342,11 @@ export default function Index() {
           <div className='banner_img'>
             <div className='content'>
               <h1>
-                <p>We make it easy to trade in creativity.</p>
-                <p>For fans, artists and collectors.</p>
+                <p>{wrapperIntl('home.banner1')}</p>
+                <p>{wrapperIntl('home.banner2')}</p>
               </h1>
               <Link to="/Marketplace">
-                <button>Explore</button>
+                <button>{wrapperIntl('home.Explore')}</button>
               </Link>
             </div>
           </div>
@@ -307,7 +355,7 @@ export default function Index() {
 
       <CardBanner />
 
-      <CardGroup title='Fast movers' link='/Marketplace/FineArts' marinTop='64px'>
+      <CardGroup title={wrapperIntl('home.fast')} link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
           return <PopularItem itemInfo={item} key={index} src={img_example_1} />
         })}
@@ -320,7 +368,7 @@ export default function Index() {
         <Button
           width="280px"
           height="48px"
-          value="Load More"
+          value={wrapperIntl('home.more')}
           primary
           onClick={() => {
             history.push('/Marketplace/FineArts')
@@ -328,7 +376,7 @@ export default function Index() {
         />
       </div>
 
-      <CardGroup title='Name droppers' link='/Brands'>
+      <CardGroup title={wrapperIntl('home.brand')} link='/Brands'>
         {brands.map((item, index) => {
           return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
         })}
@@ -352,7 +400,7 @@ It shouldn’t be longer then ~20-30 sec.'
 
         <Link to="/Factory">
           <div className="left">
-            <h3>Create your unique NFT on Fangible</h3>
+            <h3>{wrapperIntl('home.footerBanner')}</h3>
             <img src={arrows_white} alt="" />
           </div>
         </Link>

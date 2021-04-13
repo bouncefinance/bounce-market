@@ -41,10 +41,14 @@ jobs:
     <<: *build-template
   build-prod:
     <<: *build-template
+  build-cn:
+    <<: *build-template
   # upload
   upload-stage:
     <<: *upload-template
   upload-prod:
+    <<: *upload-template
+  upload-cn:
     <<: *upload-template
 
 workflows:
@@ -68,6 +72,23 @@ workflows:
             - bounce_build_stage
           requires:
             - build-stage
+      # cn 
+      - approve-cn:
+          type: approval
+          filters:
+            branches:
+              only: [ zh_CN ]
+      - build-cn:
+          context:
+            - bounce_build_cn
+          requires:
+            - approve-cn
+      - upload-cn:
+          context:
+            - cicd
+            - bounce_build_cn
+          requires:
+            - build-cn
       # prod
       - approve-prod:
           type: approval

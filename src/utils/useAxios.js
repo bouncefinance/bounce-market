@@ -4,15 +4,18 @@ import { useWeb3React } from '@web3-react/core'
 // import { useUserInfo } from '../pages/Myprofile/useUserInfo'
 import { useEffect, useContext } from 'react';
 import { myContext } from '@/redux/index.js';
+import { useHistory } from 'react-router-dom'
 const host = window.location.host
+// const host = 'market.bounce.finance'
 const Base_URL =
-    host.includes('market.bounce.finance') ?
+    host.includes('market.bounce.finance') || host.includes('cnmarket.bounce.finance') || host.includes('192.168.') ?
         'https://bounce-market.bounce.finance' :    // BSC Main
         host.includes('market-stage.bounce.finance') ?
             'https://market-test.bounce.finance' :  // BSC Test https
             host.includes('127.0.0.1') ?
                 'https://bounce-market.bounce.finance' :    // BSC Main
-                'http://market-test.bounce.finance:11000'   // BSC Test http 
+                // 'http://market-test.bounce.finance:11000'   // BSC Test http 
+                'https://market-test.bounce.finance'   // BSC Test http 
 // const Base_URL = 'https://bounce-market.bounce.finance'
 
 const signStr = 'Welcome to Bounce!'
@@ -21,6 +24,7 @@ let isRequestLock = false
 export default function useAxios() {
     const { account, library } = useWeb3React();
     const { dispatch } = useContext(myContext);
+    const history = useHistory();
     // const { getUserInfo } = useUserInfo()
     useEffect(() => {
         if (!account || isRequestLock) return
@@ -39,7 +43,8 @@ export default function useAxios() {
             JWT_TOKEN_V2[account] = token
             window.localStorage.setItem('JWT_TOKEN_V2', JSON.stringify(JWT_TOKEN_V2))
             dispatch({ type: 'Token', authToken: token });
-            window.location.reload();
+            // window.location.reload();
+            history.push("/Home")
         }
     }
 

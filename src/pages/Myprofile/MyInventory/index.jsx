@@ -181,7 +181,7 @@ export default function Index() {
                 cover={item.fileurl}
                 itemname={item.itemname}
                 user={item.ownername}
-                status={parseInt(item.poolId) >= 0 && 'Listed'}
+                status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
                 poolType={item.poolType}
                 //  status={index % 2 === 0 ? 'Listed' : ''} 
                 poolInfo={item}

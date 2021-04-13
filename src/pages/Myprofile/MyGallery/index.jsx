@@ -13,6 +13,8 @@ import { SkeletonNFTCards } from '@/pages/component/Skeleton/NFTCard'
 import { AUCTION_TYPE } from '@/utils/const'
 import Category from '../Category'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const MyGalleryStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
@@ -53,10 +55,12 @@ export default function Index() {
   const [myNftData, setMyNftData] = useState([])
   const [myTradeData, setMyTradeData] = useState([])
 
+  const { wrapperIntl } = useWrapperIntl()
 
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
     {
       variables: { user: String(account).toLowerCase() },
+      // variables: { user: String('0x2d3fff58da3346dce601f6db8eec57906cdb17be').toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: async () => {
         setMyNftData(data || [])
@@ -69,6 +73,7 @@ export default function Index() {
   const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
     {
       variables: { user: String(account).toLowerCase() },
+      // variables: { user: String('0x2d3fff58da3346dce601f6db8eec57906cdb17be').toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: () => {
         setMyTradeData(traddata || [])
@@ -128,7 +133,7 @@ export default function Index() {
               token1: item.token1,
               createTime: item.createTime
             }
-          })
+          }).filter(item => item.fileurl)
           const result = list.sort((a, b) => b.createTime - a.createTime)
           setItemList(result);
           setStatusList(result);
@@ -174,7 +179,7 @@ export default function Index() {
                 cover={item.fileurl}
                 itemname={item.itemname}
                 user={item.ownername}
-                status={parseInt(item.poolId) >= 0 && 'Listed'}
+                status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
                 poolType={item.poolType}
                 //  status={index % 2 === 0 ? 'Listed' : ''} 
                 poolInfo={item}

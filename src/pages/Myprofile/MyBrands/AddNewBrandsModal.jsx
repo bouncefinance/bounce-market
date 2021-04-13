@@ -12,7 +12,10 @@ import { myContext } from '@/redux'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useBrandList } from './useHook'
 
-const AddNewBrandstModalStyled = styled.div`
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
+
+const AddNewBrandsModalStyled = styled.div`
     width: 1100px;
     box-sizing: border-box; 
     padding: 32px 83px;
@@ -40,19 +43,21 @@ const AddNewBrandstModalStyled = styled.div`
 
 `
 
-export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAddress, open, setOpen }) {
+export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAddress, open, setOpen }) {
     const { active, library, chainId, account } = useActiveWeb3React()
+    const { wrapperIntl } = useWrapperIntl()
     const { state, dispatch } = useContext(myContext);
     const { sign_Axios } = useAxios()
     const [fileData, setFileData] = useState(null)
     const [formData, setFormData] = useState({})
     const [btnLock, setBtnLock] = useState(true)
     const [inputDisable, setInputDisable] = useState(false)
-    const [btnText, setBtnText] = useState('Save')
+    const [btnText, setBtnText] = useState(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.Save'))
     const [nftType, setNftType] = useState('ERC-721')
     const { showTransferByStatus } = useTransferModal()
     const { getBrandList } = useBrandList()
     // const [brandAddress, setBrandAddress] = useState(false)
+
 
     useEffect(() => {
         if (!active) return
@@ -83,20 +88,23 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
     const handelSubmit = () => {
         setBtnLock(true)
         setInputDisable(true)
-        setBtnText('Uploading File ...')
+        /* setBtnText('Uploading File ...') */
+        setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.UploadingFile'))
 
         // 第一步：上传图片
         sign_Axios
             .post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
             .then(function (response) {
-                setBtnText('Uploading Data ...')
+                /* setBtnText('Uploading Data ...') */
+                setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.UploadingData'))
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.OnlySupports") });
                     setBtnLock(false)
                     setInputDisable(false)
-                    setBtnText('Save');
+                    /* setBtnText('Save'); */
+                    setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.Save'))
                     // throw new Error('File upload failed,' + response.data.msg)
                 }
             }).then((imgUrl) => {
@@ -125,14 +133,15 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         .on('receipt', async (_, receipt) => {
                             // console.log('bid fixed swap receipt:', receipt)
                             dispatch({ type: 'TransferModal', TransferModal: "" });
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully build your brands" });
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
                             const brandAddress = await getCreatedBrand()
                             uploadData(imgUrl, brandAddress)
                         })
                         .on('error', (err, receipt) => {
                             // setBidStatus(errorStatus)
                             setBtnLock(false);
-                            setBtnText("Try Again");
+                            /* setBtnText("Try Again"); */
+                            setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
                             setInputDisable(false);
                             // showTransferByStatus('errorStatus')
                         })
@@ -146,7 +155,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         .on('receipt', async (_, receipt) => {
                             // console.log('bid fixed swap receipt:', receipt)
                             dispatch({ type: 'TransferModal', TransferModal: "" });
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully build your brands" });
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
                             const brandAddress = await getCreatedBrand()
                             uploadData(imgUrl, brandAddress)
                         })
@@ -154,16 +163,18 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                             // setBidStatus(errorStatus)
                             // showTransferByStatus('errorStatus');
                             setBtnLock(false);
-                            setBtnText("Try Again");
+                            /* setBtnText("Try Again"); */
+                            setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
                             setInputDisable(false);
                         })
                 }
 
             }).catch(function (error) {
-                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.DataUpdateFailed") });
                 setBtnLock(false)
                 setInputDisable(false)
-                setBtnText('Try Again')
+                /* setBtnText('Try Again') */
+                setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
             })
     }
 
@@ -200,17 +211,19 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
             }
         }).catch(err => {
             setBtnLock(false);
-            setBtnText("Try Again");
+            /* setBtnText("Try Again"); */
+            setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
             // alert('Brand 创建失败')
         })
     }
 
     return (
         <>
-            <Modal open={open} setOpen={setOpen} header={{ title: 'Build Your Brand', isClose: true }}>
-                <AddNewBrandstModalStyled>
+            <Modal open={open} setOpen={setOpen} header={{ title: wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.BuildYourBrand')/* 'Build Your Brand' */, isClose: true }}>
+                <AddNewBrandsModalStyled>
                     <TextInput
-                        title='Brand Name'
+                        /* title='Brand Name' */
+                        title={wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.BrandName')}
                         width='620px'
                         required={true}
                         marginTop={0}
@@ -221,7 +234,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         }}
                     />
 
-                    <Radio title={'Standard'} description={`Select a Standard for the created Brand,which is not changed,and the new Item under BRAN will also cast this SRANDARD.`}
+                    <Radio title={'Standard'} description={wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.StandardNotice')}
                         marginTop={'0'}
                         options={[{
                             name: 'ERC-721',
@@ -236,7 +249,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                     />
 
                     <TextInput
-                        title='Symbol'
+                        title={wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.Symbol')}
                         width='620px'
                         required={true}
                         /* marginTop={'16px'} */
@@ -248,9 +261,10 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                     />
 
                     <TextAreaInput
-                        title='Description'
+                        title={wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.Description')}
                         width='620px'
-                        placeholder={`Describe your brand`}
+                        /* placeholder={`Describe your brand`} */
+                        placeholder={wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.DescriptionPlaceHolder')}
                         required={true}
                         /* marginTop={'16px'} */
                         marginTop={'5px'}
@@ -264,7 +278,7 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         width='200px'
                         /* height='200px' */
                         height="100%"
-                        lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
+                        lockInput={inputDisable} infoTitle={wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.browseBrandPhoto')} onFileChange={(formData) => {
                             setFileData(formData)
                         }} />
 
@@ -272,13 +286,13 @@ export default function AddNewBrandstModal({ run, hasAddressButNotBrand, brandAd
                         <Button height='48px' width='302px' onClick={() => {
                             setOpen(false)
                             // setModalStatus(approveStatus)
-                        }}>Cancel</Button>
+                        }}>{wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.Cancel')}</Button>
                         <div className="wrap">
                             <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
                             {inputDisable && <CircularProgress className="buttonProgress" />}
                         </div>
                     </div>
-                </AddNewBrandstModalStyled>
+                </AddNewBrandsModalStyled>
             </Modal >
         </>
     )

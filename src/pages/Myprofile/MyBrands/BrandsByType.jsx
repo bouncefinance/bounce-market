@@ -31,6 +31,7 @@ import { AUCTION_TYPE } from '@/utils/const'
 import { SkeletonNFTCard } from '@/pages/component/Skeleton/NFTCard'
 // import { weiToNum } from '@/utils/useBigNumber'
 import Category from '../Category'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -59,7 +60,10 @@ const BrandsByTypeStyled = styled.div`
         background-size: 100%!important;
         button{
             background: none;
-            width: 124px;
+            /* width: 124px; */
+            width: max-content;
+            padding-left: 10px;
+            padding-right: 10px;
             height: 40px;
             box-sizing: border-box;
             border: 1px solid #fff;
@@ -116,7 +120,10 @@ const BrandsByTypeStyled = styled.div`
             button{
                 background: none;
                 border: 1px solid rgba(0,0,0,.2);
-                width: 124px;
+                /* width: 124px; */
+                width: max-content;
+                padding-left: 10px;
+                padding-right: 10px;
                 height: 40px;
                 box-sizing: border-box;
                 font-weight: 700;
@@ -187,33 +194,6 @@ const EditBrandstModalStyled = styled.div`width: 1100px;
         }
     }`
 
-const nav_list = [{
-    name: 'All Items',
-    icon: nav_all,
-    route: 'All'
-}, {
-    name: 'Image',
-    icon: nav_image,
-    route: 'Image'
-}/*, {
-    name: 'Video',
-    icon: nav_video,
-    route: 'Video'
-}, {
-    name: 'Audios',
-    icon: nav_audio,
-    route: 'Audio'
-}, {
-    name: 'Game',
-    icon: nav_game,
-    route: 'Games'
-}, {
-    name: 'Others',
-    icon: nav_other,
-    route: 'Others'
-}*/]
-
-
 export default function BrandsByType () {
     const { brandId, type } = useParams()
     const history = useHistory()
@@ -246,6 +226,32 @@ export default function BrandsByType () {
         type: 'error',
     })
 
+    const { wrapperIntl } = useWrapperIntl()
+    const nav_list = [{
+        name: wrapperIntl('MyProfile.MyBrands.BrandsByType.AllItems'),
+        icon: nav_all,
+        route: 'All'
+    }, {
+        name: wrapperIntl('MyProfile.MyBrands.BrandsByType.Image'),
+        icon: nav_image,
+        route: 'Image'
+    }/*, {
+        name: 'Video',
+        icon: nav_video,
+        route: 'Video'
+    }, {
+        name: 'Audios',
+        icon: nav_audio,
+        route: 'Audio'
+    }, {
+        name: 'Game',
+        icon: nav_game,
+        route: 'Games'
+    }, {
+        name: 'Others',
+        icon: nav_other,
+        route: 'Others'
+    }*/]
 
     useEffect(() => {
         if (!account) return
@@ -418,7 +424,7 @@ export default function BrandsByType () {
                     history.push('/MyBrands')
                 }}>
                     <img src={arrows_left} alt="" />
-                    <p>Back to Brands</p>
+                    <p>{wrapperIntl('MyProfile.MyBrands.BrandsByType.BackToBrands')}</p>
                 </button>
             </div>
 
@@ -426,7 +432,7 @@ export default function BrandsByType () {
                 {/* <div className='bg_wrapper' style={{ backgroundSize: '100%', background: `url(https://market-test.bounce.finance/pngfileget/blob-1616642351.png) center center no-repeat` }}> */}
                 <button onClick={() => setOpenUpdateTopBarImg(true)}>
                     <img src={edit_white} alt="" />
-                    <p>Change</p>
+                    <p>{wrapperIntl('MyProfile.MyBrands.BrandsByType.Change')}</p>
                 </button>
             </div>
 
@@ -449,7 +455,7 @@ export default function BrandsByType () {
                         setIsEdit(true)
                     }}>
                         <img src={edit_black} alt="" />
-                        Edit
+                        {wrapperIntl('MyProfile.MyBrands.BrandsByType.Edit')}
                     </button>
                 </div>
             </div>
@@ -477,7 +483,7 @@ export default function BrandsByType () {
                             cover={item.fileurl}
                             itemname={item.itemname}
                             user={item.ownername}
-                            status={item.poolId && 'Listed'}
+                            status={item.poolId && wrapperIntl("Listed")}
                             poolInfo={item}
                             poolType={item.poolType}
                         />
@@ -487,10 +493,10 @@ export default function BrandsByType () {
             </ul>
 
             {/* EDIT */}
-            <Modal open={isEdit} setOpen={setIsEdit} header={{ title: 'Edit your Brand', isClose: true }}>
+            <Modal open={isEdit} setOpen={setIsEdit} header={{ title: wrapperIntl('MyProfile.MyBrands.BrandsByType.EditYourBrand'), isClose: true }}>
                 <EditBrandstModalStyled>
                     <TextInput
-                        title='Brand Name'
+                        title={wrapperIntl('MyProfile.MyBrands.BrandsByType.BrandName')}
                         width='620px'
                         required={true}
                         marginTop={0}
@@ -502,9 +508,9 @@ export default function BrandsByType () {
                         }}
                     />
                     <TextAreaInput
-                        title='Description'
+                        title={wrapperIntl('MyProfile.MyBrands.BrandsByType.Description')}
                         width='620px'
-                        placeholder={`Describe your brand`}
+                        placeholder={wrapperIntl('MyProfile.MyBrands.BrandsByType.DescribeYourBrand')}
                         required={true}
                         marginTop={'24px'}
                         lockInput={inputDisable}
@@ -521,7 +527,7 @@ export default function BrandsByType () {
                             setFileData(formData)
                         }} />
                     <div className="button_group">
-                        <Button height='48px' width='302px' onClick={() => setIsEdit(false)}>Cancel</Button>
+                        <Button height='48px' width='302px' onClick={() => setIsEdit(false)}>{wrapperIntl('MyProfile.MyBrands.BrandsByType.Cancel')}</Button>
                         <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelEditSubmit}>{editBtnText}</Button>
                     </div>
                 </EditBrandstModalStyled>

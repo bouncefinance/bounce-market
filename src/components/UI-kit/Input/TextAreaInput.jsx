@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { ErrorStatus } from './error_config'
+/* import { ErrorStatus } from './error_config' */
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const TextAreaStyled = styled.div`
     margin-top: ${({ marginTop }) => { return marginTop }};
@@ -95,6 +96,7 @@ export default function TextAreaInput({
 }) {
     const [error, setError] = useState(false)
     const [errMsg, setErrMsg] = useState(null)
+    const { wrapperIntl } = useWrapperIntl()
 
     useEffect(() => {
         onValChange && onValChange(defaultValue)
@@ -119,7 +121,8 @@ export default function TextAreaInput({
         const val = e.target.value
         if (required && val === '') {
             setError(true)
-            setErrMsg(ErrorStatus.required.tip)
+            /* setErrMsg(ErrorStatus.required.tip) */
+			setErrMsg(wrapperIntl("ErrorMsg.required"));
         }
     }
 

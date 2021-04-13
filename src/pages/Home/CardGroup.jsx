@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import arrows_blue from '@assets/images/icon/arrows-blue.svg'
 import { Link } from 'react-router-dom'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const CardGroupStyled = styled.div`
     width: 1100px;
@@ -35,11 +36,13 @@ const CardGroupStyled = styled.div`
 `
 
 export default function CardGroup ({ marinTop, title, link, children }) {
+    const {wrapperIntl} = useWrapperIntl()
+
     return (
         <CardGroupStyled marinTop={marinTop}>
             <div className="top">
                 <h4>{title}</h4>
-                <Link to={link}>View All
+                <Link to={link}>{wrapperIntl('home.view')}
                     <img src={arrows_blue} alt="" />
                 </Link>
             </div>

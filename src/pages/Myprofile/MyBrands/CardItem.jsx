@@ -4,6 +4,7 @@ import { Button } from '@components/UI-kit'
 import AddNewItemModal from './AddNewItemModal'
 import img_addItem from './assets/addItem.svg'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -47,7 +48,7 @@ export function CardItem ({ type, cover, name, price, poolId }) {
             <AutoStretchBaseWidthOrHeightImg src={cover} widgth={262} height={262} />
             <div className="item_wrapper">
                 <p>{name}</p>
-                <span>{price}</span>
+                {price && <span>{price}</span>}
             </div>
         </CardItemStyled>
     )
@@ -67,13 +68,14 @@ const AddCardItemStyled = styled(CardItemStyled)`
 
 export function AddCardItem ({ type, brandInfo }) {
     const [showCreateModal, setShowCreateModal] = useState(false)
+    const { wrapperIntl } = useWrapperIntl()
 
     return (
         <>
             <AddCardItemStyled>
                 <img src={img_addItem} alt="" />
                 <div className="create_wrapper">
-                    <Button value='Add' width='162px' onClick={() => {
+                    <Button value={wrapperIntl("MyProfile.MyBrands.CardItem.Add")} width='162px' onClick={() => {
                         setShowCreateModal(true)
                     }} />
                 </div>

@@ -20,8 +20,12 @@ import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 import icon_USDT from '@assets/images/wallet/icon_USDT.svg'
 import icon_USDC from '@assets/images/wallet/icon_USDC.svg'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 export default function SellNFT() {
 	const { chainId } = useActiveWeb3React()
+
+	const { wrapperIntl } = useWrapperIntl()
 
 	const unitOptions = [
 		{
@@ -95,15 +99,17 @@ export default function SellNFT() {
 
 	const NavList = [
 		{
-			title: "My Gallery",
+			/* title: "My Gallery", */
+			title: wrapperIntl("MyProfile.MyGallery.SellNFT.MyGallery"),
 			route: "/MyGallery",
 		},
 		{
-			title: ((nftInfo && nftInfo.itemname) || "Item name"),
+			title: ((nftInfo && nftInfo.itemname) || wrapperIntl('MyProfile.MyGallery.SellNFT.ItemName')),
 			route: "/MyGallery/" + nftId,
 		},
 		{
-			title: "Sell",
+			/* title: "Sell", */
+			title: wrapperIntl("MyProfile.MyGallery.SellNFT.Sell"),
 			route: "/MyGallery/" + nftId + "/Sell",
 		},
 	];
@@ -147,14 +153,14 @@ export default function SellNFT() {
 					<><RightItemsOnSetPrice>
 						<InputPrice
 							className="InputPrice Price"
-							title="Price"
+							title={wrapperIntl('MyProfile.MyGallery.SellNFT.Price')}
 							setPrice={setPrice}
 							setUnit={set_PriceUnit}
 							setNewUnit={setFixedSwapUnit} // new 
 							nftInfo={nftInfo}
 							ifInputAmount={true}
 							setAmount={setAmount}
-							notice="The price bidding starts at.It'll be publicly visible.You can manually accept bids above this value but below your reserve price if you want."
+							notice={wrapperIntl('MyProfile.MyGallery.SellNFT.PriceNotice')}
 							gridArea="Price"
 							options={unitOptions}
 							fixedSwapUnit={fixedSwap_Unit}
@@ -166,15 +172,18 @@ export default function SellNFT() {
 							layDownItems={[
 								{
 									value:
-										"Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:",
+										/* "Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:", */
+										wrapperIntl('MyProfile.MyGallery.SellNFT.Instructions1')
 								},
 								{
 									value:
-										"To initialize your account for making sell orders, which only needs to be done once for your account.",
+										/* "To initialize your account for making sell orders, which only needs to be done once for your account.", */
+										wrapperIntl('MyProfile.MyGallery.SellNFT.Instructions2')
 								},
 								{
 									value:
-										"To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.",
+										/* "To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.", */
+										wrapperIntl('MyProfile.MyGallery.SellNFT.Instructions3')
 								},
 							]}
 						/>
@@ -196,26 +205,26 @@ export default function SellNFT() {
 						<RightItemsOnEnglishAuction>
 							<InputPrice
 								className="InputPrice Minimum_bid"
-								title="Minimum bid"
+								title={wrapperIntl('MyProfile.MyGallery.SellNFT.Minimumbid')}
 								price={minimumBid}
 								setPrice={set_MinimumBid}
 								unit={minimumBid_Unit}
 								setUnit={set_MinimumBid_Unit}
 								setNewUnit={setFixedSwapUnit}
-								notice="The price bidding starts at. It'll be publicly visible. You can manually accept bids above this value but below your reserve price if you want."
+								notice={wrapperIntl('MyProfile.MyGallery.SellNFT.MinimumbidNotice')}
 								gridArea="Minimum_bid"
 								options={unitOptions}
 								fixedSwapUnit={fixedSwap_Unit}
 							/>
 							<InputPrice
 								className="InputPrice Direct_purchase_price"
-								title="Direct purchase price"
+								title={wrapperIntl('MyProfile.MyGallery.SellNFT.DirectPurchasePrice')}
 								price={directPurchasePrice}
 								setPrice={set_DirectPurchasePrice}
 								unit={directPurchasePrice_Unit}
 								setNewUnit={setFixedSwapUnit}
 								setUnit={set_directPurchasePrice_Unit}
-								notice="A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price."
+								notice={wrapperIntl('MyProfile.MyGallery.SellNFT.DirectPurchaseNotice')}
 								gridArea="Direct_purchase_price"
 								options={unitOptions}
 								fixedSwapUnit={fixedSwap_Unit}
@@ -228,7 +237,7 @@ export default function SellNFT() {
 								setPrice={set_ReservePrice}
 								unit={reservePrice_Unit}
 								setUnit={set_ReservePrice_Unit}
-								notice="Setting a reserve price creates a hidden limit,If you receive no bids equal to or greater than your reserve,your auction will not be sold."
+								notice={wrapperIntl('MyProfile.MyGallery.SellNFT.ReservePriceNotice')}
 								gridArea="Reserve_price"
 								ifInputAmount={true}
 								options={unitOptions}
@@ -242,7 +251,7 @@ export default function SellNFT() {
 								title="Expriration Date"
 								notice="Setting a reserve price creates a hidden limit. If you receive no bids equal to or greater than your reserve, your auction will end without selling the item."
 								setDuration={setDuration}
-								gridArea="Expriration_Date"
+								gridArea={wrapperIntl('MyProfile.MyGallery.SellNFT.ExprirationDate')}
 								options={duration_Options}
 							/>
 							<InstructionsDropdown
@@ -251,15 +260,18 @@ export default function SellNFT() {
 								layDownItems={[
 									{
 										value:
-											"Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:",
+											/* "Bounce Collectible is decentralized, so we never escrow your items. As a result, if this is your first time selling a crypto collectible, you need to complete 2 free (plus gas) transactions:", */
+											wrapperIntl('MyProfile.MyGallery.SellNFT.Instructions1')
 									},
 									{
 										value:
-											"To initialize your account for making sell orders, which only needs to be done once for your account.",
+											/* "To initialize your account for making sell orders, which only needs to be done once for your account.", */
+											wrapperIntl('MyProfile.MyGallery.SellNFT.Instructions2')
 									},
 									{
 										value:
-											"To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.",
+											/* "To allow Bounce Collectible to access your item (or all items in the collection, if the collection supports it) when a sale occurs.", */
+											wrapperIntl('MyProfile.MyGallery.SellNFT.Instructions3')
 									},
 								]}
 							/>
@@ -294,7 +306,7 @@ export default function SellNFT() {
 				</PageBodyLeft>
 				<PageBodyRight>
 					<span className="itemName">
-						{nftInfo && (nftInfo.itemname || 'Select your sell method')}
+						{nftInfo && (nftInfo.itemname || wrapperIntl('MyProfile.MyGallery.SellNFT.SelectMethod'))}
 					</span>
 
 					<ButtonGroup>
@@ -308,9 +320,9 @@ export default function SellNFT() {
 								setauctionType("setPrice");
 							}}
 						>
-							<span className="auctionType">Instant sale</span>
+							<span className="auctionType">{wrapperIntl('MyProfile.MyGallery.SellNFT.InstantSale')}</span>
 							<span className="saleFeature">
-								Claim your value and set the price you know you’re worth
+								{wrapperIntl('MyProfile.MyGallery.SellNFT.SetPriceFeature')}
 							</span>
 						</button>
 
@@ -324,9 +336,9 @@ export default function SellNFT() {
 								setauctionType("EnglishAuction");
 							}}
 						>
-							<span className="auctionType">English Auction</span>
+							<span className="auctionType">{wrapperIntl('MyProfile.MyGallery.SellNFT.EnglishAuction')}</span>
 							<span className="saleFeature">
-								Sell to the highest bidder for the selected period of time
+								{wrapperIntl('MyProfile.MyGallery.SellNFT.EnglishAcutionFeature')}
 							</span>
 						</button>
 					</ButtonGroup>

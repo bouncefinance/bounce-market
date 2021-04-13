@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -17,6 +17,7 @@ import setting_white from './assets/setting_white.svg'
 import setting_black from './assets/setting_black.svg'
 import { useActiveWeb3React } from '@/web3'
 import SettingAccountModal from '../../Myprofile/SettingAccountModal'
+import useWrapperIntl from '@/locales/useWrapperIntl';
 
 const InfoBoxStyled = styled.div`
     width: 218px;
@@ -89,55 +90,56 @@ const InfoBoxStyled = styled.div`
     }
 `
 
-const InfoList = [{
-    name: 'My Gallery',
-    img_white: gallery_white,
-    img_black: gallery_black,
-    route: '/MyGallery'
-}, {
-    name: 'My Brands',
-    img_white: brands_white,
-    img_black: brands_black,
-    route: '/MyBrands'
-}, {
-    name: 'My Activities',
-    img_white: activities_white,
-    img_black: activities_black,
-    route: '/MyActivities'
-},
-{
-    name: 'My Liked',
-    img_white: icon_liked_black,
-    img_black: icon_liked,
-    route: '/MyLiked'
-}, /*{
-    name: 'Point-2-Point',
-    img_white: p2p_white,
-    img_black: p2p_black,
-    route: '/MyP2P'
-},*/  {
-    name: 'Account Settings',
-    img_white: setting_white,
-    img_black: setting_black,
-    route: ''
-}]
 
-export default function InfoBox ({ setIsShowInfo, username, onBodyHandle, offBodyHandle }) {
+
+export default function InfoBox({ setIsShowInfo, username, onBodyHandle, offBodyHandle }) {
     const history = useHistory()
     const [curItem, setCurItem] = useState(-1)
     const { account } = useActiveWeb3React()
     const [isSettingAccount, setIsSettingAccount] = useState(false)
     const { dispatch } = useContext(myContext);
+    const { wrapperIntl } = useWrapperIntl()
+
+
+    const InfoList = [{
+        name: wrapperIntl('MyGallery'),
+        img_white: gallery_white,
+        img_black: gallery_black,
+        route: '/MyGallery'
+    }, {
+        name: wrapperIntl('MyBrands'),
+        img_white: brands_white,
+        img_black: brands_black,
+        route: '/MyBrands'
+    }, {
+        name: wrapperIntl('MyActivities'),
+        img_white: activities_white,
+        img_black: activities_black,
+        route: '/MyActivities'
+    },
+    {
+        name: wrapperIntl('MyLiked'),
+        img_white: icon_liked_black,
+        img_black: icon_liked,
+        route: '/MyLiked'
+    }, {
+        name: wrapperIntl('header.setting'),
+        img_white: setting_white,
+        img_black: setting_black,
+        route: ''
+    }]
+
+
     return (
         <InfoBoxStyled>
             <div className="top_info">
-                <span>{username || 'Unnamed User'}</span>
+                <span>{username || wrapperIntl("UnnamedUser")}</span>
                 <div className='accout'>
                     <p>{account}</p>
                     <CopyToClipboard
                         text={account}
                         onCopy={() => {
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("CopySuccessful") });
                         }}>
                         <img src={icon_copy} alt="" />
                     </CopyToClipboard>
@@ -154,7 +156,7 @@ export default function InfoBox ({ setIsShowInfo, username, onBodyHandle, offBod
                         }}
                         onClick={(e) => {
                             window.event ? window.event.cancelBubble = true : e.stopPropagation()
-                            if (item.name === 'Account Settings') {
+                            if (item.name === wrapperIntl('header.setting') && item.name !== "loading"/* 'Account Settings' */) {
                                 offBodyHandle()
                                 setIsSettingAccount(true)
                                 return

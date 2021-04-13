@@ -9,6 +9,7 @@ import icon_create from './assets/create.svg'
 
 import default_img from './assets/default_img.svg'
 import { getEllipsisAddress } from '@/utils/utils';
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const TableItemStyled = styled(TableRow)`
     font-family: 'Helvetica Neue';
@@ -55,14 +56,75 @@ const TableItemStyled = styled(TableRow)`
     }
 `
 
+const ModifyDate = (date) => {
+    const { wrapperIntl } = useWrapperIntl()
+
+    /* about */
+    date = (
+        date.search("about") !== -1
+        ?
+        date.replace("about", wrapperIntl("MyProfile.MyActivities.TableItem.about"))
+        :
+        date
+    )
+
+        /* minute */
+    date = (
+        date.search("minutes") !== -1
+        ?
+        date.replace("minutes", wrapperIntl("MyProfile.MyActivities.TableItem.minutes"))
+        :
+        date.search("minute") !== -1
+        ?
+        date.replace("minute", wrapperIntl("MyProfile.MyActivities.TableItem.minute"))
+        :
+        date
+    )
+
+    /* hour */
+    date = (
+        date.search("hours") !== -1
+        ?
+        date.replace("hours", wrapperIntl("MyProfile.MyActivities.TableItem.hours"))
+        :
+        date.search("hour") !== -1
+        ?
+        date.replace("hour", wrapperIntl("MyProfile.MyActivities.TableItem.hour"))
+        :
+        date
+    )
+
+        /* day */
+    date = (
+        date.search("days") !== -1
+        ?
+        date.replace("days", wrapperIntl("MyProfile.MyActivities.TableItem.days"))
+        :
+        date.search("day") !== -1
+        ?
+        date.replace("day", wrapperIntl("MyProfile.MyActivities.TableItem.day"))
+        :
+        date
+    )
+
+    return date
+}
+
 export default function TableItem({ row }) {
+    const { wrapperIntl } = useWrapperIntl()
     // console.log(row)
     return (
         <TableItemStyled>
             <TableCell className='event'>
                 {row.event === 'Transfer' && <img src={icon_transfer} alt="" />}
                 {row.event === 'Created' && <img src={icon_create} alt="" />}
-                {row.event}
+                {
+                    row.event === 'Transfer'
+                    ?
+                    wrapperIntl("MyProfile.MyActivities.TableItem.Transfer")
+                    :
+                    wrapperIntl("MyProfile.MyActivities.TableItem.Created")
+                }
             </TableCell>
             <TableCell className='item'>
                 {row.cover ? <img src={row.cover} alt="" /> : <img src={default_img} alt="" />}
@@ -81,7 +143,10 @@ export default function TableItem({ row }) {
                 {getEllipsisAddress(row.to)}
             </TableCell>
             <TableCell>
-                {row.date}
+                {/* {row.date} */}
+                {
+                    ModifyDate(row.date)
+                }
             </TableCell>
             {/* <TableCell>
                 {row.event === 'Transfer' && <Button>Detail</Button>}

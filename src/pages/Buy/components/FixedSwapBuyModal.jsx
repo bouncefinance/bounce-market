@@ -15,6 +15,8 @@ import AmountInput from './AmountInput'
 
 import icon_close from "@assets/images/icon/close.svg";
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const useStyles = makeStyles((theme) => ({
 	modal: {
 		display: "flex",
@@ -118,12 +120,12 @@ export default function ModalBox({
 	const [isDisabled, setIsDisabled] = useState(false)
 	/* const [agree, setAgree] = useState(false); */
 
-	useEffect(() => {
+	// useEffect(() => {
 		/* console.log("inputMin", inputMin)
 		console.log("poolInfo", poolInfo)
 		console.log("maxVal", parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P)) */
 // eslint-disable-next-line
-	}, [poolInfo, inputMin])
+	// }, [poolInfo, inputMin])
 
 	useEffect(() => {
 		if (!poolInfo) return
@@ -138,7 +140,7 @@ export default function ModalBox({
 		// eslint-disable-next-line
 	}, [poolInfo])
 
-
+	const { wrapperIntl } = useWrapperIntl()
 
 	return (
 		<Modal
@@ -172,7 +174,7 @@ export default function ModalBox({
 					<ModalContent>
 						<AmountInput
 							className="input_amount"
-							title="Buy Amount"
+							title={wrapperIntl("FixedSwapBuyModal.BuyAmount")}
 							width="100%"
 							height="68px"
 							marginTop="0"
@@ -182,8 +184,6 @@ export default function ModalBox({
 							defaultValue={"1"}
 
 							onValChange={(val) => {
-								console.log(val)
-								if (!val) return
 								setAmount(parseInt(val))
 							}}
 							disabled={isDisabled}
@@ -214,7 +214,7 @@ export default function ModalBox({
 							<Button
 								width="200px"
 								height="48px"
-								value="Cancel"
+								value={wrapperIntl("FixedSwapBuyModal.Cancel")}
 								disabled={isLoading || poolInfo.status !== 'Live'}
 								onClick={() => {
 									setOpen(false);
@@ -225,7 +225,7 @@ export default function ModalBox({
 								width="200px"
 								height="48px"
 								primary="primary"
-								value="Checkout"
+								value={wrapperIntl("FixedSwapBuyModal.Checkout")}
 								disabled={isLoading || poolInfo.status !== 'Live' || amount === '0' /* || !agree */}
 								onClick={() => {
 									onClick()

@@ -6,6 +6,7 @@ import { Button } from '@components/UI-kit'
 // import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 import { HeadImgFit } from '../component/Other/headImgFit'
 import { ImgFitCover } from '../component/Other/autoStretchBaseWidthOrHeightImg';
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const StyledCard = styled.div`
     box-sizing: border-box;
@@ -110,6 +111,8 @@ const StyledCard = styled.div`
 
 function BrandCard({img, brandName, profile, avatar, ownerName, id, standard, owneraddress}) {
     const history = useHistory();
+    const { wrapperIntl } = useWrapperIntl()
+
     return (<LazyLoad height={332}>
         <StyledCard>
             {/* <img src={img} width={540} height={332} alt="" /> */}
@@ -120,13 +123,13 @@ function BrandCard({img, brandName, profile, avatar, ownerName, id, standard, ow
                 <div className="owner">
                     {/* <img src={avatar} className='avatar' alt="" /> */}
                     <HeadImgFit src={avatar} width={20} height={20} />
-                    <span className="text">Owned by</span>
+                    <span className="text">{wrapperIntl("Brands.BrandCard.Ownedby")}</span>
                     <Link to={`/`}>{ownerName ? ownerName : owneraddress}</Link>
                 </div>
                 <div className="button_visit">
                     <Button primary width={'162px'} onClick={() => {
                         history.push(`/AirHome/${id}/${standard}/FineArts`)
-                    }}>Visit Store</Button>
+                    }}>{(wrapperIntl("Brands.BrandCard.VisitStore"))}</Button>
                 </div>
             </div>
         </StyledCard>

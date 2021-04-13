@@ -7,6 +7,7 @@ import useTransferModal from "@/web3/useTransferModal";
 import { getFixedSwapNFT } from "@/web3/address_list/contract";
 import BounceFixedSwapNFT from '@/web3/abi/BounceFixedSwapNFT.json'
 import { useActiveWeb3React, getContract } from "@/web3";
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const Wrapper = styled.div`
 	box-sizing: border-box;
@@ -31,6 +32,7 @@ const Wrapper = styled.div`
 function ConfirmCancelModal({ width, height, open, setOpen, onConfirm, poolId }) {
 	const { library, chainId, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
+	const { wrapperIntl } = useWrapperIntl()
 
 	const handelFixedSwapCancel = async () => {
 		const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
@@ -59,16 +61,16 @@ function ConfirmCancelModal({ width, height, open, setOpen, onConfirm, poolId })
 				height={height}
 				open={open}
 				setOpen={setOpen}
-				header={{ title: "Confirm Cancel", isClose: true }}
+				header={{ title: wrapperIntl("pages.buy.ConfirmCancel"), isClose: true }}
 			>
 				<Wrapper>
-					<span className="alert">Are you sure to cancel?</span>
+					<span className="alert">{wrapperIntl("pages.buy.AreYouSure")}</span>
 
 					<div className="button_group">
 						<Button
 							width="150px"
 							height="48px"
-							value="Yes"
+							value={wrapperIntl("pages.buy.Yes")}
 							onClick={() => {
 								onConfirm && onConfirm();
 								!onConfirm && handelFixedSwapCancel()
@@ -79,7 +81,7 @@ function ConfirmCancelModal({ width, height, open, setOpen, onConfirm, poolId })
 							width="150px"
 							height="48px"
 							primary="primary"
-							value="No"
+							value={wrapperIntl("pages.buy.No")}
 							onClick={() => {
 								setOpen(false);
 							}}
