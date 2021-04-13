@@ -104,6 +104,17 @@ export default function useToken() {
         const balance = await BounceERC721WithSign_CT.methods.balanceOf(accountAddr).call()
         return balance
     }
+    const getAccountHasNftCount = async (tokenContract, tokenId, account) => {
+        try {
+            const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, tokenContract)
+            const ownerAddress = await BounceERC721WithSign_CT.methods.ownerOf(parseInt(tokenId)).call()
+            return ownerAddress?.toLowerCase() ===  account?.toLowerCase() ? 1 : 0
+        } catch (error) {
+            const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, tokenContract)
+            const balance = await BounceERC1155WithSign_CT.methods.balanceOf(account, parseInt(tokenId)).call()
+            return balance
+        }
+    }
 
     const exportErc20Info = async (tokenAddr, flag) => {
         let price = 0
@@ -195,6 +206,7 @@ export default function useToken() {
         hasApprove_ERC_20,
         getPriceByToken1,
         queryPrice,
+        getAccountHasNftCount,
         // tokenList
     }
 }
