@@ -15,7 +15,7 @@ export const FONTS = {
   monument: ['"Monument Extended"', 'sans-serif'].join(','),
 };
 
-const PALETTE = {
+export const PALETTE = {
   type: 'light',
   primary: {
     light: lighten('#8FC436', 0.1),
