@@ -96,6 +96,9 @@ const en_US = {
 
     Factory: {
         /* wrapperIntl("Factory.GenerateYourNFT") */
+        "Generate": "Generate",
+        "Build": "Build",
+        "List": "List",
         "GenerateYourNFT": "Generate your NFT",
         "GenerateDescription": "You don’t need a store or brand to get started. Generate NFTs and go from there.",
         "BuildYourBrand": "Build your brand",
