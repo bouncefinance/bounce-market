@@ -158,6 +158,16 @@ export default function Index() {
             setIsFangible(false)
         } */
     }
+    const connectWallet = historyLocation => {
+        const match = [
+            '/Marketplace/FineArts/english-auction/',
+            '/Marketplace/FineArts/fixed-swap/',
+        ]
+        if (match.some(path => historyLocation.pathname.substring(0, path.length) === path)) {
+            onConnect()
+        }
+        updateActive()
+    }
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
         if (type) {
@@ -165,16 +175,8 @@ export default function Index() {
         }
 
         updateActive()
-        history.listen(historyLocation => {
-            const match = [
-                '/Marketplace/FineArts/english-auction/',
-                '/Marketplace/FineArts/fixed-swap/',
-            ]
-            if (match.some(path => historyLocation.pathname.substring(0, path.length) === path)) {
-                onConnect(type)
-            }
-            updateActive()
-        })
+        connectWallet(history.location)
+        history.listen(connectWallet)
 
         // eslint-disable-next-line
     }, [history])
