@@ -52,7 +52,7 @@ export default function BasicTable() {
         const activities = data.map(item => ({
             ...item,
             date: formatDistanceToNow(item.timestamp * 1000),
-            status: item.event === 'Cancel' || item.event === 'Claim' ? 'Unlisted' : 'Listed',
+            status: item.event === 'Cancel' || item.event === 'Claim' ? wrapperIntl("Unlisted") : wrapperIntl("Listed"),
         }));
         const tokenList = activities.map(item => item.tokenId);
         sign_Axios.post(Controller.items.getitemsbyids, {

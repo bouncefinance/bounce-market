@@ -1,5 +1,6 @@
 import { React, /* useState */ } from "react";
 import styled from "styled-components";
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 import { makeStyles, /* withStyles */ } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
@@ -111,6 +112,7 @@ export default function ModalBox({
 	USD_Price,
 }) {
 	const classes = useStyles();
+	const { wrapperIntl } = useWrapperIntl()
 
 	/* const [agree, setAgree] = useState(false); */
 
@@ -146,7 +148,7 @@ export default function ModalBox({
 					<ModalContent>
 						<AmountInput
 							className="input_amount"
-							title="Enter Amount"
+							title={wrapperIntl("PlaceBidModal.EnterAmount")}
 							width="100%"
 							height="68px"
 							marginTop="0"
@@ -182,7 +184,7 @@ export default function ModalBox({
 							<Button
 								width="200px"
 								height="48px"
-								value="Cancel"
+								value={wrapperIntl("PlaceBidModal.Cancel")}
 								disabled={isLoading || poolInfo.status !== 'Live'}
 								onClick={() => {
 									setOpen(false);
@@ -193,7 +195,7 @@ export default function ModalBox({
 								width="200px"
 								height="48px"
 								primary="primary"
-								value="Place a bid"
+								value={wrapperIntl("PlaceBidModal.PlaceAbid")}
 								disabled={isLoading || poolInfo.status !== 'Live' /* || !agree */ || parseFloat(bidPrice) < parseFloat(inputMinPrice)}
 								onClick={() => {
 									onClick()

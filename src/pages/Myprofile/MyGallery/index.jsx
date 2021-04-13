@@ -13,6 +13,8 @@ import { SkeletonNFTCards } from '@/pages/component/Skeleton/NFTCard'
 import { AUCTION_TYPE } from '@/utils/const'
 import Category from '../Category'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const MyGalleryStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
@@ -53,6 +55,7 @@ export default function Index() {
   const [myNftData, setMyNftData] = useState([])
   const [myTradeData, setMyTradeData] = useState([])
 
+  const { wrapperIntl } = useWrapperIntl()
 
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
     {
@@ -176,7 +179,7 @@ export default function Index() {
                 cover={item.fileurl}
                 itemname={item.itemname}
                 user={item.ownername}
-                status={parseInt(item.poolId) >= 0 && 'Listed'}
+                status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
                 poolType={item.poolType}
                 //  status={index % 2 === 0 ? 'Listed' : ''} 
                 poolInfo={item}

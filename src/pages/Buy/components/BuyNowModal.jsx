@@ -1,5 +1,6 @@
 import { React /* useState */ } from "react";
 import styled from "styled-components";
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 import { makeStyles /* withStyles */ } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
@@ -188,6 +189,8 @@ export default function ModalBox({
 
 	/* const [agree, setAgree] = useState(false); */
 
+	const { wrapperIntl } = useWrapperIntl()
+
 	return (
 		<Modal
 			aria-labelledby="transition-modal-title"
@@ -219,11 +222,11 @@ export default function ModalBox({
 
 					<ModalContent>
 						<div className="title_n_balance">
-							<span className="str_CurrentPrice">
+							{/* <span className="str_CurrentPrice">
 								Current price
-							</span>
+							</span> */}
 							<span className="balance">
-								Your Balance:&nbsp;
+								{wrapperIntl("BuyNowModal.YourBalance")}:&nbsp;
 								<span className="balanceValue">{(poolInfo.token1.balance).substr(0,6)} {poolInfo.token1.symbol}</span>
 							</span>
 						</div>
@@ -236,7 +239,7 @@ export default function ModalBox({
 									height={44}
 								/>
 								<span className="NFTName">
-									{nftInfo.itemname || "Name Is Loading ..."}
+									{nftInfo.itemname || wrapperIntl("BuyNowModal.NameLoading")}
 								</span>
 							</div>
 							<div className="right">
@@ -271,7 +274,7 @@ export default function ModalBox({
 							<Button
 								width="200px"
 								height="48px"
-								value="Cancel"
+								value={wrapperIntl("BuyNowModal.Cancel")}
 								disabled={
 									isLoading || poolInfo.status !== "Live"
 								}
@@ -284,7 +287,7 @@ export default function ModalBox({
 								width="200px"
 								height="48px"
 								primary="primary"
-								value="Checkout"
+								value={wrapperIntl("BuyNowModal.Checkout")}
 								disabled={
 									isLoading ||
 									poolInfo.status !== "Live" /* || !agree */

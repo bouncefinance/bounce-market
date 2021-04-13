@@ -3,6 +3,18 @@ const en_US = {
     MyBrands: 'My Brands',
     MyActivities: 'My Activities',
     MyLiked: 'My Liked',
+    UnnamedUser: "Unnamed User",
+    Listed: "Listed",
+    Unlisted: "Unlisted",
+    CopySuccessful: 'Copy Successful',
+
+    ErrorMsg: {
+        "required": "This field is required and cannot be blank",
+        "regular": "This is not in conformity with the standard, please fill in again",
+        "email": "Please enter a valid email address",
+        "url": "Please enter a valid address",
+        "intNum": "Please enter a positive integer",
+    },
 
     header: {
         home: 'Home',
@@ -41,8 +53,37 @@ const en_US = {
     'pages.buy.TokenInfo': 'TokenInfo',
     'pages.buy.ExternalLink': 'External link',
     'pages.buy.TradingHistory': 'Trading History',
+    'pages.buy.MarketPlace': 'MarketPlace',
+    'pages.buy.FineArts': 'Fine Arts',
+    'pages.buy.descriptionLoading': 'Description Is Loading ...',
+    'pages.buy.NameLoading': 'Name Is Loading ...',
+    'pages.buy.loading': 'loading ...',
+    'pages.buy.TryAgain': 'Hmm. You hit a glitch. Sorry for the trouble. Try again or check here.',
+    'pages.buy.DataUpdateFailed': 'Data update failed, please try again',
+    'pages.buy.DealFailed': 'Deal failed, claim back NFT',
+    'pages.buy.SuccessfullyClaim': "Deal failed, You have successfully Claim NFT",
+    'pages.buy.ClaimBidNFT': 'Claim Bid NFT',
+    'pages.buy.BidAndClaimed': 'You have successfully bid and claimed',
+    'pages.buy.Cancel': 'Cancel',
+    'pages.buy.ConfirmCancel': 'Confirm Cancel',
+    'pages.buy.AreYouSure': 'Are you sure to cancel?',
+    'pages.buy.Yes': 'Yes',
+    'pages.buy.No': 'No',
+
+    'pages.buy.TradeTable.Event': 'Event',
+    'pages.buy.TradeTable.Quantity': 'Quantity',
+    'pages.buy.TradeTable.Price': 'Price',
+    'pages.buy.TradeTable.From': 'From',
+    'pages.buy.TradeTable.To': 'To',
+    'pages.buy.TradeTable.Date': 'Date',
+    'pages.buy.TradeTable.Buy': 'Buy',
+    'pages.buy.TradeTable.Bid': 'Bid',
+    'pages.buy.TradeTable.Transfer': 'Transfer',
+    'pages.buy.TradeTable.Created': 'Created',
+    'pages.buy.TradeTable.Listed': 'Listed',
+
     CheckStatus: '',
-    MakeUnlisted: '',
+    MakeUnlisAted: '',
     Sell: '',
     All: '',
     OnSale: '',
@@ -125,6 +166,84 @@ const en_US = {
         "BrandCard.VisitStore": "Visit Store",
     },
 
+    ListNFTModal: {
+        "ListYourNFT": "List Your NFT",
+        "WhatAddress": "What is the address of your ERC721 or ERC1155 contract on the Ethereum Network?",
+        "placeholder": "Enter your ERC721 or ERC1155  contract address",
+        "Cancel": "Cancel",
+        "Submit": "Submit",
+        "LoadItems": "Load Items",
+        "step1": "Enter your contract address",
+        "step2": "List your Items",
+    },
+
+    TransferStatusModal: {
+        "title1": "Bounce Requests Approval",
+        "content1": "Please enable Bounce to access your tokens",
+        "title2": "Waiting for confirmation",
+        "content2": "Confirm this transaction in your wallet",
+        "title3": "Loading",
+        "content3": "Please wait a little",
+        "title4": "Your BOT was Staked",
+        "content4": "You can claim your principle",
+        "title5": "Your BOT was Unstaked",
+        "content5": "You successfully unstake your token",
+        "title-1": "Transaction Failed",
+        "content-1": "Your transaction was cancelled and wasn’t submitted",
+        "title-2": "Canceling your pool creation",
+        "content-2": "You cancel your pool creation",
+        /* "title0": "",
+        "content0": "", */
+        "title6": "Success!",
+        "content6": "You successfully claim your reward",
+        "title7": "successfully!",
+        "content7": "The transaction has been successfully completed!",
+        "Awaiting": "Awaiting...",
+        "Close": "Close...",
+        "TryAgain": "Try again",
+    },
+
+    PlaceBidModal: {
+        "EnterAmount": "Enter Amount",
+        "Cancel": "Cancel",
+        "SaleEndsIn": "Sale ends in",
+        "days": "days",
+        "hours": "hours",
+        "minutes": "minutes",
+        "PlaceAbid": "Place a bid",
+        "Checkout": "Checkout",
+        "BuyNow": "Buy Now",
+    },
+
+    BuyNowModal: {
+        "YourBalance": "Your Balance",
+        "NameLoading": "Name Is Loading ...",
+        "Cancel": "Cancel",
+        "Checkout": "Checkout",
+    },
+
+    FixedSwapBuyModal: {
+        "BuyAmount": "Buy Amount",
+        "Cancel": "Cancel",
+        "Checkout": "Checkout",
+    },
+
+    ConnectWalletModal: {
+        "ConnectWallet": "Connect to a wallet",
+        "PleaseWait": "Please wait a little...",
+        "ToGetStarted": "To get started, connect a wallet. Select an option below or hook in via your Metamask. Don’t have a clue what we’re talking about? Don’t worry. Click",
+        "here": "here",
+        "ToLearn": "to learn.",
+    },
+
+    TableList: {
+        "YourInformation": "Your information",
+        "ContractAddress": "Contract Address",
+        "ContractName": "Contract Name",
+        "ContactSymbol": "Contact Symbol",
+        "TotalSupply": "Total Supply",
+    }, 
+
     MyProfile: {
         CommonHeader: {
             MyGallery: 'My Gallery',
@@ -149,6 +268,8 @@ const en_US = {
         "CardItem.All": "All",
         "CardItem.OnSale": "On Sale",
         "CardItem.NotOnSale": "Not OnSale",
+        "CardItem.TopBid": "Top Bid",
+        "CardItem.Price": "Price",
 
         /* wrapperIntl('MyProfile.SettingAccountModal.Cancel') */
         "SettingAccountModal.Save": "Save",
@@ -178,8 +299,8 @@ const en_US = {
         'MyGallery.GenerateNewNFTModal.Supply': 'Supply',
         'MyGallery.GenerateNewNFTModal.TryAgain': 'Try Again',
         'MyGallery.GenerateNewNFTModal.UploadingData': 'Uploading Data...',
-        'MyGallery.Name': "",
-        'MyGallery.Category': "",
+        
+        "MyGallery.MyNFT.DataUpdateFailed": 'Data update failed, please try again',
 
         /* wrapperIntl('MyProfile.MyGallery.SellNFT.EnglishAuction') */
         'MyGallery.SellNFT.MyGallery': 'My Gallery',
@@ -212,6 +333,7 @@ const en_US = {
         'MyGallery.Summary.Fees': "Fees",
         'MyGallery.Summary.ToFangible': "To Fangible",
         'MyGallery.Summary.PostYourListing': "Post your Listing",
+        'MyGallery.Summary.ExpirationDate': "Expiration Date",
 
         'MyGallery.InputPrice.Price': "Price",
         'MyGallery.InputPrice.Amount': "Amount",
@@ -250,7 +372,42 @@ const en_US = {
         "MyBrands.AddNewBrandsModal.Description": "Description",
         "MyBrands.AddNewBrandsModal.DescriptionPlaceHolder": "Describe your brand",
         "MyBrands.AddNewBrandsModal.browseBrandPhoto": 'browse Brand Photo',
-        
+        "MyBrands.AddNewBrandsModal.OnlySupports": "Only supports JPG, PNG, JPEG2000",
+        "MyBrands.AddNewBrandsModal.SuccessfullyBuild": "You have successfully build your brands",
+        "MyBrands.AddNewBrandsModal.DataUpdateFailed": 'Data update failed, please try again',
+
+        /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */
+        "MyBrands.AddNewItemModal.OnlySupports": "Only supports JPG, PNG, JPEG2000",
+        'MyBrands.AddNewItemModal.SuccessfullyGenerate': "You have successfully generate your NFTs",
+        'MyBrands.AddNewItemModal.TryAgainNotice': 'Hmm. You hit a glitch. Sorry for the trouble. Try again or check here.',
+        "MyBrands.AddNewItemModal.UploadingData": "Uploading Data ...",
+        "MyBrands.AddNewItemModal.Submit": "Submit",
+        "MyBrands.AddNewItemModal.AddNewItem": "Add New Item",
+        "MyBrands.AddNewItemModal.Name": "Name",
+        "MyBrands.AddNewItemModal.Category": "Category",
+        "MyBrands.AddNewItemModal.Channel": "Channel",
+        "MyBrands.AddNewItemModal.Standard": "Standard",
+        "MyBrands.AddNewItemModal.Supply": "Supply",
+        "MyBrands.AddNewItemModal.Description": "Description",
+        "MyBrands.AddNewItemModal.browseBrandPhoto": "browse Brand Photo",
+        "MyBrands.AddNewItemModal.Cancel": "Cancel",
+
+        "MyBrands.CardItem.Add": "Add",
+
+        "MyBrands.BrandsByType.AllItems": "All Items",
+        "MyBrands.BrandsByType.Image": "Image",
+        "MyBrands.BrandsByType.BackToBrands": "Back to Brands",
+        "MyBrands.BrandsByType.Change": "Change",
+        "MyBrands.BrandsByType.Edit": "Edit",
+        "MyBrands.BrandsByType.EditYourBrand": "Edit your Brand",
+        /* wrapperIntl('MyProfile.MyBrands.BrandsByType.BrandName') */
+        "MyBrands.BrandsByType.BrandName": "Brand Name",
+        "MyBrands.BrandsByType.Description": "Description",
+        "MyBrands.BrandsByType.DescribeYourBrand": "Describe your brand",
+        "MyBrands.BrandsByType.Cancel": "Cancel",
+
+
+
         /* wrapperIntl("MyProfile.MyActivities.TableItem.Transfer") */
         "MyActivities.TableList.Event": "Event",
         "MyActivities.TableList.Item": "Item",

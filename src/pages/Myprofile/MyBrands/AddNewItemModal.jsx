@@ -12,6 +12,8 @@ import useTransferModal from '@/web3/useTransferModal'
 import { useThrottle } from '@/utils/useThrottle'
 import { myContext } from '@/redux'
 import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 // import { numToWei } from '@/utils/useBigNumber'
 const DEBOUNCE = 500;
 const AddNewBrandsModalStyled = styled.div`
@@ -38,9 +40,10 @@ const AddNewBrandsModalStyled = styled.div`
 
 export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandInfo = {} }) {
     const { active, library, account } = useActiveWeb3React()
+    const { wrapperIntl } = useWrapperIntl()
     const { sign_Axios } = useAxios()
     const { showTransferByStatus } = useTransferModal()
-    const [btnText, setBtnText] = useState('Submit')
+    const [btnText, setBtnText] = useState(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Submit'))
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
@@ -86,10 +89,10 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl('MyProfile.MyBrands.AddNewItemModal.OnlySupports') });
                     setBtnLock(false)
                     setInputDisable(false)
-                    setBtnText('Submit');
+                    setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Submit'));
                     // throw new Error('File upload failed,' + response.data.msg)
                 }
             }).then((imgUrl) => {
@@ -127,7 +130,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl('MyProfile.MyBrands.AddNewItemModal.SuccessfullyGenerate') });
                                         setTimeout(function(){
                                             window.location.reload()
                                         },1000)
@@ -136,12 +139,12 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                                         // setBidStatus(errorStatus)
                                         // showTransferByStatus('errorStatus')
                                         setBtnLock(false);
-                                        setBtnText("Submit");
+                                        setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Submit'));
                                         setInputDisable(false);
                                     })
                             } catch (error) {
                                 setBtnLock(false);
-                                setBtnText("Submit");
+                                setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Submit'));
                                 console.log('BounceERC721_CT.methods.mint', error);
                             }
 
@@ -159,33 +162,33 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl('MyProfile.MyBrands.AddNewItemModal.SuccessfullyGenerate') });
                                         setTimeout(function(){
                                             window.location.reload()
                                         },1000)
                                     })
                                     .on('error', (err, receipt) => {
                                         setBtnLock(false);
-                                        setBtnText("Submit");
+                                        setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Submit'));
                                         setInputDisable(false);
                                         // setBidStatus(errorStatus)
                                         // showTransferByStatus('errorStatus')
                                     })
                             } catch (error) {
                                 setBtnLock(false);
-                                setBtnText("Submit");
+                                setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Submit'));
                                 console.log('BounceERC1155_CT.methods.mint', error)
                             }
                         }
                     }else{
-                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl('MyProfile.MyBrands.AddNewItemModal.TryAgainNotice') });
                     }
 
                 }).catch(err => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl('MyProfile.MyBrands.AddNewItemModal.TryAgainNotice') });
                     setBtnLock(false)
                     setInputDisable(false)
-                    setBtnText('Submit')
+                    setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Submit'))
                 })
             })
         // 第三步 调用合约生成 NFT
@@ -196,10 +199,10 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
     }, DEBOUNCE);
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'Add New Item', isClose: true }}>
+        <Modal open={open} setOpen={setOpen} header={{ title: wrapperIntl('MyProfile.MyBrands.AddNewItemModal.AddNewItem'), isClose: true }}>
             <AddNewBrandsModalStyled>
                 <TextInput
-                    title='Name'
+                    title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Name')}
                     width='620px'
                     // defaultValue={'Cookie N1'}
                     required={true}
@@ -211,7 +214,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                 />
 
                 <div className="category_select">
-                    <PullRadioBox title={'Category'} marginTop='24px' width='150px' options={[{
+                    <PullRadioBox title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Category')} marginTop='24px' width='150px' options={[{
                         value: 'Images'
                     }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'}
                         inputDisable={inputDisable}
@@ -219,7 +222,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                             setFormData({ ...formData, Category: item.value })
                         }} />
 
-                    <PullRadioBox title={'Channel'} marginTop='24px' width='150px' options={[{
+                    <PullRadioBox title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Channel')} marginTop='24px' width='150px' options={[{
                         value: 'Fine Arts'
                     }, {
                         value: 'Sports'
@@ -229,7 +232,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                         setFormData({ ...formData, Channel: item.value })
                     }} />
 
-                    <Radio title={'Standard'} options={[{
+                    <Radio title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Standard')} options={[{
                         name: 'ERC-721',
                         value: '721'
                     }, {
@@ -239,7 +242,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                 </div>
 
                 {brandInfo.standard === 2 && <TextInput
-                    title='Supply'
+                    title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Supply')}
                     width='620px'
                     defaultValue={1}
                     required={true}
@@ -252,7 +255,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                 />}
 
                 <TextAreaInput
-                    title='Description'
+                    title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Description')}
                     width='620px'
                     // defaultValue={`I’m keepi`}
                     required={true}
@@ -266,14 +269,14 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                 <Upload type='image' inputDisable={inputDisable}
                     width='200px'
                     height='200px'
-                    lockInput={inputDisable} infoTitle='browse Brand Photo' onFileChange={(formData) => {
+                    lockInput={inputDisable} infoTitle={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.browseBrandPhoto')} onFileChange={(formData) => {
                         setFileData(formData)
                     }} />
 
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)
-                    }}>Cancel</Button>
+                    }}>{wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel')}</Button>
                     <Button disabled={btnLock} height='48px' width='302px' primary onClick={debounce}>{btnText}</Button>
                 </div>
             </AddNewBrandsModalStyled>

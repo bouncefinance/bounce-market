@@ -143,7 +143,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         showTransferByStatus('')
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Congratulations. Your NFTs have been generated." });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Congratulations") });
                                         if(window.location.pathname === "/MyGallery"){
                                             setTimeout(function(){
                                                 window.location.reload()
@@ -158,7 +158,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         /* setBtnText("Try Again"); */
                                         setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgain"));
                                         setInputDisable(false);
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
                                     })
                             } catch (error) {
                                 console.log('BounceERC721_CT.methods.mintUser', error)
@@ -179,7 +179,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Congratulations. Your NFTs have been generated." });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Congratulations") });
                                         if(window.location.pathname === "/MyGallery"){
                                             setTimeout(function(){
                                                 window.location.reload()
@@ -196,18 +196,18 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         /* setBtnText("Try Again"); */
                                         setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgain"));
                                         setInputDisable(false);
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
                                     })
                             } catch (error) {
                                 console.log('BounceERC1155_CT.methods.mintUser', error)
                             }
                         }
                     }else{
-                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
                     }
 
                 }).catch(err => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
                 })
             })
         // 第三步 调用合约生成 NFT

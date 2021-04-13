@@ -70,7 +70,7 @@ const SummaryWrapper = styled.div`
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
 		display: grid;
-		grid-template-columns: 12.8px 1fr;
+		grid-template-columns: max-content 1fr;
 		column-gap: 11.6px;
 	}
 
@@ -396,7 +396,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				</div>
 				{auctionType === "EnglishAuction" &&
 					<div className="listingDetail">
-						<p className="list"><span className="title">Expiration Date</span></p>
+						<p className="list"><span className="title">{wrapperIntl('MyProfile.MyGallery.Summary.ExpirationDate')}</span></p>
 						<span className="text2 percentage">{moment()
 							.add(duration, wrapperIntl('MyProfile.MyGallery.Summary.days'))
 							.format("ha on MMMM DD,YYYY")}</span>

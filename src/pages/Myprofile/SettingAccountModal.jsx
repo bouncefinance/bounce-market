@@ -118,7 +118,7 @@ export default function SettingAccountModal ({ open, setOpen }) {
             /* setBtnText('Save') */
             setBtnText(wrapperIntl('MyProfile.SettingAccountModal.Save'))
         } catch (error) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.SettingAccountModal.DataUpdateFailed") });
             setBtnLock(false)
             setInputDisable(false)
             /* setBtnText('Save') */

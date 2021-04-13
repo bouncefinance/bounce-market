@@ -2,6 +2,7 @@ import React from 'react'
 import Modal from './Modal'
 import styled from 'styled-components'
 import { TextInput, Button } from '@components/UI-kit'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 import TableList from './TableList'
 
@@ -70,6 +71,7 @@ const Wrapper = styled.div`
 `
 
 function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
+    const { wrapperIntl } = useWrapperIntl()
 
     return (
         <>
@@ -79,16 +81,19 @@ function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
                         open={open}
                         setOpen={setOpen}
                         setStep={setStep}
-                        header={{ title: 'List Your NFT', isClose: true }}
+                        header={{ title: wrapperIntl("ListNFTModal.ListYourNFT"), isClose: true }}
                     >
                         <Wrapper>
 
                             <div className="step1">
-                                <p className="description">1/2 Enter your contract address</p>
+                                {/* <p className="description">1/2 Enter your contract address</p> */}
+                                <p className="description">1/2 {wrapperIntl("ListNFTModal.step1")}</p>
 
                                 <TextInput
-                                    title='What is the address of your ERC721 or ERC1155 contract on the Ethereum Network?'
-                                    placeholder="Enter your ERC721 or ERC1155  contract address"
+                                    /* title='What is the address of your ERC721 or ERC1155 contract on the Ethereum Network?' */
+                                    title={wrapperIntl("ListNFTModal.WhatAddress")}
+                                    /* laceholder="Enter your ERC721 or ERC1155  contract address" */
+                                    laceholder={wrapperIntl("ListNFTModal.placeholder")}
                                     width='620px'
                                     required={true}
                                     marginTop="32px"
@@ -99,7 +104,8 @@ function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
                                     <Button
                                         width="302px"
                                         height="48px"
-                                        value="Cancel"
+                                        /* value="Cancel" */
+                                        value={wrapperIntl("ListNFTModal.Cancel")}
                                         onClick={
                                             () => {
                                                 setOpen(false)
@@ -110,7 +116,8 @@ function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
                                         width="302px"
                                         height="48px"
                                         primary="primary"
-                                        value="Submit"
+                                        /* value="Submit" */
+                                        value={wrapperIntl("ListNFTModal.Submit")}
                                         onClick={
                                             () => {
                                                 setStep("2")
@@ -131,12 +138,13 @@ function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
                         open={open}
                         setOpen={setOpen}
                         setStep={setStep}
-                        header={{ title: 'List Your NFT', isClose: true }}
+                        header={{ title: wrapperIntl("ListNFTModal.ListYourNFT"), isClose: true }}
                     >
                         <Wrapper>
 
                             <div className="step2">
-                                <p className="description">2/2 List your Items</p>
+                                {/* <p className="description">2/2 List your Items</p> */}
+                                <p className="description">2/2 {wrapperIntl("ListNFTModal.step2")}</p>
 
                                 <TableList tableInfoList={dataList.tableInfoList} />
 
@@ -153,7 +161,8 @@ function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
                                     <Button
                                         width="302px"
                                         height="48px"
-                                        value="Cancel"
+                                        /* value="Cancel" */
+                                        value={wrapperIntl("ListNFTModal.Cancel")}
                                         onClick={
                                             () => {
                                                 setOpen(false)
@@ -164,7 +173,8 @@ function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
                                         width="302px"
                                         height="48px"
                                         primary="primary"
-                                        value="Load Items"
+                                        /* value="Load Items" */
+                                        value={wrapperIntl("ListNFTModal.LoadItems")}
                                     />
                                 </div>
                             </div>
