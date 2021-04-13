@@ -7,15 +7,16 @@ export const useHeaderLinksStyles = makeStyles<Theme>(theme => ({
     [theme.breakpoints.up('xl')]: {
       justifyContent: 'center',
       gridAutoFlow: 'column',
-      gap: theme.spacing(0, 2),
+      gap: theme.spacing(0, 4),
     },
   },
 
   link: {
     transition: 'color 0.2s',
     fontSize: 16,
-    color: theme.palette.common.black,
     justifyContent: 'flex-start',
+    padding: theme.spacing(1, 0),
+    minWidth: 0,
 
     [theme.breakpoints.up('xl')]: {
       color: theme.palette.text.secondary,

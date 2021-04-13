@@ -1,4 +1,4 @@
-import { lighten, makeStyles, Theme } from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core';
 
 export const useSearchStyles = makeStyles<Theme>(theme => ({
   root: {},
@@ -17,17 +17,25 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
     borderRadius: 44,
     width: '100%',
     height: 44,
-    background: theme.palette.background.paper,
-    transition: 'background 0.2s',
+    background: theme.palette.common.white,
+    transition: 'background 0.2s, color 0.2s',
+    color: theme.palette.common.black,
 
-    '&:hover': {
-      background: lighten(theme.palette.background.paper, 0.05),
+    [theme.breakpoints.up('xl')]: {
+      background: theme.palette.background.paper,
+      color: 'inherit',
+    },
+
+    '$root:hover &': {
+      background: theme.palette.common.white,
+      color: theme.palette.common.black,
     },
   },
 
   inputFocused: {
     '&&': {
-      background: lighten(theme.palette.background.paper, 0.1),
+      background: theme.palette.common.white,
+      color: theme.palette.common.black,
     },
   },
 

@@ -3,11 +3,10 @@ import { makeStyles, Theme } from '@material-ui/core';
 const X_SPACING = 1;
 
 export const useSocialStyles = makeStyles<Theme>(theme => ({
-  root: {},
-
   list: {
     display: 'flex',
     flexFlow: 'row nowrap',
+    justifyContent: 'center',
     margin: theme.spacing(0, -X_SPACING),
     padding: 0,
     listStyle: 'none',

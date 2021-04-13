@@ -4,6 +4,7 @@ const HEADER_MIN_HEIGHT = 66;
 
 export const useHeaderStyles = makeStyles<Theme>(theme => ({
   root: {
+    position: 'relative',
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(1.25, 0),
@@ -36,9 +37,34 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
     },
   },
 
+  searchMobile: {
+    Width: '100%',
+  },
+
+  searchBox: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 0,
+    left: 0,
+
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+
+    background: theme.palette.background.default,
+  },
+
+  searchBoxContainer: {
+    display: 'grid',
+    alignItems: 'center',
+    gridTemplateColumns: '1fr auto',
+    gap: theme.spacing(0, 2),
+  },
+
   btnCreate: {
     [theme.breakpoints.up('xl')]: {
-      marginLeft: theme.spacing(1),
+      marginLeft: theme.spacing(2),
     },
   },
 
@@ -80,10 +106,7 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
     width: '100%',
     background: theme.palette.common.white,
     color: theme.palette.common.black,
-
-    [theme.breakpoints.up('sm')]: {
-      width: 410,
-    },
+    maxWidth: 410,
   },
 
   drawerBackdrop: {

@@ -141,8 +141,8 @@ export const mainTheme = createMuiTheme({
       },
 
       sizeLarge: {
-        height: 50,
-        fontSize: 18,
+        height: 52,
+        fontSize: 14,
         fontWeight: 500,
       },
 

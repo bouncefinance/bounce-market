@@ -1,3 +1,4 @@
+import { Box, BoxProps } from '@material-ui/core';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { NavLink } from '../../../uiKit/NavLink';
@@ -6,7 +7,7 @@ import { TelegramIcon } from './assets/TelegramIcon';
 import { TwitterIcon } from './assets/TwitterIcon';
 import { useSocialStyles } from './SocialStyles';
 
-export const Social = () => {
+export const Social = (props: BoxProps) => {
   const classes = useSocialStyles();
 
   const links = useMemo(
@@ -31,7 +32,7 @@ export const Social = () => {
   );
 
   return (
-    <nav className={classes.root}>
+    <Box {...props} component="nav">
       <ul className={classes.list}>
         {links.map(({ title, href, icon: Icon }) => {
           return (
@@ -43,6 +44,6 @@ export const Social = () => {
           );
         })}
       </ul>
-    </nav>
+    </Box>
   );
 };
