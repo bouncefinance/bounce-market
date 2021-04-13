@@ -1,14 +1,15 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import { ConnectedRouter } from 'connected-react-router';
-import intl from 'react-intl-universal';
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { locales } from '../../../i18n';
-import { QueryLoadingAbsolute } from '../QueryLoading/QueryLoading';
+import { ConnectedRouter } from 'connected-react-router';
+import React, { ReactNode, useEffect, useState } from 'react';
+import intl from 'react-intl-universal';
 import { ReactReduxContext } from 'react-redux';
-import { mainTheme } from '../../../themes/mainTheme';
+import '../../../../assets/fonts/style.css';
 import { historyInstance } from '../../../common/utils/historyInstance';
+import { QueryLoadingAbsolute } from '../../../components/QueryLoading/QueryLoading';
+import { locales } from '../../../i18n';
 import { useLocale } from '../../../i18n/utils/useLocale';
+import { mainTheme } from '../../../themes/mainTheme';
 
 interface IAppBaseProps {
   children: ReactNode;
