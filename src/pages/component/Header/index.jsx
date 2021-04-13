@@ -162,6 +162,7 @@ export default function Index() {
         const match = [
             '/Marketplace/FineArts/english-auction/',
             '/Marketplace/FineArts/fixed-swap/',
+            '/AirHome/',
         ]
         if (match.some(path => historyLocation.pathname.substring(0, path.length) === path)) {
             onConnect()
