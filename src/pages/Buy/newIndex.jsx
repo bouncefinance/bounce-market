@@ -285,7 +285,6 @@ export default function NewIndex () {
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
     const { sign_Axios } = useAxios()
-
     const [supply, setSupply] = useState();
     const [tokenContractAddress, setTokenContractAddress] = useState();
     const [tokenSymbol, setTokenSymbol] = useState();
@@ -548,7 +547,12 @@ export default function NewIndex () {
             .on('receipt', async (_, receipt) => {
                 // console.log('bid fixed swap receipt:', receipt)
                 // setBidStatus(successStatus)
-                showTransferByStatus('successStatus')
+                // showTransferByStatus('successStatus');
+                dispatch({ type: 'TransferModal', TransferModal: "" });
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "The transaction has been successfully completed！" });
+                setTimeout(function(){
+                    window.location.reload()
+                },3000)
             })
             .on('error', (err, receipt) => {
                 // setBidStatus(errorStatus)

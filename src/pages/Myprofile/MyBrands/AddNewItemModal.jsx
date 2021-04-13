@@ -130,7 +130,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
                                         setTimeout(function(){
                                             window.location.reload()
-                                        },1000)
+                                        },3000)
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -162,7 +162,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully generate your NFTs" });
                                         setTimeout(function(){
                                             window.location.reload()
-                                        },1000)
+                                        },3000)
                                     })
                                     .on('error', (err, receipt) => {
                                         setBtnLock(false);

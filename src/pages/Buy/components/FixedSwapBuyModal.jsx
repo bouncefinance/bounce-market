@@ -213,7 +213,6 @@ export default function ModalBox({
 								width="200px"
 								height="48px"
 								value="Cancel"
-								disabled={isLoading || poolInfo.status !== 'Live'}
 								onClick={() => {
 									setOpen(false);
 									/* setAgree(false); */

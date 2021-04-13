@@ -147,7 +147,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         if(window.location.pathname === "/MyGallery"){
                                             setTimeout(function(){
                                                 window.location.reload()
-                                            },1000)
+                                            },3000)
                                         }else{
                                             history.push("/MyGallery")
                                         }
@@ -183,7 +183,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         if(window.location.pathname === "/MyGallery"){
                                             setTimeout(function(){
                                                 window.location.reload()
-                                            },1000)
+                                            },3000)
                                         }else{
                                             history.push("/MyGallery")
                                         }
