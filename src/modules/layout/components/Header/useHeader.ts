@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useAppDispatch } from '../../../../store/useAppDispatch';
-import { connect } from '../../../wallet/connectionSlice';
+import { connect } from '../../../account/accountSlice';
 
 export const useHeader = () => {
   const [mobileNavShowed, setMobileNavShowed] = useState(false);

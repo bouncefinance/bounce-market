@@ -2,18 +2,19 @@ import {
   call,
   put,
   SagaReturnType,
-  select,
-  take,
   takeEvery,
+  take,
+  select,
 } from 'redux-saga/effects';
 import { connectWallet } from '../api/connectWallet';
 import { BASE_URL } from '../../common/conts';
 import axios from 'axios';
-import { connect, connectionSlice } from '../connectionSlice';
+import { connect, accountSlice } from '../accountSlice';
 import { END, eventChannel } from 'redux-saga';
 import { RootState } from '../../../store/store';
+import { MarketplaceActions } from '../../marketplace/marketplaceActions';
 
-// TODO Check disconnection, swicth schain, switch account
+// TODO Check disconnection, switch chain, switch account
 
 enum WalletEventType {
   'AccountChanged' = 'AccountChanged',
@@ -128,24 +129,24 @@ function* onConnectWallet() {
   );
 
   yield put(
-    connectionSlice.actions.setAccount({
+    accountSlice.actions.setAccount({
       address,
       token: authResponse.data.data.token,
     }),
   );
   const channel = createEventChannel(provider);
-
+  yield put(MarketplaceActions.fetchPools());
   while (true) {
     const event: ProviderEvent = yield take(channel);
 
     if (event.type === WalletEventType.ChainChanged) {
-      yield put(connectionSlice.actions.disconnect());
+      yield put(accountSlice.actions.disconnect());
     } else if (event.type === WalletEventType.AccountChanged) {
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
 
       const { currentAddress } = yield select((store: RootState) => {
-        return { currentAddress: store.wallet.address };
+        return { currentAddress: store.account.address };
       });
 
       if (currentAddress.toLowerCase() !== address?.toLowerCase()) {

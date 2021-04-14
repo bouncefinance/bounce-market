@@ -7,7 +7,7 @@ import { isDev } from '../modules/common/utils/isProd';
 import { historyInstance } from '../modules/common/utils/historyInstance';
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './rootSaga';
-import { connectionSlice } from '../modules/wallet/connectionSlice';
+import { accountSlice } from '../modules/account/accountSlice';
 import { createDriver as createAxiosDriver } from '@redux-requests/axios';
 import axios from 'axios';
 import { BASE_URL } from '../modules/common/conts';
@@ -24,7 +24,18 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     ),
   },
   onRequest: (request, action, store) => {
-    console.log('action', action);
+    const rootState: RootState = store.getState();
+
+    if (action.meta?.auth) {
+      return {
+        ...request,
+        headers: {
+          ...request.headers,
+          token: rootState.account.token,
+          'Content-Type': 'application/x-www-from-urlencoded',
+        },
+      };
+    }
     return request;
   },
   ...(isDev()
@@ -44,7 +55,7 @@ export const store = configureStore({
     i18n: i18nSlice.reducer,
     requests: requestsReducer,
     router: connectRouter(historyInstance),
-    wallet: connectionSlice.reducer,
+    account: accountSlice.reducer,
   },
   middleware: [
     ...requestsMiddleware,

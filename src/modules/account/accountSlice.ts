@@ -6,15 +6,15 @@ interface ISetAccountPayload {
   token: string;
 }
 
-export interface ConnectSlice {
+export interface AccountSlice {
   address?: string;
   token?: string;
 }
 
-const initialState: ConnectSlice = {};
+const initialState: AccountSlice = {};
 
-export const connectionSlice = createSlice({
-  name: 'connection',
+export const accountSlice = createSlice({
+  name: 'account',
   initialState,
   reducers: {
     setAccount: (state, action: PayloadAction<ISetAccountPayload>) => {
