@@ -93,7 +93,8 @@ export default function useAxios() {
         }
         let res = await axios.post(Base_URL + path, params, config)
         if (res.status === 200 && res.data.code === -1) {
-            history.push("/Home")
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+            // history.push("/Home")
         // token 无效过期
         // return alert('授权失效，请刷新页面，重新授权签名')
         // config = {
