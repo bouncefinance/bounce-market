@@ -1826,6 +1826,11 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
+"@redux-requests/axios@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@redux-requests/axios/-/axios-1.1.1.tgz#d3c6ad98c69511dc80f586893cbcd00d7dc464e4"
+  integrity sha512-3eU+XkfvAk35iI2pCVzmA0BmWTtg5ODhOmpq12fKbi2RZy96gLZeu3Y7o0ks+QIqfcziStDTSEXGggdXK1EiUA==
+
 "@redux-requests/core@1.6.1":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@redux-requests/core/-/core-1.6.1.tgz#24f8277540527e10ba77e597765e49f3f4062273"

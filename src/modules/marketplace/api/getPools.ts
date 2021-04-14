@@ -94,18 +94,24 @@ const sortByTime = (
   b: Pick<IApiTradeAuction, 'createTime'>,
 ) => b.createTime - a.createTime;
 
-export async function getMarketplaceItems(): Promise<{
+export interface IPoolsData {
   tradeAuctions: ITradeAuction[];
   tradePools: ITradePool[];
-}> {
+}
+
+export async function getPools(): Promise<IPoolsData> {
   const query = await getApolloClient().query<IApiResponse>({
     query: QueryTradePools,
   });
 
   return {
     tradeAuctions: query.data.tradeAuctions
+      .slice()
       .sort(sortByTime)
       .map(mapTradeAuction),
-    tradePools: query.data.tradePools.sort(sortByTime).map(mapTradePool),
+    tradePools: query.data.tradePools
+      .slice()
+      .sort(sortByTime)
+      .map(mapTradePool),
   };
 }

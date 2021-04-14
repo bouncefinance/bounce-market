@@ -2,9 +2,9 @@ import {
   call,
   put,
   SagaReturnType,
-  takeEvery,
-  take,
   select,
+  take,
+  takeEvery,
 } from 'redux-saga/effects';
 import { connectWallet } from '../api/connectWallet';
 import { BASE_URL } from '../../common/conts';
@@ -134,7 +134,7 @@ function* onConnectWallet() {
     }),
   );
   const channel = createEventChannel(provider);
-  debugger;
+
   while (true) {
     const event: ProviderEvent = yield take(channel);
 

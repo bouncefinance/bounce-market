@@ -8,11 +8,25 @@ import { historyInstance } from '../modules/common/utils/historyInstance';
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './rootSaga';
 import { connectionSlice } from '../modules/wallet/connectionSlice';
+import { createDriver as createAxiosDriver } from '@redux-requests/axios';
+import axios from 'axios';
+import { BASE_URL } from '../modules/common/conts';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
-  driver: createDriver({
-    processResponse: response => ({ data: response }),
-  }),
+  driver: {
+    default: createDriver({
+      processResponse: response => ({ data: response }),
+    }),
+    axios: createAxiosDriver(
+      axios.create({
+        baseURL: BASE_URL,
+      }),
+    ),
+  },
+  onRequest: (request, action, store) => {
+    console.log('action', action);
+    return request;
+  },
   ...(isDev()
     ? {
         onError: error => {
