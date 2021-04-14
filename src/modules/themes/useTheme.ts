@@ -1,4 +1,5 @@
 import { useMediaQuery, useTheme } from '@material-ui/core';
+import { Themes } from 'modules/themes/types';
 
 export const useIsXSDown = () => {
   const theme = useTheme();
@@ -38,4 +39,14 @@ export const useIsLGUp = () => {
 export const useIsXLUp = () => {
   const theme = useTheme();
   return useMediaQuery(theme.breakpoints.up('xl'));
+};
+
+export const useIsLightTheme = () => {
+  const theme = useTheme();
+  return theme.palette.type === Themes.light;
+};
+
+export const useIsDarkTheme = () => {
+  const theme = useTheme();
+  return theme.palette.type === Themes.dark;
 };

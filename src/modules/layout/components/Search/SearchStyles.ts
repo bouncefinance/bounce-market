@@ -18,7 +18,7 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
     width: '100%',
     height: 44,
     background: theme.palette.common.white,
-    transition: 'background 0.2s, color 0.2s',
+    transition: 'background 0.2s, color 0.2s, border 0.2s',
     color: theme.palette.common.black,
 
     [theme.breakpoints.up('xl')]: {

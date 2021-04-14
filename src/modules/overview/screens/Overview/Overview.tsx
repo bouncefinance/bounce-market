@@ -1,8 +1,8 @@
 import { Container, Typography } from '@material-ui/core';
 import { Section } from 'modules/uiKit/Section';
-import { t } from '../../../i18n/utils/intl';
-import { useAppDispatch } from '../../../../store/useAppDispatch';
 import { useEffect } from 'react';
+import { useAppDispatch } from '../../../../store/useAppDispatch';
+import { t } from '../../../i18n/utils/intl';
 import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
 
 export const Overview = () => {

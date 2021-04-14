@@ -1,7 +1,7 @@
 import { IconButton, InputBase } from '@material-ui/core';
 import classNames from 'classnames';
+import { SearchIcon } from 'modules/components/Icons/SearchIcon';
 import React, { useEffect, useRef } from 'react';
-import { SearchIcon } from './assets/SearchIcon';
 import { useSearchStyles } from './SearchStyles';
 
 const ANIMATION_TIMEOUT = 200;
