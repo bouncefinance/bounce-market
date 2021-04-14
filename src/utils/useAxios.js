@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 const host = window.location.host
 // const host = 'market.bounce.finance'
 const Base_URL =
-    host.includes('market.bounce.finance') || host.includes('cnmarket.bounce.finance')  ?
+    host.includes('market.bounce.finance') || host.includes('cnmarket.bounce.finance') || host.includes(' cn.fangible')   ?
         'https://bounce-market.bounce.finance' :    // BSC Main
         host.includes('market-stage.bounce.finance') ?
             'https://market-test.bounce.finance' :  // BSC Test https
