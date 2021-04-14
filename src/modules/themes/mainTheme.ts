@@ -16,22 +16,25 @@ export const FONTS = {
 };
 
 export const PALETTE = {
-  type: 'dark',
-  background: {
-    default: '#010101',
-    paper: '#232323',
-  },
+  type: 'light',
   primary: {
     light: lighten('#8FC436', 0.1),
     main: '#8FC436',
     dark: darken('#8FC436', 0.2),
   },
+  background: {
+    default: '#fff',
+    paper: '#fff',
+  },
   text: {
-    primary: '#fff',
-    secondary: '#7b7b7b',
+    primary: '#000',
+    secondary: fade('#000', 0.5),
+  },
+  warning: {
+    main: '#FFB63C',
   },
   success: {
-    main: '#38FF70',
+    main: '#36C98E',
   },
 };
 
@@ -42,7 +45,7 @@ const BREAKPOINTS = {
     md: 768,
     lg: 992,
     xl: 1200,
-    xxl: 1440,
+    xxl: 1600,
   },
 };
 
@@ -96,7 +99,7 @@ export const mainTheme = createMuiTheme({
     MuiContainer: {
       maxWidthXl: {
         [defaultTheme.breakpoints.up('xl')]: {
-          maxWidth: 1440,
+          maxWidth: 1520 + 48,
         },
       },
     },
@@ -138,8 +141,8 @@ export const mainTheme = createMuiTheme({
       },
 
       sizeLarge: {
-        height: 50,
-        fontSize: 18,
+        height: 52,
+        fontSize: 14,
         fontWeight: 500,
       },
 
@@ -187,6 +190,10 @@ export const mainTheme = createMuiTheme({
 
       text: {
         textTransform: 'none',
+
+        '&:hover': {
+          background: 'none',
+        },
       },
     },
   },
