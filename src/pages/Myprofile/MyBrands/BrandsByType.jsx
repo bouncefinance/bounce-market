@@ -217,8 +217,8 @@ export default function BrandsByType () {
     })
     const [editBtnText, setEditBtnText] = useState('Save')
     const [inputDisable, setInputDisable] = useState(false)
-    const [contract, setContract] = useState(null)
-
+    const [contract, setContract] = useState(null);
+    const [currentAccount, setCurrentAccount] = useState("");
     const [btnLock, setBtnLock] = useState(false)
     // { open: Boolean, type: 'error' | 'success' }
     const [editSnackbar, setEditSnackbar] = useState({
@@ -255,13 +255,19 @@ export default function BrandsByType () {
 
     useEffect(() => {
         if (!account) return
-        sign_Axios.post('/api/v2/main/getbrandbyid', { id: parseInt(brandId) })
-            .then(res => {
-                // console.log(res)
-                if (res.status === 200 && res.data.code === 1) {
-                    setContract(res.data.data.contractaddress)
-                }
+        console.log(account)
+        if(currentAccount && account !== currentAccount){
+            history.push("/MyBrands")
+        }else{
+            setCurrentAccount(account);
+            sign_Axios.post('/api/v2/main/getbrandbyid', { id: parseInt(brandId) })
+                .then(res => {
+                    // console.log(res)
+                    if (res.status === 200 && res.data.code === 1) {
+                        setContract(res.data.data.contractaddress)
+                    }
             })
+        }
         // eslint-disable-next-line
     }, [account])
 
