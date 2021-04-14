@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { Spinner } from '../Spinner';
 import { LoadingProps } from '@redux-requests/react';
+import React from 'react';
+import { Spinner } from '../Spinner';
 
 interface IQueryLoadingProps extends LoadingProps {
   size?: number;

@@ -1,7 +1,7 @@
 import loadable, { LoadableComponent } from '@loadable/component';
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { QueryLoadingAbsolute } from '../layout/components/QueryLoading/QueryLoading';
+import { QueryLoadingAbsolute } from '../components/QueryLoading/QueryLoading';
 import { INDEX_PATH } from '../router/const';
 
 const LoadableOverviewContainer = loadable(

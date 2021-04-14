@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Typography } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
+import { Section } from 'modules/uiKit/Section';
 import { t } from '../../../i18n/utils/intl';
 import { useAppDispatch } from '../../../../store/useAppDispatch';
 import { useEffect } from 'react';
@@ -11,8 +11,10 @@ export const Overview = () => {
     dispatch(MarketplaceActions.fetchMarketplaceItems());
   }, [dispatch]);
   return (
-    <>
-      <Typography>{t('foobar')}</Typography>
-    </>
+    <Section>
+      <Container>
+        <Typography>{t('foobar')}</Typography>
+      </Container>
+    </Section>
   );
 };
