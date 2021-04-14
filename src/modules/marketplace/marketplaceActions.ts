@@ -3,6 +3,7 @@ import { getPools, IPoolsData } from './api/getPools';
 import { RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { RootState } from '../../store/store';
+import { IApiItem } from './api/getItems';
 
 interface IFetchItemsParams {
   ids?: number[];
@@ -18,6 +19,7 @@ export const MarketplaceActions = {
       })(),
     },
     meta: {
+      getData: (data: IPoolsData) => data,
       onSuccess: (
         request: { data: IPoolsData },
         action: RequestAction,
@@ -39,6 +41,7 @@ export const MarketplaceActions = {
       method: 'post',
       data: params,
     },
+    getData: (data: { data: IApiItem }) => data.data,
     meta: {
       auth: true,
       driver: 'axios',
