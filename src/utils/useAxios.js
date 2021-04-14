@@ -5,6 +5,8 @@ import { useWeb3React } from '@web3-react/core'
 import { useEffect, useContext } from 'react';
 import { myContext } from '@/redux/index.js';
 import { useHistory } from 'react-router-dom'
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const host = window.location.host
 // const host = 'market.bounce.finance'
 const Base_URL =
@@ -25,6 +27,8 @@ export default function useAxios() {
     const { account, library } = useWeb3React();
     const { dispatch } = useContext(myContext);
     const history = useHistory();
+    const { wrapperIntl } = useWrapperIntl()
+
     // const { getUserInfo } = useUserInfo()
     useEffect(() => {
         if (!account || isRequestLock) return
@@ -93,7 +97,7 @@ export default function useAxios() {
         }
         let res = await axios.post(Base_URL + path, params, config)
         if (res.status === 200 && res.data.code === -1) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Hmm. You hit a glitch. Sorry for the trouble. Try again or check here." });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
             // history.push("/Home")
         // token 无效过期
         // return alert('授权失效，请刷新页面，重新授权签名')
