@@ -31,8 +31,10 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
         ...request,
         headers: {
           ...request.headers,
+          ...(request.method !== 'GET'
+            ? { 'Content-Type': 'application/x-www-from-urlencoded' }
+            : {}),
           token: rootState.account.token,
-          'Content-Type': 'application/x-www-from-urlencoded',
         },
       };
     }
