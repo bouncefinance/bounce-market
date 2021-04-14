@@ -33,7 +33,6 @@ export const MarketplaceActions = {
         return request;
       },
     },
-    asQuery: true,
   })),
   fetchItems: createSmartAction('FETCH_ITEMS', (params: IFetchItemsParams) => ({
     request: {
