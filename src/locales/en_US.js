@@ -289,7 +289,7 @@ const en_US = {
         'MyGallery.GenerateNewNFTModal.Supply': 'Supply',
         'MyGallery.GenerateNewNFTModal.TryAgain': 'Try Again',
         'MyGallery.GenerateNewNFTModal.UploadingData': 'Uploading Data...',
-        'MyGallery.GenerateNewNFTModal.SuccessfullyGenerate': "You have successfully generate your NFTs",
+        'MyGallery.GenerateNewNFTModal.SuccessfullyGenerate': "Congratulations. Your NFTs have been generated.",
         'MyGallery.GenerateNewNFTModal.TryAgainNotice': 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
         
         "MyGallery.MyNFT.DataUpdateFailed": 'Data update failed, please try again',
@@ -371,7 +371,7 @@ const en_US = {
 
         /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */
         "MyBrands.AddNewItemModal.OnlySupports": "Only supports JPG, PNG, JPEG2000",
-        'MyBrands.AddNewItemModal.SuccessfullyGenerate': "You have successfully generate your NFTs",
+        'MyBrands.AddNewItemModal.SuccessfullyGenerate': "Congratulations. Your NFTs have been generated.",
         'MyBrands.AddNewItemModal.TryAgainNotice': 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
         "MyBrands.AddNewItemModal.UploadingData": "Uploading Data ...",
         "MyBrands.AddNewItemModal.Submit": "Submit",

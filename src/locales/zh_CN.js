@@ -313,7 +313,7 @@ const zh_CN = {
         'MyGallery.SellNFT.ExprirationDateNotice': '您的拍卖将在此时间自动截止，出价最高者将赢得此次竞拍。',
         'MyGallery.SellNFT.SelectMethod': '请选择您的售卖方法',
         'MyGallery.SellNFT.SetPriceFeature': "定价为您心仪的价格",
-        'MyGallery.SellNFT.EnglishAcutionFeature': "在您选择的时间内出售给出价最高者。",
+        'MyGallery.SellNFT.EnglishAcutionFeature': "在您指定的时间内出售给出价最高者。",
         'MyGallery.SellNFT.InstantSale': "一口价出售",
         'MyGallery.SellNFT.EnglishAuction': "英式拍卖",
 
