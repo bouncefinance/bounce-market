@@ -1,4 +1,4 @@
-import React,{ useContext} from 'react';
+import React,{ useEffect, useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
 import IconButton from '@material-ui/core/IconButton';
@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ModalMessage() {
   const classes = useStyles();
   const {state, dispatch} = useContext(myContext);
+  const [bodyOverflow, setBodyOverflow] = React.useState(null)
   let timer;
   if(timer){
     clearTimeout(timer);
@@ -80,8 +81,17 @@ export default function ModalMessage() {
       window.open(state.modelOpenUrl);
     }
   }
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    if(originalStyle === "hidden"){
+      setBodyOverflow("fixed")
+    }else{
+      setBodyOverflow("relative")
+    }
+  }, [state.showMessageModal])
+  
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{ position: bodyOverflow }}>
       <Collapse in={state.showMessageModal}>
         <Alert
             severity={state.modelType||'warning'}
