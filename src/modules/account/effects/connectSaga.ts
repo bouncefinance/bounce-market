@@ -2,17 +2,16 @@ import {
   call,
   put,
   SagaReturnType,
-  takeEvery,
-  take,
   select,
+  take,
+  takeEvery,
 } from 'redux-saga/effects';
 import { connectWallet } from '../api/connectWallet';
 import { BASE_URL } from '../../common/conts';
 import axios from 'axios';
-import { connect, accountSlice } from '../accountSlice';
+import { accountSlice, connect } from '../accountSlice';
 import { END, eventChannel } from 'redux-saga';
 import { RootState } from '../../../store/store';
-import { MarketplaceActions } from '../../marketplace/marketplaceActions';
 
 // TODO Check disconnection, switch chain, switch account
 
@@ -135,7 +134,7 @@ function* onConnectWallet() {
     }),
   );
   const channel = createEventChannel(provider);
-  yield put(MarketplaceActions.fetchPools());
+
   while (true) {
     const event: ProviderEvent = yield take(channel);
 
