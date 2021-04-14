@@ -92,7 +92,8 @@ export default function useAxios() {
             ...option.config
         }
         let res = await axios.post(Base_URL + path, params, config)
-        // if (res.status === 200 && res.data.code === -1) {
+        if (res.status === 200 && res.data.code === -1) {
+            history.push("/Home")
         // token 无效过期
         // return alert('授权失效，请刷新页面，重新授权签名')
         // config = {
@@ -103,7 +104,7 @@ export default function useAxios() {
         //     ...option.config
         // }
         // res = await axios.post(Base_URL + path, params, config)
-        // }
+        }
 
         return res
     }

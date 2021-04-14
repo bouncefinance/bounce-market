@@ -9,7 +9,7 @@ import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
 import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
-import { equalAddress } from "@/utils/compareFun";
+// import { equalAddress } from "@/utils/compareFun";
 
 
 function InputPrice({
@@ -118,6 +118,7 @@ function InputPrice({
 		(async () => {
 			setNftCout(await getAccountHasNftCount(nftInfo.contractaddress, nftInfo.id, account))
 		})()
+		// eslint-disable-next-line
 	}, [nftInfo, account])
 	
 	return (
