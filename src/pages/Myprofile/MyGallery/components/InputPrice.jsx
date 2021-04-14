@@ -9,6 +9,7 @@ import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
 import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+// import { equalAddress } from "@/utils/compareFun";
 
 
 function InputPrice({
@@ -26,12 +27,12 @@ function InputPrice({
 	setNewUnit,
 	fixedSwapUnit
 }) {
-	const { active, chainId } = useActiveWeb3React();
+	const { active, account, chainId } = useActiveWeb3React();
 	const [priceValue, setpriceValue] = useState("");
 	const [balance, setBalance] = useState(0);
 	const [amountValue, setAmountValue] = useState(1);
 	const [selToken, setSelToken] = useState(options[0]);
-	const { getBalance_ERC_1155, getBalance_ERC_721 } = useToken()
+	const { getBalance_ERC_1155, getBalance_ERC_721, getAccountHasNftCount } = useToken()
 	const [currentChainId, setCurrentChainId] = useState("");
 	useEffect(() => {
 		if (!chainId) return;
@@ -110,8 +111,16 @@ function InputPrice({
 		}
 	};
 
-	const { wrapperIntl } = useWrapperIntl()
-
+	const { wrapperIntl } = useWrapperIntl()	
+	const [nftCount, setNftCout] = useState(0)
+	useEffect(() => {
+		if (!(nftInfo && account)) return
+		(async () => {
+			setNftCout(await getAccountHasNftCount(nftInfo.contractaddress, nftInfo.id, account))
+		})()
+		// eslint-disable-next-line
+	}, [nftInfo, account])
+	
 	return (
 		<Wrapper className={className} gridArea={gridArea}>
 			{title && <span className="title">{title}</span>}
@@ -155,7 +164,7 @@ function InputPrice({
 							value={amountValue}
 							onChange={checkAmountVal}
 						/>
-						<span className="balance"> {wrapperIntl("MyProfile.MyGallery.InputPrice.Balance")}: {balance}</span>
+						<span className="balance"> {wrapperIntl("MyProfile.MyGallery.InputPrice.Balance")}: {nftCount}</span>
 					</div>
 				</AmounttRow>
 			</>}

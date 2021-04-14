@@ -7,7 +7,8 @@ const en_US = {
     Listed: "Listed",
     Unlisted: "Unlisted",
     CopySuccessful: 'Copy Successful',
-
+    TryAgain: 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
+    
     ErrorMsg: {
         "required": "This field is required and cannot be blank",
         "regular": "This is not in conformity with the standard, please fill in again",
@@ -25,12 +26,8 @@ const en_US = {
         setting: 'Account Settings',
         search: 'Search',
         search_p: 'Search objects, items, art',
-
-        "PopularItem.LoadingPrice": "Loading Price ...",
-        "PopularItem.Price": "Price",
-        "PopularItem.TopBid": "Top Bid",
-        
     },
+
     'pages.buy.Share': 'Share',
     'pages.buy.Like': 'Like',
     'pages.buy.Canceled': 'Canceled',
@@ -58,7 +55,7 @@ const en_US = {
     'pages.buy.descriptionLoading': 'Description Is Loading ...',
     'pages.buy.NameLoading': 'Name Is Loading ...',
     'pages.buy.loading': 'loading ...',
-    'pages.buy.TryAgain': 'Hmm. You hit a glitch. Sorry for the trouble. Try again or check here.',
+    'pages.buy.TryAgain': 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
     'pages.buy.DataUpdateFailed': 'Data update failed, please try again',
     'pages.buy.DealFailed': 'Deal failed, claim back NFT',
     'pages.buy.SuccessfullyClaim': "Deal failed, You have successfully Claim NFT",
@@ -82,12 +79,16 @@ const en_US = {
     'pages.buy.TradeTable.Created': 'Created',
     'pages.buy.TradeTable.Listed': 'Listed',
 
-    CheckStatus: '',
-    MakeUnlisAted: '',
-    Sell: '',
-    All: '',
-    OnSale: '',
-    NotOnSale: '',
+    "UIKit.Input.Upload.infoTip.uploadImage": 'upload Image',
+    "UIKit.Input.Upload.infoTip.requirement1": 'Supports JPG, PNG, JPEG2000',
+    "UIKit.Input.Upload.infoTip.requirement2": 'no more than 100MB, 262*262 Reccomended',
+    "UIKit.Input.Upload.infoTip.image.requirement1": 'Supports JPG, PNG, JPEG2000',
+    "UIKit.Input.Upload.infoTip.image.requirement2": 'no more than 100MB, 262*262 Reccomended',
+    "UIKit.Input.Upload.infoTip.video.requirement1": 'Supports MP4, AVI, WMV, MOV',
+    "UIKit.Input.Upload.infoTip.video.requirement2": 'no more than 100MB, 360*240 Reccomended',
+    "UIKit.Input.Upload.infoTip.avatar.ChangeProfilePhoto": 'Change Profile Photo',
+    "UIKit.Input.Upload.infoTip.avatar.requirement1": 'Supports JPG, PNG, JPEG2000',
+    "UIKit.Input.Upload.infoTip.avatar.requirement2": 'no more than 100MB, 262*262 Reccomended',
 
     home: {
         banner1: 'We make it easy to trade in creativity.',
@@ -108,17 +109,6 @@ const en_US = {
         "PopularItem.TopBid": "Top Bid",
     },
 
-    "UIKit.Input.Upload.infoTip.uploadImage": 'upload Image',
-    "UIKit.Input.Upload.infoTip.requirement1": 'Supports JPG, PNG, JPEG2000',
-    "UIKit.Input.Upload.infoTip.requirement2": 'no more than 100MB, 262*262 Reccomended',
-    "UIKit.Input.Upload.infoTip.image.requirement1": 'Supports JPG, PNG, JPEG2000',
-    "UIKit.Input.Upload.infoTip.image.requirement2": 'no more than 100MB, 262*262 Reccomended',
-    "UIKit.Input.Upload.infoTip.video.requirement1": 'Supports MP4, AVI, WMV, MOV',
-    "UIKit.Input.Upload.infoTip.video.requirement2": 'no more than 100MB, 360*240 Reccomended',
-    "UIKit.Input.Upload.infoTip.avatar.ChangeProfilePhoto": 'Change Profile Photo',
-    "UIKit.Input.Upload.infoTip.avatar.requirement1": 'Supports JPG, PNG, JPEG2000',
-    "UIKit.Input.Upload.infoTip.avatar.requirement2": 'no more than 100MB, 262*262 Reccomended',
-
     market: {
         myMarket: 'My Market',
         fineArts: 'Fine Arts',
@@ -129,7 +119,6 @@ const en_US = {
     },
 
     MarketPlace: {
-        /* wrapperIntl("MarketPlace.CardItem.ListenAudio") */
         "CardItem.LoadingPrice": "Loading Price",
         "CardItem.Price": "Price",
         "CardItem.TopBid": "Top Bid",
@@ -254,9 +243,11 @@ const en_US = {
             setting: 'Account Settings',
             Change: "Change",
         },
+
         AddCardItem: {
             AddNewNFT: '+ Add new NFT',
         },
+
         Category: {
             Items: 'Items',
             Status: 'Status',
@@ -271,7 +262,6 @@ const en_US = {
         "CardItem.TopBid": "Top Bid",
         "CardItem.Price": "Price",
 
-        /* wrapperIntl('MyProfile.SettingAccountModal.Cancel') */
         "SettingAccountModal.Save": "Save",
         "SettingAccountModal.MyAccountSettings": "My Account Settings",
         "SettingAccountModal.UploadingFile": "Uploading File ...",
@@ -299,6 +289,8 @@ const en_US = {
         'MyGallery.GenerateNewNFTModal.Supply': 'Supply',
         'MyGallery.GenerateNewNFTModal.TryAgain': 'Try Again',
         'MyGallery.GenerateNewNFTModal.UploadingData': 'Uploading Data...',
+        'MyGallery.GenerateNewNFTModal.SuccessfullyGenerate': "You have successfully generate your NFTs",
+        'MyGallery.GenerateNewNFTModal.TryAgainNotice': 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
         
         "MyGallery.MyNFT.DataUpdateFailed": 'Data update failed, please try again',
 
@@ -318,6 +310,7 @@ const en_US = {
         'MyGallery.SellNFT.ReservePrice': 'Reserve price',
         'MyGallery.SellNFT.ReservePriceNotice': "Setting a reserve price creates a hidden limit,If you receive no bids equal to or greater than your reserve,your auction will not be sold.",
         'MyGallery.SellNFT.ExprirationDate': 'Expriration Date',
+        'MyGallery.SellNFT.ExprirationDateNotice': 'Your auction will automatically end at this time and the highest bidder will win. No need to cancel it!',
         'MyGallery.SellNFT.SelectMethod': 'Select your sell method',
         'MyGallery.SellNFT.SetPriceFeature': "Claim your value and set the price you know you’re worth",
         'MyGallery.SellNFT.EnglishAcutionFeature': "Sell to the highest bidder for the selected period of time",
@@ -379,7 +372,7 @@ const en_US = {
         /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */
         "MyBrands.AddNewItemModal.OnlySupports": "Only supports JPG, PNG, JPEG2000",
         'MyBrands.AddNewItemModal.SuccessfullyGenerate': "You have successfully generate your NFTs",
-        'MyBrands.AddNewItemModal.TryAgainNotice': 'Hmm. You hit a glitch. Sorry for the trouble. Try again or check here.',
+        'MyBrands.AddNewItemModal.TryAgainNotice': 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
         "MyBrands.AddNewItemModal.UploadingData": "Uploading Data ...",
         "MyBrands.AddNewItemModal.Submit": "Submit",
         "MyBrands.AddNewItemModal.AddNewItem": "Add New Item",
@@ -400,13 +393,10 @@ const en_US = {
         "MyBrands.BrandsByType.Change": "Change",
         "MyBrands.BrandsByType.Edit": "Edit",
         "MyBrands.BrandsByType.EditYourBrand": "Edit your Brand",
-        /* wrapperIntl('MyProfile.MyBrands.BrandsByType.BrandName') */
         "MyBrands.BrandsByType.BrandName": "Brand Name",
         "MyBrands.BrandsByType.Description": "Description",
         "MyBrands.BrandsByType.DescribeYourBrand": "Describe your brand",
         "MyBrands.BrandsByType.Cancel": "Cancel",
-
-
 
         /* wrapperIntl("MyProfile.MyActivities.TableItem.Transfer") */
         "MyActivities.TableList.Event": "Event",
@@ -424,13 +414,6 @@ const en_US = {
         "MyActivities.TableItem.hour": "hour",
         "MyActivities.TableItem.days": "days",
         "MyActivities.TableItem.day": "day",
-
-        Myliked: {
-
-        },
-        MyActivities: {
-
-        }
     },
 }
 
