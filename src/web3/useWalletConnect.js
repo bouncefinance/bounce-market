@@ -31,12 +31,26 @@ export const useWalletConnect = () => {
         activate, deactivate
     } = useWeb3React()
 
-
-    function onConnect(name, setIsLoading) {
-        window && window.localStorage.setItem('BOUNCE_SELECT_WALLET', name)
+    const setItem = (name) => window && window.localStorage.setItem('BOUNCE_SELECT_WALLET', name)
+    function onConnect (name = 'MetaMask', setIsLoading) {
         setIsLoading && setIsLoading(true)
-        activate(wallets[name]).finally(() => {
+        const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
+        const close = () => {
             setIsLoading && setIsLoading(false)
+        }
+        if (!type) {
+            getMetaMskAccount().then((account) => {
+                if (account) {
+                    setItem(name)
+                    window.location.reload()
+                }
+                close()
+            })
+            return
+        }
+        activate(wallets[name]).finally(() => {
+            setItem(name)
+            close()
         })
     }
 
@@ -47,4 +61,35 @@ export const useWalletConnect = () => {
         setIsLoading && setIsLoading(false)
     }
     return { onConnect, onDisconnect }
+}
+
+export const getMetaMskAccount = () => {
+    return new Promise((resolve, reject) => {
+    if (typeof window.ethereum === 'undefined') {
+      alert('Looks like you need a Dapp browser to get started.')
+      alert('Consider installing MetaMask!')
+    } else {
+      //如果用户安装了MetaMask，你可以要求他们授权应用登录并获取其账号
+      window.ethereum.enable()
+        //如果用户拒绝了登录请求
+        .catch(function (reason) {
+          resolve('')
+          if (reason === 'User rejected provider access') {
+            // 用户不想登录，你看该怎么办？
+          } else {
+            // 本不该执行到这里，但是真到这里了，说明发生了意外
+            // alert('There was an issue signing you in.')
+              resolve()
+          }
+        })
+
+        .then(function (accounts) {
+
+          const account = accounts?.[0]
+          resolve(account)
+
+        })
+
+    }
+  })
 }

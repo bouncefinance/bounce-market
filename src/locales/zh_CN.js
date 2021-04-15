@@ -7,6 +7,12 @@ const zh_CN = {
     Listed: "在售",
     Unlisted: "非卖品",
     CopySuccessful: '复制成功',
+    TryAgain: '非常抱歉，我们似乎碰到了一些小问题，请重试',
+    
+    userUserInfo: {
+        "uploadSuccess": "信息上传成功！",
+        "OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
+    },
 
     ErrorMsg: {
         "required": "此项不可为空",
@@ -14,6 +20,18 @@ const zh_CN = {
         "email": "请输入正确的邮箱地址",
         "url": "请输入正确的链接",
         "intNum": "请输入正整数",
+    },
+
+    header: {
+        home: '首页',
+        marketplace: '市场',
+        brands: '品牌',
+        create: '创造',
+        connect: '连接钱包',
+        setting: '账户设置',
+        search: '搜索',
+        search_p: '搜索用户、品牌、NFT',
+        SelectBSC: "请连接BSC网络",
     },
 
     'pages.buy.Share': '分享',
@@ -37,14 +55,14 @@ const zh_CN = {
     'pages.buy.Supply': '供应量',
     'pages.buy.TokenInfo': '代币信息',
     'pages.buy.ExternalLink': '外链',
-    'pages.buy.TradingHistory': '交易历史',
+    'pages.buy.TradingHistory': '交易记录',
     'pages.buy.MarketPlace': '市场',
     'pages.buy.FineArts': '艺术品',
     'pages.buy.descriptionLoading': '描述加载中 ...',
     'pages.buy.NameLoading': '名称加载中 ...',
     'pages.buy.loading': '加载中 ...',
     'pages.buy.TryAgain': '非常抱歉，我们似乎碰到了一些小问题，请重试',
-    'pages.buy.DataUpdateFailed': '数据上传失败，请重试',
+    'pages.buy.DataUpdateFailed': '数据更新失败，请重试',
     'pages.buy.DealFailed': '交易未达成，请取回您的NFT',
     'pages.buy.SuccessfullyClaim': "交易未达成，您已取回您的NFT",
     'pages.buy.ClaimBidNFT': '取回您拍得的NFT',
@@ -54,6 +72,9 @@ const zh_CN = {
     'pages.buy.AreYouSure': '您确定要下架该商品吗？',
     'pages.buy.Yes': '是',
     'pages.buy.No': '否',
+    'pages.buy.TransactionSuccess': '交易成功！',
+    'pages.buy.AuctionCancelled': '此次拍卖仅在超过截止日期后失效',
+
 
     'pages.buy.TradeTable.Event': '事件',
     'pages.buy.TradeTable.Quantity': '数量',
@@ -67,26 +88,7 @@ const zh_CN = {
     'pages.buy.TradeTable.Created': '创建',
     'pages.buy.TradeTable.Listed': '上架',
 
-    CheckStatus: '查看状态',
-    MakeUnlisted: '下架',
-    Sell: '出售',
-    All: '全部',
-    OnSale: '售卖中',
-    NotOnSale: '非卖品',
-
-    header: {
-        home: '首页',
-        marketplace: '市场',
-        brands: '品牌',
-        create: '创造',
-        connect: '连接钱包',
-        setting: '账户设置',
-        search: '搜索',
-        search_p: '搜索用户、品牌、NFT',
-    },
-
-    
-
+    "UIKit.Input.Upload.infoTip.FormatIncorrect": '暂时不支持您选择的文件格式，请重新选择',
     "UIKit.Input.Upload.infoTip.uploadImage": '上传图像',
     "UIKit.Input.Upload.infoTip.requirement1": '支持 JPG, PNG, JPEG2000 格式',
     "UIKit.Input.Upload.infoTip.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
@@ -127,7 +129,6 @@ const zh_CN = {
     },
 
     MarketPlace: {
-        /* wrapperIntl("MarketPlace.CardItem.ListenAudio") */
         "CardItem.LoadingPrice": "正在加载价格",
         "CardItem.Price": "价格",
         "CardItem.TopBid": "最高出价",
@@ -249,21 +250,17 @@ const zh_CN = {
             MyLiked: '我的收藏',
             MyActivities: '我的活动记录', 
             Settings: '设置',
+            setting: '账户设置',
             Change: "更改封面",
         },
+
         AddCardItem: {
             AddNewNFT: '+ 添加NFT',
         },
+
         Category: {
             Items: '类别',
             Status: '状态',
-        },
-        
-        Myliked: {
-
-        },
-        MyActivities: {
-
         },
 
         "CardItem.CheckStatus": "查看状态",
@@ -288,6 +285,7 @@ const zh_CN = {
         "SettingAccountModal.ShortBio": "个人简介 (选填)",
         "SettingAccountModal.ShortBioPlaceholder": "请输入您的个人简介",
         "SettingAccountModal.Cancel": "取消",
+        "SettingAccountModal.DataUpdateFailed": '数据更新失败，请重试',
 
         'MyGallery.GenerateNewNFTModal.GenerateNewNFT': '创建NFT',
         'MyGallery.GenerateNewNFTModal.Name': '名称',
@@ -302,10 +300,10 @@ const zh_CN = {
         'MyGallery.GenerateNewNFTModal.Supply': '供应量',
         'MyGallery.GenerateNewNFTModal.TryAgain': '请重新操作',
         'MyGallery.GenerateNewNFTModal.UploadingData': '正在上传数据...',
-        'MyGallery.GenerateNewNFTModal.Congratulations': "恭喜您，您的NFT已经创建成功",
+        'MyGallery.GenerateNewNFTModal.SuccessfullyGenerate': "恭喜您，您的NFT已经创建成功",
         'MyGallery.GenerateNewNFTModal.TryAgainNotice': '非常抱歉，我们似乎碰到了一些小问题，请重试',
         
-        "MyGallery.MyNFT.DataUpdateFailed": '数据上传失败，请重试',
+        "MyGallery.MyNFT.DataUpdateFailed": '数据更新失败，请重试',
 
         /* wrapperIntl('MyProfile.MyGallery.SellNFT.EnglishAuction') */
         'MyGallery.SellNFT.MyGallery': '我的展厅',
@@ -322,10 +320,11 @@ const zh_CN = {
         'MyGallery.SellNFT.DirectPurchaseNotice': "竞拍者可以以一口价直接购得该拍卖品。一口价必须高于起拍价和保留价。",
         'MyGallery.SellNFT.ReservePrice': '保留价',
         'MyGallery.SellNFT.ReservePriceNotice': "设定保留价会生成一个隐藏的限制，如果您没有收到等于或高于保留价的出价，您的拍卖品将不会售出。",
-        'MyGallery.SellNFT.ExprirationDate': '有效期',
+        'MyGallery.SellNFT.ExprirationDate': '截止时间',
+        'MyGallery.SellNFT.ExprirationDateNotice': '您的拍卖将在此时间自动截止，出价最高者将赢得此次竞拍。',
         'MyGallery.SellNFT.SelectMethod': '请选择您的售卖方法',
-        'MyGallery.SellNFT.SetPriceFeature': "定价为您认可的价格",
-        'MyGallery.SellNFT.EnglishAcutionFeature': "在您选择的时间内出售给出价最高者。",
+        'MyGallery.SellNFT.SetPriceFeature': "定价为您心仪的价格",
+        'MyGallery.SellNFT.EnglishAcutionFeature': "在您指定的时间内出售给出价最高者。",
         'MyGallery.SellNFT.InstantSale': "一口价出售",
         'MyGallery.SellNFT.EnglishAuction': "英式拍卖",
 
@@ -333,7 +332,7 @@ const zh_CN = {
         'MyGallery.Summary.Summary': "统计",
         'MyGallery.Summary.Listing': "挂单",
         'MyGallery.Summary.setPriceListingText': "您的物品将保持上架",
-        'MyGallery.Summary.EnglishAuctionListingText': "您的物品将被拍卖，出价最高者将拍得您的物品",
+        'MyGallery.Summary.EnglishAuctionListingText': "您的物品将被拍卖，出价最高者将拍得您的物品，其出价必须高于",
         'MyGallery.Summary.days': "天",
         'MyGallery.Summary.Fees': "费用",
         'MyGallery.Summary.ToFangible': "由 Fangible 收取",
@@ -379,10 +378,11 @@ const zh_CN = {
         "MyBrands.AddNewBrandsModal.browseBrandPhoto": '浏览品牌图像',
         "MyBrands.AddNewBrandsModal.OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
         "MyBrands.AddNewBrandsModal.SuccessfullyBuild": "品牌创建成功",
-        "MyBrands.AddNewBrandsModal.DataUpdateFailed": '数据上传失败，请重试',
-
+        "MyBrands.AddNewBrandsModal.DataUpdateFailed": '数据更新失败，请重试',
+        
+        /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */
         "MyBrands.AddNewItemModal.OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
-        'MyBrands.AddNewItemModal.Congratulations': "恭喜您，您的NFT已经创建成功",
+        'MyBrands.AddNewItemModal.SuccessfullyGenerate': "恭喜您，您的NFT已经创建成功",
         'MyBrands.AddNewItemModal.TryAgainNotice': '非常抱歉，我们似乎碰到了一些小问题，请重试',
         "MyBrands.AddNewItemModal.UploadingData": "正在上传数据 ...",
         "MyBrands.AddNewItemModal.Submit": "提交",
@@ -424,9 +424,7 @@ const zh_CN = {
         "MyActivities.TableItem.hour": "小时",
         "MyActivities.TableItem.days": "天",
         "MyActivities.TableItem.day": "天",
-
         }
     }
-
 
 export default zh_CN

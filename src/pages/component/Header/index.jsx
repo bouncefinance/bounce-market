@@ -158,6 +158,17 @@ export default function Index() {
             setIsFangible(false)
         } */
     }
+    const connectWallet = historyLocation => {
+        const match = [
+            '/Marketplace/FineArts/english-auction/',
+            '/Marketplace/FineArts/fixed-swap/',
+            '/AirHome/',
+        ]
+        if (match.some(path => historyLocation.pathname.substring(0, path.length) === path)) {
+            onConnect()
+        }
+        updateActive()
+    }
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
         if (type) {
@@ -165,7 +176,8 @@ export default function Index() {
         }
 
         updateActive()
-        history.listen(historyLocation => updateActive())
+        connectWallet(history.location)
+        history.listen(connectWallet)
 
         // eslint-disable-next-line
     }, [history])
@@ -208,7 +220,7 @@ export default function Index() {
         if (!active) return
         console.log("chainId:" + chainId)
         if (chainId && (chainId !== 56)) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select BSC network.", modelUrlMessage: "How to connect MetaMask to BSC.", modelOpenUrl: "https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain", modelTimer: 24 * 60 * 60 * 1000 });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("header.SelectBSC"), modelUrlMessage: "How to connect MetaMask to BSC.", modelOpenUrl: "https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain", modelTimer: 24 * 60 * 60 * 1000 });
         } else {
             dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
         }

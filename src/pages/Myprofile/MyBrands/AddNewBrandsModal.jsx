@@ -100,7 +100,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.OnlySupports") });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
                     setBtnLock(false)
                     setInputDisable(false)
                     /* setBtnText('Save'); */

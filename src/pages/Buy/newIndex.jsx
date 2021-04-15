@@ -279,7 +279,7 @@ export default function NewIndex () {
     const { showTransferByStatus } = useTransferModal()
     const { nftInfo, poolInfo } = aucType === AUCTION_TYPE.FixedSwap ? use_FS_Hook(poolId) : use_EA_Hook(poolId)
     const [isLoading, setIsLoading] = useState(false)
-    const [btnText, setBtnText] = useState('Place a bid')
+    const [btnText, setBtnText] = useState(intl.formatMessage({ id: 'pages.buy.PlaceABid'}))
     const [amount, setAmount] = useState(1)
     const [bidPrice, setBidPrice] = useState()
     // eslint-disable-next-line
@@ -287,7 +287,6 @@ export default function NewIndex () {
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
     const { sign_Axios } = useAxios()
-
     const [supply, setSupply] = useState();
     const [tokenContractAddress, setTokenContractAddress] = useState();
     const [tokenSymbol, setTokenSymbol] = useState();
@@ -551,7 +550,12 @@ export default function NewIndex () {
             .on('receipt', async (_, receipt) => {
                 // console.log('bid fixed swap receipt:', receipt)
                 // setBidStatus(successStatus)
-                showTransferByStatus('successStatus')
+                // showTransferByStatus('successStatus');
+                dispatch({ type: 'TransferModal', TransferModal: "" });
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("pages.buy.TransactionSuccess") });
+                setTimeout(function(){
+                    window.location.reload()
+                },3000)
             })
             .on('error', (err, receipt) => {
                 // setBidStatus(errorStatus)
@@ -1000,7 +1004,7 @@ export default function NewIndex () {
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
                                     < Button onClick={
                                         () => {
-                                            aucType === AUCTION_TYPE.EnglishAuction ? dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "The auction bill can only be cancelled when it expires" }) : setOpenModal(true)
+                                            aucType === AUCTION_TYPE.EnglishAuction ? dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("pages.buy.AuctionCancelled")}) : setOpenModal(true)
                                         }}
                                         height='30px'
                                     >
