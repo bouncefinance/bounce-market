@@ -1,18 +1,8 @@
-import {
-  call,
-  put,
-  SagaReturnType,
-  select,
-  take,
-  takeEvery,
-} from 'redux-saga/effects';
-import { connectWallet } from '../api/connectWallet';
-import { BASE_URL } from '../../common/conts';
-import axios from 'axios';
-import { accountSlice } from '../store/accountSlice';
+import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
 import { END, eventChannel } from 'redux-saga';
 import { RootState } from '../../../store/store';
 import { AccountActions } from '../store/accountActions';
+import { getQuery, resetRequests } from '@redux-requests/core';
 
 // TODO Check disconnection, switch chain, switch account
 
@@ -87,66 +77,29 @@ function createEventChannel(provider: any) {
   });
 }
 
-const SIGN_STR = 'Welcome to Bounce!';
-
-interface IParams {
-  accountaddress: string;
-  message: string;
-  signature: string;
-}
-
-function getAuthToken(params: IParams) {
-  return axios.post<{ data: { token: string } }>(
-    BASE_URL + '/api/v2/main/jwtauth',
-    params,
-  );
-}
-
 function* onConnectWallet() {
-  const [web3, provider]: SagaReturnType<typeof connectWallet> = yield call(
-    connectWallet,
-  );
-  const addresses: SagaReturnType<typeof web3.eth.getAccounts> = yield call(
-    web3.eth.getAccounts,
-  );
-  const address = addresses[0];
-  const signature: SagaReturnType<typeof web3.eth.personal.sign> = yield call(
-    web3.eth.personal.sign,
-    SIGN_STR,
-    address,
-    '',
-  );
+  const { action } = yield putResolve(AccountActions.setAccount());
+  const provider = action.meta.provider;
 
-  const params: IParams = {
-    accountaddress: address,
-    message: SIGN_STR,
-    signature: signature,
-  };
-
-  const authResponse: SagaReturnType<typeof getAuthToken> = yield call(
-    getAuthToken,
-    params,
-  );
-
-  yield put(
-    accountSlice.actions.setAccount({
-      address,
-      token: authResponse.data.data.token,
-    }),
-  );
   const channel = createEventChannel(provider);
-
   while (true) {
     const event: ProviderEvent = yield take(channel);
 
     if (event.type === WalletEventType.ChainChanged) {
-      yield put(accountSlice.actions.disconnect());
+      yield put(resetRequests([AccountActions.setAccount.toString()]));
     } else if (event.type === WalletEventType.AccountChanged) {
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
 
-      const { currentAddress } = yield select((store: RootState) => {
-        return { currentAddress: store.account.address };
+      const { currentAddress } = yield select((state: RootState) => {
+        const {
+          data: { address },
+        } = getQuery(state, {
+          type: AccountActions.setAccount.toString(),
+          action: AccountActions.setAccount,
+        });
+
+        return { currentAddress: address };
       });
 
       if (currentAddress.toLowerCase() !== address?.toLowerCase()) {

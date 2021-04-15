@@ -1,16 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { i18nSlice } from 'modules/i18n/i18nSlice';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { handleRequests } from '@redux-requests/core';
+import { getQuery, handleRequests } from '@redux-requests/core';
 import { createDriver } from '@redux-requests/promise';
 import { isDev } from '../modules/common/utils/isProd';
 import { historyInstance } from '../modules/common/utils/historyInstance';
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './rootSaga';
-import { accountSlice } from '../modules/account/store/accountSlice';
 import { createDriver as createAxiosDriver } from '@redux-requests/axios';
 import axios from 'axios';
 import { BASE_URL } from '../modules/common/conts';
+import { AccountActions } from '../modules/account/store/accountActions';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
   driver: {
@@ -26,6 +26,13 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
   onRequest: (request, action, store) => {
     const rootState: RootState = store.getState();
 
+    const { data } = getQuery(rootState, {
+      type: AccountActions.setAccount.toString(),
+      action: AccountActions.setAccount,
+    });
+
+    // TODO Throw exception if auth and no token?
+
     if (action.meta?.auth) {
       return {
         ...request,
@@ -34,7 +41,7 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
           ...(request.method !== 'GET'
             ? { 'Content-Type': 'application/x-www-from-urlencoded' }
             : {}),
-          token: rootState.account.token,
+          token: data?.token ?? '',
         },
       };
     }
@@ -57,7 +64,6 @@ export const store = configureStore({
     i18n: i18nSlice.reducer,
     requests: requestsReducer,
     router: connectRouter(historyInstance),
-    account: accountSlice.reducer,
   },
   middleware: [
     ...requestsMiddleware,
