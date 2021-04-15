@@ -215,7 +215,6 @@ export default function ModalBox({
 								width="200px"
 								height="48px"
 								value={wrapperIntl("FixedSwapBuyModal.Cancel")}
-								disabled={isLoading || poolInfo.status !== 'Live'}
 								onClick={() => {
 									setOpen(false);
 									/* setAgree(false); */

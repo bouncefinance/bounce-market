@@ -232,7 +232,7 @@ export default function SellNFT() {
 
 							<InputPrice
 								className="InputPrice Reserve_price"
-								title="Reserve price"
+								title={wrapperIntl('MyProfile.MyGallery.SellNFT.ReservePrice')}
 								price={reservePrice}
 								setPrice={set_ReservePrice}
 								unit={reservePrice_Unit}
@@ -248,8 +248,8 @@ export default function SellNFT() {
 							/>
 							<SelectDuration
 								className="Expriration_Date"
-								title="Expriration Date"
-								notice="Setting a reserve price creates a hidden limit. If you receive no bids equal to or greater than your reserve, your auction will end without selling the item."
+								title={wrapperIntl("MyProfile.MyGallery.SellNFT.ExprirationDate")}
+								notice={wrapperIntl('MyProfile.MyGallery.SellNFT.ExprirationDateNotice')}
 								setDuration={setDuration}
 								gridArea={wrapperIntl('MyProfile.MyGallery.SellNFT.ExprirationDate')}
 								options={duration_Options}

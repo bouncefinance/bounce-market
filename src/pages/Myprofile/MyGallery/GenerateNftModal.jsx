@@ -69,8 +69,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         // console.log(fileData, formData)
         if ((fileData || formData.imgurl) && formData) {
             const requireArr = ['Name', 'Description', 'Supply']
-/*             const requireArr = [wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Name"), wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Description"), wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Supply")]
- */            let errorCount = 0
+            let errorCount = 0
             requireArr.forEach(item => {
                 if (!checkInput(formData[item]) || (item === 'Supply' && !ErrorStatus.intNum.reg.test(formData[item]))) {
                     errorCount++
@@ -143,7 +142,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         showTransferByStatus('')
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Congratulations") });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
                                         if(window.location.pathname === "/MyGallery"){
                                             setTimeout(function(){
                                                 window.location.reload()
