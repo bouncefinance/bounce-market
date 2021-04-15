@@ -9,9 +9,10 @@ import {
 import { connectWallet } from '../api/connectWallet';
 import { BASE_URL } from '../../common/conts';
 import axios from 'axios';
-import { accountSlice, connect } from '../accountSlice';
+import { accountSlice } from '../store/accountSlice';
 import { END, eventChannel } from 'redux-saga';
 import { RootState } from '../../../store/store';
+import { AccountActions } from '../store/accountActions';
 
 // TODO Check disconnection, switch chain, switch account
 
@@ -149,12 +150,12 @@ function* onConnectWallet() {
       });
 
       if (currentAddress.toLowerCase() !== address?.toLowerCase()) {
-        yield put(connect());
+        yield put(AccountActions.connect());
       }
     }
   }
 }
 
 export function* connectSaga() {
-  yield takeEvery(connect.toString(), onConnectWallet);
+  yield takeEvery(AccountActions.connect.toString(), onConnectWallet);
 }

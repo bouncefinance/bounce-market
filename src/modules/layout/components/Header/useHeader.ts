@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useAppDispatch } from '../../../../store/useAppDispatch';
-import { connect } from '../../../account/accountSlice';
+import { AccountActions } from '../../../account/store/accountActions';
 
 export const useHeader = () => {
   const [mobileNavShowed, setMobileNavShowed] = useState(false);
@@ -38,7 +38,7 @@ export const useHeader = () => {
   );
 
   const handleConnect = useCallback(() => {
-    dispatch(connect());
+    dispatch(AccountActions.connect());
   }, [dispatch]);
 
   return {

@@ -7,7 +7,7 @@ import { isDev } from '../modules/common/utils/isProd';
 import { historyInstance } from '../modules/common/utils/historyInstance';
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './rootSaga';
-import { accountSlice } from '../modules/account/accountSlice';
+import { accountSlice } from '../modules/account/store/accountSlice';
 import { createDriver as createAxiosDriver } from '@redux-requests/axios';
 import axios from 'axios';
 import { BASE_URL } from '../modules/common/conts';

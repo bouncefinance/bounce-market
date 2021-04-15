@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createAction as createSmartAction } from 'redux-smart-actions';
 
 interface ISetAccountPayload {
   address: string;
@@ -27,5 +26,3 @@ export const accountSlice = createSlice({
     },
   },
 });
-
-export const connect = createSmartAction('CONNECT_WALLET');
