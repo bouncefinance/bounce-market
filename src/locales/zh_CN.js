@@ -62,7 +62,7 @@ const zh_CN = {
     'pages.buy.NameLoading': '名称加载中 ...',
     'pages.buy.loading': '加载中 ...',
     'pages.buy.TryAgain': '非常抱歉，我们似乎碰到了一些小问题，请重试',
-    'pages.buy.DataUpdateFailed': '数据上传失败，请重试',
+    'pages.buy.DataUpdateFailed': '数据更新失败，请重试',
     'pages.buy.DealFailed': '交易未达成，请取回您的NFT',
     'pages.buy.SuccessfullyClaim': "交易未达成，您已取回您的NFT",
     'pages.buy.ClaimBidNFT': '取回您拍得的NFT',
@@ -285,6 +285,7 @@ const zh_CN = {
         "SettingAccountModal.ShortBio": "个人简介 (选填)",
         "SettingAccountModal.ShortBioPlaceholder": "请输入您的个人简介",
         "SettingAccountModal.Cancel": "取消",
+        "SettingAccountModal.DataUpdateFailed": '数据更新失败，请重试',
 
         'MyGallery.GenerateNewNFTModal.GenerateNewNFT': '创建NFT',
         'MyGallery.GenerateNewNFTModal.Name': '名称',
@@ -302,7 +303,7 @@ const zh_CN = {
         'MyGallery.GenerateNewNFTModal.SuccessfullyGenerate': "恭喜您，您的NFT已经创建成功",
         'MyGallery.GenerateNewNFTModal.TryAgainNotice': '非常抱歉，我们似乎碰到了一些小问题，请重试',
         
-        "MyGallery.MyNFT.DataUpdateFailed": '数据上传失败，请重试',
+        "MyGallery.MyNFT.DataUpdateFailed": '数据更新失败，请重试',
 
         /* wrapperIntl('MyProfile.MyGallery.SellNFT.EnglishAuction') */
         'MyGallery.SellNFT.MyGallery': '我的展厅',
@@ -377,7 +378,7 @@ const zh_CN = {
         "MyBrands.AddNewBrandsModal.browseBrandPhoto": '浏览品牌图像',
         "MyBrands.AddNewBrandsModal.OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
         "MyBrands.AddNewBrandsModal.SuccessfullyBuild": "品牌创建成功",
-        "MyBrands.AddNewBrandsModal.DataUpdateFailed": '数据上传失败，请重试',
+        "MyBrands.AddNewBrandsModal.DataUpdateFailed": '数据更新失败，请重试',
         
         /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */
         "MyBrands.AddNewItemModal.OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",

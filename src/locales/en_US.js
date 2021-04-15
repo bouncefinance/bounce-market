@@ -284,6 +284,7 @@ const en_US = {
         "SettingAccountModal.ShortBio": "Short Bio (Optional)",
         "SettingAccountModal.ShortBioPlaceholder": "Describe your bio",
         "SettingAccountModal.Cancel": "Cancel",
+        "SettingAccountModal.DataUpdateFailed": 'Data update failed, please try again',
 
         'MyGallery.GenerateNewNFTModal.GenerateNewNFT': 'Generate New NFT',
         'MyGallery.GenerateNewNFTModal.Name': 'Name',
