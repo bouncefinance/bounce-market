@@ -8,6 +8,11 @@ const zh_CN = {
     Unlisted: "非卖品",
     CopySuccessful: '复制成功',
     TryAgain: '非常抱歉，我们似乎碰到了一些小问题，请重试',
+    
+    userUserInfo: {
+        "uploadSuccess": "信息上传成功！",
+        "OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
+    },
 
     ErrorMsg: {
         "required": "此项不可为空",
@@ -26,6 +31,7 @@ const zh_CN = {
         setting: '账户设置',
         search: '搜索',
         search_p: '搜索用户、品牌、NFT',
+        SelectBSC: "请连接BSC网络",
     },
 
     'pages.buy.Share': '分享',
@@ -66,6 +72,9 @@ const zh_CN = {
     'pages.buy.AreYouSure': '您确定要下架该商品吗？',
     'pages.buy.Yes': '是',
     'pages.buy.No': '否',
+    'pages.buy.TransactionSuccess': '交易成功！',
+    'pages.buy.AuctionCancelled': '此次拍卖仅在超过截止日期后失效',
+
 
     'pages.buy.TradeTable.Event': '事件',
     'pages.buy.TradeTable.Quantity': '数量',
@@ -79,6 +88,7 @@ const zh_CN = {
     'pages.buy.TradeTable.Created': '创建',
     'pages.buy.TradeTable.Listed': '上架',
 
+    "UIKit.Input.Upload.infoTip.FormatIncorrect": '暂时不支持您选择的文件格式，请重新选择',
     "UIKit.Input.Upload.infoTip.uploadImage": '上传图像',
     "UIKit.Input.Upload.infoTip.requirement1": '支持 JPG, PNG, JPEG2000 格式',
     "UIKit.Input.Upload.infoTip.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
@@ -313,7 +323,7 @@ const zh_CN = {
         'MyGallery.SellNFT.ExprirationDateNotice': '您的拍卖将在此时间自动截止，出价最高者将赢得此次竞拍。',
         'MyGallery.SellNFT.SelectMethod': '请选择您的售卖方法',
         'MyGallery.SellNFT.SetPriceFeature': "定价为您心仪的价格",
-        'MyGallery.SellNFT.EnglishAcutionFeature': "在您选择的时间内出售给出价最高者。",
+        'MyGallery.SellNFT.EnglishAcutionFeature': "在您指定的时间内出售给出价最高者。",
         'MyGallery.SellNFT.InstantSale': "一口价出售",
         'MyGallery.SellNFT.EnglishAuction': "英式拍卖",
 
@@ -415,6 +425,5 @@ const zh_CN = {
         "MyActivities.TableItem.day": "天",
         }
     }
-
 
 export default zh_CN
