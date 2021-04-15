@@ -18,19 +18,31 @@ import { Social } from '../Social';
 import { Toggle } from '../Toggle';
 import { useHeaderStyles } from './HeaderStyles';
 import { useHeader } from './useHeader';
+import { useCallback } from 'react';
+import { AccountActions } from '../../../account/store/accountActions';
+import { useAppDispatch } from '../../../../store/useAppDispatch';
+import { useQuery } from '@redux-requests/react';
 
 interface IHeaderProps {
   isConnected?: boolean;
 }
 
 export const Header = ({ isConnected = false }: IHeaderProps) => {
+  const dispatch = useAppDispatch();
   const {
     mobileNavShowed,
     toggleNav,
     searchShowed,
     toggleSearch,
-    handleConnect,
   } = useHeader();
+
+  const handleConnect = useCallback(() => {
+    dispatch(AccountActions.connect());
+  }, [dispatch]);
+
+  const { loading } = useQuery({
+    type: AccountActions.setAccount.toString(),
+  });
 
   const classes = useHeaderStyles();
 
@@ -56,7 +68,7 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
       </Button>
 
       {!isConnected && (
-        <Button onClick={handleConnect}>
+        <Button onClick={handleConnect} disabled={loading}>
           Connect Wallet
         </Button>
       )}
