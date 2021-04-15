@@ -4,14 +4,20 @@ import { INDEX_PATH } from 'modules/router/const';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React, { useState } from 'react';
 import { uid } from 'react-uid';
-import SwiperCore, { EffectFade, Lazy, Pagination, Thumbs } from 'swiper';
+import SwiperCore, {
+  Autoplay,
+  EffectFade,
+  Lazy,
+  Pagination,
+  Thumbs,
+} from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css';
 import { IPromoCardProps, PromoCard } from '../PromoCard';
 import { PromoThumb } from '../PromoThumb';
 import { usePromoStyles } from './PromoStyles';
 
-SwiperCore.use([Pagination, EffectFade, Thumbs, Lazy]);
+SwiperCore.use([Pagination, EffectFade, Thumbs, Lazy, Autoplay]);
 const paginationId = 'pagination-alksjd';
 
 interface IPromoItem extends IPromoCardProps {
@@ -43,9 +49,11 @@ export const PromoComponent = ({
       bulletClass: classes.bullet,
       bulletActiveClass: classes.bulletActive,
     },
-    // simulateTouch: false,
     lazy: true,
     thumbs: { swiper: swiperThumbs },
+    autoplay: {
+      delay: 5000,
+    },
   };
 
   const thumbsParams: Swiper = {
