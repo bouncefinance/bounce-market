@@ -294,6 +294,7 @@ export default function Index() {
           createTime: pool.createTime,
           token1: pool.token1
         }
+        
       })
       .sort((a, b) => b.createTime - a.createTime);
       getPoolsWeight(_list)

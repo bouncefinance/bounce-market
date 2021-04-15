@@ -15,6 +15,8 @@ import AmountInput from './AmountInput'
 
 import icon_close from "@assets/images/icon/close.svg";
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const useStyles = makeStyles((theme) => ({
 	modal: {
 		display: "flex",
@@ -138,7 +140,7 @@ export default function ModalBox({
 		// eslint-disable-next-line
 	}, [poolInfo])
 
-
+	const { wrapperIntl } = useWrapperIntl()
 
 	return (
 		<Modal
@@ -172,7 +174,7 @@ export default function ModalBox({
 					<ModalContent>
 						<AmountInput
 							className="input_amount"
-							title="Buy Amount"
+							title={wrapperIntl("FixedSwapBuyModal.BuyAmount")}
 							width="100%"
 							height="68px"
 							marginTop="0"
@@ -212,8 +214,7 @@ export default function ModalBox({
 							<Button
 								width="200px"
 								height="48px"
-								value="Cancel"
-								disabled={isLoading || poolInfo.status !== 'Live'}
+								value={wrapperIntl("FixedSwapBuyModal.Cancel")}
 								onClick={() => {
 									setOpen(false);
 									/* setAgree(false); */
@@ -223,7 +224,7 @@ export default function ModalBox({
 								width="200px"
 								height="48px"
 								primary="primary"
-								value="Checkout"
+								value={wrapperIntl("FixedSwapBuyModal.Checkout")}
 								disabled={isLoading || poolInfo.status !== 'Live' || amount === '0' /* || !agree */}
 								onClick={() => {
 									onClick()

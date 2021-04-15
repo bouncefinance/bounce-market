@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableItem from './TableItem'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const useStyles = makeStyles({
     table: {
@@ -34,6 +35,8 @@ const useStyles = makeStyles({
 
 
 export default function BasicTable({tableInfoList}) {
+    const { wrapperIntl } = useWrapperIntl()
+
     const classes = useStyles();
 
     function createData(Event,Data) {
@@ -41,10 +44,14 @@ export default function BasicTable({tableInfoList}) {
     }
     
     const rows = [
-        createData('Contract address', tableInfoList.contractAddress),
+        /* createData('Contract address', tableInfoList.contractAddress),
         createData('Contract Name', tableInfoList.contractName),
         createData('Contact Symbol', tableInfoList.contactSymbol),
-        createData('Total Supply', tableInfoList.totalSupply),
+        createData('Total Supply', tableInfoList.totalSupply), */
+        createData(wrapperIntl("TableList.ContractAddress"), tableInfoList.contractAddress),
+        createData(wrapperIntl("TableList.ContractName"), tableInfoList.contractName),
+        createData(wrapperIntl("TableList.ContactSymbol"), tableInfoList.contactSymbol),
+        createData(wrapperIntl("TableList.TotalSupply"), tableInfoList.totalSupply),
     ];
 
     return (
@@ -52,7 +59,7 @@ export default function BasicTable({tableInfoList}) {
             <Table className={classes.table} aria-label="simple table">
                 <TableHead className={classes.TableHead}>
                     <TableRow>
-                        <TableCell className={classes.TableCell} >Your information</TableCell>
+                        <TableCell className={classes.TableCell} >{wrapperIntl("TableList.YourInformation")}</TableCell>
                         <TableCell className={classes.TableCell} ></TableCell>
                     </TableRow>
                 </TableHead>

@@ -8,6 +8,7 @@ import { myContext } from '@/redux';
 import { Button } from "@components/UI-kit";
 import BreadcrumbNav from '@/components/UI-kit/NavBar/BreadcrumbNav'
 import NFTInfo from "./components/NFTInfo";
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 import icon_copy from "@assets/images/icon/copy.svg";
 import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
@@ -199,6 +200,7 @@ function MyNFT() {
 		{ title: "Created By", content: "Ralph Waldo" },
 		{ title: "External Link", content: "http://www.baidu.com" },
 	]; */
+	const { wrapperIntl } = useWrapperIntl()
 
 	useEffect(() => {
 		const getNFTInfoList = async (nftId) => {
@@ -225,11 +227,11 @@ function MyNFT() {
 						setImgURL(NFTInfoList.fileurl);
 						setDescription(NFTInfoList.description || "")
 					} else {
-						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
 					}
 				})
 				.catch((err) => {
-					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
 				});
 		};
 		if (!active || !nftId) return;

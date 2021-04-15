@@ -1,10 +1,13 @@
 import { makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, withStyles, Paper } from '@material-ui/core'
 import React from 'react'
 import styled from 'styled-components';
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 import icon_buy from '@/assets/images/icon/event/buy.svg'
 import icon_bid from '@/assets/images/icon/event/bid.svg'
 import icon_transfer from '@/assets/images/icon/event/transfer.svg'
 import icon_created from '@/assets/images/icon/event/created.svg'
+import icon_list from '@/assets/images/icon/event/list.svg'
 
 const useStyles = makeStyles({
   table: {
@@ -42,34 +45,98 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow)
 
+const ModifyDate = (date) => {
+  const { wrapperIntl } = useWrapperIntl()
+
+  /* about */
+  date = (
+      date.search("about") !== -1
+      ?
+      date.replace("about", wrapperIntl("MyProfile.MyActivities.TableItem.about"))
+      :
+      date
+  )
+
+      /* minute */
+  date = (
+      date.search("minutes") !== -1
+      ?
+      date.replace("minutes", wrapperIntl("MyProfile.MyActivities.TableItem.minutes"))
+      :
+      date.search("minute") !== -1
+      ?
+      date.replace("minute", wrapperIntl("MyProfile.MyActivities.TableItem.minute"))
+      :
+      date
+  )
+
+  /* hour */
+  date = (
+      date.search("hours") !== -1
+      ?
+      date.replace("hours", wrapperIntl("MyProfile.MyActivities.TableItem.hours"))
+      :
+      date.search("hour") !== -1
+      ?
+      date.replace("hour", wrapperIntl("MyProfile.MyActivities.TableItem.hour"))
+      :
+      date
+  )
+
+      /* day */
+  date = (
+      date.search("days") !== -1
+      ?
+      date.replace("days", wrapperIntl("MyProfile.MyActivities.TableItem.days"))
+      :
+      date.search("day") !== -1
+      ?
+      date.replace("day", wrapperIntl("MyProfile.MyActivities.TableItem.day"))
+      :
+      date
+  )
+
+  return date
+}
+
 export default function TradingHistory ({ rows = [] }) {
   const classes = useStyles()
+  const { wrapperIntl } = useWrapperIntl()
 
   return <TradingHistoryStyled>
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledHeaderCell>Event</StyledHeaderCell>
-            <StyledHeaderCell>Quantity</StyledHeaderCell>
-            <StyledHeaderCell>Price</StyledHeaderCell>
-            <StyledHeaderCell>From</StyledHeaderCell>
-            <StyledHeaderCell>To</StyledHeaderCell>
-            <StyledHeaderCell>Date</StyledHeaderCell>
+            <StyledHeaderCell>{wrapperIntl("pages.buy.TradeTable.Event")}</StyledHeaderCell>
+            <StyledHeaderCell>{wrapperIntl("pages.buy.TradeTable.Quantity")}</StyledHeaderCell>
+            <StyledHeaderCell>{wrapperIntl("pages.buy.TradeTable.Price")}</StyledHeaderCell>
+            <StyledHeaderCell>{wrapperIntl("pages.buy.TradeTable.From")}</StyledHeaderCell>
+            <StyledHeaderCell>{wrapperIntl("pages.buy.TradeTable.To")}</StyledHeaderCell>
+            <StyledHeaderCell>{wrapperIntl("pages.buy.TradeTable.Date")}</StyledHeaderCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
             <StyledTableRow key={index}>
               <StyledTableCell component="th" scope="row">
-                {
+              {/* {row.Event} */}
+              {
                   row.Event === 'Buy' ? <img className="event_icon" src={icon_buy} alt="" /> :
                     row.Event === 'Bid' ? <img className="event_icon" src={icon_bid} alt="" /> :
                       row.Event === 'Transfer' ? <img className="event_icon" src={icon_transfer} alt="" /> :
                         row.Event === 'Created' ? <img className="event_icon" src={icon_created} alt="" /> :
+                        row.Event === 'List' ? <img className="event_icon" src={icon_list} alt="" /> :
                           <></>
                 }
-                {row.Event}
+                {
+                  row.Event === 'Buy' ? wrapperIntl("pages.buy.TradeTable.Buy") :
+                    row.Event === 'Bid' ? wrapperIntl("pages.buy.TradeTable.Bid") :
+                      row.Event === 'Transfer' ? wrapperIntl("pages.buy.TradeTable.Transfer") :
+                        row.Event === 'Created' ? wrapperIntl("pages.buy.TradeTable.Created") :
+                          row.Event === 'List' ? wrapperIntl("pages.buy.TradeTable.Listed") :
+                            row.Event
+                }
               </StyledTableCell>
               <StyledTableCell>{row.Quantity}</StyledTableCell>
               <StyledTableCell><span className="price1">{row.Price[0]}</span><span className="price2">{row.Price[1]}</span></StyledTableCell>
@@ -79,7 +146,7 @@ export default function TradingHistory ({ rows = [] }) {
               <StyledTableCell>
                 <div className="to">{row.To}</div>
               </StyledTableCell>
-              <StyledTableCell>{row.Date}</StyledTableCell>
+              <StyledTableCell>{ModifyDate(row.Date)}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -109,6 +176,8 @@ position: relative;
   padding-bottom: 0px!important;
 }
 .event_icon{
+  width: 10px;
+  height: 10px;
   margin-right: 6px;
 }
 .MuiTableCell-root{

@@ -57,7 +57,8 @@ export default function Index() {
 
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
     {
-      variables: { user: String(account).toLowerCase() },
+      // variables: { user: String(account).toLowerCase() },
+      variables: { user: String('0x63c6c732d603338AB1AeBA137aA79CDa6EFfb350').toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: async () => {
         setMyNftData(data || [])
@@ -69,7 +70,8 @@ export default function Index() {
 
   const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
     {
-      variables: { user: String(account).toLowerCase() },
+      variables: { user: String('0x63c6c732d603338AB1AeBA137aA79CDa6EFfb350').toLowerCase() },
+      // variables: { user: String(account).toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: () => {
         setMyTradeData(traddata || [])
@@ -115,6 +117,7 @@ export default function Index() {
     }).filter(item => item.state !== 1);
 
     const ids_list = nft721_ids.concat(nft1155Items_ids).concat(trade721_ids).concat(trade1155Items_ids)
+    console.log(ids_list)
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
     sign_Axios.post(Controller.items.getitemsbyfilter, {
@@ -181,7 +184,7 @@ export default function Index() {
                 cover={item.fileurl}
                 itemname={item.itemname}
                 user={item.ownername}
-                status={parseInt(item.poolId) >= 0 && 'Listed'}
+                status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
                 poolType={item.poolType}
                 //  status={index % 2 === 0 ? 'Listed' : ''} 
                 poolInfo={item}

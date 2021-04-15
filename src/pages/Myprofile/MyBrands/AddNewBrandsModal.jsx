@@ -100,7 +100,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Only supports JPG, PNG, JPEG2000" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
                     setBtnLock(false)
                     setInputDisable(false)
                     /* setBtnText('Save'); */
@@ -133,7 +133,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                         .on('receipt', async (_, receipt) => {
                             // console.log('bid fixed swap receipt:', receipt)
                             dispatch({ type: 'TransferModal', TransferModal: "" });
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully build your brands" });
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
                             const brandAddress = await getCreatedBrand()
                             uploadData(imgUrl, brandAddress)
                         })
@@ -155,7 +155,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                         .on('receipt', async (_, receipt) => {
                             // console.log('bid fixed swap receipt:', receipt)
                             dispatch({ type: 'TransferModal', TransferModal: "" });
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "You have successfully build your brands" });
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
                             const brandAddress = await getCreatedBrand()
                             uploadData(imgUrl, brandAddress)
                         })
@@ -170,7 +170,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                 }
 
             }).catch(function (error) {
-                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Data update failed, please try again" });
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.DataUpdateFailed") });
                 setBtnLock(false)
                 setInputDisable(false)
                 /* setBtnText('Try Again') */

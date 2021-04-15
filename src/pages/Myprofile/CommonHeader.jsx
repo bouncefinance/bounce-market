@@ -211,13 +211,13 @@ export default function CommonHeader() {
                         {state.userInfo && state.userInfo.imgurl ? <img className="avaterImg" src={state.userInfo && state.userInfo.imgurl} alt="" /> :
                             <div className="avater"></div>}
                         <div className='account_box'>
-                            <h5>{state.userInfo.username || 'Unnamed User'}</h5>
+                            <h5>{state.userInfo.username || wrapperIntl("UnnamedUser")}</h5>
                             <div className='account'>
                                 <p>{account}</p>
                                 <CopyToClipboard
                                     text={account}
                                     onCopy={() => {
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("CopySuccessful") });
                                     }}>
                                     <img src={icon_copy} alt="" />
                                 </CopyToClipboard>

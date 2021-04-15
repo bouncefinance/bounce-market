@@ -133,13 +133,13 @@ export default function InfoBox({ setIsShowInfo, username, onBodyHandle, offBody
     return (
         <InfoBoxStyled>
             <div className="top_info">
-                <span>{username || 'Unnamed User'}</span>
+                <span>{username || wrapperIntl("UnnamedUser")}</span>
                 <div className='accout'>
                     <p>{account}</p>
                     <CopyToClipboard
                         text={account}
                         onCopy={() => {
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "Copy Successful" });
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("CopySuccessful") });
                         }}>
                         <img src={icon_copy} alt="" />
                     </CopyToClipboard>

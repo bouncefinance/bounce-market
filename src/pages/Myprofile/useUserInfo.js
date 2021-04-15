@@ -2,6 +2,7 @@ import { myContext } from '@/redux'
 import useAxios from '@/utils/useAxios'
 import { useActiveWeb3React } from '@/web3'
 import { useState, useEffect, useContext } from 'react'
+import useWrapperIntl from '@/locales/useWrapperIntl'
 
 export function useUserInfo() {
     const {state,dispatch} = useContext(myContext);
@@ -9,6 +10,7 @@ export function useUserInfo() {
     const [userInfo, setUserInfo] = useState({})
     const { sign_Axios } = useAxios()
     const { account } = useActiveWeb3React()
+    const { wrapperIntl } = useWrapperIntl()
 
     const getUserInfo = async () => {
         try {
@@ -37,14 +39,14 @@ export function useUserInfo() {
         }
         return await sign_Axios.post(requireUrl, params).then(res => {
             if (res.status === 200 && res.data.code === 1) {
-                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"Message upload success!"});
+                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage: wrapperIntl("userUserInfo.uploadSuccess")});
             }else{
-                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage:"Message upload success!"});
+                dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'success',modelMessage: wrapperIntl("userUserInfo.uploadSuccess")});
             }
             getUserInfo();
             return res;
         }).catch(()=>{
-            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage:"Only Supports JPG, PNG, JPEG2000"});
+            dispatch({type: 'Modal_Message', showMessageModal: true,modelType:'error',modelMessage: wrapperIntl("userUserInfo.OnlySupports")});
         })
     }
 

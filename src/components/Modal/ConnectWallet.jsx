@@ -9,6 +9,8 @@ import loading_dots from '@assets/images/loading/four-dots.svg'
 import { useWalletConnect } from '../../web3/useWalletConnect'
 import { useActiveWeb3React } from '@/web3'
 
+import useWrapperIntl from '@/locales/useWrapperIntl'
+
 const WalletModalStyled = styled.div`
     width: 520px;
     box-sizing: border-box; 
@@ -75,6 +77,7 @@ export default function ConnectWallet({ open, setOpen }) {
     const [isLoading, setIsLoading] = useState(false)
     const { onConnect } = useWalletConnect()
     const { active } = useActiveWeb3React()
+    const { wrapperIntl } = useWrapperIntl()
 
     useEffect(() => {
         if (!active) return
@@ -83,21 +86,21 @@ export default function ConnectWallet({ open, setOpen }) {
     }, [active])
 
     return (
-        <Modal open={open} setOpen={setOpen} header={{ title: 'Connect to a wallet', isClose: true }}>
+        <Modal open={open} setOpen={setOpen} header={{ title: wrapperIntl("ConnectWalletModal.ConnectWallet"), isClose: true }}>
             <WalletModalStyled>
                 {
                     isLoading
                     ?
                     <div className='loading'>
                         <img src={loading_dots} alt="" />
-                        <p>Please wait a little...</p>
+                        <p>{wrapperIntl("ConnectWalletModal.PleaseWait")}</p>
                     </div>
                     :
                     <div className="content">
                         <p>
-                            To get started, connect a wallet. Select an option below or hook in via your Metamask. Don’t have a clue what we’re talking about? Don’t worry. Click&nbsp;
-                            <a target="_blank" href="www.baidu.com">here</a>
-                            &nbsp;to learn.
+                            {wrapperIntl("ConnectWalletModal.ToGetStarted")}&nbsp;
+                            <a target="_blank" href="www.baidu.com">{wrapperIntl("ConnectWalletModal.here")}</a>
+                            &nbsp;{wrapperIntl("ConnectWalletModal.ToLearn")}
                         </p>
                         <ul>
                             <li onClick={() => {
