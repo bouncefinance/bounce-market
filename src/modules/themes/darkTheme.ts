@@ -34,6 +34,18 @@ export const darkTheme = createMuiTheme({
   overrides: {
     ...mainTheme.overrides,
 
+    MuiTypography: {
+      ...mainTheme.overrides?.MuiTypography,
+      root: {
+        ...mainTheme.overrides?.MuiTypography?.root,
+        '& a': {
+          '&:hover': {
+            color: PALETTE.text.primary,
+          },
+        },
+      },
+    },
+
     MuiButton: {
       ...mainTheme.overrides?.MuiButton,
 

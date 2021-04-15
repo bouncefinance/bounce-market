@@ -1,4 +1,7 @@
 {
+  "common": {
+    "read-more": "read more"
+  },
   "connect-wallet": {
     "custom-binancewallet": {
       "name": "Binance Chain",

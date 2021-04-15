@@ -88,7 +88,7 @@ export const mainTheme = createMuiTheme({
       '@global': {
         a: {
           color: 'inherit',
-          fontSize: 14,
+          fontSize: 'inherit',
           textDecoration: 'none',
           transition: 'color 0.2s',
 
@@ -108,6 +108,14 @@ export const mainTheme = createMuiTheme({
     },
 
     MuiTypography: {
+      root: {
+        '& a': {
+          '&:hover': {
+            color: PALETTE.text.primary,
+          },
+        },
+      },
+
       h1: {
         fontFamily: FONTS.secondary,
         fontWeight: 500,

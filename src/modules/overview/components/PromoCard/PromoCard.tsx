@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { t } from 'modules/i18n/utils/intl';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import { Link } from 'react-router-dom';
+import Truncate from 'react-truncate';
 import { usePromoCardStyles } from './PromoCardStyles';
 
 export interface IPromoCardProps {
@@ -32,6 +33,21 @@ export const PromoCard = ({
 }: IPromoCardProps) => {
   const classes = usePromoCardStyles();
 
+  const renderedText = (
+    <Typography color="textSecondary" className={classes.text}>
+      <Truncate
+        lines={3}
+        ellipsis={
+          <>
+            ... <Link to={href}>{t('common.read-more')}</Link>
+          </>
+        }
+      >
+        {text}
+      </Truncate>
+    </Typography>
+  );
+
   return (
     <div className={classNames(classes.root, className)}>
       <div className={classes.content}>
@@ -40,15 +56,12 @@ export const PromoCard = ({
           variant="h1"
           component={Link}
           to={href}
+          title={title}
         >
-          {title}
+          <Truncate lines={2}>{title}</Truncate>
         </Typography>
 
-        <Hidden smDown>
-          <Typography color="textSecondary" className={classes.text}>
-            {text}
-          </Typography>
-        </Hidden>
+        <Hidden smDown>{renderedText}</Hidden>
 
         <div className={classes.info}>
           <Link to={authorHref} className={classes.author}>
@@ -87,11 +100,7 @@ export const PromoCard = ({
         <div className="swiper-lazy-preloader" />
       </Box>
 
-      <Hidden mdUp>
-        <Typography color="textSecondary" className={classes.text}>
-          {text}
-        </Typography>
-      </Hidden>
+      <Hidden mdUp>{renderedText}</Hidden>
     </div>
   );
 };

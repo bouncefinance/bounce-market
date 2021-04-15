@@ -24,6 +24,7 @@
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-truncate": "^2.4.0",
     "react-uid": "^2.3.1",
     "redux-smart-actions": "^1.0.0",
     "reselect": "^4.0.0",
@@ -44,6 +45,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-truncate": "^2.3.3",
     "babel-loader": "8.1.0"
   },
   "scripts": {

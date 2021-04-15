@@ -116,7 +116,7 @@ export const Promo = () => {
       authorHref: INDEX_PATH,
     },
     {
-      title: 'test',
+      title: 'test adsad asdasdsad asdasdsada',
       text: 'adsad asdasdsad asdasdsada sdasdsadasd.',
       createdBy: 'erwtwretwet',
       avatar: 'https://via.placeholder.com/40x40',
