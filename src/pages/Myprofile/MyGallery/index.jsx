@@ -91,11 +91,18 @@ export default function Index() {
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
   useEffect(() => {
+    const penddingList = {}
+    // { tokenId: 17031, isPendding: true }
+
     if (!account || myTradeData.length === 0 || myNftData.length === 0) return
+
+
+
     const nft721_ids = myNftData.nft721Items.map(item => item.tokenId);
     const nft1155Items_ids = myNftData.nft1155Items.map(item => item.tokenId);
     const trade721_ids = myTradeData.tradePools.map(item => item.tokenId);
-    const trade1155Items_ids = myTradeData.tradeAuctions.map(item => item.tokenId);
+    const trade1155Items_ids = myTradeData.tradeAuctions.map(item => item.tokenId)
+
 
 
     const tradePools = myTradeData.tradePools.map(item => {
@@ -113,9 +120,17 @@ export default function Index() {
       }
     }).filter(item => item.state !== 1);
 
+
+
+
     const ids_list = nft721_ids.concat(nft1155Items_ids).concat(trade721_ids).concat(trade1155Items_ids)
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
+
+    if (penddingList) {
+      ids_list.unshift(penddingList.tokenId)
+      pools.unshift(penddingList)
+    }
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       category: '',
@@ -132,10 +147,11 @@ export default function Index() {
               poolId: item.poolId,
               price: item.price,
               token1: item.token1,
-              createTime: item.createTime
+              createTime: item.createTime,
+              isPendding: item.isPendding
             }
           }).filter(item => item.fileurl)
-          const result = list.sort((a, b) => b.createTime - a.createTime)
+          const result = list.sort((a, b) => b.tokenId - a.tokenId)
           setItemList(result);
           setStatusList(result);
           setLoading(false)
