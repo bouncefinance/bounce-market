@@ -16,6 +16,7 @@ export const Overview = () => {
       <ThemeProvider theme={darkTheme}>
         <Promo />
       </ThemeProvider>
+
       <Movers />
     </>
   );

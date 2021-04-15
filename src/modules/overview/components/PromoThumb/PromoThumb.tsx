@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { Img } from 'modules/uiKit/Img';
-import Truncate from 'react-truncate';
 import { usePromoThumbStyles } from './PromoThumbStyles';
 
 export type PromoThumbProps = {
@@ -17,7 +16,7 @@ export const PromoThumb = ({ img, title, className }: PromoThumbProps) => {
       <Img src={img} ratio="1x1" className={classes.imgWrap} loading="lazy" />
 
       <div className={classes.title} title={title}>
-        <Truncate lines={2}>{title}</Truncate>
+        {title}
       </div>
     </div>
   );
