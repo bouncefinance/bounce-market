@@ -87,13 +87,13 @@ export const mainTheme = createMuiTheme({
     MuiCssBaseline: {
       '@global': {
         a: {
-          color: PALETTE.text.primary,
+          color: 'inherit',
           fontSize: 14,
           textDecoration: 'none',
           transition: 'color 0.2s',
 
           '&:hover': {
-            color: PALETTE.text.primary,
+            color: 'inherit',
           },
         },
       },
@@ -108,10 +108,29 @@ export const mainTheme = createMuiTheme({
     },
 
     MuiTypography: {
+      h1: {
+        fontFamily: FONTS.secondary,
+        fontWeight: 500,
+        fontSize: 36,
+      },
+
       h2: {
         fontFamily: FONTS.secondary,
         fontWeight: 600,
         fontSize: 32,
+      },
+
+      body1: {
+        fontSize: 14,
+
+        [defaultTheme.breakpoints.up('md')]: {
+          fontSize: 16,
+        },
+      },
+
+      body2: {
+        fontSize: 13,
+        fontWeight: 500,
       },
     },
 

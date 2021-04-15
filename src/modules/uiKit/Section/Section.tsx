@@ -1,13 +1,42 @@
 import { Box, BoxProps } from '@material-ui/core';
+import classNames from 'classnames';
+import {
+  OFFSET_Y_DESKTOP,
+  OFFSET_Y_MOBILE,
+  useSectionStyles,
+} from './SectionStyles';
 
-interface ISectionProps extends BoxProps {}
+export interface ISectionProps extends BoxProps {
+  stackUp?: boolean;
+  stackDown?: boolean;
+  offsetSize?: 'normal' | 'big';
+}
 
 /**
  * You can use the same props as [Box](https://material-ui.com/components/Box/)
  */
-export const Section = ({ children, ...restProps }: ISectionProps) => {
+export const Section = ({
+  children,
+  className,
+  stackUp = false,
+  stackDown = false,
+  offsetSize = 'normal',
+  ...restProps
+}: ISectionProps) => {
+  const classes = useSectionStyles();
+
   return (
-    <Box py={{ xs: 5, md: 8 }} {...restProps} component="section">
+    <Box
+      className={classNames(
+        className,
+        classes.section,
+        stackUp && classes.stackUp,
+        stackDown && classes.stackDown,
+      )}
+      py={{ xs: OFFSET_Y_MOBILE, md: OFFSET_Y_DESKTOP }}
+      {...restProps}
+      component="section"
+    >
       {children}
     </Box>
   );

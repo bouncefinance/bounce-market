@@ -32,7 +32,7 @@ export const Img = ({
   src,
   srcset,
   objectFit = 'cover',
-  alt = 'image',
+  alt = '',
   title,
   style,
   loading,

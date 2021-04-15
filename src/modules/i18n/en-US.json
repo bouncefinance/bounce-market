@@ -20,5 +20,8 @@
       "name": "Huobi Wallet",
       "description": "Multi-currency support, practical and convenient"
     }
+  },
+  "promo": {
+    "created-by": "Created by"
   }
 }

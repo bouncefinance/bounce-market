@@ -33,17 +33,6 @@ export const darkTheme = createMuiTheme({
   palette: PALETTE as PaletteOptions,
   overrides: {
     ...mainTheme.overrides,
-    MuiCssBaseline: {
-      '@global': {
-        a: {
-          color: PALETTE.text.primary,
-
-          '&:hover': {
-            color: PALETTE.text.primary,
-          },
-        },
-      },
-    },
 
     MuiButton: {
       ...mainTheme.overrides?.MuiButton,

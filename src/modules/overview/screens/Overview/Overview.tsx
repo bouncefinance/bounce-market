@@ -1,9 +1,10 @@
-import { Container, Typography } from '@material-ui/core';
-import { Section } from 'modules/uiKit/Section';
+import { ThemeProvider } from '@material-ui/styles';
+import { MarketplaceActions } from 'modules/marketplace/marketplaceActions';
+import { Movers } from 'modules/overview/components/Movers';
+import { Promo } from 'modules/overview/components/Promo';
+import { darkTheme } from 'modules/themes/darkTheme';
 import { useEffect } from 'react';
-import { useAppDispatch } from '../../../../store/useAppDispatch';
-import { t } from '../../../i18n/utils/intl';
-import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
+import { useAppDispatch } from 'store/useAppDispatch';
 
 export const Overview = () => {
   const dispatch = useAppDispatch();
@@ -11,10 +12,11 @@ export const Overview = () => {
     dispatch(MarketplaceActions.fetchMarketplaceItems());
   }, [dispatch]);
   return (
-    <Section>
-      <Container>
-        <Typography>{t('foobar')}</Typography>
-      </Container>
-    </Section>
+    <>
+      <ThemeProvider theme={darkTheme}>
+        <Promo />
+      </ThemeProvider>
+      <Movers />
+    </>
   );
 };
