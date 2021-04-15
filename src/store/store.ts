@@ -11,6 +11,7 @@ import { createDriver as createAxiosDriver } from '@redux-requests/axios';
 import axios from 'axios';
 import { BASE_URL } from '../modules/common/conts';
 import { AccountActions } from '../modules/account/store/accountActions';
+import { notificationSlice } from '../modules/notification/store/notificationSlice';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
   driver: {
@@ -64,6 +65,7 @@ export const store = configureStore({
     i18n: i18nSlice.reducer,
     requests: requestsReducer,
     router: connectRouter(historyInstance),
+    notifications: notificationSlice.reducer,
   },
   middleware: [
     ...requestsMiddleware,
