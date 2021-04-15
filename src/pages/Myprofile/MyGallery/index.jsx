@@ -97,6 +97,7 @@ export default function Index() {
     const trade721_ids = myTradeData.tradePools.map(item => item.tokenId);
     const trade1155Items_ids = myTradeData.tradeAuctions.map(item => item.tokenId);
 
+
     const tradePools = myTradeData.tradePools.map(item => {
       return {
         ...item,
