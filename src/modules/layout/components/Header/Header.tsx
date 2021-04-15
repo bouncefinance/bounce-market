@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { getTheme } from 'modules/common/utils/getTheme';
 import { Themes } from 'modules/themes/types';
-import { useIsXLUp } from '../../../common/hooks/useTheme';
+import { useIsXLUp } from 'modules/themes/useTheme';
 import { Button } from '../../../uiKit/Button';
 import { HeaderLinks, HeaderLinksSecondary } from '../HeaderLinks';
 import { Logo } from '../Logo';
@@ -51,12 +51,12 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
 
       <HeaderLinksSecondary />
 
-      <Button className={classes.btnCreate} color="default">
+      <Button className={classes.btnCreate} variant="outlined" color="default">
         Create
       </Button>
 
       {!isConnected && (
-        <Button variant="outlined" onClick={handleConnect}>
+        <Button onClick={handleConnect}>
           Connect Wallet
         </Button>
       )}
@@ -126,9 +126,8 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
                   <Box mb={3}>
                     <Button
                       className={classes.btnCreate}
-                      color="default"
-                      variant="outlined"
                       size="large"
+                      variant="outlined"
                       fullWidth
                     >
                       Create
@@ -136,12 +135,7 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
                   </Box>
 
                   {!isConnected && (
-                    <Button
-                      size="large"
-                      variant="outlined"
-                      color="default"
-                      fullWidth
-                    >
+                    <Button size="large" fullWidth>
                       Connect Wallet
                     </Button>
                   )}

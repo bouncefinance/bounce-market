@@ -1,9 +1,9 @@
-import { Container, Typography } from '@material-ui/core';
-import { Section } from 'modules/uiKit/Section';
-import * as React from 'react';
-import { useEffect } from 'react';
-import { t } from '../../../i18n/utils/intl';
+import { ThemeProvider } from '@material-ui/styles';
 import { useDispatchRequest } from '@redux-requests/react';
+import { Movers } from 'modules/overview/components/Movers';
+import { Promo } from 'modules/overview/components/Promo';
+import { darkTheme } from 'modules/themes/darkTheme';
+import React, { useEffect } from 'react';
 import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
 
 export const Overview = () => {
@@ -21,10 +21,12 @@ export const Overview = () => {
   }, [dispatchRequest]);
 
   return (
-    <Section>
-      <Container>
-        <Typography>{t('foobar')}</Typography>
-      </Container>
-    </Section>
+    <>
+      <ThemeProvider theme={darkTheme}>
+        <Promo />
+      </ThemeProvider>
+
+      <Movers />
+    </>
   );
 };

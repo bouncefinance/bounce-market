@@ -1,7 +1,7 @@
-import { ButtonProps, SvgIcon } from '@material-ui/core';
+import { ButtonProps } from '@material-ui/core';
 import classNames from 'classnames';
+import { SearchIcon } from 'modules/components/Icons/SearchIcon';
 import { Button } from 'modules/uiKit/Button';
-import { ReactComponent as SearchIcon } from './assets/search.svg';
 import { useSearchTriggerStyles } from './SearchTriggerStyles';
 
 interface ISearchTriggerProps extends ButtonProps {
@@ -25,11 +25,7 @@ export const SearchTrigger = ({
       )}
       variant="text"
     >
-      <SvgIcon
-        component={SearchIcon}
-        className={classes.icon}
-        viewBox="0 0 24 24"
-      />
+      <SearchIcon className={classes.icon} />
     </Button>
   );
 };

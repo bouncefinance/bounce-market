@@ -1,4 +1,7 @@
 {
+  "common": {
+    "read-more": "read more"
+  },
   "connect-wallet": {
     "custom-binancewallet": {
       "name": "Binance Chain",
@@ -20,5 +23,8 @@
       "name": "Huobi Wallet",
       "description": "Multi-currency support, practical and convenient"
     }
+  },
+  "promo": {
+    "created-by": "Created by"
   }
 }
