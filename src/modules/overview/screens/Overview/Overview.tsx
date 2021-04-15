@@ -1,16 +1,29 @@
+import { Container, Typography } from '@material-ui/core';
+import { Section } from 'modules/uiKit/Section';
 import { ThemeProvider } from '@material-ui/styles';
-import { MarketplaceActions } from 'modules/marketplace/marketplaceActions';
 import { Movers } from 'modules/overview/components/Movers';
 import { Promo } from 'modules/overview/components/Promo';
 import { darkTheme } from 'modules/themes/darkTheme';
+import React from 'react';
 import { useEffect } from 'react';
-import { useAppDispatch } from 'store/useAppDispatch';
+import { t } from '../../../i18n/utils/intl';
+import { useDispatchRequest } from '@redux-requests/react';
+import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
 
 export const Overview = () => {
-  const dispatch = useAppDispatch();
+  const dispatchRequest = useDispatchRequest();
   useEffect(() => {
-    dispatch(MarketplaceActions.fetchMarketplaceItems());
-  }, [dispatch]);
+    dispatchRequest(MarketplaceActions.fetchPools()).then(({ data }) => {
+      if (data) {
+        const ids = data.tradePools
+          .concat(data.tradeAuctions)
+          .map(item => item.tokenId);
+
+        dispatchRequest(MarketplaceActions.fetchItems({ ids }));
+      }
+    });
+  }, [dispatchRequest]);
+
   return (
     <>
       <ThemeProvider theme={darkTheme}>

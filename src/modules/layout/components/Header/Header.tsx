@@ -29,7 +29,9 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
     toggleNav,
     searchShowed,
     toggleSearch,
+    handleConnect,
   } = useHeader();
+
   const classes = useHeaderStyles();
 
   const isXLUp = useIsXLUp();
@@ -53,7 +55,11 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
         Create
       </Button>
 
-      {!isConnected && <Button>Connect Wallet</Button>}
+      {!isConnected && (
+        <Button onClick={handleConnect}>
+          Connect Wallet
+        </Button>
+      )}
 
       {isConnected && renderedWallet}
     </>

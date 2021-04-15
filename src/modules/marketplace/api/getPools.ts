@@ -15,9 +15,8 @@ interface IApiTradeAuction {
 }
 
 interface ITradeAuction {
-  amountMin1: BigNumber;
+  price: BigNumber;
   createTime: Date;
-  lastestBidAmount: BigNumber;
   poolId: number;
   state: number;
   token1: string;
@@ -26,9 +25,12 @@ interface ITradeAuction {
 
 function mapTradeAuction(data: IApiTradeAuction): ITradeAuction {
   return {
-    amountMin1: new BigNumber(Web3.utils.fromWei(data.amountMin1)),
     createTime: new Date(data.createTime),
-    lastestBidAmount: new BigNumber(Web3.utils.fromWei(data.lastestBidAmount)),
+    price: new BigNumber(
+      Web3.utils.fromWei(
+        data.lastestBidAmount !== '0' ? data.lastestBidAmount : data.amountMin1,
+      ),
+    ),
     poolId: data.poolId,
     state: data.state,
     token1: data.token1,
@@ -87,16 +89,29 @@ interface IApiResponse {
   tradePools: IApiTradePool[];
 }
 
-export async function getMarketplaceItems(): Promise<{
+const sortByTime = (
+  a: Pick<IApiTradeAuction, 'createTime'>,
+  b: Pick<IApiTradeAuction, 'createTime'>,
+) => b.createTime - a.createTime;
+
+export interface IPoolsData {
   tradeAuctions: ITradeAuction[];
   tradePools: ITradePool[];
-}> {
+}
+
+export async function getPools(): Promise<IPoolsData> {
   const query = await getApolloClient().query<IApiResponse>({
     query: QueryTradePools,
   });
 
   return {
-    tradeAuctions: query.data.tradeAuctions.map(mapTradeAuction),
-    tradePools: query.data.tradePools.map(mapTradePool),
+    tradeAuctions: query.data.tradeAuctions
+      .slice()
+      .sort(sortByTime)
+      .map(mapTradeAuction),
+    tradePools: query.data.tradePools
+      .slice()
+      .sort(sortByTime)
+      .map(mapTradePool),
   };
 }

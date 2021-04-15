@@ -126,6 +126,6 @@ export async function connectWallet() {
   });
 
   const provider = await modal.connect();
-
-  return new Web3(provider);
+  const web3 = new Web3(provider);
+  return [web3, provider] as [Web3, any];
 }
