@@ -9,6 +9,11 @@ const en_US = {
     CopySuccessful: 'Copy Successful',
     TryAgain: 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
     
+    userUserInfo: {
+        "uploadSuccess": "Information upload success!",
+        "OnlySupports": "Only Supports JPG, PNG, JPEG2000",
+    },
+
     ErrorMsg: {
         "required": "This field is required and cannot be blank",
         "regular": "This is not in conformity with the standard, please fill in again",
@@ -26,6 +31,7 @@ const en_US = {
         setting: 'Account Settings',
         search: 'Search',
         search_p: 'Search objects, items, art',
+        SelectBSC: "Please select BSC network.",
     },
 
     'pages.buy.Share': 'Share',
@@ -66,6 +72,8 @@ const en_US = {
     'pages.buy.AreYouSure': 'Are you sure to cancel?',
     'pages.buy.Yes': 'Yes',
     'pages.buy.No': 'No',
+    'pages.buy.TransactionSuccess': 'The transaction has been successfully completed！',
+    'pages.buy.AuctionCancelled': 'The auction bill can only be cancelled when it expires',
 
     'pages.buy.TradeTable.Event': 'Event',
     'pages.buy.TradeTable.Quantity': 'Quantity',
@@ -79,6 +87,7 @@ const en_US = {
     'pages.buy.TradeTable.Created': 'Created',
     'pages.buy.TradeTable.Listed': 'Listed',
 
+    "UIKit.Input.Upload.infoTip.FormatIncorrect": 'The file format you selected is incorrect',
     "UIKit.Input.Upload.infoTip.uploadImage": 'upload Image',
     "UIKit.Input.Upload.infoTip.requirement1": 'Supports JPG, PNG, JPEG2000',
     "UIKit.Input.Upload.infoTip.requirement2": 'no more than 100MB, 262*262 Reccomended',
@@ -275,6 +284,7 @@ const en_US = {
         "SettingAccountModal.ShortBio": "Short Bio (Optional)",
         "SettingAccountModal.ShortBioPlaceholder": "Describe your bio",
         "SettingAccountModal.Cancel": "Cancel",
+        "SettingAccountModal.DataUpdateFailed": 'Data update failed, please try again',
 
         'MyGallery.GenerateNewNFTModal.GenerateNewNFT': 'Generate New NFT',
         'MyGallery.GenerateNewNFTModal.Name': 'Name',
@@ -289,7 +299,7 @@ const en_US = {
         'MyGallery.GenerateNewNFTModal.Supply': 'Supply',
         'MyGallery.GenerateNewNFTModal.TryAgain': 'Try Again',
         'MyGallery.GenerateNewNFTModal.UploadingData': 'Uploading Data...',
-        'MyGallery.GenerateNewNFTModal.SuccessfullyGenerate': "You have successfully generate your NFTs",
+        'MyGallery.GenerateNewNFTModal.SuccessfullyGenerate': "Congratulations. Your NFTs have been generated.",
         'MyGallery.GenerateNewNFTModal.TryAgainNotice': 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
         
         "MyGallery.MyNFT.DataUpdateFailed": 'Data update failed, please try again',
@@ -371,7 +381,7 @@ const en_US = {
 
         /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */
         "MyBrands.AddNewItemModal.OnlySupports": "Only supports JPG, PNG, JPEG2000",
-        'MyBrands.AddNewItemModal.SuccessfullyGenerate': "You have successfully generate your NFTs",
+        'MyBrands.AddNewItemModal.SuccessfullyGenerate': "Congratulations. Your NFTs have been generated.",
         'MyBrands.AddNewItemModal.TryAgainNotice': 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
         "MyBrands.AddNewItemModal.UploadingData": "Uploading Data ...",
         "MyBrands.AddNewItemModal.Submit": "Submit",

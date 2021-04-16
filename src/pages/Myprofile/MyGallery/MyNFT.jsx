@@ -227,11 +227,11 @@ function MyNFT() {
 						setImgURL(NFTInfoList.fileurl);
 						setDescription(NFTInfoList.description || "")
 					} else {
-						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
+						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
 					}
 				})
 				.catch((err) => {
-					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
+					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
 				});
 		};
 		if (!active || !nftId) return;
