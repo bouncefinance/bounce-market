@@ -9,6 +9,8 @@ const en_US = {
     CopySuccessful: 'Copy Successful',
     TryAgain: 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
     "Code-1": 'Please Connet your wallet or sign again.',
+    "Re-sign": "Please sign again",
+    "ConnectWallet": "Please connect your wallet",
     
     userUserInfo: {
         "uploadSuccess": "Information upload success!",

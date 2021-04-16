@@ -118,6 +118,9 @@ export default function ModalMessage() {
     ];
 
       const result = await ethereum.request({method: 'wallet_addEthereumChain', params: BSCChainInfo}).catch()
+      console.log("switch chain")
+      window.location.reload()
+
       if (result) {
           console.log(result)
       }
@@ -149,9 +152,9 @@ export default function ModalMessage() {
 		}
 	}, [state.showMessageModal]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("state", state)
-  }, [state])
+  }, [state]) */
 
 	return (
 		<div className={classes.root} style={{ position: bodyOverflow }}>
