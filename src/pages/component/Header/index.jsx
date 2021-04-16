@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import styled from 'styled-components'
 import { Link, useHistory } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
@@ -122,7 +122,7 @@ export default function Index() {
     // const { dispatch } = useContext(myContext);
     /* const [isFangible, setIsFangible] = useState(false) */
     const { wrapperIntl } = useWrapperIntl()
-
+    const initialRender = useRef(true);
 
     const Nav_list = [{
         name: wrapperIntl('header.home'),
@@ -217,13 +217,63 @@ export default function Index() {
     }, [])
 
     useEffect(() => {
-        if (!active) return
+        console.log("active:" + active)
         console.log("chainId:" + chainId)
-        if (chainId && (chainId !== 56)) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Please select BSC network.", modelUrlMessage: "How to connect MetaMask to BSC.", modelOpenUrl: "https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain", modelTimer: 24 * 60 * 60 * 1000 });
-        } else {
-            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+        console.log("initialRender.current 1", initialRender.current)
+
+        if(initialRender.current) {
+            initialRender.current = false;
+            console.log("0000000000")
         }
+        else {
+            console.log("initialRender.current 2", initialRender.current)
+            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+
+            if (active && chainId === 56) {
+                console.log("111111111111")
+                getUserInfo();
+                return
+            }
+
+            if (!active) {
+                console.log("2222222222")
+                dispatch({
+                    type: 'Modal_Message',
+                    showMessageModal: true,
+                    modelType: 'error',
+                    modelMessage: wrapperIntl("ConnectWallet"),
+                    modelTimer: 24 * 60 * 60 * 1000,
+                    canClose: false, 
+                });
+            }
+            else {
+                console.log("333333333")
+                dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+            
+                if (chainId && (chainId !== 56)) {
+                    console.log("444444444")
+                    dispatch({
+                        type: 'Modal_Message',
+                        showMessageModal: true,
+                        modelType: 'error',
+                        modelMessage: wrapperIntl("header.SelectBSC"),
+                        subsequentActionType: "connectToBSCChain",
+                        modelUrlMessage: wrapperIntl("header.SwitchToBSC"),
+                        modelTimer: 24 * 60 * 60 * 1000,
+                        canClose: false, 
+                    });
+                } 
+                else {
+                    console.log("555555555555")
+                    dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+                }
+            }
+            console.log("666666666666")
+            
+            console.log("end active:" + active)
+            console.log("end chainId:" + chainId)
+        }
+
         getUserInfo();
         // eslint-disable-next-line
     }, [account, chainId, active])

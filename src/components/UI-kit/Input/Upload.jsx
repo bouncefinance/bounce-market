@@ -149,7 +149,7 @@ export default function Upload({
             formData.append('filename', file)
             onFileChange && onFileChange(formData, file)
         } else {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "The file format you selected is incorrect" });
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") });
         }
     }
 
