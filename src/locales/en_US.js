@@ -31,7 +31,7 @@ const en_US = {
         setting: 'Account Settings',
         search: 'Search',
         search_p: 'Search objects, items, art',
-        SelectBSC: "Please select BSC network.",
+        SelectBSC: "Please select BSC or Heco network.",
     },
 
     'pages.buy.Share': 'Share',
