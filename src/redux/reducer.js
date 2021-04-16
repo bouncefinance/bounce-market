@@ -17,7 +17,17 @@ export const reducer = (state, action) => {
                 TransferModal: action.value
             }
         case 'Modal_Message':
-            return { ...state, showMessageModal: action.showMessageModal,modelType: action.modelType,modelMessage:action.modelMessage,modelUrlMessage:action.modelUrlMessage,modelOpenUrl:action.modelOpenUrl,modelTimer:action.modelTimer }
+            return {
+                ...state,
+                showMessageModal: action.showMessageModal,
+                modelType: action.modelType,
+                modelMessage:action.modelMessage,
+                modelUrlMessage:action.modelUrlMessage,
+                modelOpenUrl:action.modelOpenUrl,
+                modelTimer:action.modelTimer,
+                subsequentActionType:action.subsequentActionType,
+                canClose: action.canClose===false ? action.canClose : true,
+            }
         case 'Error_Notification':
             return { ...state, showErrorNotificationModal: action.showErrorNotificationModal}
         case 'Token':

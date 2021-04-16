@@ -29,6 +29,11 @@ export default function Search({ placeholder, value, onChange }) {
         const value = e.target.value && e.target.value.toLowerCase();
         search = value
     }
+    const onInput = (e) => {
+        // console.log(e.target.value)
+        handleChange(e)
+        onSearch()
+    }
     const onSearch = async () => {
         // console.log('---search--', search)
         if (inputTarget) {
@@ -143,46 +148,52 @@ export default function Search({ placeholder, value, onChange }) {
             className="search-input"
             value={value}
             onChange={handleChange}
+            onInput={onInput}
         />
         <Button onClick={onSearch} primary={true}>{wrapperIntl('header.search')}</Button>
         <div className="search-inner">
             <div style={inSearch.length <= 0 ? { minHeight: '0px', height: '0px', width: '0px', padding: '0px', opacity: 0, overflow: 'hidden' } : { minHeight: '100px', width: '483px' }} className="search-info">
-
-                <div className="search-result-title">Items</div>
-                {searchLoding ? <Loding /> : <div className="row-box">
-                    {data.items?.map(({ item, pool }, key) => <Link key={key} onClick={() => onItem()} to={`/Marketplace/FineArts/${pool.poolType}/${pool.poolId}`} className="search-result-item-row flex">
-                        <AutoStretchBaseWidthOrHeightImg width={41} height={41} src={item.fileurl} />
-                        <div className="row-right">
-                            <p className="item-name">{item.itemname}</p>
-                            <p>
-                                <span className="coin">{pool.price} {pool.symbol}</span>
-                                <span className="price">({pool.usdtPrice}$)</span>
-                            </p>
-                        </div>
-                    </Link>)}
-                    {data.items?.length === 0 && <DataNull />}
-                </div>}
-                <div className="search-result-title">Brands</div>
-                {searchLoding ? <Loding /> : <div className="row-box">
-                    {data.brands?.map((item, key) => <Link key={key} onClick={() => onItem()} to={`/AirHome/${item.id}/${item.standard}/FineArts`} className="search-result-brands-row flex flex-center-y">
-                        <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl} />
-                        <div className="brand-name">{item.brandname}</div>
-                    </Link>)}
-                    {data.brands?.length === 0 && <DataNull />}
-                </div>}
-                <div className="search-result-title">Users</div>
-                {searchLoding ? <Loding /> : <div className="row-box">
-                    {data.account?.map((item, key) => <Link key={key} onClick={() => onItem()} style={item?.hasBrand ? { opacity: '1' } : { opacity: '0.5', cursor: 'default' }} to={item?.hasBrand ? `/AirHome/${item.id}/1/FineArts` : void 0} className="search-result-users-row flex">
-                        <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl} />
-                        <div className="row-right">
-                            <p className="user-name">{item.username}</p>
-                            <p>
-                                <span className="account-address">{item.accountaddress}</span>
-                            </p>
-                        </div>
-                    </Link>)}
-                    {data.account?.length === 0 && <DataNull />}
-                </div>}
+                {searchLoding ? <Loding /> : data.items?.length > 0 && <>
+                    <div className="search-result-title">Items</div>
+                    <div className="row-box">
+                        {data.items?.map(({ item, pool }, key) => <Link key={key} onClick={() => onItem()} to={`/Marketplace/FineArts/${pool.poolType}/${pool.poolId}`} className="search-result-item-row flex">
+                            <AutoStretchBaseWidthOrHeightImg width={41} height={41} src={item.fileurl} />
+                            <div className="row-right">
+                                <p className="item-name">{item.itemname}</p>
+                                <p>
+                                    <span className="coin">{pool.price} {pool.symbol}</span>
+                                    <span className="price">({pool.usdtPrice}$)</span>
+                                </p>
+                            </div>
+                        </Link>)}
+                        {data.items?.length === 0 && <DataNull />}
+                    </div>
+                </>}
+                {searchLoding ? <Loding /> : data.brands?.length > 0 && <>
+                    <div className="search-result-title">Brands</div>
+                    <div className="row-box">
+                        {data.brands?.map((item, key) => <Link key={key} onClick={() => onItem()} to={`/AirHome/${item.id}/${item.standard}/FineArts`} className="search-result-brands-row flex flex-center-y">
+                            <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl} />
+                            <div className="brand-name">{item.brandname}</div>
+                        </Link>)}
+                        {data.brands?.length === 0 && <DataNull />}
+                    </div>
+                </>}
+                {searchLoding ? <Loding /> : data.account?.length > 0 && <>
+                    <div className="search-result-title">Users</div>
+                    <div className="row-box">
+                        {data.account?.map((item, key) => <Link key={key} onClick={() => onItem()} style={item?.hasBrand ? { opacity: '1' } : { opacity: '0.5', cursor: 'default' }} to={item?.hasBrand ? `/AirHome/${item.id}/1/FineArts` : void 0} className="search-result-users-row flex">
+                            <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl } />
+                            <div className="row-right">
+                                <p className="user-name">{item.username}</p>
+                                <p>
+                                    <span className="account-address">{item.accountaddress}</span>
+                                </p>
+                            </div>
+                        </Link>)}
+                        {data.account?.length === 0 && <DataNull />}
+                    </div>
+                </>}
             </div>
         </div>
     </SearchBoxStyled>
@@ -191,7 +202,7 @@ export default function Search({ placeholder, value, onChange }) {
 
 const Loding = () => {
     return <>
-        <Skeleton variant="rect" width={210} height={118} />
+        <Skeleton style={{marginTop: 10}} variant="rect" width={210} height={118} />
     </>
 }
 const DataNull = () => {

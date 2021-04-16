@@ -61,7 +61,7 @@ const UploadStyled = styled.div`
     }
 `
 
-export default function Upload ({
+export default function Upload({
     type = 'image',
     /* infoTitle: defaltInfoTitle = 'upload Image', */
     onFileChange,
@@ -72,9 +72,9 @@ export default function Upload ({
     height = '160px',
 }) {
     const { dispatch } = useContext(myContext);
-    
+
     const { wrapperIntl } = useWrapperIntl()
-    
+
     const [coverSrc, setCoverSrc] = useState(upload_img)
     /* const [infoTitle, setInfoTitle] = useState(defaltInfoTitle) */
     const [infoTitle, setInfoTitle] = useState(wrapperIntl("UIKit.Input.Upload.infoTip.uploadImage"))
@@ -86,10 +86,11 @@ export default function Upload ({
 
 
     useEffect(() => {
+        // console.log(type)
         switch (type) {
-            case 'image':
+            case 'Images':
                 setCoverSrc(defaultValue || upload_img)
-                setInfoTitle(infoTitle || 
+                setInfoTitle(infoTitle ||
                     wrapperIntl("UIKit.Input.Upload.infoTip.uploadImage"))
                 setInfoTip([
                     wrapperIntl("UIKit.Input.Upload.infoTip.image.requirement1"),
@@ -97,7 +98,7 @@ export default function Upload ({
                 ])
                 setFileLimit('image/*')
                 break;
-            case 'video':
+            case 'Videos':
                 setCoverSrc(defaultValue || upload_video)
                 setInfoTitle(infoTitle || 'Upload File')
                 setInfoTip([
@@ -119,13 +120,13 @@ export default function Upload ({
                 return
         }
         // eslint-disable-next-line
-    }, [])
+    }, [type])
 
     const handelFileChange = (e) => {
         const file = e.target.files[0]
         // console.log(file)
         if (!file) return
-        if (file.type === 'image/png' || file.type === 'image/jpg'|| file.type === 'image/jpeg' || file.type === 'image/gif') {
+        if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/gif') {
             let reader = new FileReader();  //调用FileReader
             reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
             reader.onload = function (evt) {   //读取操作完成时触发。
@@ -136,6 +137,17 @@ export default function Upload ({
             formData.append('filename', file)
             onFileChange && onFileChange(formData, file)
             // setFormData(formData)
+        } else if (file.type.includes('video/')) {
+            console.log(file)
+            let reader = new FileReader();  //调用FileReader
+            reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
+            reader.onload = function (evt) {   //读取操作完成时触发。
+                // setCoverSrc(evt.target.result)  //将img标签的src绑定为DataURL
+                setInfoTitle(file.name)
+            }
+            let formData = new FormData()
+            formData.append('filename', file)
+            onFileChange && onFileChange(formData, file)
         } else {
             dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") });
         }

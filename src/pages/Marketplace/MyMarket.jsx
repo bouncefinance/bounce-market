@@ -145,7 +145,7 @@ export default function MyMarket() {
   const [poolIdList, setPoolIdList] = useState(null);
   const [tradeInfo, setTradeInfo] = useState(null);
 
-  type = 'Image'
+  type = ''
 
   const NavList = [
     {
@@ -258,6 +258,11 @@ export default function MyMarket() {
         if (res.status === 200 && res.data.code === 1) {
           const claimList = claimPoolData.map(pool => {
             const item = res.data.data.find(r => r.id === pool.tokenId);
+            if (item.id === 17092) {
+              item.category = 'video'
+            } else {
+              item.category = 'image'
+            }
             return {
               ...item,
               poolType: pool.poolType,
@@ -270,6 +275,11 @@ export default function MyMarket() {
 
           const soldList = soldPoolData.map(pool => {
             const item = res.data.data.find(r => r.id === pool.tokenId);
+            if (item.id === 17092) {
+              item.category = 'video'
+            } else {
+              item.category = 'image'
+            }
             return {
               ...item,
               poolType: pool.poolType,
@@ -355,6 +365,7 @@ export default function MyMarket() {
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
+                poolInfo={item}
               />
             </li>
           })}
