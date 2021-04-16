@@ -97,7 +97,13 @@ export default function useAxios() {
         }
         let res = await axios.post(Base_URL + path, params, config)
         if (res.status === 200 && res.data.code === -1) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
+            dispatch({
+                type: 'Modal_Message',
+                showMessageModal: true,
+                modelType: 'error',
+                modelMessage: wrapperIntl("Code-1"),
+                modelTimer: 24 * 60 * 60 * 1000,
+            });
             // history.push("/Home")
         // token 无效过期
         // return alert('授权失效，请刷新页面，重新授权签名')

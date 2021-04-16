@@ -8,6 +8,7 @@ const en_US = {
     Unlisted: "Unlisted",
     CopySuccessful: 'Copy Successful',
     TryAgain: 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
+    "Code-1": 'Please Connet your wallet or sign again.',
     
     userUserInfo: {
         "uploadSuccess": "Information upload success!",
@@ -32,6 +33,7 @@ const en_US = {
         search: 'Search',
         search_p: 'Search objects, items, art',
         SelectBSC: "Please select BSC network.",
+        SwitchToBSC: "Click here to switch to BSC network.",
     },
 
     'pages.buy.Share': 'Share',

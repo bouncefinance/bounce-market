@@ -217,12 +217,26 @@ export default function Index() {
     }, [])
 
     useEffect(() => {
-        if (!active) return
+        /* if (!active) return  */
+        console.log("active:" + active)
         console.log("chainId:" + chainId)
-        if (chainId && (chainId !== 56)) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("header.SelectBSC"), modelUrlMessage: "How to connect MetaMask to BSC.", modelOpenUrl: "https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain", modelTimer: 24 * 60 * 60 * 1000 });
-        } else {
+        if (chainId && (chainId === 56)) {
+        /* if (chainId === 56) { */
+            alert("!!!!!")
             dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+        } 
+        else {
+            /* dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("header.SelectBSC"), modelUrlMessage: "How to connect MetaMask to BSC.", modelOpenUrl: "https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain", modelTimer: 24 * 60 * 60 * 1000 }); */
+            dispatch({
+                type: 'Modal_Message',
+                showMessageModal: true,
+                modelType: 'error',
+                modelMessage: wrapperIntl("header.SelectBSC"),
+                subsequentActionType: "connectToBSCChain",
+                modelUrlMessage: wrapperIntl("header.SwitchToBSC"),
+                modelTimer: 24 * 60 * 60 * 1000,
+                canClose: false, 
+            });
         }
         getUserInfo();
         // eslint-disable-next-line

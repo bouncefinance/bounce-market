@@ -8,6 +8,7 @@ const zh_CN = {
     Unlisted: "非卖品",
     CopySuccessful: '复制成功',
     TryAgain: '非常抱歉，我们似乎碰到了一些小问题，请重试',
+    "Code-1": '请连接钱包或重新签名',
     
     userUserInfo: {
         "uploadSuccess": "信息上传成功！",
@@ -31,7 +32,8 @@ const zh_CN = {
         setting: '账户设置',
         search: '搜索',
         search_p: '搜索用户、品牌、NFT',
-        SelectBSC: "请连接BSC网络",
+        SelectBSC: "请连接BSC网络，",
+        SwitchToBSC: "点击此处切换至BSC网络",
     },
 
     'pages.buy.Share': '分享',
