@@ -86,7 +86,7 @@ export default function Upload({
 
 
     useEffect(() => {
-        console.log(type)
+        // console.log(type)
         switch (type) {
             case 'Images':
                 setCoverSrc(defaultValue || upload_img)

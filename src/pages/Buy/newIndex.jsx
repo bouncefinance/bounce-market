@@ -271,7 +271,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex () {
+export default function NewIndex() {
     const intl = useIntl()
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
@@ -329,10 +329,10 @@ export default function NewIndex () {
 
 
     useEffect(() => {
-        console.log(amount.toString().replace(/[^0-9]/ig,""))
-        if (parseInt(amount) < 1 || amount.toString().replace(/[^0-9]/ig,"") === "" || parseInt(amount)>(parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P))) {
+        console.log(amount.toString().replace(/[^0-9]/ig, ""))
+        if (parseInt(amount) < 1 || amount.toString().replace(/[^0-9]/ig, "") === "" || parseInt(amount) > (parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P))) {
             setIsLoading(true);
-        }else{
+        } else {
             setIsLoading(false);
         }
     }, [amount, poolInfo.amountTotal0, poolInfo.swappedAmount0P])
@@ -354,7 +354,7 @@ export default function NewIndex () {
         // console.log(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))
         if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
-            setBtnText(intl.formatMessage({ id: 'pages.buy.loading'}))
+            setBtnText(intl.formatMessage({ id: 'pages.buy.loading' }))
             return
         }
 
@@ -366,12 +366,12 @@ export default function NewIndex () {
         if (poolInfo.status === 'Live') {
             setIsLoading(false)
             if (poolInfo.poolType === 'FS') {
-                setBtnText(intl.formatMessage({ id: 'pages.buy.BuyNow'}))
+                setBtnText(intl.formatMessage({ id: 'pages.buy.BuyNow' }))
             } else {
-                setBtnText(intl.formatMessage({ id: 'pages.buy.PlaceABid'}))
+                setBtnText(intl.formatMessage({ id: 'pages.buy.PlaceABid' }))
             }
         } else {
-            setBtnText(intl.formatMessage({ id: 'pages.buy.SoldOut'}))
+            setBtnText(intl.formatMessage({ id: 'pages.buy.SoldOut' }))
         }
 
         if (poolInfo.creatorCanceledP) {
@@ -415,11 +415,11 @@ export default function NewIndex () {
                         setTokenSymbol(NFTInfoList.itemsymbol);
                         setExternalLink(NFTInfoList.externallink);
                     } else {
-                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain")});
+                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain") });
                     }
                 })
                 .catch((err) => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain")});
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain") });
                 });
         };
         if (!active || !nftId) return;
@@ -553,9 +553,9 @@ export default function NewIndex () {
                 // showTransferByStatus('successStatus');
                 dispatch({ type: 'TransferModal', TransferModal: "" });
                 dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: "The transaction has been successfully completed！" });
-                setTimeout(function(){
+                setTimeout(function () {
                     window.location.reload()
-                },3000)
+                }, 3000)
             })
             .on('error', (err, receipt) => {
                 // setBidStatus(errorStatus)
@@ -652,7 +652,7 @@ export default function NewIndex () {
 
                 <div className="bidInfo">
                     <div>
-                        <h5><FormattedMessage id="pages.buy.CurrentPrice"/></h5>
+                        <h5><FormattedMessage id="pages.buy.CurrentPrice" /></h5>
                         <h3>
                             {poolInfo.token1 && amount && poolInfo.amountTotal1 && weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0), amount)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span>
@@ -701,14 +701,14 @@ export default function NewIndex () {
                             <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMin1, poolInfo.token1.decimals)) | 0).toFixed(2)} ) `}</span></h3>
                     </div> */}
                     <div>
-                        <h5>{aucType === AUCTION_TYPE.FixedSwap ? intl.formatMessage({id: 'pages.buy.CurrentPrice'}) : intl.formatMessage({ id: 'pages.buy.TopBid'})}</h5>
+                        <h5>{aucType === AUCTION_TYPE.FixedSwap ? intl.formatMessage({ id: 'pages.buy.CurrentPrice' }) : intl.formatMessage({ id: 'pages.buy.TopBid' })}</h5>
                         <h3>{poolInfo.showPrice && weiToNum(poolInfo.showPrice, poolInfo.token1.decimals)} {poolInfo.token1 && poolInfo.token1.symbol}
                             <span className="dollar">{poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.showPrice, poolInfo.token1.decimals)))} ) `}</span></h3>
                     </div>
 
                     <div>
                         {/* <span>{poolInfo.tokenAmount0 && `${poolInfo.tokenAmount0} of ${poolInfo.amountTotal0}`}</span> */}
-                        <h5><FormattedMessage id="pages.buy.TotalAmount"/></h5>
+                        <h5><FormattedMessage id="pages.buy.TotalAmount" /></h5>
                         <h3>{poolInfo.tokenAmount0 && `${poolInfo.tokenAmount0}`}</h3>
                     </div>
                 </div>
@@ -759,9 +759,9 @@ export default function NewIndex () {
                                 setOpenBuyNowModal(true)
                             }}
                         >
-                            <FormattedMessage id="pages.buy.BuyNowFor"/> {weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)} {poolInfo.token1.symbol}
+                            <FormattedMessage id="pages.buy.BuyNowFor" /> {weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)} {poolInfo.token1.symbol}
                         </Button>
-                    
+
                     }
                     {poolInfo.status === 'Close' && poolInfo.currentBidderP === account && !poolInfo.myClaimedP &&
                         < Button onClick={() => {
@@ -769,7 +769,7 @@ export default function NewIndex () {
                         }} width='100%' height='48px' primary marginTop={'12px'}>
                             {/* Claim Bid NFT */}
                             {wrapperIntl("pages.buy.ClaimBidNFT")}
-                    </Button>}
+                        </Button>}
 
                     {poolInfo.status === 'Close' && poolInfo.currentBidderP === account && poolInfo.myClaimedP &&
                         < Button onClick={() => {
@@ -777,7 +777,7 @@ export default function NewIndex () {
                         }} width='100%' height='48px' primary marginTop={'12px'} disabled>
                             {/* You have successfully bid and claimed */}
                             {wrapperIntl("pages.buy.BidAndClaimed")}
-                    </Button>}
+                        </Button>}
 
                     {poolInfo.status === 'Failed' && poolInfo.currentBidderP === account && !poolInfo.myClaimedP &&
                         < Button onClick={() => {
@@ -888,8 +888,8 @@ export default function NewIndex () {
     const handleAuction = (data) => {
         const tradePool = data.tradeAuctions[0];
         // if(!tradePool) return  setHistory([]);
-        
-        console.log('auctionCreates',tradePool)
+
+        console.log('auctionCreates', tradePool)
         const creator = tradePool.creator;
         const total = tradePool.tokenAmount0;
         const price = tradePool.amountMin1;
@@ -987,7 +987,11 @@ export default function NewIndex () {
 
                 <div className="container">
                     <div className="container_left">
-                        <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
+                        {nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos') ?
+                            <video width='416px' height='416px' src={nftInfo && nftInfo.fileurl} controls='controls' autoPlay></video> :
+                            <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
+                        }
+
                         <div className="btn_group">
                             {false && <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}><FormattedMessage id="pages.buy.Share" /></MaterialButton>}
                             <MaterialButton disabled={loadingLoked} onClick={onLiked} variant="contained" className="material-button" startIcon={<img className="button-icon" src={isLike ? icon_full_black : icon_line_white} alt="" />}><FormattedMessage id="pages.buy.Like" /></MaterialButton>
@@ -1009,7 +1013,7 @@ export default function NewIndex () {
                                         height='30px'
                                     >
                                         {wrapperIntl("pages.buy.Cancel")}
-                                </Button>}
+                                    </Button>}
 
                                 {/* Cancel */}
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
@@ -1021,8 +1025,8 @@ export default function NewIndex () {
                                         height='30px'
                                         disabled
                                     >
-                                    <FormattedMessage id="pages.buy.Canceled" />
-                                </Button>}
+                                        <FormattedMessage id="pages.buy.Canceled" />
+                                    </Button>}
                             </div>
                         </div>
                         <div className="seller">
@@ -1045,7 +1049,7 @@ export default function NewIndex () {
                         {renderByAucType()}
                         <div className="pullInfoBox">
 
-                            <NewPullDown open={true} title={intl.formatMessage({ id: 'pages.buy.Offers'})}>
+                            <NewPullDown open={true} title={intl.formatMessage({ id: 'pages.buy.Offers' })}>
                                 <OffersStyled>
                                     {
                                         offerList.length > 0
@@ -1068,12 +1072,12 @@ export default function NewIndex () {
 
 
                             {supply &&
-                                <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.Supply'})}>
+                                <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.Supply' })}>
                                     <div>{supply || "--"}</div>
                                 </NewPullDown>
                             }
 
-                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TokenInfo'})}>
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TokenInfo' })}>
                                 <div className="token-info">
                                     <div className="flex flex-space-x">
                                         <p><FormattedMessage id="pages.buy.TokenContractAddress" /></p>
@@ -1082,7 +1086,7 @@ export default function NewIndex () {
                                             <CopyToClipboard
                                                 text={tokenContractAddress}
                                                 onCopy={() => {
-                                                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: intl.formatMessage({ id: 'CopySuccessful'}) });
+                                                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: intl.formatMessage({ id: 'CopySuccessful' }) });
                                                 }}>
                                                 <img src={icon_copy} style={{ cursor: "pointer" }} title="Copy" alt="" />
                                             </CopyToClipboard>
@@ -1098,10 +1102,10 @@ export default function NewIndex () {
                                     </div>
                                 </div>
                             </NewPullDown>
-                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.ExternalLink'})}>
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.ExternalLink' })}>
                                 <div>{externalLink || "--"}</div>
                             </NewPullDown>
-                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TradingHistory'})}>
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TradingHistory' })}>
                                 <TradingHistory rows={
                                     history.map((item, index) => ({
                                         Event: item.event,
@@ -1148,7 +1152,7 @@ export default function NewIndex () {
                         handelEnglishAuctionBid(poolInfo.amountMax1)
                     }}
                     price={weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals)}
-                    USD_Price={poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals))).substr(0,6)} ) `}
+                    USD_Price={poolInfo.token1 && ` ( $ ${(weiMul(poolInfo.token1.price, weiToNum(poolInfo.amountMax1, poolInfo.token1.decimals))).substr(0, 6)} ) `}
                 />
             }
 

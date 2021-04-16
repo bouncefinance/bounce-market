@@ -190,6 +190,7 @@ function MyNFT() {
 	const [creator, setCreator] = useState();
 	const [externalLink, setExternalLink] = useState();
 	const [imgURL, setImgURL] = useState();
+	const [category, setCategory] = useState();
 	const [description, setDescription] = useState();
 	const { dispatch } = useContext(myContext);
 	/* const NFTInfoList = [
@@ -216,7 +217,7 @@ function MyNFT() {
 						/* console.log(res); */
 						let NFTInfoList = res.data.data;
 						/* console.log(NFTInfoList) */
-						console.log(JSON.stringify(NFTInfoList));
+						// console.log(JSON.stringify(NFTInfoList));
 						setNFTName(NFTInfoList.itemname);
 						// setDescriptionContent(NFTInfoList.description);
 						setSupply(NFTInfoList.supply);
@@ -225,6 +226,7 @@ function MyNFT() {
 						setCreator(NFTInfoList.owneraddress);
 						setExternalLink(NFTInfoList.externallink);
 						setImgURL(NFTInfoList.fileurl);
+						setCategory(NFTInfoList.category);
 						setDescription(NFTInfoList.description || "")
 					} else {
 						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
@@ -249,12 +251,16 @@ function MyNFT() {
 			route: "/MyGallery/" + nftId,
 		},
 	];
-	
+
 	return (
 		<Page>
 			<BreadcrumbNav marginTop="24px" NavList={NavList} />
 			<PageBody className="sellNFT">
-				<AutoStretchBaseWidthOrHeightImg src={ imgURL } width={400} height={400} />
+				{category && category === "Videos" ?
+					<video width='400px' height='400px' src={imgURL} controls='controls' autoPlay></video> :
+					<AutoStretchBaseWidthOrHeightImg src={imgURL} width={400} height={400} />
+				}
+
 
 				<PageBodyRight className="right">
 					<span className="NFTName">{NFTName}</span>
@@ -272,7 +278,7 @@ function MyNFT() {
 							width="200px"
 							value="Sell"
 							onClick={() => {
-								 history.push(`/MyGallery/${nftId}/Sell`)
+								history.push(`/MyGallery/${nftId}/Sell`)
 								// history.push("/MyGallery/Sell");
 							}}
 						/>

@@ -160,14 +160,14 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }) {
+export function CardItem({ cover, name, price, cardId, poolType, token1, nftId, poolInfo }) {
     const { wrapperIntl } = useWrapperIntl()
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const { active } = useActiveWeb3React()
     /* const [newPrice, setNewPrice] = useState('Loading Price ...') */
     const [newPrice, setNewPrice] = useState(wrapperIntl("MarketPlace.CardItem.LoadingPrice"))
-    // console.log(price, token1)
+    // console.log(poolInfo)
 
     useEffect(() => {
         if (!active) return
@@ -185,14 +185,12 @@ export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }
 
     return (<LazyLoad width={262} height={408}>
         <CardItemStyled>
-            <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />
+
+            {poolInfo && poolInfo.category === 'video' ?
+                <video width='262px' height='262px' src={cover} /> :
+                <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
             <div className="item_wrapper">
                 <div className='info_wrapper'>
-                    {/* <div>
-                        <p>{name}</p>
-                        <span># {cardId}</span>
-                    </div>
-                    <p>{price}</p> */}
                     <div className="info_top">
                         <span className="itemName">
                             {name}
@@ -245,7 +243,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem({ cover, name, price, cardId, poolType,nftId }) {
+export function VideoCardItem({ cover, name, price, cardId, poolType, nftId }) {
     const { wrapperIntl } = useWrapperIntl()
     return (<LazyLoad width={262} height={408}>
         <VideoCardItemStyled>

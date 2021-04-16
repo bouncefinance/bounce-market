@@ -234,13 +234,14 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 <div className="category_select">
                     <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Category')} marginTop='0' /* marginTop='24px' */ width='150px' options={[{
                         value: 'Images'
-                    },{
+                    }, {
                         value: 'Videos'
                     }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'}
                         inputDisable={inputDisable}
 
                         onChange={(item) => {
-                            setFormData({ ...formData, Category: item.value })
+                            const cate = item.value === 'Videos' ? 'video' : 'image'
+                            setFormData({ ...formData, Category: cate })
                         }} />
 
                     <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Channel')} marginTop='0px' width='150px' options={[{
