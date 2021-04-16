@@ -12,7 +12,6 @@ import SwiperCore, {
   Thumbs,
 } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.min.css';
 import { IPromoCardProps, PromoCard } from '../PromoCard';
 import { PromoThumb } from '../PromoThumb';
 import { usePromoStyles } from './PromoStyles';
@@ -53,6 +52,10 @@ export const PromoComponent = ({
     thumbs: { swiper: swiperThumbs },
     autoplay: {
       delay: 5000,
+    },
+    onSlideChange: swiper => {
+      // slides visibility bugfix
+      swiper.update();
     },
   };
 
