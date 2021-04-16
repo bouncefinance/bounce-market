@@ -302,11 +302,12 @@ export default function SellNFT() {
 
 			<PageBody>
 				<PageBodyLeft>
-					<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl)} />
+					{<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl)} />}
 				</PageBodyLeft>
 				<PageBodyRight>
 					<span className="itemName">
 						{nftInfo && (nftInfo.itemname || wrapperIntl('MyProfile.MyGallery.SellNFT.SelectMethod'))}
+						{nftInfo.Category}
 					</span>
 
 					<ButtonGroup>

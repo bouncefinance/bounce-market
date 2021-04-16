@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import CommonHeader from '../CommonHeader'
 import styled from 'styled-components'
 // import Search from './Search'
-import { CardItem, AddCardItem } from '../CardItem'
+import { CardItem, AddCardItem, PenddingCardItem } from '../CardItem'
 import { useLazyQuery } from '@apollo/client';
 import { QueryMyNFT, QueryMyTradePools } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
@@ -91,8 +91,7 @@ export default function Index() {
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
   useEffect(() => {
-    const penddingList = {}
-    // { tokenId: 17031, isPendding: true }
+    const PenddingItem = JSON.parse(window.localStorage.getItem('PenddingItem')) || null
 
     if (!account || myTradeData.length === 0 || myNftData.length === 0) return
 
@@ -127,9 +126,10 @@ export default function Index() {
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
 
-    if (penddingList) {
-      ids_list.unshift(penddingList.tokenId)
-      pools.unshift(penddingList)
+    if (PenddingItem) {
+      if ([...ids_list].includes(PenddingItem.tokenId)) return window.localStorage.setItem('PenddingItem', null)
+      ids_list.unshift(PenddingItem.tokenId)
+      pools.unshift({ ...PenddingItem, isPendding: true })
     }
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
@@ -141,6 +141,11 @@ export default function Index() {
           const res_data = res.data.data
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => item.tokenId === res.id);
+            if(poolInfo.id===17092){
+              poolInfo.Category = 'Videos'
+            }else{
+              poolInfo.Category = 'Images'
+            }
             return {
               ...poolInfo,
               poolType: item.poolType,
@@ -152,6 +157,7 @@ export default function Index() {
             }
           }).filter(item => item.fileurl)
           const result = list.sort((a, b) => b.tokenId - a.tokenId)
+          console.log(result)
           setItemList(result);
           setStatusList(result);
           setLoading(false)
@@ -168,7 +174,7 @@ export default function Index() {
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
           {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
           <AddCardItem />
-          <Category itemList={itemList} onStatusChange={setStatusList} />
+          <Category  itemList={itemList} onStatusChange={setStatusList} />
 
           {/* <PullRadioBox prefix={'Categories:'} options={[{
             value: 'Image'
@@ -191,7 +197,7 @@ export default function Index() {
           </li> */}
           {statusList.map((item, index) => {
             return <li key={index}>
-              <CardItem
+              {item.isPendding ? <PenddingCardItem pools={item} /> : <CardItem
                 nftId={item.id}
                 cover={item.fileurl}
                 itemname={item.itemname}
@@ -200,7 +206,7 @@ export default function Index() {
                 poolType={item.poolType}
                 //  status={index % 2 === 0 ? 'Listed' : ''} 
                 poolInfo={item}
-              />
+              />}
             </li>
           })}
         </ul>

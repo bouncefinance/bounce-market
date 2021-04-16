@@ -16,8 +16,8 @@ const Base_URL =
             'https://market-test.bounce.finance' :  // BSC Test https
             host.includes('127.0.0.1') ?
                 'https://bounce-market.bounce.finance' :    // BSC Main
-                // 'http://market-test.bounce.finance:11000'   // BSC Test http 
-                'https://market-test.bounce.finance'   // BSC Test http 
+                'http://market-test.bounce.finance:11000'   // BSC Test http 
+                // 'https://market-test.bounce.finance'   // BSC Test http 
 // const Base_URL = 'https://bounce-market.bounce.finance'
 
 const signStr = 'Welcome to Bounce!'
