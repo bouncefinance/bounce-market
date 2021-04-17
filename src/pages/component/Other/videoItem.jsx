@@ -52,5 +52,4 @@ export function VideoItem ({ src, width, height, style = {} }) {
   </VideoStyled>
 }
 
-{/* <VideoItem width={262} height={262} src={itemInfo.fileurl} /> */ }
 // 'https://vodm0pihssv.vod.126.net/edu-video/nos/mp4/2013/03/07/206001_7179dc6b829a49e29d53d63d941d996d_sd.mp4?ak=7909bff134372bffca53cdc2c17adc27a4c38c6336120510aea1ae1790819de8914c542fa3373cc1e6158acaa03a2359c451c5ef6bd3d51342659c80414047823059f726dc7bb86b92adbc3d5b34b1327c7f4eb5a3208751c748f68b0af6e3dc'
