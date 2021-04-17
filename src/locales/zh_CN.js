@@ -13,6 +13,7 @@ const zh_CN = {
     "ConnectWallet": "请连接钱包",
 
     Category: {
+        "Category": "格式",
         "All": "全部",
         "Image": "图像",
         "Video": "视频",
@@ -100,6 +101,7 @@ const zh_CN = {
 
     "UIKit.Input.Upload.infoTip.FormatIncorrect": '暂时不支持您选择的文件格式，请重新选择',
     "UIKit.Input.Upload.infoTip.uploadImage": '上传图像',
+    "UIKit.Input.Upload.infoTip.uploadVideo": '上传视频',
     "UIKit.Input.Upload.infoTip.requirement1": '支持 JPG, PNG, JPEG2000 格式',
     "UIKit.Input.Upload.infoTip.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
     "UIKit.Input.Upload.infoTip.image.requirement1": '支持 JPG, PNG, JPEG2000 格式',

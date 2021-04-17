@@ -61,6 +61,13 @@ const UploadStyled = styled.div`
     }
 `
 
+/* 
+    type: [
+        'image',
+        'video',
+    ]
+*/
+
 export default function Upload({
     type = 'image',
     /* infoTitle: defaltInfoTitle = 'upload Image', */
@@ -84,26 +91,29 @@ export default function Upload({
     ])
     const [fileLimit, setFileLimit] = useState('image/*')
 
+    useEffect(() => {
+        console.log("type:", type)
+    }, [type])
+
 
     useEffect(() => {
         // console.log(type)
         switch (type) {
-            case 'Images':
+            case 'image':
                 setCoverSrc(defaultValue || upload_img)
-                setInfoTitle(infoTitle ||
-                    wrapperIntl("UIKit.Input.Upload.infoTip.uploadImage"))
+                setInfoTitle(wrapperIntl("UIKit.Input.Upload.infoTip.uploadImage"))
                 setInfoTip([
                     wrapperIntl("UIKit.Input.Upload.infoTip.image.requirement1"),
                     wrapperIntl("UIKit.Input.Upload.infoTip.image.requirement2"),
                 ])
                 setFileLimit('image/*')
                 break;
-            case 'Videos':
+            case 'video':
                 setCoverSrc(defaultValue || upload_video)
-                setInfoTitle(infoTitle || 'Upload File')
+                setInfoTitle(wrapperIntl("UIKit.Input.Upload.infoTip.uploadVideo"))
                 setInfoTip([
-                    'Supports MP4, AVI, WMV, MOV',
-                    'no more than 100MB, 360*240 Reccomended'
+                    wrapperIntl("UIKit.Input.Upload.infoTip.video.requirement1"),
+                    wrapperIntl("UIKit.Input.Upload.infoTip.video.requirement2"),
                 ])
                 setFileLimit('video/*')
                 break;
