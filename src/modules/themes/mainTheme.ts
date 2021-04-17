@@ -10,6 +10,7 @@ import { Themes } from './types';
 
 const TEN_SECONDS = 10 * 1000;
 const BTN_TRANSITION_TIME = 0.25;
+const NOTIFICATION_AUTO_HIDE_DURATION = 3000;
 
 export const FONTS = {
   primary: ['"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
@@ -66,6 +67,12 @@ export const mainTheme = createMuiTheme({
   },
 
   props: {
+    MuiSnackbar: {
+      autoHideDuration: NOTIFICATION_AUTO_HIDE_DURATION,
+    },
+    MuiAlert: {
+      icon: false,
+    },
     MuiContainer: {
       maxWidth: 'xl',
     },
@@ -298,6 +305,36 @@ export const mainTheme = createMuiTheme({
         '&:last-child': {
           paddingBottom: defaultTheme.spacing(2),
         },
+      },
+    },
+    MuiSnackbar: {
+      root: {
+        '&&': {
+          top: 0,
+          right: 0,
+          left: 0,
+          bottom: 'auto',
+          width: '100%',
+          transform: 'translateX(0)',
+        },
+      },
+    },
+    MuiAlert: {
+      root: {
+        width: '100%',
+        paddingTop: 12,
+        paddingBottom: 12,
+        borderRadius: 0,
+      },
+      standardError: {
+        backgroundColor: '#FF362D',
+      },
+      message: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#fff',
+        width: '100%',
+        textAlign: 'center',
       },
     },
   },
