@@ -149,6 +149,7 @@ export default function Marketplace() {
 
 
   const [loading, setLoding] = useState(true)
+  
 
   const [length, setLength] = useState(4);
   const [coinList, setCoinList] = useState([])
@@ -156,11 +157,15 @@ export default function Marketplace() {
     channel === NavList[0].route ? NavList[0].channelRequestParam :
       channel === NavList[1].route ? NavList[1].channelRequestParam :
         NavList[2].channelRequestParam);
-  
+  const [categoryRequestParam, setCategoryRequestParam] = useState(wrapperIntl("All"))
 
 
-  type = 'Image'
+  /* type = 'video' */
 
+  useEffect(() => {
+    console.log("type:", type)
+    console.log("categoryRequestParam:", categoryRequestParam)
+  }, [type, categoryRequestParam])
 
   useEffect(() => {
     // if (!active) return
@@ -194,8 +199,9 @@ export default function Marketplace() {
       // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
-        category: type,
-        channel: channelRequestParam
+        /* category: type, */
+        category: categoryRequestParam,
+        channel: channelRequestParam,
       })
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
@@ -236,7 +242,7 @@ export default function Marketplace() {
         })
     }
     // eslint-disable-next-line
-  }, [active, data, type, channel])
+  }, [active, data, type, channel, categoryRequestParam])
 
   const handleChange = (filterSearch) => {
     const list = tokenList.filter(item => item.itemname.toLowerCase().indexOf(filterSearch) > -1
@@ -321,9 +327,35 @@ export default function Marketplace() {
       <div className="filterBox">
         <Search placeholder={wrapperIntl('market.placeholder')} onChange={handleChange} />
 
-        <PullRadioBox prefix={'Category:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
-          // console.log(item)
-        }} />
+        <PullRadioBox
+          prefix={'Category:'}
+          width={'205px'}
+          options={[
+            { value: wrapperIntl("Category.All"), },
+            { value: wrapperIntl("Category.Image"), },
+            { value: wrapperIntl("Category.Video"), },
+          ]}
+          defaultValue={wrapperIntl("Category.All")}
+          onChange={(option) => {
+            console.log(option)
+            switch (option.value) {
+              case wrapperIntl("Category.All"):
+                setCategoryRequestParam('')
+                break;
+
+              case wrapperIntl("Category.Image"):
+                setCategoryRequestParam('Image')
+                break;
+
+              case wrapperIntl("Category.Video"):
+                setCategoryRequestParam('Video')
+                break;
+            
+              default:
+                break;
+            }
+          }}
+        />
 
         {coinList.length > 0 && <PullRadioBox prefix={'Currency:'}
           width={'205px'} options={coinList}

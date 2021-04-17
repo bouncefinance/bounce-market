@@ -11,7 +11,13 @@ const zh_CN = {
     "Code-1": '请连接钱包或重新签名',
     "Re-sign": "请重新签名",
     "ConnectWallet": "请连接钱包",
-    
+
+    Category: {
+        "All": "全部",
+        "Image": "图像",
+        "Video": "视频",
+    },
+
     userUserInfo: {
         "uploadSuccess": "信息上传成功！",
         "OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
@@ -275,6 +281,8 @@ const zh_CN = {
         "CardItem.NotOnSale": "非卖品",
         "CardItem.TopBid": "最高出价",
         "CardItem.Price": "价格",
+        "CardItem.InProcessOfCreation": "正在创建 ...",
+        "CardItem.WaitingBlock": "等待区块确认 ...",
 
         "SettingAccountModal.Save": "保存",
         "SettingAccountModal.MyAccountSettings": "账户设置",

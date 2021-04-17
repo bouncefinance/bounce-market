@@ -170,7 +170,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
         <>
             <CardItemStyled>
                 <div className="img_wrapper" onClick={() => history.push("/MyGallery/" + nftId)}>
-                    {poolInfo.Category === 'Videos' ?
+                    {poolInfo&&(poolInfo.Category === 'Videos'||poolInfo.Category === 'video') ?
                         <video width='100%' height='100%' src={cover}
                         // controls="controls"
                         /> : <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />}
@@ -278,6 +278,7 @@ const PenddingCardItemStyle = styled(CardItemStyled)`
 
 export function PenddingCardItem({ pools }) {
     console.log(pools.fileurl)
+    const { wrapperIntl } = useWrapperIntl()
 
     return <PenddingCardItemStyle>
         <div className="img_wrapper">
@@ -288,10 +289,10 @@ export function PenddingCardItem({ pools }) {
                 <h5 className="name">{pools.itemname}</h5>
                 <div className="line"></div>
                 <div className="flex flex-space-x">
-                    <p className="type">In process of creation ...</p>
+                    <p className="type">{wrapperIntl("MyProfile.CardItem.InProcessOfCreation")}</p>
                     <p className="_tag">{`# ${pools.id}`}</p>
                 </div>
-                <h4 className="price">Waiting for block confirmation ...</h4>
+                <h4 className="price">{wrapperIntl("MyProfile.CardItem.WaitingBlock")}</h4>
             </div>
         </div>
     </PenddingCardItemStyle>
