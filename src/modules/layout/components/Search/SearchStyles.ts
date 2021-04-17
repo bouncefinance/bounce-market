@@ -10,7 +10,7 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
     height: '100%',
     width: 46,
     padding: 0,
-    color: theme.palette.text.secondary,
+    color: '#7b7b7b',
   },
 
   input: {

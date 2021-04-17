@@ -11,6 +11,7 @@ import { getRandomId } from 'modules/common/utils/getRandomId';
 import { AngleLeftIcon } from 'modules/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/components/Icons/AngleRightIcon';
 import { IProductCardProps, ProductCard } from 'modules/components/ProductCard';
+import { SwiperPreloader } from 'modules/components/SwiperPreloader';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React from 'react';
 import { uid } from 'react-uid';
@@ -64,6 +65,7 @@ export const MoversComponent = ({
           objectFit: 'scale-down',
         }}
         ProfileInfoProps={cardProps.ProfileInfoProps}
+        imgPreloader={<SwiperPreloader />}
       />
     </SwiperSlide>
   ));

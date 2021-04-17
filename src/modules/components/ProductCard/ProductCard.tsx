@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
 import { getDaysLeft } from 'modules/common/utils/getDaysLeft';
 import { IImgProps, Img } from 'modules/uiKit/Img';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { IProfileInfoProps, ProfileInfo } from '../ProfileInfo';
 import { HeartIcon } from './assets/HeartIcon';
@@ -22,6 +22,7 @@ export interface IProductCardProps {
   ProfileInfoProps: IProfileInfoProps;
   href: string;
   isLiked?: boolean;
+  imgPreloader?: ReactNode;
   onLikeClick?: () => void;
 }
 
@@ -38,6 +39,7 @@ export const ProductCard = ({
   onLikeClick,
   ImgProps,
   ProfileInfoProps,
+  imgPreloader,
 }: IProductCardProps) => {
   const classes = useProductCardStyles();
   const daysLeft = endDate ? getDaysLeft(endDate) : 0;
@@ -51,6 +53,7 @@ export const ProductCard = ({
           className={classNames(ImgProps.className, classes.imgWrap)}
           ratio="1x1"
         />
+        {imgPreloader}
       </Link>
 
       <CardContent>
