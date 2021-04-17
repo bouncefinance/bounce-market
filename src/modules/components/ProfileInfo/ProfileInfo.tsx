@@ -2,6 +2,7 @@ import { Avatar, Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { uid } from 'react-uid';
 import { useProfileInfoStyles } from './ProfileInfoStyles';
 
 interface IUserInfo {
@@ -27,10 +28,11 @@ export const ProfileInfo = ({
   const classes = useProfileInfoStyles();
 
   const renderedAvatars = useMemo(() => {
-    return users.map(({ name, avatar, verified, href }) => {
+    return users.map(({ name, avatar, verified, href }, i) => {
       const commonProps = {
         className: classes.avatarWrap,
         title: name,
+        key: uid(name, i),
       };
 
       const renderedContent = (
