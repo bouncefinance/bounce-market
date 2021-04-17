@@ -8,62 +8,63 @@ enum State {
   Done,
 }
 
-interface IApiTradeAuction {
-  amountMin1: string;
-  createTime: number;
-  lastestBidAmount: string;
-  poolId: number;
-  state: State;
-  token1: string;
+interface IApiTradeItem {
   tokenId: number;
+  poolId: number;
+  token1: string;
+  createTime: number;
+  state: State;
+}
+
+interface ITradeItem {
+  tokenId: number;
+  poolId: number;
+  token1: string;
+  createTime: Date;
+  state: State;
+}
+
+function mapTradeItem(data: IApiTradeItem): ITradeItem {
+  return {
+    ...data,
+    createTime: new Date(data.createTime),
+  };
+}
+
+interface IApiTradeAuction extends IApiTradeItem {
+  lastestBidAmount: string;
+  amountMin1: string;
   __typename: 'TradeAuction';
 }
 
-interface ITradeAuction {
+interface ITradeAuction extends ITradeItem {
   price: BigNumber;
-  createTime: Date;
-  poolId: number;
-  state: State;
-  token1: string;
-  tokenId: number;
 }
 
 function mapTradeAuction(data: IApiTradeAuction): ITradeAuction {
   return {
-    createTime: new Date(data.createTime),
+    ...mapTradeItem(data),
     price: new BigNumber(
       Web3.utils.fromWei(
         data.lastestBidAmount !== '0' ? data.lastestBidAmount : data.amountMin1,
       ),
     ),
-    poolId: data.poolId,
-    state: data.state,
-    token1: data.token1,
-    tokenId: data.tokenId,
   };
 }
 
-interface IApiTradePool {
-  createTime: number;
-  poolId: 0;
+interface IApiTradePool extends IApiTradeItem {
   price: string;
-  state: State;
-  token1: string;
-  tokenId: number;
   __typename: 'TradePool';
 }
 
-interface ITradePool {
-  createTime: Date;
+interface ITradePool extends ITradeItem {
   price: BigNumber;
-  tokenId: number;
 }
 
 function mapTradePool(data: IApiTradePool): ITradePool {
   return {
-    createTime: new Date(data.createTime),
-    price: new BigNumber(Web3.utils.fromWei(data.price)),
-    tokenId: data.tokenId,
+    ...mapTradeItem(data),
+    price: new BigNumber(data.price),
   };
 }
 
@@ -73,18 +74,18 @@ export const QueryTradePools = gql`
       tokenId
       poolId
       token1
-      price
       createTime
       state
+      price
     }
     tradeAuctions {
       tokenId
       poolId
       token1
-      lastestBidAmount
-      amountMin1
       createTime
       state
+      lastestBidAmount
+      amountMin1
     }
   }
 `;
