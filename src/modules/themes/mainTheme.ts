@@ -128,6 +128,11 @@ export const mainTheme = createMuiTheme({
         fontSize: 32,
       },
 
+      h5: {
+        fontSize: 15,
+        fontWeight: 500,
+      },
+
       body1: {
         fontSize: 14,
 
@@ -276,6 +281,22 @@ export const mainTheme = createMuiTheme({
 
         '&:hover': {
           background: 'none',
+        },
+      },
+    },
+
+    MuiCard: {
+      root: {
+        borderRadius: 12,
+      },
+    },
+
+    MuiCardContent: {
+      root: {
+        padding: defaultTheme.spacing(2, 2.5),
+
+        '&:last-child': {
+          paddingBottom: defaultTheme.spacing(2),
         },
       },
     },

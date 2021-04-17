@@ -35,6 +35,10 @@ export const usePromoCardStyles = makeStyles<Theme>(theme => ({
     '&:hover': {
       color: 'inherit',
     },
+
+    '& span': {
+      whiteSpace: 'nowrap',
+    },
   },
 
   text: {
@@ -45,6 +49,10 @@ export const usePromoCardStyles = makeStyles<Theme>(theme => ({
     [theme.breakpoints.up('md')]: {
       marginTop: 0,
       gridColumn: 'auto',
+    },
+
+    '& span': {
+      whiteSpace: 'nowrap',
     },
   },
 

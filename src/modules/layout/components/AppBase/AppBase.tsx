@@ -4,6 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import React, { ReactNode, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { ReactReduxContext } from 'react-redux';
+import 'swiper/swiper-bundle.min.css';
 import '../../../../assets/fonts/style.css';
 import { historyInstance } from '../../../common/utils/historyInstance';
 import { QueryLoadingAbsolute } from '../../../components/QueryLoading/QueryLoading';
