@@ -3,12 +3,17 @@ import { getApolloClient } from '../../common/api/getApolloClient';
 import { BigNumber } from 'bignumber.js';
 import Web3 from 'web3';
 
+enum State {
+  InProgress,
+  Done,
+}
+
 interface IApiTradeAuction {
   amountMin1: string;
   createTime: number;
   lastestBidAmount: string;
   poolId: number;
-  state: 0;
+  state: State;
   token1: string;
   tokenId: number;
   __typename: 'TradeAuction';
@@ -18,7 +23,7 @@ interface ITradeAuction {
   price: BigNumber;
   createTime: Date;
   poolId: number;
-  state: number;
+  state: State;
   token1: string;
   tokenId: number;
 }
@@ -42,7 +47,7 @@ interface IApiTradePool {
   createTime: number;
   poolId: 0;
   price: string;
-  state: 1;
+  state: State;
   token1: string;
   tokenId: number;
   __typename: 'TradePool';
