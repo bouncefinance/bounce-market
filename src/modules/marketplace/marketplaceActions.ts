@@ -1,6 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { getPools, IPoolsData } from './api/getPools';
 import { IApiItem } from './api/getItems';
+import { RequestAction } from '@redux-requests/core';
 
 interface IFetchItemsParams {
   ids?: number[];
@@ -19,7 +20,9 @@ export const MarketplaceActions = {
       getData: (data: IPoolsData) => data,
     },
   })),
-  fetchItems: createSmartAction('FETCH_ITEMS', (params: IFetchItemsParams) => ({
+  fetchItems: createSmartAction<
+    RequestAction<{ code: 1; data: IApiItem[] }, IApiItem[]>
+  >('FETCH_ITEMS', (params: IFetchItemsParams) => ({
     request: {
       url: '/api/v2/main/getitemsbyfilter',
       method: 'post',
@@ -29,7 +32,7 @@ export const MarketplaceActions = {
       auth: true,
       driver: 'axios',
       asMutation: false,
-      getData: (data: { code: 1; data: IApiItem[] }) => {
+      getData: data => {
         return data.data;
       },
     },

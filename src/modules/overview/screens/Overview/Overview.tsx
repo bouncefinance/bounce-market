@@ -8,10 +8,13 @@ import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
 import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
 import { useItems } from '../../../marketplace/hooks/useItems';
+import { INDEX_PATH } from '../../../router/const';
+import { t } from '../../../i18n/utils/intl';
+import { Queries } from '../../../common/components/Queries/Queries';
 
 export const Overview = () => {
-  const data = useItems();
-  console.log('data', data);
+  const { data } = useItems();
+  const promoItems = data?.splice(0, 3);
   const dispatchRequest = useDispatchRequest();
   useEffect(() => {
     dispatchRequest(MarketplaceActions.fetchPools()).then(({ data }) => {
@@ -28,7 +31,33 @@ export const Overview = () => {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
-        <Promo />
+        <Queries
+          requestActions={[
+            MarketplaceActions.fetchPools,
+            MarketplaceActions.fetchItems,
+          ]}
+        >
+          {() => (
+            <Promo
+              stackDown
+              items={
+                promoItems?.map(item => ({
+                  title: item.itemname!,
+                  text: item.itemname!,
+                  createdBy: item.itemname!,
+                  avatar: 'https://via.placeholder.com/40x40',
+                  price: t('unit.BNB-value', {
+                    value: item.price.toNumber(),
+                  }),
+                  img: item.fileurl,
+                  thumbImg: item.fileurl!,
+                  href: INDEX_PATH,
+                  authorHref: INDEX_PATH,
+                })) || []
+              }
+            />
+          )}
+        </Queries>
       </ThemeProvider>
 
       <Movers />

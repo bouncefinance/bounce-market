@@ -26,5 +26,11 @@
   },
   "promo": {
     "created-by": "Created by"
+  },
+  "unit": {
+    "BNB-value": "{value, number} BNB"
+  },
+  "error": {
+    "unexpected": "Unexpected error"
   }
 }
