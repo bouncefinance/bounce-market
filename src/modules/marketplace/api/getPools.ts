@@ -2,8 +2,9 @@ import { gql } from '@apollo/client';
 import { getApolloClient } from '../../common/api/getApolloClient';
 import { BigNumber } from 'bignumber.js';
 import Web3 from 'web3';
+import { AuctionType } from './auctionType';
 
-enum State {
+export enum AuctionState {
   InProgress,
   Done,
 }
@@ -13,18 +14,22 @@ interface IApiTradeItem {
   poolId: number;
   token1: string;
   createTime: number;
-  state: State;
+  state: AuctionState;
 }
 
-interface ITradeItem {
+export interface ITradeItem {
   tokenId: number;
   poolId: number;
   token1: string;
   createTime: Date;
-  state: State;
+  state: AuctionState;
+  price: BigNumber;
+  poolType: AuctionType;
 }
 
-function mapTradeItem(data: IApiTradeItem): ITradeItem {
+function mapTradeItem(
+  data: IApiTradeItem,
+): Omit<ITradeItem, 'price' | 'poolType'> {
   return {
     ...data,
     createTime: new Date(data.createTime),
@@ -38,7 +43,7 @@ interface IApiTradeAuction extends IApiTradeItem {
 }
 
 interface ITradeAuction extends ITradeItem {
-  price: BigNumber;
+  poolType: AuctionType.EnglishAuction;
 }
 
 function mapTradeAuction(data: IApiTradeAuction): ITradeAuction {
@@ -49,6 +54,7 @@ function mapTradeAuction(data: IApiTradeAuction): ITradeAuction {
         data.lastestBidAmount !== '0' ? data.lastestBidAmount : data.amountMin1,
       ),
     ),
+    poolType: AuctionType.EnglishAuction,
   };
 }
 
@@ -58,13 +64,14 @@ interface IApiTradePool extends IApiTradeItem {
 }
 
 interface ITradePool extends ITradeItem {
-  price: BigNumber;
+  poolType: AuctionType.FixedSwap;
 }
 
 function mapTradePool(data: IApiTradePool): ITradePool {
   return {
     ...mapTradeItem(data),
     price: new BigNumber(data.price),
+    poolType: AuctionType.FixedSwap,
   };
 }
 

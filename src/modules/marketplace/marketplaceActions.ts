@@ -25,11 +25,13 @@ export const MarketplaceActions = {
       method: 'post',
       data: params,
     },
-    getData: (data: { data: IApiItem }) => data.data,
     meta: {
       auth: true,
       driver: 'axios',
       asMutation: false,
+      getData: (data: { code: 1; data: IApiItem[] }) => {
+        return data.data;
+      },
     },
   })),
 };

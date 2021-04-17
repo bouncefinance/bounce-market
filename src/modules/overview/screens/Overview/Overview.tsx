@@ -7,15 +7,18 @@ import { Promo } from 'modules/overview/components/Promo';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
 import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
+import { useItems } from '../../../marketplace/hooks/useItems';
 
 export const Overview = () => {
+  const data = useItems();
+  console.log('data', data);
   const dispatchRequest = useDispatchRequest();
   useEffect(() => {
     dispatchRequest(MarketplaceActions.fetchPools()).then(({ data }) => {
       if (data) {
         const ids = data.tradePools
-          .concat(data.tradeAuctions)
-          .map(item => item.tokenId);
+          .map(item => item.tokenId)
+          .concat(data.tradeAuctions.map(item => item.tokenId));
 
         dispatchRequest(MarketplaceActions.fetchItems({ ids }));
       }
