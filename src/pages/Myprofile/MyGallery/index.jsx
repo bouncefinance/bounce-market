@@ -54,6 +54,7 @@ export default function Index() {
   // const { tradeData } = useQuery(QueryTradePools)
   const [myNftData, setMyNftData] = useState([])
   const [myTradeData, setMyTradeData] = useState([])
+  const [myApiDate, setMyApiDate] = useState([])
 
   const { wrapperIntl } = useWrapperIntl()
 
@@ -83,11 +84,15 @@ export default function Index() {
       }
     })
 
+  const getMyApiNFT = () => {
+    // sign_Axios.post()
+  }
 
   useEffect(() => {
     if (!active) return;
     getMyNFT();
     getMyTradeNFT()
+    getMyApiNFT()
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
   useEffect(() => {
@@ -141,9 +146,9 @@ export default function Index() {
           const res_data = res.data.data
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => item.tokenId === res.id);
-            if(poolInfo.id===17092){
+            if (poolInfo.id === 17092) {
               poolInfo.Category = 'Videos'
-            }else{
+            } else {
               poolInfo.Category = 'Images'
             }
             return {
@@ -174,7 +179,7 @@ export default function Index() {
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
           {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
           <AddCardItem />
-          <Category  itemList={itemList} onStatusChange={setStatusList} />
+          <Category itemList={itemList} onStatusChange={setStatusList} />
 
           {/* <PullRadioBox prefix={'Categories:'} options={[{
             value: 'Image'
