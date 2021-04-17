@@ -28,6 +28,10 @@ const ConnectToSelectedChain = async () => {
     }
 };
 
+/* const MetaMask_Logout = () => {
+	
+} */
+
 export default function Index() {
 	return (
 		<div>
