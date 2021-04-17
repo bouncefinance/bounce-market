@@ -1,72 +1,76 @@
 import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
-import { SwiperPreloader } from 'modules/components/SwiperPreloader';
+import classNames from 'classnames';
 import { Button } from 'modules/uiKit/Button';
+import { Img } from 'modules/uiKit/Img';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useMemo } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { ArtistsItem, IArtistsItemProps } from '../ArtistsItem';
-import { useArtistsStyles } from './ArtistsStyles';
+import { useBrandsStyles } from './BrandsStyles';
 
 SwiperCore.use([Lazy]);
 
-type ItemProps = Omit<IArtistsItemProps, 'ImgProps'> & {
+interface IBrandItemProps {
   img: string;
-};
-
-interface IArtistsProps extends ISectionProps {
-  className?: string;
-  items: ItemProps[];
+  theme?: 'light' | 'dark';
 }
 
-export const ArtistsComponent = ({
+interface IBrandsProps extends ISectionProps {
+  className?: string;
+  items: IBrandItemProps[];
+}
+
+export const BrandsComponent = ({
   className,
   items,
   ...sectionProps
-}: IArtistsProps) => {
-  const classes = useArtistsStyles();
+}: IBrandsProps) => {
+  const classes = useBrandsStyles();
   const theme = useTheme();
 
   const sliderProps: Swiper = {
     watchSlidesVisibility: true,
     slidesPerView: 'auto',
-    spaceBetween: theme.spacing(2),
+    spaceBetween: 30,
     lazy: true,
     breakpoints: {
-      [theme.breakpoints.values.md]: {
-        spaceBetween: theme.spacing(8),
+      [theme.breakpoints.values.xl]: {
+        slidesPerView: 6,
       },
     },
   };
 
   const renderedSlides = useMemo(
     () =>
-      items.map(({ img, href, name, subscribers }, i) => (
-        <SwiperSlide className={classes.slide} key={uid(name, i)}>
-          <ArtistsItem
-            href={href}
-            name={name}
-            subscribers={subscribers}
-            ImgProps={{
-              src: img,
-              isNativeLazyLoading: false,
-              imgClassName: 'swiper-lazy',
-            }}
-            imgPreloader={<SwiperPreloader />}
-          />
+      items.map(({ img, theme = 'light' }, i) => (
+        <SwiperSlide className={classes.slide} key={uid(i)}>
+          <div
+            className={classNames(classes.brand, {
+              [classes.brandLight]: theme === 'light',
+              [classes.brandDark]: theme === 'dark',
+            })}
+          >
+            <Img
+              src={img}
+              className={classes.brandImgWrap}
+              isNativeLazyLoading={false}
+              objectFit="scale-down"
+              imgClassName="swiper-lazy"
+            />
+          </div>
         </SwiperSlide>
       )),
-    [classes.slide, items],
+    [classes, items],
   );
 
   return (
     <Section {...sectionProps} className={classes.root}>
       <Container>
-        <Box mb={5}>
+        <Box mb={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs>
-              <Typography variant="h2">Top Artists</Typography>
+              <Typography variant="h2">Hot Brands</Typography>
             </Grid>
 
             <Grid item xs="auto">
@@ -85,13 +89,11 @@ export const ArtistsComponent = ({
   );
 };
 
-export const Artists = () => {
-  const artists: ItemProps[] = new Array(8).fill(0).map((_, i) => ({
+export const Brands = () => {
+  const brands: IBrandItemProps[] = new Array(6).fill(0).map((_, i) => ({
     img: `https://picsum.photos/134?random=${i + 1}`,
-    href: '#',
-    name: `Artist ${i + 1}`,
-    subscribers: 10 + i,
+    theme: i === 1 || i === 4 ? 'dark' : 'light',
   }));
 
-  return <ArtistsComponent items={artists} stackUp stackDown />;
+  return <BrandsComponent items={brands} stackUp />;
 };

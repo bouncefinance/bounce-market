@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@material-ui/styles';
 import { useDispatchRequest } from '@redux-requests/react';
 import { Artists } from 'modules/overview/components/Artists';
+import { Brands } from 'modules/overview/components/Brands';
 import { Movers } from 'modules/overview/components/Movers';
 import { Promo } from 'modules/overview/components/Promo';
 import { darkTheme } from 'modules/themes/darkTheme';
@@ -31,6 +32,7 @@ export const Overview = () => {
 
       <ThemeProvider theme={darkTheme}>
         <Artists />
+        <Brands />
       </ThemeProvider>
     </>
   );
