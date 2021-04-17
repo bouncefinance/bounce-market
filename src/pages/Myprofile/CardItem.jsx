@@ -149,7 +149,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
 
     const [newPrice, setNewPrice] = useState('--')
     // console.log(poolInfo)
-    
+
     const { wrapperIntl } = useWrapperIntl()
 
     useEffect(() => {
@@ -170,7 +170,10 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
         <>
             <CardItemStyled>
                 <div className="img_wrapper" onClick={() => history.push("/MyGallery/" + nftId)}>
-                    <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />
+                    {poolInfo&&(poolInfo.Category === 'Videos'||poolInfo.Category === 'video') ?
+                        <video width='100%' height='100%' src={cover}
+                        // controls="controls"
+                        /> : <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />}
                 </div>
                 <div className="content">
                     {/* <div className="info">
@@ -251,4 +254,46 @@ export function AddCardItem() {
             <GenerateNftModal open={showGenrateModal} setOpen={setShowGenrateModal} />
         </>
     )
+}
+
+const PenddingCardItemStyle = styled(CardItemStyled)`
+    .content{
+        width: 100%;
+        text-align: center;
+        button{
+            width: 224px;
+            height: 46px;
+            color:#fff;
+            background-color: #000;
+            /* margin: 18px auto; */
+        }
+        .price{
+            font-size: 13px;
+            line-height: 23px;
+        }
+    }
+
+   
+`
+
+export function PenddingCardItem({ pools }) {
+    console.log(pools.fileurl)
+    const { wrapperIntl } = useWrapperIntl()
+
+    return <PenddingCardItemStyle>
+        <div className="img_wrapper">
+            <AutoStretchBaseWidthOrHeightImg src={pools.fileurl} width={262} height={262} />
+        </div>
+        <div className="content">
+            <div className="info-box">
+                <h5 className="name">{pools.itemname}</h5>
+                <div className="line"></div>
+                <div className="flex flex-space-x">
+                    <p className="type">{wrapperIntl("MyProfile.CardItem.InProcessOfCreation")}</p>
+                    <p className="_tag">{`# ${pools.id}`}</p>
+                </div>
+                <h4 className="price">{wrapperIntl("MyProfile.CardItem.WaitingBlock")}</h4>
+            </div>
+        </div>
+    </PenddingCardItemStyle>
 }

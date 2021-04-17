@@ -8,6 +8,7 @@ import { weiToNum } from '@/utils/useBigNumber'
 import useToken from '@/utils/useToken'
 import { useActiveWeb3React } from '@/web3';
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { VideoItem } from '../component/Other/videoItem'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -160,14 +161,14 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }) {
+export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId, poolInfo, category }) {
     const { wrapperIntl } = useWrapperIntl()
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const { active } = useActiveWeb3React()
     /* const [newPrice, setNewPrice] = useState('Loading Price ...') */
     const [newPrice, setNewPrice] = useState(wrapperIntl("MarketPlace.CardItem.LoadingPrice"))
-    // console.log(price, token1)
+    // console.log(poolInfo)
 
     useEffect(() => {
         if (!active) return
@@ -185,14 +186,12 @@ export function CardItem({ cover, name, price, cardId, poolType, token1, nftId }
 
     return (<LazyLoad width={262} height={408}>
         <CardItemStyled>
-            <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />
+
+            {category && category === 'video' ?
+                <VideoItem width={262} height={262} src={cover} />:
+                <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
             <div className="item_wrapper">
                 <div className='info_wrapper'>
-                    {/* <div>
-                        <p>{name}</p>
-                        <span># {cardId}</span>
-                    </div>
-                    <p>{price}</p> */}
                     <div className="info_top">
                         <span className="itemName">
                             {name}
@@ -245,7 +244,7 @@ const VideoCardItemStyled = styled(CardItemStyled)`
     
 `
 
-export function VideoCardItem({ cover, name, price, cardId, poolType,nftId }) {
+export function VideoCardItem({ cover, name, price, cardId, poolType, nftId }) {
     const { wrapperIntl } = useWrapperIntl()
     return (<LazyLoad width={262} height={408}>
         <VideoCardItemStyled>

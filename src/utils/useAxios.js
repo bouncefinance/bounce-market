@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const host = window.location.hostname
-// const host = 'market.bounce.finance'
+// const host = 'fangible.com'
 const Base_URL =
     host.includes('market.bounce.finance') || host.includes('cnmarket.bounce.finance') || host.includes('fangible')?
         'https://bounce-market.bounce.finance' :    // BSC Main
@@ -16,15 +16,15 @@ const Base_URL =
             'https://market-test.bounce.finance' :  // BSC Test https
             host.includes('127.0.0.1') ?
                 'https://bounce-market.bounce.finance' :    // BSC Main
-                // 'http://market-test.bounce.finance:11000'   // BSC Test http 
-                'https://market-test.bounce.finance'   // BSC Test http 
+                'http://market-test.bounce.finance:11000'   // BSC Test http 
+                // 'https://market-test.bounce.finance'   // BSC Test http 
 // const Base_URL = 'https://bounce-market.bounce.finance'
 
 const signStr = 'Welcome to Bounce!'
 let isRequestLock = false
 
 export default function useAxios() {
-    const { account, library } = useWeb3React();
+    const { account, library, active } = useWeb3React();
     const { dispatch } = useContext(myContext);
     const history = useHistory();
     const { wrapperIntl } = useWrapperIntl()
@@ -97,7 +97,23 @@ export default function useAxios() {
         }
         let res = await axios.post(Base_URL + path, params, config)
         if (res.status === 200 && res.data.code === -1) {
-            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
+            if (active) {
+                dispatch({
+                    type: 'Modal_Message',
+                    showMessageModal: true,
+                    modelType: 'error',
+                    modelMessage: wrapperIntl("Re-sign"),
+                    modelTimer: 24 * 60 * 60 * 1000,
+                    canClose: false,
+                });
+            }
+            /* dispatch({
+                type: 'Modal_Message',
+                showMessageModal: true,
+                modelType: 'error',
+                modelMessage: wrapperIntl("Code-1"),
+                modelTimer: 24 * 60 * 60 * 1000,
+            }); */
             // history.push("/Home")
         // token 无效过期
         // return alert('授权失效，请刷新页面，重新授权签名')

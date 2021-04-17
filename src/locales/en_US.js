@@ -8,6 +8,15 @@ const en_US = {
     Unlisted: "Unlisted",
     CopySuccessful: 'Copy Successful',
     TryAgain: 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
+    "Code-1": 'Please Connet your wallet or sign again.',
+    "Re-sign": "Please sign again",
+    "ConnectWallet": "Please connect your wallet",
+
+    Category: {
+        "All": "All",
+        "Image": "Image",
+        "Video": "Video",
+    },
     
     userUserInfo: {
         "uploadSuccess": "Information upload success!",
@@ -32,6 +41,7 @@ const en_US = {
         search: 'Search',
         search_p: 'Search objects, items, art',
         SelectBSC: "Please select BSC network.",
+        SwitchToBSC: "Click here to switch to BSC network.",
     },
 
     'pages.buy.Share': 'Share',
@@ -270,6 +280,8 @@ const en_US = {
         "CardItem.NotOnSale": "Not OnSale",
         "CardItem.TopBid": "Top Bid",
         "CardItem.Price": "Price",
+        "CardItem.InProcessOfCreation": "In process of creation ...",
+        "CardItem.WaitingBlock": "Waiting for block confirmation ...",
 
         "SettingAccountModal.Save": "Save",
         "SettingAccountModal.MyAccountSettings": "My Account Settings",

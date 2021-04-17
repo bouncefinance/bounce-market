@@ -1,29 +1,54 @@
-import React from 'react'
+import React from "react";
 
+const ConnectToSelectedChain = async () => {
+	let ethereum = window.ethereum;
+
+	if (typeof ethereum !== "undefined") {
+		console.log("MetaMask is installed!");
+	}
+
+	const BSCChainInfo = [
+		{
+			chainId: "0x38",
+			chainName: "Binance Smart Chain Mainnet",
+			nativeCurrency: {
+				name: "BNB",
+				symbol: "BNB",
+				decimals: 18,
+			},
+			/* rpcUrls: ["https://bsc-dataseed.binance.org/"], */
+			rpcUrls: ["https://bsc-dataseed4.binance.org"],
+			blockExplorerUrls: ["https://bscscan.com/"],
+		},
+	];
+
+    const result = await ethereum.request({method: 'wallet_addEthereumChain', params: BSCChainInfo}).catch()
+    if (result) {
+        console.log(result)
+    }
+};
+
+/* const MetaMask_Logout = () => {
+	
+} */
 
 export default function Index() {
-    
-    return (
-        <div>
-            <h1>Test Page</h1>
+	return (
+		<div>
+			<h1>Test Page</h1>
 
-            {/* <Button onClick={() => {setOpenModal1(true)}}>GenerateNFTModal</Button>
-            <Button onClick={() => {setOpenModal2(true)}}>CreateBrandModal</Button>
-            <Button onClick={() => {setOpenModal3(true)}}>AddNewItemModal</Button>
-            <Button onClick={() => {setOpenModal4(true)}}>ListNFTModalStep1</Button>
-            <Button onClick={() => {setOpenModal5(true)}}>ListNFTModalStep2</Button>
-
-            <GenerateNFTModal open={openModal1} setOpen={setOpenModal1} />
-            <CreateBrandModal open={openModal2} setOpen={setOpenModal2} />
-            <AddNewItemModal open={openModal3} setOpen={setOpenModal3} />
-            <ListNFTModalStep1 open={openModal4} setOpen={setOpenModal4} />
-            <ListNFTModalStep2
-                open={openModal5}
-                setOpen={setOpenModal5}
-                dataList={dataList}
-            /> */}
-
-
-        </div>
-    )
+			{
+				<button
+                    style={{
+                        border: "solid 1px rgb(0,0,0)"
+                    }}
+					onClick={() => {
+						ConnectToSelectedChain();
+					}}
+				>
+					connect BSC chain
+				</button>
+			}
+		</div>
+	);
 }
