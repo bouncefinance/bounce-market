@@ -41,7 +41,7 @@ export const ProductCard = ({
 }: IProductCardProps) => {
   const classes = useProductCardStyles();
   const daysLeft = endDate ? getDaysLeft(endDate) : 0;
-  const isLastDay = daysLeft === 0;
+  const isLastDay = daysLeft <= 0;
 
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
