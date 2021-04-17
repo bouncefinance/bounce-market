@@ -3,7 +3,6 @@ import { i18nSlice } from 'modules/i18n/i18nSlice';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { getQuery, handleRequests } from '@redux-requests/core';
 import { createDriver } from '@redux-requests/promise';
-import { isDev } from '../modules/common/utils/isProd';
 import { historyInstance } from '../modules/common/utils/historyInstance';
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './rootSaga';
@@ -12,6 +11,8 @@ import axios from 'axios';
 import { BASE_URL } from '../modules/common/conts';
 import { AccountActions } from '../modules/account/store/accountActions';
 import { notificationSlice } from '../modules/notification/store/notificationSlice';
+import { NotificationActions } from '../modules/notification/store/NotificationActions';
+import { extractMessage } from '../modules/common/utils/extractError';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
   driver: {
@@ -48,14 +49,18 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     }
     return request;
   },
-  ...(isDev()
-    ? {
-        onError: error => {
-          console.error(error);
-          throw error;
-        },
-      }
-    : {}),
+  onError: (error, action, store) => {
+    if (!action.meta?.suppressError) {
+      store.dispatch(
+        NotificationActions.showNotification({
+          message: extractMessage(error),
+          severity: 'error',
+        }),
+      );
+    }
+
+    throw error;
+  },
 });
 
 const sagaMiddleware = createSagaMiddleware();
