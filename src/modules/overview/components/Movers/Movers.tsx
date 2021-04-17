@@ -1,11 +1,4 @@
-import {
-  Box,
-  ButtonBase,
-  Container,
-  Grid,
-  Typography,
-} from '@material-ui/core';
-import BigNumber from 'bignumber.js';
+import { Box, ButtonBase, Container, Grid, Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { AngleLeftIcon } from 'modules/components/Icons/AngleLeftIcon';
@@ -31,11 +24,7 @@ interface IMoversProps extends ISectionProps {
   items: ProductProps[];
 }
 
-export const MoversComponent = ({
-  className,
-  items,
-  ...sectionProps
-}: IMoversProps) => {
+export const Movers = ({ className, items, ...sectionProps }: IMoversProps) => {
   const classes = useMoversStyles();
 
   const sliderProps: Swiper = {
@@ -99,55 +88,4 @@ export const MoversComponent = ({
       </Container>
     </Section>
   );
-};
-
-export const Movers = () => {
-  const items: ProductProps[] = [
-    {
-      title: 'Pokemon Indigo League Baвфывыфв фывфыв',
-      price: new BigNumber(10000),
-      priceType: 'USDT',
-      endDate: new Date(2021, 3, 16),
-      likes: 102,
-      href: '#',
-      img: 'https://picsum.photos/seed/3/240',
-      ProfileInfoProps: {
-        subTitle: 'Owner',
-        title: '1livinginzen',
-        users: [
-          {
-            name: 'name',
-            avatar: 'https://picsum.photos/32/32?random=1',
-            verified: true,
-          },
-          {
-            name: 'name',
-            avatar: 'https://picsum.photos/32/32?random=2',
-            verified: true,
-          },
-        ],
-      },
-    },
-    {
-      title: 'Pokemon Indigo League Ba',
-      price: new BigNumber(10000),
-      priceType: 'USDT',
-      endDate: new Date(2021, 3, 18),
-      likes: 100,
-      href: '#',
-      img: 'https://picsum.photos/seed/1/240',
-      ProfileInfoProps: {
-        subTitle: 'Owner',
-        title: '1livinginzen',
-        users: [
-          {
-            name: 'name',
-            avatar: 'https://via.placeholder.com/32',
-          },
-        ],
-      },
-    },
-  ];
-
-  return <MoversComponent stackUp stackDown items={items} />;
 };

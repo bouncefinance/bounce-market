@@ -2,7 +2,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { useDispatchRequest } from '@redux-requests/react';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
-import { MoversComponent } from 'modules/overview/components/Movers';
+import { Movers } from 'modules/overview/components/Movers';
 import { Promo } from 'modules/overview/components/Promo';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
@@ -93,9 +93,7 @@ export const Overview = () => {
           ]}
         >
           {() => (
-            <MoversComponent
-              items={fastMoversItems?.map(mapMoversItem) || []}
-            />
+            <Movers stackUp items={fastMoversItems?.map(mapMoversItem) || []} />
           )}
         </Queries>
       </ThemeProvider>
