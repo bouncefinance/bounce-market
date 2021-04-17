@@ -8,6 +8,7 @@ import { weiToNum } from '@/utils/useBigNumber'
 import useToken from '@/utils/useToken'
 import { useActiveWeb3React } from '@/web3';
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { VideoItem } from '../component/Other/videoItem'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -187,9 +188,8 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
         <CardItemStyled>
 
             {category && category === 'video' ?
-                <video width='262px' height='262px' src={cover} /> :
+                <VideoItem width={262} height={262} src={cover} />:
                 <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
-            <div>{category}</div>
             <div className="item_wrapper">
                 <div className='info_wrapper'>
                     <div className="info_top">

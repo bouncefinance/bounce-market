@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
+import { VideoItem } from '../component/Other/videoItem'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const PopularItemStyled = styled.div`
@@ -105,7 +106,10 @@ export default function PopularItem({ style = {}, itemInfo }) {
         <PopularItemStyled style={style} onClick={() => {
             history.push(`/Marketplace/FineArts/${itemInfo.poolType}/${itemInfo.poolId}`)
         }}>
-            <AutoStretchBaseWidthOrHeightImg src={itemInfo.fileurl} width={262} height={262} />
+            {   itemInfo.category && itemInfo.category === 'video'
+                ? <VideoItem width={262} height={262} src={itemInfo.fileurl} />
+                : <AutoStretchBaseWidthOrHeightImg src={itemInfo.fileurl} width={262} height={262} />
+            }
             {/* <div className='info_box'>
                 <p>{name}</p>
                 <span>{price}</span>

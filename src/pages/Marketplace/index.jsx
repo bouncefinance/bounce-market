@@ -219,7 +219,7 @@ export default function Marketplace() {
 
             const list = pools.map((item, index) => {
               const poolInfo = res.data.data.find(r => item.tokenId === r.id);
-              console.log(poolInfo)
+              // console.log(poolInfo)
               return {
                 ...poolInfo,
                 category: poolInfo?.category,
