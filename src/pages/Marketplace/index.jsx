@@ -213,8 +213,10 @@ export default function Marketplace() {
 
             const list = pools.map((item, index) => {
               const poolInfo = res.data.data.find(r => item.tokenId === r.id);
+              console.log(poolInfo)
               return {
                 ...poolInfo,
+                category: poolInfo?.category,
                 poolType: item.poolType,
                 poolId: item.poolId,
                 price: item.price,
@@ -249,6 +251,7 @@ export default function Marketplace() {
           {filterList.map((item, index) => {
             return <li key={index}>
               <CardItem
+                category={item.category}
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.poolId}
@@ -266,6 +269,7 @@ export default function Marketplace() {
           {filterList.map((item, index) => {
             return <li key={index}>
               <CardItem
+                category={item.category}
                 cover={item.fileurl}
                 name={item.itemname}
                 cardId={item.poolId}

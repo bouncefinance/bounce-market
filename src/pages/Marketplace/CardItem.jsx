@@ -160,7 +160,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, name, price, cardId, poolType, token1, nftId, poolInfo }) {
+export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId, poolInfo, category }) {
     const { wrapperIntl } = useWrapperIntl()
     const history = useHistory()
     const { exportErc20Info } = useToken()
@@ -186,9 +186,10 @@ export function CardItem({ cover, name, price, cardId, poolType, token1, nftId, 
     return (<LazyLoad width={262} height={408}>
         <CardItemStyled>
 
-            {poolInfo && poolInfo.category === 'video' ?
+            {category && category === 'video' ?
                 <video width='262px' height='262px' src={cover} /> :
                 <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
+            <div>{category}</div>
             <div className="item_wrapper">
                 <div className='info_wrapper'>
                     <div className="info_top">
