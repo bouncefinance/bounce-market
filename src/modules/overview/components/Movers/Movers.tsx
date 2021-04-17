@@ -13,6 +13,7 @@ import { AngleRightIcon } from 'modules/components/Icons/AngleRightIcon';
 import { IProductCardProps, ProductCard } from 'modules/components/ProductCard';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React from 'react';
+import { uid } from 'react-uid';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useMoversStyles } from './MoversStyles';
@@ -48,7 +49,7 @@ export const MoversComponent = ({
   };
 
   const renderedSlides = items.map(cardProps => (
-    <SwiperSlide className={classes.slide}>
+    <SwiperSlide className={classes.slide} key={uid(cardProps)}>
       <ProductCard
         title={cardProps.title}
         price={cardProps.price}
@@ -146,5 +147,5 @@ export const Movers = () => {
     },
   ];
 
-  return <MoversComponent stackUp items={items} />;
+  return <MoversComponent stackUp stackDown items={items} />;
 };

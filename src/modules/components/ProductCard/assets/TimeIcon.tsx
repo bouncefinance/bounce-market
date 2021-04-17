@@ -9,7 +9,7 @@ export const TimeIcon = (props: SvgIconProps) => {
           cy="8"
           r="7.25"
           stroke="currentColor"
-          stroke-width="1.5"
+          strokeWidth="1.5"
         />
         <path d="M8 4V9H12" stroke="currentColor" />
       </g>
