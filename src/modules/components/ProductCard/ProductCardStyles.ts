@@ -6,6 +6,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   },
 
   imgLink: {
+    position: 'relative',
     display: 'block',
   },
 

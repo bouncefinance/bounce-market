@@ -1,5 +1,6 @@
 import { Avatar, Box, Hidden, Typography } from '@material-ui/core';
 import classNames from 'classnames';
+import { SwiperPreloader } from 'modules/components/SwiperPreloader';
 import { t } from 'modules/i18n/utils/intl';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React from 'react';
@@ -98,7 +99,7 @@ export const PromoCard = ({
           />
         </Link>
 
-        <div className="swiper-lazy-preloader" />
+        <SwiperPreloader />
       </Box>
 
       <Hidden mdUp>{renderedText}</Hidden>

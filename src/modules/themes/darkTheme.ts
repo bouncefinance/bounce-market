@@ -17,7 +17,7 @@ export const PALETTE = {
   },
   text: {
     primary: '#fff',
-    secondary: '#7b7b7b',
+    secondary: fade('#fff', 0.4),
   },
   success: {
     main: '#38FF70',
