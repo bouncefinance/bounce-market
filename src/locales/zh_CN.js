@@ -417,6 +417,7 @@ const zh_CN = {
         "MyBrands.BrandsByType.BackToBrands": "返回品牌合集",
         "MyBrands.BrandsByType.Change": "更改横幅图片",
         "MyBrands.BrandsByType.Edit": "修改品牌信息",
+        "MyBrands.BrandsByType.EditYourBrand": "修改品牌信息",
         "MyBrands.BrandsByType.BrandName": "品牌名称",
         "MyBrands.BrandsByType.Description": "描述",
         "MyBrands.BrandsByType.DescribeYourBrand": "描述您的品牌",
