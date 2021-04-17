@@ -1,11 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { useAppDispatch } from '../../../../store/useAppDispatch';
-import { connect } from '../../../account/accountSlice';
 
 export const useHeader = () => {
   const [mobileNavShowed, setMobileNavShowed] = useState(false);
   const [searchShowed, setSearchShowed] = useState(false);
-  const dispatch = useAppDispatch();
 
   const toggleNav = useCallback(
     (isOpen: boolean) => (event: any) => {
@@ -37,15 +34,10 @@ export const useHeader = () => {
     [],
   );
 
-  const handleConnect = useCallback(() => {
-    dispatch(connect());
-  }, [dispatch]);
-
   return {
     mobileNavShowed,
     toggleNav,
     searchShowed,
     toggleSearch,
-    handleConnect,
   };
 };
