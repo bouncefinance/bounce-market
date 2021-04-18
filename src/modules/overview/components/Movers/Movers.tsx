@@ -1,4 +1,11 @@
-import { Box, ButtonBase, Container, Grid, Typography } from '@material-ui/core';
+import {
+  Box,
+  ButtonBase,
+  Container,
+  Grid,
+  Typography,
+  useTheme,
+} from '@material-ui/core';
 import classNames from 'classnames';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { AngleLeftIcon } from 'modules/components/Icons/AngleLeftIcon';
@@ -26,6 +33,7 @@ interface IMoversProps extends ISectionProps {
 
 export const Movers = ({ className, items, ...sectionProps }: IMoversProps) => {
   const classes = useMoversStyles();
+  const theme = useTheme();
 
   const sliderProps: Swiper = {
     slidesPerView: 'auto',
@@ -35,6 +43,11 @@ export const Movers = ({ className, items, ...sectionProps }: IMoversProps) => {
     navigation: {
       prevEl: `#${prevId}`,
       nextEl: `#${nextId}`,
+    },
+    breakpoints: {
+      [theme.breakpoints.values.xl]: {
+        slidesPerView: 5,
+      },
     },
   };
 

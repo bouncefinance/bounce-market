@@ -1,9 +1,7 @@
 import { fade, makeStyles, Theme } from '@material-ui/core/styles';
 
 export const useProductCardStyles = makeStyles<Theme>(theme => ({
-  root: {
-    maxWidth: 240,
-  },
+  root: {},
 
   imgLink: {
     position: 'relative',
@@ -13,15 +11,44 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   imgWrap: {
     overflow: 'hidden',
 
-    '& img': {
-      transform: 'scale(1.05)',
-      transition: 'all 0.3s ease',
+    '&:after': {
+      content: `''`,
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      width: '100%',
+      height: '100%',
+
+      background: fade(theme.palette.common.black, 0),
+      transition: '0.2s',
     },
 
     '$imgLink:hover &': {
-      '& img': {
-        transform: 'scale(1)',
+      '&:after': {
+        background: fade(theme.palette.common.black, 0.3),
       },
+    },
+
+    '& .swiper-lazy': {
+      opacity: 0,
+      visibility: 'hidden',
+      transition: '0.2s',
+    },
+
+    '& .swiper-lazy-loaded': {
+      opacity: 1,
+      visibility: 'visible',
+    },
+
+    '.swiper-slide &': {
+      visibility: 'hidden',
+      opacity: 0,
+      transition: '0.2s',
+    },
+
+    '.swiper-slide-visible &': {
+      visibility: 'visible',
+      opacity: 1,
     },
   },
 
@@ -72,10 +99,9 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
 
   likeBtn: {
     padding: 6,
-    transition: 'all 0.2s',
 
     '&:hover': {
-      transform: 'scale(1.2)',
+      color: 'red',
     },
   },
 
