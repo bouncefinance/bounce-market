@@ -21,13 +21,14 @@ export const FONTS = {
 export const PALETTE = {
   type: Themes.light,
   primary: {
-    light: lighten('#8FC436', 0.1),
-    main: '#8FC436',
-    dark: darken('#8FC436', 0.2),
+    light: lighten('#2663FF', 0.1),
+    main: '#2663FF',
+    dark: darken('#2663FF', 0.2),
   },
   background: {
     default: '#fff',
     paper: '#fff',
+    reverse: '#000',
   },
   text: {
     primary: '#000',
@@ -88,6 +89,28 @@ export const mainTheme = createMuiTheme({
       enterTouchDelay: 0,
       leaveTouchDelay: TEN_SECONDS,
     },
+    MuiTab: {
+      disableRipple: true,
+    },
+    MuiTextField: {
+      variant: 'outlined',
+    },
+    MuiSelect: {
+      MenuProps: {
+        elevation: 0,
+        getContentAnchorEl: null,
+
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'left',
+        },
+
+        transformOrigin: {
+          vertical: 'top',
+          horizontal: 'left',
+        },
+      },
+    },
   },
 
   overrides: {
@@ -132,7 +155,11 @@ export const mainTheme = createMuiTheme({
       h2: {
         fontFamily: FONTS.secondary,
         fontWeight: 600,
-        fontSize: 32,
+        fontSize: 28,
+
+        [defaultTheme.breakpoints.up('md')]: {
+          fontSize: 32,
+        },
       },
 
       h5: {
@@ -156,13 +183,47 @@ export const mainTheme = createMuiTheme({
 
     MuiInputBase: {
       root: {
-        fontSize: 14,
+        fontSize: 18,
         border: `1px solid ${fade(defaultTheme.palette.common.black, 0.1)}`,
-        transition: 'boreder 0.2s',
+        transition: 'border 0.2s',
 
         '&.Mui-focused': {
           border: `1px solid ${fade(defaultTheme.palette.common.black, 0.7)}`,
         },
+
+        '& fieldset': {
+          display: 'none',
+        },
+      },
+    },
+
+    MuiOutlinedInput: {
+      root: {
+        borderRadius: 8,
+      },
+
+      input: {
+        padding: defaultTheme.spacing(2.25, 2),
+      },
+    },
+
+    MuiSelect: {
+      select: {
+        '&:focus': {
+          backgroundColor: 'none',
+        },
+      },
+
+      outlined: {
+        '&&': {
+          paddingRight: 52,
+        },
+      },
+
+      iconOutlined: {
+        fontSize: 20,
+        right: 16,
+        top: 'calc(50% - 10px)',
       },
     },
 
@@ -295,6 +356,56 @@ export const mainTheme = createMuiTheme({
     MuiCard: {
       root: {
         borderRadius: 12,
+      },
+    },
+
+    MuiTabs: {
+      root: {
+        minHeight: 40,
+      },
+
+      scroller: {
+        zIndex: 0,
+      },
+
+      indicator: {
+        zIndex: -1,
+        height: '100%',
+        background: PALETTE.background.reverse,
+        borderRadius: 8,
+      },
+    },
+
+    MuiTab: {
+      root: {
+        minWidth: 88,
+        minHeight: 40,
+        padding: defaultTheme.spacing(0.75, 2.5),
+        transition: 'color 0.2s ease-in',
+        fontWeight: 700,
+        fontSize: 20,
+        lineHeight: 1,
+        textTransform: 'none',
+
+        [defaultTheme.breakpoints.up('sm')]: {
+          minWidth: 88,
+        },
+
+        '&.Mui-selected': {
+          color: defaultTheme.palette.common.white,
+        },
+      },
+
+      textColorSecondary: {
+        '&.Mui-selected': {
+          color: defaultTheme.palette.common.white,
+        },
+      },
+    },
+
+    MuiPaper: {
+      outlined: {
+        border: `1px solid ${fade('#000', 0.1)}`,
       },
     },
 
