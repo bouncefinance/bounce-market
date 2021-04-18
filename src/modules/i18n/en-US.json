@@ -32,5 +32,8 @@
   },
   "error": {
     "unexpected": "Unexpected error"
+  },
+  "go-back": {
+    "action": "Go back"
   }
 }
