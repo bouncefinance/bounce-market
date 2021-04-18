@@ -9,7 +9,6 @@ import {
 export interface ISectionProps extends BoxProps {
   stackUp?: boolean;
   stackDown?: boolean;
-  offsetSize?: 'normal' | 'big';
 }
 
 /**
@@ -20,7 +19,6 @@ export const Section = ({
   className,
   stackUp = false,
   stackDown = false,
-  offsetSize = 'normal',
   ...restProps
 }: ISectionProps) => {
   const classes = useSectionStyles();
