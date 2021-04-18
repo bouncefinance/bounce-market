@@ -9,6 +9,7 @@ import { FormErrors } from '../../../form/utils/FormErrors';
 
 interface ICreateNFTPayload {
   name: string;
+  description: string;
 }
 
 const validateCreateNFT = (payload: ICreateNFTPayload) => {
@@ -16,6 +17,10 @@ const validateCreateNFT = (payload: ICreateNFTPayload) => {
 
   if (!payload.name) {
     errors.name = t('validation.required');
+  }
+
+  if (!payload.description) {
+    errors.description = t('validation.required');
   }
 
   return errors;
@@ -33,13 +38,25 @@ export const CreateNFT = () => {
         gridGap={72}
       >
         <div>
+          <Box mb={5}>
+            <Field
+              component={InputField}
+              name="name"
+              type="text"
+              label={t('create-nft.label.name')}
+              color="primary"
+              fullWidth={true}
+            />
+          </Box>
           <Field
             component={InputField}
-            name="name"
+            name="description"
             type="text"
-            label={t('create-nft.label.name')}
+            label={t('create-nft.label.description')}
             color="primary"
             fullWidth={true}
+            rowsMax={10}
+            multiline
           />
           <Box>
             <Button

@@ -39,7 +39,8 @@
   "create-nft": {
     "title": "Create NFT",
     "label": {
-      "name": "Name"
+      "name": "Name",
+      "description": "Description"
     },
     "submit": "Create"
   },
