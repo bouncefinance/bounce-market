@@ -58,5 +58,11 @@
   },
   "validation": {
     "required": "This field is required"
+  },
+  "upload-image-field": {
+    "title": "Drop your item here",
+    "subtitle": "or <b>browse</b> to choose a file",
+    "formats": "PNG, GIF, WEBP, MP4 or MP3",
+    "max-size": "Max 30MB"
   }
 }

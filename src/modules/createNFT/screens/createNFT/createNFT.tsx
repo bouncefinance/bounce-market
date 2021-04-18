@@ -7,6 +7,7 @@ import { Field, Form, FormRenderProps } from 'react-final-form';
 import { InputField } from '../../../form/components/InputField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { SelectField } from '../../../form/components/SelectField';
+import { UploadImageField } from '../../../form/components/UploadImageField';
 
 enum Channel {
   FineArts,
@@ -90,7 +91,7 @@ export const CreateNFT = () => {
         component="form"
         onSubmit={handleSubmit}
         display="grid"
-        gridTemplateColumns="1fr minmax(320px, auto)"
+        gridTemplateColumns="1fr minmax(380px, auto)"
         gridGap={72}
       >
         <div>
@@ -163,7 +164,9 @@ export const CreateNFT = () => {
             </Button>
           </Box>
         </div>
-        <div>Column 2</div>
+        <div>
+          <Field component={UploadImageField} name="file" />
+        </div>
       </Box>
     );
   };

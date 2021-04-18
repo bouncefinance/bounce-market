@@ -40,6 +40,9 @@ export const PALETTE = {
   success: {
     main: '#36C98E',
   },
+  grey: {
+    300: '#F1F1F1',
+  },
 };
 
 const BREAKPOINTS = {
@@ -143,6 +146,9 @@ export const mainTheme = createMuiTheme({
 
     MuiTypography: {
       root: {
+        '& b': {
+          fontWeight: 'bold',
+        },
         '& a': {
           '&:hover': {
             color: PALETTE.text.primary,

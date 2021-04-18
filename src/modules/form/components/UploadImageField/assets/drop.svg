@@ -1,0 +1,22 @@
+<svg width="144" height="91" viewBox="0 0 144 91" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect y="12.9414" width="50" height="70" rx="8" transform="rotate(-15 0 12.9414)" fill="white"/>
+    <circle cx="29.324" cy="25.79" r="13" transform="rotate(-15 29.324 25.79)" fill="#C8C8C8"/>
+    <path d="M34.8302 23.9768C35.4954 24.2096 35.7176 25.0388 35.2579 25.573L28.7647 33.1185C28.2407 33.7275 27.2488 33.5011 27.0408 32.725L24.138 21.8915C23.93 21.1154 24.6759 20.4234 25.4342 20.6888L34.8302 23.9768Z" fill="white"/>
+    <rect x="16.9238" y="52.9238" width="38" height="3" rx="1" transform="rotate(-15 16.9238 52.9238)" fill="#C8C8C8"/>
+    <rect x="18.7363" y="59.6855" width="38" height="3" rx="1" transform="rotate(-15 18.7363 59.6855)" fill="#C8C8C8"/>
+    <rect x="20.5488" y="66.4453" width="24" height="3" rx="1" transform="rotate(-15 20.5488 66.4453)" fill="#C8C8C8"/>
+    <rect x="95.1172" width="50" height="70" rx="8" transform="rotate(15 95.1172 0)" fill="white"/>
+    <path d="M126.415 18.4508L111.103 18.1932L109.821 22.9768L125.134 23.2344L126.415 18.4508Z" fill="#C8C8C8"/>
+    <path d="M121.448 36.9874L125.134 23.2344M106.136 36.7298L109.821 22.9768M109.821 22.9768L111.103 18.1932L126.415 18.4508L125.134 23.2344M109.821 22.9768L125.134 23.2344" stroke="#C8C8C8" stroke-width="2"/>
+    <ellipse cx="102.589" cy="35.6202" rx="4.64286" ry="3.25" transform="rotate(15 102.589 35.6202)" fill="#C8C8C8"/>
+    <ellipse cx="117.901" cy="35.878" rx="4.64286" ry="3.25" transform="rotate(15 117.901 35.878)" fill="#C8C8C8"/>
+    <rect x="89.7832" y="43.0879" width="38" height="3" rx="1" transform="rotate(15 89.7832 43.0879)" fill="#C8C8C8"/>
+    <rect x="87.9727" y="49.8496" width="38" height="3" rx="1" transform="rotate(15 87.9727 49.8496)" fill="#C8C8C8"/>
+    <rect x="86.1602" y="56.6113" width="24" height="3" rx="1" transform="rotate(15 86.1602 56.6113)" fill="#C8C8C8"/>
+    <rect x="43" y="21" width="50" height="70" rx="8" fill="white"/>
+    <path d="M85.9725 56H49.9112C49.1016 56 48.6398 55.0882 49.1049 54.4256L61.9183 36.1664C62.3165 35.599 63.1572 35.599 63.5554 36.1664L70.4268 45.9582C70.7991 46.4887 71.5698 46.5304 71.9972 46.0432L75.62 41.9132C76.035 41.4401 76.7787 41.4634 77.1633 41.9616L86.7564 54.3889C87.2638 55.0463 86.8029 56 85.9725 56Z" fill="#C8C8C8"/>
+    <circle cx="84" cy="33" r="4" fill="#C8C8C8"/>
+    <rect x="49" y="64" width="38" height="3" rx="1" fill="#C8C8C8"/>
+    <rect x="49" y="71" width="38" height="3" rx="1" fill="#C8C8C8"/>
+    <rect x="49" y="78" width="24" height="3" rx="1" fill="#C8C8C8"/>
+</svg>
