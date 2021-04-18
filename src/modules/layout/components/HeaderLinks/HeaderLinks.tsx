@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
-import { NavLink } from '../../../uiKit/NavLink';
 import { useHeaderLinksStyles } from './HeaderLinksStyles';
+import { RoutesConfiguration } from '../../../overview/Routes';
+import { Link as RouterLink } from 'react-router-dom';
+import { Button } from '@material-ui/core';
 
 interface IHeaderLinksProps {
   items: {
@@ -16,9 +18,16 @@ export const HeaderLinksComponent = ({ items }: IHeaderLinksProps) => {
   return (
     <nav className={classes.root}>
       {items.map(({ label, href }) => (
-        <NavLink key={uid(label)} href={href} className={classes.link}>
+        <Button
+          component={RouterLink}
+          to={href}
+          key={uid(label)}
+          href={href}
+          variant="text"
+          className={classes.link}
+        >
           {label}
-        </NavLink>
+        </Button>
       ))}
     </nav>
   );
@@ -29,7 +38,7 @@ export const HeaderLinks = () => {
     () => [
       {
         label: 'Market',
-        href: '/',
+        href: RoutesConfiguration.Overview.generatePath(),
       },
       {
         label: 'Brands',
