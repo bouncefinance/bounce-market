@@ -1,8 +1,7 @@
-import { Box, BoxProps } from '@material-ui/core';
+import { Box, BoxProps, IconButton } from '@material-ui/core';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
-import { NavLink } from '../../../uiKit/NavLink';
-import { MonogramIcon } from './assets/MonogramIcon';
+import { MediumIcon } from './assets/MediumIcon';
 import { TelegramIcon } from './assets/TelegramIcon';
 import { TwitterIcon } from './assets/TwitterIcon';
 import { useSocialStyles } from './SocialStyles';
@@ -13,9 +12,9 @@ export const Social = (props: BoxProps) => {
   const links = useMemo(
     () => [
       {
-        title: 'Monogram',
-        icon: MonogramIcon,
-        href: 'https://www.google.com/search?q=monogram',
+        title: 'Medium',
+        icon: MediumIcon,
+        href: 'https://bouncefinance.medium.com',
       },
       {
         title: 'Twitter',
@@ -37,9 +36,17 @@ export const Social = (props: BoxProps) => {
         {links.map(({ title, href, icon: Icon }) => {
           return (
             <li className={classes.listItem} key={uid(title)}>
-              <NavLink href={href} className={classes.link}>
+              <IconButton
+                component="a"
+                href={href}
+                role="link"
+                rel="noopener noreferrer"
+                target="_blank"
+                className={classes.link}
+                {...(props as any)}
+              >
                 <Icon className={classes.icon} />
-              </NavLink>
+              </IconButton>
             </li>
           );
         })}

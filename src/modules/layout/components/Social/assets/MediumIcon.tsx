@@ -1,7 +1,7 @@
 import { SvgIcon, SvgIconProps } from '@material-ui/core';
 import React from 'react';
 
-export const MonogramIcon = (props: SvgIconProps) => {
+export const MediumIcon = (props: SvgIconProps) => {
   return (
     <SvgIcon {...props} viewBox="0 0 18 18">
       <path fill="currentColor" d="M18 0H0v18h18V0z" />
