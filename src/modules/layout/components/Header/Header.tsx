@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   ClickAwayListener,
   Container,
   Drawer,
@@ -9,7 +10,6 @@ import {
 import { getTheme } from 'modules/common/utils/getTheme';
 import { Themes } from 'modules/themes/types';
 import { useIsXLUp } from 'modules/themes/useTheme';
-import { Button } from '../../../uiKit/Button';
 import { HeaderLinks, HeaderLinksSecondary } from '../HeaderLinks';
 import { Logo } from '../Logo';
 import { Search } from '../Search';
@@ -22,6 +22,8 @@ import { useCallback } from 'react';
 import { AccountActions } from '../../../account/store/accountActions';
 import { useAppDispatch } from '../../../../store/useAppDispatch';
 import { useQuery } from '@redux-requests/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { RoutesConfiguration } from '../../../createNFT/Routes';
 
 interface IHeaderProps {
   isConnected?: boolean;
@@ -58,12 +60,15 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
   const renderedDesktop = (
     <>
       <Search className={classes.search} />
-
       <HeaderLinks />
-
       <HeaderLinksSecondary />
-
-      <Button className={classes.btnCreate} variant="outlined" color="default">
+      <Button
+        component={RouterLink}
+        to={RoutesConfiguration.CreateNft.generatePath()}
+        className={classes.btnCreate}
+        variant="outlined"
+        color="default"
+      >
         Create
       </Button>
 
@@ -72,7 +77,6 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
           Connect Wallet
         </Button>
       )}
-
       {isConnected && renderedWallet}
     </>
   );

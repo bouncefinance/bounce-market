@@ -4,17 +4,17 @@ import { Route } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 
-export const PATH_INDEX = '/';
+const PATH_CREATE_NFT = '/nft/create';
 
 export const RoutesConfiguration: { [key: string]: RouteConfiguration } = {
-  Overview: {
-    path: PATH_INDEX,
-    generatePath: () => PATH_INDEX,
+  CreateNft: {
+    path: PATH_CREATE_NFT,
+    generatePath: () => PATH_CREATE_NFT,
   },
 };
 
-const LoadableOverviewContainer: LoadableComponent<any> = loadable(
-  async () => import('./screens/Overview').then(module => module.Overview),
+const LoadableCreateNFTContainer: LoadableComponent<any> = loadable(
+  async () => import('./screens/createNFT').then(module => module.CreateNFT),
   {
     fallback: <QueryLoadingAbsolute />,
   },
@@ -24,9 +24,9 @@ export function Routes() {
   return (
     <>
       <Route
-        path={RoutesConfiguration.Overview.path}
+        path={RoutesConfiguration.CreateNft.path}
         exact={true}
-        component={LoadableOverviewContainer}
+        component={LoadableCreateNFTContainer}
       />
     </>
   );

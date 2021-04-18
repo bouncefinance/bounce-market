@@ -1,6 +1,12 @@
-import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Typography,
+  useTheme,
+} from '@material-ui/core';
 import classNames from 'classnames';
-import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useMemo } from 'react';
