@@ -1,7 +1,6 @@
-import { ButtonProps } from '@material-ui/core';
+import { Button, ButtonProps } from '@material-ui/core';
 import classNames from 'classnames';
 import React, { forwardRef } from 'react';
-import { Button } from '../../../uiKit/Button';
 import { useToggleStyles } from './ToggleStyles';
 
 interface IToggleProps extends ButtonProps {

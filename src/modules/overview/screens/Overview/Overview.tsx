@@ -11,7 +11,7 @@ import { Queries } from '../../../common/components/Queries/Queries';
 import { t } from '../../../i18n/utils/intl';
 import { useItems } from '../../../marketplace/hooks/useItems';
 import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
-import { INDEX_PATH } from '../../../router/const';
+import { RoutesConfiguration } from '../../Routes';
 
 function mapPromoItem(
   item: Exclude<ReturnType<typeof useItems>['data'], null>[0],
@@ -26,8 +26,8 @@ function mapPromoItem(
     }),
     img: item.fileurl,
     thumbImg: item.fileurl || '',
-    href: INDEX_PATH,
-    authorHref: INDEX_PATH,
+    href: RoutesConfiguration.Overview.generatePath(),
+    authorHref: RoutesConfiguration.Overview.generatePath(),
   };
 }
 

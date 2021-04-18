@@ -1,6 +1,12 @@
-import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Typography,
+  useTheme,
+} from '@material-ui/core';
 import { SwiperPreloader } from 'modules/components/SwiperPreloader';
-import { Button } from 'modules/uiKit/Button';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
