@@ -6,8 +6,11 @@ import { Movers } from 'modules/overview/components/Movers';
 import { Promo } from 'modules/overview/components/Promo';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
-import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
+import { Queries } from '../../../common/components/Queries/Queries';
+import { t } from '../../../i18n/utils/intl';
 import { useItems } from '../../../marketplace/hooks/useItems';
+import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
+import { INDEX_PATH } from '../../../router/const';
 import { t } from '../../../i18n/utils/intl';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { RoutesConfiguration } from '../../Routes';
@@ -85,18 +88,21 @@ export const Overview = () => {
           )}
         </Queries>
       </ThemeProvider>
-      <ThemeProvider theme={darkTheme}>
-        <Queries
-          requestActions={[
-            MarketplaceActions.fetchPools,
-            MarketplaceActions.fetchItems,
-          ]}
-        >
-          {() => (
-            <Movers stackUp items={fastMoversItems?.map(mapMoversItem) || []} />
-          )}
-        </Queries>
-      </ThemeProvider>
+
+      <Queries
+        requestActions={[
+          MarketplaceActions.fetchPools,
+          MarketplaceActions.fetchItems,
+        ]}
+      >
+        {() => (
+          <Movers
+            stackUp
+            stackDown
+            items={fastMoversItems?.map(mapMoversItem) || []}
+          />
+        )}
+      </Queries>
 
       <ThemeProvider theme={darkTheme}>
         <Artists />

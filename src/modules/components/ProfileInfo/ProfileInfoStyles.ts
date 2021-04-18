@@ -28,7 +28,6 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
     },
 
     '&:hover': {
-      transform: 'scale(1.3)',
       zIndex: 1,
     },
 

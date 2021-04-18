@@ -16,7 +16,9 @@ export const useMoversStyles = makeStyles<Theme>(theme => ({
   },
 
   slide: {
-    maxWidth: 240,
+    [theme.breakpoints.down('lg')]: {
+      width: '240px !important',
+    },
   },
 
   buttons: {
