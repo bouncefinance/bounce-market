@@ -20,6 +20,7 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
     background: theme.palette.common.white,
     transition: 'background 0.2s, color 0.2s, border 0.2s',
     color: theme.palette.common.black,
+    fontSize: 14,
 
     [theme.breakpoints.up('xl')]: {
       background: theme.palette.background.paper,

@@ -9,11 +9,12 @@ export const PALETTE = {
   background: {
     default: '#010101',
     paper: '#232323',
+    reverse: '#fff',
   },
   primary: {
-    light: lighten('#8FC436', 0.1),
-    main: '#8FC436',
-    dark: darken('#8FC436', 0.2),
+    light: lighten('#2663FF', 0.1),
+    main: '#2663FF',
+    dark: darken('#2663FF', 0.2),
   },
   text: {
     primary: '#fff',

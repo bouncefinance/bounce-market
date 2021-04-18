@@ -107,7 +107,7 @@ export const Overview = () => {
         <Brands />
       </ThemeProvider>
 
-      <Products stackUp />
+      <Products stackUp items={fastMoversItems?.map(mapMoversItem) || []} />
     </>
   );
 };
