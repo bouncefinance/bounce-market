@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import { GoBack } from '../../../layout/components/GoBack';
 import { useCreateNFTStyles } from './useCreateNFTStyles';
@@ -6,10 +6,23 @@ import { t } from '../../../i18n/utils/intl';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { InputField } from '../../../form/components/InputField';
 import { FormErrors } from '../../../form/utils/FormErrors';
+import { SelectField } from '../../../form/components/SelectField';
+
+enum Channel {
+  FineArts,
+  Sports,
+  Conicbooks,
+}
+
+enum Standard {
+  ERC721,
+  ERC1155,
+}
 
 interface ICreateNFTPayload {
   name: string;
   description: string;
+  channel: Channel;
 }
 
 const validateCreateNFT = (payload: ICreateNFTPayload) => {
@@ -28,6 +41,38 @@ const validateCreateNFT = (payload: ICreateNFTPayload) => {
 
 export const CreateNFT = () => {
   const classes = useCreateNFTStyles();
+  const channelOptions = useMemo(
+    () => [
+      {
+        label: t(`create-nft.channelOption.${Channel.FineArts}`),
+        value: Channel.FineArts,
+      },
+      {
+        label: t(`create-nft.channelOption.${Channel.Sports}`),
+        value: Channel.Sports,
+      },
+      {
+        label: t(`create-nft.channelOption.${Channel.Conicbooks}`),
+        value: Channel.Conicbooks,
+      },
+    ],
+    [],
+  );
+
+  const standardOptions = useMemo(
+    () => [
+      {
+        label: t(`create-nft.standardOption.${Standard.ERC721}`),
+        value: Standard.ERC721,
+      },
+      {
+        label: t(`create-nft.standardOption.${Standard.ERC1155}`),
+        value: Standard.ERC1155,
+      },
+    ],
+    [],
+  );
+
   const renderForm = ({ handleSubmit }: FormRenderProps<ICreateNFTPayload>) => {
     return (
       <Box
@@ -48,22 +93,47 @@ export const CreateNFT = () => {
               fullWidth={true}
             />
           </Box>
-          <Field
-            component={InputField}
-            name="description"
-            type="text"
-            label={t('create-nft.label.description')}
-            color="primary"
-            fullWidth={true}
-            rowsMax={10}
-            multiline
-          />
+          <Box mb={5}>
+            <Field
+              component={InputField}
+              name="description"
+              type="text"
+              label={t('create-nft.label.description')}
+              color="primary"
+              fullWidth={true}
+              rowsMax={10}
+              multiline
+            />
+          </Box>
+          <Box mb={5}>
+            <Field
+              component={SelectField}
+              name="channel"
+              type="text"
+              label={t('create-nft.label.channel')}
+              color="primary"
+              fullWidth={true}
+              options={channelOptions}
+            />
+          </Box>
+          <Box mb={5}>
+            <Field
+              component={SelectField}
+              name="channel"
+              type="text"
+              label={t('create-nft.label.standard')}
+              color="primary"
+              fullWidth={true}
+              options={standardOptions}
+            />
+          </Box>
           <Box>
             <Button
               color="primary"
               size="large"
               variant="contained"
               type="submit"
+              fullWidth={true}
             >
               {t('create-nft.submit')}
             </Button>
@@ -86,6 +156,7 @@ export const CreateNFT = () => {
           onSubmit={() => alert('Submit')}
           render={renderForm}
           validate={validateCreateNFT}
+          initialValues={{ channel: Channel.FineArts }}
         />
       </Box>
     </Container>

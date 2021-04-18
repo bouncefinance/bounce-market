@@ -40,7 +40,18 @@
     "title": "Create NFT",
     "label": {
       "name": "Name",
-      "description": "Description"
+      "description": "Description",
+      "channel": "Channel",
+      "standard": "Standard"
+    },
+    "channelOption": {
+      "0": "Fine arts",
+      "1": "Sports",
+      "2": "Comicbooks"
+    },
+    "standardOption": {
+      "0": "ERC-721",
+      "1": "ERC-1155"
     },
     "submit": "Create"
   },
