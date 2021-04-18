@@ -26,6 +26,7 @@ interface ICreateNFTPayload {
   channel: Channel;
   standard: Standard;
   supply: number;
+  file: string;
 }
 
 const validateCreateNFT = (payload: ICreateNFTPayload) => {
@@ -43,6 +44,10 @@ const validateCreateNFT = (payload: ICreateNFTPayload) => {
     if (!payload.supply) {
       errors.supply = t('validation.required');
     }
+  }
+
+  if (!payload.file) {
+    errors.file = t('validation.required');
   }
 
   return errors;
