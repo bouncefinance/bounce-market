@@ -13,7 +13,7 @@ import { AngleRightIcon } from 'modules/components/Icons/AngleRightIcon';
 import { IProductCardProps, ProductCard } from 'modules/components/ProductCard';
 import { SwiperPreloader } from 'modules/components/SwiperPreloader';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -34,6 +34,14 @@ interface IMoversProps extends ISectionProps {
 export const Movers = ({ className, items, ...sectionProps }: IMoversProps) => {
   const classes = useMoversStyles();
   const theme = useTheme();
+  const [swiper, setSwiper] = useState<SwiperCore | null>(null);
+
+  useEffect(() => {
+    if (items.length && swiper !== null) {
+      swiper.update();
+      swiper.lazy.load();
+    }
+  }, [items, swiper]);
 
   const sliderProps: Swiper = {
     slidesPerView: 'auto',
@@ -49,6 +57,7 @@ export const Movers = ({ className, items, ...sectionProps }: IMoversProps) => {
         slidesPerView: 5,
       },
     },
+    onSwiper: setSwiper,
   };
 
   const renderedSlides = items.map(cardProps => (

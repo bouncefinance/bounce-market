@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
 import { SwiperPreloader } from 'modules/components/SwiperPreloader';
 import { Button } from 'modules/uiKit/Button';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -27,6 +27,14 @@ export const ArtistsComponent = ({
 }: IArtistsProps) => {
   const classes = useArtistsStyles();
   const theme = useTheme();
+  const [swiper, setSwiper] = useState<SwiperCore | null>(null);
+
+  useEffect(() => {
+    if (items.length && swiper !== null) {
+      swiper.update();
+      swiper.lazy.load();
+    }
+  }, [items, swiper]);
 
   const sliderProps: Swiper = {
     watchSlidesVisibility: true,
@@ -38,6 +46,7 @@ export const ArtistsComponent = ({
         spaceBetween: theme.spacing(8),
       },
     },
+    onSwiper: setSwiper,
   };
 
   const renderedSlides = useMemo(

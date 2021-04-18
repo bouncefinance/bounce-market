@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -28,6 +28,14 @@ export const BrandsComponent = ({
 }: IBrandsProps) => {
   const classes = useBrandsStyles();
   const theme = useTheme();
+  const [swiper, setSwiper] = useState<SwiperCore | null>(null);
+
+  useEffect(() => {
+    if (items.length && swiper !== null) {
+      swiper.update();
+      swiper.lazy.load();
+    }
+  }, [items, swiper]);
 
   const sliderProps: Swiper = {
     watchSlidesVisibility: true,
@@ -39,6 +47,7 @@ export const BrandsComponent = ({
         slidesPerView: 6,
       },
     },
+    onSwiper: setSwiper,
   };
 
   const renderedSlides = useMemo(
@@ -95,5 +104,5 @@ export const Brands = () => {
     theme: i === 1 || i === 4 ? 'dark' : 'light',
   }));
 
-  return <BrandsComponent items={brands} stackUp />;
+  return <BrandsComponent items={brands} stackUp stackDown />;
 };

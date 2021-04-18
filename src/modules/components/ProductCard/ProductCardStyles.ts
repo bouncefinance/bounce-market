@@ -25,7 +25,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
 
     '$imgLink:hover &': {
       '&:after': {
-        background: fade(theme.palette.common.black, 0.3),
+        background: fade(theme.palette.common.black, 0.2),
       },
     },
 
