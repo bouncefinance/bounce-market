@@ -42,7 +42,8 @@
       "name": "Name",
       "description": "Description",
       "channel": "Channel",
-      "standard": "Standard"
+      "standard": "Standard",
+      "supply": "Supply"
     },
     "channelOption": {
       "0": "Fine arts",

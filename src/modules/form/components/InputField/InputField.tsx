@@ -7,12 +7,13 @@ import { hasError } from '../../utils/hasError';
 interface IFieldProps extends FieldRenderProps<string> {}
 
 export const InputField = ({
-  input: { name, onChange, value },
+  input: { name, onChange, value, type },
   meta,
   ...rest
 }: IFieldProps & TextFieldProps) => {
   return (
     <TextField
+      type={type}
       name={name}
       error={hasError(meta)}
       value={value}

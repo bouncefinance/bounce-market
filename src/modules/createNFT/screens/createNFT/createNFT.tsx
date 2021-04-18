@@ -127,6 +127,17 @@ export const CreateNFT = () => {
               options={standardOptions}
             />
           </Box>
+          <Box mb={5}>
+            <Field
+              component={InputField}
+              name="supply"
+              type="number"
+              label={t('create-nft.label.supply')}
+              color="primary"
+              fullWidth={true}
+              options={standardOptions}
+            />
+          </Box>
           <Box>
             <Button
               color="primary"
