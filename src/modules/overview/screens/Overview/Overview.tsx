@@ -10,9 +10,6 @@ import { Queries } from '../../../common/components/Queries/Queries';
 import { t } from '../../../i18n/utils/intl';
 import { useItems } from '../../../marketplace/hooks/useItems';
 import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
-import { INDEX_PATH } from '../../../router/const';
-import { t } from '../../../i18n/utils/intl';
-import { Queries } from '../../../common/components/Queries/Queries';
 import { RoutesConfiguration } from '../../Routes';
 
 function mapPromoItem(
