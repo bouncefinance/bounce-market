@@ -42,8 +42,8 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
   const renderedProducts = useMemo(
     () =>
       items.map(cardProps => (
-        <InView rootMargin="-10% 0% -10% 0%">
-          {({ inView, ref, entry }) => (
+        <InView key={uid(cardProps)} rootMargin="-10% 0% -10% 0%">
+          {({ inView, ref }) => (
             <Fade in={inView}>
               <Grid item xs={12} sm={6} md={4} lg={3} ref={ref}>
                 <ProductCard

@@ -23,6 +23,8 @@ interface ICreateNFTPayload {
   name: string;
   description: string;
   channel: Channel;
+  standard: Standard;
+  supply: number;
 }
 
 const validateCreateNFT = (payload: ICreateNFTPayload) => {
@@ -34,6 +36,12 @@ const validateCreateNFT = (payload: ICreateNFTPayload) => {
 
   if (!payload.description) {
     errors.description = t('validation.required');
+  }
+
+  if (payload.standard === Standard.ERC1155) {
+    if (!payload.supply) {
+      errors.supply = t('validation.required');
+    }
   }
 
   return errors;
@@ -73,7 +81,10 @@ export const CreateNFT = () => {
     [],
   );
 
-  const renderForm = ({ handleSubmit }: FormRenderProps<ICreateNFTPayload>) => {
+  const renderForm = ({
+    handleSubmit,
+    values,
+  }: FormRenderProps<ICreateNFTPayload>) => {
     return (
       <Box
         component="form"
@@ -119,7 +130,7 @@ export const CreateNFT = () => {
           <Box mb={5}>
             <Field
               component={SelectField}
-              name="channel"
+              name="standard"
               type="text"
               label={t('create-nft.label.standard')}
               color="primary"
@@ -127,18 +138,20 @@ export const CreateNFT = () => {
               options={standardOptions}
             />
           </Box>
-          <Box mb={5}>
-            <Field
-              component={InputField}
-              name="supply"
-              type="number"
-              label={t('create-nft.label.supply')}
-              color="primary"
-              fullWidth={true}
-              options={standardOptions}
-            />
-          </Box>
-          <Box>
+          {values.standard === Standard.ERC1155 && (
+            <Box mb={5}>
+              <Field
+                component={InputField}
+                name="supply"
+                type="number"
+                label={t('create-nft.label.supply')}
+                color="primary"
+                fullWidth={true}
+                options={standardOptions}
+              />
+            </Box>
+          )}
+          <Box mb={20}>
             <Button
               color="primary"
               size="large"
@@ -167,7 +180,10 @@ export const CreateNFT = () => {
           onSubmit={() => alert('Submit')}
           render={renderForm}
           validate={validateCreateNFT}
-          initialValues={{ channel: Channel.FineArts }}
+          initialValues={{
+            channel: Channel.FineArts,
+            standard: Standard.ERC721,
+          }}
         />
       </Box>
     </Container>
