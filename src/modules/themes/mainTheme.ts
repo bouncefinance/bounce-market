@@ -94,6 +94,10 @@ export const mainTheme = createMuiTheme({
     },
     MuiTextField: {
       variant: 'outlined',
+      InputLabelProps: {
+        shrink: true,
+        variant: 'standard',
+      },
     },
     MuiSelect: {
       MenuProps: {
@@ -194,6 +198,16 @@ export const mainTheme = createMuiTheme({
         '& fieldset': {
           display: 'none',
         },
+      },
+    },
+
+    MuiInputLabel: {
+      shrink: {
+        position: 'relative',
+        marginBottom: 20,
+        fontSize: 18,
+        fontWeight: 700,
+        color: '#000',
       },
     },
 

@@ -35,5 +35,15 @@
   },
   "go-back": {
     "action": "Go back"
+  },
+  "create-nft": {
+    "title": "Create NFT",
+    "label": {
+      "name": "Name"
+    },
+    "submit": "Create"
+  },
+  "validation": {
+    "required": "This field is required"
   }
 }
