@@ -7,11 +7,11 @@ export const client = new ApolloClient({
   uri: hostname.includes('market.bounce.finance') || hostname.includes('127.0.0.1') || hostname.includes('cnmarket.bounce.finance') || hostname.includes('fangible') ?
     // 'https://api.thegraph.com/subgraphs/name/winless/bouncenft' :      // bsc main
     // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft' :      // bsc main
-    'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft' :      // bsc main
+    'https://subgraph_official_bsc.bounce.finance/subgraphs/name/winless/BounceNFT':
+    'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft' ,      // bsc main
     // 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc test
     // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
     // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
-    'https://subgraph_official_bsc.bounce.finance/subgraphs/name/winless/BounceNFT/graphql',
     // 'http://54.254.179.26:8000/subgraphs/name/winless/bouncenft2',
   cache: new InMemoryCache(),
 })
