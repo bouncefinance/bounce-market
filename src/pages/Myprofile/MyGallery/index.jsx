@@ -54,7 +54,6 @@ export default function Index() {
   // const { tradeData } = useQuery(QueryTradePools)
   const [myNftData, setMyNftData] = useState([])
   const [myTradeData, setMyTradeData] = useState([])
-  const [myApiDate, setMyApiDate] = useState([])
 
   const { wrapperIntl } = useWrapperIntl()
 
@@ -84,15 +83,22 @@ export default function Index() {
       }
     })
 
-  const getMyApiNFT = () => {
-    // sign_Axios.post()
+  const getMyApi = async () => {
+    const params = {
+      accountaddress: account
+    }
+    sign_Axios.post('/api/v2/main/getitemsext', params).then(res=>{
+      console.log(res)
+    })
   }
+
 
   useEffect(() => {
     if (!active) return;
     getMyNFT();
     getMyTradeNFT()
-    getMyApiNFT()
+    getMyApi()
+    // eslint-disable-next-line
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
   useEffect(() => {

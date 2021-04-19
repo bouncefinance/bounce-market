@@ -106,7 +106,7 @@ function ListNFTModal({ open, Step, setOpen, setStep }) {
         }
         setStep1Lock(!bool)
         // eslint-disable-next-line
-    }, [ct_Addr, step2Lock])
+    }, [ct_Addr])
 
     const getTokenBaseInfoByAddress = async (ct_Addr) => {
         try {   
@@ -154,6 +154,7 @@ function ListNFTModal({ open, Step, setOpen, setStep }) {
                 }
                 setStep2Lock(false)
             } catch (error) {
+                console.log(error)
                 setStep2Date({
                     ...step2Date,
                     contractAddress: ct_Addr,
