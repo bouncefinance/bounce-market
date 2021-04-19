@@ -85,7 +85,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
         sign_Axios
             .post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
             .then(function (response) {
-                setBtnText('Uploading Data ...')
+                setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.UploadingData'))
                 if (response.data.code === 200) {
                     return response.data.result.path
                 } else {
@@ -214,13 +214,47 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                 />
 
                 <div className="category_select">
-                    <PullRadioBox title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Category')} marginTop='24px' width='150px' options={[{
+                    {/* <PullRadioBox title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Category')}
+                    marginTop='24px' width='150px' options={[{
                         value: 'Images'
                     }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'}
                         inputDisable={inputDisable}
                         onChange={(item) => {
                             setFormData({ ...formData, Category: item.value })
-                        }} />
+                        }} /> */}
+                    <PullRadioBox
+                        title={wrapperIntl('Category.Category')}
+                        marginTop='24px'
+                        width='150px'
+                        options={[
+                            { value: wrapperIntl('Category.Image') },
+                            { value: wrapperIntl('Category.Video') },
+                        ]}
+                        /* defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'} */
+                        defaultValue={wrapperIntl('Category.Image')}
+                        inputDisable={inputDisable}
+                        onChange={(option) => {
+                            /* const cate = item.value === 'Videos' ? 'video' : 'image' */
+                            console.log("option.value: ", option.value)
+                            let categoryParam
+                            switch (option.value) {
+                                case wrapperIntl('Category.Image'):
+                                    categoryParam = 'image'
+                                    break;
+                            
+                                case wrapperIntl('Category.Video'):
+                                    categoryParam = 'video'
+                                    break;
+
+                                default:
+                                    categoryParam = 'image'
+                                    break;
+                            }
+                            /* setFormData({ ...formData, Category: cate }) */
+                            console.log("categoryParam2: ", categoryParam)
+                            setFormData({ ...formData, Category: categoryParam })
+                        }}
+                    />
 
                     <PullRadioBox title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Channel')} marginTop='24px' width='150px' options={[{
                         value: 'Fine Arts'
@@ -266,7 +300,9 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                     }}
                 />
 
-                <Upload type='image' inputDisable={inputDisable}
+                <Upload
+                    type={formData.Category}
+                    inputDisable={inputDisable}
                     width='200px'
                     height='200px'
                     lockInput={inputDisable} infoTitle={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.browseBrandPhoto')} onFileChange={(formData) => {

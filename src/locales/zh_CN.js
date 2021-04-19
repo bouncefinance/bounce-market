@@ -111,6 +111,7 @@ const zh_CN = {
     "UIKit.Input.Upload.infoTip.avatar.ChangeProfilePhoto": '更改用户头像',
     "UIKit.Input.Upload.infoTip.avatar.requirement1": '支持 JPG, PNG, JPEG2000 格式',
     "UIKit.Input.Upload.infoTip.avatar.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
+    "UIKit.Input.Upload.infoTip.videoError": '文件大小或文件类型错误。 请检查并重试。',
 
     home: {
         banner1: '我们让创意更易于交易。',
@@ -417,6 +418,7 @@ const zh_CN = {
         "MyBrands.BrandsByType.BackToBrands": "返回品牌合集",
         "MyBrands.BrandsByType.Change": "更改横幅图片",
         "MyBrands.BrandsByType.Edit": "修改品牌信息",
+        "MyBrands.BrandsByType.EditYourBrand": "修改品牌信息",
         "MyBrands.BrandsByType.BrandName": "品牌名称",
         "MyBrands.BrandsByType.Description": "描述",
         "MyBrands.BrandsByType.DescribeYourBrand": "描述您的品牌",
