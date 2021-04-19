@@ -170,25 +170,23 @@ export default function Index() {
     }
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
+      // cts: cts_list,
       category: '',
       channel: ''
     })
       .then(res => {
-        
+
         if (res.status === 200 && res.data.code === 1) {
-          
+
           const res_data = res.data.data
-          
+
           const list = pools.map((item, index) => {
-            const poolInfo = res_data.find(res => item.tokenId === res.id);
+            const poolInfo = res_data.find(res => {
+              return item.tokenId === res.id
+              // && item.
+            });
 
-            // console.log('poolInfo',poolInfo)
-
-            // if (poolInfo.id === 17092) {
-            //   poolInfo.Category = 'Videos'
-            // } else {
-            //   poolInfo.Category = 'Images'
-            // }
+            if (!poolInfo) return {}
 
             return {
               ...poolInfo,
@@ -200,25 +198,26 @@ export default function Index() {
               isPendding: item.isPendding,
               category: poolInfo.category,
             }
-            
+
           }).filter(item => item.fileurl)
-          
-          
+
+
 
           let result = list.sort((a, b) => a.tokenId - b.tokenId)
           // console.log(result)
           if (myApiData.length !== 0) {
             result = [...myApiData, ...result]
           }
+
           setItemList(result);
           setStatusList(result);
           setLoading(false)
         }
       })
-      .catch((err) => { 
+      .catch((err) => {
 
-        
-          
+
+
         console.log(err)
       })
     // eslint-disable-next-line
