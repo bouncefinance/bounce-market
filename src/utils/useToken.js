@@ -28,18 +28,66 @@ export default function useToken() {
             // console.log('error, nftId is ' + nftId)
             return {}
         }
-        try {
-            const res = await sign_Axios.post('/api/v2/main/auth/getoneitembyid', { id: parseInt(nftId) })
-            if (res.status === 200 && res.data.code === 1) {
-                return res.data.data
-            } else {
-                return {}
-            }
-        } catch (error) {
-            return {
-                error
+        if (nftId.includes('-')) {
+            const [contract, tokenId] = nftId.split('-')
+            console.log(contract, tokenId)
+            const info = await exportNftInfoByAddressAndTokenId(contract, tokenId)
+            return info
+        } else {
+            try {
+                const res = await sign_Axios.post('/api/v2/main/auth/getoneitembyid', { id: parseInt(nftId) })
+                if (res.status === 200 && res.data.code === 1) {
+                    return res.data.data
+                } else {
+                    return {}
+                }
+            } catch (error) {
+                return {
+                    error
+                }
             }
         }
+    }
+
+    const exportNftInfoByAddressAndTokenId = async (contract, tokenId) => {
+        return {
+            brandid: 10,
+            category: "image",
+            channel: "Fine Arts",
+            contractaddress: "0x479FCe86f116665b8a4d07165a0eB7799A4AEb30",
+            created_at: "2021-03-31T17:07:25Z",
+            description: "Homie_Bounce_2",
+            externallink: "",
+            fileurl: "https://market-test.bounce.finance/jpgfileget/17fccb9944c83381aca5bcde4fc5fa3e-1617210444.jpg",
+            id: 16788,
+            itemname: "Homie_Bounce_2",
+            itemsymbol: "BOUNCE",
+            levels: "",
+            metadata: "",
+            owneraddress: "0x2d3fff58da3346dce601f6db8eec57906cdb17be",
+            ownername: "",
+            popularweight: 14,
+            price: "",
+            properties: "",
+            standard: 1,
+            stats: "",
+            status: 1,
+            supply: 1,
+            unlockablecontent: 0,
+            updated_at: "2021-04-18T12:53:30Z"
+        }
+        // try {
+        //     const res = await sign_Axios.post('/api/v2/main/auth/getoneitembyid', { id: parseInt(nftId) })
+        //     if (res.status === 200 && res.data.code === 1) {
+        //         return res.data.data
+        //     } else {
+        //         return {}
+        //     }
+        // } catch (error) {
+        //     return {
+        //         error
+        //     }
+        // }
     }
 
     const exportArrayNftInfo = async (nftIdArray, category = '', channel = '') => {
@@ -108,7 +156,7 @@ export default function useToken() {
         try {
             const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, tokenContract)
             const ownerAddress = await BounceERC721WithSign_CT.methods.ownerOf(parseInt(tokenId)).call()
-            return ownerAddress?.toLowerCase() ===  account?.toLowerCase() ? 1 : 0
+            return ownerAddress?.toLowerCase() === account?.toLowerCase() ? 1 : 0
         } catch (error) {
             const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, tokenContract)
             const balance = await BounceERC1155WithSign_CT.methods.balanceOf(account, parseInt(tokenId)).call()
@@ -189,9 +237,9 @@ export default function useToken() {
 
     const getPriceByToken1 = async (_price, token1) => {
         if (!_price || !token1) return {}
-        const {symbol, decimals} = await exportErc20Info(token1)
+        const { symbol, decimals } = await exportErc20Info(token1)
         const price = weiToNum(_price, decimals)
-        return {price, symbol}
+        return { price, symbol }
     }
 
     return {
@@ -208,5 +256,6 @@ export default function useToken() {
         queryPrice,
         getAccountHasNftCount,
         // tokenList
+        exportNftInfoByAddressAndTokenId
     }
 }

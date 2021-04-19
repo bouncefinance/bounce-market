@@ -54,6 +54,7 @@ export default function Index() {
   // const { tradeData } = useQuery(QueryTradePools)
   const [myNftData, setMyNftData] = useState([])
   const [myTradeData, setMyTradeData] = useState([])
+  const [myApiData, setMyApiData] = useState([])
 
   const { wrapperIntl } = useWrapperIntl()
 
@@ -87,9 +88,34 @@ export default function Index() {
     const params = {
       accountaddress: account
     }
-    sign_Axios.post('/api/v2/main/getitemsext', params).then(res=>{
-      console.log(res)
+    sign_Axios.post('/api/v2/main/getitemsext', params).then(res => {
+      if (res.status === 200 && res.data.code === 1) {
+        return res.data.data
+      } else {
+        throw new Error('Error:/api/v2/main/getitemsext')
+      }
+    }).then(data => {
+      const apiNftList = wrapperItem(data)
+      // console.log(apiNftList)
+      // setItemList([...apiNftList, ...itemList])
+      setMyApiData(apiNftList)
     })
+  }
+
+  const wrapperItem = (data) => {
+    const isArray = Object.prototype.toString.call(data) === '[object Array]';//true
+    if (isArray) {
+      const list = data.map(item => {
+        return {
+          getType: 'getMyApi',
+          ...item.metadata,
+          ...item
+        }
+      })
+      return list
+    } else {
+      return []
+    }
   }
 
 
@@ -167,8 +193,11 @@ export default function Index() {
               isPendding: item.isPendding
             }
           }).filter(item => item.fileurl)
-          const result = list.sort((a, b) => b.tokenId - a.tokenId)
+          let result = list.sort((a, b) => a.tokenId - b.tokenId)
           console.log(result)
+          if (myApiData.length !== 0) {
+            result = [...myApiData, ...result]
+          }
           setItemList(result);
           setStatusList(result);
           setLoading(false)
@@ -176,7 +205,7 @@ export default function Index() {
       })
       .catch(() => { })
     // eslint-disable-next-line
-  }, [myNftData, myTradeData, account])
+  }, [myNftData, myTradeData, myApiData, account])
 
   return (
     <>
@@ -211,7 +240,7 @@ export default function Index() {
               {item.isPendding ? <PenddingCardItem pools={item} /> : <CardItem
                 nftId={item.id}
                 cover={item.fileurl}
-                itemname={item.itemname}
+                itemname={item.itemname === '' ? 'unname' : item.itemname}
                 user={item.ownername}
                 status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
                 poolType={item.poolType}

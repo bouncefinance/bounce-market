@@ -154,7 +154,7 @@ function ListNFTModal({ open, Step, setOpen, setStep }) {
                 }
                 setStep2Lock(false)
             } catch (error) {
-                console.log(error)
+                // console.log(error)
                 setStep2Date({
                     ...step2Date,
                     contractAddress: ct_Addr,
