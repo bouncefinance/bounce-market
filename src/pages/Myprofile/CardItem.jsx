@@ -171,14 +171,12 @@ export function CardItem ({ cover, status, nftId, itemname, poolType, poolInfo, 
         <>
             <CardItemStyled>
                 <div className="img_wrapper" onClick={() => {
-                    // console.log(poolInfo)
                     if (poolInfo.getType === "getMyApi") return alert('comming Soon!')
                     history.push("/MyGallery/" + nftId)
                 }}>
-                    {poolInfo && (poolInfo.Category === 'Videos' || poolInfo.Category === 'video') ?
-                        <video width='100%' height='100%' src={cover}
-                        // controls="controls"
-                        /> : <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />}
+                    {category && category === 'video' ?
+                        <VideoItem width={262} height={262} src={cover} /> :
+                        <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
                 </div>
                 <div className="content">
                     {/* <div className="info">
@@ -291,7 +289,7 @@ const PenddingCardItemStyle = styled(CardItemStyled)`
 `
 
 export function PenddingCardItem ({ pools, category }) {
-    console.log(pools.fileurl)
+    console.log('=====', pools.fileurl, pools)
     const { wrapperIntl } = useWrapperIntl()
 
     return <PenddingCardItemStyle>
