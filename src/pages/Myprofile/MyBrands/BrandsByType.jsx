@@ -15,7 +15,7 @@ import nav_all from '@assets/images/icon/nav_all.svg'
 // import nav_game from '@assets/images/icon/nav_game.svg'
 import nav_image from '@assets/images/icon/nav_image.svg'
 // import nav_other from '@assets/images/icon/nav_other.svg'
-// import nav_video from '@assets/images/icon/nav_video.svg'
+import nav_video from '@assets/images/icon/nav_video.svg'
 
 import { useBrandInfo } from './useHook'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -195,7 +195,7 @@ const EditBrandstModalStyled = styled.div`width: 1100px;
     }`
 
 export default function BrandsByType () {
-    const { brandId, type } = useParams()
+    const { brandId, category } = useParams()
     const history = useHistory()
     const [listData, setListData] = useState([])
     const [statusList, setStatusList] = useState([]);
@@ -228,30 +228,18 @@ export default function BrandsByType () {
 
     const { wrapperIntl } = useWrapperIntl()
     const nav_list = [{
-        name: wrapperIntl('MyProfile.MyBrands.BrandsByType.AllItems'),
+        name: wrapperIntl('Category.All'),
         icon: nav_all,
         route: 'All'
     }, {
-        name: wrapperIntl('MyProfile.MyBrands.BrandsByType.Image'),
+        name: wrapperIntl('Category.Image'),
         icon: nav_image,
         route: 'Image'
-    }/*, {
-        name: 'Video',
+    }, {
+        name: wrapperIntl('Category.Video'),
         icon: nav_video,
         route: 'Video'
-    }, {
-        name: 'Audios',
-        icon: nav_audio,
-        route: 'Audio'
-    }, {
-        name: 'Game',
-        icon: nav_game,
-        route: 'Games'
-    }, {
-        name: 'Others',
-        icon: nav_other,
-        route: 'Others'
-    }*/]
+    }]
 
     useEffect(() => {
         if (!account) return
@@ -315,19 +303,41 @@ export default function BrandsByType () {
     const [tokenList_2, setTokenList_2] = useState();
 
     useEffect(() => {
+        console.log("category:", category)
         if (!account || !tokenList || !tokenList_2) return
         // console.log(tokenList, tokenList_2)
         const pools = tokenList.concat(tokenList_2)
-        handleBrandTradeItems(pools)
+        console.log("pools: ", pools)
+        pools && handleBrandTradeItems(pools)
         // eslint-disable-next-line
-    }, [account, tokenList, tokenList_2])
+    }, [account, tokenList, tokenList_2, category])
 
     const handleBrandTradeItems = (pools) => {
         const ids = pools.map(item => item.tokenId)
 
+        let categoryParam
+
+        switch (category) {
+            case "All":
+                categoryParam = ''
+                break;
+
+            case "Image":
+                categoryParam = 'image'
+                break;
+
+            case "Video":
+                categoryParam = 'video'
+                break;
+        
+            default:
+                categoryParam = ''
+                break;
+        }
+
         sign_Axios.post(Controller.items.getitemsbyfilter, {
             ids: ids,
-            category: type.toLowerCase() === 'all' ? '' : type,
+            category: categoryParam,
             channel: ''
         })
             .then(res => {
@@ -469,7 +479,7 @@ export default function BrandsByType () {
             <div className="nav_wrapper flex flex-space-x">
                 <div className="flex">
                     {nav_list.map((item) => {
-                        return <li key={item.name} className={type === item.route ? 'active' : ''} onClick={() => {
+                        return <li key={item.name} className={category === item.route ? 'active' : ''} onClick={() => {
                             history.push(`/MyBrands/${brandId}/${item.route}`)
                         }}>
                             <img src={item.icon} alt="" />
@@ -480,7 +490,7 @@ export default function BrandsByType () {
             </div>
             <ul className="list_wrapper">
                 <li>
-                    <AddCardItem type={type} nftType={brandInfo.standard} brandInfo={brandInfo} />
+                    <AddCardItem type={category} nftType={brandInfo.standard} brandInfo={brandInfo} />
                 </li>
                 {statusList.map((item, index) => {
                     return <li key={index}>
