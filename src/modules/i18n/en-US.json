@@ -48,13 +48,16 @@
       "supply": "Supply"
     },
     "channelOption": {
-      "0": "Fine arts",
-      "1": "Sports",
-      "2": "Comicbooks"
+      "Fine Arts": "Fine arts",
+      "Sports": "Sports",
+      "Comics": "Comicbooks"
     },
     "standardOption": {
       "0": "ERC-721",
       "1": "ERC-1155"
+    },
+    "validation": {
+      "max-size": "Max size is {value, number}MB"
     },
     "submit": "Create"
   },
@@ -65,7 +68,7 @@
     "title": "Drop your item here",
     "subtitle": "or <b>browse</b> to choose a file",
     "formats": "PNG, GIF, WEBP, MP4 or MP3",
-    "max-size": "Max 30MB"
+    "max-size": "Max {value}MB"
   },
   "products": {
     "sort-label": "Sort by: {value}"

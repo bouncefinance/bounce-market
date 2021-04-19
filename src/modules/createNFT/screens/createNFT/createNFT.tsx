@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import { GoBack } from '../../../layout/components/GoBack';
 import { useCreateNFTStyles } from './useCreateNFTStyles';
@@ -8,26 +8,16 @@ import { InputField } from '../../../form/components/InputField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { SelectField } from '../../../form/components/SelectField';
 import { UploadImageField } from '../../../form/components/UploadImageField';
+import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
+import { useDispatchRequest } from '@redux-requests/react';
+import {
+  Channel,
+  CreateNftActions,
+  ICreateNFTPayload,
+  Standard,
+} from '../../CreateNftActions';
 
-enum Channel {
-  FineArts,
-  Sports,
-  Conicbooks,
-}
-
-enum Standard {
-  ERC721,
-  ERC1155,
-}
-
-interface ICreateNFTPayload {
-  name: string;
-  description: string;
-  channel: Channel;
-  standard: Standard;
-  supply: number;
-  file: string;
-}
+const MAX_SIZE: Bytes = 31457280;
 
 const validateCreateNFT = (payload: ICreateNFTPayload) => {
   const errors: FormErrors<ICreateNFTPayload> = {};
@@ -48,6 +38,10 @@ const validateCreateNFT = (payload: ICreateNFTPayload) => {
 
   if (!payload.file) {
     errors.file = t('validation.required');
+  } else if (payload.file.size > MAX_SIZE) {
+    errors.file = t('create-nft.validation.max-size', {
+      value: convertBytesToMegabytes(MAX_SIZE),
+    });
   }
 
   return errors;
@@ -55,6 +49,15 @@ const validateCreateNFT = (payload: ICreateNFTPayload) => {
 
 export const CreateNFT = () => {
   const classes = useCreateNFTStyles();
+  const dispatch = useDispatchRequest();
+
+  const handleSubmit = useCallback(
+    (payload: ICreateNFTPayload) => {
+      dispatch(CreateNftActions.createNft(payload));
+    },
+    [dispatch],
+  );
+
   const channelOptions = useMemo(
     () => [
       {
@@ -170,7 +173,7 @@ export const CreateNFT = () => {
           </Box>
         </div>
         <div>
-          <Field component={UploadImageField} name="file" />
+          <Field component={UploadImageField} name="file" maxSize={MAX_SIZE} />
         </div>
       </Box>
     );
@@ -185,7 +188,7 @@ export const CreateNFT = () => {
       </Box>
       <Box>
         <Form
-          onSubmit={() => alert('Submit')}
+          onSubmit={handleSubmit}
           render={renderForm}
           validate={validateCreateNFT}
           initialValues={{
