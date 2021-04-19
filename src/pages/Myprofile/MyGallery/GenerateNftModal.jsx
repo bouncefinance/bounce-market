@@ -183,7 +183,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId }))
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Congratulations") });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
                                         if (window.location.pathname === "/MyGallery") {
                                             setTimeout(function () {
                                                 window.location.reload()
