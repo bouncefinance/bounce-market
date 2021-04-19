@@ -2,13 +2,14 @@ import loadable, { LoadableComponent } from '@loadable/component';
 import { Route } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
+import { generatePath } from 'react-router-dom';
 
-export const PATH_DETAILS_NFT = '/nft/details';
+export const PATH_DETAILS_NFT = '/nft/details/:id';
 
 export const DetailsNFTRoutesConfig: { [key: string]: RouteConfiguration } = {
   DetailsNFT: {
     path: PATH_DETAILS_NFT,
-    generatePath: () => PATH_DETAILS_NFT,
+    generatePath: (id: string) => generatePath(PATH_DETAILS_NFT, { id }),
   },
 };
 

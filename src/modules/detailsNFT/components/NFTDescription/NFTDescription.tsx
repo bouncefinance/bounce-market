@@ -12,9 +12,15 @@ const DESCR_LINES = 3;
 
 interface INFTDescriptionProps {
   className?: string;
+  name: string;
+  description: string;
 }
 
-export const NFTDescription = ({ className }: INFTDescriptionProps) => {
+export const NFTDescription = ({
+  className,
+  name,
+  description,
+}: INFTDescriptionProps) => {
   const classes = useNFTDescriptionStyles();
   const [expanded, setExpanded] = useState(false);
   const [truncated, setTruncated] = useState(false);
@@ -41,7 +47,7 @@ export const NFTDescription = ({ className }: INFTDescriptionProps) => {
         <Container className={classes.section}>
           <Box mb={3}>
             <Typography variant="h2" className={classes.title}>
-              NM0979 The Truth is Often Somewhere in Between
+              {name}
             </Typography>
           </Box>
 
@@ -101,10 +107,7 @@ export const NFTDescription = ({ className }: INFTDescriptionProps) => {
                 </>
               }
             >
-              Welcome to the first series of 'Daves', officially the worlds most
-              exciting collectible. This series is entitled 'The Masters' and
-              pays homage to some of the artists who's work have influenced me
-              over the years.
+              {description}
             </Truncate>
 
             {!truncated && expanded && (

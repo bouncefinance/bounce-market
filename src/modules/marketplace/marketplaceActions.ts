@@ -10,7 +10,7 @@ interface IFetchItemsParams {
 }
 
 export const MarketplaceActions = {
-  fetchPools: createSmartAction('FETCH_POOLS', () => ({
+  fetchPools: createSmartAction('MarketplaceActions/fetchPools', () => ({
     request: {
       promise: (async function () {
         return await getPools();
@@ -22,7 +22,7 @@ export const MarketplaceActions = {
   })),
   fetchItems: createSmartAction<
     RequestAction<{ code: 1; data: IApiItem[] }, IApiItem[]>
-  >('FETCH_ITEMS', (params: IFetchItemsParams) => ({
+  >('MarketplaceActions/fetchItems', (params: IFetchItemsParams) => ({
     request: {
       url: '/api/v2/main/getitemsbyfilter',
       method: 'post',

@@ -14,9 +14,10 @@ import { useNFTContentStyles } from './useNFTContentStyles';
 
 interface INFTContentProps {
   className?: string;
+  src: string;
 }
 
-export const NFTContent = ({ className }: INFTContentProps) => {
+export const NFTContent = ({ className, src }: INFTContentProps) => {
   const classes = useNFTContentStyles();
   const renderedTooltipContent = (
     <MenuList>
@@ -45,12 +46,7 @@ export const NFTContent = ({ className }: INFTContentProps) => {
   return (
     <Container className={classNames(classes.root, className)}>
       <div className={classes.content}>
-        <img
-          className={classes.img}
-          src="https://picsum.photos/1000/600?random=1"
-          loading="lazy"
-          alt=""
-        />
+        <img className={classes.img} src={src} loading="lazy" alt="" />
 
         <div className={classes.actions}>
           <Button variant="outlined" className={classes.btn}>

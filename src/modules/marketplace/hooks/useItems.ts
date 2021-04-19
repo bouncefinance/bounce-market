@@ -39,18 +39,20 @@ export function useItems() {
   const pools = [...tradePools, ...tradeAuctions];
 
   return {
-    data: dataItems.map(poolInfo => {
-      const pool = pools.find(pool => poolInfo.id === pool.tokenId)!;
+    data: dataItems
+      .filter(poolInfo => !!pools.find(pool => poolInfo.id === pool.tokenId))
+      .map(poolInfo => {
+        const pool = pools.find(pool => poolInfo.id === pool.tokenId)!;
 
-      return {
-        ...poolInfo,
-        poolType: pool.poolType,
-        poolId: pool.poolId,
-        price: pool.price,
-        createTime: pool.createTime,
-        token1: pool.token1,
-      };
-    }),
+        return {
+          ...poolInfo,
+          poolType: pool.poolType,
+          poolId: pool.poolId,
+          price: pool.price,
+          createTime: pool.createTime,
+          token1: pool.token1,
+        };
+      }),
     loading,
   };
 }
