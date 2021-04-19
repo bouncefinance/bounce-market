@@ -33,7 +33,7 @@ export function Routes() {
         exact
         path={CreateNFTRoutesConfig.CreateNft.path}
         render={() => (
-          <DefaultLayout>
+          <DefaultLayout headerTheme={Themes.dark}>
             <CreateNFTRoutes />
           </DefaultLayout>
         )}
@@ -43,7 +43,7 @@ export function Routes() {
         exact
         path={DetailsNFTRoutesConfig.DetailsNFT.path}
         render={() => (
-          <DefaultLayout>
+          <DefaultLayout headerTheme={Themes.dark}>
             <DetailsNFTRoutes />
           </DefaultLayout>
         )}
