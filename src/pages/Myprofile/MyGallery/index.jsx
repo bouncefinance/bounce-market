@@ -168,7 +168,8 @@ export default function Index() {
               price: item.price,
               token1: item.token1,
               createTime: item.createTime,
-              isPendding: item.isPendding
+              isPendding: item.isPendding,
+              category: poolInfo.category,
             }
           }).filter(item => item.fileurl)
           const result = list.sort((a, b) => b.tokenId - a.tokenId)
@@ -212,7 +213,7 @@ export default function Index() {
           </li> */}
           {statusList.map((item, index) => {
             return <li key={index}>
-              {item.isPendding ? <PenddingCardItem pools={item} /> : <CardItem
+              {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
                 nftId={item.id}
                 cover={item.fileurl}
                 itemname={item.itemname}
@@ -221,6 +222,7 @@ export default function Index() {
                 poolType={item.poolType}
                 //  status={index % 2 === 0 ? 'Listed' : ''} 
                 poolInfo={item}
+                category={item.category}
               />}
             </li>
           })}

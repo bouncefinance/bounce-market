@@ -33,6 +33,7 @@ export function VideoItem ({ src, width, height, style = {} }) {
       if (!video) return
     // TODO   The error you provided does not contain a stack trace.
     video?.play()
+    // video.defaultMuted = true
   }
   const onMouseLeave = () => {
     const video = videoRef?.current

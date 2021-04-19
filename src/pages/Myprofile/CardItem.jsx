@@ -11,6 +11,7 @@ import useToken from '@/utils/useToken'
 import { weiToNum } from '@/utils/useBigNumber'
 import GenerateNftModal from './MyGallery/GenerateNftModal'
 import { AUCTION_TYPE } from '@/utils/const'
+import { VideoItem } from '../component/Other/videoItem'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
@@ -142,7 +143,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo }) {
+export function CardItem ({ cover, status, nftId, itemname, poolType, poolInfo, category }) {
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const [openCancel, setOpenCancel] = useState(false)
@@ -170,10 +171,10 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
         <>
             <CardItemStyled>
                 <div className="img_wrapper" onClick={() => history.push("/MyGallery/" + nftId)}>
-                    {poolInfo&&(poolInfo.Category === 'Videos'||poolInfo.Category === 'video') ?
-                        <video width='100%' height='100%' src={cover}
-                        // controls="controls"
-                        /> : <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />}
+                    {category && category === 'video' ?
+                        <VideoItem width={262} height={262} src={cover} /> :
+                        <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
+                        {category || 'no category'}
                 </div>
                 <div className="content">
                     {/* <div className="info">
@@ -276,14 +277,18 @@ const PenddingCardItemStyle = styled(CardItemStyled)`
    
 `
 
-export function PenddingCardItem({ pools }) {
+export function PenddingCardItem ({ pools, category }) {
     console.log(pools.fileurl)
     const { wrapperIntl } = useWrapperIntl()
 
     return <PenddingCardItemStyle>
-        <div className="img_wrapper">
+        {/* <div className="img_wrapper">
             <AutoStretchBaseWidthOrHeightImg src={pools.fileurl} width={262} height={262} />
-        </div>
+        </div> */}
+        {category && category === 'video' ?
+            <VideoItem width={262} height={262} src={pools.fileurl} /> :
+            <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={pools.fileurl} />}
+            
         <div className="content">
             <div className="info-box">
                 <h5 className="name">{pools.itemname}</h5>
