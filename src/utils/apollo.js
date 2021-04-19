@@ -10,8 +10,8 @@ export const client = new ApolloClient({
     'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft' :      // bsc main
     // 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc test
     // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
-    // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
-    'http://52.77.252.164:8000/subgraphs/name/winless/BounceNFT',
+    'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
+    // 'http://52.77.252.164:8000/subgraphs/name/winless/BounceNFT',
     // 'http://54.254.179.26:8000/subgraphs/name/winless/bouncenft2',
   cache: new InMemoryCache(),
 })
