@@ -124,7 +124,6 @@ export default function SellNFT() {
 	const setInitNftInfo = async (nftId) => {
 		const info = await exportNftInfo(nftId);
 
-		// console.log(info); 
 		setNftId(info);
 	};
 
@@ -303,7 +302,10 @@ export default function SellNFT() {
 
 			<PageBody>
 				<PageBodyLeft>
-					<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl)} />
+					{nftInfo && nftInfo.category === "Videos" ?
+						<video width='500px' height='500px' src={nftInfo && (nftInfo.fileurl)} controls='controls' autoPlay></video> :
+						<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl)} />
+					}
 				</PageBodyLeft>
 				<PageBodyRight>
 					<span className="itemName">

@@ -46,7 +46,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const history = useHistory();
     const { active, library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
-    const { state,dispatch } = useContext(myContext)
+    const { state, dispatch } = useContext(myContext)
     const { showTransferByStatus } = useTransferModal()
     /* const [btnText, setBtnText] = useState('Submit') */
     const [btnText, setBtnText] = useState(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Submit"))
@@ -60,6 +60,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         Supply: 1
     })
 
+    useEffect(() => {
+        console.log("formData:", formData)
+      }, [formData])
 
     useEffect(() => {
         if (!active) return
@@ -140,14 +143,15 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
+                                        window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId }))
                                         showTransferByStatus('')
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
-                                        if(window.location.pathname === "/MyGallery"){
-                                            setTimeout(function(){
+                                        if (window.location.pathname === "/MyGallery") {
+                                            setTimeout(function () {
                                                 window.location.reload()
-                                            },3000)
-                                        }else{
+                                            }, 3000)
+                                        } else {
                                             history.push("/MyGallery")
                                         }
                                     })
@@ -166,10 +170,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                         } else {
                             const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
                             const _amount = formData.Supply
-                            const _data = 0 
+                            const _data = 0
                             // console.log(_nftId, _amount, _data, _sign,_expiredtime)
                             try {
-                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign,_expiredtime).send({ from: account })
+                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign, _expiredtime).send({ from: account })
                                     .on('transactionHash', hash => {
                                         setOpen(false)
                                         // setBidStatus(pendingStatus)
@@ -177,16 +181,17 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
+                                        window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId }))
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Congratulations") });
-                                        if(window.location.pathname === "/MyGallery"){
-                                            setTimeout(function(){
+                                        if (window.location.pathname === "/MyGallery") {
+                                            setTimeout(function () {
                                                 window.location.reload()
-                                            },3000)
-                                        }else{
+                                            }, 3000)
+                                        } else {
                                             history.push("/MyGallery")
                                         }
-                                        
+
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -201,7 +206,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                 console.log('BounceERC1155_CT.methods.mintUser', error)
                             }
                         }
-                    }else{
+                    } else {
                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
                     }
 
@@ -230,14 +235,39 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />
 
                 <div className="category_select">
-                    <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Category')} marginTop='0' /* marginTop='24px' */ width='150px' options={[{
-                        value: 'Images'
-                    }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'}
+                    <PullRadioBox
+                        title={wrapperIntl('Category.Category')}
+                        marginTop='0' /* marginTop='24px' */
+                        width='150px'
+                        options={[
+                            { value: wrapperIntl('Category.Image') },
+                            { value: wrapperIntl('Category.Video') },
+                        ]}
+                        /* defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'} */
+                        defaultValue={wrapperIntl('Category.Image')}
                         inputDisable={inputDisable}
-                        
-                        onChange={(item) => {
-                            setFormData({ ...formData, Category: item.value })
-                        }} />
+                        onChange={(option) => {
+                            /* const cate = item.value === 'Videos' ? 'video' : 'image' */
+                            console.log("option.value: ", option.value)
+                            let categoryParam
+                            switch (option.value) {
+                                case wrapperIntl('Category.Image'):
+                                    categoryParam = 'iamge'
+                                    break;
+                            
+                                case wrapperIntl('Category.Video'):
+                                    categoryParam = 'video'
+                                    break;
+
+                                default:
+                                    categoryParam = 'iamge'
+                                    break;
+                            }
+                            /* setFormData({ ...formData, Category: cate }) */
+                            console.log("categoryParam2: ", categoryParam)
+                            setFormData({ ...formData, Category: categoryParam })
+                        }}
+                    />
 
                     <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Channel')} marginTop='0px' width='150px' options={[{
                         value: NFT_CATEGORY.FineArts
@@ -262,7 +292,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                         defaultValue={'721'}
                         onValChange={(item) => {
                             setNftType(item.name)
-                        }} 
+                        }}
                     />
                 </div>
 
@@ -291,13 +321,18 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     }}
                 />
 
-                <Upload type='image' inputDisable={inputDisable}
+                <Upload
+                    type={formData.Category}
+                    inputDisable={inputDisable}
                     width='200px'
                     /* height='200px' */
                     height="100%"
-                    lockInput={inputDisable} infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')} onFileChange={(formData) => {
+                    lockInput={inputDisable}
+                    infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')}
+                    onFileChange={(formData) => {
                         setFileData(formData)
-                    }} />
+                    }}
+                />
 
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {

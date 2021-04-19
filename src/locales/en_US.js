@@ -8,6 +8,16 @@ const en_US = {
     Unlisted: "Unlisted",
     CopySuccessful: 'Copy Successful',
     TryAgain: 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
+    "Code-1": 'Please Connet your wallet or sign again.',
+    "Re-sign": "Please sign again",
+    "ConnectWallet": "Please connect your wallet",
+
+    Category: {
+        "Category": "Category",
+        "All": "All",
+        "Image": "Image",
+        "Video": "Video",
+    },
     
     userUserInfo: {
         "uploadSuccess": "Information upload success!",
@@ -31,7 +41,8 @@ const en_US = {
         setting: 'Account Settings',
         search: 'Search',
         search_p: 'Search objects, items, art',
-        SelectBSC: "Please select BSC or Heco network.",
+        SelectBSC: "Please select BSC network.",
+        SwitchToBSC: "Click here to switch to BSC network.",
     },
 
     'pages.buy.Share': 'Share',
@@ -89,6 +100,7 @@ const en_US = {
 
     "UIKit.Input.Upload.infoTip.FormatIncorrect": 'The file format you selected is incorrect',
     "UIKit.Input.Upload.infoTip.uploadImage": 'upload Image',
+    "UIKit.Input.Upload.infoTip.uploadVideo": 'upload Video',
     "UIKit.Input.Upload.infoTip.requirement1": 'Supports JPG, PNG, JPEG2000',
     "UIKit.Input.Upload.infoTip.requirement2": 'no more than 100MB, 262*262 Reccomended',
     "UIKit.Input.Upload.infoTip.image.requirement1": 'Supports JPG, PNG, JPEG2000',
@@ -270,6 +282,8 @@ const en_US = {
         "CardItem.NotOnSale": "Not OnSale",
         "CardItem.TopBid": "Top Bid",
         "CardItem.Price": "Price",
+        "CardItem.InProcessOfCreation": "In process of creation ...",
+        "CardItem.WaitingBlock": "Waiting for block confirmation ...",
 
         "SettingAccountModal.Save": "Save",
         "SettingAccountModal.MyAccountSettings": "My Account Settings",

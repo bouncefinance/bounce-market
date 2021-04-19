@@ -5,8 +5,13 @@ const hostname = window.location.hostname
 
 export const client = new ApolloClient({
   uri: hostname.includes('market.bounce.finance') || hostname.includes('127.0.0.1') || hostname.includes('cnmarket.bounce.finance') || hostname.includes('fangible') ?
-    'https://api.thegraph.com/subgraphs/name/winless/bouncenft' :      // bsc main
-    'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc test
+    // 'https://api.thegraph.com/subgraphs/name/winless/bouncenft' :      // bsc main
+    // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft' :      // bsc main
+    'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft' :      // bsc main
+    // 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc test
+    // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
+    'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
+    // 'http://54.254.179.26:8000/subgraphs/name/winless/bouncenft2',
   cache: new InMemoryCache(),
 })
 
