@@ -10,6 +10,8 @@ import icon_create from './assets/create.svg'
 import default_img from './assets/default_img.svg'
 import { getEllipsisAddress } from '@/utils/utils';
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { VideoItem } from '../../component/Other/videoItem'
+import { AutoStretchBaseWidthOrHeightImg } from '../../component/Other/autoStretchBaseWidthOrHeightImg'
 
 const TableItemStyled = styled(TableRow)`
     font-family: 'Helvetica Neue';
@@ -127,7 +129,12 @@ export default function TableItem({ row }) {
                 }
             </TableCell>
             <TableCell className='item'>
-                {row.cover ? <img src={row.cover} alt="" /> : <img src={default_img} alt="" />}
+
+                <div style={{display: 'inline-block', marginRight: '12px'}}>
+                    {row.category && row.category === 'video' ?
+                        <VideoItem width={44} height={44} src={row.cover} /> :
+                        <AutoStretchBaseWidthOrHeightImg width={44} height={44} src={row.cover} />}
+                </div>
                 <span className="itemName">{row.item}</span>
             </TableCell>
             <TableCell>
