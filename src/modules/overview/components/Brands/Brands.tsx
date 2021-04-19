@@ -15,6 +15,11 @@ import { uid } from 'react-uid';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useBrandsStyles } from './BrandsStyles';
+import darkHorseLogo from './assets/darkHorse.svg';
+import sociosLogo from './assets/socios.svg';
+import alpacaLogo from './assets/alpaca.svg';
+import rockiLogo from './assets/rocki.svg';
+import polkaPetLogo from './assets/polkaPet.svg';
 
 SwiperCore.use([Lazy]);
 
@@ -106,10 +111,28 @@ export const BrandsComponent = ({
 };
 
 export const Brands = () => {
-  const brands: IBrandItemProps[] = new Array(6).fill(0).map((_, i) => ({
-    img: `https://picsum.photos/134?random=${i + 1}`,
-    theme: i === 1 || i === 4 ? 'dark' : 'light',
-  }));
+  const brands: IBrandItemProps[] = [
+    {
+      img: darkHorseLogo,
+      theme: 'dark',
+    },
+    {
+      img: sociosLogo,
+      theme: 'light',
+    },
+    {
+      img: alpacaLogo,
+      theme: 'light',
+    },
+    {
+      img: rockiLogo,
+      theme: 'dark',
+    },
+    {
+      img: polkaPetLogo,
+      theme: 'light',
+    },
+  ];
 
   return <BrandsComponent items={brands} stackUp stackDown />;
 };
