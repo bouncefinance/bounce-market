@@ -61,7 +61,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     })
 
     useEffect(() => {
-        console.log("formData:", formData)
+        // console.log("formData:", formData)
       }, [formData])
 
     useEffect(() => {

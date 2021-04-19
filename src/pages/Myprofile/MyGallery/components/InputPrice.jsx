@@ -47,6 +47,7 @@ function InputPrice({
 	}, [chainId])
 	useEffect(() => {
 		if (!active || !nftInfo || !nftInfo.standard) return;
+		console.log(nftInfo.contractaddress, nftInfo.id)
 		let getBalance
 		if (nftInfo.standard === 2) {
 			getBalance = async () => {
