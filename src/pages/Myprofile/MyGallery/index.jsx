@@ -83,11 +83,26 @@ export default function Index() {
       }
     })
 
+  const getMyApiNFT = async () => {
+    sign_Axios.post('/api/v2/main/getitemsext', { accountaddress: account }).then(res => {
+      console.log(res)
+      if (res.status === 200 && res.data.code === 1) {
+        return res.data.data
+      }else{
+        throw new Error('Error: /api/v2/main/getitemsext')
+      }
+    }).then(data=>{
+      console.log(data)
+    })
+  }
+
 
   useEffect(() => {
     if (!active) return;
     getMyNFT();
     getMyTradeNFT()
+    getMyApiNFT()
+    // eslint-disable-next-line
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
   useEffect(() => {
@@ -141,9 +156,9 @@ export default function Index() {
           const res_data = res.data.data
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => item.tokenId === res.id);
-            if(poolInfo.id===17092){
+            if (poolInfo.id === 17092) {
               poolInfo.Category = 'Videos'
-            }else{
+            } else {
               poolInfo.Category = 'Images'
             }
             return {
@@ -174,7 +189,7 @@ export default function Index() {
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
           {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
           <AddCardItem />
-          <Category  itemList={itemList} onStatusChange={setStatusList} />
+          <Category itemList={itemList} onStatusChange={setStatusList} />
 
           {/* <PullRadioBox prefix={'Categories:'} options={[{
             value: 'Image'
