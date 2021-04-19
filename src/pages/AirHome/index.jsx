@@ -215,9 +215,9 @@ export function AirHome() {
           })
 
           console.log(list)
-          const result = list.filter(item => {
-            return item.poolId || item.poolId === 0
-          }).sort((a, b) => b.createTime - a.createTime);
+          const result = list
+            // .filter(item => item.poolId || item.poolId === 0)
+            .sort((a, b) => b.createTime - a.createTime);
           setItemList(result);
         }
       })
@@ -300,6 +300,7 @@ export function AirHome() {
                 cardId={item.poolId}
                 price={item.price}
                 token1={item.token1}
+                category={item.category}
               />
             </li>
           })}
@@ -315,6 +316,7 @@ export function AirHome() {
                 cardId={item.poolId}
                 price={item.price}
                 token1={item.token1}
+                category={item.category}
               />
             </li>
           })}

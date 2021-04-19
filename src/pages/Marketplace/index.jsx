@@ -245,8 +245,8 @@ export default function Marketplace() {
   }, [active, data, channel, categoryRequestParam])
 
   const handleChange = (filterSearch) => {
-    const list = tokenList.filter(item => item.itemname.toLowerCase().indexOf(filterSearch) > -1
-      || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
+    const list = tokenList.filter(item => item.itemname?.toLowerCase().indexOf(filterSearch) > -1
+      || item.owneraddress?.toLowerCase().indexOf(filterSearch) > -1);
     setFilterList(list);
   }
 

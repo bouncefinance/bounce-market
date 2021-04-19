@@ -38,7 +38,7 @@ export default function useAxios() {
     }, [account])
 
     const initSign = async () => {
-        alert("initSign")
+        /* console.log("initSign", initSign) */
 
         // 判断授权是否过期
         const res = await sign_Axios_Post('/api/v2/main/auth/getaccount', { accountaddress: account })
@@ -56,7 +56,7 @@ export default function useAxios() {
     }
 
     const getNewToken = async () => {
-        alert("getNewToken")
+        /* console.log("getNewToken", getNewToken) */
 
         // console.log(isRequestLock)
         const web3 = new Web3(library.provider);

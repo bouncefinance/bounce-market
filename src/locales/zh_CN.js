@@ -106,7 +106,7 @@ const zh_CN = {
     "UIKit.Input.Upload.infoTip.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
     "UIKit.Input.Upload.infoTip.image.requirement1": '支持 JPG, PNG, JPEG2000 格式',
     "UIKit.Input.Upload.infoTip.image.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
-    "UIKit.Input.Upload.infoTip.video.requirement1": '支持 MP4, AVI, WMV, MOV 格式',
+    "UIKit.Input.Upload.infoTip.video.requirement1": '支持 MP4 格式',
     "UIKit.Input.Upload.infoTip.video.requirement2": '图片大小不大于 100MB, 推荐分辨率为360*240',
     "UIKit.Input.Upload.infoTip.avatar.ChangeProfilePhoto": '更改用户头像',
     "UIKit.Input.Upload.infoTip.avatar.requirement1": '支持 JPG, PNG, JPEG2000 格式',
