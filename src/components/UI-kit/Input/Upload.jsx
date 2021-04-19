@@ -149,6 +149,10 @@ export default function Upload({
             // setFormData(formData)
         } else if (file.type.includes('video/')) {
             console.log(file)
+            if (file.size > 100 * 1024 * 1024 || file.type !== "video/mp4") {
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.videoError") });
+                return ;
+            }
             let reader = new FileReader();  //调用FileReader
             reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
             reader.onload = function (evt) {   //读取操作完成时触发。

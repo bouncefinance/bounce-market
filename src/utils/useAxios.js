@@ -38,6 +38,8 @@ export default function useAxios() {
     }, [account])
 
     const initSign = async () => {
+        alert("initSign")
+
         // 判断授权是否过期
         const res = await sign_Axios_Post('/api/v2/main/auth/getaccount', { accountaddress: account })
         if (res.status === 200 && res.data.code === -1) {
@@ -47,12 +49,15 @@ export default function useAxios() {
             JWT_TOKEN_V2[account] = token
             window.localStorage.setItem('JWT_TOKEN_V2', JSON.stringify(JWT_TOKEN_V2))
             dispatch({ type: 'Token', authToken: token });
+            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
             // window.location.reload();
             history.push("/Home")
         }
     }
 
     const getNewToken = async () => {
+        alert("getNewToken")
+
         // console.log(isRequestLock)
         const web3 = new Web3(library.provider);
         const sign = await web3.eth.personal.sign(signStr, account)
@@ -96,6 +101,7 @@ export default function useAxios() {
             ...option.config
         }
         let res = await axios.post(Base_URL + path, params, config)
+        console.log("res.data.code: ", res.data.code)
         if (res.status === 200 && res.data.code === -1) {
             if (active) {
                 dispatch({
@@ -126,6 +132,7 @@ export default function useAxios() {
         // }
         // res = await axios.post(Base_URL + path, params, config)
         }
+        /* else if (res.status === 200 && res.data.code === -1) */
 
         return res
     }

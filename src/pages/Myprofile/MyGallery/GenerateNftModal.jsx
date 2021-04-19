@@ -252,7 +252,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             let categoryParam
                             switch (option.value) {
                                 case wrapperIntl('Category.Image'):
-                                    categoryParam = 'iamge'
+                                    categoryParam = 'image'
                                     break;
                             
                                 case wrapperIntl('Category.Video'):
@@ -260,7 +260,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     break;
 
                                 default:
-                                    categoryParam = 'iamge'
+                                    categoryParam = 'image'
                                     break;
                             }
                             /* setFormData({ ...formData, Category: cate }) */
