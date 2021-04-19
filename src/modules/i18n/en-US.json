@@ -1,6 +1,8 @@
 {
   "common": {
-    "read-more": "read more"
+    "load-more": "Load more",
+    "read-more": "read more",
+    "view-all": "View all"
   },
   "connect-wallet": {
     "custom-binancewallet": {
@@ -64,5 +66,17 @@
     "subtitle": "or <b>browse</b> to choose a file",
     "formats": "PNG, GIF, WEBP, MP4 or MP3",
     "max-size": "Max 30MB"
+  },
+  "products": {
+    "sort-label": "Sort by: {value}"
+  },
+  "movers": {
+    "title": "Fast movers"
+  },
+  "artists": {
+    "title": "Top Artists"
+  },
+  "brands": {
+    "title": "Hot Brands"
   }
 }

@@ -7,6 +7,7 @@ import {
   useTheme,
 } from '@material-ui/core';
 import classNames from 'classnames';
+import { t } from 'modules/i18n/utils/intl';
 import { Img } from 'modules/uiKit/Img';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useEffect, useMemo, useState } from 'react';
@@ -85,12 +86,12 @@ export const BrandsComponent = ({
         <Box mb={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs>
-              <Typography variant="h2">Hot Brands</Typography>
+              <Typography variant="h2">{t('brands.title')}</Typography>
             </Grid>
 
             <Grid item xs="auto">
               <Button variant="outlined" className={classes.moreBtn}>
-                View all
+                {t('common.view-all')}
               </Button>
             </Grid>
           </Grid>

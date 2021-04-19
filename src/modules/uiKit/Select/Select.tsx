@@ -1,6 +1,6 @@
 import { Select as SelectComponent, SelectProps } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
-import { AngleDownIcon } from 'modules/components/Icons/AngleDownIcon';
+import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
 import React, { ReactNode, useMemo } from 'react';
 import { uid } from 'react-uid';
 import { useSelectStyles } from './SelectStyles';

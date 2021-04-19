@@ -1,6 +1,6 @@
 import { Avatar, Box, Hidden, Typography } from '@material-ui/core';
 import classNames from 'classnames';
-import { SwiperPreloader } from 'modules/components/SwiperPreloader';
+import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { t } from 'modules/i18n/utils/intl';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React from 'react';

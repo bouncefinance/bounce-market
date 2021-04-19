@@ -1,7 +1,7 @@
 import loadable, { LoadableComponent } from '@loadable/component';
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { QueryLoadingAbsolute } from '../components/QueryLoading/QueryLoading';
+import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 
 export const PATH_INDEX = '/';

@@ -1,6 +1,6 @@
 import { IconButton, InputBase } from '@material-ui/core';
 import classNames from 'classnames';
-import { SearchIcon } from 'modules/components/Icons/SearchIcon';
+import { SearchIcon } from 'modules/common/components/Icons/SearchIcon';
 import React, { useEffect, useRef } from 'react';
 import { useSearchStyles } from './SearchStyles';
 

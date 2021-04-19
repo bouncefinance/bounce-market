@@ -6,7 +6,8 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { SwiperPreloader } from 'modules/components/SwiperPreloader';
+import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
+import { t } from 'modules/i18n/utils/intl';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
@@ -81,12 +82,12 @@ export const ArtistsComponent = ({
         <Box mb={5}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs>
-              <Typography variant="h2">Top Artists</Typography>
+              <Typography variant="h2">{t('artists.title')}</Typography>
             </Grid>
 
             <Grid item xs="auto">
               <Button variant="outlined" className={classes.moreBtn}>
-                View all
+                {t('common.view-all')}
               </Button>
             </Grid>
           </Grid>

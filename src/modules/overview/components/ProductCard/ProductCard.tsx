@@ -1,11 +1,14 @@
 import { ButtonBase, Card, CardContent, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
+import {
+  IProfileInfoProps,
+  ProfileInfo,
+} from 'modules/common/components/ProfileInfo';
 import { getDaysLeft } from 'modules/common/utils/getDaysLeft';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { IProfileInfoProps, ProfileInfo } from '../ProfileInfo';
 import { HeartIcon } from './assets/HeartIcon';
 import { TimeIcon } from './assets/TimeIcon';
 import { useProductCardStyles } from './ProductCardStyles';

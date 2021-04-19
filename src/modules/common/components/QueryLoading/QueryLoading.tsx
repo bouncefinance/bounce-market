@@ -1,7 +1,7 @@
+import { Box } from '@material-ui/core';
 import { LoadingProps } from '@redux-requests/react';
 import React from 'react';
 import { Spinner } from '../Spinner';
-import { Box } from '@material-ui/core';
 
 interface IQueryLoadingProps extends LoadingProps {
   size?: number;

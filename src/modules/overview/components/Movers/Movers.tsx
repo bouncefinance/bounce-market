@@ -7,11 +7,15 @@ import {
   useTheme,
 } from '@material-ui/core';
 import classNames from 'classnames';
+import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
+import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
+import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { getRandomId } from 'modules/common/utils/getRandomId';
-import { AngleLeftIcon } from 'modules/components/Icons/AngleLeftIcon';
-import { AngleRightIcon } from 'modules/components/Icons/AngleRightIcon';
-import { IProductCardProps, ProductCard } from 'modules/components/ProductCard';
-import { SwiperPreloader } from 'modules/components/SwiperPreloader';
+import { t } from 'modules/i18n/utils/intl';
+import {
+  IProductCardProps,
+  ProductCard,
+} from 'modules/overview/components/ProductCard';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
@@ -87,7 +91,7 @@ export const Movers = ({ className, items, ...sectionProps }: IMoversProps) => {
         <Box mb={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs>
-              <Typography variant="h2">Fast movers</Typography>
+              <Typography variant="h2">{t('movers.title')}</Typography>
             </Grid>
 
             <Grid item xs="auto">

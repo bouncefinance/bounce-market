@@ -8,7 +8,11 @@ import {
   Tab,
   Tabs,
 } from '@material-ui/core';
-import { IProductCardProps, ProductCard } from 'modules/components/ProductCard';
+import { t } from 'modules/i18n/utils/intl';
+import {
+  IProductCardProps,
+  ProductCard,
+} from 'modules/overview/components/ProductCard';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { Select } from 'modules/uiKit/Select';
@@ -112,7 +116,9 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
                         );
                         const label = sortVariant?.label.toLowerCase();
 
-                        return <>Sort by: {label}</>;
+                        return t('products.sort-label', {
+                          value: label,
+                        });
                       }
                     : undefined
                 }
@@ -127,7 +133,7 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
 
         <Box display="flex" justifyContent="center" mt={5}>
           <Button variant="outlined" className={classes.moreBtn} fullWidth>
-            Load More
+            {t('common.load-more')}
           </Button>
         </Box>
       </Container>

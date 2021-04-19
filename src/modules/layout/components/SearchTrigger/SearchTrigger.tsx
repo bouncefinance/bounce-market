@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from '@material-ui/core';
 import classNames from 'classnames';
-import { SearchIcon } from 'modules/components/Icons/SearchIcon';
+import { SearchIcon } from 'modules/common/components/Icons/SearchIcon';
 import { useSearchTriggerStyles } from './SearchTriggerStyles';
 
 interface ISearchTriggerProps extends ButtonProps {
