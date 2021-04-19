@@ -71,7 +71,7 @@ export const Overview = () => {
         dispatchRequest(
           MarketplaceActions.fetchItems({
             ids,
-            // channel: 'Sports',
+            channel: 'Sports',
           }),
         );
       }
