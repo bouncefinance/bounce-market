@@ -21,9 +21,9 @@ export const FONTS = {
 export const PALETTE = {
   type: Themes.light,
   primary: {
-    light: lighten('#2663FF', 0.1),
-    main: '#2663FF',
-    dark: darken('#2663FF', 0.2),
+    light: lighten('#0075FF', 0.1),
+    main: '#0075FF',
+    dark: darken('#0075FF', 0.2),
   },
   background: {
     default: '#fff',
@@ -263,6 +263,11 @@ export const mainTheme = createMuiTheme({
         '&$disabled': {
           cursor: 'not-allowed',
           pointerEvents: 'auto',
+          borderColor: fade(defaultTheme.palette.common.black, 0),
+
+          '&:before': {
+            display: 'none',
+          },
 
           '&:active': {
             transform: 'none',

@@ -8,6 +8,13 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
     borderTop: `1px solid ${fade(theme.palette.common.black, 0.1)}`,
   },
 
+  container: {
+    '@media (min-width: 1400px)': {
+      paddingLeft: theme.spacing(5.5),
+      paddingRight: theme.spacing(5.5),
+    },
+  },
+
   col: {
     display: 'flex',
     justifyContent: 'center',

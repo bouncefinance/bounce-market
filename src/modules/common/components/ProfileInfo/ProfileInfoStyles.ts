@@ -74,5 +74,9 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
   title: {
     gridColumn: '2/3',
     gridRow: '2/3',
+
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   },
 }));

@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@material-ui/styles';
 import { useDispatchRequest } from '@redux-requests/react';
+import { DetailsNFTRoutesConfig } from 'modules/detailsNFT/DetailsNFTRoutes';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers } from 'modules/overview/components/Movers';
@@ -26,7 +27,7 @@ function mapPromoItem(
     }),
     img: item.fileurl,
     thumbImg: item.fileurl || '',
-    href: RoutesConfiguration.Overview.generatePath(),
+    href: DetailsNFTRoutesConfig.DetailsNFT.generatePath(),
     authorHref: RoutesConfiguration.Overview.generatePath(),
   };
 }
@@ -38,9 +39,9 @@ function mapMoversItem(
     title: item.itemname || '',
     price: item.price,
     priceType: 'USDT',
-    endDate: new Date(2021, 3, 18),
+    endDate: new Date(2021, 3, 30),
     likes: 100,
-    href: '#',
+    href: DetailsNFTRoutesConfig.DetailsNFT.generatePath(),
     img: item.fileurl || '',
     ProfileInfoProps: {
       subTitle: 'Owner',

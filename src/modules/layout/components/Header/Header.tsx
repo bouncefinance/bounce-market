@@ -7,9 +7,16 @@ import {
   Fade,
   ThemeProvider,
 } from '@material-ui/core';
+import { useQuery } from '@redux-requests/react';
 import { getTheme } from 'modules/common/utils/getTheme';
+import { t } from 'modules/i18n/utils/intl';
 import { Themes } from 'modules/themes/types';
 import { useIsXLUp } from 'modules/themes/useTheme';
+import { useCallback } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { useAppDispatch } from '../../../../store/useAppDispatch';
+import { AccountActions } from '../../../account/store/accountActions';
+import { RoutesConfiguration } from '../../../createNFT/Routes';
 import { HeaderLinks, HeaderLinksSecondary } from '../HeaderLinks';
 import { Logo } from '../Logo';
 import { Search } from '../Search';
@@ -18,12 +25,6 @@ import { Social } from '../Social';
 import { Toggle } from '../Toggle';
 import { useHeaderStyles } from './HeaderStyles';
 import { useHeader } from './useHeader';
-import { useCallback } from 'react';
-import { AccountActions } from '../../../account/store/accountActions';
-import { useAppDispatch } from '../../../../store/useAppDispatch';
-import { useQuery } from '@redux-requests/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { RoutesConfiguration } from '../../../createNFT/Routes';
 
 interface IHeaderProps {
   isConnected?: boolean;
@@ -69,12 +70,12 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
         variant="outlined"
         color="default"
       >
-        Create
+        {t('header.create')}
       </Button>
 
       {!isConnected && (
         <Button onClick={handleConnect} disabled={loading}>
-          Connect Wallet
+          {t('header.connect')}
         </Button>
       )}
       {isConnected && renderedWallet}
@@ -128,6 +129,7 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
                 classes={{
                   paperAnchorRight: classes.drawerPaper,
                 }}
+                elevation={0}
                 anchor="right"
                 open={mobileNavShowed}
                 onClose={toggleNav(false)}
@@ -139,20 +141,27 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
                     <HeaderLinksSecondary />
                   </Box>
 
-                  <Box mb={3}>
+                  <Box mt="auto" mb={3}>
                     <Button
+                      component={RouterLink}
                       className={classes.btnCreate}
                       size="large"
                       variant="outlined"
+                      to={RoutesConfiguration.CreateNft.generatePath()}
                       fullWidth
                     >
-                      Create
+                      {t('header.create')}
                     </Button>
                   </Box>
 
                   {!isConnected && (
-                    <Button size="large" fullWidth>
-                      Connect Wallet
+                    <Button
+                      size="large"
+                      onClick={handleConnect}
+                      disabled={loading}
+                      fullWidth
+                    >
+                      {t('header.connect')}
                     </Button>
                   )}
 
@@ -170,7 +179,7 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
 
   return (
     <header className={classes.root}>
-      <Container className={classes.container}>
+      <Container className={classes.container} maxWidth={false}>
         <Logo />
 
         {!isXLUp && renderedMobile}

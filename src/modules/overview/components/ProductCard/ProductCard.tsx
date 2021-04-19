@@ -1,16 +1,17 @@
 import { ButtonBase, Card, CardContent, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
+import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
+import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
+import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
 import {
   IProfileInfoProps,
   ProfileInfo,
 } from 'modules/common/components/ProfileInfo';
-import { getDaysLeft } from 'modules/common/utils/getDaysLeft';
+import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { HeartIcon } from './assets/HeartIcon';
-import { TimeIcon } from './assets/TimeIcon';
 import { useProductCardStyles } from './ProductCardStyles';
 
 export interface IProductCardProps {
@@ -79,7 +80,14 @@ export const ProductCard = ({
             component="div"
             className={classes.status}
           >
-            {copies && <>📄 {copies}</>}
+            {copies && (
+              <>
+                <LayersIcon
+                  className={classNames(classes.icon, classes.iconRightOffset)}
+                />{' '}
+                {copies}
+              </>
+            )}
 
             {!copies && endDate && (
               <>

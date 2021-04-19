@@ -4,6 +4,10 @@
     "read-more": "read more",
     "view-all": "View all"
   },
+  "header": {
+    "create": "Create",
+    "connect": "Connect Wallet"
+  },
   "connect-wallet": {
     "custom-binancewallet": {
       "name": "Binance Chain",

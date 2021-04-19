@@ -10,7 +10,7 @@ export const Footer = () => {
 
   return (
     <footer className={classes.root}>
-      <Container>
+      <Container maxWidth={false} className={classes.container}>
         <Grid container spacing={3} alignItems="center">
           <Grid item xs={12} md className={classes.col}>
             <Logo />

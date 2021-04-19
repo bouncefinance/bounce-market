@@ -1,6 +1,7 @@
 import { fade, lighten, makeStyles, Theme } from '@material-ui/core';
 
-const HEADER_MIN_HEIGHT = 66;
+export const HEADER_HEIGHT_XS = 66;
+export const HEADER_HEIGHT_XL = 80;
 
 export const useHeaderStyles = makeStyles<Theme>(theme => ({
   root: {
@@ -11,10 +12,11 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
     borderBottom: `1px solid ${fade(theme.palette.text.primary, 0.15)}`,
     background: theme.palette.background.default,
     color: theme.palette.text.primary,
-    minHeight: HEADER_MIN_HEIGHT,
+    height: HEADER_HEIGHT_XS,
 
     [theme.breakpoints.up('xl')]: {
       padding: theme.spacing(2, 0),
+      height: HEADER_HEIGHT_XL,
     },
   },
 
@@ -28,6 +30,11 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
     [theme.breakpoints.up('xl')]: {
       gridTemplateColumns: 'auto auto 1fr repeat(3, auto)',
       justifyContent: 'initial',
+    },
+
+    '@media (min-width: 1400px)': {
+      paddingLeft: theme.spacing(5.5),
+      paddingRight: theme.spacing(5.5),
     },
   },
 
@@ -98,7 +105,7 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
   },
 
   drawer: {
-    top: `${HEADER_MIN_HEIGHT}px !important`,
+    top: `${HEADER_HEIGHT_XS}px !important`,
   },
 
   drawerPaper: {
@@ -117,6 +124,7 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
     flexShrink: 0,
     display: 'flex',
     flexDirection: 'column',
+    minHeight: '100%',
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
   },
