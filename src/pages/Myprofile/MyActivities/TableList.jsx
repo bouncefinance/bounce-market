@@ -63,10 +63,12 @@ export default function BasicTable() {
                 const items = res.data.data;
                 const list = items.map(item => {
                     const activity = activities.find(issue => issue.tokenId === item.id);
+                    console.log(item)
                     return {
                         ...activity,
                         cover: item.fileurl,
                         item: item.itemname,
+                        category: item.category,
                     }
                 })
                 console.log(list)
