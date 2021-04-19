@@ -97,6 +97,9 @@ function ListNFTModal({ open, Step, setOpen, setStep, dataList }) {
                                     width='620px'
                                     required={true}
                                     marginTop="32px"
+                                    onValChange={(val) => {
+                                        console.log(val)
+                                    }}
                                 />
 
 
