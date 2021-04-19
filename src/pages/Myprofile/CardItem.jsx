@@ -170,7 +170,10 @@ export function CardItem ({ cover, status, nftId, itemname, poolType, poolInfo, 
     return (
         <>
             <CardItemStyled>
-                <div className="img_wrapper" onClick={() => history.push("/MyGallery/" + nftId)}>
+                <div className="img_wrapper" onClick={() => {
+                    if (poolInfo.getType === "getMyApi") return alert('comming Soon!')
+                    history.push("/MyGallery/" + nftId)
+                }}>
                     {category && category === 'video' ?
                         <VideoItem width={262} height={262} src={cover} /> :
                         <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
@@ -180,7 +183,11 @@ export function CardItem ({ cover, status, nftId, itemname, poolType, poolInfo, 
                     <p>{itemname}</p>
                     <span>{user}</span>
                 </div> */}
-                    <div className="info-box" onClick={() => history.push("/MyGallery/" + nftId)}>
+                    <div className="info-box" onClick={() => {
+                        if (poolInfo.getType === 'getMyApi') return
+                        history.push("/MyGallery/" + nftId)
+                    }}
+                    >
                         <h5 className="name">{itemname}</h5>
                         <div className="line"></div>
                         <div className="flex flex-space-x">
@@ -194,7 +201,12 @@ export function CardItem ({ cover, status, nftId, itemname, poolType, poolInfo, 
                             <Button
                                 value={wrapperIntl('MyProfile.CardItem.Sell')}
                                 primary
-                                onClick={() => { history.push(`/MyGallery/${nftId}/Sell`) }}
+                                onClick={() => { 
+                                    if (poolInfo.getType === "getMyApi"){
+                                        return history.push(`/MyGallery/${poolInfo.contractaddress}-${nftId}/Sell`)
+                                    }
+                                    history.push(`/MyGallery/${nftId}/Sell`) 
+                                }}
                             />
                             {/* <Button value={'Make Listed'} /> */}
                         </div> : poolInfo.poolType === AUCTION_TYPE.FixedSwap ? <div className='button_group'>

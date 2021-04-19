@@ -226,11 +226,10 @@ export default function Index() {
             /* console.log("0000000000") */
         }
         else {
-            console.log("initialRender.current 2", initialRender.current)
+            // console.log("initialRender.current 2", initialRender.current)
             dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
 
             if (active && chainId === 56) {
-                /* console.log("111111111111") */
                 getUserInfo();
                 return
             }

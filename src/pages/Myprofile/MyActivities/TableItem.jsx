@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import icon_transfer from './assets/transfer.svg'
 import icon_create from './assets/create.svg'
 
-import default_img from './assets/default_img.svg'
+// import default_img from './assets/default_img.svg'
 import { getEllipsisAddress } from '@/utils/utils';
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import { VideoItem } from '../../component/Other/videoItem'
