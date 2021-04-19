@@ -9,8 +9,8 @@ div{
   background-size: 63px;
   background-position: center;
   /* background-color: rgba(0, 0, 0, 1); */
-  /* background-color: rgb(224,224,224); */
-  background-color: white;
+  background-color: rgb(244,244,244);
+  /* background-color: white; */
   .img-loading{
     position: absolute;
     top: 0px;
