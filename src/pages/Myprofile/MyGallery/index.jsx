@@ -174,15 +174,22 @@ export default function Index() {
       channel: ''
     })
       .then(res => {
+        
         if (res.status === 200 && res.data.code === 1) {
+          
           const res_data = res.data.data
+          
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => item.tokenId === res.id);
-            if (poolInfo.id === 17092) {
-              poolInfo.Category = 'Videos'
-            } else {
-              poolInfo.Category = 'Images'
-            }
+
+            // console.log('poolInfo',poolInfo)
+
+            // if (poolInfo.id === 17092) {
+            //   poolInfo.Category = 'Videos'
+            // } else {
+            //   poolInfo.Category = 'Images'
+            // }
+
             return {
               ...poolInfo,
               poolType: item.poolType,
@@ -192,9 +199,13 @@ export default function Index() {
               createTime: item.createTime,
               isPendding: item.isPendding
             }
+            
           }).filter(item => item.fileurl)
+          
+          
+
           let result = list.sort((a, b) => a.tokenId - b.tokenId)
-          console.log(result)
+          // console.log(result)
           if (myApiData.length !== 0) {
             result = [...myApiData, ...result]
           }
@@ -203,7 +214,12 @@ export default function Index() {
           setLoading(false)
         }
       })
-      .catch(() => { })
+      .catch((err) => { 
+
+        
+          
+        console.log(err)
+      })
     // eslint-disable-next-line
   }, [myNftData, myTradeData, myApiData, account])
 

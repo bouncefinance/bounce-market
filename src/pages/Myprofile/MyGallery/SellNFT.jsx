@@ -122,7 +122,7 @@ export default function SellNFT() {
 
 	const setInitNftInfo = async (nftId) => {
 		const info = await exportNftInfo(nftId);
-
+		
 		setNftId(info);
 	};
 

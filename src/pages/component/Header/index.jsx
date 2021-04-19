@@ -217,20 +217,19 @@ export default function Index() {
     }, [])
 
     useEffect(() => {
-        console.log("active:" + active)
-        console.log("chainId:" + chainId)
-        console.log("initialRender.current 1", initialRender.current)
+        // console.log("active:" + active)
+        // console.log("chainId:" + chainId)
+        // console.log("initialRender.current 1", initialRender.current)
 
         if(initialRender.current) {
             initialRender.current = false;
-            console.log("0000000000")
+            // console.log("0000000000")
         }
         else {
-            console.log("initialRender.current 2", initialRender.current)
+            // console.log("initialRender.current 2", initialRender.current)
             dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
 
             if (active && chainId === 56) {
-                console.log("111111111111")
                 getUserInfo();
                 return
             }
