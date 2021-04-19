@@ -68,7 +68,12 @@ export const Overview = () => {
           .map(item => item.tokenId)
           .concat(data.tradeAuctions.map(item => item.tokenId));
 
-        dispatchRequest(MarketplaceActions.fetchItems({ ids }));
+        dispatchRequest(
+          MarketplaceActions.fetchItems({
+            ids,
+            channel: 'Sports',
+          }),
+        );
       }
     });
   }, [dispatchRequest]);

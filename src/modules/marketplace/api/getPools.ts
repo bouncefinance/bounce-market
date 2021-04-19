@@ -32,7 +32,7 @@ function mapTradeItem(
 ): Omit<ITradeItem, 'price' | 'poolType'> {
   return {
     ...data,
-    createTime: new Date(data.createTime),
+    createTime: new Date(data.createTime * 1000),
   };
 }
 

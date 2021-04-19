@@ -24,7 +24,7 @@ export const MarketplaceActions = {
     RequestAction<{ code: 1; data: IApiItem[] }, IApiItem[]>
   >('FETCH_ITEMS', (params: IFetchItemsParams) => ({
     request: {
-      url: '/api/v2/main/getitemsbyids',
+      url: '/api/v2/main/getitemsbyfilter',
       method: 'post',
       data: params,
     },

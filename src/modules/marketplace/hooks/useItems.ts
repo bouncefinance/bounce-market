@@ -27,8 +27,8 @@ export function useItems() {
     return { data: null, loading };
   }
 
-  const tradePools: ITradeItem[] = dataPools.tradeAuctions.filter(
-    item => item.state !== AuctionState.Done && item.poolId !== 0,
+  const tradePools: ITradeItem[] = dataPools.tradePools.filter(
+    item => item.state !== AuctionState.Done,
   );
 
   // TODO Remove zero pull filtering
@@ -39,8 +39,9 @@ export function useItems() {
   const pools = [...tradePools, ...tradeAuctions];
 
   return {
-    data: pools.map(pool => {
-      const poolInfo = dataItems.find(item => item.id === pool.tokenId);
+    data: dataItems.map(poolInfo => {
+      const pool = pools.find(pool => poolInfo.id === pool.tokenId)!;
+
       return {
         ...poolInfo,
         poolType: pool.poolType,
