@@ -174,7 +174,6 @@ export function CardItem ({ cover, status, nftId, itemname, poolType, poolInfo, 
                     {category && category === 'video' ?
                         <VideoItem width={262} height={262} src={cover} /> :
                         <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
-                        {category || 'no category'}
                 </div>
                 <div className="content">
                     {/* <div className="info">
@@ -278,7 +277,7 @@ const PenddingCardItemStyle = styled(CardItemStyled)`
 `
 
 export function PenddingCardItem ({ pools, category }) {
-    console.log(pools.fileurl)
+    console.log('=====', pools.fileurl, pools)
     const { wrapperIntl } = useWrapperIntl()
 
     return <PenddingCardItemStyle>
