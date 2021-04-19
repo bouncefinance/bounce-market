@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 
-export const PATH_INDEX = '/';
+const PATH_INDEX = '/';
 
 export const RoutesConfiguration: { [key: string]: RouteConfiguration } = {
   Overview: {

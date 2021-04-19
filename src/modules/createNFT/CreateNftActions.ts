@@ -64,6 +64,7 @@ export const CreateNftActions = {
         promise: (async function () {})(),
       },
       meta: {
+        asMutation: true,
         onRequest: (
           request: { promise: Promise<any> },
           action: RequestAction,

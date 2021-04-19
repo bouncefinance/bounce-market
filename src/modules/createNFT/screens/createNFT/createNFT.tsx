@@ -9,13 +9,15 @@ import { FormErrors } from '../../../form/utils/FormErrors';
 import { SelectField } from '../../../form/components/SelectField';
 import { UploadImageField } from '../../../form/components/UploadImageField';
 import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
-import { useDispatchRequest } from '@redux-requests/react';
+import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import {
   Channel,
   CreateNftActions,
   ICreateNFTPayload,
   Standard,
 } from '../../CreateNftActions';
+import { useHistory } from 'react-router';
+import { RoutesConfiguration } from '../../../overview/Routes';
 
 const MAX_SIZE: Bytes = 31457280;
 
@@ -50,12 +52,17 @@ const validateCreateNFT = (payload: ICreateNFTPayload) => {
 export const CreateNFT = () => {
   const classes = useCreateNFTStyles();
   const dispatch = useDispatchRequest();
+  const { push } = useHistory();
 
   const handleSubmit = useCallback(
     (payload: ICreateNFTPayload) => {
-      dispatch(CreateNftActions.createNft(payload));
+      dispatch(CreateNftActions.createNft(payload)).then(({ error }) => {
+        if (!error) {
+          push(RoutesConfiguration.Overview.generatePath());
+        }
+      });
     },
-    [dispatch],
+    [dispatch, push],
   );
 
   const channelOptions = useMemo(
@@ -161,15 +168,22 @@ export const CreateNFT = () => {
             </Box>
           )}
           <Box mb={20}>
-            <Button
-              color="primary"
-              size="large"
-              variant="contained"
-              type="submit"
-              fullWidth={true}
-            >
-              {t('create-nft.submit')}
-            </Button>
+            <Mutation type={CreateNftActions.createNft.toString()}>
+              {({ loading }) => (
+                <Button
+                  color="primary"
+                  size="large"
+                  variant="contained"
+                  type="submit"
+                  fullWidth={true}
+                  disabled={loading}
+                >
+                  {loading
+                    ? t('create-nft.submitting')
+                    : t('create-nft.submit')}
+                </Button>
+              )}
+            </Mutation>
           </Box>
         </div>
         <div>

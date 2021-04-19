@@ -63,7 +63,8 @@
     "validation": {
       "max-size": "Max size is {value, number}MB"
     },
-    "submit": "Create"
+    "submit": "Create",
+    "submitting": "Creating"
   },
   "validation": {
     "required": "This field is required"
