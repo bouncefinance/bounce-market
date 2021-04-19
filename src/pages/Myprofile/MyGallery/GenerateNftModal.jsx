@@ -60,6 +60,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         Supply: 1
     })
 
+    useEffect(() => {
+        // console.log("formData:", formData)
+      }, [formData])
 
     useEffect(() => {
         if (!active) return
@@ -180,7 +183,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                         // console.log('bid fixed swap receipt:', receipt)
                                         window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId }))
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Congratulations") });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
                                         if (window.location.pathname === "/MyGallery") {
                                             setTimeout(function () {
                                                 window.location.reload()
@@ -232,17 +235,39 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />
 
                 <div className="category_select">
-                    <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Category')} marginTop='0' /* marginTop='24px' */ width='150px' options={[{
-                        value: 'Images'
-                    }, {
-                        value: 'Videos'
-                    }]} defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'}
+                    <PullRadioBox
+                        title={wrapperIntl('Category.Category')}
+                        marginTop='0' /* marginTop='24px' */
+                        width='150px'
+                        options={[
+                            { value: wrapperIntl('Category.Image') },
+                            { value: wrapperIntl('Category.Video') },
+                        ]}
+                        /* defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'} */
+                        defaultValue={wrapperIntl('Category.Image')}
                         inputDisable={inputDisable}
+                        onChange={(option) => {
+                            /* const cate = item.value === 'Videos' ? 'video' : 'image' */
+                            console.log("option.value: ", option.value)
+                            let categoryParam
+                            switch (option.value) {
+                                case wrapperIntl('Category.Image'):
+                                    categoryParam = 'image'
+                                    break;
+                            
+                                case wrapperIntl('Category.Video'):
+                                    categoryParam = 'video'
+                                    break;
 
-                        onChange={(item) => {
-                            const cate = item.value === 'Videos' ? 'video' : 'image'
-                            setFormData({ ...formData, Category: cate })
-                        }} />
+                                default:
+                                    categoryParam = 'image'
+                                    break;
+                            }
+                            /* setFormData({ ...formData, Category: cate }) */
+                            console.log("categoryParam2: ", categoryParam)
+                            setFormData({ ...formData, Category: categoryParam })
+                        }}
+                    />
 
                     <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Channel')} marginTop='0px' width='150px' options={[{
                         value: NFT_CATEGORY.FineArts
@@ -296,13 +321,18 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     }}
                 />
 
-                <Upload type={formData.Category} inputDisable={inputDisable}
+                <Upload
+                    type={formData.Category}
+                    inputDisable={inputDisable}
                     width='200px'
                     /* height='200px' */
                     height="100%"
-                    lockInput={inputDisable} infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')} onFileChange={(formData) => {
+                    lockInput={inputDisable}
+                    infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')}
+                    onFileChange={(formData) => {
                         setFileData(formData)
-                    }} />
+                    }}
+                />
 
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {

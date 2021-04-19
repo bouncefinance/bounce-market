@@ -50,7 +50,7 @@ export default function Index() {
                 <Route exact path='/Marketplace/:channel' component={Marketplace} />
                 <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket/FineArts' />}} />
                 <Route exact path='/MyMarket/:channel' component={MyMarket} />
-                <Route exact path='/Marketplace/:type/:aucType/:poolId' component={Buy} />
+                <Route exact path='/Marketplace/:channel/:aucType/:poolId' component={Buy} />
 
                 <Route exact path='/Brands' component={Brands} />
                 <Route exact path='/Brands/:brandId/:type' component={BrandGoods} />
@@ -66,7 +66,7 @@ export default function Index() {
                 <Route exact path='/MyGallery/:nftId/Sell' component={SellNFT} />
 
                 <Route exact path='/MyBrands' component={MyBrands} />
-                <Route exact path='/MyBrands/:brandId/:type' component={BrandsByType} />
+                <Route exact path='/MyBrands/:brandId/:category' component={BrandsByType} />
                 <Route exact path='/MyActivities' component={MyActivities} />
 
                 <Route exact path='/MyLiked' component={MyLiked} />

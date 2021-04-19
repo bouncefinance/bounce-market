@@ -145,28 +145,6 @@ const MarketplaceStyled = styled.div`
     }
 `
 
-const nav_list = [{
-  name: 'Image',
-  // icon: nav_image,
-  route: 'Image'
-}, {
-  name: 'Video',
-  // icon: nav_video,
-  route: 'Video'
-}, {
-  name: 'Audios',
-  // icon: nav_audio,
-  route: 'Audio'
-}, {
-  name: 'Game',
-  // icon: nav_game,
-  route: 'Games'
-}, {
-  name: 'Others',
-  // icon: nav_other,
-  route: 'Others'
-}]
-
 export function AirHome() {
   const history = useHistory()
   const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
@@ -183,7 +161,7 @@ export function AirHome() {
 
   const { wrapperIntl } = useWrapperIntl()
 
-  const type = "Image"
+  /* const type = "Image" */
 
   const NavList = [
     {
@@ -207,14 +185,20 @@ export function AirHome() {
     channel === NavList[0].route ? NavList[0].channelRequestParam :
       channel === NavList[1].route ? NavList[1].channelRequestParam :
         NavList[2].channelRequestParam);
-
+  const [categoryRequestParam, setCategoryRequestParam] = useState(wrapperIntl("Category.All"))
+  
+  useEffect(() => {
+    console.log("categoryRequestParam:", categoryRequestParam)
+  }, [categoryRequestParam])
+  
   const handleBrandTradeItems = useCallback((pools) => {
     console.log(pools)
     /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
-      category: type,
-      channel: channelRequestParam
+      /* category: type, */
+      category: categoryRequestParam,
+      channel: channelRequestParam,
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
@@ -231,14 +215,14 @@ export function AirHome() {
           })
 
           console.log(list)
-          const result = list.filter(item => {
-            return item.poolId || item.poolId === 0
-          }).sort((a, b) => b.createTime - a.createTime);
+          const result = list
+            // .filter(item => item.poolId || item.poolId === 0)
+            .sort((a, b) => b.createTime - a.createTime);
           setItemList(result);
         }
       })
     // eslint-disable-next-line
-  }, [channel, type, tokenList, channelRequestParam]);
+  }, [channel, tokenList, channelRequestParam, categoryRequestParam]);
 
   const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
     variables: { tokenList: tokenList },
@@ -301,12 +285,12 @@ export function AirHome() {
         }
       })
     // eslint-disable-next-line
-  }, [active, id, channel]);
+  }, [active, id, channel, categoryRequestParam]);
 
-  const renderListByType = (type) => {
-    switch (type) {
+  const renderListByChannel = (channel) => {
+    switch (channel) {
       case 'FineArts':
-        return <ul className={`list_wrapper ${type}`} style={{ marginBottom: 30 }}>
+        return <ul className={`list_wrapper ${channel}`} style={{ marginBottom: 30 }}>
           {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem
@@ -316,12 +300,13 @@ export function AirHome() {
                 cardId={item.poolId}
                 price={item.price}
                 token1={item.token1}
+                category={item.category}
               />
             </li>
           })}
         </ul>
       default:
-        return <ul className={`list_wrapper ${type}`} style={{ marginBottom: 30 }}>
+        return <ul className={`list_wrapper ${channel}`} style={{ marginBottom: 30 }}>
           {itemList.map((item, index) => {
             return <li key={index}>
               <CardItem
@@ -331,12 +316,14 @@ export function AirHome() {
                 cardId={item.poolId}
                 price={item.price}
                 token1={item.token1}
+                category={item.category}
               />
             </li>
           })}
         </ul>
     }
   }
+  
   return <AirHomeStyled>
     <div className="top_bar">
       <div className='bg_wrapper' style={brandInfo?.bandimgurl ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
@@ -352,16 +339,6 @@ export function AirHome() {
       </div>
     </div>
     <MarketplaceStyled>
-      {false && <ul className="nav_wrapper">
-        {nav_list.map((item) => {
-          return <li key={item.name} className={type === item.route ? 'active' : ''} onClick={() => {
-            history.push(`/Marketplace/${item.route}`)
-          }}>
-            {/* <img src={item.icon} alt="" /> */}
-            <p>{item.name}</p>
-          </li>
-        })}
-      </ul>}
       <ul className="nav_wrapper">
         {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
@@ -395,9 +372,36 @@ export function AirHome() {
       <div className="filterBox">
         <Search placeholder={ wrapperIntl("AirHome.placeholder")} />
 
-        <PullRadioBox prefix={'Category:'} width={'205px'} options={[{ value: 'Image' }]} defaultValue='Image' onChange={(item) => {
-          // console.log(item)
-        }} />
+        <PullRadioBox
+          prefix={wrapperIntl("Category.Category") + ':'}
+          width={'205px'}
+          options={[
+            { value: wrapperIntl("Category.All"), },
+            { value: wrapperIntl("Category.Image"), },
+            { value: wrapperIntl("Category.Video"), },
+          ]}
+          defaultValue={wrapperIntl("Category.All")}
+          onChange={(option) => {
+            console.log(option)
+            switch (option.value) {
+              case wrapperIntl("Category.All"):
+                setCategoryRequestParam('')
+                break;
+
+              case wrapperIntl("Category.Image"):
+                setCategoryRequestParam('Image')
+                break;
+
+              case wrapperIntl("Category.Video"):
+                setCategoryRequestParam('Video')
+                break;
+            
+              default:
+                setCategoryRequestParam('')
+                break;
+            }
+          }}
+        />
 
         <PullRadioBox prefix={'Currency:'} width={'205px'} options={[{ value: 'BNB' }]} defaultValue='BNB' onChange={(item) => {
           // console.log(item)
@@ -410,7 +414,7 @@ export function AirHome() {
         </div>
       </div>
 
-      {renderListByType(type)}
+      {renderListByChannel(channel)}
 
       {/* <PagingControls /> */}
     </MarketplaceStyled>

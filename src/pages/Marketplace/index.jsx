@@ -118,7 +118,7 @@ export default function Marketplace() {
     },
   ]
  
-  let { type, channel } = useParams()
+  let { channel } = useParams()
   const history = useHistory()
   const { active, chainId } = useActiveWeb3React()
   // const { exportErc20Info } = useToken()
@@ -162,10 +162,10 @@ export default function Marketplace() {
 
   /* type = 'video' */
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("type:", type)
     console.log("categoryRequestParam:", categoryRequestParam)
-  }, [type, categoryRequestParam])
+  }, [type, categoryRequestParam]) */
 
   useEffect(() => {
     // if (!active) return
@@ -242,18 +242,18 @@ export default function Marketplace() {
         })
     }
     // eslint-disable-next-line
-  }, [active, data, type, channel, categoryRequestParam])
+  }, [active, data, channel, categoryRequestParam])
 
   const handleChange = (filterSearch) => {
-    const list = tokenList.filter(item => item.itemname.toLowerCase().indexOf(filterSearch) > -1
-      || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
+    const list = tokenList.filter(item => item.itemname?.toLowerCase().indexOf(filterSearch) > -1
+      || item.owneraddress?.toLowerCase().indexOf(filterSearch) > -1);
     setFilterList(list);
   }
 
-  const renderListByType = (type) => {
-    switch (type) {
+  const renderListByChannel = (channel) => {
+    switch (channel) {
       case 'FineArts':
-        return <ul className={`list_wrapper ${type}`}>
+        return <ul className={`list_wrapper ${channel}`}>
           {filterList.map((item, index) => {
             return <li key={index}>
               <CardItem
@@ -271,7 +271,7 @@ export default function Marketplace() {
         </ul>
 
       default:
-        return <ul className={`list_wrapper ${type}`}>
+        return <ul className={`list_wrapper ${channel}`}>
           {filterList.map((item, index) => {
             return <li key={index}>
               <CardItem
@@ -328,7 +328,7 @@ export default function Marketplace() {
         <Search placeholder={wrapperIntl('market.placeholder')} onChange={handleChange} />
 
         <PullRadioBox
-          prefix={'Category:'}
+          prefix={wrapperIntl("Category.Category") + ':'}
           width={'205px'}
           options={[
             { value: wrapperIntl("Category.All"), },
@@ -375,7 +375,7 @@ export default function Marketplace() {
       </div>
 
       {loading && <SkeletonNFTCards n={length} ></SkeletonNFTCards>}
-      {renderListByType(type)}
+      {renderListByChannel(channel)}
 
       {/* <PagingControls /> */}
     </MarketplaceStyled>

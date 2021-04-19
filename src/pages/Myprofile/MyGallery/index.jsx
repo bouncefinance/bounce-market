@@ -54,6 +54,7 @@ export default function Index() {
   // const { tradeData } = useQuery(QueryTradePools)
   const [myNftData, setMyNftData] = useState([])
   const [myTradeData, setMyTradeData] = useState([])
+  const [myApiData, setMyApiData] = useState([])
 
   const { wrapperIntl } = useWrapperIntl()
 
@@ -83,11 +84,47 @@ export default function Index() {
       }
     })
 
+  const getMyApi = async () => {
+    const params = {
+      accountaddress: account
+    }
+    sign_Axios.post('/api/v2/main/getitemsext', params).then(res => {
+      if (res.status === 200 && res.data.code === 1) {
+        return res.data.data
+      } else {
+        throw new Error('Error:/api/v2/main/getitemsext')
+      }
+    }).then(data => {
+      const apiNftList = wrapperItem(data)
+      // console.log(apiNftList)
+      // setItemList([...apiNftList, ...itemList])
+      setMyApiData(apiNftList)
+    })
+  }
+
+  const wrapperItem = (data) => {
+    const isArray = Object.prototype.toString.call(data) === '[object Array]';//true
+    if (isArray) {
+      const list = data.map(item => {
+        return {
+          getType: 'getMyApi',
+          ...item.metadata,
+          ...item
+        }
+      })
+      return list
+    } else {
+      return []
+    }
+  }
+
 
   useEffect(() => {
     if (!active) return;
     getMyNFT();
     getMyTradeNFT()
+    getMyApi()
+    // eslint-disable-next-line
   }, [active, account, getMyNFT, getMyTradeNFT]);
 
   useEffect(() => {
@@ -137,15 +174,22 @@ export default function Index() {
       channel: ''
     })
       .then(res => {
+        
         if (res.status === 200 && res.data.code === 1) {
+          
           const res_data = res.data.data
+          
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => item.tokenId === res.id);
-            if(poolInfo.id===17092){
-              poolInfo.Category = 'Videos'
-            }else{
-              poolInfo.Category = 'Images'
-            }
+
+            // console.log('poolInfo',poolInfo)
+
+            // if (poolInfo.id === 17092) {
+            //   poolInfo.Category = 'Videos'
+            // } else {
+            //   poolInfo.Category = 'Images'
+            // }
+
             return {
               ...poolInfo,
               poolType: item.poolType,
@@ -153,19 +197,32 @@ export default function Index() {
               price: item.price,
               token1: item.token1,
               createTime: item.createTime,
-              isPendding: item.isPendding
+              isPendding: item.isPendding,
+              category: poolInfo.category,
             }
+            
           }).filter(item => item.fileurl)
-          const result = list.sort((a, b) => b.tokenId - a.tokenId)
-          console.log(result)
+          
+          
+
+          let result = list.sort((a, b) => a.tokenId - b.tokenId)
+          // console.log(result)
+          if (myApiData.length !== 0) {
+            result = [...myApiData, ...result]
+          }
           setItemList(result);
           setStatusList(result);
           setLoading(false)
         }
       })
-      .catch(() => { })
+      .catch((err) => { 
+
+        
+          
+        console.log(err)
+      })
     // eslint-disable-next-line
-  }, [myNftData, myTradeData, account])
+  }, [myNftData, myTradeData, myApiData, account])
 
   return (
     <>
@@ -174,7 +231,7 @@ export default function Index() {
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
           {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
           <AddCardItem />
-          <Category  itemList={itemList} onStatusChange={setStatusList} />
+          <Category itemList={itemList} onStatusChange={setStatusList} />
 
           {/* <PullRadioBox prefix={'Categories:'} options={[{
             value: 'Image'
@@ -197,15 +254,16 @@ export default function Index() {
           </li> */}
           {statusList.map((item, index) => {
             return <li key={index}>
-              {item.isPendding ? <PenddingCardItem pools={item} /> : <CardItem
+              {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
                 nftId={item.id}
                 cover={item.fileurl}
-                itemname={item.itemname}
+                itemname={item.itemname === '' ? 'unname' : item.itemname}
                 user={item.ownername}
                 status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
                 poolType={item.poolType}
                 //  status={index % 2 === 0 ? 'Listed' : ''} 
                 poolInfo={item}
+                category={item.category}
               />}
             </li>
           })}

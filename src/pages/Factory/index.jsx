@@ -16,7 +16,6 @@ import pic_Generate from './assets/pic_Generate.svg'
 import pic_Build from './assets/pic_Build.svg'
 import pic_List from './assets/pic_List.svg'
 
-import img1 from './assets/img1.svg'
 import { useWalletConnect } from '@/web3/useWalletConnect'
 
 const CardList = styled.div`
@@ -31,18 +30,7 @@ const CardList = styled.div`
     row-gap: 25px;
 `
 
-const dataList = {
-    img1: img1,
-    img2: img1,
-    img3: img1,
-    leftImgAmount: 12,
-    tableInfoList: {
-        contractAddress: '0x33a9b7ed8c71c6910fb4a9bc41de...74c2976',
-        contractName: 'Cindy Yi',
-        contactSymbol: 'CKIE',
-        totalSupply: '10',
-    },
-}
+
 
 function Factory () {
     const { onConnect } = useWalletConnect()
@@ -131,7 +119,7 @@ function Factory () {
             <GenerateNFTModal open={openGenerateNFTModal} setOpen={setOpenGenerateNFTModal} />
             <CreateBrandModal open={openCreateBrandModal} setOpen={setCreateBrandModal} />
             <AddNewItemModal open={openAddNewItemModal} setOpen={setAddNewItemModal} />
-            <ListNFTModal open={Open} Step={Step} setOpen={setOpen} setStep={setStep} dataList={dataList} />
+            <ListNFTModal open={Open} Step={Step} setOpen={setOpen} setStep={setStep} />
         </>
     )
 }
