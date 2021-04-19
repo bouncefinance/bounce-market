@@ -105,7 +105,7 @@ const en_US = {
     "UIKit.Input.Upload.infoTip.requirement2": 'no more than 100MB, 262*262 Reccomended',
     "UIKit.Input.Upload.infoTip.image.requirement1": 'Supports JPG, PNG, JPEG2000',
     "UIKit.Input.Upload.infoTip.image.requirement2": 'no more than 100MB, 262*262 Reccomended',
-    "UIKit.Input.Upload.infoTip.video.requirement1": 'Supports MP4, AVI, WMV, MOV',
+    "UIKit.Input.Upload.infoTip.video.requirement1": 'Supports MP4',
     "UIKit.Input.Upload.infoTip.video.requirement2": 'no more than 100MB, 360*240 Reccomended',
     "UIKit.Input.Upload.infoTip.avatar.ChangeProfilePhoto": 'Change Profile Photo',
     "UIKit.Input.Upload.infoTip.avatar.requirement1": 'Supports JPG, PNG, JPEG2000',
