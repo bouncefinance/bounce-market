@@ -4,23 +4,29 @@ import {
   TextFieldProps,
   Typography,
 } from '@material-ui/core';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FieldRenderProps } from 'react-final-form';
 import { useUploadImageStyles } from './useUploadImageStyles';
 import { ReactComponent as DropImage } from './assets/drop.svg';
 import { t, tHTML } from '../../../i18n/utils/intl';
 import { getErrorText } from '../../utils/getErrorText';
+import { readImage } from '../../utils/readImage';
+import { convertBytesToMegabytes } from '../../../common/types/unit';
 
-interface IFieldProps extends FieldRenderProps<string> {}
+interface IFieldProps extends FieldRenderProps<string> {
+  maxSize?: number;
+}
 
 export const UploadImageField = ({
   input: { name, onChange, value },
   meta,
+  maxSize,
 }: IFieldProps & TextFieldProps) => {
   const classes = useUploadImageStyles();
+  const [cover, setCover] = useState<string>();
 
   const handleChange = useCallback(
-    (
+    async (
       event: React.ChangeEvent<HTMLInputElement> & {
         dataTransfer: DataTransfer;
       },
@@ -34,12 +40,11 @@ export const UploadImageField = ({
         }
       })();
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        onChange(reader.result);
-      };
       if (files) {
-        reader.readAsDataURL(files[0]);
+        const file = files[0];
+        const { image } = await readImage(file);
+        setCover(image);
+        onChange(file);
       } else {
         onChange(undefined);
       }
@@ -61,7 +66,7 @@ export const UploadImageField = ({
     <div>
       {value ? (
         <div className={classes.uploaded}>
-          <img src={value} alt="" className={classes.uploadedImage} />
+          <img src={cover} alt="" className={classes.uploadedImage} />
           {input}
         </div>
       ) : (
@@ -79,9 +84,17 @@ export const UploadImageField = ({
             <Typography variant="body1" align="center" className={classes.note}>
               {t('upload-image-field.formats')}
             </Typography>
-            <Typography variant="body1" align="center" className={classes.note}>
-              {t('upload-image-field.max-size')}
-            </Typography>
+            {maxSize && (
+              <Typography
+                variant="body1"
+                align="center"
+                className={classes.note}
+              >
+                {t('upload-image-field.max-size', {
+                  value: convertBytesToMegabytes(maxSize),
+                })}
+              </Typography>
+            )}
           </Box>
           {input}
         </div>

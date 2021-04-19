@@ -51,25 +51,29 @@ export type Address = string;
 
 function createEventChannel(provider: any) {
   return eventChannel(emitter => {
-    provider.on('accountsChanged', (accounts: Address[]) => {
-      emitter({
-        data: { accounts },
-        type: WalletEventType.AccountChanged,
-      } as IAccountChangedEvent);
-    });
-    provider.on('disconnect', (error: Error) => {
-      emitter({ error, type: WalletEventType.Disconnect } as IDisconnectEvent);
-      emitter(END);
-    });
-    provider.on('message', (message: any) => {
-      emitter({ message, type: WalletEventType.Message });
-    });
-    provider.on('chainChanged', (chainId: string) => {
-      emitter({
-        data: { chainId },
-        type: WalletEventType.ChainChanged,
-      } as IChainChangedEvent);
-    });
+    provider
+      .on('accountsChanged', (accounts: Address[]) => {
+        emitter({
+          data: { accounts },
+          type: WalletEventType.AccountChanged,
+        } as IAccountChangedEvent);
+      })
+      .on('disconnect', (error: Error) => {
+        emitter({
+          error,
+          type: WalletEventType.Disconnect,
+        } as IDisconnectEvent);
+        emitter(END);
+      })
+      .on('message', (message: any) => {
+        emitter({ message, type: WalletEventType.Message });
+      })
+      .on('chainChanged', (chainId: string) => {
+        emitter({
+          data: { chainId },
+          type: WalletEventType.ChainChanged,
+        } as IChainChangedEvent);
+      });
 
     return () => {
       provider.disconnect();
