@@ -7,8 +7,8 @@ import { myContext } from '@/redux/index.js';
 import { useHistory } from 'react-router-dom'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
-const host = window.location.hostname
-// const host = 'fangible.com'
+// const host = window.location.hostname
+const host = 'fangible.com'
 const Base_URL =
     host.includes('market.bounce.finance') || host.includes('cnmarket.bounce.finance') || host.includes('fangible')?
         'https://bounce-market.bounce.finance' :    // BSC Main
