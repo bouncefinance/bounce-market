@@ -8,9 +8,9 @@ export const client = new ApolloClient({
     // 'https://api.thegraph.com/subgraphs/name/winless/bouncenft' :      // bsc main
     // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft' :      // bsc main
     'https://subgraph_official_bsc.bounce.finance/subgraphs/name/winless/BounceNFT':
-    'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2' ,      // bsc main
+    // 'https://subgraph_official_bsc.bounce.finance/subgraphs/name/winless/BounceNFT2' ,      // bsc main
     // 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc test
-    // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
+    'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
     // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
     // 'http://54.254.179.26:8000/subgraphs/name/winless/bouncenft2',
   cache: new InMemoryCache(),
@@ -203,9 +203,11 @@ export const QueryMyNFT = gql`
   query nftItems($user: String!) {
     nft721Items(where: {user: $user}) {
       tokenId
+      contract
     }
     nft1155Items(where: {user: $user}) {
       tokenId
+      contract
     }
   }
 `
