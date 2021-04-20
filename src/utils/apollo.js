@@ -44,6 +44,7 @@ export const QueryMarketTradePools_0 = gql`
     tradePools{
       tokenId
       poolId
+      token0
       token1
       price
       createTime
@@ -52,6 +53,7 @@ export const QueryMarketTradePools_0 = gql`
     tradeAuctions{
       tokenId
       poolId
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -66,6 +68,7 @@ export const QueryMarketTradePools = gql`
     tradePools (where: {token1: $contract}){
       tokenId
       poolId
+      token0
       token1
       price
       createTime
@@ -74,6 +77,7 @@ export const QueryMarketTradePools = gql`
     tradeAuctions (where: {token1: $contract}){
       tokenId
       poolId
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -112,6 +116,7 @@ export const QueryMyPools = gql`
       tokenId
       poolId
       price
+      token0
       token1
       createTime
       state
@@ -119,6 +124,7 @@ export const QueryMyPools = gql`
     tradeAuctions(where: {creator: $user}) {
       tokenId
       poolId
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -142,11 +148,13 @@ export const queryTradeInfo = gql`
   query queryTradeInfo($poolIdList: [Int!]!) {
     tradePools(where: {poolId_in: $poolIdList}) {
       poolId
+      token0
       token1
     }
     tradeAuctions(where: {poolId_in: $poolIdList}) {
       poolId
       creator
+      token0
       token1
       lastestBidAmount
       amountMin1
