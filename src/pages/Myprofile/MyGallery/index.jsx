@@ -139,7 +139,10 @@ export default function Index() {
     const trade721_ids = myTradeData.tradePools.map(item => item.tokenId);
     const trade1155Items_ids = myTradeData.tradeAuctions.map(item => item.tokenId)
 
-
+    const nft721_cts = myNftData.nft721Items.map(item => item.token0 || item.contract);
+    const nft1155Items_cts = myNftData.nft1155Items.map(item => item.token0 || item.contract);
+    const trade721_cts = myTradeData.tradePools.map(item => item.token0 || item.contract);
+    const trade1155Items_cts = myTradeData.tradeAuctions.map(item => item.token0 || item.contract)
 
     const tradePools = myTradeData.tradePools.map(item => {
       return {
@@ -160,8 +163,12 @@ export default function Index() {
 
 
     const ids_list = nft721_ids.concat(nft1155Items_ids).concat(trade721_ids).concat(trade1155Items_ids)
+    const cts_list = nft721_cts.concat(nft1155Items_cts).concat(trade721_cts).concat(trade1155Items_cts)
+
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
+
+    console.log(pools)
 
     if (PenddingItem) {
       if ([...ids_list].includes(PenddingItem.tokenId)) return window.localStorage.setItem('PenddingItem', null)
@@ -170,7 +177,7 @@ export default function Index() {
     }
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
-      // cts: cts_list,
+      cts: cts_list,
       category: '',
       channel: ''
     })
@@ -183,7 +190,8 @@ export default function Index() {
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => {
               return item.tokenId === res.id
-              // && item.
+                && (String(item.token0).toLowerCase() === String(res.contractaddress).toLowerCase() ||
+                  String(item.contract).toLowerCase() === String(res.contractaddress).toLowerCase())
             });
 
             if (!poolInfo) return {}
@@ -256,7 +264,7 @@ export default function Index() {
               {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
                 nftId={item.id}
                 cover={item.fileurl}
-                itemname={item.itemname === '' ? 'unname' : item.itemname}
+                itemname={item.itemname === '' ? 'Unname (External import)' : item.itemname}
                 user={item.ownername}
                 status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
                 poolType={item.poolType}

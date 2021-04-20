@@ -192,7 +192,7 @@ export function AirHome() {
   }, [categoryRequestParam])
   
   const handleBrandTradeItems = useCallback((pools) => {
-    console.log(pools)
+    // console.log('pools',tokenList,categoryRequestParam,channelRequestParam)
     /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
