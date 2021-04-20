@@ -117,7 +117,7 @@ export default function Marketplace() {
       channelRequestParam: "Conicbooks",
     },
   ]
- 
+
   let { channel } = useParams()
   const history = useHistory()
   const { active, chainId } = useActiveWeb3React()
@@ -149,7 +149,7 @@ export default function Marketplace() {
 
 
   const [loading, setLoding] = useState(true)
-  
+
 
   const [length, setLength] = useState(4);
   const [coinList, setCoinList] = useState([])
@@ -190,7 +190,9 @@ export default function Marketplace() {
         .filter(item => item.state !== 1 && item.poolId !== 0)
 
       const pools = tradePools.concat(tradeAuctions);
+      console.log(pools)
       const list = pools.map(item => item.tokenId);
+      const cts_list = pools.map(item => item.token0);
       // console.log(pools)
 
       setLength(list.length);
@@ -199,6 +201,7 @@ export default function Marketplace() {
       // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
+        cts: cts_list,
         /* category: type, */
         category: categoryRequestParam,
         channel: channelRequestParam,
@@ -350,7 +353,7 @@ export default function Marketplace() {
               case wrapperIntl("Category.Video"):
                 setCategoryRequestParam('Video')
                 break;
-            
+
               default:
                 break;
             }

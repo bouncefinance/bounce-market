@@ -243,13 +243,16 @@ export default function MyMarket() {
     const soldPoolData = soldTradePools
       .concat(soldTradeAuctions)
       .concat(soldAuctionBids)
-
     const ids_list = poolData.map(item => item.tokenId);
+    const cts_list = poolData.map(item => item.token0);
+    
+    // console.log(poolData)
     setLength(ids_list.length);
     /* const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel */
 
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
+      cts: cts_list,
       category: type,
       /* channel: channel_2 */
       channel: channelRequestParam
@@ -258,11 +261,7 @@ export default function MyMarket() {
         if (res.status === 200 && res.data.code === 1) {
           const claimList = claimPoolData.map(pool => {
             const item = res.data.data.find(r => r.id === pool.tokenId);
-            if (item.id === 17092) {
-              item.category = 'video'
-            } else {
-              item.category = 'image'
-            }
+            
             return {
               ...item,
               poolType: pool.poolType,

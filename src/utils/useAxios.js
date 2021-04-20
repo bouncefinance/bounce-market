@@ -101,7 +101,6 @@ export default function useAxios() {
             ...option.config
         }
         let res = await axios.post(Base_URL + path, params, config)
-        console.log("res.data.code: ", res.data.code)
         if (res.status === 200 && res.data.code === -1) {
             if (active) {
                 dispatch({
