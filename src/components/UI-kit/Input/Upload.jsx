@@ -5,6 +5,7 @@ import upload_video from '@assets/images/upload_video.svg'
 import upload_avatar from '@assets/images/upload_avatar.svg'
 import { myContext } from '@/redux/index.js'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { getFileType }  from '@/utils/getFileType'
 
 const UploadStyled = styled.div`
     display: flex;
@@ -132,10 +133,18 @@ export default function Upload({
         // eslint-disable-next-line
     }, [type])
 
-    const handelFileChange = (e) => {
+    const handelFileChange = async (e) => {
         const file = e.target.files[0]
-        // console.log(file)
         if (!file) return
+        try {
+            const type = await getFileType(file)
+            console.log('get file type', type)
+            if (type === 'video/avi') {
+                return dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
+            }
+        } catch (error) {
+            console.log(error)
+        }
         if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/gif') {
             let reader = new FileReader();  //调用FileReader
             reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
