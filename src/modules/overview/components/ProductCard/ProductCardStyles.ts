@@ -1,7 +1,11 @@
 import { fade, makeStyles, Theme } from '@material-ui/core/styles';
 
 export const useProductCardStyles = makeStyles<Theme>(theme => ({
-  root: {},
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
 
   imgLink: {
     position: 'relative',
@@ -52,6 +56,12 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     },
   },
 
+  content: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+
   title: {
     marginBottom: theme.spacing(2),
 
@@ -69,6 +79,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   price: {
     fontSize: 15,
     fontWeight: 700,
+    margin: theme.spacing(0, 0, 1.5),
   },
 
   info: {
@@ -76,7 +87,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     alignItems: 'center',
     gridTemplateColumns: '1fr auto',
     gap: theme.spacing(0, 2),
-    margin: theme.spacing(1.5, 0, 0),
+    marginTop: 'auto',
   },
 
   status: {

@@ -60,7 +60,7 @@ export const ProductCard = ({
         {imgPreloader}
       </Link>
 
-      <CardContent>
+      <CardContent className={classes.content}>
         <Typography variant="h5" className={classes.title} title={title}>
           {title}
         </Typography>
