@@ -1,3 +1,4 @@
+import atleticoDeMadridLogo from './assets/atletico-de-madrid.png';
 import barcelonaLogo from './assets/barcelona.png';
 import bayernLogo from './assets/bayern.png';
 import juventusLogo from './assets/juventus.png';
@@ -43,6 +44,11 @@ export const Clubs = () => {
       img: manchesterUnitedLogo,
       href: '#',
       name: 'Manchester United',
+    },
+    {
+      img: atleticoDeMadridLogo,
+      href: '#',
+      name: 'Club Atlético de Madrid',
     },
   ];
 
