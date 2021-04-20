@@ -28,6 +28,7 @@ export default function useToken() {
             // console.log('error, nftId is ' + nftId)
             return {}
         }
+        // console.log(nftId)
         if (nftId.includes('-')) {
             const [contract, tokenId] = nftId.split('-')
             console.log(contract, tokenId)
@@ -37,6 +38,7 @@ export default function useToken() {
     }
 
     const exportNftInfoByAddressAndTokenId = async (contract, tokenId) => {
+        // console.log(contract, tokenId)
         if (!contract && !tokenId) return
         const params = {
             id: Number(tokenId),
@@ -45,7 +47,7 @@ export default function useToken() {
         try {
             const res = await sign_Axios.post('/api/v2/main/auth/getoneitembyid', params)
             if (res.status === 200 && res.data.code === 1) {
-                return res.data.data
+                return res.data.data || {}
             } else {
                 return {}
             }

@@ -224,9 +224,11 @@ export const QueryMyNFTByBrand = gql`
   query nftItems($user: String!, $contract: String!) {
     nft721Items(where: {user: $user, contract: $contract}) {
       tokenId
+      contract
     }
     nft1155Items(where: {user: $user}) {
       tokenId
+      contract
     }
   }
 `
@@ -275,6 +277,7 @@ export const QueryBrandTradeItemsByBrand = gql`
       poolId
       price
       createTime
+      token0
       token1
       state
     }
@@ -284,6 +287,7 @@ export const QueryBrandTradeItemsByBrand = gql`
       lastestBidAmount
       amountMin1
       createTime
+      token0
       token1
       state
     }
