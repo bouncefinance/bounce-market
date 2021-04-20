@@ -201,7 +201,7 @@ const TransferBox = styled.div`
 			font-size: 16px;
 			line-height: 20px;
 			color: #000000;
-			opacity: 0.8;
+			opacity: 0.3;
 		}
 
 		&:-ms-input-placeholder {
@@ -212,7 +212,7 @@ const TransferBox = styled.div`
 			font-size: 16px;
 			line-height: 20px;
 			color: #000000;
-			opacity: 0.8;
+			opacity: 0.3;
 		}
 
 		&::placeholder {
@@ -222,7 +222,7 @@ const TransferBox = styled.div`
 			font-size: 16px;
 			line-height: 20px;
 			color: #000000;
-			opacity: 0.8;
+			opacity: 0.3;
 		}
 	}
 

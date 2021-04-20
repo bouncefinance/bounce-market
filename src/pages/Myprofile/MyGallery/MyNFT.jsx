@@ -284,7 +284,13 @@ function MyNFT() {
 								// history.push("/MyGallery/Sell");
 							}}
 						/>
-						{/* <Button width="200px" value="Transfer" /> */}
+						<Button
+							width="200px"
+							value="Transfer"
+							onClick={() => {
+								history.push(`/MyGallery/${nftId}/Transfer`)
+							}}
+						/>
 					</div>
 
 					<span className="description">{description}</span>
