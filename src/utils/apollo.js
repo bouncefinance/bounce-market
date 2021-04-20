@@ -1,7 +1,7 @@
 
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 const hostname = window.location.hostname
-// const hostname = 'market.bounce.finance'
+// const hostname = 'fangible.com'
 
 export const client = new ApolloClient({
   uri: hostname.includes('market.bounce.finance') || hostname.includes('127.0.0.1') || hostname.includes('cnmarket.bounce.finance') || hostname.includes('fangible') ?
