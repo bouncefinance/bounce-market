@@ -1,7 +1,7 @@
 export interface IApiItem {
   fileurl: string;
-  id: number;
   itemname: string;
+  id: number;
   likecount: number;
   metadata: string;
 }

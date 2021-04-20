@@ -8,7 +8,8 @@ export const getBounceERC721WithSign = (chainID: any) => {
     case 56:
       if (
         hostname.indexOf('market.bounce.finance') !== -1 ||
-        hostname.includes('127.0.0.1')
+        hostname.includes('127.0.0.1') ||
+        hostname.includes('bs-1-dev.stkr.io')
       ) {
         return '0xbf4f70215e8f99e384afdf641e55181155714163';
       }
@@ -29,7 +30,8 @@ export const getBounceERC1155WithSign = (chainID: any) => {
     case 56:
       if (
         hostname.indexOf('market.bounce.finance') !== -1 ||
-        hostname.includes('127.0.0.1')
+        hostname.includes('127.0.0.1') ||
+        hostname.includes('bs-1-dev.stkr.io')
       ) {
         return '0x9f24433c60b51d2271c064028faab5da47cc714e';
       }
