@@ -237,6 +237,7 @@ const TransferBox = styled.div`
 		padding-top: 8px;
 		padding-bottom: 24px;
 		padding-left: 24px;
+		height: 15px;
 	}
 `;
 
@@ -259,6 +260,7 @@ function TransferNFT() {
 	const [description, setDescription] = useState();
 	const [receiverAddress, setReceiverAddress] = useState("");
 	const [disableButton, setDisableButton] = useState(true);
+	const [showNotice, setShowNotice] = useState(false);
 
 	const { dispatch } = useContext(myContext);
 
@@ -333,7 +335,7 @@ function TransferNFT() {
 		setReceiverAddress(e.target.value);
 		if (receiverAddress.match("^0x.{40}$")) {
 			console.log("case 0");
-			console.log(e.target.value)
+			console.log(e.target.value);
 		}
 		/* } else if (receiverAddress.length === 0) {
 			console.log("case 1");
@@ -357,17 +359,18 @@ function TransferNFT() {
 	useEffect(() => {
 		if (receiverAddress.match("^0x.{40}$")) {
 			console.log("Correct Address");
-			setDisableButton(false)
-		}
-		else {
+			setDisableButton(false);
+			setShowNotice(true);
+		} else {
 			console.log("InCorrect Address");
-			setDisableButton(true)
+			setDisableButton(true);
+			setShowNotice(false);
 		}
-	}, [receiverAddress])
+	}, [receiverAddress]);
 
 	const handleClick = () => {
-		alert("Transfer")
-	}
+		alert("Transfer");
+	};
 
 	return (
 		<Page>
@@ -415,9 +418,10 @@ function TransferNFT() {
 							value={receiverAddress}
 							onChange={handleAddressInput}
 						/>
-
 						<span className="str_transferTo">
-							“Digital Image Name” will be transferred to {receiverAddress.slice(0,6)+'...'+receiverAddress.slice(-5,-1)}
+							{showNotice &&
+								`“Digital Image Name” will be transferred to 
+								${receiverAddress.slice(0, 6) + "..." + receiverAddress.slice(-5, -1)}`}
 						</span>
 
 						<Button
