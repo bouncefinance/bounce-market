@@ -9,6 +9,8 @@ import {
 import classNames from 'classnames';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
+import { QueryError } from 'modules/common/components/QueryError/QueryError';
+import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { t } from 'modules/i18n/utils/intl';
@@ -32,10 +34,18 @@ type ProductProps = Omit<IProductCardProps, 'ImgProps'> & {
 };
 
 interface IMoversProps extends ISectionProps {
-  items: ProductProps[];
+  items?: ProductProps[];
+  isLoading?: boolean;
+  error?: any;
 }
 
-export const Movers = ({ className, items, ...sectionProps }: IMoversProps) => {
+export const Movers = ({
+  className,
+  items = [],
+  isLoading,
+  error,
+  ...sectionProps
+}: IMoversProps) => {
   const classes = useMoversStyles();
   const theme = useTheme();
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
@@ -108,9 +118,15 @@ export const Movers = ({ className, items, ...sectionProps }: IMoversProps) => {
           </Grid>
         </Box>
 
-        <Swiper {...sliderProps} className={classes.slider}>
-          {renderedSlides}
-        </Swiper>
+        {isLoading && <QueryLoadingCentered />}
+
+        {!isLoading && error && <QueryError error={error} />}
+
+        {!isLoading && items.length && (
+          <Swiper {...sliderProps} className={classes.slider}>
+            {renderedSlides}
+          </Swiper>
+        )}
       </Container>
     </Section>
   );

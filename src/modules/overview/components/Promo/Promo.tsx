@@ -1,9 +1,17 @@
 import { Container, Grid } from '@material-ui/core';
 import classNames from 'classnames';
+import { QueryError } from 'modules/common/components/QueryError/QueryError';
+import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React, { useState } from 'react';
 import { uid } from 'react-uid';
-import SwiperCore, { Autoplay, EffectFade, Lazy, Pagination, Thumbs } from 'swiper';
+import SwiperCore, {
+  Autoplay,
+  EffectFade,
+  Lazy,
+  Pagination,
+  Thumbs,
+} from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { IPromoCardProps, PromoCard } from '../PromoCard';
 import { PromoThumb } from '../PromoThumb';
@@ -18,10 +26,18 @@ interface IPromoItem extends IPromoCardProps {
 
 interface IPromoProps extends ISectionProps {
   className?: string;
-  items: IPromoItem[];
+  items?: IPromoItem[];
+  isLoading?: boolean;
+  error?: any;
 }
 
-export const Promo = ({ className, items, ...sectionProps }: IPromoProps) => {
+export const Promo = ({
+  className,
+  items = [],
+  isLoading = false,
+  error,
+  ...sectionProps
+}: IPromoProps) => {
   const classes = usePromoStyles();
   const [swiperThumbs, setSwiperThumbs] = useState<SwiperCore>();
 
@@ -81,21 +97,27 @@ export const Promo = ({ className, items, ...sectionProps }: IPromoProps) => {
       className={classNames(classes.root, className)}
     >
       <Container className={classes.container}>
-        <Grid container alignItems="center">
-          <Grid item xs={12} lg={9}>
-            <Swiper {...sliderParams} className={classes.slider}>
-              {renderedItems}
-            </Swiper>
+        {isLoading && <QueryLoadingCentered />}
 
-            <div className={classes.pagination} id={paginationId} />
-          </Grid>
+        {!isLoading && error && <QueryError error={error} />}
 
-          <Grid item lg={3} className={classes.thumbsCol}>
-            <Swiper {...thumbsParams} className={classes.thumbs}>
-              {renderedThumbs}
-            </Swiper>
+        {!isLoading && items.length && (
+          <Grid container alignItems="center">
+            <Grid item xs={12} lg={9}>
+              <Swiper {...sliderParams} className={classes.slider}>
+                {renderedItems}
+              </Swiper>
+
+              <div className={classes.pagination} id={paginationId} />
+            </Grid>
+
+            <Grid item lg={3} className={classes.thumbsCol}>
+              <Swiper {...thumbsParams} className={classes.thumbs}>
+                {renderedThumbs}
+              </Swiper>
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Container>
     </Section>
   );

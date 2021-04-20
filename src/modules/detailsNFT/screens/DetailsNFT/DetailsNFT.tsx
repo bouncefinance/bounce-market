@@ -1,13 +1,13 @@
+import { QueryState } from '@redux-requests/core';
+import { useDispatchRequest } from '@redux-requests/react';
 import { NFTContent } from 'modules/detailsNFT/components/NFTContent';
 import { NFTDescription } from 'modules/detailsNFT/components/NFTDescription';
-import { useDetailsNFTStyles } from './useDetailsNFTStyles';
-import { useParams } from 'react-router';
 import { useEffect } from 'react';
-import { useDispatchRequest } from '@redux-requests/react';
+import { useParams } from 'react-router';
 import { Queries } from '../../../common/components/Queries/Queries';
-import { DetailsNFTActions } from '../../DetailsNFTActions';
-import { QueryState } from '@redux-requests/core';
 import { INFTDetails } from '../../api/NFTDetails';
+import { DetailsNFTActions } from '../../DetailsNFTActions';
+import { useDetailsNFTStyles } from './useDetailsNFTStyles';
 
 export const DetailsNFT = () => {
   const classes = useDetailsNFTStyles();

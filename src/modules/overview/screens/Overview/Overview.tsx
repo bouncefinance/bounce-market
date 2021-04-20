@@ -1,17 +1,15 @@
 import { ThemeProvider } from '@material-ui/styles';
-import { useDispatchRequest } from '@redux-requests/react';
 import { DetailsNFTRoutesConfig } from 'modules/detailsNFT/DetailsNFTRoutes';
 import { Clubs } from 'modules/overview/components/Clubs';
 import { Movers } from 'modules/overview/components/Movers';
 import { Products } from 'modules/overview/components/Products';
 import { Promo } from 'modules/overview/components/Promo';
 import { darkTheme } from 'modules/themes/darkTheme';
-import React, { useEffect } from 'react';
-import { Queries } from '../../../common/components/Queries/Queries';
+import React from 'react';
 import { t } from '../../../i18n/utils/intl';
 import { useItems } from '../../../marketplace/hooks/useItems';
-import { MarketplaceActions } from '../../../marketplace/marketplaceActions';
 import { RoutesConfiguration } from '../../Routes';
+import { useOverview } from './useOverview';
 
 function mapPromoItem(
   item: Exclude<ReturnType<typeof useItems>['data'], null>[0],
@@ -56,56 +54,33 @@ function mapMoversItem(
 }
 
 export const Overview = () => {
-  const { data } = useItems();
-  const promoItems = data?.splice(0, 3);
-  const fastMoversItems = data?.splice(3, 12);
-  const dispatchRequest = useDispatchRequest();
-  useEffect(() => {
-    dispatchRequest(MarketplaceActions.fetchPools()).then(({ data }) => {
-      if (data) {
-        const ids = data.tradePools
-          .map(item => item.tokenId)
-          .concat(data.tradeAuctions.map(item => item.tokenId));
-
-        dispatchRequest(
-          MarketplaceActions.fetchItems({
-            ids,
-            channel: 'Sports',
-          }),
-        );
-      }
-    });
-  }, [dispatchRequest]);
+  const {
+    poolsLoading,
+    poolsError,
+    itemsLoading,
+    itemsError,
+    promoItems,
+    fastMoversItems,
+  } = useOverview();
 
   return (
     <>
       <ThemeProvider theme={darkTheme}>
-        <Queries
-          requestActions={[
-            MarketplaceActions.fetchPools,
-            MarketplaceActions.fetchItems,
-          ]}
-        >
-          {() => (
-            <Promo stackDown items={promoItems?.map(mapPromoItem) || []} />
-          )}
-        </Queries>
+        <Promo
+          stackDown
+          error={poolsError || itemsError}
+          isLoading={poolsLoading || itemsLoading}
+          items={promoItems?.map(mapPromoItem)}
+        />
       </ThemeProvider>
 
-      <Queries
-        requestActions={[
-          MarketplaceActions.fetchPools,
-          MarketplaceActions.fetchItems,
-        ]}
-      >
-        {() => (
-          <Movers
-            stackUp
-            stackDown
-            items={fastMoversItems?.map(mapMoversItem) || []}
-          />
-        )}
-      </Queries>
+      <Movers
+        stackUp
+        stackDown
+        error={poolsError || itemsError}
+        isLoading={poolsLoading || itemsLoading}
+        items={fastMoversItems?.map(mapMoversItem)}
+      />
 
       <ThemeProvider theme={darkTheme}>
         {/* <Artists /> */}
