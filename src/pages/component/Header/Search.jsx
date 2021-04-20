@@ -81,6 +81,8 @@ export default function Search({ placeholder, value, onChange }) {
                     item.pool = { ...pool, ...await getPriceByToken1(price, token1) }
                     item.pool = { ...item.pool, usdtPrice: parseFloat(await queryPrice(item.pool.price) * item.pool.price).toFixed(2) }
                 }
+                console.log('data')
+                console.log(data)
                 setdata(data)
                 setSearchLoding(false)
             } else {

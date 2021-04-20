@@ -156,6 +156,7 @@ export function AirHome() {
 
   const [brandInfo, setBrandInfo] = useState({});
   const [tokenList, setTokenList] = useState([]);
+  const [ctList, setCtList] = useState([]);
   const [itemList, setItemList] = useState([]);
   const [pools, setPools] = useState([]);
 
@@ -194,8 +195,10 @@ export function AirHome() {
   const handleBrandTradeItems = useCallback((pools) => {
     // console.log('pools',tokenList,categoryRequestParam,channelRequestParam)
     /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
+
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
+      cts: ctList,
       /* category: type, */
       category: categoryRequestParam,
       channel: channelRequestParam,
@@ -222,7 +225,7 @@ export function AirHome() {
         }
       })
     // eslint-disable-next-line
-  }, [channel, tokenList, channelRequestParam, categoryRequestParam]);
+  }, [channel, ctList, tokenList, channelRequestParam, categoryRequestParam]);
 
   const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
     variables: { tokenList: tokenList },
@@ -244,18 +247,30 @@ export function AirHome() {
   })
 
   const handleBrandItems = (data) => {
-    // const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
-    const brand1 = data.bounce721Brands[0] ? data.bounce721Brands[0].tokenList : []
-    const brand2 = data.bounce1155Brands[0] ? data.bounce1155Brands[0].tokenList : []
+    // // const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
+    // const brand1 = data.bounce721Brands[0] ? data.bounce721Brands[0].tokenList : []
+    // const brand2 = data.bounce1155Brands[0] ? data.bounce1155Brands[0].tokenList : []
 
-    // const brands = [].concat(data.bounce721Brands[0], data.bounce1155Brands[0])
-    const brands = { tokenList: brand1.concat(brand2) }
+    // // const brands = [].concat(data.bounce721Brands[0], data.bounce1155Brands[0])
+    // const brands = { tokenList: brand1.concat(brand2) }
 
-    if (brands && brands.tokenList) {
-      const tokenList = brands.tokenList.map(item => item.tokenId);
-      setTokenList(tokenList);
-      getBrandTradeItems();
-    }
+    // if (brands && brands.tokenList) {
+    //   const tokenList = brands.tokenList.map(item => item.tokenId);
+    //   setTokenList(tokenList);
+    //   getBrandTradeItems();
+    // }
+    
+    const brands = [].concat(
+        (data?.bounce721Brands ?? [])[0],
+        (data?.bounce1155Brands ?? [])[0]
+      )
+      .map(v => (v?.tokenList ?? []).map(e => ({ ...e, tokenCnt: v.tokenCnt })))
+    const tokenList = brands.map(item => item.tokenId);
+    const ctList = brands.map(item => item.tokenCnt);
+    // console.log(tokenList, ctList)
+    setTokenList(tokenList);
+    setCtList(ctList);
+    getBrandTradeItems();
   }
 
   const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
