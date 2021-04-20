@@ -384,49 +384,9 @@ export const mainTheme = createMuiTheme({
       },
     },
 
-    MuiTabs: {
-      root: {
-        minHeight: 40,
-      },
+    MuiTabs: {},
 
-      scroller: {
-        zIndex: 0,
-      },
-
-      indicator: {
-        zIndex: -1,
-        height: '100%',
-        background: PALETTE.background.reverse,
-        borderRadius: 8,
-      },
-    },
-
-    MuiTab: {
-      root: {
-        minWidth: 88,
-        minHeight: 40,
-        padding: defaultTheme.spacing(0.75, 2.5),
-        transition: 'color 0.2s ease-in',
-        fontWeight: 700,
-        fontSize: 20,
-        lineHeight: 1,
-        textTransform: 'none',
-
-        [defaultTheme.breakpoints.up('sm')]: {
-          minWidth: 88,
-        },
-
-        '&.Mui-selected': {
-          color: defaultTheme.palette.common.white,
-        },
-      },
-
-      textColorSecondary: {
-        '&.Mui-selected': {
-          color: defaultTheme.palette.common.white,
-        },
-      },
-    },
+    MuiTab: {},
 
     MuiPaper: {
       outlined: {

@@ -1,19 +1,11 @@
-import {
-  Box,
-  Button,
-  Container,
-  Fade,
-  Grid,
-  Hidden,
-  Tab,
-  Tabs,
-} from '@material-ui/core';
+import { Box, Button, Container, Fade, Grid, Hidden } from '@material-ui/core';
 import { t } from 'modules/i18n/utils/intl';
 import {
   IProductCardProps,
   ProductCard,
 } from 'modules/overview/components/ProductCard';
 import { useIsMDUp } from 'modules/themes/useTheme';
+import { FilledTab, FilledTabs } from 'modules/uiKit/FilledTabs';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { Select } from 'modules/uiKit/Select';
 import { useMemo } from 'react';
@@ -80,16 +72,16 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={6} md>
               <Hidden mdDown>
-                <Tabs
+                <FilledTabs
                   value={catergory}
-                  onChange={onCategoryTabChange}
+                  onChange={onCategoryTabChange as any}
                   textColor="secondary"
                   variant="scrollable"
                 >
                   {categories.map(({ label, value }) => (
-                    <Tab key={uid(label)} label={label} value={value} />
+                    <FilledTab key={uid(label)} label={label} value={value} />
                   ))}
-                </Tabs>
+                </FilledTabs>
               </Hidden>
 
               <Hidden lgUp>
