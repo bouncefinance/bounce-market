@@ -185,11 +185,45 @@ const TransferBox = styled.div`
 	.inputAddress {
 		width: 492px;
 		height: 48px;
-		opacity: 0.2;
-		border: 1px solid #000000;
+		border: 1px solid rgba(0, 0, 0, 0.2);
 		box-sizing: border-box;
 		margin-left: 24px;
 		text-indent: 20px;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 20px;
+
+		&::-webkit-input-placeholder {
+			/* Edge */
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 20px;
+			color: #000000;
+			opacity: 0.8;
+		}
+
+		&:-ms-input-placeholder {
+			/* Internet Explorer 10-11 */
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 20px;
+			color: #000000;
+			opacity: 0.8;
+		}
+
+		&::placeholder {
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 20px;
+			color: #000000;
+			opacity: 0.8;
+		}
 	}
 
 	.str_transferTo {
@@ -211,6 +245,7 @@ function TransferNFT() {
 	const history = useHistory();
 	const { nftId } = useParams();
 	const { sign_Axios } = useAxios();
+	const { wrapperIntl } = useWrapperIntl();
 
 	const [NFTName, setNFTName] = useState();
 	// const [descriptionContent, setDescriptionContent] = useState();
@@ -222,16 +257,10 @@ function TransferNFT() {
 	const [imgURL, setImgURL] = useState();
 	const [category, setCategory] = useState();
 	const [description, setDescription] = useState();
+	const [receiverAddress, setReceiverAddress] = useState("");
+	const [disableButton, setDisableButton] = useState(true);
+
 	const { dispatch } = useContext(myContext);
-	/* const NFTInfoList = [
-		{ title: "Description", content: "An irreplaceable girl" },
-		{ title: "Supply", content: "114514" },
-		{ title: "Token ID", content: "#123456" },
-		{ title: "Token Symbol", content: "CKIE" },
-		{ title: "Created By", content: "Ralph Waldo" },
-		{ title: "External Link", content: "http://www.baidu.com" },
-	]; */
-	const { wrapperIntl } = useWrapperIntl();
 
 	useEffect(() => {
 		const getNFTInfoList = async (nftId) => {
@@ -292,6 +321,54 @@ function TransferNFT() {
 		},
 	];
 
+	/* useEffect(() => {
+		console.log("typeof(receiverAddress): ", typeof receiverAddress);
+		console.log("receiverAddress: ", receiverAddress);
+		console.log("alertStatus: ", alertStatus);
+		console.log("receiverAddress.length: ", receiverAddress.length);
+		console.log("-------------");
+	}, [alertStatus, receiverAddress]); */
+
+	const handleAddressInput = (e) => {
+		setReceiverAddress(e.target.value);
+		if (receiverAddress.match("^0x.{40}$")) {
+			console.log("case 0");
+			console.log(e.target.value)
+		}
+		/* } else if (receiverAddress.length === 0) {
+			console.log("case 1");
+			setAlertStatus("empty");
+		} else if (receiverAddress === "0") {
+			console.log("case 2");
+			setAlertStatus("typing");
+		} else if (receiverAddress === "0x") {
+			console.log("case 3");
+			setAlertStatus("typing");
+		} else if (receiverAddress.match("^0x.{0,40}$") !== null) {
+			console.log("case 4");
+			setAlertStatus("incorrectHeader");
+		} else {
+			console.log("case 5");
+		
+		console.log("receiverAddress.length: ", receiverAddress.length);
+		console.log("alertStatus: ", alertStatus); */
+	};
+
+	useEffect(() => {
+		if (receiverAddress.match("^0x.{40}$")) {
+			console.log("Correct Address");
+			setDisableButton(false)
+		}
+		else {
+			console.log("InCorrect Address");
+			setDisableButton(true)
+		}
+	}, [receiverAddress])
+
+	const handleClick = () => {
+		alert("Transfer")
+	}
+
 	return (
 		<Page>
 			<BreadcrumbNav marginTop="24px" NavList={NavList} />
@@ -335,10 +412,12 @@ function TransferNFT() {
 							className="inputAddress"
 							type="text"
 							placeholder="e.g. 0x1ed3.... or destination.eth"
+							value={receiverAddress}
+							onChange={handleAddressInput}
 						/>
 
 						<span className="str_transferTo">
-							“Digital Image Name” will be transferred to...
+							“Digital Image Name” will be transferred to {receiverAddress.slice(0,6)+'...'+receiverAddress.slice(-5,-1)}
 						</span>
 
 						<Button
@@ -346,7 +425,9 @@ function TransferNFT() {
 							width="492px"
 							height="48px"
 							marginLeft="24px"
-						> 
+							onClick={handleClick}
+							disabled={disableButton}
+						>
 							Transfer
 						</Button>
 					</TransferBox>

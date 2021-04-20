@@ -157,7 +157,7 @@ export default function Marketplace() {
     channel === NavList[0].route ? NavList[0].channelRequestParam :
       channel === NavList[1].route ? NavList[1].channelRequestParam :
         NavList[2].channelRequestParam);
-  const [categoryRequestParam, setCategoryRequestParam] = useState(wrapperIntl("All"))
+  const [categoryRequestParam, setCategoryRequestParam] = useState(wrapperIntl("Category.All"))
 
 
   /* type = 'video' */
