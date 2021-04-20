@@ -76,7 +76,7 @@ export default function SellNFT() {
 	];
 
 	const fees = "1";
-	const { exportNftInfo } = useNftInfo();
+	const { exportNftInfoV2 } = useNftInfo();
 	const { nftId } = useParams();
 	const { active } = useActiveWeb3React();
 	const [auctionType, setauctionType] = useState("setPrice");
@@ -121,7 +121,7 @@ export default function SellNFT() {
 	}, [active]);
 
 	const setInitNftInfo = async (nftId) => {
-		const info = await exportNftInfo(nftId);
+		const info = await exportNftInfoV2(nftId);
 		
 		setNftId(info);
 	};

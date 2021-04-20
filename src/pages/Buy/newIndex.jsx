@@ -329,7 +329,7 @@ export default function NewIndex() {
 
 
     useEffect(() => {
-        console.log(amount.toString().replace(/[^0-9]/ig, ""))
+        // console.log(amount.toString().replace(/[^0-9]/ig, ""))
         if (parseInt(amount) < 1 || amount.toString().replace(/[^0-9]/ig, "") === "" || parseInt(amount) > (parseInt(poolInfo.amountTotal0) - parseInt(poolInfo.swappedAmount0P))) {
             setIsLoading(true);
         } else {
@@ -423,7 +423,7 @@ export default function NewIndex() {
                 });
         };
         if (!active || !nftId) return;
-        getNFTInfoList(nftId);
+        getNFTInfoList(poolInfo.contractaddress,nftId);
         // eslint-disable-next-line
     }, [active, nftId])
 
@@ -889,7 +889,7 @@ export default function NewIndex() {
         const tradePool = data.tradeAuctions[0];
         // if(!tradePool) return  setHistory([]);
 
-        console.log('auctionCreates', tradePool)
+        // console.log('auctionCreates', tradePool)
         const creator = tradePool.creator;
         const total = tradePool.tokenAmount0;
         const price = tradePool.amountMin1;

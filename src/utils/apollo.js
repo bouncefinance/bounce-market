@@ -1,17 +1,16 @@
 
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 const hostname = window.location.hostname
-// const hostname = 'market.bounce.finance'
+// const hostname = 'fangible.com'
 
 export const client = new ApolloClient({
   uri: hostname.includes('market.bounce.finance') || hostname.includes('127.0.0.1') || hostname.includes('cnmarket.bounce.finance') || hostname.includes('fangible') ?
     // 'https://api.thegraph.com/subgraphs/name/winless/bouncenft' :      // bsc main
     // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft' :      // bsc main
     'https://subgraph_official_bsc.bounce.finance/subgraphs/name/winless/BounceNFT':
-
-    'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2' ,      // bsc main
+    // 'https://subgraph_official_bsc.bounce.finance/subgraphs/name/winless/BounceNFT2' ,      // bsc main
     // 'https://api.thegraph.com/subgraphs/name/winless/bouncenft2',     // bsc test
-    // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
+    'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
     // 'https://subgraph_bsc.bounce.finance/subgraphs/name/winless/bouncenft2',
     // 'http://54.254.179.26:8000/subgraphs/name/winless/bouncenft2',
   cache: new InMemoryCache(),
@@ -45,6 +44,7 @@ export const QueryMarketTradePools_0 = gql`
     tradePools{
       tokenId
       poolId
+      token0
       token1
       price
       createTime
@@ -53,6 +53,7 @@ export const QueryMarketTradePools_0 = gql`
     tradeAuctions{
       tokenId
       poolId
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -67,6 +68,7 @@ export const QueryMarketTradePools = gql`
     tradePools (where: {token1: $contract}){
       tokenId
       poolId
+      token0
       token1
       price
       createTime
@@ -75,6 +77,7 @@ export const QueryMarketTradePools = gql`
     tradeAuctions (where: {token1: $contract}){
       tokenId
       poolId
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -113,6 +116,7 @@ export const QueryMyPools = gql`
       tokenId
       poolId
       price
+      token0
       token1
       createTime
       state
@@ -120,6 +124,7 @@ export const QueryMyPools = gql`
     tradeAuctions(where: {creator: $user}) {
       tokenId
       poolId
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -143,11 +148,13 @@ export const queryTradeInfo = gql`
   query queryTradeInfo($poolIdList: [Int!]!) {
     tradePools(where: {poolId_in: $poolIdList}) {
       poolId
+      token0
       token1
     }
     tradeAuctions(where: {poolId_in: $poolIdList}) {
       poolId
       creator
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -204,9 +211,11 @@ export const QueryMyNFT = gql`
   query nftItems($user: String!) {
     nft721Items(where: {user: $user}) {
       tokenId
+      contract
     }
     nft1155Items(where: {user: $user}) {
       tokenId
+      contract
     }
   }
 `

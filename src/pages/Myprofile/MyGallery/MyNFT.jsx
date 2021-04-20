@@ -204,8 +204,9 @@ function MyNFT() {
 	const { wrapperIntl } = useWrapperIntl()
 
 	useEffect(() => {
-		const getNFTInfoList = async (nftId) => {
+		const getNFTInfoList = async (contractaddress, nftId) => {
 			const params = {
+				ct: contractaddress,
 				id: parseInt(nftId),
 			};
 
