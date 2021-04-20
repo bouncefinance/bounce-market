@@ -138,7 +138,6 @@ export default function Upload({
         if (!file) return
         try {
             const type = await getFileType(file)
-            console.log('get file type', type)
             if (type === 'video/avi') {
                 return dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
             }
