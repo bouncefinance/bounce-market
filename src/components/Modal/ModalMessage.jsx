@@ -187,7 +187,7 @@ export default function ModalMessage() {
 						</IconButton>
 					}
 				>
-					{state.modelMessage || "Info"}
+					{state.modelMessage/*  || "Info" */}
           
 					<span
 						className={classes.links}
