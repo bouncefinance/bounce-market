@@ -78,6 +78,7 @@ export default function Upload({
     lockInput,
     width = '240px',
     height = '160px',
+    onClick
 }) {
     const { dispatch } = useContext(myContext);
 
@@ -136,11 +137,9 @@ export default function Upload({
     const handelFileChange = async (e) => {
         const file = e.target.files[0]
         if (!file) return
+        let filetype
         try {
-            const type = await getFileType(file)
-            if (type === 'video/avi') {
-                return dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
-            }
+            filetype = await getFileType(file)
         } catch (error) {
             console.log(error)
         }
@@ -153,7 +152,7 @@ export default function Upload({
             }
             let formData = new FormData()
             formData.append('filename', file)
-            onFileChange && onFileChange(formData, file)
+            onFileChange && onFileChange(formData, file, filetype)
             // setFormData(formData)
         } else if (file.type.includes('video/')) {
             console.log(file)
@@ -169,7 +168,7 @@ export default function Upload({
             }
             let formData = new FormData()
             formData.append('filename', file)
-            onFileChange && onFileChange(formData, file)
+            onFileChange && onFileChange(formData, file, filetype)
         } else {
             dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") });
         }
@@ -181,7 +180,7 @@ export default function Upload({
         <UploadStyled width={width} height={height} >
             <div className={`left_img ${type}`}>
                 <img src={coverSrc} alt="" />
-                <input disabled={disabled || lockInput} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" />
+                <input disabled={disabled || lockInput} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" onClick={onClick} />
             </div>
 
             <div className="right_info">
