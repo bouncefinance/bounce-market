@@ -109,7 +109,7 @@ export default function useAxios() {
                     modelType: 'error',
                     modelMessage: wrapperIntl("Re-sign"),
                     modelTimer: 24 * 60 * 60 * 1000,
-                    canClose: false,
+                    canClose: true,
                 });
             }
             /* dispatch({
