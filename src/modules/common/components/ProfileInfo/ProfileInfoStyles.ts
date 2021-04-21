@@ -6,12 +6,21 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
     gridTemplateColumns: 'auto 1fr',
     alignItems: 'center',
     gap: theme.spacing(0, 1.5),
+    gridTemplateAreas: `
+      'avatars subTitle'
+      'avatars title'
+    `,
+  },
+
+  titleFirst: {
+    gridTemplateAreas: `
+      'avatars title'
+      'avatars subTitle'
+    `,
   },
 
   avatars: {
-    gridColumn: '1/2',
-    gridRow: '1/3',
-
+    gridArea: 'avatars',
     display: 'flex',
   },
 
@@ -36,9 +45,19 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
     },
   },
 
-  avatar: {
+  avatarSmall: {
     width: 32,
     height: 32,
+  },
+
+  avatarMedium: {
+    width: 40,
+    height: 40,
+  },
+
+  avatarBig: {
+    width: 44,
+    height: 44,
   },
 
   avatarCheck: {
@@ -67,13 +86,11 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
   },
 
   subTitle: {
-    gridColumn: '2/3',
-    gridRow: '1/2',
+    gridArea: 'subTitle',
   },
 
   title: {
-    gridColumn: '2/3',
-    gridRow: '2/3',
+    gridArea: 'title',
 
     overflow: 'hidden',
     whiteSpace: 'nowrap',

@@ -57,13 +57,15 @@ const BREAKPOINTS = {
 };
 
 export const defaultTheme = createMuiTheme({
+  spacing: 8,
+  palette: PALETTE as PaletteOptions,
   breakpoints: BREAKPOINTS,
 });
 
 export const mainTheme = createMuiTheme({
-  spacing: 8,
-  palette: PALETTE as PaletteOptions,
-  breakpoints: BREAKPOINTS,
+  spacing: defaultTheme.spacing,
+  palette: defaultTheme.palette,
+  breakpoints: defaultTheme.breakpoints,
 
   typography: {
     fontFamily: FONTS.primary,
@@ -384,9 +386,45 @@ export const mainTheme = createMuiTheme({
       },
     },
 
-    MuiTabs: {},
+    MuiTabs: {
+      root: {
+        minHeight: 40,
+      },
 
-    MuiTab: {},
+      flexContainer: {
+        display: 'inline-grid',
+        gridAutoFlow: 'column',
+        gap: defaultTheme.spacing(3),
+      },
+
+      indicator: {
+        background: defaultTheme.palette.text.primary,
+      },
+    },
+
+    MuiTab: {
+      root: {
+        minWidth: 0,
+        minHeight: 40,
+        padding: defaultTheme.spacing(1, 0),
+        textTransform: 'none',
+        fontWeight: 700,
+        fontSize: 16,
+
+        [defaultTheme.breakpoints.up('sm')]: {
+          minWidth: 0,
+        },
+
+        '&.Mui-selected': {
+          color: defaultTheme.palette.text.primary,
+        },
+      },
+
+      textColorInherit: {
+        opacity: 1,
+        color: defaultTheme.palette.text.secondary,
+      },
+    },
 
     MuiPaper: {
       outlined: {

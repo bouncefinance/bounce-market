@@ -10,15 +10,16 @@ import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { TwitterIcon } from 'modules/layout/components/Social/assets/TwitterIcon';
 import { FacebookIcon } from './assets/FacebookIcon';
 import { ShareIcon } from './assets/ShareIcon';
-import { useNFTContentStyles } from './useNFTContentStyles';
+import { useImgContainerStyles } from './useImgContainerStyles';
 
 interface INFTContentProps {
   className?: string;
   src: string;
 }
 
-export const NFTContent = ({ className, src }: INFTContentProps) => {
-  const classes = useNFTContentStyles();
+export const ImgContainer = ({ className, src }: INFTContentProps) => {
+  const classes = useImgContainerStyles();
+
   const renderedTooltipContent = (
     <MenuList>
       <MenuItem

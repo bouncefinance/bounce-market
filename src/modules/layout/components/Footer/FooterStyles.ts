@@ -1,11 +1,19 @@
 import { fade, makeStyles, Theme } from '@material-ui/core';
 
+export const FOOTER_MIN_HEIGHT = 90;
+
 export const useFooterStyles = makeStyles<Theme>(theme => ({
   root: {
-    padding: theme.spacing(3, 0),
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(2, 0),
     background: theme.palette.background.default,
     color: theme.palette.text.primary,
     borderTop: `1px solid ${fade(theme.palette.common.black, 0.1)}`,
+
+    [theme.breakpoints.up('md')]: {
+      minHeight: FOOTER_MIN_HEIGHT,
+    },
   },
 
   container: {

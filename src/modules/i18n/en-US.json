@@ -66,6 +66,18 @@
     "submit": "Create",
     "submitting": "Creating"
   },
+  "details-nft": {
+    "tabs": {
+      "history": "History",
+      "bids": "Bids",
+      "owners": "Owners",
+      "token-info": "Token info"
+    },
+    "info": {
+      "date": "{value, date, medium}",
+      "time": "at {value, time, short}"
+    }
+  },
   "validation": {
     "required": "This field is required"
   },

@@ -1,6 +1,6 @@
 import { fade, makeStyles, Theme } from '@material-ui/core';
 
-export const useNFTContentStyles = makeStyles<Theme>(theme => ({
+export const useImgContainerStyles = makeStyles<Theme>(theme => ({
   root: {
     paddingTop: theme.spacing(5),
     display: 'flex',

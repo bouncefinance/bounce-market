@@ -17,6 +17,8 @@ export interface IProfileInfoProps {
   subTitle: string;
   title: string;
   users: IUserInfo[];
+  isTitleFirst?: boolean;
+  avatarSize?: 'small' | 'medium' | 'big';
 }
 
 export const ProfileInfo = ({
@@ -24,6 +26,8 @@ export const ProfileInfo = ({
   users,
   subTitle,
   title,
+  isTitleFirst = false,
+  avatarSize = 'small',
 }: IProfileInfoProps) => {
   const classes = useProfileInfoStyles();
 
@@ -37,7 +41,14 @@ export const ProfileInfo = ({
 
       const renderedContent = (
         <>
-          <Avatar className={classes.avatar} src={avatar} />
+          <Avatar
+            className={classNames({
+              [classes.avatarBig]: avatarSize === 'big',
+              [classes.avatarMedium]: avatarSize === 'medium',
+              [classes.avatarSmall]: avatarSize === 'small',
+            })}
+            src={avatar}
+          />
 
           {verified && <i className={classes.avatarCheck} />}
         </>
@@ -51,10 +62,16 @@ export const ProfileInfo = ({
         <div {...commonProps}>{renderedContent}</div>
       );
     });
-  }, [classes, users]);
+  }, [avatarSize, classes, users]);
 
   return (
-    <div className={classNames(className, classes.root)}>
+    <div
+      className={classNames(
+        className,
+        classes.root,
+        isTitleFirst && classes.titleFirst,
+      )}
+    >
       <div className={classes.avatars}>{renderedAvatars}</div>
 
       <Typography
