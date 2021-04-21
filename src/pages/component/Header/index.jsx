@@ -242,7 +242,6 @@ export default function Index() {
                     modelType: 'error',
                     modelMessage: wrapperIntl("ConnectWallet"),
                     modelTimer: 24 * 60 * 60 * 1000,
-                    canClose: false, 
                 });
             }
             else {
@@ -259,7 +258,7 @@ export default function Index() {
                         subsequentActionType: "connectToBSCChain",
                         modelUrlMessage: wrapperIntl("header.SwitchToBSC"),
                         modelTimer: 24 * 60 * 60 * 1000,
-                        canClose: false, 
+                        canClose: true, 
                     });
                 } 
                 else {
