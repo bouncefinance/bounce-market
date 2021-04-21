@@ -217,7 +217,6 @@ export function AirHome() {
             }
           })
 
-          console.log(list)
           const result = list
             // .filter(item => item.poolId || item.poolId === 0)
             .sort((a, b) => b.createTime - a.createTime);
@@ -247,19 +246,6 @@ export function AirHome() {
   })
 
   const handleBrandItems = (data) => {
-    // // const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
-    // const brand1 = data.bounce721Brands[0] ? data.bounce721Brands[0].tokenList : []
-    // const brand2 = data.bounce1155Brands[0] ? data.bounce1155Brands[0].tokenList : []
-
-    // // const brands = [].concat(data.bounce721Brands[0], data.bounce1155Brands[0])
-    // const brands = { tokenList: brand1.concat(brand2) }
-
-    // if (brands && brands.tokenList) {
-    //   const tokenList = brands.tokenList.map(item => item.tokenId);
-    //   setTokenList(tokenList);
-    //   getBrandTradeItems();
-    // }
-    
     const brands = [].concat(
         (data?.bounce721Brands ?? [])[0],
         (data?.bounce1155Brands ?? [])[0]
