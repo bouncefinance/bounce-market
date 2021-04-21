@@ -61,7 +61,7 @@ export default function Index() {
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
     {
       variables: { user: String(account).toLowerCase() },
-      // variables: { user: String('0x2d3fff58da3346dce601f6db8eec57906cdb17be').toLowerCase() },
+      // variables: { user: String('0x9baBe2CB2c4FCe0fe9674FEA2A05a25280114441').toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: async () => {
         setMyNftData(data || [])
@@ -74,7 +74,7 @@ export default function Index() {
   const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
     {
       variables: { user: String(account).toLowerCase() },
-      // variables: { user: String('0x2d3fff58da3346dce601f6db8eec57906cdb17be').toLowerCase() },
+      // variables: { user: String('0x9baBe2CB2c4FCe0fe9674FEA2A05a25280114441').toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: () => {
         setMyTradeData(traddata || [])
@@ -168,7 +168,7 @@ export default function Index() {
     const pools = myNftData.nft721Items.concat(myNftData.nft1155Items)
       .concat(tradePools).concat(tradeAuctions)
 
-    console.log(pools)
+    // console.log(pools)
 
     if (PenddingItem) {
       if ([...ids_list].includes(PenddingItem.tokenId)) return window.localStorage.setItem('PenddingItem', null)
