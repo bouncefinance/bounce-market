@@ -314,7 +314,7 @@ export default function BrandsByType() {
 
     const handleBrandTradeItems = (pools) => {
         const ids = pools.map(item => item.tokenId)
-        const cts = pools.map(item => item.token0)
+        const cts = pools.map(item => item.token0 || item.contract)
 
         let categoryParam
 
@@ -410,10 +410,11 @@ export default function BrandsByType() {
         variables: { user: account && account.toLowerCase(), contract: contract && contract.toLowerCase() },
         fetchPolicy: "network-only",
         onCompleted: () => {
-            const brands = brandInfo.standard === 1
-                ? brandItems.nft721Items
-                : brandItems.nft1155Items;
-            // console.log(brands)
+            // const brands = brandInfo.standard === 1
+            //     ? brandItems.nft721Items
+            //     : brandItems.nft1155Items;
+            // console.log(brandItems.nft721Items, brandItems.nft1155Items)
+            const brands = [...brandItems.nft721Items, ...brandItems.nft1155Items]
             if (!brands) {
                 // handleBrandTradeItems([]);
                 setTokenList([]);
