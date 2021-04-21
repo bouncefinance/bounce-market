@@ -205,8 +205,8 @@ export function AirHome() {
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          const list = res.data.data.map(item => {
-            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+          const list = pools.map(poolInfo => {
+            const item = res.data.data.find(item => poolInfo.tokenId === item.id);
             return {
               ...item,
               poolType: poolInfo ? poolInfo.poolType : null,
