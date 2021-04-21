@@ -1,18 +1,181 @@
 import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { useActiveWeb3React } from "@/web3";
 import { useHistory, useParams } from "react-router-dom";
 import useAxios from "@utils/useAxios.js";
 import { myContext } from "@/redux";
 import { Button } from "@components/UI-kit";
 import BreadcrumbNav from "@/components/UI-kit/NavBar/BreadcrumbNav";
-import NFTInfo from "./components/NFTInfo";
+/* import NFTInfo from "./components/NFTInfo"; */
 import useWrapperIntl from "@/locales/useWrapperIntl";
 
 import icon_copy from "@assets/images/icon/copy.svg";
 import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
-/* import pic_NFT1 from "./assets/pic_NFT1.svg"; */
+import useNftInfo from "@/utils/useToken";
+import { getContract, useActiveWeb3React } from "@/web3";
+import BounceERC721 from "@/web3/abi/BounceERC721.json";
+import useTransferModal from "@/web3/useTransferModal";
+
+function TransferNFT() {
+	const { account, library, active } = useActiveWeb3React();
+	const { nftId } = useParams();
+	const history = useHistory();
+	const { sign_Axios } = useAxios();
+	const { wrapperIntl } = useWrapperIntl();
+	const { exportNftInfoV2 } = useNftInfo();
+	const [receiverAddress, setReceiverAddress] = useState("");
+	const [disableButton, setDisableButton] = useState(true);
+	const [showNotice, setShowNotice] = useState(false);
+	const [NFTInfo, setNFTInfo] = useState();
+	const { showTransferByStatus } = useTransferModal();
+
+	const { dispatch } = useContext(myContext);
+
+	const setInitNFTInfo = async (nftId) => {
+		const NFTInfo = await exportNftInfoV2(nftId);
+
+		setNFTInfo(NFTInfo);
+	};
+
+	useEffect(() => {
+		if (!active) return;
+		setInitNFTInfo(nftId);
+		// eslint-disable-next-line
+	}, [active]);
+
+	useEffect(() => {
+		console.log("NFTInfo: ", NFTInfo);
+	}, [NFTInfo]);
+
+	const NavList = [
+		{
+			title: "My Gallery",
+			route: "/MyGallery",
+		},
+		{
+			title: NFTInfo && NFTInfo.itemname,
+			route: "/MyGallery/" + nftId,
+		},
+	];
+
+	const handleAddressInput = (e) => {
+		setReceiverAddress(e.target.value);
+	};
+
+	useEffect(() => {
+		if (receiverAddress.match("^0x.{40}$")) {
+			setDisableButton(false);
+			setShowNotice(true);
+		} else {
+			setDisableButton(true);
+			setShowNotice(false);
+		}
+	}, [receiverAddress]);
+
+	const handleClick = () => {
+		/* alert("Transfer"); */
+		if (NFTInfo) {
+			if (parseInt(NFTInfo.standard) === 1) {
+				const BounceERC721_CT = getContract(
+					library,
+					BounceERC721.abi,
+					NFTInfo.contractaddress
+				);
+				BounceERC721_CT.methods
+					.safeTransferFrom(
+						account,
+						receiverAddress,
+						parseInt(NFTInfo.id)
+					)
+					.send({ from: account })
+					.on("transactionHash", (hash) => {
+						// setBidStatus(pendingStatus)
+						showTransferByStatus("pendingStatus");
+					})
+					.on("receipt", async (_, receipt) => {
+						// console.log('bid fixed swap receipt:', receipt)
+						// setBidStatus(successStatus)
+						history.push("/MyGallery");
+						showTransferByStatus("successStatus");
+					})
+					.on("error", (err, receipt) => {
+						// setBidStatus(errorStatus)
+						showTransferByStatus("errorStatus");
+					});
+			}
+		}
+	};
+
+	return (
+		<Page>
+			<BreadcrumbNav marginTop="24px" NavList={NavList} />
+			<PageBody className="sellNFT">
+				{NFTInfo && NFTInfo.category === "video" ? (
+					<video
+						width="400px"
+						height="400px"
+						src={NFTInfo && NFTInfo.fileurl}
+						controls="controls"
+						autoPlay
+					></video>
+				) : (
+					<AutoStretchBaseWidthOrHeightImg
+						src={NFTInfo && NFTInfo.fileurl}
+						width={400}
+						height={400}
+					/>
+				)}
+
+				<PageBodyRight className="right">
+					<span className="NFTName">
+						{NFTInfo && NFTInfo.itemname}
+					</span>
+
+					<div className="account">
+						<p>{account}</p>
+						<CopyToClipboard text={account} onCopy={() => {}}>
+							<img className="icon_copy" src={icon_copy} alt="" />
+						</CopyToClipboard>
+					</div>
+
+					<TransferBox>
+						<span className="str_Transfer">Transfer</span>
+
+						<span className="str_WalletAddress">
+							Wallet Address
+						</span>
+
+						<input
+							className="inputAddress"
+							type="text"
+							placeholder="e.g. 0x1ed3.... or destination.eth"
+							value={receiverAddress}
+							onChange={handleAddressInput}
+						/>
+						<span className="str_transferTo">
+							{showNotice &&
+								`“${
+									NFTInfo && NFTInfo.itemname
+								}” will be transferred to 
+								${receiverAddress.slice(0, 6) + "..." + receiverAddress.slice(-5, -1)}`}
+						</span>
+
+						<Button
+							primary
+							width="492px"
+							height="48px"
+							marginLeft="24px"
+							onClick={handleClick}
+							disabled={disableButton}
+						>
+							Transfer
+						</Button>
+					</TransferBox>
+				</PageBodyRight>
+			</PageBody>
+		</Page>
+	);
+}
 
 const Page = styled.div`
 	display: flex;
@@ -23,7 +186,7 @@ const Page = styled.div`
 	.sellNFT {
 		margin-top: 50px;
 		display: grid;
-		grid-template-columns: 400px 416px;
+		grid-template-columns: 400px max-content;
 		column-gap: 52px;
 
 		img.NFTImg {
@@ -240,205 +403,5 @@ const TransferBox = styled.div`
 		height: 15px;
 	}
 `;
-
-function TransferNFT() {
-	const { account, active } = useActiveWeb3React();
-	const history = useHistory();
-	const { nftId } = useParams();
-	const { sign_Axios } = useAxios();
-	const { wrapperIntl } = useWrapperIntl();
-
-	const [NFTName, setNFTName] = useState();
-	// const [descriptionContent, setDescriptionContent] = useState();
-	const [supply, setSupply] = useState();
-	const [tokenID, setTokenID] = useState();
-	const [tokenSymbol, setTokenSymbol] = useState();
-	const [creator, setCreator] = useState();
-	const [externalLink, setExternalLink] = useState();
-	const [imgURL, setImgURL] = useState();
-	const [category, setCategory] = useState();
-	const [description, setDescription] = useState();
-	const [receiverAddress, setReceiverAddress] = useState("");
-	const [disableButton, setDisableButton] = useState(true);
-	const [showNotice, setShowNotice] = useState(false);
-
-	const { dispatch } = useContext(myContext);
-
-	useEffect(() => {
-		const getNFTInfoList = async (nftId) => {
-			const params = {
-				id: parseInt(nftId),
-			};
-
-			sign_Axios
-				.post("/api/v2/main/auth/getoneitembyid", params)
-				.then((res) => {
-					if (res.status === 200 && res.data.code === 1) {
-						/* alert("获取成功"); */
-						/* console.log(res); */
-						let NFTInfoList = res.data.data;
-						/* console.log(NFTInfoList) */
-						// console.log(JSON.stringify(NFTInfoList));
-						setNFTName(NFTInfoList.itemname);
-						// setDescriptionContent(NFTInfoList.description);
-						setSupply(NFTInfoList.supply);
-						setTokenID(NFTInfoList.id);
-						setTokenSymbol(NFTInfoList.itemsymbol);
-						setCreator(NFTInfoList.owneraddress);
-						setExternalLink(NFTInfoList.externallink);
-						setImgURL(NFTInfoList.fileurl);
-						setCategory(NFTInfoList.category);
-						setDescription(NFTInfoList.description || "");
-					} else {
-						dispatch({
-							type: "Modal_Message",
-							showMessageModal: true,
-							modelType: "error",
-							modelMessage: wrapperIntl("TryAgain"),
-						});
-					}
-				})
-				.catch((err) => {
-					dispatch({
-						type: "Modal_Message",
-						showMessageModal: true,
-						modelType: "error",
-						modelMessage: wrapperIntl("TryAgain"),
-					});
-				});
-		};
-		if (!active || !nftId) return;
-		getNFTInfoList(nftId);
-		// eslint-disable-next-line
-	}, [active, nftId]);
-
-	const NavList = [
-		{
-			title: "My Gallery",
-			route: "/MyGallery",
-		},
-		{
-			title: NFTName || "",
-			route: "/MyGallery/" + nftId,
-		},
-	];
-
-	/* useEffect(() => {
-		console.log("typeof(receiverAddress): ", typeof receiverAddress);
-		console.log("receiverAddress: ", receiverAddress);
-		console.log("alertStatus: ", alertStatus);
-		console.log("receiverAddress.length: ", receiverAddress.length);
-		console.log("-------------");
-	}, [alertStatus, receiverAddress]); */
-
-	const handleAddressInput = (e) => {
-		setReceiverAddress(e.target.value);
-		if (receiverAddress.match("^0x.{40}$")) {
-			console.log("case 0");
-			console.log(e.target.value);
-		}
-		/* } else if (receiverAddress.length === 0) {
-			console.log("case 1");
-			setAlertStatus("empty");
-		} else if (receiverAddress === "0") {
-			console.log("case 2");
-			setAlertStatus("typing");
-		} else if (receiverAddress === "0x") {
-			console.log("case 3");
-			setAlertStatus("typing");
-		} else if (receiverAddress.match("^0x.{0,40}$") !== null) {
-			console.log("case 4");
-			setAlertStatus("incorrectHeader");
-		} else {
-			console.log("case 5");
-		
-		console.log("receiverAddress.length: ", receiverAddress.length);
-		console.log("alertStatus: ", alertStatus); */
-	};
-
-	useEffect(() => {
-		if (receiverAddress.match("^0x.{40}$")) {
-			console.log("Correct Address");
-			setDisableButton(false);
-			setShowNotice(true);
-		} else {
-			console.log("InCorrect Address");
-			setDisableButton(true);
-			setShowNotice(false);
-		}
-	}, [receiverAddress]);
-
-	const handleClick = () => {
-		alert("Transfer");
-	};
-
-	return (
-		<Page>
-			<BreadcrumbNav marginTop="24px" NavList={NavList} />
-			<PageBody className="sellNFT">
-				{category && category === "Videos" ? (
-					<video
-						width="400px"
-						height="400px"
-						src={imgURL}
-						controls="controls"
-						autoPlay
-					></video>
-				) : (
-					<AutoStretchBaseWidthOrHeightImg
-						src={imgURL}
-						width={400}
-						height={400}
-					/>
-				)}
-
-				<PageBodyRight className="right">
-					<span className="NFTName">
-						{"Digital Image Name" /* {NFTName} */}
-					</span>
-
-					<div className="account">
-						<p>{account}</p>
-						<CopyToClipboard text={account} onCopy={() => {}}>
-							<img className="icon_copy" src={icon_copy} alt="" />
-						</CopyToClipboard>
-					</div>
-
-					<TransferBox>
-						<span className="str_Transfer">Transfer</span>
-
-						<span className="str_WalletAddress">
-							Wallet Address
-						</span>
-
-						<input
-							className="inputAddress"
-							type="text"
-							placeholder="e.g. 0x1ed3.... or destination.eth"
-							value={receiverAddress}
-							onChange={handleAddressInput}
-						/>
-						<span className="str_transferTo">
-							{showNotice &&
-								`“Digital Image Name” will be transferred to 
-								${receiverAddress.slice(0, 6) + "..." + receiverAddress.slice(-5, -1)}`}
-						</span>
-
-						<Button
-							primary
-							width="492px"
-							height="48px"
-							marginLeft="24px"
-							onClick={handleClick}
-							disabled={disableButton}
-						>
-							Transfer
-						</Button>
-					</TransferBox>
-				</PageBodyRight>
-			</PageBody>
-		</Page>
-	);
-}
 
 export default TransferNFT;
