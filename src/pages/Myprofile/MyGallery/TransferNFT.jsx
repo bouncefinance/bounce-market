@@ -14,6 +14,7 @@ import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStr
 import useNftInfo from "@/utils/useToken";
 import { getContract, useActiveWeb3React } from "@/web3";
 import BounceERC721 from "@/web3/abi/BounceERC721.json";
+import BounceERC1155 from "@/web3/abi/BounceERC1155.json";
 import useTransferModal from "@/web3/useTransferModal";
 
 function TransferNFT() {
@@ -53,8 +54,12 @@ function TransferNFT() {
 			route: "/MyGallery",
 		},
 		{
-			title: NFTInfo && NFTInfo.itemname,
+			title: NFTInfo && NFTInfo.itemname || "itemName",
 			route: "/MyGallery/" + nftId,
+		},
+		{
+			title: NFTInfo && "Transfer",
+			route: "/MyGallery/" + nftId + "Transfer",
 		},
 	];
 
@@ -74,35 +79,67 @@ function TransferNFT() {
 
 	const handleClick = () => {
 		/* alert("Transfer"); */
-		if (NFTInfo) {
-			if (parseInt(NFTInfo.standard) === 1) {
-				const BounceERC721_CT = getContract(
-					library,
-					BounceERC721.abi,
-					NFTInfo.contractaddress
-				);
-				BounceERC721_CT.methods
-					.safeTransferFrom(
-						account,
-						receiverAddress,
-						parseInt(NFTInfo.id)
-					)
-					.send({ from: account })
-					.on("transactionHash", (hash) => {
-						// setBidStatus(pendingStatus)
-						showTransferByStatus("pendingStatus");
-					})
-					.on("receipt", async (_, receipt) => {
-						// console.log('bid fixed swap receipt:', receipt)
-						// setBidStatus(successStatus)
-						history.push("/MyGallery");
-						showTransferByStatus("successStatus");
-					})
-					.on("error", (err, receipt) => {
-						// setBidStatus(errorStatus)
-						showTransferByStatus("errorStatus");
-					});
+		try {
+			if (NFTInfo) {
+				if (parseInt(NFTInfo.standard) === 1) {
+					const BounceERC721_CT = getContract(
+						library,
+						BounceERC721.abi,
+						NFTInfo.contractaddress
+					);
+					BounceERC721_CT.methods
+						.safeTransferFrom(
+							account,
+							receiverAddress,
+							parseInt(NFTInfo.id)
+						)
+						.send({ from: account })
+						.on("transactionHash", (hash) => {
+							// setBidStatus(pendingStatus)
+							showTransferByStatus("pendingStatus");
+						})
+						.on("receipt", async (_, receipt) => {
+							// console.log('bid fixed swap receipt:', receipt)
+							// setBidStatus(successStatus)
+							history.push("/MyGallery");
+							showTransferByStatus("successStatus");
+						})
+						.on("error", (err, receipt) => {
+							// setBidStatus(errorStatus)
+							showTransferByStatus("errorStatus");
+						});
+				} else if (parseInt(NFTInfo.standard) === 2) {
+					const BounceERC1155_CT = getContract(
+						library,
+						BounceERC1155.abi,
+						NFTInfo.contractaddress
+					);
+					BounceERC1155_CT.methods
+						.safeTransferFrom(
+							account,
+							receiverAddress,
+							parseInt(NFTInfo.id)
+						)
+						.send({ from: account })
+						.on("transactionHash", (hash) => {
+							// setBidStatus(pendingStatus)
+							showTransferByStatus("pendingStatus");
+						})
+						.on("receipt", async (_, receipt) => {
+							// console.log('bid fixed swap receipt:', receipt)
+							// setBidStatus(successStatus)
+							history.push("/MyGallery");
+							showTransferByStatus("successStatus");
+						})
+						.on("error", (err, receipt) => {
+							// setBidStatus(errorStatus)
+							showTransferByStatus("errorStatus");
+						});
+				}
 			}
+		} catch (e) {
+			console.log(e);
+			showTransferByStatus("errorStatus");
 		}
 	};
 

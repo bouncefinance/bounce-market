@@ -177,6 +177,8 @@ export default function InfoBox({ setIsShowInfo, username, onBodyHandle, offBody
                             }
                             if (item.name === wrapperIntl("header.logout") && item.name !== "loading") {
                                 deactivate()
+                                /* localStorage.removeItem('JWT_TOKEN_V2'); */
+                                window.location.reload()
                                 setIsShowInfo(false)
                                 return
                             }
