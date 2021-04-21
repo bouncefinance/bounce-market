@@ -234,13 +234,13 @@ export const QueryMyNFTByBrand = gql`
 export const QueryOwnerBrandItems = gql`
   query nftItems($owner: String!) {
     bounce721Brands(where: {owner: $owner}) {
-      tokenCnt
+      nft
       tokenList {
         tokenId
       } 
     }
     bounce1155Brands(where: {owner: $owner}) {
-      tokenCnt
+      nft
       tokenList {
         tokenId
       }

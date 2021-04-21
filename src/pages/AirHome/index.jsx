@@ -264,10 +264,10 @@ export function AirHome() {
         (data?.bounce721Brands ?? [])[0],
         (data?.bounce1155Brands ?? [])[0]
       )
-      .map(v => (v?.tokenList ?? []).map(e => ({ ...e, tokenCnt: v.tokenCnt })))
+      .map(v => (v?.tokenList ?? []).map(e => ({ ...e, nft: v.nft }))).flat()
     const tokenList = brands.map(item => item.tokenId);
-    const ctList = brands.map(item => item.tokenCnt);
-    // console.log(tokenList, ctList)
+    const ctList = brands.map(item => item.nft);
+    // console.log(brands, tokenList, ctList)
     setTokenList(tokenList);
     setCtList(ctList);
     getBrandTradeItems();
