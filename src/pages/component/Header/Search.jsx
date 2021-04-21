@@ -16,6 +16,7 @@ import useWrapperIntl from '@/locales/useWrapperIntl';
 
 let search = ''
 let inputTarget
+let poolsDataRes = []
 export default function Search({ placeholder, value, onChange }) {
     const { sign_Axios } = useAxios()
     const { getPriceByToken1, queryPrice } = useToken()
@@ -81,6 +82,8 @@ export default function Search({ placeholder, value, onChange }) {
                     item.pool = { ...pool, ...await getPriceByToken1(price, token1) }
                     item.pool = { ...item.pool, usdtPrice: parseFloat(await queryPrice(item.pool.price) * item.pool.price).toFixed(2) }
                 }
+                console.log('data')
+                console.log(data)
                 setdata(data)
                 setSearchLoding(false)
             } else {
@@ -101,8 +104,8 @@ export default function Search({ placeholder, value, onChange }) {
         onSearch()
     }
 
-    const getPools = () => {
-        const data = poolDataRes.data
+    const getPools = () => {        
+        const data = poolsDataRes // poolDataRes.data
         // console.log('poolData', data)
         const tradePools = data.tradePools.map((item) => ({
             ...item,
@@ -130,6 +133,7 @@ export default function Search({ placeholder, value, onChange }) {
     }, [debounceFilter])
     useEffect(() => {
         if (poolDataRes.loading) return
+        poolsDataRes = poolDataRes.data
         search = ''
         const onEnter = (function (e) {
             var event = e || window.event;
@@ -146,6 +150,10 @@ export default function Search({ placeholder, value, onChange }) {
         }
         // eslint-disable-next-line
     }, [poolDataRes, poolDataRes.loading])
+
+    useEffect(() => {
+        poolsDataRes = []
+    }, [])
 
     return (<SearchBoxStyled className={'flex flex-center-y'}>
         <SearchStyled

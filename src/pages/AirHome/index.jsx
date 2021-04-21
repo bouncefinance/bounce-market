@@ -156,6 +156,7 @@ export function AirHome() {
 
   const [brandInfo, setBrandInfo] = useState({});
   const [tokenList, setTokenList] = useState([]);
+  const [ctList, setCtList] = useState([]);
   const [itemList, setItemList] = useState([]);
   const [pools, setPools] = useState([]);
 
@@ -194,16 +195,18 @@ export function AirHome() {
   const handleBrandTradeItems = useCallback((pools) => {
     // console.log('pools',tokenList,categoryRequestParam,channelRequestParam)
     /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
+
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: tokenList,
+      cts: ctList,
       /* category: type, */
       category: categoryRequestParam,
       channel: channelRequestParam,
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          const list = res.data.data.map(item => {
-            const poolInfo = pools.find(pool => pool.tokenId === item.id);
+          const list = pools.map(poolInfo => {
+            const item = res.data.data.find(item => poolInfo.tokenId === item.id);
             return {
               ...item,
               poolType: poolInfo ? poolInfo.poolType : null,
@@ -214,7 +217,6 @@ export function AirHome() {
             }
           })
 
-          console.log(list)
           const result = list
             // .filter(item => item.poolId || item.poolId === 0)
             .sort((a, b) => b.createTime - a.createTime);
@@ -222,7 +224,7 @@ export function AirHome() {
         }
       })
     // eslint-disable-next-line
-  }, [channel, tokenList, channelRequestParam, categoryRequestParam]);
+  }, [channel, ctList, tokenList, channelRequestParam, categoryRequestParam]);
 
   const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
     variables: { tokenList: tokenList },
@@ -244,18 +246,17 @@ export function AirHome() {
   })
 
   const handleBrandItems = (data) => {
-    // const brands = standard === '1' ? data.bounce721Brands[0] : data.bounce1155Brands[0];
-    const brand1 = data.bounce721Brands[0] ? data.bounce721Brands[0].tokenList : []
-    const brand2 = data.bounce1155Brands[0] ? data.bounce1155Brands[0].tokenList : []
-
-    // const brands = [].concat(data.bounce721Brands[0], data.bounce1155Brands[0])
-    const brands = { tokenList: brand1.concat(brand2) }
-
-    if (brands && brands.tokenList) {
-      const tokenList = brands.tokenList.map(item => item.tokenId);
-      setTokenList(tokenList);
-      getBrandTradeItems();
-    }
+    const brands = [].concat(
+        (data?.bounce721Brands ?? [])[0],
+        (data?.bounce1155Brands ?? [])[0]
+      )
+      .map(v => (v?.tokenList ?? []).map(e => ({ ...e, nft: v.nft }))).flat()
+    const tokenList = brands.map(item => item.tokenId);
+    const ctList = brands.map(item => item.nft);
+    // console.log(brands, tokenList, ctList)
+    setTokenList(tokenList);
+    setCtList(ctList);
+    getBrandTradeItems();
   }
 
   const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {

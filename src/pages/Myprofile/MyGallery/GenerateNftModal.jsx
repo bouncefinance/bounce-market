@@ -329,7 +329,15 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     height="100%"
                     lockInput={inputDisable}
                     infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')}
-                    onFileChange={(formData) => {
+                    onClick={() => {
+                        setFileData(null)
+                    }}
+                    onFileChange={(formData, file, filetype) => {
+                        console.log(filetype)
+                        if (filetype === 'video/avi') {
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
+                            return setFileData(null)
+                        }
                         setFileData(formData)
                     }}
                 />
