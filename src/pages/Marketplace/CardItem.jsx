@@ -9,6 +9,7 @@ import useToken from '@/utils/useToken'
 import { useActiveWeb3React } from '@/web3';
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import { VideoItem } from '../component/Other/videoItem'
+// import { getMetadata } from '@utils/utils'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -161,7 +162,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId, poolInfo, category }) {
+export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId, poolInfo, category, litimgurl }) {
     const { wrapperIntl } = useWrapperIntl()
     const history = useHistory()
     const { exportErc20Info } = useToken()
@@ -189,7 +190,7 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
 
             {category && category === 'video' ?
                 <VideoItem width={262} height={262} src={cover} />:
-                <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
+                <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={litimgurl || cover} />}
             <div className="item_wrapper">
                 <div className='info_wrapper'>
                     <div className="info_top">
