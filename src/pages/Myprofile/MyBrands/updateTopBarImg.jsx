@@ -139,6 +139,7 @@ export default function UpdateTopBarImg (props) {
       }
       // close popup
     } catch (error) {
+      console.log(error)
       setInputDisable(false)
       /* setBtnText('Upload Error!') */
       setBtnText(wrapperIntl('MyProfile.MyBrands.updateTopBarImg.UploadError'))

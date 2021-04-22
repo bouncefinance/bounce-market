@@ -268,6 +268,7 @@ export default function Marketplace() {
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
+                litimgurl={item.litimgurl}
               />
             </li>
           })}
