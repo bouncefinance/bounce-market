@@ -12,7 +12,6 @@ import useWrapperIntl from '@/locales/useWrapperIntl'
 
 import icon_copy from "@assets/images/icon/copy.svg";
 import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
-/* import pic_NFT1 from "./assets/pic_NFT1.svg"; */
 
 const Page = styled.div`
 	display: flex;

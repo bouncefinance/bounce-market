@@ -16,6 +16,7 @@ import { getContract, useActiveWeb3React } from "@/web3";
 import BounceERC721 from "@/web3/abi/BounceERC721.json";
 import BounceERC1155 from "@/web3/abi/BounceERC1155.json";
 import useTransferModal from "@/web3/useTransferModal";
+import useToken from "@/utils/useToken";
 
 function TransferNFT() {
 	const { account, library, active } = useActiveWeb3React();
@@ -33,6 +34,13 @@ function TransferNFT() {
 
 	const { dispatch } = useContext(myContext);
 
+	const [NFTBalance, setNFTBalance] = useState();
+	const {
+		getBalance_ERC_1155,
+		getBalance_ERC_721,
+		getAccountHasNftCount,
+	} = useToken();
+
 	const setInitNFTInfo = async (nftId) => {
 		const NFTInfo = await exportNftInfoV2(nftId);
 
@@ -49,13 +57,29 @@ function TransferNFT() {
 		console.log("NFTInfo: ", NFTInfo);
 	}, [NFTInfo]);
 
+	useEffect(() => {
+		if (!active || !NFTInfo) return;
+		const getNFTBalance = async () => {
+			const NFTbalance = await getAccountHasNftCount(
+				NFTInfo.contractaddress,
+				NFTInfo.id,
+				account
+			);
+			console.log("NFTbalance", NFTbalance);
+			/* return NFTbalance */
+			setNFTBalance(NFTbalance)
+		};
+		/* setNFTBalance(getNFTBalance()); */
+		getNFTBalance()
+	}, [active, NFTInfo]);
+
 	const NavList = [
 		{
 			title: "My Gallery",
 			route: "/MyGallery",
 		},
 		{
-			title: NFTInfo && NFTInfo.itemname || "itemName",
+			title: (NFTInfo && NFTInfo.itemname) || "itemName",
 			route: "/MyGallery/" + nftId,
 		},
 		{
@@ -152,21 +176,23 @@ function TransferNFT() {
 		<Page>
 			<BreadcrumbNav marginTop="24px" NavList={NavList} />
 			<PageBody className="sellNFT">
-				{NFTInfo && NFTInfo.category === "video" ? (
-					<video
-						width="400px"
-						height="400px"
-						src={NFTInfo && NFTInfo.fileurl}
-						controls="controls"
-						autoPlay
-					></video>
-				) : (
-					<AutoStretchBaseWidthOrHeightImg
-						src={NFTInfo && NFTInfo.fileurl}
-						width={400}
-						height={400}
-					/>
-				)}
+				<PageBodyLeft>
+					{NFTInfo && NFTInfo.category === "video" ? (
+						<video
+							width="400px"
+							height="400px"
+							src={NFTInfo && NFTInfo.fileurl}
+							controls="controls"
+							autoPlay
+						></video>
+					) : (
+						<AutoStretchBaseWidthOrHeightImg
+							src={NFTInfo && NFTInfo.fileurl}
+							width={400}
+							height={400}
+						/>
+					)}
+				</PageBodyLeft>
 
 				<PageBodyRight className="right">
 					<span className="NFTName">
@@ -196,25 +222,33 @@ function TransferNFT() {
 						/>
 
 						<span className="str_transferTo">
-							{
-								`“${
-									NFTInfo && NFTInfo.itemname
-								}” will be transferred to 
-								${showNotice ? (receiverAddress.slice(0, 6) + "..." + receiverAddress.slice(-5, -1)) : "..."}`}
+							{`“${
+								NFTInfo && NFTInfo.itemname
+							}” will be transferred to 
+								${
+									showNotice
+										? receiverAddress.slice(0, 6) +
+										  "..." +
+										  receiverAddress.slice(-5, -1)
+										: "..."
+								}`}
 						</span>
 
-						<span className="str_Amount">
-							Amount
-						</span>
+						<div className="str_AmountAndNFTBalance">
+							<span className="str_Amount">Amount</span>
+							<span className="NFTBalance">
+								Balance: {NFTBalance}
+							</span>
+						</div>
 
 						<input
 							className="inputAmount"
 							type="number"
 							min="0"
-							max="10"
+							max={NFTInfo && NFTInfo.supply}
 							placeholder="Enter amount of NFT you want to transfer"
-							value={transferAmount}
-							onChange={handleAmountInput}
+							/* value={transferAmount}
+							onChange={handleAmountInput} */
 						/>
 
 						<Button
@@ -297,14 +331,12 @@ const PageBody = styled.div`
 	grid-template-columns: 400px 416px;
 	column-gap: 52px;
 	grid-template-areas: "left right";
+`;
 
-	/* left of pagebody*/
-	img.NFTImg {
-		grid-area: left;
-		width: 400px;
-	}
-
-	/* right of pagebody */
+const PageBodyLeft = styled.div`
+	grid-area: left;
+	align-self: center;
+	width: 400px;
 `;
 
 const PageBodyRight = styled.div`
@@ -371,7 +403,7 @@ const TransferBox = styled.div`
 		"str_WalletAddress"
 		"inputAddress"
 		"str_transferTo"
-		"str_Amount"
+		"str_AmountAndNFTBalance"
 		"inputAmount"
 		"transferButton";
 
@@ -390,7 +422,7 @@ const TransferBox = styled.div`
 		padding-left: 24px;
 	}
 
-	.str_WalletAddress, .str_Amount {
+	.str_WalletAddress {
 		font-family: Helvetica Neue;
 		font-style: normal;
 		font-weight: 500;
@@ -445,6 +477,27 @@ const TransferBox = styled.div`
 			line-height: 20px;
 			color: #000000;
 			opacity: 0.3;
+		}
+	}
+
+	.str_AmountAndNFTBalance {
+		padding-top: 24px;
+		padding-bottom: 8px;
+		padding-left: 24px;
+		padding-right: 24px;
+		display: flex;
+		justify-content: space-between;
+
+		.str_Amount,
+		.NFTBalance {
+			font-family: Helvetica Neue;
+			font-style: normal;
+			font-weight: 500;
+			font-size: 13px;
+			line-height: 16px;
+			color: #000000;
+			opacity: 0.6;
+			box-sizing: border-box;
 		}
 	}
 

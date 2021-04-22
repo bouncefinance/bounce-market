@@ -169,7 +169,7 @@ export default function Index() {
         }
         updateActive()
     }
-    /* useEffect(() => {
+    useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
         if (type) {
             onConnect(type)
@@ -180,7 +180,7 @@ export default function Index() {
         history.listen(connectWallet)
 
         // eslint-disable-next-line
-    }, [history]) */
+    }, [history])
 
     const findTopElement = (e) => {
         if (e.tagName === 'BODY') return false
