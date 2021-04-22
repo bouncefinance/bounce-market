@@ -25,6 +25,7 @@ function TransferNFT() {
 	const { wrapperIntl } = useWrapperIntl();
 	const { exportNftInfoV2 } = useNftInfo();
 	const [receiverAddress, setReceiverAddress] = useState("");
+	const [transferAmount, setTransferAmount] = useState();
 	const [disableButton, setDisableButton] = useState(true);
 	const [showNotice, setShowNotice] = useState(false);
 	const [NFTInfo, setNFTInfo] = useState();
@@ -65,6 +66,10 @@ function TransferNFT() {
 
 	const handleAddressInput = (e) => {
 		setReceiverAddress(e.target.value);
+	};
+
+	const handleAmountInput = (e) => {
+		setTransferAmount(parseInt(e.target.value));
 	};
 
 	useEffect(() => {
@@ -189,13 +194,28 @@ function TransferNFT() {
 							value={receiverAddress}
 							onChange={handleAddressInput}
 						/>
+
 						<span className="str_transferTo">
-							{showNotice &&
+							{
 								`“${
 									NFTInfo && NFTInfo.itemname
 								}” will be transferred to 
-								${receiverAddress.slice(0, 6) + "..." + receiverAddress.slice(-5, -1)}`}
+								${showNotice ? (receiverAddress.slice(0, 6) + "..." + receiverAddress.slice(-5, -1)) : "..."}`}
 						</span>
+
+						<span className="str_Amount">
+							Amount
+						</span>
+
+						<input
+							className="inputAmount"
+							type="number"
+							min="0"
+							max="10"
+							placeholder="Enter amount of NFT you want to transfer"
+							value={transferAmount}
+							onChange={handleAmountInput}
+						/>
 
 						<Button
 							primary
@@ -341,16 +361,18 @@ const PageBodyRight = styled.div`
 const TransferBox = styled.div`
 	box-sizing: border-box;
 	width: 540px;
-	height: 272px;
+	height: 372px;
 	border: 1px solid rgba(0, 0, 0, 0.2);
 
 	display: grid;
-	grid-template-rows: repeat(5, max-content);
+	grid-template-rows: repeat(7, max-content);
 	grid-template-areas:
 		"str_Transfer"
 		"str_WalletAddress"
 		"inputAddress"
 		"str_transferTo"
+		"str_Amount"
+		"inputAmount"
 		"transferButton";
 
 	.str_Transfer {
@@ -368,7 +390,7 @@ const TransferBox = styled.div`
 		padding-left: 24px;
 	}
 
-	.str_WalletAddress {
+	.str_WalletAddress, .str_Amount {
 		font-family: Helvetica Neue;
 		font-style: normal;
 		font-weight: 500;
@@ -382,7 +404,7 @@ const TransferBox = styled.div`
 		padding-left: 24px;
 	}
 
-	.inputAddress {
+	input {
 		width: 492px;
 		height: 48px;
 		border: 1px solid rgba(0, 0, 0, 0.2);
@@ -426,6 +448,10 @@ const TransferBox = styled.div`
 		}
 	}
 
+	input.inputAmount {
+		margin-bottom: 28px;
+	}
+
 	.str_transferTo {
 		font-family: Helvetica Neue;
 		font-style: normal;
@@ -435,7 +461,6 @@ const TransferBox = styled.div`
 		color: #000000;
 		opacity: 0.5;
 		padding-top: 8px;
-		padding-bottom: 24px;
 		padding-left: 24px;
 		height: 15px;
 	}
