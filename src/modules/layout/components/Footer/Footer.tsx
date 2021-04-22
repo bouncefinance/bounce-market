@@ -5,8 +5,6 @@ import { Logo } from '../Logo';
 import { Social } from '../Social';
 import { useFooterStyles } from './FooterStyles';
 
-const ENABLE_LOGO = false;
-
 export const Footer = () => {
   const classes = useFooterStyles();
 
@@ -15,7 +13,7 @@ export const Footer = () => {
       <Container maxWidth={false} className={classes.container}>
         <Grid container spacing={3} alignItems="center">
           <Grid item xs={12} md className={classes.col}>
-            {ENABLE_LOGO && <Logo />}
+            <Logo />
           </Grid>
 
           <Grid
