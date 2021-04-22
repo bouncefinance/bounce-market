@@ -210,7 +210,10 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
                         width={'162px'}
                         onClick={() => {
                             // const pathname = window.location.pathname
-                            history.push(`/Marketplace/FineArts/${poolType}/${cardId}`)
+                            history.push(
+                                `/Marketplace/FineArts/${poolType}/${cardId}`,
+                                {fileurl: cover}
+                            )
                         }}
                         marginTop="34px"
                     >{wrapperIntl("MarketPlace.CardItem.ShowMore")}</Button>}

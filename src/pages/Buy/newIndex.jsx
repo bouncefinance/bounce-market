@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { /* Link,  */useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components'
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
@@ -303,6 +303,11 @@ export default function NewIndex() {
     const [openFixedSwapBuyModal, setOpenFixedSwapBuyModal] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const { wrapperIntl } = useWrapperIntl()
+    const { state } = useLocation()
+
+    useEffect(() => {
+        console.log("state: ", state)
+    }, [state])
 
     const updateParams = {
         auctiontype: aucType | 0,
@@ -997,9 +1002,28 @@ export default function NewIndex() {
 
                 <div className="container">
                     <div className="container_left">
-                        {nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos') ?
-                            <video width='416px' height='416px' src={nftInfo && nftInfo.fileurl} controls='controls' autoPlay></video> :
-                            <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
+                        {
+                            nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos')
+                            ?
+                            <video
+                                width='416px'
+                                height='416px'
+                                src={
+                                    active
+                                    ? 
+                                    nftInfo && nftInfo.fileurl
+                                    :
+                                    state?.fileurl
+                                }
+                                controls='controls'
+                                autoPlay>
+                            </video>
+                            :
+                            <AutoStretchBaseWidthOrHeightImg
+                                src={nftInfo && nftInfo.fileurl}
+                                width={416}
+                                height={416}
+                            />
                         }
 
                         <div className="btn_group">
