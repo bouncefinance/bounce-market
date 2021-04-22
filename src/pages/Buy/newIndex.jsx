@@ -301,6 +301,7 @@ export default function NewIndex() {
     const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false);
     const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
     const [openFixedSwapBuyModal, setOpenFixedSwapBuyModal] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
     const { wrapperIntl } = useWrapperIntl()
 
     const updateParams = {
@@ -337,6 +338,10 @@ export default function NewIndex() {
         }
     }, [amount, poolInfo.amountTotal0, poolInfo.swappedAmount0P])
 
+    useEffect(() => {
+        console.log("isLoading: ", isLoading)
+    }, [isLoading])
+
     const setLike = async () => {
         const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
         if (res.data.code === 200 || res.data.code === 1) {
@@ -352,7 +357,12 @@ export default function NewIndex() {
 
         // console.log(nftInfo, poolInfo)
         // console.log(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))
-        if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
+        /* if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
+            setIsLoading(true)
+            setBtnText(intl.formatMessage({ id: 'pages.buy.loading' }))
+            return
+        } */
+        if (!nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
             setBtnText(intl.formatMessage({ id: 'pages.buy.loading' }))
             return
