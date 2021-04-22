@@ -215,11 +215,6 @@ export default function Index() {
         return offBodyHandle
         // eslint-disable-next-line
     }, [])
-    
-	useEffect(() => {
-		console.log("和 account: ", account)
-		console.log("和 active: ", active)
-	}, [account, active])
 
     useEffect(() => {
         if(initialRender.current) {  // Check if it is the first render.
