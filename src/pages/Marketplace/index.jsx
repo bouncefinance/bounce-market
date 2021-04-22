@@ -325,7 +325,7 @@ export default function Marketplace() {
             } alt="" />{nav.title}</p>
           </li>
         })}
-        {active && <li className="link">
+        {(active && localStorage.getItem('JWT_TOKEN_V2')) && <li className="link">
           <Button onClick={() => { history.push('/MyMarket') }}>
             {wrapperIntl('market.myMarket')}
           </Button>

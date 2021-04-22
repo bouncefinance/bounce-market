@@ -212,7 +212,16 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
                             // const pathname = window.location.pathname
                             history.push(
                                 `/Marketplace/FineArts/${poolType}/${cardId}`,
-                                {fileurl: cover}
+                                {
+                                    category: category,
+                                    fileurl: cover,
+                                    name: name,
+                                    cardId: cardId,
+                                    nftId: nftId,
+                                    price: price,
+                                    token1: token1,
+                                    poolType: poolType,
+                                }
                             )
                         }}
                         marginTop="34px"
