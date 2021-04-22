@@ -1,5 +1,6 @@
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory } from 'react-router';
@@ -102,13 +103,16 @@ export const CreateNFT = () => {
     values,
   }: FormRenderProps<ICreateNFTPayload>) => {
     return (
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        display="grid"
-        gridTemplateColumns="1fr minmax(380px, auto)"
-        gridGap={72}
-      >
+      <Box className={classes.form} component="form" onSubmit={handleSubmit}>
+        <div className={classes.formImgCol}>
+          <Field
+            className={classes.formImgBox}
+            component={UploadImageField}
+            name="file"
+            maxSize={MAX_SIZE}
+          />
+        </div>
+
         <div>
           <Box mb={5}>
             <Field
@@ -167,7 +171,7 @@ export const CreateNFT = () => {
               />
             </Box>
           )}
-          <Box mb={20}>
+          <Box>
             <Mutation type={CreateNftActions.createNft.toString()}>
               {({ loading }) => (
                 <Button size="large" type="submit" fullWidth disabled={loading}>
@@ -179,31 +183,31 @@ export const CreateNFT = () => {
             </Mutation>
           </Box>
         </div>
-        <div>
-          <Field component={UploadImageField} name="file" maxSize={MAX_SIZE} />
-        </div>
       </Box>
     );
   };
+
   return (
-    <Container maxWidth="lg" className={classes.root}>
-      <Box mb={3.5}>
-        <GoBack />
-      </Box>
-      <Box mb={3}>
-        <Typography variant="h1">{t('create-nft.title')}</Typography>
-      </Box>
-      <Box>
-        <Form
-          onSubmit={handleSubmit}
-          render={renderForm}
-          validate={validateCreateNFT}
-          initialValues={{
-            channel: Channel.FineArts,
-            standard: Standard.ERC721,
-          }}
-        />
-      </Box>
-    </Container>
+    <Section>
+      <Container maxWidth="lg">
+        <Box mb={3.5}>
+          <GoBack />
+        </Box>
+        <Box mb={3}>
+          <Typography variant="h1">{t('create-nft.title')}</Typography>
+        </Box>
+        <Box>
+          <Form
+            onSubmit={handleSubmit}
+            render={renderForm}
+            validate={validateCreateNFT}
+            initialValues={{
+              channel: Channel.FineArts,
+              standard: Standard.ERC721,
+            }}
+          />
+        </Box>
+      </Container>
+    </Section>
   );
 };

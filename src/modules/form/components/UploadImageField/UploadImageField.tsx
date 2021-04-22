@@ -6,21 +6,23 @@ import {
 } from '@material-ui/core';
 import React, { useCallback, useState } from 'react';
 import { FieldRenderProps } from 'react-final-form';
-import { useUploadImageStyles } from './useUploadImageStyles';
-import { ReactComponent as DropImage } from './assets/drop.svg';
+import { convertBytesToMegabytes } from '../../../common/types/unit';
 import { t, tHTML } from '../../../i18n/utils/intl';
 import { getErrorText } from '../../utils/getErrorText';
 import { readImage } from '../../utils/readImage';
-import { convertBytesToMegabytes } from '../../../common/types/unit';
+import { ReactComponent as DropImage } from './assets/drop.svg';
+import { useUploadImageStyles } from './useUploadImageStyles';
 
 interface IFieldProps extends FieldRenderProps<string> {
   maxSize?: number;
+  className?: string;
 }
 
 export const UploadImageField = ({
   input: { name, onChange, value },
   meta,
   maxSize,
+  className,
 }: IFieldProps & TextFieldProps) => {
   const classes = useUploadImageStyles();
   const [cover, setCover] = useState<string>();
@@ -63,7 +65,7 @@ export const UploadImageField = ({
   );
 
   return (
-    <div>
+    <div className={className}>
       {value ? (
         <div className={classes.uploaded}>
           <img src={cover} alt="" className={classes.uploadedImage} />
