@@ -23,15 +23,31 @@ export default function useToken() {
     const { library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
 
-    const exportNftInfo = async (nftId) => {
+    const exportNftInfoV2 = async (nftId) => {
         if (!nftId) {
             // console.log('error, nftId is ' + nftId)
             return {}
         }
+        // console.log(nftId)
+        if (nftId.includes('-')) {
+            const [contract, tokenId] = nftId.split('-')
+            console.log(contract, tokenId)
+            const info = await exportNftInfoByAddressAndTokenId(contract, tokenId)
+            return info
+        }
+    }
+
+    const exportNftInfoByAddressAndTokenId = async (contract, tokenId) => {
+        // console.log(contract, tokenId)
+        if (!contract && !tokenId) return
+        const params = {
+            id: Number(tokenId),
+            ct: contract
+        }
         try {
-            const res = await sign_Axios.post('/api/v2/main/auth/getoneitembyid', { id: parseInt(nftId) })
+            const res = await sign_Axios.post('/api/v2/main/auth/getoneitembyid', params)
             if (res.status === 200 && res.data.code === 1) {
-                return res.data.data
+                return res.data.data || {}
             } else {
                 return {}
             }
@@ -108,7 +124,7 @@ export default function useToken() {
         try {
             const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, tokenContract)
             const ownerAddress = await BounceERC721WithSign_CT.methods.ownerOf(parseInt(tokenId)).call()
-            return ownerAddress?.toLowerCase() ===  account?.toLowerCase() ? 1 : 0
+            return ownerAddress?.toLowerCase() === account?.toLowerCase() ? 1 : 0
         } catch (error) {
             const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, tokenContract)
             const balance = await BounceERC1155WithSign_CT.methods.balanceOf(account, parseInt(tokenId)).call()
@@ -189,13 +205,13 @@ export default function useToken() {
 
     const getPriceByToken1 = async (_price, token1) => {
         if (!_price || !token1) return {}
-        const {symbol, decimals} = await exportErc20Info(token1)
+        const { symbol, decimals } = await exportErc20Info(token1)
         const price = weiToNum(_price, decimals)
-        return {price, symbol}
+        return { price, symbol }
     }
 
     return {
-        exportNftInfo,
+        exportNftInfoV2,
         exportArrayNftInfo,
         hasApprove_ERC_721,
         hasApprove_ERC_1155,
@@ -208,5 +224,6 @@ export default function useToken() {
         queryPrice,
         getAccountHasNftCount,
         // tokenList
+        exportNftInfoByAddressAndTokenId
     }
 }

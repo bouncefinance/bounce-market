@@ -205,8 +205,10 @@ function MyNFT() {
 
 	useEffect(() => {
 		const getNFTInfoList = async (nftId) => {
+			const [contract, tokenId] = nftId.split('-')
 			const params = {
-				id: parseInt(nftId),
+				ct: contract,
+				id: parseInt(tokenId),
 			};
 
 			sign_Axios

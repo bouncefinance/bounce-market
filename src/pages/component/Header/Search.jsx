@@ -16,6 +16,7 @@ import useWrapperIntl from '@/locales/useWrapperIntl';
 
 let search = ''
 let inputTarget
+let poolsDataRes = []
 export default function Search({ placeholder, value, onChange }) {
     const { sign_Axios } = useAxios()
     const { getPriceByToken1, queryPrice } = useToken()
@@ -65,8 +66,13 @@ export default function Search({ placeholder, value, onChange }) {
                 let i = 0
                 for (let { accountaddress } of data.account) {
                     const isAccountBrandRes = await sign_Axios.post('/api/v2/main/ifaccounthavebrands', { accountaddress })
+                    const getaccountbrandsnoauth = await sign_Axios.post('/api/v2/main/getaccountbrandsnoauth', { accountaddress })
+                    // console.log('---getaccountbrandsnoauth---', getaccountbrandsnoauth)
                     if (isAccountBrandRes.data.code === 1) {
                         data.account[i].hasBrand = true
+                        if (getaccountbrandsnoauth.data.code === 1) {
+                            data.account[i].brandId = getaccountbrandsnoauth.data.data[0].id
+                        }
                     }
                     i++
                 }
@@ -76,6 +82,8 @@ export default function Search({ placeholder, value, onChange }) {
                     item.pool = { ...pool, ...await getPriceByToken1(price, token1) }
                     item.pool = { ...item.pool, usdtPrice: parseFloat(await queryPrice(item.pool.price) * item.pool.price).toFixed(2) }
                 }
+                console.log('data')
+                console.log(data)
                 setdata(data)
                 setSearchLoding(false)
             } else {
@@ -96,8 +104,8 @@ export default function Search({ placeholder, value, onChange }) {
         onSearch()
     }
 
-    const getPools = () => {
-        const data = poolDataRes.data
+    const getPools = () => {        
+        const data = poolsDataRes // poolDataRes.data
         // console.log('poolData', data)
         const tradePools = data.tradePools.map((item) => ({
             ...item,
@@ -125,6 +133,7 @@ export default function Search({ placeholder, value, onChange }) {
     }, [debounceFilter])
     useEffect(() => {
         if (poolDataRes.loading) return
+        poolsDataRes = poolDataRes.data
         search = ''
         const onEnter = (function (e) {
             var event = e || window.event;
@@ -141,6 +150,10 @@ export default function Search({ placeholder, value, onChange }) {
         }
         // eslint-disable-next-line
     }, [poolDataRes, poolDataRes.loading])
+
+    useEffect(() => {
+        poolsDataRes = []
+    }, [])
 
     return (<SearchBoxStyled className={'flex flex-center-y'}>
         <SearchStyled
@@ -182,7 +195,7 @@ export default function Search({ placeholder, value, onChange }) {
                 {searchLoding ? <Loding /> : data.account?.length > 0 && <>
                     <div className="search-result-title">Users</div>
                     <div className="row-box">
-                        {data.account?.map((item, key) => <Link key={key} onClick={() => onItem()} style={item?.hasBrand ? { opacity: '1' } : { opacity: '0.5', cursor: 'default' }} to={item?.hasBrand ? `/AirHome/${item.id}/1/FineArts` : void 0} className="search-result-users-row flex">
+                        {data.account?.map((item, key) => <Link key={key} onClick={() => onItem()} style={item?.hasBrand ? { opacity: '1' } : { opacity: '0.5', cursor: 'default' }} to={item?.hasBrand ? `/AirHome/${item.brandId}/1/FineArts` : void 0} className="search-result-users-row flex">
                             <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl } />
                             <div className="row-right">
                                 <p className="user-name">{item.username}</p>

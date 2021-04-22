@@ -77,17 +77,17 @@ export default function SellNFT() {
 	];
 
 	const fees = "1";
-	const { exportNftInfo } = useNftInfo();
+	const { exportNftInfoV2 } = useNftInfo();
 	const { nftId } = useParams();
 	const { active } = useActiveWeb3React();
 	const [auctionType, setauctionType] = useState("setPrice");
 
 	const [amount, setAmount] = useState(0);
 	const [price, setPrice] = useState(0);
-	const [priceUnit, set_PriceUnit] = useState("ETH");
-	const [minimumBid_Unit, set_MinimumBid_Unit] = useState("ETH");
-	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState("ETH");
-	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("ETH");
+	const [priceUnit, set_PriceUnit] = useState("BNB");
+	const [minimumBid_Unit, set_MinimumBid_Unit] = useState("BNB");
+	const [directPurchasePrice_Unit, set_directPurchasePrice_Unit] = useState("BNB");
+	const [reservePrice_Unit, set_ReservePrice_Unit] = useState("BNB");
 
 
 	const [fixedSwap_Unit, setFixedSwapUnit] = useState(unitOptions[0]);
@@ -122,8 +122,8 @@ export default function SellNFT() {
 	}, [active]);
 
 	const setInitNftInfo = async (nftId) => {
-		const info = await exportNftInfo(nftId);
-
+		const info = await exportNftInfoV2(nftId);
+		
 		setNftId(info);
 	};
 

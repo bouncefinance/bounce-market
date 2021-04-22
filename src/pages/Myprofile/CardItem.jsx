@@ -11,6 +11,7 @@ import useToken from '@/utils/useToken'
 import { weiToNum } from '@/utils/useBigNumber'
 import GenerateNftModal from './MyGallery/GenerateNftModal'
 import { AUCTION_TYPE } from '@/utils/const'
+import { VideoItem } from '../component/Other/videoItem'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
@@ -142,7 +143,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo }) {
+export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo, category }) {
     const history = useHistory()
     const { exportErc20Info } = useToken()
     const [openCancel, setOpenCancel] = useState(false)
@@ -169,18 +170,25 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
     return (
         <>
             <CardItemStyled>
-                <div className="img_wrapper" onClick={() => history.push("/MyGallery/" + nftId)}>
-                    {poolInfo&&(poolInfo.Category === 'Videos'||poolInfo.Category === 'video') ?
-                        <video width='100%' height='100%' src={cover}
-                        // controls="controls"
-                        /> : <AutoStretchBaseWidthOrHeightImg src={cover} width={262} height={262} />}
-                </div>
+                {poolInfo && <div className="img_wrapper" onClick={() => {
+                    // console.log(poolInfo)
+                    if (!poolInfo.contractaddress) return
+                    history.push("/MyGallery/" + poolInfo.contractaddress + '-' + nftId)
+                }}>
+                    {category && category === 'video' ?
+                        <VideoItem width={262} height={262} src={cover} /> :
+                        <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
+                </div>}
                 <div className="content">
                     {/* <div className="info">
                     <p>{itemname}</p>
                     <span>{user}</span>
                 </div> */}
-                    <div className="info-box" onClick={() => history.push("/MyGallery/" + nftId)}>
+                    <div className="info-box" onClick={() => {
+                        if (!poolInfo.contractaddress) return
+                        history.push("/MyGallery/" + poolInfo.contractaddress + '-' + nftId)
+                    }}
+                    >
                         <h5 className="name">{itemname}</h5>
                         <div className="line"></div>
                         <div className="flex flex-space-x">
@@ -194,19 +202,24 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo })
                             <Button
                                 value={wrapperIntl('MyProfile.CardItem.Sell')}
                                 primary
-                                onClick={() => { history.push(`/MyGallery/${nftId}/Sell`) }}
+                                onClick={() => {
+                                    if (poolInfo.getType === "getMyApi") {
+                                        return history.push(`/MyGallery/${poolInfo.contractaddress}-${nftId}/Sell`)
+                                    }
+                                    history.push(`/MyGallery/${poolInfo.contractaddress}-${nftId}/Sell`)
+                                }}
                             />
                             {/* <Button value={'Make Listed'} /> */}
                         </div> : poolInfo.poolType === AUCTION_TYPE.FixedSwap ? <div className='button_group'>
                             <Button value={wrapperIntl('MyProfile.CardItem.CheckStatus')} primary onClick={() => {
-                                history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
+                                history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.contractaddress}-${poolInfo.poolId}`)
                             }} />
                             <Button value={wrapperIntl('MyProfile.CardItem.MakeUnlisted')} onClick={() => {
                                 setOpenCancel(true)
                             }} />
                         </div> : <div className='button_group btn_one'>
                             <Button value={wrapperIntl('MyProfile.CardItem.CheckStatus')} primary onClick={() => {
-                                history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
+                                history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.contractaddress}-${poolInfo.poolId}`)
                             }} />
                         </div>
                     }
@@ -276,14 +289,18 @@ const PenddingCardItemStyle = styled(CardItemStyled)`
    
 `
 
-export function PenddingCardItem({ pools }) {
-    console.log(pools.fileurl)
+export function PenddingCardItem({ pools, category }) {
+    console.log('=====', pools.fileurl, pools)
     const { wrapperIntl } = useWrapperIntl()
 
     return <PenddingCardItemStyle>
-        <div className="img_wrapper">
+        {/* <div className="img_wrapper">
             <AutoStretchBaseWidthOrHeightImg src={pools.fileurl} width={262} height={262} />
-        </div>
+        </div> */}
+        {category && category === 'video' ?
+            <VideoItem width={262} height={262} src={pools.fileurl} /> :
+            <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={pools.fileurl} />}
+
         <div className="content">
             <div className="info-box">
                 <h5 className="name">{pools.itemname}</h5>

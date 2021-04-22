@@ -61,8 +61,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     })
 
     useEffect(() => {
-        console.log("formData:", formData)
-      }, [formData])
+        // console.log("formData:", formData)
+    }, [formData])
 
     useEffect(() => {
         if (!active) return
@@ -143,7 +143,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId }))
+                                        window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId, contract: getBounceERC721WithSign(chainId) }))
                                         showTransferByStatus('')
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
@@ -181,9 +181,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     })
                                     .on('receipt', async (_, receipt) => {
                                         // console.log('bid fixed swap receipt:', receipt)
-                                        window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId }))
+                                        window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId, contract: getBounceERC721WithSign(chainId) }))
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Congratulations") });
+                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
                                         if (window.location.pathname === "/MyGallery") {
                                             setTimeout(function () {
                                                 window.location.reload()
@@ -254,7 +254,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                 case wrapperIntl('Category.Image'):
                                     categoryParam = 'image'
                                     break;
-                            
+
                                 case wrapperIntl('Category.Video'):
                                     categoryParam = 'video'
                                     break;
@@ -329,7 +329,15 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     height="100%"
                     lockInput={inputDisable}
                     infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')}
-                    onFileChange={(formData) => {
+                    onClick={() => {
+                        setFileData(null)
+                    }}
+                    onFileChange={(formData, file, filetype) => {
+                        console.log(filetype)
+                        if (filetype === 'video/avi') {
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
+                            return setFileData(null)
+                        }
                         setFileData(formData)
                     }}
                 />

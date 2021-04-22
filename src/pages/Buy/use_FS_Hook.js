@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function useHook(poolIndex) {
     const { active, chainId, library } = useActiveWeb3React()
-    const { exportErc20Info, exportNftInfo } = useToken()
+    const { exportErc20Info, exportNftInfoByAddressAndTokenId } = useToken()
     const [poolInfo, setPoolInfo] = useState({})
     const [nftInfo, setNftInfo] = useState({})
 
@@ -18,16 +18,17 @@ export default function useHook(poolIndex) {
 
     const getPoolsByIndex = async (poolIndex) => {
         const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
-        console.log(BounceFixedSwapNFT_CT)
+        // console.log(BounceFixedSwapNFT_CT)
         const pools = await BounceFixedSwapNFT_CT.methods.pools(poolIndex).call()
-        
+
         const swappedAmount0P = await BounceFixedSwapNFT_CT.methods.swappedAmount0P(poolIndex).call()
         const creatorCanceledP = await BounceFixedSwapNFT_CT.methods.creatorCanceledP(poolIndex).call()
 
 
-        
-        if (pools.tokenId) {
-            const info = await exportNftInfo(pools.tokenId)
+
+        if (pools.tokenId && pools.token0) {
+            const info = await exportNftInfoByAddressAndTokenId(pools.token0, pools.tokenId)
+            // console.log(info)
             setNftInfo(info)
         }
 
@@ -52,7 +53,7 @@ export default function useHook(poolIndex) {
             poolsObj.status = 'Closed'
         }
 
-        console.log(poolsObj)
+        // console.log(poolsObj)
 
         setPoolInfo(poolsObj)
     }

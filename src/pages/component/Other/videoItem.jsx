@@ -9,8 +9,8 @@ div{
   background-size: 63px;
   background-position: center;
   /* background-color: rgba(0, 0, 0, 1); */
-  /* background-color: rgb(224,224,224); */
-  background-color: white;
+  background-color: rgb(244,244,244);
+  /* background-color: white; */
   .img-loading{
     position: absolute;
     top: 0px;
@@ -33,6 +33,7 @@ export function VideoItem ({ src, width, height, style = {} }) {
       if (!video) return
     // TODO   The error you provided does not contain a stack trace.
     video?.play()
+    // video.defaultMuted = true
   }
   const onMouseLeave = () => {
     const video = videoRef?.current

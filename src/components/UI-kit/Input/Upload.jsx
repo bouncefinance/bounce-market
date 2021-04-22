@@ -5,6 +5,7 @@ import upload_video from '@assets/images/upload_video.svg'
 import upload_avatar from '@assets/images/upload_avatar.svg'
 import { myContext } from '@/redux/index.js'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { getFileType }  from '@/utils/getFileType'
 
 const UploadStyled = styled.div`
     display: flex;
@@ -77,6 +78,7 @@ export default function Upload({
     lockInput,
     width = '240px',
     height = '160px',
+    onClick
 }) {
     const { dispatch } = useContext(myContext);
 
@@ -132,10 +134,15 @@ export default function Upload({
         // eslint-disable-next-line
     }, [type])
 
-    const handelFileChange = (e) => {
+    const handelFileChange = async (e) => {
         const file = e.target.files[0]
-        // console.log(file)
         if (!file) return
+        let filetype
+        try {
+            filetype = await getFileType(file)
+        } catch (error) {
+            console.log(error)
+        }
         if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/gif') {
             let reader = new FileReader();  //调用FileReader
             reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
@@ -145,7 +152,7 @@ export default function Upload({
             }
             let formData = new FormData()
             formData.append('filename', file)
-            onFileChange && onFileChange(formData, file)
+            onFileChange && onFileChange(formData, file, filetype)
             // setFormData(formData)
         } else if (file.type.includes('video/')) {
             console.log(file)
@@ -161,7 +168,7 @@ export default function Upload({
             }
             let formData = new FormData()
             formData.append('filename', file)
-            onFileChange && onFileChange(formData, file)
+            onFileChange && onFileChange(formData, file, filetype)
         } else {
             dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") });
         }
@@ -173,7 +180,7 @@ export default function Upload({
         <UploadStyled width={width} height={height} >
             <div className={`left_img ${type}`}>
                 <img src={coverSrc} alt="" />
-                <input disabled={disabled || lockInput} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" />
+                <input disabled={disabled || lockInput} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" onClick={onClick} />
             </div>
 
             <div className="right_info">
