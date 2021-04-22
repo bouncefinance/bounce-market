@@ -1,3 +1,5 @@
+const disableStageEnv = true;
+
 export const getBounceERC721WithSign = (chainID: any) => {
   const hostname = window.location.hostname;
   switch (chainID) {
@@ -7,8 +9,9 @@ export const getBounceERC721WithSign = (chainID: any) => {
       return '0xD9b73E3f331420C8bCBa26c98Fb7fbbCd2A682E7';
     case 56:
       if (
-        hostname.indexOf('market.bounce.finance') !== -1 ||
-        hostname.includes('127.0.0.1')
+        (hostname.indexOf('market.bounce.finance') !== -1 ||
+          hostname.includes('127.0.0.1')) &&
+        !disableStageEnv
       ) {
         return '0xbf4f70215e8f99e384afdf641e55181155714163';
       }
