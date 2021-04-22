@@ -236,11 +236,13 @@ export const QueryMyNFTByBrand = gql`
 export const QueryOwnerBrandItems = gql`
   query nftItems($owner: String!) {
     bounce721Brands(where: {owner: $owner}) {
+      nft
       tokenList {
         tokenId
       } 
     }
     bounce1155Brands(where: {owner: $owner}) {
+      nft
       tokenList {
         tokenId
       }
@@ -256,6 +258,7 @@ export const QueryBrandTradeItems = gql`
       price
       createTime
       state
+      token0
       token1
     }
     tradeAuctions(where: {tokenId_in: $tokenList}) {
@@ -265,6 +268,7 @@ export const QueryBrandTradeItems = gql`
       amountMin1
       createTime
       state
+      token0
       token1
     }
   }
