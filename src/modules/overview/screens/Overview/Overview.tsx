@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@material-ui/styles';
 import { DetailsNFTRoutesConfig } from 'modules/detailsNFT/DetailsNFTRoutes';
-import { Clubs } from 'modules/overview/components/Clubs';
+import { Artists } from 'modules/overview/components/Artists';
+import { Brands } from 'modules/overview/components/Brands';
 import { Movers } from 'modules/overview/components/Movers';
 import { Products } from 'modules/overview/components/Products';
 import { Promo } from 'modules/overview/components/Promo';
@@ -83,9 +84,8 @@ export const Overview = () => {
       />
 
       <ThemeProvider theme={darkTheme}>
-        {/* <Artists /> */}
-        <Clubs />
-        {/* <Brands /> */}
+        <Artists />
+        <Brands />
       </ThemeProvider>
 
       <Products stackUp items={fastMoversItems?.map(mapMoversItem) || []} />
