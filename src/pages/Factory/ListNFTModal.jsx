@@ -147,9 +147,9 @@ function ListNFTModal({ open, Step, setOpen, setStep }) {
                     setStep2Date({
                         ...step2Date,
                         contractAddress: ct_Addr,
-                        contractName: 'ERC1155 - null',
-                        contactSymbol: 'ERC1155 - null',
-                        totalSupply: 'ERC1155 - null'
+                        contractName: 'ERC1155 - Without this attribute',
+                        contactSymbol: 'ERC1155 - Without this attribute',
+                        totalSupply: 'ERC1155 - Without this attribute'
                     })
                 }
                 setStep2Lock(false)
