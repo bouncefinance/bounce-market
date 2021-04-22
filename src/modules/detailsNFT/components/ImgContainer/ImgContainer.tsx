@@ -1,13 +1,8 @@
-import {
-  Button,
-  Container,
-  MenuItem,
-  MenuList,
-  Tooltip,
-} from '@material-ui/core';
+import { Container, MenuItem, MenuList, Tooltip } from '@material-ui/core';
 import classNames from 'classnames';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { TwitterIcon } from 'modules/layout/components/Social/assets/TwitterIcon';
+import { Button } from 'modules/uiKit/Button';
 import { FacebookIcon } from './assets/FacebookIcon';
 import { ShareIcon } from './assets/ShareIcon';
 import { useImgContainerStyles } from './useImgContainerStyles';
@@ -50,7 +45,7 @@ export const ImgContainer = ({ className, src }: INFTContentProps) => {
         <img className={classes.img} src={src} loading="lazy" alt="" />
 
         <div className={classes.actions}>
-          <Button variant="outlined" className={classes.btn}>
+          <Button variant="outlined" className={classes.btn} rounded>
             <HeartIcon className={classes.btnIcon} /> 150
           </Button>
 
@@ -65,7 +60,7 @@ export const ImgContainer = ({ className, src }: INFTContentProps) => {
             leaveTouchDelay={1000 * 60}
             interactive
           >
-            <Button variant="outlined" className={classes.btn}>
+            <Button variant="outlined" className={classes.btn} rounded>
               <ShareIcon className={classes.btnIcon} /> share
             </Button>
           </Tooltip>

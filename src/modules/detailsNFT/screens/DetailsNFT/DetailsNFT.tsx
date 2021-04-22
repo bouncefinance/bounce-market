@@ -2,6 +2,7 @@ import { QueryState } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { BidDialog } from 'modules/detailsNFT/components/BidDialog';
 import { ImgContainer } from 'modules/detailsNFT/components/ImgContainer';
 import { Info } from 'modules/detailsNFT/components/Info';
 import { InfoDescr } from 'modules/detailsNFT/components/InfoDescr';
@@ -9,17 +10,23 @@ import { InfoPrices } from 'modules/detailsNFT/components/InfoPrices';
 import { InfoTabs } from 'modules/detailsNFT/components/InfoTabs';
 import { InfoTabsItem } from 'modules/detailsNFT/components/InfoTabsItem';
 import { InfoTabsList } from 'modules/detailsNFT/components/InfoTabsList';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { INFTDetails } from '../../api/NFTDetails';
 import { DetailsNFTActions } from '../../DetailsNFTActions';
+import { useBidDialog } from './useBidDialog';
 import { useDetailsNFTStyles } from './useDetailsNFTStyles';
 
 export const DetailsNFT = () => {
   const classes = useDetailsNFTStyles();
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatchRequest();
+  const { opened, toggleDialog } = useBidDialog();
+
+  const onSubmit = useCallback(values => {
+    console.log({ values });
+  }, []);
 
   useEffect(() => {
     dispatch(DetailsNFTActions.fethItem({ id: parseInt(id, 10) }));
@@ -135,6 +142,7 @@ export const DetailsNFT = () => {
             currency="$"
             cryptoPrice={new BigNumber('1000.50')}
             cryptoCurrency="BNB"
+            onBidClick={toggleDialog(true)}
           />
 
           <InfoTabs
@@ -144,6 +152,18 @@ export const DetailsNFT = () => {
             tokenInfo={renderedTokenInfoList}
           />
         </Info>
+
+        <BidDialog
+          name={data.itemname}
+          img={data.fileurl}
+          onSubmit={onSubmit}
+          isOpen={opened}
+          onClose={toggleDialog(false)}
+          currency="BNB"
+          owner="Bombist"
+          ownerAvatar="https://picsum.photos/44?random=1"
+          isOwnerVerified={false}
+        />
       </>
     );
   };

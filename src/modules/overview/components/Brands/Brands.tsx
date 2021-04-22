@@ -1,25 +1,19 @@
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Typography,
-  useTheme,
-} from '@material-ui/core';
+import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
 import classNames from 'classnames';
 import { t } from 'modules/i18n/utils/intl';
+import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useBrandsStyles } from './BrandsStyles';
-import darkHorseLogo from './assets/darkHorse.svg';
-import sociosLogo from './assets/socios.svg';
 import alpacaLogo from './assets/alpaca.svg';
-import rockiLogo from './assets/rocki.svg';
+import darkHorseLogo from './assets/darkHorse.svg';
 import polkaPetLogo from './assets/polkaPet.svg';
+import rockiLogo from './assets/rocki.svg';
+import sociosLogo from './assets/socios.svg';
+import { useBrandsStyles } from './BrandsStyles';
 
 SwiperCore.use([Lazy]);
 
@@ -95,7 +89,7 @@ export const BrandsComponent = ({
             </Grid>
 
             <Grid item xs="auto">
-              <Button variant="outlined" className={classes.moreBtn}>
+              <Button variant="outlined" className={classes.moreBtn} rounded>
                 {t('common.view-all')}
               </Button>
             </Grid>

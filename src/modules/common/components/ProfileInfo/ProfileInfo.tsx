@@ -17,7 +17,13 @@ export interface IProfileInfoProps {
   subTitle: string;
   title: string;
   users: IUserInfo[];
+  /**
+   * Display title at first
+   */
   isTitleFirst?: boolean;
+  /**
+   * default size is - small
+   */
   avatarSize?: 'small' | 'medium' | 'big';
 }
 

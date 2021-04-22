@@ -174,6 +174,16 @@ export const mainTheme = createMuiTheme({
         },
       },
 
+      h3: {
+        fontFamily: FONTS.secondary,
+        fontWeight: 600,
+        fontSize: 18,
+
+        [defaultTheme.breakpoints.up('md')]: {
+          fontSize: 22,
+        },
+      },
+
       h5: {
         fontSize: 15,
         fontWeight: 500,
@@ -211,11 +221,12 @@ export const mainTheme = createMuiTheme({
 
     MuiInputLabel: {
       shrink: {
-        position: 'relative',
+        position: 'static',
         marginBottom: 20,
         fontSize: 18,
         fontWeight: 700,
         color: '#000',
+        transform: 'none',
       },
     },
 
@@ -225,7 +236,9 @@ export const mainTheme = createMuiTheme({
       },
 
       input: {
-        padding: defaultTheme.spacing(2.25, 2),
+        padding: defaultTheme.spacing(2.3, 2),
+        minHeight: 58,
+        boxSizing: 'border-box',
       },
     },
 
@@ -251,7 +264,7 @@ export const mainTheme = createMuiTheme({
 
     MuiButton: {
       root: {
-        borderRadius: 44,
+        borderRadius: 12,
         height: 44,
         padding: defaultTheme.spacing(0, 3),
         textTransform: 'none',
@@ -282,7 +295,7 @@ export const mainTheme = createMuiTheme({
       },
 
       sizeLarge: {
-        height: 52,
+        height: 60,
         fontSize: 14,
         fontWeight: 500,
       },
@@ -423,6 +436,20 @@ export const mainTheme = createMuiTheme({
       textColorInherit: {
         opacity: 1,
         color: defaultTheme.palette.text.secondary,
+      },
+    },
+
+    MuiDialog: {
+      paper: {
+        margin: defaultTheme.spacing(4, 1),
+
+        [defaultTheme.breakpoints.up('md')]: {
+          margin: defaultTheme.spacing(4, 4),
+        },
+      },
+
+      paperFullWidth: {
+        width: `calc(100% - ${defaultTheme.spacing(1)}px)`,
       },
     },
 

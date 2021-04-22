@@ -67,6 +67,11 @@
     "submitting": "Creating"
   },
   "details-nft": {
+    "descr-full": "Full description",
+    "descr-short": "Collapse",
+    "top-bid": "Top Bid",
+    "buy-now": "Buy now",
+    "place-a-bid": "Place a bid",
     "tabs": {
       "history": "History",
       "bids": "Bids",
@@ -76,10 +81,16 @@
     "info": {
       "date": "{value, date, medium}",
       "time": "at {value, time, short}"
+    },
+    "dialog": {
+      "input-info": "You must bid at least {value} {currency}",
+      "footnote": "Bids placed in auction cannot be withdrawn"
     }
   },
   "validation": {
-    "required": "This field is required"
+    "required": "This field is required",
+    "min": "Must be greater than {value}",
+    "max": "Must be less than {value}"
   },
   "upload-image-field": {
     "title": "Drop your item here",

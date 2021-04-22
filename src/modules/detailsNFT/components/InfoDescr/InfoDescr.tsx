@@ -1,5 +1,6 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
+import { t } from 'modules/i18n/utils/intl';
 import Truncate from 'react-truncate';
 import { useInfoDescrStyles } from './useInfoDescrStyles';
 import { useInfoDescrToggle } from './useInfoDescrToggle';
@@ -71,7 +72,7 @@ export const InfoDescr = ({
                 variant="text"
                 onClick={toggleExpanded(true)}
               >
-                Full description ⬇
+                {t('details-nft.descr-full')} ⬇
               </Button>
             </>
           }
@@ -86,7 +87,7 @@ export const InfoDescr = ({
               variant="text"
               onClick={toggleExpanded(false)}
             >
-              Collapse ⬆
+              {t('details-nft.descr-short')} ⬇
             </Button>
           </Box>
         )}

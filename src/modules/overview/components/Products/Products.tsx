@@ -1,10 +1,11 @@
-import { Box, Button, Container, Fade, Grid, Hidden } from '@material-ui/core';
+import { Box, Container, Fade, Grid, Hidden } from '@material-ui/core';
 import { t } from 'modules/i18n/utils/intl';
 import {
   IProductCardProps,
   ProductCard,
 } from 'modules/overview/components/ProductCard';
 import { useIsMDUp } from 'modules/themes/useTheme';
+import { Button } from 'modules/uiKit/Button';
 import { FilledTab, FilledTabs } from 'modules/uiKit/FilledTabs';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { Select } from 'modules/uiKit/Select';
@@ -124,7 +125,12 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
         </Grid>
 
         <Box display="flex" justifyContent="center" mt={5}>
-          <Button variant="outlined" className={classes.moreBtn} fullWidth>
+          <Button
+            variant="outlined"
+            className={classes.moreBtn}
+            fullWidth
+            rounded
+          >
             {t('common.load-more')}
           </Button>
         </Box>

@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   ClickAwayListener,
   Container,
   Drawer,
@@ -12,6 +11,7 @@ import { getTheme } from 'modules/common/utils/getTheme';
 import { t } from 'modules/i18n/utils/intl';
 import { Themes } from 'modules/themes/types';
 import { useIsXLUp } from 'modules/themes/useTheme';
+import { Button } from 'modules/uiKit/Button';
 import { useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAppDispatch } from '../../../../store/useAppDispatch';
@@ -64,6 +64,7 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
       <HeaderLinks />
       <HeaderLinksSecondary />
       <Button
+        rounded
         component={RouterLink}
         to={RoutesConfiguration.CreateNft.generatePath()}
         className={classes.btnCreate}
@@ -74,7 +75,7 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
       </Button>
 
       {!isConnected && (
-        <Button onClick={handleConnect} disabled={loading}>
+        <Button onClick={handleConnect} disabled={loading} rounded>
           {t('header.connect')}
         </Button>
       )}
@@ -145,10 +146,10 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
                     <Button
                       component={RouterLink}
                       className={classes.btnCreate}
-                      size="large"
                       variant="outlined"
                       to={RoutesConfiguration.CreateNft.generatePath()}
                       fullWidth
+                      rounded
                     >
                       {t('header.create')}
                     </Button>
@@ -156,10 +157,10 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
 
                   {!isConnected && (
                     <Button
-                      size="large"
                       onClick={handleConnect}
                       disabled={loading}
                       fullWidth
+                      rounded
                     >
                       {t('header.connect')}
                     </Button>

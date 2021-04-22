@@ -1,5 +1,6 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
+import { t } from 'modules/i18n/utils/intl';
 import React from 'react';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
@@ -29,7 +30,7 @@ export const InfoPrices = ({
     <Grid container spacing={3} alignItems="center">
       <Grid item xs={12} sm>
         <div className={classes.bid}>
-          Top Bid
+          {t('details-nft.top-bid')}
           <i className={classes.bidDevider} />
           {/* new Date(2021, 3, 30) */}
           <Timer endDate={endDate} />
@@ -47,12 +48,12 @@ export const InfoPrices = ({
       <Grid item xs={12} sm={5}>
         <Box mb={2}>
           <Button fullWidth onClick={onBidClick}>
-            Place a bid
+            {t('details-nft.place-a-bid')}
           </Button>
         </Box>
 
         <Button variant="outlined" fullWidth onClick={onBuyClick}>
-          Buy now
+          {t('details-nft.buy-now')}
         </Button>
       </Grid>
     </Grid>

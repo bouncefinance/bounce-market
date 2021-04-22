@@ -1,23 +1,23 @@
-import React, { useCallback, useMemo } from 'react';
 import { Box, Button, Container, Typography } from '@material-ui/core';
-import { GoBack } from '../../../layout/components/GoBack';
-import { useCreateNFTStyles } from './useCreateNFTStyles';
-import { t } from '../../../i18n/utils/intl';
+import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import React, { useCallback, useMemo } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
+import { useHistory } from 'react-router';
+import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
 import { InputField } from '../../../form/components/InputField';
-import { FormErrors } from '../../../form/utils/FormErrors';
 import { SelectField } from '../../../form/components/SelectField';
 import { UploadImageField } from '../../../form/components/UploadImageField';
-import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
-import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { FormErrors } from '../../../form/utils/FormErrors';
+import { t } from '../../../i18n/utils/intl';
+import { GoBack } from '../../../layout/components/GoBack';
+import { RoutesConfiguration } from '../../../overview/Routes';
 import {
   Channel,
   CreateNftActions,
   ICreateNFTPayload,
   Standard,
 } from '../../CreateNftActions';
-import { useHistory } from 'react-router';
-import { RoutesConfiguration } from '../../../overview/Routes';
+import { useCreateNFTStyles } from './useCreateNFTStyles';
 
 const MAX_SIZE: Bytes = 31457280;
 
@@ -170,14 +170,7 @@ export const CreateNFT = () => {
           <Box mb={20}>
             <Mutation type={CreateNftActions.createNft.toString()}>
               {({ loading }) => (
-                <Button
-                  color="primary"
-                  size="large"
-                  variant="contained"
-                  type="submit"
-                  fullWidth={true}
-                  disabled={loading}
-                >
+                <Button size="large" type="submit" fullWidth disabled={loading}>
                   {loading
                     ? t('create-nft.submitting')
                     : t('create-nft.submit')}
