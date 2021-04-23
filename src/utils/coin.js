@@ -14,7 +14,7 @@ import { getBUSDAddress, getUSDCAddress, getUSDTAddress } from "@/web3/address_l
 export function getCoinList (chainId) {
        return [
           {
-            value: chainId === 56 ? 'BNB' : 'ETH',
+            value: chainId === 56 ? 'BNB' : chainId === 128 ? 'HT' : 'ETH',
             contract: '0x0000000000000000000000000000000000000000',
             decimals: 18
           }, {

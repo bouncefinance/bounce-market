@@ -138,13 +138,13 @@ export default function useToken() {
             const web3 = new Web3(library?.provider)
             const balanceOf = await web3.eth.getBalance(account)
             if (flag) {
-                price = chainId === 56 || chainId === 97 ? await queryPrice('BNB') : await queryPrice('ETH')
+                price = chainId === 56 || chainId === 97 ? await queryPrice('BNB') : chainId === 128 ? await queryPrice('HT') : await queryPrice('ETH')
             }
             return {
                 chainId,
                 contract: tokenAddr,
                 decimals: 18,
-                symbol: chainId === 56 || chainId === 97 ? 'BNB' : 'ETH',
+                symbol: chainId === 56 || chainId === 97 ? 'BNB' : chainId === 128 ? 'HT' : 'ETH',
                 balanceOf,
                 balance: weiToNum(balanceOf),
                 price

@@ -41,7 +41,7 @@ export const QueryTradePools = gql`
 
 export const QueryMarketTradePools_0 = gql`
   query xx{
-    tradePools{
+    tradePools(first: 1000){
       tokenId
       poolId
       token0
@@ -50,7 +50,7 @@ export const QueryMarketTradePools_0 = gql`
       createTime
       state
     }
-    tradeAuctions{
+    tradeAuctions(first: 1000){
       tokenId
       poolId
       token0
@@ -65,7 +65,7 @@ export const QueryMarketTradePools_0 = gql`
 
 export const QueryMarketTradePools = gql`
   query xx($contract: String!){
-    tradePools (where: {token1: $contract}){
+    tradePools (first: 1000,  where: {token1: $contract}){
       tokenId
       poolId
       token0
@@ -74,7 +74,7 @@ export const QueryMarketTradePools = gql`
       createTime
       state
     }
-    tradeAuctions (where: {token1: $contract}){
+    tradeAuctions (first: 1000, where: {token1: $contract}){
       tokenId
       poolId
       token0
