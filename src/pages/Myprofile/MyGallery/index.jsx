@@ -45,6 +45,7 @@ const MyGalleryStyled = styled.div`
 
 export default function Index() {
   const { account, active } = useActiveWeb3React();
+  const current_account = account
   const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
@@ -60,7 +61,7 @@ export default function Index() {
 
   const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
     {
-      variables: { user: String(account).toLowerCase() },
+      variables: { user: String(current_account).toLowerCase() },
       // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: async () => {
@@ -73,7 +74,7 @@ export default function Index() {
 
   const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
     {
-      variables: { user: String(account).toLowerCase() },
+      variables: { user: String(current_account).toLowerCase() },
       // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
       fetchPolicy: "network-only",
       onCompleted: () => {
@@ -86,7 +87,7 @@ export default function Index() {
 
   const getMyApi = async () => {
     const params = {
-      accountaddress: account
+      accountaddress: current_account
     }
     sign_Axios.post('/api/v2/main/getitemsext', params).then(res => {
       if (res.status === 200 && res.data.code === 1) {
