@@ -9,7 +9,7 @@ const zh_CN = {
     CopySuccessful: '复制成功',
     TryAgain: '非常抱歉，我们似乎碰到了一些小问题，请重试',
     "Code-1": '请连接钱包或重新签名',
-    "Re-sign": "请重新签名",
+    "Re-sign": "请签名",
     "ConnectWallet": "请连接钱包",
 
     Category: {

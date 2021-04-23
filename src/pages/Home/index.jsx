@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
@@ -27,7 +27,7 @@ import { QueryTradePools } from '@/utils/apollo'
 import { AUCTION_TYPE } from '@/utils/const'
 import { Controller } from '@/utils/controller'
 import useWrapperIntl from '@/locales/useWrapperIntl'
-
+import { myContext } from '@/redux/index.js';
 
 const HomeStyled = styled.div`
   .banner{
@@ -180,6 +180,7 @@ export default function Index() {
   const [loadingItems, setLoadingItems] = useState(true)
   // const { dispatch } = useContext(myContext)
   const { wrapperIntl } = useWrapperIntl()
+  const { dispatch } = useContext(myContext);
 
   useEffect(() => {
     // if (!account) {
@@ -209,6 +210,18 @@ export default function Index() {
 
   useEffect(() => {
     // if (!active || !data) return
+    if (!active) {
+      if (!active) {
+        dispatch({
+        type: 'Modal_Message',
+        showMessageModal: true,
+        modelType: 'error',
+        modelMessage: wrapperIntl("ConnectWallet"),
+        modelTimer: 24 * 60 * 60 * 1000,
+        });
+      }
+    }
+
     if (!data) return
     setLoadingItems(true)
     const tradePools = data.tradePools.map(item => ({
