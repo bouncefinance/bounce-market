@@ -301,7 +301,6 @@ export default function NewIndex() {
     const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false);
     const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
     const [openFixedSwapBuyModal, setOpenFixedSwapBuyModal] = useState(false);
-    const [buttonDisabled, setButtonDisabled] = useState(false);
     const { wrapperIntl } = useWrapperIntl()
     const { state } = useLocation()
 
