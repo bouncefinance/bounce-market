@@ -17,7 +17,7 @@ import BounceERC721 from "@/web3/abi/BounceERC721.json";
 import BounceERC1155 from "@/web3/abi/BounceERC1155.json";
 import useTransferModal from "@/web3/useTransferModal";
 import useToken from "@/utils/useToken";
-import Web3 from 'web3'
+import AmountInput from "@/pages/Buy/components/AmountInput";
 
 function TransferNFT() {
 	const { account, library, active } = useActiveWeb3React();
@@ -27,7 +27,7 @@ function TransferNFT() {
 	const { wrapperIntl } = useWrapperIntl();
 	const { exportNftInfoV2 } = useNftInfo();
 	const [receiverAddress, setReceiverAddress] = useState("");
-	const [transferAmount, setTransferAmount] = useState();
+	const [transferAmount, setTransferAmount] = useState(1);
 	const [disableButton, setDisableButton] = useState(true);
 	const [showNotice, setShowNotice] = useState(false);
 	const [NFTInfo, setNFTInfo] = useState();
@@ -36,11 +36,7 @@ function TransferNFT() {
 	const { dispatch } = useContext(myContext);
 
 	const [NFTBalance, setNFTBalance] = useState();
-	const {
-		getBalance_ERC_1155,
-		getBalance_ERC_721,
-		getAccountHasNftCount,
-	} = useToken();
+	const { getAccountHasNftCount } = useToken();
 
 	const setInitNFTInfo = async (nftId) => {
 		const NFTInfo = await exportNftInfoV2(nftId);
@@ -59,6 +55,10 @@ function TransferNFT() {
 	}, [NFTInfo]);
 
 	useEffect(() => {
+		console.log("receiverAddress: ", receiverAddress);
+	}, [receiverAddress]);
+
+	useEffect(() => {
 		if (!active || !NFTInfo) return;
 		const getNFTBalance = async () => {
 			const NFTbalance = await getAccountHasNftCount(
@@ -68,10 +68,10 @@ function TransferNFT() {
 			);
 			console.log("NFTbalance", NFTbalance);
 			/* return NFTbalance */
-			setNFTBalance(NFTbalance)
+			setNFTBalance(NFTbalance);
 		};
 		/* setNFTBalance(getNFTBalance()); */
-		getNFTBalance()
+		getNFTBalance();
 	}, [active, NFTInfo, account]);
 
 	const NavList = [
@@ -94,34 +94,61 @@ function TransferNFT() {
 	};
 
 	const handleAmountInput = (e) => {
-		setTransferAmount(parseInt(e.target.value));
+		if (e.target.value === NaN) setTransferAmount(1);
+		else if (parseInt(e.target.value) > NFTBalance)
+			setTransferAmount(parseInt(NFTBalance));
+		else setTransferAmount(parseInt(e.target.value));
 	};
 
 	useEffect(() => {
+		setDisableButton(true);
+		setShowNotice(false);
+
 		if (receiverAddress.match("^0x.{40}$")) {
-			setDisableButton(false);
 			setShowNotice(true);
-		} else {
-			setDisableButton(true);
-			setShowNotice(false);
 		}
-	}, [receiverAddress]);
+
+		if (transferAmount === "NaN") {
+			setDisableButton(true);
+		}
+
+		if (transferAmount && receiverAddress.match("^0x.{40}$")) {
+			console.log("1111111")
+			console.log("transferAmount 1: ", transferAmount)
+			setDisableButton(false);
+		}
+		console.log("transferAmount: ", transferAmount)
+	}, [receiverAddress, transferAmount, NFTBalance]);
+
+	/* useEffect(() => {
+		console.log("transferAmount: ", transferAmount);
+	}, [transferAmount]); */
 
 	const handleClick = () => {
 		/* alert("Transfer"); */
 		try {
+			let params = {};
+
 			if (NFTInfo) {
 				if (parseInt(NFTInfo.standard) === 1) {
+					params = {
+						from: account,
+						to: receiverAddress,
+						tokenId: parseInt(NFTInfo.id),
+					};
+					console.log("params: ", params);
+
 					const BounceERC721_CT = getContract(
 						library,
 						BounceERC721.abi,
 						NFTInfo.contractaddress
 					);
+
 					BounceERC721_CT.methods
 						.safeTransferFrom(
-							account,
-							receiverAddress,
-							parseInt(NFTInfo.id)
+							params.from,
+							params.to,
+							params.tokenId
 						)
 						.send({ from: account })
 						.on("transactionHash", (hash) => {
@@ -139,18 +166,28 @@ function TransferNFT() {
 							showTransferByStatus("errorStatus");
 						});
 				} else if (parseInt(NFTInfo.standard) === 2) {
+					params = {
+						from: account,
+						to: receiverAddress,
+						tokenId: parseInt(NFTInfo.id),
+						amount: parseInt(transferAmount),
+						data: 0,
+					};
+					console.log("params: ", params);
+
 					const BounceERC1155_CT = getContract(
 						library,
 						BounceERC1155.abi,
 						NFTInfo.contractaddress
 					);
+					/* debugger */
 					BounceERC1155_CT.methods
 						.safeTransferFrom(
-							account,                 // from
-							receiverAddress,         // to  
-							parseInt(NFTInfo.id),     // NFTId
-							transferAmount,         // Amount
-							0x00/* Web3.utils.utf8ToHex("I have 100€") */,   // data
+							params.from,
+							params.to,
+							params.tokenId,
+							params.amount,
+							params.data
 						)
 						.send({ from: account })
 						.on("transactionHash", (hash) => {
@@ -232,7 +269,7 @@ function TransferNFT() {
 									showNotice
 										? receiverAddress.slice(0, 6) +
 										  "..." +
-										  receiverAddress.slice(-5, -1)
+										  receiverAddress.slice(-5)
 										: "..."
 								}`}
 						</span>
@@ -247,11 +284,12 @@ function TransferNFT() {
 						<input
 							className="inputAmount"
 							type="number"
-							min="0"
-							max={NFTInfo && NFTInfo.supply}
+							min="1"
+							max={NFTBalance}
 							placeholder="Enter amount of NFT you want to transfer"
-							/* value={transferAmount}
-							onChange={handleAmountInput} */
+							disabled={NFTBalance ? false : true}
+							value={transferAmount.toString()}
+							onChange={handleAmountInput}
 						/>
 
 						<Button
