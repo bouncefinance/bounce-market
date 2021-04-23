@@ -18,7 +18,7 @@ import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import Button from '@/components/UI-kit/Button/Button'
 import { getCoinList } from '@/utils/coin'
-import { ZERO_ADDRESS } from "@/web3/address_list/token"
+// import { ZERO_ADDRESS } from "@/web3/address_list/token"
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const MarketplaceStyled = styled.div`
@@ -123,7 +123,7 @@ export default function Marketplace() {
   const { active, chainId } = useActiveWeb3React()
   // const { exportErc20Info } = useToken()
 
-  const [getpollsVariables, _setGetPollsVariables] = useState({ contract: ZERO_ADDRESS })
+  const [getpollsVariables, _setGetPollsVariables] = useState({ contract: '' })
   const [getpollsMethods, _setGetPollsMethods] = useState(QueryMarketTradePools)
 
   const setGetPollsVariables = (v) => {
@@ -135,7 +135,7 @@ export default function Marketplace() {
     }
     _setGetPollsVariables(v)
   }
-  const { data } = useQuery(getpollsMethods, { variables: getpollsVariables })
+  const { data } = useQuery(getpollsMethods, { variables: getpollsVariables, skip: getpollsVariables.contract === '' })
 
 
   const { sign_Axios } = useAxios();
@@ -268,6 +268,7 @@ export default function Marketplace() {
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
+                litimgurl={item.litimgurl}
               />
             </li>
           })}

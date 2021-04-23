@@ -217,16 +217,10 @@ export default function Index() {
     }, [])
 
     useEffect(() => {
-        /* console.log("active:" + active)
-        console.log("chainId:" + chainId)
-        console.log("initialRender.current 1", initialRender.current) */
-
-        if(initialRender.current) {
+        if(initialRender.current) {  // Check if it is the first render.
             initialRender.current = false;
-            /* console.log("0000000000") */
         }
         else {
-            // console.log("initialRender.current 2", initialRender.current)
             dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
 
             if (active && chainId === 56) {
@@ -235,7 +229,6 @@ export default function Index() {
             }
 
             if (!active) {
-                /* console.log("2222222222") */
                 dispatch({
                     type: 'Modal_Message',
                     showMessageModal: true,
@@ -245,11 +238,9 @@ export default function Index() {
                 });
             }
             else {
-                /* console.log("333333333") */
                 dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
             
                 if (chainId && (chainId !== 56)) {
-                    /* console.log("444444444") */
                     dispatch({
                         type: 'Modal_Message',
                         showMessageModal: true,
@@ -262,11 +253,9 @@ export default function Index() {
                     });
                 } 
                 else {
-                    /* console.log("555555555555") */
                     dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
                 }
             }
-            /* console.log("666666666666") */
             
             console.log("end active:" + active)
             console.log("end chainId:" + chainId)

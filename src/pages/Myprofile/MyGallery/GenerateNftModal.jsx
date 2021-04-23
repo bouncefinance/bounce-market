@@ -15,6 +15,9 @@ import { NFT_CATEGORY } from '@/utils/const';
 import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
 import { useHistory } from 'react-router-dom'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import to from 'await-to-js'
+import { ImgToUrl } from '@/utils/imgToUrl'
+import { ImgCompressorCreate } from '@utils/img-compressor'
 
 // import { numToWei } from '@/utils/useBigNumber'
 
@@ -89,131 +92,147 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     }, [formData, fileData])
 
 
-    const handelSubmit = () => {
+    const handelSubmit = async () => {
         // 第一步 上传图片
         setInputDisable(true)
         setBtnLock(true)
 
-        sign_Axios
-            .post('/api/v2/main/auth/fileupload', fileData, { appendAccount: false })
-            .then(function (response) {
-                /* setBtnText('Uploading Data ...') */
-                setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.UploadingData"));
-                if (response.data.code === 200) {
-                    return response.data.result.path
-                } else {
-                    /* setBtnText('Submit'); */
-                    setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Submit"));
-                    setBtnLock(false)
-                    setInputDisable(false)
-                    // throw new Error('File upload failed,' + response.data.msg)
-                }
-            }).then((imgUrl) => {
-                // 第二步 上传数据生成 json
-                const params = {
-                    brandid: nftType === 'ERC-721' ? 10 : 11,
-                    category: formData.Category,
-                    channel: formData.Channel,
-                    contractaddress: nftType === 'ERC-721' ? getBounceERC721WithSign(chainId) : getBounceERC1155WithSign(chainId),
-                    description: formData.Description,
-                    fileurl: imgUrl,
-                    itemname: formData.Name,
-                    itemsymbol: 'BOUNCE',
-                    owneraddress: account,
-                    ownername: state.username,
-                    standard: nftType === 'ERC-721' ? 1 : 2,
-                    supply: nftType === 'ERC-721' ? 1 : parseInt(formData.Supply)
-                }
-                // console.log(params)
-                sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {
-                    const _nftId = res.data.data.id
-                    const _sign = res.data.data.signaturestr
-                    const _expiredtime = res.data.data.expiredtime
-                    if (res.data.code === 1) {
-                        if (nftType === 'ERC-721') {
-                            const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, getBounceERC721WithSign(chainId))
-                            console.log(_nftId, _sign, _expiredtime)
-                            try {
+        // Get image url
+        const originImageFormData = new FormData()
+        originImageFormData.append('filename', new File([fileData.file], 'blob.png', { type: 'image/png' }))
+        const [imgUrlErr, imgUrl] = await to(ImgToUrl(sign_Axios, originImageFormData))
+        let reviewImageUrl = ''
+        const IMAGE = 'image/'
+        if (imgUrlErr) {
+            setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Submit"));
+            setBtnLock(false)
+            setInputDisable(false)
+        }
+        if (fileData.type.substring(0, IMAGE.length) === IMAGE) {
+            const previewImageFormData = new FormData()
+            const [previewImageError, previewImage] = await to(new Promise((resolve, reject) => new ImgCompressorCreate({ mimeType: 'image/jpeg', quality: 0.4 }).compress(fileData.file, {
+                success: resolve,
+            })))
+            if (previewImageError) {
+                setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Submit"))
+                setBtnLock(false)
+                setInputDisable(false)
+            }
+            previewImageFormData.append('filename', new File([previewImage], 'blob.png', { type: 'image/png' }))
+            const [reviewImageUrlError, _reviewImageUrl] = await to(ImgToUrl(sign_Axios, previewImageFormData))
+            reviewImageUrl = _reviewImageUrl
+            if (reviewImageUrlError) {
+                setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Submit"))
+                setBtnLock(false)
+                setInputDisable(false)
+            }
+        }
+        // 第二步 上传数据生成 json
+        const params = {
+            brandid: nftType === 'ERC-721' ? 10 : 11,
+            category: formData.Category,
+            channel: formData.Channel,
+            contractaddress: nftType === 'ERC-721' ? getBounceERC721WithSign(chainId) : getBounceERC1155WithSign(chainId),
+            description: formData.Description,
+            fileurl: imgUrl,
+            litimgurl: reviewImageUrl,
+            // metadata: JSON.stringify(reviewImageUrl ? {miniImg: reviewImageUrl} : {}),
+            itemname: formData.Name,
+            itemsymbol: 'BOUNCE',
+            owneraddress: account,
+            ownername: state.username,
+            standard: nftType === 'ERC-721' ? 1 : 2,
+            supply: nftType === 'ERC-721' ? 1 : parseInt(formData.Supply)
+        }
+        // console.log(params)
+        sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {
+            const _nftId = res.data.data.id
+            const _sign = res.data.data.signaturestr
+            const _expiredtime = res.data.data.expiredtime
+            if (res.data.code === 1) {
+                if (nftType === 'ERC-721') {
+                    const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, getBounceERC721WithSign(chainId))
+                    console.log(_nftId, _sign, _expiredtime)
+                    try {
 
-                                BounceERC721WithSign_CT.methods.mintUser(_nftId, _sign, _expiredtime).send({ from: account })
-                                    .on('transactionHash', hash => {
-                                        setOpen(false)
-                                        // setBidStatus(pendingStatus)
-                                        showTransferByStatus('pendingStatus')
-                                    })
-                                    .on('receipt', async (_, receipt) => {
-                                        // console.log('bid fixed swap receipt:', receipt)
-                                        window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId, contract: getBounceERC721WithSign(chainId) }))
-                                        showTransferByStatus('')
-                                        dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
-                                        if (window.location.pathname === "/MyGallery") {
-                                            setTimeout(function () {
-                                                window.location.reload()
-                                            }, 3000)
-                                        } else {
-                                            history.push("/MyGallery")
-                                        }
-                                    })
-                                    .on('error', (err, receipt) => {
-                                        // setBidStatus(errorStatus)
-                                        setBtnLock(false);
-                                        /* setBtnText("Try Again"); */
-                                        setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgain"));
-                                        setInputDisable(false);
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
-                                    })
-                            } catch (error) {
-                                console.log('BounceERC721_CT.methods.mintUser', error)
-                            }
-
-                        } else {
-                            const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
-                            const _amount = formData.Supply
-                            const _data = 0
-                            // console.log(_nftId, _amount, _data, _sign,_expiredtime)
-                            try {
-                                BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign, _expiredtime).send({ from: account })
-                                    .on('transactionHash', hash => {
-                                        setOpen(false)
-                                        // setBidStatus(pendingStatus)
-                                        showTransferByStatus('pendingStatus')
-                                    })
-                                    .on('receipt', async (_, receipt) => {
-                                        // console.log('bid fixed swap receipt:', receipt)
-                                        window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId, contract: getBounceERC721WithSign(chainId) }))
-                                        dispatch({ type: 'TransferModal', TransferModal: "" });
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
-                                        if (window.location.pathname === "/MyGallery") {
-                                            setTimeout(function () {
-                                                window.location.reload()
-                                            }, 3000)
-                                        } else {
-                                            history.push("/MyGallery")
-                                        }
-
-                                    })
-                                    .on('error', (err, receipt) => {
-                                        // setBidStatus(errorStatus)
-                                        // showTransferByStatus('errorStatus')
-                                        setBtnLock(false);
-                                        /* setBtnText("Try Again"); */
-                                        setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgain"));
-                                        setInputDisable(false);
-                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
-                                    })
-                            } catch (error) {
-                                console.log('BounceERC1155_CT.methods.mintUser', error)
-                            }
-                        }
-                    } else {
-                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
+                        BounceERC721WithSign_CT.methods.mintUser(_nftId, _sign, _expiredtime).send({ from: account })
+                            .on('transactionHash', hash => {
+                                setOpen(false)
+                                // setBidStatus(pendingStatus)
+                                showTransferByStatus('pendingStatus')
+                            })
+                            .on('receipt', async (_, receipt) => {
+                                // console.log('bid fixed swap receipt:', receipt)
+                                window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId,contract:  getBounceERC721WithSign(chainId)}))
+                                showTransferByStatus('')
+                                dispatch({ type: 'TransferModal', TransferModal: "" });
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
+                                if (window.location.pathname === "/MyGallery") {
+                                    setTimeout(function () {
+                                        window.location.reload()
+                                    }, 3000)
+                                } else {
+                                    history.push("/MyGallery")
+                                }
+                            })
+                            .on('error', (err, receipt) => {
+                                // setBidStatus(errorStatus)
+                                setBtnLock(false);
+                                /* setBtnText("Try Again"); */
+                                setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgain"));
+                                setInputDisable(false);
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
+                            })
+                    } catch (error) {
+                        console.log('BounceERC721_CT.methods.mintUser', error)
                     }
 
-                }).catch(err => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
-                })
-            })
+                } else {
+                    const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
+                    const _amount = formData.Supply
+                    const _data = 0
+                    // console.log(_nftId, _amount, _data, _sign,_expiredtime)
+                    try {
+                        BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign, _expiredtime).send({ from: account })
+                            .on('transactionHash', hash => {
+                                setOpen(false)
+                                // setBidStatus(pendingStatus)
+                                showTransferByStatus('pendingStatus')
+                            })
+                            .on('receipt', async (_, receipt) => {
+                                // console.log('bid fixed swap receipt:', receipt)
+                                window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId,contract: getBounceERC1155WithSign(chainId) }))
+                                dispatch({ type: 'TransferModal', TransferModal: "" });
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
+                                if (window.location.pathname === "/MyGallery") {
+                                    setTimeout(function () {
+                                        window.location.reload()
+                                    }, 3000)
+                                } else {
+                                    history.push("/MyGallery")
+                                }
+
+                            })
+                            .on('error', (err, receipt) => {
+                                // setBidStatus(errorStatus)
+                                // showTransferByStatus('errorStatus')
+                                setBtnLock(false);
+                                /* setBtnText("Try Again"); */
+                                setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgain"));
+                                setInputDisable(false);
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
+                            })
+                    } catch (error) {
+                        console.log('BounceERC1155_CT.methods.mintUser', error)
+                    }
+                }
+            } else {
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
+            }
+
+        }).catch(err => {
+            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.TryAgainNotice") });
+        })
         // 第三步 调用合约生成 NFT
         // const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
     }
@@ -338,7 +357,11 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
                             return setFileData(null)
                         }
-                        setFileData(formData)
+                        setFileData({
+                            formData,
+                            file,
+                            type: filetype
+                        })
                     }}
                 />
 

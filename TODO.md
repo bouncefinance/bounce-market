@@ -31,3 +31,15 @@ export const QueryOwnerBrandItems = gql`
     }
   }
 ```
+
+image zip
+```js
+import { ImgCompressorCreate } from '@utils/img-compressor'
+import { Create as ImgCompressorCreate } from 'img-compressor'
+const previewImage = await new Promise((resolve, reject) => new ImgCompressorCreate({ mimeType: 'image/jpeg', quality: 0.4 }).compress(blob, {
+        success: resolve,
+      }))
+
+      
+import { ImgToUrl } from '@/utils/imgToUrl'
+```
