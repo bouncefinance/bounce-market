@@ -50,7 +50,7 @@ export default function useAxios() {
             JWT_TOKEN_V2[account] = token
             window.localStorage.setItem('JWT_TOKEN_V2', JSON.stringify(JWT_TOKEN_V2))
             dispatch({ type: 'Token', authToken: token });
-            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "", canClose: false });
             // window.location.reload();
             history.push("/Home")
         }
@@ -110,7 +110,7 @@ export default function useAxios() {
                     modelType: 'error',
                     modelMessage: wrapperIntl("Re-sign"),
                     modelTimer: 24 * 60 * 60 * 1000,
-                    canClose: false,
+                    canClose: true,
                 });
             }
             /* dispatch({

@@ -1,52 +1,48 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
-const ConnectToSelectedChain = async () => {
-	let ethereum = window.ethereum;
-
-	if (typeof ethereum !== "undefined") {
-		console.log("MetaMask is installed!");
-	}
-
-	const BSCChainInfo = [
-		{
-			chainId: "0x38",
-			chainName: "Binance Smart Chain Mainnet",
-			nativeCurrency: {
-				name: "BNB",
-				symbol: "BNB",
-				decimals: 18,
-			},
-			/* rpcUrls: ["https://bsc-dataseed.binance.org/"], */
-			rpcUrls: ["https://bsc-dataseed4.binance.org"],
-			blockExplorerUrls: ["https://bscscan.com/"],
-		},
-	];
-
-    const result = await ethereum.request({method: 'wallet_addEthereumChain', params: BSCChainInfo}).catch()
-    if (result) {
-        console.log(result)
-    }
-};
-
-/* const MetaMask_Logout = () => {
-	
-} */
+import { useActiveWeb3React } from "@/web3";
 
 export default function Index() {
+	const { account, active, activate, deactivate } = useActiveWeb3React();
+
+	useEffect(() => {
+		console.log("account: ", account)
+		console.log("active: ", active)
+	}, [account, active])
+
 	return (
-		<div>
+		active && <div
+			style={{
+				display: "grid",
+				gridTemplateRows: "repeat(3, max-content)",
+				gridTemplateColumns: "max-content",
+				rowGap: "20px",
+				justifyContent: "center",
+			}}
+		>
 			<h1>Test Page</h1>
+			{<span style={{ border: "1px solid red" }}>
+				active: {active ? "true" : "false"}
+			</span>}
+
+			<span
+				style={{
+					border: "1px solid grey",
+				}}
+			>
+				account: {account ? account : "--"}
+			</span>
 
 			{
 				<button
-                    style={{
-                        border: "solid 1px rgb(0,0,0)"
-                    }}
+					style={{ border: "1px solid black", borderRadius: "50px" }}
 					onClick={() => {
-						ConnectToSelectedChain();
+						/* if (!active) activate();
+						else deactivate(); */
+						activate()
 					}}
 				>
-					connect BSC chain
+					{active ? "deactivate" : "activate"}
 				</button>
 			}
 		</div>

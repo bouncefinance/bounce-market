@@ -326,7 +326,11 @@ export default function Marketplace() {
             } alt="" />{nav.title}</p>
           </li>
         })}
-        <li className="link"><Button onClick={() => { history.push('/MyMarket') }}>{wrapperIntl('market.myMarket')}</Button></li>
+        {active && <li className="link">
+          <Button onClick={() => { history.push('/MyMarket') }}>
+            {wrapperIntl('market.myMarket')}
+          </Button>
+        </li>}
       </ul>
       <div className="filterBox">
         <Search placeholder={wrapperIntl('market.placeholder')} onChange={handleChange} />

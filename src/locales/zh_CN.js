@@ -39,6 +39,7 @@ const zh_CN = {
         create: '创造',
         connect: '连接钱包',
         setting: '账户设置',
+        logout: '退出',
         search: '搜索',
         search_p: '搜索用户、品牌、NFT',
         SelectBSC: "请连接BSC网络，",

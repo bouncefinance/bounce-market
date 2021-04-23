@@ -21,6 +21,7 @@ import Page404 from './Page404'
 import MyGallery from './Myprofile/MyGallery'
 import MyNFT from './Myprofile/MyGallery/MyNFT'
 import SellNFT from './Myprofile/MyGallery/SellNFT'
+import TransferNFT from './Myprofile/MyGallery/TransferNFT'
 
 import MyBrands from './Myprofile/MyBrands'
 import BrandsByType from './Myprofile/MyBrands/BrandsByType'
@@ -64,6 +65,8 @@ export default function Index() {
                 <Route exact path='/MyGallery' component={MyGallery} />
                 <Route exact path='/MyGallery/:nftId' component={MyNFT} />
                 <Route exact path='/MyGallery/:nftId/Sell' component={SellNFT} />
+                <Route exact path='/MyGallery/:nftId/Transfer' component={TransferNFT} />
+                <Route exact path='/Transfer' component={TransferNFT} />
 
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyBrands/:brandId/:category' component={BrandsByType} />
