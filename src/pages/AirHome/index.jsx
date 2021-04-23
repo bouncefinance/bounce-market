@@ -286,7 +286,7 @@ export function AirHome() {
         }
       })
     // eslint-disable-next-line
-  }, [active, id, channel, categoryRequestParam]);
+  }, [active, id, channel, categoryRequestParam])
 
   const renderListByChannel = (channel) => {
     switch (channel) {
