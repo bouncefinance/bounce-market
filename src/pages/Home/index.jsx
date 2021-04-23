@@ -6,7 +6,9 @@ import PopularItem from './PopularItem'
 import BrandsItem from './BrandsItem'
 // import RequestsItem from './RequestsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
-import img_banner from '@assets/images/banner2.png'
+// import img_banner from '@assets/images/banner2.png'
+import img_banner_fmg from './assets/FMG.png'
+
 import img_example_1 from '@assets/images/example_1.svg'
 // import img_alpaca_city from '@assets/images/alpaca_city.svg'
 import two_setting from './assets/two-setting.svg'
@@ -181,6 +183,12 @@ export default function Index() {
   // const { dispatch } = useContext(myContext)
   const { wrapperIntl } = useWrapperIntl()
 
+  const bannerSetting = {
+    img: img_banner_fmg,
+    href: 'https://bsc.fmg.art',
+    showText: false,
+  }
+
   useEffect(() => {
     // if (!account) {
     //   return
@@ -280,25 +288,25 @@ export default function Index() {
     })
     */
 
-    sign_Axios.post(Controller.items.getitemsbyids, {ids: list})
-    .then(res => {
-      // .filter((_) => _.id).slice(0, 8)
-      const _list = pools.map((pool, index) => {
-        const poolInfo = res.data.data.find((item) => pool.tokenId === item.id);
-        return {
-          ...poolInfo,
-          tokenId: pool.tokenId,
-          poolType: pool.poolType,
-          poolId: pool.poolId,
-          price: pool.price,
-          createTime: pool.createTime,
-          token1: pool.token1
-        }
-        
+    sign_Axios.post(Controller.items.getitemsbyids, { ids: list })
+      .then(res => {
+        // .filter((_) => _.id).slice(0, 8)
+        const _list = pools.map((pool, index) => {
+          const poolInfo = res.data.data.find((item) => pool.tokenId === item.id);
+          return {
+            ...poolInfo,
+            tokenId: pool.tokenId,
+            poolType: pool.poolType,
+            poolId: pool.poolId,
+            price: pool.price,
+            createTime: pool.createTime,
+            token1: pool.token1
+          }
+
+        })
+          .sort((a, b) => b.createTime - a.createTime);
+        getPoolsWeight(_list)
       })
-      .sort((a, b) => b.createTime - a.createTime);
-      getPoolsWeight(_list)
-    })
     const getPoolsWeight = async (list) => {
       weightMap = new Map()
       const _res = await sign_Axios.post(Controller.pools.getpoolsinfo, {
@@ -338,18 +346,25 @@ export default function Index() {
             return <li key={item.name}><Link to={`/Marketplace/${item.name}`}>{item.name}</Link></li>
           })}
         </ul> */}
-        <div className="banner_wrapper" style={{ background: `url(${img_banner}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', }}>
-          <div className='banner_img'>
-            <div className='content'>
-              <h1>
-                <p>{wrapperIntl('home.banner1')}</p>
-                <p>{wrapperIntl('home.banner2')}</p>
-              </h1>
-              <Link to="/Marketplace">
-                <button>{wrapperIntl('home.Explore')}</button>
-              </Link>
+        <div
+          className="banner_wrapper"
+          style={{ background: `url(${bannerSetting.img}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', cursor: 'pointer' }}
+          onClick={() => { window.open(bannerSetting.href) }}
+          title={`jump to ${bannerSetting.href}`}
+        >
+          {
+            bannerSetting.showText && <div className='banner_img'>
+              <div className='content'>
+                <h1>
+                  <p>{wrapperIntl('home.banner1')}</p>
+                  <p>{wrapperIntl('home.banner2')}</p>
+                </h1>
+                <Link to="/Marketplace">
+                  <button>{wrapperIntl('home.Explore')}</button>
+                </Link>
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
 
