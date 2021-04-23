@@ -1,13 +1,13 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
-import { IPoolsData } from '../../marketplace/api/getPools';
 import { RequestAction } from '@redux-requests/core';
+import { createAction as createSmartAction } from 'redux-smart-actions';
+import Web3 from 'web3';
+import { IPoolsData } from '../../marketplace/api/getPools';
 import { connectWallet } from '../api/connectWallet';
 import { getAuthToken } from '../api/getAuthToken';
-import Web3 from 'web3';
 
 const SIGN_STR = 'Welcome to Bounce!';
 
-interface ISetAccountData {
+export interface ISetAccountData {
   token: string;
   address: string;
   provider?: any;
