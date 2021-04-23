@@ -5,7 +5,7 @@ import upload_video from '@assets/images/upload_video.svg'
 import upload_avatar from '@assets/images/upload_avatar.svg'
 import { myContext } from '@/redux/index.js'
 import useWrapperIntl from '@/locales/useWrapperIntl'
-import { getFileType }  from '@/utils/getFileType'
+import { getFileType } from '@/utils/getFileType'
 
 const UploadStyled = styled.div`
     display: flex;

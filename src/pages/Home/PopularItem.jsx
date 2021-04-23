@@ -108,7 +108,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
         }}>
             {   itemInfo.category && itemInfo.category === 'video'
                 ? <VideoItem width={262} height={262} src={itemInfo.fileurl} />
-                : <AutoStretchBaseWidthOrHeightImg src={itemInfo.fileurl} width={262} height={262} />
+                : <AutoStretchBaseWidthOrHeightImg src={itemInfo.litimgurl || itemInfo.fileurl} width={262} height={262} />
             }
             {/* <div className='info_box'>
                 <p>{name}</p>
