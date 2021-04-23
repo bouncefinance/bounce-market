@@ -23,71 +23,39 @@ export default function useToken() {
     const { library, account, chainId } = useActiveWeb3React()
     const { sign_Axios } = useAxios()
 
-    const exportNftInfo = async (nftId) => {
+    const exportNftInfoV2 = async (nftId) => {
         if (!nftId) {
             // console.log('error, nftId is ' + nftId)
             return {}
         }
+        // console.log(nftId)
         if (nftId.includes('-')) {
             const [contract, tokenId] = nftId.split('-')
             console.log(contract, tokenId)
             const info = await exportNftInfoByAddressAndTokenId(contract, tokenId)
             return info
-        } else {
-            try {
-                const res = await sign_Axios.post('/api/v2/main/auth/getoneitembyid', { id: parseInt(nftId) })
-                if (res.status === 200 && res.data.code === 1) {
-                    return res.data.data
-                } else {
-                    return {}
-                }
-            } catch (error) {
-                return {
-                    error
-                }
-            }
         }
     }
 
     const exportNftInfoByAddressAndTokenId = async (contract, tokenId) => {
-        return {
-            brandid: 10,
-            category: "image",
-            channel: "Fine Arts",
-            contractaddress: contract,
-            created_at: "2021-03-31T17:07:25Z",
-            description: "Homie_Bounce_2",
-            externallink: "",
-            fileurl: "https://market-test.bounce.finance/jpgfileget/17fccb9944c83381aca5bcde4fc5fa3e-1617210444.jpg",
-            id: tokenId,
-            itemname: "Homie_Bounce_2",
-            itemsymbol: "BOUNCE",
-            levels: "",
-            metadata: "",
-            owneraddress: "0x2d3fff58da3346dce601f6db8eec57906cdb17be",
-            ownername: "",
-            popularweight: 14,
-            price: "",
-            properties: "",
-            standard: 1,
-            stats: "",
-            status: 1,
-            supply: 1,
-            unlockablecontent: 0,
-            updated_at: "2021-04-18T12:53:30Z"
+        // console.log(contract, tokenId)
+        if (!contract && !tokenId) return
+        const params = {
+            id: Number(tokenId),
+            ct: contract
         }
-        // try {
-        //     const res = await sign_Axios.post('/api/v2/main/auth/getoneitembyid', { id: parseInt(nftId) })
-        //     if (res.status === 200 && res.data.code === 1) {
-        //         return res.data.data
-        //     } else {
-        //         return {}
-        //     }
-        // } catch (error) {
-        //     return {
-        //         error
-        //     }
-        // }
+        try {
+            const res = await sign_Axios.post('/api/v2/main/auth/getoneitembyid', params)
+            if (res.status === 200 && res.data.code === 1) {
+                return res.data.data || {}
+            } else {
+                return {}
+            }
+        } catch (error) {
+            return {
+                error
+            }
+        }
     }
 
     const exportArrayNftInfo = async (nftIdArray, category = '', channel = '') => {
@@ -170,13 +138,13 @@ export default function useToken() {
             const web3 = new Web3(library?.provider)
             const balanceOf = await web3.eth.getBalance(account)
             if (flag) {
-                price = chainId === 56 || chainId === 97 ? await queryPrice('BNB') : await queryPrice('ETH')
+                price = chainId === 56 || chainId === 97 ? await queryPrice('BNB') : chainId === 128 ? await queryPrice('HT') : await queryPrice('ETH')
             }
             return {
                 chainId,
                 contract: tokenAddr,
                 decimals: 18,
-                symbol: chainId === 56 || chainId === 97 ? 'BNB' : 'ETH',
+                symbol: chainId === 56 || chainId === 97 ? 'BNB' : chainId === 128 ? 'HT' : 'ETH',
                 balanceOf,
                 balance: weiToNum(balanceOf),
                 price
@@ -243,7 +211,7 @@ export default function useToken() {
     }
 
     return {
-        exportNftInfo,
+        exportNftInfoV2,
         exportArrayNftInfo,
         hasApprove_ERC_721,
         hasApprove_ERC_1155,

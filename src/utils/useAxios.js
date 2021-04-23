@@ -16,7 +16,8 @@ const Base_URL =
             'https://market-test.bounce.finance' :  // BSC Test https
             host.includes('127.0.0.1') ?
                 'https://bounce-market.bounce.finance' :    // BSC Main
-                'http://market-test.bounce.finance:11000'   // BSC Test http 
+                // 'http://market-test.bounce.finance:11000'   // BSC Test http 
+                'https://market-test.bounce.finance'   // BSC Test http 
                 // 'https://market-test.bounce.finance'   // BSC Test http 
 // const Base_URL = 'https://bounce-market.bounce.finance'
 
@@ -101,7 +102,6 @@ export default function useAxios() {
             ...option.config
         }
         let res = await axios.post(Base_URL + path, params, config)
-        console.log("res.data.code: ", res.data.code)
         if (res.status === 200 && res.data.code === -1) {
             if (active) {
                 dispatch({

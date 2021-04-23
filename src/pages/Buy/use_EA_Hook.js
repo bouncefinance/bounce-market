@@ -9,7 +9,7 @@ import useWrapperIntl from '@/locales/useWrapperIntl'
 
 export default function useHook(poolIndex) {
     const { active, chainId, library, account } = useActiveWeb3React()
-    const { exportErc20Info, exportNftInfo } = useToken()
+    const { exportErc20Info, exportNftInfoByAddressAndTokenId } = useToken()
     const [poolInfo, setPoolInfo] = useState({})
     const [nftInfo, setNftInfo] = useState({})
     const intl = useIntl()
@@ -32,13 +32,14 @@ export default function useHook(poolIndex) {
         const currentBidderP = await BounceEnglishAuctionNFT_CT.methods.currentBidderP(poolIndex).call()
         let showPrice = pools.amountMin1
 
-        if(currentBidderAmount!=='0'){
+        if (currentBidderAmount !== '0') {
             showPrice = currentBidderAmount
         }
 
-        // console.log(pools)
-        if (pools.tokenId) {
-            const info = await exportNftInfo(pools.tokenId)
+        if (pools.tokenId && pools.token0) {
+            
+            const info = await exportNftInfoByAddressAndTokenId(pools.token0, pools.tokenId)
+            console.log(info)
             setNftInfo(info)
         }
 
@@ -74,16 +75,16 @@ export default function useHook(poolIndex) {
         if (diffTime < 0) {
             if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) >= 1) {
                 // 预期价成交
-                poolsObj.showTime = intl.formatMessage({id: 'pages.buy.ThisTrandingClosed'})
+                poolsObj.showTime = intl.formatMessage({ id: 'pages.buy.ThisTrandingClosed' })
                 poolsObj.status = 'Close'
             } else if (parseFloat(weiDiv(currentBidderAmount, reserveAmount1P)) < 1) {
                 // 流拍
-                poolsObj.showTime = intl.formatMessage({id: 'pages.buy.ThisTrandingClosed'})
+                poolsObj.showTime = intl.formatMessage({ id: 'pages.buy.ThisTrandingClosed' })
                 poolsObj.status = 'Failed'
             } else {
                 // console.log(currentBidderAmount)
 
-                poolsObj.showTime = intl.formatMessage({id: 'pages.buy.ThisTrandingClosed'})
+                poolsObj.showTime = intl.formatMessage({ id: 'pages.buy.ThisTrandingClosed' })
                 poolsObj.status = 'Close'
             }
 

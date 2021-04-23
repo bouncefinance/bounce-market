@@ -194,7 +194,7 @@ const EditBrandstModalStyled = styled.div`width: 1100px;
         }
     }`
 
-export default function BrandsByType () {
+export default function BrandsByType() {
     const { brandId, category } = useParams()
     const history = useHistory()
     const [listData, setListData] = useState([])
@@ -244,9 +244,9 @@ export default function BrandsByType () {
     useEffect(() => {
         if (!account) return
         console.log(account)
-        if(currentAccount && account !== currentAccount){
+        if (currentAccount && account !== currentAccount) {
             history.push("/MyBrands")
-        }else{
+        } else {
             setCurrentAccount(account);
             sign_Axios.post('/api/v2/main/getbrandbyid', { id: parseInt(brandId) })
                 .then(res => {
@@ -254,7 +254,7 @@ export default function BrandsByType () {
                     if (res.status === 200 && res.data.code === 1) {
                         setContract(res.data.data.contractaddress)
                     }
-            })
+                })
         }
         // eslint-disable-next-line
     }, [account])
@@ -303,7 +303,7 @@ export default function BrandsByType () {
     const [tokenList_2, setTokenList_2] = useState();
 
     useEffect(() => {
-        console.log("category:", category)
+        // console.log("category:", category)
         if (!account || !tokenList || !tokenList_2) return
         // console.log(tokenList, tokenList_2)
         const pools = tokenList.concat(tokenList_2)
@@ -314,6 +314,7 @@ export default function BrandsByType () {
 
     const handleBrandTradeItems = (pools) => {
         const ids = pools.map(item => item.tokenId)
+        const cts = pools.map(item => item.token0 || item.contract)
 
         let categoryParam
 
@@ -329,7 +330,7 @@ export default function BrandsByType () {
             case "Video":
                 categoryParam = 'video'
                 break;
-        
+
             default:
                 categoryParam = ''
                 break;
@@ -337,6 +338,7 @@ export default function BrandsByType () {
 
         sign_Axios.post(Controller.items.getitemsbyfilter, {
             ids: ids,
+            cts: cts,
             category: categoryParam,
             channel: ''
         })
@@ -408,10 +410,11 @@ export default function BrandsByType () {
         variables: { user: account && account.toLowerCase(), contract: contract && contract.toLowerCase() },
         fetchPolicy: "network-only",
         onCompleted: () => {
-            const brands = brandInfo.standard === 1
-                ? brandItems.nft721Items
-                : brandItems.nft1155Items;
-            // console.log(brands)
+            // const brands = brandInfo.standard === 1
+            //     ? brandItems.nft721Items
+            //     : brandItems.nft1155Items;
+            // console.log(brandItems.nft721Items, brandItems.nft1155Items)
+            const brands = [...brandItems.nft721Items, ...brandItems.nft1155Items]
             if (!brands) {
                 // handleBrandTradeItems([]);
                 setTokenList([]);

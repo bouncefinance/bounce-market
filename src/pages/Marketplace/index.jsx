@@ -18,7 +18,7 @@ import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import Button from '@/components/UI-kit/Button/Button'
 import { getCoinList } from '@/utils/coin'
-import { ZERO_ADDRESS } from "@/web3/address_list/token"
+// import { ZERO_ADDRESS } from "@/web3/address_list/token"
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
 const MarketplaceStyled = styled.div`
@@ -117,13 +117,13 @@ export default function Marketplace() {
       channelRequestParam: "Conicbooks",
     },
   ]
- 
+
   let { channel } = useParams()
   const history = useHistory()
   const { active, chainId } = useActiveWeb3React()
   // const { exportErc20Info } = useToken()
 
-  const [getpollsVariables, _setGetPollsVariables] = useState({ contract: ZERO_ADDRESS })
+  const [getpollsVariables, _setGetPollsVariables] = useState({ contract: '' })
   const [getpollsMethods, _setGetPollsMethods] = useState(QueryMarketTradePools)
 
   const setGetPollsVariables = (v) => {
@@ -135,7 +135,7 @@ export default function Marketplace() {
     }
     _setGetPollsVariables(v)
   }
-  const { data } = useQuery(getpollsMethods, { variables: getpollsVariables })
+  const { data } = useQuery(getpollsMethods, { variables: getpollsVariables, skip: getpollsVariables.contract === '' })
 
 
   const { sign_Axios } = useAxios();
@@ -149,7 +149,7 @@ export default function Marketplace() {
 
 
   const [loading, setLoding] = useState(true)
-  
+
 
   const [length, setLength] = useState(4);
   const [coinList, setCoinList] = useState([])
@@ -157,7 +157,7 @@ export default function Marketplace() {
     channel === NavList[0].route ? NavList[0].channelRequestParam :
       channel === NavList[1].route ? NavList[1].channelRequestParam :
         NavList[2].channelRequestParam);
-  const [categoryRequestParam, setCategoryRequestParam] = useState(wrapperIntl("All"))
+  const [categoryRequestParam, setCategoryRequestParam] = useState(wrapperIntl("Category.All"))
 
 
   /* type = 'video' */
@@ -190,7 +190,9 @@ export default function Marketplace() {
         .filter(item => item.state !== 1 && item.poolId !== 0)
 
       const pools = tradePools.concat(tradeAuctions);
+      console.log(pools)
       const list = pools.map(item => item.tokenId);
+      const cts_list = pools.map(item => item.token0);
       // console.log(pools)
 
       setLength(list.length);
@@ -199,6 +201,7 @@ export default function Marketplace() {
       // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
+        cts: cts_list,
         /* category: type, */
         category: categoryRequestParam,
         channel: channelRequestParam,
@@ -265,6 +268,7 @@ export default function Marketplace() {
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
+                litimgurl={item.litimgurl}
               />
             </li>
           })}
@@ -350,7 +354,7 @@ export default function Marketplace() {
               case wrapperIntl("Category.Video"):
                 setCategoryRequestParam('Video')
                 break;
-            
+
               default:
                 break;
             }

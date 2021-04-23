@@ -44,6 +44,7 @@ export const QueryMarketTradePools_0 = gql`
     tradePools{
       tokenId
       poolId
+      token0
       token1
       price
       createTime
@@ -52,6 +53,7 @@ export const QueryMarketTradePools_0 = gql`
     tradeAuctions{
       tokenId
       poolId
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -66,6 +68,7 @@ export const QueryMarketTradePools = gql`
     tradePools (where: {token1: $contract}){
       tokenId
       poolId
+      token0
       token1
       price
       createTime
@@ -74,6 +77,7 @@ export const QueryMarketTradePools = gql`
     tradeAuctions (where: {token1: $contract}){
       tokenId
       poolId
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -112,6 +116,7 @@ export const QueryMyPools = gql`
       tokenId
       poolId
       price
+      token0
       token1
       createTime
       state
@@ -119,6 +124,7 @@ export const QueryMyPools = gql`
     tradeAuctions(where: {creator: $user}) {
       tokenId
       poolId
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -142,11 +148,13 @@ export const queryTradeInfo = gql`
   query queryTradeInfo($poolIdList: [Int!]!) {
     tradePools(where: {poolId_in: $poolIdList}) {
       poolId
+      token0
       token1
     }
     tradeAuctions(where: {poolId_in: $poolIdList}) {
       poolId
       creator
+      token0
       token1
       lastestBidAmount
       amountMin1
@@ -216,9 +224,11 @@ export const QueryMyNFTByBrand = gql`
   query nftItems($user: String!, $contract: String!) {
     nft721Items(where: {user: $user, contract: $contract}) {
       tokenId
+      contract
     }
     nft1155Items(where: {user: $user}) {
       tokenId
+      contract
     }
   }
 `
@@ -226,11 +236,13 @@ export const QueryMyNFTByBrand = gql`
 export const QueryOwnerBrandItems = gql`
   query nftItems($owner: String!) {
     bounce721Brands(where: {owner: $owner}) {
+      nft
       tokenList {
         tokenId
       } 
     }
     bounce1155Brands(where: {owner: $owner}) {
+      nft
       tokenList {
         tokenId
       }
@@ -246,6 +258,7 @@ export const QueryBrandTradeItems = gql`
       price
       createTime
       state
+      token0
       token1
     }
     tradeAuctions(where: {tokenId_in: $tokenList}) {
@@ -255,6 +268,7 @@ export const QueryBrandTradeItems = gql`
       amountMin1
       createTime
       state
+      token0
       token1
     }
   }
@@ -267,6 +281,7 @@ export const QueryBrandTradeItemsByBrand = gql`
       poolId
       price
       createTime
+      token0
       token1
       state
     }
@@ -276,6 +291,7 @@ export const QueryBrandTradeItemsByBrand = gql`
       lastestBidAmount
       amountMin1
       createTime
+      token0
       token1
       state
     }

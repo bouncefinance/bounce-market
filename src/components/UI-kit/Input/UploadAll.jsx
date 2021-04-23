@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 import upload_img from '@assets/images/upload_img.svg'
-import upload_video from '@assets/images/upload_video.svg'
-import upload_avatar from '@assets/images/upload_avatar.svg'
 import { myContext } from '@/redux/index.js'
 import useWrapperIntl from '@/locales/useWrapperIntl'
-import { getFileType } from '@/utils/getFileType'
+import { getFileType }  from '@/utils/getFileType'
 
 const UploadStyled = styled.div`
     display: flex;
@@ -62,16 +60,8 @@ const UploadStyled = styled.div`
     }
 `
 
-/* 
-    type: [
-        'image',
-        'video',
-    ]
-*/
-
-export default function Upload({
-    type = 'image',
-    /* infoTitle: defaltInfoTitle = 'upload Image', */
+export default function UploadAll({
+    // type = 'image',
     onFileChange,
     defaultValue,
     disabled,
@@ -81,59 +71,9 @@ export default function Upload({
     onClick
 }) {
     const { dispatch } = useContext(myContext);
-
     const { wrapperIntl } = useWrapperIntl()
-
     const [coverSrc, setCoverSrc] = useState(upload_img)
-    /* const [infoTitle, setInfoTitle] = useState(defaltInfoTitle) */
-    const [infoTitle, setInfoTitle] = useState(wrapperIntl("UIKit.Input.Upload.infoTip.uploadImage"))
-    const [infoTip, setInfoTip] = useState([
-        wrapperIntl("UIKit.Input.Upload.infoTip.requirement1"),
-        wrapperIntl("UIKit.Input.Upload.infoTip.requirement2"),
-    ])
-    const [fileLimit, setFileLimit] = useState('image/*')
-
-    useEffect(() => {
-        console.log("type:", type)
-    }, [type])
-
-
-    useEffect(() => {
-        // console.log(type)
-        switch (type) {
-            case 'image':
-                setCoverSrc(defaultValue || upload_img)
-                setInfoTitle(wrapperIntl("UIKit.Input.Upload.infoTip.uploadImage"))
-                setInfoTip([
-                    wrapperIntl("UIKit.Input.Upload.infoTip.image.requirement1"),
-                    wrapperIntl("UIKit.Input.Upload.infoTip.image.requirement2"),
-                ])
-                setFileLimit('image/*')
-                break;
-            case 'video':
-                setCoverSrc(defaultValue || upload_video)
-                setInfoTitle(wrapperIntl("UIKit.Input.Upload.infoTip.uploadVideo"))
-                setInfoTip([
-                    wrapperIntl("UIKit.Input.Upload.infoTip.video.requirement1"),
-                    wrapperIntl("UIKit.Input.Upload.infoTip.video.requirement2"),
-                ])
-                setFileLimit('video/*')
-                break;
-            case 'avatar':
-                setCoverSrc(defaultValue || upload_avatar)
-                setInfoTitle(infoTitle || wrapperIntl("UIKit.Input.Upload.infoTip.ChangeProfilePhoto"))
-                setInfoTip([
-                    wrapperIntl('UIKit.Input.Upload.infoTip.avatar.requirement1'),
-                    wrapperIntl('UIKit.Input.Upload.infoTip.avatar.requirement2'),
-                ])
-                setFileLimit('image/*')
-                break;
-            default:
-                return
-        }
-        // eslint-disable-next-line
-    }, [type])
-
+    const [infoTitle, setInfoTitle] = useState(wrapperIntl("UIKit.Input.Upload.infoTip.uploadImageAndVideo"))
     const handelFileChange = async (e) => {
         const file = e.target.files[0]
         if (!file) return
@@ -143,6 +83,7 @@ export default function Upload({
         } catch (error) {
             console.log(error)
         }
+        console.log(file);
         if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/gif') {
             let reader = new FileReader();  //调用FileReader
             reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
@@ -174,22 +115,19 @@ export default function Upload({
         }
     }
 
-    // 'https://account.bounce.finance:16000/api/v1/fileupload'
-
     return (
         <UploadStyled width={width} height={height} >
-            <div className={`left_img ${type}`}>
+            <div className={`left_img image`}>
                 <img src={coverSrc} alt="" />
-                <input disabled={disabled || lockInput} type="file" accept={fileLimit} name="upload_file" onChange={handelFileChange} id="" onClick={onClick} />
+                <input disabled={disabled || lockInput} type="file" 
+                accept=""
+                name="upload_file" onChange={handelFileChange} id="" onClick={onClick} />
             </div>
-
             <div className="right_info">
                 <p>{infoTitle}</p>
-                <span>{infoTip[0]}</span>
-                <span>{infoTip[1]}</span>
+                <span>{wrapperIntl('UIKit.Input.Upload.infoTip.requirementImageANdVideo')}</span>
+                <span>{wrapperIntl('UIKit.Input.Upload.infoTip.image.requirementImageAndVideo')}</span>
             </div>
         </UploadStyled>
     )
 }
-
-export const UploadStyle = UploadStyled
