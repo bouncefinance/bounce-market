@@ -46,6 +46,7 @@ const MyGalleryStyled = styled.div`
 export default function Index() {
   const { account, active } = useActiveWeb3React();
   const current_account = account
+  
   const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
