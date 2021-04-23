@@ -212,14 +212,14 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo, c
                             {/* <Button value={'Make Listed'} /> */}
                         </div> : poolInfo.poolType === AUCTION_TYPE.FixedSwap ? <div className='button_group'>
                             <Button value={wrapperIntl('MyProfile.CardItem.CheckStatus')} primary onClick={() => {
-                                history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.contractaddress}-${poolInfo.poolId}`)
+                                history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
                             <Button value={wrapperIntl('MyProfile.CardItem.MakeUnlisted')} onClick={() => {
                                 setOpenCancel(true)
                             }} />
                         </div> : <div className='button_group btn_one'>
                             <Button value={wrapperIntl('MyProfile.CardItem.CheckStatus')} primary onClick={() => {
-                                history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.contractaddress}-${poolInfo.poolId}`)
+                                history.push(`/Marketplace/FineArts/${poolType}/${poolInfo.poolId}`)
                             }} />
                         </div>
                     }
