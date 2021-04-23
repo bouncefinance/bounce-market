@@ -87,7 +87,6 @@ const zh_CN = {
     'pages.buy.TransactionSuccess': '交易成功！',
     'pages.buy.AuctionCancelled': '此次拍卖仅在超过截止日期后失效',
 
-
     'pages.buy.TradeTable.Event': '事件',
     'pages.buy.TradeTable.Quantity': '数量',
     'pages.buy.TradeTable.Price': '价格',
@@ -343,6 +342,16 @@ const zh_CN = {
         'MyGallery.SellNFT.EnglishAcutionFeature': "在您指定的时间内出售给出价最高者。",
         'MyGallery.SellNFT.InstantSale': "一口价出售",
         'MyGallery.SellNFT.EnglishAuction': "英式拍卖",
+
+        /* wrapperIntl('MyProfile.MyGallery.TransferNFT.WalletAddress') */
+        'MyGallery.TransferNFT.MyGallery': "我的展厅",
+        'MyGallery.TransferNFT.WalletAddress': "目标地址",
+        'MyGallery.TransferNFT.eg': "例如：0x1ed3....或以太坊地址",
+        'MyGallery.TransferNFT.WillBeTransferredTo': "将会转移至",
+        'MyGallery.TransferNFT.Amount': "转移数量",
+        'MyGallery.TransferNFT.Balance': "剩余数量",
+        'MyGallery.TransferNFT.EnterAmount': "请输入您想转移的NFT数量",
+        'MyGallery.TransferNFT.Transfer': "转移",
 
         /* wrapperIntl('MyProfile.MyGallery.Summary.ToFangible') */
         'MyGallery.Summary.Summary': "统计",
