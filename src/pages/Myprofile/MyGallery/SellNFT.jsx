@@ -19,6 +19,7 @@ import icon_BUSD from '@assets/images/wallet/icon_BUSD.png'
 import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 import icon_USDT from '@assets/images/wallet/icon_USDT.svg'
 import icon_USDC from '@assets/images/wallet/icon_USDC.svg'
+import icon_HT from '@assets/images/wallet/icon_HT.svg'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
@@ -29,9 +30,9 @@ export default function SellNFT() {
 
 	const unitOptions = [
 		{
-			value: chainId === 56 ? 'BNB' : 'ETH',
+			value: chainId === 56 ? 'BNB' : chainId === 128 ? 'HT' : 'ETH',
 			contract: '0x0000000000000000000000000000000000000000',
-			icon: chainId === 56 ? icon_BNB : icon_ETH_new,
+			icon: chainId === 56 ? icon_BNB : chainId === 128 ? icon_HT :icon_ETH_new,
 			isShow: true,
 			decimals: 18
 		}, {

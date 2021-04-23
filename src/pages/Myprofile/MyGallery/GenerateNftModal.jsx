@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import Modal from '@components/Modal/Modal'
 import styled from 'styled-components'
 import { useActiveWeb3React, getContract } from '@/web3'
-import { TextInput, TextAreaInput, Button, PullRadioBox, Radio, Upload } from '@components/UI-kit'
+import { TextInput, TextAreaInput, Button, PullRadioBox, Radio, UploadAll } from '@components/UI-kit'
 import { useState } from 'react'
 import { checkInput } from '@/utils/compareFun'
 import BounceERC721WithSign from '@/web3/abi/BounceERC721WithSign.json'
@@ -130,7 +130,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         // 第二步 上传数据生成 json
         const params = {
             brandid: nftType === 'ERC-721' ? 10 : 11,
-            category: formData.Category,
+            category: imgUrl.slice(imgUrl.length-3,) === "mp4"?"video":"image",
             channel: formData.Channel,
             contractaddress: nftType === 'ERC-721' ? getBounceERC721WithSign(chainId) : getBounceERC1155WithSign(chainId),
             description: formData.Description,
@@ -254,19 +254,17 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />
 
                 <div className="category_select">
-                    <PullRadioBox
+                    {/* <PullRadioBox
                         title={wrapperIntl('Category.Category')}
-                        marginTop='0' /* marginTop='24px' */
+                        marginTop='0'
                         width='150px'
                         options={[
                             { value: wrapperIntl('Category.Image') },
                             { value: wrapperIntl('Category.Video') },
                         ]}
-                        /* defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'} */
                         defaultValue={wrapperIntl('Category.Image')}
                         inputDisable={inputDisable}
                         onChange={(option) => {
-                            /* const cate = item.value === 'Videos' ? 'video' : 'image' */
                             console.log("option.value: ", option.value)
                             let categoryParam
                             switch (option.value) {
@@ -282,11 +280,10 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     categoryParam = 'image'
                                     break;
                             }
-                            /* setFormData({ ...formData, Category: cate }) */
                             console.log("categoryParam2: ", categoryParam)
                             setFormData({ ...formData, Category: categoryParam })
                         }}
-                    />
+                    />*/}
 
                     <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Channel')} marginTop='0px' width='150px' options={[{
                         value: NFT_CATEGORY.FineArts
@@ -340,8 +337,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     }}
                 />
 
-                <Upload
-                    type={formData.Category}
+                <UploadAll
+                    // type={formData.Category}
                     inputDisable={inputDisable}
                     width='200px'
                     /* height='200px' */
