@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React, { useEffect} from "react";
 
 import { useActiveWeb3React } from "@/web3";
 
 export default function Index() {
-	const { account, active, activate, deactivate } = useActiveWeb3React();
+	const { account, active, activate } = useActiveWeb3React();
 
 	useEffect(() => {
 		console.log("account: ", account)

@@ -17,14 +17,14 @@ import BounceERC721 from "@/web3/abi/BounceERC721.json";
 import BounceERC1155 from "@/web3/abi/BounceERC1155.json";
 import useTransferModal from "@/web3/useTransferModal";
 import useToken from "@/utils/useToken";
-import AmountInput from "@/pages/Buy/components/AmountInput";
+// import AmountInput from "@/pages/Buy/components/AmountInput";
 
 function TransferNFT() {
 	const { account, library, active } = useActiveWeb3React();
 	const { nftId } = useParams();
 	const history = useHistory();
-	const { sign_Axios } = useAxios();
-	const { wrapperIntl } = useWrapperIntl();
+	// const { sign_Axios } = useAxios();
+	// const { wrapperIntl } = useWrapperIntl();
 	const { exportNftInfoV2 } = useNftInfo();
 	const [receiverAddress, setReceiverAddress] = useState("");
 	const [transferAmount, setTransferAmount] = useState(1);
@@ -33,7 +33,7 @@ function TransferNFT() {
 	const [NFTInfo, setNFTInfo] = useState();
 	const { showTransferByStatus } = useTransferModal();
 
-	const { dispatch } = useContext(myContext);
+	// const { dispatch } = useContext(myContext);
 
 	const [NFTBalance, setNFTBalance] = useState();
 	const { getAccountHasNftCount } = useToken();
