@@ -17,6 +17,7 @@ import BounceERC721 from "@/web3/abi/BounceERC721.json";
 import BounceERC1155 from "@/web3/abi/BounceERC1155.json";
 import useTransferModal from "@/web3/useTransferModal";
 import useToken from "@/utils/useToken";
+import Web3 from 'web3'
 
 function TransferNFT() {
 	const { account, library, active } = useActiveWeb3React();
@@ -71,7 +72,7 @@ function TransferNFT() {
 		};
 		/* setNFTBalance(getNFTBalance()); */
 		getNFTBalance()
-	}, [active, NFTInfo]);
+	}, [active, NFTInfo, account]);
 
 	const NavList = [
 		{
@@ -145,9 +146,11 @@ function TransferNFT() {
 					);
 					BounceERC1155_CT.methods
 						.safeTransferFrom(
-							account,
-							receiverAddress,
-							parseInt(NFTInfo.id)
+							account,                 // from
+							receiverAddress,         // to  
+							parseInt(NFTInfo.id),     // NFTId
+							transferAmount,         // Amount
+							0x00/* Web3.utils.utf8ToHex("I have 100€") */,   // data
 						)
 						.send({ from: account })
 						.on("transactionHash", (hash) => {
