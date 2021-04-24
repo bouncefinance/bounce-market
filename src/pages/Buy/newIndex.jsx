@@ -1004,35 +1004,35 @@ export default function NewIndex() {
                     <div className="container_left">
                         {
                             (nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos'))
-                            ||
-                            (state && (state.category === "video" || state.category === 'Videos'))
-                            ?
-                            <video
-                                width='416px'
-                                height='416px'
-                                src={
-                                    active && localStorage.getItem('JWT_TOKEN_V2')
-                                    ? 
-                                    nftInfo && nftInfo.fileurl
-                                    :
-                                    state && state.fileurl
-                                }
-                                controls='controls'
-                                autoPlay>
-                            </video>
-                            :
-                            <AutoStretchBaseWidthOrHeightImg
-                                src={
-                                    /* nftInfo && nftInfo.fileurl */
-                                    active && localStorage.getItem('JWT_TOKEN_V2')
-                                    ? 
-                                    nftInfo && nftInfo.fileurl
-                                    :
-                                    state && state.fileurl
-                                }
-                                width={416}
-                                height={416}
-                            />
+                                ||
+                                (state && (state.category === "video" || state.category === 'Videos'))
+                                ?
+                                <video
+                                    width='416px'
+                                    height='416px'
+                                    src={
+                                        active && localStorage.getItem('JWT_TOKEN_V2')
+                                            ?
+                                            nftInfo && nftInfo.fileurl
+                                            :
+                                            state && state.fileurl
+                                    }
+                                    controls='controls'
+                                    autoPlay>
+                                </video>
+                                :
+                                <AutoStretchBaseWidthOrHeightImg
+                                    src={
+                                        /* nftInfo && nftInfo.fileurl */
+                                        active && localStorage.getItem('JWT_TOKEN_V2')
+                                            ?
+                                            nftInfo && nftInfo.fileurl
+                                            :
+                                            state && state.fileurl
+                                    }
+                                    width={416}
+                                    height={416}
+                                />
                         }
 
                         <div className="btn_group">
@@ -1045,7 +1045,7 @@ export default function NewIndex() {
                     <div className="container_right">
                         <div className="sell_info">
                             <div className="row1">
-                                <h3>{nftInfo.itemname || state.name || wrapperIntl("pages.buy.NameLoading")}</h3>
+                                <h3>{nftInfo.itemname || (state && state.name) || wrapperIntl("pages.buy.NameLoading")}</h3>
 
                                 {/* Cancel */}
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&

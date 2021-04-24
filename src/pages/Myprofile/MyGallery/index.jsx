@@ -4,7 +4,7 @@ import styled from 'styled-components'
 // import Search from './Search'
 import { CardItem, AddCardItem, PenddingCardItem } from '../CardItem'
 import { useLazyQuery } from '@apollo/client';
-import { QueryMyNFT, QueryMyTradePools } from '@/utils/apollo'
+import { QueryMyNFT } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
@@ -47,7 +47,7 @@ export default function Index() {
   const { account, active } = useActiveWeb3React();
   // FMG: 0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f
   const current_account = account //account
-  const { sign_Axios } = useAxios();
+  const { sign_Axios, axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
   // eslint-disable-next-line
@@ -73,18 +73,44 @@ export default function Index() {
       }
     });
 
-  const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
-    {
-      variables: { user: String(current_account).toLowerCase() },
-      // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
-      fetchPolicy: "network-only",
-      onCompleted: () => {
-        setMyTradeData(traddata || [])
-      },
-      onError: (err) => {
-        console.log('onerror', err);
+  // const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
+  //   {
+  //     variables: { user: String(current_account).toLowerCase() },
+  //     // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
+  //     fetchPolicy: "network-only",
+  //     onCompleted: () => {
+  //       setMyTradeData(traddata || [])
+  //     },
+  //     onError: (err) => {
+  //       console.log('onerror', err)
+  //     }
+  //   })
+
+  const getMyTradeNFT = async () => {
+    let traddata = {
+      tradePools: [],
+      tradeAuctions: []
+    }
+
+    try {
+      const params = {
+        offset: 0,
+        count: 100,
+        user_address: current_account
       }
-    })
+      const res = await axios.get('https://nftview.bounce.finance/v1/bsc/pools', { params })
+      if (res.status === 200 && res.data.code === 200) {
+        traddata = res.data.data
+      }
+    } catch (error) {
+
+    }
+
+
+
+    setMyTradeData(traddata)
+  }
+
 
   const getMyApi = async () => {
     const params = {
@@ -127,9 +153,10 @@ export default function Index() {
     getMyTradeNFT()
     getMyApi()
     // eslint-disable-next-line
-  }, [active, account, getMyNFT, getMyTradeNFT]);
+  }, [active, account, getMyNFT]);
 
   useEffect(() => {
+    console.log(myTradeData, myNftData)
     const PenddingItem = JSON.parse(window.localStorage.getItem('PenddingItem')) || null
 
     if (!account || myTradeData.length === 0 || myNftData.length === 0) return
