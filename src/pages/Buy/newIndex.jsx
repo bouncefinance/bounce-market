@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { /* Link,  */useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components'
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
@@ -302,6 +302,12 @@ export default function NewIndex() {
     const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
     const [openFixedSwapBuyModal, setOpenFixedSwapBuyModal] = useState(false);
     const { wrapperIntl } = useWrapperIntl()
+    const { state } = useLocation()
+
+    useEffect(() => {
+        console.log("state: ", state)
+        console.log("active: ", active)
+    }, [state, active])
 
     const updateParams = {
         auctiontype: aucType | 0,
@@ -337,6 +343,10 @@ export default function NewIndex() {
         }
     }, [amount, poolInfo.amountTotal0, poolInfo.swappedAmount0P])
 
+    useEffect(() => {
+        console.log("isLoading: ", isLoading)
+    }, [isLoading])
+
     const setLike = async () => {
         const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
         if (res.data.code === 200 || res.data.code === 1) {
@@ -352,7 +362,12 @@ export default function NewIndex() {
 
         // console.log(nftInfo, poolInfo)
         // console.log(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))
-        if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
+        /* if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
+            setIsLoading(true)
+            setBtnText(intl.formatMessage({ id: 'pages.buy.loading' }))
+            return
+        } */
+        if (!nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
             setBtnText(intl.formatMessage({ id: 'pages.buy.loading' }))
             return
@@ -987,9 +1002,37 @@ export default function NewIndex() {
 
                 <div className="container">
                     <div className="container_left">
-                        {nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos') ?
-                            <video width='416px' height='416px' src={nftInfo && nftInfo.fileurl} controls='controls' autoPlay></video> :
-                            <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
+                        {
+                            (nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos'))
+                            ||
+                            (state && (state.category === "video" || state.category === 'Videos'))
+                            ?
+                            <video
+                                width='416px'
+                                height='416px'
+                                src={
+                                    active && localStorage.getItem('JWT_TOKEN_V2')
+                                    ? 
+                                    nftInfo && nftInfo.fileurl
+                                    :
+                                    state && state.fileurl
+                                }
+                                controls='controls'
+                                autoPlay>
+                            </video>
+                            :
+                            <AutoStretchBaseWidthOrHeightImg
+                                src={
+                                    /* nftInfo && nftInfo.fileurl */
+                                    active && localStorage.getItem('JWT_TOKEN_V2')
+                                    ? 
+                                    nftInfo && nftInfo.fileurl
+                                    :
+                                    state && state.fileurl
+                                }
+                                width={416}
+                                height={416}
+                            />
                         }
 
                         <div className="btn_group">
@@ -1002,7 +1045,7 @@ export default function NewIndex() {
                     <div className="container_right">
                         <div className="sell_info">
                             <div className="row1">
-                                <h3>{nftInfo.itemname || wrapperIntl("pages.buy.NameLoading")}</h3>
+                                <h3>{nftInfo.itemname || state.name || wrapperIntl("pages.buy.NameLoading")}</h3>
 
                                 {/* Cancel */}
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&

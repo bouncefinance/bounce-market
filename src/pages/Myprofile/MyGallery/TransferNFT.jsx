@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useHistory, useParams } from "react-router-dom";
-import useAxios from "@utils/useAxios.js";
-import { myContext } from "@/redux";
 import { Button } from "@components/UI-kit";
 import BreadcrumbNav from "@/components/UI-kit/NavBar/BreadcrumbNav";
 /* import NFTInfo from "./components/NFTInfo"; */
@@ -17,14 +15,12 @@ import BounceERC721 from "@/web3/abi/BounceERC721.json";
 import BounceERC1155 from "@/web3/abi/BounceERC1155.json";
 import useTransferModal from "@/web3/useTransferModal";
 import useToken from "@/utils/useToken";
-// import AmountInput from "@/pages/Buy/components/AmountInput";
 
 function TransferNFT() {
 	const { account, library, active } = useActiveWeb3React();
 	const { nftId } = useParams();
 	const history = useHistory();
-	// const { sign_Axios } = useAxios();
-	// const { wrapperIntl } = useWrapperIntl();
+	const { wrapperIntl } = useWrapperIntl();
 	const { exportNftInfoV2 } = useNftInfo();
 	const [receiverAddress, setReceiverAddress] = useState("");
 	const [transferAmount, setTransferAmount] = useState(1);
@@ -32,8 +28,6 @@ function TransferNFT() {
 	const [showNotice, setShowNotice] = useState(false);
 	const [NFTInfo, setNFTInfo] = useState();
 	const { showTransferByStatus } = useTransferModal();
-
-	// const { dispatch } = useContext(myContext);
 
 	const [NFTBalance, setNFTBalance] = useState();
 	const { getAccountHasNftCount } = useToken();
@@ -52,31 +46,29 @@ function TransferNFT() {
 
 	useEffect(() => {
 		console.log("NFTInfo: ", NFTInfo);
-	}, [NFTInfo]);
-
-	useEffect(() => {
 		console.log("receiverAddress: ", receiverAddress);
-	}, [receiverAddress]);
+	}, [NFTInfo, receiverAddress]);
 
 	useEffect(() => {
 		if (!active || !NFTInfo) return;
-		const getNFTBalance = async () => {
-			const NFTbalance = await getAccountHasNftCount(
-				NFTInfo.contractaddress,
-				NFTInfo.id,
-				account
-			);
-			console.log("NFTbalance", NFTbalance);
-			/* return NFTbalance */
-			setNFTBalance(NFTbalance);
-		};
-		/* setNFTBalance(getNFTBalance()); */
-		getNFTBalance();
+		(async () => {
+			const getNFTBalance = async () => {
+				const NFTbalance = await getAccountHasNftCount(
+					NFTInfo.contractaddress,
+					NFTInfo.id,
+					account
+				);
+				console.log("NFTbalance", NFTbalance);
+				return NFTbalance;
+			};
+			setNFTBalance(await getNFTBalance());
+		})();
+		// eslint-disable-next-line
 	}, [active, NFTInfo, account]);
 
 	const NavList = [
 		{
-			title: "My Gallery",
+			title: wrapperIntl('MyProfile.MyGallery.TransferNFT.MyGallery'),
 			route: "/MyGallery",
 		},
 		{
@@ -84,7 +76,7 @@ function TransferNFT() {
 			route: "/MyGallery/" + nftId,
 		},
 		{
-			title: NFTInfo && "Transfer",
+			title: NFTInfo && wrapperIntl('MyProfile.MyGallery.TransferNFT.Transfer'),
 			route: "/MyGallery/" + nftId + "Transfer",
 		},
 	];
@@ -94,8 +86,7 @@ function TransferNFT() {
 	};
 
 	const handleAmountInput = (e) => {
-		if (e.target.value === NaN) setTransferAmount(1);
-		else if (parseInt(e.target.value) > NFTBalance)
+		if (parseInt(e.target.value) > NFTBalance)
 			setTransferAmount(parseInt(NFTBalance));
 		else setTransferAmount(parseInt(e.target.value));
 	};
@@ -113,11 +104,9 @@ function TransferNFT() {
 		}
 
 		if (transferAmount && receiverAddress.match("^0x.{40}$")) {
-			console.log("1111111")
-			console.log("transferAmount 1: ", transferAmount)
 			setDisableButton(false);
 		}
-		console.log("transferAmount: ", transferAmount)
+		console.log("transferAmount: ", transferAmount);
 	}, [receiverAddress, transferAmount, NFTBalance]);
 
 	/* useEffect(() => {
@@ -125,7 +114,6 @@ function TransferNFT() {
 	}, [transferAmount]); */
 
 	const handleClick = () => {
-		/* alert("Transfer"); */
 		try {
 			let params = {};
 
@@ -250,13 +238,13 @@ function TransferNFT() {
 						<span className="str_Transfer">Transfer</span>
 
 						<span className="str_WalletAddress">
-							Wallet Address
+							{wrapperIntl('MyProfile.MyGallery.TransferNFT.WalletAddress')}
 						</span>
 
 						<input
 							className="inputAddress"
 							type="text"
-							placeholder="e.g. 0x1ed3.... or destination.eth"
+							placeholder={wrapperIntl('MyProfile.MyGallery.TransferNFT.eg')}
 							value={receiverAddress}
 							onChange={handleAddressInput}
 						/>
@@ -264,7 +252,7 @@ function TransferNFT() {
 						<span className="str_transferTo">
 							{`“${
 								NFTInfo && NFTInfo.itemname
-							}” will be transferred to 
+							}” ${wrapperIntl('MyProfile.MyGallery.TransferNFT.WillBeTransferredTo')}
 								${
 									showNotice
 										? receiverAddress.slice(0, 6) +
@@ -275,9 +263,9 @@ function TransferNFT() {
 						</span>
 
 						<div className="str_AmountAndNFTBalance">
-							<span className="str_Amount">Amount</span>
+							<span className="str_Amount">{wrapperIntl('MyProfile.MyGallery.TransferNFT.Amount')}</span>
 							<span className="NFTBalance">
-								Balance: {NFTBalance}
+								{wrapperIntl('MyProfile.MyGallery.TransferNFT.Balance')}: {NFTBalance}
 							</span>
 						</div>
 
@@ -286,7 +274,7 @@ function TransferNFT() {
 							type="number"
 							min="1"
 							max={NFTBalance}
-							placeholder="Enter amount of NFT you want to transfer"
+							placeholder={wrapperIntl('MyProfile.MyGallery.TransferNFT.EnterAmount')}
 							disabled={NFTBalance ? false : true}
 							value={transferAmount.toString()}
 							onChange={handleAmountInput}
@@ -300,7 +288,7 @@ function TransferNFT() {
 							onClick={handleClick}
 							disabled={disableButton}
 						>
-							Transfer
+							{wrapperIntl('MyProfile.MyGallery.TransferNFT.Transfer')}
 						</Button>
 					</TransferBox>
 				</PageBodyRight>

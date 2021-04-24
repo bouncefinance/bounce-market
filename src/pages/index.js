@@ -5,6 +5,7 @@ import Header from './component/Header'
 import Footer from './component/Footer'
 import UIkit from '../test/UIkit'
 import Test from '../test'
+import Test2 from '../test/test2'
 
 import Home from './Home'
 import Marketplace from './Marketplace/index'
@@ -42,6 +43,7 @@ export default function Index() {
                 <ErrorNotification />
                 <Header />
                 <Route exact path='/test' component={Test} />
+                <Route exact path='/test2' component={Test2} />
                 <Route exact path='/UIkit' component={UIkit} />
 
 

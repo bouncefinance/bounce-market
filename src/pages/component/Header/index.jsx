@@ -160,9 +160,9 @@ export default function Index() {
     }
     const connectWallet = historyLocation => {
         const match = [
-            '/Marketplace/FineArts/english-auction/',
+            /* '/Marketplace/FineArts/english-auction/',
             '/Marketplace/FineArts/fixed-swap/',
-            '/AirHome/',
+            '/AirHome/', */
         ]
         if (match.some(path => historyLocation.pathname.substring(0, path.length) === path)) {
             onConnect()

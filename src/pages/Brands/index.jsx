@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 
 import SearchBar from './SearchBar'
@@ -13,6 +13,7 @@ import { Controller } from '@/utils/controller'
 import { SkeletonBrandRowCards } from '../component/Skeleton/Brandrow'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { myContext } from '@/redux/index.js';
 
 const StyledBrandPage = styled.div`
     width: 1100px;
@@ -55,9 +56,20 @@ export default function Index() {
   const [loding, setloding] = useState(true)
 
   const { wrapperIntl } = useWrapperIntl()
+  const { dispatch } = useContext(myContext);
 
   useEffect(() => {
     // if (!active) return;
+    if (!active) {
+      dispatch({
+        type: 'Modal_Message',
+        showMessageModal: true,
+        modelType: 'error',
+        modelMessage: wrapperIntl("ConnectWallet"),
+        modelTimer: 24 * 60 * 60 * 1000,
+      });
+    }
+
     if (data) {
       const bounce721Brands = data.bounce721Brands.map(item => item.id)
       const bounce1155Brands = data.bounce1155Brands.map(item => item.id)

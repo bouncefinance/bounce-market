@@ -346,6 +346,16 @@ const en_US = {
         'MyGallery.SellNFT.InstantSale': "Instant sale",
         'MyGallery.SellNFT.EnglishAuction': "English Auction",
         
+        /* wrapperIntl('MyProfile.MyGallery.TransferNFT.EnterAmount') */
+        'MyGallery.TransferNFT.MyGallery': "My Gallery",
+        'MyGallery.TransferNFT.WalletAddress': "Wallet Address",
+        'MyGallery.TransferNFT.eg': "e.g. 0x1ed3.... or destination.eth",
+        'MyGallery.TransferNFT.WillBeTransferredTo': "will be transferred to ",
+        'MyGallery.TransferNFT.Amount': "Amount",
+        'MyGallery.TransferNFT.Balance': "Balance",
+        'MyGallery.TransferNFT.EnterAmount': "Enter amount of NFT you want to transfer",
+        'MyGallery.TransferNFT.Transfer': "Transfer",
+
         /* wrapperIntl('MyProfile.MyGallery.Summary.ToFangible') */
         'MyGallery.Summary.Summary': "Summary",
         'MyGallery.Summary.Listing': "Listing",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router'
 import Search from '../component/Other/Search'
@@ -20,6 +20,7 @@ import Button from '@/components/UI-kit/Button/Button'
 import { getCoinList } from '@/utils/coin'
 // import { ZERO_ADDRESS } from "@/web3/address_list/token"
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { myContext } from '@/redux/index.js';
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -97,7 +98,7 @@ const MarketplaceStyled = styled.div`
 
 export default function Marketplace() {
   const { wrapperIntl } = useWrapperIntl()
-
+  const { dispatch } = useContext(myContext);
 
 
   const NavList = [
@@ -169,6 +170,15 @@ export default function Marketplace() {
 
   useEffect(() => {
     // if (!active) return
+    if (!active) {
+      dispatch({
+        type: 'Modal_Message',
+        showMessageModal: true,
+        modelType: 'error',
+        modelMessage: wrapperIntl("ConnectWallet"),
+        modelTimer: 24 * 60 * 60 * 1000,
+      });
+    }
 
     if (chainId) {
       // console.log(getCoinList(chainId))
@@ -326,7 +336,7 @@ export default function Marketplace() {
             } alt="" />{nav.title}</p>
           </li>
         })}
-        {active && <li className="link">
+        {(active && localStorage.getItem('JWT_TOKEN_V2')) && <li className="link">
           <Button onClick={() => { history.push('/MyMarket') }}>
             {wrapperIntl('market.myMarket')}
           </Button>
