@@ -10,6 +10,7 @@ import icon_comics from '@assets/images/icon/comics.svg'
 import icon_sport from '@assets/images/icon/sport.svg'
 
 import useAxios from '@/utils/useAxios'
+import useToken from '@utils/useToken'
 import { Controller } from '@/utils/controller'
 import { useQuery } from '@apollo/client'
 import { QueryMarketTradePools, QueryMarketTradePools_0 } from '@/utils/apollo'
@@ -20,6 +21,7 @@ import Button from '@/components/UI-kit/Button/Button'
 import { getCoinList } from '@/utils/coin'
 // import { ZERO_ADDRESS } from "@/web3/address_list/token"
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -95,6 +97,7 @@ const MarketplaceStyled = styled.div`
     }
 `
 
+const poolsParmas = { offset: 0, count: 1e4 }
 export default function Marketplace() {
   const { wrapperIntl } = useWrapperIntl()
 
@@ -121,7 +124,7 @@ export default function Marketplace() {
   let { channel } = useParams()
   const history = useHistory()
   const { active, chainId } = useActiveWeb3React()
-  // const { exportErc20Info } = useToken()
+  const { exportErc20Info } = useToken()
 
   const [getpollsVariables, _setGetPollsVariables] = useState({ contract: '' })
   const [getpollsMethods, _setGetPollsMethods] = useState(QueryMarketTradePools)
@@ -135,9 +138,9 @@ export default function Marketplace() {
     }
     _setGetPollsVariables(v)
   }
-  const { data } = useQuery(getpollsMethods, { variables: getpollsVariables, skip: getpollsVariables.contract === '' })
-
-
+  // const { data } = useQuery(getpollsMethods, { variables: getpollsVariables, skip: getpollsVariables.contract === '' })
+  
+  const [data, setData] = useState({ tradeAuctions: [], tradePools: [] })
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
@@ -145,6 +148,16 @@ export default function Marketplace() {
   //   type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
   //     type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
   //       NFT_CATEGORY.FineArts);
+
+  const initPools = async (params) => {
+    const res = await axios.get('https://nftview.bounce.finance/v1/bsc/pools', { params: params})
+    if (res.data.code === 200) {
+      setData(res.data.data)
+    }
+  }
+  useEffect(() => {
+    initPools(poolsParmas)
+  }, [])
 
 
 
@@ -177,7 +190,7 @@ export default function Marketplace() {
       }, ...getCoinList(chainId).filter(item => item.contract)])
     }
     if (data) {
-      // console.log(data)
+      console.log(data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
@@ -369,7 +382,8 @@ export default function Marketplace() {
             // console.log(item)
             if (item) {
               setLoding(false)
-              setGetPollsVariables({ contract: item.contract })
+              // setGetPollsVariables({ contract: item.contract })
+              initPools({ ...poolsParmas, contract: item.contract})
             }
           }} />}
 

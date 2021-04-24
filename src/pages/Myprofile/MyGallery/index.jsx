@@ -14,6 +14,7 @@ import { AUCTION_TYPE } from '@/utils/const'
 import Category from '../Category'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios';
 
 const MyGalleryStyled = styled.div`
     width: 1100px;
@@ -83,6 +84,13 @@ export default function Index() {
         console.log('onerror', err);
       }
     })
+  // useEffect(() => {
+  //   ; (async () => {
+  //     const [myNftError, myNft] = await to(axios.get('https://nftview.bounce.finance/v2/bsc/nft', { user_address: String(account).toLowerCase() }))
+  //     console.log(myNftError, myNft)
+  //   })()
+  // })
+  
 
   const getMyApi = async () => {
     const params = {

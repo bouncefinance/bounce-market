@@ -27,6 +27,7 @@ import { QueryTradePools } from '@/utils/apollo'
 import { AUCTION_TYPE } from '@/utils/const'
 import { Controller } from '@/utils/controller'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios'
 
 
 const HomeStyled = styled.div`
@@ -155,15 +156,7 @@ const HomeStyled = styled.div`
 
 `
 
-/* const banner_Nav = [
-  ----sort----
-  { name: 'New' },
-  { name: 'Popular' },
-  ----channel----
-  { name: 'Fine Arts' },
-  { name: 'Sports' },
-  { name: 'Comics' },
-] */
+const poolsParmas = { offset: 0, count: 1e4 }
 let weightMap = new Map()
 const getStandardTypeValue = (e) => e === 2 ? 'english-auction' : 'fixed-swap'
 export default function Index() {
@@ -172,7 +165,18 @@ export default function Index() {
   const { account, active } = useWeb3React();
   const history = useHistory()
   const [brands, setbrands] = useState([])
-  const { data } = useQuery(QueryTradePools)
+  // const { data } = useQuery(QueryTradePools)
+
+  const [data, setData] = useState()
+  const initPools = async (params) => {
+    const res = await axios.get('https://nftview.bounce.finance/v1/bsc/pools', { params: params })
+    if (res.data.code === 200) {
+      setData(res.data.data)
+    }
+  }
+  useEffect(() => {
+    initPools(poolsParmas)
+  }, [])
   // const { data } = []
   const [itemList, setItemList] = useState()
   // const { exportArrayNftInfo } = useToken()
@@ -233,52 +237,6 @@ export default function Index() {
         return 2
       }
     })
-
-    // console.log(standards)
-    /*
-    sign_Axios.post(Controller.pools.getpoolsinfo, {
-      poolids: poolIds,
-      standards: standards
-    }).then(stardRes => {
-      sign_Axios.post(Controller.items.getitemsbyids, {
-        ids: list,
-        // category: '',
-        // channel: ''
-      })
-        .then(res => {
-
-          // console.log(res.data.data)
-          if (res.status === 200 && res.data.code === 1) {
-            const list = pools.map((pool, index) => {
-              const poolInfo = res.data.data.find(item => pool.tokenId === item.id);
-              const standardInfo = stardRes.data.data.find(item => pool.poolId === item.poolid);
-
-              return {
-                ...poolInfo,
-                poolweight: 1,
-                ...standardInfo,
-                tokenId: pool.tokenId,
-                poolType: pool.poolType,
-                poolId: pool.poolId,
-                price: pool.price,
-                createTime: pool.createTime,
-                token1: pool.token1
-              }
-            })
-            console.log(list)
-            const list_2 = list.sort((a, b) => b.poolweight - a.poolweight)
-            const list_3 = list_2.slice(0, 8)
-
-            // console.log(list_3)
-            // console.log(list_3)
-            // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
-            setItemList(list_3);
-            setLoadingItems(false)
-          }
-        })
-        .catch(() => { })
-    })
-    */
 
     sign_Axios.post(Controller.items.getitemsbyids, {ids: list})
     .then(res => {
