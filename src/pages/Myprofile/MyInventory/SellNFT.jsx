@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 import { useActiveWeb3React } from "@/web3";
 import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
 import { getUSDTAddress, getBUSDAddress, getUSDCAddress } from "@/web3/address_list/token";
-
+import icon_HT from '@assets/images/wallet/icon_HT.svg'
 import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
 import icon_BUSD from '@assets/images/wallet/icon_BUSD.png'
 import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
@@ -25,9 +25,9 @@ export default function SellNFT() {
 
 	const unitOptions = [
 		{
-			value: chainId === 56 ? 'BNB' : 'ETH',
+			value: chainId === 56 ? 'BNB' : chainId === 128 ? 'HT' :'ETH',
 			contract: '0x0000000000000000000000000000000000000000',
-			icon: chainId === 56 ? icon_BNB : icon_ETH_new,
+			icon: chainId === 56 ? icon_BNB : chainId === 128 ? icon_HT : icon_ETH_new,
 			isShow: true,
 			decimals: 18
 		}, {

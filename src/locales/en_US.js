@@ -39,6 +39,7 @@ const en_US = {
         create: 'Create',
         connect: 'Connect Wallet',
         setting: 'Account Settings',
+        logout: 'Log Out',
         search: 'Search',
         search_p: 'Search objects, items, art',
         SelectBSC: "Please select BSC network.",
@@ -111,6 +112,9 @@ const en_US = {
     "UIKit.Input.Upload.infoTip.avatar.requirement1": 'Supports JPG, PNG, JPEG2000',
     "UIKit.Input.Upload.infoTip.avatar.requirement2": 'no more than 100MB, 262*262 Reccomended',
     "UIKit.Input.Upload.infoTip.videoError": 'Oops!File size or file type is wrong. Please check and try again.',
+    "UIKit.Input.Upload.infoTip.uploadImageAndVideo": 'upload Image Or Video',
+    "UIKit.Input.Upload.infoTip.requirementImageANdVideo": 'Supports JPG, PNG, JPEG2000 ,MP4',
+    "UIKit.Input.Upload.infoTip.image.requirementImageAndVideo": 'Image no more than 100MB, 262*262 Reccomended. Video no more than 100MB, 360*240 Reccomended',
 
     home: {
         banner1: 'We make it easy to trade in creativity.',
@@ -342,6 +346,16 @@ const en_US = {
         'MyGallery.SellNFT.InstantSale': "Instant sale",
         'MyGallery.SellNFT.EnglishAuction': "English Auction",
         
+        /* wrapperIntl('MyProfile.MyGallery.TransferNFT.EnterAmount') */
+        'MyGallery.TransferNFT.MyGallery': "My Gallery",
+        'MyGallery.TransferNFT.WalletAddress': "Wallet Address",
+        'MyGallery.TransferNFT.eg': "e.g. 0x1ed3.... or destination.eth",
+        'MyGallery.TransferNFT.WillBeTransferredTo': "will be transferred to ",
+        'MyGallery.TransferNFT.Amount': "Amount",
+        'MyGallery.TransferNFT.Balance': "Balance",
+        'MyGallery.TransferNFT.EnterAmount': "Enter amount of NFT you want to transfer",
+        'MyGallery.TransferNFT.Transfer': "Transfer",
+
         /* wrapperIntl('MyProfile.MyGallery.Summary.ToFangible') */
         'MyGallery.Summary.Summary': "Summary",
         'MyGallery.Summary.Listing': "Listing",

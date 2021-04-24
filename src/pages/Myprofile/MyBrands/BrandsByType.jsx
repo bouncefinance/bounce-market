@@ -22,12 +22,13 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
 import { useLazyQuery } from '@apollo/client'
-import { QueryBrandTradeItemsByBrand, QueryMyNFTByBrand } from '@/utils/apollo'
+// import { QueryBrandTradeItemsByBrand, QueryMyNFTByBrand } from '@/utils/apollo'
+import { QueryMyNFTByBrand } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 import { CardItem } from '../CardItem'
-import { AUCTION_TYPE } from '@/utils/const'
+// import { AUCTION_TYPE } from '@/utils/const'
 import { SkeletonNFTCard } from '@/pages/component/Skeleton/NFTCard'
 // import { weiToNum } from '@/utils/useBigNumber'
 import Category from '../Category'
@@ -201,7 +202,7 @@ export default function BrandsByType() {
     const [statusList, setStatusList] = useState([]);
     const { brandInfo, run } = useBrandInfo(brandId)
     const { state } = useContext(myContext)
-    const { sign_Axios } = useAxios()
+    const { sign_Axios, axios } = useAxios()
     const [fileData, setFileData] = useState(null)
     const { account } = useActiveWeb3React();
 
@@ -304,13 +305,19 @@ export default function BrandsByType() {
 
     useEffect(() => {
         // console.log("category:", category)
-        if (!account || !tokenList || !tokenList_2) return
+        if (!account || !tokenList || !tokenList_2 || !brandInfo.contractaddress) return
         // console.log(tokenList, tokenList_2)
-        const pools = tokenList.concat(tokenList_2)
+        const brandTradeList_fs = tokenList_2.tradePools.filter(item => String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
+        const brandTradeList_ea = tokenList_2.tradeAuctions.filter(item => String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
+        const brandTradeList = brandTradeList_fs.concat(brandTradeList_ea)
+
+        console.log(brandTradeList)
+        const pools = tokenList.concat(brandTradeList)
+
         console.log("pools: ", pools)
         pools && handleBrandTradeItems(pools)
         // eslint-disable-next-line
-    }, [account, tokenList, tokenList_2, category])
+    }, [account, tokenList, tokenList_2, brandInfo, category])
 
     const handleBrandTradeItems = (pools) => {
         const ids = pools.map(item => item.tokenId)
@@ -349,17 +356,21 @@ export default function BrandsByType() {
                         const poolInfo = res.data.data.find(pool => item.tokenId === pool.id);
 
                         // console.log(poolInfo)
-                        return {
-                            ...poolInfo,
-                            poolType: item && item.poolType,
-                            poolId: item && item.poolId,
-                            price: item && item.price,
-                            token1: item && item.token1,
-                            createTime: item && item.createTime
+                        if (poolInfo) {
+                            return {
+                                ...poolInfo,
+                                poolType: item && item.poolType,
+                                poolId: item && item.poolId,
+                                price: item && (item.lastestBidAmount || item.amountMin1),
+                                token1: item && item.token1,
+                                createTime: item && item.createTime
+                            }
+                        } else {
+                            return null
                         }
-                    })
+                    }).filter(item => item)
 
-                    // console.log(list)
+                    console.log(list)
                     const result = list.sort((a, b) => b.createTime - a.createTime);
                     setListData(result);
                     setStatusList(result);
@@ -368,25 +379,50 @@ export default function BrandsByType() {
             })
     }
     // 16806 正在售卖
-    const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItemsByBrand, {
-        variables: { creator: account, token0: contract },
-        fetchPolicy: "network-only",
-        onCompleted: async () => {
-            const tradePools = brandTradeItems.data.tradePools.map(item => ({
-                ...item,
-                poolType: AUCTION_TYPE.FixedSwap
-            })).filter(item => item.state !== 1)
-            const tradeAuctions = brandTradeItems.data.tradeAuctions.map(item => ({
-                ...item,
-                price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-                poolType: AUCTION_TYPE.EnglishAuction
-            })).filter(item => item.state !== 1)
+    // const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItemsByBrand, {
+    //     variables: { creator: account, token0: contract },
+    //     fetchPolicy: "network-only",
+    //     onCompleted: async () => {
+    //         const tradePools = brandTradeItems.data.tradePools.map(item => ({
+    //             ...item,
+    //             poolType: AUCTION_TYPE.FixedSwap
+    //         })).filter(item => item.state !== 1)
+    //         const tradeAuctions = brandTradeItems.data.tradeAuctions.map(item => ({
+    //             ...item,
+    //             price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
+    //             poolType: AUCTION_TYPE.EnglishAuction
+    //         })).filter(item => item.state !== 1)
 
-            // console.log(tradePools.concat(tradeAuctions))
-            // handleBrandTradeItems(tradePools.concat(tradeAuctions));
-            setTokenList_2(tradePools.concat(tradeAuctions));
+    //         // console.log(tradePools.concat(tradeAuctions))
+    //         // handleBrandTradeItems(tradePools.concat(tradeAuctions));
+    //         setTokenList_2(tradePools.concat(tradeAuctions));
+    //     }
+    // })
+
+    const getBrandTradeItems = async () => {
+        let traddata = {
+            tradePools: [],
+            tradeAuctions: []
         }
-    })
+
+        try {
+            const params = {
+                offset: 0,
+                count: 100,
+                user_address: account
+            }
+            const res = await axios.get('v1/bsc/pools', { params })
+            if (res.status === 200 && res.data.code === 200) {
+                traddata = res.data.data
+            }
+        } catch (error) {
+
+        }
+
+
+
+        setTokenList_2(traddata)
+    }
 
     // const [getBrandItems_2, { data: brandItems_2 }] = useLazyQuery(QueryOwnerBrandItems, {
     //     variables: { owner: account ? account.toLowerCase() : account },
@@ -434,7 +470,8 @@ export default function BrandsByType() {
             getBrandTradeItems()
             // getBrandItems_2()
         }
-    }, [account, contract, brandInfo.standard, getBrandItems, getBrandTradeItems]);
+        // eslint-disable-next-line
+    }, [account, contract, brandInfo.standard, getBrandItems]);
 
     return (
         <BrandsByTypeStyled>

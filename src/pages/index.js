@@ -5,6 +5,7 @@ import Header from './component/Header'
 import Footer from './component/Footer'
 import UIkit from '../test/UIkit'
 import Test from '../test'
+import Test2 from '../test/test2'
 
 import Home from './Home'
 import Marketplace from './Marketplace/index'
@@ -21,6 +22,7 @@ import Page404 from './Page404'
 import MyGallery from './Myprofile/MyGallery'
 import MyNFT from './Myprofile/MyGallery/MyNFT'
 import SellNFT from './Myprofile/MyGallery/SellNFT'
+import TransferNFT from './Myprofile/MyGallery/TransferNFT'
 
 import MyBrands from './Myprofile/MyBrands'
 import BrandsByType from './Myprofile/MyBrands/BrandsByType'
@@ -31,7 +33,9 @@ import ModalMessage from '@components/Modal/ModalMessage'
 import ErrorNotification from '@components/Modal/ErrorNotification'
 import { AirHome } from './AirHome/index'
 import MyLiked from './Myprofile/MyLiked'
+import { InitAxios } from '@/utils/utils'
 
+InitAxios()
 export default function Index() {
 
     return (
@@ -41,6 +45,7 @@ export default function Index() {
                 <ErrorNotification />
                 <Header />
                 <Route exact path='/test' component={Test} />
+                <Route exact path='/test2' component={Test2} />
                 <Route exact path='/UIkit' component={UIkit} />
 
 
@@ -64,6 +69,8 @@ export default function Index() {
                 <Route exact path='/MyGallery' component={MyGallery} />
                 <Route exact path='/MyGallery/:nftId' component={MyNFT} />
                 <Route exact path='/MyGallery/:nftId/Sell' component={SellNFT} />
+                <Route exact path='/MyGallery/:nftId/Transfer' component={TransferNFT} />
+                <Route exact path='/Transfer' component={TransferNFT} />
 
                 <Route exact path='/MyBrands' component={MyBrands} />
                 <Route exact path='/MyBrands/:brandId/:category' component={BrandsByType} />

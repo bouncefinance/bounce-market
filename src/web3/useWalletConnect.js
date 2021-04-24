@@ -4,14 +4,15 @@ import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 
 
 const injected = new InjectedConnector({
-    supportedChainIds: [1, 3, 4, 5, 42, 56, 31337]
+    supportedChainIds: [1, 3, 4, 5, 42, 56, 128, 31337]
 });
 
 const POLLING_INTERVAL = 12000;
 const RPC_URLS = {
     1: "https://mainnet.infura.io/v3/0b500c5f885b43a4ab192e8048f6fa88",
     4: "https://rinkeby.infura.io/v3/8f6d3d5d7a1442a38d9e8050c31c1884",
-    56: "https://bsc-dataseed4.binance.org"
+    56: "https://bsc-dataseed4.binance.org",
+    128:"https://http-mainnet.hecochain.com"
 };
 
 const walletconnect = new WalletConnectConnector({
