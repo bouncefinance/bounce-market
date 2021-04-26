@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
@@ -28,8 +28,8 @@ import { AUCTION_TYPE } from '@/utils/const'
 import { Controller } from '@/utils/controller'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import axios from 'axios'
+import to from 'await-to-js'
 
-import { myContext } from '@/redux/index.js';
 
 const HomeStyled = styled.div`
   .banner{
@@ -157,34 +157,80 @@ const HomeStyled = styled.div`
 
 `
 
-const poolsParmas = { offset: 0, count: 1e4 }
-let weightMap = new Map()
 const HOMETOPLISTNUMBER = 8
-const getStandardTypeValue = (e) => e === 2 ? 'english-auction' : 'fixed-swap'
+const HOMETOPFORNUMBER = 10
 export default function Index() {
   // const { state } = useContext(myContext);
   const { sign_Axios } = useAxios()
-  const { account, active } = useWeb3React();
+  const { account } = useWeb3React();
   const history = useHistory()
   const [brands, setbrands] = useState([])
   // const { data } = useQuery(QueryTradePools)
 
-  const [data, setData] = useState()
-  const initPools = async (params) => {
+  const initPools = async () => {
     let offset = 0
-    const weightRes = await sign_Axios.post(Controller.pools.getpoolsinfobypage, { offset, limit: HOMETOPLISTNUMBER, orderweight: 1 })
-    if (weightRes.data.code === 1) {
-      console.log('weightRes: ', weightRes)
-      // artistpoolweight poolweight poolid id standard
-      let { data, total } = weightRes.data
+    let items = [], nftMap = new Map()
+    const getNftList = async () => {
+      const weightRes = await sign_Axios.post(Controller.pools.getpoolsinfobypage, { offset, limit: HOMETOPFORNUMBER, orderweight: 1 })
+      if (weightRes.data.code === 1) {
+        // artistpoolweight poolweight poolid id standard
+        let { data } = weightRes.data
+        let templPools = []
+        for (let weightItem of data) {
+          const [poolErr, poolRes] = await to(axios.get('/pool', {
+            params: {
+              pool_id: weightItem.poolid,
+              // standard == pool_type
+              pool_type: weightItem.standard === 1 ? 'fixedswap' : 'english'
+            }
+          }))
+          if (poolErr) {
+            return console.log(poolErr)
+          }
+          if (poolRes?.data?.code !== 200) {
+            return console.log('error')
+          }
+          templPools.push(poolRes.data.data)
+        }
+        const [nftErr, nftRes] = await to(sign_Axios.post(Controller.items.getitemsbyids, {
+          ids: templPools.map(e => e.tokenId),
+          cts: templPools.map(e => e.token0),
+        }))
+        if (nftErr) {
+          return console.log(nftErr)
+        }
+        if (nftRes.data.code !== 1) {
+          return console.log('error')
+        }
+        const nftList = nftRes.data?.data ?? []
+        for (let nft of nftList) {
+          nftMap.set(`${nft.contractaddress}_${nft.id}`, nft)
+        }
+        items.push(...templPools.map(pool => {
+          const nftInfo = nftMap.get([pool.token0, pool.tokenId].join('_'))
+          return {
+            ...nftInfo,
+            tokenId: pool.tokenId,
+            poolType: pool.amountMin1 ? AUCTION_TYPE.EnglishAuction : AUCTION_TYPE.FixedSwap, 
+            poolId: pool.poolId,
+            price: pool.price || pool.lastestBidAmount,
+            createTime: pool.createTime,
+            token1: pool.token1
+          }
+        }))
+        items = items.filter(e => e.contractaddress)
+        if (items.length < HOMETOPLISTNUMBER) {
+          return getNftList()
+        }
+        setItemList(items.filter((_, i) => i < HOMETOPLISTNUMBER))
+        setLoadingItems(false)
+      }
     }
-    const res = await axios.get('/pools', { params: params })
-    if (res.data.code === 200) {
-      setData(res.data.data)
-    }
+    getNftList()
   }
   useEffect(() => {
-    initPools(poolsParmas)
+    initPools()
+    // eslint-disable-next-line
   }, [])
   // const { data } = []
   const [itemList, setItemList] = useState()
@@ -193,7 +239,6 @@ export default function Index() {
   const [loadingItems, setLoadingItems] = useState(true)
   // const { dispatch } = useContext(myContext)
   const { wrapperIntl } = useWrapperIntl()
-  const { dispatch } = useContext(myContext);
 
   const bannerSetting = {
     img: img_banner_fmg,

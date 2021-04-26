@@ -189,6 +189,8 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
             {category && category === 'video' ?
                 <VideoItem width={262} height={262} src={cover} />:
                 <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={litimgurl || cover} />}
+            {/* <div>litimgurl: {litimgurl }</div>
+            <div>cover: {cover }</div> */}
             <div className="item_wrapper">
                 <div className='info_wrapper'>
                     <div className="info_top">

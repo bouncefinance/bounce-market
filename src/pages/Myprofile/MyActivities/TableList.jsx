@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableItem from './TableItem'
 
-import { QueryFromActivities, QueryToActivities } from '@/utils/apollo';
+import { QueryFromActivities } from '@/utils/apollo';
 import { useLazyQuery } from '@apollo/client';
 import { useActiveWeb3React } from '@/web3';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
@@ -97,6 +97,9 @@ export default function BasicTable() {
         if (res?.data?.code === 200) {
             const data = fromData.activities.concat(res.data.data);
             handleActivities(data);
+        }
+        if (resErr) {
+            return handleActivities([])
         }
     }
 

@@ -31,7 +31,7 @@ import icon_time from './assets/icon_time.svg'
 import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
 import TradingHistory from './components/TradingHistory';
 import { useLazyQuery } from '@apollo/client';
-import { QueryFixedSwapPool, QueryEnglishAuction, querylastestBidAmount } from '@/utils/apollo';
+import { /* QueryFixedSwapPool,  QueryEnglishAuction, */querylastestBidAmount } from '@/utils/apollo';
 import { getEllipsisAddress } from '@/utils/utils';
 import { format, formatDistanceToNow } from 'date-fns';
 import { AUCTION_TYPE } from '@/utils/const';
@@ -874,72 +874,73 @@ export default function NewIndex() {
         setHistory(list);
     }
 
-    const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
-        variables: { poolId: Number(poolId) },
-        fetchPolicy: "network-only",
-        onCompleted: () => {
-            handleSwap(poolSwap.data);
-        }
-    });
+    // const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
+    //     variables: { poolId: Number(poolId) },
+    //     fetchPolicy: "network-only",
+    //     onCompleted: () => {
+    //         handleSwap(poolSwap.data);
+    //     }
+    // });
+    handleSwap({ tradePools: [], poolCreates: [], poolSwaps: [], poolCancels: []})
 
-    const handleAuction = (data) => {
-        const tradePool = data.tradeAuctions[0];
-        // if(!tradePool) return  setHistory([]);
+    // const handleAuction = (data) => {
+    //     const tradePool = data.tradeAuctions[0];
+    //     // if(!tradePool) return  setHistory([]);
 
-        // console.log('auctionCreates', tradePool)
-        const creator = tradePool.creator;
-        const total = tradePool.tokenAmount0;
-        const price = tradePool.amountMin1;
-        // const offerLiist = data.auctionBids.map(item => ({
-        //     name: getEllipsisAddress(item.sender),
-        //     time: format(new Date(item.timestamp * 1000), 'PPPpp'),
-        //     // amount: Web3.utils.fromWei(item.amount1),
-        //     amount: item.amount1,
-        //     price: item.amount1,
-        // }))
-        // console.log(offerLiist)
-        // setOfferList(offerLiist);
-        const createList = data.auctionCreates.map(item => ({
-            // event: 'Created',
-            event: 'List',
-            quantity: total,
-            price: price,
-            from: getEllipsisAddress(ZERO_ADDRESS),
-            to: getEllipsisAddress(creator),
-            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
-            timestamp: item.timestamp,
-        }));
-        const bidList = data.auctionBids.map(item => ({
-            event: 'Bid',
-            quantity: '',
-            price: item.amount1,
-            from: getEllipsisAddress(creator),
-            to: getEllipsisAddress(item.sender),
-            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
-            timestamp: item.timestamp,
-        }))
-        const claimList = data.auctionClaims.map(item => ({
-            event: 'Claim',
-            price: '',
-            quantity: item.amount1,
-            from: getEllipsisAddress(item.sender),
-            to: '',
-            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
-            timestamp: item.timestamp,
-        }))
-        const list = createList.concat(bidList).concat(claimList)
-            .sort((a, b) => b.timestamp - a.timestamp);
-        console.log(list)
-        setHistory(list);
-    }
+    //     // console.log('auctionCreates', tradePool)
+    //     const creator = tradePool.creator;
+    //     const total = tradePool.tokenAmount0;
+    //     const price = tradePool.amountMin1;
+    //     // const offerLiist = data.auctionBids.map(item => ({
+    //     //     name: getEllipsisAddress(item.sender),
+    //     //     time: format(new Date(item.timestamp * 1000), 'PPPpp'),
+    //     //     // amount: Web3.utils.fromWei(item.amount1),
+    //     //     amount: item.amount1,
+    //     //     price: item.amount1,
+    //     // }))
+    //     // console.log(offerLiist)
+    //     // setOfferList(offerLiist);
+    //     const createList = data.auctionCreates.map(item => ({
+    //         // event: 'Created',
+    //         event: 'List',
+    //         quantity: total,
+    //         price: price,
+    //         from: getEllipsisAddress(ZERO_ADDRESS),
+    //         to: getEllipsisAddress(creator),
+    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+    //         timestamp: item.timestamp,
+    //     }));
+    //     const bidList = data.auctionBids.map(item => ({
+    //         event: 'Bid',
+    //         quantity: '',
+    //         price: item.amount1,
+    //         from: getEllipsisAddress(creator),
+    //         to: getEllipsisAddress(item.sender),
+    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+    //         timestamp: item.timestamp,
+    //     }))
+    //     const claimList = data.auctionClaims.map(item => ({
+    //         event: 'Claim',
+    //         price: '',
+    //         quantity: item.amount1,
+    //         from: getEllipsisAddress(item.sender),
+    //         to: '',
+    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+    //         timestamp: item.timestamp,
+    //     }))
+    //     const list = createList.concat(bidList).concat(claimList)
+    //         .sort((a, b) => b.timestamp - a.timestamp);
+    //     console.log(list)
+    //     setHistory(list);
+    // }
 
-    const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
-        variables: { poolId: Number(poolId) },
-        fetchPolicy: "network-only",
-        onCompleted: () => {
-            handleAuction(auctionPool.data);
-        }
-    })
+    // const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
+    //     variables: { poolId: Number(poolId) },
+    //     fetchPolicy: "network-only",
+    //     onCompleted: () => {
+    //         handleAuction(auctionPool.data);
+    //     }
+    // })
     const initOfferList = async () => {
         const type = aucType === AUCTION_TYPE.FixedSwap ? 'fixedswap' : 'english'
         const [offerListError, offerListRes] = await to(axios.get(`bids?pool_id=${poolId}&pool_type=${type}`))
@@ -960,6 +961,7 @@ export default function NewIndex() {
     }
     useEffect(() => {
         initOfferList()
+        // eslint-disable-next-line
     }, [])
 
 
