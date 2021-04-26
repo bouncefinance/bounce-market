@@ -159,6 +159,7 @@ const HomeStyled = styled.div`
 
 const poolsParmas = { offset: 0, count: 1e4 }
 let weightMap = new Map()
+const HOMETOPLISTNUMBER = 8
 const getStandardTypeValue = (e) => e === 2 ? 'english-auction' : 'fixed-swap'
 export default function Index() {
   // const { state } = useContext(myContext);
@@ -170,6 +171,13 @@ export default function Index() {
 
   const [data, setData] = useState()
   const initPools = async (params) => {
+    let offset = 0
+    const weightRes = await sign_Axios.post(Controller.pools.getpoolsinfobypage, { offset, limit: HOMETOPLISTNUMBER, orderweight: 1 })
+    if (weightRes.data.code === 1) {
+      console.log('weightRes: ', weightRes)
+      // artistpoolweight poolweight poolid id standard
+      let { data, total } = weightRes.data
+    }
     const res = await axios.get('/pools', { params: params })
     if (res.data.code === 200) {
       setData(res.data.data)
@@ -194,9 +202,6 @@ export default function Index() {
   }
 
   useEffect(() => {
-    // if (!account) {
-    //   return
-    // }
 
     const init = async () => {
       setLoadingBrands(true)
@@ -208,7 +213,6 @@ export default function Index() {
           return item.id !== 10 && item.id !== 11 && item.id !== 117
         }).slice(0, 4)
         setbrands(brands_2)
-        // console.log('---brands----', brands_2)
       } else {
         // TODO ERROR SHOW
         // dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Oops! Something went wrong. Try again." });
@@ -218,94 +222,6 @@ export default function Index() {
     init()
     // eslint-disable-next-line
   }, [account])
-
-  useEffect(() => {
-    // if (!active || !data) return
-    if (!active) {
-      if (!active) {
-        dispatch({
-        type: 'Modal_Message',
-        showMessageModal: true,
-        modelType: 'error',
-        modelMessage: wrapperIntl("ConnectWallet"),
-        modelTimer: 24 * 60 * 60 * 1000,
-        });
-      }
-    }
-
-    if (!data) return
-    setLoadingItems(true)
-    const tradePools = data.tradePools.map(item => ({
-      ...item,
-      poolType: AUCTION_TYPE.FixedSwap
-    })).filter(item => item.state !== 1)
-    const tradeAuctions = data.tradeAuctions.map(item => ({
-      ...item,
-      price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-      poolType: AUCTION_TYPE.EnglishAuction
-    })).filter(item => item.state !== 1 && item.poolId !== 0)
-
-    const pools = tradePools.concat(tradeAuctions)
-    const list = pools.map(item => item.tokenId)
-    const poolIds = pools.map(item => {
-      return item.poolId
-    })
-    const standards = pools.map(item => {
-      if (item.poolType === 'fixed-swap') {
-        return 1
-      } else {
-        return 2
-      }
-    })
-    sign_Axios.post(Controller.items.getitemsbyids, { ids: list })
-      .then(res => {
-        // .filter((_) => _.id).slice(0, 8)
-        const _list = pools.map((pool, index) => {
-          const poolInfo = res.data.data.find((item) => pool.tokenId === item.id);
-          return {
-            ...poolInfo,
-            tokenId: pool.tokenId,
-            poolType: pool.poolType,
-            poolId: pool.poolId,
-            price: pool.price,
-            createTime: pool.createTime,
-            token1: pool.token1
-          }
-
-        })
-          .sort((a, b) => b.createTime - a.createTime);
-        getPoolsWeight(_list)
-      })
-    const getPoolsWeight = async (list) => {
-      weightMap = new Map()
-      const _res = await sign_Axios.post(Controller.pools.getpoolsinfo, {
-        poolids: poolIds,
-        standards: standards
-      })
-      const res = _res.data
-      if (res.code === 1) {
-        res.data?.forEach((item) => {
-          weightMap.set(`${item.poolid}_${getStandardTypeValue(item.standard)}`, item.poolweight)
-        })
-        const _list = list.map((item) => {
-          return {
-            ...item,
-            defaultWeight: weightMap.get(`${item.poolId}_${item.poolType}`) ?? 0
-          }
-        })
-          .sort((a, b) => b.defaultWeight - a.defaultWeight)
-        // console.log(_list, weightMap)
-        setItemList(_list.filter((_) => _.id).slice(0, 8));
-        setLoadingItems(false)
-      }
-    }
-
-
-
-    // eslint-disable-next-line
-  }, [active, data])
-
-
 
   return (
     <HomeStyled>
