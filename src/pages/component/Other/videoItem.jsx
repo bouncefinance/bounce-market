@@ -28,14 +28,16 @@ div{
   }
   .playButton {
     position: absolute;
-    top: 116px;
-    left: 116px;
+    top: 50%;
+    left: 50%;
+    margin-top: -15px;
+    margin-left: -15px;
     z-index: 10;
     background-color: transparent;
     img {
       width: 30px;
       height: 30px;
-      opacity: 0.9;
+      /* opacity: 1; */
     }
   }
 }

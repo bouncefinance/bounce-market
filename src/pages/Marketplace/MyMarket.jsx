@@ -348,6 +348,7 @@ export default function MyMarket() {
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
+                category={item.category}
               />
             </li>
           })}
@@ -365,6 +366,7 @@ export default function MyMarket() {
                 token1={item.token1}
                 poolType={item.poolType}
                 poolInfo={item}
+                category={item.category}
               />
             </li>
           })}

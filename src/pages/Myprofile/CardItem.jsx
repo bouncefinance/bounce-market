@@ -305,9 +305,13 @@ export function PenddingCardItem({ pools, category }) {
         {/* <div className="img_wrapper">
             <AutoStretchBaseWidthOrHeightImg src={pools.fileurl} width={262} height={262} />
         </div> */}
-        {category && category === (category === "Videos" || category === 'video') ?
-            <VideoItem width={262} height={262} src={pools.fileurl} /> :
-            <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={pools.fileurl} />}
+        {
+            category && (category === "Videos" || category === 'video')
+            ?
+            <VideoItem width={262} height={262} src={pools.fileurl} />
+            :
+            <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={pools.fileurl}
+        />}
 
         <div className="content">
             <div className="info-box">
