@@ -253,13 +253,22 @@ function MyNFT() {
 		},
 	];
 
+	/* useEffect(() => {
+		console.log("category: ", category)
+	}, [category])
+
+	useEffect(() => {
+		console.log("imgURL: ", imgURL)
+	}, [imgURL]) */
+
 	return (
 		<Page>
 			<BreadcrumbNav marginTop="24px" NavList={NavList} />
 			<PageBody className="sellNFT">
-				{category && category === "Videos" ?
-					<video width='400px' height='400px' src={imgURL} controls='controls' autoPlay></video> :
-					<AutoStretchBaseWidthOrHeightImg src={imgURL} width={400} height={400} />
+				{category && (category === "Videos" || category === 'video') ?
+						<video width='400px' height='400px' src={imgURL} controls='controls' autoPlay></video>
+						:
+						<AutoStretchBaseWidthOrHeightImg src={imgURL} width={400} height={400} />
 				}
 
 

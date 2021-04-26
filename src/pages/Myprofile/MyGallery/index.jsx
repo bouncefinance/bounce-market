@@ -46,7 +46,8 @@ const MyGalleryStyled = styled.div`
 export default function Index() {
   const { account, active } = useActiveWeb3React();
   // FMG: 0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f
-  const current_account = account //account
+  //const current_account = account //account
+  const current_account = '0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f'
   const { sign_Axios, axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);

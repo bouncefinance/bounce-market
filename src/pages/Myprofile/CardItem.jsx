@@ -167,15 +167,23 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo, c
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
 
+    useEffect(() => {
+		console.log("category: ", category)
+	}, [category])
+
+    useEffect(() => {
+		console.log("cover: ", cover)
+	}, [cover])
+
     return (
         <>
             <CardItemStyled>
-                {poolInfo && <div className="img_wrapper" onClick={() => {
+                {poolInfo && <div className="img_wrapper" onClick={(e) => {
                     // console.log(poolInfo)
                     if (!poolInfo.contractaddress) return
                     history.push("/MyGallery/" + poolInfo.contractaddress + '-' + nftId)
                 }}>
-                    {category && category === 'video' ?
+                    {category && (category === "Videos" || category === 'video') ?
                         <VideoItem width={262} height={262} src={cover} /> :
                         <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={cover} />}
                 </div>}

@@ -302,7 +302,7 @@ export default function SellNFT() {
 
 			<PageBody>
 				<PageBodyLeft>
-					{nftInfo && nftInfo.category === "Videos" ?
+					{nftInfo && (nftInfo.category === "Videos" || nftInfo.category === "video") ?
 						<video width='500px' height='500px' src={nftInfo && (nftInfo.fileurl)} controls='controls' autoPlay></video> :
 						<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl)} />
 					}
