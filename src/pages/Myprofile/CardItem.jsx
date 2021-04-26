@@ -167,13 +167,13 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo, c
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
 
-    useEffect(() => {
-		console.log("category: ", category)
-	}, [category])
+    // useEffect(() => {
+	// 	console.log("category: ", category)
+	// }, [category])
 
-    useEffect(() => {
-		console.log("cover: ", cover)
-	}, [cover])
+    // useEffect(() => {
+	// 	console.log("cover: ", cover)
+	// }, [cover])
 
     return (
         <>

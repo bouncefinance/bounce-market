@@ -3,8 +3,8 @@ import CommonHeader from '../CommonHeader'
 import styled from 'styled-components'
 // import Search from './Search'
 import { CardItem, AddCardItem, PenddingCardItem } from '../CardItem'
-import { useLazyQuery } from '@apollo/client';
-import { QueryMyNFT } from '@/utils/apollo'
+// import { useLazyQuery } from '@apollo/client';
+// import { QueryMyNFT } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
@@ -14,7 +14,7 @@ import { AUCTION_TYPE } from '@/utils/const'
 import Category from '../Category'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
-import axios from 'axios';
+// import axios from 'axios';
 
 const MyGalleryStyled = styled.div`
     width: 1100px;
@@ -47,8 +47,8 @@ const MyGalleryStyled = styled.div`
 export default function Index() {
   const { account, active } = useActiveWeb3React();
   // FMG: 0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f
-  const current_account = account //account
-  const { sign_Axios } = useAxios();
+  const current_account = '0x4074A8deA884611F6553932CDF0B8390CDbA427E' //account
+  const { sign_Axios,axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
   // eslint-disable-next-line
@@ -61,18 +61,40 @@ export default function Index() {
 
   const { wrapperIntl } = useWrapperIntl()
 
-  const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
-    {
-      variables: { user: String(current_account).toLowerCase() },
-      // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
-      fetchPolicy: "network-only",
-      onCompleted: async () => {
-        setMyNftData(data || [])
-      },
-      onError: (err) => {
-        console.log('onerror', err);
+  // const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
+  //   {
+  //     variables: { user: String(current_account).toLowerCase() },
+  //     // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
+  //     fetchPolicy: "network-only",
+  //     onCompleted: async () => {
+  //       setMyNftData(data || [])
+  //     },
+  //     onError: (err) => {
+  //       console.log('onerror', err);
+  //     }
+  //   });
+    const getMyNFT = async ()=>{
+      let myNftData = {
+        nft721Items: [],
+        nft1155Items: []
       }
-    });
+  
+      try {
+        const params = {
+          user_address: current_account
+        }
+        const res = await axios.get('nft', { params })
+        if (res.status === 200 && res.data.code === 200) {
+          myNftData = res.data.data
+        }
+      } catch (error) {
+  
+      }
+  
+  
+  
+      setMyNftData(myNftData)
+    }
 
   // const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
   //   {
@@ -155,7 +177,7 @@ export default function Index() {
     getMyTradeNFT()
     getMyApi()
     // eslint-disable-next-line
-  }, [active, account, getMyNFT]);
+  }, [active, account]);
 
   useEffect(() => {
     console.log(myTradeData, myNftData)
