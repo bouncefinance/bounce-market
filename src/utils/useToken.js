@@ -132,10 +132,10 @@ export default function useToken() {
     }
 
     const exportErc20Info = async (tokenAddr, flag) => {
-        let _chainId = chainId || window.localStorage.LastChainId 
+        let _chainId = chainId || window.localStorage.LastChainId
         let price = 0
         let web3
-        if (typeof web3 !== 'undefined') {
+        if ((typeof web3 !== 'undefined') && !chainId) {
             web3 = new Web3(web3.currentProvider);
         } else {
             // set the provider you want from Web3.providers
@@ -143,7 +143,7 @@ export default function useToken() {
         }
 
         if (tokenAddr === ZERO_ADDRESS) {
-            const balanceOf = account?await web3.eth.getBalance(account):0
+            const balanceOf = account ? await web3.eth.getBalance(account) : 0
             if (flag) {
                 price = _chainId === 56 || _chainId === 97 ? await queryPrice('BNB') : _chainId === 128 ? await queryPrice('HT') : await queryPrice('ETH')
             }
@@ -157,10 +157,10 @@ export default function useToken() {
                 price
             }
         }
-        
-        
+
+
         console.log(web3, tokenAddr)
-        
+
         let BounceERC20_CT = library ? getContract(library, BounceERC20.abi, tokenAddr) : new web3.eth.Contract(BounceERC20.abi, tokenAddr)
 
 

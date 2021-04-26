@@ -32,46 +32,67 @@ const MyLikedStyled = styled.div`
         }
     }
 `
-export default function MyLiked () {
+export default function MyLiked() {
   const [loading, setLoding] = useState(true)
   const [list, setlist] = useState([])
-  const { sign_Axios } = useAxios()
+  const { sign_Axios,axios } = useAxios()
   const { account, } = useActiveWeb3React()
   const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
   const { data } = useQuery(QueryTradePools)
+
+  const getAllPoolData = async () => {
+    const poolsParmas = { offset: 0, count: 1e4 }
+    try {
+      const res = await axios.get('/pools', { params: poolsParmas })
+      if (res.status === 200 && res.data.code === 200) {
+        return res.data.data
+      } else {
+        return []
+      }
+    } catch (error) {
+      return []
+    }
+  }
+
   useEffect(() => {
     const init = async () => {
       setLoding(true)
       // await new Promise((resolve,) => setTimeout(resolve, 600))
       // console.log(data)
-      const tradePools = data.tradePools.map(item => ({
+      const newData =await getAllPoolData()
+
+      const tradePools = newData.tradePools.map(item => ({
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
       })).filter(item => item.state !== 1)
-      const tradeAuctions = data.tradeAuctions.map(item => ({
+      const tradeAuctions = newData.tradeAuctions.map(item => ({
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
       })).filter(item => item.state !== 1)
-      // console.log(tradeAuctions)
-      const pools = tradePools.concat(tradeAuctions);
+      // new Api 
+
+      const pools = tradePools.concat(tradeAuctions)
+      // console.log('newData',pools)
 
       const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
       setLoding(false)
+      // console.log(res.data.data)
       if (res.data.code === 200 || res.data.code === 1) {
         setlist(res.data.data.map(item => {
           const poolInfo = pools.find(pool => pool.tokenId === item.itemid);
           if (!poolInfo) {
             console.error('poolInfo error:', pools, item)
             return null
-          }
-          return {
-            ...item,
-            poolType: poolInfo.poolType,
-            poolId: poolInfo.poolId,
-            price: poolInfo.price,
-            createTime: poolInfo.createTime,
-            token1: poolInfo.token1
+          } else {
+            return {
+              ...item,
+              poolType: poolInfo.poolType,
+              poolId: poolInfo.poolId,
+              price: poolInfo.price,
+              createTime: poolInfo.createTime,
+              token1: poolInfo.token1
+            }
           }
         }).filter((e => e)))
       } else {

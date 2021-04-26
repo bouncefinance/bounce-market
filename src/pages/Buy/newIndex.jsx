@@ -824,6 +824,8 @@ export default function NewIndex() {
     const [history, setHistory] = useState([]);
     const handleSwap = (data) => {
         const tradePool = data.tradePools[0];
+        if(!tradePool) return
+        console.log(tradePool)
         // if(!tradePool) return  setHistory([]);
         const creator = tradePool.creator;
         const total = tradePool.amountTotal0;
