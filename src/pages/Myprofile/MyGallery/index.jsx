@@ -126,7 +126,9 @@ export default function Index() {
       const apiNftList = wrapperItem(data)
       // console.log(apiNftList)
       // setItemList([...apiNftList, ...itemList])
-      setMyApiData(apiNftList)
+      const filterList = apiNftList.filter(item => item.itemname && item.itemname !== 'Untitled (External import)')
+      console.log(filterList)
+      setMyApiData(filterList)
     })
   }
 
@@ -136,7 +138,6 @@ export default function Index() {
       const list = data.map(item => {
         return {
           getType: 'getMyApi',
-          ...item.metadata,
           ...item
         }
       })
@@ -186,7 +187,7 @@ export default function Index() {
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
       }
-    }).filter(item => item.state !== 1);
+    }).filter(item => item.state !== 1)
 
 
 
@@ -238,7 +239,6 @@ export default function Index() {
             }
 
           }).filter(item => item.fileurl)
-
 
 
           let result = list.sort((a, b) => a.tokenId - b.tokenId)
