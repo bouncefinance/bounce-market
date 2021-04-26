@@ -274,11 +274,11 @@ export default function MyMarket() {
 
           const soldList = soldPoolData.map(pool => {
             const item = res.data.data.find(r => r.id === pool.tokenId);
-            if (item.id === 17092) {
-              item.category = 'video'
-            } else {
-              item.category = 'image'
-            }
+            // if (item.id === 17092) {
+            //   item.category = 'video'
+            // } else {
+            //   item.category = 'image'
+            // }
             return {
               ...item,
               poolType: pool.poolType,

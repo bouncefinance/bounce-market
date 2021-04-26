@@ -10,9 +10,10 @@ import icon_comics from '@assets/images/icon/comics.svg'
 import icon_sport from '@assets/images/icon/sport.svg'
 
 import useAxios from '@/utils/useAxios'
+// import useToken from '@utils/useToken'
 import { Controller } from '@/utils/controller'
-import { useQuery } from '@apollo/client'
-import { QueryMarketTradePools, QueryMarketTradePools_0 } from '@/utils/apollo'
+// import { useQuery } from '@apollo/client'
+// import { QueryMarketTradePools, QueryMarketTradePools_0 } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
@@ -20,6 +21,7 @@ import Button from '@/components/UI-kit/Button/Button'
 import { getCoinList } from '@/utils/coin'
 // import { ZERO_ADDRESS } from "@/web3/address_list/token"
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios'
 import { myContext } from '@/redux/index.js';
 
 const MarketplaceStyled = styled.div`
@@ -96,6 +98,7 @@ const MarketplaceStyled = styled.div`
     }
 `
 
+const poolsParmas = { offset: 0, count: 1e4 }
 export default function Marketplace() {
   const { wrapperIntl } = useWrapperIntl()
   const { dispatch } = useContext(myContext);
@@ -124,21 +127,21 @@ export default function Marketplace() {
   const { active, chainId } = useActiveWeb3React()
   // const { exportErc20Info } = useToken()
 
-  const [getpollsVariables, _setGetPollsVariables] = useState({ contract: '' })
-  const [getpollsMethods, _setGetPollsMethods] = useState(QueryMarketTradePools)
+  // const [getpollsVariables, _setGetPollsVariables] = useState({ contract: '' })
+  // const [getpollsMethods, _setGetPollsMethods] = useState(QueryMarketTradePools)
 
-  const setGetPollsVariables = (v) => {
-    // console.log(v)
-    if (!v.contract) {
-      _setGetPollsMethods(QueryMarketTradePools_0)
-    } else {
-      _setGetPollsMethods(QueryMarketTradePools)
-    }
-    _setGetPollsVariables(v)
-  }
-  const { data } = useQuery(getpollsMethods, { variables: getpollsVariables, skip: getpollsVariables.contract === '' })
-
-
+  // const setGetPollsVariables = (v) => {
+  //   // console.log(v)
+  //   if (!v.contract) {
+  //     _setGetPollsMethods(QueryMarketTradePools_0)
+  //   } else {
+  //     _setGetPollsMethods(QueryMarketTradePools)
+  //   }
+  //   _setGetPollsVariables(v)
+  // }
+  // const { data } = useQuery(getpollsMethods, { variables: getpollsVariables, skip: getpollsVariables.contract === '' })
+  
+  const [data, setData] = useState({ tradeAuctions: [], tradePools: [] })
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
@@ -146,6 +149,16 @@ export default function Marketplace() {
   //   type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
   //     type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
   //       NFT_CATEGORY.FineArts);
+
+  const initPools = async (params) => {
+    const res = await axios.get('/pools', { params: params})
+    if (res.data.code === 200) {
+      setData(res.data.data)
+    }
+  }
+  useEffect(() => {
+    initPools(poolsParmas)
+  }, [])
 
 
 
@@ -180,14 +193,13 @@ export default function Marketplace() {
       });
     }
 
-    if (chainId) {
       // console.log(getCoinList(chainId))
       setCoinList([{
         value: 'All'
       }, ...getCoinList(chainId).filter(item => item.contract)])
-    }
+    
     if (data) {
-      // console.log(data)
+      console.log(data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
@@ -375,7 +387,10 @@ export default function Marketplace() {
           }}
         />
 
-        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'}
+        {
+          // coinList.length > 0
+          true
+          && <PullRadioBox prefix={'Currency:'}
           width={'205px'} options={coinList}
           // defaultValue={chainId === 56 ? 'BNB' : 'ETH'} 
           defaultValue={'All'}
@@ -383,7 +398,8 @@ export default function Marketplace() {
             // console.log(item)
             if (item) {
               setLoding(false)
-              setGetPollsVariables({ contract: item.contract })
+              // setGetPollsVariables({ contract: item.contract })
+              initPools({ ...poolsParmas, contract: item.contract})
             }
           }} />}
 

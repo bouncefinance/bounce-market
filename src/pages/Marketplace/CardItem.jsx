@@ -6,7 +6,7 @@ import { useHistory } from 'react-router'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 import { weiToNum } from '@/utils/useBigNumber'
 import useToken from '@/utils/useToken'
-import { useActiveWeb3React } from '@/web3';
+// import { useActiveWeb3React } from '@/web3';
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import { VideoItem } from '../component/Other/videoItem'
 // import { getMetadata } from '@utils/utils'
@@ -166,16 +166,14 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
     const { wrapperIntl } = useWrapperIntl()
     const history = useHistory()
     const { exportErc20Info } = useToken()
-    const { active } = useActiveWeb3React()
     /* const [newPrice, setNewPrice] = useState('Loading Price ...') */
     const [newPrice, setNewPrice] = useState(wrapperIntl("MarketPlace.CardItem.LoadingPrice"))
     // console.log(poolInfo)
 
     useEffect(() => {
-        if (!active) return
         getPriceByToken1(price, token1)
         // eslint-disable-next-line
-    }, [active, token1, price])
+    }, [token1, price])
 
     const getPriceByToken1 = async (price, token1) => {
         if (!price || !token1) return setNewPrice('--')
@@ -185,10 +183,14 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
 
+    useEffect(() => {
+        console.log("category: ", category)
+    }, [category])
+
     return (<LazyLoad width={262} height={408}>
         <CardItemStyled>
 
-            {category && category === 'video' ?
+            {category && (category === "Videos" || category === 'video') ?
                 <VideoItem width={262} height={262} src={cover} />:
                 <AutoStretchBaseWidthOrHeightImg width={262} height={262} src={litimgurl || cover} />}
             <div className="item_wrapper">

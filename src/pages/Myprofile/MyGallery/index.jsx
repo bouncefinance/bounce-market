@@ -14,6 +14,7 @@ import { AUCTION_TYPE } from '@/utils/const'
 import Category from '../Category'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios';
 
 const MyGalleryStyled = styled.div`
     width: 1100px;
@@ -46,9 +47,8 @@ const MyGalleryStyled = styled.div`
 export default function Index() {
   const { account, active } = useActiveWeb3React();
   // FMG: 0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f
-  //const current_account = account //account
-  const current_account = '0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f'
-  const { sign_Axios, axios } = useAxios();
+  const current_account = account //account
+  const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
   // eslint-disable-next-line
@@ -99,7 +99,7 @@ export default function Index() {
         count: 100,
         user_address: current_account
       }
-      const res = await axios.get('https://nftview.bounce.finance/v1/bsc/pools', { params })
+      const res = await axios.get('pools', { params })
       if (res.status === 200 && res.data.code === 200) {
         traddata = res.data.data
       }
@@ -127,7 +127,9 @@ export default function Index() {
       const apiNftList = wrapperItem(data)
       // console.log(apiNftList)
       // setItemList([...apiNftList, ...itemList])
-      setMyApiData(apiNftList)
+      const filterList = apiNftList.filter(item => item.itemname && item.itemname !== 'Untitled (External import)')
+      console.log(filterList)
+      setMyApiData(filterList)
     })
   }
 
@@ -137,7 +139,6 @@ export default function Index() {
       const list = data.map(item => {
         return {
           getType: 'getMyApi',
-          ...item.metadata,
           ...item
         }
       })
@@ -187,7 +188,7 @@ export default function Index() {
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
       }
-    }).filter(item => item.state !== 1);
+    }).filter(item => item.state !== 1)
 
 
 
@@ -239,7 +240,6 @@ export default function Index() {
             }
 
           }).filter(item => item.fileurl)
-
 
 
           let result = list.sort((a, b) => a.tokenId - b.tokenId)

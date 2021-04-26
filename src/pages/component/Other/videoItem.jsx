@@ -3,11 +3,6 @@ import styled from 'styled-components'
 import errorImg from '../../../assets/images/loading/3.svg'
 import play from './assets/play_gray.svg'
 
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import Fade from '@material-ui/core/Fade';
 import Grow from '@material-ui/core/Grow';
 
 const VideoStyled = styled.div`
@@ -19,6 +14,10 @@ div{
   /* background-color: rgba(0, 0, 0, 1); */
   background-color: rgb(244,244,244);
   /* background-color: white; */
+  cursor: ${(cursorVisible)=>{
+    if (!cursorVisible) return 'none'
+  }};
+
   .img-loading{
     position: absolute;
     top: 0px;
@@ -34,7 +33,6 @@ div{
     z-index: 10;
     background-color: transparent;
     img {
-      /* color: rgb(255,255,255); */
       width: 30px;
       height: 30px;
       opacity: 0.9;
@@ -49,10 +47,12 @@ export function VideoItem ({ src, width, height, style = {} }) {
   const [imgShow, setImgShow] = useState(true)
   const [imgLoding, setImgLoding] = useState(!true)
   const [playButtonVisiable, setPlayButtonVisiable] = useState(true)
+  const [cursorVisible, setCursorVisible] = useState(true)
   // let [isHover, setIsHover] = useState(false)
 
-  /* useEffect(() => {
-  }, []) */
+  useEffect(() => {
+    console.log("cursorVisible: ", cursorVisible)
+  }, [cursorVisible])
 
   /* const onMouseMove = () => {
     const video = videoRef?.current
@@ -69,7 +69,7 @@ export function VideoItem ({ src, width, height, style = {} }) {
     setPlayButtonVisiable(true)
   }
   
-  return <VideoStyled>
+  return <VideoStyled cursorVisible={cursorVisible}>
     <div  style={{ ...style, width: `${width}px`, height: `${height}px`, backgroundImage: `url(${errorImg})` }}>
       {
       imgShow
@@ -112,13 +112,17 @@ export function VideoItem ({ src, width, height, style = {} }) {
               const video = videoRef?.current
               if (!video) return
               video?.play()
+
+              setTimeout(() => {
+                setCursorVisible(false)
+              }, 1000);
             }
           }
         >
           <img src={play} alt=""/>
         </div>
       </Grow>
-      
+
     </div>
   </VideoStyled>
 }
