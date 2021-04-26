@@ -382,7 +382,7 @@ export default function BrandsByType() {
                         }
                     }).filter(item => item)
 
-                    console.log(list)
+                    // console.log(list)
                     const result = list.sort((a, b) => b.createTime - a.createTime);
                     setListData(result);
                     setStatusList(result);
