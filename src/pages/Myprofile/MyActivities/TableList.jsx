@@ -15,8 +15,8 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import useAxios from '@/utils/useAxios';
 import { Controller } from '@/utils/controller';
 import useWrapperIntl from '@/locales/useWrapperIntl'
-import axios from 'axios';
-import to from 'await-to-js'
+// import axios from 'axios';
+// import to from 'await-to-js'
 
 const useStyles = makeStyles({
     table: {
@@ -51,7 +51,7 @@ export default function BasicTable() {
     const { sign_Axios } = useAxios();
 
     const handleActivities = (data) => {
-        console.log('data', data)
+        // console.log('data', data)
         const activities = data.map(item => ({
             ...item,
             date: formatDistanceToNow(item.Timestamp * 1000),
@@ -61,37 +61,37 @@ export default function BasicTable() {
         sign_Axios.post(Controller.items.getitemsbyids, {
             ids: tokenList
         })
-        .then(res => {
-            if (res.status === 200 && res.data.code === 1) {
-                const items = res.data.data;
-                const list = items.map(item => {
-                    const activity = activities.find(issue => issue.id === item.id);
-                    console.log(item)
-                    return {
-                        ...activity,
-                        cover: item.fileurl,
-                        item: item.itemname,
-                        category: item.category,
-                    }
-                })
-                console.log(list)
-                setList(list.sort((a, b) => b.timestamp - a.timestamp));
-            }
-        })
+            .then(res => {
+                if (res.status === 200 && res.data.code === 1) {
+                    const items = res.data.data;
+                    const list = items.map(item => {
+                        const activity = activities.find(issue => issue.id === item.id);
+                        console.log(item)
+                        return {
+                            ...activity,
+                            cover: item.fileurl,
+                            item: item.itemname,
+                            category: item.category,
+                        }
+                    })
+                    console.log(list)
+                    setList(list.sort((a, b) => b.timestamp - a.timestamp));
+                }
+            })
     }
-
+    // eslint-disable-next-line
     const [fromData, setFromData] = useState([]);
 
     const [getToActivities, toData] = useLazyQuery(QueryToActivities, {
-        variables: { user: String(account).toLowerCase()},
-        fetchPolicy:"network-only",
+        variables: { user: String(account).toLowerCase() },
+        fetchPolicy: "network-only",
         onCompleted: () => {
             const data = fromData.activities.concat(toData.data.activities);
             handleActivities(data);
         }
     });
 
-    
+
     // const getToActivities = async (fromData) => {
     //     const [resErr, res] = await to(axios.get('activities', { params: {user_address: String(account).toLowerCase()}}))
     //     if (res?.data?.code === 200) {
@@ -105,8 +105,8 @@ export default function BasicTable() {
     }
 
     const [getFromActivities, { data }] = useLazyQuery(QueryFromActivities, {
-        variables: { user: String(account).toLowerCase()},
-        fetchPolicy:"network-only",
+        variables: { user: String(account).toLowerCase() },
+        fetchPolicy: "network-only",
         onCompleted: () => {
             handleFromActivities(data);
         }

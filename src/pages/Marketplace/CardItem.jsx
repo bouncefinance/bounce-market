@@ -6,7 +6,7 @@ import { useHistory } from 'react-router'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 import { weiToNum } from '@/utils/useBigNumber'
 import useToken from '@/utils/useToken'
-import { useActiveWeb3React } from '@/web3';
+// import { useActiveWeb3React } from '@/web3';
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import { VideoItem } from '../component/Other/videoItem'
 // import { getMetadata } from '@utils/utils'

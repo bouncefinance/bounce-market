@@ -1,6 +1,6 @@
 import { weiToNum } from '@/utils/useBigNumber'
 import useToken from '@/utils/useToken'
-import { useActiveWeb3React } from '@/web3'
+// import { useActiveWeb3React } from '@/web3'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
