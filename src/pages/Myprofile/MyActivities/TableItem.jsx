@@ -60,6 +60,7 @@ const TableItemStyled = styled(TableRow)`
 
 const ModifyDate = (date) => {
     const { wrapperIntl } = useWrapperIntl()
+    if(!date) return '--' 
 
     /* about */
     date = (

@@ -2,6 +2,7 @@ import Axios from "axios";
 import { AXIOS_DEFAULT, AXIOS_URL_MATCH_ARRAY } from "./const";
 
 export const getEllipsisAddress = (address) => {
+  if(!address) return '--'
   return address.substring(0, 4) + '...' + address.slice(-4);
 }
 

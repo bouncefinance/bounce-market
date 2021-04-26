@@ -257,53 +257,6 @@ export default function Index() {
         return 2
       }
     })
-
-    // console.log(standards)
-    /*
-    sign_Axios.post(Controller.pools.getpoolsinfo, {
-      poolids: poolIds,
-      standards: standards
-    }).then(stardRes => {
-      sign_Axios.post(Controller.items.getitemsbyids, {
-        ids: list,
-        // category: '',
-        // channel: ''
-      })
-        .then(res => {
-
-          // console.log(res.data.data)
-          if (res.status === 200 && res.data.code === 1) {
-            const list = pools.map((pool, index) => {
-              const poolInfo = res.data.data.find(item => pool.tokenId === item.id);
-              const standardInfo = stardRes.data.data.find(item => pool.poolId === item.poolid);
-
-              return {
-                ...poolInfo,
-                poolweight: 1,
-                ...standardInfo,
-                tokenId: pool.tokenId,
-                poolType: pool.poolType,
-                poolId: pool.poolId,
-                price: pool.price,
-                createTime: pool.createTime,
-                token1: pool.token1
-              }
-            })
-            console.log(list)
-            const list_2 = list.sort((a, b) => b.poolweight - a.poolweight)
-            const list_3 = list_2.slice(0, 8)
-
-            // console.log(list_3)
-            // console.log(list_3)
-            // const list_3 = list_2.sort((a, b) => b.createTime - a.createTime)
-            setItemList(list_3);
-            setLoadingItems(false)
-          }
-        })
-        .catch(() => { })
-    })
-    */
-
     sign_Axios.post(Controller.items.getitemsbyids, { ids: list })
       .then(res => {
         // .filter((_) => _.id).slice(0, 8)
@@ -392,9 +345,6 @@ export default function Index() {
         })}
       </CardGroup>
 
-      {/* <div className="load_more" onClick={() => {
-        history.push('/Marketplace/FineArts')
-      }}>Load More</div> */}
       <div className="Button_LoadMore">
         <Button
           width="280px"
@@ -413,22 +363,7 @@ export default function Index() {
         })}
         {loadingBrands && <SkeletonBrandCards n={4} />}
       </CardGroup>
-
-      {/* <CardGroup title='Newest Requests' link=''>
-        {[...new Array(4)].map((item, index) => {
-          return <RequestsItem
-            key={index}
-            title='B-day Video'
-            type='Video'
-            context='I want to a custom video for my birthday. It shouldn’t be longer then ~20-30 sec. I want to a custom video for my birthday.
-It shouldn’t be longer then ~20-30 sec.'
-            price='100 USDT'
-          />
-        })}
-      </CardGroup> */}
-
       <div className="bottom_banner">
-
         <Link to="/Factory">
           <div className="left">
             <h3>{wrapperIntl('home.footerBanner')}</h3>
