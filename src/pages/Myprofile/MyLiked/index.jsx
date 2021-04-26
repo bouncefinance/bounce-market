@@ -81,9 +81,12 @@ export default function MyLiked() {
       if (res.data.code === 200 || res.data.code === 1) {
         console.log("res.data.data: ", res.data.data)
         setlist(res.data.data.map(item => {
-          const poolInfo = pools.find(pool => pool.tokenId === item.itemid);
+          const poolInfo = pools.find(pool => {
+            return (pool.tokenId === item.itemid)&&
+            (pool.poolId === item.poolid)
+          });
           if (!poolInfo) {
-            console.error('poolInfo error:', pools, item)
+            // console.error('poolInfo error:', pools, item)
             return null
           } else {
             return {
@@ -127,7 +130,7 @@ export default function MyLiked() {
             cover={item.imageurl}
             name={item.itemname}
             cardId={item.poolId}
-            nftId={item.id}
+            nftId={item.itemid}
             price={item.price}
             token1={item.token1}
             poolType={item.poolType}

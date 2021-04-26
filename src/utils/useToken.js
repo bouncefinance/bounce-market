@@ -159,14 +159,14 @@ export default function useToken() {
         }
 
 
-        console.log(web3, tokenAddr)
+        // console.log(web3, tokenAddr)
 
         let BounceERC20_CT = library ? getContract(library, BounceERC20.abi, tokenAddr) : new web3.eth.Contract(BounceERC20.abi, tokenAddr)
 
 
         const decimals = await BounceERC20_CT.methods.decimals().call()
         const symbol = await BounceERC20_CT.methods.symbol().call()
-        const balanceOf = account ? await BounceERC20_CT.methods.balanceOf(account).call() : '0'
+        const balanceOf = '0' //account ? await BounceERC20_CT.methods.balanceOf(account).call() : '0'
 
         if (flag) {
             price = await queryPrice(symbol)
