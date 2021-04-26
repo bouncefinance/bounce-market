@@ -259,6 +259,7 @@ export default function Index() {
             
             console.log("end active:" + active)
             console.log("end chainId:" + chainId)
+            window.localStorage.LastChainId = chainId
         }
 
         getUserInfo();

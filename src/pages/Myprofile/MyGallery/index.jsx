@@ -99,7 +99,7 @@ export default function Index() {
         count: 100,
         user_address: current_account
       }
-      const res = await axios.get('v1/bsc/pools', { params })
+      const res = await axios.get('pools', { params })
       if (res.status === 200 && res.data.code === 200) {
         traddata = res.data.data
       }

@@ -1,6 +1,7 @@
 export const DEBOUNCE = 300;
 
-const GH_URL = 'https://nftview.bounce.finance/'
+// const GH_URL = 'https://nftview.bounce.finance/'
+const GH_URL = 'https://nftview.bounce.finance/v1/bsc_test/'
 // axios default url
 export const AXIOS_DEFAULT = GH_URL
 export const AXIOS_URL_MATCH_ARRAY = [

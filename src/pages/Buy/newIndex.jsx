@@ -409,38 +409,16 @@ export default function NewIndex() {
         // eslint-disable-next-line
     }, [poolInfo])
 
-    const nftId = poolInfo.tokenId
 
     useEffect(() => {
-        const getNFTInfoList = async (nftId) => {
-            const params = {
-                id: parseInt(nftId),
-            };
-
-            sign_Axios
-                .post("/api/v2/main/auth/getoneitembyid", params)
-                .then((res) => {
-                    if (res.status === 200 && res.data.code === 1) {
-                        /* alert("获取成功"); */
-                        /* console.log(res); */
-                        let NFTInfoList = res.data.data;
-                        setSupply(NFTInfoList.supply)
-                        setTokenID(NFTInfoList.id);
-                        setTokenContractAddress(NFTInfoList.contractaddress);
-                        setTokenSymbol(NFTInfoList.itemsymbol);
-                        setExternalLink(NFTInfoList.externallink);
-                    } else {
-                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain") });
-                    }
-                })
-                .catch((err) => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain") });
-                });
-        };
-        if (!active || !nftId) return;
-        getNFTInfoList(poolInfo.contractaddress, nftId);
+        if (!nftInfo) return;
+        setSupply(nftInfo.supply)
+        setTokenID(nftInfo.id);
+        setTokenContractAddress(nftInfo.contractaddress);
+        setTokenSymbol(nftInfo.itemsymbol);
+        setExternalLink(nftInfo.externallink)    
         // eslint-disable-next-line
-    }, [active, nftId])
+    }, [nftInfo])
 
     const onLiked = async () => {
         setLoadingLocked(true)

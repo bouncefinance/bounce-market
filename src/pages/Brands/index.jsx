@@ -51,7 +51,7 @@ export default function Index() {
 
   const [data, setData] = useState({ erc721: [], erc1155: [] })
   const initPools = async (params) => {
-    const res = await axios.get('v1/bsc/brands', { params: params })
+    const res = await axios.get('/brands', { params: params })
     if (res.data.code === 200) {
       setData(res.data.data)
     }

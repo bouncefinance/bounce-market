@@ -10,7 +10,6 @@ import Web3 from "web3";
 import { weiDiv, weiToNum } from "./useBigNumber";
 import axios from "axios";
 
-
 // import { getUSDTAddress, getBUSDAddress, getUSDCAddress } from "@/web3/address_list/token";
 
 // import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
@@ -133,28 +132,41 @@ export default function useToken() {
     }
 
     const exportErc20Info = async (tokenAddr, flag) => {
+        let _chainId = chainId || window.localStorage.LastChainId 
         let price = 0
+        let web3
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            // set the provider you want from Web3.providers
+            web3 = new Web3(new Web3.providers.HttpProvider('https://bsc-dataseed4.binance.org'));
+        }
+
         if (tokenAddr === ZERO_ADDRESS) {
-            const web3 = new Web3(library?.provider)
-            const balanceOf = await web3.eth.getBalance(account)
+            const balanceOf = account?await web3.eth.getBalance(account):0
             if (flag) {
-                price = chainId === 56 || chainId === 97 ? await queryPrice('BNB') : chainId === 128 ? await queryPrice('HT') : await queryPrice('ETH')
+                price = _chainId === 56 || _chainId === 97 ? await queryPrice('BNB') : _chainId === 128 ? await queryPrice('HT') : await queryPrice('ETH')
             }
             return {
-                chainId,
+                chainId: _chainId,
                 contract: tokenAddr,
                 decimals: 18,
-                symbol: chainId === 56 || chainId === 97 ? 'BNB' : chainId === 128 ? 'HT' : 'ETH',
+                symbol: _chainId === 1 || _chainId === 4 ? 'ETH' : _chainId === 128 ? 'HT' : 'BNB',
                 balanceOf,
                 balance: weiToNum(balanceOf),
                 price
             }
         }
-        let BounceERC20_CT = getContract(library, BounceERC20.abi, tokenAddr)
+        
+        
+        console.log(web3, tokenAddr)
+        
+        let BounceERC20_CT = library ? getContract(library, BounceERC20.abi, tokenAddr) : new web3.eth.Contract(BounceERC20.abi, tokenAddr)
+
 
         const decimals = await BounceERC20_CT.methods.decimals().call()
         const symbol = await BounceERC20_CT.methods.symbol().call()
-        const balanceOf = await BounceERC20_CT.methods.balanceOf(account).call()
+        const balanceOf = account ? await BounceERC20_CT.methods.balanceOf(account).call() : '0'
 
         if (flag) {
             price = await queryPrice(symbol)

@@ -151,7 +151,7 @@ export default function Marketplace() {
   //       NFT_CATEGORY.FineArts);
 
   const initPools = async (params) => {
-    const res = await axios.get('v1/bsc/pools', { params: params})
+    const res = await axios.get('/pools', { params: params})
     if (res.data.code === 200) {
       setData(res.data.data)
     }
@@ -193,12 +193,11 @@ export default function Marketplace() {
       });
     }
 
-    if (chainId) {
       // console.log(getCoinList(chainId))
       setCoinList([{
         value: 'All'
       }, ...getCoinList(chainId).filter(item => item.contract)])
-    }
+    
     if (data) {
       console.log(data)
       const tradePools = data.tradePools.map(item => ({
@@ -388,7 +387,10 @@ export default function Marketplace() {
           }}
         />
 
-        {coinList.length > 0 && <PullRadioBox prefix={'Currency:'}
+        {
+          // coinList.length > 0
+          true
+          && <PullRadioBox prefix={'Currency:'}
           width={'205px'} options={coinList}
           // defaultValue={chainId === 56 ? 'BNB' : 'ETH'} 
           defaultValue={'All'}

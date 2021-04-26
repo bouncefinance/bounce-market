@@ -411,7 +411,7 @@ export default function BrandsByType() {
                 count: 100,
                 user_address: account
             }
-            const res = await axios.get('v1/bsc/pools', { params })
+            const res = await axios.get('pools', { params })
             if (res.status === 200 && res.data.code === 200) {
                 traddata = res.data.data
             }

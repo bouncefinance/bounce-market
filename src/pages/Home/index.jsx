@@ -170,7 +170,7 @@ export default function Index() {
 
   const [data, setData] = useState()
   const initPools = async (params) => {
-    const res = await axios.get('v1/bsc/pools', { params: params })
+    const res = await axios.get('/pools', { params: params })
     if (res.data.code === 200) {
       setData(res.data.data)
     }
