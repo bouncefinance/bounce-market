@@ -120,7 +120,7 @@ export default function UploadAll({
             <div className={`left_img image`}>
                 <img src={coverSrc} alt="" />
                 <input disabled={disabled || lockInput} type="file" 
-                accept=""
+                accept="image/*,video/*"
                 name="upload_file" onChange={handelFileChange} id="" onClick={onClick} />
             </div>
             <div className="right_info">
