@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import styled from 'styled-components'
 import errorImg from '../../../assets/images/loading/3.svg'
 import play from './assets/play_gray.svg'
@@ -14,9 +14,6 @@ div{
   /* background-color: rgba(0, 0, 0, 1); */
   background-color: rgb(244,244,244);
   /* background-color: white; */
-  cursor: ${(cursorVisible)=>{
-    if (!cursorVisible) return 'none'
-  }};
 
   .img-loading{
     position: absolute;
@@ -43,18 +40,13 @@ div{
 }
 `
 
-export function VideoItem ({ src, width, height, style = {} }) {
+export function VideoItem ({ src, width, height, style = {}, showPlayButton = true }) {
 
   const videoRef = useRef(null)
   const [imgShow, setImgShow] = useState(true)
   const [imgLoding, setImgLoding] = useState(!true)
   const [playButtonVisiable, setPlayButtonVisiable] = useState(true)
-  const [cursorVisible, setCursorVisible] = useState(true)
   // let [isHover, setIsHover] = useState(false)
-
-  useEffect(() => {
-    console.log("cursorVisible: ", cursorVisible)
-  }, [cursorVisible])
 
   /* const onMouseMove = () => {
     const video = videoRef?.current
@@ -71,7 +63,7 @@ export function VideoItem ({ src, width, height, style = {} }) {
     setPlayButtonVisiable(true)
   }
   
-  return <VideoStyled cursorVisible={cursorVisible}>
+  return <VideoStyled showPlayButton={showPlayButton}>
     <div  style={{ ...style, width: `${width}px`, height: `${height}px`, backgroundImage: `url(${errorImg})` }}>
       {
       imgShow
@@ -97,33 +89,33 @@ export function VideoItem ({ src, width, height, style = {} }) {
       {imgLoding && <div className="img-loading"></div>}
 
       
-      <Grow
-          in={playButtonVisiable}
-          style={{ transformOrigin: 'center' }}
-          {...(playButtonVisiable ? { timeout: 500 } : {})}
-      >
-        <div
-          className="playButton"
-          onClick={
-            (e)=>{
-              if (imgLoding) return
-              e.stopPropagation();
-              e.nativeEvent.stopImmediatePropagation();
-              setPlayButtonVisiable(false)
-              /* debugger */
-              const video = videoRef?.current
-              if (!video) return
-              video?.play()
-
-              setTimeout(() => {
-                setCursorVisible(false)
-              }, 1000);
-            }
-          }
+      {
+        showPlayButton
+        &&
+        <Grow
+            in={playButtonVisiable}
+            style={{ transformOrigin: 'center' }}
+            {...(playButtonVisiable ? { timeout: 500 } : {})}
         >
-          <img src={play} alt=""/>
-        </div>
-      </Grow>
+          <div
+            className="playButton"
+            onClick={
+              (e)=>{
+                if (imgLoding) return
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                setPlayButtonVisiable(false)
+                /* debugger */
+                const video = videoRef?.current
+                if (!video) return
+                video?.play()
+              }
+            }
+          >
+            <img src={play} alt=""/>
+          </div>
+        </Grow>
+      }
 
     </div>
   </VideoStyled>
