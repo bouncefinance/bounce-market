@@ -159,7 +159,7 @@ export default function useToken() {
         }
 
 
-        console.log(web3, tokenAddr)
+        // console.log(web3, tokenAddr)
 
         let BounceERC20_CT = library ? getContract(library, BounceERC20.abi, tokenAddr) : new web3.eth.Contract(BounceERC20.abi, tokenAddr)
 

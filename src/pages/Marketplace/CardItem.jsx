@@ -183,9 +183,9 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
 
-    useEffect(() => {
-        console.log("category: ", category)
-    }, [category])
+    // useEffect(() => {
+    //     console.log("category: ", category)
+    // }, [category])
 
     return (<LazyLoad width={262} height={408}>
         <CardItemStyled>
