@@ -14,6 +14,7 @@ import { AUCTION_TYPE } from '@/utils/const'
 import Category from '../Category'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios';
 
 const MyGalleryStyled = styled.div`
     width: 1100px;
@@ -47,7 +48,7 @@ export default function Index() {
   const { account, active } = useActiveWeb3React();
   // FMG: 0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f
   const current_account = account //account
-  const { sign_Axios, axios } = useAxios();
+  const { sign_Axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
   // eslint-disable-next-line
@@ -98,7 +99,7 @@ export default function Index() {
         count: 100,
         user_address: current_account
       }
-      const res = await axios.get('https://nftview.bounce.finance/v1/bsc/pools', { params })
+      const res = await axios.get('pools', { params })
       if (res.status === 200 && res.data.code === 200) {
         traddata = res.data.data
       }

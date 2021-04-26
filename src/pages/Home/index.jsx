@@ -21,14 +21,14 @@ import Button from '@/components/UI-kit/Button/Button'
 // import { myContext } from '@/redux'
 
 
-import { useQuery } from '@apollo/client'
-import { QueryTradePools } from '@/utils/apollo'
 // import { useActiveWeb3React } from '@/web3'
 // import useToken from '@/utils/useToken'
 // import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE } from '@/utils/const'
 import { Controller } from '@/utils/controller'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios'
+
 import { myContext } from '@/redux/index.js';
 
 const HomeStyled = styled.div`
@@ -157,15 +157,7 @@ const HomeStyled = styled.div`
 
 `
 
-/* const banner_Nav = [
-  ----sort----
-  { name: 'New' },
-  { name: 'Popular' },
-  ----channel----
-  { name: 'Fine Arts' },
-  { name: 'Sports' },
-  { name: 'Comics' },
-] */
+const poolsParmas = { offset: 0, count: 1e4 }
 let weightMap = new Map()
 const getStandardTypeValue = (e) => e === 2 ? 'english-auction' : 'fixed-swap'
 export default function Index() {
@@ -174,7 +166,18 @@ export default function Index() {
   const { account, active } = useWeb3React();
   const history = useHistory()
   const [brands, setbrands] = useState([])
-  const { data } = useQuery(QueryTradePools)
+  // const { data } = useQuery(QueryTradePools)
+
+  const [data, setData] = useState()
+  const initPools = async (params) => {
+    const res = await axios.get('/pools', { params: params })
+    if (res.data.code === 200) {
+      setData(res.data.data)
+    }
+  }
+  useEffect(() => {
+    initPools(poolsParmas)
+  }, [])
   // const { data } = []
   const [itemList, setItemList] = useState()
   // const { exportArrayNftInfo } = useToken()
