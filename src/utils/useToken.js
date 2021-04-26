@@ -166,7 +166,7 @@ export default function useToken() {
 
         const decimals = await BounceERC20_CT.methods.decimals().call()
         const symbol = await BounceERC20_CT.methods.symbol().call()
-        const balanceOf = account ? await BounceERC20_CT.methods.balanceOf(account).call() : '0'
+        const balanceOf = '0' //account ? await BounceERC20_CT.methods.balanceOf(account).call() : '0'
 
         if (flag) {
             price = await queryPrice(symbol)
