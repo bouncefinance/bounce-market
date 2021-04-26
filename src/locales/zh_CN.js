@@ -284,7 +284,7 @@ const zh_CN = {
         "CardItem.Sell": "出售",
         "CardItem.All": "全部",
         "CardItem.OnSale": "售卖中",
-        "CardItem.NotOnSale": "非卖品",
+        "CardItem.NotOnSale": "未上架",
         "CardItem.TopBid": "最高出价",
         "CardItem.Price": "价格",
         "CardItem.InProcessOfCreation": "正在创建 ...",

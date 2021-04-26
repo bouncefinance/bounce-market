@@ -46,6 +46,8 @@ import icon_copy from '@assets/images/icon/copy.svg'
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios';
+import to from 'await-to-js';
 
 const NewIndexStyled = styled.div`
     width: 1100px;
@@ -888,15 +890,15 @@ export default function NewIndex() {
         const creator = tradePool.creator;
         const total = tradePool.tokenAmount0;
         const price = tradePool.amountMin1;
-        const offerLiist = data.auctionBids.map(item => ({
-            name: getEllipsisAddress(item.sender),
-            time: format(new Date(item.timestamp * 1000), 'PPPpp'),
-            // amount: Web3.utils.fromWei(item.amount1),
-            amount: item.amount1,
-            price: item.amount1,
-        }))
+        // const offerLiist = data.auctionBids.map(item => ({
+        //     name: getEllipsisAddress(item.sender),
+        //     time: format(new Date(item.timestamp * 1000), 'PPPpp'),
+        //     // amount: Web3.utils.fromWei(item.amount1),
+        //     amount: item.amount1,
+        //     price: item.amount1,
+        // }))
         // console.log(offerLiist)
-        setOfferList(offerLiist);
+        // setOfferList(offerLiist);
         const createList = data.auctionCreates.map(item => ({
             // event: 'Created',
             event: 'List',
@@ -938,16 +940,38 @@ export default function NewIndex() {
             handleAuction(auctionPool.data);
         }
     })
-
-    useEffect(() => {
-        if (poolId) {
-            if (aucType === AUCTION_TYPE.FixedSwap) {
-                queryPoolSwap();
-            } else if (aucType === AUCTION_TYPE.EnglishAuction) {
-                queryAuctionPool();
-            }
+    const initOfferList = async () => {
+        const type = aucType === AUCTION_TYPE.FixedSwap ? 'fixedswap' : 'english'
+        const [offerListError, offerListRes] = await to(axios.get(`bids?pool_id=${poolId}&pool_type=${type}`))
+        if (offerListRes?.data?.code === 200) {
+            const list = (offerListRes.data?.data || []).map(item => {
+                return {
+                    name: getEllipsisAddress(item.Sender),
+                    time: format(new Date(item.Timestamp * 1000), 'PPPpp'),
+                    amount: item.Amount0,
+                    price: item.Amount1,
+                }
+            })
+            setOfferList(list)
         }
-    }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
+        if (offerListError) {
+            console.log(offerListError)
+        }
+    }
+    useEffect(() => {
+        initOfferList()
+    }, [])
+
+
+    // useEffect(() => {
+    //     if (poolId) {
+    //         if (aucType === AUCTION_TYPE.FixedSwap) {
+    //             queryPoolSwap();
+    //         } else if (aucType === AUCTION_TYPE.EnglishAuction) {
+    //             queryAuctionPool();
+    //         }
+    //     }
+    // }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
 
     /* useEffect(() => {
         console.log("poolInfo", poolInfo)

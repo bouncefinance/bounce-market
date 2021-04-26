@@ -9,11 +9,13 @@ produceHost.forEach(item => {
   }
 })
 const GH_URL = isProDev ? 'https://nftview.bounce.finance/v1/bsc' : 'https://nftview.bounce.finance/v1/bsc_test'
+const GH_V2_URL = isProDev ? 'https://nftview.bounce.finance/v2/bsc' : 'https://nftview.bounce.finance/v2/bsc'
 
 // axios default url
 export const AXIOS_DEFAULT = GH_URL
 export const AXIOS_URL_MATCH_ARRAY = [
   { key: '[GH]', value: GH_URL },
+  { key: '[V2]', value: GH_V2_URL },
 ]
 
 export const AUCTION_TYPE = {
