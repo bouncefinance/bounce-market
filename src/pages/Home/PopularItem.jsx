@@ -117,10 +117,10 @@ export default function PopularItem({ style = {}, itemInfo }) {
                 <div className="line"></div>
                 <div className="flex flex-space-x">
                     <p className="type">
-                        {itemInfo.poolType && (itemInfo.poolType === "english-auction" ? wrapperIntl("home.PopularItem.Price") : wrapperIntl("home.PopularItem.TopBid"))}
+                        {itemInfo.poolType && (itemInfo.poolType === "english-auction" ? wrapperIntl("home.PopularItem.TopBid") : wrapperIntl("home.PopularItem.Price"))}
                     </p>
                     <p className="tag">{`# ${itemInfo.id}`}</p>
-                    <p>{itemInfo.poolweight}</p>
+                    {/* <p>{itemInfo.poolweight}</p> */}
                 </div>
                 <h4 className="price">{newPrice}</h4>
             </div>

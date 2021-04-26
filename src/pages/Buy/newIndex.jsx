@@ -31,7 +31,7 @@ import icon_time from './assets/icon_time.svg'
 import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
 import TradingHistory from './components/TradingHistory';
 import { useLazyQuery } from '@apollo/client';
-import {  QueryEnglishAuction, querylastestBidAmount } from '@/utils/apollo';
+import {/*  QueryFixedSwapPool, QueryEnglishAuction, */ querylastestBidAmount } from '@/utils/apollo';
 import { getEllipsisAddress } from '@/utils/utils';
 import { format, formatDistanceToNow } from 'date-fns';
 import { AUCTION_TYPE } from '@/utils/const';
@@ -285,7 +285,7 @@ export default function NewIndex() {
     const [amount, setAmount] = useState(1)
     const [bidPrice, setBidPrice] = useState()
     // eslint-disable-next-line
-    const [/* minPrice */, setMinPrice] = useState(0)
+    const [minPrice, setMinPrice] = useState(0)
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
     const { sign_Axios } = useAxios()
@@ -824,26 +824,23 @@ export default function NewIndex() {
 
     const [offerList, setOfferList] = useState([]);
     const [history, setHistory] = useState([]);
-
-
-    const handleAuction = (data) => {
-        const tradePool = data.tradeAuctions[0];
+    const handleSwap = (data) => {
+        const tradePool = data.tradePools[0];
+        if(!tradePool) return
+        console.log(tradePool)
         // if(!tradePool) return  setHistory([]);
-
-        // console.log('auctionCreates', tradePool)
         const creator = tradePool.creator;
-        const total = tradePool.tokenAmount0;
-        const price = tradePool.amountMin1;
-        // const offerLiist = data.auctionBids.map(item => ({
-        //     name: getEllipsisAddress(item.sender),
-        //     time: format(new Date(item.timestamp * 1000), 'PPPpp'),
-        //     // amount: Web3.utils.fromWei(item.amount1),
-        //     amount: item.amount1,
-        //     price: item.amount1,
-        // }))
-        // console.log(offerLiist)
-        // setOfferList(offerLiist);
-        const createList = data.auctionCreates.map(item => ({
+        const total = tradePool.amountTotal0;
+        const price = tradePool.price;
+        // console.log(price)
+        const offerList = data.poolSwaps.map(item => ({
+            name: getEllipsisAddress(item.sender),
+            time: format(new Date(item.timestamp * 1000), 'PPPpp'),
+            amount: item.swapAmount0,
+            price: price,
+        }));
+        setOfferList(offerList);
+        const createList = data.poolCreates.map(item => ({
             // event: 'Created',
             event: 'List',
             quantity: total,
@@ -853,31 +850,102 @@ export default function NewIndex() {
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
         }));
-        const bidList = data.auctionBids.map(item => ({
-            event: 'Bid',
-            quantity: '',
-            price: item.amount1,
+        const swapList = data.poolSwaps.map(item => ({
+            event: 'Transfer',
+            quantity: item.swapAmount0,
+            price: price,
             from: getEllipsisAddress(creator),
             to: getEllipsisAddress(item.sender),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
-        }))
-        const claimList = data.auctionClaims.map(item => ({
-            event: 'Claim',
-            price: '',
-            quantity: item.amount1,
+        }));
+        const cancelList = data.poolCancels.map(item => ({
+            event: 'Cancel',
+            price: price,
+            quantity: item.unswappedAmount0,
             from: getEllipsisAddress(item.sender),
             to: '',
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
-        }))
-        const list = createList.concat(bidList).concat(claimList)
+        }));
+        const list = createList.concat(swapList).concat(cancelList)
             .sort((a, b) => b.timestamp - a.timestamp);
-        console.log(list)
+        // console.log(price)
         setHistory(list);
     }
+    handleSwap({
+        tradePools: [],
+        poolSwaps: [],
+        poolCreates: [],
+        poolCancels: [],
+    })
 
-   
+    // const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
+    //     variables: { poolId: Number(poolId) },
+    //     fetchPolicy: "network-only",
+    //     onCompleted: () => {
+    //         handleSwap(poolSwap.data);
+    //     }
+    // });
+
+    // const handleAuction = (data) => {
+    //     const tradePool = data.tradeAuctions[0];
+    //     // if(!tradePool) return  setHistory([]);
+
+    //     // console.log('auctionCreates', tradePool)
+    //     const creator = tradePool.creator;
+    //     const total = tradePool.tokenAmount0;
+    //     const price = tradePool.amountMin1;
+    //     // const offerLiist = data.auctionBids.map(item => ({
+    //     //     name: getEllipsisAddress(item.sender),
+    //     //     time: format(new Date(item.timestamp * 1000), 'PPPpp'),
+    //     //     // amount: Web3.utils.fromWei(item.amount1),
+    //     //     amount: item.amount1,
+    //     //     price: item.amount1,
+    //     // }))
+    //     // console.log(offerLiist)
+    //     // setOfferList(offerLiist);
+    //     const createList = data.auctionCreates.map(item => ({
+    //         // event: 'Created',
+    //         event: 'List',
+    //         quantity: total,
+    //         price: price,
+    //         from: getEllipsisAddress(ZERO_ADDRESS),
+    //         to: getEllipsisAddress(creator),
+    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+    //         timestamp: item.timestamp,
+    //     }));
+    //     const bidList = data.auctionBids.map(item => ({
+    //         event: 'Bid',
+    //         quantity: '',
+    //         price: item.amount1,
+    //         from: getEllipsisAddress(creator),
+    //         to: getEllipsisAddress(item.sender),
+    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+    //         timestamp: item.timestamp,
+    //     }))
+    //     const claimList = data.auctionClaims.map(item => ({
+    //         event: 'Claim',
+    //         price: '',
+    //         quantity: item.amount1,
+    //         from: getEllipsisAddress(item.sender),
+    //         to: '',
+    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+    //         timestamp: item.timestamp,
+    //     }))
+    //     const list = createList.concat(bidList).concat(claimList)
+    //         .sort((a, b) => b.timestamp - a.timestamp);
+    //     console.log(list)
+    //     setHistory(list);
+    // }
+
+    // const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
+    //     variables: { poolId: Number(poolId) },
+    //     fetchPolicy: "network-only",
+    //     onCompleted: () => {
+    //         handleAuction(auctionPool.data);
+    //     }
+    // })
     const initOfferList = async () => {
         const type = aucType === AUCTION_TYPE.FixedSwap ? 'fixedswap' : 'english'
         const [offerListError, offerListRes] = await to(axios.get(`bids?pool_id=${poolId}&pool_type=${type}`))
@@ -898,6 +966,7 @@ export default function NewIndex() {
     }
     useEffect(() => {
         initOfferList()
+        // eslint-disable-next-line
     }, [])
 
 

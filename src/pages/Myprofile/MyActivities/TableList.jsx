@@ -107,6 +107,9 @@ export default function BasicTable() {
             const data = res.data.data
             handleActivities(data);
         }
+        if (resErr) {
+            return handleActivities([])
+        }
     }
 
     const handleFromActivities = (fromData) => {

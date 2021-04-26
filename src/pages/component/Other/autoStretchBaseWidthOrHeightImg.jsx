@@ -27,7 +27,7 @@ div{
   }
 }
 `
-export function AutoStretchBaseWidthOrHeightImg({ src, width, height, style = {} }) {
+export function AutoStretchBaseWidthOrHeightImg ({ src, width, height, style = {} }) {
   const [imgShow, setImgShow] = useState(true)
   const [imgLoding, setImgLoding] = useState(true)
 
