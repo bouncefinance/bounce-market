@@ -205,6 +205,7 @@ function MyNFT () {
 
 	useEffect(() => {
 		const getNFTInfoList = async (nftId) => {
+			if (!active) return;
 			const [contract, tokenId] = nftId.split('-')
 			const params = {
 				ct: contract,
@@ -238,10 +239,9 @@ function MyNFT () {
 					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
 				});
 		};
-		if (!active || !nftId) return;
 		getNFTInfoList(nftId);
 		// eslint-disable-next-line
-	}, [active, nftId]);
+	}, [ NFTInfo]);
 
 	const NavList = [
 		{

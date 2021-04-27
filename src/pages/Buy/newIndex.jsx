@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { /* Link,  */useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components'
 import use_FS_Hook from './use_FS_Hook'
 import use_EA_Hook from './use_EA_Hook'
@@ -31,7 +31,7 @@ import icon_time from './assets/icon_time.svg'
 import { numToWei, weiDiv, weiMul, weiToNum } from '@/utils/useBigNumber';
 import TradingHistory from './components/TradingHistory';
 import { useLazyQuery } from '@apollo/client';
-import { QueryFixedSwapPool, QueryEnglishAuction, querylastestBidAmount } from '@/utils/apollo';
+import {/*  QueryFixedSwapPool, QueryEnglishAuction, */ querylastestBidAmount } from '@/utils/apollo';
 import { getEllipsisAddress } from '@/utils/utils';
 import { format, formatDistanceToNow } from 'date-fns';
 import { AUCTION_TYPE } from '@/utils/const';
@@ -46,6 +46,7 @@ import icon_copy from '@assets/images/icon/copy.svg'
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import to from 'await-to-js';
 
 const NewIndexStyled = styled.div`
     width: 1100px;
@@ -286,7 +287,7 @@ export default function NewIndex() {
     const [minPrice, setMinPrice] = useState(0)
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
-    const { sign_Axios } = useAxios()
+    const { sign_Axios, axios } = useAxios()
     const [supply, setSupply] = useState();
     const [tokenContractAddress, setTokenContractAddress] = useState();
     const [tokenSymbol, setTokenSymbol] = useState();
@@ -302,12 +303,16 @@ export default function NewIndex() {
     const [openBuyNowModal, setOpenBuyNowModal] = useState(false);
     const [openFixedSwapBuyModal, setOpenFixedSwapBuyModal] = useState(false);
     const { wrapperIntl } = useWrapperIntl()
+    const { state } = useLocation()
+
+
 
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
         itemid: poolInfo.tokenId | 0,
         poolid: poolId | 0,
+        category: nftInfo.category,
     }
     /* const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false) */
 
@@ -337,6 +342,7 @@ export default function NewIndex() {
         }
     }, [amount, poolInfo.amountTotal0, poolInfo.swappedAmount0P])
 
+
     const setLike = async () => {
         const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
         if (res.data.code === 200 || res.data.code === 1) {
@@ -352,7 +358,12 @@ export default function NewIndex() {
 
         // console.log(nftInfo, poolInfo)
         // console.log(weiMul(poolInfo.token1.price, weiMul(weiDiv(weiToNum(poolInfo.amountTotal1, poolInfo.token1.decimals), poolInfo.amountTotal0))
-        if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
+        /* if (!active || !nftInfo.contractaddress || !poolInfo.poolType) {
+            setIsLoading(true)
+            setBtnText(intl.formatMessage({ id: 'pages.buy.loading' }))
+            return
+        } */
+        if (!nftInfo.contractaddress || !poolInfo.poolType) {
             setIsLoading(true)
             setBtnText(intl.formatMessage({ id: 'pages.buy.loading' }))
             return
@@ -394,38 +405,16 @@ export default function NewIndex() {
         // eslint-disable-next-line
     }, [poolInfo])
 
-    const nftId = poolInfo.tokenId
 
     useEffect(() => {
-        const getNFTInfoList = async (nftId) => {
-            const params = {
-                id: parseInt(nftId),
-            };
-
-            sign_Axios
-                .post("/api/v2/main/auth/getoneitembyid", params)
-                .then((res) => {
-                    if (res.status === 200 && res.data.code === 1) {
-                        /* alert("获取成功"); */
-                        /* console.log(res); */
-                        let NFTInfoList = res.data.data;
-                        setSupply(NFTInfoList.supply)
-                        setTokenID(NFTInfoList.id);
-                        setTokenContractAddress(NFTInfoList.contractaddress);
-                        setTokenSymbol(NFTInfoList.itemsymbol);
-                        setExternalLink(NFTInfoList.externallink);
-                    } else {
-                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain") });
-                    }
-                })
-                .catch((err) => {
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("pages.buy.TryAgain") });
-                });
-        };
-        if (!active || !nftId) return;
-        getNFTInfoList(poolInfo.contractaddress, nftId);
+        if (!nftInfo) return;
+        setSupply(nftInfo.supply)
+        setTokenID(nftInfo.id);
+        setTokenContractAddress(nftInfo.contractaddress);
+        setTokenSymbol(nftInfo.itemsymbol);
+        setExternalLink(nftInfo.externallink)
         // eslint-disable-next-line
-    }, [active, nftId])
+    }, [nftInfo])
 
     const onLiked = async () => {
         setLoadingLocked(true)
@@ -454,8 +443,8 @@ export default function NewIndex() {
                 const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
                 approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
 
-                console.log(poolInfo.token1.contract)
-                console.log(approveRes)
+                // console.log(poolInfo.token1.contract)
+                // console.log(approveRes)
                 if (!approveRes) {
                     showTransferByStatus('approveStatus')
                     approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
@@ -540,7 +529,7 @@ export default function NewIndex() {
             }
         }
         if (!approveRes) return showTransferByStatus('errorStatus')
-        console.log(poolId, _amount1, sendParams)
+        // console.log(poolId, _amount1, sendParams)
         BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
             .send(sendParams)
             .on('transactionHash', hash => {
@@ -830,129 +819,182 @@ export default function NewIndex() {
     const [offerList, setOfferList] = useState([]);
     const [history, setHistory] = useState([]);
     const handleSwap = (data) => {
-        const tradePool = data.tradePools[0];
-        // if(!tradePool) return  setHistory([]);
-        const creator = tradePool.creator;
-        const total = tradePool.amountTotal0;
-        const price = tradePool.price;
-        // console.log(price)
-        const offerList = data.poolSwaps.map(item => ({
-            name: getEllipsisAddress(item.sender),
-            time: format(new Date(item.timestamp * 1000), 'PPPpp'),
-            amount: item.swapAmount0,
-            price: price,
-        }));
-        setOfferList(offerList);
+        const tradePool = data.tradePools[0] || data;
+        if (!tradePool) return
         const createList = data.poolCreates.map(item => ({
             // event: 'Created',
             event: 'List',
-            quantity: total,
-            price: price,
-            from: getEllipsisAddress(ZERO_ADDRESS),
-            to: getEllipsisAddress(creator),
+            quantity: item.quantity,
+            price: item.price || '--',
+            from: String(account).toLowerCase() === String(item.from).toLowerCase() ? 'You' : getEllipsisAddress(item.from),
+            to: String(account).toLowerCase() === String(item.to).toLowerCase() ? 'You' : getEllipsisAddress(item.to),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
         }));
         const swapList = data.poolSwaps.map(item => ({
             event: 'Transfer',
-            quantity: item.swapAmount0,
-            price: price,
-            from: getEllipsisAddress(creator),
-            to: getEllipsisAddress(item.sender),
+            quantity: item.quantity,
+            price: item.price || '--',
+            from: String(account).toLowerCase() === String(item.from).toLowerCase() ? 'You' : getEllipsisAddress(item.from),
+            to: String(account).toLowerCase() === String(item.to).toLowerCase() ? 'You' : getEllipsisAddress(item.to),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
         }));
         const cancelList = data.poolCancels.map(item => ({
             event: 'Cancel',
-            price: price,
-            quantity: item.unswappedAmount0,
-            from: getEllipsisAddress(item.sender),
-            to: '',
+            price: item.price || '--',
+            quantity: item.quantity,
+            from: String(account).toLowerCase() === String(item.from).toLowerCase() ? 'You' : getEllipsisAddress(item.from),
+            to: String(account).toLowerCase() === String(item.to).toLowerCase() ? 'You' : getEllipsisAddress(item.to),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
         }));
-        const list = createList.concat(swapList).concat(cancelList)
+        const historyList = createList.concat(swapList).concat(cancelList)
             .sort((a, b) => b.timestamp - a.timestamp);
-        // console.log(price)
-        setHistory(list);
+        // console.log(historyList)
+        setHistory(historyList);
     }
 
-    const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
-        variables: { poolId: Number(poolId) },
-        fetchPolicy: "network-only",
-        onCompleted: () => {
-            handleSwap(poolSwap.data);
+
+
+    const initHistoryList = async () => {
+
+        const params = {
+            pool_id: poolId,
+            pool_type: aucType===AUCTION_TYPE.FixedSwap?'fixedswap': 'english'
         }
-    });
 
-    const handleAuction = (data) => {
-        const tradePool = data.tradeAuctions[0];
-        // if(!tradePool) return  setHistory([]);
+        const initData = {
+            tradePools: [],
+            poolSwaps: [],
+            poolCreates: [],
+            poolCancels: [],
+        }
 
-        // console.log('auctionCreates', tradePool)
-        const creator = tradePool.creator;
-        const total = tradePool.tokenAmount0;
-        const price = tradePool.amountMin1;
-        const offerLiist = data.auctionBids.map(item => ({
-            name: getEllipsisAddress(item.sender),
-            time: format(new Date(item.timestamp * 1000), 'PPPpp'),
-            // amount: Web3.utils.fromWei(item.amount1),
-            amount: item.amount1,
-            price: item.amount1,
-        }))
-        // console.log(offerLiist)
-        setOfferList(offerLiist);
-        const createList = data.auctionCreates.map(item => ({
-            // event: 'Created',
-            event: 'List',
-            quantity: total,
-            price: price,
-            from: getEllipsisAddress(ZERO_ADDRESS),
-            to: getEllipsisAddress(creator),
-            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
-            timestamp: item.timestamp,
-        }));
-        const bidList = data.auctionBids.map(item => ({
-            event: 'Bid',
-            quantity: '',
-            price: item.amount1,
-            from: getEllipsisAddress(creator),
-            to: getEllipsisAddress(item.sender),
-            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
-            timestamp: item.timestamp,
-        }))
-        const claimList = data.auctionClaims.map(item => ({
-            event: 'Claim',
-            price: '',
-            quantity: item.amount1,
-            from: getEllipsisAddress(item.sender),
-            to: '',
-            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
-            timestamp: item.timestamp,
-        }))
-        const list = createList.concat(bidList).concat(claimList)
-            .sort((a, b) => b.timestamp - a.timestamp);
-        console.log(list)
-        setHistory(list);
+        try {
+            const historyRes = await axios.get('/activities', { params })
+
+            if (historyRes.status === 200 && historyRes.data.code === 200) {
+                const data = historyRes.data.data
+                console.log(data)
+                initData.poolCreates = data.filter(item => item.event === 'Created')
+                initData.poolSwaps = data.filter(item => item.event === 'poolSwaps')
+                initData.tradePools = data.filter(item => item.event === 'tradePools')
+                initData.poolCancels = data.filter(item => item.event === 'Canceled')
+
+                return handleSwap(initData)
+            } else {
+                throw Error()
+            }
+        } catch (error) {
+
+        }
+        handleSwap(initData)
+
     }
 
-    const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
-        variables: { poolId: Number(poolId) },
-        fetchPolicy: "network-only",
-        onCompleted: () => {
-            handleAuction(auctionPool.data);
+    // const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
+    //     variables: { poolId: Number(poolId) },
+    //     fetchPolicy: "network-only",
+    //     onCompleted: () => {
+    //         handleSwap(poolSwap.data);
+    //     }
+    // });
+
+    // const handleAuction = (data) => {
+    //     const tradePool = data.tradeAuctions[0];
+    //     // if(!tradePool) return  setHistory([]);
+
+    //     // console.log('auctionCreates', tradePool)
+    //     const creator = tradePool.creator;
+    //     const total = tradePool.tokenAmount0;
+    //     const price = tradePool.amountMin1;
+    //     // const offerLiist = data.auctionBids.map(item => ({
+    //     //     name: getEllipsisAddress(item.sender),
+    //     //     time: format(new Date(item.timestamp * 1000), 'PPPpp'),
+    //     //     // amount: Web3.utils.fromWei(item.amount1),
+    //     //     amount: item.amount1,
+    //     //     price: item.amount1,
+    //     // }))
+    //     // console.log(offerLiist)
+    //     // setOfferList(offerLiist);
+    //     const createList = data.auctionCreates.map(item => ({
+    //         // event: 'Created',
+    //         event: 'List',
+    //         quantity: total,
+    //         price: price,
+    //         from: getEllipsisAddress(ZERO_ADDRESS),
+    //         to: getEllipsisAddress(creator),
+    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+    //         timestamp: item.timestamp,
+    //     }));
+    //     const bidList = data.auctionBids.map(item => ({
+    //         event: 'Bid',
+    //         quantity: '',
+    //         price: item.amount1,
+    //         from: getEllipsisAddress(creator),
+    //         to: getEllipsisAddress(item.sender),
+    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+    //         timestamp: item.timestamp,
+    //     }))
+    //     const claimList = data.auctionClaims.map(item => ({
+    //         event: 'Claim',
+    //         price: '',
+    //         quantity: item.amount1,
+    //         from: getEllipsisAddress(item.sender),
+    //         to: '',
+    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+    //         timestamp: item.timestamp,
+    //     }))
+    //     const list = createList.concat(bidList).concat(claimList)
+    //         .sort((a, b) => b.timestamp - a.timestamp);
+    //     console.log(list)
+    //     setHistory(list);
+    // }
+
+    // const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
+    //     variables: { poolId: Number(poolId) },
+    //     fetchPolicy: "network-only",
+    //     onCompleted: () => {
+    //         handleAuction(auctionPool.data);
+    //     }
+    // })
+    const initOfferList = async () => {
+        const type = aucType === AUCTION_TYPE.FixedSwap ? 'fixedswap' : 'english'
+        const [offerListError, offerListRes] = await to(axios.get(`bids?pool_id=${poolId}&pool_type=${type}`))
+        if (offerListRes?.data?.code === 200) {
+            const list = (offerListRes.data?.data || []).map(item => {
+                return {
+                    name: getEllipsisAddress(item.Sender),
+                    time: format(new Date(item.Timestamp * 1000), 'PPPpp'),
+                    amount: item.Amount0,
+                    price: item.Amount1,
+                }
+            }).sort((a, b) => b.price - a.price)
+            console.log(list)
+            setOfferList(list)
         }
-    })
+        if (offerListError) {
+            console.log(offerListError)
+        }
+    }
 
     useEffect(() => {
-        if (poolId) {
-            if (aucType === AUCTION_TYPE.FixedSwap) {
-                queryPoolSwap();
-            } else if (aucType === AUCTION_TYPE.EnglishAuction) {
-                queryAuctionPool();
-            }
-        }
-    }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
+        initOfferList()
+        initHistoryList()
+        // eslint-disable-next-line
+    }, [active])
+
+
+    // useEffect(() => {
+    //     if (poolId) {
+    //         if (aucType === AUCTION_TYPE.FixedSwap) {
+    //             queryPoolSwap();
+    //         } else if (aucType === AUCTION_TYPE.EnglishAuction) {
+    //             queryAuctionPool();
+    //         }
+    //     }
+    // }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
 
     /* useEffect(() => {
         console.log("poolInfo", poolInfo)
@@ -987,9 +1029,37 @@ export default function NewIndex() {
 
                 <div className="container">
                     <div className="container_left">
-                        {nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos') ?
-                            <video width='416px' height='416px' src={nftInfo && nftInfo.fileurl} controls='controls' autoPlay></video> :
-                            <AutoStretchBaseWidthOrHeightImg src={nftInfo && nftInfo.fileurl} width={416} height={416} />
+                        {
+                            (nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos'))
+                                ||
+                                (state && (state.category === "video" || state.category === 'Videos'))
+                                ?
+                                <video
+                                    width='416px'
+                                    height='416px'
+                                    src={
+                                        active && localStorage.getItem('JWT_TOKEN_V2')
+                                            ?
+                                            nftInfo && nftInfo.fileurl
+                                            :
+                                            state && state.fileurl
+                                    }
+                                    controls='controls'
+                                    autoPlay>
+                                </video>
+                                :
+                                <AutoStretchBaseWidthOrHeightImg
+                                    src={
+                                        /* nftInfo && nftInfo.fileurl */
+                                        active && localStorage.getItem('JWT_TOKEN_V2')
+                                            ?
+                                            nftInfo && nftInfo.fileurl
+                                            :
+                                            state && state.fileurl
+                                    }
+                                    width={416}
+                                    height={416}
+                                />
                         }
 
                         <div className="btn_group">
@@ -1002,7 +1072,7 @@ export default function NewIndex() {
                     <div className="container_right">
                         <div className="sell_info">
                             <div className="row1">
-                                <h3>{nftInfo.itemname || wrapperIntl("pages.buy.NameLoading")}</h3>
+                                <h3>{nftInfo.itemname || (state && state.name) || wrapperIntl("pages.buy.NameLoading")}</h3>
 
                                 {/* Cancel */}
                                 {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
@@ -1111,8 +1181,8 @@ export default function NewIndex() {
                                         Event: item.event,
                                         Quantity: item.quantity,
                                         Price: [item.price ? (poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`) : '--', `($)`],
-                                        From: getEllipsisAddress(item.from),
-                                        To: getEllipsisAddress(item.to),
+                                        From: item.from,
+                                        To: item.to,
                                         Date: item.date,
                                     }))
                                 } />

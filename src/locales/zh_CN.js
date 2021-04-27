@@ -9,7 +9,7 @@ const zh_CN = {
     CopySuccessful: '复制成功',
     TryAgain: '非常抱歉，我们似乎碰到了一些小问题，请重试',
     "Code-1": '请连接钱包或重新签名',
-    "Re-sign": "请重新签名",
+    "Re-sign": "请签名",
     "ConnectWallet": "请连接钱包",
 
     Category: {
@@ -39,6 +39,7 @@ const zh_CN = {
         create: '创造',
         connect: '连接钱包',
         setting: '账户设置',
+        logout: '退出',
         search: '搜索',
         search_p: '搜索用户、品牌、NFT',
         SelectBSC: "请连接BSC网络，",
@@ -85,7 +86,6 @@ const zh_CN = {
     'pages.buy.No': '否',
     'pages.buy.TransactionSuccess': '交易成功！',
     'pages.buy.AuctionCancelled': '此次拍卖仅在超过截止日期后失效',
-
 
     'pages.buy.TradeTable.Event': '事件',
     'pages.buy.TradeTable.Quantity': '数量',
@@ -284,7 +284,7 @@ const zh_CN = {
         "CardItem.Sell": "出售",
         "CardItem.All": "全部",
         "CardItem.OnSale": "售卖中",
-        "CardItem.NotOnSale": "非卖品",
+        "CardItem.NotOnSale": "未上架",
         "CardItem.TopBid": "最高出价",
         "CardItem.Price": "价格",
         "CardItem.InProcessOfCreation": "正在创建 ...",
@@ -345,6 +345,16 @@ const zh_CN = {
         'MyGallery.SellNFT.EnglishAcutionFeature': "在您指定的时间内出售给出价最高者。",
         'MyGallery.SellNFT.InstantSale': "一口价出售",
         'MyGallery.SellNFT.EnglishAuction': "英式拍卖",
+
+        /* wrapperIntl('MyProfile.MyGallery.TransferNFT.WalletAddress') */
+        'MyGallery.TransferNFT.MyGallery': "我的展厅",
+        'MyGallery.TransferNFT.WalletAddress': "目标地址",
+        'MyGallery.TransferNFT.eg': "例如：0x1ed3....或以太坊地址",
+        'MyGallery.TransferNFT.WillBeTransferredTo': "将会转移至",
+        'MyGallery.TransferNFT.Amount': "转移数量",
+        'MyGallery.TransferNFT.Balance': "剩余数量",
+        'MyGallery.TransferNFT.EnterAmount': "请输入您想转移的NFT数量",
+        'MyGallery.TransferNFT.Transfer': "转移",
 
         /* wrapperIntl('MyProfile.MyGallery.Summary.ToFangible') */
         'MyGallery.Summary.Summary': "统计",

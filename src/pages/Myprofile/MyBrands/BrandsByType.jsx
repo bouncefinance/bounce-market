@@ -22,16 +22,18 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
 import { useLazyQuery } from '@apollo/client'
-import { QueryBrandTradeItemsByBrand, QueryMyNFTByBrand } from '@/utils/apollo'
+// import { QueryBrandTradeItemsByBrand, QueryMyNFTByBrand } from '@/utils/apollo'
+import { QueryMyNFTByBrand } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 import { CardItem } from '../CardItem'
-import { AUCTION_TYPE } from '@/utils/const'
+// import { AUCTION_TYPE } from '@/utils/const'
 import { SkeletonNFTCard } from '@/pages/component/Skeleton/NFTCard'
 // import { weiToNum } from '@/utils/useBigNumber'
 import Category from '../Category'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { AUCTION_TYPE } from '@/utils/const'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -201,7 +203,7 @@ export default function BrandsByType() {
     const [statusList, setStatusList] = useState([]);
     const { brandInfo, run } = useBrandInfo(brandId)
     const { state } = useContext(myContext)
-    const { sign_Axios } = useAxios()
+    const { sign_Axios, axios } = useAxios()
     const [fileData, setFileData] = useState(null)
     const { account } = useActiveWeb3React();
 
@@ -304,17 +306,29 @@ export default function BrandsByType() {
 
     useEffect(() => {
         // console.log("category:", category)
-        if (!account || !tokenList || !tokenList_2) return
+        if (!account || !tokenList || !tokenList_2 || !brandInfo.contractaddress) return
         // console.log(tokenList, tokenList_2)
-        const pools = tokenList.concat(tokenList_2)
-        console.log("pools: ", pools)
+        const brand_erc721 = tokenList_2.brandserc721.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
+        const brand_erc1155 = tokenList_2.brandserc1155.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
+        const brandTradeList_fs = tokenList_2.tradePools.filter(item =>
+            String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase() && item.state !== 1
+        )
+        const brandTradeList_ea = tokenList_2.tradeAuctions.filter(item =>
+            String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase() && item.state !== 1
+        )
+        const brandErcList = brand_erc721.concat(brand_erc1155)
+        const brandTradeList = brandTradeList_fs.concat(brandTradeList_ea)
+
+        const pools = brandErcList.concat(brandTradeList)
+
+        // console.log("pools: ", pools)
         pools && handleBrandTradeItems(pools)
         // eslint-disable-next-line
-    }, [account, tokenList, tokenList_2, category])
+    }, [account, tokenList, tokenList_2, brandInfo, category])
 
     const handleBrandTradeItems = (pools) => {
-        const ids = pools.map(item => item.tokenId)
-        const cts = pools.map(item => item.token0 || item.contract)
+        const ids = pools.map(item => (item.tokenId || parseInt(item.token_id)))
+        const cts = pools.map(item => item.token0 || item.contract_addr)
 
         let categoryParam
 
@@ -346,18 +360,27 @@ export default function BrandsByType() {
                 if (res.status === 200 && res.data.code === 1) {
                     console.log(pools)
                     const list = pools.map(item => {
-                        const poolInfo = res.data.data.find(pool => item.tokenId === pool.id);
+                        const poolInfo = res.data.data.find(pool => {
+                            return (parseInt(item.token_id) === pool.id || item.tokenId === pool.id) && (
+                                String(item.contract_addr).toLowerCase() === String(pool.contractaddress).toLowerCase() ||
+                                String(item.contract_addr).toLowerCase() === String(pool.token0).toLowerCase()
+                            )
+                        });
 
                         // console.log(poolInfo)
-                        return {
-                            ...poolInfo,
-                            poolType: item && item.poolType,
-                            poolId: item && item.poolId,
-                            price: item && item.price,
-                            token1: item && item.token1,
-                            createTime: item && item.createTime
+                        if (poolInfo) {
+                            return {
+                                ...poolInfo,
+                                poolType: item && item.amount_total0 ? AUCTION_TYPE.FixedSwap : AUCTION_TYPE.EnglishAuction,
+                                poolId: item && item.poolId,
+                                price: item && (item.lastestBidAmount || item.amountMin1),
+                                token1: item && item.token1,
+                                createTime: item && item.createTime
+                            }
+                        } else {
+                            return null
                         }
-                    })
+                    }).filter(item => item)
 
                     // console.log(list)
                     const result = list.sort((a, b) => b.createTime - a.createTime);
@@ -368,25 +391,77 @@ export default function BrandsByType() {
             })
     }
     // 16806 正在售卖
-    const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItemsByBrand, {
-        variables: { creator: account, token0: contract },
-        fetchPolicy: "network-only",
-        onCompleted: async () => {
-            const tradePools = brandTradeItems.data.tradePools.map(item => ({
-                ...item,
-                poolType: AUCTION_TYPE.FixedSwap
-            })).filter(item => item.state !== 1)
-            const tradeAuctions = brandTradeItems.data.tradeAuctions.map(item => ({
-                ...item,
-                price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-                poolType: AUCTION_TYPE.EnglishAuction
-            })).filter(item => item.state !== 1)
+    // const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItemsByBrand, {
+    //     variables: { creator: account, token0: contract },
+    //     fetchPolicy: "network-only",
+    //     onCompleted: async () => {
+    //         const tradePools = brandTradeItems.data.tradePools.map(item => ({
+    //             ...item,
+    //             poolType: AUCTION_TYPE.FixedSwap
+    //         })).filter(item => item.state !== 1)
+    //         const tradeAuctions = brandTradeItems.data.tradeAuctions.map(item => ({
+    //             ...item,
+    //             price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
+    //             poolType: AUCTION_TYPE.EnglishAuction
+    //         })).filter(item => item.state !== 1)
 
-            // console.log(tradePools.concat(tradeAuctions))
-            // handleBrandTradeItems(tradePools.concat(tradeAuctions));
-            setTokenList_2(tradePools.concat(tradeAuctions));
+    //         // console.log(tradePools.concat(tradeAuctions))
+    //         // handleBrandTradeItems(tradePools.concat(tradeAuctions));
+    //         setTokenList_2(tradePools.concat(tradeAuctions));
+    //     }
+    // })
+
+    useEffect(() => {
+        console.log("statusList: ", statusList)
+    }, [statusList])
+
+    const getBrandTradeItems = async () => {
+        let brandData = {
+            tradePools: [],
+            tradeAuctions: [],
+            brandserc721: [],
+            brandserc1155: [],
         }
-    })
+
+        try {
+            const ErcParams = {
+                user_address: account,
+                contract_address: brandInfo.contractaddress
+            }
+
+            const TradeParams = {
+                offset: 0,
+                count: 100,
+                user_address: account
+            }
+
+            const res = await axios.get('[V2]/erc721', { params: ErcParams })
+            if (res.status === 200 && res.data.code === 200) {
+                const erc721Data = res.data.data
+                brandData.brandserc721 = erc721Data.tokens
+
+            }
+
+            const res_1155 = await axios.get('[V2]/erc1155', { params: ErcParams })
+            if (res.status === 200 && res.data.code === 200) {
+                const erc1155Data = res_1155.data.data
+                brandData.brandserc1155 = erc1155Data.tokens
+            }
+
+            const res_trade = await axios.get('pools', { params: TradeParams })
+            if (res.status === 200 && res.data.code === 200) {
+                const tradeDate = res_trade.data.data
+                brandData.tradePools = tradeDate.tradePools
+                brandData.tradeAuctions = tradeDate.tradeAuctions
+            }
+
+
+        } catch (error) {
+
+        }
+        console.log(brandData)
+        setTokenList_2(brandData)
+    }
 
     // const [getBrandItems_2, { data: brandItems_2 }] = useLazyQuery(QueryOwnerBrandItems, {
     //     variables: { owner: account ? account.toLowerCase() : account },
@@ -434,7 +509,8 @@ export default function BrandsByType() {
             getBrandTradeItems()
             // getBrandItems_2()
         }
-    }, [account, contract, brandInfo.standard, getBrandItems, getBrandTradeItems]);
+        // eslint-disable-next-line
+    }, [account, contract, brandInfo.standard, getBrandItems]);
 
     return (
         <BrandsByTypeStyled>
@@ -496,6 +572,7 @@ export default function BrandsByType() {
                     <AddCardItem type={category} nftType={brandInfo.standard} brandInfo={brandInfo} />
                 </li>
                 {statusList.map((item, index) => {
+                    /* debugger */
                     return <li key={index}>
                         <CardItem
                             nftId={item.id}
@@ -505,6 +582,7 @@ export default function BrandsByType() {
                             status={item.poolId && wrapperIntl("Listed")}
                             poolInfo={item}
                             poolType={item.poolType}
+                            category={item.category}
                         />
                     </li>
                 })}

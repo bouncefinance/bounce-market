@@ -99,8 +99,11 @@ export default function ConnectWallet({ open, setOpen }) {
                     <div className="content">
                         <p>
                             {wrapperIntl("ConnectWalletModal.ToGetStarted")}&nbsp;
-                            <a target="_blank" href="www.baidu.com">{wrapperIntl("ConnectWalletModal.here")}</a>
-                            &nbsp;{wrapperIntl("ConnectWalletModal.ToLearn")}
+                            <a target="_blank" rel="noreferrer" href="https://ankr.gitbook.io/fangible/getting-started-1">
+                                {wrapperIntl("ConnectWalletModal.here")}
+                            </a>
+                            &nbsp;
+                            {wrapperIntl("ConnectWalletModal.ToLearn")}
                         </p>
                         <ul>
                             <li onClick={() => {

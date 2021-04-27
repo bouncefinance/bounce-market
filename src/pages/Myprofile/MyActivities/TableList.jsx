@@ -8,13 +8,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableItem from './TableItem'
 
-import { QueryFromActivities, QueryToActivities } from '@/utils/apollo';
-import { useLazyQuery } from '@apollo/client';
+// import { QueryFromActivities } from '@/utils/apollo';
+// import { useLazyQuery } from '@apollo/client';
 import { useActiveWeb3React } from '@/web3';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import useAxios from '@/utils/useAxios';
 import { Controller } from '@/utils/controller';
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios';
+import to from 'await-to-js'
 
 const useStyles = makeStyles({
     table: {
@@ -45,66 +47,77 @@ export default function BasicTable() {
     const classes = useStyles();
 
     const { active, account } = useActiveWeb3React();
+    // const account = '0x706a5014E41E2a96812189D2a9B32b4155972831'
     const [list, setList] = useState([]);
     const { sign_Axios } = useAxios();
 
     const handleActivities = (data) => {
+        // console.log('data', data)
         const activities = data.map(item => ({
             ...item,
-            date: formatDistanceToNow(item.timestamp * 1000),
+            date: formatDistanceToNow((item.timestamp || item.Timestamp) * 1000),
             status: item.event === 'Cancel' || item.event === 'Claim' ? wrapperIntl("Unlisted") : wrapperIntl("Listed"),
-        }));
-        const tokenList = activities.map(item => item.tokenId);
+        })).filter(item => parseInt(item.tokenId) <= 99999999999)
+        const tokenList = activities.map(item => +item.tokenId);
+        const cts = activities.map(item => item.contract);
         sign_Axios.post(Controller.items.getitemsbyids, {
-            ids: tokenList
+            ids: tokenList,
+            cts: cts
         })
-        .then(res => {
-            if (res.status === 200 && res.data.code === 1) {
-                const items = res.data.data;
-                const list = items.map(item => {
-                    const activity = activities.find(issue => issue.tokenId === item.id);
-                    console.log(item)
-                    return {
-                        ...activity,
-                        cover: item.fileurl,
-                        item: item.itemname,
-                        category: item.category,
-                    }
-                })
-                console.log(list)
-                setList(list.sort((a, b) => b.timestamp - a.timestamp));
-            }
-        })
+            .then(res => {
+                if (res.status === 200 && res.data.code === 1) {
+                    const items = res.data.data;
+                    console.log(activities, items)
+                    const list = activities.map(issue => {
+                        const activity = items.find(item => {
+                            return parseInt(issue.tokenId) === item.id
+                                && String(issue.contract).toLowerCase() === String(item.contractaddress).toLowerCase()
+                        });
+                        if (!activity) return {}
+                        return {
+                            ...issue,
+                            cover: activity.fileurl,
+                            item: activity.itemname,
+                            category: activity.category || 'image',
+                        }
+                    })
+                        .filter(item => item.contract)
+
+                    console.log(list)
+                    setList(list.sort((a, b) => {
+                        const time_a = a.timestamp || a.Timestamp
+                        const time_b = b.timestamp || b.Timestamp
+                        return time_b - time_a
+                    }));
+                }
+            })
     }
 
-    const [fromData, setFromData] = useState([]);
 
-    const [getToActivities, toData] = useLazyQuery(QueryToActivities, {
-        variables: { user: String(account).toLowerCase()},
-        fetchPolicy:"network-only",
-        onCompleted: () => {
-            const data = fromData.activities.concat(toData.data.activities);
-            handleActivities(data);
+    const getToActivities = async (fromData) => {
+        const [resErr, res] = await to(axios.get('activities', { params: { user_address: String(account).toLowerCase() } }))
+        if (resErr) {
+            return
         }
-    });
+        if (res?.data?.code === 200) {
+            const data = res.data.data
+            handleActivities(data || []);
+        }
+        if (resErr) {
+            return handleActivities([])
+        }
+    }
 
     const handleFromActivities = (fromData) => {
         getToActivities(fromData)
     }
 
-    const [getFromActivities, { data }] = useLazyQuery(QueryFromActivities, {
-        variables: { user: String(account).toLowerCase()},
-        fetchPolicy:"network-only",
-        onCompleted: () => {
-            setFromData(data);
-            handleFromActivities();
-        }
-    });
 
     useEffect(() => {
         if (!active) return;
-        getFromActivities();
-    }, [active, getFromActivities]);
+        handleFromActivities();
+        // eslint-disable-next-line
+    }, [active]);
 
     const { wrapperIntl } = useWrapperIntl()
 

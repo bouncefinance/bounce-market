@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
@@ -17,6 +17,9 @@ import pic_Build from './assets/pic_Build.svg'
 import pic_List from './assets/pic_List.svg'
 
 import { useWalletConnect } from '@/web3/useWalletConnect'
+import { useActiveWeb3React } from '@/web3'
+
+import { myContext } from '@/redux/index.js';
 
 const CardList = styled.div`
     width: 1100px;
@@ -33,6 +36,7 @@ const CardList = styled.div`
 
 
 function Factory () {
+    const {active} = useActiveWeb3React()
     const { onConnect } = useWalletConnect()
     const [openGenerateNFTModal, setOpenGenerateNFTModal] = useState(false)
     const [openCreateBrandModal, setCreateBrandModal] = useState(false)
@@ -41,6 +45,7 @@ function Factory () {
     const [Step, setStep] = useState("0")
 
     const { wrapperIntl } = useWrapperIntl()
+    const { dispatch } = useContext(myContext);
 
     const GenerateButton = () => {
         return (
@@ -50,6 +55,7 @@ function Factory () {
                     onConnect()
                     setOpenGenerateNFTModal(true)
                 }}
+                disabled={!active}
             >
                 {wrapperIntl("Factory.Generate")}
             </Button>
@@ -64,6 +70,7 @@ function Factory () {
                     onConnect()
                     setCreateBrandModal(true)
                 }}
+                disabled={!active}
             >
                 {wrapperIntl("Factory.Build")}
             </Button>
@@ -81,11 +88,26 @@ function Factory () {
                         setStep("1")
                     }
                 }
+                disabled={!active}
             >
                 {wrapperIntl("Factory.List")}
             </Button>
         )
     }
+
+    useEffect(() => {
+        /* console.log("active: ", active) */
+        if (!active) {
+            dispatch({
+            type: 'Modal_Message',
+            showMessageModal: true,
+            modelType: 'error',
+            modelMessage: wrapperIntl("ConnectWallet"),
+            modelTimer: 24 * 60 * 60 * 1000,
+            });
+        }
+    // eslint-disable-next-line
+    }, [active])
 
     return (
         <>

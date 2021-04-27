@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import styled from 'styled-components'
 import errorImg from '../../../assets/images/loading/3.svg'
+import play from './assets/play_gray.svg'
+
+import Grow from '@material-ui/core/Grow';
 
 const VideoStyled = styled.div`
 div{
@@ -11,6 +14,7 @@ div{
   /* background-color: rgba(0, 0, 0, 1); */
   background-color: rgb(244,244,244);
   /* background-color: white; */
+
   .img-loading{
     position: absolute;
     top: 0px;
@@ -19,36 +23,100 @@ div{
     width: 100%;
     height: 100%;
   }
-}`
+  .playButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -15px;
+    margin-left: -15px;
+    z-index: 10;
+    background-color: transparent;
+    img {
+      width: 30px;
+      height: 30px;
+      /* opacity: 1; */
+    }
+  }
+}
+`
 
-export function VideoItem ({ src, width, height, style = {} }) {
+export function VideoItem ({ src, width, height, style = {}, showPlayButton = true }) {
+
   const videoRef = useRef(null)
   const [imgShow, setImgShow] = useState(true)
   const [imgLoding, setImgLoding] = useState(!true)
+  const [playButtonVisiable, setPlayButtonVisiable] = useState(true)
   // let [isHover, setIsHover] = useState(false)
-  useEffect(() => {
-  }, [])
-  const onMouseMove = () => {
+
+  /* const onMouseMove = () => {
     const video = videoRef?.current
       if (!video) return
     // TODO   The error you provided does not contain a stack trace.
     video?.play()
     // video.defaultMuted = true
-  }
+  } */
+
   const onMouseLeave = () => {
     const video = videoRef?.current
     if (!video) return
     video?.pause()
+    setPlayButtonVisiable(true)
   }
-  return <VideoStyled>
+  
+  return <VideoStyled showPlayButton={showPlayButton}>
     <div  style={{ ...style, width: `${width}px`, height: `${height}px`, backgroundImage: `url(${errorImg})` }}>
-      {imgShow && <video onMouseOver={onMouseMove} onMouseLeave={onMouseLeave} ref={videoRef} style={{ objectFit: 'contain' }} width={width} height={height} src={src} alt="" onError={() => {
-        setImgShow(false)
-        setImgLoding(false)
-      }} onLoad={() => {
-        setImgLoding(false)
-      }} />}
+      {
+      imgShow
+      &&
+      <video
+        /* onMouseOver={onMouseMove} */
+        onMouseLeave={onMouseLeave}
+        ref={videoRef}
+        style={{ objectFit: 'contain' }}
+        width={width}
+        height={height}
+        src={src}
+        alt=""
+        onError={() => {
+          setImgShow(false)
+          setImgLoding(false)
+        }}
+        onLoad={() => {
+          setImgLoding(false)
+        }}
+      />}
+
       {imgLoding && <div className="img-loading"></div>}
+
+      
+      {
+        showPlayButton
+        &&
+        <Grow
+            in={playButtonVisiable}
+            style={{ transformOrigin: 'center' }}
+            {...(playButtonVisiable ? { timeout: 500 } : {})}
+        >
+          <div
+            className="playButton"
+            onClick={
+              (e)=>{
+                if (imgLoding) return
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                setPlayButtonVisiable(false)
+                /* debugger */
+                const video = videoRef?.current
+                if (!video) return
+                video?.play()
+              }
+            }
+          >
+            <img src={play} alt=""/>
+          </div>
+        </Grow>
+      }
+
     </div>
   </VideoStyled>
 }

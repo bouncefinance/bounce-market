@@ -3,8 +3,8 @@ import CommonHeader from '../CommonHeader'
 import styled from 'styled-components'
 // import Search from './Search'
 import { CardItem, AddCardItem, PenddingCardItem } from '../CardItem'
-import { useLazyQuery } from '@apollo/client';
-import { QueryMyNFT, QueryMyTradePools } from '@/utils/apollo'
+// import { useLazyQuery } from '@apollo/client';
+// import { QueryMyNFT } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
@@ -14,6 +14,7 @@ import { AUCTION_TYPE } from '@/utils/const'
 import Category from '../Category'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+// import axios from 'axios';
 
 const MyGalleryStyled = styled.div`
     width: 1100px;
@@ -46,8 +47,10 @@ const MyGalleryStyled = styled.div`
 export default function Index() {
   const { account, active } = useActiveWeb3React();
   // FMG: 0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f
+  // xxy: 0x4074A8deA884611F6553932CDF0B8390CDbA427E
+  // homie: '0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE'
   const current_account = account //account
-  const { sign_Axios } = useAxios();
+  const { sign_Axios, axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
   // eslint-disable-next-line
@@ -56,93 +59,134 @@ export default function Index() {
   // const { tradeData } = useQuery(QueryTradePools)
   const [myNftData, setMyNftData] = useState([])
   const [myTradeData, setMyTradeData] = useState([])
-  const [myApiData, setMyApiData] = useState([])
+  // const [myApiData, setMyApiData] = useState([])
 
   const { wrapperIntl } = useWrapperIntl()
 
-  const [getMyNFT, { data }] = useLazyQuery(QueryMyNFT,
-    {
-      variables: { user: String(current_account).toLowerCase() },
-      // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
-      fetchPolicy: "network-only",
-      onCompleted: async () => {
-        setMyNftData(data || [])
-      },
-      onError: (err) => {
-        console.log('onerror', err);
-      }
-    });
-
-  const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
-    {
-      variables: { user: String(current_account).toLowerCase() },
-      // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
-      fetchPolicy: "network-only",
-      onCompleted: () => {
-        setMyTradeData(traddata || [])
-      },
-      onError: (err) => {
-        console.log('onerror', err);
-      }
-    })
-
-  const getMyApi = async () => {
-    const params = {
-      accountaddress: current_account
+  const getMyNFT = async () => {
+    let myNftData = {
+      nft721Items: [],
+      nft1155Items: []
     }
-    sign_Axios.post('/api/v2/main/getitemsext', params).then(res => {
-      if (res.status === 200 && res.data.code === 1) {
-        return res.data.data
-      } else {
-        throw new Error('Error:/api/v2/main/getitemsext')
+
+    try {
+      const params = {
+        user_address: current_account
       }
-    }).then(data => {
-      const apiNftList = wrapperItem(data)
-      // console.log(apiNftList)
-      // setItemList([...apiNftList, ...itemList])
-      setMyApiData(apiNftList)
-    })
+      const res = await axios.get('[V2]/nft', { params })
+      if (res.status === 200 && res.data.code === 200) {
+
+        console.log('myNftData', myNftData)
+        const data = res.data.data
+        myNftData.nft721Items = data.nfts721.filter(item => parseInt(item.token_id) < 9999999999)
+        myNftData.nft1155Items = data.nfts1155.filter(item => parseInt(item.token_id) < 9999999999)
+      }
+    } catch (error) {
+
+    }
+
+
+    setMyNftData(myNftData)
   }
 
-  const wrapperItem = (data) => {
-    const isArray = Object.prototype.toString.call(data) === '[object Array]';//true
-    if (isArray) {
-      const list = data.map(item => {
-        return {
-          getType: 'getMyApi',
-          ...item.metadata,
-          ...item
-        }
-      })
-      return list
-    } else {
-      return []
+  // const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
+  //   {
+  //     variables: { user: String(current_account).toLowerCase() },
+  //     // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
+  //     fetchPolicy: "network-only",
+  //     onCompleted: () => {
+  //       setMyTradeData(traddata || [])
+  //     },
+  //     onError: (err) => {
+  //       console.log('onerror', err)
+  //     }
+  //   })
+
+  const getMyTradeNFT = async () => {
+    let traddata = {
+      tradePools: [],
+      tradeAuctions: []
     }
+
+    try {
+      const params = {
+        offset: 0,
+        count: 100,
+        user_address: current_account
+      }
+      const res = await axios.get('pools', { params })
+      if (res.status === 200 && res.data.code === 200) {
+        traddata = res.data.data
+      }
+    } catch (error) {
+
+    }
+
+
+
+    setMyTradeData(traddata)
   }
+
+
+  // const getMyApi = async () => {
+  //   const params = {
+  //     accountaddress: current_account
+  //   }
+  //   sign_Axios.post('/api/v2/main/getitemsext', params).then(res => {
+  //     if (res.status === 200 && res.data.code === 1) {
+  //       return res.data.data
+  //     } else {
+  //       throw new Error('Error:/api/v2/main/getitemsext')
+  //     }
+  //   }).then(data => {
+  //     const apiNftList = wrapperItem(data)
+  //     // console.log(apiNftList)
+  //     // setItemList([...apiNftList, ...itemList])
+  //     const filterList = apiNftList.filter(item => item.itemname && item.itemname !== 'Untitled (External import)')
+  //     // console.log(filterList)
+  //     setMyApiData(filterList)
+  //   })
+  // }
+
+  // const wrapperItem = (data) => {
+  //   const isArray = Object.prototype.toString.call(data) === '[object Array]';//true
+  //   if (isArray) {
+  //     const list = data.map(item => {
+  //       return {
+  //         getType: 'getMyApi',
+  //         ...item
+  //       }
+  //     })
+  //     return list
+  //   } else {
+  //     return []
+  //   }
+  // }
 
 
   useEffect(() => {
     if (!active) return;
     getMyNFT();
     getMyTradeNFT()
-    getMyApi()
+    // getMyApi()
     // eslint-disable-next-line
-  }, [active, account, getMyNFT, getMyTradeNFT]);
+  }, [active, account]);
 
   useEffect(() => {
+    console.log(myTradeData, myNftData)
     const PenddingItem = JSON.parse(window.localStorage.getItem('PenddingItem')) || null
 
     if (!account || myTradeData.length === 0 || myNftData.length === 0) return
 
 
 
-    const nft721_ids = myNftData.nft721Items.map(item => item.tokenId);
-    const nft1155Items_ids = myNftData.nft1155Items.map(item => item.tokenId);
+    const nft721_ids = myNftData.nft721Items.map(item => parseInt(item.token_id))
+    const nft1155Items_ids = myNftData.nft1155Items.map(item => parseInt(item.token_id));
     const trade721_ids = myTradeData.tradePools.map(item => item.tokenId);
     const trade1155Items_ids = myTradeData.tradeAuctions.map(item => item.tokenId)
 
-    const nft721_cts = myNftData.nft721Items.map(item => item.token0 || item.contract);
-    const nft1155Items_cts = myNftData.nft1155Items.map(item => item.token0 || item.contract);
+    const nft721_cts = myNftData.nft721Items.map(item => item.token0 || item.contract_addr);
+    const nft1155Items_cts = myNftData.nft1155Items.map(item => item.token0 || item.contract_addr);
     const trade721_cts = myTradeData.tradePools.map(item => item.token0 || item.contract);
     const trade1155Items_cts = myTradeData.tradeAuctions.map(item => item.token0 || item.contract)
 
@@ -159,7 +203,7 @@ export default function Index() {
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction
       }
-    }).filter(item => item.state !== 1);
+    }).filter(item => item.state !== 1)
 
 
 
@@ -189,12 +233,16 @@ export default function Index() {
         if (res.status === 200 && res.data.code === 1) {
 
           const res_data = res.data.data
-
+          console.log(pools)
+          console.log(res_data)
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => {
-              return item.tokenId === res.id
-                && (String(item.token0).toLowerCase() === String(res.contractaddress).toLowerCase() ||
-                  String(item.contract).toLowerCase() === String(res.contractaddress).toLowerCase())
+              return (item.tokenId === res.id || parseInt(item.token_id) === res.id)
+                && (
+                  String(item.token0).toLowerCase() === String(res.contractaddress).toLowerCase() ||
+                  String(item.contract).toLowerCase() === String(res.contractaddress).toLowerCase() ||
+                  String(item.contract_addr).toLowerCase() === String(res.contractaddress).toLowerCase()
+                )
             });
 
             if (!poolInfo) return {}
@@ -210,15 +258,14 @@ export default function Index() {
               category: poolInfo.category,
             }
 
-          }).filter(item => item.fileurl)
+          }).filter(item => item.fileurl && item.itemname !== 'Untitled (External import)')
 
 
-
+          console.log(list)
           let result = list.sort((a, b) => a.tokenId - b.tokenId)
-          // console.log(result)
-          if (myApiData.length !== 0) {
-            result = [...myApiData, ...result]
-          }
+          // if (myApiData.length !== 0) {
+          //   result = [...myApiData, ...result]
+          // }
 
           setItemList(result);
           setStatusList(result);
@@ -232,7 +279,7 @@ export default function Index() {
         console.log(err)
       })
     // eslint-disable-next-line
-  }, [myNftData, myTradeData, myApiData, account])
+  }, [myNftData, myTradeData, account])
 
   return (
     <>

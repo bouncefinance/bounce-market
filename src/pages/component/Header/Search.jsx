@@ -96,8 +96,12 @@ export default function Search({ placeholder, value, onChange }) {
     }
     const onItem = (e) => {
         // console.log(e?.target)
-        if (e?.target?.innerText === 'Search' || e?.target?.innerText === '搜索' || e?.target?.className?.includes('search-input')) {
-            return
+        try {
+            if (e?.target?.innerText === 'Search' || e?.target?.innerText === '搜索' || e?.target?.className?.includes('search-input')) {
+                return
+            }
+        } catch (error) {
+            console.log(error)
         }
         if (inputTarget) inputTarget.value = ''
         search = ''
