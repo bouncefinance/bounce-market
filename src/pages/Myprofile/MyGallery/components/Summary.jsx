@@ -286,6 +286,7 @@ function Summary ({ auctionType, price, amount, unit, duration, fees, nftInfo, m
 				const _amountReserve1 = numToWei(price, newUnit.decimals)
 				// const _duration = window.location.hostname.includes('market.bounce.finance') ? duration * 60 * 60 * 24 : duration * 60
 				const _duration = duration * 60 * 60 * 24
+				
 				// const _duration = duration * 60
 				const _onlyBot = false
 
