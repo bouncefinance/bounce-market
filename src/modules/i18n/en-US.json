@@ -126,6 +126,9 @@
       "reservePrice": "Reserve price",
       "count": "Count",
       "duration": "Expiration Date"
+    },
+    "tooltip": {
+      "directPurchase": "TODO Direct purchase price description"
     }
   }
 }

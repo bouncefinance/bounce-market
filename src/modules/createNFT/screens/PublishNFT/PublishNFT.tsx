@@ -2,7 +2,9 @@ import {
   Box,
   Button,
   Container,
+  IconButton,
   InputAdornment,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
@@ -20,6 +22,7 @@ import { useHistory } from 'react-router';
 import { InputField } from '../../../form/components/InputField';
 import { SelectField } from '../../../form/components/SelectField';
 import { useCurrencies } from '../../hooks/useCurrencies';
+import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 
 interface IPublishNFTPayload {
   type: AuctionType;
@@ -177,7 +180,16 @@ export const PublishNFT = () => {
                   component={InputField}
                   name="directPurchase"
                   type="number"
-                  label={t('publish-nft.label.directPurchase')}
+                  label={
+                    <>
+                      {t('publish-nft.label.directPurchase')}
+                      <Tooltip title={t('publish-nft.tooltip.directPurchase')}>
+                        <Box component={IconButton}>
+                          <QuestionIcon />
+                        </Box>
+                      </Tooltip>
+                    </>
+                  }
                   color="primary"
                   fullWidth={true}
                   InputProps={{
