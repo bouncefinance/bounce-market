@@ -1,17 +1,16 @@
+import { useAccount } from 'modules/account/hooks/useAccount';
+import { RoutesConfiguration } from 'modules/overview/Routes';
 import React from 'react';
-import { Route, RouteProps } from 'react-router-dom';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
 
-interface IPrivateRouteProps extends RouteProps {
-  component: any;
-}
+interface IPrivateRouteProps extends RouteProps {}
 
 export const PrivateRoute = (props: IPrivateRouteProps) => {
-  // const store = useStore<IStoreState>();
+  const { isConnected } = useAccount();
 
-  // TODO Pass data
-  // if (isConnected) {
-  return <Route {...props} />;
-  // }
+  if (isConnected) {
+    return <Route {...props} />;
+  }
 
-  // return <Redirect to={INDEX_PATH} />;
+  return <Redirect to={RoutesConfiguration.Overview.path} />;
 };

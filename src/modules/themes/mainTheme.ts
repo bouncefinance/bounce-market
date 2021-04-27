@@ -141,7 +141,7 @@ export const mainTheme = createMuiTheme({
     MuiContainer: {
       maxWidthXl: {
         [defaultTheme.breakpoints.up('xl')]: {
-          maxWidth: 1520 + 48,
+          maxWidth: 1240 + 48,
         },
       },
     },
@@ -182,6 +182,11 @@ export const mainTheme = createMuiTheme({
         [defaultTheme.breakpoints.up('md')]: {
           fontSize: 22,
         },
+      },
+
+      h4: {
+        fontSize: 18,
+        fontWeight: 700,
       },
 
       h5: {
@@ -262,6 +267,21 @@ export const mainTheme = createMuiTheme({
       },
     },
 
+    MuiButtonBase: {
+      root: {
+        '&:active': {
+          transform: 'translateY(1px)',
+        },
+      },
+    },
+
+    MuiIconButton: {
+      root: {
+        border: `1px solid ${fade(defaultTheme.palette.text.primary, 0.1)}`,
+        color: defaultTheme.palette.text.primary,
+      },
+    },
+
     MuiButton: {
       root: {
         borderRadius: 12,
@@ -270,10 +290,6 @@ export const mainTheme = createMuiTheme({
         textTransform: 'none',
         fontWeight: 500,
         minWidth: 95,
-
-        '&:active': {
-          transform: 'translateY(1px)',
-        },
 
         '&$disabled': {
           cursor: 'not-allowed',
@@ -384,6 +400,26 @@ export const mainTheme = createMuiTheme({
         border: `1px solid ${PALETTE.primary.main}`,
       },
 
+      outlinedSecondary: {
+        border: `1px solid ${fade(defaultTheme.palette.text.primary, 0.1)}`,
+        transition: `background ${BTN_TRANSITION_TIME}s ease-in, border ${BTN_TRANSITION_TIME}s ease-in`,
+        color: defaultTheme.palette.text.primary,
+
+        '&:before': {
+          display: 'none',
+        },
+
+        '&:hover': {
+          backgroundColor: fade(defaultTheme.palette.text.primary, 0.04),
+          borderColor: fade(defaultTheme.palette.text.primary, 0.1),
+          color: defaultTheme.palette.text.primary,
+        },
+
+        '&:active': {
+          backgroundColor: fade(defaultTheme.palette.text.primary, 0.08),
+        },
+      },
+
       text: {
         textTransform: 'none',
 
@@ -404,12 +440,6 @@ export const mainTheme = createMuiTheme({
         minHeight: 40,
       },
 
-      flexContainer: {
-        display: 'inline-grid',
-        gridAutoFlow: 'column',
-        gap: defaultTheme.spacing(3),
-      },
-
       indicator: {
         background: defaultTheme.palette.text.primary,
       },
@@ -423,6 +453,7 @@ export const mainTheme = createMuiTheme({
         textTransform: 'none',
         fontWeight: 700,
         fontSize: 16,
+        transition: 'color 0.2s',
 
         [defaultTheme.breakpoints.up('sm')]: {
           minWidth: 0,
@@ -431,11 +462,15 @@ export const mainTheme = createMuiTheme({
         '&.Mui-selected': {
           color: defaultTheme.palette.text.primary,
         },
+
+        '& + &': {
+          marginLeft: defaultTheme.spacing(3),
+        },
       },
 
       textColorInherit: {
         opacity: 1,
-        color: defaultTheme.palette.text.secondary,
+        color: fade(defaultTheme.palette.text.primary, 0.3),
       },
     },
 

@@ -1,4 +1,4 @@
-import { Box, Container, Fade, Grid, Hidden } from '@material-ui/core';
+import { Box, Fade, Grid, Hidden } from '@material-ui/core';
 import { t } from 'modules/i18n/utils/intl';
 import {
   IProductCardProps,
@@ -12,6 +12,7 @@ import { Select } from 'modules/uiKit/Select';
 import { useMemo } from 'react';
 import InView from 'react-intersection-observer';
 import { uid } from 'react-uid';
+import { WideContainer } from '../WideContainer';
 import { useProductsStyles } from './ProductsStyles';
 import { useProducts } from './useProducts';
 
@@ -68,7 +69,7 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
 
   return (
     <Section {...sectionProps}>
-      <Container>
+      <WideContainer>
         <Box mb={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={6} md>
@@ -134,7 +135,7 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
             {t('common.load-more')}
           </Button>
         </Box>
-      </Container>
+      </WideContainer>
     </Section>
   );
 };

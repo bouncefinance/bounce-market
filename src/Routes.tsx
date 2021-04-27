@@ -1,3 +1,7 @@
+import {
+  ProfileRoutes,
+  ProfileRoutesConfig,
+} from 'modules/profile/ProfileRoutes';
 import { Route, Switch } from 'react-router-dom';
 import {
   Routes as CreateNFTRoutes,
@@ -33,7 +37,7 @@ export function Routes() {
         exact
         path={CreateNFTRoutesConfig.CreateNft.path}
         render={() => (
-          <DefaultLayout headerTheme={Themes.dark}>
+          <DefaultLayout>
             <CreateNFTRoutes />
           </DefaultLayout>
         )}
@@ -43,8 +47,28 @@ export function Routes() {
         exact
         path={DetailsNFTRoutesConfig.DetailsNFT.path}
         render={() => (
-          <DefaultLayout headerTheme={Themes.dark}>
+          <DefaultLayout>
             <DetailsNFTRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={ProfileRoutesConfig.UserProfile.path}
+        render={() => (
+          <DefaultLayout>
+            <ProfileRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={ProfileRoutesConfig.Profile.path}
+        render={() => (
+          <DefaultLayout>
+            <ProfileRoutes />
           </DefaultLayout>
         )}
       />

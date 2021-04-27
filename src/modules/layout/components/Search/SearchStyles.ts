@@ -11,6 +11,7 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
     width: 46,
     padding: 0,
     color: '#7b7b7b',
+    border: 'none',
   },
 
   input: {

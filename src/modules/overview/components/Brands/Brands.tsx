@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
+import { Box, Grid, Typography, useTheme } from '@material-ui/core';
 import classNames from 'classnames';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { WideContainer } from '../WideContainer';
 import alpacaLogo from './assets/alpaca.svg';
 import darkHorseLogo from './assets/darkHorse.svg';
 import polkaPetLogo from './assets/polkaPet.svg';
@@ -81,7 +82,7 @@ export const BrandsComponent = ({
 
   return (
     <Section {...sectionProps} className={classes.root}>
-      <Container>
+      <WideContainer>
         <Box mb={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs>
@@ -99,7 +100,7 @@ export const BrandsComponent = ({
         <Swiper {...sliderProps} className={classes.slider}>
           {renderedSlides}
         </Swiper>
-      </Container>
+      </WideContainer>
     </Section>
   );
 };

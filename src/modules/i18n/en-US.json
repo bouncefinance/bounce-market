@@ -109,5 +109,10 @@
   },
   "brands": {
     "title": "Hot Brands"
+  },
+  "profile": {
+    "customize-btn": "Customize",
+    "follow": "Follow",
+    "subscribers": "Subscribers"
   }
 }

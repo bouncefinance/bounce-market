@@ -13,7 +13,7 @@ export const useFilledTabsStyles = makeStyles<Theme>(theme => ({
     zIndex: -1,
     height: '100%',
     background: theme.palette.text.primary,
-    borderRadius: 8,
+    borderRadius: 40,
   },
 
   tab: {

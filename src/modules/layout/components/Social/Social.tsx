@@ -1,9 +1,9 @@
 import { Box, BoxProps, IconButton } from '@material-ui/core';
+import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { MediumIcon } from './assets/MediumIcon';
 import { TelegramIcon } from './assets/TelegramIcon';
-import { TwitterIcon } from './assets/TwitterIcon';
 import { useSocialStyles } from './SocialStyles';
 
 export const Social = (props: BoxProps) => {

@@ -123,7 +123,7 @@ export const DetailsNFT = () => {
     );
 
     return (
-      <>
+      <div className={classes.root}>
         <ImgContainer className={classes.imgContainer} src={data.fileurl} />
 
         <Info className={classes.info}>
@@ -164,15 +164,13 @@ export const DetailsNFT = () => {
           ownerAvatar="https://picsum.photos/44?random=1"
           isOwnerVerified={false}
         />
-      </>
+      </div>
     );
   };
 
   return (
-    <div className={classes.root}>
-      <Queries requestActions={[DetailsNFTActions.fethItem]}>
-        {renderContent}
-      </Queries>
-    </div>
+    <Queries requestActions={[DetailsNFTActions.fethItem]}>
+      {renderContent}
+    </Queries>
   );
 };

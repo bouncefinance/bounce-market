@@ -6,16 +6,13 @@ import {
   Fade,
   ThemeProvider,
 } from '@material-ui/core';
-import { useQuery } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { getTheme } from 'modules/common/utils/getTheme';
 import { t } from 'modules/i18n/utils/intl';
 import { Themes } from 'modules/themes/types';
 import { useIsXLUp } from 'modules/themes/useTheme';
 import { Button } from 'modules/uiKit/Button';
-import { useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useAppDispatch } from '../../../../store/useAppDispatch';
-import { AccountActions } from '../../../account/store/accountActions';
 import { RoutesConfiguration } from '../../../createNFT/Routes';
 import { HeaderLinks, HeaderLinksSecondary } from '../HeaderLinks';
 import { Logo } from '../Logo';
@@ -23,15 +20,11 @@ import { Search } from '../Search';
 import { SearchTrigger } from '../SearchTrigger';
 import { Social } from '../Social';
 import { Toggle } from '../Toggle';
+import { Wallet } from '../Wallet';
 import { useHeaderStyles } from './HeaderStyles';
 import { useHeader } from './useHeader';
 
-interface IHeaderProps {
-  isConnected?: boolean;
-}
-
-export const Header = ({ isConnected = false }: IHeaderProps) => {
-  const dispatch = useAppDispatch();
+export const Header = () => {
   const {
     mobileNavShowed,
     toggleNav,
@@ -39,24 +32,13 @@ export const Header = ({ isConnected = false }: IHeaderProps) => {
     toggleSearch,
   } = useHeader();
 
-  const handleConnect = useCallback(() => {
-    dispatch(AccountActions.connect());
-  }, [dispatch]);
-
-  const { loading } = useQuery({
-    type: AccountActions.setAccount.toString(),
-  });
+  const { isConnected, handleConnect, loading } = useAccount();
 
   const classes = useHeaderStyles();
 
   const isXLUp = useIsXLUp();
 
-  const renderedWallet = (
-    <Button className={classes.wallet}>
-      0x63c6...b350
-      <span className={classes.walletLogo} />
-    </Button>
-  );
+  const renderedWallet = <Wallet />;
 
   const renderedDesktop = (
     <>
