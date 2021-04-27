@@ -156,7 +156,7 @@ const SummaryWrapper = styled.div`
 	}
 `;
 
-function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit }) {
+function Summary ({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
 	const [btnLock, setBtnLock] = useState(true);
@@ -184,7 +184,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
 			// Fixswap NFT
-			const _name = String(nftInfo.itemname).substr(0,30)
+			const _name = String(nftInfo.itemname).substr(0, 30)
 			const _token0 = nftInfo.contractaddress
 			// const _token1 = ZERO_ADDRESS
 			const _token1 = newUnit.contract
@@ -276,7 +276,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			// console.log(unit)
 			try {
 				// Fixswap NFT
-				const _name = String(nftInfo.itemname).substr(0,30)
+				const _name = String(nftInfo.itemname).substr(0, 30)
 				const _token0 = nftInfo.contractaddress
 				const _token1 = newUnit.contract
 				const _tokenId = nftInfo.id
@@ -284,7 +284,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				const _amountMin1 = numToWei(minPrice, newUnit.decimals)
 				const _amountMinIncr1 = numToWei(minIncr, newUnit.decimals)
 				const _amountReserve1 = numToWei(price, newUnit.decimals)
-				const _duration = window.location.hostname.includes('market.bounce.finance') ? duration * 60 * 60 * 24 : duration * 60
+				// const _duration = window.location.hostname.includes('market.bounce.finance') ? duration * 60 * 60 * 24 : duration * 60
+				const _duration = duration * 60 * 60 * 24
 				// const _duration = duration * 60
 				const _onlyBot = false
 
