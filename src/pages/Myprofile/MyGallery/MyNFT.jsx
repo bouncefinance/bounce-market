@@ -12,6 +12,7 @@ import useWrapperIntl from '@/locales/useWrapperIntl'
 
 import icon_copy from "@assets/images/icon/copy.svg";
 import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
+/* import pic_NFT1 from "./assets/pic_NFT1.svg"; */
 
 const Page = styled.div`
 	display: flex;
@@ -175,7 +176,7 @@ const InfoDropdowns = styled.div`
 	display: grid;
 `;
 
-function MyNFT() {
+function MyNFT () {
 	const { account, active } = useActiveWeb3React();
 	const history = useHistory();
 	const { nftId } = useParams();
@@ -204,6 +205,7 @@ function MyNFT() {
 
 	useEffect(() => {
 		const getNFTInfoList = async (nftId) => {
+			if (!active) return;
 			const [contract, tokenId] = nftId.split('-')
 			const params = {
 				ct: contract,
@@ -237,10 +239,9 @@ function MyNFT() {
 					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
 				});
 		};
-		if (!active || !nftId) return;
 		getNFTInfoList(nftId);
 		// eslint-disable-next-line
-	}, [active, nftId]);
+	}, [ NFTInfo]);
 
 	const NavList = [
 		{
@@ -253,27 +254,20 @@ function MyNFT() {
 		},
 	];
 
-	/* useEffect(() => {
-		console.log("category: ", category)
-	}, [category])
-
-	useEffect(() => {
-		console.log("imgURL: ", imgURL)
-	}, [imgURL]) */
-
 	return (
 		<Page>
 			<BreadcrumbNav marginTop="24px" NavList={NavList} />
 			<PageBody className="sellNFT">
-				{category && (category === "Videos" || category === 'video') ?
-						<video width='400px' height='400px' src={imgURL} controls='controls' autoPlay></video>
-						:
-						<AutoStretchBaseWidthOrHeightImg src={imgURL} width={400} height={400} />
+				{category && (category === "Videos" || category === "Video") ?
+					<video width='400px' height='400px' src={imgURL} controls='controls' autoPlay></video> :
+					<AutoStretchBaseWidthOrHeightImg src={imgURL} width={400} height={400} />
+					
 				}
 
 
 				<PageBodyRight className="right">
 					<span className="NFTName">{NFTName}</span>
+					{category}
 
 					<div className="account">
 						<p>{account}</p>
@@ -292,13 +286,7 @@ function MyNFT() {
 								// history.push("/MyGallery/Sell");
 							}}
 						/>
-						<Button
-							width="200px"
-							value="Transfer"
-							onClick={() => {
-								history.push(`/MyGallery/${nftId}/Transfer`)
-							}}
-						/>
+						{/* <Button width="200px" value="Transfer" /> */}
 					</div>
 
 					<span className="description">{description}</span>
