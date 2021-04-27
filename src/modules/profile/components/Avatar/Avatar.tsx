@@ -4,7 +4,7 @@ import {
   IconButton,
 } from '@material-ui/core';
 import classNames from 'classnames';
-import { PencilIcon } from 'modules/profile/assets/PencilIcon';
+import { PencilIcon } from 'modules/common/components/Icons/PencilIcon';
 import React from 'react';
 import { useAvatarStyles } from './useAvatarStyles';
 

@@ -1,10 +1,10 @@
 import { Box, Container } from '@material-ui/core';
 import classNames from 'classnames';
+import { PencilIcon } from 'modules/common/components/Icons/PencilIcon';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import React from 'react';
-import { PencilIcon } from '../../assets/PencilIcon';
 import { useHeaderStyles } from './useHeaderStyles';
 
 interface IHeaderProps {
