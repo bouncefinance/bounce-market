@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import UpdateTopBarImg from '../Myprofile/MyBrands/updateTopBarImg'
@@ -11,8 +11,6 @@ import { CardItem } from '../Marketplace/CardItem'
 import icon_arts from '@assets/images/icon/image.svg'
 import icon_comics from '@assets/images/icon/comics.svg'
 import icon_sport from '@assets/images/icon/sport.svg'
-import { useLazyQuery } from '@apollo/client'
-import { QueryBrandTradeItems, QueryOwnerBrandItems } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
@@ -20,6 +18,7 @@ import { Controller } from '@/utils/controller'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios'
 
 const AirHomeStyled = styled.div`
 .top_bar{
@@ -155,8 +154,6 @@ export function AirHome() {
   const { sign_Axios } = useAxios();
 
   const [brandInfo, setBrandInfo] = useState({});
-  const [tokenList, setTokenList] = useState([]);
-  const [ctList, setCtList] = useState([]);
   const [itemList, setItemList] = useState([]);
   const [pools, setPools] = useState([]);
 
@@ -187,88 +184,84 @@ export function AirHome() {
       channel === NavList[1].route ? NavList[1].channelRequestParam :
         NavList[2].channelRequestParam);
   const [categoryRequestParam, setCategoryRequestParam] = useState(wrapperIntl("Category.All"))
-  
-  // useEffect(() => {
-  //   console.log("categoryRequestParam:", categoryRequestParam)
-  // }, [categoryRequestParam])
-  
-  const handleBrandTradeItems = useCallback((pools) => {
-    // console.log('pools',tokenList,categoryRequestParam,channelRequestParam)
-    /* const chanel_2 =  channel === 'Comics' ? 'Conicbooks' : channel; */
+
+
+  const handleBrandItems = (tradeData) => {
+
+    const tradeAuctions = tradeData.tradeAuctions.filter(item => {
+      return item.state !== 1 && String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase()
+    })
+
+    const tradePools = tradeData.tradePools.filter(item => {
+      return item.state !== 1 && String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase()
+    })
+
+    const tradeArr = tradeAuctions.concat(tradePools)
+
+    changeDataByCannel(tradeArr)
+    setPools(tradeArr)
+  }
+
+
+
+  const changeDataByCannel = async (tradeArr) => {
+    const ids = tradeArr.map(item => item.tokenId)
+    const cts = tradeArr.map(item => item.token0)
 
     sign_Axios.post(Controller.items.getitemsbyfilter, {
-      ids: tokenList,
-      cts: ctList,
-      /* category: type, */
+      ids: ids,
+      cts: cts,
       category: categoryRequestParam,
       channel: channelRequestParam,
     })
       .then(res => {
         if (res.status === 200 && res.data.code === 1) {
-          const list = pools.map(poolInfo => {
+          // console.log(tradeArr)
+          const list = tradeArr.map(poolInfo => {
             const item = res.data.data.find(item => poolInfo.tokenId === item.id);
+            // console.log(poolInfo)
             return {
               ...item,
-              poolType: poolInfo ? poolInfo.poolType : null,
+              poolType: poolInfo.amount_total0 ? AUCTION_TYPE.FixedSwap : AUCTION_TYPE.EnglishAuction,
               poolId: poolInfo ? poolInfo.poolId : null,
               price: poolInfo && poolInfo.price,
               createTime: poolInfo && poolInfo.createTime,
               token1: poolInfo && poolInfo.token1
             }
           })
+            .filter(item => item.itemname)
 
-          const result = list
-            // .filter(item => item.poolId || item.poolId === 0)
-            .sort((a, b) => b.createTime - a.createTime);
+          const result = list.sort((a, b) => b.createTime - a.createTime);
           setItemList(result);
         }
       })
-    // eslint-disable-next-line
-  }, [channel, ctList, tokenList, channelRequestParam, categoryRequestParam]);
-
-  const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItems, {
-    variables: { tokenList: tokenList },
-    fetchPolicy: "network-only",
-    onCompleted: () => {
-      const tradePools = brandTradeItems.data.tradePools.map(item => ({
-        ...item,
-        poolType: AUCTION_TYPE.FixedSwap
-      }))
-      const tradeAuctions = brandTradeItems.data.tradeAuctions.map(item => ({
-        ...item,
-        price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-        poolType: AUCTION_TYPE.EnglishAuction
-      }));
-      const pools = tradePools.concat(tradeAuctions);
-      setPools(pools);
-      handleBrandTradeItems(pools);
-    }
-  })
-
-  const handleBrandItems = (data) => {
-    const brands = [].concat(
-        (data?.bounce721Brands ?? [])[0],
-        (data?.bounce1155Brands ?? [])[0]
-      )
-      .map(v => (v?.tokenList ?? []).map(e => ({ ...e, nft: v.nft }))).flat()
-    const tokenList = brands.map(item => item.tokenId);
-    const ctList = brands.map(item => item.nft);
-    // console.log(brands, tokenList, ctList)
-    setTokenList(tokenList);
-    setCtList(ctList);
-    getBrandTradeItems();
   }
 
-  const [getBrandItems, brandItems] = useLazyQuery(QueryOwnerBrandItems, {
-    variables: { owner: brandInfo.owneraddress },
-    fetchPolicy: "network-only",
-    onCompleted: () => {
-      handleBrandItems(brandItems.data);
+  useEffect(() => {
+    changeDataByCannel(pools)
+    // eslint-disable-next-line
+  }, [channel])
+
+  const getBrandItems = async () => {
+    const params = {
+      offset: 0,
+      count: 10000,
+      user_address: brandInfo.owneraddress
     }
-  })
+
+    const brandDataRes = await axios.get('/pools', { params })
+    if (brandDataRes.status === 200 && brandDataRes.data.code === 200) {
+      const data = brandDataRes.data.data
+      // console.log(data)
+      handleBrandItems(data || {
+        tradeAuctions: [],
+        tradePools: []
+      })
+    }
+
+  }
 
   useEffect(() => {
-    if (!active) return;
     sign_Axios.post(Controller.brands.getbrandbyid, {
       id: Number(id)
     })
@@ -277,54 +270,37 @@ export function AirHome() {
           const data = res.data.data;
           // console.log(data)
           setBrandInfo(data);
-          getBrandItems();
-          if (channel && tokenList.length > 0) {
-            handleBrandTradeItems(pools);
-          }
-        } else {
-          
         }
       })
     // eslint-disable-next-line
-  }, [active, id, channel, categoryRequestParam])
+  }, [])
+
+  useEffect(() => {
+    if (!active || !brandInfo.owneraddress) return;
+    getBrandItems();
+    // eslint-disable-next-line
+  }, [active, id, categoryRequestParam, brandInfo])
 
   const renderListByChannel = (channel) => {
-    switch (channel) {
-      case 'FineArts':
-        return <ul className={`list_wrapper ${channel}`} style={{ marginBottom: 30 }}>
-          {itemList.map((item, index) => {
-            return <li key={index}>
-              <CardItem
-                poolType={item.poolType}
-                cover={item.fileurl}
-                name={item.itemname}
-                cardId={item.poolId}
-                price={item.price}
-                token1={item.token1}
-                category={item.category}
-              />
-            </li>
-          })}
-        </ul>
-      default:
-        return <ul className={`list_wrapper ${channel}`} style={{ marginBottom: 30 }}>
-          {itemList.map((item, index) => {
-            return <li key={index}>
-              <CardItem
-                poolType={item.poolType}
-                cover={item.fileurl}
-                name={item.itemname}
-                cardId={item.poolId}
-                price={item.price}
-                token1={item.token1}
-                category={item.category}
-              />
-            </li>
-          })}
-        </ul>
-    }
+    // console.log(itemList)
+    return <ul className={`list_wrapper ${channel}`} style={{ marginBottom: 30 }}>
+      {itemList && itemList.map((item, index) => {
+        return <li key={channel + index}>
+          <CardItem
+            poolType={item.poolType}
+            cover={item.fileurl}
+            name={item.itemname}
+            cardId={item.poolId}
+            price={item.price}
+            token1={item.token1}
+            category={item.category}
+            nftId={item.id}
+          />
+        </li>
+      })}
+    </ul>
   }
-  
+
   return <AirHomeStyled>
     <div className="top_bar">
       <div className='bg_wrapper' style={brandInfo?.bandimgurl ? { backgroundSize: '100%!important', background: `url(${brandInfo.bandimgurl}) center center no-repeat` } : {}}>
@@ -371,7 +347,7 @@ export function AirHome() {
       </ul>
 
       <div className="filterBox">
-        <Search placeholder={ wrapperIntl("AirHome.placeholder")} />
+        <Search placeholder={wrapperIntl("AirHome.placeholder")} />
 
         <PullRadioBox
           prefix={wrapperIntl("Category.Category") + ':'}
@@ -383,7 +359,7 @@ export function AirHome() {
           ]}
           defaultValue={wrapperIntl("Category.All")}
           onChange={(option) => {
-            console.log(option)
+            // console.log(option)
             switch (option.value) {
               case wrapperIntl("Category.All"):
                 setCategoryRequestParam('')
@@ -396,7 +372,7 @@ export function AirHome() {
               case wrapperIntl("Category.Video"):
                 setCategoryRequestParam('Video')
                 break;
-            
+
               default:
                 setCategoryRequestParam('')
                 break;

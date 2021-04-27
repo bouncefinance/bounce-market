@@ -106,7 +106,7 @@ export default function BasicTable() {
         }
         if (res?.data?.code === 200) {
             const data = res.data.data
-            handleActivities(data);
+            handleActivities(data || []);
         }
         if (resErr) {
             return handleActivities([])
