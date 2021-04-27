@@ -2,7 +2,10 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { RootState } from '../../store/store';
 import { Store } from 'redux';
-import { IApiUploadFileResponse, IApiUploadFileSuccess } from './api/uploadFile';
+import {
+  IApiUploadFileResponse,
+  IApiUploadFileSuccess,
+} from './api/uploadFile';
 import { AccountActions } from '../account/store/accountActions';
 import { getBounceERC1155WithSign, getBounceERC721WithSign } from './api/sign';
 import { IAddItem, IApiAddItem, mapAddItem } from './api/addItem';
@@ -10,7 +13,10 @@ import BounceERC721WithSign from './contracts/BounceERC721WithSign.json';
 import BounceERC1155WithSign from './contracts/BounceERC1155WithSign.json';
 import { AbiItem } from 'web3-utils';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
-import { fetchNftByUser, IApiFetchNftByUserVariables } from './api/fetchNftByUser';
+import {
+  fetchNftByUser,
+  IApiFetchNftByUserVariables,
+} from './api/fetchNftByUser';
 import { getPoolsByUser } from '../marketplace/api/getPoolsByUser';
 import { MarketplaceActions } from '../marketplace/marketplaceActions';
 import { IItem } from '../marketplace/api/getItems';
@@ -50,7 +56,22 @@ export interface ICreateNFTPayload {
   file: File;
 }
 
+export interface IPublishNftPayload {}
+
 export const CreateNftActions = {
+  publishNft: createSmartAction<
+    RequestAction<null, null>,
+    [IPublishNftPayload]
+  >('CreateNftActions/publishNft', data => {
+    return {
+      request: {
+        promise: (async function () {})(),
+      },
+      meta: {
+        asMutation: true,
+      },
+    };
+  }),
   createNft: createSmartAction(
     'MarketplaceActions/createNft',
     ({
