@@ -275,7 +275,7 @@ export const PublishNFT = () => {
           <GoBack />
         </Box>
         <Box mb={3}>
-          <Typography variant="h1">{t('create-nft.title')}</Typography>
+          <Typography variant="h1">{t('publish-nft.title')}</Typography>
         </Box>
         <Box>
           <Form
