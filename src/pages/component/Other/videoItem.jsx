@@ -1,18 +1,22 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState/* , useEffect */ } from "react"
 import styled from 'styled-components'
-import errorImg from '../../../assets/images/loading/3.svg'
+import defaultImg from '../../../assets/images/loading/3.svg'
 import play from './assets/play_gray.svg'
 
 import Grow from '@material-ui/core/Grow';
 
 const VideoStyled = styled.div`
-div{
+.videoWrapper {
   position: relative;
   background-repeat: no-repeat;
   background-size: 63px;
   background-position: center;
   /* background-color: rgba(0, 0, 0, 1); */
-  background-color: rgb(244,244,244);
+  background-color: ${
+    ({hasBackgroundColor}) => {
+      return hasBackgroundColor ? 'rgb(244,244,244)' : 'none';
+    }
+  };
   /* background-color: white; */
 
   .img-loading{
@@ -23,6 +27,20 @@ div{
     width: 100%;
     height: 100%;
   }
+  
+  .defaultImg{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -33.5px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
   .playButton {
     position: absolute;
     top: 50%;
@@ -40,12 +58,15 @@ div{
 }
 `
 
-export function VideoItem ({ src, width, height, style = {}, showPlayButton = true }) {
+export function VideoItem ({ src, width, height, style = {}, initPlayButtonVisible = true, hasBackgroundColor = true, initShowDefaultImage = true }) {
 
   const videoRef = useRef(null)
-  const [imgShow, setImgShow] = useState(true)
-  const [imgLoding, setImgLoding] = useState(!true)
-  const [playButtonVisiable, setPlayButtonVisiable] = useState(true)
+  /* const [imgShow, setImgShow] = useState(true)
+  const [imgLoding, setImgLoding] = useState(!true) */
+  const [playButtonVisiable, setPlayButtonVisiable] = useState(initPlayButtonVisible)
+  const [playButtonClickable, setPlayButtonClickable] = useState(true)
+  /* const [videoError, setVideoError] = useState(false) */
+  const [showDefaultImage, setShowDefaultImage] = useState(initShowDefaultImage)
   // let [isHover, setIsHover] = useState(false)
 
   /* const onMouseMove = () => {
@@ -58,39 +79,61 @@ export function VideoItem ({ src, width, height, style = {}, showPlayButton = tr
 
   const onMouseLeave = () => {
     const video = videoRef?.current
+    if (!initPlayButtonVisible) return
     if (!video) return
     video?.pause()
     setPlayButtonVisiable(true)
   }
-  
-  return <VideoStyled showPlayButton={showPlayButton}>
-    <div  style={{ ...style, width: `${width}px`, height: `${height}px`, backgroundImage: `url(${errorImg})` }}>
+
+  return <VideoStyled playButtonVisiable={playButtonVisiable} hasBackgroundColor={hasBackgroundColor}>
+    <div className="videoWrapper" style={{ ...style, width: `${width}px`, height: `${height}px`/* , backgroundImage: `url(${errorImg})` */ }}>
       {
-      imgShow
-      &&
-      <video
-        /* onMouseOver={onMouseMove} */
-        onMouseLeave={onMouseLeave}
-        ref={videoRef}
-        style={{ objectFit: 'contain' }}
-        width={width}
-        height={height}
-        src={src}
-        alt=""
-        onError={() => {
-          setImgShow(false)
-          setImgLoding(false)
-        }}
-        onLoad={() => {
-          setImgLoding(false)
-        }}
-      />}
+        /* imgShow
+        && */
+        <video
+          /* onMouseOver={onMouseMove} */
+          onMouseLeave={onMouseLeave}
+          ref={videoRef}
+          style={{ objectFit: 'contain' }}
+          width={width}
+          height={height}
+          src={src}
+          alt=""
+          onError={() => {
+            /* setImgShow(false)
+            setImgLoding(false) */
+            /* setVideoError(true) */
+            setPlayButtonClickable(false)
+            console.log("onError")
+          }}
+          /* onLoad={() => {
+            setImgLoding(false)
+          }} */
+          
+          onCanPlay={() => {
+            setShowDefaultImage(false)
+          }}
+        />
+      }
 
-      {imgLoding && <div className="img-loading"></div>}
+      {/* {
+        imgLoding
+        &&
+        <div className="img-loading">
+        </div>
+      } */}
 
+      {
+        /* videoError */
+        showDefaultImage
+        &&
+        <div className="defaultImg">
+          <img src={defaultImg} alt=""/>
+        </div>
+      }
       
       {
-        showPlayButton
+        playButtonVisiable
         &&
         <Grow
             in={playButtonVisiable}
@@ -101,11 +144,11 @@ export function VideoItem ({ src, width, height, style = {}, showPlayButton = tr
             className="playButton"
             onClick={
               (e)=>{
-                if (imgLoding) return
                 e.stopPropagation();
                 e.nativeEvent.stopImmediatePropagation();
+
+                if (!playButtonClickable) return
                 setPlayButtonVisiable(false)
-                /* debugger */
                 const video = videoRef?.current
                 if (!video) return
                 video?.play()
