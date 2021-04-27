@@ -1,7 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { getPools, IPoolsData } from './api/getPools';
-import { IApiItem } from './api/getItems';
-import { RequestAction } from '@redux-requests/core';
+import { IApiItem, IItem, mapItem } from './api/getItems';
+import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 
 interface IFetchItemsParams {
   ids?: number[];
@@ -21,20 +21,27 @@ export const MarketplaceActions = {
     },
   })),
   fetchItems: createSmartAction<
-    RequestAction<{ code: 1; data: IApiItem[] }, IApiItem[]>
-  >('MarketplaceActions/fetchItems', (params: IFetchItemsParams) => ({
-    request: {
-      url: '/api/v2/main/getitemsbyids',
-      method: 'post',
-      data: params,
-    },
-    meta: {
-      auth: true,
-      driver: 'axios',
-      asMutation: false,
-      getData: data => {
-        return data.data;
+    RequestAction<{ code: 1; data: IApiItem[] }, IItem[]>
+  >(
+    'MarketplaceActions/fetchItems',
+    (
+      params: IFetchItemsParams,
+      meta?: RequestActionMeta<{ code: 1; data: IApiItem[] }, IItem[]>,
+    ) => ({
+      request: {
+        url: '/api/v2/main/getitemsbyids',
+        method: 'post',
+        data: params,
       },
-    },
-  })),
+      meta: {
+        auth: true,
+        driver: 'axios',
+        asMutation: false,
+        getData: data => {
+          return data.data.map(mapItem);
+        },
+        ...meta,
+      },
+    }),
+  ),
 };

@@ -2,6 +2,7 @@ import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useItems } from 'modules/marketplace/hooks/useItems';
 import { MarketplaceActions } from 'modules/marketplace/marketplaceActions';
 import { useEffect } from 'react';
+import { CreateNftActions } from '../../../createNFT/CreateNftActions';
 
 export const useOverview = () => {
   const { data } = useItems();
@@ -21,6 +22,14 @@ export const useOverview = () => {
   });
 
   useEffect(() => {
+    // TODO Move to profile
+    dispatchRequest(
+      CreateNftActions.fetchNftByUser({
+        // user: request.data.address,
+        user: '0x5fe96748b9f9f6df3b7f8c71cbd6b62e12997be2',
+      }),
+    );
+
     if (!poolsPristine) {
       return;
     }

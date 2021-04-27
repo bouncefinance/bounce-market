@@ -2,10 +2,7 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { RootState } from '../../store/store';
 import { Store } from 'redux';
-import {
-  IApiUploadFileResponse,
-  IApiUploadFileSuccess,
-} from './api/uploadFile';
+import { IApiUploadFileResponse, IApiUploadFileSuccess } from './api/uploadFile';
 import { AccountActions } from '../account/store/accountActions';
 import { getBounceERC1155WithSign, getBounceERC721WithSign } from './api/sign';
 import { IAddItem, IApiAddItem, mapAddItem } from './api/addItem';
@@ -13,6 +10,10 @@ import BounceERC721WithSign from './contracts/BounceERC721WithSign.json';
 import BounceERC1155WithSign from './contracts/BounceERC1155WithSign.json';
 import { AbiItem } from 'web3-utils';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
+import { fetchNftByUser, IApiFetchNftByUserVariables } from './api/fetchNftByUser';
+import { getPoolsByUser } from '../marketplace/api/getPoolsByUser';
+import { MarketplaceActions } from '../marketplace/marketplaceActions';
+import { IItem } from '../marketplace/api/getItems';
 
 interface IAddItemPayload {
   brandid: number;
@@ -213,4 +214,56 @@ export const CreateNftActions = {
       },
     };
   }),
+  fetchNftByUser: createSmartAction<
+    RequestAction<IItem[], IItem[]>,
+    [payload: IApiFetchNftByUserVariables]
+  >(
+    'CreateNftActions/fetchNftByUser',
+    (payload: IApiFetchNftByUserVariables) => ({
+      request: {
+        promise: (async function () {})(),
+      },
+      meta: {
+        getData: (data: IItem[]) => data,
+        onRequest: (
+          request: { promise: Promise<any> },
+          action: RequestAction,
+          store: Store<RootState> & { dispatchRequest: DispatchRequest },
+        ) => {
+          return {
+            promise: (async function () {
+              const nfts = await fetchNftByUser(payload);
+              const pools = await getPoolsByUser(payload);
+              const ids = [
+                ...nfts.nft721Items.map(item => item.tokenId),
+                ...nfts.nft1155Items.map(item => item.tokenId),
+                ...pools.tradePools.map(item => item.tokenId),
+                ...pools.tradeAuctions.map(item => item.tokenId),
+              ];
+
+              const {
+                data,
+                error: fetchItemsError,
+              } = await store.dispatchRequest(
+                MarketplaceActions.fetchItems(
+                  { ids },
+                  {
+                    silent: true,
+                    suppressErrorNotification: true,
+                    requestKey: action.type,
+                  },
+                ),
+              );
+
+              if (fetchItemsError) {
+                throw fetchItemsError;
+              }
+
+              return data;
+            })(),
+          };
+        },
+      },
+    }),
+  ),
 };

@@ -5,3 +5,9 @@ export interface IApiItem {
   likecount: number;
   metadata: string;
 }
+
+export interface IItem extends IApiItem {}
+
+export function mapItem(item: IApiItem): IItem {
+  return item;
+}
