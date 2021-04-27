@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"
+import React, { useRef, useState/* , useEffect */ } from "react"
 import styled from 'styled-components'
 import defaultImg from '../../../assets/images/loading/3.svg'
 import play from './assets/play_gray.svg'
@@ -84,10 +84,6 @@ export function VideoItem ({ src, width, height, style = {}, initPlayButtonVisib
     video?.pause()
     setPlayButtonVisiable(true)
   }
-
-  useEffect(() => {
-    console.log("showDefaultImage: ", showDefaultImage)
-  }, [showDefaultImage])
 
   return <VideoStyled playButtonVisiable={playButtonVisiable} hasBackgroundColor={hasBackgroundColor}>
     <div className="videoWrapper" style={{ ...style, width: `${width}px`, height: `${height}px`/* , backgroundImage: `url(${errorImg})` */ }}>
