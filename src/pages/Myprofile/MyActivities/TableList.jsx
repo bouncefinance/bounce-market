@@ -46,8 +46,8 @@ const useStyles = makeStyles({
 export default function BasicTable() {
     const classes = useStyles();
 
-    const { active/* , account */ } = useActiveWeb3React();
-    const account = '0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE'
+    const { active, account } = useActiveWeb3React();
+    /* const account = '0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE' */
     const [list, setList] = useState([]);
     const { sign_Axios } = useAxios();
 
@@ -107,6 +107,9 @@ export default function BasicTable() {
         if (res?.data?.code === 200) {
             const data = res.data.data
             handleActivities(data);
+        }
+        if (resErr) {
+            return handleActivities([])
         }
     }
 

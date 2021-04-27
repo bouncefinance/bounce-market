@@ -16,14 +16,14 @@ import icon_sport from '@assets/images/icon/sport.svg'
 
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
-import { useLazyQuery } from '@apollo/client'
-import { QueryMyPools, queryTradeInfo } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import { SkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import { AUCTION_TYPE, NFT_CATEGORY } from '@/utils/const'
 import Button from '@/components/UI-kit/Button/Button'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import axios from 'axios'
+import to from 'await-to-js'
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -127,7 +127,9 @@ export default function MyMarket() {
   const { wrapperIntl } = useWrapperIntl()
 
   const history = useHistory()
-  const { active, account } = useActiveWeb3React()
+  const { active, account  } = useActiveWeb3React()
+
+  // const account = '0x2d3fff58da3346dce601f6db8eec57906cdb17be'
 
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
@@ -142,8 +144,6 @@ export default function MyMarket() {
   const [loading, setLoading] = useState(true)
   const [length, setLength] = useState(4);
   const [tradeData, setTradeData] = useState(null);
-  const [poolIdList, setPoolIdList] = useState(null);
-  const [tradeInfo, setTradeInfo] = useState(null);
 
   type = ''
 
@@ -204,45 +204,17 @@ export default function MyMarket() {
       .filter(item => !claimTradeAuctions.includes(item))
 
 
-    const auctionBids = tradeData.auctionBids.map(item => {
-      const poolInfo = tradeInfo.tradeAuctions.find(pool => pool.poolId === item.poolId);
-      return {
-        ...item,
-        poolType: AUCTION_TYPE.EnglishAuction,
-        price: poolInfo && (poolInfo.lastestBidAmount !== '0' ? poolInfo.lastestBidAmount : poolInfo.amountMin1),
-        token1: poolInfo && poolInfo.token1,
-        createTime: item.timestamp,
-        creator: poolInfo && poolInfo.creator,
-        lastestBidAmount: poolInfo && poolInfo.lastestBidAmount,
-        amountMax1: poolInfo && poolInfo.amountMax1,
-        createrClaimed: poolInfo && poolInfo.createrClaimed,
-        bidderClaimed: poolInfo && poolInfo.bidderClaimed
-      }
-    });
-    const claimAuctionBids = auctionBids
-      .filter(item => {
-        if (String(account).toLowerCase() === item.creator) {
-          return item.createrClaimed === 0
-        } else {
-          return item.bidderClaimed === 0
-        }
-      })
-      .filter(item => item.lastestBidAmount !== item.amountMax1)
-      .filter(item => item.lastestBidAmount === item.amount1)
-    const soldAuctionBids = auctionBids
-      .filter(item => !claimAuctionBids.includes(item))
-
     const poolData = tradePools
       .concat(tradeAuctions)
-      .concat(auctionBids)
+      // .concat(auctionBids)
 
     const claimPoolData = claimTradePools
       .concat(claimTradeAuctions)
-      .concat(claimAuctionBids)
+      // .concat(claimAuctionBids)
 
     const soldPoolData = soldTradePools
       .concat(soldTradeAuctions)
-      .concat(soldAuctionBids)
+      // .concat(soldAuctionBids)
     const ids_list = poolData.map(item => item.tokenId);
     const cts_list = poolData.map(item => item.token0);
     
@@ -290,6 +262,11 @@ export default function MyMarket() {
           })
           const claimResult = claimList.sort((a, b) => b.createTime - a.createTime)
           const soldResult = soldList.sort((a, b) => b.createTime - a.createTime)
+
+          console.log('claimResult')
+          console.log(claimResult)
+          console.log('soldResult')
+          console.log(soldResult)
           setTokenList(claimResult);
           setSoldList(soldResult);
           setClaimList(claimResult);
@@ -300,33 +277,29 @@ export default function MyMarket() {
     // eslint-disable-next-line
   }, [channel, tradeData, type]);
 
-  const [getTradeInfo, { data }] = useLazyQuery(queryTradeInfo, {
-    variables: { poolIdList: poolIdList },
-    onCompleted: () => {
-      setTradeInfo(data);
-    }
-  })
-
-  const [getMyTradeNFT, { data: myTrade }] = useLazyQuery(QueryMyPools, {
-    variables: { user: String(account).toLowerCase() },
-    fetchPolicy: "network-only",
-    onCompleted: () => {
-      const auctionBids = myTrade.auctionBids.map(item => Number(item.poolId));
-      setPoolIdList(auctionBids)
+  const init = async () => {
+    const [dataErr, dataRes] = await to(axios.get('/records', {params: { offset: 0, count: 100, user_address: String(account).toLowerCase() }}))
+    if (dataRes?.data?.code === 200) {
+      const myTrade = dataRes.data.data
+      // 1:claim  0 unclaim 
       setTradeData(myTrade)
-    },
-  })
+    }
+    if (dataErr) {
+      console.log(dataErr)
+    }
+  }
+  useEffect(() => {
+    account && init()
+    // eslint-disable-next-line
+  }, [account])
 
   useEffect(() => {
     if (!active) return
-    getMyTradeNFT()
+    // getMyTradeNFT()
     if (tradeData) {
-      getTradeInfo();
+      handleTradeData(tradeData);
     }
-    if (tradeInfo) {
-      handleTradeData(tradeInfo);
-    }
-  }, [active, tradeData, tradeInfo, getMyTradeNFT, getTradeInfo, handleTradeData])
+  }, [active, tradeData, handleTradeData])
 
   const handleChange = (filterSearch) => {
     const list = tokenList.filter(item => item.itemname.toLowerCase().indexOf(filterSearch) > -1
@@ -339,7 +312,7 @@ export default function MyMarket() {
       case 'Image':
         return <ul className={`list_wrapper ${type}`}>
           {filterList.map((item, index) => {
-            return <li key={index}>
+            return <li key={item.id}>
               <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
@@ -357,7 +330,7 @@ export default function MyMarket() {
       default:
         return <ul className={`list_wrapper ${type}`}>
           {filterList.map((item, index) => {
-            return <li key={index}>
+            return <li key={item.id}>
               <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
@@ -367,6 +340,7 @@ export default function MyMarket() {
                 poolType={item.poolType}
                 poolInfo={item}
                 category={item.category}
+                nftId={item.id}
               />
             </li>
           })}

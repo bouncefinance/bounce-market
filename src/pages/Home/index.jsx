@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import CardBanner from './CardBanner'
 import CardGroup from './CardGroup'
@@ -28,8 +28,8 @@ import { AUCTION_TYPE } from '@/utils/const'
 import { Controller } from '@/utils/controller'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import axios from 'axios'
+import to from 'await-to-js'
 
-import { myContext } from '@/redux/index.js';
 
 const HomeStyled = styled.div`
   .banner{
@@ -157,26 +157,80 @@ const HomeStyled = styled.div`
 
 `
 
-const poolsParmas = { offset: 0, count: 1e4 }
-let weightMap = new Map()
-const getStandardTypeValue = (e) => e === 2 ? 'english-auction' : 'fixed-swap'
+const HOMETOPLISTNUMBER = 8
+const HOMETOPFORNUMBER = 10
 export default function Index() {
   // const { state } = useContext(myContext);
   const { sign_Axios } = useAxios()
-  const { account, active } = useWeb3React();
+  const { account } = useWeb3React();
   const history = useHistory()
   const [brands, setbrands] = useState([])
   // const { data } = useQuery(QueryTradePools)
 
-  const [data, setData] = useState()
-  const initPools = async (params) => {
-    const res = await axios.get('/pools', { params: params })
-    if (res.data.code === 200) {
-      setData(res.data.data)
+  const initPools = async () => {
+    let offset = 0
+    let items = [], nftMap = new Map()
+    const getNftList = async () => {
+      const weightRes = await sign_Axios.post(Controller.pools.getpoolsinfobypage, { offset, limit: HOMETOPFORNUMBER, orderweight: 1 })
+      if (weightRes.data.code === 1) {
+        // artistpoolweight poolweight poolid id standard
+        let { data } = weightRes.data
+        let templPools = []
+        for (let weightItem of data) {
+          const [poolErr, poolRes] = await to(axios.get('/pool', {
+            params: {
+              pool_id: weightItem.poolid,
+              // standard == pool_type
+              pool_type: weightItem.standard === 1 ? 'fixedswap' : 'english'
+            }
+          }))
+          if (poolErr) {
+            return console.log(poolErr)
+          }
+          if (poolRes?.data?.code !== 200) {
+            return console.log('error')
+          }
+          templPools.push(poolRes.data.data)
+        }
+        const [nftErr, nftRes] = await to(sign_Axios.post(Controller.items.getitemsbyids, {
+          ids: templPools.map(e => e.tokenId),
+          cts: templPools.map(e => e.token0),
+        }))
+        if (nftErr) {
+          return console.log(nftErr)
+        }
+        if (nftRes.data.code !== 1) {
+          return console.log('error')
+        }
+        const nftList = nftRes.data?.data ?? []
+        for (let nft of nftList) {
+          nftMap.set(`${nft.contractaddress}_${nft.id}`, nft)
+        }
+        items.push(...templPools.map(pool => {
+          const nftInfo = nftMap.get([pool.token0, pool.tokenId].join('_'))
+          return {
+            ...nftInfo,
+            tokenId: pool.tokenId,
+            poolType: pool.amountMin1 ? AUCTION_TYPE.EnglishAuction : AUCTION_TYPE.FixedSwap, 
+            poolId: pool.poolId,
+            price: pool.price || pool.lastestBidAmount,
+            createTime: pool.createTime,
+            token1: pool.token1
+          }
+        }))
+        items = items.filter(e => e.contractaddress)
+        if (items.length < HOMETOPLISTNUMBER) {
+          return getNftList()
+        }
+        setItemList(items.filter((_, i) => i < HOMETOPLISTNUMBER))
+        setLoadingItems(false)
+      }
     }
+    getNftList()
   }
   useEffect(() => {
-    initPools(poolsParmas)
+    initPools()
+    // eslint-disable-next-line
   }, [])
   // const { data } = []
   const [itemList, setItemList] = useState()
@@ -185,7 +239,6 @@ export default function Index() {
   const [loadingItems, setLoadingItems] = useState(true)
   // const { dispatch } = useContext(myContext)
   const { wrapperIntl } = useWrapperIntl()
-  const { dispatch } = useContext(myContext);
 
   const bannerSetting = {
     img: img_banner_fmg,
@@ -194,9 +247,6 @@ export default function Index() {
   }
 
   useEffect(() => {
-    // if (!account) {
-    //   return
-    // }
 
     const init = async () => {
       setLoadingBrands(true)
@@ -208,7 +258,6 @@ export default function Index() {
           return item.id !== 10 && item.id !== 11 && item.id !== 117
         }).slice(0, 4)
         setbrands(brands_2)
-        // console.log('---brands----', brands_2)
       } else {
         // TODO ERROR SHOW
         // dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Oops! Something went wrong. Try again." });
@@ -218,94 +267,6 @@ export default function Index() {
     init()
     // eslint-disable-next-line
   }, [account])
-
-  useEffect(() => {
-    // if (!active || !data) return
-    if (!active) {
-      if (!active) {
-        dispatch({
-        type: 'Modal_Message',
-        showMessageModal: true,
-        modelType: 'error',
-        modelMessage: wrapperIntl("ConnectWallet"),
-        modelTimer: 24 * 60 * 60 * 1000,
-        });
-      }
-    }
-
-    if (!data) return
-    setLoadingItems(true)
-    const tradePools = data.tradePools.map(item => ({
-      ...item,
-      poolType: AUCTION_TYPE.FixedSwap
-    })).filter(item => item.state !== 1)
-    const tradeAuctions = data.tradeAuctions.map(item => ({
-      ...item,
-      price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-      poolType: AUCTION_TYPE.EnglishAuction
-    })).filter(item => item.state !== 1 && item.poolId !== 0)
-
-    const pools = tradePools.concat(tradeAuctions)
-    const list = pools.map(item => item.tokenId)
-    const poolIds = pools.map(item => {
-      return item.poolId
-    })
-    const standards = pools.map(item => {
-      if (item.poolType === 'fixed-swap') {
-        return 1
-      } else {
-        return 2
-      }
-    })
-    sign_Axios.post(Controller.items.getitemsbyids, { ids: list })
-      .then(res => {
-        // .filter((_) => _.id).slice(0, 8)
-        const _list = pools.map((pool, index) => {
-          const poolInfo = res.data.data.find((item) => pool.tokenId === item.id);
-          return {
-            ...poolInfo,
-            tokenId: pool.tokenId,
-            poolType: pool.poolType,
-            poolId: pool.poolId,
-            price: pool.price,
-            createTime: pool.createTime,
-            token1: pool.token1
-          }
-
-        })
-          .sort((a, b) => b.createTime - a.createTime);
-        getPoolsWeight(_list)
-      })
-    const getPoolsWeight = async (list) => {
-      weightMap = new Map()
-      const _res = await sign_Axios.post(Controller.pools.getpoolsinfo, {
-        poolids: poolIds,
-        standards: standards
-      })
-      const res = _res.data
-      if (res.code === 1) {
-        res.data?.forEach((item) => {
-          weightMap.set(`${item.poolid}_${getStandardTypeValue(item.standard)}`, item.poolweight)
-        })
-        const _list = list.map((item) => {
-          return {
-            ...item,
-            defaultWeight: weightMap.get(`${item.poolId}_${item.poolType}`) ?? 0
-          }
-        })
-          .sort((a, b) => b.defaultWeight - a.defaultWeight)
-        // console.log(_list, weightMap)
-        setItemList(_list.filter((_) => _.id).slice(0, 8));
-        setLoadingItems(false)
-      }
-    }
-
-
-
-    // eslint-disable-next-line
-  }, [active, data])
-
-
 
   return (
     <HomeStyled>

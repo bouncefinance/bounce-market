@@ -167,20 +167,20 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo, c
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
 
-    useEffect(() => {
-		console.log("category: ", category)
-	}, [category])
+    // useEffect(() => {
+    // 	console.log("category: ", category)
+    // }, [category])
 
-    useEffect(() => {
-		console.log("cover: ", cover)
-	}, [cover])
+    // useEffect(() => {
+    // 	console.log("cover: ", cover)
+    // }, [cover])
 
     return (
         <>
             <CardItemStyled>
                 {poolInfo && <div className="img_wrapper" onClick={(e) => {
                     // console.log(poolInfo)
-                    if (!poolInfo.contractaddress) return
+                    if (!poolInfo.contractaddress || poolInfo.poolId) return
                     history.push("/MyGallery/" + poolInfo.contractaddress + '-' + nftId)
                 }}>
                     {category && (category === "Videos" || category === 'video') ?
@@ -193,7 +193,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo, c
                     <span>{user}</span>
                 </div> */}
                     <div className="info-box" onClick={() => {
-                        if (!poolInfo.contractaddress) return
+                        if (!poolInfo.contractaddress || poolInfo.poolId) return
                         history.push("/MyGallery/" + poolInfo.contractaddress + '-' + nftId)
                     }}
                     >
@@ -298,7 +298,7 @@ const PenddingCardItemStyle = styled(CardItemStyled)`
 `
 
 export function PenddingCardItem({ pools, category }) {
-    console.log('=====', pools.fileurl, pools)
+    // console.log('=====', pools.fileurl, pools)
     const { wrapperIntl } = useWrapperIntl()
 
     return <PenddingCardItemStyle>

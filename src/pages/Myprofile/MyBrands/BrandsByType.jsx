@@ -33,6 +33,7 @@ import { SkeletonNFTCard } from '@/pages/component/Skeleton/NFTCard'
 // import { weiToNum } from '@/utils/useBigNumber'
 import Category from '../Category'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { AUCTION_TYPE } from '@/utils/const'
 
 const BrandsByTypeStyled = styled.div`
     margin-bottom: 84px;
@@ -307,21 +308,27 @@ export default function BrandsByType() {
         // console.log("category:", category)
         if (!account || !tokenList || !tokenList_2 || !brandInfo.contractaddress) return
         // console.log(tokenList, tokenList_2)
-        const brandTradeList_fs = tokenList_2.tradePools.filter(item => String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
-        const brandTradeList_ea = tokenList_2.tradeAuctions.filter(item => String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
+        const brand_erc721 = tokenList_2.brandserc721.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
+        const brand_erc1155 = tokenList_2.brandserc1155.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
+        const brandTradeList_fs = tokenList_2.tradePools.filter(item =>
+            String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase() && item.state !== 1
+        )
+        const brandTradeList_ea = tokenList_2.tradeAuctions.filter(item =>
+            String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase() && item.state !== 1
+        )
+        const brandErcList = brand_erc721.concat(brand_erc1155)
         const brandTradeList = brandTradeList_fs.concat(brandTradeList_ea)
 
-        console.log(brandTradeList)
-        const pools = tokenList.concat(brandTradeList)
+        const pools = brandErcList.concat(brandTradeList)
 
-        console.log("pools: ", pools)
+        // console.log("pools: ", pools)
         pools && handleBrandTradeItems(pools)
         // eslint-disable-next-line
     }, [account, tokenList, tokenList_2, brandInfo, category])
 
     const handleBrandTradeItems = (pools) => {
-        const ids = pools.map(item => item.tokenId)
-        const cts = pools.map(item => item.token0 || item.contract)
+        const ids = pools.map(item => (item.tokenId || parseInt(item.token_id)))
+        const cts = pools.map(item => item.token0 || item.contract_addr)
 
         let categoryParam
 
@@ -353,13 +360,18 @@ export default function BrandsByType() {
                 if (res.status === 200 && res.data.code === 1) {
                     console.log(pools)
                     const list = pools.map(item => {
-                        const poolInfo = res.data.data.find(pool => item.tokenId === pool.id);
+                        const poolInfo = res.data.data.find(pool => {
+                            return (parseInt(item.token_id) === pool.id || item.tokenId === pool.id) && (
+                                String(item.contract_addr).toLowerCase() === String(pool.contractaddress).toLowerCase() ||
+                                String(item.contract_addr).toLowerCase() === String(pool.token0).toLowerCase()
+                            )
+                        });
 
                         // console.log(poolInfo)
                         if (poolInfo) {
                             return {
                                 ...poolInfo,
-                                poolType: item && item.poolType,
+                                poolType: item && item.amount_total0 ? AUCTION_TYPE.FixedSwap : AUCTION_TYPE.EnglishAuction,
                                 poolId: item && item.poolId,
                                 price: item && (item.lastestBidAmount || item.amountMin1),
                                 token1: item && item.token1,
@@ -404,28 +416,51 @@ export default function BrandsByType() {
     }, [statusList])
 
     const getBrandTradeItems = async () => {
-        let traddata = {
+        let brandData = {
             tradePools: [],
-            tradeAuctions: []
+            tradeAuctions: [],
+            brandserc721: [],
+            brandserc1155: [],
         }
 
         try {
-            const params = {
+            const ErcParams = {
+                user_address: account,
+                contract_address: brandInfo.contractaddress
+            }
+
+            const TradeParams = {
                 offset: 0,
                 count: 100,
                 user_address: account
             }
-            const res = await axios.get('pools', { params })
+
+            const res = await axios.get('[V2]/erc721', { params: ErcParams })
             if (res.status === 200 && res.data.code === 200) {
-                traddata = res.data.data
+                const erc721Data = res.data.data
+                brandData.brandserc721 = erc721Data.tokens
+
             }
+
+            const res_1155 = await axios.get('[V2]/erc1155', { params: ErcParams })
+            if (res.status === 200 && res.data.code === 200) {
+                const erc1155Data = res_1155.data.data
+                brandData.brandserc1155 = erc1155Data.tokens
+            }
+
+            const res_trade = await axios.get('pools', { params: TradeParams })
+            if (res.status === 200 && res.data.code === 200) {
+                const tradeDate = res_trade.data.data
+                brandData.tradePools = tradeDate.tradePools
+                brandData.tradeAuctions = tradeDate.tradeAuctions
+            }
+
+
         } catch (error) {
 
         }
-
-
-
-        setTokenList_2(traddata)
+        console.log(brandData)
+        setTokenList_2(brandData)
     }
 
     // const [getBrandItems_2, { data: brandItems_2 }] = useLazyQuery(QueryOwnerBrandItems, {

@@ -10,6 +10,8 @@ export const Controller = {
     getitemsbyfilter: `/api/v2/main/getitemsbyfilter`
   },
   pools: {
-    getpoolsinfo: '/api/v2/main/getpoolsinfo'
+    getpoolsinfo: '/api/v2/main/getpoolsinfo',
+    /* 1 poolweight; 2: artistpoolweight */
+    getpoolsinfobypage: '/api/v2/main/getpoolsinfobypage',
   }
 }
