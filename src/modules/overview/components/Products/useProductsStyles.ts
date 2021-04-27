@@ -15,6 +15,10 @@ export const useProductsStyles = makeStyles<Theme>(theme => ({
     },
   },
 
+  tab: {
+    fontSize: 18,
+  },
+
   moreBtn: {
     maxWidth: 245,
   },

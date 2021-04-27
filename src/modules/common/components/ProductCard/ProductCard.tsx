@@ -12,7 +12,7 @@ import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { useProductCardStyles } from './ProductCardStyles';
+import { useProductCardStyles } from './useProductCardStyles';
 
 export interface IProductCardProps {
   className?: string;

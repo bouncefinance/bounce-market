@@ -1,9 +1,9 @@
 import { Box, Fade, Grid, Hidden } from '@material-ui/core';
-import { t } from 'modules/i18n/utils/intl';
 import {
   IProductCardProps,
   ProductCard,
-} from 'modules/overview/components/ProductCard';
+} from 'modules/common/components/ProductCard';
+import { t } from 'modules/i18n/utils/intl';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { Button } from 'modules/uiKit/Button';
 import { FilledTab, FilledTabs } from 'modules/uiKit/FilledTabs';
@@ -13,8 +13,8 @@ import { useMemo } from 'react';
 import InView from 'react-intersection-observer';
 import { uid } from 'react-uid';
 import { WideContainer } from '../WideContainer';
-import { useProductsStyles } from './ProductsStyles';
 import { useProducts } from './useProducts';
+import { useProductsStyles } from './useProductsStyles';
 
 type ProductProps = Omit<IProductCardProps, 'ImgProps'> & {
   img: string;
@@ -81,7 +81,12 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
                   variant="scrollable"
                 >
                   {categories.map(({ label, value }) => (
-                    <FilledTab key={uid(label)} label={label} value={value} />
+                    <FilledTab
+                      className={classes.tab}
+                      key={uid(label)}
+                      label={label}
+                      value={value}
+                    />
                   ))}
                 </FilledTabs>
               </Hidden>
