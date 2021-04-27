@@ -176,7 +176,7 @@ const InfoDropdowns = styled.div`
 	display: grid;
 `;
 
-function MyNFT() {
+function MyNFT () {
 	const { account, active } = useActiveWeb3React();
 	const history = useHistory();
 	const { nftId } = useParams();
@@ -258,14 +258,16 @@ function MyNFT() {
 		<Page>
 			<BreadcrumbNav marginTop="24px" NavList={NavList} />
 			<PageBody className="sellNFT">
-				{category && category === "Videos" ?
+				{category && (category === "Videos" || category === "Video") ?
 					<video width='400px' height='400px' src={imgURL} controls='controls' autoPlay></video> :
 					<AutoStretchBaseWidthOrHeightImg src={imgURL} width={400} height={400} />
+					
 				}
 
 
 				<PageBodyRight className="right">
 					<span className="NFTName">{NFTName}</span>
+					{category}
 
 					<div className="account">
 						<p>{account}</p>

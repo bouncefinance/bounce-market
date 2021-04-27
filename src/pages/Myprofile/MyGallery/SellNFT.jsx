@@ -23,7 +23,7 @@ import icon_HT from '@assets/images/wallet/icon_HT.svg'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
-export default function SellNFT() {
+export default function SellNFT () {
 	const { chainId } = useActiveWeb3React()
 
 	const { wrapperIntl } = useWrapperIntl()
@@ -32,7 +32,7 @@ export default function SellNFT() {
 		{
 			value: chainId === 56 ? 'BNB' : chainId === 128 ? 'HT' : 'ETH',
 			contract: '0x0000000000000000000000000000000000000000',
-			icon: chainId === 56 ? icon_BNB : chainId === 128 ? icon_HT :icon_ETH_new,
+			icon: chainId === 56 ? icon_BNB : chainId === 128 ? icon_HT : icon_ETH_new,
 			isShow: true,
 			decimals: 18
 		}, {
@@ -123,7 +123,7 @@ export default function SellNFT() {
 
 	const setInitNftInfo = async (nftId) => {
 		const info = await exportNftInfoV2(nftId);
-		
+
 		setNftId(info);
 	};
 
@@ -302,7 +302,7 @@ export default function SellNFT() {
 
 			<PageBody>
 				<PageBodyLeft>
-					{nftInfo && nftInfo.category === "Videos" ?
+					{nftInfo && (nftInfo.category === "Videos" || nftInfo.category === "video") ?
 						<video width='500px' height='500px' src={nftInfo && (nftInfo.fileurl)} controls='controls' autoPlay></video> :
 						<AutoStretchBaseWidthOrHeightImg width={500} height={500} src={nftInfo && (nftInfo.fileurl)} />
 					}
