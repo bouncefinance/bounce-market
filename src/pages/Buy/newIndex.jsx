@@ -311,11 +311,16 @@ export default function NewIndex() {
         console.log("active: ", active)
     }, [state, active])
 
+    useEffect(() => {
+        console.log("nftInfo: ", nftInfo)
+    }, [nftInfo])
+
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
         itemid: poolInfo.tokenId | 0,
         poolid: poolId | 0,
+        category: nftInfo.category,
     }
     /* const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false) */
 

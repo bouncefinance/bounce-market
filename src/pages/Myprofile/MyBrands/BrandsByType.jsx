@@ -411,6 +411,10 @@ export default function BrandsByType() {
     //     }
     // })
 
+    useEffect(() => {
+        console.log("statusList: ", statusList)
+    }, [statusList])
+
     const getBrandTradeItems = async () => {
         let brandData = {
             tradePools: [],
@@ -568,6 +572,7 @@ export default function BrandsByType() {
                     <AddCardItem type={category} nftType={brandInfo.standard} brandInfo={brandInfo} />
                 </li>
                 {statusList.map((item, index) => {
+                    /* debugger */
                     return <li key={index}>
                         <CardItem
                             nftId={item.id}
@@ -577,6 +582,7 @@ export default function BrandsByType() {
                             status={item.poolId && wrapperIntl("Listed")}
                             poolInfo={item}
                             poolType={item.poolType}
+                            category={item.category}
                         />
                     </li>
                 })}

@@ -9,6 +9,7 @@ import { QueryItemsIn1155Brand, QueryItemsIn721Brand } from "@/utils/apollo";
 import { useInitEffect } from "@/utils/useInitEffect";
 import { useActiveWeb3React } from "@/web3";
 import useWrapperIntl from "@/locales/useWrapperIntl";
+import { VideoItem } from '../../component/Other/videoItem'
 
 const CardItemStyled = styled.div`
 	width: 262px;
@@ -45,7 +46,7 @@ const CardItemStyled = styled.div`
 	}
 `;
 
-export function CardItem({ cover, name, standard }) {
+export function CardItem({ cover, name, standard, category }) {
 	const [count, setCount] = useState(0);
 	const { account } = useActiveWeb3React();
 
@@ -91,11 +92,17 @@ export function CardItem({ cover, name, standard }) {
 
 	return (
 		<CardItemStyled>
-			<AutoStretchBaseWidthOrHeightImg
-				src={cover}
-				widgth={262}
-				height={180}
-			/>
+			{
+				category && (category === "Videos" || category === 'video')
+				?
+                <VideoItem width={262} height={262} src={cover} />
+				:
+				<AutoStretchBaseWidthOrHeightImg
+					src={cover}
+					widgth={262}
+					height={180}
+				/>
+			}
 			<div className="item_wrapper">
 				<span>{name}</span>
 					<p>

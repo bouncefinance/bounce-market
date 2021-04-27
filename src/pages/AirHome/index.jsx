@@ -188,9 +188,9 @@ export function AirHome() {
         NavList[2].channelRequestParam);
   const [categoryRequestParam, setCategoryRequestParam] = useState(wrapperIntl("Category.All"))
   
-  useEffect(() => {
-    console.log("categoryRequestParam:", categoryRequestParam)
-  }, [categoryRequestParam])
+  // useEffect(() => {
+  //   console.log("categoryRequestParam:", categoryRequestParam)
+  // }, [categoryRequestParam])
   
   const handleBrandTradeItems = useCallback((pools) => {
     // console.log('pools',tokenList,categoryRequestParam,channelRequestParam)

@@ -133,7 +133,7 @@ export default function TableItem({ row }) {
 
                 <div style={{display: 'inline-block', marginRight: '12px'}}>
                     {row.category && row.category === 'video' ?
-                        <VideoItem width={44} height={44} src={row.cover} /> :
+                        <VideoItem width={44} height={44} src={row.cover} showPlayButton={false} /> :
                         <AutoStretchBaseWidthOrHeightImg width={44} height={44} src={row.cover} />}
                 </div>
                 <span className="itemName">{row.item}</span>
