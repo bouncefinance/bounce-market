@@ -48,6 +48,7 @@ export default function BasicTable() {
 
     const { active, account } = useActiveWeb3React();
     /* const account = '0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE' */
+    // const account = '0x706a5014E41E2a96812189D2a9B32b4155972831'
     const [list, setList] = useState([]);
     const { sign_Axios } = useAxios();
 
@@ -55,58 +56,53 @@ export default function BasicTable() {
         // console.log('data', data)
         const activities = data.map(item => ({
             ...item,
-            date: formatDistanceToNow((item.Timestamp || item.timestamp) * 1000),
+            date: formatDistanceToNow((item.timestamp || item.Timestamp) * 1000),
             status: item.event === 'Cancel' || item.event === 'Claim' ? wrapperIntl("Unlisted") : wrapperIntl("Listed"),
         })).filter(item => parseInt(item.tokenId) <= 99999999999)
         const tokenList = activities.map(item => +item.tokenId);
+        const cts = activities.map(item => item.contract);
         sign_Axios.post(Controller.items.getitemsbyids, {
-            ids: tokenList
+            ids: tokenList,
+            cts: cts
         })
             .then(res => {
                 if (res.status === 200 && res.data.code === 1) {
                     const items = res.data.data;
                     console.log(activities, items)
-                    const list = items.map(item => {
-                        const activity = activities.find(issue => {
-                            return (issue.tokenId | 0 === item.id) && (String(issue.contract).toLowerCase() === String(item.contractaddress).toLowerCase())
+                    const list = activities.map(issue => {
+                        const activity = items.find(item => {
+                            return parseInt(issue.tokenId) === item.id
+                                && String(issue.contract).toLowerCase() === String(item.contractaddress).toLowerCase()
                         });
+                        if (!activity) return {}
                         return {
-                            ...activity,
-                            cover: item.fileurl,
-                            item: item.itemname,
-                            category: item.category,
+                            ...issue,
+                            cover: activity.fileurl,
+                            item: activity.itemname,
+                            category: activity.category || 'image',
                         }
-                    }).filter(item=>item.contract)
+                    })
+                        .filter(item => item.contract)
+
                     console.log(list)
                     setList(list.sort((a, b) => {
-                        const time_a = a.Timestamp || a.timestamp
-                        const time_b = b.Timestamp || b.timestamp
+                        const time_a = a.timestamp || a.Timestamp
+                        const time_b = b.timestamp || b.Timestamp
                         return time_b - time_a
                     }));
                 }
             })
     }
-    // eslint-disable-next-line
-    // const [fromData, setFromData] = useState([]);
-
-    // const [getToActivities, toData] = useLazyQuery(QueryToActivities, {
-    //     variables: { user: String(account).toLowerCase() },
-    //     fetchPolicy: "network-only",
-    //     onCompleted: () => {
-    //         const data = fromData.activities.concat(toData.data.activities);
-    //         handleActivities(data);
-    //     }
-    // });
 
 
     const getToActivities = async (fromData) => {
         const [resErr, res] = await to(axios.get('activities', { params: { user_address: String(account).toLowerCase() } }))
-        if(resErr){
+        if (resErr) {
             return
         }
         if (res?.data?.code === 200) {
             const data = res.data.data
-            handleActivities(data);
+            handleActivities(data || []);
         }
         if (resErr) {
             return handleActivities([])
