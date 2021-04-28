@@ -8,11 +8,11 @@ import { IApiNFTDetails, INFTDetails, mapNFTDetails } from './api/NFTDetails';
 export const DetailsNFTActions = {
   fethItem: createSmartAction<RequestAction<IApiNFTDetails, INFTDetails>>(
     'DetailsNFTActions/fethItem',
-    (params: { id: number }) => ({
+    (params: { contract: string; id: number }) => ({
       request: {
         url: '/api/v2/main/auth/getoneitembyid',
         method: 'post',
-        data: params,
+        data: { ct: params.contract, id: params.id },
       },
       meta: {
         getData: data => mapNFTDetails(data),

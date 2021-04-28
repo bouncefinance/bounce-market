@@ -25,7 +25,10 @@ function mapPromoItem(
     }),
     img: item.fileurl,
     thumbImg: item.fileurl || '',
-    href: DetailsNFTRoutesConfig.DetailsNFT.generatePath(item.id),
+    href: DetailsNFTRoutesConfig.DetailsNFT.generatePath(
+      item.contractaddress,
+      item.id,
+    ),
     authorHref: RoutesConfiguration.Overview.generatePath(),
   };
 }
@@ -39,7 +42,10 @@ function mapMoversItem(
     priceType: 'USDT',
     endDate: new Date(2021, 3, 30),
     likes: 100,
-    href: DetailsNFTRoutesConfig.DetailsNFT.generatePath(item.id),
+    href: DetailsNFTRoutesConfig.DetailsNFT.generatePath(
+      item.contractaddress,
+      item.id,
+    ),
     img: item.fileurl || '',
     ProfileInfoProps: {
       subTitle: 'Owner',

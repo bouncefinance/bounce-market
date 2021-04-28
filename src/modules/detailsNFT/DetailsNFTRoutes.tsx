@@ -4,12 +4,13 @@ import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoa
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 import { generatePath } from 'react-router-dom';
 
-export const PATH_DETAILS_NFT = '/nft/details/:id';
+export const PATH_DETAILS_NFT = '/nft/details/:contract/:id';
 
 export const DetailsNFTRoutesConfig: { [key: string]: RouteConfiguration } = {
   DetailsNFT: {
     path: PATH_DETAILS_NFT,
-    generatePath: (id: string) => generatePath(PATH_DETAILS_NFT, { id }),
+    generatePath: (contract: string, id: string) =>
+      generatePath(PATH_DETAILS_NFT, { id, contract }),
   },
 };
 

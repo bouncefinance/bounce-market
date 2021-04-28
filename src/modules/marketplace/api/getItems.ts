@@ -1,6 +1,7 @@
 export interface IApiItem {
   fileurl: string;
   id: number;
+  contractaddress: string;
   itemname: string;
   likecount: number;
   metadata: string;

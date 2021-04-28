@@ -40,9 +40,6 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
         ...request,
         headers: {
           ...request.headers,
-          ...(request.method !== 'GET'
-            ? { 'Content-Type': 'application/x-www-form-urlencoded' }
-            : {}),
           token: data?.token ?? '',
         },
       };
