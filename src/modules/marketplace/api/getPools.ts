@@ -97,7 +97,7 @@ export const QueryTradePools = gql`
   }
 `;
 
-interface IApiResponse {
+export interface IApiGetPoolsResponse {
   tradeAuctions: IApiTradeAuction[];
   tradePools: IApiTradePool[];
 }
@@ -112,19 +112,20 @@ export interface IPoolsData {
   tradePools: ITradePool[];
 }
 
-export async function getPools(): Promise<IPoolsData> {
-  const query = await getApolloClient().query<IApiResponse>({
-    query: QueryTradePools,
-  });
-
+export function mapPools(data: IApiGetPoolsResponse) {
   return {
-    tradeAuctions: query.data.tradeAuctions
+    tradeAuctions: data.tradeAuctions
       .slice()
       .sort(sortByTime)
       .map(mapTradeAuction),
-    tradePools: query.data.tradePools
-      .slice()
-      .sort(sortByTime)
-      .map(mapTradePool),
+    tradePools: data.tradePools.slice().sort(sortByTime).map(mapTradePool),
   };
+}
+
+export async function getPools(): Promise<IPoolsData> {
+  const query = await getApolloClient().query<IApiGetPoolsResponse>({
+    query: QueryTradePools,
+  });
+
+  return mapPools(query.data);
 }

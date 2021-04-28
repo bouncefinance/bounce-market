@@ -20,7 +20,11 @@ import { useDetailsNFTStyles } from './useDetailsNFTStyles';
 
 export const DetailsNFT = () => {
   const classes = useDetailsNFTStyles();
-  const { id } = useParams<{ id: string }>();
+  const { id: idParam, contract } = useParams<{
+    contract: string;
+    id: string;
+  }>();
+  const id = parseInt(idParam, 10);
   const dispatch = useDispatchRequest();
   const { opened, toggleDialog } = useBidDialog();
 
@@ -29,12 +33,10 @@ export const DetailsNFT = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(DetailsNFTActions.fethItem({ id: parseInt(id, 10) }));
-  }, [dispatch, id]);
+    dispatch(DetailsNFTActions.fethItem({ contract, id }));
+  }, [contract, dispatch, id]);
 
   const renderContent = ({ data }: QueryState<INFTDetails>) => {
-    console.log('data', data);
-
     const renderedCreator = (
       <ProfileInfo
         subTitle="Creator"

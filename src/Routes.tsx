@@ -35,7 +35,10 @@ export function Routes() {
 
       <Route
         exact
-        path={CreateNFTRoutesConfig.CreateNft.path}
+        path={[
+          CreateNFTRoutesConfig.CreateNft.path,
+          CreateNFTRoutesConfig.PublishNft.path,
+        ]}
         render={() => (
           <DefaultLayout>
             <CreateNFTRoutes />

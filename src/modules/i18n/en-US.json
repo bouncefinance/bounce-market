@@ -34,6 +34,7 @@
     "created-by": "Created by"
   },
   "unit": {
+    "day": "{value, plural, =0 {0 days} =1 {1 day} other {# days}}",
     "BNB-value": "{value, number} BNB"
   },
   "error": {
@@ -110,6 +111,26 @@
   "brands": {
     "title": "Hot Brands"
   },
+  "publish-nft": {
+    "title": "Put on sale",
+    "submit": "Put on Sale",
+    "submitting": "Submitting",
+    "auction-type": {
+      "fixed-swap": "English swap",
+      "english-auction": "English auction"
+    },
+    "label": {
+      "price": "Sale price",
+      "amount": "Amount",
+      "minBid": "Minimum bid",
+      "directPurchase": "Direct purchase price",
+      "reservePrice": "Reserve price",
+      "count": "Count",
+      "duration": "Expiration Date"
+    },
+    "tooltip": {
+      "directPurchase": "TODO Direct purchase price description"
+    },
   "profile": {
     "customize-btn": "Customize",
     "follow": "Follow",

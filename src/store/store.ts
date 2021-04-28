@@ -40,9 +40,6 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
         ...request,
         headers: {
           ...request.headers,
-          ...(request.method !== 'GET'
-            ? { 'Content-Type': 'application/x-www-from-urlencoded' }
-            : {}),
           token: data?.token ?? '',
         },
       };
@@ -50,7 +47,7 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     return request;
   },
   onError: (error, action, store) => {
-    if (!action.meta?.suppressError) {
+    if (!action.meta?.suppressErrorNotification) {
       store.dispatch(
         NotificationActions.showNotification({
           message: extractMessage(error),
