@@ -163,7 +163,7 @@ const CardItemStyled = styled.div`
     }
 `
 
-export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId, poolInfo, category, litimgurl }) {
+export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId, poolInfo, category, litimgurl, setIsConnectWallect }) {
     const { wrapperIntl } = useWrapperIntl()
     const history = useHistory()
     const { exportErc20Info } = useToken()
@@ -240,6 +240,9 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
                                     modelType: 'error',
                                     modelMessage: wrapperIntl("ConnectWallet"),
                                     modelTimer: 24 * 60 * 60 * 1000,
+                                    subsequentActionType: "connectWallet",
+                                    modelUrlMessage: wrapperIntl("header.ConnectWallet"),
+                                    subsequentActionFunc: setIsConnectWallect,
                                 });
                 
                                 // back to the top

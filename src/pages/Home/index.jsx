@@ -18,6 +18,7 @@ import { useWeb3React } from '@web3-react/core'
 import { SkeletonBrandCards } from '../component/Skeleton/BrandItem'
 import { NewSkeletonNFTCards } from '../component/Skeleton/NFTCard'
 import Button from '@/components/UI-kit/Button/Button'
+import ConnectWalletModal from '@components/Modal/ConnectWallet'
 // import { myContext } from '@/redux'
 
 
@@ -243,6 +244,7 @@ export default function Index () {
   // const { exportArrayNftInfo } = useToken()
   const [loadingBrands, setLoadingBrands] = useState(false)
   const [loadingItems, setLoadingItems] = useState(true)
+  const [isConnectWallect, setIsConnectWallect] = useState(false)
   // const { dispatch } = useContext(myContext)
   const { wrapperIntl } = useWrapperIntl()
 
@@ -275,6 +277,7 @@ export default function Index () {
   }, [account])
 
   return (
+    <>
     <HomeStyled>
       <div className="banner">
         {/* <ul>
@@ -308,7 +311,7 @@ export default function Index () {
 
       <CardGroup title={wrapperIntl('home.fast')} link='/Marketplace/FineArts' marinTop='64px'>
         {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
-          return <PopularItem itemInfo={item} key={index} src={img_example_1} />
+          return <PopularItem itemInfo={item} key={index} src={img_example_1} setIsConnectWallect={setIsConnectWallect}/>
         })}
       </CardGroup>
 
@@ -340,5 +343,7 @@ export default function Index () {
         <img className='right' src={two_setting} alt="" />
       </div>
     </HomeStyled>
+    <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />
+    </>
   )
 }

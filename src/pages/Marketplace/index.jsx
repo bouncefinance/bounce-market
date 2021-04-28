@@ -22,6 +22,7 @@ import { getCoinList } from '@/utils/coin'
 // import { ZERO_ADDRESS } from "@/web3/address_list/token"
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import axios from 'axios'
+import ConnectWalletModal from '@components/Modal/ConnectWallet'
 /* import { myContext } from '@/redux/index.js'; */
 
 const MarketplaceStyled = styled.div`
@@ -145,6 +146,7 @@ export default function Marketplace() {
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
+  const [isConnectWallect, setIsConnectWallect] = useState(false)
   // const [channel, setChannel] = useState(
   //   type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
   //     type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
@@ -296,6 +298,7 @@ export default function Marketplace() {
                 token1={item.token1}
                 poolType={item.poolType}
                 litimgurl={item.litimgurl}
+                setIsConnectWallect={setIsConnectWallect}
               />
             </li>
           })}
@@ -314,6 +317,7 @@ export default function Marketplace() {
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
+                setIsConnectWallect={setIsConnectWallect}
               />
             </li>
           })}
@@ -324,6 +328,7 @@ export default function Marketplace() {
 
 
   return (
+    <>
     <MarketplaceStyled>
       <ul className="nav_wrapper">
         {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
@@ -418,6 +423,8 @@ export default function Marketplace() {
 
       {/* <PagingControls /> */}
     </MarketplaceStyled>
+    <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />
+    </>
   )
 }
 

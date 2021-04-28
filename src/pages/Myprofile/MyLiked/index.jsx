@@ -31,14 +31,24 @@ const MyLikedStyled = styled.div`
             }
         }
     }
+
+    .noticeWrapper{
+      display: flex;
+      align-items: center;
+      height: 300px;
+      .emptyNotive {
+        margin: auto;
+      }
+    }
 `
 export default function MyLiked() {
   const [loading, setLoding] = useState(true)
   const [list, setlist] = useState([])
   const { sign_Axios,axios } = useAxios()
-  const { account, } = useActiveWeb3React()
+  const { account, active } = useActiveWeb3React()
   const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
   const { data } = useQuery(QueryTradePools)
+  const [listLength, setListLength] = useState(0)
 
   const getAllPoolData = async () => {
     const poolsParmas = { offset: 0, count: 1e4 }
@@ -118,6 +128,9 @@ export default function MyLiked() {
   return <>
     <CommonHeader />
     <MyLikedStyled>
+    {
+      active && list.length > 0
+      ?  
       <div className="con">
         {list.map((item, index) => {
           // <PopularItem style={{ marginTop: '17px' }} key={name} src={src} name={name} price={price} />
@@ -139,7 +152,14 @@ export default function MyLiked() {
           />
         })}
       </div>
-      {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
+      :
+      <div className="noticeWrapper">
+        <div className="emptyNotive">
+          You didn’t like any NFT
+        </div>
+      </div>
+    }
+      {active && loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
       <MessageTips open={openMessage} setopen={setopenMessage} />
     </MyLikedStyled>
   </>

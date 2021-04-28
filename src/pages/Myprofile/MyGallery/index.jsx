@@ -41,6 +41,15 @@ const MyGalleryStyled = styled.div`
             }
         }
     }
+
+    .noticeWrapper{
+      display: flex;
+      align-items: center;
+      height: 300px;
+      .emptyNotive {
+        margin: auto;
+      }
+    }
 `
 
 
@@ -62,6 +71,7 @@ export default function Index() {
   // const [myApiData, setMyApiData] = useState([])
 
   const { wrapperIntl } = useWrapperIntl()
+  const [listLength, setListLength] = useState(0)
 
   const getMyNFT = async () => {
     let myNftData = {
@@ -284,49 +294,59 @@ export default function Index() {
   return (
     <>
       <CommonHeader />
-      <MyGalleryStyled>
-        <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
-          {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
-          <AddCardItem />
-          <Category itemList={itemList} onStatusChange={setStatusList} />
-
-          {/* <PullRadioBox prefix={'Categories:'} options={[{
-            value: 'Image'
-          }, {
-            value: 'Video'
-          }, {
-            value: 'Audio'
-          }, {
-            value: 'Games'
-          }, {
-            value: 'Others'
-          }]} defaultValue='Image' onChange={(item) => {
-            setType(item.value);
-          }} /> */}
-        </div>
-
-        <ul className="list">
-          {/* <li>
+      
+        <MyGalleryStyled>
+          <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
+            {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
             <AddCardItem />
-          </li> */}
-          {statusList.map((item, index) => {
-            return <li key={index}>
-              {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
-                nftId={item.id}
-                cover={item.fileurl}
-                itemname={item.itemname === '' ? 'Unname (External import)' : item.itemname}
-                user={item.ownername}
-                status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
-                poolType={item.poolType}
-                //  status={index % 2 === 0 ? 'Listed' : ''} 
-                poolInfo={item}
-                category={item.category}
-              />}
-            </li>
-          })}
-        </ul>
-        {loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
-      </MyGalleryStyled>
+            <Category itemList={itemList} onStatusChange={setStatusList} />
+
+            {/* <PullRadioBox prefix={'Categories:'} options={[{
+              value: 'Image'
+            }, {
+              value: 'Video'
+            }, {
+              value: 'Audio'
+            }, {
+              value: 'Games'
+            }, {
+              value: 'Others'
+            }]} defaultValue='Image' onChange={(item) => {
+              setType(item.value);
+            }} /> */}
+          </div>
+          {
+            active && statusList.length > 0
+            ?
+            <ul className="list">
+              {/* <li>
+                <AddCardItem />
+              </li> */}
+              {statusList.map((item, index) => {
+                return <li key={index}>
+                  {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
+                    nftId={item.id}
+                    cover={item.fileurl}
+                    itemname={item.itemname === '' ? 'Unname (External import)' : item.itemname}
+                    user={item.ownername}
+                    status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
+                    poolType={item.poolType}
+                    //  status={index % 2 === 0 ? 'Listed' : ''} 
+                    poolInfo={item}
+                    category={item.category}
+                  />}
+                </li>
+              })}
+            </ul>
+            :
+            <div className="noticeWrapper">
+              <div className="emptyNotive">
+                You dosen’t have any NFT
+              </div>
+            </div>
+          }
+          {active && loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
+        </MyGalleryStyled>
     </>
   )
 }

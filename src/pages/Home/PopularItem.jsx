@@ -84,7 +84,7 @@ const PopularItemStyled = styled.div`
     
 `
 
-export default function PopularItem({ style = {}, itemInfo }) {
+export default function PopularItem({ style = {}, itemInfo, setIsConnectWallect }) {
     const history = useHistory()
     const {active} = useActiveWeb3React()
     const { dispatch } = useContext(myContext)
@@ -128,6 +128,9 @@ export default function PopularItem({ style = {}, itemInfo }) {
                     modelType: 'error',
                     modelMessage: wrapperIntl("ConnectWallet"),
                     modelTimer: 24 * 60 * 60 * 1000,
+                    subsequentActionType: "connectWallet",
+                    modelUrlMessage: wrapperIntl("header.ConnectWallet"),
+                    subsequentActionFunc: setIsConnectWallect,
                 });
 
                 // back to the top
