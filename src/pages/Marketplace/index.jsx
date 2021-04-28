@@ -162,7 +162,7 @@ export default function Marketplace() {
 
 
 
-  const [loading, setLoding] = useState(true)
+  const [loading, setLoading] = useState(true)
 
 
   const [length, setLength] = useState(4);
@@ -182,7 +182,10 @@ export default function Marketplace() {
   }, [type, categoryRequestParam]) */
 
   useEffect(() => {
-    if (!active) return
+    console.log("loading: ", loading)
+  }, [loading])
+
+  useEffect(() => {
     /* if (!active) {
       console.log("111111111111")
       dispatch({
@@ -200,7 +203,7 @@ export default function Marketplace() {
       }, ...getCoinList(chainId).filter(item => item.contract)])
     
     if (data) {
-      console.log(data)
+      console.log("data", data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
@@ -213,13 +216,13 @@ export default function Marketplace() {
         .filter(item => item.state !== 1 && item.poolId !== 0)
 
       const pools = tradePools.concat(tradeAuctions);
-      console.log(pools)
+      console.log("pools", pools)
       const list = pools.map(item => item.tokenId);
       const cts_list = pools.map(item => item.token0);
       // console.log(pools)
 
       setLength(list.length);
-      setLoding(true)
+      setLoading(true)
       // console.log(pools)
       // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
@@ -257,14 +260,15 @@ export default function Marketplace() {
               }
             }).filter(item => item.fileurl)
               .sort((a, b) => b.createTime - a.createTime);
+            console.log("list: ", list)
             setTokenList(list);
             setFilterList(list);
-            setLoding(false)
+            setLoading(false)
             // console.log('---setFilterList---', list)
           }
         })
         .catch(() => {
-          setLoding(false)
+          setLoading(false)
         })
     }
     // eslint-disable-next-line
@@ -398,7 +402,7 @@ export default function Marketplace() {
           onChange={(item) => {
             // console.log(item)
             if (item) {
-              setLoding(false)
+              setLoading(false)
               // setGetPollsVariables({ contract: item.contract })
               initPools({ ...poolsParmas, contract: item.contract})
             }

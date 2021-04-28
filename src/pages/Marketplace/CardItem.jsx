@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import LazyLoad from 'react-lazy-load';
 import styled from 'styled-components'
 import { Button } from '@components/UI-kit'
@@ -6,10 +6,11 @@ import { useHistory } from 'react-router'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 import { weiToNum } from '@/utils/useBigNumber'
 import useToken from '@/utils/useToken'
-// import { useActiveWeb3React } from '@/web3';
+import { useActiveWeb3React } from '@/web3';
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import { VideoItem } from '../component/Other/videoItem'
 // import { getMetadata } from '@utils/utils'
+import { myContext } from '@/redux'
 
 const CardItemStyled = styled.div`
     width: 262px;
@@ -17,7 +18,7 @@ const CardItemStyled = styled.div`
     box-sizing: border-box;
     border: 1px solid rgba(0, 0, 0, 0.2);
     overflow: hidden;
-    cursor: pointer;
+    /* cursor: pointer; */
     position: relative;
     padding: 0;
     display: flex;
@@ -168,6 +169,8 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
     const { exportErc20Info } = useToken()
     /* const [newPrice, setNewPrice] = useState('Loading Price ...') */
     const [newPrice, setNewPrice] = useState(wrapperIntl("MarketPlace.CardItem.LoadingPrice"))
+    const {active} = useActiveWeb3React()
+    const { dispatch } = useContext(myContext)
     // console.log(poolInfo)
 
     useEffect(() => {
@@ -188,7 +191,7 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
     // }, [category])
 
     return (<LazyLoad width={262} height={408}>
-        <CardItemStyled>
+        <CardItemStyled  active={active}>
 
             {category && (category === "Videos" || category === 'video') ?
                 <VideoItem width={262} height={262} src={cover} />:
@@ -214,20 +217,40 @@ export function CardItem ({ cover, name, price, cardId, poolType, token1, nftId,
                         primary
                         width={'162px'}
                         onClick={() => {
-                            // const pathname = window.location.pathname
-                            history.push(
-                                `/Marketplace/FineArts/${poolType}/${cardId}`,
-                                {
-                                    category: category,
-                                    fileurl: cover,
-                                    name: name,
-                                    cardId: cardId,
-                                    nftId: nftId,
-                                    price: price,
-                                    token1: token1,
-                                    poolType: poolType,
-                                }
-                            )
+                                // const pathname = window.location.pathname
+                            if (active) {
+                                history.push(
+                                    `/Marketplace/FineArts/${poolType}/${cardId}`,
+                                    {
+                                        category: category,
+                                        fileurl: cover,
+                                        name: name,
+                                        cardId: cardId,
+                                        nftId: nftId,
+                                        price: price,
+                                        token1: token1,
+                                        poolType: poolType,
+                                    }
+                                )
+                            }
+                            else {
+                                dispatch({
+                                    type: 'Modal_Message',
+                                    showMessageModal: true,
+                                    modelType: 'error',
+                                    modelMessage: wrapperIntl("ConnectWallet"),
+                                    modelTimer: 24 * 60 * 60 * 1000,
+                                });
+                
+                                // back to the top
+                                (function smoothToTop(){
+                                    var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                                    if (currentScroll > 0) {
+                                         window.requestAnimationFrame(smoothToTop);
+                                         window.scrollTo (0,currentScroll - (currentScroll/5));
+                                    }
+                                })();
+                            }
                         }}
                         marginTop="34px"
                     >{wrapperIntl("MarketPlace.CardItem.ShowMore")}</Button>}
