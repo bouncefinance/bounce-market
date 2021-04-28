@@ -49,7 +49,7 @@ export default function Index() {
   // FMG: 0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f
   // xxy: 0x4074A8deA884611F6553932CDF0B8390CDbA427E
   // homie: '0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE'
-  const current_account = '0xc591be7a2f0999e0de9edab0e07bddd4e1ee954f' //account
+  const current_account = account //account
   const { sign_Axios, axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
@@ -76,7 +76,7 @@ export default function Index() {
       const res = await axios.get('[V2]/nft', { params })
       if (res.status === 200 && res.data.code === 200) {
 
-        console.log('myNftData', myNftData)
+        // console.log('myNftData', myNftData)
         const data = res.data.data
         myNftData.nft721Items = data.nfts721.filter(item => parseInt(item.token_id) < 9999999999)
         myNftData.nft1155Items = data.nfts1155.filter(item => parseInt(item.token_id) < 9999999999)
@@ -85,6 +85,35 @@ export default function Index() {
 
     }
 
+    // 排除掉刚刚可能卖出去的NFT record_soldOutNft
+    // 1. 判断数据栈中有没有这个数据
+    const record_soldOutNft = window.localStorage.getItem('record_soldOutNft')
+
+    if (!record_soldOutNft) return setMyNftData(myNftData)
+
+    const findDataByRecord_soldOutNft_721 = myNftData.nft721Items.find(item => {
+      return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
+        item.id === record_soldOutNft.tokenId
+    })
+
+    const findDataByRecord_soldOutNft_1155 = myNftData.nft1155Items.find(item => {
+      return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
+        item.id === record_soldOutNft.tokenId
+    })
+
+    if (findDataByRecord_soldOutNft_721) {
+      myNftData.nft721Items = myNftData.nft721Items.filter(item => {
+        return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_721.contract).toLowerCase() &&
+          item.id !== findDataByRecord_soldOutNft_721.id
+      })
+    } else if (findDataByRecord_soldOutNft_1155) {
+      myNftData.nft1155Items = myNftData.nft1155Items.filter(item => {
+        return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_1155.contract).toLowerCase() &&
+          item.id !== findDataByRecord_soldOutNft_1155.id
+      })
+    } else {
+      window.localStorage.setItem('record_soldOutNft', null)
+    }
 
     setMyNftData(myNftData)
   }
@@ -116,42 +145,6 @@ export default function Index() {
   }
 
 
-  // const getMyApi = async () => {
-  //   const params = {
-  //     accountaddress: current_account
-  //   }
-  //   sign_Axios.post('/api/v2/main/getitemsext', params).then(res => {
-  //     if (res.status === 200 && res.data.code === 1) {
-  //       return res.data.data
-  //     } else {
-  //       throw new Error('Error:/api/v2/main/getitemsext')
-  //     }
-  //   }).then(data => {
-  //     const apiNftList = wrapperItem(data)
-  //     // console.log(apiNftList)
-  //     // setItemList([...apiNftList, ...itemList])
-  //     const filterList = apiNftList.filter(item => item.itemname && item.itemname !== 'Untitled (External import)')
-  //     // console.log(filterList)
-  //     setMyApiData(filterList)
-  //   })
-  // }
-
-  // const wrapperItem = (data) => {
-  //   const isArray = Object.prototype.toString.call(data) === '[object Array]';//true
-  //   if (isArray) {
-  //     const list = data.map(item => {
-  //       return {
-  //         getType: 'getMyApi',
-  //         ...item
-  //       }
-  //     })
-  //     return list
-  //   } else {
-  //     return []
-  //   }
-  // }
-
-
   useEffect(() => {
     if (!active) return;
     getMyNFT();
@@ -162,7 +155,7 @@ export default function Index() {
 
   useEffect(() => {
     console.log(myTradeData, myNftData)
-    const PenddingItem = JSON.parse(window.localStorage.getItem('PenddingItem')) || null
+    // const PenddingItem = JSON.parse(window.localStorage.getItem('PenddingItem')) || null
 
     if (!account || myTradeData.length === 0 || myNftData.length === 0) return
 
@@ -204,12 +197,12 @@ export default function Index() {
 
     // console.log(pools)
 
-    if (PenddingItem) {
-      if ([...ids_list].includes(PenddingItem.tokenId)) return window.localStorage.setItem('PenddingItem', null)
-      ids_list.unshift(PenddingItem.tokenId)
-      cts_list.unshift(PenddingItem.contract)
-      pools.unshift({ ...PenddingItem, isPendding: true })
-    }
+    // if (PenddingItem) {
+    //   if ([...ids_list].includes(PenddingItem.tokenId)) return window.localStorage.setItem('PenddingItem', null)
+    //   ids_list.unshift(PenddingItem.tokenId)
+    //   cts_list.unshift(PenddingItem.contract)
+    //   pools.unshift({ ...PenddingItem, isPendding: true })
+    // }
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       cts: cts_list,
@@ -243,10 +236,11 @@ export default function Index() {
               token1: item.token1,
               createTime: item.createTime,
               isPendding: item.isPendding,
-              category: poolInfo.category,
+              category: poolInfo.category || 'image',
             }
 
-          }).filter(item => item.fileurl && item.itemname !== 'Untitled (External import)')
+          })
+            .filter(item => item.fileurl && item.itemname !== 'Untitled (External import)')
 
 
           console.log(list)

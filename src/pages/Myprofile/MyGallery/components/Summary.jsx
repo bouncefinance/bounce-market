@@ -156,7 +156,7 @@ const SummaryWrapper = styled.div`
 	}
 `;
 
-function Summary ({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit }) {
+function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
 	const [btnLock, setBtnLock] = useState(true);
@@ -227,6 +227,14 @@ function Summary ({ auctionType, price, amount, unit, duration, fees, nftInfo, m
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
+
+							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
+							const soldOutNft = {
+								contract: _token0,
+								tokenId: _tokenId
+							}
+							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
+
 							history.push("/MyGallery");
 							showTransferByStatus('successStatus')
 						})
@@ -263,6 +271,14 @@ function Summary ({ auctionType, price, amount, unit, duration, fees, nftInfo, m
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
+							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
+							const soldOutNft = {
+								contract: _token0,
+								tokenId: _tokenId
+							}
+							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
+
+
 							history.push("/MyGallery");
 							showTransferByStatus('successStatus')
 						})
@@ -284,9 +300,9 @@ function Summary ({ auctionType, price, amount, unit, duration, fees, nftInfo, m
 				const _amountMin1 = numToWei(minPrice, newUnit.decimals)
 				const _amountMinIncr1 = numToWei(minIncr, newUnit.decimals)
 				const _amountReserve1 = numToWei(price, newUnit.decimals)
-				// const _duration = window.location.hostname.includes('market.bounce.finance') ? duration * 60 * 60 * 24 : duration * 60
-				const _duration = duration * 60 * 60 * 24
-				
+				const _duration = window.location.hostname.includes('market-stage.bounce.finance') ? duration * 60 : duration * 60 * 60 * 24
+				// const _duration = duration * 60 * 60 * 24
+
 				// const _duration = duration * 60
 				const _onlyBot = false
 
@@ -326,9 +342,16 @@ function Summary ({ auctionType, price, amount, unit, duration, fees, nftInfo, m
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
+
+							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
+							const soldOutNft = {
+								contract: _token0,
+								tokenId: _tokenId
+							}
+							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
+
 							history.push("/MyGallery");
 							showTransferByStatus('successStatus')
-
 						})
 						.on('error', (err, receipt) => {
 							// setBidStatus(errorStatus)
@@ -365,6 +388,14 @@ function Summary ({ auctionType, price, amount, unit, duration, fees, nftInfo, m
 						.on('receipt', async (_, receipt) => {
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
+
+							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
+							const soldOutNft = {
+								contract: _token0,
+								tokenId: _tokenId
+							}
+							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
+
 							history.push("/MyGallery");
 							showTransferByStatus('successStatus')
 						})
