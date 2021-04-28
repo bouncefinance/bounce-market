@@ -159,7 +159,7 @@ const HomeStyled = styled.div`
 
 const HOMETOPLISTNUMBER = 8
 const HOMETOPFORNUMBER = 10
-export default function Index() {
+export default function Index () {
   // const { state } = useContext(myContext);
   const { sign_Axios } = useAxios()
   const { account } = useWeb3React();
@@ -192,6 +192,7 @@ export default function Index() {
           }
           templPools.push(poolRes.data.data)
         }
+        // console.log('templPools:', templPools)
         const [nftErr, nftRes] = await to(sign_Axios.post(Controller.items.getitemsbyids, {
           ids: templPools.map(e => e.tokenId),
           cts: templPools.map(e => e.token0),
@@ -204,14 +205,17 @@ export default function Index() {
         }
         const nftList = nftRes.data?.data ?? []
         for (let nft of nftList) {
-          nftMap.set(`${nft.contractaddress}_${nft.id}`, nft)
+          nftMap.set(`${String(nft.contractaddress).toLowerCase()}_${nft.id}`, nft)
         }
         items.push(...templPools.map(pool => {
-          const nftInfo = nftMap.get([pool.token0, pool.tokenId].join('_'))
+          const nftInfo = nftMap.get([String(pool.token0).toLowerCase(), pool.tokenId].join('_'))
+          if (!nftInfo) {
+            // console.log('nftInfo:', pool)
+          }
           return {
             ...nftInfo,
             tokenId: pool.tokenId,
-            poolType: pool.amountMin1 ? AUCTION_TYPE.EnglishAuction : AUCTION_TYPE.FixedSwap, 
+            poolType: pool.amountMin1 ? AUCTION_TYPE.EnglishAuction : AUCTION_TYPE.FixedSwap,
             poolId: pool.poolId,
             price: pool.price || pool.lastestBidAmount,
             createTime: pool.createTime,
@@ -219,8 +223,10 @@ export default function Index() {
           }
         }))
         items = items.filter(e => e.contractaddress)
+        // console.log('items:', items)
         if (items.length < HOMETOPLISTNUMBER) {
-          return getNftList()
+            offset+=1
+            getNftList()
         }
         setItemList(items.filter((_, i) => i < HOMETOPLISTNUMBER))
         setLoadingItems(false)
