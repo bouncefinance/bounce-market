@@ -71,7 +71,6 @@ export default function Index() {
   // const [myApiData, setMyApiData] = useState([])
 
   const { wrapperIntl } = useWrapperIntl()
-  const [listLength, setListLength] = useState(0)
 
   const getMyNFT = async () => {
     let myNftData = {
@@ -315,9 +314,6 @@ export default function Index() {
               setType(item.value);
             }} /> */}
           </div>
-          {
-            active && statusList.length > 0
-            ?
             <ul className="list">
               {/* <li>
                 <AddCardItem />
@@ -338,13 +334,6 @@ export default function Index() {
                 </li>
               })}
             </ul>
-            :
-            <div className="noticeWrapper">
-              <div className="emptyNotive">
-                You dosen’t have any NFT
-              </div>
-            </div>
-          }
           {active && loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
         </MyGalleryStyled>
     </>
