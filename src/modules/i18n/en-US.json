@@ -130,7 +130,8 @@
     },
     "tooltip": {
       "directPurchase": "TODO Direct purchase price description"
-    },
+    }
+  },
   "profile": {
     "customize-btn": "Customize",
     "follow": "Follow",
