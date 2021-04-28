@@ -119,14 +119,13 @@ export default function TableItem({ row }) {
     return (
         <TableItemStyled>
             <TableCell className='event'>
-                {row.event === 'Transfer' && <img src={icon_transfer} alt="" />}
+                {row.event === 'Swapped' && <img src={icon_transfer} alt="" />}
                 {row.event === 'Created' && <img src={icon_create} alt="" />}
                 {
-                    row.event === 'Transfer'
-                    ?
-                    wrapperIntl("MyProfile.MyActivities.TableItem.Transfer")
-                    :
-                    wrapperIntl("MyProfile.MyActivities.TableItem.Created")
+                    row.event === 'Swapped'?
+                    wrapperIntl("MyProfile.MyActivities.TableItem.Transfer"): row.event === 'Created'?
+                    wrapperIntl("MyProfile.MyActivities.TableItem.Created"): row.event  === 'Claimed'?
+                    'Buy': row.event
                 }
             </TableCell>
             <TableCell className='item'>

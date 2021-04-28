@@ -49,7 +49,7 @@ export default function Index() {
   // FMG: 0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f
   // xxy: 0x4074A8deA884611F6553932CDF0B8390CDbA427E
   // homie: '0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE'
-  const current_account = account //account
+  const current_account = '0xc591be7a2f0999e0de9edab0e07bddd4e1ee954f' //account
   const { sign_Axios, axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
@@ -89,18 +89,6 @@ export default function Index() {
     setMyNftData(myNftData)
   }
 
-  // const [getMyTradeNFT, { data: traddata }] = useLazyQuery(QueryMyTradePools,
-  //   {
-  //     variables: { user: String(current_account).toLowerCase() },
-  //     // variables: { user: String('0x647d7adCC163CebE75aBCf81364eF99d06e6cE4E').toLowerCase() },
-  //     fetchPolicy: "network-only",
-  //     onCompleted: () => {
-  //       setMyTradeData(traddata || [])
-  //     },
-  //     onError: (err) => {
-  //       console.log('onerror', err)
-  //     }
-  //   })
 
   const getMyTradeNFT = async () => {
     let traddata = {
