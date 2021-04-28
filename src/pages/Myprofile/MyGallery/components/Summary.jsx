@@ -324,6 +324,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					if (!isOwner) showTransferByStatus('errorStatus')
 					let approveResult = await hasApprove_ERC_721(_token0, _tokenId, getEnglishAuctionNFT(chainId))
 					if (!approveResult) {
+						
 						approveResult = await BounceERC721WithSign_CT.methods.approve(
 							getEnglishAuctionNFT(chainId),
 							parseInt(_tokenId)
@@ -340,8 +341,6 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 							showTransferByStatus('pendingStatus')
 						})
 						.on('receipt', async (_, receipt) => {
-							// console.log('bid fixed swap receipt:', receipt)
-							// setBidStatus(successStatus)
 
 							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
 							const soldOutNft = {

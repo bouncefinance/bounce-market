@@ -87,33 +87,38 @@ export default function Index() {
 
     // 排除掉刚刚可能卖出去的NFT record_soldOutNft
     // 1. 判断数据栈中有没有这个数据
-    const record_soldOutNft = window.localStorage.getItem('record_soldOutNft')
+    const record_soldOutNft = JSON.parse(window.localStorage.getItem('record_soldOutNft'))
 
     if (!record_soldOutNft) return setMyNftData(myNftData)
 
     const findDataByRecord_soldOutNft_721 = myNftData.nft721Items.find(item => {
       return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
-        item.id === record_soldOutNft.tokenId
+        parseInt(item.token_id) === record_soldOutNft.tokenId
     })
 
     const findDataByRecord_soldOutNft_1155 = myNftData.nft1155Items.find(item => {
       return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
-        item.id === record_soldOutNft.tokenId
+        parseInt(item.token_id) === record_soldOutNft.tokenId
     })
-
+    // console.log('record_soldOutNft', record_soldOutNft)
+    // console.log('findDataByRecord_soldOutNft_721', findDataByRecord_soldOutNft_721)
+    // console.log('findDataByRecord_soldOutNft_1155', findDataByRecord_soldOutNft_1155)
+    // console.log('myNftData-1', myNftData)
     if (findDataByRecord_soldOutNft_721) {
       myNftData.nft721Items = myNftData.nft721Items.filter(item => {
         return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_721.contract).toLowerCase() &&
-          item.id !== findDataByRecord_soldOutNft_721.id
+          parseInt(item.token_id) !== parseInt(findDataByRecord_soldOutNft_721.token_id)
       })
     } else if (findDataByRecord_soldOutNft_1155) {
       myNftData.nft1155Items = myNftData.nft1155Items.filter(item => {
         return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_1155.contract).toLowerCase() &&
-          item.id !== findDataByRecord_soldOutNft_1155.id
+          parseInt(item.token_id) !== parseInt(findDataByRecord_soldOutNft_721.token_id)
       })
-    } else {
-      window.localStorage.setItem('record_soldOutNft', null)
     }
+    // console.log('myNftData-2', myNftData)
+    //  else {
+    //   window.localStorage.setItem('record_soldOutNft', null)
+    // }
 
     setMyNftData(myNftData)
   }

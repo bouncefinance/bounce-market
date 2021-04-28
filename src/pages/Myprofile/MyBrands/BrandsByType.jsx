@@ -448,36 +448,6 @@ export default function BrandsByType() {
                 brandData.brandserc1155 = erc1155Data.tokens
             }
 
-            // 排除掉刚刚可能卖出去的NFT record_soldOutNft
-            // 1. 判断数据栈中有没有这个数据
-            console.log(brandData)
-            const record_soldOutNft = window.localStorage.getItem('record_soldOutNft')
-            if (record_soldOutNft) {
-                const findDataByRecord_soldOutNft_721 = brandData.brandserc721.find(item => {
-                    return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
-                        parseInt(item.token_id) === record_soldOutNft.tokenId
-                })
-
-                const findDataByRecord_soldOutNft_1155 = brandData.brandserc1155.find(item => {
-                    return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
-                        parseInt(item.token_id) === record_soldOutNft.tokenId
-                })
-
-                if (findDataByRecord_soldOutNft_721) {
-                    brandData.brandserc721 = brandData.brandserc721.filter(item => {
-                        return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_721.contract).toLowerCase() &&
-                            parseInt(item.token_id) !== findDataByRecord_soldOutNft_721.id
-                    })
-                } else if (findDataByRecord_soldOutNft_1155) {
-                    brandData.brandserc721 = brandData.brandserc1155.filter(item => {
-                        return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_1155.contract).toLowerCase() &&
-                            parseInt(item.token_id) !== findDataByRecord_soldOutNft_1155.id
-                    })
-                } else {
-                    window.localStorage.setItem('record_soldOutNft', null)
-                }
-            }
-
             const res_trade = await axios.get('pools', { params: TradeParams })
             if (res_trade.status === 200 && res_trade.data.code === 200) {
                 const tradeDate = res_trade.data.data
