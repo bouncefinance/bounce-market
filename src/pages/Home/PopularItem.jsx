@@ -90,6 +90,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
     const [newPrice, setNewPrice] = useState(wrapperIntl("home.PopularItem.LoadingPrice"))
 
     useEffect(() => {
+        console.log("itemInfo: ", itemInfo)
         getPriceByToken1(itemInfo.price, itemInfo.token1)
         // eslint-disable-next-line
     }, [itemInfo])
@@ -102,7 +103,17 @@ export default function PopularItem({ style = {}, itemInfo }) {
     }
     return (
         <PopularItemStyled style={style} onClick={() => {
-            history.push(`/Marketplace/FineArts/${itemInfo.poolType}/${itemInfo.poolId}`)
+            history.push(`/Marketplace/FineArts/${itemInfo.poolType}/${itemInfo.poolId}`,
+            {
+                category: itemInfo.category,
+                fileurl: itemInfo.fileurl,
+                name: itemInfo.itemname,
+                price: itemInfo.price,
+                description: itemInfo.description,
+                owneraddress: itemInfo.owneraddress,
+                token1: itemInfo.token1,
+                poolType: itemInfo.poolType,
+            })
         }}>
             {   itemInfo.category && itemInfo.category === 'video'
                 ? <VideoItem width={262} height={262} src={itemInfo.fileurl} />

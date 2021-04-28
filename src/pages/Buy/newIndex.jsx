@@ -327,6 +327,14 @@ export default function NewIndex() {
     })
 
     useEffect(() => {
+        console.log("nftInfo: ", nftInfo)
+    }, [nftInfo])
+
+    useEffect(() => {
+        console.log("poolInfo: ", poolInfo)
+    }, [poolInfo])
+
+    useEffect(() => {
         if (poolId) {
             queryLastbid();
         }
@@ -1102,15 +1110,24 @@ export default function NewIndex() {
                         <div className="seller">
                             <div className='info'>
                                 <img src={icon_altAvatar} alt="" />
-                                <p><FormattedMessage id="pages.buy.OwnedBy" /> <span>{nftInfo.owneraddress && `${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)} ${nftInfo.ownername && '(' + nftInfo.ownername + ')'}`}</span></p>
+                                <p>
+                                    <FormattedMessage id="pages.buy.OwnedBy" />
+                                    <span>
+                                        {
+                                            (nftInfo.owneraddress && ` ${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)} ${nftInfo.ownername && '(' + nftInfo.ownername + ')'}`)
+                                            ||
+                                            (state.owneraddress && ` ${String(state.owneraddress).substr(0, 5) + '...' + String(state.owneraddress).substr(-4)}`)
+                                        }
+                                    </span>
+                                </p>
 
-                                {aucType === 'english-auction' && <div className="close_time">
+                                {poolInfo.showTime && aucType === 'english-auction' && <div className="close_time">
                                     <img src={icon_time} alt="" />
                                     <span>{poolInfo.showTime}</span>
                                 </div>}
                             </div>
                             <div className="desc">
-                                <p>{nftInfo.description || wrapperIntl("pages.buy.descriptionLoading")}</p>
+                                <p>{nftInfo.description || state.description || wrapperIntl("pages.buy.descriptionLoading")}</p>
                                 {/* <span>Read more</span> */}
 
                             </div>
