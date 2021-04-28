@@ -141,7 +141,7 @@ export const mainTheme = createMuiTheme({
     MuiContainer: {
       maxWidthXl: {
         [defaultTheme.breakpoints.up('xl')]: {
-          maxWidth: 1240 + 48,
+          maxWidth: 1520 + 48,
         },
       },
     },
@@ -489,6 +489,10 @@ export const mainTheme = createMuiTheme({
     },
 
     MuiPaper: {
+      rounded: {
+        borderRadius: 8,
+      },
+
       outlined: {
         border: `1px solid ${fade('#000', 0.1)}`,
       },

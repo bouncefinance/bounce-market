@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, useTheme } from '@material-ui/core';
+import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
@@ -8,7 +8,6 @@ import { uid } from 'react-uid';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ArtistsItem, IArtistsItemProps } from '../ArtistsItem';
-import { WideContainer } from '../WideContainer';
 import { useArtistsStyles } from './ArtistsStyles';
 
 SwiperCore.use([Lazy]);
@@ -73,7 +72,7 @@ export const ArtistsComponent = ({
 
   return (
     <Section {...sectionProps} className={classes.root}>
-      <WideContainer>
+      <Container>
         <Box mb={5}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs>
@@ -91,7 +90,7 @@ export const ArtistsComponent = ({
         <Swiper {...sliderProps} className={classes.slider}>
           {renderedSlides}
         </Swiper>
-      </WideContainer>
+      </Container>
     </Section>
   );
 };

@@ -1,4 +1,11 @@
-import { Box, ButtonBase, Grid, Typography, useTheme } from '@material-ui/core';
+import {
+  Box,
+  ButtonBase,
+  Container,
+  Grid,
+  Typography,
+  useTheme,
+} from '@material-ui/core';
 import classNames from 'classnames';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
@@ -16,7 +23,6 @@ import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { WideContainer } from '../WideContainer';
 import { useMoversStyles } from './MoversStyles';
 
 SwiperCore.use([Lazy, Navigation]);
@@ -91,7 +97,7 @@ export const Movers = ({
 
   return (
     <Section {...sectionProps} className={classNames(classes.root, className)}>
-      <WideContainer>
+      <Container>
         <Box mb={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs>
@@ -121,7 +127,7 @@ export const Movers = ({
             {renderedSlides}
           </Swiper>
         )}
-      </WideContainer>
+      </Container>
     </Section>
   );
 };
