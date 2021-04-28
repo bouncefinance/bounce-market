@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState/* , useContext */ } from 'react'
 import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router'
 import Search from '../component/Other/Search'
@@ -22,7 +22,7 @@ import { getCoinList } from '@/utils/coin'
 // import { ZERO_ADDRESS } from "@/web3/address_list/token"
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import axios from 'axios'
-import { myContext } from '@/redux/index.js';
+/* import { myContext } from '@/redux/index.js'; */
 
 const MarketplaceStyled = styled.div`
     width: 1100px;
@@ -101,7 +101,7 @@ const MarketplaceStyled = styled.div`
 const poolsParmas = { offset: 0, count: 1e4 }
 export default function Marketplace() {
   const { wrapperIntl } = useWrapperIntl()
-  const { dispatch } = useContext(myContext);
+  /* const { dispatch } = useContext(myContext); */
 
 
   const NavList = [
@@ -182,8 +182,9 @@ export default function Marketplace() {
   }, [type, categoryRequestParam]) */
 
   useEffect(() => {
-    // if (!active) return
-    if (!active) {
+    if (!active) return
+    /* if (!active) {
+      console.log("111111111111")
       dispatch({
         type: 'Modal_Message',
         showMessageModal: true,
@@ -191,7 +192,7 @@ export default function Marketplace() {
         modelMessage: wrapperIntl("ConnectWallet"),
         modelTimer: 24 * 60 * 60 * 1000,
       });
-    }
+    } */
 
       // console.log(getCoinList(chainId))
       setCoinList([{

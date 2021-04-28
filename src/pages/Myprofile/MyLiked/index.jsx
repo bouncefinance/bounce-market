@@ -134,6 +134,7 @@ export default function MyLiked() {
             price={item.price}
             token1={item.token1}
             poolType={item.poolType}
+            category={item.category}
             key={index}
           />
         })}

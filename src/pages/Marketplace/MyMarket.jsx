@@ -127,7 +127,8 @@ export default function MyMarket() {
   const { wrapperIntl } = useWrapperIntl()
 
   const history = useHistory()
-  const { active, account  } = useActiveWeb3React()
+  const { active, account } = useActiveWeb3React()
+  // const account = '0x706a5014E41E2a96812189D2a9B32b4155972831'
 
   // const account = '0x2d3fff58da3346dce601f6db8eec57906cdb17be'
 
@@ -193,31 +194,32 @@ export default function MyMarket() {
 
     const claimTradeAuctions = tradeAuctions
       .filter(item => {
-        if (String(account).toLowerCase() === item.creator) {
-          return item.createrClaimed === 0
+        if (String(account).toLowerCase() === String(item.creator).toLowerCase()) {
+          return !item.creatorClaimed
         } else {
-          return item.bidderClaimed === 0
+          return !item.bidderClaimed
         }
       })
-      .filter(item => item.lastestBidAmount !== item.amountMax1);
+      .filter(item => item.lastestBidAmount !== item.amountMax1)
+
     const soldTradeAuctions = tradeAuctions
       .filter(item => !claimTradeAuctions.includes(item))
 
 
     const poolData = tradePools
       .concat(tradeAuctions)
-      // .concat(auctionBids)
+    // .concat(auctionBids)
 
     const claimPoolData = claimTradePools
       .concat(claimTradeAuctions)
-      // .concat(claimAuctionBids)
+    // .concat(claimAuctionBids)
 
     const soldPoolData = soldTradePools
       .concat(soldTradeAuctions)
-      // .concat(soldAuctionBids)
+    // .concat(soldAuctionBids)
     const ids_list = poolData.map(item => item.tokenId);
     const cts_list = poolData.map(item => item.token0);
-    
+
     // console.log(poolData)
     setLength(ids_list.length);
     /* const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel */
@@ -233,7 +235,7 @@ export default function MyMarket() {
         if (res.status === 200 && res.data.code === 1) {
           const claimList = claimPoolData.map(pool => {
             const item = res.data.data.find(r => r.id === pool.tokenId);
-            
+
             return {
               ...item,
               poolType: pool.poolType,
@@ -263,10 +265,10 @@ export default function MyMarket() {
           const claimResult = claimList.sort((a, b) => b.createTime - a.createTime)
           const soldResult = soldList.sort((a, b) => b.createTime - a.createTime)
 
-          console.log('claimResult')
-          console.log(claimResult)
-          console.log('soldResult')
-          console.log(soldResult)
+          // console.log('claimResult')
+          // console.log(claimResult)
+          // console.log('soldResult')
+          // console.log(soldResult)
           setTokenList(claimResult);
           setSoldList(soldResult);
           setClaimList(claimResult);
@@ -278,7 +280,7 @@ export default function MyMarket() {
   }, [channel, tradeData, type]);
 
   const init = async () => {
-    const [dataErr, dataRes] = await to(axios.get('/records', {params: { offset: 0, count: 100, user_address: String(account).toLowerCase() }}))
+    const [dataErr, dataRes] = await to(axios.get('/records', { params: { offset: 0, count: 100, user_address: String(account).toLowerCase() } }))
     if (dataRes?.data?.code === 200) {
       const myTrade = dataRes.data.data
       // 1:claim  0 unclaim 
@@ -312,7 +314,7 @@ export default function MyMarket() {
       case 'Image':
         return <ul className={`list_wrapper ${type}`}>
           {filterList.map((item, index) => {
-            return <li key={item.id}>
+            return <li key={item.poolId}>
               <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
@@ -321,6 +323,7 @@ export default function MyMarket() {
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
+                category={item.category}
               />
             </li>
           })}
@@ -329,7 +332,7 @@ export default function MyMarket() {
       default:
         return <ul className={`list_wrapper ${type}`}>
           {filterList.map((item, index) => {
-            return <li key={item.id}>
+            return <li key={item.poolId}>
               <CardItem
                 cover={item.fileurl}
                 name={item.itemname}
@@ -339,6 +342,7 @@ export default function MyMarket() {
                 poolType={item.poolType}
                 poolInfo={item}
                 nftId={item.id}
+                category={item.category}
               />
             </li>
           })}

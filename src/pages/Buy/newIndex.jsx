@@ -46,7 +46,6 @@ import icon_copy from '@assets/images/icon/copy.svg'
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
-import axios from 'axios';
 import to from 'await-to-js';
 
 const NewIndexStyled = styled.div`
@@ -288,7 +287,7 @@ export default function NewIndex() {
     const [minPrice, setMinPrice] = useState(0)
     const [openModal, setOpenModal] = useState(false)
     const [isLike, setIsLike] = useState(false)
-    const { sign_Axios } = useAxios()
+    const { sign_Axios, axios } = useAxios()
     const [supply, setSupply] = useState();
     const [tokenContractAddress, setTokenContractAddress] = useState();
     const [tokenSymbol, setTokenSymbol] = useState();
@@ -306,16 +305,14 @@ export default function NewIndex() {
     const { wrapperIntl } = useWrapperIntl()
     const { state } = useLocation()
 
-    useEffect(() => {
-        console.log("state: ", state)
-        console.log("active: ", active)
-    }, [state, active])
+
 
     const updateParams = {
         auctiontype: aucType | 0,
         // brandid: nftInfo.brandid,
         itemid: poolInfo.tokenId | 0,
         poolid: poolId | 0,
+        category: nftInfo.category,
     }
     /* const [openPlaceBidModal, setOpenPlaceBidModal] = useState(false) */
 
@@ -345,9 +342,6 @@ export default function NewIndex() {
         }
     }, [amount, poolInfo.amountTotal0, poolInfo.swappedAmount0P])
 
-    useEffect(() => {
-        console.log("isLoading: ", isLoading)
-    }, [isLoading])
 
     const setLike = async () => {
         const res = await sign_Axios.post('/api/v2/main/auth/getaccountlike', {})
@@ -418,7 +412,7 @@ export default function NewIndex() {
         setTokenID(nftInfo.id);
         setTokenContractAddress(nftInfo.contractaddress);
         setTokenSymbol(nftInfo.itemsymbol);
-        setExternalLink(nftInfo.externallink)    
+        setExternalLink(nftInfo.externallink)
         // eslint-disable-next-line
     }, [nftInfo])
 
@@ -449,8 +443,8 @@ export default function NewIndex() {
                 const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
                 approveRes = await hasApprove_ERC_20(poolInfo.token1.contract, getFixedSwapNFT(chainId), poolInfo.amountTotal1, account)
 
-                console.log(poolInfo.token1.contract)
-                console.log(approveRes)
+                // console.log(poolInfo.token1.contract)
+                // console.log(approveRes)
                 if (!approveRes) {
                     showTransferByStatus('approveStatus')
                     approveRes = await BounceERC20_CT.methods.approve(getFixedSwapNFT(chainId), '0xffffffffffffffff')
@@ -535,7 +529,7 @@ export default function NewIndex() {
             }
         }
         if (!approveRes) return showTransferByStatus('errorStatus')
-        console.log(poolId, _amount1, sendParams)
+        // console.log(poolId, _amount1, sendParams)
         BounceEnglishAuctionNFT_CT.methods.bid(poolId, _amount1)
             .send(sendParams)
             .on('transactionHash', hash => {
@@ -825,60 +819,79 @@ export default function NewIndex() {
     const [offerList, setOfferList] = useState([]);
     const [history, setHistory] = useState([]);
     const handleSwap = (data) => {
-        const tradePool = data.tradePools[0];
-        if(!tradePool) return
-        console.log(tradePool)
-        // if(!tradePool) return  setHistory([]);
-        const creator = tradePool.creator;
-        const total = tradePool.amountTotal0;
-        const price = tradePool.price;
-        // console.log(price)
-        const offerList = data.poolSwaps.map(item => ({
-            name: getEllipsisAddress(item.sender),
-            time: format(new Date(item.timestamp * 1000), 'PPPpp'),
-            amount: item.swapAmount0,
-            price: price,
-        }));
-        setOfferList(offerList);
+        const tradePool = data.tradePools[0] || data;
+        if (!tradePool) return
         const createList = data.poolCreates.map(item => ({
             // event: 'Created',
             event: 'List',
-            quantity: total,
-            price: price,
-            from: getEllipsisAddress(ZERO_ADDRESS),
-            to: getEllipsisAddress(creator),
+            quantity: item.quantity,
+            price: item.price || '--',
+            from: String(account).toLowerCase() === String(item.from).toLowerCase() ? 'You' : getEllipsisAddress(item.from),
+            to: String(account).toLowerCase() === String(item.to).toLowerCase() ? 'You' : getEllipsisAddress(item.to),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
         }));
         const swapList = data.poolSwaps.map(item => ({
             event: 'Transfer',
-            quantity: item.swapAmount0,
-            price: price,
-            from: getEllipsisAddress(creator),
-            to: getEllipsisAddress(item.sender),
+            quantity: item.quantity,
+            price: item.price || '--',
+            from: String(account).toLowerCase() === String(item.from).toLowerCase() ? 'You' : getEllipsisAddress(item.from),
+            to: String(account).toLowerCase() === String(item.to).toLowerCase() ? 'You' : getEllipsisAddress(item.to),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
         }));
         const cancelList = data.poolCancels.map(item => ({
             event: 'Cancel',
-            price: price,
-            quantity: item.unswappedAmount0,
-            from: getEllipsisAddress(item.sender),
-            to: '',
+            price: item.price || '--',
+            quantity: item.quantity,
+            from: String(account).toLowerCase() === String(item.from).toLowerCase() ? 'You' : getEllipsisAddress(item.from),
+            to: String(account).toLowerCase() === String(item.to).toLowerCase() ? 'You' : getEllipsisAddress(item.to),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
         }));
-        const list = createList.concat(swapList).concat(cancelList)
+        const historyList = createList.concat(swapList).concat(cancelList)
             .sort((a, b) => b.timestamp - a.timestamp);
-        // console.log(price)
-        setHistory(list);
+        // console.log(historyList)
+        setHistory(historyList);
     }
-    handleSwap({
-        tradePools: [],
-        poolSwaps: [],
-        poolCreates: [],
-        poolCancels: [],
-    })
+
+
+
+    const initHistoryList = async () => {
+
+        const params = {
+            pool_id: poolId,
+            pool_type: aucType===AUCTION_TYPE.FixedSwap?'fixedswap': 'english'
+        }
+
+        const initData = {
+            tradePools: [],
+            poolSwaps: [],
+            poolCreates: [],
+            poolCancels: [],
+        }
+
+        try {
+            const historyRes = await axios.get('/activities', { params })
+
+            if (historyRes.status === 200 && historyRes.data.code === 200) {
+                const data = historyRes.data.data
+                console.log(data)
+                initData.poolCreates = data.filter(item => item.event === 'Created')
+                initData.poolSwaps = data.filter(item => item.event === 'poolSwaps')
+                initData.tradePools = data.filter(item => item.event === 'tradePools')
+                initData.poolCancels = data.filter(item => item.event === 'Canceled')
+
+                return handleSwap(initData)
+            } else {
+                throw Error()
+            }
+        } catch (error) {
+
+        }
+        handleSwap(initData)
+
+    }
 
     // const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
     //     variables: { poolId: Number(poolId) },
@@ -957,17 +970,20 @@ export default function NewIndex() {
                     amount: item.Amount0,
                     price: item.Amount1,
                 }
-            })
+            }).sort((a, b) => b.price - a.price)
+            console.log(list)
             setOfferList(list)
         }
         if (offerListError) {
             console.log(offerListError)
         }
     }
+
     useEffect(() => {
         initOfferList()
+        initHistoryList()
         // eslint-disable-next-line
-    }, [])
+    }, [active])
 
 
     // useEffect(() => {
@@ -1165,8 +1181,8 @@ export default function NewIndex() {
                                         Event: item.event,
                                         Quantity: item.quantity,
                                         Price: [item.price ? (poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`) : '--', `($)`],
-                                        From: getEllipsisAddress(item.from),
-                                        To: getEllipsisAddress(item.to),
+                                        From: item.from,
+                                        To: item.to,
                                         Date: item.date,
                                     }))
                                 } />
