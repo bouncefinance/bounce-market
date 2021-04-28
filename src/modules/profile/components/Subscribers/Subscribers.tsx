@@ -44,7 +44,6 @@ export const Subscribers = ({
           className={classes.followBtn}
           onClick={onFollowClick}
           variant="outlined"
-          color="secondary"
         >
           <PlusIcon
             className={classNames(classes.icon, classes.iconOffsetRight)}

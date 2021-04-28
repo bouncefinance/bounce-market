@@ -1,6 +1,7 @@
 import { createMuiTheme, darken, fade, lighten } from '@material-ui/core';
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 import { PaletteOptions } from '@material-ui/core/styles/createPalette';
+import { BREAKPOINTS, BTN_TRANSITION_TIME } from './const';
 import { FONTS, mainTheme } from './mainTheme';
 import { Themes } from './types';
 
@@ -24,6 +25,12 @@ export const PALETTE = {
     main: '#38FF70',
   },
 };
+
+const defaultTheme = createMuiTheme({
+  spacing: 8,
+  palette: PALETTE as PaletteOptions,
+  breakpoints: BREAKPOINTS,
+});
 
 export const darkTheme = createMuiTheme({
   ...mainTheme,
@@ -68,6 +75,37 @@ export const darkTheme = createMuiTheme({
       outlined: {
         ...mainTheme.overrides?.MuiButton?.outlined,
         border: `1px solid ${mainTheme.palette.common.white}`,
+
+        '&:before': {
+          content: `''`,
+          position: 'absolute',
+          borderRadius: 'inherit',
+          top: -1,
+          left: -1,
+          right: -1,
+          bottom: -1,
+          width: 'auto',
+          height: 'auto',
+          background: defaultTheme.palette.text.primary,
+          transition: `transform ${BTN_TRANSITION_TIME}s cubic-bezier(0.7, 0, 0.2, 1)`,
+          transform: 'translateY(100%)',
+        },
+
+        '&:hover': {
+          color: defaultTheme.palette.common.black,
+          background: 'none',
+          borderColor: fade(defaultTheme.palette.common.black, 0),
+
+          '&:before': {
+            transform: 'translateY(0)',
+          },
+        },
+      },
+
+      outlinedPrimary: {
+        ...mainTheme.overrides?.MuiButton?.outlinedPrimary,
+        border: `1px solid ${defaultTheme.palette.text.primary}`,
+        color: defaultTheme.palette.text.primary,
       },
     },
   },

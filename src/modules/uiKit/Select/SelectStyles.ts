@@ -1,4 +1,4 @@
-import { lighten, makeStyles, Theme } from '@material-ui/core';
+import { fade, makeStyles, Theme } from '@material-ui/core';
 
 export const useSelectStyles = makeStyles<Theme>(theme => ({
   menuPaper: {
@@ -11,7 +11,7 @@ export const useSelectStyles = makeStyles<Theme>(theme => ({
       fontSize: 'inherit',
 
       '&:hover': {
-        background: lighten(theme.palette.primary.main, 0.8),
+        background: fade(theme.palette.text.primary, 0.04),
       },
 
       '&.Mui-selected': {
@@ -27,7 +27,7 @@ export const useSelectStyles = makeStyles<Theme>(theme => ({
 
           width: 10,
           height: 6,
-          border: `solid ${theme.palette.primary.main}`,
+          border: `solid ${theme.palette.text.secondary}`,
           borderWidth: '0 0 2px 2px',
           transform: 'rotate(-45deg)',
         },

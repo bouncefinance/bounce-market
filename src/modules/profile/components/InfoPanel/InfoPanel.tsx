@@ -40,7 +40,7 @@ export const InfoPanel = ({
         </Grid>
 
         <Grid item>
-          <ButtonBase className={classes.address} title={address} disableRipple>
+          <ButtonBase className={classes.address} title={address}>
             <Typography>{convertWallet(address || '')}</Typography>
           </ButtonBase>
         </Grid>

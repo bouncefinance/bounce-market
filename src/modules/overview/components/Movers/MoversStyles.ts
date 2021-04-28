@@ -33,13 +33,14 @@ export const useMoversStyles = makeStyles<Theme>(theme => ({
   navBtn: {
     width: 50,
     height: 50,
-    borderRadius: '50%',
-    border: '1px solid #ccc',
-    color: theme.palette.text.secondary,
 
     '&.swiper-button-disabled': {
       cursor: 'default',
       opacity: 0.3,
+
+      '&:active': {
+        transform: 'none',
+      },
     },
   },
 

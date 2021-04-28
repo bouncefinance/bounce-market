@@ -39,7 +39,6 @@ export const useSubscribersStyles = makeStyles<Theme>(theme => ({
     fontSize: 16,
     fontWeight: 500,
     fontFamily: 'inherit',
-    transition: 'background 0.2s',
 
     '&:hover': {
       backgroundColor: fade(theme.palette.text.primary, 0.04),

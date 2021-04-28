@@ -7,7 +7,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     height: '100%',
   },
 
-  imgLink: {
+  imgBox: {
     position: 'relative',
     display: 'block',
   },
@@ -27,7 +27,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
       transition: '0.2s',
     },
 
-    '$imgLink:hover &': {
+    '$imgBox:hover &': {
       '&:after': {
         background: fade(theme.palette.common.black, 0.2),
       },
@@ -56,6 +56,36 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     },
   },
 
+  cardStatus: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    background: fade(theme.palette.common.black, 0.3),
+    color: theme.palette.common.white,
+  },
+
+  statusTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: theme.spacing(1.5),
+    fontSize: 16,
+    fontWeight: 500,
+  },
+
+  statusSpinner: {
+    margin: theme.spacing(0, 1, 0, 0),
+  },
+
+  statusSubTitle: {},
+
   content: {
     flexGrow: 1,
     display: 'flex',
@@ -65,6 +95,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   title: {
     marginBottom: theme.spacing(2),
 
+    fontSize: 16,
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -82,17 +113,26 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     margin: theme.spacing(0, 0, 1.5),
   },
 
-  info: {
+  infoContainer: {
     display: 'grid',
     alignItems: 'center',
     gridTemplateColumns: '1fr auto',
-    gap: theme.spacing(0, 2),
+    gap: theme.spacing(0, 1.5),
     marginTop: 'auto',
   },
 
-  status: {
+  info: {
     display: 'flex',
     alignItems: 'center',
+    fontSize: 13,
+    color: theme.palette.text.secondary,
+  },
+
+  status: {
+    fontSize: 15,
+    fontWeight: 700,
+    color: theme.palette.text.primary,
+    marginBottom: theme.spacing(0.75),
   },
 
   icon: {
@@ -103,11 +143,6 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     marginRight: theme.spacing(1),
   },
 
-  likes: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-
   likeBtn: {
     padding: 6,
 
@@ -116,7 +151,29 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     },
   },
 
+  saleBtn: {},
+
   likeBtnActive: {
     color: 'red',
+  },
+
+  menuPopover: {
+    marginTop: theme.spacing(1),
+  },
+
+  menuBtn: {
+    padding: theme.spacing(1, 1),
+    marginRight: -16,
+  },
+
+  menuIcon: {
+    fontSize: 20,
+    color: theme.palette.text.secondary,
+  },
+
+  menuItem: {
+    fontSize: 13,
+    fontWeight: 500,
+    minWidth: 170,
   },
 }));

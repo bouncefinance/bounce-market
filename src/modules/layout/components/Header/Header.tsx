@@ -51,7 +51,7 @@ export const Header = () => {
         to={RoutesConfiguration.CreateNft.generatePath()}
         className={classes.btnCreate}
         variant="outlined"
-        color="default"
+        color="primary"
       >
         {t('header.create')}
       </Button>

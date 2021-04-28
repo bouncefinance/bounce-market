@@ -42,7 +42,7 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
         <InView key={uid(cardProps)} rootMargin="-10% 0% -10% 0%">
           {({ inView, ref }) => (
             <Fade in={inView}>
-              <Grid item xs={12} sm={6} md={4} lg={3} ref={ref}>
+              <Grid item xs={12} sm={6} lg={4} xl={3} ref={ref}>
                 <ProductCard
                   key={uid(cardProps)}
                   title={cardProps.title}

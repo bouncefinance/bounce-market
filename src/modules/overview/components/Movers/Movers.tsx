@@ -1,8 +1,8 @@
 import {
   Box,
-  ButtonBase,
   Container,
   Grid,
+  IconButton,
   Typography,
   useTheme,
 } from '@material-ui/core';
@@ -106,13 +106,13 @@ export const Movers = ({
 
             <Grid item xs="auto">
               <div className={classes.buttons}>
-                <ButtonBase id={prevId} className={classes.navBtn}>
+                <IconButton id={prevId} className={classes.navBtn}>
                   <AngleLeftIcon className={classes.navBtnIcon} />
-                </ButtonBase>
+                </IconButton>
 
-                <ButtonBase id={nextId} className={classes.navBtn}>
+                <IconButton id={nextId} className={classes.navBtn}>
                   <AngleRightIcon className={classes.navBtnIcon} />
-                </ButtonBase>
+                </IconButton>
               </div>
             </Grid>
           </Grid>

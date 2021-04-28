@@ -8,10 +8,67 @@ import { Header } from '../components/Header';
 import { InfoPanel } from '../components/InfoPanel';
 import { Social } from '../components/Social';
 import { Subscribers } from '../components/Subscribers';
-import { TabItems } from '../components/TabItems';
+import { TabItemProps, TabItems } from '../components/TabItems';
 import { TabPanel } from '../components/TabPanel';
 import { Tabs } from '../components/Tabs';
 import { useProfileStyles } from './useProfileStyles';
+
+const items: TabItemProps[] = [
+  {
+    href: '#',
+    title: 'Berserk - Red EthRanger #04 - Ruby Crystal Edition',
+    img: 'https://picsum.photos/350?random=1',
+    status: 0,
+    // price: new BigNumber(5),
+    copies: '6',
+    ProfileInfoProps: {
+      subTitle: 'Owner',
+      title: '1livinginzen',
+      users: [
+        {
+          name: 'name',
+          avatar: 'https://via.placeholder.com/32',
+          verified: true,
+        },
+      ],
+    },
+  },
+  {
+    href: '#',
+    title: 'Berserk - Red EthRanger #04 - Ruby Crystal Edition',
+    img: 'https://picsum.photos/350?random=3',
+    copies: '2',
+    ProfileInfoProps: {
+      subTitle: 'Owner',
+      title: '1livinginzen',
+      users: [
+        {
+          name: 'name',
+          avatar: 'https://via.placeholder.com/32',
+          verified: true,
+        },
+      ],
+    },
+  },
+  {
+    href: '#',
+    title: 'Berserk - Red EthRanger #04 - Ruby Crystal Edition',
+    img: 'https://picsum.photos/350?random=2',
+    status: 1,
+    copies: '1',
+    ProfileInfoProps: {
+      subTitle: 'Owner',
+      title: '1livinginzen',
+      users: [
+        {
+          name: 'name',
+          avatar: 'https://via.placeholder.com/32',
+          verified: true,
+        },
+      ],
+    },
+  },
+];
 
 enum TabList {
   items,
@@ -95,7 +152,7 @@ export const Profile = () => {
         />
 
         <TabPanel value={tab} index={TabList.items}>
-          <TabItems />
+          <TabItems items={items} />
         </TabPanel>
 
         <TabPanel value={tab} index={TabList.brands}>

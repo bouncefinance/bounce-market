@@ -27,6 +27,7 @@ export const useSocialStyles = makeStyles<Theme>(theme => ({
     '&:hover': {
       background: 'none',
       color: theme.palette.primary.main,
+      border: 'none',
     },
   },
 

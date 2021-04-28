@@ -12,6 +12,10 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
     padding: 0,
     color: '#7b7b7b',
     border: 'none',
+
+    '&:hover': {
+      border: 'none',
+    },
   },
 
   input: {
