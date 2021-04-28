@@ -176,14 +176,16 @@ export default function Index() {
         // artistpoolweight poolweight poolid id standard
         let { data } = weightRes.data
         let templPools = []
+        let poolsPromise = []
         for (let weightItem of data) {
-          const [poolErr, poolRes] = await to(axios.get('/pool', {
+          poolsPromise.push( to (axios.get('/pool', {
             params: {
               pool_id: weightItem.poolid,
-              // standard == pool_type
               pool_type: weightItem.standard === 1 ? 'fixedswap' : 'english'
             }
-          }))
+          })))
+        }
+        for (let [poolErr, poolRes] of await Promise.all(poolsPromise)) {
           if (poolErr) {
             return console.log(poolErr)
           }

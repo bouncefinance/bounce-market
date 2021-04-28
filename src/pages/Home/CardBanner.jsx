@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 /* import arrows_blue from '@assets/images/icon/arrows-blue.svg' */
-import banner_1 from './assets/banner_1.2.svg'
-import banner_2 from './assets/banner_2.2.svg'
+import banner_1 from './assets/banner_1_2.png'
+import banner_2 from './assets/banner_2.2.png'
 // import banner_3 from './assets/banner_3.svg'
 // import { Tooltip } from '@material-ui/core'
 import { Link } from 'react-router-dom'

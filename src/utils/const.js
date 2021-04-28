@@ -1,6 +1,6 @@
 export const DEBOUNCE = 300;
 
-const produceHost = ['127.0.0.1', 'bounce-market.bounce.finance', 'cnmarket.bounce.finance', 'fangible']
+const produceHost = ['127.0.0.1', 'marke.bounce.finance', 'cnmarket.bounce.finance', 'fangible']
 let isProDev = false
 const hostname = window.location.hostname
 produceHost.forEach(item => {
