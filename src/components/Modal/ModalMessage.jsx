@@ -127,20 +127,25 @@ export default function ModalMessage() {
   };
 
 	const subsequentAction = () => {
-    switch (state.subsequentActionType) {
-      case "openNewWeb":
-        if (state.modelOpenUrl) {
-          window.open(state.modelOpenUrl);
-        }
-        break;
+		switch (state.subsequentActionType) {
+		case "openNewWeb":
+			if (state.modelOpenUrl) {
+			window.open(state.modelOpenUrl);
+			}
+			break;
 
-      case "connectToBSCChain":
-        ConnectToBSCChain();
-        break;
-    
-      default:
-        break;
-    }
+		case "connectToBSCChain":
+			ConnectToBSCChain();
+			break;
+
+		case "connectWallet":
+			/* alert("connectWallet!!!") */
+			state.subsequentActionFunc(true)
+			break;
+		
+		default:
+			break;
+		}
 	};
   
 	useEffect(() => {
@@ -165,8 +170,8 @@ export default function ModalMessage() {
 					icon={false}
 					action={
 						state.canClose 
-            && 
-            <IconButton
+            			&& 
+            			<IconButton
 							aria-label="close"
 							color="inherit"
 							size="small"
@@ -193,7 +198,7 @@ export default function ModalMessage() {
 						className={classes.links}
 						onClick={() => {
 							/* openNewWeb(); */
-              subsequentAction()
+              				subsequentAction()
 						}}
 					>
 						{state.modelUrlMessage}

@@ -44,6 +44,7 @@ const zh_CN = {
         search_p: '搜索用户、品牌、NFT',
         SelectBSC: "请连接BSC网络，",
         SwitchToBSC: "点击此处切换至BSC网络",
+        ConnectWallet: "点击此处连接钱包",
     },
 
     'pages.buy.Share': '分享',

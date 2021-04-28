@@ -44,6 +44,7 @@ const en_US = {
         search_p: 'Search objects, items, art',
         SelectBSC: "Please select BSC network.",
         SwitchToBSC: "Click here to switch to BSC network.",
+        ConnectWallet: "Click here to connect wallet.",
     },
 
     'pages.buy.Share': 'Share',

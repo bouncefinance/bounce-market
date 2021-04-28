@@ -234,7 +234,10 @@ export default function Index() {
                     showMessageModal: true,
                     modelType: 'error',
                     modelMessage: wrapperIntl("ConnectWallet"),
+                    subsequentActionType: "connectWallet",
+                    modelUrlMessage: wrapperIntl("header.ConnectWallet"),
                     modelTimer: 24 * 60 * 60 * 1000,
+                    subsequentActionFunc: setIsConnectWallect
                 });
             }
             else {
