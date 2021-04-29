@@ -115,7 +115,7 @@ const en_US = {
     "UIKit.Input.Upload.infoTip.videoError": 'Oops!File size or file type is wrong. Please check and try again.',
     "UIKit.Input.Upload.infoTip.uploadImageAndVideo": 'upload Image Or Video',
     "UIKit.Input.Upload.infoTip.requirementImageANdVideo": 'Supports JPG, PNG, GIF ,MP4',
-    "UIKit.Input.Upload.infoTip.image.requirementImageAndVideo": 'Image no more than 10MB, 262*262 Reccomended. Video no more than 10MB, 360*240 Reccomended',
+    "UIKit.Input.Upload.infoTip.image.requirementImageAndVideo": 'Image no more than 10MB, 262*262 Reccomended. Video no more than 50MB, 360*240 Reccomended',
 
     home: {
         banner1: 'We make it easy to trade in creativity.',

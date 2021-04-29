@@ -115,7 +115,7 @@ const zh_CN = {
     "UIKit.Input.Upload.infoTip.videoError": '文件大小或文件类型错误。 请检查并重试。',
     "UIKit.Input.Upload.infoTip.uploadImageAndVideo": '上传图像或视频',
     "UIKit.Input.Upload.infoTip.requirementImageANdVideo": '支持 JPG, PNG, GIF, MP4 格式',
-    "UIKit.Input.Upload.infoTip.image.requirementImageAndVideo": '图片或视频大小不大于 10MB, 图片推荐分辨率为262*262, 图片推荐分辨率为360*240',
+    "UIKit.Input.Upload.infoTip.image.requirementImageAndVideo": '图片不大于10M；视频不大于50MB, 图片推荐分辨率为262*262, 视频推荐分辨率为360*240',
 
     home: {
         banner1: '我们让创意更易于交易。',
