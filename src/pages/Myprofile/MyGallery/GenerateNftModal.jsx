@@ -100,7 +100,11 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         // Get image url
         const originImageFormData = new FormData()
         originImageFormData.append('filename', new File([fileData.file], 'blob.png', { type: 'image/png' }))
-        const [imgUrlErr, imgUrl] = await to(ImgToUrl(sign_Axios, originImageFormData))
+        const [imgUrlErr, imgUrl] = await to(ImgToUrl(sign_Axios, originImageFormData, (progress) => {
+            // setImgUploadUrlProgress(progress)
+            console.log(progress + '%')
+            setBtnText(progress + '%')
+        }))
         let reviewImageUrl = ''
         const IMAGE = 'image/'
         if (imgUrlErr) {
@@ -119,7 +123,11 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 setInputDisable(false)
             }
             previewImageFormData.append('filename', new File([previewImage], 'blob.png', { type: 'image/png' }))
-            const [reviewImageUrlError, _reviewImageUrl] = await to(ImgToUrl(sign_Axios, previewImageFormData))
+            const [reviewImageUrlError, _reviewImageUrl] = await to(ImgToUrl(sign_Axios, previewImageFormData, (progress) => {
+                // setImgPreviewUploadUrlProgress(progress)
+                console.log(progress + '%')
+                setBtnText(progress + '%')
+            }))
             reviewImageUrl = _reviewImageUrl
             if (reviewImageUrlError) {
                 setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Submit"))
@@ -130,7 +138,12 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         // 第二步 上传数据生成 json
         const params = {
             brandid: nftType === 'ERC-721' ? 10 : 11,
+<<<<<<< HEAD
             category: imgUrl.slice(imgUrl.length - 3,) === "mp4" ? "video" : "image",
+=======
+            // category: imgUrl.slice(imgUrl.length-3,) === "mp4"?"video":"image",
+            category: fileData.type.substring(0, IMAGE.length) === IMAGE ? "image" : "video",
+>>>>>>> 26034bc1206d18205285c6a474e882b03f427dc0
             channel: formData.Channel,
             contractaddress: nftType === 'ERC-721' ? getBounceERC721WithSign(chainId) : getBounceERC1155WithSign(chainId),
             description: formData.Description,
@@ -361,6 +374,9 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                         if (filetype === 'video/avi') {
                             dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
                             return setFileData(null)
+                        }
+                        if (filetype.substring(0, 'video'.length) === 'video') {
+                            console.log('video')
                         }
                         setFileData({
                             formData,
