@@ -1,11 +1,11 @@
 import loadable, { LoadableComponent } from '@loadable/component';
 import React from 'react';
-import { Route } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
+import { PrivateRoute } from '../router/components/PrivateRoute';
 
 const PATH_CREATE_NFT = '/nft/create';
-const PATH_PUBLISH_NFT = '/nft/publish';
+const PATH_PUBLISH_NFT = '/nft/publish/:contract/:id';
 
 export const RoutesConfiguration: { [key: string]: RouteConfiguration } = {
   CreateNft: {
@@ -35,12 +35,12 @@ const LoadablePublishNFTContainer: LoadableComponent<any> = loadable(
 export function Routes() {
   return (
     <>
-      <Route
+      <PrivateRoute
         path={RoutesConfiguration.CreateNft.path}
         exact={true}
         component={LoadableCreateNFTContainer}
       />
-      <Route
+      <PrivateRoute
         path={RoutesConfiguration.PublishNft.path}
         exact={true}
         component={LoadablePublishNFTContainer}

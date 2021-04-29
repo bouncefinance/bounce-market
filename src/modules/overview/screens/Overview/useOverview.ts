@@ -1,8 +1,8 @@
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import { useItems } from 'modules/marketplace/hooks/useItems';
-import { MarketplaceActions } from 'modules/marketplace/marketplaceActions';
+import { useItems } from 'modules/overview/hooks/useItems';
 import { useEffect } from 'react';
-import { CreateNftActions } from '../../../createNFT/CreateNftActions';
+import { fetchItemsByIds } from '../../actions/fetchItemsByIds';
+import { fetchPools } from '../../actions/fetchPools';
 
 export const useOverview = () => {
   const { data } = useItems();
@@ -15,34 +15,25 @@ export const useOverview = () => {
     error: poolsError,
     pristine: poolsPristine,
   } = useQuery({
-    type: MarketplaceActions.fetchPools,
+    type: fetchPools,
   });
   const { loading: itemsLoading, error: itemsError } = useQuery({
-    type: MarketplaceActions.fetchItems,
+    type: fetchItemsByIds,
   });
 
   useEffect(() => {
-    // TODO Move to profile
-    dispatchRequest(
-      CreateNftActions.fetchNftByUser({
-        // user: request.data.address,
-        user: '0x5fe96748b9f9f6df3b7f8c71cbd6b62e12997be2',
-      }),
-    );
-
     if (!poolsPristine) {
       return;
     }
-    dispatchRequest(MarketplaceActions.fetchPools()).then(({ data }) => {
+    dispatchRequest(fetchPools()).then(({ data }) => {
       if (data) {
         const ids = data.tradePools
           .map(item => item.tokenId)
           .concat(data.tradeAuctions.map(item => item.tokenId));
 
         dispatchRequest(
-          MarketplaceActions.fetchItems({
+          fetchItemsByIds({
             ids,
-            channel: 'Sports',
           }),
         );
       }

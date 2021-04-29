@@ -14,9 +14,9 @@ import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { INFTDetails } from '../../api/NFTDetails';
-import { DetailsNFTActions } from '../../DetailsNFTActions';
 import { useBidDialog } from './useBidDialog';
 import { useDetailsNFTStyles } from './useDetailsNFTStyles';
+import { fetchItem } from '../../actions/fetchItem';
 
 export const DetailsNFT = () => {
   const classes = useDetailsNFTStyles();
@@ -33,7 +33,7 @@ export const DetailsNFT = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(DetailsNFTActions.fethItem({ contract, id }));
+    dispatch(fetchItem({ contract, id }));
   }, [contract, dispatch, id]);
 
   const renderContent = ({ data }: QueryState<INFTDetails>) => {
@@ -170,9 +170,5 @@ export const DetailsNFT = () => {
     );
   };
 
-  return (
-    <Queries requestActions={[DetailsNFTActions.fethItem]}>
-      {renderContent}
-    </Queries>
-  );
+  return <Queries requestActions={[fetchItem]}>{renderContent}</Queries>;
 };

@@ -9,10 +9,10 @@ import { rootSaga } from './rootSaga';
 import { createDriver as createAxiosDriver } from '@redux-requests/axios';
 import axios from 'axios';
 import { BASE_URL } from '../modules/common/conts';
-import { AccountActions } from '../modules/account/store/accountActions';
 import { notificationSlice } from '../modules/notification/store/notificationSlice';
 import { NotificationActions } from '../modules/notification/store/NotificationActions';
 import { extractMessage } from '../modules/common/utils/extractError';
+import { setAccount } from '../modules/account/store/actions/setAccount';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
   driver: {
@@ -29,8 +29,8 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     const rootState: RootState = store.getState();
 
     const { data } = getQuery(rootState, {
-      type: AccountActions.setAccount.toString(),
-      action: AccountActions.setAccount,
+      type: setAccount.toString(),
+      action: setAccount,
     });
 
     // TODO Throw exception if auth and no token?

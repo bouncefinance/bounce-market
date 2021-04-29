@@ -1,6 +1,6 @@
 import { useQuery } from '@redux-requests/react';
-import { AccountActions } from '../../account/store/accountActions';
 import { useMemo } from 'react';
+import { setAccount } from '../../account/store/actions/setAccount';
 
 enum Currency {
   BNB = 'BNB',
@@ -57,8 +57,8 @@ function getBUSDAddress(chainId: number) {
 
 export function useCurrencies() {
   const { data } = useQuery({
-    type: AccountActions.setAccount.toString(),
-    action: AccountActions.setAccount,
+    type: setAccount.toString(),
+    action: setAccount,
   });
 
   // TODO Remove 56
