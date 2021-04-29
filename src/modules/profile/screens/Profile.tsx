@@ -1,5 +1,6 @@
 import { Container } from '@material-ui/core';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Avatar } from '../components/Avatar';
@@ -93,29 +94,29 @@ export const Profile = () => {
     () => [
       {
         value: TabList.items,
-        label: 'My items',
+        label: t('profile.tabs.my-items'),
       },
       {
         value: TabList.brands,
-        label: 'My brands',
+        label: t('profile.tabs.my-brands'),
       },
       {
         value: TabList.activity,
-        label: 'Activity',
+        label: t('profile.tabs.activity'),
       },
       {
         value: TabList.liked,
-        label: 'Liked',
+        label: t('profile.tabs.liked'),
         count: 0,
       },
       {
         value: TabList.following,
-        label: 'Following',
+        label: t('profile.tabs.following'),
         count: 11,
       },
       {
         value: TabList.followers,
-        label: 'Followers',
+        label: t('profile.tabs.followers'),
         count: 150,
       },
     ],
