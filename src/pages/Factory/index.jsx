@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
@@ -19,7 +19,6 @@ import pic_List from './assets/pic_List.svg'
 import { useWalletConnect } from '@/web3/useWalletConnect'
 import { useActiveWeb3React } from '@/web3'
 
-import { myContext } from '@/redux/index.js';
 
 const CardList = styled.div`
     width: 1100px;
@@ -45,7 +44,6 @@ function Factory () {
     const [Step, setStep] = useState("0")
 
     const { wrapperIntl } = useWrapperIntl()
-    const { dispatch } = useContext(myContext);
 
     const GenerateButton = () => {
         return (
@@ -94,20 +92,6 @@ function Factory () {
             </Button>
         )
     }
-
-    useEffect(() => {
-        /* console.log("active: ", active) */
-        if (!active) {
-            dispatch({
-            type: 'Modal_Message',
-            showMessageModal: true,
-            modelType: 'error',
-            modelMessage: wrapperIntl("ConnectWallet"),
-            modelTimer: 24 * 60 * 60 * 1000,
-            });
-        }
-    // eslint-disable-next-line
-    }, [active])
 
     return (
         <>

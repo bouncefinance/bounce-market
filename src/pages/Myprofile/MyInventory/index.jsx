@@ -38,6 +38,15 @@ const MyInventoryStyled = styled.div`
             }
         }
     }
+
+    .noticeWrapper{
+      display: flex;
+      align-items: center;
+      height: 300px;
+      .emptyNotive {
+        margin: auto;
+      }
+    }
 `
 
 
@@ -152,48 +161,58 @@ export default function Index() {
   return (
     <>
       <CommonHeader />
-      <MyInventoryStyled>
-        <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
-          {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
-          <AddCardItem />
-          <Category itemList={itemList} onStatusChange={setStatusList} />
-
-          {/* <PullRadioBox prefix={'Categories:'} options={[{
-            value: 'Image'
-          }, {
-            value: 'Video'
-          }, {
-            value: 'Audio'
-          }, {
-            value: 'Games'
-          }, {
-            value: 'Others'
-          }]} defaultValue='Image' onChange={(item) => {
-            setType(item.value);
-          }} /> */}
-        </div>
-
-        <ul className="list">
-          {/* <li>
+        <MyInventoryStyled>
+          <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
+            {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
             <AddCardItem />
-          </li> */}
-          {statusList.map((item, index) => {
-            return <li key={index}>
-              <CardItem
-                nftId={item.id}
-                cover={item.fileurl}
-                itemname={item.itemname}
-                user={item.ownername}
-                status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
-                poolType={item.poolType}
-                //  status={index % 2 === 0 ? 'Listed' : ''} 
-                poolInfo={item}
-              />
-            </li>
-          })}
-        </ul>
-        {loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
-      </MyInventoryStyled>
+            <Category itemList={itemList} onStatusChange={setStatusList} />
+
+            {/* <PullRadioBox prefix={'Categories:'} options={[{
+              value: 'Image'
+            }, {
+              value: 'Video'
+            }, {
+              value: 'Audio'
+            }, {
+              value: 'Games'
+            }, {
+              value: 'Others'
+            }]} defaultValue='Image' onChange={(item) => {
+              setType(item.value);
+            }} /> */}
+          </div>
+          {
+            active && statusList.length > 0
+            ?
+            <ul className="list">
+              {/* <li>
+                <AddCardItem />
+              </li> */}
+              {statusList.map((item, index) => {
+                return <li key={index}>
+                  <CardItem
+                    nftId={item.id}
+                    cover={item.fileurl}
+                    itemname={item.itemname}
+                    user={item.ownername}
+                    status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
+                    poolType={item.poolType}
+                    //  status={index % 2 === 0 ? 'Listed' : ''} 
+                    poolInfo={item}
+                  />
+                </li>
+              })}
+            </ul>
+            :
+            <div className="noticeWrapper">
+              <div className="emptyNotive">
+                You dosen’t have any NFT
+              </div>
+            </div>
+          }
+
+          {active && loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
+        </MyInventoryStyled>
     </>
   )
 }
