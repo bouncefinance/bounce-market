@@ -6,6 +6,7 @@ import useWrapperIntl from '@/locales/useWrapperIntl'
 import { getFileType }  from '@/utils/getFileType'
 
 const UploadStyled = styled.div`
+    width: 620px;
     display: flex;
     /* margin-top: 22px; */
 

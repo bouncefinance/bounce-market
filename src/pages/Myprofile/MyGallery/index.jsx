@@ -45,18 +45,10 @@ const MyGalleryStyled = styled.div`
         }
     }
 
-<<<<<<< HEAD
     .emptyNoticeWrapper {
       flex: 1;
       display: flex;
       .emptyNotice {
-=======
-    .noticeWrapper{
-      display: flex;
-      align-items: center;
-      height: 300px;
-      .emptyNotive {
->>>>>>> 880d420b99cba6c52983a8fb049c1519e97bc901
         margin: auto;
       }
     }
