@@ -13,6 +13,7 @@ import { useThrottle } from '@/utils/useThrottle'
 import { myContext } from '@/redux'
 import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import UploadAll from '@/components/UI-kit/Input/UploadAll'
 
 // import { numToWei } from '@/utils/useBigNumber'
 const DEBOUNCE = 500;
@@ -52,6 +53,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
         Channel: 'Fine Arts',
         Supply: 1
     })
+    const [fileOrigin, setFileOrigin] = useState(null)
     const { dispatch } = useContext(myContext);
 
     useEffect(() => {
@@ -79,6 +81,8 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
 
     
     const handelSubmit = () => {
+        const IMAGE = 'image/'
+        const category = fileOrigin.type.substring(0, IMAGE.length) === IMAGE ? "image" : "video"
         // 第一步 上传图片
         setInputDisable(false);
         setBtnLock(true)
@@ -99,7 +103,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                 // 第二步 上传数据生成 json
                 const params = {
                     brandid: brandInfo.id,
-                    category: formData.Category,
+                    category,
                     channel: formData.Channel,
                     contractaddress: brandInfo.contractaddress,
                     description: formData.Description,
@@ -222,39 +226,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                         onChange={(item) => {
                             setFormData({ ...formData, Category: item.value })
                         }} /> */}
-                    <PullRadioBox
-                        title={wrapperIntl('Category.Category')}
-                        marginTop='24px'
-                        width='150px'
-                        options={[
-                            { value: wrapperIntl('Category.Image') },
-                            { value: wrapperIntl('Category.Video') },
-                        ]}
-                        /* defaultValue={defaultValue === 'All' ? 'Images' : defaultValue || 'Images'} */
-                        defaultValue={wrapperIntl('Category.Image')}
-                        inputDisable={inputDisable}
-                        onChange={(option) => {
-                            /* const cate = item.value === 'Videos' ? 'video' : 'image' */
-                            console.log("option.value: ", option.value)
-                            let categoryParam
-                            switch (option.value) {
-                                case wrapperIntl('Category.Image'):
-                                    categoryParam = 'image'
-                                    break;
-                            
-                                case wrapperIntl('Category.Video'):
-                                    categoryParam = 'video'
-                                    break;
-
-                                default:
-                                    categoryParam = 'image'
-                                    break;
-                            }
-                            /* setFormData({ ...formData, Category: cate }) */
-                            console.log("categoryParam2: ", categoryParam)
-                            setFormData({ ...formData, Category: categoryParam })
-                        }}
-                    />
+                    
 
                     <PullRadioBox title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Channel')} marginTop='24px' width='150px' options={[{
                         value: 'Fine Arts'
@@ -300,13 +272,13 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                     }}
                 />
 
-                <Upload
-                    type={formData.Category}
+                <UploadAll
                     inputDisable={inputDisable}
                     width='200px'
                     height='200px'
-                    lockInput={inputDisable} infoTitle={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.browseBrandPhoto')} onFileChange={(formData) => {
+                    lockInput={inputDisable} infoTitle={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.browseBrandPhoto')} onFileChange={(formData, file, filetype) => {
                         setFileData(formData)
+                        setFileOrigin(file)
                     }} />
 
                 <div className="button_group">

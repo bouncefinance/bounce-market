@@ -77,6 +77,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
             const requireArr = ['Name', 'Description', 'Supply']
             let errorCount = 0
             requireArr.forEach(item => {
+                console.log('---item---', item, formData)
                 if (!checkInput(formData[item]) || (item === 'Supply' && !ErrorStatus.intNum.reg.test(formData[item]))) {
                     errorCount++
                 }
@@ -96,17 +97,19 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         // 第一步 上传图片
         setInputDisable(true)
         setBtnLock(true)
+        const IMAGE = 'image/'
+        const category = fileData.type.substring(0, IMAGE.length) === IMAGE ? "image" : "video"
 
         // Get image url
         const originImageFormData = new FormData()
-        originImageFormData.append('filename', new File([fileData.file], 'blob.png', { type: 'image/png' }))
+        // TODO type
+        originImageFormData.append('filename', new File([fileData.file], fileData.file?.name || `blob.${category === 'image' ? 'png' : 'mp4'}`, { type: fileData.type || 'image/png' }))
         const [imgUrlErr, imgUrl] = await to(ImgToUrl(sign_Axios, originImageFormData, (progress) => {
             // setImgUploadUrlProgress(progress)
             console.log(progress + '%')
             setBtnText(progress + '%')
         }))
         let reviewImageUrl = ''
-        const IMAGE = 'image/'
         if (imgUrlErr) {
             setBtnText(wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.Submit"));
             setBtnLock(false)
@@ -138,8 +141,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         // 第二步 上传数据生成 json
         const params = {
             brandid: nftType === 'ERC-721' ? 10 : 11,
-            // category: imgUrl.slice(imgUrl.length-3,) === "mp4"?"video":"image",
-            category: fileData.type.substring(0, IMAGE.length) === IMAGE ? "image" : "video",
+            category,
             channel: formData.Channel,
             contractaddress: nftType === 'ERC-721' ? getBounceERC721WithSign(chainId) : getBounceERC1155WithSign(chainId),
             description: formData.Description,
@@ -263,37 +265,6 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />
 
                 <div className="category_select">
-                    {/* <PullRadioBox
-                        title={wrapperIntl('Category.Category')}
-                        marginTop='0'
-                        width='150px'
-                        options={[
-                            { value: wrapperIntl('Category.Image') },
-                            { value: wrapperIntl('Category.Video') },
-                        ]}
-                        defaultValue={wrapperIntl('Category.Image')}
-                        inputDisable={inputDisable}
-                        onChange={(option) => {
-                            console.log("option.value: ", option.value)
-                            let categoryParam
-                            switch (option.value) {
-                                case wrapperIntl('Category.Image'):
-                                    categoryParam = 'image'
-                                    break;
-
-                                case wrapperIntl('Category.Video'):
-                                    categoryParam = 'video'
-                                    break;
-
-                                default:
-                                    categoryParam = 'image'
-                                    break;
-                            }
-                            console.log("categoryParam2: ", categoryParam)
-                            setFormData({ ...formData, Category: categoryParam })
-                        }}
-                    />*/}
-
                     <PullRadioBox title={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Channel')} marginTop='0px' width='150px' options={[{
                         value: NFT_CATEGORY.FineArts
                     }, {
@@ -355,13 +326,14 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     lockInput={inputDisable}
                     infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')}
                     onClick={() => {
-                        setFileData(null)
+                        // setFileData(null)
                     }}
                     onFileChange={(formData, file, filetype) => {
-                        console.log(filetype)
+                        // console.log(filetype, file)
                         if (filetype === 'video/avi') {
                             dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
-                            return setFileData(null)
+                            setFileData(null)
+                            return
                         }
                         if (filetype.substring(0, 'video'.length) === 'video') {
                             console.log('video')

@@ -49,6 +49,10 @@ const UploadStyled = styled.div`
             font-weight: 700;
             margin-bottom: 12px;
             color: rgba(0,0,0,.7);
+            width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         span{
@@ -74,16 +78,18 @@ export default function UploadAll({
     const { wrapperIntl } = useWrapperIntl()
     const [coverSrc, setCoverSrc] = useState(upload_img)
     const [infoTitle, setInfoTitle] = useState(wrapperIntl("UIKit.Input.Upload.infoTip.uploadImageAndVideo"))
+    const resetInfoTitle = () => {
+        setInfoTitle(wrapperIntl("UIKit.Input.Upload.infoTip.uploadImageAndVideo"))
+    }
     const handelFileChange = async (e) => {
         const file = e.target.files[0]
         if (!file) return
-        let filetype
-        try {
-            filetype = await getFileType(file)
-        } catch (error) {
-            console.log(error)
-        }
-        console.log(file);
+        let filetype = file.type
+        // try {
+        //     filetype = await getFileType(file)
+        // } catch (error) {
+        //     console.log(error)
+        // }
         if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/gif') {
             let reader = new FileReader();  //调用FileReader
             reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
@@ -98,6 +104,7 @@ export default function UploadAll({
         } else if (file.type.includes('video/')) {
             console.log(file)
             if (file.size > 100 * 1024 * 1024 || file.type !== "video/mp4") {
+                resetInfoTitle()
                 dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.videoError") });
                 return ;
             }
