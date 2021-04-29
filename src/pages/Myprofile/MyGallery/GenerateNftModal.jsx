@@ -138,12 +138,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
         // 第二步 上传数据生成 json
         const params = {
             brandid: nftType === 'ERC-721' ? 10 : 11,
-<<<<<<< HEAD
-            category: imgUrl.slice(imgUrl.length - 3,) === "mp4" ? "video" : "image",
-=======
             // category: imgUrl.slice(imgUrl.length-3,) === "mp4"?"video":"image",
             category: fileData.type.substring(0, IMAGE.length) === IMAGE ? "image" : "video",
->>>>>>> 26034bc1206d18205285c6a474e882b03f427dc0
             channel: formData.Channel,
             contractaddress: nftType === 'ERC-721' ? getBounceERC721WithSign(chainId) : getBounceERC1155WithSign(chainId),
             description: formData.Description,
