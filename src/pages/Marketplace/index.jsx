@@ -22,6 +22,7 @@ import { getCoinList } from '@/utils/coin'
 // import { ZERO_ADDRESS } from "@/web3/address_list/token"
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import axios from 'axios'
+import ConnectWalletModal from '@components/Modal/ConnectWallet'
 /* import { myContext } from '@/redux/index.js'; */
 
 const MarketplaceStyled = styled.div`
@@ -101,8 +102,6 @@ const MarketplaceStyled = styled.div`
 const poolsParmas = { offset: 0, count: 1e4 }
 export default function Marketplace() {
   const { wrapperIntl } = useWrapperIntl()
-  /* const { dispatch } = useContext(myContext); */
-
 
   const NavList = [
     {
@@ -125,33 +124,15 @@ export default function Marketplace() {
   let { channel } = useParams()
   const history = useHistory()
   const { active, chainId } = useActiveWeb3React()
-  // const { exportErc20Info } = useToken()
 
-  // const [getpollsVariables, _setGetPollsVariables] = useState({ contract: '' })
-  // const [getpollsMethods, _setGetPollsMethods] = useState(QueryMarketTradePools)
-
-  // const setGetPollsVariables = (v) => {
-  //   // console.log(v)
-  //   if (!v.contract) {
-  //     _setGetPollsMethods(QueryMarketTradePools_0)
-  //   } else {
-  //     _setGetPollsMethods(QueryMarketTradePools)
-  //   }
-  //   _setGetPollsVariables(v)
-  // }
-  // const { data } = useQuery(getpollsMethods, { variables: getpollsVariables, skip: getpollsVariables.contract === '' })
-  
   const [data, setData] = useState({ tradeAuctions: [], tradePools: [] })
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
-  // const [channel, setChannel] = useState(
-  //   type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
-  //     type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
-  //       NFT_CATEGORY.FineArts);
+  const [isConnectWallect, setIsConnectWallect] = useState(false)
 
   const initPools = async (params) => {
-    const res = await axios.get('/pools', { params: params})
+    const res = await axios.get('/pools', { params: params })
     if (res.data.code === 200) {
       setData(res.data.data)
     }
@@ -162,7 +143,7 @@ export default function Marketplace() {
 
 
 
-  const [loading, setLoding] = useState(true)
+  const [loading, setLoading] = useState(true)
 
 
   const [length, setLength] = useState(4);
@@ -172,35 +153,37 @@ export default function Marketplace() {
       channel === NavList[1].route ? NavList[1].channelRequestParam :
         NavList[2].channelRequestParam);
   const [categoryRequestParam, setCategoryRequestParam] = useState(wrapperIntl("Category.All"))
-
-
-  /* type = 'video' */
-
-  /* useEffect(() => {
-    console.log("type:", type)
-    console.log("categoryRequestParam:", categoryRequestParam)
-  }, [type, categoryRequestParam]) */
+  const [paramsByToken1, setParamsByToken1] = useState(null)
 
   useEffect(() => {
-    if (!active) return
-    /* if (!active) {
-      console.log("111111111111")
-      dispatch({
-        type: 'Modal_Message',
-        showMessageModal: true,
-        modelType: 'error',
-        modelMessage: wrapperIntl("ConnectWallet"),
-        modelTimer: 24 * 60 * 60 * 1000,
-      });
-    } */
+    console.log('categoryRequestParam', categoryRequestParam)
+    console.log('paramsByToken1', paramsByToken1)
+    if (!paramsByToken1 && !categoryRequestParam) return setFilterList(tokenList)
+    let filterData = tokenList
+    if (paramsByToken1) {
+      filterData = filterData.filter(item => {
+        return String(item.token1).toLowerCase() === String(paramsByToken1).toLowerCase()
+      })
+    }
 
-      // console.log(getCoinList(chainId))
-      setCoinList([{
-        value: 'All'
-      }, ...getCoinList(chainId).filter(item => item.contract)])
-    
+    if (categoryRequestParam) {
+      filterData = filterData.filter(item => {
+        return String(item.category).toLowerCase() === String(categoryRequestParam).toLowerCase()
+      })
+    }
+
+    setFilterList(filterData)
+
+    // eslint-disable-next-line
+  }, [paramsByToken1, categoryRequestParam])
+
+  useEffect(() => {
+    setCoinList([{
+      value: 'All'
+    }, ...getCoinList(chainId).filter(item => item.contract)])
+
     if (data) {
-      console.log(data)
+      console.log("data", data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
@@ -213,35 +196,23 @@ export default function Marketplace() {
         .filter(item => item.state !== 1 && item.poolId !== 0)
 
       const pools = tradePools.concat(tradeAuctions);
-      console.log(pools)
+      // console.log(pools)
       const list = pools.map(item => item.tokenId);
       const cts_list = pools.map(item => item.token0);
       // console.log(pools)
 
       setLength(list.length);
-      setLoding(true)
-      // console.log(pools)
-      // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
+      setLoading(true)
       sign_Axios.post(Controller.items.getitemsbyfilter, {
         ids: list,
         cts: cts_list,
         /* category: type, */
-        category: categoryRequestParam,
+        // category: categoryRequestParam,
+        category: '',
         channel: channelRequestParam,
       })
         .then(res => {
           if (res.status === 200 && res.data.code === 1) {
-            // const list = res.data.data.map((item, index) => {
-            //   const poolInfo = pools.find(pool => pool.tokenId === item.id);
-            //   return {
-            //     ...item,
-            //     poolType: poolInfo.poolType,
-            //     poolId: poolInfo.poolId,
-            //     price: poolInfo.price,
-            //     createTime: poolInfo.createTime,
-            //     token1: poolInfo.token1
-            //   }
-            // })
 
             const list = pools.map((item, index) => {
               const poolInfo = res.data.data.find(r => item.tokenId === r.id);
@@ -257,18 +228,19 @@ export default function Marketplace() {
               }
             }).filter(item => item.fileurl)
               .sort((a, b) => b.createTime - a.createTime);
+            console.log("list: ", list)
             setTokenList(list);
             setFilterList(list);
-            setLoding(false)
+            setLoading(false)
             // console.log('---setFilterList---', list)
           }
         })
         .catch(() => {
-          setLoding(false)
+          setLoading(false)
         })
     }
     // eslint-disable-next-line
-  }, [active, data, channel, categoryRequestParam])
+  }, [active, data, channel])
 
   const handleChange = (filterSearch) => {
     const list = tokenList.filter(item => item.itemname?.toLowerCase().indexOf(filterSearch) > -1
@@ -281,7 +253,7 @@ export default function Marketplace() {
       case 'FineArts':
         return <ul className={`list_wrapper ${channel}`}>
           {filterList.map((item, index) => {
-            return <li key={index}>
+            return <li key={index + '_' + item.poolId}>
               <CardItem
                 category={item.category}
                 cover={item.fileurl}
@@ -292,6 +264,7 @@ export default function Marketplace() {
                 token1={item.token1}
                 poolType={item.poolType}
                 litimgurl={item.litimgurl}
+                setIsConnectWallect={setIsConnectWallect}
               />
             </li>
           })}
@@ -300,7 +273,7 @@ export default function Marketplace() {
       default:
         return <ul className={`list_wrapper ${channel}`}>
           {filterList.map((item, index) => {
-            return <li key={index}>
+            return <li key={index + '_' + item.poolId}>
               <CardItem
                 category={item.category}
                 cover={item.fileurl}
@@ -310,6 +283,7 @@ export default function Marketplace() {
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
+                setIsConnectWallect={setIsConnectWallect}
               />
             </li>
           })}
@@ -320,100 +294,90 @@ export default function Marketplace() {
 
 
   return (
-    <MarketplaceStyled>
-      <ul className="nav_wrapper">
-        {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
-          return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
-            setChannel(item.name)
-          }}>
-            <p className="flex flex-center-y"><img src={
-              item.name === NFT_CATEGORY.FineArts ? icon_arts :
-                item.name === NFT_CATEGORY.Sports ? icon_sport :
-                  item.name === NFT_CATEGORY.ComicBooks ? icon_comics :
-                    ''
-            } alt="" />{item.name}</p>
-          </li>
-        })} */}
-        {NavList.map(nav => {
-          return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
-            () => {
-              setChannelRequestParam(nav.channelRequestParam)
-              history.push('/Marketplace/' + nav.route)
-              // setChannelRequestParam(item.name)
-            }}>
-            <p className="flex flex-center-y"><img src={
-              nav.title === NFT_CATEGORY.FineArts ? icon_arts :
-                nav.title === NFT_CATEGORY.Sports ? icon_sport :
-                  nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
-                    ''
-            } alt="" />{nav.title}</p>
-          </li>
-        })}
-        {(active && localStorage.getItem('JWT_TOKEN_V2')) && <li className="link">
-          <Button onClick={() => { history.push('/MyMarket') }}>
-            {wrapperIntl('market.myMarket')}
-          </Button>
-        </li>}
-      </ul>
-      <div className="filterBox">
-        <Search placeholder={wrapperIntl('market.placeholder')} onChange={handleChange} />
+    <>
+      <MarketplaceStyled>
+        <ul className="nav_wrapper">
+          {NavList.map(nav => {
+            return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
+              () => {
+                setChannelRequestParam(nav.channelRequestParam)
+                history.push('/Marketplace/' + nav.route)
+                // setChannelRequestParam(item.name)
+              }}>
+              <p className="flex flex-center-y"><img src={
+                nav.title === NFT_CATEGORY.FineArts ? icon_arts :
+                  nav.title === NFT_CATEGORY.Sports ? icon_sport :
+                    nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
+                      ''
+              } alt="" />{nav.title}</p>
+            </li>
+          })}
+          {(active && localStorage.getItem('JWT_TOKEN_V2')) && <li className="link">
+            <Button onClick={() => { history.push('/MyMarket') }}>
+              {wrapperIntl('market.myMarket')}
+            </Button>
+          </li>}
+        </ul>
+        <div className="filterBox">
+          <Search placeholder={wrapperIntl('market.placeholder')} onChange={handleChange} />
 
-        <PullRadioBox
-          prefix={wrapperIntl("Category.Category") + ':'}
-          width={'205px'}
-          options={[
-            { value: wrapperIntl("Category.All"), },
-            { value: wrapperIntl("Category.Image"), },
-            { value: wrapperIntl("Category.Video"), },
-          ]}
-          defaultValue={wrapperIntl("Category.All")}
-          onChange={(option) => {
-            console.log(option)
-            switch (option.value) {
-              case wrapperIntl("Category.All"):
-                setCategoryRequestParam('')
-                break;
+          <PullRadioBox
+            prefix={wrapperIntl("Category.Category") + ':'}
+            width={'205px'}
+            options={[
+              { value: wrapperIntl("Category.All"), },
+              { value: wrapperIntl("Category.Image"), },
+              { value: wrapperIntl("Category.Video"), },
+            ]}
+            defaultValue={wrapperIntl("Category.All")}
+            onChange={(option) => {
+              switch (option.value) {
+                case wrapperIntl("Category.All"):
+                  setCategoryRequestParam('')
+                  break;
 
-              case wrapperIntl("Category.Image"):
-                setCategoryRequestParam('Image')
-                break;
+                case wrapperIntl("Category.Image"):
+                  setCategoryRequestParam('Image')
+                  break;
 
-              case wrapperIntl("Category.Video"):
-                setCategoryRequestParam('Video')
-                break;
+                case wrapperIntl("Category.Video"):
+                  setCategoryRequestParam('Video')
+                  break;
 
-              default:
-                break;
-            }
-          }}
-        />
+                default:
+                  break;
+              }
+            }}
+          />
 
-        {
-          // coinList.length > 0
-          true
-          && <PullRadioBox prefix={'Currency:'}
-          width={'205px'} options={coinList}
-          // defaultValue={chainId === 56 ? 'BNB' : 'ETH'} 
-          defaultValue={'All'}
-          onChange={(item) => {
+          <PullRadioBox prefix={'Currency:'}
+            width={'205px'} options={coinList}
+            // defaultValue={chainId === 56 ? 'BNB' : 'ETH'} 
+            defaultValue={'All'}
+            onChange={(item) => {
+              if (!item) return
+              console.log(item)
+              switch (item.value) {
+                case 'All':
+                  setParamsByToken1('')
+                  break;
+                default:
+                  setParamsByToken1(item.contract)
+              }
+            }} />
+
+          <PullRadioBox prefix={'Sort by:'} width={'204px'} options={[{ value: 'New' }, { value: 'Popular' }]} defaultValue='New' onChange={(item) => {
             // console.log(item)
-            if (item) {
-              setLoding(false)
-              // setGetPollsVariables({ contract: item.contract })
-              initPools({ ...poolsParmas, contract: item.contract})
-            }
-          }} />}
+          }} />
+        </div>
 
-        <PullRadioBox prefix={'Sort by:'} width={'204px'} options={[{ value: 'New' }, { value: 'Popular' }]} defaultValue='New' onChange={(item) => {
-          // console.log(item)
-        }} />
-      </div>
+        {loading && <SkeletonNFTCards n={length} ></SkeletonNFTCards>}
+        {renderListByChannel(channel)}
 
-      {loading && <SkeletonNFTCards n={length} ></SkeletonNFTCards>}
-      {renderListByChannel(channel)}
-
-      {/* <PagingControls /> */}
-    </MarketplaceStyled>
+        {/* <PagingControls /> */}
+      </MarketplaceStyled>
+      <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />
+    </>
   )
 }
 

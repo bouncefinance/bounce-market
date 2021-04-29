@@ -21,7 +21,7 @@ const zh_CN = {
 
     userUserInfo: {
         "uploadSuccess": "信息上传成功！",
-        "OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
+        "OnlySupports": "仅支持 JPG, PNG, GIF 格式",
     },
 
     ErrorMsg: {
@@ -44,6 +44,7 @@ const zh_CN = {
         search_p: '搜索用户、品牌、NFT',
         SelectBSC: "请连接BSC网络，",
         SwitchToBSC: "点击此处切换至BSC网络",
+        ConnectWallet: "点击此处连接钱包",
     },
 
     'pages.buy.Share': '分享',
@@ -102,19 +103,19 @@ const zh_CN = {
     "UIKit.Input.Upload.infoTip.FormatIncorrect": '暂时不支持您选择的文件格式，请重新选择',
     "UIKit.Input.Upload.infoTip.uploadImage": '上传图像',
     "UIKit.Input.Upload.infoTip.uploadVideo": '上传视频',
-    "UIKit.Input.Upload.infoTip.requirement1": '支持 JPG, PNG, JPEG2000 格式',
-    "UIKit.Input.Upload.infoTip.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
-    "UIKit.Input.Upload.infoTip.image.requirement1": '支持 JPG, PNG, JPEG2000 格式',
-    "UIKit.Input.Upload.infoTip.image.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
+    "UIKit.Input.Upload.infoTip.requirement1": '支持 JPG, PNG, GIF 格式',
+    "UIKit.Input.Upload.infoTip.requirement2": '图片大小不大于 10MB, 推荐分辨率为262*262',
+    "UIKit.Input.Upload.infoTip.image.requirement1": '支持 JPG, PNG, GIF 格式',
+    "UIKit.Input.Upload.infoTip.image.requirement2": '图片大小不大于 10MB, 推荐分辨率为262*262',
     "UIKit.Input.Upload.infoTip.video.requirement1": '支持 MP4 格式',
-    "UIKit.Input.Upload.infoTip.video.requirement2": '图片大小不大于 100MB, 推荐分辨率为360*240',
+    "UIKit.Input.Upload.infoTip.video.requirement2": '视频大小不大于 50MB, 推荐分辨率为360*240',
     "UIKit.Input.Upload.infoTip.avatar.ChangeProfilePhoto": '更改用户头像',
-    "UIKit.Input.Upload.infoTip.avatar.requirement1": '支持 JPG, PNG, JPEG2000 格式',
-    "UIKit.Input.Upload.infoTip.avatar.requirement2": '图片大小不大于 100MB, 推荐分辨率为262*262',
+    "UIKit.Input.Upload.infoTip.avatar.requirement1": '支持 JPG, PNG, GIF 格式',
+    "UIKit.Input.Upload.infoTip.avatar.requirement2": '图片大小不大于 10MB, 推荐分辨率为262*262',
     "UIKit.Input.Upload.infoTip.videoError": '文件大小或文件类型错误。 请检查并重试。',
     "UIKit.Input.Upload.infoTip.uploadImageAndVideo": '上传图像或视频',
-    "UIKit.Input.Upload.infoTip.requirementImageANdVideo": '支持 JPG, PNG, JPEG2000, MP4 格式',
-    "UIKit.Input.Upload.infoTip.image.requirementImageAndVideo": '图片或视频大小不大于 50MB, 图片推荐分辨率为262*262, 图片推荐分辨率为360*240',
+    "UIKit.Input.Upload.infoTip.requirementImageANdVideo": '支持 JPG, PNG, GIF, MP4 格式',
+    "UIKit.Input.Upload.infoTip.image.requirementImageAndVideo": '图片不大于10M；视频不大于50MB, 图片推荐分辨率为262*262, 视频推荐分辨率为360*240',
 
     home: {
         banner1: '我们让创意更易于交易。',
@@ -294,7 +295,7 @@ const zh_CN = {
         "SettingAccountModal.MyAccountSettings": "账户设置",
         "SettingAccountModal.UploadingFile": "正在上传文件 ...",
         "SettingAccountModal.UploadingData": "正在上传数据 ...",
-        "SettingAccountModal.OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
+        "SettingAccountModal.OnlySupports": "仅支持 JPG, PNG, GIF 格式",
         "SettingAccountModal.UserName": "昵称",
         "SettingAccountModal.FullName": "用户名",
         "SettingAccountModal.BounceID": "Bounce ID",
@@ -380,8 +381,8 @@ const zh_CN = {
 
         /* wrapperIntl('MyProfile.MyBrands.updateTopBarImg.preview') */
         'MyBrands.updateTopBarImg.ChangeThemePhoto': "更改背景图片  ",
-        'MyBrands.updateTopBarImg.infoTip1': "支持 JPG, PNG, JPEG2000 格式",
-        'MyBrands.updateTopBarImg.infoTip2': "文件不大于 100MB,",
+        'MyBrands.updateTopBarImg.infoTip1': "支持 JPG, PNG, GIF 格式",
+        'MyBrands.updateTopBarImg.infoTip2': "文件不大于 10MB,",
         'MyBrands.updateTopBarImg.infoTip3': "最佳",
         'MyBrands.updateTopBarImg.ApplyAndSave': "应用并保存",
         'MyBrands.updateTopBarImg.UploadingFile': "正在上传文件 ...",
@@ -404,12 +405,12 @@ const zh_CN = {
         "MyBrands.AddNewBrandsModal.Description": "品牌介绍",
         "MyBrands.AddNewBrandsModal.DescriptionPlaceHolder": "输入你的品牌介绍",
         "MyBrands.AddNewBrandsModal.browseBrandPhoto": '浏览品牌图像',
-        "MyBrands.AddNewBrandsModal.OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
+        "MyBrands.AddNewBrandsModal.OnlySupports": "仅支持 JPG, PNG, GIF 格式",
         "MyBrands.AddNewBrandsModal.SuccessfullyBuild": "品牌创建成功",
         "MyBrands.AddNewBrandsModal.DataUpdateFailed": '数据更新失败，请重试',
         
         /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */
-        "MyBrands.AddNewItemModal.OnlySupports": "仅支持 JPG, PNG, JPEG2000 格式",
+        "MyBrands.AddNewItemModal.OnlySupports": "仅支持 JPG, PNG, GIF 格式",
         'MyBrands.AddNewItemModal.SuccessfullyGenerate': "恭喜您，您的NFT已经创建成功",
         'MyBrands.AddNewItemModal.TryAgainNotice': '非常抱歉，我们似乎碰到了一些小问题，请重试',
         "MyBrands.AddNewItemModal.UploadingData": "正在上传数据 ...",

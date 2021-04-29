@@ -174,14 +174,14 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             })
                             .on('receipt', async (_, receipt) => {
                                 // console.log('bid fixed swap receipt:', receipt)
-                                window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId,contract:  getBounceERC721WithSign(chainId)}))
+                                window.localStorage.setItem('PenddingItem', JSON.stringify({ account, tokenId: _nftId, contract: getBounceERC721WithSign(chainId) }))
                                 showTransferByStatus('')
                                 dispatch({ type: 'TransferModal', TransferModal: "" });
                                 dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
                                 if (window.location.pathname === "/MyGallery") {
                                     setTimeout(function () {
                                         window.location.reload()
-                                    }, 3000)
+                                    }, 2000)
                                 } else {
                                     history.push("/MyGallery")
                                 }
@@ -212,16 +212,24 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             })
                             .on('receipt', async (_, receipt) => {
                                 // console.log('bid fixed swap receipt:', receipt)
-                                window.localStorage.setItem('PenddingItem', JSON.stringify({ tokenId: _nftId,contract: getBounceERC1155WithSign(chainId) }))
-                                dispatch({ type: 'TransferModal', TransferModal: "" });
-                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate") });
-                                if (window.location.pathname === "/MyGallery") {
-                                    setTimeout(function () {
-                                        window.location.reload()
-                                    }, 3000)
-                                } else {
-                                    history.push("/MyGallery")
-                                }
+                                window.localStorage.setItem('PenddingItem', JSON.stringify({ account, tokenId: _nftId, contract: getBounceERC1155WithSign(chainId) }))
+                                dispatch({
+                                    type: 'TransferModal',
+                                    TransferModal: ""
+                                });
+                                dispatch({
+                                    type: 'Modal_Message',
+                                    showMessageModal: true,
+                                    modelType: 'success',
+                                    modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate")
+                                });
+                                // if (window.location.pathname === "/MyGallery") {
+                                //     setTimeout(function () {
+                                //         window.location.reload()
+                                //     }, 3000)
+                                // } else {
+                                //     history.push("/MyGallery")
+                                // }
 
                             })
                             .on('error', (err, receipt) => {
@@ -349,6 +357,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)
+                        // window.location.reload()
                     }}>{wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.Cancel')}</Button>
                     <Button disabled={btnLock} height='48px' width='302px' primary onClick={handelSubmit}>{btnText}</Button>
                 </div>

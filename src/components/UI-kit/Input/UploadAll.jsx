@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import upload_img from '@assets/images/upload_img.svg'
 import { myContext } from '@/redux/index.js'
 import useWrapperIntl from '@/locales/useWrapperIntl'
-import { getFileType }  from '@/utils/getFileType'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const UploadStyled = styled.div`
+    width: 620px;
     display: flex;
     /* margin-top: 22px; */
 

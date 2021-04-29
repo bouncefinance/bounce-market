@@ -8,7 +8,7 @@ produceHost.forEach(item => {
     isProDev = true
   }
 })
-const GH_URL = isProDev ? 'https://nftview.bounce.finance/v1/bsc' : 'https://nftview.bounce.finance/v1/bsc_test'
+const GH_URL = isProDev ? 'https://api1-bsc.fangible.com/v1/bsc' : 'https://api1-bsc.fangible.com/v1/bsc_test'
 const GH_V2_URL = isProDev ? 'https://nftview.bounce.finance/v2/bsc' : 'https://nftview.bounce.finance/v2/bsc'
 
 // axios default url

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { Link, useHistory } from 'react-router-dom'
 import { Button } from '../../../components/UI-kit'
@@ -122,7 +122,6 @@ export default function Index() {
     // const { dispatch } = useContext(myContext);
     /* const [isFangible, setIsFangible] = useState(false) */
     const { wrapperIntl } = useWrapperIntl()
-    const initialRender = useRef(true);
 
     const Nav_list = [{
         name: wrapperIntl('header.home'),
@@ -217,50 +216,55 @@ export default function Index() {
     }, [])
 
     useEffect(() => {
-        if(initialRender.current) {  // Check if it is the first render.
-            initialRender.current = false;
-        }
-        else {
-            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
-
-            if (active && chainId === 56) {
-                getUserInfo();
-                return
-            }
-
-            if (!active) {
+        /* console.log("active: ", active) */
+        let activeTimeout
+        if (!active) {
+            activeTimeout = setTimeout(() => {
                 dispatch({
                     type: 'Modal_Message',
                     showMessageModal: true,
                     modelType: 'error',
                     modelMessage: wrapperIntl("ConnectWallet"),
                     modelTimer: 24 * 60 * 60 * 1000,
+                    subsequentActionType: "connectWallet",
+                    modelUrlMessage: wrapperIntl("header.ConnectWallet"),
+                    subsequentActionFunc: setIsConnectWallect,
                 });
+            }, 500);
+            return () => {
+                clearTimeout(activeTimeout);
             }
-            else {
-                dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
-            
-                if (chainId && (chainId !== 56)) {
-                    dispatch({
-                        type: 'Modal_Message',
-                        showMessageModal: true,
-                        modelType: 'error',
-                        modelMessage: wrapperIntl("header.SelectBSC"),
-                        subsequentActionType: "connectToBSCChain",
-                        modelUrlMessage: wrapperIntl("header.SwitchToBSC"),
-                        modelTimer: 24 * 60 * 60 * 1000,
-                        canClose: true, 
-                    });
-                } 
-                else {
-                    dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
-                }
-            }
-            
-            console.log("end active:" + active)
-            console.log("end chainId:" + chainId)
-            window.localStorage.LastChainId = chainId
         }
+        // eslint-disable-next-line
+    }, [active])
+
+    useEffect(() => {
+        dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+
+        if (active && chainId === 56) {
+            getUserInfo();
+            return
+        }
+
+        if (chainId && (chainId !== 56)) {
+            dispatch({
+                type: 'Modal_Message',
+                showMessageModal: true,
+                modelType: 'error',
+                modelMessage: wrapperIntl("header.SelectBSC"),
+                subsequentActionType: "connectToBSCChain",
+                modelUrlMessage: wrapperIntl("header.SwitchToBSC"),
+                modelTimer: 24 * 60 * 60 * 1000,
+                canClose: true, 
+            });
+        } 
+        else {
+            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+        }
+        
+        console.log("end active:" + active)
+        console.log("end chainId:" + chainId)
+        window.localStorage.LastChainId = chainId
 
         getUserInfo();
         // eslint-disable-next-line

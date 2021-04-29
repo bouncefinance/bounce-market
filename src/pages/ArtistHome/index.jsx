@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import CommonHeader from '../CommonHeader'
+import CommonHeader from './header'
 import styled from 'styled-components'
 // import Search from './Search'
-import { CardItem, AddCardItem, PenddingCardItem } from '../CardItem'
+import { CardItem, PenddingCardItem } from '../Myprofile/CardItem'
 // import { useLazyQuery } from '@apollo/client';
 // import { QueryMyNFT } from '@/utils/apollo'
 import { useActiveWeb3React } from '@/web3'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 import { SkeletonNFTCards } from '@/pages/component/Skeleton/NFTCard'
-// import { weiToNum } from '@/utils/useBigNumber'
 import { AUCTION_TYPE } from '@/utils/const'
-import Category from '../Category'
+import Category from '../Myprofile/Category'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
 // import axios from 'axios';
@@ -232,8 +231,8 @@ export default function Index() {
         if (res.status === 200 && res.data.code === 1) {
 
           const res_data = res.data.data
-          // console.log(pools)
-          // console.log(res_data)
+        //   console.log(pools)
+        //   console.log(res_data)
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => {
               return (item.tokenId === res.id || parseInt(item.token_id) === res.id)
@@ -261,8 +260,11 @@ export default function Index() {
             .filter(item => item.fileurl && item.itemname !== 'Untitled (External import)')
 
 
-          // console.log(list)
+          console.log(list)
           let result = list.sort((a, b) => b.id - a.id)
+          // if (myApiData.length !== 0) {
+          //   result = [...myApiData, ...result]
+          // }
 
           setItemList(result);
           setStatusList(result);
@@ -280,39 +282,39 @@ export default function Index() {
       <CommonHeader />
       <MyGalleryStyled>
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
-          <AddCardItem />
           <Category itemList={itemList} onStatusChange={setStatusList} />
         </div>
 
         {
           active && !loading && statusList.length > 0
-            ?
-            <ul className="list">
-              {statusList.map((item, index) => {
-                return <li key={item.id+'_'+index}>
-                  {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
-                    nftId={item.id}
-                    cover={item.fileurl}
-                    itemname={item.itemname === '' ? 'Unname (External import)' : item.itemname}
-                    user={item.ownername}
-                    status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
-                    poolType={item.poolType}
-                    poolInfo={item}
-                    category={item.category}
-                  />}
-                </li>
-              })}
-            </ul>
-            :
-            !loading
-              ?
-              <div className="emptyNoticeWrapper">
-                <span className="emptyNotice">
-                  You doesn't have any NFT.
+          ?
+          <ul className="list">
+            {statusList.map((item, index) => {
+              return <li key={item.id+'_'+index}>
+                {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
+                  nftId={item.id}
+                  cover={item.fileurl}
+                  itemname={item.itemname === '' ? 'Unname (External import)' : item.itemname}
+                  user={item.ownername}
+                  status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
+                  poolType={item.poolType}
+                  //  status={index % 2 === 0 ? 'Listed' : ''} 
+                  poolInfo={item}
+                  category={item.category}
+                />}
+              </li>
+            })}
+          </ul>
+          :
+          !loading
+          ?
+          <div className="emptyNoticeWrapper">
+            <span className="emptyNotice">
+              You doesn't have any NFT.
             </span>
-              </div>
-              :
-              <></>
+          </div>
+          :
+          <></>
         }
         {active && loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
       </MyGalleryStyled>

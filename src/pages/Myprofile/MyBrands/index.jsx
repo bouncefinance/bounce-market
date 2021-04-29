@@ -13,6 +13,9 @@ import BounceNFTFactory from '@/web3/abi/BounceNFTFactory.json'
 const BrandsStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 
     ul.list_wrapper{
         display: flex;
@@ -26,6 +29,14 @@ const BrandsStyled = styled.div`
                 margin-right: 0px;
             }
         }
+    }
+
+    .emptyNoticeWrapper {
+      flex: 1;
+      display: flex;
+      .emptyNotice {
+        margin: auto;
+      }
     }
 `
 
@@ -65,34 +76,45 @@ export default function Index () {
     }, [active])
     const hasAddressButNotBrand = brand_list.length === 0 && brandAddContract
     return (
-        <div>
+        <>
             <CommonHeader />
 
             <BrandsStyled>
                 <AddCardItem run={getBrandList} hasAddressButNotBrand={hasAddressButNotBrand} brandAddress={brandAddress} isCreate={hasAddressButNotBrand ? true : !brandAddContract} />
-                {<ul className="list_wrapper">
-                    {/* <li>
-                        <button onClick={()=>{
-                            setModalStatus(approveStatus)
-                        }}>按钮</button>
-                    </li> */}
-                    {brand_list.map((item) => {
-                        return <li key={item.id} onClick={() => {
-                            history.push(`/MyBrands/${item.id}/All`)
-                        }}>
-                            <CardItem
-                                cover={item.imgurl}
-                                name={item.brandname}
-                                standard={item.standard}
-                            />
-                        </li>
-                    })}
-                </ul>}
+                
+                {
+                    active && brand_list.length > 0
+                    ?
+                    <ul className="list_wrapper">
+                        {/* <li>
+                            <button onClick={()=>{
+                                setModalStatus(approveStatus)
+                            }}>按钮</button>
+                        </li> */}
+                        {brand_list.map((item) => {
+                            return <li key={item.id} onClick={() => {
+                                history.push(`/MyBrands/${item.id}/All`)
+                            }}>
+                                <CardItem
+                                    cover={item.imgurl}
+                                    name={item.brandname}
+                                    standard={item.standard}
+                                />
+                            </li>
+                        })}
+                    </ul>
+                    :
+                    <div className="emptyNoticeWrapper">
+                      <span className="emptyNotice">
+                        You doesn't have any brand.
+                      </span>
+                    </div>
+                }
 
             </BrandsStyled>
             {/* <TransferStatusModal modalStatus={modalStatus} onDismiss={() => {
                 setModalStatus(initStatus)
             }} /> */}
-        </div>
+        </>
     )
 }

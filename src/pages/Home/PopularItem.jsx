@@ -1,12 +1,14 @@
 import { weiToNum } from '@/utils/useBigNumber'
 import useToken from '@/utils/useToken'
 // import { useActiveWeb3React } from '@/web3'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { AutoStretchBaseWidthOrHeightImg } from '../component/Other/autoStretchBaseWidthOrHeightImg'
 import { VideoItem } from '../component/Other/videoItem'
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { useActiveWeb3React } from '@/web3'
+import { myContext } from '@/redux'
 
 const PopularItemStyled = styled.div`
     width: 262px;
@@ -16,7 +18,9 @@ const PopularItemStyled = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.2);
     overflow: hidden;
     margin-bottom: 32px;
-    cursor: pointer;
+    cursor: ${({active})=>{
+        return active ? 'pointer' : 'default'
+    }};
     transition: all 200ms;
     :hover{
         transform: translateY(-10px);
@@ -80,9 +84,10 @@ const PopularItemStyled = styled.div`
     
 `
 
-export default function PopularItem({ style = {}, itemInfo }) {
+export default function PopularItem({ style = {}, itemInfo, setIsConnectWallect }) {
     const history = useHistory()
-
+    const {active} = useActiveWeb3React()
+    const { dispatch } = useContext(myContext)
     const { wrapperIntl } = useWrapperIntl()
 
     const { exportErc20Info } = useToken()
@@ -90,6 +95,7 @@ export default function PopularItem({ style = {}, itemInfo }) {
     const [newPrice, setNewPrice] = useState(wrapperIntl("home.PopularItem.LoadingPrice"))
 
     useEffect(() => {
+        console.log("itemInfo: ", itemInfo)
         getPriceByToken1(itemInfo.price, itemInfo.token1)
         // eslint-disable-next-line
     }, [itemInfo])
@@ -101,8 +107,41 @@ export default function PopularItem({ style = {}, itemInfo }) {
         setNewPrice(`${newPrice} ${tokenInfo.symbol}`)
     }
     return (
-        <PopularItemStyled style={style} onClick={() => {
-            history.push(`/Marketplace/FineArts/${itemInfo.poolType}/${itemInfo.poolId}`)
+        <PopularItemStyled active={active} style={style} onClick={() => {
+            if (active) {
+                history.push(`/Marketplace/FineArts/${itemInfo.poolType}/${itemInfo.poolId}`,
+                {
+                    category: itemInfo.category,
+                    fileurl: itemInfo.fileurl,
+                    name: itemInfo.itemname,
+                    price: itemInfo.price,
+                    description: itemInfo.description,
+                    owneraddress: itemInfo.owneraddress,
+                    token1: itemInfo.token1,
+                    poolType: itemInfo.poolType,
+                })
+            }
+            else {
+                dispatch({
+                    type: 'Modal_Message',
+                    showMessageModal: true,
+                    modelType: 'error',
+                    modelMessage: wrapperIntl("ConnectWallet"),
+                    modelTimer: 24 * 60 * 60 * 1000,
+                    subsequentActionType: "connectWallet",
+                    modelUrlMessage: wrapperIntl("header.ConnectWallet"),
+                    subsequentActionFunc: setIsConnectWallect,
+                });
+
+                // back to the top
+                (function smoothToTop(){
+                    var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                    if (currentScroll > 0) {
+                         window.requestAnimationFrame(smoothToTop);
+                         window.scrollTo (0,currentScroll - (currentScroll/5));
+                    }
+                })();
+            }
         }}>
             {   itemInfo.category && itemInfo.category === 'video'
                 ? <VideoItem width={262} height={262} src={itemInfo.fileurl} />
