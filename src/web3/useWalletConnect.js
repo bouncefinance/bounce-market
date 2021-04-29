@@ -7,6 +7,7 @@ const injected = new InjectedConnector({
     supportedChainIds: [1, 3, 4, 5, 42, 56, 128, 31337]
 });
 
+
 const POLLING_INTERVAL = 12000;
 const RPC_URLS = {
     1: "https://mainnet.infura.io/v3/0b500c5f885b43a4ab192e8048f6fa88",

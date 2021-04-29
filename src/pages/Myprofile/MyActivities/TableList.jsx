@@ -57,7 +57,7 @@ export default function BasicTable() {
         const activities = data.map(item => ({
             ...item,
             date: formatDistanceToNow((item.timestamp || item.Timestamp) * 1000),
-            status: item.event === 'Cancel' || item.event === 'Claim' ? wrapperIntl("Unlisted") : wrapperIntl("Listed"),
+            status: item.event === 'Canceled' || item.event === 'Claimed' ? wrapperIntl("Unlisted") : wrapperIntl("Listed"),
         })).filter(item => parseInt(item.tokenId) <= 99999999999)
         const tokenList = activities.map(item => +item.tokenId);
         const cts = activities.map(item => item.contract);
@@ -68,7 +68,7 @@ export default function BasicTable() {
             .then(res => {
                 if (res.status === 200 && res.data.code === 1) {
                     const items = res.data.data;
-                    console.log(activities, items)
+                    // console.log(activities, items)
                     const list = activities.map(issue => {
                         const activity = items.find(item => {
                             return parseInt(issue.tokenId) === item.id

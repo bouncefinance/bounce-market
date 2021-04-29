@@ -358,7 +358,7 @@ export default function BrandsByType() {
         })
             .then(res => {
                 if (res.status === 200 && res.data.code === 1) {
-                    console.log(pools)
+                    // console.log(pools)
                     const list = pools.map(item => {
                         const poolInfo = res.data.data.find(pool => {
                             return (parseInt(item.token_id) === pool.id || item.tokenId === pool.id) && (
@@ -435,21 +435,21 @@ export default function BrandsByType() {
                 user_address: account
             }
 
-            const res = await axios.get('[V2]/erc721', { params: ErcParams })
-            if (res.status === 200 && res.data.code === 200) {
-                const erc721Data = res.data.data
+            const res_721 = await axios.get('[V2]/erc721', { params: ErcParams })
+            if (res_721.status === 200 && res_721.data.code === 200) {
+                const erc721Data = res_721.data.data
                 brandData.brandserc721 = erc721Data.tokens
 
             }
 
             const res_1155 = await axios.get('[V2]/erc1155', { params: ErcParams })
-            if (res.status === 200 && res.data.code === 200) {
+            if (res_1155.status === 200 && res_1155.data.code === 200) {
                 const erc1155Data = res_1155.data.data
                 brandData.brandserc1155 = erc1155Data.tokens
             }
 
             const res_trade = await axios.get('pools', { params: TradeParams })
-            if (res.status === 200 && res.data.code === 200) {
+            if (res_trade.status === 200 && res_trade.data.code === 200) {
                 const tradeDate = res_trade.data.data
                 brandData.tradePools = tradeDate.tradePools
                 brandData.tradeAuctions = tradeDate.tradeAuctions
@@ -459,7 +459,7 @@ export default function BrandsByType() {
         } catch (error) {
 
         }
-        console.log(brandData)
+        // console.log(brandData)
         setTokenList_2(brandData)
     }
 
