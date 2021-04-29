@@ -4,6 +4,7 @@ import upload_img from '@assets/images/upload_img.svg'
 import { myContext } from '@/redux/index.js'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import { getFileType }  from '@/utils/getFileType'
+import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
 
 const UploadStyled = styled.div`
     display: flex;
@@ -103,7 +104,7 @@ export default function UploadAll({
             // setFormData(formData)
         } else if (file.type.includes('video/')) {
             console.log(file)
-            if (file.size > 100 * 1024 * 1024 || file.type !== "video/mp4") {
+            if (file.size > 50 * 1024 * 1024 || file.type !== "video/mp4") {
                 resetInfoTitle()
                 dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.videoError") });
                 return ;
@@ -125,7 +126,7 @@ export default function UploadAll({
     return (
         <UploadStyled width={width} height={height} >
             <div className={`left_img image`}>
-                <img src={coverSrc} alt="" />
+                <AutoStretchBaseWidthOrHeightImg src={coverSrc} width={160} height={160} />
                 <input disabled={disabled || lockInput} type="file" 
                 accept="image/*,video/*"
                 name="upload_file" onChange={handelFileChange} id="" onClick={onClick} />
