@@ -20,6 +20,9 @@ const MyGalleryStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+
     .filterBox{
         margin-top: 32px;
         /* margin-bottom: 50px; */
@@ -40,6 +43,14 @@ const MyGalleryStyled = styled.div`
                 margin-right: 0px;
             }
         }
+    }
+
+    .emptyNoticeWrapper {
+      flex: 1;
+      display: flex;
+      .emptyNotice {
+        margin: auto;
+      }
     }
 `
 
@@ -292,27 +303,41 @@ export default function Index() {
           }} /> */}
         </div>
 
-        <ul className="list">
-          {/* <li>
-            <AddCardItem />
-          </li> */}
-          {statusList.map((item, index) => {
-            return <li key={index}>
-              {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
-                nftId={item.id}
-                cover={item.fileurl}
-                itemname={item.itemname === '' ? 'Unname (External import)' : item.itemname}
-                user={item.ownername}
-                status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
-                poolType={item.poolType}
-                //  status={index % 2 === 0 ? 'Listed' : ''} 
-                poolInfo={item}
-                category={item.category}
-              />}
-            </li>
-          })}
-        </ul>
-        {loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
+        {
+          active && !loading && statusList.length > 0
+          ?
+          <ul className="list">
+            {/* <li>
+              <AddCardItem />
+            </li> */}
+            {statusList.map((item, index) => {
+              return <li key={index}>
+                {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
+                  nftId={item.id}
+                  cover={item.fileurl}
+                  itemname={item.itemname === '' ? 'Unname (External import)' : item.itemname}
+                  user={item.ownername}
+                  status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
+                  poolType={item.poolType}
+                  //  status={index % 2 === 0 ? 'Listed' : ''} 
+                  poolInfo={item}
+                  category={item.category}
+                />}
+              </li>
+            })}
+          </ul>
+          :
+          !loading
+          ?
+          <div className="emptyNoticeWrapper">
+            <span className="emptyNotice">
+              You doesn't have any NFT.
+            </span>
+          </div>
+          :
+          <></>
+        }
+        {active && loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
       </MyGalleryStyled>
     </>
   )
