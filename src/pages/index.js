@@ -32,6 +32,7 @@ import TransferStatusModal from '@components/Modal/TransferStatusModal'
 import ModalMessage from '@components/Modal/ModalMessage'
 import ErrorNotification from '@components/Modal/ErrorNotification'
 import { AirHome } from './AirHome/index'
+import { ArtistHome } from './ArtistHome/index'
 import MyLiked from './Myprofile/MyLiked'
 import { InitAxios } from '@/utils/utils'
 
@@ -82,6 +83,7 @@ export default function Index() {
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
 
                 <Route exact path='/AirHome/:id/:standard/:channel' component={AirHome} />
+                <Route exact path='/ArtistHome/:id/:standard/:channel' component={ArtistHome} />
 
                 <Route exact path='/404' component={Page404} />
 

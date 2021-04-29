@@ -137,13 +137,18 @@ export default function SellNFT () {
 		if (directPurchasePrice && reservePrice && parseFloat(reservePrice) > parseFloat(directPurchasePrice)) {
 			set_ReservePrice(directPurchasePrice);
 		}
-		if (reservePrice && minimumBid && parseFloat(minimumBid) > parseFloat(reservePrice)) {
-			set_MinimumBid(reservePrice);
+		if (reservePrice && minimumBid && parseFloat(minimumBid) >= parseFloat(reservePrice)) {
+			console.log("parseFloat(reservePrice) * 0.9: ", `${parseFloat(reservePrice) * 0.9}`)
+			console.log("reservePrice2: ", `${parseFloat(reservePrice) * 0.9}`.slice(0,reservePrice.length+1))
+			set_MinimumBid(`${parseFloat(reservePrice) * 0.9}`.slice(0,reservePrice.length+1));
 		}
 		if (directPurchasePrice && minimumBid && parseFloat(minimumBid) > parseFloat(directPurchasePrice)) {
-			set_DirectPurchasePrice(reservePrice);
+			console.log("parseFloat(directPurchasePrice) * 0.9: ", `${parseFloat(directPurchasePrice) * 0.9}`)
+			console.log("directPurchasePrice: ", `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+1))
+			set_MinimumBid(`${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+2));
 		}
 
+		console.log({directPurchasePrice: directPurchasePrice, reservePrice: reservePrice, minimumBid: minimumBid})
 	}, [directPurchasePrice, reservePrice, minimumBid]);
 
 	const render_LeftItems = (auctionType) => {
