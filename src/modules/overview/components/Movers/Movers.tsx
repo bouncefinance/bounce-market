@@ -1,23 +1,23 @@
 import {
   Box,
-  ButtonBase,
   Container,
   Grid,
+  IconButton,
   Typography,
   useTheme,
 } from '@material-ui/core';
 import classNames from 'classnames';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
+import {
+  IProductCardProps,
+  ProductCard,
+} from 'modules/common/components/ProductCard';
 import { QueryError } from 'modules/common/components/QueryError/QueryError';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { t } from 'modules/i18n/utils/intl';
-import {
-  IProductCardProps,
-  ProductCard,
-} from 'modules/overview/components/ProductCard';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
@@ -106,13 +106,13 @@ export const Movers = ({
 
             <Grid item xs="auto">
               <div className={classes.buttons}>
-                <ButtonBase id={prevId} className={classes.navBtn}>
+                <IconButton id={prevId} className={classes.navBtn}>
                   <AngleLeftIcon className={classes.navBtnIcon} />
-                </ButtonBase>
+                </IconButton>
 
-                <ButtonBase id={nextId} className={classes.navBtn}>
+                <IconButton id={nextId} className={classes.navBtn}>
                   <AngleRightIcon className={classes.navBtnIcon} />
-                </ButtonBase>
+                </IconButton>
               </div>
             </Grid>
           </Grid>

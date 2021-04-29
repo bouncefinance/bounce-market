@@ -131,5 +131,19 @@
     "tooltip": {
       "directPurchase": "TODO Direct purchase price description"
     }
+  },
+  "profile": {
+    "customize-btn": "Customize",
+    "follow": "Follow",
+    "subscribers": "Subscribers",
+    "bio": "Bio",
+    "tabs": {
+      "my-items": "My items",
+      "my-brands": "My brands",
+      "activity": "Activity",
+      "liked": "Liked",
+      "following": "Following",
+      "followers": "Followers"
+    }
   }
 }

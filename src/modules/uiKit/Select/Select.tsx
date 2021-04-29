@@ -22,7 +22,6 @@ export const Select = ({ children, options, ...restProps }: ISelectProps) => {
   const items = useMemo(() => {
     return options?.map(option => (
       <MenuItem
-        disableRipple
         key={uid(option)}
         value={option.value}
         disabled={option.disabled}

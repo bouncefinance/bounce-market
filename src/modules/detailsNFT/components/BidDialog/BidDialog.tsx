@@ -120,7 +120,6 @@ export const BidDialog = ({
                         <IconButton
                           className={classes.spinBtn}
                           onClick={form.mutators.increaseQuantity}
-                          disableRipple
                         >
                           <AngleUpIcon className={classes.spinBtnIcon} />
                         </IconButton>
@@ -129,7 +128,6 @@ export const BidDialog = ({
                           className={classes.spinBtn}
                           disabled={isQuantityMinusDisabled}
                           onClick={form.mutators.decreaseQuantity}
-                          disableRipple
                         >
                           <AngleDownIcon className={classes.spinBtnIcon} />
                         </IconButton>

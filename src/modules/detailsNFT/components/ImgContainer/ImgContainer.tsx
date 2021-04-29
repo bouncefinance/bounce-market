@@ -1,10 +1,10 @@
 import { Container, MenuItem, MenuList, Tooltip } from '@material-ui/core';
 import classNames from 'classnames';
+import { FacebookIcon } from 'modules/common/components/Icons/FacebookIcon';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
-import { TwitterIcon } from 'modules/layout/components/Social/assets/TwitterIcon';
+import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
+import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
 import { Button } from 'modules/uiKit/Button';
-import { FacebookIcon } from './assets/FacebookIcon';
-import { ShareIcon } from './assets/ShareIcon';
 import { useImgContainerStyles } from './useImgContainerStyles';
 
 interface INFTContentProps {
