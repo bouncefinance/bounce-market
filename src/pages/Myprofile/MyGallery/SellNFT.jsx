@@ -146,18 +146,13 @@ export default function SellNFT () {
 			console.log("parseFloat(directPurchasePrice) * 0.9: ", `${parseFloat(directPurchasePrice) * 0.9}`)
 			console.log("-1: ", `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+1).charAt(-1))
 			set_MinimumBid(
-					() => {
-						let temp = `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+1)
-						if (temp.charAt(temp.length-1) === '.')
-							return `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+2)
-						else
-							return temp
-					}
-					/* `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+1).charAt(directPurchasePrice.length – 1) === '.'
-					?
-					`${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+2)
-					:
-					`${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+1) */
+				() => {
+					let temp = `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+1)
+					if (temp.charAt(temp.length-1) === '.')
+						return `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+2)
+					else
+						return temp
+				}
 			);
 		}
 
