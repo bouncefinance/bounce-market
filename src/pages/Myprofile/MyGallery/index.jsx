@@ -128,41 +128,6 @@ export default function Index() {
   }
 
 
-  // const getMyApi = async () => {
-  //   const params = {
-  //     accountaddress: current_account
-  //   }
-  //   sign_Axios.post('/api/v2/main/getitemsext', params).then(res => {
-  //     if (res.status === 200 && res.data.code === 1) {
-  //       return res.data.data
-  //     } else {
-  //       throw new Error('Error:/api/v2/main/getitemsext')
-  //     }
-  //   }).then(data => {
-  //     const apiNftList = wrapperItem(data)
-  //     // console.log(apiNftList)
-  //     // setItemList([...apiNftList, ...itemList])
-  //     const filterList = apiNftList.filter(item => item.itemname && item.itemname !== 'Untitled (External import)')
-  //     // console.log(filterList)
-  //     setMyApiData(filterList)
-  //   })
-  // }
-
-  // const wrapperItem = (data) => {
-  //   const isArray = Object.prototype.toString.call(data) === '[object Array]';//true
-  //   if (isArray) {
-  //     const list = data.map(item => {
-  //       return {
-  //         getType: 'getMyApi',
-  //         ...item
-  //       }
-  //     })
-  //     return list
-  //   } else {
-  //     return []
-  //   }
-  // }
-
 
   useEffect(() => {
     if (!active) return;
