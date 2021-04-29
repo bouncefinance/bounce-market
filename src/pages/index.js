@@ -32,7 +32,7 @@ import TransferStatusModal from '@components/Modal/TransferStatusModal'
 import ModalMessage from '@components/Modal/ModalMessage'
 import ErrorNotification from '@components/Modal/ErrorNotification'
 import { AirHome } from './AirHome/index'
-import { ArtistHome } from './ArtistHome/index'
+import  ArtistHome  from './ArtistHome/index'
 import MyLiked from './Myprofile/MyLiked'
 import { InitAxios } from '@/utils/utils'
 
@@ -49,12 +49,11 @@ export default function Index() {
                 <Route exact path='/test2' component={Test2} />
                 <Route exact path='/UIkit' component={UIkit} />
 
-
                 <Route exact path='/' render={() => { return <Redirect to='/Home' /> }} />
                 <Route exact path='/Home' component={Home} />
                 <Route exact path='/Marketplace' render={() => { return <Redirect to='/Marketplace/FineArts' /> }} />
                 <Route exact path='/Marketplace/:channel' component={Marketplace} />
-                <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket/FineArts' />}} />
+                <Route exact path='/MyMarket' render={() => { return <Redirect to='/MyMarket/FineArts' /> }} />
                 <Route exact path='/MyMarket/:channel' component={MyMarket} />
                 <Route exact path='/Marketplace/:channel/:aucType/:poolId' component={Buy} />
 
@@ -83,7 +82,7 @@ export default function Index() {
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
 
                 <Route exact path='/AirHome/:id/:standard/:channel' component={AirHome} />
-                <Route exact path='/ArtistHome/:id/:standard/:channel' component={ArtistHome} />
+                <Route exact path='/ArtistHome/:userName' component={ArtistHome} />
 
                 <Route exact path='/404' component={Page404} />
 

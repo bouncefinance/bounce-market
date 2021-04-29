@@ -272,12 +272,12 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
 							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
-							const soldOutNft = {
-								contract: _token0,
-								tokenId: _tokenId,
-								// TODO 对1155一次没有卖完的情况需要再做讨论
-							}
-							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
+							// TODO 对1155一次没有卖完的情况需要再做讨论
+							// const soldOutNft = {
+							// 	contract: _token0,
+							// 	tokenId: _tokenId,
+							// }
+							// window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
 
 
 							history.push("/MyGallery");
@@ -389,12 +389,12 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
 
-							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
-							const soldOutNft = {
-								contract: _token0,
-								tokenId: _tokenId
-							}
-							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
+							// TODO 对1155一次没有卖完的情况需要再做讨论
+							// const soldOutNft = {
+							// 	contract: _token0,
+							// 	tokenId: _tokenId,
+							// }
+							// window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
 
 							history.push("/MyGallery");
 							showTransferByStatus('successStatus')

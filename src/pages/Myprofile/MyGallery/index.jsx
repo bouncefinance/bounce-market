@@ -45,11 +45,10 @@ const MyGalleryStyled = styled.div`
         }
     }
 
-    .noticeWrapper{
+    .emptyNoticeWrapper {
+      flex: 1;
       display: flex;
-      align-items: center;
-      height: 300px;
-      .emptyNotive {
+      .emptyNotice {
         margin: auto;
       }
     }
@@ -233,8 +232,8 @@ export default function Index() {
         if (res.status === 200 && res.data.code === 1) {
 
           const res_data = res.data.data
-          console.log(pools)
-          console.log(res_data)
+          // console.log(pools)
+          // console.log(res_data)
           const list = pools.map((item, index) => {
             const poolInfo = res_data.find(res => {
               return (item.tokenId === res.id || parseInt(item.token_id) === res.id)
@@ -262,11 +261,8 @@ export default function Index() {
             .filter(item => item.fileurl && item.itemname !== 'Untitled (External import)')
 
 
-          console.log(list)
+          // console.log(list)
           let result = list.sort((a, b) => b.id - a.id)
-          // if (myApiData.length !== 0) {
-          //   result = [...myApiData, ...result]
-          // }
 
           setItemList(result);
           setStatusList(result);
@@ -284,58 +280,39 @@ export default function Index() {
       <CommonHeader />
       <MyGalleryStyled>
         <div className="flex flex-space-x" style={{ marginTop: '32px' }}>
-          {/* <Search placeholder={'Search items，Brands and Accounts'} /> */}
           <AddCardItem />
           <Category itemList={itemList} onStatusChange={setStatusList} />
-
-          {/* <PullRadioBox prefix={'Categories:'} options={[{
-            value: 'Image'
-          }, {
-            value: 'Video'
-          }, {
-            value: 'Audio'
-          }, {
-            value: 'Games'
-          }, {
-            value: 'Others'
-          }]} defaultValue='Image' onChange={(item) => {
-            setType(item.value);
-          }} /> */}
         </div>
 
         {
           active && !loading && statusList.length > 0
-          ?
-          <ul className="list">
-            {/* <li>
-              <AddCardItem />
-            </li> */}
-            {statusList.map((item, index) => {
-              return <li key={index}>
-                {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
-                  nftId={item.id}
-                  cover={item.fileurl}
-                  itemname={item.itemname === '' ? 'Unname (External import)' : item.itemname}
-                  user={item.ownername}
-                  status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
-                  poolType={item.poolType}
-                  //  status={index % 2 === 0 ? 'Listed' : ''} 
-                  poolInfo={item}
-                  category={item.category}
-                />}
-              </li>
-            })}
-          </ul>
-          :
-          !loading
-          ?
-          <div className="emptyNoticeWrapper">
-            <span className="emptyNotice">
-              You doesn't have any NFT.
+            ?
+            <ul className="list">
+              {statusList.map((item, index) => {
+                return <li key={item.id+'_'+index}>
+                  {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
+                    nftId={item.id}
+                    cover={item.fileurl}
+                    itemname={item.itemname === '' ? 'Unname (External import)' : item.itemname}
+                    user={item.ownername}
+                    status={parseInt(item.poolId) >= 0 && wrapperIntl("Listed")}
+                    poolType={item.poolType}
+                    poolInfo={item}
+                    category={item.category}
+                  />}
+                </li>
+              })}
+            </ul>
+            :
+            !loading
+              ?
+              <div className="emptyNoticeWrapper">
+                <span className="emptyNotice">
+                  You doesn't have any NFT.
             </span>
-          </div>
-          :
-          <></>
+              </div>
+              :
+              <></>
         }
         {active && loading && <SkeletonNFTCards n={4} ></SkeletonNFTCards>}
       </MyGalleryStyled>

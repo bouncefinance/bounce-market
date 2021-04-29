@@ -22,7 +22,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
 import { useLazyQuery } from '@apollo/client'
-// import { QueryBrandTradeItemsByBrand, QueryMyNFTByBrand } from '@/utils/apollo'
 import { QueryMyNFTByBrand } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
@@ -390,27 +389,6 @@ export default function BrandsByType() {
                 }
             })
     }
-    // 16806 正在售卖
-    // const [getBrandTradeItems, brandTradeItems] = useLazyQuery(QueryBrandTradeItemsByBrand, {
-    //     variables: { creator: account, token0: contract },
-    //     fetchPolicy: "network-only",
-    //     onCompleted: async () => {
-    //         const tradePools = brandTradeItems.data.tradePools.map(item => ({
-    //             ...item,
-    //             poolType: AUCTION_TYPE.FixedSwap
-    //         })).filter(item => item.state !== 1)
-    //         const tradeAuctions = brandTradeItems.data.tradeAuctions.map(item => ({
-    //             ...item,
-    //             price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-    //             poolType: AUCTION_TYPE.EnglishAuction
-    //         })).filter(item => item.state !== 1)
-
-    //         // console.log(tradePools.concat(tradeAuctions))
-    //         // handleBrandTradeItems(tradePools.concat(tradeAuctions));
-    //         setTokenList_2(tradePools.concat(tradeAuctions));
-    //     }
-    // })
-
     useEffect(() => {
         console.log("statusList: ", statusList)
     }, [statusList])
@@ -459,43 +437,21 @@ export default function BrandsByType() {
         } catch (error) {
 
         }
-        // console.log(brandData)
+
         setTokenList_2(brandData)
     }
 
-    // const [getBrandItems_2, { data: brandItems_2 }] = useLazyQuery(QueryOwnerBrandItems, {
-    //     variables: { owner: account ? account.toLowerCase() : account },
-    //     fetchPolicy: "network-only",
-    //     onCompleted: () => {
-    //         const brands = brandInfo.standard === 1
-    //             ? brandItems_2.bounce721Brands[0]
-    //             : brandItems_2.bounce1155Brands[0];
-    //         if (!brands) {
-    //             handleBrandTradeItems([]);
-    //         } else {
-    //             const tokenList = brands.tokenList.map(item => item.tokenId);
-    //             console.log(tokenList)
-    //             setTokenList_2(tokenList);
-    //         }
-    //     }
-    // })
 
     // 16806 正在列表
     const [getBrandItems, { data: brandItems }] = useLazyQuery(QueryMyNFTByBrand, {
         variables: { user: account && account.toLowerCase(), contract: contract && contract.toLowerCase() },
         fetchPolicy: "network-only",
         onCompleted: () => {
-            // const brands = brandInfo.standard === 1
-            //     ? brandItems.nft721Items
-            //     : brandItems.nft1155Items;
-            // console.log(brandItems.nft721Items, brandItems.nft1155Items)
             const brands = [...brandItems.nft721Items, ...brandItems.nft1155Items]
             if (!brands) {
                 // handleBrandTradeItems([]);
                 setTokenList([]);
             } else {
-                // const tokenList = brands.map(item => item.tokenId);
-                // console.log(brands)
                 setTokenList(brands);
             }
         }
