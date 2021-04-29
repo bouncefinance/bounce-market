@@ -223,13 +223,13 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                     modelType: 'success',
                                     modelMessage: wrapperIntl("MyProfile.MyGallery.GenerateNewNFTModal.SuccessfullyGenerate")
                                 });
-                                // if (window.location.pathname === "/MyGallery") {
-                                //     setTimeout(function () {
-                                //         window.location.reload()
-                                //     }, 3000)
-                                // } else {
-                                //     history.push("/MyGallery")
-                                // }
+                                if (window.location.pathname === "/MyGallery") {
+                                    setTimeout(function () {
+                                        window.location.reload()
+                                    }, 2000)
+                                } else {
+                                    history.push("/MyGallery")
+                                }
 
                             })
                             .on('error', (err, receipt) => {

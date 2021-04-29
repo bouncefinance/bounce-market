@@ -383,8 +383,8 @@ export default function BrandsByType() {
 
                     // console.log(list)
                     const result = list.sort((a, b) => b.createTime - a.createTime);
-                    setListData(result);
-                    setStatusList(result);
+                    setListData(result || []);
+                    setStatusList(result || []);
                     setLoading(false);
                 }
             })
@@ -404,7 +404,7 @@ export default function BrandsByType() {
         try {
             const ErcParams = {
                 user_address: account,
-                contract_address: brandInfo.contractaddress
+                contract_address: brandInfo.contractaddress,
             }
 
             const TradeParams = {
@@ -429,8 +429,8 @@ export default function BrandsByType() {
             const res_trade = await axios.get('pools', { params: TradeParams })
             if (res_trade.status === 200 && res_trade.data.code === 200) {
                 const tradeDate = res_trade.data.data
-                brandData.tradePools = tradeDate.tradePools
-                brandData.tradeAuctions = tradeDate.tradeAuctions
+                brandData.tradePools = tradeDate.tradePools || []
+                brandData.tradeAuctions = tradeDate.tradeAuctions || []
             }
 
 

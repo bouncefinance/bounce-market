@@ -168,12 +168,18 @@ export default function Index() {
   }, [active, account]);
 
   useEffect(() => {
-    console.log(myTradeData, myNftData)
+    // console.log(myTradeData, myNftData)
     const PenddingItem = JSON.parse(window.localStorage.getItem('PenddingItem')) || null
 
     if (!account || myTradeData.length === 0 || myNftData.length === 0) return
 
+    if(!myTradeData.tradePools){
+      myTradeData.tradePools = []
+    }
 
+    if(!myTradeData.tradeAuctions){
+      myTradeData.tradeAuctions = []
+    }
 
     const nft721_ids = myNftData.nft721Items.map(item => parseInt(item.token_id))
     const nft1155Items_ids = myNftData.nft1155Items.map(item => parseInt(item.token_id));
