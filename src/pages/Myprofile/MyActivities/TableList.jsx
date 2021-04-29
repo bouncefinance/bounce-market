@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -17,6 +18,15 @@ import { Controller } from '@/utils/controller';
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import axios from 'axios';
 import to from 'await-to-js'
+
+const EmptyNoticeWrapper = styled.div`
+    flex: 1;
+    display: flex;
+
+    .emptyNotice {
+        margin: auto;
+    }
+`
 
 const useStyles = makeStyles({
     table: {
@@ -123,26 +133,38 @@ export default function BasicTable() {
     const { wrapperIntl } = useWrapperIntl()
 
     return (
-        <TableContainer>
-            <Table className={classes.table} aria-label="simple table">
-                <TableHead className={classes.TableHead}>
-                    <TableRow>
-                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Event")}</TableCell>
-                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Item")}</TableCell>
-                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Quantity")}</TableCell>
-                        {/* <TableCell className={classes.TableCell} >Status</TableCell> */}
-                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.From")}</TableCell>
-                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.To")}</TableCell>
-                        <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Date")}</TableCell>
-                        {/* <TableCell className={classes.TableCell} >operation</TableCell> */}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {list.map((row, index) => (
-                        <TableItem key={index} row={row}></TableItem>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <>
+            {
+                active && list.length > 0
+                ?
+                <TableContainer>
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead className={classes.TableHead}>
+                            <TableRow>
+                                <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Event")}</TableCell>
+                                <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Item")}</TableCell>
+                                <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Quantity")}</TableCell>
+                                {/* <TableCell className={classes.TableCell} >Status</TableCell> */}
+                                <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.From")}</TableCell>
+                                <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.To")}</TableCell>
+                                <TableCell className={classes.TableCell} >{wrapperIntl("MyProfile.MyActivities.TableList.Date")}</TableCell>
+                                {/* <TableCell className={classes.TableCell} >operation</TableCell> */}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {list.map((row, index) => (
+                                <TableItem key={index} row={row}></TableItem>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                :
+                <EmptyNoticeWrapper>
+                    <span className="emptyNotice">
+                        You doesn't have any activity.
+                    </span>
+                </EmptyNoticeWrapper>
+            }
+        </>
     );
 }

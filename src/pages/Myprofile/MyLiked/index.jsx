@@ -16,6 +16,8 @@ const MyLikedStyled = styled.div`
     width: 1100px;
     margin: 0 auto;
     padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
     .con{
 
         display: flex;
@@ -31,12 +33,20 @@ const MyLikedStyled = styled.div`
             }
         }
     }
+
+    .emptyNoticeWrapper {
+      flex: 1;
+      display: flex;
+      .emptyNotice {
+        margin: auto;
+      }
+    }
 `
 export default function MyLiked() {
   const [loading, setLoding] = useState(true)
   const [list, setlist] = useState([])
   const { sign_Axios,axios } = useAxios()
-  const { account, } = useActiveWeb3React()
+  const { account, active } = useActiveWeb3React()
   const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
   const { data } = useQuery(QueryTradePools)
 
@@ -118,28 +128,43 @@ export default function MyLiked() {
   return <>
     <CommonHeader />
     <MyLikedStyled>
-      <div className="con">
-        {list.map((item, index) => {
-          // <PopularItem style={{ marginTop: '17px' }} key={name} src={src} name={name} price={price} />
-          return <CardItem
-            // cover={item.fileurl}
-            // name={item.itemname}
-            // cardId={item.poolId}
-            // price={!!item.price ? `${item.price} ETH` : `--`}
-            // poolType={item.poolType}
-            cover={item.imageurl}
-            name={item.itemname}
-            cardId={item.poolId}
-            nftId={item.itemid}
-            price={item.price}
-            token1={item.token1}
-            poolType={item.poolType}
-            category={item.category}
-            key={index}
-          />
-        })}
-      </div>
-      {loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
+      {
+        active && !loading && list.length > 0
+        ?
+        <div className="con">
+          {list.map((item, index) => {
+            // <PopularItem style={{ marginTop: '17px' }} key={name} src={src} name={name} price={price} />
+            return <CardItem
+              // cover={item.fileurl}
+              // name={item.itemname}
+              // cardId={item.poolId}
+              // price={!!item.price ? `${item.price} ETH` : `--`}
+              // poolType={item.poolType}
+              cover={item.imageurl}
+              name={item.itemname}
+              cardId={item.poolId}
+              nftId={item.itemid}
+              price={item.price}
+              token1={item.token1}
+              poolType={item.poolType}
+              category={item.category}
+              key={index}
+            />
+          })}
+        </div>
+        :
+        !loading
+        ?
+        <div className="emptyNoticeWrapper">
+          <span className="emptyNotice">
+            You haven't liked any NFT.
+          </span>
+        </div>
+        :
+        <></>
+      }
+      
+      {active && loading && <SkeletonNFTCards n={3} ></SkeletonNFTCards>}
       <MessageTips open={openMessage} setopen={setopenMessage} />
     </MyLikedStyled>
   </>

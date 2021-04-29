@@ -27,6 +27,7 @@ export const reducer = (state, action) => {
                 modelTimer:action.modelTimer,
                 subsequentActionType:action.subsequentActionType,
                 canClose: action.canClose===false ? action.canClose : true,
+                subsequentActionFunc:action.subsequentActionFunc,
             }
         case 'Error_Notification':
             return { ...state, showErrorNotificationModal: action.showErrorNotificationModal}

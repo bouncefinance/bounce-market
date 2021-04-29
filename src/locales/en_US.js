@@ -21,7 +21,7 @@ const en_US = {
     
     userUserInfo: {
         "uploadSuccess": "Information upload success!",
-        "OnlySupports": "Only Supports JPG, PNG, JPEG2000",
+        "OnlySupports": "Only Supports JPG, PNG, GIF",
     },
 
     ErrorMsg: {
@@ -44,6 +44,7 @@ const en_US = {
         search_p: 'Search objects, items, art',
         SelectBSC: "Please select BSC network.",
         SwitchToBSC: "Click here to switch to BSC network.",
+        ConnectWallet: "Click here to connect wallet.",
     },
 
     'pages.buy.Share': 'Share',
@@ -102,19 +103,19 @@ const en_US = {
     "UIKit.Input.Upload.infoTip.FormatIncorrect": 'The file format you selected is incorrect',
     "UIKit.Input.Upload.infoTip.uploadImage": 'upload Image',
     "UIKit.Input.Upload.infoTip.uploadVideo": 'upload Video',
-    "UIKit.Input.Upload.infoTip.requirement1": 'Supports JPG, PNG, JPEG2000',
-    "UIKit.Input.Upload.infoTip.requirement2": 'no more than 100MB, 262*262 Reccomended',
-    "UIKit.Input.Upload.infoTip.image.requirement1": 'Supports JPG, PNG, JPEG2000',
-    "UIKit.Input.Upload.infoTip.image.requirement2": 'no more than 100MB, 262*262 Reccomended',
+    "UIKit.Input.Upload.infoTip.requirement1": 'Supports JPG, PNG, GIF',
+    "UIKit.Input.Upload.infoTip.requirement2": 'no more than 10MB, 262*262 Reccomended',
+    "UIKit.Input.Upload.infoTip.image.requirement1": 'Supports JPG, PNG, GIF',
+    "UIKit.Input.Upload.infoTip.image.requirement2": 'no more than 10MB, 262*262 Reccomended',
     "UIKit.Input.Upload.infoTip.video.requirement1": 'Supports MP4',
-    "UIKit.Input.Upload.infoTip.video.requirement2": 'no more than 100MB, 360*240 Reccomended',
+    "UIKit.Input.Upload.infoTip.video.requirement2": 'no more than 50MB, 360*240 Reccomended',
     "UIKit.Input.Upload.infoTip.avatar.ChangeProfilePhoto": 'Change Profile Photo',
-    "UIKit.Input.Upload.infoTip.avatar.requirement1": 'Supports JPG, PNG, JPEG2000',
-    "UIKit.Input.Upload.infoTip.avatar.requirement2": 'no more than 100MB, 262*262 Reccomended',
+    "UIKit.Input.Upload.infoTip.avatar.requirement1": 'Supports JPG, PNG, GIF',
+    "UIKit.Input.Upload.infoTip.avatar.requirement2": 'no more than 10MB, 262*262 Reccomended',
     "UIKit.Input.Upload.infoTip.videoError": 'Oops!File size or file type is wrong. Please check and try again.',
     "UIKit.Input.Upload.infoTip.uploadImageAndVideo": 'upload Image Or Video',
-    "UIKit.Input.Upload.infoTip.requirementImageANdVideo": 'Supports JPG, PNG, JPEG2000 ,MP4',
-    "UIKit.Input.Upload.infoTip.image.requirementImageAndVideo": 'Image no more than 100MB, 262*262 Reccomended. Video no more than 100MB, 360*240 Reccomended',
+    "UIKit.Input.Upload.infoTip.requirementImageANdVideo": 'Supports JPG, PNG, GIF ,MP4',
+    "UIKit.Input.Upload.infoTip.image.requirementImageAndVideo": 'Image no more than 10MB, 262*262 Reccomended. Video no more than 10MB, 360*240 Reccomended',
 
     home: {
         banner1: 'We make it easy to trade in creativity.',
@@ -294,7 +295,7 @@ const en_US = {
         "SettingAccountModal.MyAccountSettings": "My Account Settings",
         "SettingAccountModal.UploadingFile": "Uploading File ...",
         "SettingAccountModal.UploadingData": "Uploading Data ...",
-        "SettingAccountModal.OnlySupports": "Only supports JPG, PNG, JPEG2000",
+        "SettingAccountModal.OnlySupports": "Only supports JPG, PNG, GIF",
         "SettingAccountModal.UserName": "User Name",
         "SettingAccountModal.FullName": "Full Name",
         "SettingAccountModal.BounceID": "Bounce ID",
@@ -380,8 +381,8 @@ const en_US = {
 
         /* wrapperIntl('MyProfile.MyBrands.updateTopBarImg.uploadImage') */
         'MyBrands.updateTopBarImg.ChangeThemePhoto': "Change Theme Photo",
-        'MyBrands.updateTopBarImg.infoTip1': "Supports JPG, PNG, JPEG2000",
-        'MyBrands.updateTopBarImg.infoTip2': "no more than 100MB,",
+        'MyBrands.updateTopBarImg.infoTip1': "Supports JPG, PNG, GIF",
+        'MyBrands.updateTopBarImg.infoTip2': "no more than 10MB,",
         'MyBrands.updateTopBarImg.infoTip3': "Reccomended",
         'MyBrands.updateTopBarImg.ApplyAndSave': "Apply and Save",
         'MyBrands.updateTopBarImg.UploadingFile': "Uploading File ...",
@@ -404,12 +405,12 @@ const en_US = {
         "MyBrands.AddNewBrandsModal.Description": "Description",
         "MyBrands.AddNewBrandsModal.DescriptionPlaceHolder": "Describe your brand",
         "MyBrands.AddNewBrandsModal.browseBrandPhoto": 'browse Brand Photo',
-        "MyBrands.AddNewBrandsModal.OnlySupports": "Only supports JPG, PNG, JPEG2000",
+        "MyBrands.AddNewBrandsModal.OnlySupports": "Only supports JPG, PNG, GIF",
         "MyBrands.AddNewBrandsModal.SuccessfullyBuild": "You have successfully build your brands",
         "MyBrands.AddNewBrandsModal.DataUpdateFailed": 'Data update failed, please try again',
 
         /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */
-        "MyBrands.AddNewItemModal.OnlySupports": "Only supports JPG, PNG, JPEG2000",
+        "MyBrands.AddNewItemModal.OnlySupports": "Only supports JPG, PNG, GIF",
         'MyBrands.AddNewItemModal.SuccessfullyGenerate': "Congratulations. Your NFTs have been generated.",
         'MyBrands.AddNewItemModal.TryAgainNotice': 'Hmm. You hit a glitch. Sorry for the trouble. Please try again.',
         "MyBrands.AddNewItemModal.UploadingData": "Uploading Data ...",

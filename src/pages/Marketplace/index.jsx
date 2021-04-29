@@ -22,6 +22,7 @@ import { getCoinList } from '@/utils/coin'
 // import { ZERO_ADDRESS } from "@/web3/address_list/token"
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import axios from 'axios'
+import ConnectWalletModal from '@components/Modal/ConnectWallet'
 /* import { myContext } from '@/redux/index.js'; */
 
 const MarketplaceStyled = styled.div`
@@ -145,6 +146,7 @@ export default function Marketplace() {
   const { sign_Axios } = useAxios();
   const [tokenList, setTokenList] = useState([]);
   const [filterList, setFilterList] = useState([]);
+  const [isConnectWallect, setIsConnectWallect] = useState(false)
   // const [channel, setChannel] = useState(
   //   type === NFT_CATEGORY.Sports ? NFT_CATEGORY.Sports :
   //     type === NFT_CATEGORY.ComicBooks ? NFT_CATEGORY.ComicBooks :
@@ -162,7 +164,7 @@ export default function Marketplace() {
 
 
 
-  const [loading, setLoding] = useState(true)
+  const [loading, setLoading] = useState(true)
 
 
   const [length, setLength] = useState(4);
@@ -182,7 +184,10 @@ export default function Marketplace() {
   }, [type, categoryRequestParam]) */
 
   useEffect(() => {
-    if (!active) return
+    console.log("loading: ", loading)
+  }, [loading])
+
+  useEffect(() => {
     /* if (!active) {
       console.log("111111111111")
       dispatch({
@@ -200,7 +205,7 @@ export default function Marketplace() {
       }, ...getCoinList(chainId).filter(item => item.contract)])
     
     if (data) {
-      console.log(data)
+      console.log("data", data)
       const tradePools = data.tradePools.map(item => ({
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
@@ -219,7 +224,7 @@ export default function Marketplace() {
       // console.log(pools)
 
       setLength(list.length);
-      setLoding(true)
+      setLoading(true)
       // console.log(pools)
       // const channel_2 = channel === 'Comics' ? 'Conicbooks' : channel
       sign_Axios.post(Controller.items.getitemsbyfilter, {
@@ -257,14 +262,15 @@ export default function Marketplace() {
               }
             }).filter(item => item.fileurl)
               .sort((a, b) => b.createTime - a.createTime);
+            console.log("list: ", list)
             setTokenList(list);
             setFilterList(list);
-            setLoding(false)
+            setLoading(false)
             // console.log('---setFilterList---', list)
           }
         })
         .catch(() => {
-          setLoding(false)
+          setLoading(false)
         })
     }
     // eslint-disable-next-line
@@ -292,6 +298,7 @@ export default function Marketplace() {
                 token1={item.token1}
                 poolType={item.poolType}
                 litimgurl={item.litimgurl}
+                setIsConnectWallect={setIsConnectWallect}
               />
             </li>
           })}
@@ -310,6 +317,7 @@ export default function Marketplace() {
                 price={item.price}
                 token1={item.token1}
                 poolType={item.poolType}
+                setIsConnectWallect={setIsConnectWallect}
               />
             </li>
           })}
@@ -320,6 +328,7 @@ export default function Marketplace() {
 
 
   return (
+    <>
     <MarketplaceStyled>
       <ul className="nav_wrapper">
         {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
@@ -398,7 +407,7 @@ export default function Marketplace() {
           onChange={(item) => {
             // console.log(item)
             if (item) {
-              setLoding(false)
+              setLoading(false)
               // setGetPollsVariables({ contract: item.contract })
               initPools({ ...poolsParmas, contract: item.contract})
             }
@@ -414,6 +423,8 @@ export default function Marketplace() {
 
       {/* <PagingControls /> */}
     </MarketplaceStyled>
+    <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />
+    </>
   )
 }
 
