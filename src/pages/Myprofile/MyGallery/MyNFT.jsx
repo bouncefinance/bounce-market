@@ -267,7 +267,7 @@ function MyNFT () {
 
 				<PageBodyRight className="right">
 					<span className="NFTName">{NFTName}</span>
-					{category}
+					{/* {category} */}
 
 					<div className="account">
 						<p>{account}</p>

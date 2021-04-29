@@ -213,7 +213,7 @@ export default function Marketplace() {
         .filter(item => item.state !== 1 && item.poolId !== 0)
 
       const pools = tradePools.concat(tradeAuctions);
-      console.log(pools)
+      // console.log(pools)
       const list = pools.map(item => item.tokenId);
       const cts_list = pools.map(item => item.token0);
       // console.log(pools)

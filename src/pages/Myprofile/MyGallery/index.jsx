@@ -112,13 +112,13 @@ export default function Index() {
     } else if (findDataByRecord_soldOutNft_1155) {
       myNftData.nft1155Items = myNftData.nft1155Items.filter(item => {
         return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_1155.contract).toLowerCase() &&
-          parseInt(item.token_id) !== parseInt(findDataByRecord_soldOutNft_721.token_id)
+          parseInt(item.token_id) !== parseInt(findDataByRecord_soldOutNft_1155.token_id)
       })
+    } else {
+      window.localStorage.setItem('record_soldOutNft', null)
     }
+
     // console.log('myNftData-2', myNftData)
-    //  else {
-    //   window.localStorage.setItem('record_soldOutNft', null)
-    // }
 
     setMyNftData(myNftData)
   }
@@ -144,8 +144,6 @@ export default function Index() {
 
     }
 
-
-
     setMyTradeData(traddata)
   }
 
@@ -160,7 +158,7 @@ export default function Index() {
 
   useEffect(() => {
     console.log(myTradeData, myNftData)
-    // const PenddingItem = JSON.parse(window.localStorage.getItem('PenddingItem')) || null
+    const PenddingItem = JSON.parse(window.localStorage.getItem('PenddingItem')) || null
 
     if (!account || myTradeData.length === 0 || myNftData.length === 0) return
 
@@ -202,12 +200,16 @@ export default function Index() {
 
     // console.log(pools)
 
-    // if (PenddingItem) {
-    //   if ([...ids_list].includes(PenddingItem.tokenId)) return window.localStorage.setItem('PenddingItem', null)
-    //   ids_list.unshift(PenddingItem.tokenId)
-    //   cts_list.unshift(PenddingItem.contract)
-    //   pools.unshift({ ...PenddingItem, isPendding: true })
-    // }
+    if (PenddingItem && String(PenddingItem.account).toLowerCase() === String(account).toLowerCase()) {
+      if ([...ids_list].includes(PenddingItem.tokenId)) {
+        window.localStorage.setItem('PenddingItem', null)
+      } else {
+        ids_list.unshift(PenddingItem.tokenId)
+        cts_list.unshift(PenddingItem.contract)
+        pools.unshift({ ...PenddingItem, isPendding: true })
+      }
+    }
+
     sign_Axios.post(Controller.items.getitemsbyfilter, {
       ids: ids_list,
       cts: cts_list,
@@ -249,7 +251,7 @@ export default function Index() {
 
 
           console.log(list)
-          let result = list.sort((a, b) => a.tokenId - b.tokenId)
+          let result = list.sort((a, b) => b.id - a.id)
           // if (myApiData.length !== 0) {
           //   result = [...myApiData, ...result]
           // }
@@ -260,9 +262,6 @@ export default function Index() {
         }
       })
       .catch((err) => {
-
-
-
         console.log(err)
       })
     // eslint-disable-next-line

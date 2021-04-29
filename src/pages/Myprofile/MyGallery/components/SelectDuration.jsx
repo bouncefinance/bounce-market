@@ -79,7 +79,7 @@ function SelectDuration({
 					height = "50px"
 					options={options}
 					icon={icon_ETH}
-					defaultValue={5}
+					defaultValue={3}
 					onChange={(item) => {
 						/* console.log("typeof(item): ", typeof item);
 						console.log(item); */
