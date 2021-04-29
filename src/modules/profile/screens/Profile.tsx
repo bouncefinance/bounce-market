@@ -3,6 +3,7 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo, useState } from 'react';
+import { uid } from 'react-uid';
 import { Avatar } from '../components/Avatar';
 import { Bio } from '../components/Bio';
 import { Header } from '../components/Header';
@@ -12,6 +13,7 @@ import { Subscribers } from '../components/Subscribers';
 import { TabItemProps, TabItems } from '../components/TabItems';
 import { TabPanel } from '../components/TabPanel';
 import { Tabs } from '../components/Tabs';
+import { Tab } from '../components/Tabs/Tab';
 import { useProfileStyles } from './useProfileStyles';
 
 const items: TabItemProps[] = [
@@ -147,10 +149,13 @@ export const Profile = () => {
 
         <Tabs
           className={classes.tabs}
-          items={tabs}
-          onChange={onTabsChange}
+          onChange={onTabsChange as any}
           value={tab}
-        />
+        >
+          {tabs.map(tabProps => (
+            <Tab key={uid(tabProps)} {...tabProps} />
+          ))}
+        </Tabs>
 
         <TabPanel value={tab} index={TabList.items}>
           <TabItems items={items} />
