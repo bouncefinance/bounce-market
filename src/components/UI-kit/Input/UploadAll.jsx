@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import upload_img from '@assets/images/upload_img.svg'
 import { myContext } from '@/redux/index.js'
 import useWrapperIntl from '@/locales/useWrapperIntl'
-import { getFileType }  from '@/utils/getFileType'
 
 const UploadStyled = styled.div`
     width: 620px;
