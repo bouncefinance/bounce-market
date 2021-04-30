@@ -123,6 +123,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                     if (res.data.code === 1) {
                         // console.log(nftId, brandInfo.standard)
                         if (brandInfo.standard === 1) {
+                            // console.log('参数',library, BounceERC721.abi, brandInfo.contractaddress)
                             const BounceERC721_CT = getContract(library, BounceERC721.abi, brandInfo.contractaddress)
                             try {
                                 BounceERC721_CT.methods.mint(account, nftId).send({ from: account })
@@ -149,7 +150,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                             } catch (error) {
                                 setBtnLock(false);
                                 setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Submit'));
-                                console.log('BounceERC721_CT.methods.mint', error);
+                                // console.log('BounceERC721_CT.methods.mint', error);
                             }
 
                         } else {
