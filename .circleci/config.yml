@@ -43,6 +43,8 @@ jobs:
     <<: *build-template
   build-cn:
     <<: *build-template
+  build-ht:
+    <<: *build-template
   # upload
   upload-stage:
     <<: *upload-template
@@ -50,11 +52,30 @@ jobs:
     <<: *upload-template
   upload-cn:
     <<: *upload-template
+  upload-ht:
+    <<: *upload-template
 
 workflows:
   version: 2.1
   bounce_market:
     jobs:
+      # ht 
+      - approve-ht:
+          type: approval
+          filters:
+            branches:
+              only: [ ht ]
+      - build-ht:
+          context:
+            - bounce_build_ht
+          requires:
+            - approve-ht
+      - upload-ht:
+          context:
+            - cicd
+            - bounce_build_ht
+          requires:
+            - build-ht
       # stage
       - approve-stage:
           type: approval
