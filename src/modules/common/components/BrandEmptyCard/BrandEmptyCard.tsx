@@ -18,7 +18,7 @@ export const BrandEmptyCard = ({ className }: IBrandEmptyCardProps) => {
       <CardContent className={classes.contentEmpty}>
         <Button
           href="#"
-          className={classNames(classes.addNewBtn, classes.btnMarginVNone)}
+          className={classNames(classes.addNewBtn, classes.btnMarginVNone, classes.addNewBtnBig)}
           variant="outlined"
           fullWidth={false}
           rounded

@@ -87,6 +87,9 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
       marginTop: '-0.1em'
     }
   },
+  addNewBtnBig: {
+    minHeight: 60,
+  },
   btnMarginVNone: {
     marginTop: 0,
     marginBottom: 0
