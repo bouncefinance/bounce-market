@@ -3,15 +3,13 @@ import { BrandCard, IBrandCardProps } from 'modules/profile/components/BrandCard
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { BrandEmptyCard } from '../BrandEmptyCard';
-import classNames from 'classnames';
 import { useTabBrandStyles } from './useTabBrandsStyles';
 
 interface ITabBrandsProps {
-  className?: string;
   items?: IBrandCardProps[];
 }
 
-export const TabBrands = ({ className, items }: ITabBrandsProps) => {
+export const TabBrands = ({ items }: ITabBrandsProps) => {
   const classes = useTabBrandStyles();
 
   const renderedBrands = useMemo(
@@ -39,7 +37,7 @@ export const TabBrands = ({ className, items }: ITabBrandsProps) => {
   return (
     <>
       {items && (
-        <Grid container spacing={4} className={classNames(classes.root, className)}>
+        <Grid container spacing={4} className={classes.root}>
           {renderedBrands}
           {renderEmpty}
         </Grid>

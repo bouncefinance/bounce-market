@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import classNames from 'classnames';
 import { uid } from 'react-uid';
 import { Link } from 'react-router-dom';
 import { useTabFollowingStyles } from './useTabFollowingStyles';
@@ -9,7 +8,6 @@ import { Button } from 'modules/uiKit/Button';
 import { t } from 'modules/i18n/utils/intl';
 
 export interface IFollowingItemProps {
-  className?: string;
   userName: string;
   userId: number;
   href: string;
@@ -19,11 +17,10 @@ export interface IFollowingItemProps {
 }
 
 interface ITabFollowingProps {
-  className?: string;
   items?: IFollowingItemProps[];
 }
 
-export const TabFollowing = ({ className, items }: ITabFollowingProps) => {
+export const TabFollowing = ({ items }: ITabFollowingProps) => {
   const classes = useTabFollowingStyles();
 
   const renderListItems = useMemo(
@@ -86,7 +83,7 @@ export const TabFollowing = ({ className, items }: ITabFollowingProps) => {
   );
 
   return (
-    <Grid container spacing={0} className={classNames(classes.root, className)}>
+    <Grid container spacing={0} className={classes.root}>
       {renderListItems}
     </Grid>
   );
