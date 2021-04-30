@@ -6,7 +6,7 @@ import { QueryError } from '../QueryError/QueryError';
 import { QueryLoadingCentered } from '../QueryLoading/QueryLoading';
 
 interface ILoadingProps<T> {
-  requestActions: (() => RequestAction)[];
+  requestActions: ((...args: any[]) => RequestAction)[];
   // Make T more strict
   children: (...query: QueryState<T>[]) => ReactNode;
 }

@@ -1,7 +1,7 @@
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { RoutesConfiguration } from 'modules/overview/Routes';
 import React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { Route, RouteProps } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
 
 interface IPrivateRouteProps extends RouteProps {}
 
@@ -12,5 +12,12 @@ export const PrivateRoute = (props: IPrivateRouteProps) => {
     return <Route {...props} />;
   }
 
-  return <Redirect to={RoutesConfiguration.Overview.path} />;
+  // TODO Update placeholder https://ankrnetwork.atlassian.net/browse/FD-3422
+  return (
+    <Route
+      {...props}
+      component={undefined}
+      render={() => <Typography>Please, connect you wallet</Typography>}
+    />
+  );
 };

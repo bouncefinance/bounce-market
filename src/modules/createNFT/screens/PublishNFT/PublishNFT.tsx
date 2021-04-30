@@ -9,20 +9,22 @@ import {
 } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { Section } from 'modules/uiKit/Section';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
-import { CreateNftActions } from '../../CreateNftActions';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
 import { ButtonGroupField } from '../../../form/components/ButtonGroupField/ButtonGroupField';
-import { AuctionType } from '../../../marketplace/api/auctionType';
-import { useHistory } from 'react-router';
+import { AuctionType } from '../../../overview/api/auctionType';
+import { useHistory, useParams } from 'react-router';
 import { InputField } from '../../../form/components/InputField';
 import { SelectField } from '../../../form/components/SelectField';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
+import { Queries } from '../../../common/components/Queries/Queries';
+import { publishNft } from '../../actions/publishNft';
+import { fetchItem } from '../../../detailsNFT/actions/fetchItem';
 
 interface IPublishNFTPayload {
   type: AuctionType;
@@ -38,6 +40,15 @@ export const PublishNFT = () => {
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
   const { goBack } = useHistory();
+  const { id: idParam, contract } = useParams<{
+    contract: string;
+    id: string;
+  }>();
+  const id = parseInt(idParam, 10);
+
+  useEffect(() => {
+    dispatch(fetchItem({ contract, id }));
+  }, [contract, dispatch, id]);
 
   const options = useMemo(
     () => [
@@ -86,7 +97,7 @@ export const PublishNFT = () => {
 
   const handleSubmit = useCallback(
     (payload: IPublishNFTPayload) => {
-      dispatch(CreateNftActions.publishNft(payload)).then(({ error }) => {
+      dispatch(publishNft(payload)).then(({ error }) => {
         if (!error) {
           goBack();
         }
@@ -253,7 +264,7 @@ export const PublishNFT = () => {
             </>
           )}
           <Box>
-            <Mutation type={CreateNftActions.publishNft.toString()}>
+            <Mutation type={publishNft.toString()}>
               {({ loading }) => (
                 <Button size="large" type="submit" fullWidth disabled={loading}>
                   {loading
@@ -278,16 +289,20 @@ export const PublishNFT = () => {
           <Typography variant="h1">{t('publish-nft.title')}</Typography>
         </Box>
         <Box>
-          <Form
-            onSubmit={handleSubmit}
-            render={renderForm}
-            validate={validateCreateNFT}
-            initialValues={{
-              type: AuctionType.FixedSwap,
-              currency: defaultCurrency,
-              duration: durationOptions[0].value,
-            }}
-          />
+          <Queries requestActions={[fetchItem]}>
+            {() => (
+              <Form
+                onSubmit={handleSubmit}
+                render={renderForm}
+                validate={validateCreateNFT}
+                initialValues={{
+                  type: AuctionType.FixedSwap,
+                  currency: defaultCurrency,
+                  duration: durationOptions[0].value,
+                }}
+              />
+            )}
+          </Queries>
         </Box>
       </Container>
     </Section>

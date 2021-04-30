@@ -1,7 +1,8 @@
 import loadable, { LoadableComponent } from '@loadable/component';
-import { generatePath, Route } from 'react-router-dom';
+import { generatePath } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
+import { PrivateRoute } from '../router/components/PrivateRoute';
 
 export const PATH_USER_PROFILE = '/profile';
 export const PATH_PROFILE = '/profile/:id';
@@ -27,13 +28,13 @@ const LoadableProfileContainer: LoadableComponent<any> = loadable(
 export function ProfileRoutes() {
   return (
     <>
-      <Route
+      <PrivateRoute
         path={ProfileRoutesConfig.Profile.path}
         exact={true}
         component={LoadableProfileContainer}
       />
 
-      <Route
+      <PrivateRoute
         path={ProfileRoutesConfig.UserProfile.path}
         exact={true}
         component={LoadableProfileContainer}

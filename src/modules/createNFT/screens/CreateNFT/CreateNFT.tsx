@@ -12,13 +12,13 @@ import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
 import { RoutesConfiguration } from '../../../overview/Routes';
+import { useCreateNFTStyles } from './useCreateNFTStyles';
 import {
   Channel,
-  CreateNftActions,
+  createNft,
   ICreateNFTPayload,
   Standard,
-} from '../../CreateNftActions';
-import { useCreateNFTStyles } from './useCreateNFTStyles';
+} from '../../actions/createNft';
 
 const MAX_SIZE: Bytes = 31457280;
 
@@ -57,7 +57,7 @@ export const CreateNFT = () => {
 
   const handleSubmit = useCallback(
     (payload: ICreateNFTPayload) => {
-      dispatch(CreateNftActions.createNft(payload)).then(({ error }) => {
+      dispatch(createNft(payload)).then(({ error }) => {
         if (!error) {
           push(RoutesConfiguration.Overview.generatePath());
         }
@@ -172,7 +172,7 @@ export const CreateNFT = () => {
             </Box>
           )}
           <Box>
-            <Mutation type={CreateNftActions.createNft.toString()}>
+            <Mutation type={createNft.toString()}>
               {({ loading }) => (
                 <Button size="large" type="submit" fullWidth disabled={loading}>
                   {loading

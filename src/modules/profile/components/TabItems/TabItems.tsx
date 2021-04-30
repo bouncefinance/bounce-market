@@ -1,13 +1,10 @@
 import { Box, Grid, Hidden } from '@material-ui/core';
-import {
-  IProductCardProps,
-  ProductCard,
-} from 'modules/common/components/ProductCard';
+import { IProductCardProps } from 'modules/common/components/ProductCard';
 import { t } from 'modules/i18n/utils/intl';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { FilledTab, FilledTabs } from 'modules/uiKit/FilledTabs';
 import { Select } from 'modules/uiKit/Select';
-import React, { useMemo } from 'react';
+import React, { ReactNode } from 'react';
 import { uid } from 'react-uid';
 import { useTabItems } from './useTabItems';
 import { useTabItemsStyles } from './useTabItemsStyles';
@@ -17,11 +14,10 @@ export type TabItemProps = Omit<IProductCardProps, 'ImgProps'> & {
 };
 
 interface ITabItemsProps {
-  className?: string;
-  items?: TabItemProps[];
+  children: ReactNode;
 }
 
-export const TabItems = ({ className, items }: ITabItemsProps) => {
+export const TabItems = ({ children }: ITabItemsProps) => {
   const classes = useTabItemsStyles();
   const isMDUp = useIsMDUp();
   const {
@@ -33,29 +29,6 @@ export const TabItems = ({ className, items }: ITabItemsProps) => {
     sortBy,
     sortVariants,
   } = useTabItems();
-
-  const renderedProducts = useMemo(
-    () =>
-      items?.map(cardProps => (
-        <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(cardProps)}>
-          <ProductCard
-            key={uid(cardProps)}
-            title={cardProps.title}
-            href={cardProps.href}
-            status={cardProps.status}
-            price={cardProps.price}
-            copies={cardProps.copies}
-            ImgProps={{
-              src: cardProps.img,
-              objectFit: 'scale-down',
-              loading: 'lazy',
-            }}
-            ProfileInfoProps={cardProps.ProfileInfoProps}
-          />
-        </Grid>
-      )),
-    [items],
-  );
 
   return (
     <>
@@ -115,11 +88,7 @@ export const TabItems = ({ className, items }: ITabItemsProps) => {
         </Grid>
       </Box>
 
-      {items && (
-        <Grid container spacing={4}>
-          {renderedProducts}
-        </Grid>
-      )}
+      {children}
     </>
   );
 };

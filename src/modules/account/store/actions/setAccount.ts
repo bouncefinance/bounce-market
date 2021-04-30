@@ -1,9 +1,8 @@
-import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
+import { connectWallet } from '../../api/connectWallet';
+import { getAuthToken } from '../../api/getAuthToken';
+import { RequestAction } from '@redux-requests/core';
 import Web3 from 'web3';
-import { IPoolsData } from '../../marketplace/api/getPools';
-import { connectWallet } from '../api/connectWallet';
-import { getAuthToken } from '../api/getAuthToken';
 
 const SIGN_STR = 'Welcome to Bounce!';
 
@@ -15,11 +14,9 @@ export interface ISetAccountData {
   web3: Web3;
 }
 
-export const AccountActions = {
-  connect: createSmartAction<RequestAction<IPoolsData>>(
-    'AccountActions/connect',
-  ),
-  setAccount: createSmartAction('AccountActions/setAccount', () => ({
+export const setAccount = createSmartAction(
+  'AccountActions/setAccount',
+  () => ({
     request: {
       promise: (async function () {
         const [web3, provider] = await connectWallet();
@@ -52,5 +49,5 @@ export const AccountActions = {
         return request;
       },
     },
-  })),
-};
+  }),
+);

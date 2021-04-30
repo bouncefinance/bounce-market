@@ -1,8 +1,9 @@
 import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
 import { END, eventChannel } from 'redux-saga';
 import { RootState } from '../../../store/store';
-import { AccountActions } from '../store/accountActions';
 import { getQuery, resetRequests } from '@redux-requests/core';
+import { setAccount } from '../store/actions/setAccount';
+import { connect } from '../store/actions/connect';
 
 // TODO Check disconnection, switch chain, switch account
 
@@ -82,7 +83,7 @@ function createEventChannel(provider: any) {
 }
 
 function* onConnectWallet() {
-  const { action } = yield putResolve(AccountActions.setAccount());
+  const { action } = yield putResolve(setAccount());
   const provider = action.meta.provider;
 
   const channel = createEventChannel(provider);
@@ -90,7 +91,7 @@ function* onConnectWallet() {
     const event: ProviderEvent = yield take(channel);
 
     if (event.type === WalletEventType.ChainChanged) {
-      yield put(resetRequests([AccountActions.setAccount.toString()]));
+      yield put(resetRequests([setAccount.toString()]));
     } else if (event.type === WalletEventType.AccountChanged) {
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
@@ -99,20 +100,20 @@ function* onConnectWallet() {
         const {
           data: { address },
         } = getQuery(state, {
-          type: AccountActions.setAccount.toString(),
-          action: AccountActions.setAccount,
+          type: setAccount.toString(),
+          action: setAccount,
         });
 
         return { currentAddress: address };
       });
 
       if (currentAddress.toLowerCase() !== address?.toLowerCase()) {
-        yield put(AccountActions.connect());
+        yield put(connect());
       }
     }
   }
 }
 
 export function* connectSaga() {
-  yield takeEvery(AccountActions.connect.toString(), onConnectWallet);
+  yield takeEvery(connect.toString(), onConnectWallet);
 }

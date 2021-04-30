@@ -1,8 +1,9 @@
+import { createAction as createSmartAction } from 'redux-smart-actions';
+import { BigNumber } from 'bignumber.js';
+import { AuctionType } from '../api/auctionType';
+import Web3 from 'web3';
 import { gql } from '@apollo/client';
 import { getApolloClient } from '../../common/api/getApolloClient';
-import { BigNumber } from 'bignumber.js';
-import Web3 from 'web3';
-import { AuctionType } from './auctionType';
 
 export enum AuctionState {
   InProgress,
@@ -129,3 +130,17 @@ export async function getPools(): Promise<IPoolsData> {
 
   return mapPools(query.data);
 }
+
+export const fetchPools = createSmartAction(
+  'MarketplaceActions/fetchPools',
+  () => ({
+    request: {
+      promise: (async function () {
+        return await getPools();
+      })(),
+    },
+    meta: {
+      getData: (data: IPoolsData) => data,
+    },
+  }),
+);
