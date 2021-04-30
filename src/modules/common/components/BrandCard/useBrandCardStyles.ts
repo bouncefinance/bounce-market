@@ -9,7 +9,7 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
     textAlign: 'center',
     transition: '0.2s',
     '&:hover': {
-      borderColor: fade(theme.palette.text.primary, 0.2)
+      borderColor: fade(theme.palette.text.primary, 0.3)
     }
   },
 
