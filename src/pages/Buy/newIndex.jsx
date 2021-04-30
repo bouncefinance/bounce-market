@@ -1132,9 +1132,13 @@ export default function NewIndex() {
                                         <FormattedMessage id="pages.buy.OwnedBy" />
                                         <span>
                                             {
+                                                nftInfo.owneraddress 
+                                                ?
                                                 (nftInfo.owneraddress && ` ${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)} ${nftInfo.ownername && '(' + nftInfo.ownername + ')'}`)
                                                 ||
                                                 (state.owneraddress && ` ${String(state.owneraddress).substr(0, 5) + '...' + String(state.owneraddress).substr(-4)}`)
+                                                :
+                                                ' ...'
                                             }
                                         </span>
                                     </p>
@@ -1145,7 +1149,7 @@ export default function NewIndex() {
                                     </div>}
                                 </div>
                                 <div className="desc">
-                                    <p>{nftInfo.description || state.description || wrapperIntl("pages.buy.descriptionLoading")}</p>
+                                    <p>{nftInfo?.description || state?.description || wrapperIntl("pages.buy.descriptionLoading")}</p>
                                     {/* <span>Read more</span> */}
 
                                 </div>
