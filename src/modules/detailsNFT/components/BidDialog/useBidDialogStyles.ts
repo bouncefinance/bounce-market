@@ -19,10 +19,15 @@ export const useBidDialogStyles = makeStyles<Theme>(theme => ({
     height: 40,
     padding: 0,
     color: theme.palette.text.primary,
+    border: 'none',
 
     [theme.breakpoints.up('md')]: {
       top: 20,
       right: 20,
+    },
+
+    '&:hover': {
+      border: 'none',
     },
   },
 
@@ -100,11 +105,24 @@ export const useBidDialogStyles = makeStyles<Theme>(theme => ({
     width: '100%',
     height: '50%',
     padding: 0,
-    borderRadius: 'inherit',
+    border: 'none',
+
+    '&:hover': {
+      border: 'none',
+      background: fade(theme.palette.text.primary, 0.04),
+    },
 
     '& + &': {
       borderTop: `1px solid ${fade(theme.palette.text.primary, 0.1)}`,
     },
+  },
+
+  spinBtnUp: {
+    borderRadius: '0 8px 0 0',
+  },
+
+  spinBtnDown: {
+    borderRadius: '0 0 8px 0',
   },
 
   spinBtnIcon: {

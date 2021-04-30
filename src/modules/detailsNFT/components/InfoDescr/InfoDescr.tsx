@@ -87,7 +87,7 @@ export const InfoDescr = ({
               variant="text"
               onClick={toggleExpanded(false)}
             >
-              {t('details-nft.descr-short')} ⬇
+              {t('details-nft.descr-short')} ⬆
             </Button>
           </Box>
         )}
