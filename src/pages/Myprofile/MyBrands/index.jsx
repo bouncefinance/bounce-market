@@ -135,7 +135,6 @@ export default function Index() {
         })
         console.log(list)
         setBrandList(list)
-
     }
 
     const getBrandInfoByAccount = async () => {
@@ -168,7 +167,7 @@ export default function Index() {
                                 setModalStatus(approveStatus)
                             }}>按钮</button>
                         </li> */}
-                            {brand_list.filter(item => item.contractaddress !== ZERO_ADDRESS).map((item) => {
+                            {brandList.filter(item => item.contractaddress !== ZERO_ADDRESS).map((item) => {
                                 return <li key={item.id} onClick={() => {
                                     history.push(`/MyBrands/${item.id}/All`)
                                 }}>

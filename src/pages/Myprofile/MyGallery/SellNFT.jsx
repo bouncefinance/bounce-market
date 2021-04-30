@@ -23,7 +23,7 @@ import icon_HT from '@assets/images/wallet/icon_HT.svg'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
-export default function SellNFT () {
+export default function SellNFT() {
 	const { chainId } = useActiveWeb3React()
 
 	const { wrapperIntl } = useWrapperIntl()
@@ -97,6 +97,7 @@ export default function SellNFT () {
 	const [duration, setDuration] = useState(0);
 
 	const [nftInfo, setNftId] = useState();
+	const [nftCount, setNftCount] = useState(0)
 
 	const NavList = [
 		{
@@ -139,24 +140,24 @@ export default function SellNFT () {
 		}
 		if (reservePrice && minimumBid && parseFloat(minimumBid) >= parseFloat(reservePrice)) {
 			console.log("parseFloat(reservePrice) * 0.9: ", `${parseFloat(reservePrice) * 0.9}`)
-			console.log("reservePrice2: ", `${parseFloat(reservePrice) * 0.9}`.slice(0,reservePrice.length+1))
-			set_MinimumBid(`${parseFloat(reservePrice) * 0.9}`.slice(0,reservePrice.length+1));
+			console.log("reservePrice2: ", `${parseFloat(reservePrice) * 0.9}`.slice(0, reservePrice.length + 1))
+			set_MinimumBid(`${parseFloat(reservePrice) * 0.9}`.slice(0, reservePrice.length + 1));
 		}
 		if (directPurchasePrice && minimumBid && parseFloat(minimumBid) > parseFloat(directPurchasePrice)) {
 			console.log("parseFloat(directPurchasePrice) * 0.9: ", `${parseFloat(directPurchasePrice) * 0.9}`)
-			console.log("-1: ", `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+1).charAt(-1))
+			console.log("-1: ", `${parseFloat(directPurchasePrice) * 0.9}`.slice(0, directPurchasePrice.length + 1).charAt(-1))
 			set_MinimumBid(
 				() => {
-					let temp = `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+1)
-					if (temp.charAt(temp.length-1) === '.')
-						return `${parseFloat(directPurchasePrice) * 0.9}`.slice(0,directPurchasePrice.length+2)
+					let temp = `${parseFloat(directPurchasePrice) * 0.9}`.slice(0, directPurchasePrice.length + 1)
+					if (temp.charAt(temp.length - 1) === '.')
+						return `${parseFloat(directPurchasePrice) * 0.9}`.slice(0, directPurchasePrice.length + 2)
 					else
 						return temp
 				}
 			);
 		}
 
-		console.log({directPurchasePrice: directPurchasePrice, reservePrice: reservePrice, minimumBid: minimumBid})
+		// console.log({ directPurchasePrice: directPurchasePrice, reservePrice: reservePrice, minimumBid: minimumBid })
 	}, [directPurchasePrice, reservePrice, minimumBid]);
 
 	const render_LeftItems = (auctionType) => {
@@ -177,6 +178,7 @@ export default function SellNFT () {
 							gridArea="Price"
 							options={unitOptions}
 							fixedSwapUnit={fixedSwap_Unit}
+							setNftCount={setNftCount}
 						/>
 
 						<InstructionsDropdown
@@ -209,6 +211,7 @@ export default function SellNFT () {
 							unit={priceUnit}
 							newUnit={fixedSwap_Unit}
 							fees={fees}
+							nftCount={nftCount&&nftCount}
 						/>
 					</>
 				);
@@ -258,6 +261,7 @@ export default function SellNFT () {
 								nftInfo={nftInfo}
 								setAmount={setAmount}
 								fixedSwapUnit={fixedSwap_Unit}
+								setNftCount={setNftCount}
 							/>
 							<SelectDuration
 								className="Expriration_Date"
@@ -301,6 +305,7 @@ export default function SellNFT () {
 							minIncr={minimumBid * 0.05}
 							amount={amount || 1}
 							newUnit={fixedSwap_Unit}
+							nftCount={nftCount && nftCount}
 						/>
 					</>
 				);
@@ -373,26 +378,6 @@ const Page = styled.div`
 	display: grid;
 	grid-template-rows: 86px 1fr;
 `;
-/* 
-const BreadcrumbNav = styled.div`
-	font-family: IBM Plex Mono;
-	font-style: normal;
-	font-weight: 500;
-	font-size: 12px;
-	line-height: 16px;
-	display: flex;
-	color: #1f191b;
-	opacity: 0.8;
-
-	padding-top: 24px;
-	padding-bottom: 44px;
-
-	box-sizing: border-box;
-
-	span {
-		opacity: 0.4;
-	}
-`; */
 
 const PageBody = styled.div`
 	width: 1100px;

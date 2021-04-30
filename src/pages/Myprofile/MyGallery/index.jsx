@@ -104,12 +104,12 @@ export default function Index() {
 
     const findDataByRecord_soldOutNft_721 = myNftData.nft721Items.find(item => {
       return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
-        parseInt(item.token_id) === record_soldOutNft.tokenId
+        parseInt(item.token_id) === record_soldOutNft.tokenId && record_soldOutNft.balance !== 0
     })
 
     const findDataByRecord_soldOutNft_1155 = myNftData.nft1155Items.find(item => {
       return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
-        parseInt(item.token_id) === record_soldOutNft.tokenId
+        parseInt(item.token_id) === record_soldOutNft.tokenId && record_soldOutNft.balance === 0
     })
     // console.log('record_soldOutNft', record_soldOutNft)
     // console.log('findDataByRecord_soldOutNft_721', findDataByRecord_soldOutNft_721)
@@ -173,11 +173,11 @@ export default function Index() {
 
     if (!account || myTradeData.length === 0 || myNftData.length === 0) return
 
-    if(!myTradeData.tradePools){
+    if (!myTradeData.tradePools) {
       myTradeData.tradePools = []
     }
 
-    if(!myTradeData.tradeAuctions){
+    if (!myTradeData.tradeAuctions) {
       myTradeData.tradeAuctions = []
     }
 
@@ -191,12 +191,24 @@ export default function Index() {
     const trade721_cts = myTradeData.tradePools.map(item => item.token0 || item.contract);
     const trade1155Items_cts = myTradeData.tradeAuctions.map(item => item.token0 || item.contract)
 
-    const tradePools = myTradeData.tradePools.map(item => {
+    let tradePools = myTradeData.tradePools.map(item => {
       return {
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
       }
     }).filter(item => item.state !== 1);
+
+    // 判断是否是刚 unList 了，如果是则过滤掉
+    console.log(tradePools)
+    const record_cancelListNft = JSON.parse(window.localStorage.getItem('record_cancelListNft'))
+    if (record_cancelListNft) {
+      tradePools = tradePools.filter(item => {
+        return item.poolType !== AUCTION_TYPE.FixedSwap || item.poolId !== record_cancelListNft.poolId
+      })
+    } else {
+      window.localStorage.setItem('record_cancelListNft', null)
+    }
+    console.log(tradePools)
 
     const tradeAuctions = myTradeData.tradeAuctions.map(item => {
       return {
@@ -295,7 +307,7 @@ export default function Index() {
             ?
             <ul className="list">
               {statusList.map((item, index) => {
-                return <li key={item.id+'_'+index}>
+                return <li key={item.id + '_' + index}>
                   {item.isPendding ? <PenddingCardItem pools={item} category={item.category} /> : <CardItem
                     nftId={item.id}
                     cover={item.fileurl}
