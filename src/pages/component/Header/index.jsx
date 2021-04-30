@@ -241,19 +241,19 @@ export default function Index() {
     useEffect(() => {
         dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
 
-        if (active && chainId === 56) {
+        if (active && chainId === 128) {
             getUserInfo();
             return
         }
 
-        if (chainId && (chainId !== 56)) {
+        if (chainId && (chainId !== 128)) {
             dispatch({
                 type: 'Modal_Message',
                 showMessageModal: true,
                 modelType: 'error',
-                modelMessage: wrapperIntl("header.SelectBSC"),
-                subsequentActionType: "connectToBSCChain",
-                modelUrlMessage: wrapperIntl("header.SwitchToBSC"),
+                modelMessage: wrapperIntl("header.SelectHeco"),
+                subsequentActionType: "ConnectToHecoChain",
+                modelUrlMessage: wrapperIntl("header.SwitchToHeco"),
                 modelTimer: 24 * 60 * 60 * 1000,
                 canClose: true, 
             });

@@ -811,7 +811,7 @@ BounceFixedSwapNFT_CT.methods.createErc721(_name, _token0, _token1, _tokenId, _a
 
 - _name: NFT name
 - _token0:   The contract address of the NFT for sale
-- _token1:  The contract address of the collection subject (ETH, BNB) is 0x000...000).
+- _token1:  The contract address of the collection subject (ETH, HT) is 0x000...000).
 - _tokenId: NFT ID for sale
 - _amountTotla1: The selling price, and the units are token1 symbols
 - _onlyBot: Is the participant a BOT (AUCTION) holder
@@ -838,7 +838,7 @@ BounceFixedSwapNFT_CT.methods.createErc1155(_name, _token0, _token1, _tokenId, _
 
 - _name: NFT name
 - _token0:   The contract address of the NFT for sale
-- _token1:  The contract address of the collection subject (ETH, BNB) is 0x000...000).
+- _token1:  The contract address of the collection subject (ETH, HT) is 0x000...000).
 
 - _tokenId: NFT ID for sale
 - _amountTotal0: Number of NFTs to sell
@@ -884,7 +884,7 @@ BounceFixedSwapNFT_CT.methods.cancel(poolId)
 
 **approve**
 
-> If it is non-ETH, the base currency of BNB is used as the payment currency, which needs to be approved before consumption, and the platform adopts one-time authorization
+> If it is non-ETH, the base currency of HT is used as the payment currency, which needs to be approved before consumption, and the platform adopts one-time authorization
 
 ```jsx
  const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)
@@ -906,7 +906,7 @@ BounceEnglishAuctionNFT_CT.methods.createErc721(_name, _token0, _token1, _tokenI
 
 - name: NFT name
 - _token0:   The contract address of the NFT for sale
-- _token1: The contract address of the collection subject (ETH, BNB) is 0x000...000).
+- _token1: The contract address of the collection subject (ETH, HT) is 0x000...000).
 
 - _amountMax1: Direct Purchase Price, where the buyer can buy the item directly at the Price of one bid, bypassing the auction
 - _amountMin1: Minimum Bid,The starting price of the item
@@ -921,7 +921,7 @@ BounceEnglishAuctionNFT_CT.methods.createErc721(_name, _token0, _token1, _tokenI
 
 **approve**
 
-> If it is non-ETH, the base currency of BNB is used as the payment currency, which needs to be approved before consumption, and the platform adopts one-time authorization
+> If it is non-ETH, the base currency of HT is used as the payment currency, which needs to be approved before consumption, and the platform adopts one-time authorization
 
 ```jsx
  const BounceERC20_CT = getContract(library, BounceERC20.abi, poolInfo.token1.contract)

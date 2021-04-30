@@ -352,7 +352,7 @@ export default function Marketplace() {
 
           <PullRadioBox prefix={'Currency:'}
             width={'205px'} options={coinList}
-            // defaultValue={chainId === 56 ? 'BNB' : 'ETH'} 
+            // defaultValue={chainId === 56 ? 'HT' : 'ETH'} 
             defaultValue={'All'}
             onChange={(item) => {
               if (!item) return

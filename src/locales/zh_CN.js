@@ -42,8 +42,8 @@ const zh_CN = {
         logout: '退出',
         search: '搜索',
         search_p: '搜索用户、品牌、NFT',
-        SelectBSC: "请连接BSC网络，",
-        SwitchToBSC: "点击此处切换至BSC网络",
+        SelectHeco: "请连接Heco网络，",
+        SwitchToHeco: "点击此处切换至Heco网络",
         ConnectWallet: "点击此处连接钱包",
     },
 

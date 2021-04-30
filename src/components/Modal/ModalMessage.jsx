@@ -95,29 +95,28 @@ export default function ModalMessage() {
 
   
 
-  const ConnectToBSCChain = async () => {
+  const ConnectToHecoChain = async () => {
     let ethereum = window.ethereum;
 
     if (typeof ethereum !== "undefined") {
       console.log("MetaMask is installed!");
     }
 
-    const BSCChainInfo = [
+    const HecoChainInfo = [
       {
-        chainId: "0x38",
-        chainName: "Binance Smart Chain Mainnet",
+        chainId: "0x80",
+        chainName: "Huobi ECO Chain Mainnet",
         nativeCurrency: {
-          name: "BNB",
-          symbol: "BNB",
+          name: "HT",
+          symbol: "HT",
           decimals: 18,
         },
-        /* rpcUrls: ["https://bsc-dataseed.binance.org/"], */
-        rpcUrls: ["https://bsc-dataseed4.binance.org"],
-        blockExplorerUrls: ["https://bscscan.com/"],
+        rpcUrls: ["https://http-mainnet.hecochain.com"],
+        blockExplorerUrls: ["https://testnet.huobichain.com/"],
       },
     ];
 
-      const result = await ethereum.request({method: 'wallet_addEthereumChain', params: BSCChainInfo}).catch()
+      const result = await ethereum.request({method: 'wallet_addEthereumChain', params: HecoChainInfo}).catch()
       console.log("switch chain")
       window.location.reload()
 
@@ -134,8 +133,8 @@ export default function ModalMessage() {
 			}
 			break;
 
-		case "connectToBSCChain":
-			ConnectToBSCChain();
+		case "ConnectToHecoChain":
+			ConnectToHecoChain();
 			break;
 
 		case "connectWallet":

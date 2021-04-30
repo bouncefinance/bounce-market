@@ -5,7 +5,7 @@ import { useActiveWeb3React } from "@/web3";
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
-import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
+// import icon_HT from '@assets/images/wallet/icon_HT.svg'
 import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 import icon_HT from '@assets/images/wallet/icon_HT.svg'
 
@@ -239,7 +239,7 @@ export default function AmountInput({
                     afterFix
                     &&
                     <p className='afterFix'>
-                        <img src={chainId === 56 ? icon_BNB :chainId === 128 ? icon_HT : icon_ETH_new} alt="" />
+                        <img src={chainId === 56 ? icon_HT :chainId === 128 ? icon_HT : icon_ETH_new} alt="" />
                         {afterFix}
                     </p>
 

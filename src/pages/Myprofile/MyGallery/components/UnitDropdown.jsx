@@ -186,7 +186,7 @@ export default function PullRadioBox({
 									setOpen(false);
 								}}
 							>
-								{(chainId === 56 && item.con === 'ETH') ? 'BNB' : item.value}
+								{(chainId === 56 && item.con === 'ETH') ? 'HT' : item.value}
 							</li>
 						);
 					})}
