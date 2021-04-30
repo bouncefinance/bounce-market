@@ -55,8 +55,6 @@ export default function Index() {
 // eslint-disable-next-line
     const [brandList, setBrandList] = useState([])
 
-    const [brandList, setBrandList] = useState([])
-
     useEffect(() => {
         if (!active) return
         const getCreatedBrand = async () => {
