@@ -24,7 +24,7 @@ const CardItemStyled = styled.div`
     position: relative;
     
 
-    .img_wrapper{
+    .img_wrapper {
         width: 262px;
         height: 262px;
         cursor: pointer;
