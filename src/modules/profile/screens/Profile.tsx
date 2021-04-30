@@ -254,6 +254,10 @@ export const Profile = () => {
         <TabPanel value={tab} index={TabList.brands}>
           <TabBrands items={brands} />
         </TabPanel>
+
+        <TabPanel value={tab} index={TabList.following}>
+
+        </TabPanel>
       </Container>
     </Section>
   );
