@@ -135,6 +135,11 @@
   "profile": {
     "customize-btn": "Customize",
     "follow": "Follow",
-    "subscribers": "Subscribers"
+    "subscribers": "Subscribers",
+    "brands": {
+      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}",
+      "addNewItem": "Add new item",
+      "createNewItem": "Create new item"
+    }
   }
 }

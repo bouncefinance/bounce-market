@@ -12,6 +12,7 @@ import { TabItemProps, TabItems } from '../components/TabItems';
 import { TabPanel } from '../components/TabPanel';
 import { Tabs } from '../components/Tabs';
 import { useProfileStyles } from './useProfileStyles';
+import {TabBrandProps, TabBrands} from "../components/TabBrands";
 
 const items: TabItemProps[] = [
   {
@@ -67,6 +68,21 @@ const items: TabItemProps[] = [
         },
       ],
     },
+  },
+];
+
+const brands: TabBrandProps[] = [
+  {
+    href: '#',
+    title: 'Polka Pet World',
+    img: 'https://picsum.photos/120?random=10',
+    itemsCount: 0
+  },
+  {
+    href: '#',
+    title: 'Polka Pet World',
+    img: 'https://picsum.photos/120?random=20',
+    itemsCount: 20
   },
 ];
 
@@ -156,7 +172,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={TabList.brands}>
-          brands
+          <TabBrands items={brands} />
         </TabPanel>
       </Container>
     </Section>
