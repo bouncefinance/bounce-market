@@ -144,6 +144,15 @@
       "liked": "Liked",
       "following": "Following",
       "followers": "Followers"
+    },
+    "activity": {
+      "event": "Event",
+      "item": "Item",
+      "price": "Price",
+      "quantity": "Quantity",
+      "from": "From",
+      "to": "To",
+      "date": "Date"
     }
   }
 }
