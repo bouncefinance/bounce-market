@@ -188,11 +188,11 @@ export function AirHome() {
 
   const handleBrandItems = (tradeData) => {
 
-    const tradeAuctions = tradeData.tradeAuctions.filter(item => {
+    const tradeAuctions = (tradeData.tradeAuctions || []).filter(item => {
       return item.state !== 1 && String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase()
     })
 
-    const tradePools = tradeData.tradePools.filter(item => {
+    const tradePools = (tradeData.tradePools || []).filter(item => {
       return item.state !== 1 && String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase()
     })
 
@@ -219,12 +219,12 @@ export function AirHome() {
           // console.log(tradeArr)
           const list = tradeArr.map(poolInfo => {
             const item = res.data.data.find(item => poolInfo.tokenId === item.id);
-            // console.log(poolInfo)
+            console.log(poolInfo)
             return {
               ...item,
               poolType: poolInfo.amount_total0 ? AUCTION_TYPE.FixedSwap : AUCTION_TYPE.EnglishAuction,
               poolId: poolInfo ? poolInfo.poolId : null,
-              price: poolInfo && poolInfo.price,
+              price: poolInfo && (poolInfo.price || poolInfo.lastestBidAmount),
               createTime: poolInfo && poolInfo.createTime,
               token1: poolInfo && poolInfo.token1
             }

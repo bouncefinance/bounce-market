@@ -95,7 +95,7 @@ export default function PopularItem({ style = {}, itemInfo, setIsConnectWallect 
     const [newPrice, setNewPrice] = useState(wrapperIntl("home.PopularItem.LoadingPrice"))
 
     useEffect(() => {
-        console.log("itemInfo: ", itemInfo)
+        // console.log("itemInfo: ", itemInfo)
         getPriceByToken1(itemInfo.price, itemInfo.token1)
         // eslint-disable-next-line
     }, [itemInfo])
