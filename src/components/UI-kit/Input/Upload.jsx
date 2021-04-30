@@ -51,6 +51,7 @@ const UploadStyled = styled.div`
             font-weight: 700;
             margin-bottom: 12px;
             color: rgba(0,0,0,.7);
+            
         }
 
         span{
@@ -158,7 +159,7 @@ export default function Upload({
             console.log(file)
             if (file.size > 100 * 1024 * 1024 || file.type !== "video/mp4") {
                 dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.videoError") });
-                return ;
+                return;
             }
             let reader = new FileReader();  //调用FileReader
             reader.readAsDataURL(file); //将文件读取为 DataURL(base64)
@@ -175,6 +176,14 @@ export default function Upload({
     }
 
     // 'https://account.bounce.finance:16000/api/v1/fileupload'
+    const wrapperOmit = (str) => {
+        if (String(str).length > 20) {
+            const str1 = String(str).substr(0, 10)
+            const str2 = String(str).substr(-10)
+            return `${str1}...${str2}`
+        }
+        return str
+    }
 
     return (
         <UploadStyled width={width} height={height} >
@@ -184,7 +193,7 @@ export default function Upload({
             </div>
 
             <div className="right_info">
-                <p>{infoTitle}</p>
+                <p>{wrapperOmit(infoTitle)}</p>
                 <span>{infoTip[0]}</span>
                 <span>{infoTip[1]}</span>
             </div>

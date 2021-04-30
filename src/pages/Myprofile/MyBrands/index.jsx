@@ -52,6 +52,8 @@ export default function Index() {
     const { active, library, chainId, account } = useActiveWeb3React()
     const [brandAddress, setbrandAddress] = useState('')
     const [brandAddContract, setbrandAddContract] = useState(true)
+// eslint-disable-next-line
+    const [brandList, setBrandList] = useState([])
 
     const [brandList, setBrandList] = useState([])
 
@@ -81,69 +83,74 @@ export default function Index() {
     }, [active])
     const hasAddressButNotBrand = brand_list.length === 0 && brandAddContract
 
-    // useEffect(() => {
-    //     if (!active) return
-    //     getBrandListByChain()
-    // }, [active])
+    useEffect(() => {
+        if (!active) return
+        getBrandListByChain()
+        // eslint-disable-next-line
+    }, [active])
 
-    // const getBrandListByChain = async () => {
+    const getBrandListByChain = async () => {
 
-    //     try {
-    //         const params = {
-    //             offset: 0,
-    //             count: 100,
-    //             user_address: account
-    //         }
+        try {
+            const params = {
+                offset: 0,
+                count: 100,
+                user_address: account
+            }
 
-    //         const brandListRes = await axios.get('/brands', { params })
-    //         if (brandListRes.status === 200 && brandListRes.data.code === 200) {
-    //             const data = brandListRes.data.data
+            const brandListRes = await axios.get('/brands', { params })
+            if (brandListRes.status === 200 && brandListRes.data.code === 200) {
+                const data = brandListRes.data.data
 
-    //             const brandList_721 = (data.erc721 || []).map(item => {
-    //                 return {
-    //                     standard: 1,
-    //                     ...item
-    //                 }
-    //             })
+                const brandList_721 = (data.erc721 || []).map(item => {
+                    return {
+                        standard: 1,
+                        ...item
+                    }
+                })
 
-    //             const brandList_1155 = (data.erc1155 || []).map(item => {
-    //                 return {
-    //                     standard: 2,
-    //                     ...item
-    //                 }
-    //             })
+                const brandList_1155 = (data.erc1155 || []).map(item => {
+                    return {
+                        standard: 2,
+                        ...item
+                    }
+                })
 
-    //             const brandList = [...brandList_721, ...brandList_1155]
-    //             linkBrandInfo(brandList)
-    //         }
-    //     } catch (error) {
-    //         console.error('Failed to obtain brand information')
-    //     }
-    // }
+                const brandList = [...brandList_721, ...brandList_1155]
+                linkBrandInfo(brandList)
+            }
+        } catch (error) {
+            console.error('Failed to obtain brand information')
+        }
+    }
 
-    // const linkBrandInfo = async (brandList) => {
-    //     const brandInfo = await getBrandInfoByAccount()
-    //     console.log(brandList, brandInfo)
-    //     const list = brandList.map(listItem => {
-    //         console.log(listItem, brandInfo)
-    //         const tarItem = brandInfo.find(brandItem => String(brandItem.contractaddress).toLowerCase() === String(listItem.contract_address).toLowerCase())
-    //         console.log(tarItem)
-    //     })
+    const linkBrandInfo = async (brandList) => {
+        const brandInfo = await getBrandInfoByAccount()
+        console.log(brandList, brandInfo)
+        const list = brandList.map(listItem => {
+            console.log(listItem, brandInfo)
+            const tarItem = brandInfo.find(brandItem => String(brandItem.contractaddress).toLowerCase() === String(listItem.contract_address).toLowerCase())
+            return {
+                ...listItem,
+                ...tarItem
+            }
+        })
+        console.log(list)
+        setBrandList(list)
+    }
 
-    // }
-
-    // const getBrandInfoByAccount = async () => {
-    //     try {
-    //         const brandInfoRes = await sign_Axios.post('/api/v2/main/auth/getaccountbrands', { accountaddress: account })
-    //         if (brandInfoRes.status === 200 && brandInfoRes.data.code === 1) {
-    //             return brandInfoRes.data.data
-    //         } else {
-    //             return []
-    //         }
-    //     } catch (error) {
-    //         return []
-    //     }
-    // }
+    const getBrandInfoByAccount = async () => {
+        try {
+            const brandInfoRes = await sign_Axios.post('/api/v2/main/auth/getaccountbrands', { accountaddress: account })
+            if (brandInfoRes.status === 200 && brandInfoRes.data.code === 1) {
+                return brandInfoRes.data.data
+            } else {
+                return []
+            }
+        } catch (error) {
+            return []
+        }
+    }
 
 
     return (
@@ -162,7 +169,7 @@ export default function Index() {
                                 setModalStatus(approveStatus)
                             }}>按钮</button>
                         </li> */}
-                            {brand_list.filter(item => item.contractaddress !== ZERO_ADDRESS).map((item) => {
+                            {brandList.filter(item => item.contractaddress !== ZERO_ADDRESS).map((item) => {
                                 return <li key={item.id} onClick={() => {
                                     history.push(`/MyBrands/${item.id}/All`)
                                 }}>

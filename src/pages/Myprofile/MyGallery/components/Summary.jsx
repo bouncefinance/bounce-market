@@ -156,7 +156,7 @@ const SummaryWrapper = styled.div`
 	}
 `;
 
-function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit }) {
+function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit,nftCount }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
 	const [btnLock, setBtnLock] = useState(true);
@@ -166,6 +166,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 	const { wrapperIntl } = useWrapperIntl()
 
 	useEffect(() => {
+		console.log(nftCount)
 		if (auctionType === 'setPrice') {
 			if (price && nftInfo) {
 				setBtnLock(false)
@@ -179,7 +180,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				setBtnLock(true)
 			}
 		}
-	}, [auctionType, price, unit, duration, fees, nftInfo, minPrice, maxPrice])
+	}, [auctionType, price, unit, duration, fees, nftInfo, minPrice, maxPrice,nftCount])
 
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
@@ -191,6 +192,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 			const _tokenId = nftInfo.id
 			const _amountTotal1 = numToWei(price, newUnit.decimals)
 			const _onlyBot = false
+
 
 			const BounceFixedSwapNFT_CT = getContract(library, BounceFixedSwapNFT.abi, getFixedSwapNFT(chainId))
 
@@ -231,7 +233,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
 							const soldOutNft = {
 								contract: _token0,
-								tokenId: _tokenId
+								tokenId: _tokenId,
+								balance: 0
 							}
 							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
 
@@ -272,12 +275,12 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
 							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
-							// TODO 对1155一次没有卖完的情况需要再做讨论
-							// const soldOutNft = {
-							// 	contract: _token0,
-							// 	tokenId: _tokenId,
-							// }
-							// window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
+							const soldOutNft = {
+								contract: _token0,
+								tokenId: _tokenId,
+								balance: parseInt(nftCount) - parseInt(amount)
+							}
+							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
 
 
 							history.push("/MyGallery");
@@ -325,7 +328,7 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 					if (!isOwner) showTransferByStatus('errorStatus')
 					let approveResult = await hasApprove_ERC_721(_token0, _tokenId, getEnglishAuctionNFT(chainId))
 					if (!approveResult) {
-						
+
 						approveResult = await BounceERC721WithSign_CT.methods.approve(
 							getEnglishAuctionNFT(chainId),
 							parseInt(_tokenId)
@@ -346,7 +349,8 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
 							const soldOutNft = {
 								contract: _token0,
-								tokenId: _tokenId
+								tokenId: _tokenId,
+								balance: 0
 							}
 							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
 
@@ -389,12 +393,12 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
 
-							// TODO 对1155一次没有卖完的情况需要再做讨论
-							// const soldOutNft = {
-							// 	contract: _token0,
-							// 	tokenId: _tokenId,
-							// }
-							// window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
+							const soldOutNft = {
+								contract: _token0,
+								tokenId: _tokenId,
+								balance: parseInt(nftCount) - parseInt(amount)
+							}
+							window.localStorage.setItem('record_soldOutNft', JSON.stringify(soldOutNft))
 
 							history.push("/MyGallery");
 							showTransferByStatus('successStatus')
