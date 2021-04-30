@@ -107,8 +107,8 @@ export default function ModalMessage() {
         chainId: "0x38",
         chainName: "Binance Smart Chain Mainnet",
         nativeCurrency: {
-          name: "BNB",
-          symbol: "BNB",
+          name: "HT",
+          symbol: "HT",
           decimals: 18,
         },
         /* rpcUrls: ["https://bsc-dataseed.binance.org/"], */

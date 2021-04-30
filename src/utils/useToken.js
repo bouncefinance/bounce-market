@@ -12,7 +12,7 @@ import axios from "axios";
 
 // import { getUSDTAddress, getBUSDAddress, getUSDCAddress } from "@/web3/address_list/token";
 
-// import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
+// import icon_HT from '@assets/images/wallet/icon_HT.svg'
 // import icon_BUSD from '@assets/images/wallet/icon_BUSD.png'
 // import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 // import icon_USDT from '@assets/images/wallet/icon_USDT.svg'
@@ -145,13 +145,13 @@ export default function useToken() {
         if (tokenAddr === ZERO_ADDRESS) {
             const balanceOf = account ? await web3.eth.getBalance(account) : 0
             if (flag) {
-                price = _chainId === 56 || _chainId === 97 ? await queryPrice('BNB') : _chainId === 128 ? await queryPrice('HT') : await queryPrice('ETH')
+                price = _chainId === 56 || _chainId === 97 ? await queryPrice('HT') : _chainId === 128 ? await queryPrice('HT') : await queryPrice('ETH')
             }
             return {
                 chainId: _chainId,
                 contract: tokenAddr,
                 decimals: 18,
-                symbol: _chainId === 1 || _chainId === 4 ? 'ETH' : _chainId === 128 ? 'HT' : 'BNB',
+                symbol: _chainId === 1 || _chainId === 4 ? 'ETH' : _chainId === 128 ? 'HT' : 'HT',
                 balanceOf,
                 balance: weiToNum(balanceOf),
                 price
@@ -198,7 +198,7 @@ export default function useToken() {
     const queryPrice = async (tokenSymbol) => {
         let price = 0
         let code = 'ethereum'
-        if (String(tokenSymbol).toLowerCase() === 'bnb') {
+        if (String(tokenSymbol).toLowerCase() === 'ht') {
             code = 'binance-coin'
         } else if (String(tokenSymbol).toLowerCase() === 'auction') {
             code = 'auction'

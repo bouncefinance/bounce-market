@@ -5,7 +5,6 @@ import UnitDropdown from "./UnitDropdown";
 import { useActiveWeb3React } from "@/web3";
 import useToken from "@/utils/useToken";
 
-import icon_BNB from '@assets/images/wallet/icon_BNB.svg'
 import icon_ETH_new from '@assets/images/wallet/icon_ETH_new.svg'
 import icon_HT from '@assets/images/wallet/icon_HT.svg'
 
@@ -39,9 +38,9 @@ function InputPrice({
 		if (!chainId) return;
 		setCurrentChainId(chainId);
 		setSelToken({
-			value: chainId === 56 ? 'BNB' : chainId === 128 ? 'HT' : 'ETH',
+			value: chainId === 56 ? 'HT' : chainId === 128 ? 'HT' : 'ETH',
 			contract: '0x0000000000000000000000000000000000000000',
-			icon: chainId === 56 ? icon_BNB : chainId === 128 ? icon_HT : icon_ETH_new,
+			icon: chainId === 56 ? icon_HT : chainId === 128 ? icon_HT : icon_ETH_new,
 			isShow: true,
 			decimals: 18
 		})
@@ -144,7 +143,7 @@ function InputPrice({
 					width="115px"
 					height="32px"
 					options={options.filter(item => item.isShow)}
-					icon={(currentChainId === 56 && selToken.value === 'ETH') ? icon_BNB : selToken.icon}
+					icon={(currentChainId === 56 && selToken.value === 'ETH') ? icon_HT : selToken.icon}
 					fixedSwapUnitVal={selToken?.value}
 					onChange={(item) => {
 						// console.log(item)
