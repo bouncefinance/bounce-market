@@ -38,7 +38,7 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
             <Box className={classes.itemContent}>
               <Link to={item.href} className={classes.itemUserNameLink}>
                 <Typography
-                  variant="h5"
+                  variant='h5'
                   className={classes.itemName}
                   title={item.userName}
                 >
@@ -46,8 +46,8 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
                 </Typography>
                 {item.userFollowers ? (
                   <Typography
-                    color="textSecondary"
-                    variant="body2"
+                    color='textSecondary'
+                    variant='body2'
                     className={classes.userFollowers}
                   >
                     <UserIcon className={classes.userFollowersIcon} />
@@ -60,9 +60,10 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
           <Grid item xs={12} sm={4} lg={3} className={classes.itemFollowWrap}>
             {item.follow ? (
               <Button
-                onClick={() => {}}
+                onClick={() => {
+                }}
                 className={classes.followButton}
-                variant="outlined"
+                variant='outlined'
                 fullWidth={false}
                 rounded
               >
@@ -70,9 +71,10 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
               </Button>
             ) : (
               <Button
-                onClick={() => {}}
+                onClick={() => {
+                }}
                 className={classes.followButton}
-                variant="outlined"
+                variant='outlined'
                 fullWidth={false}
                 rounded
               >
@@ -86,7 +88,11 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
   );
 
   return (
-    <Grid container spacing={0} className={classes.root}>
+    <Grid
+      container
+      spacing={0}
+      className={classes.root}
+    >
       {renderListItems}
     </Grid>
   );

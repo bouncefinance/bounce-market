@@ -43,7 +43,7 @@ export const TabBrands = ({ items }: ITabBrandsProps) => {
         <Grid
           container
           spacing={4}
-          className={classNames(classes.root, className)}
+          className={classes.root}
         >
           {renderedBrands}
           {renderEmpty}
