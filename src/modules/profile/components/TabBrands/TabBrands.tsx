@@ -1,5 +1,8 @@
 import { Grid } from '@material-ui/core';
-import { BrandCard, IBrandCardProps } from 'modules/profile/components/BrandCard';
+import {
+  BrandCard,
+  IBrandCardProps,
+} from 'modules/profile/components/BrandCard';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { BrandEmptyCard } from '../BrandEmptyCard';
@@ -39,7 +42,11 @@ export const TabBrands = ({ className, items }: ITabBrandsProps) => {
   return (
     <>
       {items && (
-        <Grid container spacing={4} className={classNames(classes.root, className)}>
+        <Grid
+          container
+          spacing={4}
+          className={classNames(classes.root, className)}
+        >
           {renderedBrands}
           {renderEmpty}
         </Grid>
