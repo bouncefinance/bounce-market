@@ -20,18 +20,18 @@ export const BrandCard = ({ className, href, title, itemsCount, imgSrc }: IBrand
   const classes = useBrandCardStyles();
 
   return (
-    <Card className={classNames(classes.root, className)} variant="outlined">
+    <Card className={classNames(classes.root, className)} variant='outlined'>
 
       {itemsCount ?
         <div className={classes.createNewMiniBtnWrap}>
           <Tooltip title={t('profile.brands.createNewItem')} arrow>
             <Button
               className={classes.createNewMiniBtn}
-              variant="outlined"
+              variant='outlined'
               fullWidth={false}
               rounded
             >
-              <PlusIcon className={classNames(classes.icon, classes.iconInheritFontSize)}/>
+              <PlusIcon className={classNames(classes.icon, classes.iconInheritFontSize)} />
             </Button>
           </Tooltip>
         </div>
@@ -43,22 +43,22 @@ export const BrandCard = ({ className, href, title, itemsCount, imgSrc }: IBrand
           <Img
             src={imgSrc}
             className={classes.imgWrap}
-            ratio="1x1"
+            ratio='1x1'
           />
         </Box>
 
         <CardContent className={classes.content}>
-          <Typography variant="h5" className={classes.title} title={title}>
+          <Typography variant='h5' className={classes.title} title={title}>
             {title}
           </Typography>
 
           <Typography
-            color="textSecondary"
-            variant="body2"
+            color='textSecondary'
+            variant='body2'
             className={classes.subTitle}
           >
             {t('profile.brands.itemsCount', {
-              value: itemsCount
+              value: itemsCount,
             })}
           </Typography>
         </CardContent>
@@ -66,10 +66,10 @@ export const BrandCard = ({ className, href, title, itemsCount, imgSrc }: IBrand
       {!itemsCount ?
         <Button
           className={classNames(classes.addNewBtn, classes.addNewBtnInCard)}
-          variant="outlined"
+          variant='outlined'
           fullWidth={false}
           rounded
-          startIcon={<PlusIcon className={classNames(classes.icon, classes.iconInheritFontSize)}/>}
+          startIcon={<PlusIcon className={classNames(classes.icon, classes.iconInheritFontSize)} />}
         >
           {t('profile.brands.addNewItem')}
         </Button>
