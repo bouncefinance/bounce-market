@@ -41,7 +41,10 @@ const StyledCard = styled.div`
             font-size: 20px;
             line-height: 25px;
             color: #1F191B;
-            opacity: 0.8;            
+            opacity: 0.8;
+            height: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;          
             
             margin-top: 16px;
         }

@@ -148,6 +148,7 @@ const PageBodyRight = styled.div`
 		font-size: 12px;
 		line-height: 16px;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		color: #1f191b;
 		opacity: 0.5;
@@ -176,7 +177,7 @@ const InfoDropdowns = styled.div`
 	display: grid;
 `;
 
-function MyNFT () {
+function MyNFT() {
 	const { account, active } = useActiveWeb3React();
 	const history = useHistory();
 	const { nftId } = useParams();
@@ -204,44 +205,45 @@ function MyNFT () {
 	const { wrapperIntl } = useWrapperIntl()
 
 	useEffect(() => {
-		const getNFTInfoList = async (nftId) => {
-			if (!active) return;
-			const [contract, tokenId] = nftId.split('-')
-			const params = {
-				ct: contract,
-				id: parseInt(tokenId),
-			};
-
-			sign_Axios
-				.post("/api/v2/main/auth/getoneitembyid", params)
-				.then((res) => {
-					if (res.status === 200 && res.data.code === 1) {
-						/* alert("获取成功"); */
-						/* console.log(res); */
-						let NFTInfoList = res.data.data;
-						/* console.log(NFTInfoList) */
-						// console.log(JSON.stringify(NFTInfoList));
-						setNFTName(NFTInfoList.itemname);
-						// setDescriptionContent(NFTInfoList.description);
-						setSupply(NFTInfoList.supply);
-						setTokenID(NFTInfoList.id);
-						setTokenSymbol(NFTInfoList.itemsymbol);
-						setCreator(NFTInfoList.owneraddress);
-						setExternalLink(NFTInfoList.externallink);
-						setImgURL(NFTInfoList.fileurl);
-						setCategory(NFTInfoList.category);
-						setDescription(NFTInfoList.description || "")
-					} else {
-						dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
-					}
-				})
-				.catch((err) => {
-					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
-				});
-		};
+		if (!active) return
 		getNFTInfoList(nftId);
 		// eslint-disable-next-line
-	}, [ NFTInfo]);
+	}, [active, nftId]);
+
+	const getNFTInfoList = async (nftId) => {
+		const [contract, tokenId] = nftId.split('-')
+		const params = {
+			ct: contract,
+			id: parseInt(tokenId),
+		};
+
+		sign_Axios
+			.post("/api/v2/main/auth/getoneitembyid", params)
+			.then((res) => {
+				if (res.status === 200 && res.data.code === 1) {
+					/* alert("获取成功"); */
+					/* console.log(res); */
+					let NFTInfoList = res.data.data;
+					/* console.log(NFTInfoList) */
+					// console.log(JSON.stringify(NFTInfoList));
+					setNFTName(NFTInfoList.itemname);
+					// setDescriptionContent(NFTInfoList.description);
+					setSupply(NFTInfoList.supply);
+					setTokenID(NFTInfoList.id);
+					setTokenSymbol(NFTInfoList.itemsymbol);
+					setCreator(NFTInfoList.owneraddress);
+					setExternalLink(NFTInfoList.externallink);
+					setImgURL(NFTInfoList.fileurl);
+					setCategory(NFTInfoList.category);
+					setDescription(NFTInfoList.description || "")
+				} else {
+					dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
+				}
+			})
+			.catch((err) => {
+				dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("TryAgain") });
+			});
+	};
 
 	const NavList = [
 		{
@@ -254,14 +256,21 @@ function MyNFT () {
 		},
 	];
 
+	const wrappperReplaceSpace = (str) => {
+		if (!str) return []
+		const strArr = str.split(/\n/)
+		// console.log(strArr)
+		return strArr
+	}
+
 	return (
 		<Page>
 			<BreadcrumbNav marginTop="24px" NavList={NavList} />
 			<PageBody className="sellNFT">
-				{category && (category === "Videos" || category === "Video") ?
+				{category && (category === "Videos" || category === "Video" || category === "video") ?
 					<video width='400px' height='400px' src={imgURL} controls='controls' autoPlay></video> :
 					<AutoStretchBaseWidthOrHeightImg src={imgURL} width={400} height={400} />
-					
+
 				}
 
 
@@ -289,11 +298,13 @@ function MyNFT () {
 						{/* <Button width="200px" value="Transfer" /> */}
 					</div>
 
-					<span className="description">{description}</span>
-
-					{/*<span className="descriptionContent">
-						{descriptionContent}
-					</span>*/}
+					<span className="description">
+						{wrappperReplaceSpace(description).map((strItem, index) => {
+							return <div key={index}>
+								{strItem === '' ? <br /> : strItem}
+							</div>
+						})}
+					</span>
 
 					<InfoDropdowns>
 						<NFTInfo title="Supply" content={supply} />

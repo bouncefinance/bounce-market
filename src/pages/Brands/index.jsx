@@ -84,7 +84,7 @@ export default function Index() {
 
     if (data) {
       const bounce721Brands = data.erc721.map(item => item.contract_address)
-      const bounce1155Brands = data.erc1155.map(item => item.contract_address)
+      const bounce1155Brands = data.erc1155.map(item => item.Token)
       const list = bounce721Brands.concat(bounce1155Brands);
       setloding(true)
       sign_Axios.post(Controller.brands.getbrandsbyfilter, {
@@ -104,6 +104,7 @@ export default function Index() {
               owneraddress: item.owneraddress,
             })).filter(item => item.id !== 117)
               .sort((a, b) => b.popularweight - a.popularweight);
+              // console.log(itemList)
             setList(itemList);
             setFilterList(itemList);
             setloding(false)

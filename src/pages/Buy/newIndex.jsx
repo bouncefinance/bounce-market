@@ -342,13 +342,13 @@ export default function NewIndex() {
         if (!active) {
             activeTimeout = setTimeout(() => {
                 setIsConnectWallect(true)
-                
+
             }, 500);
             return () => {
                 clearTimeout(activeTimeout);
             }
         }
-        
+
     }, [active])
 
     useEffect(() => {
@@ -727,26 +727,6 @@ export default function NewIndex() {
                     </div>
                 </div>
 
-                {/* <div className="bidInfo">
-                     <div>
-                        <h5>Current Round</h5>
-                        <h3>{poolInfo.bidCountP && `${poolInfo.bidCountP}`}</h3>
-                    </div> 
-                </div> */}
-
-                {/* <NumberInput
-                    className='input_amount'
-                    title={`I'll make an offer`}
-                    width='100%'
-                    minVal={inputMinPrice}
-                    defaultValue={inputMinPrice}
-                    onValChange={(val) => {
-                        setBidPrice(val)
-                    }}
-                    afterFix={poolInfo.token1 && `Balance: ${poolInfo.token1.balance} ${poolInfo.token1.symbol}`}
-                    disabled={isLoading || poolInfo.status !== 'Live'}
-                /> */}
-
                 <div className="btn_group">
                     <Button
                         primary
@@ -886,7 +866,7 @@ export default function NewIndex() {
 
         const params = {
             pool_id: poolId,
-            pool_type: aucType===AUCTION_TYPE.FixedSwap?'fixedswap': 'english'
+            pool_type: aucType === AUCTION_TYPE.FixedSwap ? 'fixedswap' : 'english'
         }
 
         const initData = {
@@ -917,73 +897,6 @@ export default function NewIndex() {
         handleSwap(initData)
 
     }
-
-    // const [queryPoolSwap, poolSwap] = useLazyQuery(QueryFixedSwapPool, {
-    //     variables: { poolId: Number(poolId) },
-    //     fetchPolicy: "network-only",
-    //     onCompleted: () => {
-    //         handleSwap(poolSwap.data);
-    //     }
-    // });
-
-    // const handleAuction = (data) => {
-    //     const tradePool = data.tradeAuctions[0];
-    //     // if(!tradePool) return  setHistory([]);
-
-    //     // console.log('auctionCreates', tradePool)
-    //     const creator = tradePool.creator;
-    //     const total = tradePool.tokenAmount0;
-    //     const price = tradePool.amountMin1;
-    //     // const offerLiist = data.auctionBids.map(item => ({
-    //     //     name: getEllipsisAddress(item.sender),
-    //     //     time: format(new Date(item.timestamp * 1000), 'PPPpp'),
-    //     //     // amount: Web3.utils.fromWei(item.amount1),
-    //     //     amount: item.amount1,
-    //     //     price: item.amount1,
-    //     // }))
-    //     // console.log(offerLiist)
-    //     // setOfferList(offerLiist);
-    //     const createList = data.auctionCreates.map(item => ({
-    //         // event: 'Created',
-    //         event: 'List',
-    //         quantity: total,
-    //         price: price,
-    //         from: getEllipsisAddress(ZERO_ADDRESS),
-    //         to: getEllipsisAddress(creator),
-    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
-    //         timestamp: item.timestamp,
-    //     }));
-    //     const bidList = data.auctionBids.map(item => ({
-    //         event: 'Bid',
-    //         quantity: '',
-    //         price: item.amount1,
-    //         from: getEllipsisAddress(creator),
-    //         to: getEllipsisAddress(item.sender),
-    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
-    //         timestamp: item.timestamp,
-    //     }))
-    //     const claimList = data.auctionClaims.map(item => ({
-    //         event: 'Claim',
-    //         price: '',
-    //         quantity: item.amount1,
-    //         from: getEllipsisAddress(item.sender),
-    //         to: '',
-    //         date: formatDistanceToNow(new Date(item.timestamp * 1000)),
-    //         timestamp: item.timestamp,
-    //     }))
-    //     const list = createList.concat(bidList).concat(claimList)
-    //         .sort((a, b) => b.timestamp - a.timestamp);
-    //     console.log(list)
-    //     setHistory(list);
-    // }
-
-    // const [queryAuctionPool, auctionPool] = useLazyQuery(QueryEnglishAuction, {
-    //     variables: { poolId: Number(poolId) },
-    //     fetchPolicy: "network-only",
-    //     onCompleted: () => {
-    //         handleAuction(auctionPool.data);
-    //     }
-    // })
     const initOfferList = async () => {
         const type = aucType === AUCTION_TYPE.FixedSwap ? 'fixedswap' : 'english'
         const [offerListError, offerListRes] = await to(axios.get(`bids?pool_id=${poolId}&pool_type=${type}`))
@@ -1011,20 +924,6 @@ export default function NewIndex() {
     }, [active])
 
 
-    // useEffect(() => {
-    //     if (poolId) {
-    //         if (aucType === AUCTION_TYPE.FixedSwap) {
-    //             queryPoolSwap();
-    //         } else if (aucType === AUCTION_TYPE.EnglishAuction) {
-    //             queryAuctionPool();
-    //         }
-    //     }
-    // }, [poolId, aucType, queryPoolSwap, queryAuctionPool])
-
-    /* useEffect(() => {
-        console.log("poolInfo", poolInfo)
-    }, [poolInfo]) */
-
     const NavList = [
         {
             title: wrapperIntl("pages.buy.MarketPlace"),
@@ -1042,7 +941,7 @@ export default function NewIndex() {
 
     return (
         <>
-            {active &&<NewIndexStyled>
+            {active && <NewIndexStyled>
                 {/* 面包屑导航栏 */}
                 {/* <ul className='crumbs'>
                     <li><span>Marketplace</span></li>
@@ -1051,186 +950,191 @@ export default function NewIndex() {
                 </ul> */}
                 <BreadcrumbNav marginTop="24px" NavList={NavList} />
 
-                
-                    
-                    <div className="container">
-                        <div className="container_left">
-                            {
-                                (nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos'))
-                                    ||
-                                    (state && (state.category === "video" || state.category === 'Videos'))
-                                    ?
-                                    <video
-                                        width='416px'
-                                        height='416px'
-                                        src={
-                                            active && localStorage.getItem('JWT_TOKEN_V2')
-                                                ?
-                                                nftInfo && nftInfo.fileurl
-                                                :
-                                                state && state.fileurl
-                                        }
-                                        controls='controls'
-                                        autoPlay>
-                                    </video>
-                                    :
-                                    <AutoStretchBaseWidthOrHeightImg
-                                        src={
-                                            /* nftInfo && nftInfo.fileurl */
-                                            active && localStorage.getItem('JWT_TOKEN_V2')
-                                                ?
-                                                nftInfo && nftInfo.fileurl
-                                                :
-                                                state && state.fileurl
-                                        }
-                                        width={416}
-                                        height={416}
-                                    />
-                            }
 
-                            <div className="btn_group">
-                                {false && <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}><FormattedMessage id="pages.buy.Share" /></MaterialButton>}
-                                <MaterialButton disabled={loadingLoked} onClick={onLiked} variant="contained" className="material-button" startIcon={<img className="button-icon" src={isLike ? icon_full_black : icon_line_white} alt="" />}><FormattedMessage id="pages.buy.Like" /></MaterialButton>
+
+                <div className="container">
+                    <div className="container_left">
+                        {
+                            (nftInfo && (nftInfo.category === "video" || nftInfo.category === 'Videos'))
+                                ||
+                                (state && (state.category === "video" || state.category === 'Videos'))
+                                ?
+                                <video
+                                    width='416px'
+                                    height='416px'
+                                    src={
+                                        active && localStorage.getItem('JWT_TOKEN_V2')
+                                            ?
+                                            nftInfo && nftInfo.fileurl
+                                            :
+                                            state && state.fileurl
+                                    }
+                                    controls='controls'
+                                    autoPlay>
+                                </video>
+                                :
+                                <AutoStretchBaseWidthOrHeightImg
+                                    src={
+                                        /* nftInfo && nftInfo.fileurl */
+                                        active && localStorage.getItem('JWT_TOKEN_V2')
+                                            ?
+                                            nftInfo && nftInfo.fileurl
+                                            :
+                                            state && state.fileurl
+                                    }
+                                    width={416}
+                                    height={416}
+                                />
+                        }
+
+                        <div className="btn_group">
+                            {false && <MaterialButton variant="contained" className="material-button" startIcon={<img className="button-icon" src={icon_share} alt="" />}><FormattedMessage id="pages.buy.Share" /></MaterialButton>}
+                            <MaterialButton disabled={loadingLoked} onClick={onLiked} variant="contained" className="material-button" startIcon={<img className="button-icon" src={isLike ? icon_full_black : icon_line_white} alt="" />}><FormattedMessage id="pages.buy.Like" /></MaterialButton>
+                        </div>
+                    </div>
+
+
+                    <div className="container_right">
+                        <div className="sell_info">
+                            <div className="row1">
+                                <h3>{nftInfo.itemname || (state && state.name) || wrapperIntl("pages.buy.NameLoading")}</h3>
+
+                                {/* Cancel */}
+                                {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
+                                    < Button onClick={
+                                        () => {
+                                            aucType === AUCTION_TYPE.EnglishAuction ? dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("pages.buy.AuctionCancelled") }) : setOpenModal(true)
+                                        }}
+                                        height='30px'
+                                    >
+                                        {wrapperIntl("pages.buy.Cancel")}
+                                    </Button>}
+
+                                {/* Cancel */}
+                                {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
+                                    < Button onClick={
+                                        () => {
+                                            /* handelFixedSwapCancel() */
+                                            setOpenModal(true)
+                                        }}
+                                        height='30px'
+                                        disabled
+                                    >
+                                        <FormattedMessage id="pages.buy.Canceled" />
+                                    </Button>}
                             </div>
                         </div>
-
-
-                        <div className="container_right">
-                            <div className="sell_info">
-                                <div className="row1">
-                                    <h3>{nftInfo.itemname || (state && state.name) || wrapperIntl("pages.buy.NameLoading")}</h3>
-
-                                    {/* Cancel */}
-                                    {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && !poolInfo.creatorCanceledP &&
-                                        < Button onClick={
-                                            () => {
-                                                aucType === AUCTION_TYPE.EnglishAuction ? dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("pages.buy.AuctionCancelled") }) : setOpenModal(true)
-                                            }}
-                                            height='30px'
-                                        >
-                                            {wrapperIntl("pages.buy.Cancel")}
-                                        </Button>}
-
-                                    {/* Cancel */}
-                                    {aucType === AUCTION_TYPE.FixedSwap && poolInfo.status === 'Live' && poolInfo.creator === account && poolInfo.creatorCanceledP &&
-                                        < Button onClick={
-                                            () => {
-                                                /* handelFixedSwapCancel() */
-                                                setOpenModal(true)
-                                            }}
-                                            height='30px'
-                                            disabled
-                                        >
-                                            <FormattedMessage id="pages.buy.Canceled" />
-                                        </Button>}
-                                </div>
-                            </div>
-                            <div className="seller">
-                                <div className='info'>
-                                    <img src={icon_altAvatar} alt="" />
-                                    <p>
-                                        <FormattedMessage id="pages.buy.OwnedBy" />
-                                        <span>
-                                            {
+                        <div className="seller">
+                            <div className='info'>
+                                <img src={icon_altAvatar} alt="" />
+                                <p>
+                                    <FormattedMessage id="pages.buy.OwnedBy" />
+                                    <span>
+                                        {
+                                            nftInfo.owneraddress
+                                                ?
                                                 (nftInfo.owneraddress && ` ${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)} ${nftInfo.ownername && '(' + nftInfo.ownername + ')'}`)
                                                 ||
                                                 (state.owneraddress && ` ${String(state.owneraddress).substr(0, 5) + '...' + String(state.owneraddress).substr(-4)}`)
-                                            }
-                                        </span>
-                                    </p>
-
-                                    {poolInfo.showTime && aucType === 'english-auction' && <div className="close_time">
-                                        <img src={icon_time} alt="" />
-                                        <span>{poolInfo.showTime}</span>
-                                    </div>}
-                                </div>
-                                <div className="desc">
-                                    <p>{nftInfo.description || state.description || wrapperIntl("pages.buy.descriptionLoading")}</p>
-                                    {/* <span>Read more</span> */}
-
-                                </div>
-                            </div>
-
-                            {renderByAucType()}
-                            <div className="pullInfoBox">
-
-                                <NewPullDown open={true} title={intl.formatMessage({ id: 'pages.buy.Offers' })}>
-                                    <OffersStyled>
-                                        {
-                                            offerList.length > 0
-                                                ?
-                                                offerList.map((item, index) => <div className="Offers flex flex-space-x" key={index}>
-                                                    <div className="flex Offers-info">
-                                                        <p className="name">{item.name}</p>
-                                                        <p className="time">{item.time}</p>
-                                                    </div>
-                                                    <div className="Offers-price">
-                                                        <span>{poolInfo.token1 && `${poolInfo.token1 && weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`}</span>
-                                                        <p className="amount">{poolInfo.token1 && amount && `( $ ${weiMul(poolInfo.token1.price, weiToNum(item.price, poolInfo.token1.decimals))} )`}</p>
-                                                    </div>
-                                                </div>)
                                                 :
-                                                <span>--</span>
+                                                ' ...'
                                         }
-                                    </OffersStyled>
-                                </NewPullDown>
+                                    </span>
+                                </p>
 
+                                {poolInfo.showTime && aucType === 'english-auction' && <div className="close_time">
+                                    <img src={icon_time} alt="" />
+                                    <span>{poolInfo.showTime}</span>
+                                </div>}
+                            </div>
+                            <div className="desc">
+                                <p>{nftInfo?.description || state?.description || wrapperIntl("pages.buy.descriptionLoading")}</p>
+                                {/* <span>Read more</span> */}
 
-                                {supply &&
-                                    <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.Supply' })}>
-                                        <div>{supply || "--"}</div>
-                                    </NewPullDown>
-                                }
-
-                                <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TokenInfo' })}>
-                                    <div className="token-info">
-                                        <div className="flex flex-space-x">
-                                            <p><FormattedMessage id="pages.buy.TokenContractAddress" /></p>
-                                            <div className="contractAddress">
-                                                <p style={{ color: 'rgba(31,25,27,0.5)', }}>{tokenContractAddress || ""}</p>
-                                                <CopyToClipboard
-                                                    text={tokenContractAddress}
-                                                    onCopy={() => {
-                                                        dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: intl.formatMessage({ id: 'CopySuccessful' }) });
-                                                    }}>
-                                                    <img src={icon_copy} style={{ cursor: "pointer" }} title="Copy" alt="" />
-                                                </CopyToClipboard>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-space-x">
-                                            <p><FormattedMessage id="pages.buy.TokenSymbol" /></p>
-                                            <p>{tokenSymbol || ""}</p>
-                                        </div>
-                                        <div className="flex flex-space-x">
-                                            <p><FormattedMessage id="pages.buy.TokenID" /></p>
-                                            <p>#{tokenID || ""}</p>
-                                        </div>
-                                    </div>
-                                </NewPullDown>
-                                <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.ExternalLink' })}>
-                                    <div>{externalLink || "--"}</div>
-                                </NewPullDown>
-                                <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TradingHistory' })}>
-                                    <TradingHistory rows={
-                                        history.map((item, index) => ({
-                                            Event: item.event,
-                                            Quantity: item.quantity,
-                                            Price: [item.price ? (poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`) : '--', `($)`],
-                                            From: item.from,
-                                            To: item.to,
-                                            Date: item.date,
-                                        }))
-                                    } />
-                                </NewPullDown>
                             </div>
                         </div>
+
+                        {renderByAucType()}
+                        <div className="pullInfoBox">
+
+                            <NewPullDown open={true} title={intl.formatMessage({ id: 'pages.buy.Offers' })}>
+                                <OffersStyled>
+                                    {
+                                        offerList.length > 0
+                                            ?
+                                            offerList.map((item, index) => <div className="Offers flex flex-space-x" key={index}>
+                                                <div className="flex Offers-info">
+                                                    <p className="name">{item.name}</p>
+                                                    <p className="time">{item.time}</p>
+                                                </div>
+                                                <div className="Offers-price">
+                                                    <span>{poolInfo.token1 && `${poolInfo.token1 && weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`}</span>
+                                                    <p className="amount">{poolInfo.token1 && amount && `( $ ${weiMul(poolInfo.token1.price, weiToNum(item.price, poolInfo.token1.decimals))} )`}</p>
+                                                </div>
+                                            </div>)
+                                            :
+                                            <span>--</span>
+                                    }
+                                </OffersStyled>
+                            </NewPullDown>
+
+
+                            {supply &&
+                                <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.Supply' })}>
+                                    <div>{supply || "--"}</div>
+                                </NewPullDown>
+                            }
+
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TokenInfo' })}>
+                                <div className="token-info">
+                                    <div className="flex flex-space-x">
+                                        <p><FormattedMessage id="pages.buy.TokenContractAddress" /></p>
+                                        <div className="contractAddress">
+                                            <p style={{ color: 'rgba(31,25,27,0.5)', }}>{tokenContractAddress || ""}</p>
+                                            <CopyToClipboard
+                                                text={tokenContractAddress}
+                                                onCopy={() => {
+                                                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: intl.formatMessage({ id: 'CopySuccessful' }) });
+                                                }}>
+                                                <img src={icon_copy} style={{ cursor: "pointer" }} title="Copy" alt="" />
+                                            </CopyToClipboard>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-space-x">
+                                        <p><FormattedMessage id="pages.buy.TokenSymbol" /></p>
+                                        <p>{tokenSymbol || ""}</p>
+                                    </div>
+                                    <div className="flex flex-space-x">
+                                        <p><FormattedMessage id="pages.buy.TokenID" /></p>
+                                        <p>#{tokenID || ""}</p>
+                                    </div>
+                                </div>
+                            </NewPullDown>
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.ExternalLink' })}>
+                                <div>{externalLink || "--"}</div>
+                            </NewPullDown>
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TradingHistory' })}>
+                                <TradingHistory rows={
+                                    history.map((item, index) => ({
+                                        Event: item.event,
+                                        Quantity: item.quantity,
+                                        Price: [item.price ? (poolInfo.token1 && `${weiToNum(item.price, poolInfo.token1.decimals)} ${poolInfo.token1.symbol}`) : '--', `($)`],
+                                        From: item.from,
+                                        To: item.to,
+                                        Date: item.date,
+                                    }))
+                                } />
+                            </NewPullDown>
+                        </div>
                     </div>
+                </div>
             </NewIndexStyled >
             }
-            
+
             {aucType === AUCTION_TYPE.FixedSwap && <ConfirmCancelModal open={openModal} setOpen={setOpenModal} onConfirm={handelFixedSwapCancel} />}
             <MessageTips open={openMessage} setopen={setopenMessage} />
             <PlaceBidModal
+                // Test one bug
                 open={openPlaceBidModal}
                 setOpen={setOpenPlaceBidModal}
                 title={wrapperIntl("PlaceBidModal.PlaceAbid")}
@@ -1282,22 +1186,6 @@ export default function NewIndex() {
     )
 }
 
-
-
-/* 
-const StyledLink = styled(Link)`
-    font-family: Helvetica Neue;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
-    color: #0075FF;
-
-    height: auto;
-
-    margin-top: 50px;
-`
- */
 
 const OffersStyled = styled.div`
 font-family: Helvetica Neue;

@@ -16,7 +16,7 @@ export const getNFTFactory = (chainID) => {
             return '0xf3af2a1b601c84033F1dEcc4aFE37E586A49f990'
 
         default:
-            return '0xb9BaC7b8C8ca157035E78e764bC3AD7D7BcCAb3A'
+            return '0xf3af2a1b601c84033F1dEcc4aFE37E586A49f990'
     }
 }
 
@@ -34,7 +34,7 @@ export const getBounceERC721WithSign = (chainID) => {
             return '0x479FCe86f116665b8a4d07165a0eB7799A4AEb30'
 
         default:
-            return '0xD9b73E3f331420C8bCBa26c98Fb7fbbCd2A682E7'
+            return '0x479FCe86f116665b8a4d07165a0eB7799A4AEb30'
     }
 }
 
@@ -52,7 +52,7 @@ export const getBounceERC1155WithSign = (chainID) => {
             return '0xaAAeAe4283635358946E653883cD12E5c06cC5E3'
 
         default:
-            return '0x57174694E5E1221709992B93C71d43eba7F5d73F'
+            return '0xaAAeAe4283635358946E653883cD12E5c06cC5E3'
     }
 }
 
@@ -70,7 +70,7 @@ export const getFixedSwapNFT = (chainID) => {
             return '0x1C035FD1F11eA9Bb753625fD167205Cd40029607'
 
         default:
-            return '0x65B2FA838588003102fb3883e608f8b0049BFDD1'
+            return '0x1C035FD1F11eA9Bb753625fD167205Cd40029607'
     }
 }
 
@@ -88,6 +88,6 @@ export const getEnglishAuctionNFT = (chainID) => {
             return '0x7eF2DECf116f8aeBb9a7940A4713C00997DF79fd'
 
         default:
-            return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525'
+            return '0x7eF2DECf116f8aeBb9a7940A4713C00997DF79fd'
     }
 }

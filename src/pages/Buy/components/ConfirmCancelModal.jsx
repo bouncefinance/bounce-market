@@ -46,6 +46,11 @@ function ConfirmCancelModal({ width, height, open, setOpen, onConfirm, poolId })
 			.on('receipt', async (_, receipt) => {
 				// console.log('bid fixed swap receipt:', receipt)
 				// setBidStatus(successStatus)
+				const cancelListNft = {
+					poolId: poolId
+				}
+				window.localStorage.setItem('record_cancelListNft', JSON.stringify(cancelListNft))
+
 				showTransferByStatus('successStatus')
 			})
 			.on('error', (err, receipt) => {
