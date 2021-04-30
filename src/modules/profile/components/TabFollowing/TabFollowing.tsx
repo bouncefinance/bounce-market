@@ -37,49 +37,52 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
             </Link>
             <Box className={classes.itemContent}>
               <Link to={item.href} className={classes.itemUserNameLink}>
-                <Typography variant='h5' className={classes.itemName} title={item.userName}>
+                <Typography
+                  variant="h5"
+                  className={classes.itemName}
+                  title={item.userName}
+                >
                   {item.userName}
                 </Typography>
-                {item.userFollowers ?
+                {item.userFollowers ? (
                   <Typography
-                    color='textSecondary'
-                    variant='body2'
+                    color="textSecondary"
+                    variant="body2"
                     className={classes.userFollowers}
                   >
                     <UserIcon className={classes.userFollowersIcon} />
                     {item.userFollowers}
                   </Typography>
-                  : null
-                }
+                ) : null}
               </Link>
             </Box>
           </Grid>
           <Grid item xs={12} sm={4} lg={3} className={classes.itemFollowWrap}>
-            {item.follow ?
+            {item.follow ? (
               <Button
                 onClick={() => {}}
                 className={classes.followButton}
-                variant='outlined'
+                variant="outlined"
                 fullWidth={false}
                 rounded
               >
                 {t('profile.unfollow')}
               </Button>
-              :
+            ) : (
               <Button
                 onClick={() => {}}
                 className={classes.followButton}
-                variant='outlined'
+                variant="outlined"
                 fullWidth={false}
                 rounded
               >
                 {t('profile.follow')}
               </Button>
-            }
+            )}
           </Grid>
         </Grid>
       )),
-    [items, classes]
+    [items, classes],
   );
 
   return (

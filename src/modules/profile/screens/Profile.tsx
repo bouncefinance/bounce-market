@@ -114,13 +114,13 @@ const brands: IBrandCardProps[] = [
     href: '#',
     title: 'Polka Pet World',
     imgSrc: 'https://picsum.photos/120?random=10',
-    itemsCount: 0
+    itemsCount: 0,
   },
   {
     href: '#',
     title: 'Polka Pet World',
     imgSrc: 'https://picsum.photos/120?random=20',
-    itemsCount: 20
+    itemsCount: 20,
   },
 ];
 
@@ -131,7 +131,7 @@ const followings: IFollowingItemProps[] = [
     href: '#',
     userFollowers: 150,
     imgSrc: 'https://picsum.photos/82?random=200',
-    follow: false
+    follow: false,
   },
   {
     userName: 'John Smith',
@@ -139,7 +139,7 @@ const followings: IFollowingItemProps[] = [
     href: '#',
     userFollowers: 0,
     imgSrc: 'https://picsum.photos/82?random=201',
-    follow: true
+    follow: true,
   },
   {
     userName: 'Smith John',
@@ -147,8 +147,8 @@ const followings: IFollowingItemProps[] = [
     href: '#',
     userFollowers: 15,
     imgSrc: 'https://picsum.photos/82?random=202',
-    follow: false
-  }
+    follow: false,
+  },
 ];
 
 const followers = followings;
