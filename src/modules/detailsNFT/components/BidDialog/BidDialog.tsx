@@ -112,20 +112,26 @@ export const BidDialog = ({
                   name="quantity"
                   type="number"
                   label="Quantity"
-                  parse={value => value && Math.round(+value)}
-                  format={value => (value ? Math.round(+value) : '')}
+                  parse={value => (value ? Math.round(+value) : 1)}
+                  format={value => (value ? Math.round(+value) : 1)}
                   InputProps={{
                     endAdornment: (
                       <div className={classes.spinBtns}>
                         <IconButton
-                          className={classes.spinBtn}
+                          className={classNames(
+                            classes.spinBtn,
+                            classes.spinBtnUp,
+                          )}
                           onClick={form.mutators.increaseQuantity}
                         >
                           <AngleUpIcon className={classes.spinBtnIcon} />
                         </IconButton>
 
                         <IconButton
-                          className={classes.spinBtn}
+                          className={classNames(
+                            classes.spinBtn,
+                            classes.spinBtnDown,
+                          )}
                           disabled={isQuantityMinusDisabled}
                           onClick={form.mutators.decreaseQuantity}
                         >
