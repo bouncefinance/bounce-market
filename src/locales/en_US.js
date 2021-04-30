@@ -42,8 +42,8 @@ const en_US = {
         logout: 'Log Out',
         search: 'Search',
         search_p: 'Search objects, items, art',
-        SelectBSC: "Please select BSC network.",
-        SwitchToBSC: "Click here to switch to BSC network.",
+        SelectHeco: "Please select Heco network.",
+        SwitchToHeco: "Click here to switch to Heco network.",
         ConnectWallet: "Click here to connect wallet.",
     },
 
