@@ -24,7 +24,7 @@ export const BrandEmptyCard = ({ className }: IBrandEmptyCardProps) => {
           rounded
           startIcon={<PlusIcon className={classNames(classes.icon, classes.iconInheritFontSize)}/>}
         >
-          {t('profile.brands.createNewItem')}
+          {t('profile.brands.createNewBrand')}
         </Button>
       </CardContent>
     </Card>

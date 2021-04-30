@@ -6,7 +6,11 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
     flexDirection: 'column',
     height: '100%',
     minHeight: 300,
-    textAlign: 'center'
+    textAlign: 'center',
+    transition: '0.2s',
+    '&:hover': {
+      borderColor: fade(theme.palette.text.primary, 0.2)
+    }
   },
 
   createNewMiniBtnWrap: {
