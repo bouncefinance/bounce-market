@@ -135,6 +135,7 @@
   "profile": {
     "customize-btn": "Customize",
     "follow": "Follow",
+    "unfollow": "Unfollow",
     "subscribers": "Subscribers",
     "bio": "Bio",
     "tabs": {
