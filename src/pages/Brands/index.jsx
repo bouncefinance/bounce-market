@@ -104,7 +104,7 @@ export default function Index() {
               owneraddress: item.owneraddress,
             })).filter(item => item.id !== 117)
               .sort((a, b) => b.popularweight - a.popularweight);
-              console.log(itemList)
+              // console.log(itemList)
             setList(itemList);
             setFilterList(itemList);
             setloding(false)
