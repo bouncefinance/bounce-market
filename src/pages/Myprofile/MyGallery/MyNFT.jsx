@@ -258,7 +258,7 @@ function MyNFT() {
 
 	const wrappperReplaceSpace = (str) => {
 		if (!str) return []
-		const strArr = str.split(/\n/).filter(item => item)
+		const strArr = str.split(/\n/)
 		// console.log(strArr)
 		return strArr
 	}
@@ -299,11 +299,10 @@ function MyNFT() {
 					</div>
 
 					<span className="description">
-						{wrappperReplaceSpace(description).map(strItem => {
-							return <>
-								<span>{strItem}</span>
-								<br />
-							</>
+						{wrappperReplaceSpace(description).map((strItem, index) => {
+							return <div key={index}>
+								{strItem === '' ? <br /> : strItem}
+							</div>
 						})}
 					</span>
 
