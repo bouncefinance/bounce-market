@@ -30,7 +30,7 @@ const wallets = {
 
 export const useWalletConnect = () => {
     const {
-        activate, deactivate
+        activate/* , deactivate */
     } = useWeb3React()
 
     const setItem = (name) => window && window.localStorage.setItem('BOUNCE_SELECT_WALLET', name)
@@ -56,13 +56,13 @@ export const useWalletConnect = () => {
         })
     }
 
-    function onDisconnect(setIsLoading) {
+    /* function onDisconnect(setIsLoading) {
         window && window.localStorage.removeItem('BOUNCE_SELECT_WALLET')
         setIsLoading && setIsLoading(true)
         deactivate()
         setIsLoading && setIsLoading(false)
-    }
-    return { onConnect, onDisconnect }
+    } */
+    return { onConnect/* , onDisconnect */ }
 }
 
 export const getMetaMskAccount = () => {

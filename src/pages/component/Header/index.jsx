@@ -123,6 +123,40 @@ export default function Index() {
     /* const [isFangible, setIsFangible] = useState(false) */
     const { wrapperIntl } = useWrapperIntl()
 
+    let ethereum = window.ethereum;
+
+    ethereum.on(
+        'chainChanged',
+        (_chainId) => {
+            console.log("chain changed")
+            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+            /* setTimeout(() => {
+                window.location.reload()
+            }, 700); */
+            window.location.reload()
+        }
+    );
+
+    /* ethereum.on(
+        'accountsChanged',
+        () => {
+            console.log("accountsChanged")
+            console.log("isConnected: ", ethereum.isConnected())
+            ethereum
+            .request({ method: 'eth_requestAccounts' })
+            .then((accounts)=>{console.log("Accounts: ", accounts)})
+            .catch((error) => {
+                if (error.code === 4001) {
+                  // EIP-1193 userRejectedRequest error
+                  alert('Please connect to MetaMask.');
+                } else {
+                  alert('Please connect to MetaMask.');
+                  console.error(error);
+                }
+              });
+        }
+    ); */
+
     const Nav_list = [{
         name: wrapperIntl('header.home'),
         route: '/Home',
@@ -168,6 +202,7 @@ export default function Index() {
         }
         updateActive()
     }
+
     useEffect(() => {
         const type = window.localStorage.getItem('BOUNCE_SELECT_WALLET')
         if (type) {
@@ -215,8 +250,11 @@ export default function Index() {
         // eslint-disable-next-line
     }, [])
 
+    /* useEffect(() => {
+        // window.location.reload()
+    }, [chainId, active, account]) */
+
     useEffect(() => {
-        /* console.log("active: ", active) */
         let activeTimeout
         if (!active) {
             activeTimeout = setTimeout(() => {
@@ -230,13 +268,14 @@ export default function Index() {
                     modelUrlMessage: wrapperIntl("header.ConnectWallet"),
                     subsequentActionFunc: setIsConnectWallect,
                 });
-            }, 500);
+            }, 1000);
             return () => {
                 clearTimeout(activeTimeout);
             }
         }
         // eslint-disable-next-line
     }, [active])
+    
 
     useEffect(() => {
         dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
@@ -246,24 +285,25 @@ export default function Index() {
             return
         }
 
-        if (chainId && (chainId !== 128)) {
-            dispatch({
-                type: 'Modal_Message',
-                showMessageModal: true,
-                modelType: 'error',
-                modelMessage: wrapperIntl("header.SelectHeco"),
-                subsequentActionType: "ConnectToHecoChain",
-                modelUrlMessage: wrapperIntl("header.SwitchToHeco"),
-                modelTimer: 24 * 60 * 60 * 1000,
-                canClose: true, 
-            });
-        } 
-        else {
+
+        setTimeout(() => {
+            if (chainId && (chainId !== 128)) {
+                dispatch({
+                    type: 'Modal_Message',
+                    showMessageModal: true,
+                    modelType: 'error',
+                    modelMessage: wrapperIntl("header.SelectHeco"),
+                    subsequentActionType: "ConnectToHecoChain",
+                    modelUrlMessage: wrapperIntl("header.SwitchToHeco"),
+                    modelTimer: 24 * 60 * 60 * 1000,
+                    canClose: true, 
+                });
+            } 
+        }, 500);
+        /* else {
             dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
-        }
+        } */
         
-        console.log("end active:" + active)
-        console.log("end chainId:" + chainId)
         window.localStorage.LastChainId = chainId
 
         getUserInfo();
