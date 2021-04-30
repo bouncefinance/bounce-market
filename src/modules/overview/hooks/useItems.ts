@@ -1,6 +1,7 @@
 import { useQuery } from '@redux-requests/react';
-import { MarketplaceActions } from '../marketplaceActions';
-import { AuctionState, ITradeItem } from '../api/getPools';
+import { AuctionState, ITradeItem } from '../actions/fetchPools';
+import { fetchItemsByIds } from '../actions/fetchItemsByIds';
+import { fetchPools } from '../actions/fetchPools';
 
 export function useItems() {
   const {
@@ -8,16 +9,16 @@ export function useItems() {
     loading: loadingPools,
     pristine: pristinePools,
   } = useQuery({
-    type: MarketplaceActions.fetchPools.toString(),
-    action: MarketplaceActions.fetchPools,
+    type: fetchPools.toString(),
+    action: fetchPools,
   });
   const {
     data: dataItems,
     loading: loadingItems,
     pristine: pristineItems,
   } = useQuery({
-    type: MarketplaceActions.fetchItems.toString(),
-    action: MarketplaceActions.fetchItems,
+    type: fetchItemsByIds.toString(),
+    action: fetchItemsByIds,
   });
 
   const pristine = pristinePools || pristineItems;

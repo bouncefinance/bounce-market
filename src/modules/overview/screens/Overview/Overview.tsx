@@ -8,7 +8,7 @@ import { Promo } from 'modules/overview/components/Promo';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React from 'react';
 import { t } from '../../../i18n/utils/intl';
-import { useItems } from '../../../marketplace/hooks/useItems';
+import { useItems } from '../../hooks/useItems';
 import { RoutesConfiguration } from '../../Routes';
 import { useOverview } from './useOverview';
 

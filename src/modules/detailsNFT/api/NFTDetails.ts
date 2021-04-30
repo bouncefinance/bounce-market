@@ -1,4 +1,4 @@
-import { Channel } from '../../createNFT/CreateNftActions';
+import { Channel } from '../../createNFT/actions/createNft';
 
 export interface IApiNFTDetails {
   code: number;

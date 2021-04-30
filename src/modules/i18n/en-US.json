@@ -136,6 +136,15 @@
     "customize-btn": "Customize",
     "follow": "Follow",
     "subscribers": "Subscribers",
+    "bio": "Bio",
+    "tabs": {
+      "my-items": "My items",
+      "my-brands": "My brands",
+      "activity": "Activity",
+      "liked": "Liked",
+      "following": "Following",
+      "followers": "Followers"
+    },
     "brands": {
       "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}",
       "addNewItem": "Add new item",
