@@ -1,18 +1,14 @@
 import { Grid } from '@material-ui/core';
-import { BrandCard, IBrandCardProps, } from 'modules/common/components/BrandCard';
+import { BrandCard, IBrandCardProps, } from 'modules/profile/components/BrandCard';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
-import { BrandEmptyCard } from '../../../common/components/BrandEmptyCard';
+import { BrandEmptyCard } from '../BrandEmptyCard';
 import classNames from 'classnames';
 import { useTabBrandStyles } from './useTabBrandsStyles';
 
-export type TabBrandProps = Omit<IBrandCardProps, 'ImgProps'> & {
-  img: string;
-};
-
 interface ITabBrandsProps {
   className?: string;
-  items?: TabBrandProps[];
+  items?: IBrandCardProps[];
 }
 
 export const TabBrands = ({ className, items }: ITabBrandsProps) => {
@@ -27,11 +23,7 @@ export const TabBrands = ({ className, items }: ITabBrandsProps) => {
             title={brandProps.title}
             href={brandProps.href}
             itemsCount={brandProps.itemsCount}
-            ImgProps={{
-              src: brandProps.img,
-              objectFit: 'scale-down',
-              loading: 'lazy',
-            }}
+            imgSrc={brandProps.imgSrc}
           />
         </Grid>
       )),

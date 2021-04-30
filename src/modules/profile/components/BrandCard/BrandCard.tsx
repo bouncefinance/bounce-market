@@ -1,30 +1,22 @@
 import { Box, Card, CardContent, Tooltip, Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import { Button } from 'modules/uiKit/Button';
-import { IImgProps, Img } from 'modules/uiKit/Img';
-import React, { ReactNode } from 'react';
+import { Img } from 'modules/uiKit/Img';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useBrandCardStyles } from './useBrandCardStyles';
 import { t } from 'modules/i18n/utils/intl';
-import { PlusIcon } from '../Icons/PlusIcon';
+import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
 
 export interface IBrandCardProps {
   className?: string;
   title: string;
   itemsCount: number;
-  ImgProps: IImgProps;
+  imgSrc: string;
   href: string;
-  imgPreloader?: ReactNode;
 }
 
-export const BrandCard = ({
-                            className,
-                            href,
-                            title,
-                            itemsCount,
-                            ImgProps,
-                            imgPreloader,
-                          }: IBrandCardProps) => {
+export const BrandCard = ({ className, href, title, itemsCount, imgSrc }: IBrandCardProps) => {
   const classes = useBrandCardStyles();
 
   return (
@@ -49,11 +41,10 @@ export const BrandCard = ({
       <Link to={href} className={classes.wrapLink}>
         <Box className={classes.imgBox}>
           <Img
-            {...ImgProps}
-            className={classNames(ImgProps.className, classes.imgWrap)}
+            src={imgSrc}
+            className={classes.imgWrap}
             ratio="1x1"
           />
-          {imgPreloader}
         </Box>
 
         <CardContent className={classes.content}>
@@ -74,7 +65,7 @@ export const BrandCard = ({
       </Link>
       {!itemsCount ?
         <Button
-          className={classes.addNewBtn}
+          className={classNames(classes.addNewBtn, classes.addNewBtnInCard)}
           variant="outlined"
           fullWidth={false}
           rounded

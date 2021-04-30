@@ -4,7 +4,7 @@ import { Button } from 'modules/uiKit/Button';
 import React from 'react';
 import { useBrandCardStyles } from '../BrandCard/useBrandCardStyles';
 import { t } from 'modules/i18n/utils/intl';
-import { PlusIcon } from '../Icons/PlusIcon';
+import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
 
 export interface IBrandEmptyCardProps {
   className?: string;
@@ -18,7 +18,7 @@ export const BrandEmptyCard = ({ className }: IBrandEmptyCardProps) => {
       <CardContent className={classes.contentEmpty}>
         <Button
           href="#"
-          className={classNames(classes.addNewBtn, classes.btnMarginVNone, classes.addNewBtnBig)}
+          className={classNames(classes.addNewBtn, classes.addNewBtnBig)}
           variant="outlined"
           fullWidth={false}
           rounded
