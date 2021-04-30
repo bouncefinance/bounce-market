@@ -81,7 +81,7 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
   addNewBtn: {
     width: 'auto',
     minHeight: 50,
-    margin: theme.spacing(0, 'auto', 3),
+    margin: theme.spacing(0, 'auto'),
     border: `solid ${fade(theme.palette.text.primary, 0.1)}`,
     borderWidth: 1,
     fontSize: 16,
@@ -91,12 +91,11 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
       marginTop: '-0.1em'
     }
   },
-  addNewBtnBig: {
-    minHeight: 60,
+  addNewBtnInCard: {
+    marginBottom: theme.spacing(3)
   },
-  btnMarginVNone: {
-    marginTop: 0,
-    marginBottom: 0
+  addNewBtnBig: {
+    minHeight: 60
   },
   iconInheritFontSize: {
     fontSize: 'inherit !important'
