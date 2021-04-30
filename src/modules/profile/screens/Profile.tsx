@@ -4,6 +4,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
+import { ActivityTable } from '../components/ActivityTable';
 import { Avatar } from '../components/Avatar';
 import { Bio } from '../components/Bio';
 import { Header } from '../components/Header';
@@ -254,6 +255,10 @@ export const Profile = () => {
 
         <TabPanel value={tab} index={TabList.brands}>
           <TabBrands items={brands} />
+        </TabPanel>
+
+        <TabPanel value={tab} index={TabList.activity}>
+          <ActivityTable />
         </TabPanel>
       </Container>
     </Section>

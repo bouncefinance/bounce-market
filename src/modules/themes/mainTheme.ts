@@ -198,7 +198,7 @@ export const mainTheme = createMuiTheme({
 
     MuiInputBase: {
       root: {
-        fontSize: 18,
+        fontSize: 16,
         border: `1px solid ${fade(defaultTheme.palette.common.black, 0.1)}`,
         transition: 'border 0.2s',
 
@@ -216,7 +216,7 @@ export const mainTheme = createMuiTheme({
       shrink: {
         position: 'static',
         marginBottom: 20,
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 700,
         color: '#000',
         transform: 'none',
@@ -499,6 +499,30 @@ export const mainTheme = createMuiTheme({
 
       outlined: {
         border: `1px solid ${fade('#000', 0.1)}`,
+      },
+    },
+
+    MuiTableCell: {
+      root: {
+        padding: defaultTheme.spacing(2),
+      },
+
+      head: {
+        paddingTop: defaultTheme.spacing(1.75),
+        paddingBottom: defaultTheme.spacing(1.75),
+        lineHeight: 1.2,
+        fontWeight: 700,
+        color: defaultTheme.palette.text.secondary,
+        background: '#F3F3F3',
+        borderBottom: 'none',
+
+        '&:first-child': {
+          borderRadius: '8px 0 0 8px',
+        },
+
+        '&:last-child': {
+          borderRadius: '0 8px 8px 0',
+        },
       },
     },
 
