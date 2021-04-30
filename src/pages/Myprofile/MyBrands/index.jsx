@@ -112,7 +112,8 @@ export default function Index() {
                 const brandList_1155 = (data.erc1155 || []).map(item => {
                     return {
                         standard: 2,
-                        ...item
+                        ...item,
+                        contract_address: item.Token
                     }
                 })
 
@@ -128,14 +129,15 @@ export default function Index() {
         const brandInfo = await getBrandInfoByAccount()
         console.log(brandList, brandInfo)
         const list = brandList.map(listItem => {
-            console.log(listItem, brandInfo)
+            // console.log(listItem, brandInfo)
             const tarItem = brandInfo.find(brandItem => String(brandItem.contractaddress).toLowerCase() === String(listItem.contract_address).toLowerCase())
             return {
                 ...listItem,
                 ...tarItem
             }
         })
-        console.log(list)
+        .filter(item=>item.contract_address&&item.contractaddress)
+        // console.log(list)
         setBrandList(list)
     }
 
