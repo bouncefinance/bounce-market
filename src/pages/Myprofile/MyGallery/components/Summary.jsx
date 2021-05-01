@@ -156,7 +156,17 @@ const SummaryWrapper = styled.div`
 	}
 `;
 
-function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, minPrice, maxPrice, minIncr, newUnit,nftCount }) {
+function smoothToTop(){
+	var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+	if (currentScroll > 0) {
+		 window.requestAnimationFrame(smoothToTop);
+		 window.scrollTo (0, currentScroll - (currentScroll/5));
+	}
+}
+
+function Summary({ auctionType, price, amount, unit,
+	 duration, fees, nftInfo, minPrice, maxPrice, minIncr,
+	  newUnit,nftCount, setAlarm }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
 	const [btnLock, setBtnLock] = useState(true);
@@ -293,6 +303,14 @@ function Summary({ auctionType, price, amount, unit, duration, fees, nftInfo, mi
 				}
 			} catch (e) { console.log(e); showTransferByStatus('errorStatus') }
 		} else {
+			if (!(parseFloat(minPrice) < parseFloat(price)) || !(parseFloat(price) <= parseFloat(maxPrice)) || !(parseFloat(minPrice) < parseFloat(maxPrice))) {
+				setAlarm('Make sure Minimum bid < Reserve price ≤ Direct purchase price')
+				
+				// back to the top
+                smoothToTop();
+				
+				return
+			}
 			// console.log(unit)
 			try {
 				// Fixswap NFT

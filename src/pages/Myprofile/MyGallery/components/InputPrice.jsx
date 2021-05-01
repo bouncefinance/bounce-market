@@ -27,7 +27,9 @@ function InputPrice({
 	nftInfo,
 	setNewUnit,
 	fixedSwapUnit,
-	setNftCount
+	setNftCount,
+	alarm,
+	setAlarm,
 }) {
 	const { active, account, chainId } = useActiveWeb3React();
 	const [priceValue, setpriceValue] = useState("");
@@ -142,6 +144,7 @@ function InputPrice({
 					placeholder={wrapperIntl("MyProfile.MyGallery.InputPrice.Price")}
 					maxLength={18}
 					value={priceValue}
+					onFocus={()=>{setAlarm('')}}
 					onChange={checkInputPrice}
 				/>
 				<UnitDropdown
@@ -159,6 +162,9 @@ function InputPrice({
 					}}
 				/>
 			</InputRow>
+			<span className="alarm">
+				{alarm}
+			</span>
 			{ifInputAmount && <>
 				<span className="amount">{wrapperIntl("MyProfile.MyGallery.InputPrice.Amount")}</span>
 				<AmounttRow>
@@ -188,7 +194,8 @@ const Wrapper = styled.div`
 	grid-area: ${({ gridArea }) => {
 		return gridArea;
 	}};
-
+	display: flex;
+	flex-direction: column;
 
 	span.title {
 		font-family: Helvetica Neue;
@@ -213,6 +220,19 @@ const Wrapper = styled.div`
 		margin: 6px 0 8px;
 		display:block;
 	}
+
+	span.alarm {
+		font-family: Helvetica Neue;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 12px;
+		line-height: 15px;
+		text-transform: capitalize;
+		color: red;
+		opacity: 0.7;
+		grid-area: alarm;
+		margin-bottom: 20px;
+	}
 	
 	span.amount {
 		font-family: Helvetica Neue;
@@ -233,7 +253,7 @@ const InputRow = styled.div`
 	grid-template-columns: 79% auto;
 	border: 1px solid rgba(0, 0, 0, 0.3);
 	align-items: center;
-	margin-bottom: 20px;
+	// margin-bottom: 20px;
 	input {
 		box-sizing: border-box;
 		padding-top: 5px;

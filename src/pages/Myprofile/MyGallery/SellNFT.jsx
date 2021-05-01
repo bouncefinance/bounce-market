@@ -94,6 +94,10 @@ export default function SellNFT() {
 	const [minimumBid, set_MinimumBid] = useState(0);
 	const [directPurchasePrice, set_DirectPurchasePrice] = useState(0);
 	const [reservePrice, set_ReservePrice] = useState(0);
+	//const [minimumBid_Clicked, set_MinimumBid_Clicked] = useState(false);
+	//const [directPurchasePrice_Clicked, set_DirectPurchasePrice_Clicked] = useState(false);
+	//const [reservePrice_Clicked, set_ReservePrice_Clicked] = useState(false);
+	const [alarm, setAlarm] = useState('')
 	const [duration, setDuration] = useState(0);
 
 	const [nftInfo, setNftId] = useState();
@@ -128,7 +132,7 @@ export default function SellNFT() {
 		setNftId(info);
 	};
 
-	useEffect(() => {
+	/* useEffect(() => {
 		if ((directPurchasePrice && ((directPurchasePrice.charAt(directPurchasePrice.length - 1) === '.') || (parseInt(directPurchasePrice) === 0 && directPurchasePrice.charAt(directPurchasePrice.length - 1) === '0'))) ||
 			(reservePrice && ((reservePrice.charAt(reservePrice.length - 1) === '.') || (parseInt(reservePrice) === 0 && reservePrice.charAt(reservePrice.length - 1) === '0'))) ||
 			(minimumBid && ((minimumBid.charAt(minimumBid.length - 1) === '.') || (parseInt(minimumBid) === 0 && minimumBid.charAt(minimumBid.length - 1) === '0')))) {
@@ -141,7 +145,7 @@ export default function SellNFT() {
 		if (reservePrice && minimumBid && parseFloat(minimumBid) >= parseFloat(reservePrice)) {
 			// console.log("parseFloat(reservePrice) * 0.9: ", `${parseFloat(reservePrice) * 0.9}`)
 			// console.log("reservePrice2: ", `${parseFloat(reservePrice) * 0.9}`.slice(0, reservePrice.length + 1))
-			set_MinimumBid(`${parseFloat(reservePrice) * 0.995}`.slice(0, reservePrice.length + 1));
+			set_ReservePrice(`${parseFloat(reservePrice) * 1.005}`.slice(0, reservePrice.length + 1));
 		}
 		if (directPurchasePrice && minimumBid && parseFloat(minimumBid) > parseFloat(directPurchasePrice)) {
 			// console.log("parseFloat(directPurchasePrice) * 0.9: ", `${parseFloat(directPurchasePrice) * 0.9}`)
@@ -158,7 +162,7 @@ export default function SellNFT() {
 		}
 
 		// console.log({ directPurchasePrice: directPurchasePrice, reservePrice: reservePrice, minimumBid: minimumBid })
-	}, [directPurchasePrice, reservePrice, minimumBid]);
+	}, [directPurchasePrice, reservePrice, minimumBid]); */
 
 	const render_LeftItems = (auctionType) => {
 		switch (auctionType) {
@@ -231,6 +235,8 @@ export default function SellNFT() {
 								gridArea="Minimum_bid"
 								options={unitOptions}
 								fixedSwapUnit={fixedSwap_Unit}
+								alarm={alarm}
+								setAlarm={setAlarm}
 							/>
 							<InputPrice
 								className="InputPrice Direct_purchase_price"
@@ -244,6 +250,8 @@ export default function SellNFT() {
 								gridArea="Direct_purchase_price"
 								options={unitOptions}
 								fixedSwapUnit={fixedSwap_Unit}
+								alarm={alarm}
+								setAlarm={setAlarm}
 							/>
 
 							<InputPrice
@@ -262,6 +270,8 @@ export default function SellNFT() {
 								setAmount={setAmount}
 								fixedSwapUnit={fixedSwap_Unit}
 								setNftCount={setNftCount}
+								alarm={alarm}
+								setAlarm={setAlarm}
 							/>
 							<SelectDuration
 								className="Expriration_Date"
@@ -306,6 +316,7 @@ export default function SellNFT() {
 							amount={amount || 1}
 							newUnit={fixedSwap_Unit}
 							nftCount={nftCount && nftCount}
+							setAlarm={setAlarm}
 						/>
 					</>
 				);
