@@ -104,17 +104,17 @@ export default function Index() {
 
     const findDataByRecord_soldOutNft_721 = myNftData.nft721Items.find(item => {
       return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
-        parseInt(item.token_id) === record_soldOutNft.tokenId && record_soldOutNft.balance !== 0
+        parseInt(item.token_id) === record_soldOutNft.tokenId && record_soldOutNft.balance === 0
     })
 
     const findDataByRecord_soldOutNft_1155 = myNftData.nft1155Items.find(item => {
       return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
         parseInt(item.token_id) === record_soldOutNft.tokenId && record_soldOutNft.balance === 0
     })
-    console.log('record_soldOutNft', record_soldOutNft)
-    console.log('findDataByRecord_soldOutNft_721', findDataByRecord_soldOutNft_721)
-    console.log('findDataByRecord_soldOutNft_1155', findDataByRecord_soldOutNft_1155)
-    console.log('myNftData-1', myNftData)
+    // console.log('record_soldOutNft', record_soldOutNft)
+    // console.log('findDataByRecord_soldOutNft_721', findDataByRecord_soldOutNft_721)
+    // console.log('findDataByRecord_soldOutNft_1155', findDataByRecord_soldOutNft_1155)
+    // console.log('myNftData-1', myNftData)
     if (findDataByRecord_soldOutNft_721) {
       myNftData.nft721Items = myNftData.nft721Items.filter(item => {
         return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_721.contract).toLowerCase() &&
@@ -125,10 +125,10 @@ export default function Index() {
         return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_1155.contract).toLowerCase() &&
           parseInt(item.token_id) !== parseInt(findDataByRecord_soldOutNft_1155.token_id)
       })
-    } 
-    // else {
-    //   window.localStorage.setItem('record_soldOutNft', null)
-    // }
+    }else {
+      window.localStorage.setItem('record_soldOutNft', null)
+    }
+    
 
     // console.log('myNftData-2', myNftData)
 

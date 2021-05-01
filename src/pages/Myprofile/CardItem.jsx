@@ -192,7 +192,7 @@ export function CardItem({ cover, status, nftId, itemname, poolType, poolInfo, c
                         <h5 className="name">{itemname}</h5>
                         <div className="line"></div>
                         <div className="flex flex-space-x">
-                            <p className="type">{poolType && (poolType === "english-auction" ? wrapperIntl('MyProfile.CardItem.TopBid') : wrapperIntl('MyProfile.CardItem.TopBid'))}</p>
+                            <p className="type">{poolType && (poolType === "english-auction" ? wrapperIntl('MyProfile.CardItem.TopBid') : wrapperIntl('MyProfile.CardItem.Price'))}</p>
                             <p className="_tag">{`# ${poolInfo.id}`}</p>
                         </div>
                         <h4 className="price">{poolInfo.price ? newPrice : wrapperIntl('MyProfile.CardItem.NotOnSale')}</h4>
