@@ -111,10 +111,10 @@ export default function Index() {
       return String(item.contract_addr).toLowerCase() === String(record_soldOutNft.contract).toLowerCase() &&
         parseInt(item.token_id) === record_soldOutNft.tokenId && record_soldOutNft.balance === 0
     })
-    // console.log('record_soldOutNft', record_soldOutNft)
-    // console.log('findDataByRecord_soldOutNft_721', findDataByRecord_soldOutNft_721)
-    // console.log('findDataByRecord_soldOutNft_1155', findDataByRecord_soldOutNft_1155)
-    // console.log('myNftData-1', myNftData)
+    console.log('record_soldOutNft', record_soldOutNft)
+    console.log('findDataByRecord_soldOutNft_721', findDataByRecord_soldOutNft_721)
+    console.log('findDataByRecord_soldOutNft_1155', findDataByRecord_soldOutNft_1155)
+    console.log('myNftData-1', myNftData)
     if (findDataByRecord_soldOutNft_721) {
       myNftData.nft721Items = myNftData.nft721Items.filter(item => {
         return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_721.contract).toLowerCase() &&
@@ -125,9 +125,10 @@ export default function Index() {
         return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_1155.contract).toLowerCase() &&
           parseInt(item.token_id) !== parseInt(findDataByRecord_soldOutNft_1155.token_id)
       })
-    } else {
-      window.localStorage.setItem('record_soldOutNft', null)
-    }
+    } 
+    // else {
+    //   window.localStorage.setItem('record_soldOutNft', null)
+    // }
 
     // console.log('myNftData-2', myNftData)
 
@@ -199,7 +200,7 @@ export default function Index() {
     }).filter(item => item.state !== 1);
 
     // 判断是否是刚 unList 了，如果是则过滤掉
-    console.log(tradePools)
+    // console.log(tradePools)
     const record_cancelListNft = JSON.parse(window.localStorage.getItem('record_cancelListNft'))
     if (record_cancelListNft) {
       tradePools = tradePools.filter(item => {
@@ -208,7 +209,7 @@ export default function Index() {
     } else {
       window.localStorage.setItem('record_cancelListNft', null)
     }
-    console.log(tradePools)
+    // console.log(tradePools)
 
     const tradeAuctions = myTradeData.tradeAuctions.map(item => {
       return {
