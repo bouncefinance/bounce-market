@@ -328,16 +328,8 @@ export default function NewIndex() {
         }
     })
 
-    useEffect(() => {
-        console.log("nftInfo: ", nftInfo)
-    }, [nftInfo])
 
     useEffect(() => {
-        console.log("poolInfo: ", poolInfo)
-    }, [poolInfo])
-
-    useEffect(() => {
-        console.log("active: ", active)
         let activeTimeout
         if (!active) {
             activeTimeout = setTimeout(() => {
@@ -824,6 +816,7 @@ export default function NewIndex() {
     const [offerList, setOfferList] = useState([]);
     const [history, setHistory] = useState([]);
     const handleSwap = (data) => {
+        console.log(data)
         const tradePool = data.tradePools[0] || data;
         if (!tradePool) return
         const createList = data.poolCreates.map(item => ({
@@ -837,10 +830,19 @@ export default function NewIndex() {
             timestamp: item.timestamp,
         }));
         const swapList = data.poolSwaps.map(item => ({
-            event: 'Transfer',
+            event: 'Transfer-Swap',
             quantity: item.quantity,
             price: item.price || '--',
             from: String(account).toLowerCase() === String(item.from).toLowerCase() ? 'You' : getEllipsisAddress(item.from),
+            to: String(account).toLowerCase() === String(item.to).toLowerCase() ? 'You' : getEllipsisAddress(item.to),
+            date: formatDistanceToNow(new Date(item.timestamp * 1000)),
+            timestamp: item.timestamp,
+        }));
+        const claimList = data.poolClaims.map(item => ({
+            event: 'Transfer-Claim',
+            quantity: item.quantity,
+            price: item.price || '--',
+            from: 'Bounce',
             to: String(account).toLowerCase() === String(item.to).toLowerCase() ? 'You' : getEllipsisAddress(item.to),
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
@@ -854,7 +856,7 @@ export default function NewIndex() {
             date: formatDistanceToNow(new Date(item.timestamp * 1000)),
             timestamp: item.timestamp,
         }));
-        const historyList = createList.concat(swapList).concat(cancelList)
+        const historyList = createList.concat(swapList).concat(cancelList).concat(claimList)
             .sort((a, b) => b.timestamp - a.timestamp);
         // console.log(historyList)
         setHistory(historyList);
@@ -874,6 +876,7 @@ export default function NewIndex() {
             poolSwaps: [],
             poolCreates: [],
             poolCancels: [],
+            poolClaims: []
         }
 
         try {
@@ -883,10 +886,10 @@ export default function NewIndex() {
                 const data = historyRes.data.data
                 console.log(data)
                 initData.poolCreates = data.filter(item => item.event === 'Created')
-                initData.poolSwaps = data.filter(item => item.event === 'poolSwaps')
+                initData.poolSwaps = data.filter(item => item.event === 'Swapped')
                 initData.tradePools = data.filter(item => item.event === 'tradePools')
                 initData.poolCancels = data.filter(item => item.event === 'Canceled')
-
+                initData.poolClaims = data.filter(item => item.event === 'Claimed')
                 return handleSwap(initData)
             } else {
                 throw Error()
@@ -903,10 +906,10 @@ export default function NewIndex() {
         if (offerListRes?.data?.code === 200) {
             const list = (offerListRes.data?.data || []).map(item => {
                 return {
-                    name: getEllipsisAddress(item.Sender),
-                    time: format(new Date(item.Timestamp * 1000), 'PPPpp'),
-                    amount: item.Amount0,
-                    price: item.Amount1,
+                    name: getEllipsisAddress(item.Sender || item.sender),
+                    time: format(new Date((item.Timestamp || item.timestamp) * 1000), 'PPPpp'),
+                    amount: (item.Amount0 || item.amount0),
+                    price: (item.Amount1 || item.amount1),
                 }
             }).sort((a, b) => b.price - a.price)
             console.log(list)
