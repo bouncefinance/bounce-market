@@ -189,19 +189,6 @@ const Wrapper = styled.div`
 		return gridArea;
 	}};
 
-	// display: grid;
-	// align-items: center;
-	// grid-template-rows: 15px 16px 15px 16px 52px 15px 16px 16px 1fr;
-	// grid-template-areas:
-	// 	"title"
-	// 	"."
-	// 	"notice"
-	// 	"."
-	// 	"InputRow"
-	// 	"."
-	// 	"amount"
-	// 	"."
-	// 	"AmounttRow";
 
 	span.title {
 		font-family: Helvetica Neue;
@@ -238,28 +225,6 @@ const Wrapper = styled.div`
 		opacity: 0.7;
 		grid-area: amount;
 	}
-	
-
-	// span.notice {
-	// 	font-family: Helvetica Neue;
-	// 	font-style: normal;
-	// 	font-weight: 500;
-	// 	font-size: 14px;
-	// 	line-height: 17px;
-	// 	color: #1f191b;
-	// 	opacity: 0.3;
-
-	// 	box-sizing: border-box;
-	// 	/* border-bottom: 1px solid rgba(0, 0, 0, 0.3); */
-	// 	border-bottom: 1px solid #000000;
-
-	// 	grid-area: notice;
-
-	// 	padding-top: 10px;
-	// 	padding-bottom: 20px;
-
-	// 	align-self: start;
-	// }
 `;
 
 const InputRow = styled.div`

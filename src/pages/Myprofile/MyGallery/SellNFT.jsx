@@ -139,18 +139,18 @@ export default function SellNFT() {
 			set_ReservePrice(directPurchasePrice);
 		}
 		if (reservePrice && minimumBid && parseFloat(minimumBid) >= parseFloat(reservePrice)) {
-			console.log("parseFloat(reservePrice) * 0.9: ", `${parseFloat(reservePrice) * 0.9}`)
-			console.log("reservePrice2: ", `${parseFloat(reservePrice) * 0.9}`.slice(0, reservePrice.length + 1))
-			set_MinimumBid(`${parseFloat(reservePrice) * 0.9}`.slice(0, reservePrice.length + 1));
+			// console.log("parseFloat(reservePrice) * 0.9: ", `${parseFloat(reservePrice) * 0.9}`)
+			// console.log("reservePrice2: ", `${parseFloat(reservePrice) * 0.9}`.slice(0, reservePrice.length + 1))
+			set_MinimumBid(`${parseFloat(reservePrice) * 0.995}`.slice(0, reservePrice.length + 1));
 		}
 		if (directPurchasePrice && minimumBid && parseFloat(minimumBid) > parseFloat(directPurchasePrice)) {
-			console.log("parseFloat(directPurchasePrice) * 0.9: ", `${parseFloat(directPurchasePrice) * 0.9}`)
-			console.log("-1: ", `${parseFloat(directPurchasePrice) * 0.9}`.slice(0, directPurchasePrice.length + 1).charAt(-1))
+			// console.log("parseFloat(directPurchasePrice) * 0.9: ", `${parseFloat(directPurchasePrice) * 0.9}`)
+			// console.log("-1: ", `${parseFloat(directPurchasePrice) * 0.9}`.slice(0, directPurchasePrice.length + 1).charAt(-1))
 			set_MinimumBid(
 				() => {
-					let temp = `${parseFloat(directPurchasePrice) * 0.9}`.slice(0, directPurchasePrice.length + 1)
+					let temp = `${parseFloat(directPurchasePrice) * 0.995}`.slice(0, directPurchasePrice.length + 1)
 					if (temp.charAt(temp.length - 1) === '.')
-						return `${parseFloat(directPurchasePrice) * 0.9}`.slice(0, directPurchasePrice.length + 2)
+						return `${parseFloat(directPurchasePrice) * 0.995}`.slice(0, directPurchasePrice.length + 2)
 					else
 						return temp
 				}
