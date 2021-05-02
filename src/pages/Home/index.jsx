@@ -167,7 +167,10 @@ export default function Index () {
         <div
           className="banner_wrapper"
           style={{ background: `url(${bannerSetting.img}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', cursor: 'pointer' }}
-          onClick={() => { window.open(bannerSetting.href) }}
+          onClick={() => { 
+            history.push('/AirHome/155/2/FineArts')
+            // window.open(bannerSetting.href)
+           }}
           title={`jump to ${bannerSetting.href}`}
         >
           {
