@@ -156,8 +156,8 @@ export default function Marketplace() {
   const [paramsByToken1, setParamsByToken1] = useState(null)
 
   useEffect(() => {
-    console.log('categoryRequestParam', categoryRequestParam)
-    console.log('paramsByToken1', paramsByToken1)
+    // console.log('categoryRequestParam', categoryRequestParam)
+    // console.log('paramsByToken1', paramsByToken1)
     if (!paramsByToken1 && !categoryRequestParam) return setFilterList(tokenList)
     let filterData = tokenList
     if (paramsByToken1) {

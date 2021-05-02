@@ -381,7 +381,7 @@ function Summary({ auctionType, price, amount, unit,
 						})
 				} else if (nftInfo.standard === 2) {
 					// approve
-					console.log(amount, price)
+					// console.log(amount, price)
 
 					const _amountTotal0 = amount;
 					// const _amountTotal1 = weiMul(numToWei(price), amount)

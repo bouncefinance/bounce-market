@@ -273,7 +273,7 @@ const NewIndexStyled = styled.div`
     
 `
 
-export default function NewIndex() {
+export default function NewIndex () {
     const intl = useIntl()
     const { library, account, chainId, active } = useActiveWeb3React()
     const { poolId, aucType } = useParams()
@@ -942,6 +942,13 @@ export default function NewIndex() {
         },
     ];
 
+    const wrappperReplaceSpace = (str) => {
+        if (!str) return []
+        const strArr = str.split(/\n/)
+        // console.log(strArr)
+        return strArr
+    }
+
     return (
         <>
             {active && <NewIndexStyled>
@@ -1051,8 +1058,13 @@ export default function NewIndex() {
                                 </div>}
                             </div>
                             <div className="desc">
-                                <p>{nftInfo?.description || state?.description || wrapperIntl("pages.buy.descriptionLoading")}</p>
-                                {/* <span>Read more</span> */}
+                                <p>
+                                    {wrappperReplaceSpace(nftInfo.description).map((strItem, index) => {
+                                        return <div key={index}>
+                                            {strItem === '' ? <br /> : strItem}
+                                        </div>
+                                    })}
+                                </p>
 
                             </div>
                         </div>
