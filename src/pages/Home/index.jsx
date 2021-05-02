@@ -128,6 +128,7 @@ export default function Index () {
 
   const bannerSetting = {
     img: img_banner_fmg,
+    // test cicd
     href: 'https://fangible.com/AirHome/155/2/FineArts',
     showText: false,
   }
