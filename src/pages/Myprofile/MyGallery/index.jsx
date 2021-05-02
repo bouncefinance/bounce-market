@@ -16,45 +16,6 @@ import Category from '../Category'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 // import axios from 'axios';
 
-const MyGalleryStyled = styled.div`
-    width: 1100px;
-    margin: 0 auto;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-
-    .filterBox{
-        margin-top: 32px;
-        /* margin-bottom: 50px; */
-        display: flex;
-        justify-content: space-between;
-    }
-
-    ul.list{
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 84px;
-
-        li{
-            margin-top: 32px;
-            margin-right: 17px;
-
-            &:nth-child(4n){
-                margin-right: 0px;
-            }
-        }
-    }
-
-    .emptyNoticeWrapper {
-      flex: 1;
-      display: flex;
-      .emptyNotice {
-        margin: auto;
-      }
-    }
-`
-
-
 export default function Index() {
   const { account, active } = useActiveWeb3React();
   // FMG: 0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f
@@ -338,3 +299,41 @@ export default function Index() {
     </>
   )
 }
+
+const MyGalleryStyled = styled.div`
+    width: 1100px;
+    margin: 0 auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .filterBox{
+        margin-top: 32px;
+        /* margin-bottom: 50px; */
+        display: flex;
+        justify-content: space-between;
+    }
+
+    ul.list{
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 84px;
+
+        li{
+            margin-top: 32px;
+            margin-right: 17px;
+
+            &:nth-child(4n){
+                margin-right: 0px;
+            }
+        }
+    }
+
+    .emptyNoticeWrapper {
+      flex: 1;
+      display: flex;
+      .emptyNotice {
+        margin: auto;
+      }
+    }
+`
