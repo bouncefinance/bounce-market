@@ -32,6 +32,200 @@ import axios from 'axios'
 import to from 'await-to-js'
 
 
+
+
+const HOMETOPLISTNUMBER = 8
+const HOMETOPFORNUMBER = 10
+export default function Index () {
+  // const { state } = useContext(myContext);
+  const { sign_Axios } = useAxios()
+  const { account } = useWeb3React();
+  const history = useHistory()
+  const [brands, setbrands] = useState([])
+  // const { data } = useQuery(QueryTradePools)
+
+  const initPools = async () => {
+    let offset = 0
+    let items = [], nftMap = new Map()
+    const getNftList = async () => {
+      const weightRes = await sign_Axios.post(Controller.pools.getpoolsinfobypage, { offset, limit: HOMETOPFORNUMBER, orderweight: 1 })
+      if (weightRes.data.code === 1) {
+        // artistpoolweight poolweight poolid id standard
+        let { data } = weightRes.data
+        let templPools = []
+        let poolsPromise = []
+        for (let weightItem of data) {
+          poolsPromise.push( to (axios.get('/pool', {
+            params: {
+              pool_id: weightItem.poolid,
+              pool_type: weightItem.standard === 1 ? 'fixedswap' : 'english'
+            }
+          })))
+        }
+        for (let [poolErr, poolRes] of await Promise.all(poolsPromise)) {
+          if (poolErr) {
+            return console.log(poolErr)
+          }
+          if (poolRes?.data?.code !== 200) {
+            return console.log('error')
+          }
+          templPools.push(poolRes.data.data)
+        }
+        // console.log('templPools:', templPools)
+        const [nftErr, nftRes] = await to(sign_Axios.post(Controller.items.getitemsbyids, {
+          ids: templPools.map(e => e.tokenId),
+          cts: templPools.map(e => e.token0),
+        }))
+        if (nftErr) {
+          return console.log(nftErr)
+        }
+        if (nftRes.data.code !== 1) {
+          return console.log('error')
+        }
+        const nftList = nftRes.data?.data ?? []
+        for (let nft of nftList) {
+          nftMap.set(`${String(nft.contractaddress).toLowerCase()}_${nft.id}`, nft)
+        }
+        items.push(...templPools.map(pool => {
+          const nftInfo = nftMap.get([String(pool.token0).toLowerCase(), pool.tokenId].join('_'))
+          if (!nftInfo) {
+            // console.log('nftInfo:', pool)
+          }
+          return {
+            ...nftInfo,
+            tokenId: pool.tokenId,
+            poolType: pool.amountMin1 ? AUCTION_TYPE.EnglishAuction : AUCTION_TYPE.FixedSwap,
+            poolId: pool.poolId,
+            price: pool.price || pool.lastestBidAmount,
+            createTime: pool.createTime,
+            token1: pool.token1
+          }
+        }))
+        items = items.filter(e => e.contractaddress)
+        // console.log('items:', items)
+        if (items.length < HOMETOPLISTNUMBER) {
+            offset+=1
+            getNftList()
+        }
+        setItemList(items.filter((_, i) => i < HOMETOPLISTNUMBER))
+        setLoadingItems(false)
+      }
+    }
+    getNftList()
+  }
+  useEffect(() => {
+    initPools()
+    // eslint-disable-next-line
+  }, [])
+  // const { data } = []
+  const [itemList, setItemList] = useState()
+  // const { exportArrayNftInfo } = useToken()
+  const [loadingBrands, setLoadingBrands] = useState(false)
+  const [loadingItems, setLoadingItems] = useState(true)
+  const [isConnectWallect, setIsConnectWallect] = useState(false)
+  // const { dispatch } = useContext(myContext)
+  const { wrapperIntl } = useWrapperIntl()
+
+  const bannerSetting = {
+    img: img_banner_fmg,
+    href: 'https://fangible.com/AirHome/155/2/FineArts',
+    showText: false,
+  }
+
+  useEffect(() => {
+
+    const init = async () => {
+      setLoadingBrands(true)
+      const brandsRes = await sign_Axios.post('/api/v2/main/getpopularbrands', {})
+      setLoadingBrands(false)
+      if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
+        const brands = brandsRes.data.data
+        const brands_2 = brands.filter(item => {
+          return item.id !== 10 && item.id !== 11 && item.id !== 117
+        }).slice(0, 4)
+        setbrands(brands_2)
+      } else {
+        // TODO ERROR SHOW
+        // dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Oops! Something went wrong. Try again." });
+      }
+    }
+
+    init()
+    // eslint-disable-next-line
+  }, [account])
+
+  return (
+    <>
+    <HomeStyled>
+      <div className="banner">
+        {/* <ul>
+          {banner_Nav.map((item) => {
+            return <li key={item.name}><Link to={`/Marketplace/${item.name}`}>{item.name}</Link></li>
+          })}
+        </ul> */}
+        <div
+          className="banner_wrapper"
+          style={{ background: `url(${bannerSetting.img}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', cursor: 'pointer' }}
+          onClick={() => { window.open(bannerSetting.href) }}
+          title={`jump to ${bannerSetting.href}`}
+        >
+          {
+            bannerSetting.showText && <div className='banner_img'>
+              <div className='content'>
+                <h1>
+                  <p>{wrapperIntl('home.banner1')}</p>
+                  <p>{wrapperIntl('home.banner2')}</p>
+                </h1>
+                <Link to="/Marketplace">
+                  <button>{wrapperIntl('home.Explore')}</button>
+                </Link>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <CardBanner />
+
+      <CardGroup title={wrapperIntl('home.fast')} link='/Marketplace/FineArts' marinTop='64px'>
+        {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
+          return <PopularItem itemInfo={item} key={index} src={img_example_1} setIsConnectWallect={setIsConnectWallect}/>
+        })}
+      </CardGroup>
+
+      <div className="Button_LoadMore">
+        <Button
+          width="280px"
+          height="48px"
+          value={wrapperIntl('home.more')}
+          primary
+          onClick={() => {
+            history.push('/Marketplace/FineArts')
+          }}
+        />
+      </div>
+
+      <CardGroup title={wrapperIntl('home.brand')} link='/Brands'>
+        {brands.map((item, index) => {
+          return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
+        })}
+        {loadingBrands && <SkeletonBrandCards n={4} />}
+      </CardGroup>
+      <div className="bottom_banner">
+        <Link to="/Factory">
+          <div className="left">
+            <h3>{wrapperIntl('home.footerBanner')}</h3>
+            <img src={arrows_white} alt="" />
+          </div>
+        </Link>
+        <img className='right' src={two_setting} alt="" />
+      </div>
+    </HomeStyled>
+    <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />
+    </>
+  )
+}
+
 const HomeStyled = styled.div`
   .banner{
     display: flex;
@@ -157,195 +351,3 @@ const HomeStyled = styled.div`
   }
 
 `
-
-const HOMETOPLISTNUMBER = 8
-const HOMETOPFORNUMBER = 10
-export default function Index () {
-  // const { state } = useContext(myContext);
-  const { sign_Axios } = useAxios()
-  const { account } = useWeb3React();
-  const history = useHistory()
-  const [brands, setbrands] = useState([])
-  // const { data } = useQuery(QueryTradePools)
-
-  const initPools = async () => {
-    let offset = 0
-    let items = [], nftMap = new Map()
-    const getNftList = async () => {
-      const weightRes = await sign_Axios.post(Controller.pools.getpoolsinfobypage, { offset, limit: HOMETOPFORNUMBER, orderweight: 1 })
-      if (weightRes.data.code === 1) {
-        // artistpoolweight poolweight poolid id standard
-        let { data } = weightRes.data
-        let templPools = []
-        let poolsPromise = []
-        for (let weightItem of data) {
-          poolsPromise.push( to (axios.get('/pool', {
-            params: {
-              pool_id: weightItem.poolid,
-              pool_type: weightItem.standard === 1 ? 'fixedswap' : 'english'
-            }
-          })))
-        }
-        for (let [poolErr, poolRes] of await Promise.all(poolsPromise)) {
-          if (poolErr) {
-            return console.log(poolErr)
-          }
-          if (poolRes?.data?.code !== 200) {
-            return console.log('error')
-          }
-          templPools.push(poolRes.data.data)
-        }
-        // console.log('templPools:', templPools)
-        const [nftErr, nftRes] = await to(sign_Axios.post(Controller.items.getitemsbyids, {
-          ids: templPools.map(e => e.tokenId),
-          cts: templPools.map(e => e.token0),
-        }))
-        if (nftErr) {
-          return console.log(nftErr)
-        }
-        if (nftRes.data.code !== 1) {
-          return console.log('error')
-        }
-        const nftList = nftRes.data?.data ?? []
-        for (let nft of nftList) {
-          nftMap.set(`${String(nft.contractaddress).toLowerCase()}_${nft.id}`, nft)
-        }
-        items.push(...templPools.map(pool => {
-          const nftInfo = nftMap.get([String(pool.token0).toLowerCase(), pool.tokenId].join('_'))
-          if (!nftInfo) {
-            // console.log('nftInfo:', pool)
-          }
-          return {
-            ...nftInfo,
-            tokenId: pool.tokenId,
-            poolType: pool.amountMin1 ? AUCTION_TYPE.EnglishAuction : AUCTION_TYPE.FixedSwap,
-            poolId: pool.poolId,
-            price: pool.price || pool.lastestBidAmount,
-            createTime: pool.createTime,
-            token1: pool.token1
-          }
-        }))
-        items = items.filter(e => e.contractaddress)
-        // console.log('items:', items)
-        if (items.length < HOMETOPLISTNUMBER) {
-            offset+=1
-            getNftList()
-        }
-        setItemList(items.filter((_, i) => i < HOMETOPLISTNUMBER))
-        setLoadingItems(false)
-      }
-    }
-    getNftList()
-  }
-  useEffect(() => {
-    initPools()
-    // eslint-disable-next-line
-  }, [])
-  // const { data } = []
-  const [itemList, setItemList] = useState()
-  // const { exportArrayNftInfo } = useToken()
-  const [loadingBrands, setLoadingBrands] = useState(false)
-  const [loadingItems, setLoadingItems] = useState(true)
-  const [isConnectWallect, setIsConnectWallect] = useState(false)
-  // const { dispatch } = useContext(myContext)
-  const { wrapperIntl } = useWrapperIntl()
-
-  const bannerSetting = {
-    img: img_banner_fmg,
-    href: 'https://bsc.fmg.art',
-    showText: false,
-  }
-
-  useEffect(() => {
-
-    const init = async () => {
-      setLoadingBrands(true)
-      const brandsRes = await sign_Axios.post('/api/v2/main/getpopularbrands', {})
-      setLoadingBrands(false)
-      if (brandsRes.data.code === 200 || brandsRes.data.code === 1) {
-        const brands = brandsRes.data.data
-        const brands_2 = brands.filter(item => {
-          return item.id !== 10 && item.id !== 11 && item.id !== 117
-        }).slice(0, 4)
-        setbrands(brands_2)
-      } else {
-        // TODO ERROR SHOW
-        // dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: "Oops! Something went wrong. Try again." });
-      }
-    }
-
-    init()
-    // eslint-disable-next-line
-  }, [account])
-
-  return (
-    <>
-    <HomeStyled>
-      <div className="banner">
-        {/* <ul>
-          {banner_Nav.map((item) => {
-            return <li key={item.name}><Link to={`/Marketplace/${item.name}`}>{item.name}</Link></li>
-          })}
-        </ul> */}
-        <div
-          className="banner_wrapper"
-          style={{ background: `url(${bannerSetting.img}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', cursor: 'pointer' }}
-          onClick={() => { window.open(bannerSetting.href) }}
-          title={`jump to ${bannerSetting.href}`}
-        >
-          {
-            bannerSetting.showText && <div className='banner_img'>
-              <div className='content'>
-                <h1>
-                  <p>{wrapperIntl('home.banner1')}</p>
-                  <p>{wrapperIntl('home.banner2')}</p>
-                </h1>
-                <Link to="/Marketplace">
-                  <button>{wrapperIntl('home.Explore')}</button>
-                </Link>
-              </div>
-            </div>
-          }
-        </div>
-      </div>
-
-      <CardBanner />
-
-      <CardGroup title={wrapperIntl('home.fast')} link='/Marketplace/FineArts' marinTop='64px'>
-        {loadingItems ? <NewSkeletonNFTCards n={8} /> : itemList.map((item, index) => {
-          return <PopularItem itemInfo={item} key={index} src={img_example_1} setIsConnectWallect={setIsConnectWallect}/>
-        })}
-      </CardGroup>
-
-      <div className="Button_LoadMore">
-        <Button
-          width="280px"
-          height="48px"
-          value={wrapperIntl('home.more')}
-          primary
-          onClick={() => {
-            history.push('/Marketplace/FineArts')
-          }}
-        />
-      </div>
-
-      <CardGroup title={wrapperIntl('home.brand')} link='/Brands'>
-        {brands.map((item, index) => {
-          return <BrandsItem key={index} src={item.imgurl} id={item.id} standard={item.standard} name={item.brandname} />
-        })}
-        {loadingBrands && <SkeletonBrandCards n={4} />}
-      </CardGroup>
-      <div className="bottom_banner">
-        <Link to="/Factory">
-          <div className="left">
-            <h3>{wrapperIntl('home.footerBanner')}</h3>
-            <img src={arrows_white} alt="" />
-          </div>
-        </Link>
-        <img className='right' src={two_setting} alt="" />
-      </div>
-    </HomeStyled>
-    <ConnectWalletModal open={isConnectWallect} setOpen={setIsConnectWallect} />
-    </>
-  )
-}
