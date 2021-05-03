@@ -4,6 +4,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
+import { ActivityTable } from '../components/ActivityTable';
 import { Avatar } from '../components/Avatar';
 import { Bio } from '../components/Bio';
 import { Header } from '../components/Header';
@@ -19,6 +20,9 @@ import { useDispatchRequest } from '@redux-requests/react';
 import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
 import { ProductCard } from '../../common/components/ProductCard';
 import { Queries } from '../../common/components/Queries/Queries';
+import { ResponseData } from '../../common/types/ResponseData';
+import { TabBrands } from '../components/TabBrands';
+import { IBrandCardProps } from '../components/BrandCard';
 import { RoutesConfiguration } from '../../createNFT/Routes';
 import { IItem } from '../../overview/api/getItems';
 
@@ -81,6 +85,21 @@ import { IItem } from '../../overview/api/getItems';
   },
  ];
  */
+
+const brands: IBrandCardProps[] = [
+  {
+    href: '#',
+    title: 'Polka Pet World',
+    imgSrc: 'https://picsum.photos/120?random=10',
+    itemsCount: 0
+  },
+  {
+    href: '#',
+    title: 'Polka Pet World',
+    imgSrc: 'https://picsum.photos/120?random=20',
+    itemsCount: 20
+  },
+];
 
 enum TabList {
   items,
@@ -220,7 +239,11 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={TabList.brands}>
-          brands
+          <TabBrands items={brands} />
+        </TabPanel>
+
+        <TabPanel value={tab} index={TabList.activity}>
+          <ActivityTable />
         </TabPanel>
       </Container>
     </Section>
