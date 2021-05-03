@@ -11,9 +11,9 @@ import BounceERC1155WithSign from '../contracts/BounceERC1155WithSign.json';
 import { addItem, IAddItemPayload } from './addItem';
 import { uploadFile } from './uploadFile';
 
-export enum Standard {
-  ERC721,
-  ERC1155,
+export enum NftStandard {
+  ERC721 = 1,
+  ERC1155 = 2,
 }
 
 export enum Channel {
@@ -26,7 +26,7 @@ export interface ICreateNFTPayload {
   name: string;
   description: string;
   channel: Channel;
-  standard: Standard;
+  standard: NftStandard;
   supply: number;
   file: File;
 }
@@ -63,11 +63,11 @@ export const createNft = createSmartAction(
             });
 
             const addItemPayload: IAddItemPayload = {
-              brandid: standard === Standard.ERC721 ? 10 : 11,
+              brandid: standard === NftStandard.ERC721 ? 10 : 11,
               category: 'image',
               channel,
               contractaddress:
-                standard === Standard.ERC721
+                standard === NftStandard.ERC721
                   ? getBounceERC721WithSign(chainId)
                   : getBounceERC1155WithSign(chainId),
               description,
@@ -76,8 +76,8 @@ export const createNft = createSmartAction(
               itemsymbol: 'BOUNCE',
               owneraddress: address,
               ownername: 'foobar',
-              standard: standard === Standard.ERC721 ? 1 : 2,
-              supply: standard === Standard.ERC721 ? 1 : supply, // is supply an integer?
+              standard: standard === NftStandard.ERC721 ? 1 : 2,
+              supply: standard === NftStandard.ERC721 ? 1 : supply, // is supply an integer?
             };
 
             const { data: addItemData } = await store.dispatchRequest(
@@ -88,7 +88,7 @@ export const createNft = createSmartAction(
               throw new Error("Item hasn't been added");
             }
 
-            if (standard === Standard.ERC721) {
+            if (standard === NftStandard.ERC721) {
               return await new Promise((resolve, reject) => {
                 const ContractBounceERC721WithSign = new web3.eth.Contract(
                   (BounceERC721WithSign.abi as unknown) as AbiItem,
