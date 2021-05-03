@@ -60,6 +60,7 @@ export const fetchAllNftByUser: (
               ...(fetchNftByUserData?.nfts1155.map(
                 item => item.contractAddress,
               ) ?? []),
+              // TODO Update mapping
               ...(pools?.tradePools.map((item: any) => item.tokenId) ?? []),
               ...(pools?.tradeAuctions.map((item: any) => item.tokenId) ?? []),
             ];

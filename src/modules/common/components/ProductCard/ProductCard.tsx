@@ -25,6 +25,7 @@ import { Link } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { useProductCardStyles } from './useProductCardStyles';
+import { Link as RouterLink } from 'react-router-dom';
 
 export enum ProductCardStatuses {
   minting,
@@ -46,7 +47,7 @@ export interface IProductCardProps {
   imgPreloader?: ReactNode;
   onLikeClick?: () => void;
   status?: ProductCardStatuses;
-  onPutOnSaleClick?: () => void;
+  toSale?: string;
   onTransferClick?: () => void;
   onBurnClick?: () => void;
 }
@@ -66,7 +67,7 @@ export const ProductCard = ({
   ProfileInfoProps,
   imgPreloader,
   status,
-  onPutOnSaleClick,
+  toSale,
   onTransferClick,
   onBurnClick,
 }: IProductCardProps) => {
@@ -205,17 +206,16 @@ export const ProductCard = ({
                 <Box display="flex" alignItems="center">
                   <Button
                     className={classes.saleBtn}
+                    component={RouterLink}
                     variant="outlined"
                     rounded
-                    onClick={onPutOnSaleClick}
+                    to={toSale}
                   >
                     Put on sale
                   </Button>
-
                   <ButtonBase className={classes.menuBtn} onClick={handleClick}>
                     <VerticalDotsIcon className={classes.menuIcon} />
                   </ButtonBase>
-
                   <Popover
                     className={classes.menuPopover}
                     open={isPopoverOpened}
