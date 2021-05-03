@@ -20,7 +20,6 @@ import { useDispatchRequest } from '@redux-requests/react';
 import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
 import { ProductCard } from '../../common/components/ProductCard';
 import { Queries } from '../../common/components/Queries/Queries';
-import { ResponseData } from '../../common/types/ResponseData';
 import { TabBrands } from '../components/TabBrands';
 import { IBrandCardProps } from '../components/BrandCard';
 import { RoutesConfiguration } from '../../createNFT/Routes';
@@ -91,13 +90,13 @@ const brands: IBrandCardProps[] = [
     href: '#',
     title: 'Polka Pet World',
     imgSrc: 'https://picsum.photos/120?random=10',
-    itemsCount: 0
+    itemsCount: 0,
   },
   {
     href: '#',
     title: 'Polka Pet World',
     imgSrc: 'https://picsum.photos/120?random=20',
-    itemsCount: 20
+    itemsCount: 20,
   },
 ];
 
