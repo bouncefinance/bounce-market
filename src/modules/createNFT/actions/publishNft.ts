@@ -23,7 +23,7 @@ const getFixedSwapContract = (chainID: number) => {
     case 4:
       return '0x65B2FA838588003102fb3883e608f8b0049BFDD1';
     case 56:
-      return '0x58E84d90fd976A183bEfB36a69caB464bef18cC5';
+      return '0x1C035FD1F11eA9Bb753625fD167205Cd40029607';
     default:
       return '0x65B2FA838588003102fb3883e608f8b0049BFDD1';
   }
@@ -104,6 +104,8 @@ export const publishNft = createSmartAction<
               getBounceERC1155WithSign(chainId),
             );
 
+            const onlyBOT = false;
+
             // TODO isOwner
 
             if (payload.type === AuctionType.FixedSwap) {
@@ -130,7 +132,8 @@ export const publishNft = createSmartAction<
                       tokenContract,
                       unitContract,
                       tokenId,
-                      Web3.utils.fromWei(price.toString()),
+                      Web3.utils.toWei(price.toString()),
+                      onlyBOT,
                     )
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
@@ -156,7 +159,8 @@ export const publishNft = createSmartAction<
                       unitContract,
                       tokenId,
                       quantity,
-                      price.multipliedBy(quantity),
+                      Web3.utils.toWei(price.multipliedBy(quantity).toString()),
+                      onlyBOT,
                     )
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
@@ -202,11 +206,12 @@ export const publishNft = createSmartAction<
                       tokenContract,
                       unitContract,
                       tokenId,
-                      purchasePrice,
-                      minBid,
-                      minIncremental,
-                      reservePrice,
+                      Web3.utils.toWei(purchasePrice.toString()),
+                      Web3.utils.toWei(minBid.toString()),
+                      Web3.utils.toWei(minIncremental.toString()),
+                      Web3.utils.toWei(reservePrice.toString()),
                       duration,
+                      onlyBOT,
                     )
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
@@ -232,11 +237,12 @@ export const publishNft = createSmartAction<
                       unitContract,
                       tokenId,
                       quantity,
-                      purchasePrice,
-                      minBid,
-                      minIncremental,
-                      reservePrice,
+                      Web3.utils.toWei(purchasePrice.toString()),
+                      Web3.utils.toWei(minBid.toString()),
+                      Web3.utils.toWei(minIncremental.toString()),
+                      Web3.utils.toWei(reservePrice.toString()),
                       duration,
+                      onlyBOT,
                     )
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {

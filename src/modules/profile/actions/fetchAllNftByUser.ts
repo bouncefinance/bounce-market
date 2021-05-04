@@ -50,8 +50,7 @@ export const fetchAllNftByUser: (
             const ids = [
               ...(fetchNftByUserData?.nfts721.map(item => item.tokenId) ?? []),
               ...(fetchNftByUserData?.nfts1155.map(item => item.tokenId) ?? []),
-              ...(pools?.tradePools.map((item: any) => item.tokenId) ?? []),
-              ...(pools?.tradeAuctions.map((item: any) => item.tokenId) ?? []),
+              ...(pools?.list.map(item => item.tokenId) ?? []),
             ];
             const cts = [
               ...(fetchNftByUserData?.nfts721.map(
@@ -60,9 +59,7 @@ export const fetchAllNftByUser: (
               ...(fetchNftByUserData?.nfts1155.map(
                 item => item.contractAddress,
               ) ?? []),
-              // TODO Update mapping
-              ...(pools?.tradePools.map((item: any) => item.tokenId) ?? []),
-              ...(pools?.tradeAuctions.map((item: any) => item.tokenId) ?? []),
+              ...(pools?.list.map(item => item.tokenContract) ?? []),
             ];
 
             const {
@@ -83,7 +80,18 @@ export const fetchAllNftByUser: (
               throw fetchItemsError;
             }
 
-            return data;
+            // TODO How to manage pools, separated data or inline?
+            return data?.map(item => {
+              const pool = pools?.list.find(pool => pool.tokenId === item.id);
+              if (pool) {
+                return {
+                  ...item,
+                  poolId: pool.poolId,
+                };
+              }
+
+              return item;
+            });
           })(),
         };
       },

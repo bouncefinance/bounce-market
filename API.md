@@ -224,11 +224,11 @@
 
 Swagger UI Summary of interface documents：[网页链接](https://market-test.bounce.finance/swagger/index.html)
 
-BaseHost: 
+BaseHost:
 
 - Binance Smart Chain: https://bounce-market.bounce.finance
 
-- Rinkeby (https):  https://bounce-market.bounce.financ
+- Rinkeby (https):  https://bounce-market.bounce.finance
 - Rinkeby (http):  https://market-test.bounce.finance
 
 #### 2.1 Create and use signatures
@@ -768,7 +768,7 @@ const result = {
 
 Note: To complete this function, first of all, we need to select the artist's address as the filtering condition, request the weight of the artist pool, and then sort it according to the weight, and render the first four pools according to the UI
 
-**Query pool weight** 
+**Query pool weight**
 
 ```jsx
 # POST
@@ -842,7 +842,7 @@ For updates, see **2.2 Create Using NFT**
 
 Upon successful MateData generation, the back-end interface returns the three required fields
 
-- expiredtime：A timestamp that reflects the time 10 minutes later	
+- expiredtime：A timestamp that reflects the time 10 minutes later
 - id: NFT Token ID
 - signaturestr: An encrypted string signed by an administrator account on the back end
 
@@ -1147,7 +1147,7 @@ BounceFixedSwapNFT_CT.methods.creatorClaim(poolId)
 
 1. First, use The Graph to request all the list data for sale.（tradePools, tradeAuctions）
 2. Request the backend interface`/api/v2/main/getitemsbyfilter`，Gets the corresponding Item information
-3. Rendered the first eight data  sorted according to 'item.popular'
+3.  Rendered the first eight data  sorted according to 'item.popular'
 
 **Home-2**
 
@@ -1217,14 +1217,14 @@ Note: The Graph can pass in the account address and state as the filter conditio
 - Request backend interface`/api/v2/main/auth/getaccountbrands` Query the basic information parameters of the brand
 - The two can be contacted and matched through `contractaddress`
 
-**Change Brand Background** 
+**Change Brand Background**
 
 1. Get the bandimgurl in the `/api/v2/main/auth/getaccount` interface as the picture setting
 2. Request back-end interface `/api/v2/main/auth/updateaccountbandimg` to replace the image
 
 **Create Brand**
 
-![image-20210413164217214](http://oss.yitian2019.cn/img/image-20210413164217214.png) 
+![image-20210413164217214](http://oss.yitian2019.cn/img/image-20210413164217214.png)
 
 1. The first step is to upload an image through `/api/v2/main/auth/fileupload` to generate an online image link
 2. Call the factory contract `createBrand721`/`createBrand1155` to generate the brand sub-contract

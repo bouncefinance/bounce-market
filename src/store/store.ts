@@ -8,7 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './rootSaga';
 import { createDriver as createAxiosDriver } from '@redux-requests/axios';
 import axios from 'axios';
-import { BASE_URL } from '../modules/common/conts';
+import { API_BASE } from '../modules/common/conts';
 import { notificationSlice } from '../modules/notification/store/notificationSlice';
 import { NotificationActions } from '../modules/notification/store/NotificationActions';
 import { extractMessage } from '../modules/common/utils/extractError';
@@ -21,7 +21,7 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     }),
     axios: createAxiosDriver(
       axios.create({
-        baseURL: BASE_URL,
+        baseURL: API_BASE,
       }),
     ),
   },

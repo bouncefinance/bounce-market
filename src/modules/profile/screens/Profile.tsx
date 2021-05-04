@@ -24,6 +24,7 @@ import { TabBrands } from '../components/TabBrands';
 import { IBrandCardProps } from '../components/BrandCard';
 import { RoutesConfiguration } from '../../createNFT/Routes';
 import { IItem } from '../../overview/api/getItems';
+import BigNumber from 'bignumber.js';
 
 /**
  * Temporary samples
@@ -197,16 +198,17 @@ export const Profile = () => {
         <TabPanel value={tab} index={TabList.items}>
           <TabItems>
             <Grid container spacing={4}>
-              <Queries requestActions={[fetchAllNftByUser]}>
+              <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
                 {({ data }) =>
-                  (data as any)?.map((item: IItem) => (
+                  data?.map((item: IItem) => (
                     <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
                       <ProductCard
                         key={uid(item)}
                         title={item.itemname}
                         href={'#'}
                         // status={item.status}
-                        // price={item.price}
+                        // UPDATE price
+                        price={item.poolId ? new BigNumber(10) : undefined}
                         copies={'1'}
                         ImgProps={{
                           src: item.fileurl,
