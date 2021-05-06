@@ -140,7 +140,7 @@ const chains = [
 
 let reloadFlag = false;
 const ConnectToChain = async (chainName) => {
-    if(!reloadFlag) return reloadFlag = true
+	if (!reloadFlag) return (reloadFlag = true);
 	let ethereum = window.ethereum;
 
 	if (typeof ethereum !== "undefined") {
@@ -182,8 +182,8 @@ const ConnectToChain = async (chainName) => {
 			params: chainName === "BSC" ? BSCInfo : HECOInfo,
 		})
 		.then(() => {
-            // reloadFlag = true
-            window.location.reload();
+			// reloadFlag = true
+			window.location.reload();
 		})
 		.catch();
 	if (result) {
@@ -480,9 +480,11 @@ export default function Index() {
 									value: "HECO",
 								},
 							]}
-							defaultValue={chainId===128?"HECO":"BSC"}
+							defaultValue={
+								chainId && chainId === 128 ? "HECO" : "BSC"
+							}
 							onChange={(item) => {
-								ConnectToChain(item.value)
+								ConnectToChain(item.value);
 							}}
 						/>
 
