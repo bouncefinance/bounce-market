@@ -356,7 +356,6 @@ export default function Marketplace() {
             defaultValue={'All'}
             onChange={(item) => {
               if (!item) return
-              console.log(item)
               switch (item.value) {
                 case 'All':
                   setParamsByToken1('')
