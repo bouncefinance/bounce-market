@@ -10,6 +10,8 @@ import { FormErrors } from 'modules/form/utils/FormErrors';
 import { editProfile } from '../../actions/editProfile';
 import { useHistory } from 'react-router';
 import { ProfileRoutesConfig } from '../../ProfileRoutes';
+import { isValidEmail } from 'modules/common/utils/isValidEmail';
+import { isValidWebsiteUrl } from 'modules/common/utils/isValidWebsiteUrl';
 
 export interface IEditProfile {
   username: string;
@@ -29,13 +31,11 @@ const validateEditProfile = (payload: IEditProfile) => {
     errors.username = t('validation.required');
   }
 
-  const emailRegex = /^(([^<>()\\.,;:\s@"]+(\.[^<>()\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if (!!payload.email && !emailRegex.test(String(payload.email).toLowerCase())) {
+  if (!!payload.email && !isValidEmail(payload.email)) {
     errors.email = t('validation.invalid-email');
   }
 
-  const urlRegex = /^(?:(?:http|https):\/\/)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(\/|\\?|#)[^\\s]*)?$/;
-  if (!!payload.website && (payload.website.length >= 2083 || !urlRegex.test(String(payload.website).toLowerCase()))) {
+  if (!!payload.website && !isValidWebsiteUrl(payload.website)) {
     errors.website = t('validation.invalid-website');
   }
 
