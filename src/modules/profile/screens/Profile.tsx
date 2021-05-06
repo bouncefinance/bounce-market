@@ -22,6 +22,7 @@ import { ProductCard } from '../../common/components/ProductCard';
 import { Queries } from '../../common/components/Queries/Queries';
 import { TabBrands } from '../components/TabBrands';
 import { IBrandCardProps } from '../components/BrandCard';
+import { IFollowingItemProps, TabFollowing } from '../components/TabFollowing';
 import { RoutesConfiguration } from '../../createNFT/Routes';
 import { IItem } from '../../overview/api/getItems';
 import BigNumber from 'bignumber.js';
@@ -100,6 +101,35 @@ const brands: IBrandCardProps[] = [
     itemsCount: 20,
   },
 ];
+
+const followings: IFollowingItemProps[] = [
+  {
+    userName: 'Pasha Ho',
+    userId: 123,
+    href: '#',
+    userFollowers: 150,
+    imgSrc: 'https://picsum.photos/82?random=200',
+    follow: false,
+  },
+  {
+    userName: 'John Smith',
+    userId: 321,
+    href: '#',
+    userFollowers: 0,
+    imgSrc: 'https://picsum.photos/82?random=201',
+    follow: true,
+  },
+  {
+    userName: 'Smith John',
+    userId: 213,
+    href: '#',
+    userFollowers: 15,
+    imgSrc: 'https://picsum.photos/82?random=202',
+    follow: false,
+  },
+];
+
+const followers = followings;
 
 enum TabList {
   items,
@@ -245,6 +275,14 @@ export const Profile = () => {
 
         <TabPanel value={tab} index={TabList.activity}>
           <ActivityTable />
+        </TabPanel>
+
+        <TabPanel value={tab} index={TabList.following}>
+          <TabFollowing items={followings} />
+        </TabPanel>
+
+        <TabPanel value={tab} index={TabList.followers}>
+          <TabFollowing items={followers} />
         </TabPanel>
       </Container>
     </Section>

@@ -9,12 +9,12 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
     textAlign: 'center',
     transition: '0.2s',
     '&:hover': {
-      borderColor: fade(theme.palette.text.primary, 0.3)
-    }
+      borderColor: fade(theme.palette.text.primary, 0.3),
+    },
   },
 
   createNewMiniBtnWrap: {
-    textAlign: 'right'
+    textAlign: 'right',
   },
   createNewMiniBtn: {
     margin: theme.spacing(2, 2, 0),
@@ -24,7 +24,7 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
     border: `1px solid ${fade(theme.palette.text.primary, 0.1)}`,
     fontSize: 16,
     borderRadius: '100%',
-    color: '#a09fa0'
+    color: '#a09fa0',
   },
 
   imgBox: {
@@ -33,7 +33,7 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
     margin: theme.spacing(4, 0, 1),
     '$createNewMiniBtnWrap + a > &': {
       marginTop: 0,
-    }
+    },
   },
 
   imgWrap: {
@@ -67,7 +67,7 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
   contentEmpty: {
     display: 'flex',
     alignItems: 'center',
-    flexGrow: 1
+    flexGrow: 1,
   },
 
   title: {
@@ -76,7 +76,7 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
   },
 
   subTitle: {
-    fontSize: 15
+    fontSize: 15,
   },
   addNewBtn: {
     width: 'auto',
@@ -88,16 +88,16 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
     '& .MuiButton-startIcon': {
-      marginTop: '-0.1em'
-    }
+      marginTop: '-0.1em',
+    },
   },
   addNewBtnInCard: {
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(3),
   },
   addNewBtnBig: {
-    minHeight: 60
+    minHeight: 60,
   },
   iconInheritFontSize: {
-    fontSize: 'inherit !important'
-  }
+    fontSize: 'inherit !important',
+  },
 }));
