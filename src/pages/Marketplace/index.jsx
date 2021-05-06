@@ -183,12 +183,12 @@ export default function Marketplace() {
     }, ...getCoinList(chainId).filter(item => item.contract)])
 
     if (data) {
-      console.log("data", data)
-      const tradePools = data.tradePools.map(item => ({
+      // console.log("data", data)
+      const tradePools = (data.tradePools || []).map(item => ({
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
       })).filter(item => item.state !== 1)
-      const tradeAuctions = data.tradeAuctions.map(item => ({
+      const tradeAuctions = (data.tradeAuctions || []).map(item => ({
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
         poolType: AUCTION_TYPE.EnglishAuction

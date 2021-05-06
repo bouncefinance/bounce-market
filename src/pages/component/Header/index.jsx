@@ -251,21 +251,21 @@ export default function Index() {
             return
         }
 
-        if (chainId && (chainId !== 56)) {
-            dispatch({
-                type: 'Modal_Message',
-                showMessageModal: true,
-                modelType: 'error',
-                modelMessage: wrapperIntl("header.SelectBSC"),
-                subsequentActionType: "connectToBSCChain",
-                modelUrlMessage: wrapperIntl("header.SwitchToBSC"),
-                modelTimer: 24 * 60 * 60 * 1000,
-                canClose: true,
-            });
-        }
-        else {
-            dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
-        }
+        // if (chainId && (chainId !== 56)) {
+        //     dispatch({
+        //         type: 'Modal_Message',
+        //         showMessageModal: true,
+        //         modelType: 'error',
+        //         modelMessage: wrapperIntl("header.SelectBSC"),
+        //         subsequentActionType: "connectToBSCChain",
+        //         modelUrlMessage: wrapperIntl("header.SwitchToBSC"),
+        //         modelTimer: 24 * 60 * 60 * 1000,
+        //         canClose: true,
+        //     });
+        // }
+        // else {
+        //     dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
+        // }
 
         console.log("end active:" + active)
         console.log("end chainId:" + chainId)
