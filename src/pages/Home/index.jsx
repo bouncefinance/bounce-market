@@ -7,7 +7,8 @@ import BrandsItem from './BrandsItem'
 // import RequestsItem from './RequestsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
 // import img_banner from '@assets/images/banner2.png'
-import img_banner_fmg from './assets/FMG/FMG.gif'
+//import img_banner_fmg from './assets/FMG/FMG.gif'
+import img_banner_fmg from '../../../src/assets/images/banner2.png'
 
 import img_example_1 from '@assets/images/example_1.svg'
 // import img_alpaca_city from '@assets/images/alpaca_city.svg'
@@ -290,7 +291,7 @@ export default function Index () {
         <div
           className="banner_wrapper"
           style={{ background: `url(${bannerSetting.img}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', cursor: 'pointer' }}
-          onClick={() => { window.open(bannerSetting.href) }}
+          // onClick={() => { window.open(bannerSetting.href) }}
           title={`jump to ${bannerSetting.href}`}
         >
           {
