@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from '../../common/conts';
+import { API_BASE } from '../../common/conts';
 
 export interface IParams {
   accountaddress: string;
@@ -9,7 +9,7 @@ export interface IParams {
 
 export function getAuthToken(params: IParams) {
   return axios.post<{ data: { token: string } }>(
-    BASE_URL + '/api/v2/main/jwtauth',
+    API_BASE + '/api/v2/main/jwtauth',
     params,
   );
 }

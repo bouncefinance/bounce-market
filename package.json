@@ -19,6 +19,7 @@
     "classnames": "^2.3.1",
     "connected-react-router": "^6.9.1",
     "date-fns": "^2.21.1",
+    "env-cmd": "^10.1.0",
     "final-form": "^4.20.2",
     "graphql": "^15.5.0",
     "history": "^4.10.1",
@@ -66,8 +67,9 @@
     ]
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env.smartchain react-scripts start",
+    "start:rinkeby": "env-cmd -f .env.rinkeby react-scripts start",
+    "build": "env-cmd -f .env.smartchain react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",

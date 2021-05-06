@@ -4,6 +4,7 @@ import { RootState } from '../../../store/store';
 import { getQuery, resetRequests } from '@redux-requests/core';
 import { setAccount } from '../store/actions/setAccount';
 import { connect } from '../store/actions/connect';
+import { Address } from '../../common/types/unit';
 
 // TODO Check disconnection, switch chain, switch account
 
@@ -47,8 +48,6 @@ export type ProviderEvent =
   | IDisconnectEvent
   | IMessageEvent
   | IChainChangedEvent;
-
-export type Address = string;
 
 function createEventChannel(provider: any) {
   return eventChannel(emitter => {

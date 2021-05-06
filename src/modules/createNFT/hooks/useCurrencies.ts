@@ -2,7 +2,7 @@ import { useQuery } from '@redux-requests/react';
 import { useMemo } from 'react';
 import { setAccount } from '../../account/store/actions/setAccount';
 
-enum Currency {
+export enum Currency {
   BNB = 'BNB',
   ETH = 'ETH',
   BUSD = 'BUSD',
@@ -71,7 +71,7 @@ export function useCurrencies() {
             options: [
               {
                 label: chainId === 56 ? Currency.BNB : Currency.ETH,
-                value: chainId === 56 ? Currency.BNB : Currency.ETH,
+                value: '0x0000000000000000000000000000000000000000',
                 contract: '0x0000000000000000000000000000000000000000',
                 decimals: 18,
               },
@@ -79,26 +79,23 @@ export function useCurrencies() {
                 ? [
                     {
                       label: Currency.BUSD,
-                      value: Currency.BUSD,
-                      contract: getBUSDAddress(chainId),
+                      value: getBUSDAddress(chainId),
                       decimals: 18,
                     },
                   ]
                 : []),
               {
                 label: Currency.USDT,
-                value: Currency.USDT,
-                contract: getUSDTAddress(chainId),
+                value: getUSDTAddress(chainId),
                 decimals: chainId === 56 ? 18 : 6,
               },
               {
                 label: Currency.USDC,
-                value: Currency.USDC,
-                contract: getUSDCAddress(chainId),
+                value: getUSDCAddress(chainId),
                 decimals: 18,
               },
             ],
-            default: Currency.BNB,
+            default: '0x0000000000000000000000000000000000000000',
           }
         : { options: [], default: undefined },
     [chainId],

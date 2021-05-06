@@ -3,6 +3,7 @@ import React from 'react';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 import { PrivateRoute } from '../router/components/PrivateRoute';
+import { generatePath } from 'react-router-dom';
 
 const PATH_CREATE_NFT = '/nft/create';
 const PATH_PUBLISH_NFT = '/nft/publish/:contract/:id';
@@ -14,7 +15,8 @@ export const RoutesConfiguration: { [key: string]: RouteConfiguration } = {
   },
   PublishNft: {
     path: PATH_PUBLISH_NFT,
-    generatePath: () => PATH_PUBLISH_NFT,
+    generatePath: (contract: string, id: number) =>
+      generatePath(PATH_PUBLISH_NFT, { contract, id }),
   },
 };
 

@@ -7,7 +7,9 @@ export interface IApiItem {
   metadata: string;
 }
 
-export interface IItem extends IApiItem {}
+export interface IItem extends IApiItem {
+  poolId?: number;
+}
 
 export function mapItem(item: IApiItem): IItem {
   return item;

@@ -17,7 +17,7 @@ import { GoBack } from '../../../layout/components/GoBack';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
 import { ButtonGroupField } from '../../../form/components/ButtonGroupField/ButtonGroupField';
 import { AuctionType } from '../../../overview/api/auctionType';
-import { useHistory, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { InputField } from '../../../form/components/InputField';
 import { SelectField } from '../../../form/components/SelectField';
 import { useCurrencies } from '../../hooks/useCurrencies';
@@ -25,30 +25,54 @@ import { ReactComponent as QuestionIcon } from '../../../common/assets/question.
 import { Queries } from '../../../common/components/Queries/Queries';
 import { publishNft } from '../../actions/publishNft';
 import { fetchItem } from '../../../detailsNFT/actions/fetchItem';
+import { Days } from '../../../common/types/unit';
+import { ResponseData } from '../../../common/types/ResponseData';
+import { NftStandard } from '../../actions/createNft';
+import BigNumber from 'bignumber.js';
 
-interface IPublishNFTPayload {
-  type: AuctionType;
+const MIN_INCREMENTAL_PART = 0.05;
+
+interface IPublishFixedSwap {
+  type: AuctionType.FixedSwap;
+  price: number;
+  quantity: number;
+  unitContract: string;
 }
 
-const validateCreateNFT = (payload: IPublishNFTPayload) => {
-  const errors: FormErrors<IPublishNFTPayload> = {};
+interface IPublishEnglishAuction {
+  type: AuctionType.EnglishAuction;
+  minBid: number;
+  purchasePrice: number;
+  reservePrice: number;
+  quantity: number;
+  duration: Days;
+  unitContract: string;
+}
+
+type IPublishNFTFormData = IPublishFixedSwap | IPublishEnglishAuction;
+
+const validateCreateNFT = (payload: IPublishNFTFormData) => {
+  const errors: FormErrors<IPublishNFTFormData> = {};
+  // name max length is 30
 
   return errors;
 };
 
-export const PublishNFT = () => {
+interface IPublishNFTComponentProps {
+  name: string;
+  tokenContract: string;
+  standard: NftStandard;
+  tokenId: number;
+}
+
+export const PublishNFTComponent = ({
+  name,
+  tokenContract,
+  standard,
+  tokenId,
+}: IPublishNFTComponentProps) => {
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
-  const { goBack } = useHistory();
-  const { id: idParam, contract } = useParams<{
-    contract: string;
-    id: string;
-  }>();
-  const id = parseInt(idParam, 10);
-
-  useEffect(() => {
-    dispatch(fetchItem({ contract, id }));
-  }, [contract, dispatch, id]);
 
   const options = useMemo(
     () => [
@@ -96,20 +120,54 @@ export const PublishNFT = () => {
   );
 
   const handleSubmit = useCallback(
-    (payload: IPublishNFTPayload) => {
-      dispatch(publishNft(payload)).then(({ error }) => {
-        if (!error) {
-          goBack();
-        }
-      });
+    (payload: IPublishNFTFormData) => {
+      if (payload.type === AuctionType.FixedSwap) {
+        dispatch(
+          publishNft({
+            type: payload.type,
+            name,
+            tokenContract,
+            unitContract: payload.unitContract,
+            standard,
+            tokenId,
+            price: new BigNumber(payload.price),
+            quantity: payload.quantity,
+          }),
+        ).then(({ error }) => {
+          if (!error) {
+            console.log('sent');
+          }
+        });
+      } else {
+        dispatch(
+          publishNft({
+            type: payload.type,
+            purchasePrice: payload.purchasePrice,
+            minBid: payload.minBid,
+            minIncremental: payload.minBid * MIN_INCREMENTAL_PART,
+            reservePrice: payload.reservePrice,
+            duration: payload.duration * 60 * 60 * 24,
+            name,
+            tokenContract,
+            unitContract: payload.unitContract,
+            standard,
+            tokenId,
+            quantity: payload.quantity,
+          }),
+        ).then(({ error }) => {
+          if (!error) {
+            console.log('sent');
+          }
+        });
+      }
     },
-    [dispatch, goBack],
+    [dispatch, name, standard, tokenContract, tokenId],
   );
 
   const renderForm = ({
     handleSubmit,
     values,
-  }: FormRenderProps<IPublishNFTPayload>) => {
+  }: FormRenderProps<IPublishNFTFormData>) => {
     return (
       <Box className={classes.form} component="form" onSubmit={handleSubmit}>
         <div className={classes.formImgCol}>IMG</div>
@@ -140,7 +198,7 @@ export const PublishNFT = () => {
                       <InputAdornment position="end">
                         <Field
                           component={SelectField}
-                          name="currency"
+                          name="unitContract"
                           color="primary"
                           fullWidth={true}
                           options={currencyOptions}
@@ -176,7 +234,7 @@ export const PublishNFT = () => {
                       <InputAdornment position="end">
                         <Field
                           component={SelectField}
-                          name="currency"
+                          name="unitContract"
                           color="primary"
                           fullWidth={true}
                           options={currencyOptions}
@@ -189,7 +247,7 @@ export const PublishNFT = () => {
               <Box>
                 <Field
                   component={InputField}
-                  name="directPurchase"
+                  name="purchasePrice"
                   type="number"
                   label={
                     <>
@@ -208,7 +266,7 @@ export const PublishNFT = () => {
                       <InputAdornment position="end">
                         <Field
                           component={SelectField}
-                          name="currency"
+                          name="unitContract"
                           color="primary"
                           fullWidth={true}
                           options={currencyOptions}
@@ -231,7 +289,7 @@ export const PublishNFT = () => {
                       <InputAdornment position="end">
                         <Field
                           component={SelectField}
-                          name="currency"
+                          name="unitContract"
                           color="primary"
                           fullWidth={true}
                           options={currencyOptions}
@@ -289,22 +347,47 @@ export const PublishNFT = () => {
           <Typography variant="h1">{t('publish-nft.title')}</Typography>
         </Box>
         <Box>
-          <Queries requestActions={[fetchItem]}>
-            {() => (
-              <Form
-                onSubmit={handleSubmit}
-                render={renderForm}
-                validate={validateCreateNFT}
-                initialValues={{
-                  type: AuctionType.FixedSwap,
-                  currency: defaultCurrency,
-                  duration: durationOptions[0].value,
-                }}
-              />
-            )}
-          </Queries>
+          <Form
+            onSubmit={handleSubmit}
+            render={renderForm}
+            validate={validateCreateNFT}
+            initialValues={
+              {
+                type: AuctionType.FixedSwap,
+                unitContract: defaultCurrency,
+                duration: durationOptions[0].value,
+              } as Partial<IPublishFixedSwap>
+            }
+          />
         </Box>
       </Container>
     </Section>
+  );
+};
+
+export const PublishNFT = () => {
+  const dispatch = useDispatchRequest();
+  const { id: idParam, contract } = useParams<{
+    contract: string;
+    id: string;
+  }>();
+  const id = parseInt(idParam, 10);
+  useEffect(() => {
+    dispatch(fetchItem({ contract, id }));
+  }, [contract, dispatch, id]);
+
+  return (
+    <Queries<ResponseData<typeof fetchItem>> requestActions={[fetchItem]}>
+      {({ data }) => {
+        return (
+          <PublishNFTComponent
+            name={data.itemname}
+            tokenContract={data.contractaddress}
+            standard={data.standard}
+            tokenId={data.id}
+          />
+        );
+      }}
+    </Queries>
   );
 };
