@@ -434,7 +434,7 @@ export default function Index() {
                             borderHidden
                             defaultValue={defaultNetwork}
                             onValChange={(item) => {
-                                console.log(item,defaultNetwork)
+                                // console.log(item,defaultNetwork)
                                 if (defaultNetwork !== item) {
                                     ConnectToChain(item)
                                 }
