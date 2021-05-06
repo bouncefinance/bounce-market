@@ -2,11 +2,14 @@
   "common": {
     "load-more": "Load more",
     "read-more": "read more",
-    "view-all": "View all"
+    "view-all": "View all",
+    "connect": "Connect Wallet"
   },
   "header": {
-    "create": "Create",
-    "connect": "Connect Wallet"
+    "create": "Create"
+  },
+  "not-connected": {
+    "title": "Please, connect you wallet"
   },
   "connect-wallet": {
     "custom-binancewallet": {
