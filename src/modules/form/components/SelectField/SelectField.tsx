@@ -1,15 +1,11 @@
-import React, { useMemo } from 'react';
-import TextField, { OutlinedTextFieldProps } from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import { uid } from 'react-uid';
+import { OutlinedTextFieldProps } from '@material-ui/core/TextField';
+import { ISelectOption, Select } from 'modules/uiKit/Select';
+import React, { useMemo } from 'react';
 import { FieldRenderProps } from 'react-final-form';
+import { uid } from 'react-uid';
 import { getErrorText } from '../../utils/getErrorText';
 import { hasError } from '../../utils/hasError';
-
-export interface ISelectOption {
-  value: string;
-  label: string;
-}
 
 interface ISelectComponent
   extends OutlinedTextFieldProps,
@@ -32,16 +28,15 @@ export const SelectField = ({
   }, [options]);
 
   return (
-    <TextField
+    <Select
       name={name}
       error={hasError(meta)}
       value={value}
       helperText={getErrorText(meta)}
-      select={true}
-      onChange={onChange}
-      {...rest}
+      onChange={onChange as any}
+      {...(rest as any)}
     >
       {items}
-    </TextField>
+    </Select>
   );
 };
