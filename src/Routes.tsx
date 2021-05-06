@@ -58,6 +58,16 @@ export function Routes() {
 
       <Route
         exact
+        path={ProfileRoutesConfig.EditProfile.path}
+        render={() => (
+          <DefaultLayout>
+            <ProfileRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
         path={ProfileRoutesConfig.UserProfile.path}
         render={() => (
           <DefaultLayout>

@@ -3,12 +3,15 @@ import {
   ButtonBase,
   Grid,
   IconButton,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { convertWallet } from 'modules/common/utils/convertWallet';
 import React, { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { t } from 'modules/i18n/utils/intl';
 import { useInfoPanelStyles } from './useInfoPanelStyles';
 
 interface IInfoPanelProps {
@@ -46,15 +49,21 @@ export const InfoPanel = ({
         </Grid>
 
         <Grid item>
-          <IconButton title="Share">
-            <ShareIcon />
-          </IconButton>
+          <Tooltip title={t('profile.share')} arrow>
+            <IconButton>
+              <ShareIcon />
+            </IconButton>
+          </Tooltip>
         </Grid>
 
         <Grid item>
-          <IconButton title="Settings">
-            <CogIcon />
-          </IconButton>
+          <Link to="/profile/edit">
+            <Tooltip title={t('profile.edit-profile')} arrow>
+              <IconButton>
+                <CogIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
         </Grid>
 
         <Grid item xs={12} lg="auto" className={classes.linksCol}>
