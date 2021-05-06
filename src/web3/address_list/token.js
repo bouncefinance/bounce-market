@@ -86,6 +86,8 @@ export function getWBTCAddress(chainId) {
             return '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
         case 97:
             return ''
+        case 128:
+            return ''
         case 56:
             return '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
         default:
@@ -101,6 +103,8 @@ export function getYFIAddress(chainId) {
         case 4:
             return '0xBA8913A83C899dDB0F071bf64f7a1A299B578758'
         case 97:
+            return ''
+        case 128:
             return ''
         case 56:
             return ''
