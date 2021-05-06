@@ -7,19 +7,29 @@ import { myContext } from '@/redux/index.js';
 import { useHistory } from 'react-router-dom'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
-const host = window.location.hostname
-// const host = 'fangible.com'
-const Base_URL =
-    host.includes('market.bounce.finance') || host.includes('cnmarket.bounce.finance') || host.includes('fangible')?
-        'https://bounce-market.bounce.finance' :    // BSC Main
-        host.includes('market-stage.bounce.finance') ?
-            'https://market-test.bounce.finance' :  // BSC Test https
-            host.includes('127.0.0.1') ?
-                'https://bounce-market.bounce.finance' :    // BSC Main
-                // 'http://market-test.bounce.finance:11000'   // BSC Test http 
-                'https://market-test.bounce.finance'   // BSC Test http 
-                // 'https://market-test.bounce.finance'   // BSC Test http 
-// const Base_URL = 'https://bounce-market.bounce.finance'
+const produceHost = ['127.0.0.1', 'marke.bounce.finance', 'cnmarket.bounce.finance', 'fangible']
+const hostname = window.location.hostname
+const isProDev = produceHost.some(hostItem => {
+    return hostname.includes(hostItem) ? true : false
+})
+
+const getBaseUrl = (chainID) => {
+    chainID = parseInt(chainID)
+    if (!isProDev) return 'https://market-test.bounce.finance'
+    switch (chainID) {
+        case 56:
+            return 'https://bounce-market.bounce.finance'
+        case 128:
+            return 'https://heco-api.bounce.finance'
+
+        default:
+            return 'https://bounce-market.bounce.finance'
+    }
+}
+
+const currentChainId = window.localStorage.getItem('currentChainId')
+const Base_URL = getBaseUrl(currentChainId)
+
 
 const signStr = 'Welcome to Bounce!'
 let isRequestLock = false
@@ -30,7 +40,6 @@ export default function useAxios() {
     const history = useHistory();
     const { wrapperIntl } = useWrapperIntl()
 
-    // const { getUserInfo } = useUserInfo()
     useEffect(() => {
         if (!account || isRequestLock) return
         isRequestLock = true
@@ -121,16 +130,16 @@ export default function useAxios() {
                 modelTimer: 24 * 60 * 60 * 1000,
             }); */
             // history.push("/Home")
-        // token 无效过期
-        // return alert('授权失效，请刷新页面，重新授权签名')
-        // config = {
-        //     headers: {
-        //         token: await getNewToken(),
-        //         "Content-Type": "application/x-www-from-urlencoded"
-        //     },
-        //     ...option.config
-        // }
-        // res = await axios.post(Base_URL + path, params, config)
+            // token 无效过期
+            // return alert('授权失效，请刷新页面，重新授权签名')
+            // config = {
+            //     headers: {
+            //         token: await getNewToken(),
+            //         "Content-Type": "application/x-www-from-urlencoded"
+            //     },
+            //     ...option.config
+            // }
+            // res = await axios.post(Base_URL + path, params, config)
         }
         /* else if (res.status === 200 && res.data.code === -1) */
 

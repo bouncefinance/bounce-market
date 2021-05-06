@@ -239,6 +239,11 @@ export default function Index() {
     }, [active])
 
     useEffect(() => {
+        if (!chainId) return
+        window.localStorage.setItem('currentChainId', chainId)
+    }, [chainId])
+
+    useEffect(() => {
         dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
 
         if (active && chainId === 56) {
@@ -255,13 +260,13 @@ export default function Index() {
                 subsequentActionType: "connectToBSCChain",
                 modelUrlMessage: wrapperIntl("header.SwitchToBSC"),
                 modelTimer: 24 * 60 * 60 * 1000,
-                canClose: true, 
+                canClose: true,
             });
-        } 
+        }
         else {
             dispatch({ type: 'Modal_Message', showMessageModal: false, modelType: 'error', modelMessage: "", modelUrlMessage: "" });
         }
-        
+
         console.log("end active:" + active)
         console.log("end chainId:" + chainId)
         window.localStorage.LastChainId = chainId

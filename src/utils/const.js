@@ -1,15 +1,33 @@
 export const DEBOUNCE = 300;
 
 const produceHost = ['127.0.0.1', 'marke.bounce.finance', 'cnmarket.bounce.finance', 'fangible']
-let isProDev = false
 const hostname = window.location.hostname
-produceHost.forEach(item => {
-  if (hostname.includes(item)) {
-    isProDev = true
-  }
+const isProDev = produceHost.some(hostItem => {
+  return hostname.includes(hostItem) ? true : false
 })
-const GH_URL = isProDev ? 'https://api1-bsc.fangible.com/v1/bsc' : 'https://api1-bsc.fangible.com/v1/bsc_test'
-const GH_V2_URL = isProDev ? 'https://nftview.bounce.finance/v2/bsc' : 'https://nftview.bounce.finance/v2/bsc'
+
+const getNetwork = (chainID) => {
+  chainID = parseInt(chainID)
+  switch (chainID) {
+    case 1:
+      return []
+    case 56:
+      return [isProDev?'https://api1-bsc.fangible.com/v1/bsc':'https://api1-bsc.fangible.com/v1/bsc_test', 'https://nftview.bounce.finance/v2/bsc']
+    case 128:
+      return ['https://api1-heco.fangible.com/v1/heco', 'https://nftview.bounce.finance/v2/heco']
+    default:
+      return [isProDev?'https://api1-bsc.fangible.com/v1/bsc':'https://api1-bsc.fangible.com/v1/bsc_test', 'https://nftview.bounce.finance/v2/bsc']
+  }
+}
+
+
+
+
+const currentChainId = window.localStorage.getItem('currentChainId')
+const [GH_URL, GH_V2_URL] = getNetwork(currentChainId)
+
+// const GH_URL = isProDev ? `https://api1-bsc.fangible.com/v1/bsc` : `https://api1-bsc.fangible.com/v1/bsc_test`
+// const GH_V2_URL = isProDev ? `https://nftview.bounce.finance/v2/bsc` : `https://nftview.bounce.finance/v2/bsc`
 
 // axios default url
 export const AXIOS_DEFAULT = GH_URL
