@@ -23,7 +23,7 @@ const PullRadioBoxStyled = styled.div`
         height: 48px;
         padding:0 20px;
         box-sizing: border-box;
-        border: 1px solid rgba(0,0,0,.2);
+        border: ${(borderHidden) => { return borderHidden ? 'none' : '1px solid rgba(0,0,0,.2)' }};
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -54,7 +54,7 @@ const PullRadioBoxStyled = styled.div`
         }
 
         &:hover{
-            border: 1px solid rgba(0,0,0,.6);
+            ${(borderHidden) => { return borderHidden ? 'none' : '1px solid rgba(0,0,0,.6)' }};
         }
 
         &.open{
@@ -117,10 +117,10 @@ const PullRadioBoxStyled = styled.div`
     }
 `
 
-export default function PullRadioBox ({
+export default function PullRadioBox({
     options, defaultValue, defaultItem, onChange,
     onValChange, disabled, prefix, style, width,
-    marginTop, title }) {
+    marginTop, title, borderHidden }) {
     // 这个组件的option 一定要传value属性
     const [open, setOpen] = useState(false)
     const [checkVal, setCheckVal] = useState(defaultValue || options[0].value)
@@ -133,7 +133,7 @@ export default function PullRadioBox ({
         // eslint-disable-next-line
     }, [checkVal])
 
-    function bindBodyClick (e) {
+    function bindBodyClick(e) {
         if (e.target === inputRef.current || e.target?.outerHTML === inputRef.current?.children[0]?.children[0]?.outerHTML || e.target?.outerHTML === inputRef.current?.children[1]?.outerHTML) return;
         setOpen(false);
     }
@@ -146,7 +146,7 @@ export default function PullRadioBox ({
     }, [open])
 
     return (
-        <PullRadioBoxStyled style={style} width={width} marginTop={marginTop}>
+        <PullRadioBoxStyled style={style} width={width} marginTop={marginTop} borderHidden={borderHidden}>
             {title && <p className={`title`}>{title}</p>}
             <div ref={inputRef} className={`select ${!disabled && open && 'open'} ${disabled && 'disabled'}`} onClick={() => {
                 if (disabled) return;
