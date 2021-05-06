@@ -1,31 +1,39 @@
 import { TextField, TextFieldProps } from '@material-ui/core';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { FieldMetaState, FieldRenderProps } from 'react-final-form';
 import { getErrorText } from '../../utils/getErrorText';
 import { hasError } from '../../utils/hasError';
 import { useInputFieldStyles } from './InputFieldStyles';
+import { t } from 'modules/i18n/utils/intl';
 
 interface IFieldProps extends FieldRenderProps<string> {
-  showlimitcounter: boolean;
+  showLimitCounter: boolean;
 }
+
+const getHelperString = (
+  value:string,
+  meta:FieldMetaState<any>,
+  maxLength:number|null,
+  showLimitCounter:boolean):string => {
+  let helperTextString:string = getErrorText(meta);
+  if (showLimitCounter && maxLength && !hasError(meta)) {
+    helperTextString = t('form.limit-counter', {
+      value: value.length ?? 0,
+      maxLimit: maxLength
+    });
+  }
+  return helperTextString;
+};
 
 export const InputField = ({
   input: { name, onChange, value, type,  },
   meta,
-  showlimitcounter = false,
+  showLimitCounter = false,
   ...rest
 }: IFieldProps & TextFieldProps) => {
   const classes = useInputFieldStyles();
 
   const maxLength:number|null = rest.inputProps?.maxLength ?? null;
-
-  const getHelperString = useCallback((value:string, meta:FieldMetaState<any>):string => {
-    let helperTextString:string = getErrorText(meta);
-    if (showlimitcounter && maxLength && !hasError(meta)) {
-      helperTextString = `${value.length ?? 0}/${maxLength}`;
-    }
-    return helperTextString;
-  }, [maxLength, showlimitcounter]);
 
   return (
     <TextField
@@ -33,7 +41,7 @@ export const InputField = ({
       name={name}
       error={hasError(meta)}
       value={value}
-      helperText={getHelperString(value, meta)}
+      helperText={getHelperString(value, meta, maxLength, showLimitCounter)}
       onChange={onChange}
       className={classes.root}
       {...rest}

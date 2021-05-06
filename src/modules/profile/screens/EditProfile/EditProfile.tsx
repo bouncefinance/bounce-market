@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import { InputField } from 'modules/form/components/InputField';
 import { t } from 'modules/i18n/utils/intl';
-import { Mutation } from '@redux-requests/react';
+import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { GoBack } from 'modules/layout/components/GoBack';
 import { Section } from 'modules/uiKit/Section';
 import { FormErrors } from 'modules/form/utils/FormErrors';
+import { editProfile } from '../../actions/editProfile';
+import { useHistory } from 'react-router';
+import { ProfileRoutesConfig } from '../../ProfileRoutes';
 
 export interface IEditProfile {
   username: string;
@@ -26,13 +29,35 @@ const validateEditProfile = (payload: IEditProfile) => {
     errors.username = t('validation.required');
   }
 
+  const emailRegex = /^(([^<>()\\.,;:\s@"]+(\.[^<>()\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!!payload.email && !emailRegex.test(String(payload.email).toLowerCase())) {
+    errors.email = t('validation.invalid-email');
+  }
+
+  const urlRegex = /^(?:(?:http|https):\/\/)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(\/|\\?|#)[^\\s]*)?$/;
+  if (!!payload.website && (payload.website.length >= 2083 || !urlRegex.test(String(payload.website).toLowerCase()))) {
+    errors.website = t('validation.invalid-website');
+  }
+
   return errors;
 };
 
-const handleSubmit = () => {};
+const BIO_CHARACTER_LIMIT = 200;
 
 export const EditProfile = () => {
-  const BIO_CHARACTER_LIMIT = 200;
+  const dispatch = useDispatchRequest();
+  const { push } = useHistory();
+
+  const handleSubmit = useCallback(
+    (payload: IEditProfile) => {
+      dispatch(editProfile()).then(({ error }) => {
+        if (!error) {
+          push(ProfileRoutesConfig.EditProfile.generatePath());
+        }
+      });
+    },
+    [dispatch, push],
+  );
 
   const renderForm = ({ handleSubmit }: FormRenderProps<IEditProfile>) => {
     return (
@@ -51,7 +76,8 @@ export const EditProfile = () => {
           <Field
             component={InputField}
             name='email'
-            type='email'
+            type='text'
+            inputMode='email'
             label={t('profile.edit.label.email')}
             color='primary'
             fullWidth={true}
@@ -77,7 +103,7 @@ export const EditProfile = () => {
             fullWidth={true}
             rowsMax={10}
             multiline
-            showlimitcounter={true}
+            showLimitCounter={true}
             inputProps={{
               maxLength: BIO_CHARACTER_LIMIT,
             }}
@@ -87,7 +113,8 @@ export const EditProfile = () => {
           <Field
             component={InputField}
             name='website'
-            type='url'
+            type='text'
+            inputMode='url'
             label={t('profile.edit.label.website')}
             color='primary'
             fullWidth={true}
@@ -128,7 +155,7 @@ export const EditProfile = () => {
         </Box>
 
         <Box>
-          <Mutation>
+          <Mutation type={editProfile.toString()}>
             {({ loading }) => (
               <Button size='large' type='submit' fullWidth disabled={loading}>
                 {loading

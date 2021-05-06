@@ -89,10 +89,15 @@
       "footnote": "Bids placed in auction cannot be withdrawn"
     }
   },
+  "form": {
+    "limit-counter": "{value}/{maxLimit}"
+  },
   "validation": {
     "required": "This field is required",
     "min": "Must be greater than {value}",
-    "max": "Must be less than {value}"
+    "max": "Must be less than {value}",
+    "invalid-email": "Enter a valid Email",
+    "invalid-website": "Enter a valid Website URL"
   },
   "upload-image-field": {
     "title": "Drop your item here",
