@@ -99,7 +99,6 @@ const brands: IBrandCardProps[] = [
     title: 'Polka Pet World',
     imgSrc: 'https://picsum.photos/120?random=20',
     itemsCount: 20,
-    itemsCount: 20,
   },
 ];
 
