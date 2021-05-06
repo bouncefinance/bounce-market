@@ -1,5 +1,5 @@
 import loadable, { LoadableComponent } from '@loadable/component';
-import { generatePath } from 'react-router-dom';
+import { generatePath, Switch } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 import { PrivateRoute } from '../router/components/PrivateRoute';
@@ -39,7 +39,13 @@ const LoadableEditProfileContainer: LoadableComponent<any> = loadable(
 
 export function ProfileRoutes() {
   return (
-    <>
+    <Switch>
+      <PrivateRoute
+        path={ProfileRoutesConfig.EditProfile.path}
+        exact={true}
+        component={LoadableEditProfileContainer}
+      />
+
       <PrivateRoute
         path={ProfileRoutesConfig.Profile.path}
         exact={true}
@@ -51,12 +57,6 @@ export function ProfileRoutes() {
         exact={true}
         component={LoadableProfileContainer}
       />
-
-      <PrivateRoute
-        path={ProfileRoutesConfig.EditProfile.path}
-        exact={true}
-        component={LoadableEditProfileContainer}
-      />
-    </>
+    </Switch>
   );
 }
