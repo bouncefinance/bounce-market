@@ -176,7 +176,7 @@ export const CreateNFT = () => {
               {({ loading }) => (
                 <Button size="large" type="submit" fullWidth disabled={loading}>
                   {loading
-                    ? t('create-nft.submitting')
+                    ? t('common.submitting')
                     : t('create-nft.submit')}
                 </Button>
               )}

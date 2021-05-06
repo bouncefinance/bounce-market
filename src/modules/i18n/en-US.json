@@ -2,7 +2,8 @@
   "common": {
     "load-more": "Load more",
     "read-more": "read more",
-    "view-all": "View all"
+    "view-all": "View all",
+    "submitting": "Submitting"
   },
   "header": {
     "create": "Create",
@@ -114,7 +115,6 @@
   "publish-nft": {
     "title": "Put on sale",
     "submit": "Put on Sale",
-    "submitting": "Submitting",
     "auction-type": {
       "fixed-swap": "English swap",
       "english-auction": "English auction"
@@ -138,6 +138,27 @@
     "unfollow": "Unfollow",
     "subscribers": "Subscribers",
     "bio": "Bio",
+    "share": "Share",
+    "user-profile": "User profile",
+    "edit-profile": "Edit profile",
+    "edit": {
+      "label": {
+        "username": "Username",
+        "email": "Email",
+        "custom-url": "Custom URL",
+        "bio": "Bio",
+        "website": "Website",
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "facebook": "Facebook"
+      },
+      "placeholder": {
+        "instagram": "Instagram Username",
+        "twitter": "Twitter Username",
+        "facebook": "Facebook Username"
+      },
+      "save-changes": "Save Changes"
+    },
     "tabs": {
       "my-items": "My items",
       "my-brands": "My brands",
