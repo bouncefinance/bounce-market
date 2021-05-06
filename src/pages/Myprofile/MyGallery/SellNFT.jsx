@@ -27,7 +27,7 @@ export default function SellNFT() {
 	const { chainId } = useActiveWeb3React()
 
 	const { wrapperIntl } = useWrapperIntl()
-
+	console.log(chainId)
 	const unitOptions = [
 		{
 			value: chainId === 56 ? 'BNB' : chainId === 128 ? 'HT' : 'ETH',
@@ -53,7 +53,7 @@ export default function SellNFT() {
 			value: "USDC",
 			contract: getUSDCAddress(chainId),
 			icon: icon_USDC,
-			isShow: true,
+			isShow: chainId !== 128 ? true : false,
 			decimals: 18
 		}
 	];
