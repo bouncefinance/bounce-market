@@ -34,6 +34,8 @@ export function getUSDTAddress(chainId) {
             return '0x101194a3FF67f83A05B3E15AfA52D45D588614ca'
         case 97:
             return ''
+        case 128:
+            return '0xa71EdC38d189767582C38A3145b5873052c3e47a'
         case 56:
             return '0x55d398326f99059ff775485246999027b3197955'
         default:
@@ -49,6 +51,8 @@ export function getUSDCAddress(chainId) {
             return '0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b'
         case 97:
             return ''
+        case 128:
+            return ''
         case 56:
             return '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d'
         default:
@@ -63,6 +67,8 @@ export function getBUSDAddress(chainId) {
         case 4:
             return ''
         case 97:
+            return ''
+        case 128:
             return ''
         case 56:
             return '0xe9e7cea3dedca5984780bafc599bd69add087d56'
@@ -80,6 +86,8 @@ export function getWBTCAddress(chainId) {
             return '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
         case 97:
             return ''
+        case 128:
+            return ''
         case 56:
             return '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599'
         default:
@@ -95,6 +103,8 @@ export function getYFIAddress(chainId) {
         case 4:
             return '0xBA8913A83C899dDB0F071bf64f7a1A299B578758'
         case 97:
+            return ''
+        case 128:
             return ''
         case 56:
             return ''
