@@ -14,6 +14,7 @@ import { useUserInfo } from "../../Myprofile/useUserInfo";
 import { Tooltip } from "@material-ui/core";
 import { myContext } from "@/redux/index.js";
 import useWrapperIntl from "@/locales/useWrapperIntl";
+import ChainMenu from './ChainMenu'
 
 const HeaderStyled = styled.div`
 	height: 76px;
@@ -420,8 +421,9 @@ export default function Index() {
                                 history.push("/Factory");
                             }}
                         />
-
-                        <PullRadioBox
+                        
+                        <ChainMenu/>
+                        {/* <PullRadioBox
                             width={"100px"}
                             options={[
                                 {
@@ -439,7 +441,7 @@ export default function Index() {
                                     ConnectToChain(item)
                                 }
                             }}
-                        />
+                        /> */}
 
                         {active ? (
                             <div
