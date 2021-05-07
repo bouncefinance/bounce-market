@@ -8,7 +8,11 @@ import icon_pull from '../assets/pull.svg'
 
 const PullRadioBoxStyled = styled.div`
     cursor: pointer;
-    position: relative;
+    // position: relative;
+    position: ${({ popDirection }) => { return popDirection==='down' ? 'relative' : 'absolute' }};
+    /* position: absolute;
+    left: -100px;
+    bottom: -12px; */
 
     .title{
         font-weight: 700;
@@ -23,7 +27,7 @@ const PullRadioBoxStyled = styled.div`
         height: 48px;
         padding:0 20px;
         box-sizing: border-box;
-        border: ${(borderHidden) => { return borderHidden ? 'none' : '1px solid rgba(0,0,0,.2)' }};
+        border: ${({borderHidden}) => { return borderHidden ? 'none' : '1px solid rgba(0,0,0,.2)' }};
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -54,7 +58,7 @@ const PullRadioBoxStyled = styled.div`
         }
 
         &:hover{
-            ${(borderHidden) => { return borderHidden ? 'none' : '1px solid rgba(0,0,0,.6)' }};
+            ${({borderHidden}) => { return borderHidden ? 'none' : '1px solid rgba(0,0,0,.6)' }};
         }
 
         &.open{
@@ -72,7 +76,8 @@ const PullRadioBoxStyled = styled.div`
     }
 
     ul.options{
-        position: absolute;
+        //position: absolute;
+        position: ${({ popDirection }) => { return popDirection==='down' ? 'absolute' : 'relative' }};
         width: ${({ width }) => { return width || '262px' }};
         max-height: 220px;
         box-sizing: border-box;
@@ -82,7 +87,10 @@ const PullRadioBoxStyled = styled.div`
         box-sizing: border-box;
         box-shadow: 0px 1px 14px rgba(0, 0, 0, 0.1);
         margin-top: 5px;
-        z-index: 1;
+        z-index: 5;
+        //top: ${({optionsAmount})=>{return `${optionsAmount*42}px`}};
+        // transform-origin: bottom;
+        //transform: translateY(-30px);
         
         li{
             width: 100%;
@@ -120,7 +128,7 @@ const PullRadioBoxStyled = styled.div`
 export default function PullRadioBox({
     options, defaultValue, defaultItem, onChange,
     onValChange, disabled, prefix, style, width,
-    marginTop, title, borderHidden }) {
+    marginTop, title, borderHidden, popDirection='down',className }) {
     // 这个组件的option 一定要传value属性
     const [open, setOpen] = useState(false)
     const [checkVal, setCheckVal] = useState(defaultValue || options[0].value)
@@ -146,8 +154,27 @@ export default function PullRadioBox({
     }, [open])
 
     return (
-        <PullRadioBoxStyled style={style} width={width} marginTop={marginTop} borderHidden={borderHidden}>
+        <PullRadioBoxStyled className={className} style={style} width={width} marginTop={marginTop} borderHidden={borderHidden} popDirection={popDirection}>
             {title && <p className={`title`}>{title}</p>}
+
+            {
+                popDirection==='up' && !disabled && open && <ul className="options">
+                    {options.map((item, index) => {
+                        return <li
+                            key={item.value + '_' + index}
+                            className={`${item.value === checkVal ? 'check' : ''}`}
+                            onClick={() => {
+                                setCheckVal(item.value)
+                                setCheckItem(item)
+                                setOpen(false)
+                            }}
+                        >
+                            {item.value}
+                        </li>
+                    })}
+                </ul>
+            }
+
             <div ref={inputRef} className={`select ${!disabled && open && 'open'} ${disabled && 'disabled'}`} onClick={() => {
                 if (disabled) return;
                 setOpen(!open)
@@ -160,7 +187,7 @@ export default function PullRadioBox({
             </div>
 
             {
-                !disabled && open && <ul className="options">
+                popDirection==='down' && !disabled && open && <ul className="options">
                     {options.map((item, index) => {
                         return <li
                             key={item.value + '_' + index}

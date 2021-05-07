@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		backgroundColor: theme.palette.background.paper,
 	},
-	
+
 }));
 
 const options = ["BSC", "HECO"];
@@ -27,7 +27,7 @@ const chainsId = {
 	HECO: 128,
 };
 
-const chains = [
+/* const chains = [
 	{
 		Id: 56,
 		name: "BSC",
@@ -36,7 +36,7 @@ const chains = [
 		Id: 128,
 		name: "HECO",
 	},
-];
+]; */
 
 const ConnectToChain = async (chainName) => {
 	let ethereum = window.ethereum;
@@ -117,7 +117,7 @@ export default function SimpleListMenu() {
 		setSelectedIndex(index);
 		setAnchorEl(null);
 		console.log("chainsId[options[index]]", chainsId[options[index]]);
-		let selectedId = chainsId[options[index]];
+		/* let selectedId = chainsId[options[index]]; */
 		let selectedChainName = options[index];
 		ConnectToChain(selectedChainName);
 	};
