@@ -2,41 +2,53 @@ import {
   Box,
   Button,
   Container,
-  IconButton,
+  FormControl,
+  Grid,
   InputAdornment,
+  InputLabel,
+  Paper,
   Tooltip,
   Typography,
+  useTheme,
 } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import BigNumber from 'bignumber.js';
+import { add } from 'date-fns';
+import { Img } from 'modules/uiKit/Img';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
+import { useParams } from 'react-router';
+import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
+import { Queries } from '../../../common/components/Queries/Queries';
+import { ResponseData } from '../../../common/types/ResponseData';
+import { Days } from '../../../common/types/unit';
+import { fetchItem } from '../../../detailsNFT/actions/fetchItem';
+import { ButtonGroupField } from '../../../form/components/ButtonGroupField/ButtonGroupField';
+import { InputField } from '../../../form/components/InputField';
+import { SelectField } from '../../../form/components/SelectField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
-import { usePublishNFTtyles } from './usePublishNFTtyles';
-import { ButtonGroupField } from '../../../form/components/ButtonGroupField/ButtonGroupField';
 import { AuctionType } from '../../../overview/api/auctionType';
-import { useParams } from 'react-router';
-import { InputField } from '../../../form/components/InputField';
-import { SelectField } from '../../../form/components/SelectField';
-import { useCurrencies } from '../../hooks/useCurrencies';
-import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
-import { Queries } from '../../../common/components/Queries/Queries';
-import { publishNft } from '../../actions/publishNft';
-import { fetchItem } from '../../../detailsNFT/actions/fetchItem';
-import { Days } from '../../../common/types/unit';
-import { ResponseData } from '../../../common/types/ResponseData';
 import { NftStandard } from '../../actions/createNft';
-import BigNumber from 'bignumber.js';
+import { publishNft } from '../../actions/publishNft';
+import { useCurrencies } from '../../hooks/useCurrencies';
+import { usePublishNFTtyles } from './usePublishNFTtyles';
 
+const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
+
+// todo: get that values dynamic
+const DEMO_CURRENCY_PRICE = 2600;
+const FEE_PERCENTAGE = 1;
 
 interface IPublishFixedSwap {
   type: AuctionType.FixedSwap;
-  price: number;
-  quantity: number;
+  price: string;
+  amount: number | string;
   unitContract: string;
+  img?: string;
 }
 
 interface IPublishEnglishAuction {
@@ -44,7 +56,7 @@ interface IPublishEnglishAuction {
   minBid: number;
   purchasePrice: number;
   reservePrice: number;
-  quantity: number;
+  amount: number | string;
   duration: Days;
   unitContract: string;
 }
@@ -55,14 +67,31 @@ const validateCreateNFT = (payload: IPublishNFTFormData) => {
   const errors: FormErrors<IPublishNFTFormData> = {};
   // name max length is 30
 
+  if (!payload.amount) {
+    errors.amount = t('validation.required');
+  } else if (+payload.amount < MIN_AMOUNT) {
+    errors.amount = t('validation.min', { value: MIN_AMOUNT - 1 });
+  }
+
+  if (payload.type === AuctionType.FixedSwap) {
+    if (!payload.price) {
+      (errors as any).price = t('validation.required');
+    } else if (+payload.price <= 0) {
+      (errors as any).price = t('validation.min', { value: 0 });
+    }
+  }
+
   return errors;
 };
+
+const formatAmount = (value: string) => (value ? `${Math.round(+value)}` : '1');
 
 interface IPublishNFTComponentProps {
   name: string;
   tokenContract: string;
   standard: NftStandard;
   tokenId: number;
+  img?: string;
 }
 
 export const PublishNFTComponent = ({
@@ -70,9 +99,11 @@ export const PublishNFTComponent = ({
   tokenContract,
   standard,
   tokenId,
+  img,
 }: IPublishNFTComponentProps) => {
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
+  const theme = useTheme();
 
   const options = useMemo(
     () => [
@@ -131,7 +162,7 @@ export const PublishNFTComponent = ({
             standard,
             tokenId,
             price: new BigNumber(payload.price),
-            quantity: payload.quantity,
+            quantity: +payload.amount,
           }),
         ).then(({ error }) => {
           if (!error) {
@@ -152,7 +183,7 @@ export const PublishNFTComponent = ({
             unitContract: payload.unitContract,
             standard,
             tokenId,
-            quantity: payload.quantity,
+            quantity: +payload.amount,
           }),
         ).then(({ error }) => {
           if (!error) {
@@ -168,31 +199,58 @@ export const PublishNFTComponent = ({
     handleSubmit,
     values,
   }: FormRenderProps<IPublishNFTFormData>) => {
+    const currentCryptoCurrencyLabel = currencyOptions.find(
+      o => o.value === values.unitContract,
+    )?.label;
+
+    console.log(values);
+
+    const reciveValue =
+      values.type === AuctionType.FixedSwap
+        ? new BigNumber((+values.price * (100 - FEE_PERCENTAGE)) / 100)
+        : undefined;
+
     return (
       <Box className={classes.form} component="form" onSubmit={handleSubmit}>
-        <div className={classes.formImgCol}>IMG</div>
+        <div className={classes.formImgCol}>
+          <Paper className={classes.formImgBox} variant="outlined">
+            <Img
+              src={img}
+              alt={name}
+              title={name}
+              ratio="1x1"
+              objectFit="scale-down"
+            />
+          </Paper>
+        </div>
 
         <div>
-          <Box>
-            <Field
-              component={ButtonGroupField}
-              name="type"
-              type="number"
-              color="primary"
-              fullWidth={true}
-              items={options}
-            />
+          <Box mb={6}>
+            <FormControl fullWidth>
+              <InputLabel shrink>{t('publish-nft.label.type')}</InputLabel>
+
+              <Field
+                component={ButtonGroupField}
+                name="type"
+                type="number"
+                color="primary"
+                fullWidth={true}
+                items={options}
+              />
+            </FormControl>
           </Box>
+
           {values.type === AuctionType.FixedSwap ? (
             <>
-              <Box>
+              <Box className={classes.formControl}>
                 <Field
                   component={InputField}
                   name="price"
                   type="number"
+                  min={0}
                   label={t('publish-nft.label.price')}
                   color="primary"
-                  fullWidth={true}
+                  fullWidth
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -202,13 +260,42 @@ export const PublishNFTComponent = ({
                           color="primary"
                           fullWidth={true}
                           options={currencyOptions}
+                          className={classes.currencySelect}
                         />
                       </InputAdornment>
                     ),
                   }}
                 />
+
+                <Box className={classes.fieldText}>
+                  <Grid container spacing={3}>
+                    <Grid item xs>
+                      Fangible fee {FEE_PERCENTAGE}%
+                    </Grid>
+
+                    {values.price && +values.price > 0 && (
+                      <Grid item>
+                        You will receive{' '}
+                        <b>
+                          {reciveValue?.decimalPlaces(6).toFormat()}{' '}
+                          {currentCryptoCurrencyLabel}
+                        </b>{' '}
+                        <Box
+                          component="span"
+                          color={theme.palette.text.secondary}
+                        >
+                          $
+                          {reciveValue
+                            ?.multipliedBy(DEMO_CURRENCY_PRICE)
+                            .decimalPlaces(2)
+                            .toFormat()}
+                        </Box>
+                      </Grid>
+                    )}
+                  </Grid>
+                </Box>
               </Box>
-              <Box>
+              <Box className={classes.formControl}>
                 <Field
                   component={InputField}
                   name="amount"
@@ -216,12 +303,14 @@ export const PublishNFTComponent = ({
                   label={t('publish-nft.label.amount')}
                   color="primary"
                   fullWidth={true}
+                  parse={formatAmount}
+                  format={formatAmount}
                 />
               </Box>
             </>
           ) : (
             <>
-              <Box>
+              <Box className={classes.formControl}>
                 <Field
                   component={InputField}
                   name="minBid"
@@ -238,26 +327,73 @@ export const PublishNFTComponent = ({
                           color="primary"
                           fullWidth={true}
                           options={currencyOptions}
+                          className={classes.currencySelect}
                         />
                       </InputAdornment>
                     ),
                   }}
                 />
               </Box>
-              <Box>
+
+              <Box className={classes.formControl}>
+                <Field
+                  component={InputField}
+                  name="amount"
+                  type="number"
+                  label={t('publish-nft.label.amount')}
+                  color="primary"
+                  fullWidth={true}
+                  disabled
+                />
+                <div className={classes.fieldText}>
+                  {t('publish-nft.auction-amount')}
+                </div>
+              </Box>
+
+              <Box className={classes.formControl}>
+                <Field
+                  component={SelectField}
+                  name="duration"
+                  label={
+                    <Box display="flex" alignItems="center">
+                      {t('publish-nft.label.duration')}
+
+                      <Tooltip title={t('publish-nft.tooltip.duration')}>
+                        <Box component="i" ml={1}>
+                          <QuestionIcon />
+                        </Box>
+                      </Tooltip>
+                    </Box>
+                  }
+                  color="primary"
+                  fullWidth={true}
+                  options={durationOptions}
+                />
+
+                <div className={classes.fieldText}>
+                  {t('publish-nft.expire', {
+                    value: add(new Date(), {
+                      days: +values.duration,
+                    }),
+                  })}
+                </div>
+              </Box>
+
+              <Box className={classes.formControl}>
                 <Field
                   component={InputField}
                   name="purchasePrice"
                   type="number"
                   label={
-                    <>
+                    <Box display="flex" alignItems="center">
                       {t('publish-nft.label.directPurchase')}
+
                       <Tooltip title={t('publish-nft.tooltip.directPurchase')}>
-                        <Box component={IconButton}>
+                        <Box component="i" ml={1}>
                           <QuestionIcon />
                         </Box>
                       </Tooltip>
-                    </>
+                    </Box>
                   }
                   color="primary"
                   fullWidth={true}
@@ -270,13 +406,15 @@ export const PublishNFTComponent = ({
                           color="primary"
                           fullWidth={true}
                           options={currencyOptions}
+                          className={classes.currencySelect}
                         />
                       </InputAdornment>
                     ),
                   }}
                 />
               </Box>
-              <Box>
+
+              <Box className={classes.formControl}>
                 <Field
                   component={InputField}
                   name="reservePrice"
@@ -293,30 +431,11 @@ export const PublishNFTComponent = ({
                           color="primary"
                           fullWidth={true}
                           options={currencyOptions}
+                          className={classes.currencySelect}
                         />
                       </InputAdornment>
                     ),
                   }}
-                />
-              </Box>
-              <Box>
-                <Field
-                  component={InputField}
-                  name="count"
-                  type="number"
-                  label={t('publish-nft.label.count')}
-                  color="primary"
-                  fullWidth={true}
-                />
-              </Box>
-              <Box>
-                <Field
-                  component={SelectField}
-                  name="duration"
-                  label={t('publish-nft.label.duration')}
-                  color="primary"
-                  fullWidth={true}
-                  options={durationOptions}
                 />
               </Box>
             </>
@@ -343,7 +462,7 @@ export const PublishNFTComponent = ({
         <Box mb={3.5}>
           <GoBack />
         </Box>
-        <Box mb={3}>
+        <Box mb={6}>
           <Typography variant="h1">{t('publish-nft.title')}</Typography>
         </Box>
         <Box>
@@ -356,6 +475,7 @@ export const PublishNFTComponent = ({
                 type: AuctionType.FixedSwap,
                 unitContract: defaultCurrency,
                 duration: durationOptions[0].value,
+                amount: '1',
               } as Partial<IPublishFixedSwap>
             }
           />
@@ -385,6 +505,7 @@ export const PublishNFT = () => {
             tokenContract={data.contractaddress}
             standard={data.standard}
             tokenId={data.id}
+            img={data.fileurl}
           />
         );
       }}

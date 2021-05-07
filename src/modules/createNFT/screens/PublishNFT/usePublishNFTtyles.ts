@@ -23,4 +23,21 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
       top: theme.spacing(2),
     },
   },
+
+  currencySelect: {
+    border: 'none',
+    marginRight: -14,
+
+    '&.Mui-focused': {
+      border: 'none',
+    },
+  },
+
+  formControl: {
+    marginBottom: theme.spacing(5),
+  },
+
+  fieldText: {
+    marginTop: theme.spacing(1.5),
+  },
 }));

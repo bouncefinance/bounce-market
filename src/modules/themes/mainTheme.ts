@@ -210,6 +210,20 @@ export const mainTheme = createMuiTheme({
           display: 'none',
         },
       },
+
+      input: {
+        '&[type=number]': {
+          '-moz-appearance': 'textfield',
+        },
+
+        '&::-webkit-outer-spin-button': {
+          '-webkit-appearance': 'none',
+        },
+
+        '&::-webkit-inner-spin-button': {
+          '-webkit-appearance': 'none',
+        },
+      },
     },
 
     MuiInputLabel: {
@@ -249,6 +263,7 @@ export const mainTheme = createMuiTheme({
       },
 
       iconOutlined: {
+        color: defaultTheme.palette.text.primary,
         fontSize: 20,
         right: 16,
         top: 'calc(50% - 10px)',
@@ -310,7 +325,7 @@ export const mainTheme = createMuiTheme({
 
       sizeLarge: {
         height: 60,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 500,
       },
 

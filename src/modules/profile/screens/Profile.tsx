@@ -1,31 +1,32 @@
 import { Container, Grid } from '@material-ui/core';
+import { useDispatchRequest } from '@redux-requests/react';
+import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { DetailsNFTRoutesConfig } from 'modules/detailsNFT/DetailsNFTRoutes';
 import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
+import { ProductCard } from '../../common/components/ProductCard';
+import { Queries } from '../../common/components/Queries/Queries';
+import { RoutesConfiguration } from '../../createNFT/Routes';
+import { IItem } from '../../overview/api/getItems';
+import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
 import { ActivityTable } from '../components/ActivityTable';
 import { Avatar } from '../components/Avatar';
 import { Bio } from '../components/Bio';
+import { IBrandCardProps } from '../components/BrandCard';
 import { Header } from '../components/Header';
 import { InfoPanel } from '../components/InfoPanel';
 import { Social } from '../components/Social';
 import { Subscribers } from '../components/Subscribers';
+import { TabBrands } from '../components/TabBrands';
+import { IFollowingItemProps, TabFollowing } from '../components/TabFollowing';
 import { TabItems } from '../components/TabItems';
 import { TabPanel } from '../components/TabPanel';
 import { Tabs } from '../components/Tabs';
 import { Tab } from '../components/Tabs/Tab';
 import { useProfileStyles } from './useProfileStyles';
-import { useDispatchRequest } from '@redux-requests/react';
-import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
-import { ProductCard } from '../../common/components/ProductCard';
-import { Queries } from '../../common/components/Queries/Queries';
-import { TabBrands } from '../components/TabBrands';
-import { IBrandCardProps } from '../components/BrandCard';
-import { IFollowingItemProps, TabFollowing } from '../components/TabFollowing';
-import { RoutesConfiguration } from '../../createNFT/Routes';
-import { IItem } from '../../overview/api/getItems';
-import BigNumber from 'bignumber.js';
 
 /**
  * Temporary samples
@@ -235,7 +236,10 @@ export const Profile = () => {
                       <ProductCard
                         key={uid(item)}
                         title={item.itemname}
-                        href={'#'}
+                        href={DetailsNFTRoutesConfig.DetailsNFT.generatePath(
+                          item.contractaddress,
+                          item.id,
+                        )}
                         // status={item.status}
                         // UPDATE price
                         price={item.poolId ? new BigNumber(10) : undefined}

@@ -58,8 +58,8 @@
       "Comics": "Comicbooks"
     },
     "standardOption": {
-      "0": "ERC-721",
-      "1": "ERC-1155"
+      "1": "ERC-721",
+      "2": "ERC-1155"
     },
     "validation": {
       "max-size": "Max size is {value, number}MB"
@@ -115,11 +115,14 @@
     "title": "Put on sale",
     "submit": "Put on Sale",
     "submitting": "Submitting",
+    "expire": "Will expire on {value, date, medium} {value, time, short}",
+    "auction-amount": "In the auction you can only put up 1 copy for sale",
     "auction-type": {
-      "fixed-swap": "English swap",
+      "fixed-swap": "Fixed Price",
       "english-auction": "English auction"
     },
     "label": {
+      "type": "Type of Sale",
       "price": "Sale price",
       "amount": "Amount",
       "minBid": "Minimum bid",
@@ -129,7 +132,8 @@
       "duration": "Expiration Date"
     },
     "tooltip": {
-      "directPurchase": "TODO Direct purchase price description"
+      "directPurchase": "TODO Direct purchase price description",
+      "duration": "TODO Expiration Date description"
     }
   },
   "profile": {
