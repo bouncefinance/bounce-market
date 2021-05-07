@@ -1,7 +1,7 @@
 import { useAccount } from 'modules/account/hooks/useAccount';
 import React from 'react';
 import { Route, RouteProps } from 'react-router-dom';
-import { Typography } from '@material-ui/core';
+import { ConnectWallet } from '../ConnectWallet';
 
 interface IPrivateRouteProps extends RouteProps {}
 
@@ -16,8 +16,7 @@ export const PrivateRoute = (props: IPrivateRouteProps) => {
   return (
     <Route
       {...props}
-      component={undefined}
-      render={() => <Typography>Please, connect you wallet</Typography>}
+      component={ConnectWallet}
     />
   );
 };
