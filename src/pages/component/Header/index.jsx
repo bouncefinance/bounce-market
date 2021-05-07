@@ -76,12 +76,14 @@ const HeaderStyled = styled.div`
 
                     .select {
                         width: fit-content;
+                        min-width: 100px;
                         height: 36px;
-                        padding: 15px;
+                        padding-left: 20px;
+                        padding-right: 20px;
 
                         .value_wrapper {
                             width: fit-content;
-                            max-width: 100px;
+                            max-width: 85px;
 
                             p.value {
                                 font-family: Helvetica Neue;
