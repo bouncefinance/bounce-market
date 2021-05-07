@@ -75,10 +75,9 @@ const HeaderStyled = styled.div`
                     margin-right: 20px;
 
                     .select {
-                        //width: 155px;
                         width: fit-content;
                         height: 36px;
-                        //padding: 10px;
+                        padding: 15px;
 
                         .value_wrapper {
                             width: fit-content;
@@ -102,6 +101,10 @@ const HeaderStyled = styled.div`
                         img.icon_pull {
                             margin-left: 7px;
                         }
+                    }
+
+                    .options {
+                        width: 100%;
                     }
                 }
 			}

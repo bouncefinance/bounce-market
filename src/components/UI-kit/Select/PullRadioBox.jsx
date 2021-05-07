@@ -49,11 +49,13 @@ const PullRadioBoxStyled = styled.div`
         &>img{
             transition: all .3s;
             &.up{
-                transform:rotate(180deg);
+                //transform:rotate(180deg);
+                ${({ popDirection }) => { return popDirection==='down' ? 'transform:rotate(180deg)' : 'transform:rotate(0deg)' }};
             }
 
             &.down{
-                transform:rotate(0deg);
+                //transform:rotate(0deg);
+                ${({ popDirection }) => { return popDirection==='down' ? 'transform:rotate(0deg)' : 'transform:rotate(180deg)' }};
             }
         }
 
