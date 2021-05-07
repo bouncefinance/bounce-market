@@ -27,7 +27,7 @@ const PullRadioBoxStyled = styled.div`
         height: 48px;
         padding:0 20px;
         box-sizing: border-box;
-        border: ${({borderHidden}) => { return borderHidden ? 'none' : '1px solid rgba(0,0,0,.2)' }};
+        border: ${({borderHidden}) => { return borderHidden ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,.2)' }};
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -179,11 +179,11 @@ export default function PullRadioBox({
                 if (disabled) return;
                 setOpen(!open)
             }}>
-                <div>
+                <div className='value_wrapper'>
                     {prefix && <span className='prefix'>{prefix}</span>}
                     <p className='value'>{checkVal}</p>
                 </div>
-                <img src={icon_pull} className={open ? 'up' : 'down'} alt="" />
+                <img src={icon_pull} className={`icon_pull ${open ? 'up' : 'down'}`} alt="" />
             </div>
 
             {
