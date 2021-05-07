@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import CommonHeader from '../CommonHeader'
 import MessageTips from '@/components/Modal/MessageTips';
 import { useActiveWeb3React } from '@/web3'
-import { useQuery } from '@apollo/client'
-import { QueryTradePools } from '@/utils/apollo'
+// import { useQuery } from '@apollo/client'
+// import { QueryTradePools } from '@/utils/apollo'
 import { AUCTION_TYPE } from '@/utils/const'
 
 const MyLikedStyled = styled.div`
@@ -48,7 +48,7 @@ export default function MyLiked() {
   const { sign_Axios,axios } = useAxios()
   const { account, active } = useActiveWeb3React()
   const [openMessage, setopenMessage] = useState({ open: false, message: 'error', severity: 'error' })
-  const { data } = useQuery(QueryTradePools)
+  // const { data } = useQuery(QueryTradePools)
 
   const getAllPoolData = async () => {
     const poolsParmas = { offset: 0, count: 1e4 }
@@ -121,9 +121,9 @@ export default function MyLiked() {
       //   , name: 'name' + i, price: i + 'E'
       // })))
     }
-    account && data && init()
+    account  && init()
     // eslint-disable-next-line
-  }, [account, data])
+  }, [account])
 
   return <>
     <CommonHeader />

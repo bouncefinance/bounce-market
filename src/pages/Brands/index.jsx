@@ -70,6 +70,9 @@ export default function Index() {
   const { wrapperIntl } = useWrapperIntl()
   const { dispatch } = useContext(myContext);
 
+  const [sortBy, setSortBy] = useState()
+
+
   useEffect(() => {
     // if (!active) return;
     if (!active) {
@@ -103,10 +106,8 @@ export default function Index() {
               popularweight: item.popularweight,
               owneraddress: item.owneraddress,
             })).filter(item => item.id !== 117)
-              .sort((a, b) => b.popularweight - a.popularweight);
             // console.log(itemList)
             setList(itemList);
-            setFilterList(itemList);
             setloding(false)
           }
         })
@@ -114,27 +115,50 @@ export default function Index() {
     // eslint-disable-next-line
   }, [active, data]);
 
+  useEffect(() => {
+    if (!list.length || !sortBy) return
+    console.log(sortBy)
+    let filter
+    if (sortBy === 'Popular') {
+      filter = list.sort((item1, item2) => {
+        return item2.popularweight - item1.popularweight
+      })
+    } else {
+      filter = list.sort((item1, item2) => {
+        return item2.id - item1.id
+      })
+    }
+
+    setFilterList(filter)
+    setloding(false)
+  }, [sortBy, list])
+
   const handleChange = (filterSearch) => {
+    console.log(filterSearch)
     const result = list.filter(item => item.brandName.toLowerCase().indexOf(filterSearch) > -1
       || item.owneraddress.toLowerCase().indexOf(filterSearch) > -1);
     setFilterList(result);
   }
 
   return (
-    <StyledBrandPage>
+    filterList&&<StyledBrandPage>
       <div className="row-1">
         <SearchBar placeholder={wrapperIntl("Brands.placeholder")}
-          onChange={handleChange} />
+          onChange={(e) => { handleChange(e) }} />
         <DropDownMenu
           width={"261px"}
           options={[{
+            value: 'Popular'
+          }, {
             value: 'New'
           },
           ]}
-          defaultValue={'New'}
+          defaultValue={'Popular'}
           prefix={"Sort by:"}
-          onChange={(item) => {
+          onValChange={(item) => {
             // console.log(item)
+            setSortBy(item)
+            setloding(true)
           }}
         />
       </div>
