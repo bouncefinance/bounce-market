@@ -175,9 +175,7 @@ export const CreateNFT = () => {
             <Mutation type={createNft.toString()}>
               {({ loading }) => (
                 <Button size="large" type="submit" fullWidth disabled={loading}>
-                  {loading
-                    ? t('create-nft.submitting')
-                    : t('create-nft.submit')}
+                  {loading ? t('common.submitting') : t('create-nft.submit')}
                 </Button>
               )}
             </Mutation>

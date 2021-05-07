@@ -1,7 +1,7 @@
 import { useAccount } from 'modules/account/hooks/useAccount';
 import React from 'react';
 import { Route, RouteProps } from 'react-router-dom';
-import { Typography } from '@material-ui/core';
+import { ConnectWallet } from '../ConnectWallet';
 
 interface IPrivateRouteProps extends RouteProps {}
 
@@ -13,11 +13,5 @@ export const PrivateRoute = (props: IPrivateRouteProps) => {
   }
 
   // TODO Update placeholder https://ankrnetwork.atlassian.net/browse/FD-3422
-  return (
-    <Route
-      {...props}
-      component={undefined}
-      render={() => <Typography>Please, connect you wallet</Typography>}
-    />
-  );
+  return <Route {...props} component={ConnectWallet} />;
 };

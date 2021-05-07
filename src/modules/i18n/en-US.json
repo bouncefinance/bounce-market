@@ -2,13 +2,18 @@
   "common": {
     "load-more": "Load more",
     "read-more": "read more",
-    "view-all": "View all"
+    "view-all": "View all",
+    "submitting": "Submitting"
   },
   "header": {
     "create": "Create",
     "connect": "Connect Wallet"
   },
   "connect-wallet": {
+    "placeholder": {
+      "title": "Connect your wallet",
+      "description": "The content of this page is only available with the connected wallet"
+    },
     "custom-binancewallet": {
       "name": "Binance Chain",
       "description": "Binance Chain & Smart Chain Wallet"
@@ -88,10 +93,15 @@
       "footnote": "Bids placed in auction cannot be withdrawn"
     }
   },
+  "form": {
+    "limit-counter": "{value}/{maxLimit}"
+  },
   "validation": {
     "required": "This field is required",
     "min": "Must be greater than {value}",
-    "max": "Must be less than {value}"
+    "max": "Must be less than {value}",
+    "invalid-email": "Enter a valid Email",
+    "invalid-website": "Enter a valid Website URL"
   },
   "upload-image-field": {
     "title": "Drop your item here",
@@ -142,6 +152,27 @@
     "unfollow": "Unfollow",
     "subscribers": "Subscribers",
     "bio": "Bio",
+    "share": "Share",
+    "user-profile": "User profile",
+    "edit-profile": "Edit profile",
+    "edit": {
+      "label": {
+        "username": "Username",
+        "email": "Email",
+        "custom-url": "Custom URL",
+        "bio": "Bio",
+        "website": "Website",
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "facebook": "Facebook"
+      },
+      "placeholder": {
+        "instagram": "Instagram Username",
+        "twitter": "Twitter Username",
+        "facebook": "Facebook Username"
+      },
+      "save-changes": "Save Changes"
+    },
     "tabs": {
       "my-items": "My items",
       "my-brands": "My brands",
