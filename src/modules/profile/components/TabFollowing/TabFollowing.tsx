@@ -26,7 +26,7 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
   const renderListItems = useMemo(
     () =>
       items?.map(item => (
-        <Grid item xs={12} spacing={0} className={classes.item} key={uid(item)}>
+        <Grid item xs={12} className={classes.item} key={uid(item)}>
           <Grid item xs={12} sm={8} lg={9} className={classes.itemContentWrap}>
             <Link to={item.href} className={classes.itemAvatarLink}>
               <Avatar
