@@ -199,7 +199,7 @@ export default function Search({ placeholder, value, onChange }) {
                 {searchLoding ? <Loding /> : data.account?.length > 0 && <>
                     <div className="search-result-title">Users</div>
                     <div className="row-box">
-                        {data.account?.map((item, key) => <Link key={key} onClick={() => onItem()} style={item?.hasBrand ? { opacity: '1' } : { opacity: '0.5', cursor: 'default' }} to={item?.hasBrand ? `/AirHome/${item.brandId}/1/FineArts` : void 0} className="search-result-users-row flex">
+                        {data.account?.map((item, key) => <Link key={key} onClick={() => onItem()} style={item?.hasBrand ? { opacity: '1' } : { opacity: '0.5', cursor: 'default' }} to={item?.hasBrand ? `/AirHome/${item.brandId}/FineArts` : void 0} className="search-result-users-row flex">
                             <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl } />
                             <div className="row-right">
                                 <p className="user-name">{item.username}</p>

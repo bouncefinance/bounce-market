@@ -304,8 +304,12 @@ export default function BrandsByType() {
     const [tokenList_2, setTokenList_2] = useState();
 
     useEffect(() => {
-        // console.log("category:", category)
         if (!account  || !tokenList_2 || !brandInfo.contractaddress) return
+        // console.log(brandInfo)
+        
+        if(String(brandInfo.owneraddress).toLowerCase() !== String(account).toLowerCase()){
+            history.push(`/AirHome/${brandInfo.id}/FineArts`)
+        }
         // console.log(tokenList, tokenList_2)
         const brand_erc721 = tokenList_2.brandserc721.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
         const brand_erc1155 = tokenList_2.brandserc1155.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
@@ -389,9 +393,6 @@ export default function BrandsByType() {
                 }
             })
     }
-    useEffect(() => {
-        console.log("statusList: ", statusList)
-    }, [statusList])
 
     const getBrandTradeItems = async () => {
         let brandData = {
@@ -442,31 +443,15 @@ export default function BrandsByType() {
     }
 
 
-    // 16806 正在列表
-    // const [getBrandItems, { data: brandItems }] = useLazyQuery(QueryMyNFTByBrand, {
-    //     variables: { user: account && account.toLowerCase(), contract: contract && contract.toLowerCase() },
-    //     fetchPolicy: "network-only",
-    //     onCompleted: () => {
-    //         const brands = [...brandItems.nft721Items, ...brandItems.nft1155Items]
-    //         if (!brands) {
-    //             // handleBrandTradeItems([]);
-    //             setTokenList([]);
-    //         } else {
-    //             setTokenList(brands);
-    //         }
-    //     }
-    // })
 
     useEffect(() => {
         if (!account || !contract) return;
         if (!!brandInfo.standard) {
-            // getBrandItems()
 
             getBrandTradeItems()
-            // getBrandItems_2()
         }
         // eslint-disable-next-line
-    }, [account, contract, brandInfo.standard, getBrandItems]);
+    }, [account, contract, brandInfo.standard]);
 
     return (
         <BrandsByTypeStyled>

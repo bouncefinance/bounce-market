@@ -81,7 +81,7 @@ export default function Index() {
                 <Route exact path='/MyP2P' render={() => { return <Redirect to='/MyP2P/Requests' /> }} />
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
 
-                <Route exact path='/AirHome/:id/:standard/:channel' component={AirHome} />
+                <Route exact path='/AirHome/:id/:channel' component={AirHome} />
                 <Route exact path='/ArtistHome/:userName' component={ArtistHome} />
 
                 <Route exact path='/404' component={Page404} />

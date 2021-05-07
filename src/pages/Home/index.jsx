@@ -130,7 +130,7 @@ export default function Index () {
     // img: img_banner_fmg,
     img: img_banner,
     // test cicd 2
-    href: 'https://fangible.com/AirHome/155/2/FineArts',
+    href: 'https://fangible.com/AirHome/155/FineArts',
     showText: false,
   }
 
