@@ -58,7 +58,7 @@ export const Header = () => {
 
       {!isConnected && (
         <Button onClick={handleConnect} disabled={loading} rounded>
-          {t('common.connect')}
+          {t('header.connect')}
         </Button>
       )}
       {isConnected && renderedWallet}
