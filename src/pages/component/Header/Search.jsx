@@ -203,7 +203,7 @@ export default function Search ({ placeholder, value, onChange }) {
                 {searchLoding ? <Loding /> : data.brands?.length > 0 && <>
                     <div className="search-result-title">Brands</div>
                     <div className="row-box">
-                        {data.brands?.map((item, key) => <Link key={key} onClick={() => onItem()} to={`/AirHome/${item.id}/${item.standard}/FineArts`} className="search-result-brands-row flex flex-center-y">
+                        {data.brands?.map((item, key) => <Link key={key} onClick={() => onItem()} to={`/AirHome/${item.id}/FineArts`} className="search-result-brands-row flex flex-center-y">
                             <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl} />
                             <div className="brand-name">{item.brandname}</div>
                         </Link>)}
