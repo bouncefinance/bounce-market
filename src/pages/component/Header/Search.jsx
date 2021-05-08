@@ -1,4 +1,4 @@
-import Button from '@/components/UI-kit/Button/Button';
+/* import Button from '@/components/UI-kit/Button/Button'; */
 import { DEBOUNCE } from '@/utils/const';
 import useAxios from '@/utils/useAxios';
 import { useDebouncedValue } from '@/utils/useDebouncedValue';
@@ -12,7 +12,7 @@ import { useQuery } from '@apollo/client';
 import { QueryTradePools } from '@/utils/apollo'
 import { AUCTION_TYPE } from '@/utils/const'
 import useToken from '@/utils/useToken';
-import useWrapperIntl from '@/locales/useWrapperIntl';
+/* import useWrapperIntl from '@/locales/useWrapperIntl'; */
 
 let search = ''
 let inputTarget
@@ -24,7 +24,7 @@ export default function Search({ placeholder, value, onChange }) {
     const [searchLoding, setSearchLoding] = useState(!false)
     const [data, setdata] = useState({})
     const poolDataRes = useQuery(QueryTradePools)
-    const {wrapperIntl} = useWrapperIntl()
+    /* const {wrapperIntl} = useWrapperIntl() */
     const handleChange = (e) => {
         inputTarget = e.target
         const value = e.target.value && e.target.value.toLowerCase();
@@ -167,7 +167,7 @@ export default function Search({ placeholder, value, onChange }) {
             onChange={handleChange}
             onInput={onInput}
         />
-        <Button onClick={onSearch} primary={true}>{wrapperIntl('header.search')}</Button>
+        {/* <Button onClick={onSearch} primary={true}>{wrapperIntl('header.search')}</Button> */}
         <div className="search-inner">
             <div style={inSearch.length <= 0 ? { minHeight: '0px', height: '0px', width: '0px', padding: '0px', opacity: 0, overflow: 'hidden' } : { minHeight: '100px', width: '483px' }} className="search-info">
                 {searchLoding ? <Loding /> : data.items?.length > 0 && <>

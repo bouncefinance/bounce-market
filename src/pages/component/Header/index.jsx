@@ -14,6 +14,7 @@ import { useUserInfo } from "../../Myprofile/useUserInfo";
 import { Tooltip } from "@material-ui/core";
 import { myContext } from "@/redux/index.js";
 import useWrapperIntl from "@/locales/useWrapperIntl";
+/* import ChainMenu from './ChainMenu' */
 
 const HeaderStyled = styled.div`
 	height: 76px;
@@ -42,6 +43,7 @@ const HeaderStyled = styled.div`
 			}
 
 			&.right {
+            justify-content: space-between;
 				ul.nav {
 					display: flex;
 					align-items: center;
@@ -68,6 +70,45 @@ const HeaderStyled = styled.div`
 				button {
 					margin-right: 20px;
 				}
+
+                .chain_menu {
+                    margin-right: 20px;
+
+                    .select {
+                        width: fit-content;
+                        min-width: 100px;
+                        height: 36px;
+                        padding-left: 20px;
+                        padding-right: 20px;
+
+                        .value_wrapper {
+                            width: fit-content;
+                            max-width: 85px;
+
+                            p.value {
+                                font-family: Helvetica Neue;
+                                font-style: normal;
+                                font-weight: bold;
+                                font-size: 13px;
+                                line-height: 16px;
+                                display: flex;
+                                align-items: center;
+                                text-align: center;
+                                text-transform: capitalize;
+
+                                color: #000000;
+                            }
+                        }
+
+                        img.icon_pull {
+                            margin-left: 7px;
+                        }
+                    }
+
+                    .options {
+                        width: 100%;
+                    }
+                }
 			}
 		}
 	}
@@ -146,21 +187,16 @@ const ConnectToChain = async (chainName) => {
         },
     ];
 
-    const result = await ethereum
+    await ethereum
         .request({
             method: "wallet_addEthereumChain",
             params: chainName === "BSC" ? BSCInfo : HECOInfo,
         })
         .then(() => {
-            // window.location.reload();
+            window.localStorage.setItem('currentChainId', chainName === "BSC" ? 56 : chainName === "HECO" ? 128 : 'Unsupported Chain')
+            window.location.reload();
         })
-        .catch();
-    if (result) {
-        console.log(result);
-    }
-
-    window.localStorage.setItem('currentChainId', chainName === "BSC" ? 56 : 128)
-    window.location.reload();
+        .catch((reason)=>{window.location.reload();});
 
 };
 
@@ -176,26 +212,33 @@ export default function Index() {
     // const { dispatch } = useContext(myContext);
     /* const [isFangible, setIsFangible] = useState(false) */
     const { wrapperIntl } = useWrapperIntl();
-    const defaultNetwork = window.localStorage.getItem('currentChainId') === '128' ? 'HECO' : 'BSC'
-
+    //const defaultNetwork = window.localStorage.getItem('currentChainId') === '128' ? 'HECO' : window.localStorage.getItem('currentChainId') === '56' ? 'BSC' : 'Unsupported Chain'
+    // const currentChainName = window.localStorage.getItem('currentChainId') === '128' ? 'HECO' : window.localStorage.getItem('currentChainId') === '56' ? 'BSC' : 'Unsupported Chain'
+    const [currentChainName, setCurrentChainName] = useState(
+		window.localStorage.getItem("currentChainId") === "56"
+			? "BSC"
+			: window.localStorage.getItem("currentChainId") === "128"
+			? "HECO"
+			: "Unsupported Chain"
+	);
 
     const Nav_list = [
-        {
-            name: wrapperIntl("header.home"),
-            route: "/Home",
-            enable: true,
-        },
-        {
-            name: wrapperIntl("header.marketplace"),
-            route: "/Marketplace",
-            enable: true,
-        },
-        {
-            name: wrapperIntl("header.brands"),
-            route: "/Brands",
-            enable: true,
-        },
-    ];
+		{
+			name: wrapperIntl("header.home"),
+			route: "/Home",
+			enable: true,
+		},
+		{
+			name: wrapperIntl("header.marketplace"),
+			route: "/Marketplace",
+			enable: true,
+		},
+		{
+			name: wrapperIntl("header.brands"),
+			route: "/Brands",
+			enable: true,
+		},
+	];
 
     const updateActive = () => {
         const pathName = window.location.pathname;
@@ -231,6 +274,20 @@ export default function Index() {
         }
         updateActive();
     };
+
+    
+    let ethereum = window.ethereum;
+    ethereum.on("chainChanged", (_chainId) => {
+		if (_chainId !== 56 || _chainId !== 128) window.location.reload();
+	});
+
+    useEffect(() => {
+        console.log("chainId000: ", chainId);
+        if (!chainId) return
+        window.localStorage.setItem('currentChainId', chainId === 56 ? 56 : chainId === 128 ? 128 : 'Unsupported Chain')
+        setCurrentChainName(chainId === 56 ? 'BSC' : chainId === 128 ? 'HECO' : 'Unsupported Chain')
+    }, [chainId])
+
     useEffect(() => {
         const type = window.localStorage.getItem("BOUNCE_SELECT_WALLET");
         if (type) {
@@ -332,162 +389,138 @@ export default function Index() {
     };
 
     return (
-        <>
-            <HeaderStyled>
-                <div className="wrapper">
-                    <div className="left">
-                        <Link to="/">
-                            <img
-                                src={
+		<>
+			<HeaderStyled>
+				<div className="wrapper">
+					<div className="left">
+						<Link to="/">
+							<img
+								src={
 									/* isFangible ? logo_bfangible : */ logo_bounce
-                                }
-                                alt=""
-                            ></img>
-                        </Link>
+								}
+								alt=""
+							></img>
+						</Link>
 
-                        <Search placeholder={wrapperIntl("header.search_p")} />
-                    </div>
-                    <div className="right">
-                        {false &&
-                            window.location.hostname.includes("localhost") && (
-                                <Button
-                                    width="100px"
-                                    height="36px"
-                                    value="中文"
-                                    onClick={() => {
-                                        window.localStorage.setItem(
-                                            "Language",
-                                            "zh-CN"
-                                        );
-                                        window.location.reload();
-                                    }}
-                                />
-                            )}
+						<Search placeholder={wrapperIntl("header.search_p")} />
+					</div>
+					<div className="right">
+						<ul className="nav">
+							{Nav_list.map((item) => {
+								return item.enable ? (
+									<li
+										key={item.name}
+										className={
+											item.name === curNav ? "active" : ""
+										}
+										onClick={() => {
+											window.localStorage.setItem(
+												"Herder_CurNav",
+												item.name
+											);
+											setCurNav(item.name);
+										}}
+									>
+										<Link to={item.route}>
+											<h5>{item.name}</h5>
+										</Link>
+									</li>
+								) : (
+									<Tooltip
+										key={item.name}
+										title="Coming soon"
+									>
+										<li style={{ opacity: 0.5 }}>
+											<h5>{item.name}</h5>
+										</li>
+									</Tooltip>
+								);
+							})}
+						</ul>
 
-                        {false &&
-                            window.location.hostname.includes("localhost") && (
-                                <Button
-                                    width="100px"
-                                    height="36px"
-                                    value="English"
-                                    onClick={() => {
-                                        window.localStorage.setItem(
-                                            "Language",
-                                            "en-US"
-                                        );
-                                        window.location.reload();
-                                    }}
-                                />
-                            )}
-                        <ul className="nav">
-                            {Nav_list.map((item) => {
-                                return item.enable ? (
-                                    <li
-                                        key={item.name}
-                                        className={
-                                            item.name === curNav ? "active" : ""
-                                        }
-                                        onClick={() => {
-                                            window.localStorage.setItem(
-                                                "Herder_CurNav",
-                                                item.name
-                                            );
-                                            setCurNav(item.name);
-                                        }}
-                                    >
-                                        <Link to={item.route}>
-                                            <h5>{item.name}</h5>
-                                        </Link>
-                                    </li>
-                                ) : (
-                                    <Tooltip
-                                        key={item.name}
-                                        title="Coming soon"
-                                    >
-                                        <li style={{ opacity: 0.5 }}>
-                                            <h5>{item.name}</h5>
-                                        </li>
-                                    </Tooltip>
-                                );
-                            })}
-                        </ul>
+						<Button
+							width="110px"
+							height="36px"
+							value={wrapperIntl("header.create")}
+							onClick={() => {
+								history.push("/Factory");
+							}}
+						/>
 
-                        <Button
-                            width="110px"
-                            height="36px"
-                            value={wrapperIntl("header.create")}
-                            onClick={() => {
-                                history.push("/Factory");
-                            }}
-                        />
+						{/* <ChainMenu/> */}
+						<PullRadioBox
+							className="chain_menu"
+							width={"110px"}
+							height={"36px"}
+							options={[
+								{
+									value: "BSC",
+								},
+								{
+									value: "HECO",
+								},
+							]}
+							//borderHidden
+							defaultValue={
+                                currentChainName
+							}
+							onValChange={async (item) => {
+								if (currentChainName !== item) {
+                                    //debugger
+									await ConnectToChain(item);
+                                    // window.location.reload()
+								}
+							}}
+						/>
 
-                        <PullRadioBox
-                            width={"100px"}
-                            options={[
-                                {
-                                    value: "BSC",
-                                },
-                                {
-                                    value: "HECO",
-                                },
-                            ]}
-                            borderHidden
-                            defaultValue={defaultNetwork}
-                            onValChange={(item) => {
-                                // console.log(item,defaultNetwork)
-                                if (defaultNetwork !== item) {
-                                    ConnectToChain(item)
-                                }
-                            }}
-                        />
-
-                        {active ? (
-                            <div
-                                className={`avatar_box ${isShowInfo ? "open" : ""
-                                    }`}
-                            >
-                                {state.userInfo && state.userInfo.imgurl ? (
-                                    <img
-                                        src={
-                                            state.userInfo &&
-                                            state.userInfo.imgurl
-                                        }
-                                        alt=""
-                                        onClick={onHandleShowInfo}
-                                    />
-                                ) : (
-                                    <div
-                                        className="avatar"
-                                        onClick={onHandleShowInfo}
-                                    ></div>
-                                )}
-                            </div>
-                        ) : (
-                            <Button
-                                className="connect_btn"
-                                primary
-                                onClick={() => {
-                                    setIsConnectWallect(true);
-                                }}
-                            >
-                                {wrapperIntl("header.connect")}
-                            </Button>
-                        )}
-                    </div>
-                    {isShowInfo && (
-                        <InfoBox
-                            onBodyHandle={onBodyHandle}
-                            offBodyHandle={offBodyHandle}
-                            setIsShowInfo={setIsShowInfo}
-                            username={state.userInfo && state.userInfo.username}
-                        />
-                    )}
-                </div>
-            </HeaderStyled>
-            <ConnectWalletModal
-                open={isConnectWallect}
-                setOpen={setIsConnectWallect}
-            />
-        </>
-    );
+						{active ? (
+							<div
+								className={`avatar_box ${
+									isShowInfo ? "open" : ""
+								}`}
+							>
+								{state.userInfo && state.userInfo.imgurl ? (
+									<img
+										src={
+											state.userInfo &&
+											state.userInfo.imgurl
+										}
+										alt=""
+										onClick={onHandleShowInfo}
+									/>
+								) : (
+									<div
+										className="avatar"
+										onClick={onHandleShowInfo}
+									></div>
+								)}
+							</div>
+						) : (
+							<Button
+								className="connect_btn"
+								primary
+								onClick={() => {
+									setIsConnectWallect(true);
+								}}
+							>
+								{wrapperIntl("header.connect")}
+							</Button>
+						)}
+					</div>
+					{isShowInfo && (
+						<InfoBox
+							onBodyHandle={onBodyHandle}
+							offBodyHandle={offBodyHandle}
+							setIsShowInfo={setIsShowInfo}
+							username={state.userInfo && state.userInfo.username}
+						/>
+					)}
+				</div>
+			</HeaderStyled>
+			<ConnectWalletModal
+				open={isConnectWallect}
+				setOpen={setIsConnectWallect}
+			/>
+		</>
+	);
 }
