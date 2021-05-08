@@ -2,6 +2,9 @@ import React, {useRef, useEffect, useState, useCallback, useMemo} from "react";
 import styled from 'styled-components'
 import { Image, Popover, Spin  } from 'antd';
 import debounce from './useDebounce';
+import Grow from '@material-ui/core/Grow';
+import play from '@/assets/images/play_gray.svg'
+
 
 const VideoDebugs = styled.div`
     width: 100%;
@@ -13,10 +16,25 @@ const VideoDebugs = styled.div`
     .debugContainer {
         width: ${props => props.videoWidth || 600}px;
         height: ${props => props.videoHeight || 360}px;
+        position:relative;
         .player{
             width: 100%;
             height: ${props => props.videoHeight - 20}px;
             position: relative;
+          }
+          .playButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -15px;
+            margin-left: -15px;
+            z-index: 10;
+            background-color: transparent;
+            img {
+              width: 30px;
+              height: 30px;
+              /* opacity: 1; */
+            }
           }
           .frameControl {
               width: 100%;
@@ -38,10 +56,19 @@ function VideoFrame (props) {
     const nodeRef = useRef(null);
     
     const [images, setImages] = useState({});
+    const [poster, setPoster] = useState('');
+    const [playButtonVisiable, setPlayButtonVisiable] = useState(true)
+    const [playButtonClickable, setPlayButtonClickable] = useState(true)
+
+    const onMouseLeave = () => {
+        const video = videoRef?.current
+        video?.pause()
+        setPlayButtonVisiable(true)
+    }
 
     useEffect(() => {
         videoRef.current.addEventListener('canplay', (e) => {
-            videoRef.current.play();
+            // videoRef.current.play();
             // videoRef.current.addEventListener('seeked', seekDef)
             frameControlRef.current.addEventListener('click', debounce((e) => {
                 const indexTabWidth = e.target.clientWidth;
@@ -72,9 +99,11 @@ function VideoFrame (props) {
     //     })
     // }, [rate]);
 
-    useEffect(() => {
-        // generateFrame()
-    }, [rate])
+    // useEffect(() => {
+    //     const { image, width, height, currentTime } = generateCanvas(videoRef.current, 1);
+    //     const base64Path = window.URL.createObjectURL(new Blob([image]));
+    //     setPoster(base64Path);
+    // }, [])
 
     const uniq = (arr) => {
         return Array.from(new Set(arr));
@@ -87,13 +116,7 @@ function VideoFrame (props) {
         });
         const { image, width, height, currentTime } = generateCanvas(videoRef.current);
         videoRef.current.pause();
-        const base64Path = window.URL.createObjectURL(new Blob([image]));
-        // setImages((prev) => {
-        //     if (!~prev.map(v => v.url).indexOf(base64Path)) {
-        //         prev = [...prev, { url: base64Path, time: currentTime, width: width, height: height }]
-        //     }
-        //     return prev;
-        // });        
+        const base64Path = window.URL.createObjectURL(new Blob([image]));      
         setImages({ url: base64Path, time: currentTime, width: width, height: height });
     }
 
@@ -132,7 +155,34 @@ function VideoFrame (props) {
     return (
         <VideoDebugs videoWidth={props.videoWidth} videoHeight={props.videoHeight}>
             <div className="debugContainer" ref={containerRef}>
-                <video ref={videoRef} className="player" src={src} muted={true} controls/>
+                <video ref={videoRef} className="player" src={src} muted={true} poster={poster} style={{ objectFit: 'contain' }} onMouseLeave={onMouseLeave}/>
+                {
+                    playButtonVisiable
+                    &&
+                    <Grow
+                        in={playButtonVisiable}
+                        style={{ transformOrigin: 'center' }}
+                        {...(playButtonVisiable ? { timeout: 500 } : {})}
+                    >
+                    <div
+                        className="playButton"
+                        onClick={
+                        (e)=>{
+                            e.stopPropagation();
+                            e.nativeEvent.stopImmediatePropagation();
+
+                            if (!playButtonClickable) return
+                            setPlayButtonVisiable(false)
+                            const video = videoRef?.current
+                            if (!video) return
+                            video?.play()
+                        }
+                        }
+                    >
+                        <img src={play} alt=""/>
+                    </div>
+                    </Grow>
+                }
                 <div className="frameControl" ref={frameControlRef}></div>
             </div>
         </VideoDebugs>

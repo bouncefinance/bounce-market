@@ -22,6 +22,7 @@ import VideoFrame from '@/components/VideoFrame/VideoFrame';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 // import { numToWei } from '@/utils/useBigNumber'
 
@@ -70,10 +71,6 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     })
 
     useEffect(() => {
-        // console.log("formData:", formData)
-    }, [formData])
-
-    useEffect(() => {
         if (!active) return
     }, [active])
 
@@ -83,7 +80,6 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
             const requireArr = ['Name', 'Description', 'Supply']
             let errorCount = 0
             requireArr.forEach(item => {
-                console.log('---item---', item, formData)
                 if (!checkInput(formData[item]) || (item === 'Supply' && !ErrorStatus.intNum.reg.test(formData[item]))) {
                     errorCount++
                 }
@@ -332,17 +328,18 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 />
                 <div style={{width: '100%', display: 'flex', justifyContent: 'flex-start'}}>
                     {
-                        
                         fileData ? 
-                        <div style={{display: 'flex'}}>
+                        <Card style={{display: 'flex'}}>
                             <VideoFrame src={videoPath} videoWidth={240} videoHeight={120} onImageChangeCalback={(frameData) => {
-                            console.log('ddd', frameData);
-                            setVideoFramePath(frameData)
-                        }}/>
-                        <img src={videoFramePath.url} alt="" width={'240px'} height={'120px'}/>
-                        </div>
-                        
-                        
+                                setVideoFramePath(frameData);
+                            }}/>
+                            {videoFramePath?.url && <img src={videoFramePath.url} alt="" width={'240px'} height={'120px'}/>}
+                            <DeleteIcon style={{cursor: 'pointer', color: 'red'}} onClick={() => {
+                                setVideoFramePath({});
+                                setVideoPath('');
+                                setFileData(null);
+                            }}/>
+                        </Card>
                         :
                         <UploadAll
                         // type={formData.Category}
@@ -380,8 +377,6 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     }
                 </div>
                 
-                
-
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)
