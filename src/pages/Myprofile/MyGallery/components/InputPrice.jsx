@@ -13,7 +13,7 @@ import useWrapperIntl from '@/locales/useWrapperIntl'
 // import { equalAddress } from "@/utils/compareFun";
 
 
-function InputPrice({
+function InputPrice ({
 	className,
 	title,
 	price,
@@ -57,7 +57,7 @@ function InputPrice({
 			getBalance = async () => {
 				const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
 				setBalance(balance)
-				if(balance){
+				if (balance) {
 					setNftCount(balance)
 				}
 			}
@@ -65,7 +65,7 @@ function InputPrice({
 			getBalance = async () => {
 				const balance = await getBalance_ERC_721(nftInfo.contractaddress, nftInfo.id)
 				setBalance(balance)
-				if(balance){
+				if (balance) {
 					setNftCount(balance)
 				}
 			}
@@ -75,11 +75,11 @@ function InputPrice({
 	}, [active, nftInfo, ifInputAmount])
 
 	useEffect(() => {
-		if (fixedSwapUnit){
+		if (fixedSwapUnit) {
 			setSelToken(fixedSwapUnit);
 			setUnit(fixedSwapUnit.value);
 		}
-	}, [fixedSwapUnit,setUnit])
+	}, [fixedSwapUnit, setUnit])
 
 
 	useEffect(() => {
@@ -122,7 +122,7 @@ function InputPrice({
 		}
 	};
 
-	const { wrapperIntl } = useWrapperIntl()	
+	const { wrapperIntl } = useWrapperIntl()
 	const [nftCount, setNftCout] = useState(0)
 	useEffect(() => {
 		if (!(nftInfo && account)) return
@@ -131,7 +131,7 @@ function InputPrice({
 		})()
 		// eslint-disable-next-line
 	}, [nftInfo, account])
-	
+
 	return (
 		<Wrapper className={className} gridArea={gridArea}>
 			{title && <span className="title">{title}</span>}
@@ -144,7 +144,7 @@ function InputPrice({
 					placeholder={wrapperIntl("MyProfile.MyGallery.InputPrice.Price")}
 					maxLength={18}
 					value={priceValue}
-					onFocus={()=>{setAlarm('')}}
+					onFocus={() => { setAlarm && setAlarm('') }}
 					onChange={checkInputPrice}
 				/>
 				<UnitDropdown
@@ -157,7 +157,7 @@ function InputPrice({
 					onChange={(item) => {
 						// console.log(item)
 						setSelToken(item)
-						setNewUnit&&setNewUnit(item)
+						setNewUnit && setNewUnit(item)
 						setUnit && setUnit(item.value);
 					}}
 				/>

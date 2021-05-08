@@ -304,7 +304,7 @@ function Summary({ auctionType, price, amount, unit,
 			} catch (e) { console.log(e); showTransferByStatus('errorStatus') }
 		} else {
 			if (!(parseFloat(minPrice) < parseFloat(price)) || !(parseFloat(price) <= parseFloat(maxPrice)) || !(parseFloat(minPrice) < parseFloat(maxPrice))) {
-				setAlarm('Make sure Minimum bid < Reserve price ≤ Direct purchase price')
+				setAlarm&&setAlarm('Make sure Minimum bid < Reserve price ≤ Direct purchase price')
 				
 				// back to the top
                 smoothToTop();
