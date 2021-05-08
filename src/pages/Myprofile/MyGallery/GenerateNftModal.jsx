@@ -18,6 +18,10 @@ import useWrapperIntl from '@/locales/useWrapperIntl'
 import to from 'await-to-js'
 import { ImgToUrl } from '@/utils/imgToUrl'
 import { ImgCompressorCreate } from '@utils/img-compressor'
+import VideoFrame from '@/components/VideoFrame/VideoFrame';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
 
 // import { numToWei } from '@/utils/useBigNumber'
 
@@ -56,6 +60,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
+    const [videoPath, setVideoPath] = useState('');
+    const [videoFramePath, setVideoFramePath] = useState({});
     const [nftType, setNftType] = useState('ERC-721')
     const [formData, setFormData] = useState({
         Category: 'image',
@@ -324,35 +330,57 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                         setFormData({ ...formData, Description: val })
                     }}
                 />
-
-                <UploadAll
-                    // type={formData.Category}
-                    inputDisable={inputDisable}
-                    width='200px'
-                    /* height='200px' */
-                    height="100%"
-                    lockInput={inputDisable}
-                    infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')}
-                    onClick={() => {
-                        // setFileData(null)
-                    }}
-                    onFileChange={(formData, file, filetype) => {
-                        // console.log(filetype, file)
-                        if (filetype === 'video/avi') {
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
-                            setFileData(null)
-                            return
-                        }
-                        if (filetype.substring(0, 'video'.length) === 'video') {
-                            console.log('video')
-                        }
-                        setFileData({
-                            formData,
-                            file,
-                            type: filetype
-                        })
-                    }}
-                />
+                <div style={{width: '100%', display: 'flex', justifyContent: 'flex-start'}}>
+                    {
+                        
+                        fileData ? 
+                        <div style={{display: 'flex'}}>
+                            <VideoFrame src={videoPath} videoWidth={240} videoHeight={120} onImageChangeCalback={(frameData) => {
+                            console.log('ddd', frameData);
+                            setVideoFramePath(frameData)
+                        }}/>
+                        <img src={videoFramePath.url} alt="" width={'240px'} height={'120px'}/>
+                        </div>
+                        
+                        
+                        :
+                        <UploadAll
+                        // type={formData.Category}
+                        inputDisable={inputDisable}
+                        width='200px'
+                        /* height='200px' */
+                        height="100%"
+                        lockInput={inputDisable}
+                        infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')}
+                        onClick={() => {
+                            // setFileData(null)
+                        }}
+                        onFileChange={(formData, file, filetype) => {
+                            // console.log(filetype, file)
+                            if (filetype === 'video/avi') {
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
+                                setFileData(null)
+                                return
+                            }
+                            if (filetype.substring(0, 'video'.length) === 'video') {
+                                console.log('video')
+                            }
+                            console.log('fileData', formData, file);
+                            setFileData({
+                                formData,
+                                file,
+                                type: filetype
+                            })
+                        }}
+                        onVideoFileChange={(videoPathUrl) => {
+                            console.log('vvvv', videoPathUrl);
+                            setVideoPath(videoPathUrl)
+                        }}
+                    />
+                    }
+                </div>
+                
+                
 
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {
