@@ -11,7 +11,7 @@ const VideoDebugs = styled.div`
     height: 100%;
     display:flex;
     // justify-content:center;
-    align-items:flex-start;
+    align-items:center;
     flex-direction:column;
     .debugContainer {
         width: ${props => props.videoWidth || 600}px;
@@ -41,6 +41,7 @@ const VideoDebugs = styled.div`
               height: 20px;
               background: #ccc;
               cursor:pointer;
+              margin: 0 auto;
           }
     }
 `;

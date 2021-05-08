@@ -23,6 +23,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Image } from 'antd';
 
 // import { numToWei } from '@/utils/useBigNumber'
 
@@ -333,7 +334,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             <VideoFrame src={videoPath} videoWidth={240} videoHeight={120} onImageChangeCalback={(frameData) => {
                                 setVideoFramePath(frameData);
                             }}/>
-                            {videoFramePath?.url && <img src={videoFramePath.url} alt="" width={'240px'} height={'120px'}/>}
+                            {videoFramePath?.url && <Image src={videoFramePath.url} width={240} height={120}/>}
                             <DeleteIcon style={{cursor: 'pointer', color: 'red'}} onClick={() => {
                                 setVideoFramePath({});
                                 setVideoPath('');
