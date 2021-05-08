@@ -308,7 +308,7 @@ export default function Marketplace() {
                 nav.title === NFT_CATEGORY.FineArts ? icon_arts :
                   nav.title === NFT_CATEGORY.Sports ? icon_sport :
                     nav.title === NFT_CATEGORY.ComicBooks ? icon_comics :
-                      ''
+                    icon_arts
               } alt="" />{nav.title}</p>
             </li>
           })}
