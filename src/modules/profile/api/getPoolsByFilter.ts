@@ -1,7 +1,7 @@
 import { createAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { Address, Seconds } from '../../common/types/unit';
-import { NftStandard } from '../../createNFT/actions/createNft';
+import { NftType } from '../../createNFT/actions/createNft';
 import BigNumber from 'bignumber.js';
 import { AuctionState } from '../../overview/actions/fetchPools';
 import Web3 from 'web3';
@@ -39,7 +39,7 @@ interface IPool {
   createTime: Date;
   creator: Address;
   name: string;
-  nftType: NftStandard;
+  nftType: NftType;
   poolId: number;
   price: BigNumber;
   state: AuctionState;

@@ -5,10 +5,17 @@ import { QueryEmpty } from '../QueryEmpty/QueryEmpty';
 import { QueryError } from '../QueryError/QueryError';
 import { QueryLoadingCentered } from '../QueryLoading/QueryLoading';
 
-interface ILoadingProps<T> {
+interface ILoadingProps<T1, T2, T3, T4, T5> {
   requestActions: ((...args: any[]) => RequestAction)[];
-  // Make T more strict
-  children: (...query: QueryState<T>[]) => ReactNode;
+  children: (
+    ...a: [
+      T1 extends void ? void : QueryState<T1>,
+      T2 extends void ? void : QueryState<T2>,
+      T3 extends void ? void : QueryState<T3>,
+      T4 extends void ? void : QueryState<T4>,
+      T5 extends void ? void : QueryState<T5>,
+    ]
+  ) => ReactNode;
 }
 
 function isLoading(queries: QueryState<any>[]) {
@@ -31,7 +38,10 @@ function isEmpty(queries: QueryState<any>[]) {
   return queries.every(item => isDataEmpty(item.data));
 }
 
-export function Queries<T>({ requestActions, children }: ILoadingProps<T>) {
+export function Queries<T1 = void, T2 = void, T3 = void, T4 = void, T5 = void>({
+  requestActions,
+  children,
+}: ILoadingProps<T1, T2, T3, T4, T5>) {
   const queries = useAppSelector(state =>
     requestActions.map(item =>
       getQuery(state, { type: item.toString(), action: item }),
@@ -52,5 +62,5 @@ export function Queries<T>({ requestActions, children }: ILoadingProps<T>) {
     return <QueryEmpty />;
   }
 
-  return <>{children(...queries)}</>;
+  return <>{(children as any)(...queries)}</>;
 }

@@ -27,7 +27,7 @@ import { publishNft } from '../../actions/publishNft';
 import { fetchItem } from '../../../detailsNFT/actions/fetchItem';
 import { Days } from '../../../common/types/unit';
 import { ResponseData } from '../../../common/types/ResponseData';
-import { NftStandard } from '../../actions/createNft';
+import { NftType } from '../../actions/createNft';
 import BigNumber from 'bignumber.js';
 
 const MIN_INCREMENTAL_PART = 0.05;
@@ -61,7 +61,7 @@ const validateCreateNFT = (payload: IPublishNFTFormData) => {
 interface IPublishNFTComponentProps {
   name: string;
   tokenContract: string;
-  standard: NftStandard;
+  standard: NftType;
   tokenId: number;
 }
 

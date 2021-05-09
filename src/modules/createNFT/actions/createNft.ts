@@ -11,7 +11,7 @@ import BounceERC1155WithSign from '../contracts/BounceERC1155WithSign.json';
 import { addItem, IAddItemPayload } from './addItem';
 import { uploadFile } from './uploadFile';
 
-export enum NftStandard {
+export enum NftType {
   ERC721 = 1,
   ERC1155 = 2,
 }
@@ -26,7 +26,7 @@ export interface ICreateNFTPayload {
   name: string;
   description: string;
   channel: Channel;
-  standard: NftStandard;
+  standard: NftType;
   supply: number;
   file: File;
 }
@@ -63,11 +63,11 @@ export const createNft = createSmartAction(
             });
 
             const addItemPayload: IAddItemPayload = {
-              brandid: standard === NftStandard.ERC721 ? 10 : 11,
+              brandid: standard === NftType.ERC721 ? 10 : 11,
               category: 'image',
               channel,
               contractaddress:
-                standard === NftStandard.ERC721
+                standard === NftType.ERC721
                   ? getBounceERC721WithSign(chainId)
                   : getBounceERC1155WithSign(chainId),
               description,
@@ -76,8 +76,8 @@ export const createNft = createSmartAction(
               itemsymbol: 'BOUNCE',
               owneraddress: address,
               ownername: 'foobar',
-              standard: standard === NftStandard.ERC721 ? 1 : 2,
-              supply: standard === NftStandard.ERC721 ? 1 : supply, // is supply an integer?
+              standard: standard === NftType.ERC721 ? 1 : 2,
+              supply: standard === NftType.ERC721 ? 1 : supply, // is supply an integer?
             };
 
             const { data: addItemData } = await store.dispatchRequest(
@@ -88,7 +88,7 @@ export const createNft = createSmartAction(
               throw new Error("Item hasn't been added");
             }
 
-            if (standard === NftStandard.ERC721) {
+            if (standard === NftType.ERC721) {
               return await new Promise((resolve, reject) => {
                 const ContractBounceERC721WithSign = new web3.eth.Contract(
                   (BounceERC721WithSign.abi as unknown) as AbiItem,

@@ -17,7 +17,7 @@ import {
   Channel,
   createNft,
   ICreateNFTPayload,
-  NftStandard,
+  NftType,
 } from '../../actions/createNft';
 
 const MAX_SIZE: Bytes = 31457280;
@@ -33,7 +33,7 @@ const validateCreateNFT = (payload: ICreateNFTPayload) => {
     errors.description = t('validation.required');
   }
 
-  if (payload.standard === NftStandard.ERC1155) {
+  if (payload.standard === NftType.ERC1155) {
     if (!payload.supply) {
       errors.supply = t('validation.required');
     }
@@ -87,12 +87,12 @@ export const CreateNFT = () => {
   const standardOptions = useMemo(
     () => [
       {
-        label: t(`create-nft.standardOption.${NftStandard.ERC721}`),
-        value: NftStandard.ERC721,
+        label: t(`create-nft.standardOption.${NftType.ERC721}`),
+        value: NftType.ERC721,
       },
       {
-        label: t(`create-nft.standardOption.${NftStandard.ERC1155}`),
-        value: NftStandard.ERC1155,
+        label: t(`create-nft.standardOption.${NftType.ERC1155}`),
+        value: NftType.ERC1155,
       },
     ],
     [],
@@ -158,7 +158,7 @@ export const CreateNFT = () => {
               options={standardOptions}
             />
           </Box>
-          {values.standard === NftStandard.ERC1155 && (
+          {values.standard === NftType.ERC1155 && (
             <Box mb={5}>
               <Field
                 component={InputField}
@@ -175,9 +175,7 @@ export const CreateNFT = () => {
             <Mutation type={createNft.toString()}>
               {({ loading }) => (
                 <Button size="large" type="submit" fullWidth disabled={loading}>
-                  {loading
-                    ? t('common.submitting')
-                    : t('create-nft.submit')}
+                  {loading ? t('common.submitting') : t('create-nft.submit')}
                 </Button>
               )}
             </Mutation>
@@ -203,7 +201,7 @@ export const CreateNFT = () => {
             validate={validateCreateNFT}
             initialValues={{
               channel: Channel.FineArts,
-              standard: NftStandard.ERC721,
+              standard: NftType.ERC721,
             }}
           />
         </Box>

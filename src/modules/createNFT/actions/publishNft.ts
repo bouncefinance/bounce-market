@@ -10,7 +10,7 @@ import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
 import BounceERC721WithSign from '../contracts/BounceERC721WithSign.json';
 import BounceERC1155WithSign from '../contracts/BounceERC1155WithSign.json';
 import BounceEnglishAuctionNFT from '../contracts/BounceEnglishAuctionNFT.json';
-import { NftStandard } from './createNft';
+import { NftType } from './createNft';
 import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
@@ -48,7 +48,7 @@ type IPublishNftPayload =
       name: string;
       tokenContract: string;
       unitContract: string;
-      standard: NftStandard;
+      standard: NftType;
       tokenId: number;
       price: BigNumber;
       quantity: number;
@@ -63,7 +63,7 @@ type IPublishNftPayload =
       name: string;
       tokenContract: string;
       unitContract: string;
-      standard: NftStandard;
+      standard: NftType;
       tokenId: number;
       quantity: number;
     };
@@ -119,7 +119,7 @@ export const publishNft = createSmartAction<
                 quantity,
               } = payload;
 
-              if (standard === NftStandard.ERC721) {
+              if (standard === NftType.ERC721) {
                 // TODO Has approve
                 await ContractBounceERC721WithSign.methods
                   .approve(getFixedSwapContract(chainId), tokenId)
@@ -194,7 +194,7 @@ export const publishNft = createSmartAction<
                 getEnglishAuctionNFT(chainId),
               );
 
-              if (standard === NftStandard.ERC721) {
+              if (standard === NftType.ERC721) {
                 await ContractBounceERC721WithSign.methods
                   .approve(getEnglishAuctionNFT(chainId), tokenId)
                   .send({ from: address });

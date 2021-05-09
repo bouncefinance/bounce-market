@@ -1,4 +1,4 @@
-import { Channel, NftStandard } from '../../createNFT/actions/createNft';
+import { Channel, NftType } from '../../createNFT/actions/createNft';
 
 export interface IApiNFTDetails {
   code: number;
@@ -21,7 +21,7 @@ export interface IApiNFTDetails {
     popularweight: number;
     price: string;
     properties: string;
-    standard: NftStandard;
+    standard: NftType;
     stats: string;
     status: number;
     supply: number;
@@ -49,7 +49,7 @@ export interface INFTDetails {
   popularweight: number;
   price: string;
   properties: string;
-  standard: NftStandard;
+  standard: NftType;
   stats: string;
   status: number;
   supply: number;

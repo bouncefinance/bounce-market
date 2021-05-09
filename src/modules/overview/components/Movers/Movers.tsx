@@ -29,7 +29,7 @@ SwiperCore.use([Lazy, Navigation]);
 const prevId = getRandomId('prev');
 const nextId = getRandomId('next');
 
-type ProductProps = Omit<IProductCardProps, 'ImgProps'> & {
+export type ProductProps = Omit<IProductCardProps, 'ImgProps'> & {
   img: string;
 };
 

@@ -36,7 +36,7 @@ export const fetchItemsByFilter = createSmartAction<
       }
       return data.data
         .map(mapItem)
-        .filter(item => item.fileurl && item.itemname !== EXCLUDED_NAME);
+        .filter(item => item.fileUrl && item.itemName !== EXCLUDED_NAME);
     },
     ...meta,
   },
