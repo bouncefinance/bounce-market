@@ -10,6 +10,10 @@
     "connect": "Connect Wallet"
   },
   "connect-wallet": {
+    "placeholder": {
+      "title": "Connect your wallet",
+      "description": "The content of this page is only available with the connected wallet"
+    },
     "custom-binancewallet": {
       "name": "Binance Chain",
       "description": "Binance Chain & Smart Chain Wallet"
