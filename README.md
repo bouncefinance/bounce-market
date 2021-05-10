@@ -30,7 +30,7 @@
     	defaule: 'image'
     	value: ""
     },
-    "channel":{		// channel（Fine Arts, sports, Comic Books...）
+    "channel":{		// channel（FineArts, sports, Comic Books...）
     	type: String,
     	require: true,
     	defaule: 'Fine Arts'
@@ -340,7 +340,7 @@ const params = {
     "accountaddress": account,
     "ids": [10086, 10010],
     "category": "Image",	// optional
-  	"channel": "Fine Arts",		// optional
+  	"channel": "FineArts",		// optional
 }
 
 const result = {

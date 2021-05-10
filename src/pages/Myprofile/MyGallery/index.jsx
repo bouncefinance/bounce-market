@@ -247,6 +247,7 @@ export default function Index() {
           setItemList(result);
           setStatusList(result);
           setLoading(false)
+          window.localStorage.setItem('record_soldOutNft', null)
         }
       })
       .catch((err) => {

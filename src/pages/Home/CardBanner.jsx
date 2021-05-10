@@ -56,7 +56,7 @@ export default function CardBannerGroup() {
                 <div style={{ opacity: 0.5, cursor: 'pointer' }}>
                     <CardBannerItem
                         title='Point-2-Point'
-                        context='Fine Arts, Comics, Sports and others. You can find your content here according to your taste of brands'
+                        context='FineArts, Comics, Sports and others. You can find your content here according to your taste of brands'
                         img={banner_3}
                     />
                 </div>

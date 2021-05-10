@@ -50,7 +50,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
     const [fileData, setFileData] = useState(null)
     const [formData, setFormData] = useState({
         Category: 'image',
-        Channel: 'Fine Arts',
+        Channel: 'FineArts',
         Supply: 1
     })
     const [fileOrigin, setFileOrigin] = useState(null)
@@ -230,12 +230,12 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                     
 
                     <PullRadioBox title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Channel')} marginTop='24px' width='150px' options={[{
-                        value: 'Fine Arts'
+                        value: 'FineArts'
                     }, {
                         value: 'Sports'
                     }, {
                         value: 'Conicbooks'
-                    }]} defaultValue={defaultValue === 'Fine Arts'} inputDisable={inputDisable} onChange={(item) => {
+                    }]} defaultValue={defaultValue === 'FineArts'} inputDisable={inputDisable} onChange={(item) => {
                         setFormData({ ...formData, Channel: item.value })
                     }} />
 
