@@ -31,7 +31,7 @@ import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
 import { AuctionType } from '../../../overview/api/auctionType';
-import { NftStandard } from '../../actions/createNft';
+import { NftType } from '../../actions/createNft';
 import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
@@ -89,7 +89,7 @@ const formatAmount = (value: string) => (value ? `${Math.round(+value)}` : '1');
 interface IPublishNFTComponentProps {
   name: string;
   tokenContract: string;
-  standard: NftStandard;
+  standard: NftType;
   tokenId: number;
   img?: string;
 }

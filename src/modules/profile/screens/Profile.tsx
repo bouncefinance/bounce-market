@@ -235,7 +235,7 @@ export const Profile = () => {
                     <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
                       <ProductCard
                         key={uid(item)}
-                        title={item.itemname}
+                        title={item.itemName}
                         href={DetailsNFTRoutesConfig.DetailsNFT.generatePath(
                           item.contractaddress,
                           item.id,
@@ -245,7 +245,7 @@ export const Profile = () => {
                         price={item.poolId ? new BigNumber(10) : undefined}
                         copies={'1'}
                         ImgProps={{
-                          src: item.fileurl,
+                          src: item.fileUrl,
                           objectFit: 'scale-down',
                           loading: 'lazy',
                         }}
@@ -261,7 +261,7 @@ export const Profile = () => {
                           ],
                         }}
                         toSale={RoutesConfiguration.PublishNft.generatePath(
-                          item.contractaddress,
+                          item.contractAddress,
                           item.id,
                         )}
                       />
