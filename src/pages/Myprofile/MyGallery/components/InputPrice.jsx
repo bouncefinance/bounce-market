@@ -13,7 +13,7 @@ import useWrapperIntl from '@/locales/useWrapperIntl'
 // import { equalAddress } from "@/utils/compareFun";
 
 
-function InputPrice({
+function InputPrice ({
 	className,
 	title,
 	price,

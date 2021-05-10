@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import { AutoStretchBaseWidthOrHeightImg } from '../Other/autoStretchBaseWidthOrHeightImg';
 import icon_search from './assets/search.svg'
-import { useQuery } from '@apollo/client';
-import { QueryTradePools } from '@/utils/apollo'
+// import { useQuery } from '@apollo/client';
+// import { QueryTradePools } from '@/utils/apollo'
 import { AUCTION_TYPE } from '@/utils/const'
 import useToken from '@/utils/useToken';
 /* import useWrapperIntl from '@/locales/useWrapperIntl'; */
@@ -17,13 +17,14 @@ import useToken from '@/utils/useToken';
 let search = ''
 let inputTarget
 let poolsDataRes = []
-export default function Search({ placeholder, value, onChange }) {
-    const { sign_Axios } = useAxios()
+export default function Search ({ placeholder, value, onChange }) {
+    const { sign_Axios, axios } = useAxios()
     const { getPriceByToken1, queryPrice } = useToken()
     const [inSearch, setInSearch] = useState('')
     const [searchLoding, setSearchLoding] = useState(!false)
     const [data, setdata] = useState({})
-    const poolDataRes = useQuery(QueryTradePools)
+    const [tradeData, setTradeData] = useState()
+    // const poolDataRes = useQuery(QueryTradePools)
     /* const {wrapperIntl} = useWrapperIntl() */
     const handleChange = (e) => {
         inputTarget = e.target
@@ -33,7 +34,7 @@ export default function Search({ placeholder, value, onChange }) {
     const onInput = (e) => {
         // console.log(e.target.value)
         handleChange(e)
-        onSearch()
+        // onSearch()
     }
     const onSearch = async () => {
         // console.log('---search--', search)
@@ -52,7 +53,7 @@ export default function Search({ placeholder, value, onChange }) {
                 const data = res.data.data
                 // <tokenId, pool>
                 let map = new Map()
-                const pools = getPools()
+                const pools =await getPools()
                 for (let item of data.items) {
                     map.set(item.id, item)
                 }
@@ -82,7 +83,6 @@ export default function Search({ placeholder, value, onChange }) {
                     item.pool = { ...pool, ...await getPriceByToken1(price, token1) }
                     item.pool = { ...item.pool, usdtPrice: parseFloat(await queryPrice(item.pool.price) * item.pool.price).toFixed(2) }
                 }
-                console.log('data')
                 console.log(data)
                 setdata(data)
                 setSearchLoding(false)
@@ -108,9 +108,10 @@ export default function Search({ placeholder, value, onChange }) {
         onSearch()
     }
 
-    const getPools = () => {        
+
+
+    const getPools = async () => {
         const data = poolsDataRes // poolDataRes.data
-        // console.log('poolData', data)
         const tradePools = data.tradePools.map((item) => ({
             ...item,
             poolType: AUCTION_TYPE.FixedSwap
@@ -126,18 +127,31 @@ export default function Search({ placeholder, value, onChange }) {
     }
     const debounceFilter = useDebouncedValue(search, DEBOUNCE);
 
-    // useEffect(() => {
-    //     // if (!loading) return
-    //     console.log('poolData', poolData)
-    //  }, [loading])
 
     useEffect(() => {
         onChange && onChange(debounceFilter);
         // eslint-disable-next-line
     }, [debounceFilter])
+
+    const initTradeData = async () => {
+        const res = await axios.get('/pools', { params: { offset: 0, count: 1000 } })
+        if (res.data.code === 200) {
+            return setTradeData(res.data.data)
+        }
+        setTradeData({
+            tradePools: [],
+            tradeAuctions: []
+        })
+    }
+
     useEffect(() => {
-        if (poolDataRes.loading) return
-        poolsDataRes = poolDataRes.data
+        initTradeData()
+        // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+        if (!tradeData) return
+        poolsDataRes = tradeData
         search = ''
         const onEnter = (function (e) {
             var event = e || window.event;
@@ -153,7 +167,7 @@ export default function Search({ placeholder, value, onChange }) {
             document.removeEventListener('click', onItem)
         }
         // eslint-disable-next-line
-    }, [poolDataRes, poolDataRes.loading])
+    }, [tradeData])
 
     useEffect(() => {
         poolsDataRes = []
@@ -189,7 +203,7 @@ export default function Search({ placeholder, value, onChange }) {
                 {searchLoding ? <Loding /> : data.brands?.length > 0 && <>
                     <div className="search-result-title">Brands</div>
                     <div className="row-box">
-                        {data.brands?.map((item, key) => <Link key={key} onClick={() => onItem()} to={`/AirHome/${item.id}/${item.standard}/FineArts`} className="search-result-brands-row flex flex-center-y">
+                        {data.brands?.map((item, key) => <Link key={key} onClick={() => onItem()} to={`/AirHome/${item.id}/FineArts`} className="search-result-brands-row flex flex-center-y">
                             <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl} />
                             <div className="brand-name">{item.brandname}</div>
                         </Link>)}
@@ -200,7 +214,7 @@ export default function Search({ placeholder, value, onChange }) {
                     <div className="search-result-title">Users</div>
                     <div className="row-box">
                         {data.account?.map((item, key) => <Link key={key} onClick={() => onItem()} style={item?.hasBrand ? { opacity: '1' } : { opacity: '0.5', cursor: 'default' }} to={item?.hasBrand ? `/AirHome/${item.brandId}/FineArts` : void 0} className="search-result-users-row flex">
-                            <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl } />
+                            <AutoStretchBaseWidthOrHeightImg style={{ borderRadius: '50%', overflow: 'hidden' }} width={41} height={41} src={item.imgurl} />
                             <div className="row-right">
                                 <p className="user-name">{item.username}</p>
                                 <p>
@@ -219,7 +233,7 @@ export default function Search({ placeholder, value, onChange }) {
 
 const Loding = () => {
     return <>
-        <Skeleton style={{marginTop: 10}} variant="rect" width={210} height={118} />
+        <Skeleton style={{ marginTop: 10 }} variant="rect" width={210} height={118} />
     </>
 }
 const DataNull = () => {
