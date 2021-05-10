@@ -79,6 +79,7 @@ export default function useAxios() {
         }
     }
 
+    /** 带有签名请求的 Axios post */
     const sign_Axios_Post = async (path, params, option = {
         appendAccount: true,    // 是否给每个参数追加 account
         config: {}
@@ -142,6 +143,7 @@ export default function useAxios() {
         return res
     }
 
+    /** 带有签名请求的 Axios get */
     const sign_Axios_Get = async (path, params) => {
 
 
