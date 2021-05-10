@@ -1,41 +1,94 @@
 import { Avatar } from '@material-ui/core';
 import classNames from 'classnames';
+import { FocusOn } from 'react-focus-on';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { convertWallet } from 'modules/common/utils/convertWallet';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Button } from 'modules/uiKit/Button';
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useRef } from 'react';
 import { useWalletStyles } from './useWalletStyles';
+import { WalletCard } from '../WalletCard';
+import bnbLogo from 'modules/account/assets/bnb.svg'; // TODO: need provide logo from API?
+import { useIsXLUp } from 'modules/themes/useTheme';
+import { useWalletDropdown } from './useWalletDropdown';
 
 interface IWalletProps {
-  className?: string;
   address?: string;
   img?: string;
 }
 
-export const WalletComponent = ({
-  className,
-  address = '',
-  img,
-}: IWalletProps) => {
+// TODO: replace with real data
+const walletCardData = {
+  name: 'Nick',
+  currency: 'BNB',
+  balance: 1000.34,
+  logo: bnbLogo,
+};
+
+const { name, currency, logo, balance } = walletCardData;
+
+export const WalletComponent = ({ address = '', img }: IWalletProps) => {
   const classes = useWalletStyles();
+  const isXLUp = useIsXLUp();
+
+  const { isOpened, handleClose, handleOpen } = useWalletDropdown();
+
+  const controlRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <Button
-      className={classNames(classes.root, className)}
-      component={RouterLink}
-      to={ProfileRoutesConfig.UserProfile.generatePath()}
-      rounded
-    >
-      {convertWallet(address)}
-      <Avatar src={img} className={classes.walletLogo} />
-    </Button>
+    <>
+      {isXLUp ? (
+        <>
+          <Button
+            className={classes.accountBtn}
+            onClick={handleOpen}
+            ref={controlRef}
+            rounded
+          >
+            {convertWallet(address)}
+            <Avatar src={img} className={classes.walletLogo} />
+          </Button>
+          <FocusOn
+            enabled={isOpened}
+            onEscapeKey={handleClose}
+            onClickOutside={handleClose}
+            focusLock={true}
+            scrollLock={false}
+            shards={[controlRef]}
+          >
+            <div
+              className={classNames(
+                classes.dropdown,
+                isOpened && classes.dropdownActive,
+              )}
+            >
+              <WalletCard
+                address={address}
+                name={name}
+                currency={currency}
+                logo={logo}
+                balance={balance}
+                handleClose={handleClose}
+              />
+            </div>
+          </FocusOn>
+        </>
+      ) : (
+        <>
+          <WalletCard
+            address={address}
+            name={name}
+            currency={currency}
+            logo={logo}
+            balance={balance}
+          />
+        </>
+      )}
+    </>
   );
 };
 
-export const Wallet = ({ className }: Pick<IWalletProps, 'className'>) => {
+export const Wallet = () => {
   const { address } = useAccount();
 
-  return <WalletComponent address={address} className={className} />;
+  return <WalletComponent address={address} />;
 };
