@@ -237,7 +237,7 @@ export const Profile = () => {
                         key={uid(item)}
                         title={item.itemName}
                         href={DetailsNFTRoutesConfig.DetailsNFT.generatePath(
-                          item.contractaddress,
+                          item.contractAddress,
                           item.id,
                         )}
                         // status={item.status}
