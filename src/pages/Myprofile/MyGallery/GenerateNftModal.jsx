@@ -202,7 +202,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
                     const _amount = formData.Supply
                     const _data = 0
-                    // console.log(_nftId, _amount, _data, _sign,_expiredtime)
+                    console.log(_nftId, _amount, _data, _sign,_expiredtime)
                     try {
                         BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign, _expiredtime).send({ from: account })
                             .on('transactionHash', hash => {
