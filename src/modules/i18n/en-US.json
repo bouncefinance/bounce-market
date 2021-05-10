@@ -133,6 +133,8 @@
     "title": "Put on sale",
     "submit": "Put on Sale",
     "submitting": "Submitting",
+    "fee": "Fangible fee {value}%",
+    "recieve": "You will receive",
     "expire": "Will expire on {value, date, medium} {value, time, short}",
     "auction-amount": "In the auction you can only put up 1 copy for sale",
     "auction-type": {
@@ -151,6 +153,7 @@
     },
     "tooltip": {
       "directPurchase": "TODO Direct purchase price description",
+      "reservePrice": "TODO Reserve price description",
       "duration": "TODO Expiration Date description"
     }
   },

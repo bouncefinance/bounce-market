@@ -7,6 +7,7 @@ import {
   InputAdornment,
   InputLabel,
   Paper,
+  Switch,
   Tooltip,
   Typography,
   useTheme,
@@ -16,7 +17,7 @@ import BigNumber from 'bignumber.js';
 import { add } from 'date-fns';
 import { Img } from 'modules/uiKit/Img';
 import { Section } from 'modules/uiKit/Section';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useParams } from 'react-router';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
@@ -63,27 +64,6 @@ interface IPublishEnglishAuction {
 
 type IPublishNFTFormData = IPublishFixedSwap | IPublishEnglishAuction;
 
-const validateCreateNFT = (payload: IPublishNFTFormData) => {
-  const errors: FormErrors<IPublishNFTFormData> = {};
-  // name max length is 30
-
-  if (!payload.amount) {
-    errors.amount = t('validation.required');
-  } else if (+payload.amount < MIN_AMOUNT) {
-    errors.amount = t('validation.min', { value: MIN_AMOUNT - 1 });
-  }
-
-  if (payload.type === AuctionType.FixedSwap) {
-    if (!payload.price) {
-      (errors as any).price = t('validation.required');
-    } else if (+payload.price <= 0) {
-      (errors as any).price = t('validation.min', { value: 0 });
-    }
-  }
-
-  return errors;
-};
-
 const formatAmount = (value: string) => (value ? `${Math.round(+value)}` : '1');
 
 interface IPublishNFTComponentProps {
@@ -104,6 +84,16 @@ export const PublishNFTComponent = ({
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
   const theme = useTheme();
+  const [purchasePriceChecked, setPurchasePriceChecked] = useState(false);
+  const [reservePriceChecked, setReservePriceChecked] = useState(false);
+
+  const togglePurchasePriceChecked = () => {
+    setPurchasePriceChecked(prev => !prev);
+  };
+
+  const toggleReservePriceChecked = () => {
+    setReservePriceChecked(prev => !prev);
+  };
 
   const options = useMemo(
     () => [
@@ -123,6 +113,51 @@ export const PublishNFTComponent = ({
     options: currencyOptions,
     default: defaultCurrency,
   } = useCurrencies();
+
+  const validateCreateNFT = useCallback(
+    (payload: IPublishNFTFormData) => {
+      const errors: FormErrors<IPublishNFTFormData> = {};
+
+      if (!payload.amount) {
+        errors.amount = t('validation.required');
+      } else if (+payload.amount < MIN_AMOUNT) {
+        errors.amount = t('validation.min', { value: MIN_AMOUNT - 1 });
+      }
+
+      if (payload.type === AuctionType.FixedSwap) {
+        if (!payload.price) {
+          (errors as any).price = t('validation.required');
+        } else if (+payload.price <= 0) {
+          (errors as any).price = t('validation.min', { value: 0 });
+        }
+      } else {
+        if (!payload.minBid) {
+          (errors as any).minBid = t('validation.required');
+        } else if (+payload.minBid <= 0) {
+          (errors as any).minBid = t('validation.min', { value: 0 });
+        }
+
+        if (purchasePriceChecked) {
+          if (!payload.purchasePrice) {
+            (errors as any).purchasePrice = t('validation.required');
+          } else if (+payload.purchasePrice <= 0) {
+            (errors as any).purchasePrice = t('validation.min', { value: 0 });
+          }
+        }
+
+        if (reservePriceChecked) {
+          if (!payload.reservePrice) {
+            (errors as any).reservePrice = t('validation.required');
+          } else if (+payload.reservePrice <= 0) {
+            (errors as any).reservePrice = t('validation.min', { value: 0 });
+          }
+        }
+      }
+
+      return errors;
+    },
+    [purchasePriceChecked, reservePriceChecked],
+  );
 
   const durationOptions = useMemo(
     () => [
@@ -203,8 +238,6 @@ export const PublishNFTComponent = ({
       o => o.value === values.unitContract,
     )?.label;
 
-    console.log(values);
-
     const reciveValue =
       values.type === AuctionType.FixedSwap
         ? new BigNumber((+values.price * (100 - FEE_PERCENTAGE)) / 100)
@@ -270,12 +303,12 @@ export const PublishNFTComponent = ({
                 <Box className={classes.fieldText}>
                   <Grid container spacing={3}>
                     <Grid item xs>
-                      Fangible fee {FEE_PERCENTAGE}%
+                      {t('publish-nft.fee', { value: FEE_PERCENTAGE })}
                     </Grid>
 
                     {values.price && +values.price > 0 && (
                       <Grid item>
-                        You will receive{' '}
+                        {t('publish-nft.recieve')}{' '}
                         <b>
                           {reciveValue?.decimalPlaces(6).toFormat()}{' '}
                           {currentCryptoCurrencyLabel}
@@ -354,6 +387,9 @@ export const PublishNFTComponent = ({
                 <Field
                   component={SelectField}
                   name="duration"
+                  color="primary"
+                  fullWidth={true}
+                  options={durationOptions}
                   label={
                     <Box display="flex" alignItems="center">
                       {t('publish-nft.label.duration')}
@@ -365,9 +401,6 @@ export const PublishNFTComponent = ({
                       </Tooltip>
                     </Box>
                   }
-                  color="primary"
-                  fullWidth={true}
-                  options={durationOptions}
                 />
 
                 <div className={classes.fieldText}>
@@ -380,66 +413,113 @@ export const PublishNFTComponent = ({
               </Box>
 
               <Box className={classes.formControl}>
-                <Field
-                  component={InputField}
-                  name="purchasePrice"
-                  type="number"
-                  label={
-                    <Box display="flex" alignItems="center">
-                      {t('publish-nft.label.directPurchase')}
+                <Box mb={2.5}>
+                  <Grid container alignItems="center">
+                    <Grid item xs>
+                      <InputLabel shrink className={classes.labelNoMargin}>
+                        <Box display="flex" alignItems="center">
+                          {t('publish-nft.label.directPurchase')}
 
-                      <Tooltip title={t('publish-nft.tooltip.directPurchase')}>
-                        <Box component="i" ml={1}>
-                          <QuestionIcon />
+                          <Tooltip
+                            title={t('publish-nft.tooltip.directPurchase')}
+                          >
+                            <Box component="i" ml={1}>
+                              <QuestionIcon />
+                            </Box>
+                          </Tooltip>
                         </Box>
-                      </Tooltip>
-                    </Box>
-                  }
-                  color="primary"
-                  fullWidth={true}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Field
-                          component={SelectField}
-                          name="unitContract"
-                          color="primary"
-                          fullWidth={true}
-                          options={currencyOptions}
-                          className={classes.currencySelect}
-                        />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+                      </InputLabel>
+                    </Grid>
+
+                    <Grid item>
+                      <Switch
+                        checked={purchasePriceChecked}
+                        onChange={togglePurchasePriceChecked}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+
+                {purchasePriceChecked && (
+                  <Field
+                    component={InputField}
+                    name="purchasePrice"
+                    type="number"
+                    color="primary"
+                    fullWidth={true}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Field
+                            component={SelectField}
+                            name="unitContract"
+                            color="primary"
+                            fullWidth
+                            options={currencyOptions}
+                            className={classes.currencySelect}
+                          />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
               </Box>
 
               <Box className={classes.formControl}>
-                <Field
-                  component={InputField}
-                  name="reservePrice"
-                  type="number"
-                  label={t('publish-nft.label.reservePrice')}
-                  color="primary"
-                  fullWidth={true}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Field
-                          component={SelectField}
-                          name="unitContract"
-                          color="primary"
-                          fullWidth={true}
-                          options={currencyOptions}
-                          className={classes.currencySelect}
-                        />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+                <Box mb={2.5}>
+                  <Grid container alignItems="center">
+                    <Grid item xs>
+                      <InputLabel shrink className={classes.labelNoMargin}>
+                        <Box display="flex" alignItems="center">
+                          {t('publish-nft.label.reservePrice')}
+
+                          <Tooltip
+                            title={t('publish-nft.tooltip.reservePrice')}
+                          >
+                            <Box component="i" ml={1}>
+                              <QuestionIcon />
+                            </Box>
+                          </Tooltip>
+                        </Box>
+                      </InputLabel>
+                    </Grid>
+
+                    <Grid item>
+                      <Switch
+                        checked={reservePriceChecked}
+                        onChange={toggleReservePriceChecked}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+
+                {reservePriceChecked && (
+                  <Field
+                    component={InputField}
+                    name="reservePrice"
+                    type="number"
+                    color="primary"
+                    fullWidth={true}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Field
+                            component={SelectField}
+                            name="unitContract"
+                            color="primary"
+                            fullWidth={true}
+                            options={currencyOptions}
+                            className={classes.currencySelect}
+                          />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
               </Box>
             </>
           )}
+
           <Box>
             <Mutation type={publishNft.toString()}>
               {({ loading }) => (
