@@ -3,11 +3,19 @@
     "load-more": "Load more",
     "read-more": "read more",
     "view-all": "View all",
-    "submitting": "Submitting"
+    "submitting": "Submitting",
+    "copy-to-clipboard": "Copy to clipboard",
+    "copied": "Copied!"
   },
   "header": {
     "create": "Create",
-    "connect": "Connect Wallet"
+    "connect": "Connect Wallet",
+    "inventory": "My Inventory",
+    "profile-settings": "Profile settings",
+    "disconnect": "Disconnect"
+  },
+  "wallet": {
+    "unit": "{value, number} {unit}"
   },
   "connect-wallet": {
     "placeholder": {
