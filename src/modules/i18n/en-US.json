@@ -71,8 +71,8 @@
       "Comics": "Comicbooks"
     },
     "standardOption": {
-      "1": "ERC-721",
-      "2": "ERC-1155"
+      "0": "ERC-721",
+      "1": "ERC-1155"
     },
     "validation": {
       "max-size": "Max size is {value, number}MB"
