@@ -18,10 +18,10 @@ export const useConnectWalletStyles = makeStyles<Theme>(theme => ({
   text: {
     fontSize: 16,
     margin: theme.spacing(2, 'auto', 3),
-    maxWidth: 320
+    maxWidth: 320,
   },
   connectBtn: {
     fontSize: 16,
-    minHeight: 60
-  }
+    minHeight: 60,
+  },
 }));

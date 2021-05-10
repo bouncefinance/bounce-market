@@ -13,10 +13,5 @@ export const PrivateRoute = (props: IPrivateRouteProps) => {
   }
 
   // TODO Update placeholder https://ankrnetwork.atlassian.net/browse/FD-3422
-  return (
-    <Route
-      {...props}
-      component={ConnectWallet}
-    />
-  );
+  return <Route {...props} component={ConnectWallet} />;
 };

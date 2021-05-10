@@ -40,11 +40,7 @@ export const TabBrands = ({ items }: ITabBrandsProps) => {
   return (
     <>
       {items && (
-        <Grid
-          container
-          spacing={4}
-          className={classes.root}
-        >
+        <Grid container spacing={4} className={classes.root}>
           {renderedBrands}
           {renderEmpty}
         </Grid>

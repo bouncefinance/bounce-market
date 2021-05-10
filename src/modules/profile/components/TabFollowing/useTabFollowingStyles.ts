@@ -4,19 +4,24 @@ export const useTabFollowingStyles = makeStyles<Theme>(theme => ({
   root: {},
 
   item: {
-    display: 'flex',
+    display: 'grid',
     alignItems: 'center',
-    flexWrap: 'wrap',
+
     padding: theme.spacing(3, 0),
     borderBottomWidth: 1,
     borderBottomStyle: 'solid',
     borderBottomColor: fade(theme.palette.text.primary, 0.1),
+
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: '1fr auto',
+    },
   },
 
   itemContentWrap: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+
     [theme.breakpoints.up('sm')]: {
       justifyContent: 'start',
     },
@@ -52,6 +57,7 @@ export const useTabFollowingStyles = makeStyles<Theme>(theme => ({
   itemFollowWrap: {
     marginTop: theme.spacing(2),
     textAlign: 'center',
+
     [theme.breakpoints.up('sm')]: {
       marginTop: 0,
       textAlign: 'right',

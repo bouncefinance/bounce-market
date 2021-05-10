@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
-import { uid } from 'react-uid';
-import { Link } from 'react-router-dom';
-import { useTabFollowingStyles } from './useTabFollowingStyles';
-import { Avatar, Box, Grid, Typography } from '@material-ui/core';
+import { Avatar, Box, Typography } from '@material-ui/core';
 import { UserIcon } from 'modules/common/components/Icons/UserIcon';
-import { Button } from 'modules/uiKit/Button';
 import { t } from 'modules/i18n/utils/intl';
+import { Button } from 'modules/uiKit/Button';
+import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { uid } from 'react-uid';
+import { useTabFollowingStyles } from './useTabFollowingStyles';
 
 export interface IFollowingItemProps {
   userName: string;
@@ -26,8 +26,8 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
   const renderListItems = useMemo(
     () =>
       items?.map(item => (
-        <Grid item xs={12} className={classes.item} key={uid(item)}>
-          <Grid item xs={12} sm={8} lg={9} className={classes.itemContentWrap}>
+        <div className={classes.item} key={uid(item)}>
+          <div className={classes.itemContentWrap}>
             <Link to={item.href} className={classes.itemAvatarLink}>
               <Avatar
                 alt={item.userName}
@@ -35,35 +35,38 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
                 className={classes.itemAvatar}
               />
             </Link>
+
             <Box className={classes.itemContent}>
               <Link to={item.href} className={classes.itemUserNameLink}>
                 <Typography
-                  variant='h5'
+                  variant="h5"
                   className={classes.itemName}
                   title={item.userName}
                 >
                   {item.userName}
                 </Typography>
+
                 {item.userFollowers ? (
                   <Typography
-                    color='textSecondary'
-                    variant='body2'
+                    color="textSecondary"
+                    variant="body2"
                     className={classes.userFollowers}
                   >
                     <UserIcon className={classes.userFollowersIcon} />
+
                     {item.userFollowers}
                   </Typography>
                 ) : null}
               </Link>
             </Box>
-          </Grid>
-          <Grid item xs={12} sm={4} lg={3} className={classes.itemFollowWrap}>
+          </div>
+
+          <div className={classes.itemFollowWrap}>
             {item.follow ? (
               <Button
-                onClick={() => {
-                }}
+                onClick={() => {}}
                 className={classes.followButton}
-                variant='outlined'
+                variant="outlined"
                 fullWidth={false}
                 rounded
               >
@@ -71,29 +74,20 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
               </Button>
             ) : (
               <Button
-                onClick={() => {
-                }}
+                onClick={() => {}}
                 className={classes.followButton}
-                variant='outlined'
+                variant="outlined"
                 fullWidth={false}
                 rounded
               >
                 {t('profile.follow')}
               </Button>
             )}
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       )),
     [items, classes],
   );
 
-  return (
-    <Grid
-      container
-      spacing={0}
-      className={classes.root}
-    >
-      {renderListItems}
-    </Grid>
-  );
+  return <div className={classes.root}>{renderListItems}</div>;
 };

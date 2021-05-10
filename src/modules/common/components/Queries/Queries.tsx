@@ -1,3 +1,4 @@
+import { Box } from '@material-ui/core';
 import { getQuery, QueryState, RequestAction } from '@redux-requests/core';
 import React, { ReactNode } from 'react';
 import { useAppSelector } from '../../../../store/useAppSelector';
@@ -49,7 +50,11 @@ export function Queries<T1 = void, T2 = void, T3 = void, T4 = void, T5 = void>({
   );
 
   if (isLoading(queries)) {
-    return <QueryLoadingCentered />;
+    return (
+      <Box py={5} position="relative" width="100%">
+        <QueryLoadingCentered />
+      </Box>
+    );
   }
 
   const error = hasError(queries);

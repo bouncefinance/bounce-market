@@ -13,9 +13,13 @@ export const ConnectWallet = () => {
 
   return (
     <Section className={classes.root}>
-      <Container maxWidth='sm'>
-        <Typography variant='h1' className={classes.caption}>{t('connect-wallet.placeholder.title')}</Typography>
-        <Typography variant='body1' className={classes.text}>{t('connect-wallet.placeholder.description')}</Typography>
+      <Container maxWidth="sm">
+        <Typography variant="h1" className={classes.caption}>
+          {t('connect-wallet.placeholder.title')}
+        </Typography>
+        <Typography variant="body1" className={classes.text}>
+          {t('connect-wallet.placeholder.description')}
+        </Typography>
         <Button
           onClick={handleConnect}
           disabled={loading}

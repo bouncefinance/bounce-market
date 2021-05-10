@@ -61,45 +61,45 @@ export const EditProfile = () => {
 
   const renderForm = ({ handleSubmit }: FormRenderProps<IEditProfile>) => {
     return (
-      <Box component='form' onSubmit={handleSubmit}>
+      <Box component="form" onSubmit={handleSubmit}>
         <Box mb={5}>
           <Field
             component={InputField}
-            name='username'
-            type='text'
+            name="username"
+            type="text"
             label={t('profile.edit.label.username')}
-            color='primary'
+            color="primary"
             fullWidth={true}
           />
         </Box>
         <Box mb={5}>
           <Field
             component={InputField}
-            name='email'
-            type='text'
-            inputMode='email'
+            name="email"
+            type="text"
+            inputMode="email"
             label={t('profile.edit.label.email')}
-            color='primary'
+            color="primary"
             fullWidth={true}
           />
         </Box>
         <Box mb={5}>
           <Field
             component={InputField}
-            name='customUrl'
-            type='text'
+            name="customUrl"
+            type="text"
             label={t('profile.edit.label.custom-url')}
-            color='primary'
+            color="primary"
             fullWidth={true}
           />
         </Box>
         <Box mb={5}>
           <Field
             component={InputField}
-            name='bio'
-            type='text'
+            name="bio"
+            type="text"
             label={t('profile.edit.label.bio')}
-            color='primary'
+            color="primary"
             fullWidth={true}
             rowsMax={10}
             multiline
@@ -112,44 +112,44 @@ export const EditProfile = () => {
         <Box mb={5}>
           <Field
             component={InputField}
-            name='website'
-            type='text'
-            inputMode='url'
+            name="website"
+            type="text"
+            inputMode="url"
             label={t('profile.edit.label.website')}
-            color='primary'
+            color="primary"
             fullWidth={true}
           />
         </Box>
         <Box mb={5}>
           <Field
             component={InputField}
-            name='instagram'
-            type='text'
+            name="instagram"
+            type="text"
             label={t('profile.edit.label.instagram')}
             placeholder={t('profile.edit.placeholder.instagram')}
-            color='primary'
+            color="primary"
             fullWidth={true}
           />
         </Box>
         <Box mb={5}>
           <Field
             component={InputField}
-            name='twitter'
-            type='text'
+            name="twitter"
+            type="text"
             label={t('profile.edit.label.twitter')}
             placeholder={t('profile.edit.placeholder.twitter')}
-            color='primary'
+            color="primary"
             fullWidth={true}
           />
         </Box>
         <Box mb={5}>
           <Field
             component={InputField}
-            name='facebook'
-            type='text'
+            name="facebook"
+            type="text"
             label={t('profile.edit.label.facebook')}
             placeholder={t('profile.edit.placeholder.facebook')}
-            color='primary'
+            color="primary"
             fullWidth={true}
           />
         </Box>
@@ -157,7 +157,7 @@ export const EditProfile = () => {
         <Box>
           <Mutation type={editProfile.toString()}>
             {({ loading }) => (
-              <Button size='large' type='submit' fullWidth disabled={loading}>
+              <Button size="large" type="submit" fullWidth disabled={loading}>
                 {loading
                   ? t('common.submitting')
                   : t('profile.edit.save-changes')}
@@ -171,12 +171,12 @@ export const EditProfile = () => {
 
   return (
     <Section>
-      <Container maxWidth='sm'>
+      <Container maxWidth="sm">
         <Box mb={3.5}>
           <GoBack />
         </Box>
         <Box mb={6}>
-          <Typography variant='h1'>{t('profile.user-profile')}</Typography>
+          <Typography variant="h1">{t('profile.user-profile')}</Typography>
         </Box>
         <Box>
           <Form

@@ -6,8 +6,8 @@ export const useInputFieldStyles = makeStyles((theme: Theme) =>
     root: {
       '& > p': {
         marginLeft: 0,
-        marginRight: 0
-      }
-    }
+        marginRight: 0,
+      },
+    },
   }),
 );
