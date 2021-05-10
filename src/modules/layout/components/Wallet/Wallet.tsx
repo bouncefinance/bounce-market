@@ -3,10 +3,8 @@ import classNames from 'classnames';
 import { FocusOn } from 'react-focus-on';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { convertWallet } from 'modules/common/utils/convertWallet';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Button } from 'modules/uiKit/Button';
 import React, { useRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { useWalletStyles } from './useWalletStyles';
 import { WalletCard } from '../WalletCard';
 import bnbLogo from 'modules/account/assets/bnb.svg'; // TODO: need provide logo from API?
@@ -76,16 +74,6 @@ export const WalletComponent = ({ address = '', img }: IWalletProps) => {
         </>
       ) : (
         <>
-          <Button
-            className={classNames(classes.accountBtn, classes.accountBtnMd)}
-            component={RouterLink}
-            to={ProfileRoutesConfig.UserProfile.generatePath()}
-            rounded
-          >
-            {convertWallet(address)}
-            <Avatar src={img} className={classes.walletLogo} />
-          </Button>
-
           <WalletCard
             address={address}
             name={name}
