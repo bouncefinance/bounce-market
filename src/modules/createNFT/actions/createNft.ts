@@ -12,8 +12,8 @@ import { addItem, IAddItemPayload } from './addItem';
 import { uploadFile } from './uploadFile';
 
 export enum NftType {
-  ERC721 = 1,
-  ERC1155 = 2,
+  ERC721,
+  ERC1155,
 }
 
 export enum Channel {
