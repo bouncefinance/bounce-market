@@ -277,7 +277,7 @@ export default function Index() {
 
     
     let ethereum = window.ethereum;
-    ethereum.on("chainChanged", (_chainId) => {
+    ethereum?.on("chainChanged", (_chainId) => {
 		if (_chainId !== 56 || _chainId !== 128) window.location.reload();
 	});
 
