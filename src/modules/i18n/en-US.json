@@ -14,6 +14,9 @@
     "profile-settings": "Profile settings",
     "disconnect": "Disconnect"
   },
+  "wallet": {
+    "unit": "{value, number} {unit}"
+  },
   "connect-wallet": {
     "custom-binancewallet": {
       "name": "Binance Chain",

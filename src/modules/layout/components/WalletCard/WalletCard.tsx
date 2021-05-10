@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useWalletCardStyles } from './WalletCardStyles';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Avatar, Box, IconButton, MenuItem, MenuList, Tooltip, Typography } from '@material-ui/core';
+import {
+  Avatar,
+  Box,
+  IconButton,
+  MenuItem,
+  MenuList,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import { convertWallet } from 'modules/common/utils/convertWallet';
 import { t } from 'modules/i18n/utils/intl';
 import { DoneIcon } from 'modules/common/components/Icons/DoneIcon';
@@ -16,7 +24,7 @@ export interface IWalletCardProps {
   logo?: string;
   currency?: string;
   name?: string;
-  handleClose?: any
+  handleClose?: any;
 }
 
 export const WalletCard = ({
@@ -25,8 +33,8 @@ export const WalletCard = ({
   logo = '',
   currency = '',
   name,
-  handleClose = () => {} }: IWalletCardProps) => {
-
+  handleClose = () => {},
+}: IWalletCardProps) => {
   const classes = useWalletCardStyles();
   const [isCopy, setCopy] = useState<boolean>(false);
 
@@ -41,25 +49,34 @@ export const WalletCard = ({
 
   return (
     <Box className={classes.root}>
-      {name ?
+      {name ? (
         <Box className={classes.row}>
-          <Typography variant='h3' className={classes.name}>
+          <Typography variant="h3" className={classes.name}>
             {name}
           </Typography>
         </Box>
-        : null
-      }
+      ) : null}
 
-      {address ?
+      {address ? (
         <Box className={classes.row}>
-          <Typography variant='body1' className={classes.addressText}>
+          <Typography variant="body1" className={classes.addressText}>
             {convertWallet(address)}
 
             <CopyToClipboard text={address} onCopy={() => setCopy(true)}>
-              <Tooltip title={isCopy ? t('common.copied') : t('common.copy-to-clipboard')} arrow>
+              <Tooltip
+                title={
+                  isCopy ? t('common.copied') : t('common.copy-to-clipboard')
+                }
+                arrow
+              >
                 <IconButton size="small" className={classes.clipboardBtn}>
                   {isCopy ? (
-                    <DoneIcon className={classNames(classes.clipboardBtnIcon, classes.clipboardBtnIconDone)} />
+                    <DoneIcon
+                      className={classNames(
+                        classes.clipboardBtnIcon,
+                        classes.clipboardBtnIconDone,
+                      )}
+                    />
                   ) : (
                     <CopyIcon className={classes.clipboardBtnIcon} />
                   )}
@@ -68,21 +85,19 @@ export const WalletCard = ({
             </CopyToClipboard>
           </Typography>
         </Box>
-        : null
-      }
+      ) : null}
 
-      {balance ?
+      {balance ? (
         <Box className={classes.row}>
           <Box className={classes.walletBalance}>
-            {logo ?
-              <Avatar src={logo} className={classes.walletLogo} />
-              : null
-            }
-            {new Intl.NumberFormat().format(balance)} {currency}
+            {logo ? <Avatar src={logo} className={classes.walletLogo} /> : null}
+            {t('wallet.unit', {
+              value: balance,
+              unit: currency,
+            })}
           </Box>
         </Box>
-        : null
-      }
+      ) : null}
 
       <MenuList className={classes.menuList}>
         <MenuItem
@@ -101,10 +116,7 @@ export const WalletCard = ({
         >
           {t('header.profile-settings')}
         </MenuItem>
-        <MenuItem
-          className={classes.menuItem}
-          onClick={handleClose}
-        >
+        <MenuItem className={classes.menuItem} onClick={handleClose}>
           {t('header.disconnect')}
         </MenuItem>
       </MenuList>
