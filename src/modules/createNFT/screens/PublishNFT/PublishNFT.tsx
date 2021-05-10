@@ -87,13 +87,13 @@ export const PublishNFTComponent = ({
   const [purchasePriceChecked, setPurchasePriceChecked] = useState(false);
   const [reservePriceChecked, setReservePriceChecked] = useState(false);
 
-  const togglePurchasePriceChecked = () => {
+  const togglePurchasePriceChecked = useCallback(() => {
     setPurchasePriceChecked(prev => !prev);
-  };
+  }, []);
 
-  const toggleReservePriceChecked = () => {
+  const toggleReservePriceChecked = useCallback(() => {
     setReservePriceChecked(prev => !prev);
-  };
+  }, []);
 
   const options = useMemo(
     () => [
