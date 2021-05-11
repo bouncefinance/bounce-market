@@ -330,12 +330,12 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                 <div style={{width: '100%', display: 'flex', justifyContent: 'flex-start'}}>
                     {
                         fileData ? 
-                        <Card style={{display: 'flex'}}>
+                        <Card style={{display: 'flex', justifyContent: 'center'}}>
                             <VideoFrame src={videoPath} videoWidth={240} videoHeight={120} onImageChangeCalback={(frameData) => {
                                 setVideoFramePath(frameData);
                             }}/>
                             {videoFramePath?.url && <Image src={videoFramePath.url} width={240} height={120}/>}
-                            <DeleteIcon style={{cursor: 'pointer', color: 'red'}} onClick={() => {
+                            <DeleteIcon style={{cursor: 'pointer'}} onClick={() => {
                                 setVideoFramePath({});
                                 setVideoPath('');
                                 setFileData(null);

@@ -16,6 +16,9 @@ const VideoDebugs = styled.div`
     .debugContainer {
         width: ${props => props.videoWidth || 600}px;
         height: ${props => props.videoHeight || 360}px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
         position:relative;
         .player{
             width: 100%;
@@ -68,10 +71,10 @@ function VideoFrame (props) {
     }
 
     useEffect(() => {
-        videoRef.current.addEventListener('canplay', (e) => {
+        videoRef.current?.addEventListener('canplay', (e) => {
             // videoRef.current.play();
             // videoRef.current.addEventListener('seeked', seekDef)
-            frameControlRef.current.addEventListener('click', debounce((e) => {
+            frameControlRef?.current?.addEventListener('click', debounce((e) => {
                 const indexTabWidth = e.target.clientWidth;
                 const indexTabOffsetX = e.offsetX;
                 const frameRate = indexTabOffsetX / indexTabWidth;
@@ -82,7 +85,7 @@ function VideoFrame (props) {
         // return videoRef.current.removeEventListener('canplay', () => {
 
         // });
-        return frameControlRef.current.removeEventListener('click', () => {
+        return frameControlRef?.current?.removeEventListener('click', () => {
             console.log('event mousemove has removed')
         })
     }, []);
@@ -184,7 +187,7 @@ function VideoFrame (props) {
                     </div>
                     </Grow>
                 }
-                <div className="frameControl" ref={frameControlRef}></div>
+                {/* <div className="frameControl" ref={frameControlRef}></div> */}
             </div>
         </VideoDebugs>
     )
