@@ -169,6 +169,7 @@
     "edit": {
       "label": {
         "username": "Username",
+        "full-name": "Full Name",
         "email": "Email",
         "custom-url": "Custom URL",
         "bio": "Bio",

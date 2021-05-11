@@ -1,32 +1,39 @@
 import { Avatar } from '@material-ui/core';
+import { useQuery } from '@redux-requests/react';
 import classNames from 'classnames';
-import { FocusOn } from 'react-focus-on';
+import bnbLogo from 'modules/account/assets/bnb.svg'; // TODO: need provide logo from API?
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { convertWallet } from 'modules/common/utils/convertWallet';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
+import { useIsXLUp } from 'modules/themes/useTheme';
 import { Button } from 'modules/uiKit/Button';
 import React, { useRef } from 'react';
-import { useWalletStyles } from './useWalletStyles';
+import { FocusOn } from 'react-focus-on';
 import { WalletCard } from '../WalletCard';
-import bnbLogo from 'modules/account/assets/bnb.svg'; // TODO: need provide logo from API?
-import { useIsXLUp } from 'modules/themes/useTheme';
 import { useWalletDropdown } from './useWalletDropdown';
+import { useWalletStyles } from './useWalletStyles';
 
 interface IWalletProps {
   address?: string;
   img?: string;
+  name?: string;
 }
 
 // TODO: replace with real data
 const walletCardData = {
-  name: 'Nick',
   currency: 'BNB',
   balance: 1000.34,
   logo: bnbLogo,
 };
 
-const { name, currency, logo, balance } = walletCardData;
+const { currency, logo, balance } = walletCardData;
 
-export const WalletComponent = ({ address = '', img }: IWalletProps) => {
+export const WalletComponent = ({
+  address = '',
+  img,
+  name = 'Unnamed',
+}: IWalletProps) => {
   const classes = useWalletStyles();
   const isXLUp = useIsXLUp();
 
@@ -47,6 +54,7 @@ export const WalletComponent = ({ address = '', img }: IWalletProps) => {
             {convertWallet(address)}
             <Avatar src={img} className={classes.walletLogo} />
           </Button>
+
           <FocusOn
             enabled={isOpened}
             onEscapeKey={handleClose}
@@ -90,5 +98,15 @@ export const WalletComponent = ({ address = '', img }: IWalletProps) => {
 export const Wallet = () => {
   const { address } = useAccount();
 
-  return <WalletComponent address={address} />;
+  const { data } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
+  });
+
+  return (
+    <WalletComponent
+      address={address}
+      name={data?.username}
+      img={data?.imgUrl}
+    />
+  );
 };

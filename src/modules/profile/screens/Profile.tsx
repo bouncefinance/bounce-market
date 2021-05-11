@@ -1,7 +1,8 @@
 import { Container, Grid } from '@material-ui/core';
-import { useDispatchRequest } from '@redux-requests/react';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { featuresConfig } from 'modules/common/conts';
 import { DetailsNFTRoutesConfig } from 'modules/detailsNFT/DetailsNFTRoutes';
 import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
@@ -12,12 +13,15 @@ import { Queries } from '../../common/components/Queries/Queries';
 import { RoutesConfiguration } from '../../createNFT/Routes';
 import { IItem } from '../../overview/api/getItems';
 import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
+import { fetchProfileInfo } from '../actions/fetchProfileInfo';
+import { IProfileInfo } from '../api/profileInfo';
 import { ActivityTable } from '../components/ActivityTable';
 import { Avatar } from '../components/Avatar';
 import { Bio } from '../components/Bio';
 import { IBrandCardProps } from '../components/BrandCard';
 import { Header } from '../components/Header';
 import { InfoPanel } from '../components/InfoPanel';
+import { NoItems } from '../components/NoItems';
 import { Social } from '../components/Social';
 import { Subscribers } from '../components/Subscribers';
 import { TabBrands } from '../components/TabBrands';
@@ -27,66 +31,6 @@ import { TabPanel } from '../components/TabPanel';
 import { Tabs } from '../components/Tabs';
 import { Tab } from '../components/Tabs/Tab';
 import { useProfileStyles } from './useProfileStyles';
-
-/**
- * Temporary samples
- * const items: TabItemProps[] = [
- {
-    href: '#',
-    title: 'Berserk - Red EthRanger #04 - Ruby Crystal Edition',
-    img: 'https://picsum.photos/350?random=1',
-    status: 0,
-    // price: new BigNumber(5),
-    copies: '6',
-    ProfileInfoProps: {
-      subTitle: 'Owner',
-      title: '1livinginzen',
-      users: [
-        {
-          name: 'name',
-          avatar: 'https://via.placeholder.com/32',
-          verified: true,
-        },
-      ],
-    },
-  },
- {
-    href: '#',
-    title: 'Berserk - Red EthRanger #04 - Ruby Crystal Edition',
-    img: 'https://picsum.photos/350?random=3',
-    copies: '2',
-    ProfileInfoProps: {
-      subTitle: 'Owner',
-      title: '1livinginzen',
-      users: [
-        {
-          name: 'name',
-          avatar: 'https://via.placeholder.com/32',
-          verified: true,
-        },
-      ],
-    },
-  },
- {
-    href: '#',
-    title: 'Berserk - Red EthRanger #04 - Ruby Crystal Edition',
-    img: 'https://picsum.photos/350?random=2',
-    status: 1,
-    copies: '1',
-    ProfileInfoProps: {
-      subTitle: 'Owner',
-      title: '1livinginzen',
-      users: [
-        {
-          name: 'name',
-          avatar: 'https://via.placeholder.com/32',
-          verified: true,
-        },
-      ],
-    },
-  },
- ];
- */
 
 const brands: IBrandCardProps[] = [
   {
@@ -142,9 +86,18 @@ enum TabList {
 }
 
 export const Profile = () => {
+  const [tab, setTab] = useState<TabList>(TabList.items);
   const classes = useProfileStyles();
   const { address } = useAccount();
   const dispatchRequest = useDispatchRequest();
+
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
+  });
+
+  const allNftByUserQuery = useQuery<IItem[] | null>({
+    type: fetchAllNftByUser.toString(),
+  });
 
   useEffect(() => {
     if (address) {
@@ -155,11 +108,13 @@ export const Profile = () => {
       );
     }
   }, [address, dispatchRequest]);
-  const [tab, setTab] = useState<TabList>(TabList.items);
 
   const onTabsChange = useCallback((_, value) => {
     setTab(value);
   }, []);
+
+  const hasItems =
+    !!allNftByUserQuery.data && allNftByUserQuery.data.length > 0;
 
   const tabs = useMemo(
     () => [
@@ -196,25 +151,26 @@ export const Profile = () => {
 
   return (
     <Section className={classes.root}>
-      <Header img="https://picsum.photos/1920/300?random=1" />
+      <Header img={profileInfo?.bandImgUrl} />
 
       <Container>
-        <Avatar className={classes.avatar} isEditable />
+        <Avatar
+          className={classes.avatar}
+          src={profileInfo?.imgUrl}
+          isEditable
+        />
 
         <InfoPanel
-          name="Unnamed"
-          url="@my_custom_url"
-          subscribers={<Subscribers count={150} withFollow />}
-          social={<Social />}
+          name={profileInfo?.username}
+          email={profileInfo?.email}
+          subscribers={<Subscribers count={profileInfo?.followCount} />}
+          // https://ankrnetwork.atlassian.net/browse/FE-3449
+          // TODO: [FE-3449] add social links after it will be implemented on backend side
+          social={featuresConfig.profileSocialLinks && <Social />}
           address={address}
         />
 
-        <Bio>
-          I'm a digital artist from Buenos Aires. I build surreal semi-static
-          worlds to share my perception: everything is as beautiful as it is
-          absurd. Wonder manifests itself to those who take the time to stop and
-          observe.
-        </Bio>
+        {profileInfo?.bio && <Bio>{profileInfo.bio}</Bio>}
 
         <Tabs
           className={classes.tabs}
@@ -227,50 +183,54 @@ export const Profile = () => {
         </Tabs>
 
         <TabPanel value={tab} index={TabList.items}>
-          <TabItems>
-            <Grid container spacing={4}>
-              <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
-                {({ data }) =>
-                  data?.map((item: IItem) => (
-                    <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
-                      <ProductCard
-                        key={uid(item)}
-                        title={item.itemName}
-                        href={DetailsNFTRoutesConfig.DetailsNFT.generatePath(
-                          item.contractAddress,
-                          item.id,
-                        )}
-                        // status={item.status}
-                        // UPDATE price
-                        price={item.poolId ? new BigNumber(10) : undefined}
-                        copies={'1'}
-                        ImgProps={{
-                          src: item.fileUrl,
-                          objectFit: 'scale-down',
-                          loading: 'lazy',
-                        }}
-                        ProfileInfoProps={{
-                          subTitle: 'Owner',
-                          title: '1livinginzen',
-                          users: [
-                            {
-                              name: 'name',
-                              avatar: 'https://via.placeholder.com/32',
-                              verified: true,
-                            },
-                          ],
-                        }}
-                        toSale={RoutesConfiguration.PublishNft.generatePath(
-                          item.contractAddress,
-                          item.id,
-                        )}
-                      />
-                    </Grid>
-                  ))
-                }
-              </Queries>
-            </Grid>
-          </TabItems>
+          {hasItems || allNftByUserQuery.loading ? (
+            <TabItems>
+              <Grid container spacing={4}>
+                <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
+                  {({ data }) =>
+                    data?.map((item: IItem) => (
+                      <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
+                        <ProductCard
+                          key={uid(item)}
+                          title={item.itemName}
+                          href={DetailsNFTRoutesConfig.DetailsNFT.generatePath(
+                            item.contractAddress,
+                            item.id,
+                          )}
+                          // status={item.status}
+                          // UPDATE price
+                          price={item.poolId ? new BigNumber(10) : undefined}
+                          copies={'1'}
+                          ImgProps={{
+                            src: item.fileUrl,
+                            objectFit: 'scale-down',
+                            loading: 'lazy',
+                          }}
+                          ProfileInfoProps={{
+                            subTitle: 'Owner',
+                            title: '1livinginzen',
+                            users: [
+                              {
+                                name: 'name',
+                                avatar: 'https://via.placeholder.com/32',
+                                verified: true,
+                              },
+                            ],
+                          }}
+                          toSale={RoutesConfiguration.PublishNft.generatePath(
+                            item.contractAddress,
+                            item.id,
+                          )}
+                        />
+                      </Grid>
+                    ))
+                  }
+                </Queries>
+              </Grid>
+            </TabItems>
+          ) : (
+            <NoItems />
+          )}
         </TabPanel>
 
         <TabPanel value={tab} index={TabList.brands}>

@@ -9,24 +9,22 @@ import {
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { convertWallet } from 'modules/common/utils/convertWallet';
+import { t } from 'modules/i18n/utils/intl';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { t } from 'modules/i18n/utils/intl';
 import { useInfoPanelStyles } from './useInfoPanelStyles';
 
 interface IInfoPanelProps {
-  className?: string;
-  name: string;
-  url?: string;
+  name?: string;
+  email?: string;
   address?: string;
   subscribers?: ReactNode;
   social?: ReactNode;
 }
 
 export const InfoPanel = ({
-  className,
-  name,
-  url,
+  name = 'Unnamed',
+  email,
   address,
   subscribers,
   social,
@@ -39,7 +37,7 @@ export const InfoPanel = ({
         <Grid item xs={12} sm="auto">
           <Typography variant="h2">{name}</Typography>
 
-          <Typography className={classes.url}>{url}</Typography>
+          {email && <Typography className={classes.url}>{email}</Typography>}
         </Grid>
 
         <Grid item>
@@ -70,7 +68,7 @@ export const InfoPanel = ({
           <Grid container spacing={2} alignItems="center">
             <Grid item>{subscribers}</Grid>
 
-            <Grid item>{social}</Grid>
+            {social && <Grid item>{social}</Grid>}
           </Grid>
         </Grid>
       </Grid>
