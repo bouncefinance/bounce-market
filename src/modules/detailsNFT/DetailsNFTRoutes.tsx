@@ -1,8 +1,8 @@
 import loadable, { LoadableComponent } from '@loadable/component';
-import { Route } from 'react-router-dom';
+import { generatePath } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
-import { generatePath } from 'react-router-dom';
+import { PrivateRoute } from '../router/components/PrivateRoute';
 
 export const PATH_DETAILS_NFT = '/nft/details/:contract/:id';
 
@@ -24,7 +24,7 @@ const LoadableDetailsNFTContainer: LoadableComponent<any> = loadable(
 export function DetailsNFTRoutes() {
   return (
     <>
-      <Route
+      <PrivateRoute
         path={DetailsNFTRoutesConfig.DetailsNFT.path}
         exact={true}
         component={LoadableDetailsNFTContainer}
