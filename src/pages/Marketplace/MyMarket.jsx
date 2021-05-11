@@ -150,10 +150,10 @@ export default function MyMarket() {
 
   const NavList = [
     {
-      /* title: "Fine Arts", */
+      /* title: "FineArts", */
       title: wrapperIntl("market.fineArts"),
       route: "FineArts",
-      channelRequestParam: "Fine Arts",
+      channelRequestParam: "FineArts",
     },
     {
       /* title: "Sports", */
@@ -365,7 +365,7 @@ export default function MyMarket() {
         })}
       </ul>}
       <ul className="nav_wrapper">
-        {/* {'Fine Arts、Sports、Comics'.split('、').map(e => ({ name: e })).map((item) => {
+        {/* {'FineArts、Sports、Comics'.split('、').map(e => ({ name: e })).map((item) => {
           return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
             setChannel(item.name)
           }}>

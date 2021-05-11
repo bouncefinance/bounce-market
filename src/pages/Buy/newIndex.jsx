@@ -955,7 +955,7 @@ export default function NewIndex () {
                 {/* 面包屑导航栏 */}
                 {/* <ul className='crumbs'>
                     <li><span>Marketplace</span></li>
-                    <li><span>Fine Arts</span></li>
+                    <li><span>FineArts</span></li>
                     <li><span>Digital Image Name</span></li>
                 </ul> */}
                 <BreadcrumbNav marginTop="24px" NavList={NavList} />

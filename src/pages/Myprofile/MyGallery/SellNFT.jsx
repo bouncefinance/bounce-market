@@ -73,6 +73,9 @@ export default function SellNFT() {
 		},
 		{
 			value: 30,
+		},
+		{
+			value: 0.004,
 		}
 	];
 

@@ -107,7 +107,7 @@ export default function Marketplace() {
     {
       title: wrapperIntl('market.fineArts'),
       route: "FineArts",
-      channelRequestParam: "Fine Arts",
+      channelRequestParam: "FineArts",
     },
     {
       title: wrapperIntl('market.sports'),
