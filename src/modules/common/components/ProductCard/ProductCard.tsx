@@ -42,7 +42,7 @@ export interface IProductCardProps {
   copies?: string;
   ImgProps: IImgProps;
   ProfileInfoProps: IProfileInfoProps;
-  href: string;
+  href?: string;
   isLiked?: boolean;
   imgPreloader?: ReactNode;
   onLikeClick?: () => void;
@@ -150,9 +150,9 @@ export const ProductCard = ({
     </div>
   );
 
-  return (
-    <Card className={classNames(classes.root, className)} variant="outlined">
-      <Link to={href} className={classes.imgBox}>
+  const renderContent = useCallback(
+    () => (
+      <>
         <Img
           {...ImgProps}
           className={classNames(ImgProps.className, classes.imgWrap)}
@@ -166,7 +166,27 @@ export const ProductCard = ({
 
         {isOnSalePending &&
           renderCardStatus('Puting up for sale', 'May take up to 5 minutes')}
-      </Link>
+      </>
+    ),
+    [
+      ImgProps,
+      classes.imgWrap,
+      imgPreloader,
+      isMinting,
+      isOnSalePending,
+      renderCardStatus,
+    ],
+  );
+
+  return (
+    <Card className={classNames(classes.root, className)} variant="outlined">
+      {href ? (
+        <Link to={href} className={classes.imgBox}>
+          {renderContent()}
+        </Link>
+      ) : (
+        renderContent()
+      )}
 
       <CardContent className={classes.content}>
         <Typography variant="h5" className={classes.title} title={title}>

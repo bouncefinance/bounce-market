@@ -16,7 +16,7 @@ import Web3 from 'web3';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { Seconds } from '../../common/types/unit';
 
-const getFixedSwapContract = (chainID: number) => {
+export const getFixedSwapContract = (chainID: number) => {
   switch (chainID) {
     case 1:
       return '';
@@ -29,7 +29,7 @@ const getFixedSwapContract = (chainID: number) => {
   }
 };
 
-const getEnglishAuctionNFT = (chainID: number) => {
+export const getEnglishAuctionNFT = (chainID: number) => {
   switch (chainID) {
     case 1:
       return '';

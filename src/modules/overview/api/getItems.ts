@@ -2,6 +2,7 @@ import { Address } from '../../common/types/unit';
 import { NftType } from '../../createNFT/actions/createNft';
 import { AuctionState } from '../actions/fetchPools';
 import BigNumber from 'bignumber.js';
+import { AuctionType } from './auctionType';
 
 export interface IApiItem {
   likecount: number;
@@ -60,6 +61,7 @@ export interface IItem {
   createdAt: Date;
   updateAt: Date;
   poolId?: number;
+  type?: AuctionType;
 }
 
 export function mapItem(item: IApiItem): IItem {

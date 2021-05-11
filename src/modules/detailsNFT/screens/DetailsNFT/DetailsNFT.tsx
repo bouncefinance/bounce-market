@@ -17,14 +17,17 @@ import { INFTDetails } from '../../api/NFTDetails';
 import { useBidDialog } from './useBidDialog';
 import { useDetailsNFTStyles } from './useDetailsNFTStyles';
 import { fetchItem } from '../../actions/fetchItem';
+import { NftType } from '../../../createNFT/actions/createNft';
+import { fetchPoolDetails } from '../../../overview/actions/fetchPoolDetails';
 
 export const DetailsNFT = () => {
   const classes = useDetailsNFTStyles();
-  const { id: idParam, contract } = useParams<{
-    contract: string;
-    id: string;
+  const { poolId: poolIdParam, nftType: nftTypeParam } = useParams<{
+    poolId: string;
+    nftType: string;
   }>();
-  const id = parseInt(idParam, 10);
+  const poolId = parseInt(poolIdParam, 10);
+  const nftType: NftType = parseInt(nftTypeParam, 10);
   const dispatch = useDispatchRequest();
   const { opened, toggleDialog } = useBidDialog();
 
@@ -33,8 +36,22 @@ export const DetailsNFT = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchItem({ contract, id }));
-  }, [contract, dispatch, id]);
+    dispatch(fetchPoolDetails({ poolId, standard: nftType })).then(
+      ({ data, error }) => {
+        if (error) {
+          throw error;
+        }
+
+        if (!data) {
+          throw new Error('Empty response');
+        }
+
+        dispatch(
+          fetchItem({ contract: data?.tokenContract, id: data?.tokenId }),
+        );
+      },
+    );
+  }, [dispatch, nftType, poolId]);
 
   const renderContent = ({ data }: QueryState<INFTDetails>) => {
     const renderedCreator = (
@@ -170,5 +187,9 @@ export const DetailsNFT = () => {
     );
   };
 
-  return <Queries requestActions={[fetchItem]}>{renderContent}</Queries>;
+  return (
+    <Queries requestActions={[fetchItem, fetchPoolDetails]}>
+      {renderContent}
+    </Queries>
+  );
 };

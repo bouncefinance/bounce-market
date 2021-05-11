@@ -6,7 +6,7 @@ import { Address } from '../../common/types/unit';
 import { AuctionState } from './fetchPools';
 import Web3 from 'web3';
 
-interface IApiFetchPool721Details {
+interface IApiFixedAuctionDetails {
   amount_total0: number;
   amount_total1: string;
   createTime: number;
@@ -21,7 +21,7 @@ interface IApiFetchPool721Details {
   tokenId: number;
 }
 
-interface IApiFetchPool1155Details {
+interface IApiEnglishAuctionDetails {
   amountMax1: string;
   amountMin1: string;
   amountMinIncr1: string;
@@ -42,13 +42,13 @@ interface IApiFetchPool1155Details {
   tokenId: number;
 }
 
-interface IApiFetchPoolDetailsData {
+interface IApiFetchPoolDetails {
   code: 200;
-  data: IApiFetchPool721Details | IApiFetchPool1155Details;
+  data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails;
   msg: 'ok';
 }
 
-interface IFetchPool721DetailsData {
+interface IFixedAuctionDetails {
   quantity: number;
   totalPrice: BigNumber;
   createTime: Date;
@@ -63,11 +63,11 @@ interface IFetchPool721DetailsData {
   tokenId: number;
 }
 
-interface IFetchPool1155DetailsData {
+interface IEnglishAuctionDetails {
   amountMax1: BigNumber;
   amountMin1: BigNumber;
   amountMinIncr1: BigNumber;
-  bidderClaimed: false;
+  bidderClaimed: boolean;
   closeAt: Date;
   createTime: Date;
   creator: Address;
@@ -84,20 +84,34 @@ interface IFetchPool1155DetailsData {
   tokenId: number;
 }
 
-type IFetchPoolDetailsData =
-  | IFetchPool721DetailsData
-  | IFetchPool1155DetailsData;
+export type IFetchPoolDetailsData =
+  | IFixedAuctionDetails
+  | IEnglishAuctionDetails;
+
+function isApiEnglishAuction(
+  data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails,
+): data is IApiEnglishAuctionDetails {
+  return (data as IApiEnglishAuctionDetails).amountMax1 !== undefined;
+}
+
+export function isEnglishAuction(
+  data: IFetchPoolDetailsData,
+): data is IEnglishAuctionDetails {
+  return (data as IEnglishAuctionDetails).amountMax1 === undefined;
+}
 
 interface IFetchPoolDetailsParams {
   poolId: number;
   standard: NftType;
 }
 
-export const fetchPoolDetails = createSmartAction<RequestAction<any, any>>(
+export const fetchPoolDetails = createSmartAction<
+  RequestAction<IApiFetchPoolDetails, IFetchPoolDetailsData>
+>(
   'fetchPoolDetails',
   (
     params: IFetchPoolDetailsParams,
-    meta?: RequestActionMeta<IApiFetchPoolDetailsData, IFetchPoolDetailsData>,
+    meta?: RequestActionMeta<IApiFetchPoolDetails, IFetchPoolDetailsData>,
   ) => ({
     request: {
       url: 'https://api1-bsc.fangible.com/v1/bsc_test/pool',
@@ -114,7 +128,7 @@ export const fetchPoolDetails = createSmartAction<RequestAction<any, any>>(
       driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
-        if (data.amountMax1) {
+        if (isApiEnglishAuction(data)) {
           return {
             amountMax1: new BigNumber(Web3.utils.fromWei(data.amountMax1)),
             amountMin1: new BigNumber(Web3.utils.fromWei(data.amountMin1)),
