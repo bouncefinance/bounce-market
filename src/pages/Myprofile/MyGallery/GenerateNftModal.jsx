@@ -371,7 +371,6 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             })
                         }}
                         onVideoFileChange={(videoPathUrl) => {
-                            console.log('vvvv', videoPathUrl);
                             setVideoPath(videoPathUrl)
                         }}
                     />
