@@ -67,9 +67,7 @@ function VideoFrame (props) {
     useEffect(() => {
         const generateFrame = (frameRate) => {
             const { image, width, height, currentTime } = generateCanvas(videoRef.current, videoRef.current.duration * frameRate);
-            
             const base64Path = window.URL.createObjectURL(new Blob([image]));
-            console.log('------------>>>base64Path', base64Path);
             onImageChangeCalback && onImageChangeCalback({ url: base64Path, time: currentTime });
         }
         
@@ -157,7 +155,7 @@ function VideoFrame (props) {
                     </div>
                     </Grow>
                 }
-                {/* <div className="frameControl" ref={frameControlRef}></div> */}
+                <div className="frameControl" ref={frameControlRef}></div>
             </div>
         </VideoDebugs>
     )
