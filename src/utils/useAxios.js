@@ -15,9 +15,9 @@ const isProDev = produceHost.some(hostItem => {
 
 const getBaseUrl = (chainID) => {
     chainID = parseInt(chainID)
-    if (!isProDev) return 'https://market-test.bounce.finance'
     switch (chainID) {
         case 56:
+            if (!isProDev) return 'https://market-test.bounce.finance'
             return 'https://bounce-market.bounce.finance'
         case 128:
             return 'https://heco-api.bounce.finance'

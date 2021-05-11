@@ -72,7 +72,7 @@ const StyledBrandGoods = styled.div`
 const brandCardInfo = {
     img: img_test1,
     brandName: "Cookie Store",
-    profile: "Fine Arts, Comics, Sports and others. You can find your content here according to your taste of brands. All type of content: images, video, audio, games, etc.",
+    profile: "FineArts, Comics, Sports and others. You can find your content here according to your taste of brands. All type of content: images, video, audio, games, etc.",
     avatar: img_avatar1,
     ownerName: "Mapache",
 }

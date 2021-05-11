@@ -165,7 +165,7 @@ export function AirHome () {
     {
       title: wrapperIntl("AirHome.fineArts"),
       route: "FineArts",
-      channelRequestParam: "Fine Arts",
+      channelRequestParam: "FineArts",
     },
     {
       title: wrapperIntl("AirHome.sports"),

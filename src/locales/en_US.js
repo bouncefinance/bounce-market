@@ -70,7 +70,7 @@ const en_US = {
     'pages.buy.ExternalLink': 'External link',
     'pages.buy.TradingHistory': 'Trading History',
     'pages.buy.MarketPlace': 'MarketPlace',
-    'pages.buy.FineArts': 'Fine Arts',
+    'pages.buy.FineArts': 'FineArts',
     'pages.buy.descriptionLoading': 'Description Is Loading ...',
     'pages.buy.NameLoading': 'Name Is Loading ...',
     'pages.buy.loading': 'loading ...',
@@ -138,7 +138,7 @@ const en_US = {
 
     market: {
         myMarket: 'My Market',
-        fineArts: 'Fine Arts',
+        fineArts: 'FineArts',
         sports: 'Sports',
         comics: 'Comics',
         placeholder: "Search Items and Accounts",
