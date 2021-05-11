@@ -187,5 +187,9 @@ export const DetailsNFT = () => {
     );
   };
 
-  return <Queries requestActions={[fetchItem]}>{renderContent}</Queries>;
+  return (
+    <Queries requestActions={[fetchItem, fetchPoolDetails]}>
+      {renderContent}
+    </Queries>
+  );
 };
