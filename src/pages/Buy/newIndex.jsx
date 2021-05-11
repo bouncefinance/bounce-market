@@ -1043,7 +1043,8 @@ export default function NewIndex () {
                                         {
                                             nftInfo.owneraddress
                                                 ?
-                                                (nftInfo.owneraddress && ` ${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)} ${nftInfo.ownername && '(' + nftInfo.ownername + ')'}`)
+                                                (nftInfo.ownername ? ` ${nftInfo.ownername}` : ` ${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)}`)
+                                                /* (nftInfo.owneraddress && ` ${String(nftInfo.owneraddress).substr(0, 5) + '...' + String(nftInfo.owneraddress).substr(-4)} ${nftInfo.ownername && '(' + nftInfo.ownername + ')'}`) */
                                                 ||
                                                 (state.owneraddress && ` ${String(state.owneraddress).substr(0, 5) + '...' + String(state.owneraddress).substr(-4)}`)
                                                 :
