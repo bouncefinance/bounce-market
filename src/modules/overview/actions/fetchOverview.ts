@@ -3,9 +3,10 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { RootState } from '../../../store/store';
 import { fetchPoolsWeight } from './fetchPoolsWeight';
-import { fetchPoolDetails } from './fetchPoolDetails';
+import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
 import { fetchItemsByIds } from './fetchItemsByIds';
 import { IItem } from '../api/getItems';
+import { AuctionType } from '../api/auctionType';
 
 export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
   'fetchOverview',
@@ -58,7 +59,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
 
                       return {
                         ids: [...acc.ids, current.data.tokenId],
-                        cts: [...acc.cts, current.data.contractaddress],
+                        cts: [...acc.cts, current.data.tokenContract],
                       };
                     },
                     { ids: [], cts: [] },
@@ -66,7 +67,20 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 ),
               );
 
-              return data;
+              return data?.map(item => {
+                const pool = poolDetailsList.find(pool => {
+                  return pool.data?.tokenId === item.id;
+                })?.data;
+
+                return {
+                  ...item,
+                  poolId: pool?.poolId,
+                  type:
+                    pool && isEnglishAuction(pool)
+                      ? AuctionType.EnglishAuction
+                      : AuctionType.FixedSwap,
+                };
+              });
             })(),
           };
         },

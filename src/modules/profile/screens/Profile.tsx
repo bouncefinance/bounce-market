@@ -2,7 +2,6 @@ import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { DetailsNFTRoutesConfig } from 'modules/detailsNFT/DetailsNFTRoutes';
 import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -236,10 +235,6 @@ export const Profile = () => {
                       <ProductCard
                         key={uid(item)}
                         title={item.itemName}
-                        href={DetailsNFTRoutesConfig.DetailsNFT.generatePath(
-                          item.contractAddress,
-                          item.id,
-                        )}
                         // status={item.status}
                         // UPDATE price
                         price={item.poolId ? new BigNumber(10) : undefined}
