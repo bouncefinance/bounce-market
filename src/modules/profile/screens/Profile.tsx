@@ -21,7 +21,7 @@ import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
 import { ProductCard } from '../../common/components/ProductCard';
 import { Queries } from '../../common/components/Queries/Queries';
 import { TabBrands } from '../components/TabBrands';
-import { IBrandCardProps } from '../components/BrandCard';
+import { IBrandCardProps } from '../../brand/components/BrandCard';
 import { IFollowingItemProps, TabFollowing } from '../components/TabFollowing';
 import { RoutesConfiguration } from '../../createNFT/Routes';
 import { IItem } from '../../overview/api/getItems';

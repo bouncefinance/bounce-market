@@ -74,9 +74,6 @@
       "0": "ERC-721",
       "1": "ERC-1155"
     },
-    "validation": {
-      "max-size": "Max size is {value, number}MB"
-    },
     "submit": "Create",
     "submitting": "Creating"
   },
@@ -109,13 +106,19 @@
     "min": "Must be greater than {value}",
     "max": "Must be less than {value}",
     "invalid-email": "Enter a valid Email",
-    "invalid-website": "Enter a valid Website URL"
+    "invalid-website": "Enter a valid Website URL",
+    "invalid-type": "Invalid file type",
+    "max-size": "Max size is {value, number}MB"
   },
-  "upload-image-field": {
+  "upload-file-field": {
     "title": "Drop your item here",
-    "subtitle": "or <b>browse</b> to choose a file",
-    "formats": "PNG, GIF, WEBP, MP4 or MP3",
-    "max-size": "Max {value}MB"
+    "subtitle": "or <strong>browse</strong> to choose a file",
+    "formats-many": "Supports {firstTypes} or {lastType}",
+    "formats-one": "Supports {fileType} only",
+    "max-size": "Max {value}MB",
+    "reset": "Reset",
+    "file-uploaded": "File uploaded",
+    "file-data": "{fileName} {fileSize}MB"
   },
   "products": {
     "sort-label": "Sort by: {value}"
@@ -125,6 +128,24 @@
   },
   "artists": {
     "title": "Top Artists"
+  },
+  "brand": {
+    "create": {
+      "create-brand": "Create brand",
+      "label": {
+        "brand-name": "Brand name",
+        "brand-url": "Brand URL",
+        "description": "Description",
+        "custom-url": "Custom URL",
+        "brand-avatar": "Brand avatar"
+      }
+    },
+    "card": {
+      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}",
+      "addNewItem": "Add new item",
+      "createNewItem": "Create new item",
+      "createNewBrand": "Create new brand"
+    }
   },
   "brands": {
     "title": "Hot Brands"
@@ -183,12 +204,6 @@
       "liked": "Liked",
       "following": "Following",
       "followers": "Followers"
-    },
-    "brands": {
-      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}",
-      "addNewItem": "Add new item",
-      "createNewItem": "Create new item",
-      "createNewBrand": "Create new brand"
     },
     "activity": {
       "event": "Event",
