@@ -24,6 +24,8 @@ import { AuctionType } from '../../../overview/api/auctionType';
 import { BuyDialog } from '../../components/BuyDialog';
 import { NftType } from '../../../createNFT/actions/createNft';
 import { AuctionState } from '../../../overview/actions/fetchPools';
+import { buyFixed } from '../../actions/buyFixed';
+import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -36,13 +38,36 @@ export const BuyNFT = () => {
   const { opened: openedBid, toggleDialog: toggleBidDialog } = useDialog();
   const { opened: openedBuy, toggleDialog: toggleBuyDialog } = useDialog();
 
-  const handleBid = useCallback(values => {
-    console.log({ values });
-  }, []);
+  const handleBid = useCallback(
+    values => {
+      dispatch(
+        bidEnglishAuction({
+          amountMax1: new BigNumber(0),
+          bidPrice: new BigNumber(0),
+          unitContract: '',
+          amountTotal1: new BigNumber(0),
+          poolId: 0,
+        }),
+      );
+    },
+    [dispatch],
+  );
 
-  const handleBuy = useCallback(values => {
-    console.log({ values });
-  }, []);
+  const handleBuy = useCallback(
+    values => {
+      dispatch(
+        buyFixed({
+          nftType: NftType.ERC1155,
+          unitContract: '',
+          amountTotal1: new BigNumber(0),
+          poolId: 0,
+          amountTotal0: new BigNumber(1),
+          amount: new BigNumber(0),
+        }),
+      );
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     dispatch(fetchPoolDetails({ poolId, poolType })).then(({ data, error }) => {

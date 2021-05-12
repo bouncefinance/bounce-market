@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import Web3 from 'web3';
 
-interface IBidAuctionPayload {
+interface IBuyFixedPayload {
   nftType: NftType;
   unitContract: Address;
   amountTotal1: BigNumber;
@@ -23,11 +23,11 @@ interface IBidAuctionPayload {
   amount: BigNumber;
 }
 
-export const buyNow = createSmartAction<
+export const buyFixed = createSmartAction<
   RequestAction<any, any>,
-  [IBidAuctionPayload]
+  [IBuyFixedPayload]
 >(
-  'buyNow',
+  'buyFixed',
   ({ nftType, unitContract, amountTotal1, poolId, amountTotal0, amount }) => {
     return {
       request: {
