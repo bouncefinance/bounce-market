@@ -225,5 +225,9 @@
       "to": "To",
       "date": "Date"
     }
+  },
+  "buy-dialog": {
+    "title": "Buy now",
+    "submit": "Buy"
   }
 }

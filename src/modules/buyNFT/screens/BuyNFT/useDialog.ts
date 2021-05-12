@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-export const useBidDialog = () => {
+export const useDialog = () => {
   const [opened, setOpened] = useState(false);
 
   const toggleDialog = useCallback(

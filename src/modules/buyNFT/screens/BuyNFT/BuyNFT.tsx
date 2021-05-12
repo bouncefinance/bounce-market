@@ -12,7 +12,7 @@ import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Queries } from '../../../common/components/Queries/Queries';
-import { useBidDialog } from './useBidDialog';
+import { useDialog } from './useDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { fetchItem } from '../../actions/fetchItem';
 import {
@@ -21,6 +21,8 @@ import {
 } from '../../../overview/actions/fetchPoolDetails';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { AuctionType } from '../../../overview/api/auctionType';
+import { BuyDialog } from '../../components/BuyDialog';
+import { NftType } from '../../../createNFT/actions/createNft';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -30,7 +32,8 @@ export const BuyNFT = () => {
   }>();
   const poolId = parseInt(poolIdParam, 10);
   const dispatch = useDispatchRequest();
-  const { opened, toggleDialog } = useBidDialog();
+  const { opened: openedBid, toggleDialog: toggleBidDialog } = useDialog();
+  const { opened: openedBuy, toggleDialog: toggleBuyDialog } = useDialog();
 
   const onSubmit = useCallback(values => {
     console.log({ values });
@@ -170,7 +173,8 @@ export const BuyNFT = () => {
                   currency="$"
                   cryptoPrice={poolDetails.lastestBidAmount}
                   cryptoCurrency="BNB"
-                  onBidClick={toggleDialog(true)}
+                  onBidClick={toggleBidDialog(true)}
+                  onBuyClick={toggleBuyDialog(true)}
                 />
               ) : (
                 <InfoPrices
@@ -178,6 +182,7 @@ export const BuyNFT = () => {
                   currency="$"
                   cryptoPrice={poolDetails.price}
                   cryptoCurrency="BNB"
+                  onBuyClick={toggleBuyDialog(true)}
                 />
               )}
 
@@ -193,12 +198,23 @@ export const BuyNFT = () => {
               name={item.itemname}
               img={item.fileurl}
               onSubmit={onSubmit}
-              isOpen={opened}
-              onClose={toggleDialog(false)}
+              isOpen={openedBid}
+              onClose={toggleBidDialog(false)}
               currency="BNB"
               owner="Bombist"
               ownerAvatar="https://picsum.photos/44?random=1"
               isOwnerVerified={false}
+            />
+            <BuyDialog
+              name={item.itemname}
+              img={item.fileurl}
+              onSubmit={onSubmit}
+              isOpen={openedBuy}
+              onClose={toggleBuyDialog(false)}
+              owner="Bombist"
+              ownerAvatar="https://picsum.photos/44?random=1"
+              isOwnerVerified={false}
+              disabled={item.standard === NftType.ERC721}
             />
           </div>
         );

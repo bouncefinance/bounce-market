@@ -23,11 +23,11 @@ interface IBidAuctionPayload {
   amount: BigNumber;
 }
 
-export const bidAuction = createSmartAction<
+export const buyNow = createSmartAction<
   RequestAction<any, any>,
   [IBidAuctionPayload]
 >(
-  'bidAuction',
+  'buyNow',
   ({ nftType, unitContract, amountTotal1, poolId, amountTotal0, amount }) => {
     return {
       request: {
