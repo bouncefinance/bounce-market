@@ -4,8 +4,8 @@ import { Button } from "@components/UI-kit";
 import AddNewBrandsModal from "./AddNewBrandsModal";
 // import img_addItem from './assets/addItem_img.png'
 import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
-import { useLazyQuery } from "@apollo/client";
-import { QueryItemsIn1155Brand, QueryItemsIn721Brand } from "@/utils/apollo";
+// import { useLazyQuery } from "@apollo/client";
+// import { QueryItemsIn1155Brand, QueryItemsIn721Brand } from "@/utils/apollo";
 import { useInitEffect } from "@/utils/useInitEffect";
 import { useActiveWeb3React } from "@/web3";
 import useWrapperIntl from "@/locales/useWrapperIntl";

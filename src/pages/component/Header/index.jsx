@@ -19,7 +19,7 @@ import useWrapperIntl from "@/locales/useWrapperIntl";
 const HeaderStyled = styled.div`
 	height: 76px;
 	width: 100%;
-	min-width: 1100px;
+	min-width: 1300px;
 	box-sizing: border-box;
 	display: flex;
 	align-items: center;
@@ -29,7 +29,7 @@ const HeaderStyled = styled.div`
 	box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
 
 	.wrapper {
-		width: 1100px;
+		width: 1300px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -277,7 +277,7 @@ export default function Index() {
 
     
     let ethereum = window.ethereum;
-    ethereum.on("chainChanged", (_chainId) => {
+    ethereum?.on("chainChanged", (_chainId) => {
 		if (_chainId !== 56 || _chainId !== 128) window.location.reload();
 	});
 

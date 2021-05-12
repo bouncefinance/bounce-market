@@ -6,7 +6,7 @@ import PopularItem from './PopularItem'
 import BrandsItem from './BrandsItem'
 // import RequestsItem from './RequestsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
-import img_banner from '@assets/images/banner2.png'
+import img_banner from '@assets/images/banner_5.12.jpg'
 // import img_banner_fmg from './assets/FMG/FMG.jpg'
 
 import img_example_1 from '@assets/images/example_1.svg'
