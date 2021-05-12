@@ -5,13 +5,13 @@ import { PrivateRoute } from '../router/components/PrivateRoute';
 import { AuctionType } from '../overview/api/auctionType';
 import { useParams } from 'react-router';
 
-export const PATH_SELL_NFT = '/nft/sell/poolId/:poolId/poolType/:poolType';
+export const PATH_BUY_NFT = '/nft/buy/poolId/:poolId/poolType/:poolType';
 
-export const SellNFTRoutesConfig = {
+export const BuyNFTRoutesConfig = {
   DetailsNFT: {
-    path: PATH_SELL_NFT,
+    path: PATH_BUY_NFT,
     generatePath: (poolId: number, poolType: AuctionType) =>
-      generatePath(PATH_SELL_NFT, { poolId, poolType }),
+      generatePath(PATH_BUY_NFT, { poolId, poolType }),
     useParams: () => {
       const { poolId: poolIdParam, poolType } = useParams<{
         poolId: string;
@@ -29,17 +29,17 @@ export const SellNFTRoutesConfig = {
 };
 
 const LoadableDetailsNFTContainer: LoadableComponent<any> = loadable(
-  async () => import('./screens/SellNFT').then(module => module.SellNFT),
+  async () => import('./screens/BuyNFT').then(module => module.BuyNFT),
   {
     fallback: <QueryLoadingAbsolute />,
   },
 );
 
-export function SellNFTRoutes() {
+export function BuyNFTRoutes() {
   return (
     <>
       <PrivateRoute
-        path={SellNFTRoutesConfig.DetailsNFT.path}
+        path={BuyNFTRoutesConfig.DetailsNFT.path}
         exact={true}
         component={LoadableDetailsNFTContainer}
       />

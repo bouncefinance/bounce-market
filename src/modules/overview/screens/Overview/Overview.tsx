@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/styles';
-import { SellNFTRoutesConfig } from 'modules/sellNFT/SellNFTRoutes';
+import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers, ProductProps } from 'modules/overview/components/Movers';
@@ -28,7 +28,7 @@ function mapPromoItem(item: IItem): IPromoItem {
     thumbImg: item.fileUrl || '',
     href:
       item.poolId && item.poolType
-        ? SellNFTRoutesConfig.DetailsNFT.generatePath(
+        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
             item.poolId,
             item.poolType,
           )
@@ -46,7 +46,7 @@ function mapMoversItem(item: IItem): ProductProps {
     likes: 100,
     href:
       item.poolId && item.poolType
-        ? SellNFTRoutesConfig.DetailsNFT.generatePath(
+        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
             item.poolId,
             item.poolType,
           )
