@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useUploadFileStyles } from '../../../../useUploadFileStyles';
+import { useUploadFileStyles } from '../../useUploadFileStyles';
 import { Box, Typography } from '@material-ui/core';
 import { ReactComponent as AudioPic } from './assets/audio.svg';
 import { t } from 'modules/i18n/utils/intl';
@@ -18,7 +18,7 @@ export const AudioPreview = ({ fileName, fileSize }: IAudioPreviewProps) => {
     <div
       className={classNames(
         classes.previewContainer,
-        classes.previewContainerVideo,
+        classes.previewContainerAudio,
       )}
     >
       <AudioPic className={classes.filePic} />

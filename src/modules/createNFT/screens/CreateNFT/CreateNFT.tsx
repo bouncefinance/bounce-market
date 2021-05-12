@@ -125,7 +125,6 @@ export const CreateNFT = () => {
             maxSize={MAX_SIZE}
             acceptsHint={['PNG', 'JPG', 'GIF', 'WEBP', 'MP4', 'MP3']}
             accepts={FILE_ACCEPTS}
-            template="bigBlock"
             fitView={true} // TODO should switching by fit/fill switcher in form
           />
         </div>

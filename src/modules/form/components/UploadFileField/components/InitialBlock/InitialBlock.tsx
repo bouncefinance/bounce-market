@@ -3,7 +3,7 @@ import { ReactComponent as InitialBlockPic } from './assets/files.svg';
 import { Box, Typography } from '@material-ui/core';
 import { t, tHTML } from 'modules/i18n/utils/intl';
 import { Bytes, convertBytesToMegabytes } from 'modules/common/types/unit';
-import { useUploadFileStyles } from '../../../../useUploadFileStyles';
+import { useUploadFileStyles } from '../../useUploadFileStyles';
 
 export interface IInitialBlock {
   input: JSX.Element;
@@ -50,7 +50,7 @@ export const InitialBlock = ({
       >
         {tHTML('upload-file-field.subtitle')}
       </Typography>
-      <Box mt="auto">
+      <Box mt={2}>
         {acceptsHint && (
           <Typography
             variant="body1"

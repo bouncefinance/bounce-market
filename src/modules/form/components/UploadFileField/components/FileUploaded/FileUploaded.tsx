@@ -2,7 +2,7 @@ import React from 'react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { t } from 'modules/i18n/utils/intl';
 import { CloseIcon } from 'modules/common/components/Icons/CloseIcon';
-import { useUploadFileStyles } from '../../../../useUploadFileStyles';
+import { useUploadFileStyles } from '../../useUploadFileStyles';
 
 export interface IFileUploaded {
   cover: null | JSX.Element;

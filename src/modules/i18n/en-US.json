@@ -111,6 +111,7 @@
     "max-size": "Max size is {value, number}MB"
   },
   "upload-file-field": {
+    "choose-file": "Choose file",
     "title": "Drop your item here",
     "subtitle": "or <strong>browse</strong> to choose a file",
     "formats-many": "Supports {firstTypes} or {lastType}",
@@ -138,7 +139,9 @@
         "description": "Description",
         "custom-url": "Custom URL",
         "brand-avatar": "Brand avatar"
-      }
+      },
+      "avatar-accepts": "Supports JPG, PNG, JPEG2000",
+      "avatar-recommended-size": "300x300 Recommended"
     },
     "card": {
       "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}",

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useUploadFileStyles } from '../../../../useUploadFileStyles';
+import { useUploadFileStyles } from '../../useUploadFileStyles';
 import { Box, Typography } from '@material-ui/core';
 import { ReactComponent as VideoPic } from './assets/video.svg';
 import { t } from 'modules/i18n/utils/intl';

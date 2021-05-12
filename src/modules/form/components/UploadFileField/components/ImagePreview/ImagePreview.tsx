@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { useUploadFileStyles } from '../../../../useUploadFileStyles';
+import { useUploadFileStyles } from '../../useUploadFileStyles';
 
 interface IImagePreviewProps {
   image: string;

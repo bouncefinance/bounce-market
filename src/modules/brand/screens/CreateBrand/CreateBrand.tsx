@@ -10,20 +10,39 @@ import { FormErrors } from 'modules/form/utils/FormErrors';
 import { createBrand } from '../../actions/createBrand';
 import { useHistory } from 'react-router';
 import { BrandRoutesConfig } from '../../BrandRoutes';
-import { UploadFileField } from 'modules/form/components/UploadFileField';
+import { UploadAvatarField } from '../../components/UploadAvatarField';
+import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
 
 export interface ICreateBrand {
   brandName: string;
   brandUrl: string;
   description: string;
   customUrl: string;
+  brandAvatar: File;
 }
+
+const MAX_SIZE: Bytes = 31457280;
+const FILE_ACCEPTS: string[] = [
+  'image/png',
+  'image/jpeg',
+  'image/jp2',
+  'image/jpm',
+];
 
 const validateCreateBrand = (payload: ICreateBrand) => {
   const errors: FormErrors<ICreateBrand> = {};
 
   if (!payload.brandName) {
     errors.brandName = t('validation.required');
+  }
+
+  if (payload.brandAvatar && !FILE_ACCEPTS.includes(payload.brandAvatar.type)) {
+    errors.brandAvatar = t('validation.invalid-type');
+  }
+  if (payload.brandAvatar && payload.brandAvatar.size > MAX_SIZE) {
+    errors.brandAvatar = t('validation.max-size', {
+      value: convertBytesToMegabytes(MAX_SIZE),
+    });
   }
 
   return errors;
@@ -99,12 +118,10 @@ export const CreateBrand = () => {
 
         <Box mb={5}>
           <Field
-            component={UploadFileField}
+            component={UploadAvatarField}
             name="brandAvatar"
             label={t('brand.create.label.brand-avatar')}
-            acceptsHint={['JPG', 'PNG', 'JPEG2000']}
-            accepts={['image/png', 'image/jpeg', 'image/jp2', 'image/jpm']}
-            template="bigBlock"
+            accepts={FILE_ACCEPTS}
           />
         </Box>
 
