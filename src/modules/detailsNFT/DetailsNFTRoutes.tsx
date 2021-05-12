@@ -1,17 +1,30 @@
 import loadable, { LoadableComponent } from '@loadable/component';
 import { generatePath } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
-import { RouteConfiguration } from '../common/types/RouteConfiguration';
 import { PrivateRoute } from '../router/components/PrivateRoute';
-import { NftType } from '../createNFT/actions/createNft';
+import { AuctionType } from '../overview/api/auctionType';
+import { useParams } from 'react-router';
 
-export const PATH_DETAILS_NFT = '/nft/auction/:poolId/:nftType';
+export const PATH_DETAILS_NFT = '/nft/auction/:poolId/:poolType';
 
-export const DetailsNFTRoutesConfig: { [key: string]: RouteConfiguration } = {
+export const DetailsNFTRoutesConfig = {
   DetailsNFT: {
     path: PATH_DETAILS_NFT,
-    generatePath: (poolId: string, nftType: NftType) =>
-      generatePath(PATH_DETAILS_NFT, { poolId, nftType }),
+    generatePath: (poolId: number, poolType: AuctionType) =>
+      generatePath(PATH_DETAILS_NFT, { poolId, poolType }),
+    useParams: () => {
+      const { poolId: poolIdParam, poolType } = useParams<{
+        poolId: string;
+        poolType: AuctionType;
+      }>();
+
+      const poolId = parseInt(poolIdParam, 10);
+
+      return {
+        poolType,
+        poolId,
+      };
+    },
   },
 };
 

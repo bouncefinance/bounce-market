@@ -7,6 +7,7 @@ import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
 import { fetchItemsByIds } from './fetchItemsByIds';
 import { IItem } from '../api/getItems';
 import { AuctionType } from '../api/auctionType';
+import { NftType } from '../../createNFT/actions/createNft';
 
 export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
   'fetchOverview',
@@ -37,16 +38,21 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
               }
 
               const poolDetailsList = await Promise.all(
-                poolsInfoData.list
-                  .reverse()
-                  .map(item =>
-                    store.dispatchRequest(
-                      fetchPoolDetails(
-                        { poolId: item.poolId, standard: item.standard },
-                        { silent: true, requestKey: item.poolId },
-                      ),
+                poolsInfoData.list.reverse().map(item =>
+                  store.dispatchRequest(
+                    fetchPoolDetails(
+                      {
+                        poolId: item.poolId,
+                        // TODO Wrong mapping?
+                        poolType:
+                          item.standard === NftType.ERC721
+                            ? 'fixedswap'
+                            : 'english',
+                      },
+                      { silent: true, requestKey: item.poolId },
                     ),
                   ),
+                ),
               );
 
               const { data } = await store.dispatchRequest(
@@ -75,11 +81,11 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 return {
                   ...item,
                   poolId: pool?.poolId,
-                  type:
+                  poolType:
                     pool && isEnglishAuction(pool)
                       ? AuctionType.EnglishAuction
                       : AuctionType.FixedSwap,
-                };
+                } as IItem;
               });
             })(),
           };

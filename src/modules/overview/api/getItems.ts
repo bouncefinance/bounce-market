@@ -61,7 +61,7 @@ export interface IItem {
   createdAt: Date;
   updateAt: Date;
   poolId?: number;
-  type?: AuctionType;
+  poolType?: AuctionType;
 }
 
 export function mapItem(item: IApiItem): IItem {
