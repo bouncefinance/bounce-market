@@ -28,9 +28,9 @@ export const UploadAvatarField = ({
   const [avatar, setAvatar] = useState<string>(initialAvatar);
 
   const handleReset = useCallback(() => {
-    setAvatar('');
+    setAvatar(initialAvatar);
     onChange(undefined);
-  }, [onChange]);
+  }, [initialAvatar, onChange]);
 
   const handleChange = useCallback(
     async (

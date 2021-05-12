@@ -2,6 +2,7 @@ import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { IBrandCardProps } from 'modules/brand/components/BrandCard';
 import { featuresConfig } from 'modules/common/conts';
 import { DetailsNFTRoutesConfig } from 'modules/detailsNFT/DetailsNFTRoutes';
 import { t } from 'modules/i18n/utils/intl';
@@ -18,10 +19,10 @@ import { IProfileInfo } from '../api/profileInfo';
 import { ActivityTable } from '../components/ActivityTable';
 import { Avatar } from '../components/Avatar';
 import { Bio } from '../components/Bio';
-import { IBrandCardProps } from 'modules/brand/components/BrandCard';
 import { Header } from '../components/Header';
 import { InfoPanel } from '../components/InfoPanel';
 import { NoItems } from '../components/NoItems';
+import { SetAvatarModal } from '../components/SetAvatarModal';
 import { Social } from '../components/Social';
 import { Subscribers } from '../components/Subscribers';
 import { TabBrands } from '../components/TabBrands';
@@ -87,6 +88,7 @@ enum TabList {
 
 export const Profile = () => {
   const [tab, setTab] = useState<TabList>(TabList.items);
+  const [isAvatarModalOpened, setAvatarModalOpened] = useState(false);
   const classes = useProfileStyles();
   const { address } = useAccount();
   const dispatchRequest = useDispatchRequest();
@@ -98,6 +100,13 @@ export const Profile = () => {
   const allNftByUserQuery = useQuery<IItem[] | null>({
     type: fetchAllNftByUser.toString(),
   });
+
+  const toggleAvatarModal = useCallback(
+    (isOpen: boolean) => () => {
+      setAvatarModalOpened(isOpen);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (address) {
@@ -157,7 +166,13 @@ export const Profile = () => {
         <Avatar
           className={classes.avatar}
           src={profileInfo?.imgUrl}
+          onEditClick={toggleAvatarModal(true)}
           isEditable
+        />
+
+        <SetAvatarModal
+          isOpen={isAvatarModalOpened}
+          onClose={toggleAvatarModal(false)}
         />
 
         <InfoPanel
