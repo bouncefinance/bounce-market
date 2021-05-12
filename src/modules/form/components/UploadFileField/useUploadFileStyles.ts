@@ -44,9 +44,9 @@ export const useUploadFileStyles = makeStyles<Theme>(theme => ({
       backgroundPosition: 'center',
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
-    },
-    '& $previewUploadedImageFit': {
-      backgroundSize: 'contain !important',
+      '&$previewUploadedImageFit': {
+        backgroundSize: 'contain',
+      },
     },
     '& $clearBtn': {
       position: 'absolute',

@@ -27,12 +27,12 @@ interface IFieldProps extends FieldRenderProps<string> {
   accepts?: string[];
   fitView?: boolean;
   label?: string;
-  InitialBlockComponent?: any;
-  FileUploadedComponent?: any;
-  ImagePreviewComponent?: any;
-  VideoPreviewComponent?: any;
-  AudioPreviewComponent?: any;
-  FilePreviewComponent?: any;
+  InitialBlockComponent?: JSX.Element;
+  FileUploadedComponent?: JSX.Element;
+  ImagePreviewComponent?: JSX.Element;
+  VideoPreviewComponent?: JSX.Element;
+  AudioPreviewComponent?: JSX.Element;
+  FilePreviewComponent?: JSX.Element;
 }
 
 const renderInitialBlock = (
@@ -59,7 +59,7 @@ const renderFileUploadPreview = (
   FileUploadedComponent: any,
   cover: null | JSX.Element,
   input: JSX.Element,
-  handleReset: any,
+  handleReset: () => void,
 ): any => {
   if (FileUploadedComponent) {
     return (

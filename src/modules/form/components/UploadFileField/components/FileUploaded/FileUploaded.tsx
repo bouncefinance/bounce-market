@@ -7,7 +7,7 @@ import { useUploadFileStyles } from '../../useUploadFileStyles';
 export interface IFileUploaded {
   cover: null | JSX.Element;
   input: JSX.Element;
-  handleReset: any;
+  handleReset: () => void;
 }
 
 export const FileUploaded = ({ cover, input, handleReset }: IFileUploaded) => {

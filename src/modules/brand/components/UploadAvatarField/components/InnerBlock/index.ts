@@ -1,1 +1,1 @@
-export * from './innerBlock';
+export * from './InnerBlock';

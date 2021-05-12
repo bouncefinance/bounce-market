@@ -11,10 +11,10 @@ import { useUploadAvatarFieldStyles } from '../../useUploadAvatarFieldStyles';
 
 export interface IInitialBlock {
   avatar: string;
-  value: any;
+  value: string;
   input: JSX.Element;
   inputRef: any;
-  handleReset: any;
+  handleReset: () => void;
 }
 
 export const InnerBlock = ({
