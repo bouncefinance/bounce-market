@@ -197,7 +197,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
             const brandList = (erc721 || []).concat(erc1155 || [])
             const filterBrandList = brandList.filter(item => String((item.creator || item.Creator)).toLowerCase() === String(account).toLowerCase())
             console.log('filterBrandList', filterBrandList)
-            return filterBrandList[0]?.contract_address || ZERO_ADDRESS
+            return filterBrandList[0]?.contract_address || filterBrandList[0]?.Token || ZERO_ADDRESS
         } else {
             return ZERO_ADDRESS
         }
