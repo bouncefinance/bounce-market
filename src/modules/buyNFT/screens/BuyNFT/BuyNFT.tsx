@@ -23,6 +23,7 @@ import { ResponseData } from '../../../common/types/ResponseData';
 import { AuctionType } from '../../../overview/api/auctionType';
 import { BuyDialog } from '../../components/BuyDialog';
 import { NftType } from '../../../createNFT/actions/createNft';
+import { AuctionState } from '../../../overview/actions/fetchPools';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -175,6 +176,8 @@ export const BuyNFT = () => {
                   cryptoCurrency="BNB"
                   onBidClick={toggleBidDialog(true)}
                   onBuyClick={toggleBuyDialog(true)}
+                  // TODO Doesn't work
+                  disabled={poolDetails.state === AuctionState.Done}
                 />
               ) : (
                 <InfoPrices
@@ -183,6 +186,7 @@ export const BuyNFT = () => {
                   cryptoPrice={poolDetails.price}
                   cryptoCurrency="BNB"
                   onBuyClick={toggleBuyDialog(true)}
+                  disabled={poolDetails.state === AuctionState.Done}
                 />
               )}
 
