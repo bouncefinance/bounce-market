@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/styles';
-import { DetailsNFTRoutesConfig } from 'modules/detailsNFT/DetailsNFTRoutes';
+import { DetailsNFTRoutesConfig } from 'modules/sellNFT/DetailsNFTRoutes';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers, ProductProps } from 'modules/overview/components/Movers';

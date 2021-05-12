@@ -10,7 +10,7 @@ import {
 import {
   DetailsNFTRoutes,
   DetailsNFTRoutesConfig,
-} from './modules/detailsNFT/DetailsNFTRoutes';
+} from './modules/sellNFT/DetailsNFTRoutes';
 import { DefaultLayout } from './modules/layout/components/DefautLayout';
 import {
   Routes as OverviewRoutes,

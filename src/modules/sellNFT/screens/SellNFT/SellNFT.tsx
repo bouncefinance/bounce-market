@@ -1,19 +1,19 @@
 import { useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { BidDialog } from 'modules/detailsNFT/components/BidDialog';
-import { ImgContainer } from 'modules/detailsNFT/components/ImgContainer';
-import { Info } from 'modules/detailsNFT/components/Info';
-import { InfoDescr } from 'modules/detailsNFT/components/InfoDescr';
-import { InfoPrices } from 'modules/detailsNFT/components/InfoPrices';
-import { InfoTabs } from 'modules/detailsNFT/components/InfoTabs';
-import { InfoTabsItem } from 'modules/detailsNFT/components/InfoTabsItem';
-import { InfoTabsList } from 'modules/detailsNFT/components/InfoTabsList';
+import { BidDialog } from 'modules/sellNFT/components/BidDialog';
+import { ImgContainer } from 'modules/sellNFT/components/ImgContainer';
+import { Info } from 'modules/sellNFT/components/Info';
+import { InfoDescr } from 'modules/sellNFT/components/InfoDescr';
+import { InfoPrices } from 'modules/sellNFT/components/InfoPrices';
+import { InfoTabs } from 'modules/sellNFT/components/InfoTabs';
+import { InfoTabsItem } from 'modules/sellNFT/components/InfoTabsItem';
+import { InfoTabsList } from 'modules/sellNFT/components/InfoTabsList';
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { useBidDialog } from './useBidDialog';
-import { useDetailsNFTStyles } from './useDetailsNFTStyles';
+import { useSellNFTStyles } from './useSellNFTStyles';
 import { fetchItem } from '../../actions/fetchItem';
 import {
   fetchPoolDetails,
@@ -22,8 +22,8 @@ import {
 import { ResponseData } from '../../../common/types/ResponseData';
 import { AuctionType } from '../../../overview/api/auctionType';
 
-export const DetailsNFT = () => {
-  const classes = useDetailsNFTStyles();
+export const SellNFT = () => {
+  const classes = useSellNFTStyles();
   const { poolId: poolIdParam, poolType } = useParams<{
     poolId: string;
     poolType: AuctionType;

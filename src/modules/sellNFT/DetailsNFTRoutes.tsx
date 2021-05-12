@@ -29,7 +29,7 @@ export const DetailsNFTRoutesConfig = {
 };
 
 const LoadableDetailsNFTContainer: LoadableComponent<any> = loadable(
-  async () => import('./screens/DetailsNFT').then(module => module.DetailsNFT),
+  async () => import('./screens/SellNFT').then(module => module.SellNFT),
   {
     fallback: <QueryLoadingAbsolute />,
   },

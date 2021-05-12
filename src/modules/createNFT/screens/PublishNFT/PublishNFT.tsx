@@ -24,7 +24,7 @@ import { ReactComponent as QuestionIcon } from '../../../common/assets/question.
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Days } from '../../../common/types/unit';
-import { fetchItem } from '../../../detailsNFT/actions/fetchItem';
+import { fetchItem } from '../../../sellNFT/actions/fetchItem';
 import { ButtonGroupField } from '../../../form/components/ButtonGroupField/ButtonGroupField';
 import { InputField } from '../../../form/components/InputField';
 import { SelectField } from '../../../form/components/SelectField';
