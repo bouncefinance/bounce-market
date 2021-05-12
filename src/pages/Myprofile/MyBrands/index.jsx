@@ -87,6 +87,10 @@ export default function Index() {
         // eslint-disable-next-line
     }, [active])
 
+    useEffect(() => {
+        console.log('brand_list',brand_list)
+    }, [brand_list])
+
     const getBrandListByChain = async () => {
 
         try {
@@ -176,7 +180,8 @@ export default function Index() {
                                     <CardItem
                                         cover={item.imgurl}
                                         name={item.brandname}
-                                        standard={item.standard}
+                                        // standard={item.standard}
+                                        contract = {item.contractaddress}
                                     />
                                 </li>
                             })}

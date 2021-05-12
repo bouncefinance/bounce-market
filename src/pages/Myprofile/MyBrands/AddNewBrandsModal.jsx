@@ -110,10 +110,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
             }).then((imgUrl) => {
                 setBtnLock(true)
                 // 第二步：调用工厂合约创建一个子合约
-                if (hasAddressButNotBrand) {
-                    uploadData(imgUrl, brandAddress)
-                    return
-                }
+
                 // console.log(nftType)
                 const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
                 const _name = formData.Brand_Name
@@ -167,7 +164,9 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                             setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
                             setInputDisable(false);
                         })
+
                 }
+
 
             }).catch(function (error) {
                 dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.DataUpdateFailed") });
