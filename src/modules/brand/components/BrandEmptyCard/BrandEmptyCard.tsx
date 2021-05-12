@@ -5,6 +5,8 @@ import React from 'react';
 import { useBrandCardStyles } from '../BrandCard/useBrandCardStyles';
 import { t } from 'modules/i18n/utils/intl';
 import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
+import { Link as RouterLink } from 'react-router-dom';
+import { BrandRoutesConfig } from '../../BrandRoutes';
 
 export interface IBrandEmptyCardProps {
   className?: string;
@@ -17,7 +19,8 @@ export const BrandEmptyCard = ({ className }: IBrandEmptyCardProps) => {
     <Card className={classNames(classes.root, className)} variant="outlined">
       <CardContent className={classes.contentEmpty}>
         <Button
-          href="#"
+          component={RouterLink}
+          to={BrandRoutesConfig.CreateBrand.generatePath()}
           className={classNames(classes.addNewBtn, classes.addNewBtnBig)}
           variant="outlined"
           fullWidth={false}
@@ -28,7 +31,7 @@ export const BrandEmptyCard = ({ className }: IBrandEmptyCardProps) => {
             />
           }
         >
-          {t('profile.brands.createNewBrand')}
+          {t('brand.card.createNewBrand')}
         </Button>
       </CardContent>
     </Card>

@@ -7,6 +7,9 @@ export function readImage(
     file.type === 'image/png' ||
     file.type === 'image/jpg' ||
     file.type === 'image/jpeg' ||
+    file.type === 'image/jp2' ||
+    file.type === 'image/jpm' ||
+    file.type === 'image/webp' ||
     file.type === 'image/gif'
   ) {
     const reader = new FileReader();
