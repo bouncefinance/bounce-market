@@ -19,6 +19,7 @@ import {
 import { PageNotFound } from './modules/router/components/PageNotFound';
 import { PrivateRoute } from './modules/router/components/PrivateRoute';
 import { Themes } from './modules/themes/types';
+import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 
 export function Routes() {
   return (
@@ -82,6 +83,16 @@ export function Routes() {
         render={() => (
           <DefaultLayout>
             <ProfileRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={BrandRoutesConfig.CreateBrand.path}
+        render={() => (
+          <DefaultLayout>
+            <BrandRoutes />
           </DefaultLayout>
         )}
       />

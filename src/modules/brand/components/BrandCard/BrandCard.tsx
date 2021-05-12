@@ -9,7 +9,6 @@ import { t } from 'modules/i18n/utils/intl';
 import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
 
 export interface IBrandCardProps {
-  className?: string;
   title: string;
   itemsCount: number;
   imgSrc: string;
@@ -17,7 +16,6 @@ export interface IBrandCardProps {
 }
 
 export const BrandCard = ({
-  className,
   href,
   title,
   itemsCount,
@@ -26,10 +24,10 @@ export const BrandCard = ({
   const classes = useBrandCardStyles();
 
   return (
-    <Card className={classNames(classes.root, className)} variant="outlined">
+    <Card className={classes.root} variant="outlined">
       {itemsCount ? (
         <div className={classes.createNewMiniBtnWrap}>
-          <Tooltip title={t('profile.brands.createNewItem')} arrow>
+          <Tooltip title={t('brand.card.createNewItem')} arrow>
             <Button
               className={classes.createNewMiniBtn}
               variant="outlined"
@@ -62,7 +60,7 @@ export const BrandCard = ({
             variant="body2"
             className={classes.subTitle}
           >
-            {t('profile.brands.itemsCount', {
+            {t('brand.card.itemsCount', {
               value: itemsCount,
             })}
           </Typography>
@@ -80,7 +78,7 @@ export const BrandCard = ({
             />
           }
         >
-          {t('profile.brands.addNewItem')}
+          {t('brand.card.addNewItem')}
         </Button>
       ) : null}
     </Card>
