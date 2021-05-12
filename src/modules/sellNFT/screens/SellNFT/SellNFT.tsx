@@ -174,12 +174,10 @@ export const SellNFT = () => {
                 />
               ) : (
                 <InfoPrices
-                  endDate={new Date(2021, 3, 30)}
                   price={new BigNumber(0)}
                   currency="$"
                   cryptoPrice={poolDetails.price}
                   cryptoCurrency="BNB"
-                  onBidClick={toggleDialog(true)}
                 />
               )}
 
