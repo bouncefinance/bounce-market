@@ -5,7 +5,7 @@ import { PrivateRoute } from '../router/components/PrivateRoute';
 import { AuctionType } from '../overview/api/auctionType';
 import { useParams } from 'react-router';
 
-export const PATH_SELL_NFT = '/nft/sell/pool-id/:poolId/pool-type/:poolType';
+export const PATH_SELL_NFT = '/nft/sell/poolId/:poolId/poolType/:poolType';
 
 export const SellNFTRoutesConfig = {
   DetailsNFT: {
