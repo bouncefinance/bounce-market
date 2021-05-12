@@ -19,7 +19,7 @@ import { Img } from 'modules/uiKit/Img';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
@@ -36,6 +36,7 @@ import { NftType } from '../../actions/createNft';
 import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
+import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
@@ -72,6 +73,7 @@ interface IPublishNFTComponentProps {
   nftType: NftType;
   tokenId: number;
   maxQuantity: number;
+  onPublish: () => void;
   img?: string;
 }
 
@@ -81,6 +83,7 @@ export const PublishNFTComponent = ({
   nftType,
   tokenId,
   maxQuantity,
+  onPublish,
   img,
 }: IPublishNFTComponentProps) => {
   const classes = usePublishNFTtyles();
@@ -205,7 +208,7 @@ export const PublishNFTComponent = ({
           }),
         ).then(({ error }) => {
           if (!error) {
-            console.log('sent');
+            onPublish();
           }
         });
       } else {
@@ -231,7 +234,7 @@ export const PublishNFTComponent = ({
         });
       }
     },
-    [dispatch, name, nftType, tokenContract, tokenId],
+    [dispatch, name, nftType, onPublish, tokenContract, tokenId],
   );
 
   const renderForm = ({
@@ -576,7 +579,13 @@ export const PublishNFT = () => {
     contract: string;
     id: string;
   }>();
+  const { replace } = useHistory();
   const id = parseInt(idParam, 10);
+
+  const handlePublish = useCallback(() => {
+    replace(ProfileRoutesConfig.UserProfile.generatePath());
+  }, [replace]);
+
   useEffect(() => {
     dispatch(fetchItem({ contract, id }));
   }, [contract, dispatch, id]);
@@ -592,6 +601,7 @@ export const PublishNFT = () => {
             tokenId={data.id}
             img={data.fileurl}
             maxQuantity={data.supply}
+            onPublish={handlePublish}
           />
         );
       }}
