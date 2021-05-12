@@ -69,7 +69,7 @@ const formatAmount = (value: string) => (value ? `${Math.round(+value)}` : '1');
 interface IPublishNFTComponentProps {
   name: string;
   tokenContract: string;
-  standard: NftType;
+  nftType: NftType;
   tokenId: number;
   maxQuantity: number;
   img?: string;
@@ -78,7 +78,7 @@ interface IPublishNFTComponentProps {
 export const PublishNFTComponent = ({
   name,
   tokenContract,
-  standard,
+  nftType,
   tokenId,
   maxQuantity,
   img,
@@ -198,7 +198,7 @@ export const PublishNFTComponent = ({
             name,
             tokenContract,
             unitContract: payload.unitContract,
-            standard,
+            standard: nftType,
             tokenId,
             price: new BigNumber(payload.price),
             quantity: +payload.quantity,
@@ -220,7 +220,7 @@ export const PublishNFTComponent = ({
             name,
             tokenContract,
             unitContract: payload.unitContract,
-            standard,
+            standard: nftType,
             tokenId,
             quantity: +payload.quantity,
           }),
@@ -231,7 +231,7 @@ export const PublishNFTComponent = ({
         });
       }
     },
-    [dispatch, name, standard, tokenContract, tokenId],
+    [dispatch, name, nftType, tokenContract, tokenId],
   );
 
   const renderForm = ({
@@ -342,6 +342,7 @@ export const PublishNFTComponent = ({
                   fullWidth={true}
                   parse={formatAmount}
                   format={formatAmount}
+                  disabled={nftType === NftType.ERC721}
                 />
               </Box>
             </>
@@ -380,7 +381,7 @@ export const PublishNFTComponent = ({
                   label={t('publish-nft.label.amount')}
                   color="primary"
                   fullWidth={true}
-                  disabled
+                  disabled={nftType === NftType.ERC721}
                 />
                 <div className={classes.fieldText}>
                   {t('publish-nft.auction-amount')}
@@ -559,7 +560,7 @@ export const PublishNFTComponent = ({
                 type: AuctionType.FixedSwap,
                 unitContract: defaultCurrency,
                 duration: durationOptions[0].value,
-                amount: '1',
+                quantity: maxQuantity.toString(),
               } as Partial<IPublishFixedSwap>
             }
           />
@@ -587,7 +588,7 @@ export const PublishNFT = () => {
           <PublishNFTComponent
             name={data.itemname}
             tokenContract={data.contractaddress}
-            standard={data.standard}
+            nftType={data.standard}
             tokenId={data.id}
             img={data.fileurl}
             maxQuantity={data.supply}
