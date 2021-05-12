@@ -20,10 +20,8 @@ import { ImgToUrl } from '@/utils/imgToUrl'
 import { ImgCompressorCreate } from '@utils/img-compressor'
 import VideoFrame from '@/components/VideoFrame/VideoFrame';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { Image } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
 // import { numToWei } from '@/utils/useBigNumber'
 
@@ -48,6 +46,17 @@ const GenerateNFTModalStyled = styled.div`
         justify-content: space-between;
     }
 
+`
+
+const DeleteIconStyled = styled.div`
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width: 25px;
+`
+
+const ImageSpan = styled.div`
+    position: relative;
 `
 
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
@@ -334,23 +343,27 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             {
                                 fileData?.type.substring(0, 'image'.length) === 'image' ? 
                                 <img
-                                width={240}
-                                height={120}
+                                width={280}
+                                height={135}
                                 src={filePath}
+                                style={{backgroundSize: 'cover'}}
                               /> : 
                               <div style={{display: 'flex', justifyContent: 'center'}}>
-                                  <VideoFrame src={filePath} videoWidth={240} videoHeight={120} onImageChangeCalback={(frameData) => {
+                                  <VideoFrame src={filePath} videoWidth={280} videoHeight={135} onImageChangeCalback={(frameData) => {
                                         setVideoFramePath(frameData);
                                     }}/>
-                                {videoFramePath?.url && <Image src={videoFramePath.url} width={240} height={120}/>}
+                                {
+                                    videoFramePath?.url && <Image src={videoFramePath.url} width={280} height={135} style={{objectFit: 'cover'}}/>
+                                }
                               </div>
                             }
-                            
-                            <DeleteIcon style={{cursor: 'pointer'}} onClick={() => {
-                                setVideoFramePath({});
-                                setFilePath('');
-                                setFileData(null);
-                            }}/>
+                            <DeleteIconStyled>
+                                <CloseOutlined  style={{cursor: 'pointer'}} onClick={() => {
+                                    setVideoFramePath({});
+                                    setFilePath('');
+                                    setFileData(null);
+                                }}/>
+                            </DeleteIconStyled>
                         </Card>
                         :
                         <UploadAll
