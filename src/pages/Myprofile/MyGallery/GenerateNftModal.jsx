@@ -62,7 +62,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
-    const [videoPath, setVideoPath] = useState('');
+    const [filePath, setFilePath] = useState('');
     const [videoFramePath, setVideoFramePath] = useState({});
     const [nftType, setNftType] = useState('ERC-721')
     const [formData, setFormData] = useState({
@@ -331,13 +331,24 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     {
                         fileData ? 
                         <Card style={{display: 'flex', justifyContent: 'center'}}>
-                            <VideoFrame src={videoPath} videoWidth={240} videoHeight={120} onImageChangeCalback={(frameData) => {
-                                setVideoFramePath(frameData);
-                            }}/>
-                            {videoFramePath?.url && <Image src={videoFramePath.url} width={240} height={120}/>}
+                            {
+                                fileData?.type.substring(0, 'image'.length) === 'image' ? 
+                                <img
+                                width={240}
+                                height={120}
+                                src={filePath}
+                              /> : 
+                              <div style={{display: 'flex', justifyContent: 'center'}}>
+                                  <VideoFrame src={filePath} videoWidth={240} videoHeight={120} onImageChangeCalback={(frameData) => {
+                                        setVideoFramePath(frameData);
+                                    }}/>
+                                {videoFramePath?.url && <Image src={videoFramePath.url} width={240} height={120}/>}
+                              </div>
+                            }
+                            
                             <DeleteIcon style={{cursor: 'pointer'}} onClick={() => {
                                 setVideoFramePath({});
-                                setVideoPath('');
+                                setFilePath('');
                                 setFileData(null);
                             }}/>
                         </Card>
@@ -363,15 +374,15 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             if (filetype.substring(0, 'video'.length) === 'video') {
                                 console.log('video')
                             }
-                            console.log('fileData', formData, file);
+                            console.log('fileData', filetype);
                             setFileData({
                                 formData,
                                 file,
                                 type: filetype
                             })
                         }}
-                        onVideoFileChange={(videoPathUrl) => {
-                            setVideoPath(videoPathUrl)
+                        onFilePathChange={(videoPathUrl) => {
+                            setFilePath(videoPathUrl)
                         }}
                     />
                     }
