@@ -20,10 +20,8 @@ import { ImgToUrl } from '@/utils/imgToUrl'
 import { ImgCompressorCreate } from '@utils/img-compressor'
 import VideoFrame from '@/components/VideoFrame/VideoFrame';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { Image } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
 // import { numToWei } from '@/utils/useBigNumber'
 
@@ -50,6 +48,17 @@ const GenerateNFTModalStyled = styled.div`
 
 `
 
+const DeleteIconStyled = styled.div`
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width: 25px;
+`
+
+const ImageSpan = styled.div`
+    position: relative;
+`
+
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const { wrapperIntl } = useWrapperIntl()
     const history = useHistory();
@@ -62,7 +71,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
-    const [videoPath, setVideoPath] = useState('');
+    const [filePath, setFilePath] = useState('');
     const [videoFramePath, setVideoFramePath] = useState({});
     const [nftType, setNftType] = useState('ERC-721')
     const [formData, setFormData] = useState({
@@ -331,15 +340,30 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     {
                         fileData ? 
                         <Card style={{display: 'flex', justifyContent: 'center'}}>
-                            <VideoFrame src={videoPath} videoWidth={240} videoHeight={120} onImageChangeCalback={(frameData) => {
-                                setVideoFramePath(frameData);
-                            }}/>
-                            {videoFramePath?.url && <Image src={videoFramePath.url} width={240} height={120}/>}
-                            <DeleteIcon style={{cursor: 'pointer'}} onClick={() => {
-                                setVideoFramePath({});
-                                setVideoPath('');
-                                setFileData(null);
-                            }}/>
+                            {
+                                fileData?.type.substring(0, 'image'.length) === 'image' ? 
+                                <img
+                                width={280}
+                                height={135}
+                                src={filePath}
+                                style={{backgroundSize: 'cover'}}
+                              /> : 
+                              <div style={{display: 'flex', justifyContent: 'center'}}>
+                                  <VideoFrame src={filePath} videoWidth={280} videoHeight={135} onImageChangeCalback={(frameData) => {
+                                        setVideoFramePath(frameData);
+                                    }}/>
+                                {
+                                    videoFramePath?.url && <Image src={videoFramePath.url} width={280} height={135} style={{objectFit: 'cover'}}/>
+                                }
+                              </div>
+                            }
+                            <DeleteIconStyled>
+                                <CloseOutlined  style={{cursor: 'pointer'}} onClick={() => {
+                                    setVideoFramePath({});
+                                    setFilePath('');
+                                    setFileData(null);
+                                }}/>
+                            </DeleteIconStyled>
                         </Card>
                         :
                         <UploadAll
@@ -363,15 +387,15 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             if (filetype.substring(0, 'video'.length) === 'video') {
                                 console.log('video')
                             }
-                            console.log('fileData', formData, file);
+                            console.log('fileData', filetype);
                             setFileData({
                                 formData,
                                 file,
                                 type: filetype
                             })
                         }}
-                        onVideoFileChange={(videoPathUrl) => {
-                            setVideoPath(videoPathUrl)
+                        onFilePathChange={(videoPathUrl) => {
+                            setFilePath(videoPathUrl)
                         }}
                     />
                     }

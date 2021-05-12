@@ -39,11 +39,13 @@ const VideoDebugs = styled.div`
             }
           }
           .frameControl {
+              position:relative;
               width: 100%;
-              height: 20px;
-              background: #ccc;
+              height: 5px;
+              background: #000000;
+              border-radius: 2px;
               cursor:pointer;
-              margin: 0 auto;
+              margin-top: 5px;
           }
     }
 `;
@@ -55,6 +57,7 @@ function VideoFrame (props) {
     const frameControlRef = useRef(null);
     const format = props.format || 'png';
     const nodeRef = useRef(null);
+    const [rate, setRate] = useState(0);
     
     const [playButtonVisiable, setPlayButtonVisiable] = useState(true)
 
@@ -66,7 +69,7 @@ function VideoFrame (props) {
 
     useEffect(() => {
         const generateFrame = (frameRate) => {
-            const { image, width, height, currentTime } = generateCanvas(videoRef.current, videoRef.current.duration * frameRate);
+            const { image, currentTime } = generateCanvas(videoRef.current, videoRef.current.duration * frameRate);
             const base64Path = window.URL.createObjectURL(new Blob([image]));
             onImageChangeCalback && onImageChangeCalback({ url: base64Path, time: currentTime });
         }
@@ -78,6 +81,7 @@ function VideoFrame (props) {
                 const indexTabWidth = e.target.clientWidth;
                 const indexTabOffsetX = e.offsetX;
                 const frameRate = indexTabOffsetX / indexTabWidth;
+                setRate(frameRate.toFixed(3));
                 generateFrame(frameRate.toFixed(3));
         }, 100));
         })
@@ -109,13 +113,14 @@ function VideoFrame (props) {
             nodeRef.current = cloneNode;
         }
         nodeRef.current.setAttribute('crossOrigin', 'anonymous')
+        
         nodeRef.current.currentTime = frameTime;
         const canvas = document.createElement('canvas')
         const width = canvas.width = videoRef.current.videoWidth;
         const height = canvas.height = videoRef.current.videoHeight;
         canvas.getContext('2d').drawImage(nodeRef.current, 0, 0);
         const dataURI = canvas.toDataURL('image/' + format);
-        const data = dataURI.split(',')[1];
+        let data = dataURI.split(',')[1];
         return {
             image: Buffer.from(data, 'base64'),
             currentTime: frameTime,
@@ -124,11 +129,10 @@ function VideoFrame (props) {
         }
     }
 
-
     return (
         <VideoDebugs videoWidth={props.videoWidth} videoHeight={props.videoHeight}>
             <div className="debugContainer" ref={containerRef}>
-                <video ref={videoRef} className="player" src={src} muted={true} style={{ objectFit: 'contain' }} onMouseLeave={onMouseLeave}/>
+                <video ref={videoRef} className="player" src={src} muted={true} style={{ objectFit: 'cover' }} onMouseLeave={onMouseLeave}/>
                 {
                     playButtonVisiable
                     &&
@@ -155,7 +159,9 @@ function VideoFrame (props) {
                     </div>
                     </Grow>
                 }
-                <div className="frameControl" ref={frameControlRef}></div>
+                <div className="frameControl" ref={frameControlRef}>
+                    {rate && <div style={{width: '4px', height: '100%', backgroundColor: '#fff', borderRadius: '100%', position: 'absolute', left: `${props.videoWidth * rate}px`}}></div>}
+                </div>
             </div>
         </VideoDebugs>
     )
