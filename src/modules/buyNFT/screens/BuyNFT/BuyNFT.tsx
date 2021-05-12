@@ -36,7 +36,11 @@ export const BuyNFT = () => {
   const { opened: openedBid, toggleDialog: toggleBidDialog } = useDialog();
   const { opened: openedBuy, toggleDialog: toggleBuyDialog } = useDialog();
 
-  const onSubmit = useCallback(values => {
+  const handleBid = useCallback(values => {
+    console.log({ values });
+  }, []);
+
+  const handleBuy = useCallback(values => {
     console.log({ values });
   }, []);
 
@@ -201,7 +205,7 @@ export const BuyNFT = () => {
             <BidDialog
               name={item.itemname}
               img={item.fileurl}
-              onSubmit={onSubmit}
+              onSubmit={handleBid}
               isOpen={openedBid}
               onClose={toggleBidDialog(false)}
               currency="BNB"
@@ -212,7 +216,7 @@ export const BuyNFT = () => {
             <BuyDialog
               name={item.itemname}
               img={item.fileurl}
-              onSubmit={onSubmit}
+              onSubmit={handleBuy}
               isOpen={openedBuy}
               onClose={toggleBuyDialog(false)}
               owner="Bombist"
