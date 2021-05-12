@@ -6,7 +6,7 @@ import { PrivateRoute } from '../router/components/PrivateRoute';
 
 export const PATH_USER_PROFILE = '/profile';
 export const PATH_PROFILE = '/profile/view/:id';
-export const PATH_EDIT_PROFILE = '/profile/edit'
+export const PATH_EDIT_PROFILE = '/profile/edit';
 
 export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
   Profile: {
@@ -31,7 +31,8 @@ const LoadableProfileContainer: LoadableComponent<any> = loadable(
 );
 
 const LoadableEditProfileContainer: LoadableComponent<any> = loadable(
-  async () => import('./screens/EditProfile').then(module => module.EditProfile),
+  async () =>
+    import('./screens/EditProfile').then(module => module.EditProfile),
   {
     fallback: <QueryLoadingAbsolute />,
   },

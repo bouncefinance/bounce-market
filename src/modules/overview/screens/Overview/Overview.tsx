@@ -42,8 +42,8 @@ function mapMoversItem(item: IItem): ProductProps {
     endDate: new Date(2021, 3, 30),
     likes: 100,
     href: DetailsNFTRoutesConfig.DetailsNFT.generatePath(
-      item.contractAddress,
-      item.id,
+      item.poolId,
+      item.standard,
     ),
     img: item.fileUrl || '',
     ProfileInfoProps: {

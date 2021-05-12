@@ -3,7 +3,7 @@ import { makeStyles, Theme } from '@material-ui/core';
 export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
   form: {
     display: 'grid',
-    gap: theme.spacing(4, 9),
+    gap: theme.spacing(5, 9),
 
     [theme.breakpoints.up('lg')]: {
       gridTemplateColumns: '1fr minmax(380px, auto)',
@@ -22,5 +22,26 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
       position: 'sticky',
       top: theme.spacing(2),
     },
+  },
+
+  currencySelect: {
+    border: 'none',
+    marginRight: -14,
+
+    '&.Mui-focused': {
+      border: 'none',
+    },
+  },
+
+  formControl: {
+    marginBottom: theme.spacing(5),
+  },
+
+  fieldText: {
+    marginTop: theme.spacing(1.5),
+  },
+
+  labelNoMargin: {
+    margin: 0,
   },
 }));

@@ -11,29 +11,30 @@ interface IFieldProps extends FieldRenderProps<string> {
 }
 
 const getHelperString = (
-  value:string,
-  meta:FieldMetaState<any>,
-  maxLength:number|null,
-  showLimitCounter:boolean):string => {
-  let helperTextString:string = getErrorText(meta);
+  value: string,
+  meta: FieldMetaState<any>,
+  maxLength: number | null,
+  showLimitCounter: boolean,
+): string => {
+  let helperTextString: string = getErrorText(meta);
   if (showLimitCounter && maxLength && !hasError(meta)) {
     helperTextString = t('form.limit-counter', {
       value: value.length ?? 0,
-      maxLimit: maxLength
+      maxLimit: maxLength,
     });
   }
   return helperTextString;
 };
 
 export const InputField = ({
-  input: { name, onChange, value, type,  },
+  input: { name, onChange, value, type },
   meta,
   showLimitCounter = false,
   ...rest
 }: IFieldProps & TextFieldProps) => {
   const classes = useInputFieldStyles();
 
-  const maxLength:number|null = rest.inputProps?.maxLength ?? null;
+  const maxLength: number | null = rest.inputProps?.maxLength ?? null;
 
   return (
     <TextField

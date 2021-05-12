@@ -1,16 +1,17 @@
 import loadable, { LoadableComponent } from '@loadable/component';
-import { Route } from 'react-router-dom';
+import { generatePath } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
-import { generatePath } from 'react-router-dom';
+import { PrivateRoute } from '../router/components/PrivateRoute';
+import { NftType } from '../createNFT/actions/createNft';
 
-export const PATH_DETAILS_NFT = '/nft/details/:contract/:id';
+export const PATH_DETAILS_NFT = '/nft/auction/:poolId/:nftType';
 
 export const DetailsNFTRoutesConfig: { [key: string]: RouteConfiguration } = {
   DetailsNFT: {
     path: PATH_DETAILS_NFT,
-    generatePath: (contract: string, id: string) =>
-      generatePath(PATH_DETAILS_NFT, { id, contract }),
+    generatePath: (poolId: string, nftType: NftType) =>
+      generatePath(PATH_DETAILS_NFT, { poolId, nftType }),
   },
 };
 
@@ -24,7 +25,7 @@ const LoadableDetailsNFTContainer: LoadableComponent<any> = loadable(
 export function DetailsNFTRoutes() {
   return (
     <>
-      <Route
+      <PrivateRoute
         path={DetailsNFTRoutesConfig.DetailsNFT.path}
         exact={true}
         component={LoadableDetailsNFTContainer}

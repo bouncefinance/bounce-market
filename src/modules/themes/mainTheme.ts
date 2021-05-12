@@ -210,6 +210,20 @@ export const mainTheme = createMuiTheme({
           display: 'none',
         },
       },
+
+      input: {
+        '&[type=number]': {
+          '-moz-appearance': 'textfield',
+        },
+
+        '&::-webkit-outer-spin-button': {
+          '-webkit-appearance': 'none',
+        },
+
+        '&::-webkit-inner-spin-button': {
+          '-webkit-appearance': 'none',
+        },
+      },
     },
 
     MuiInputLabel: {
@@ -249,6 +263,7 @@ export const mainTheme = createMuiTheme({
       },
 
       iconOutlined: {
+        color: defaultTheme.palette.text.primary,
         fontSize: 20,
         right: 16,
         top: 'calc(50% - 10px)',
@@ -310,7 +325,7 @@ export const mainTheme = createMuiTheme({
 
       sizeLarge: {
         height: 60,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 500,
       },
 
@@ -563,6 +578,61 @@ export const mainTheme = createMuiTheme({
         color: '#fff',
         width: '100%',
         textAlign: 'center',
+      },
+    },
+
+    MuiSwitch: {
+      root: {
+        width: 60,
+        height: 32,
+        padding: 0,
+      },
+
+      switchBase: {
+        '&&': {
+          border: 'none',
+          padding: '4px 4px',
+        },
+
+        '&:active': {
+          transform: 'none',
+        },
+
+        '&&$checked': {
+          transform: 'translateX(28px)',
+        },
+      },
+
+      colorSecondary: {
+        '&$checked': {
+          color: defaultTheme.palette.text.primary,
+
+          '&:hover': {
+            backgroundColor: 'none',
+          },
+        },
+      },
+
+      disabled: {},
+
+      thumb: {
+        width: 24,
+        height: 24,
+        boxShadow: 'none',
+      },
+
+      track: {
+        borderRadius: 32,
+        opacity: 0.18,
+        backgroundColor: defaultTheme.palette.text.primary,
+
+        '$switchBase$checked + &': {
+          opacity: 0.08,
+        },
+
+        '$colorSecondary$checked + &': {
+          backgroundColor: defaultTheme.palette.text.primary,
+        },
       },
     },
   },

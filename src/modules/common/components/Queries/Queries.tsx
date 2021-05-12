@@ -1,3 +1,4 @@
+import { Box } from '@material-ui/core';
 import { getQuery, QueryState, RequestAction } from '@redux-requests/core';
 import React, { ReactNode } from 'react';
 import { useAppSelector } from '../../../../store/useAppSelector';
@@ -7,6 +8,7 @@ import { QueryLoadingCentered } from '../QueryLoading/QueryLoading';
 
 interface ILoadingProps<T1, T2, T3, T4, T5> {
   requestActions: ((...args: any[]) => RequestAction)[];
+  requestKeys?: string[];
   children: (
     ...a: [
       T1 extends void ? void : QueryState<T1>,
@@ -41,15 +43,24 @@ function isEmpty(queries: QueryState<any>[]) {
 export function Queries<T1 = void, T2 = void, T3 = void, T4 = void, T5 = void>({
   requestActions,
   children,
+  requestKeys,
 }: ILoadingProps<T1, T2, T3, T4, T5>) {
   const queries = useAppSelector(state =>
-    requestActions.map(item =>
-      getQuery(state, { type: item.toString(), action: item }),
+    requestActions.map((item, index) =>
+      getQuery(state, {
+        type: item.toString(),
+        action: item,
+        requestKey: requestKeys?.[index],
+      }),
     ),
   );
 
   if (isLoading(queries)) {
-    return <QueryLoadingCentered />;
+    return (
+      <Box py={5} position="relative" width="100%">
+        <QueryLoadingCentered />
+      </Box>
+    );
   }
 
   const error = hasError(queries);

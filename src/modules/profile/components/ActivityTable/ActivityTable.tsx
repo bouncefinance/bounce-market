@@ -13,6 +13,7 @@ import { formatDistance } from 'date-fns';
 import { t } from 'modules/i18n/utils/intl';
 import { Img } from 'modules/uiKit/Img';
 import React, { useCallback } from 'react';
+import { uid } from 'react-uid';
 import { TransferIcon } from './assets/TransferIcon';
 import { useActivityTableStyles } from './useActivityTableStyles';
 
@@ -92,7 +93,7 @@ export const ActivityTable = ({ className }: IActivityTableProps) => {
         <TableBody>
           {data.map(row => {
             return (
-              <TableRow>
+              <TableRow key={uid(row)}>
                 <TableCell>
                   <Box display="flex" alignItems="center">
                     <TransferIcon className={classes.eventIcon} />
