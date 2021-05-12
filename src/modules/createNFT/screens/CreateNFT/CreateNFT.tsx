@@ -33,8 +33,12 @@ const FILE_ACCEPTS: string[] = [
   'video/mp4',
 ];
 
-const validateCreateNFT = (payload: ICreateNFTPayload) => {
-  const errors: FormErrors<ICreateNFTPayload> = {};
+interface ICreateNFTFormData extends Omit<ICreateNFTPayload, 'supply'> {
+  supply: string;
+}
+
+const validateCreateNFT = (payload: ICreateNFTFormData) => {
+  const errors: FormErrors<ICreateNFTFormData> = {};
 
   if (!payload.name) {
     errors.name = t('validation.required');
@@ -69,8 +73,10 @@ export const CreateNFT = () => {
   const { push } = useHistory();
 
   const handleSubmit = useCallback(
-    (payload: ICreateNFTPayload) => {
-      dispatch(createNft(payload)).then(({ error }) => {
+    (payload: ICreateNFTFormData) => {
+      dispatch(
+        createNft({ ...payload, supply: parseInt(payload.supply, 10) }),
+      ).then(({ error }) => {
         if (!error) {
           push(RoutesConfiguration.Overview.generatePath());
         }
@@ -114,7 +120,7 @@ export const CreateNFT = () => {
   const renderForm = ({
     handleSubmit,
     values,
-  }: FormRenderProps<ICreateNFTPayload>) => {
+  }: FormRenderProps<ICreateNFTFormData>) => {
     return (
       <Box className={classes.form} component="form" onSubmit={handleSubmit}>
         <div className={classes.formImgCol}>
