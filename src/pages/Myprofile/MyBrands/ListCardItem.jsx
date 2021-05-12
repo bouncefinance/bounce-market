@@ -54,6 +54,7 @@ export function CardItem({ cover, name, contract, category }) {
 	const { axios } = useAxios()
 
 	useInitEffect(() => {
+		if(!contract) return
 		getBrandTradeItems()
 	})
 	const getBrandTradeItems = async () => {

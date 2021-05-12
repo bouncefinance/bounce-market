@@ -170,7 +170,7 @@ export default function Index() {
                                     <CardItem
                                         cover={item.imgurl}
                                         name={item.brandname}
-                                        standard={item.standard}
+                                        contract={item.contractaddress}
                                     />
                                 </li>
                             })}
