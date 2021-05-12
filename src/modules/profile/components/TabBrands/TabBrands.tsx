@@ -1,11 +1,8 @@
 import { Grid } from '@material-ui/core';
-import {
-  BrandCard,
-  IBrandCardProps,
-} from 'modules/profile/components/BrandCard';
+import { BrandCard, IBrandCardProps } from 'modules/brand/components/BrandCard';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
-import { BrandEmptyCard } from '../BrandEmptyCard';
+import { BrandEmptyCard } from 'modules/brand/components/BrandEmptyCard';
 import { useTabBrandStyles } from './useTabBrandsStyles';
 
 interface ITabBrandsProps {
@@ -20,7 +17,6 @@ export const TabBrands = ({ items }: ITabBrandsProps) => {
       items?.map(brandProps => (
         <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(brandProps)}>
           <BrandCard
-            key={uid(brandProps)}
             title={brandProps.title}
             href={brandProps.href}
             itemsCount={brandProps.itemsCount}
