@@ -55,9 +55,9 @@ const DeleteIconStyled = styled.div`
     min-width: 25px;
 `
 
-const ImageSpan = styled.div`
-    position: relative;
-`
+// const ImageSpan = styled.div`
+//     position: relative;
+// `
 
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const { wrapperIntl } = useWrapperIntl()
@@ -214,7 +214,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
                     const _amount = formData.Supply
                     const _data = 0
-                    console.log(_nftId, _amount, _data, _sign,_expiredtime)
+                    // console.log(_nftId, _amount, _data, _sign,_expiredtime)
                     try {
                         BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign, _expiredtime).send({ from: account })
                             .on('transactionHash', hash => {
@@ -346,6 +346,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                 width={280}
                                 height={135}
                                 src={filePath}
+                                alt=''
                                 style={{backgroundSize: 'cover'}}
                               /> : 
                               <div style={{display: 'flex', justifyContent: 'center'}}>

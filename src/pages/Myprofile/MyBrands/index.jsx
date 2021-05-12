@@ -110,8 +110,7 @@ export default function Index() {
                 const brandList_1155 = (data.erc1155 || []).map(item => {
                     return {
                         standard: 2,
-                        ...item,
-                        contract_address: item.Token
+                        ...item
                     }
                 })
 
@@ -128,14 +127,14 @@ export default function Index() {
         console.log(brandList, brandInfo)
         const list = brandList.map(listItem => {
             // console.log(listItem, brandInfo)
-            const tarItem = brandInfo.find(brandItem => String(brandItem.contractaddress).toLowerCase() === String(listItem.contract_address).toLowerCase())
+            const tarItem = brandInfo.find(brandItem => String(brandItem.contractaddress||brandItem.contract_address).toLowerCase() === String(listItem.contract_address).toLowerCase())
             return {
                 ...listItem,
                 ...tarItem
             }
         })
         .filter(item=>item.contract_address&&item.contractaddress)
-        // console.log(list)
+        console.log(list)
         setBrandList(list)
     }
 
@@ -164,11 +163,6 @@ export default function Index() {
                     active && brand_list.length > 0
                         ?
                         <ul className="list_wrapper">
-                            {/* <li>
-                            <button onClick={()=>{
-                                setModalStatus(approveStatus)
-                            }}>按钮</button>
-                        </li> */}
                             {brandList.filter(item => item.contractaddress !== ZERO_ADDRESS).map((item) => {
                                 return <li key={item.id} onClick={() => {
                                     history.push(`/MyBrands/${item.id}/All`)

@@ -204,6 +204,8 @@ export default function useToken() {
             code = 'auction'
         } else if (String(tokenSymbol).toLowerCase() === 'btc') {
             code = 'bitcoin'
+        } else if (String(tokenSymbol).toLowerCase() === 'ht') {
+            code = 'ht'
         } else if (String(tokenSymbol).toLowerCase() === 'usdt' || String(tokenSymbol).toLowerCase() === 'busd' || String(tokenSymbol).toLowerCase() === 'usdc') {
             return 1
         }

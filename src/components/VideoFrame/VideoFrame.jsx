@@ -91,6 +91,7 @@ function VideoFrame (props) {
         return frameControlRef?.current?.removeEventListener('click', () => {
             console.log('event mousemove has removed')
         })
+        // eslint-disable-next-line
     }, []);
 
     // const uniq = (arr) => {

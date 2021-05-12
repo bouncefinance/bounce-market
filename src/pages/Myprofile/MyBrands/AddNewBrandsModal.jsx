@@ -13,6 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useBrandList } from './useHook'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import { ZERO_ADDRESS } from '@/web3/address_list/token'
 
 
 const AddNewBrandsModalStyled = styled.div`
@@ -47,7 +48,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
     const { active, library, chainId, account } = useActiveWeb3React()
     const { wrapperIntl } = useWrapperIntl()
     const { state, dispatch } = useContext(myContext);
-    const { sign_Axios } = useAxios()
+    const { sign_Axios, axios } = useAxios()
     const [fileData, setFileData] = useState(null)
     const [formData, setFormData] = useState({})
     const [btnLock, setBtnLock] = useState(true)
@@ -60,6 +61,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
 
 
     useEffect(() => {
+        // getCreatedBrand()
         if (!active) return
         // eslint-disable-next-line
     }, [active])
@@ -107,70 +109,72 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                     setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.Save'))
                     // throw new Error('File upload failed,' + response.data.msg)
                 }
-            }).then((imgUrl) => {
+            }).then(async (imgUrl) => {
                 setBtnLock(true)
                 // 第二步：调用工厂合约创建一个子合约
-                if (hasAddressButNotBrand) {
+                const brandAddress = await getCreatedBrand()
+                console.log(brandAddress)
+                if (brandAddress !== ZERO_ADDRESS) {
                     uploadData(imgUrl, brandAddress)
+                    dispatch({ type: 'TransferModal', TransferModal: "" });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
                     return
-                }
-                // console.log(nftType)
-                const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
-                const _name = formData.Brand_Name
-                const _symbol = formData.Symbol
-                const _uri = require('@/config.json').ERC_1155_BaseRui
-                const _mode = 0
-                const bytecode_721 = require('@/web3/abi/BounceERC721.json').bytecode
-                const bytecode_1155 = require('@/web3/abi/BounceERC1155.json').bytecode
+                } else {
+                    // console.log(nftType)
+                    const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
+                    const _name = formData.Brand_Name
+                    const _symbol = formData.Symbol
+                    const _uri = require('@/config.json').ERC_1155_BaseRui
+                    const _mode = 0
+                    const bytecode_721 = require('@/web3/abi/BounceERC721.json').bytecode
+                    const bytecode_1155 = require('@/web3/abi/BounceERC1155.json').bytecode
 
-                if (nftType === 'ERC-721') {
-                    Factory_CT.methods.createBrand721(bytecode_721, _name, _symbol, _mode).send({ from: account })
-                        .on('transactionHash', hash => {
-                            setOpen(false)
-                            // setBidStatus(pendingStatus)
-                            showTransferByStatus('pendingStatus')
-                        })
-                        .on('receipt', async (_, receipt) => {
-                            // console.log('bid fixed swap receipt:', receipt)
-                            dispatch({ type: 'TransferModal', TransferModal: "" });
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyBrands.AddNewBrandsModal.Build")});
-                            // alert("SuccessfullyBuild")
-                            const brandAddress = await getCreatedBrand()
-                            uploadData(imgUrl, brandAddress)
-                        })
-                        .on('error', (err, receipt) => {
-                            // setBidStatus(errorStatus)
-                            setBtnLock(false);
-                            /* setBtnText("Try Again"); */
-                            setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
-                            setInputDisable(false);
-                            // showTransferByStatus('errorStatus')
-                        })
-                } else if (nftType === 'ERC-1155') {
-                    Factory_CT.methods.createBrand1155(bytecode_1155, _uri, _mode).send({ from: account })
-                        .on('transactionHash', hash => {
-                            setOpen(false)
-                            // setBidStatus(pendingStatus)
-                            showTransferByStatus('pendingStatus')
-                        })
-                        .on('receipt', async (_, receipt) => {
-                            // console.log('bid fixed swap receipt:', receipt)
-                            dispatch({ type: 'TransferModal', TransferModal: "" });
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyBrands.AddNewBrandsModal.SuccessfullyBuild")});
-                            // alert("SuccessfullyBuild")
-                            const brandAddress = await getCreatedBrand()
-                            uploadData(imgUrl, brandAddress)
-                        })
-                        .on('error', (err, receipt) => {
-                            // setBidStatus(errorStatus)
-                            // showTransferByStatus('errorStatus');
-                            setBtnLock(false);
-                            /* setBtnText("Try Again"); */
-                            setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
-                            setInputDisable(false);
-                        })
+                    if (nftType === 'ERC-721') {
+                        Factory_CT.methods.createBrand721(bytecode_721, _name, _symbol, _mode).send({ from: account })
+                            .on('transactionHash', hash => {
+                                setOpen(false)
+                                // setBidStatus(pendingStatus)
+                                showTransferByStatus('pendingStatus')
+                            })
+                            .on('receipt', async (_, receipt) => {
+                                // console.log('bid fixed swap receipt:', receipt)
+                                dispatch({ type: 'TransferModal', TransferModal: "" });
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
+                                const brandAddress = await getCreatedBrand()
+                                uploadData(imgUrl, brandAddress)
+                            })
+                            .on('error', (err, receipt) => {
+                                // setBidStatus(errorStatus)
+                                setBtnLock(false);
+                                /* setBtnText("Try Again"); */
+                                setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
+                                setInputDisable(false);
+                                // showTransferByStatus('errorStatus')
+                            })
+                    } else if (nftType === 'ERC-1155') {
+                        Factory_CT.methods.createBrand1155(bytecode_1155, _uri, _mode).send({ from: account })
+                            .on('transactionHash', hash => {
+                                setOpen(false)
+                                // setBidStatus(pendingStatus)
+                                showTransferByStatus('pendingStatus')
+                            })
+                            .on('receipt', async (_, receipt) => {
+                                // console.log('bid fixed swap receipt:', receipt)
+                                const brandAddress = await getCreatedBrand()
+                                uploadData(imgUrl, brandAddress)
+                                dispatch({ type: 'TransferModal', TransferModal: "" });
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
+                            })
+                            .on('error', (err, receipt) => {
+                                // setBidStatus(errorStatus)
+                                // showTransferByStatus('errorStatus');
+                                setBtnLock(false);
+                                /* setBtnText("Try Again"); */
+                                setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
+                                setInputDisable(false);
+                            })
+                    }
                 }
-
             }).catch(function (error) {
                 dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.DataUpdateFailed") });
                 setBtnLock(false)
@@ -179,13 +183,30 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                 setBtnText(wrapperIntl('MyProfile.MyBrands.AddNewBrandsModal.TryAgain'));
             })
     }
-
     const getCreatedBrand = async () => {
-        const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
-        // console.log(account)
-        const brand_address = await Factory_CT.methods.brands(account).call()
+        const params = {
+            offset: 0,
+            count: 100,
+            user_address: account
+        }
+        const res = await axios.get('/brands', { params })
+        if (res.status === 200) {
+            const data = res.data.data
+            const erc721 = data.erc721 || []
+            const erc1155 = data.erc1155 || []
+            const brandList = (erc721 || []).concat(erc1155 || [])
+            const filterBrandList = brandList.filter(item => String((item.creator || item.Creator)).toLowerCase() === String(account).toLowerCase())
+            console.log('filterBrandList', filterBrandList)
+            return filterBrandList[0]?.contract_address || filterBrandList[0]?.Token || ZERO_ADDRESS
+        } else {
+            return ZERO_ADDRESS
+        }
+        // const Factory_CT = getContract(library, BounceNFTFactory.abi, getNFTFactory(chainId))
+        // // console.log(account)
+        // const brand_address = await Factory_CT.methods.brands(account).call()
 
-        return brand_address
+
+        // return brand_address
     }
 
     const uploadData = async (imgUrl, brandAddress) => {

@@ -6,7 +6,7 @@ import PopularItem from './PopularItem'
 import BrandsItem from './BrandsItem'
 // import RequestsItem from './RequestsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
-import img_banner from '@assets/images/banner2.png'
+import img_banner from '@assets/images/banner_5.12.jpg'
 // import img_banner_fmg from './assets/FMG/FMG.jpg'
 
 import img_example_1 from '@assets/images/example_1.svg'
@@ -51,7 +51,13 @@ export default function Index () {
       const weightRes = await sign_Axios.post(Controller.pools.getpoolsinfobypage, { offset, limit: HOMETOPFORNUMBER, orderweight: 1 })
       if (weightRes.data.code === 1) {
         // artistpoolweight poolweight poolid id standard
+        
         let { data } = weightRes.data
+        if(data.length === 0)  {
+          setItemList([])
+          setLoadingItems(false)
+          return
+        }
         let templPools = []
         let poolsPromise = []
         for (let weightItem of data) {
@@ -71,10 +77,9 @@ export default function Index () {
           }
           templPools.push(poolRes.data.data)
         }
-        // console.log('templPools:', templPools)
         const [nftErr, nftRes] = await to(sign_Axios.post(Controller.items.getitemsbyids, {
-          ids: templPools.map(e => e.tokenId),
-          cts: templPools.map(e => e.token0),
+          ids: templPools.filter(item=>item).map(e => e.tokenId),
+          cts: templPools.filter(item=>item).map(e => e.token0),
         }))
         if (nftErr) {
           return console.log(nftErr)
@@ -86,7 +91,7 @@ export default function Index () {
         for (let nft of nftList) {
           nftMap.set(`${String(nft.contractaddress).toLowerCase()}_${nft.id}`, nft)
         }
-        items.push(...templPools.map(pool => {
+        items.push(...templPools.filter(item=>item).map(pool => {
           const nftInfo = nftMap.get([String(pool.token0).toLowerCase(), pool.tokenId].join('_'))
           if (!nftInfo) {
             // console.log('nftInfo:', pool)

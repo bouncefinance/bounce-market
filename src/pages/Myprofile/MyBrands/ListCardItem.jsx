@@ -4,12 +4,13 @@ import { Button } from "@components/UI-kit";
 import AddNewBrandsModal from "./AddNewBrandsModal";
 // import img_addItem from './assets/addItem_img.png'
 import { AutoStretchBaseWidthOrHeightImg } from "@/pages/component/Other/autoStretchBaseWidthOrHeightImg";
-import { useLazyQuery } from "@apollo/client";
-import { QueryItemsIn1155Brand, QueryItemsIn721Brand } from "@/utils/apollo";
+// import { useLazyQuery } from "@apollo/client";
+// import { QueryItemsIn1155Brand, QueryItemsIn721Brand } from "@/utils/apollo";
 import { useInitEffect } from "@/utils/useInitEffect";
 import { useActiveWeb3React } from "@/web3";
 import useWrapperIntl from "@/locales/useWrapperIntl";
 import { VideoItem } from '../../component/Other/videoItem'
+import useAxios from "@/utils/useAxios";
 
 const CardItemStyled = styled.div`
 	width: 262px;
@@ -46,68 +47,94 @@ const CardItemStyled = styled.div`
 	}
 `;
 
-export function CardItem({ cover, name, standard, category }) {
+export function CardItem({ cover, name, contract, category }) {
 	const [count, setCount] = useState(0);
 	const { account } = useActiveWeb3React();
-
-    useEffect(() => {
-        console.log("count", count)
-    }, [count])
-
-	const [query721BrandItems, brand721Items] = useLazyQuery(
-		QueryItemsIn721Brand,
-		{
-			variables: { owner: String(account).toLowerCase() },
-			fetchPolicy: "network-only",
-			onCompleted: () => {
-				if (!brand721Items.data.bounce721Brands[0]) return;
-				setCount(
-					brand721Items.data.bounce721Brands[0].tokenList?.length || 0
-				);
-			},
-		}
-	);
-
-	const [query1155BrandItems, brand1155Items] = useLazyQuery(
-		QueryItemsIn1155Brand,
-		{
-			variables: { owner: String(account).toLowerCase() },
-			fetchPolicy: "network-only",
-			onCompleted: () => {
-				if (!brand1155Items.data.bounce1155Brands[0]) return;
-				setCount(
-					brand1155Items.data.bounce1155Brands[0].tokenLiist?.length || 0
-				);
-			},
-		}
-	);
+	const [tokenList, setTokenList] = useState({})
+	const { axios } = useAxios()
 
 	useInitEffect(() => {
-		if (standard === 1) {
-			query721BrandItems();
-		} else if (standard === 2) {
-			query1155BrandItems();
+		getBrandTradeItems()
+	})
+	const getBrandTradeItems = async () => {
+		let brandData = {
+			tradePools: [],
+			tradeAuctions: [],
+			brandserc721: [],
+			brandserc1155: [],
 		}
-	});
+
+		try {
+			const ErcParams = {
+				user_address: account,
+				contract_address: contract,
+			}
+
+			const TradeParams = {
+				offset: 0,
+				count: 100,
+				user_address: account
+			}
+
+			const res_721 = await axios.get('[V2]/erc721', { params: ErcParams })
+			if (res_721.status === 200 && res_721.data.code === 200) {
+				const erc721Data = res_721.data.data
+				brandData.brandserc721 = erc721Data.tokens
+
+			}
+
+			const res_1155 = await axios.get('[V2]/erc1155', { params: ErcParams })
+			if (res_1155.status === 200 && res_1155.data.code === 200) {
+				const erc1155Data = res_1155.data.data
+				brandData.brandserc1155 = erc1155Data.tokens
+			}
+
+			const res_trade = await axios.get('pools', { params: TradeParams })
+			if (res_trade.status === 200 && res_trade.data.code === 200) {
+				const tradeDate = res_trade.data.data
+				brandData.tradePools = (tradeDate.tradePools || []).filter((item) => String(item.token0).toLowerCase() === String(contract).toLowerCase())
+				brandData.tradeAuctions = (tradeDate.tradeAuctions || []).filter((item) => String(item.token0).toLowerCase() === String(contract).toLowerCase())
+			}
+
+
+		} catch (error) {
+
+		}
+
+		setTokenList(brandData)
+	}
+
+
+	useEffect(() => {
+		console.log(tokenList)
+		let tempCount = 0
+		for (const key in tokenList) {
+			if (Object.hasOwnProperty.call(tokenList, key)) {
+				const value = tokenList[key];
+				tempCount += parseInt(value.length)
+			}
+		}
+		setCount(tempCount)
+	}, [tokenList]);
 
 	return (
 		<CardItemStyled>
 			{
 				category && (category === "Videos" || category === 'video')
-				?
-                <VideoItem width={262} height={262} src={cover} />
-				:
-				<AutoStretchBaseWidthOrHeightImg
-					src={cover}
-					widgth={262}
-					height={180}
-				/>
+					?
+					<VideoItem width={262} height={262} src={cover} />
+					:
+					<AutoStretchBaseWidthOrHeightImg
+						src={cover}
+						widgth={262}
+						height={180}
+					/>
 			}
 			<div className="item_wrapper">
 				<span>{name}</span>
-					<p>
-						{count} {count > 1 ? "items" : "item"}
-					</p>
+				<p>
+					{count} {count > 1 ? "items" : "item"}
+				</p>
 			</div>
 		</CardItemStyled>
 	);
