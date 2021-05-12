@@ -135,7 +135,7 @@ export default function Index() {
             }
         })
         .filter(item=>item.contract_address&&item.contractaddress)
-        // console.log(list)
+        console.log(list)
         setBrandList(list)
     }
 
