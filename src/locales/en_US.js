@@ -406,7 +406,7 @@ const en_US = {
         "MyBrands.AddNewBrandsModal.DescriptionPlaceHolder": "Describe your brand",
         "MyBrands.AddNewBrandsModal.browseBrandPhoto": 'browse Brand Photo',
         "MyBrands.AddNewBrandsModal.OnlySupports": "Only supports JPG, PNG, GIF",
-        "MyBrands.AddNewBrandsModal.SuccessfullyBuild": "You have successfully build your brands",
+        "MyBrands.AddNewBrandsModal.Build": "You have successfully build your brands",
         "MyBrands.AddNewBrandsModal.DataUpdateFailed": 'Data update failed, please try again',
 
         /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */

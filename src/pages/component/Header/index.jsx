@@ -282,8 +282,8 @@ export default function Index() {
 	});
 
     useEffect(() => {
-        console.log("chainId000: ", chainId);
         if (!chainId) return
+        console.log("chainId000: ", chainId);
         window.localStorage.setItem('currentChainId', chainId === 56 ? 56 : chainId === 128 ? 128 : 'Unsupported Chain')
         setCurrentChainName(chainId === 56 ? 'BSC' : chainId === 128 ? 'HECO' : 'Unsupported Chain')
     }, [chainId])

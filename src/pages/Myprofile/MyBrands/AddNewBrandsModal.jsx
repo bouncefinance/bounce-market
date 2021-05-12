@@ -133,7 +133,8 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                         .on('receipt', async (_, receipt) => {
                             // console.log('bid fixed swap receipt:', receipt)
                             dispatch({ type: 'TransferModal', TransferModal: "" });
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyBrands.AddNewBrandsModal.Build")});
+                            // alert("SuccessfullyBuild")
                             const brandAddress = await getCreatedBrand()
                             uploadData(imgUrl, brandAddress)
                         })
@@ -155,7 +156,8 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                         .on('receipt', async (_, receipt) => {
                             // console.log('bid fixed swap receipt:', receipt)
                             dispatch({ type: 'TransferModal', TransferModal: "" });
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
+                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyBrands.AddNewBrandsModal.SuccessfullyBuild")});
+                            // alert("SuccessfullyBuild")
                             const brandAddress = await getCreatedBrand()
                             uploadData(imgUrl, brandAddress)
                         })
