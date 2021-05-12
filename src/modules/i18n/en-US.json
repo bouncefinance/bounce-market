@@ -183,7 +183,8 @@
         "twitter": "Twitter Username",
         "facebook": "Facebook Username"
       },
-      "save-changes": "Save Changes"
+      "save-changes": "Save Changes",
+      "success-message": "Changes have been applied successfully."
     },
     "tabs": {
       "my-items": "My items",

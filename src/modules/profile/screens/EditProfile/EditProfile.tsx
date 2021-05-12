@@ -72,6 +72,7 @@ export const EditProfile = () => {
 
   const renderForm = ({
     handleSubmit,
+    dirty,
   }: FormRenderProps<IEditProfileValues>) => {
     return (
       <Box component="form" onSubmit={handleSubmit}>
@@ -129,7 +130,12 @@ export const EditProfile = () => {
         <Box>
           <Mutation type={editProfile.toString()}>
             {({ loading }) => (
-              <Button size="large" type="submit" fullWidth disabled={loading}>
+              <Button
+                size="large"
+                type="submit"
+                fullWidth
+                disabled={!dirty || loading}
+              >
                 {loading
                   ? t('common.submitting')
                   : t('profile.edit.save-changes')}

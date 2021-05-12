@@ -3,6 +3,8 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
+import { t } from 'modules/i18n/utils/intl';
+import { NotificationActions } from 'modules/notification/store/NotificationActions';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
@@ -101,6 +103,20 @@ export const editProfile = createSmartAction<RequestAction>(
 
           return data;
         },
+      },
+      onSuccess: (
+        request,
+        _action: RequestAction,
+        store: Store<RootState> & { dispatchRequest: DispatchRequest },
+      ) => {
+        store.dispatch(
+          NotificationActions.showNotification({
+            message: t('profile.edit.success-message'),
+            severity: 'success',
+          }),
+        );
+
+        return request;
       },
     },
   }),

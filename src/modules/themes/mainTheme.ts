@@ -571,11 +571,14 @@ export const mainTheme = createMuiTheme({
       },
       standardError: {
         backgroundColor: '#FF362D',
+        color: defaultTheme.palette.common.white,
+      },
+      standardSuccess: {
+        color: defaultTheme.palette.common.black,
       },
       message: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: '#fff',
         width: '100%',
         textAlign: 'center',
       },
