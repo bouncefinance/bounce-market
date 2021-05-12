@@ -29,7 +29,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 error: poolsInfoError,
               } = await store.dispatchRequest(
                 fetchPoolsWeight(
-                  { limit: 13, offset: 0, orderweight: 1 },
+                  { limit: 10, offset: 0, orderweight: 1 },
                   { silent: true },
                 ),
               );
@@ -45,9 +45,9 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         poolId: item.poolId,
                         // TODO Wrong mapping?
                         poolType:
-                          item.standard === NftType.ERC721
-                            ? 'fixedswap'
-                            : 'english',
+                          item.standard === NftType.ERC1155
+                            ? AuctionType.FixedSwap
+                            : AuctionType.EnglishAuction,
                       },
                       { silent: true, requestKey: item.poolId },
                     ),
