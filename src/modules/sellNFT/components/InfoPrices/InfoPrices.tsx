@@ -6,13 +6,13 @@ import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
 
 interface IInfoPricesProps {
-  endDate: Date;
   price: BigNumber;
   currency: string;
   cryptoPrice: BigNumber;
   cryptoCurrency: string;
   onBuyClick?: () => void;
   onBidClick?: () => void;
+  endDate?: Date;
 }
 
 export const InfoPrices = ({
@@ -25,16 +25,18 @@ export const InfoPrices = ({
   onBuyClick,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
-
+  console.log('endDate', endDate);
   return (
     <Grid container spacing={3} alignItems="center">
       <Grid item xs={12} sm>
-        <div className={classes.bid}>
-          {t('details-nft.top-bid')}
-          <i className={classes.bidDevider} />
-          {/* new Date(2021, 3, 30) */}
-          <Timer endDate={endDate} />
-        </div>
+        {endDate && (
+          <div className={classes.bid}>
+            {t('details-nft.top-bid')}
+            <i className={classes.bidDevider} />
+            {/* new Date(2021, 3, 30) */}
+            <Timer endDate={endDate} />
+          </div>
+        )}
 
         <Typography variant="h2" component="h4" className={classes.cryptoPrice}>
           {`${cryptoPrice.toFormat()} ${cryptoCurrency}`}
@@ -46,11 +48,13 @@ export const InfoPrices = ({
       </Grid>
 
       <Grid item xs={12} sm={5}>
-        <Box mb={2}>
-          <Button fullWidth onClick={onBidClick}>
-            {t('details-nft.place-a-bid')}
-          </Button>
-        </Box>
+        {onBidClick && (
+          <Box mb={2}>
+            <Button fullWidth onClick={onBidClick}>
+              {t('details-nft.place-a-bid')}
+            </Button>
+          </Box>
+        )}
 
         <Button variant="outlined" fullWidth onClick={onBuyClick}>
           {t('details-nft.buy-now')}

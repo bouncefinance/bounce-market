@@ -8,9 +8,9 @@ import {
   RoutesConfiguration as CreateNFTRoutesConfig,
 } from './modules/createNFT/Routes';
 import {
-  DetailsNFTRoutes,
-  DetailsNFTRoutesConfig,
-} from './modules/detailsNFT/DetailsNFTRoutes';
+  SellNFTRoutes,
+  SellNFTRoutesConfig,
+} from './modules/sellNFT/SellNFTRoutes';
 import { DefaultLayout } from './modules/layout/components/DefautLayout';
 import {
   Routes as OverviewRoutes,
@@ -49,10 +49,10 @@ export function Routes() {
 
       <Route
         exact
-        path={DetailsNFTRoutesConfig.DetailsNFT.path}
+        path={SellNFTRoutesConfig.DetailsNFT.path}
         render={() => (
           <DefaultLayout>
-            <DetailsNFTRoutes />
+            <SellNFTRoutes />
           </DefaultLayout>
         )}
       />
