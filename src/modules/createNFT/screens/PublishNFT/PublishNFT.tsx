@@ -47,7 +47,7 @@ const FEE_PERCENTAGE = 1;
 interface IPublishFixedSwap {
   type: AuctionType.FixedSwap;
   price: string;
-  amount: number | string;
+  quantity: string;
   unitContract: string;
   img?: string;
 }
@@ -57,7 +57,7 @@ interface IPublishEnglishAuction {
   minBid: number;
   purchasePrice: number;
   reservePrice: number;
-  amount: number | string;
+  quantity: string;
   duration: Days;
   unitContract: string;
 }
@@ -71,6 +71,7 @@ interface IPublishNFTComponentProps {
   tokenContract: string;
   standard: NftType;
   tokenId: number;
+  maxQuantity: number;
   img?: string;
 }
 
@@ -79,6 +80,7 @@ export const PublishNFTComponent = ({
   tokenContract,
   standard,
   tokenId,
+  maxQuantity,
   img,
 }: IPublishNFTComponentProps) => {
   const classes = usePublishNFTtyles();
@@ -118,10 +120,12 @@ export const PublishNFTComponent = ({
     (payload: IPublishNFTFormData) => {
       const errors: FormErrors<IPublishNFTFormData> = {};
 
-      if (!payload.amount) {
-        errors.amount = t('validation.required');
-      } else if (+payload.amount < MIN_AMOUNT) {
-        errors.amount = t('validation.min', { value: MIN_AMOUNT - 1 });
+      if (!payload.quantity) {
+        errors.quantity = t('validation.required');
+      } else if (+payload.quantity < MIN_AMOUNT) {
+        errors.quantity = t('validation.min', { value: MIN_AMOUNT - 1 });
+      } else if (+payload.quantity > maxQuantity) {
+        errors.quantity = t('validation.max', { value: maxQuantity + 1 });
       }
 
       if (payload.type === AuctionType.FixedSwap) {
@@ -156,7 +160,7 @@ export const PublishNFTComponent = ({
 
       return errors;
     },
-    [purchasePriceChecked, reservePriceChecked],
+    [maxQuantity, purchasePriceChecked, reservePriceChecked],
   );
 
   const durationOptions = useMemo(
@@ -197,7 +201,7 @@ export const PublishNFTComponent = ({
             standard,
             tokenId,
             price: new BigNumber(payload.price),
-            quantity: +payload.amount,
+            quantity: +payload.quantity,
           }),
         ).then(({ error }) => {
           if (!error) {
@@ -218,7 +222,7 @@ export const PublishNFTComponent = ({
             unitContract: payload.unitContract,
             standard,
             tokenId,
-            quantity: +payload.amount,
+            quantity: +payload.quantity,
           }),
         ).then(({ error }) => {
           if (!error) {
@@ -331,7 +335,7 @@ export const PublishNFTComponent = ({
               <Box className={classes.formControl}>
                 <Field
                   component={InputField}
-                  name="amount"
+                  name="quantity"
                   type="number"
                   label={t('publish-nft.label.amount')}
                   color="primary"
@@ -371,7 +375,7 @@ export const PublishNFTComponent = ({
               <Box className={classes.formControl}>
                 <Field
                   component={InputField}
-                  name="amount"
+                  name="quantity"
                   type="number"
                   label={t('publish-nft.label.amount')}
                   color="primary"
@@ -586,6 +590,7 @@ export const PublishNFT = () => {
             standard={data.standard}
             tokenId={data.id}
             img={data.fileurl}
+            maxQuantity={data.supply}
           />
         );
       }}
