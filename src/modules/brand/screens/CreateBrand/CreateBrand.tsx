@@ -1,17 +1,17 @@
-import React, { useCallback } from 'react';
-import { Field, Form, FormRenderProps } from 'react-final-form';
 import { Box, Button, Container, Typography } from '@material-ui/core';
-import { InputField } from 'modules/form/components/InputField';
-import { t } from 'modules/i18n/utils/intl';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { InputField } from 'modules/form/components/InputField';
+import { FormErrors } from 'modules/form/utils/FormErrors';
+import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
 import { Section } from 'modules/uiKit/Section';
-import { FormErrors } from 'modules/form/utils/FormErrors';
-import { createBrand } from '../../actions/createBrand';
+import React, { useCallback } from 'react';
+import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory } from 'react-router';
-import { BrandRoutesConfig } from '../../BrandRoutes';
-import { UploadAvatarField } from '../../components/UploadAvatarField';
 import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
+import { UploadAvatarField } from '../../../form/components/UploadAvatarField';
+import { createBrand } from '../../actions/createBrand';
+import { BrandRoutesConfig } from '../../BrandRoutes';
 
 export interface ICreateBrand {
   brandName: string;

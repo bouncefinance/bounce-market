@@ -1,17 +1,17 @@
 import { FormHelperText, InputLabel, TextFieldProps } from '@material-ui/core';
-import React, { useCallback, useMemo, useState } from 'react';
-import { FieldRenderProps } from 'react-final-form';
+import { IMAGE_FILES_MIMES } from 'modules/common/utils/mimeTypes';
 import { getErrorText } from 'modules/form/utils/getErrorText';
 import { readImage } from 'modules/form/utils/readImage';
-import { useUploadAvatarFieldStyles } from './useUploadAvatarFieldStyles';
-import { IMAGE_FILES_MIMES } from 'modules/common/utils/mimeTypes';
-
+import React, { useCallback, useMemo, useState } from 'react';
+import { FieldRenderProps } from 'react-final-form';
 import { InnerBlock } from './components/InnerBlock';
+import { useUploadAvatarFieldStyles } from './useUploadAvatarFieldStyles';
 
 interface IFieldProps extends FieldRenderProps<string> {
   className?: string;
   accepts?: string[];
   label?: string;
+  initialAvatar?: string;
 }
 
 export const UploadAvatarField = ({
@@ -20,11 +20,12 @@ export const UploadAvatarField = ({
   accepts = [],
   className,
   label,
+  initialAvatar = '',
 }: IFieldProps & TextFieldProps) => {
   const classes = useUploadAvatarFieldStyles();
 
   const inputRef = React.useRef(null);
-  const [avatar, setAvatar] = useState<string>('');
+  const [avatar, setAvatar] = useState<string>(initialAvatar);
 
   const handleReset = useCallback(() => {
     setAvatar('');
