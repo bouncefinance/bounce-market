@@ -258,7 +258,7 @@ export default function Ranking () {
         console.log('data', searchData.target.value);
     }
 
-    /** 切换tab */
+    /** 切换tab，筛选列表 */
     const handleChangeTab = (e, v) => {
         console.log('----->>v', v);
         setTabValue(v);
@@ -359,7 +359,7 @@ export default function Ranking () {
                     {NavList.map(nav => {
                         return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
                         () => {
-                            history.push('/Marketplace/' + nav.route)
+                            history.push('/Ranking')
                         }}>
                         <p className="flex flex-center-y">{nav.title}</p>
                         </li>
