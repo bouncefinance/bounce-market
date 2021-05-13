@@ -143,7 +143,12 @@ export const DetailsNFT = () => {
 
     return (
       <div className={classes.root}>
-        <ImgContainer className={classes.imgContainer} src={data.fileurl} />
+        <ImgContainer
+          className={classes.imgContainer}
+          src={data.fileurl}
+          title={data.itemname}
+          description={data.description}
+        />
 
         <Info className={classes.info}>
           <InfoDescr

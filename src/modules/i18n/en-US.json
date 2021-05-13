@@ -14,6 +14,10 @@
     "profile-settings": "Profile settings",
     "disconnect": "Disconnect"
   },
+  "social": {
+    "share": "Share",
+    "title-for-socials": "{title} — {description}"
+  },
   "wallet": {
     "unit": "{value, number} {unit}"
   },
@@ -163,7 +167,7 @@
     "unfollow": "Unfollow",
     "subscribers": "Subscribers",
     "bio": "Bio",
-    "share": "Share",
+
     "user-profile": "User profile",
     "edit-profile": "Edit profile",
     "edit": {

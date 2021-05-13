@@ -6,35 +6,83 @@ import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
 import { Button } from 'modules/uiKit/Button';
 import { useImgContainerStyles } from './useImgContainerStyles';
+import { t } from 'modules/i18n/utils/intl';
+import {
+  FacebookShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+} from 'react-share';
+import { TelegramIcon } from 'modules/common/components/Icons/TelegramIcon';
 
 interface INFTContentProps {
   className?: string;
   src: string;
+  title: string;
+  description: string;
 }
 
-export const ImgContainer = ({ className, src }: INFTContentProps) => {
+const currentUrl = window.location.href;
+
+export const ImgContainer = ({
+  className,
+  src,
+  title,
+  description,
+}: INFTContentProps) => {
   const classes = useImgContainerStyles();
+
+  let titleForSocial = '';
+  if (title && description) {
+    titleForSocial = t('social.title-for-socials', {
+      title: title,
+      description: description,
+    });
+  } else if (title) {
+    titleForSocial = title;
+  } else if (description) {
+    titleForSocial = description;
+  }
 
   const renderedTooltipContent = (
     <MenuList>
-      <MenuItem
-        className={classes.tooltipLink}
-        component="a"
-        href="//twitter.com"
-        target="_blank"
-      >
-        <TwitterIcon className={classes.tooltipIcon} />
-        Twitter
+      <MenuItem className={classes.tooltipItem} component="li">
+        <TwitterShareButton
+          resetButtonStyle={false}
+          className={classes.tooltipButton}
+          url={currentUrl}
+          title={titleForSocial}
+          hashtags={['Fangible', 'nft']}
+          via={'Fangible'}
+          related={['@Fangible_']}
+        >
+          <TwitterIcon className={classes.tooltipIcon} />
+          Twitter
+        </TwitterShareButton>
       </MenuItem>
 
-      <MenuItem
-        className={classes.tooltipLink}
-        component="a"
-        href="//fb.com"
-        target="_blank"
-      >
-        <FacebookIcon className={classes.tooltipIcon} />
-        Facebook
+      <MenuItem className={classes.tooltipItem} component="li">
+        <FacebookShareButton
+          resetButtonStyle={false}
+          className={classes.tooltipButton}
+          url={currentUrl}
+          quote={titleForSocial}
+          hashtag="#Fangible"
+        >
+          <FacebookIcon className={classes.tooltipIcon} />
+          Facebook
+        </FacebookShareButton>
+      </MenuItem>
+
+      <MenuItem className={classes.tooltipItem} component="li">
+        <TelegramShareButton
+          resetButtonStyle={false}
+          className={classes.tooltipButton}
+          url={currentUrl}
+          title={`${titleForSocial} \n#Fangible #nft`}
+        >
+          <TelegramIcon className={classes.tooltipIcon} />
+          Telegram
+        </TelegramShareButton>
       </MenuItem>
     </MenuList>
   );
@@ -54,14 +102,14 @@ export const ImgContainer = ({ className, src }: INFTContentProps) => {
               tooltip: classes.tooltip,
             }}
             title={renderedTooltipContent}
-            placement="bottom-end"
+            placement="bottom-start"
             enterTouchDelay={0}
-            leaveDelay={100}
+            leaveDelay={500}
             leaveTouchDelay={1000 * 60}
             interactive
           >
             <Button variant="outlined" className={classes.btn} rounded>
-              <ShareIcon className={classes.btnIcon} /> share
+              <ShareIcon className={classes.btnIcon} /> {t('social.share')}
             </Button>
           </Tooltip>
         </div>

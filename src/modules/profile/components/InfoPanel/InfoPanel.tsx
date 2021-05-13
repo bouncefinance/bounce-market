@@ -49,7 +49,7 @@ export const InfoPanel = ({
         </Grid>
 
         <Grid item>
-          <Tooltip title={t('profile.share')} arrow>
+          <Tooltip title={t('social.share')} arrow>
             <IconButton>
               <ShareIcon />
             </IconButton>
