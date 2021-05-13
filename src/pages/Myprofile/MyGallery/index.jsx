@@ -76,6 +76,7 @@ export default function Index() {
     // console.log('findDataByRecord_soldOutNft_721', findDataByRecord_soldOutNft_721)
     // console.log('findDataByRecord_soldOutNft_1155', findDataByRecord_soldOutNft_1155)
     // console.log('myNftData-1', myNftData)
+    window.localStorage.setItem('record_cancelListNft', null)
     if (findDataByRecord_soldOutNft_721) {
       myNftData.nft721Items = myNftData.nft721Items.filter(item => {
         return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_721.contract).toLowerCase() &&
@@ -164,6 +165,7 @@ export default function Index() {
     // console.log(tradePools)
     const record_cancelListNft = JSON.parse(window.localStorage.getItem('record_cancelListNft'))
     if (record_cancelListNft) {
+      window.localStorage.setItem('record_soldOutNft', null)
       tradePools = tradePools.filter(item => {
         return item.poolType !== AUCTION_TYPE.FixedSwap || item.poolId !== record_cancelListNft.poolId
       })
