@@ -406,7 +406,7 @@ const zh_CN = {
         "MyBrands.AddNewBrandsModal.DescriptionPlaceHolder": "输入你的品牌介绍",
         "MyBrands.AddNewBrandsModal.browseBrandPhoto": '浏览品牌图像',
         "MyBrands.AddNewBrandsModal.OnlySupports": "仅支持 JPG, PNG, GIF 格式",
-        "MyBrands.AddNewBrandsModal.Build": "品牌创建成功",
+        "MyBrands.AddNewBrandsModal.SuccessfullyBuild": "品牌创建成功",
         "MyBrands.AddNewBrandsModal.DataUpdateFailed": '数据更新失败，请重试',
         
         /* wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Cancel') */
