@@ -184,7 +184,12 @@ export const BuyNFT = () => {
 
         return (
           <div className={classes.root}>
-            <ImgContainer className={classes.imgContainer} src={item.fileurl} />
+            <ImgContainer
+              className={classes.imgContainer}
+              src={item.fileurl}
+              title={item.itemname}
+              description={item.description}
+            />
 
             <Info className={classes.info}>
               <InfoDescr
