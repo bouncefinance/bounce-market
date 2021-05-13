@@ -39,10 +39,14 @@ jobs:
   # build
   build-stage:
     <<: *build-template
+  build-fangible:
+    <<: *build-template
   build-prod:
     <<: *build-template
   # upload
   upload-stage:
+    <<: *upload-template
+  upload-fangible:
     <<: *upload-template
   upload-prod:
     <<: *upload-template
