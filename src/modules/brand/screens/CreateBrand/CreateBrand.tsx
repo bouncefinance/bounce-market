@@ -1,24 +1,25 @@
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { NftType } from 'modules/createNFT/actions/createNft';
 import { InputField } from 'modules/form/components/InputField';
+import { SelectField } from 'modules/form/components/SelectField';
+import { UploadAvatarField } from 'modules/form/components/UploadAvatarField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
 import { Section } from 'modules/uiKit/Section';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory } from 'react-router';
 import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
-import { UploadAvatarField } from '../../../form/components/UploadAvatarField';
 import { createBrand } from '../../actions/createBrand';
-import { BrandRoutesConfig } from '../../BrandRoutes';
 
 export interface ICreateBrand {
   brandName: string;
-  brandUrl: string;
+  standard: NftType;
   description: string;
-  customUrl: string;
-  brandAvatar: File;
+  brandSymbol: string;
+  file: File;
 }
 
 const MAX_SIZE: Bytes = 31457280;
@@ -36,11 +37,15 @@ const validateCreateBrand = (payload: ICreateBrand) => {
     errors.brandName = t('validation.required');
   }
 
-  if (payload.brandAvatar && !FILE_ACCEPTS.includes(payload.brandAvatar.type)) {
-    errors.brandAvatar = t('validation.invalid-type');
+  if (!payload.brandSymbol) {
+    errors.brandSymbol = t('validation.required');
   }
-  if (payload.brandAvatar && payload.brandAvatar.size > MAX_SIZE) {
-    errors.brandAvatar = t('validation.max-size', {
+
+  if (payload.file && !FILE_ACCEPTS.includes(payload.file.type)) {
+    errors.file = t('validation.invalid-type');
+  }
+  if (payload.file && payload.file.size > MAX_SIZE) {
+    errors.file = t('validation.max-size', {
       value: convertBytesToMegabytes(MAX_SIZE),
     });
   }
@@ -54,11 +59,25 @@ export const CreateBrand = () => {
   const dispatch = useDispatchRequest();
   const { push } = useHistory();
 
+  const standardOptions = useMemo(
+    () => [
+      {
+        label: t(`create-nft.standardOption.${NftType.ERC721}`),
+        value: NftType.ERC721,
+      },
+      {
+        label: t(`create-nft.standardOption.${NftType.ERC1155}`),
+        value: NftType.ERC1155,
+      },
+    ],
+    [],
+  );
+
   const handleSubmit = useCallback(
     (payload: ICreateBrand) => {
-      dispatch(createBrand()).then(({ error }) => {
+      dispatch(createBrand(payload)).then(({ error }) => {
         if (!error) {
-          push(BrandRoutesConfig.CreateBrand.generatePath());
+          push('/');
         }
       });
     },
@@ -81,10 +100,21 @@ export const CreateBrand = () => {
         </Box>
         <Box mb={5}>
           <Field
-            component={InputField}
-            name="brandUrl"
+            component={SelectField}
+            name="standard"
             type="text"
-            label={t('brand.create.label.brand-url')}
+            label={t('create-nft.label.standard')}
+            color="primary"
+            fullWidth={true}
+            options={standardOptions}
+          />
+        </Box>
+        <Box mb={5}>
+          <Field
+            component={InputField}
+            name="brandSymbol"
+            type="text"
+            label={t('brand.create.label.brand-symbol')}
             color="primary"
             fullWidth={true}
           />
@@ -105,21 +135,11 @@ export const CreateBrand = () => {
             }}
           />
         </Box>
-        <Box mb={5}>
-          <Field
-            component={InputField}
-            name="customUrl"
-            type="text"
-            label={t('brand.create.label.custom-url')}
-            color="primary"
-            fullWidth={true}
-          />
-        </Box>
 
         <Box mb={5}>
           <Field
             component={UploadAvatarField}
-            name="brandAvatar"
+            name="file"
             label={t('brand.create.label.brand-avatar')}
             accepts={FILE_ACCEPTS}
           />
@@ -154,6 +174,9 @@ export const CreateBrand = () => {
             onSubmit={handleSubmit}
             render={renderForm}
             validate={validateCreateBrand}
+            initialValues={{
+              standard: NftType.ERC721,
+            }}
           />
         </Box>
       </Container>
