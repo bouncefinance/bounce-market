@@ -137,7 +137,7 @@
         "brand-name": "Brand name",
         "brand-url": "Brand URL",
         "description": "Description",
-        "custom-url": "Custom URL",
+        "brand-symbol": "Brand symbol",
         "brand-avatar": "Brand avatar"
       },
       "avatar-accepts": "Supports JPG, PNG, JPEG2000",
