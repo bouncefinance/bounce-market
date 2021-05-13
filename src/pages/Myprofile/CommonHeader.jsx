@@ -14,7 +14,7 @@ import { myContext } from '@/redux/index.js'
 import SettingAccountModal from './SettingAccountModal'
 import UpdateTopBarImg from './MyBrands/updateTopBarImg'
 import edit_white from '@assets/images/icon/edit_white.svg'
-import themeBgImg from '@assets/images/big/d84d87b4548a138b206be2bae58a0362.png'
+import themeBgImg from '@assets/images/big/banner.jpg'
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
 
