@@ -51,7 +51,7 @@ export default function Index() {
     // const [modalStatus, setModalStatus] = useState(initStatus);
     const { sign_Axios } = useAxios()
     const { active, library, chainId, account } = useActiveWeb3React()
-    const [endHasAddress, setEndHasAddress] = useState(false)
+    // const [endHasAddress, setEndHasAddress] = useState(false)
     const [brandAddress, setBrandAddress] = useState(false)
     const [brandAddContract, setbrandAddContract] = useState(true)
     // eslint-disable-next-line
@@ -74,32 +74,31 @@ export default function Index() {
             }
         }
         getCreatedBrand().then(async address => {
-            // console.log('address:', address)
-            const addressNull = address.split('0x').join('').split('').filter(e => e !== '0').join('') !== ''
+            const addressNull = ZERO_ADDRESS
             try {
-                const res = await sign_Axios(Controller.brands.getaccountbrands, { accountaddress: account })
-                if (res.status===200){
+                const res = await sign_Axios.post(Controller.brands.getaccountbrands, { accountaddress: account })
+                if (res.status === 200) {
                     const brandListData = res.data.data || []
-                    const findBrand = brandListData.find(item=>String(item.contractaddress).toLowerCase() === String(address).toLowerCase())
-                    if(findBrand.length===0){
+                    const findBrand = brandListData.find(item => String(item.contractaddress).toLowerCase() === String(address).toLowerCase())
+                    if (!findBrand) {
                         setbrandAddContract(addressNull)
-                        setEndHasAddress(false)
+                        // setEndHasAddress(false)
                         setBrandAddress(addressNull)
-                    }else{
+                    } else {
                         setbrandAddContract(address)
-                        setEndHasAddress(true)
+                        // setEndHasAddress(true)
                         setBrandAddress(address)
-                    }  
+                    }
                 }
             } catch (error) {
-
+                console.log(error)
             }
         })
         // eslint-disable-next-line
     }, [active])
-    const hasAddressButNotBrand = brand_list.length === 0 && !endHasAddress
-    // console.log('brand_list', brand_list)
-    // console.log('brandAddContract', brandAddContract)
+    const hasAddressButNotBrand = brandAddress === ZERO_ADDRESS
+    // console.log('brand_list', brandAddress)
+    // console.log('brandAddContract', endHasAddress)
     // console.log('hasAddressButNotBrand', hasAddressButNotBrand)
 
     useEffect(() => {
