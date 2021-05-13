@@ -241,6 +241,11 @@ export default function Index() {
 			route: "/Brands",
 			enable: true,
 		},
+		{
+			name: wrapperIntl("header.boxs"),
+			route: "/Boxs",
+			enable: true,
+		},
 	];
 
     const updateActive = () => {

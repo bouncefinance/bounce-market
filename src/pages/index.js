@@ -36,6 +36,8 @@ import  ArtistHome  from './ArtistHome/index'
 import MyLiked from './Myprofile/MyLiked'
 import { InitAxios } from '@/utils/utils'
 
+import Boxs from './Boxs'
+
 InitAxios()
 export default function Index() {
 
@@ -83,6 +85,9 @@ export default function Index() {
 
                 <Route exact path='/AirHome/:id/:channel' component={AirHome} />
                 <Route exact path='/ArtistHome/:userName' component={ArtistHome} />
+
+                <Route exact path='/Boxs' render={() => {return <Redirect to='/Boxs/Hottest'/>}} />
+                <Route exact path='/Boxs/:boxsType' component={Boxs} />
 
                 <Route exact path='/404' component={Page404} />
 

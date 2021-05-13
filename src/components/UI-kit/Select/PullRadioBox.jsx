@@ -81,7 +81,7 @@ const PullRadioBoxStyled = styled.div`
         //position: absolute;
         position: ${({ popDirection }) => { return popDirection==='down' ? 'absolute' : 'relative' }};
         width: ${({ width }) => { return width || '262px' }};
-        max-height: 220px;
+        max-height: 320px;
         box-sizing: border-box;
         overflow-x: hidden;
         background: #FFFFFF;
@@ -130,7 +130,7 @@ const PullRadioBoxStyled = styled.div`
 export default function PullRadioBox({
     options, defaultValue, defaultItem, onChange,
     onValChange, disabled, prefix, style, width,
-    marginTop, title, borderHidden, popDirection='down',className }) {
+    marginTop, title, borderHidden, popDirection='down', className }) {
     // 这个组件的option 一定要传value属性
     const [open, setOpen] = useState(false)
     const [checkVal, setCheckVal] = useState(defaultValue || options[0].value)
