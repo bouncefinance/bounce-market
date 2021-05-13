@@ -117,7 +117,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                 if (brandAddress !== ZERO_ADDRESS) {
                     uploadData(imgUrl, brandAddress)
                     dispatch({ type: 'TransferModal', TransferModal: "" });
-                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
+                    dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
                     return
                 } else {
                     // console.log(nftType)
@@ -139,7 +139,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                             .on('receipt', async (_, receipt) => {
                                 // console.log('bid fixed swap receipt:', receipt)
                                 dispatch({ type: 'TransferModal', TransferModal: "" });
-                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
                                 const brandAddress = await getCreatedBrand()
                                 uploadData(imgUrl, brandAddress)
                             })
@@ -163,7 +163,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                                 const brandAddress = await getCreatedBrand()
                                 uploadData(imgUrl, brandAddress)
                                 dispatch({ type: 'TransferModal', TransferModal: "" });
-                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
                             })
                             .on('error', (err, receipt) => {
                                 // setBidStatus(errorStatus)
@@ -176,7 +176,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                     }
                 }
             }).catch(function (error) {
-                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyBrands.AddNewBrandsModal.DataUpdateFailed") });
+                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("MyProfile.MyBrands.AddNewBrandsModal.DataUpdateFailed") });
                 setBtnLock(false)
                 setInputDisable(false)
                 /* setBtnText('Try Again') */
