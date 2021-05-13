@@ -3,13 +3,14 @@ import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router'
 import Search from '../component/Other/Search'
 import axios from 'axios'
-import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import { useActiveWeb3React } from '@/web3'
 import Typography from '@material-ui/core/Typography';
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import ConnectWalletModal from '@components/Modal/ConnectWallet'
+import useAxios from '@/utils/useAxios'
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -204,6 +205,8 @@ export default function Ranking () {
 
     const { wrapperIntl } = useWrapperIntl()
     const [loading, setLoading] = useState(true)
+    const poolsParmas = { offset: 0, count: 1e4 }
+    const { sign_Axios } = useAxios();
 
     const NavList = [
       {
@@ -246,7 +249,7 @@ export default function Ranking () {
     const history = useHistory()
     const { active, chainId } = useActiveWeb3React()
     const [tabValue ,setTabValue] = useState('All');
-    
+
     /** Ranking列表数据 */
     const [tableData, setTableData] = useState([]);
     const [defaultValue, setDefaultValue] = useState('Search');
@@ -255,8 +258,10 @@ export default function Ranking () {
         console.log('data', searchData.target.value);
     }
 
-    const handleSort = () => {
-
+    /** 切换tab */
+    const handleChangeTab = (e, v) => {
+        console.log('----->>v', v);
+        setTabValue(v);
     }
 
     useState(() => {
@@ -307,7 +312,45 @@ export default function Ranking () {
                 assets: '183465'
             }
         ])
+    }, []);
+
+    const initPools = async (params) => {
+        const res = await axios.get('/pools', { params: params })
+        if (res.data.code === 200) {
+          setTableData(res.data.data)
+        }
+    }
+    useEffect(() => {
+        initPools(poolsParmas)
     }, [])
+
+    // useEffect(() => {
+    
+    //     if (tableData) {
+    //       const tradePools = (tableData.tradePools || []).map(item => ({
+    //         ...item,
+    //       })).filter(item => item.state !== 1)
+    //       const tradeAuctions = (tableData.tradeAuctions || []).map(item => ({
+    //         ...item,
+    //         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
+    //       }))
+    //         .filter(item => item.state !== 1 && item.poolId !== 0)
+    
+    
+    //       setLoading(true)
+    //       sign_Axios.post('', {})
+    //         .then(res => {
+    //           if (res.status === 200 && res.data.code === 1) {
+    
+    //             setLoading(false)
+    //           }
+    //         })
+    //         .catch(() => {
+    //           setLoading(false)
+    //         })
+    //     }
+    //     // eslint-disable-next-line
+    //   }, [active, tableData])
 
     return (
         <>
@@ -336,7 +379,7 @@ export default function Ranking () {
                     </h1>
                 </div>
                 <div className="contentMid">
-                    <AntTabs value={tabValue} onChange={(e, v) => {setTabValue(v)}} aria-label="ant example">
+                    <AntTabs value={tabValue} onChange={handleChangeTab} aria-label="ant example">
                         {
                             TabList.map((item, index) => {
                                 return <AntTab label={item.title} key={index} value={item.value} />
