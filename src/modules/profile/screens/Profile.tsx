@@ -14,7 +14,7 @@ import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
 import { ActivityTable } from '../components/ActivityTable';
 import { Avatar } from '../components/Avatar';
 import { Bio } from '../components/Bio';
-import { IBrandCardProps } from '../components/BrandCard';
+import { IBrandCardProps } from 'modules/brand/components/BrandCard';
 import { Header } from '../components/Header';
 import { InfoPanel } from '../components/InfoPanel';
 import { Social } from '../components/Social';
@@ -238,7 +238,7 @@ export const Profile = () => {
                         // status={item.status}
                         // UPDATE price
                         price={item.poolId ? new BigNumber(10) : undefined}
-                        copies={'1'}
+                        copies={item.supply}
                         ImgProps={{
                           src: item.fileUrl,
                           objectFit: 'scale-down',

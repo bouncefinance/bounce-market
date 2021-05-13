@@ -13,6 +13,7 @@ import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { t } from 'modules/i18n/utils/intl';
 import { useInfoPanelStyles } from './useInfoPanelStyles';
+import { ProfileRoutesConfig } from '../../ProfileRoutes';
 
 interface IInfoPanelProps {
   className?: string;
@@ -57,7 +58,7 @@ export const InfoPanel = ({
         </Grid>
 
         <Grid item>
-          <Link to="/profile/edit">
+          <Link to={ProfileRoutesConfig.EditProfile.generatePath()}>
             <Tooltip title={t('profile.edit-profile')} arrow>
               <IconButton>
                 <CogIcon />

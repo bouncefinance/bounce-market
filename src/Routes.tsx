@@ -8,9 +8,9 @@ import {
   RoutesConfiguration as CreateNFTRoutesConfig,
 } from './modules/createNFT/Routes';
 import {
-  DetailsNFTRoutes,
-  DetailsNFTRoutesConfig,
-} from './modules/detailsNFT/DetailsNFTRoutes';
+  BuyNFTRoutes,
+  BuyNFTRoutesConfig,
+} from './modules/buyNFT/BuyNFTRoutes';
 import { DefaultLayout } from './modules/layout/components/DefautLayout';
 import {
   Routes as OverviewRoutes,
@@ -19,6 +19,7 @@ import {
 import { PageNotFound } from './modules/router/components/PageNotFound';
 import { PrivateRoute } from './modules/router/components/PrivateRoute';
 import { Themes } from './modules/themes/types';
+import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 
 export function Routes() {
   return (
@@ -48,10 +49,10 @@ export function Routes() {
 
       <Route
         exact
-        path={DetailsNFTRoutesConfig.DetailsNFT.path}
+        path={BuyNFTRoutesConfig.DetailsNFT.path}
         render={() => (
           <DefaultLayout>
-            <DetailsNFTRoutes />
+            <BuyNFTRoutes />
           </DefaultLayout>
         )}
       />
@@ -82,6 +83,16 @@ export function Routes() {
         render={() => (
           <DefaultLayout>
             <ProfileRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={BrandRoutesConfig.CreateBrand.path}
+        render={() => (
+          <DefaultLayout>
+            <BrandRoutes />
           </DefaultLayout>
         )}
       />

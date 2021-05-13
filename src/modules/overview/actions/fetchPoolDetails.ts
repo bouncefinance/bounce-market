@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js';
 import { Address } from '../../common/types/unit';
 import { AuctionState } from './fetchPools';
 import Web3 from 'web3';
+import { AuctionType } from '../api/auctionType';
 
 interface IApiFixedAuctionDetails {
   amount_total0: number;
@@ -97,12 +98,12 @@ function isApiEnglishAuction(
 export function isEnglishAuction(
   data: IFetchPoolDetailsData,
 ): data is IEnglishAuctionDetails {
-  return (data as IEnglishAuctionDetails).amountMax1 === undefined;
+  return (data as IEnglishAuctionDetails).amountMax1 !== undefined;
 }
 
 interface IFetchPoolDetailsParams {
   poolId: number;
-  standard: NftType;
+  poolType: AuctionType;
 }
 
 export const fetchPoolDetails = createSmartAction<
@@ -119,8 +120,7 @@ export const fetchPoolDetails = createSmartAction<
       params: {
         pool_id: params.poolId,
         pool_type:
-          // TODO Wrong mapping?
-          params.standard === NftType.ERC721 ? 'fixedswap' : 'english',
+          params.poolType === AuctionType.FixedSwap ? 'fixedswap' : 'english',
       },
     },
     meta: {

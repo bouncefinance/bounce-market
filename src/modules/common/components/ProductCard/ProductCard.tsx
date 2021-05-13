@@ -39,7 +39,7 @@ export interface IProductCardProps {
   priceType?: string;
   endDate?: Date;
   likes?: number;
-  copies?: string;
+  copies?: number;
   ImgProps: IImgProps;
   ProfileInfoProps: IProfileInfoProps;
   href?: string;
