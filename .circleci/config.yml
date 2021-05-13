@@ -30,10 +30,10 @@ upload-template: &upload-template
         at: '.'
     - run:
         name: Upload artifacts
-        command: aws s3 cp ./build s3://stage.fangbile.com/ --acl bucket-owner-full-control --recursive --cache-control "public,max-age=600,s-maxage=3600"
+        command: aws s3 cp ./build s3://$DOMAIN_MARKET/ --acl bucket-owner-full-control --recursive --cache-control "public,max-age=600,s-maxage=3600"
     - run:
         name: Cloudfront invalidation
-        command: aws cloudfront create-invalidation --distribution-id E3HSC3HZ3YOYM6 --paths '/*'
+        command: aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID_MARKET --paths '/*'
 
 jobs:
   # build
