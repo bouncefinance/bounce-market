@@ -1,16 +1,22 @@
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
-import { t } from 'modules/i18n/utils/intl';
-import { NotificationActions } from 'modules/notification/store/NotificationActions';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
 import { IProfileInfo } from '../api/profileInfo';
 import { editProfile } from './editProfile';
+import { editProfileBandImg } from './editProfileBandImg';
 import { fetchProfileInfo } from './fetchProfileInfo';
 
-export const fileUpload = createSmartAction<RequestAction>(
+interface IFileUploadArgs {
+  formData: FormData;
+  fileType: 'avatar' | 'bandImg';
+}
+
+export const fileUpload: (
+  payload: IFileUploadArgs,
+) => RequestAction<any, any> = createSmartAction(
   'fileUpload',
-  (formData: FormData) => ({
+  ({ formData, fileType }: IFileUploadArgs) => ({
     request: {
       url: '/api/v2/main/auth/fileupload',
       method: 'post',
@@ -25,13 +31,6 @@ export const fileUpload = createSmartAction<RequestAction>(
         _action: RequestAction,
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
-        store.dispatch(
-          NotificationActions.showNotification({
-            message: t('profile.edit.success-message'),
-            severity: 'success',
-          }),
-        );
-
         const { data: profileInfo } = getQuery<IProfileInfo | null>(
           store.getState(),
           {
@@ -39,10 +38,18 @@ export const fileUpload = createSmartAction<RequestAction>(
           },
         );
 
-        if (profileInfo && request.data.code === 200) {
+        const isSuccessfulUpload = request.data.code === 200;
+
+        if (fileType === 'avatar' && isSuccessfulUpload) {
           store.dispatch(
             editProfile({
-              ...profileInfo,
+              ...(profileInfo || {}),
+              imgUrl: request.data.result.path,
+            }) as any,
+          );
+        } else if (fileType === 'bandImg' && isSuccessfulUpload) {
+          store.dispatch(
+            editProfileBandImg({
               imgUrl: request.data.result.path,
             }),
           );

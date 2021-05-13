@@ -1,17 +1,15 @@
 import { Box, Dialog, Typography } from '@material-ui/core';
-import { Mutation, useDispatchRequest, useQuery } from '@redux-requests/react';
+import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { Bytes, convertBytesToMegabytes } from 'modules/common/types/unit';
-import { UploadAvatarField } from 'modules/form/components/UploadAvatarField';
+import { UploadFileField } from 'modules/form/components/UploadFileField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
-import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { fileUpload } from 'modules/profile/actions/fileUpload';
-import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Button } from 'modules/uiKit/Button';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
-import { useSetAvatarModalStyles } from './useSetAvatarModalStyles';
+import { useSetBandImgModalStyles } from './useSetBandImgModalStyles';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -21,18 +19,19 @@ const FILE_ACCEPTS: string[] = [
   'image/jpm',
 ];
 
-export interface ISetAvatarValues {
-  avatar: File;
+export interface ISetBandImgValues {
+  bandImg: File;
 }
 
-const validateForm = (payload: ISetAvatarValues) => {
-  const errors: FormErrors<ISetAvatarValues> = {};
+const validateForm = (payload: ISetBandImgValues) => {
+  const errors: FormErrors<ISetBandImgValues> = {};
+  console.log({ payload });
 
-  if (payload.avatar && !FILE_ACCEPTS.includes(payload.avatar.type)) {
-    errors.avatar = t('validation.invalid-type');
+  if (payload.bandImg && !FILE_ACCEPTS.includes(payload.bandImg.type)) {
+    errors.bandImg = t('validation.invalid-type');
   }
-  if (payload.avatar && payload.avatar.size > MAX_SIZE) {
-    errors.avatar = t('validation.max-size', {
+  if (payload.bandImg && payload.bandImg.size > MAX_SIZE) {
+    errors.bandImg = t('validation.max-size', {
       value: convertBytesToMegabytes(MAX_SIZE),
     });
   }
@@ -40,24 +39,24 @@ const validateForm = (payload: ISetAvatarValues) => {
   return errors;
 };
 
-interface ISetAvatarModalProps {
+interface ISetBandImgModalProps {
   isOpen?: boolean;
   onClose?: () => void;
 }
 
-export const SetAvatarModal = ({
+export const SetBandImgModal = ({
   onClose,
   isOpen = false,
-}: ISetAvatarModalProps) => {
-  const classes = useSetAvatarModalStyles();
+}: ISetBandImgModalProps) => {
+  const classes = useSetBandImgModalStyles();
   const dispatch = useDispatchRequest();
 
   const onSubmit = useCallback(
-    (payload: ISetAvatarValues) => {
+    (payload: ISetBandImgValues) => {
       const formData = new FormData();
-      formData.append('filename', payload.avatar);
+      formData.append('filename', payload.bandImg);
 
-      dispatch(fileUpload({ formData, fileType: 'avatar' })).then(
+      dispatch(fileUpload({ formData, fileType: 'bandImg' })).then(
         ({ error }) => {
           if (!error && typeof onClose === 'function') {
             onClose();
@@ -68,22 +67,18 @@ export const SetAvatarModal = ({
     [dispatch, onClose],
   );
 
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
-  });
-
   const renderForm = ({
     handleSubmit,
     dirty,
-  }: FormRenderProps<ISetAvatarValues>) => {
+  }: FormRenderProps<ISetBandImgValues>) => {
     return (
       <Box component="form" onSubmit={handleSubmit}>
-        <Box mb={5} maxWidth={500}>
+        <Box mb={5}>
           <Field
-            component={UploadAvatarField}
-            name="avatar"
+            component={UploadFileField}
+            name="bandImg"
             accepts={FILE_ACCEPTS}
-            initialAvatar={profileInfo?.imgUrl}
+            className={classes.fileBox}
           />
         </Box>
 
@@ -116,7 +111,7 @@ export const SetAvatarModal = ({
       }}
     >
       <Box mb={3} textAlign="center">
-        <Typography variant="h2">{t('profile.edit-avatar')}</Typography>
+        <Typography variant="h2">{t('profile.edit-cover')}</Typography>
       </Box>
 
       <Form onSubmit={onSubmit} render={renderForm} validate={validateForm} />

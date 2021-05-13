@@ -108,6 +108,14 @@ export const mainTheme = createMuiTheme({
         },
       },
     },
+
+    MuiDialog: {
+      fullWidth: true,
+      maxWidth: 'md',
+      PaperProps: {
+        elevation: 0,
+      },
+    },
   },
 
   overrides: {
@@ -496,9 +504,12 @@ export const mainTheme = createMuiTheme({
     MuiDialog: {
       paper: {
         margin: defaultTheme.spacing(4, 1),
+        padding: defaultTheme.spacing(4, 2.5),
+        borderRadius: 22,
 
         [defaultTheme.breakpoints.up('md')]: {
           margin: defaultTheme.spacing(4, 4),
+          padding: defaultTheme.spacing(3, 5),
         },
       },
 
