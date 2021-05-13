@@ -19,12 +19,12 @@ import { Img } from 'modules/uiKit/Img';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Days } from '../../../common/types/unit';
-import { fetchItem } from '../../../sellNFT/actions/fetchItem';
+import { fetchItem } from '../../../buyNFT/actions/fetchItem';
 import { ButtonGroupField } from '../../../form/components/ButtonGroupField/ButtonGroupField';
 import { InputField } from '../../../form/components/InputField';
 import { SelectField } from '../../../form/components/SelectField';
@@ -36,6 +36,7 @@ import { NftType } from '../../actions/createNft';
 import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
+import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
@@ -47,7 +48,7 @@ const FEE_PERCENTAGE = 1;
 interface IPublishFixedSwap {
   type: AuctionType.FixedSwap;
   price: string;
-  amount: number | string;
+  quantity: string;
   unitContract: string;
   img?: string;
 }
@@ -57,7 +58,7 @@ interface IPublishEnglishAuction {
   minBid: number;
   purchasePrice: number;
   reservePrice: number;
-  amount: number | string;
+  quantity: string;
   duration: Days;
   unitContract: string;
 }
@@ -69,16 +70,20 @@ const formatAmount = (value: string) => (value ? `${Math.round(+value)}` : '1');
 interface IPublishNFTComponentProps {
   name: string;
   tokenContract: string;
-  standard: NftType;
+  nftType: NftType;
   tokenId: number;
+  maxQuantity: number;
+  onPublish: () => void;
   img?: string;
 }
 
 export const PublishNFTComponent = ({
   name,
   tokenContract,
-  standard,
+  nftType,
   tokenId,
+  maxQuantity,
+  onPublish,
   img,
 }: IPublishNFTComponentProps) => {
   const classes = usePublishNFTtyles();
@@ -118,10 +123,12 @@ export const PublishNFTComponent = ({
     (payload: IPublishNFTFormData) => {
       const errors: FormErrors<IPublishNFTFormData> = {};
 
-      if (!payload.amount) {
-        errors.amount = t('validation.required');
-      } else if (+payload.amount < MIN_AMOUNT) {
-        errors.amount = t('validation.min', { value: MIN_AMOUNT - 1 });
+      if (!payload.quantity) {
+        errors.quantity = t('validation.required');
+      } else if (+payload.quantity < MIN_AMOUNT) {
+        errors.quantity = t('validation.min', { value: MIN_AMOUNT - 1 });
+      } else if (+payload.quantity > maxQuantity) {
+        errors.quantity = t('validation.max', { value: maxQuantity + 1 });
       }
 
       if (payload.type === AuctionType.FixedSwap) {
@@ -156,7 +163,7 @@ export const PublishNFTComponent = ({
 
       return errors;
     },
-    [purchasePriceChecked, reservePriceChecked],
+    [maxQuantity, purchasePriceChecked, reservePriceChecked],
   );
 
   const durationOptions = useMemo(
@@ -194,14 +201,14 @@ export const PublishNFTComponent = ({
             name,
             tokenContract,
             unitContract: payload.unitContract,
-            standard,
+            standard: nftType,
             tokenId,
             price: new BigNumber(payload.price),
-            quantity: +payload.amount,
+            quantity: +payload.quantity,
           }),
         ).then(({ error }) => {
           if (!error) {
-            console.log('sent');
+            onPublish();
           }
         });
       } else {
@@ -216,9 +223,9 @@ export const PublishNFTComponent = ({
             name,
             tokenContract,
             unitContract: payload.unitContract,
-            standard,
+            standard: nftType,
             tokenId,
-            quantity: +payload.amount,
+            quantity: +payload.quantity,
           }),
         ).then(({ error }) => {
           if (!error) {
@@ -227,7 +234,7 @@ export const PublishNFTComponent = ({
         });
       }
     },
-    [dispatch, name, standard, tokenContract, tokenId],
+    [dispatch, name, nftType, onPublish, tokenContract, tokenId],
   );
 
   const renderForm = ({
@@ -331,13 +338,14 @@ export const PublishNFTComponent = ({
               <Box className={classes.formControl}>
                 <Field
                   component={InputField}
-                  name="amount"
+                  name="quantity"
                   type="number"
                   label={t('publish-nft.label.amount')}
                   color="primary"
                   fullWidth={true}
                   parse={formatAmount}
                   format={formatAmount}
+                  disabled={nftType === NftType.ERC721}
                 />
               </Box>
             </>
@@ -371,12 +379,12 @@ export const PublishNFTComponent = ({
               <Box className={classes.formControl}>
                 <Field
                   component={InputField}
-                  name="amount"
+                  name="quantity"
                   type="number"
                   label={t('publish-nft.label.amount')}
                   color="primary"
                   fullWidth={true}
-                  disabled
+                  disabled={nftType === NftType.ERC721}
                 />
                 <div className={classes.fieldText}>
                   {t('publish-nft.auction-amount')}
@@ -555,7 +563,7 @@ export const PublishNFTComponent = ({
                 type: AuctionType.FixedSwap,
                 unitContract: defaultCurrency,
                 duration: durationOptions[0].value,
-                amount: '1',
+                quantity: maxQuantity.toString(),
               } as Partial<IPublishFixedSwap>
             }
           />
@@ -571,7 +579,13 @@ export const PublishNFT = () => {
     contract: string;
     id: string;
   }>();
+  const { replace } = useHistory();
   const id = parseInt(idParam, 10);
+
+  const handlePublish = useCallback(() => {
+    replace(ProfileRoutesConfig.UserProfile.generatePath());
+  }, [replace]);
+
   useEffect(() => {
     dispatch(fetchItem({ contract, id }));
   }, [contract, dispatch, id]);
@@ -583,9 +597,11 @@ export const PublishNFT = () => {
           <PublishNFTComponent
             name={data.itemname}
             tokenContract={data.contractaddress}
-            standard={data.standard}
+            nftType={data.standard}
             tokenId={data.id}
             img={data.fileurl}
+            maxQuantity={data.supply}
+            onPublish={handlePublish}
           />
         );
       }}

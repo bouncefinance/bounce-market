@@ -7,7 +7,6 @@ import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
 import { fetchItemsByIds } from './fetchItemsByIds';
 import { IItem } from '../api/getItems';
 import { AuctionType } from '../api/auctionType';
-import { NftType } from '../../createNFT/actions/createNft';
 
 export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
   'fetchOverview',
@@ -43,11 +42,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                     fetchPoolDetails(
                       {
                         poolId: item.poolId,
-                        // TODO Wrong mapping?
-                        poolType:
-                          item.standard === NftType.ERC1155
-                            ? AuctionType.FixedSwap
-                            : AuctionType.EnglishAuction,
+                        poolType: item.auctionType,
                       },
                       { silent: true, requestKey: item.poolId },
                     ),

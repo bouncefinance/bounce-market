@@ -13,6 +13,7 @@ interface IInfoPricesProps {
   onBuyClick?: () => void;
   onBidClick?: () => void;
   endDate?: Date;
+  disabled: boolean;
 }
 
 export const InfoPrices = ({
@@ -23,9 +24,9 @@ export const InfoPrices = ({
   cryptoCurrency,
   onBidClick,
   onBuyClick,
+  disabled,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
-  console.log('endDate', endDate);
   return (
     <Grid container spacing={3} alignItems="center">
       <Grid item xs={12} sm>
@@ -56,7 +57,12 @@ export const InfoPrices = ({
           </Box>
         )}
 
-        <Button variant="outlined" fullWidth onClick={onBuyClick}>
+        <Button
+          disabled={disabled}
+          variant="outlined"
+          fullWidth
+          onClick={onBuyClick}
+        >
           {t('details-nft.buy-now')}
         </Button>
       </Grid>

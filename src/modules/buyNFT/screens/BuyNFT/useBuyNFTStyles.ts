@@ -5,7 +5,7 @@ import {
   HEADER_HEIGHT_XS,
 } from 'modules/layout/components/Header/HeaderStyles';
 
-export const useSellNFTStyles = makeStyles<Theme>(theme => ({
+export const useBuyNFTStyles = makeStyles<Theme>(theme => ({
   root: {
     background: theme.palette.background.default,
     color: theme.palette.text.primary,
