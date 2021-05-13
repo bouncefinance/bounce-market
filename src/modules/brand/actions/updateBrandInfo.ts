@@ -32,7 +32,7 @@ export const updateBrandInfo = createSmartAction<
         if (data.code !== 1) {
           throw new Error(data.msg);
         }
-      }
-    }
-  }
+      },
+    },
+  };
 });

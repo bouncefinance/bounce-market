@@ -1,12 +1,12 @@
-import { RequestAction } from "@redux-requests/core";
-import { FANGIBLE_URL } from "modules/common/conts";
-import { createAction as createSmartAction } from "redux-smart-actions";
-import { IApiQueryBrand, mapQueryBrandAddress } from "../api/queryBrand";
-import { QueryBrandAddressAction } from "./const";
+import { RequestAction } from '@redux-requests/core';
+import { FANGIBLE_URL } from 'modules/common/conts';
+import { createAction as createSmartAction } from 'redux-smart-actions';
+import { IApiQueryBrand, mapQueryBrandAddress } from '../api/queryBrand';
+import { QueryBrandAddressAction } from './const';
 
 export const queryBrandAddress = createSmartAction<
   RequestAction<IApiQueryBrand, string>,
-  [{address: string}]
+  [{ address: string }]
 >(QueryBrandAddressAction, data => {
   const address: string = data.address;
   return {
@@ -22,7 +22,7 @@ export const queryBrandAddress = createSmartAction<
           throw new Error('Unexpected response');
         }
         return mapQueryBrandAddress(data, address);
-      }
-    }
-  }
+      },
+    },
+  };
 });
