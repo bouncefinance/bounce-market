@@ -12,6 +12,7 @@ import BounceNFTFactory from '@/web3/abi/BounceNFTFactory.json'
 import { ZERO_ADDRESS } from '@/web3/address_list/token'
 import axios from 'axios'
 import useAxios from '@/utils/useAxios'
+import { Controller } from '@/utils/controller'
 
 const BrandsStyled = styled.div`
     width: 1100px;
@@ -50,7 +51,8 @@ export default function Index() {
     // const [modalStatus, setModalStatus] = useState(initStatus);
     const { sign_Axios } = useAxios()
     const { active, library, chainId, account } = useActiveWeb3React()
-    const [brandAddress, setbrandAddress] = useState('')
+    const [endHasAddress, setEndHasAddress] = useState(false)
+    const [brandAddress, setBrandAddress] = useState(false)
     const [brandAddContract, setbrandAddContract] = useState(true)
     // eslint-disable-next-line
     const [brandList, setBrandList] = useState([])
@@ -71,15 +73,34 @@ export default function Index() {
                 return ''
             }
         }
-        getCreatedBrand().then(address => {
+        getCreatedBrand().then(async address => {
             // console.log('address:', address)
             const addressNull = address.split('0x').join('').split('').filter(e => e !== '0').join('') !== ''
-            setbrandAddContract(addressNull)
-            setbrandAddress(address)
+            try {
+                const res = await sign_Axios(Controller.brands.getaccountbrands, { accountaddress: account })
+                if (res.status===200){
+                    const brandListData = res.data.data || []
+                    const findBrand = brandListData.find(item=>String(item.contractaddress).toLowerCase() === String(address).toLowerCase())
+                    if(findBrand.length===0){
+                        setbrandAddContract(addressNull)
+                        setEndHasAddress(false)
+                        setBrandAddress(addressNull)
+                    }else{
+                        setbrandAddContract(address)
+                        setEndHasAddress(true)
+                        setBrandAddress(address)
+                    }  
+                }
+            } catch (error) {
+
+            }
         })
         // eslint-disable-next-line
     }, [active])
-    const hasAddressButNotBrand = brand_list.length === 0 && brandAddContract
+    const hasAddressButNotBrand = brand_list.length === 0 && !endHasAddress
+    // console.log('brand_list', brand_list)
+    // console.log('brandAddContract', brandAddContract)
+    // console.log('hasAddressButNotBrand', hasAddressButNotBrand)
 
     useEffect(() => {
         if (!active) return
@@ -127,13 +148,13 @@ export default function Index() {
         console.log(brandList, brandInfo)
         const list = brandList.map(listItem => {
             // console.log(listItem, brandInfo)
-            const tarItem = brandInfo.find(brandItem => String(brandItem.contractaddress||brandItem.contract_address).toLowerCase() === String(listItem.contract_address).toLowerCase())
+            const tarItem = brandInfo.find(brandItem => String(brandItem.contractaddress || brandItem.contract_address).toLowerCase() === String(listItem.contract_address).toLowerCase())
             return {
                 ...listItem,
                 ...tarItem
             }
         })
-        .filter(item=>item.contract_address&&item.contractaddress)
+            .filter(item => item.contract_address && item.contractaddress)
         console.log(list)
         setBrandList(list)
     }

@@ -51,7 +51,7 @@ export default function Index() {
         // console.log('myNftData', myNftData)
         const data = res.data.data
         myNftData.nft721Items = data.nfts721.filter(item => parseInt(item.token_id) < 9999999999)
-        myNftData.nft1155Items = data.nfts1155.filter(item => parseInt(item.token_id) < 9999999999)
+        myNftData.nft1155Items = data.nfts1155.filter(item => parseInt(item.token_id) < 9999999999 && parseInt(item.balance) > 0)
       }
     } catch (error) {
 
@@ -86,10 +86,10 @@ export default function Index() {
         return String(item.contract_addr).toLowerCase() !== String(findDataByRecord_soldOutNft_1155.contract).toLowerCase() &&
           parseInt(item.token_id) !== parseInt(findDataByRecord_soldOutNft_1155.token_id)
       })
-    }else {
+    } else {
       window.localStorage.setItem('record_soldOutNft', null)
     }
-    
+
 
     // console.log('myNftData-2', myNftData)
 
