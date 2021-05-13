@@ -1,4 +1,4 @@
-import { fade, makeStyles, Theme } from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core';
 
 export const useImgContainerStyles = makeStyles<Theme>(theme => ({
   root: {
@@ -60,39 +60,5 @@ export const useImgContainerStyles = makeStyles<Theme>(theme => ({
   btnIcon: {
     fontSize: 18,
     marginRight: theme.spacing(1),
-  },
-
-  tooltip: {
-    minWidth: 140,
-    padding: 0,
-    background: theme.palette.background.default,
-    border: `1px solid ${fade(theme.palette.text.primary, 0.2)}`,
-    borderRadius: 12,
-    color: theme.palette.text.primary,
-  },
-
-  tooltipItem: {
-    fontSize: 13,
-    display: 'block',
-    width: '100%',
-    padding: 0,
-  },
-
-  tooltipButton: {
-    display: 'block',
-    width: '100%',
-    textAlign: 'left',
-    background: 'transparent',
-    color: 'inherit',
-    border: 0,
-    font: 'inherit',
-    fontWeight: 500,
-    cursor: 'pointer',
-    padding: theme.spacing(1, 2.5),
-  },
-
-  tooltipIcon: {
-    marginRight: theme.spacing(1.5),
-    verticalAlign: 'middle',
   },
 }));
