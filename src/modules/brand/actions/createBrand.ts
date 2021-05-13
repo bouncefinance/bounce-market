@@ -1,20 +1,22 @@
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { setAccount } from 'modules/account/store/actions/setAccount';
+import { uploadFile } from 'modules/common/actions/uploadFile';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { NftType } from 'modules/createNFT/actions/createNft';
-import { uploadFile } from 'modules/createNFT/actions/uploadFile';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
+import { AbiItem } from 'web3-utils';
+import {
+  default as BoucneErc721,
+  default as BounceErc1155,
+} from '../contract/BounceErc1155.json';
+import BounceNFTFactory from '../contract/BounceNFTFactory.json';
 import { ICreateBrand } from '../screens/CreateBrand';
 import { CreateBrandAction, getBrandContract } from './const';
 import { queryBrandAddress } from './queryCreatedBrand';
 import { IUpdateBrandInfoPayload, updateBrandInfo } from './updateBrandInfo';
-import { AbiItem } from 'web3-utils';
-import BounceNFTFactory from '../contract/BounceNFTFactory.json';
-import BoucneErc721 from '../contract/BounceErc1155.json';
-import BounceErc1155 from '../contract/BounceErc1155.json';
-import { TransactionReceipt } from '@ethersproject/abstract-provider';
 
 export const createBrand = createSmartAction(
   CreateBrandAction,
@@ -51,7 +53,7 @@ export const createBrand = createSmartAction(
               contractaddress: brandAddress.data ?? '',
               standard: standard,
               description: description,
-              imgurl: uploadFileResult.data?.path ?? '',
+              imgurl: uploadFileResult.data?.result.path ?? '',
               owneraddress: address,
               ownername: '',
             };

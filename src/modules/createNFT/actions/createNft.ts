@@ -1,15 +1,15 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import { uploadFile } from 'modules/common/actions/uploadFile';
 import { Store } from 'redux';
+import { createAction as createSmartAction } from 'redux-smart-actions';
+import { AbiItem } from 'web3-utils';
 import { RootState } from '../../../store/store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
-import BounceERC721WithSign from '../contracts/BounceERC721WithSign.json';
-import { AbiItem } from 'web3-utils';
-import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import BounceERC1155WithSign from '../contracts/BounceERC1155WithSign.json';
+import BounceERC721WithSign from '../contracts/BounceERC721WithSign.json';
 import { addItem, IAddItemPayload } from './addItem';
-import { uploadFile } from './uploadFile';
 
 export enum NftType {
   ERC721,
@@ -71,7 +71,7 @@ export const createNft = createSmartAction(
                   ? getBounceERC721WithSign(chainId)
                   : getBounceERC1155WithSign(chainId),
               description,
-              fileurl: data?.path || '',
+              fileurl: data?.result.path || '',
               itemname: name,
               itemsymbol: 'BOUNCE',
               owneraddress: address,

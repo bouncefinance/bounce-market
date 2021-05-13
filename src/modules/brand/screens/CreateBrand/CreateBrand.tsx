@@ -1,18 +1,18 @@
-import React, { useCallback, useMemo } from 'react';
-import { Field, Form, FormRenderProps } from 'react-final-form';
 import { Box, Button, Container, Typography } from '@material-ui/core';
-import { InputField } from 'modules/form/components/InputField';
-import { t } from 'modules/i18n/utils/intl';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { NftType } from 'modules/createNFT/actions/createNft';
+import { InputField } from 'modules/form/components/InputField';
+import { SelectField } from 'modules/form/components/SelectField';
+import { UploadAvatarField } from 'modules/form/components/UploadAvatarField';
+import { FormErrors } from 'modules/form/utils/FormErrors';
+import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
 import { Section } from 'modules/uiKit/Section';
-import { FormErrors } from 'modules/form/utils/FormErrors';
-import { createBrand } from '../../actions/createBrand';
+import React, { useCallback, useMemo } from 'react';
+import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory } from 'react-router';
-import { UploadAvatarField } from '../../components/UploadAvatarField';
 import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
-import { SelectField } from 'modules/form/components/SelectField';
-import { NftType } from 'modules/createNFT/actions/createNft';
+import { createBrand } from '../../actions/createBrand';
 
 export interface ICreateBrand {
   brandName: string;
@@ -77,7 +77,7 @@ export const CreateBrand = () => {
     (payload: ICreateBrand) => {
       dispatch(createBrand(payload)).then(({ error }) => {
         if (!error) {
-          push("/");
+          push('/');
         }
       });
     },
@@ -175,7 +175,7 @@ export const CreateBrand = () => {
             render={renderForm}
             validate={validateCreateBrand}
             initialValues={{
-              standard: NftType.ERC721
+              standard: NftType.ERC721,
             }}
           />
         </Box>

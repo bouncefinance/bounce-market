@@ -1,10 +1,11 @@
-import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
-import { END, eventChannel } from 'redux-saga';
-import { RootState } from '../../../store/store';
 import { getQuery, resetRequests } from '@redux-requests/core';
-import { setAccount } from '../store/actions/setAccount';
-import { connect } from '../store/actions/connect';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { END, eventChannel } from 'redux-saga';
+import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
+import { RootState } from '../../../store/store';
 import { Address } from '../../common/types/unit';
+import { connect } from '../store/actions/connect';
+import { setAccount } from '../store/actions/setAccount';
 
 // TODO Check disconnection, switch chain, switch account
 
@@ -84,6 +85,7 @@ function createEventChannel(provider: any) {
 function* onConnectWallet() {
   const { action } = yield putResolve(setAccount());
   const provider = action.meta.provider;
+  yield put(fetchProfileInfo());
 
   const channel = createEventChannel(provider);
   while (true) {

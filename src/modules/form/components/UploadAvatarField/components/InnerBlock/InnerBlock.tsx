@@ -1,12 +1,12 @@
-import React from 'react';
 import {
   Avatar as AvatarComponent,
   IconButton,
   Typography,
 } from '@material-ui/core';
-import { Button } from 'modules/uiKit/Button';
-import { t } from 'modules/i18n/utils/intl';
 import { PencilIcon } from 'modules/common/components/Icons/PencilIcon';
+import { t } from 'modules/i18n/utils/intl';
+import { Button } from 'modules/uiKit/Button';
+import React from 'react';
 import { useUploadAvatarFieldStyles } from '../../useUploadAvatarFieldStyles';
 
 export interface IInitialBlock {
