@@ -1,34 +1,39 @@
-import React, { useCallback } from 'react';
-import { Field, Form, FormRenderProps } from 'react-final-form';
 import { Box, Button, Container, Typography } from '@material-ui/core';
-import { InputField } from 'modules/form/components/InputField';
-import { t } from 'modules/i18n/utils/intl';
-import { Mutation, useDispatchRequest } from '@redux-requests/react';
-import { GoBack } from 'modules/layout/components/GoBack';
-import { Section } from 'modules/uiKit/Section';
-import { FormErrors } from 'modules/form/utils/FormErrors';
-import { editProfile } from '../../actions/editProfile';
-import { useHistory } from 'react-router';
-import { ProfileRoutesConfig } from '../../ProfileRoutes';
+import { Mutation, useDispatchRequest, useQuery } from '@redux-requests/react';
 import { isValidEmail } from 'modules/common/utils/isValidEmail';
 import { isValidWebsiteUrl } from 'modules/common/utils/isValidWebsiteUrl';
+import { InputField } from 'modules/form/components/InputField';
+import { FormErrors } from 'modules/form/utils/FormErrors';
+import { t } from 'modules/i18n/utils/intl';
+import { GoBack } from 'modules/layout/components/GoBack';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
+import { Section } from 'modules/uiKit/Section';
+import React, { useCallback } from 'react';
+import { Field, Form, FormRenderProps } from 'react-final-form';
+import { editProfile } from '../../actions/editProfile';
 
-export interface IEditProfile {
+export interface IEditProfileValues {
+  fullName: string;
   username: string;
-  email: string;
-  customUrl: string;
-  bio: string;
-  website: string;
-  instagram: string;
-  twitter: string;
-  facebook: string;
+  email?: string;
+  customUrl?: string;
+  bio?: string;
+  website?: string;
+  instagram?: string;
+  twitter?: string;
+  facebook?: string;
 }
 
-const validateEditProfile = (payload: IEditProfile) => {
-  const errors: FormErrors<IEditProfile> = {};
+const validateEditProfile = (payload: IEditProfileValues) => {
+  const errors: FormErrors<IEditProfileValues> = {};
 
   if (!payload.username) {
     errors.username = t('validation.required');
+  }
+
+  if (!payload.fullName) {
+    errors.fullName = t('validation.required');
   }
 
   if (!!payload.email && !isValidEmail(payload.email)) {
@@ -46,20 +51,29 @@ const BIO_CHARACTER_LIMIT = 200;
 
 export const EditProfile = () => {
   const dispatch = useDispatchRequest();
-  const { push } = useHistory();
+
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
+  });
 
   const handleSubmit = useCallback(
-    (payload: IEditProfile) => {
-      dispatch(editProfile()).then(({ error }) => {
-        if (!error) {
-          push(ProfileRoutesConfig.EditProfile.generatePath());
-        }
-      });
+    (payload: IEditProfileValues) => {
+      dispatch(
+        editProfile({
+          bio: payload.bio,
+          email: payload.email,
+          fullName: payload.fullName,
+          username: payload.username,
+        }),
+      );
     },
-    [dispatch, push],
+    [dispatch],
   );
 
-  const renderForm = ({ handleSubmit }: FormRenderProps<IEditProfile>) => {
+  const renderForm = ({
+    handleSubmit,
+    dirty,
+  }: FormRenderProps<IEditProfileValues>) => {
     return (
       <Box component="form" onSubmit={handleSubmit}>
         <Box mb={5}>
@@ -67,11 +81,23 @@ export const EditProfile = () => {
             component={InputField}
             name="username"
             type="text"
-            label={t('profile.edit.label.username')}
+            label={`${t('profile.edit.label.username')}*`}
             color="primary"
-            fullWidth={true}
+            fullWidth
           />
         </Box>
+
+        <Box mb={5}>
+          <Field
+            component={InputField}
+            name="fullName"
+            type="text"
+            label={`${t('profile.edit.label.full-name')}*`}
+            color="primary"
+            fullWidth
+          />
+        </Box>
+
         <Box mb={5}>
           <Field
             component={InputField}
@@ -80,19 +106,10 @@ export const EditProfile = () => {
             inputMode="email"
             label={t('profile.edit.label.email')}
             color="primary"
-            fullWidth={true}
+            fullWidth
           />
         </Box>
-        <Box mb={5}>
-          <Field
-            component={InputField}
-            name="customUrl"
-            type="text"
-            label={t('profile.edit.label.custom-url')}
-            color="primary"
-            fullWidth={true}
-          />
-        </Box>
+
         <Box mb={5}>
           <Field
             component={InputField}
@@ -100,7 +117,7 @@ export const EditProfile = () => {
             type="text"
             label={t('profile.edit.label.bio')}
             color="primary"
-            fullWidth={true}
+            fullWidth
             rowsMax={10}
             multiline
             showLimitCounter={true}
@@ -109,55 +126,16 @@ export const EditProfile = () => {
             }}
           />
         </Box>
-        <Box mb={5}>
-          <Field
-            component={InputField}
-            name="website"
-            type="text"
-            inputMode="url"
-            label={t('profile.edit.label.website')}
-            color="primary"
-            fullWidth={true}
-          />
-        </Box>
-        <Box mb={5}>
-          <Field
-            component={InputField}
-            name="instagram"
-            type="text"
-            label={t('profile.edit.label.instagram')}
-            placeholder={t('profile.edit.placeholder.instagram')}
-            color="primary"
-            fullWidth={true}
-          />
-        </Box>
-        <Box mb={5}>
-          <Field
-            component={InputField}
-            name="twitter"
-            type="text"
-            label={t('profile.edit.label.twitter')}
-            placeholder={t('profile.edit.placeholder.twitter')}
-            color="primary"
-            fullWidth={true}
-          />
-        </Box>
-        <Box mb={5}>
-          <Field
-            component={InputField}
-            name="facebook"
-            type="text"
-            label={t('profile.edit.label.facebook')}
-            placeholder={t('profile.edit.placeholder.facebook')}
-            color="primary"
-            fullWidth={true}
-          />
-        </Box>
 
         <Box>
           <Mutation type={editProfile.toString()}>
             {({ loading }) => (
-              <Button size="large" type="submit" fullWidth disabled={loading}>
+              <Button
+                size="large"
+                type="submit"
+                fullWidth
+                disabled={!dirty || loading}
+              >
                 {loading
                   ? t('common.submitting')
                   : t('profile.edit.save-changes')}
@@ -183,6 +161,12 @@ export const EditProfile = () => {
             onSubmit={handleSubmit}
             render={renderForm}
             validate={validateEditProfile}
+            initialValues={{
+              username: profileInfo?.username,
+              email: profileInfo?.email,
+              bio: profileInfo?.bio,
+              fullName: profileInfo?.fullName,
+            }}
           />
         </Box>
       </Container>

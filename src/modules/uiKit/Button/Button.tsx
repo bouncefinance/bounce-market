@@ -11,7 +11,7 @@ interface IButtonProps extends ButtonProps {
 /**
  * The main api is here - [Button API](https://material-ui.com/api/button/)
  */
-// todo: fix typings
+// TODO: fix typings
 export const Button = forwardRef<HTMLButtonElement, IButtonProps>(
   ({ rounded = false, className, ...props }, ref) => {
     const classes = useButtonStyles();

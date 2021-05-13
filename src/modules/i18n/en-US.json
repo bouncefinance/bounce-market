@@ -137,7 +137,7 @@
         "brand-name": "Brand name",
         "brand-url": "Brand URL",
         "description": "Description",
-        "custom-url": "Custom URL",
+        "brand-symbol": "Brand symbol",
         "brand-avatar": "Brand avatar"
       },
       "avatar-accepts": "Supports JPG, PNG, JPEG2000",
@@ -190,9 +190,17 @@
     "share": "Share",
     "user-profile": "User profile",
     "edit-profile": "Edit profile",
+    "edit-avatar": "Edit avatar",
+    "edit-cover": "Edit profile cover",
+    "no-items": {
+      "title": "No items found",
+      "descr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+      "btn": "Browse market"
+    },
     "edit": {
       "label": {
         "username": "Username",
+        "full-name": "Full Name",
         "email": "Email",
         "custom-url": "Custom URL",
         "bio": "Bio",
@@ -206,7 +214,8 @@
         "twitter": "Twitter Username",
         "facebook": "Facebook Username"
       },
-      "save-changes": "Save Changes"
+      "save-changes": "Save Changes",
+      "success-message": "Changes have been applied successfully."
     },
     "tabs": {
       "my-items": "My items",

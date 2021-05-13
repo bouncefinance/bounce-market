@@ -10,12 +10,12 @@ import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
 import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
 import { AngleUpIcon } from 'modules/common/components/Icons/AngleUpIcon';
-import { CloseIcon } from 'modules/common/components/Icons/CloseIcon';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { InputField } from 'modules/form/components/InputField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
 import { Img } from 'modules/uiKit/Img';
+import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useBidDialogStyles } from './useBidDialogStyles';
@@ -171,16 +171,11 @@ export const BidDialog = ({
 
   return (
     <Dialog
-      fullWidth
       open={isOpen}
       onClose={onClose}
       classes={{
         paper: classes.root,
       }}
-      PaperProps={{
-        elevation: 0,
-      }}
-      maxWidth="md"
     >
       <Typography variant="h2" className={classes.title}>
         {t('details-nft.place-a-bid')}
@@ -230,9 +225,7 @@ export const BidDialog = ({
         }}
       />
 
-      <IconButton onClick={onClose} className={classes.close}>
-        <CloseIcon fontSize="large" />
-      </IconButton>
+      <ModalCloseBtn onClick={onClose} />
     </Dialog>
   );
 };

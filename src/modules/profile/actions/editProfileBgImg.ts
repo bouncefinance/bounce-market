@@ -10,34 +10,20 @@ import { IProfileInfo } from '../api/profileInfo';
 import { fetchProfileInfo } from './fetchProfileInfo';
 import { showSuccesNotify } from './showSuccesNotify';
 
-interface IEditProfileArgs {
-  fullName?: string;
-  username?: string;
-  bio?: string;
-  email?: string;
-  imgUrl?: string;
+interface IEditProfileBgImgArgs {
+  imgUrl: string;
+  id?: string;
 }
 
-export const editProfile: (
-  payload: IEditProfileArgs,
-) => RequestAction<any, any> = createSmartAction<RequestAction>(
-  'editProfile',
-  ({
-    fullName = '',
-    username = '',
-    bio = '',
-    email = '',
-    imgUrl = '',
-  }: IEditProfileArgs) => ({
+export const editProfileBgImg = createSmartAction<RequestAction>(
+  'editProfileBgImg',
+  ({ imgUrl, id = '0' }: IEditProfileBgImgArgs) => ({
     request: {
-      url: '/api/v2/main/auth/updateaccount',
+      url: '/api/v2/main/auth/updateaccountbandimg',
       method: 'post',
       data: {
-        bio,
-        email,
-        username,
-        fullname: fullName,
-        imgurl: imgUrl,
+        id,
+        bandimgurl: imgUrl,
       },
     },
     meta: {
@@ -55,19 +41,6 @@ export const editProfile: (
           type: setAccount.toString(),
         });
 
-        const { data: profileInfo } = getQuery<IProfileInfo | null>(
-          store.getState(),
-          {
-            type: fetchProfileInfo.toString(),
-          },
-        );
-
-        const isUserNotExisted = !profileInfo?.accountAddress;
-
-        if (isUserNotExisted) {
-          request.url = '/api/v2/main/auth/addaccount';
-        }
-
         request.data.accountaddress = address;
 
         return request;
@@ -79,11 +52,7 @@ export const editProfile: (
         ): IProfileInfo | undefined => {
           if (code === 1) {
             const updatedData = {
-              ...(imgUrl ? { imgUrl } : {}),
-              bio,
-              email,
-              fullName,
-              username,
+              bgImgUrl: imgUrl,
             };
 
             if (data) {
@@ -94,10 +63,13 @@ export const editProfile: (
             }
 
             return {
-              imgUrl,
+              imgUrl: '',
               accountAddress: '',
-              bgImgUrl: '',
               followCount: 0,
+              bio: '',
+              email: '',
+              fullName: '',
+              username: '',
               ...updatedData,
             };
           }

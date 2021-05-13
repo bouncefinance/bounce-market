@@ -1,12 +1,12 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
-import { IItem } from '../../overview/api/getItems';
-import { IApiFetchNftByUserVariables } from '../../createNFT/api/fetchNftByUser';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
-import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
-import { fetchItemsByFilter } from '../../createNFT/actions/fetchItemsByFilter';
-import { getPoolsByFilter } from '../api/getPoolsByFilter';
 import { createAction } from 'redux-smart-actions';
+import { RootState } from '../../../store/store';
+import { fetchItemsByFilter } from '../../createNFT/actions/fetchItemsByFilter';
+import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
+import { IApiFetchNftByUserVariables } from '../../createNFT/api/fetchNftByUser';
+import { IItem } from '../../overview/api/getItems';
+import { getPoolsByFilter } from '../api/getPoolsByFilter';
 
 export const fetchAllNftByUser: (
   payload: IApiFetchNftByUserVariables,
@@ -80,7 +80,7 @@ export const fetchAllNftByUser: (
               throw fetchItemsError;
             }
 
-            // TODO How to manage pools, separated data or inline?
+            // TODO: How to manage pools, separated data or inline?
             return data?.map(item => {
               const pool = pools?.list.find(pool => pool.tokenId === item.id);
               if (pool) {
