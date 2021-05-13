@@ -96,7 +96,7 @@ export const editProfile: (
             return {
               imgUrl,
               accountAddress: '',
-              bandImgUrl: '',
+              bgImgUrl: '',
               followCount: 0,
               ...updatedData,
             };

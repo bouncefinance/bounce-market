@@ -10,14 +10,14 @@ import { IProfileInfo } from '../api/profileInfo';
 import { fetchProfileInfo } from './fetchProfileInfo';
 import { showSuccesNotify } from './showSuccesNotify';
 
-interface IEditProfileBandImgArgs {
+interface IEditProfileBgImgArgs {
   imgUrl: string;
   id?: string;
 }
 
-export const editProfileBandImg = createSmartAction<RequestAction>(
-  'editProfileBandImg',
-  ({ imgUrl, id = '0' }: IEditProfileBandImgArgs) => ({
+export const editProfileBgImg = createSmartAction<RequestAction>(
+  'editProfileBgImg',
+  ({ imgUrl, id = '0' }: IEditProfileBgImgArgs) => ({
     request: {
       url: '/api/v2/main/auth/updateaccountbandimg',
       method: 'post',
@@ -52,7 +52,7 @@ export const editProfileBandImg = createSmartAction<RequestAction>(
         ): IProfileInfo | undefined => {
           if (code === 1) {
             const updatedData = {
-              bandImgUrl: imgUrl,
+              bgImgUrl: imgUrl,
             };
 
             if (data) {

@@ -1,17 +1,16 @@
 import { Box, Dialog, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest, useQuery } from '@redux-requests/react';
+import { uploadFile } from 'modules/common/actions/uploadFile';
 import { Bytes, convertBytesToMegabytes } from 'modules/common/types/unit';
 import { UploadAvatarField } from 'modules/form/components/UploadAvatarField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
-import { fileUpload } from 'modules/profile/actions/fileUpload';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Button } from 'modules/uiKit/Button';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
-import { useSetAvatarModalStyles } from './useSetAvatarModalStyles';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -49,15 +48,11 @@ export const SetAvatarModal = ({
   onClose,
   isOpen = false,
 }: ISetAvatarModalProps) => {
-  const classes = useSetAvatarModalStyles();
   const dispatch = useDispatchRequest();
 
   const onSubmit = useCallback(
     (payload: ISetAvatarValues) => {
-      const formData = new FormData();
-      formData.append('filename', payload.avatar);
-
-      dispatch(fileUpload({ formData, fileType: 'avatar' })).then(
+      dispatch(uploadFile({ file: payload.avatar, fileType: 'avatar' })).then(
         ({ error }) => {
           if (!error && typeof onClose === 'function') {
             onClose();
@@ -88,7 +83,7 @@ export const SetAvatarModal = ({
         </Box>
 
         <Box>
-          <Mutation type={fileUpload.toString()}>
+          <Mutation type={uploadFile.toString()}>
             {({ loading }) => (
               <Button
                 size="large"
@@ -108,13 +103,7 @@ export const SetAvatarModal = ({
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      classes={{
-        paper: classes.root,
-      }}
-    >
+    <Dialog open={isOpen} onClose={onClose} maxWidth="sm">
       <Box mb={3} textAlign="center">
         <Typography variant="h2">{t('profile.edit-avatar')}</Typography>
       </Box>

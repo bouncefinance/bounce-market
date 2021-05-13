@@ -1,4 +1,5 @@
 import { Box, Typography } from '@material-ui/core';
+import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import React from 'react';
 import { useNoItemsStyles } from './useNoItemsStyles';
@@ -14,16 +15,15 @@ export const NoItems = ({ href, onClick }: INoItemsProps) => {
   return (
     <Box py={5} textAlign="center">
       <Typography variant="h2" className={classes.title}>
-        No items found
+        {t('profile.no-items.title')}
       </Typography>
 
       <Typography className={classes.descr}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore
+        {t('profile.no-items.descr')}
       </Typography>
 
       <Button href={href} onClick={onClick} size="large">
-        Browse market
+        {t('profile.no-items.btn')}
       </Button>
     </Box>
   );

@@ -192,6 +192,11 @@
     "edit-profile": "Edit profile",
     "edit-avatar": "Edit avatar",
     "edit-cover": "Edit profile cover",
+    "no-items": {
+      "title": "No items found",
+      "descr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+      "btn": "Browse market"
+    },
     "edit": {
       "label": {
         "username": "Username",

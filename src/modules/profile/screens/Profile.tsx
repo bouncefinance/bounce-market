@@ -3,9 +3,9 @@ import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { IBrandCardProps } from 'modules/brand/components/BrandCard';
+import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-import { SellNFTRoutesConfig } from 'modules/sellNFT/SellNFTRoutes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
@@ -23,7 +23,7 @@ import { Header } from '../components/Header';
 import { InfoPanel } from '../components/InfoPanel';
 import { NoItems } from '../components/NoItems';
 import { SetAvatarModal } from '../components/SetAvatarModal';
-import { SetBandImgModal } from '../components/SetBandImgModal';
+import { SetBgImgModal } from '../components/SetBgImgModal';
 import { Social } from '../components/Social';
 import { Subscribers } from '../components/Subscribers';
 import { TabBrands } from '../components/TabBrands';
@@ -90,7 +90,7 @@ enum TabList {
 export const Profile = () => {
   const [tab, setTab] = useState<TabList>(TabList.items);
   const [isAvatarModalOpened, setAvatarModalOpened] = useState(false);
-  const [isBandImgModalOpened, setBandImgModalOpened] = useState(false);
+  const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const classes = useProfileStyles();
   const { address } = useAccount();
   const dispatchRequest = useDispatchRequest();
@@ -110,9 +110,9 @@ export const Profile = () => {
     [],
   );
 
-  const toggleBandImgModal = useCallback(
+  const toggleBgImgModal = useCallback(
     (isOpen: boolean) => () => {
-      setBandImgModalOpened(isOpen);
+      setBgImgModalOpened(isOpen);
     },
     [],
   );
@@ -170,13 +170,13 @@ export const Profile = () => {
   return (
     <Section className={classes.root}>
       <Header
-        img={profileInfo?.bandImgUrl}
-        onEditClick={toggleBandImgModal(true)}
+        img={profileInfo?.bgImgUrl}
+        onEditClick={toggleBgImgModal(true)}
       />
 
-      <SetBandImgModal
-        isOpen={isBandImgModalOpened}
-        onClose={toggleBandImgModal(false)}
+      <SetBgImgModal
+        isOpen={isBgImgModalOpened}
+        onClose={toggleBgImgModal(false)}
       />
 
       <Container>
@@ -227,7 +227,7 @@ export const Profile = () => {
                           title={item.itemName}
                           href={
                             item.poolId && item.poolType
-                              ? SellNFTRoutesConfig.DetailsNFT.generatePath(
+                              ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
                                   item.poolId,
                                   item.poolType,
                                 )

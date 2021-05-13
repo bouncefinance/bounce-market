@@ -1,15 +1,15 @@
 import { Box, Dialog, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { uploadFile } from 'modules/common/actions/uploadFile';
 import { Bytes, convertBytesToMegabytes } from 'modules/common/types/unit';
 import { UploadFileField } from 'modules/form/components/UploadFileField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
-import { fileUpload } from 'modules/profile/actions/fileUpload';
 import { Button } from 'modules/uiKit/Button';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
-import { useSetBandImgModalStyles } from './useSetBandImgModalStyles';
+import { useSetBgImgModalStyles } from './useSetBgImgModalStyles';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -19,19 +19,18 @@ const FILE_ACCEPTS: string[] = [
   'image/jpm',
 ];
 
-export interface ISetBandImgValues {
-  bandImg: File;
+export interface ISetBgImgValues {
+  bgImg: File;
 }
 
-const validateForm = (payload: ISetBandImgValues) => {
-  const errors: FormErrors<ISetBandImgValues> = {};
-  console.log({ payload });
+const validateForm = (payload: ISetBgImgValues) => {
+  const errors: FormErrors<ISetBgImgValues> = {};
 
-  if (payload.bandImg && !FILE_ACCEPTS.includes(payload.bandImg.type)) {
-    errors.bandImg = t('validation.invalid-type');
+  if (payload.bgImg && !FILE_ACCEPTS.includes(payload.bgImg.type)) {
+    errors.bgImg = t('validation.invalid-type');
   }
-  if (payload.bandImg && payload.bandImg.size > MAX_SIZE) {
-    errors.bandImg = t('validation.max-size', {
+  if (payload.bgImg && payload.bgImg.size > MAX_SIZE) {
+    errors.bgImg = t('validation.max-size', {
       value: convertBytesToMegabytes(MAX_SIZE),
     });
   }
@@ -39,24 +38,21 @@ const validateForm = (payload: ISetBandImgValues) => {
   return errors;
 };
 
-interface ISetBandImgModalProps {
+interface ISetBgImgModalProps {
   isOpen?: boolean;
   onClose?: () => void;
 }
 
-export const SetBandImgModal = ({
+export const SetBgImgModal = ({
   onClose,
   isOpen = false,
-}: ISetBandImgModalProps) => {
-  const classes = useSetBandImgModalStyles();
+}: ISetBgImgModalProps) => {
+  const classes = useSetBgImgModalStyles();
   const dispatch = useDispatchRequest();
 
   const onSubmit = useCallback(
-    (payload: ISetBandImgValues) => {
-      const formData = new FormData();
-      formData.append('filename', payload.bandImg);
-
-      dispatch(fileUpload({ formData, fileType: 'bandImg' })).then(
+    (payload: ISetBgImgValues) => {
+      dispatch(uploadFile({ file: payload.bgImg, fileType: 'bgImg' })).then(
         ({ error }) => {
           if (!error && typeof onClose === 'function') {
             onClose();
@@ -70,20 +66,20 @@ export const SetBandImgModal = ({
   const renderForm = ({
     handleSubmit,
     dirty,
-  }: FormRenderProps<ISetBandImgValues>) => {
+  }: FormRenderProps<ISetBgImgValues>) => {
     return (
       <Box component="form" onSubmit={handleSubmit}>
         <Box mb={5}>
           <Field
             component={UploadFileField}
-            name="bandImg"
+            name="bgImg"
             accepts={FILE_ACCEPTS}
             className={classes.fileBox}
           />
         </Box>
 
         <Box>
-          <Mutation type={fileUpload.toString()}>
+          <Mutation type={uploadFile.toString()}>
             {({ loading }) => (
               <Button
                 size="large"
@@ -103,13 +99,7 @@ export const SetBandImgModal = ({
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      classes={{
-        paper: classes.root,
-      }}
-    >
+    <Dialog open={isOpen} onClose={onClose} maxWidth="lg">
       <Box mb={3} textAlign="center">
         <Typography variant="h2">{t('profile.edit-cover')}</Typography>
       </Box>

@@ -2,21 +2,30 @@ import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
-import { IProfileInfo } from '../api/profileInfo';
-import { editProfile } from './editProfile';
-import { editProfileBandImg } from './editProfileBandImg';
-import { fetchProfileInfo } from './fetchProfileInfo';
+import { editProfile } from '../../profile/actions/editProfile';
+import { editProfileBgImg } from '../../profile/actions/editProfileBgImg';
+import { fetchProfileInfo } from '../../profile/actions/fetchProfileInfo';
+import { IProfileInfo } from '../../profile/api/profileInfo';
+import {
+  IApiUploadFileResponse,
+  IApiUploadFileSuccess,
+} from '../api/uploadFile';
 
-interface IFileUploadArgs {
-  formData: FormData;
-  fileType: 'avatar' | 'bandImg';
+interface IUploadFileArgs {
+  file: File;
+  fileType?: 'avatar' | 'bgImg';
 }
 
-export const fileUpload: (
-  payload: IFileUploadArgs,
-) => RequestAction<any, any> = createSmartAction(
-  'fileUpload',
-  ({ formData, fileType }: IFileUploadArgs) => ({
+export const uploadFile: (
+  payload: IUploadFileArgs,
+) => RequestAction<
+  IApiUploadFileResponse,
+  IApiUploadFileSuccess
+> = createSmartAction('uploadFile', ({ file, fileType }: IUploadFileArgs) => {
+  const formData = new FormData();
+  formData.append('filename', file);
+
+  return {
     request: {
       url: '/api/v2/main/auth/fileupload',
       method: 'post',
@@ -26,8 +35,14 @@ export const fileUpload: (
       asMutation: true,
       auth: true,
       driver: 'axios',
+      getData: data => {
+        if (data.code !== 200) {
+          throw new Error(data.msg);
+        }
+        return data;
+      },
       onSuccess: (
-        request: any,
+        request,
         _action: RequestAction,
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
@@ -47,9 +62,9 @@ export const fileUpload: (
               imgUrl: request.data.result.path,
             }) as any,
           );
-        } else if (fileType === 'bandImg' && isSuccessfulUpload) {
+        } else if (fileType === 'bgImg' && isSuccessfulUpload) {
           store.dispatch(
-            editProfileBandImg({
+            editProfileBgImg({
               imgUrl: request.data.result.path,
             }),
           );
@@ -58,5 +73,5 @@ export const fileUpload: (
         return request;
       },
     },
-  }),
-);
+  };
+});

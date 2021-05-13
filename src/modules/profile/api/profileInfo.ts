@@ -14,7 +14,7 @@ export interface IApiProfileInfo {
 
 export interface IProfileInfo {
   accountAddress: string;
-  bandImgUrl: string;
+  bgImgUrl: string;
   bio: string;
   email: string;
   followCount: number;
@@ -32,7 +32,7 @@ export function mapProfileInfo({
 
   return {
     accountAddress: data.accountaddress,
-    bandImgUrl: data.bandimgurl,
+    bgImgUrl: data.bandimgurl,
     bio: data.bio,
     email: data.email,
     followCount: data.followcount,
