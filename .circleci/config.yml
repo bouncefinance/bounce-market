@@ -75,7 +75,7 @@ workflows:
       # stage.fangible.com
       - approve-fangible:
           type: approval
-      - build-stage:
+      - build-fangible:
           context:
             - fangible_build_stage
           requires:
