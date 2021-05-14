@@ -14,6 +14,7 @@ import { ResponseData } from '../../../common/types/ResponseData';
 import { useDispatchRequest } from '@redux-requests/react';
 import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
+import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 
 function mapPromoItem(item: IItem): IPromoItem {
   return {
@@ -71,6 +72,10 @@ export const Overview = () => {
     dispatch(fetchOverview());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(fetchPopularBrands())
+  }, [dispatch]);
+
   return (
     <>
       <Queries<ResponseData<typeof fetchOverview>>
@@ -99,8 +104,23 @@ export const Overview = () => {
 
       <ThemeProvider theme={darkTheme}>
         <Artists />
-        <Brands />
       </ThemeProvider>
+
+      <Queries<ResponseData<typeof fetchPopularBrands>>
+        requestActions={[fetchPopularBrands]}
+      >
+        {({ loading, error, data }) => (
+          <ThemeProvider theme={darkTheme}>
+            <Brands
+              stackUp 
+              stackDown
+              isLoading={loading}
+              error={error}
+              items={data}
+            />
+          </ThemeProvider>
+        )}
+      </Queries>
 
       <Products stackUp items={[]} />
     </>

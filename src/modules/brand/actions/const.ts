@@ -1,3 +1,5 @@
+export const FetchBrandsAction = 'BrandActions/fetchBrands';
+export const FetchPopularBrandsAction = 'BrandActions/fetchPopularBrands';
 export const CreateBrandAction = 'BrandActions/createBrand';
 export const UpdateBrandInfoAction = 'BrandActions/updateBrandInfo';
 export const QueryBrandAddressAction = 'BrandActions/queryBrandAddress';

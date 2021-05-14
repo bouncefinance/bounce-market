@@ -1,43 +1,26 @@
-import { Container, MenuItem, MenuList, Tooltip } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import classNames from 'classnames';
-import { FacebookIcon } from 'modules/common/components/Icons/FacebookIcon';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
-import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
 import { Button } from 'modules/uiKit/Button';
 import { useImgContainerStyles } from './useImgContainerStyles';
+import { t } from 'modules/i18n/utils/intl';
+import { SocialShare } from 'modules/common/components/SocialShare';
 
 interface INFTContentProps {
   className?: string;
   src: string;
+  title: string;
+  description: string;
 }
 
-export const ImgContainer = ({ className, src }: INFTContentProps) => {
+export const ImgContainer = ({
+  className,
+  src,
+  title,
+  description,
+}: INFTContentProps) => {
   const classes = useImgContainerStyles();
-
-  const renderedTooltipContent = (
-    <MenuList>
-      <MenuItem
-        className={classes.tooltipLink}
-        component="a"
-        href="//twitter.com"
-        target="_blank"
-      >
-        <TwitterIcon className={classes.tooltipIcon} />
-        Twitter
-      </MenuItem>
-
-      <MenuItem
-        className={classes.tooltipLink}
-        component="a"
-        href="//fb.com"
-        target="_blank"
-      >
-        <FacebookIcon className={classes.tooltipIcon} />
-        Facebook
-      </MenuItem>
-    </MenuList>
-  );
 
   return (
     <Container className={classNames(classes.root, className)}>
@@ -49,21 +32,15 @@ export const ImgContainer = ({ className, src }: INFTContentProps) => {
             <HeartIcon className={classes.btnIcon} /> 150
           </Button>
 
-          <Tooltip
-            classes={{
-              tooltip: classes.tooltip,
-            }}
-            title={renderedTooltipContent}
-            placement="bottom-end"
-            enterTouchDelay={0}
-            leaveDelay={100}
-            leaveTouchDelay={1000 * 60}
-            interactive
-          >
-            <Button variant="outlined" className={classes.btn} rounded>
-              <ShareIcon className={classes.btnIcon} /> share
-            </Button>
-          </Tooltip>
+          <SocialShare
+            titleString={title}
+            description={description}
+            buttonContent={
+              <Button variant="outlined" className={classes.btn} rounded>
+                <ShareIcon className={classes.btnIcon} /> {t('social.share')}
+              </Button>
+            }
+          />
         </div>
       </div>
     </Container>
