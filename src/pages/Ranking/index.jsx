@@ -249,6 +249,7 @@ export default function Ranking () {
     const history = useHistory()
     const { active, chainId } = useActiveWeb3React()
     const [tabValue ,setTabValue] = useState('All');
+    console.log('------>>history', history);
 
     /** Ranking列表数据 */
     const [tableData, setTableData] = useState([]);
@@ -320,9 +321,9 @@ export default function Ranking () {
           setTableData(res.data.data)
         }
     }
-    useEffect(() => {
-        initPools(poolsParmas)
-    }, [])
+    // useEffect(() => {
+    //     initPools(poolsParmas)
+    // }, [])
 
     // useEffect(() => {
     

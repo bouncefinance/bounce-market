@@ -10,7 +10,7 @@ const SearchStyled = styled.div`
 
     input{
         // width: 652px;
-        width: 447px;
+        width: ${({width}) => width || '447'}px;
         height: 48px;
         box-sizing: border-box;
         font-family: 'Optima';
