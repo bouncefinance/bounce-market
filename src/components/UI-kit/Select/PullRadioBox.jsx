@@ -143,7 +143,9 @@ export default function PullRadioBox({
 
     useEffect(() => {
         onChange && onChange(checkItem)
+        console.log("checkVal 1: ", checkVal)
         onValChange && onValChange(checkVal)
+        console.log("checkVal 2: ", checkVal)
         // eslint-disable-next-line
     }, [checkVal])
 

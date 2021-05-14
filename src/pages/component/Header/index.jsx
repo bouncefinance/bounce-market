@@ -196,7 +196,10 @@ const ConnectToChain = async (chainName) => {
             // window.localStorage.setItem('currentChainId', chainName === "BSC" ? 56 : chainName === "HECO" ? 128 : 'Unsupported Chain')
             window.location.reload();
         })
-        .catch((reason)=>{window.location.reload();});
+        .catch((reason)=>{
+			console.log("reason: ", reason)
+			window.location.reload();
+		});
 
 };
 
@@ -284,8 +287,16 @@ export default function Index() {
     let ethereum = window.ethereum;
     ethereum?.on("chainChanged", (_chainId) => {
 		// if (_chainId !== 56 || _chainId !== 128) window.location.reload();
+		console.log("chainChanged _chainId: ", _chainId)
+		window.localStorage.setItem('currentChainId', _chainId === '0x38' ? 56 : _chainId === '0x80' ? 128 : 'Unsupported Chain')
 		window.location.reload();
 	});
+
+	useEffect(() => {
+		console.log("currentChainName: ", currentChainName)
+		/* if (currentChainName !== window.localStorage.getItem('currentChainId'))
+			window.location.reload(); */
+	}, [currentChainName])
 
     useEffect(() => {
         if (!chainId) return
@@ -361,7 +372,7 @@ export default function Index() {
                     modelUrlMessage: wrapperIntl("header.ConnectWallet"),
                     subsequentActionFunc: setIsConnectWallect,
                 });
-            }, 500);
+            }, 2000);
             return () => {
                 clearTimeout(activeTimeout);
             };
@@ -380,6 +391,7 @@ export default function Index() {
 
         if (active && chainId === 56) {
             getUserInfo();
+			window.localStorage.LastChainId = chainId;
             return;
         }
 
@@ -454,6 +466,7 @@ export default function Index() {
 						/>
 
 						{/* <ChainMenu/> */}
+						
 						<PullRadioBox
 							className="chain_menu"
 							width={"110px"}
