@@ -13,7 +13,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
   () => {
     return {
       request: {
-        promise: (async function () {})(),
+        promise: (async function () { })(),
       },
       meta: {
         onRequest: (
