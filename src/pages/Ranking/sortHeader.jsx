@@ -30,7 +30,7 @@ export default function SortHeader (props) {
                             <TableCell
                                 key={headCell.key}
                                 // align={headCell.numeric ? 'right' : 'left'}
-                                align="right"
+                                align="center"
                                 padding={headCell.disablePadding ? 'none' : 'default'}
                                 sortDirection={orderBy === headCell.key ? order : false}
                             >

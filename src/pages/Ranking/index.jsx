@@ -1,4 +1,4 @@
-import React, { useEffect, useState/* , useContext */ } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router'
 import Search from '../component/Other/Search'
@@ -21,6 +21,14 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import icon_search from '../component/Other/assets/search.svg'
 import SvgIcon from '@material-ui/core/SvgIcon';
+import ImageIcon from '@material-ui/icons/Image';
+
+
+import { apiGetRankingList } from './APIController';
+import { Controller } from "@/utils/controller";
+import { SkeletonTableRowCards } from '../component/Skeleton/TableRow'
+import { throttle } from '@/utils/utils';
+
 
 
 const RankingStyled = styled.div`
@@ -229,7 +237,7 @@ export default function Ranking () {
 
     const { wrapperIntl } = useWrapperIntl()
     const [loading, setLoading] = useState(true)
-    const poolsParmas = { offset: 0, count: 1e4 }
+    const [params, setParams] = useState({ offset: 0, count: 100 })
     const { sign_Axios } = useAxios();
 
     const NavList = [
@@ -273,7 +281,6 @@ export default function Ranking () {
     const history = useHistory()
     const { active, chainId } = useActiveWeb3React()
     const [tabValue ,setTabValue] = useState('All');
-    console.log('------>>history', history);
 
     /** Ranking列表数据 */
     const [tableData, setTableData] = useState([]);
@@ -283,75 +290,73 @@ export default function Ranking () {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('dayVolume');
 
-    const searchHandle = (searchData) => {
-        console.log('data', searchData.target.value);
+    const searchRef = useRef(null);
+
+    const searchHandle = (event) => {
+        let searchValue = event.target.value
+        if (!searchValue) {
+            setTableData([]);
+            setLoading(true)
+            return initData();
+        }
+        let result = tableData.filter(v => {
+            if (v.brandname) {
+                return ~v.brandname?.toLowerCase().indexOf(searchValue.toLowerCase())
+            }
+            return false;
+        });
+        setTableData(result);
+    }
+
+    const searchHandleKey = (e) => {
+        if (e.keyCode === 13) {
+            searchHandle(e)
+        }
+    }
+
+    const handleFocus = () => {
+        setDefaultValue('')
+        if (defaultValue) searchRef.current.value = '';
     }
 
     /** 切换tab，筛选列表 */
     const handleChangeTab = (e, v) => {
-        console.log('----->>v', v);
         setTabValue(v);
     }
 
-    useState(() => {
-        setTableData([
-            {
-                collection: 'NFT',
-                volume: 100,
-                change: '100%',
-                totalVolume: 10000,
-                avgPrice: 5,
-                owner: '3232',
-                assets: '183465'
-            },
-            {
-                collection: 'NFT',
-                volume: 100,
-                change: '100%',
-                totalVolume: 10000,
-                avgPrice: 5,
-                owner: '3232',
-                assets: '183465'
-            },
-            {
-                collection: 'NFT',
-                volume: 100,
-                change: '100%',
-                totalVolume: 10000,
-                avgPrice: 5,
-                owner: '3232',
-                assets: '183465'
-            },
-            {
-                collection: 'NFT',
-                volume: 100,
-                change: '100%',
-                totalVolume: 10000,
-                avgPrice: 5,
-                owner: '3232',
-                assets: '183465'
-            },
-            {
-                collection: 'NFT',
-                volume: 100,
-                change: '100%',
-                totalVolume: 10000,
-                avgPrice: 5,
-                owner: '3232',
-                assets: '183465'
-            }
-        ])
-    }, []);
-
+    /** 初始化数据 */
     const initData = async (params) => {
-        const res = await axios.get('/pools', { params: params })
-        if (res.data.code === 200) {
-          setTableData(res.data.data)
+        try {
+            const res = await apiGetRankingList(params);
+            if (res?.data?.code === 200) {
+                let tokens = res?.data.data.map(item => item.token);
+
+                let contractData = [];
+                let rt = await sign_Axios.post(Controller.brands.getbrandsbyfilter, { Brandcontractaddressess: tokens });
+                if (rt && rt.data.code === 1) {
+                    contractData = rt.data.data;
+                    setLoading(false)
+                }
+                
+                let realData = res.data.data.map(v => {
+                    let indexContractData = contractData?.find(c => c.contractaddress.toLowerCase() === v.token.toLowerCase());
+                    v.imgurl = indexContractData?.imgurl;
+                    v.brandname = indexContractData?.brandname;
+                    v.ownername = indexContractData?.ownername;
+                    return v;
+                })
+
+            setTableData(realData)
+            }
+        } catch (e) {
+            console.log('e', e);
+            setLoading(false);
         }
+        
     }
-    // useEffect(() => {
-    //     initData(poolsParmas)
-    // }, [])
+    useEffect(() => {
+        initData(params)
+    }, [params, active])
 
     // useEffect(() => {
     
@@ -426,6 +431,10 @@ export default function Ranking () {
         return wrapperArr.map(item => item[0]);
     }
 
+    const formatMonney = (str) => {
+        return String(str).replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
+    }
+
     return (
         <>
             <RankingStyled>
@@ -464,15 +473,17 @@ export default function Ranking () {
                     <SearchStyled width={226}>
                     <input
                         type="text"
+                        ref={searchRef}
                         placeholder={wrapperIntl('Ranking.placeholder')}
                         defaultValue={defaultValue}
                         onKeyUp={(e) => {
+                            console.log('up');
                             e.stopPropagation();
                             e.nativeEvent.stopImmediatePropagation();
-                            searchHandle(e)
+                            throttle(searchHandleKey(e), 1000)
                         }}
-                        onChange={searchHandle}
-                        onFocus={() => {setDefaultValue('')}}
+                        onChange={(e) => throttle(searchHandle(e), 1000) }
+                        onFocus={() => {handleFocus()}}
                     />
                     </SearchStyled>
                 </div>
@@ -504,7 +515,7 @@ export default function Ranking () {
                                 </Tooltip>
                             </TableRow>
                         </TableHead> */}
-                        <SortHeader 
+                        <SortHeader
                             classes={classes}
                             order={order}
                             orderBy={orderBy}
@@ -517,21 +528,24 @@ export default function Ranking () {
                                     <StyledTableCell component="th" scope="row" align="left">
                                         <div className="headBox">
                                             <span>{index + 1}.</span>
-                                            <IconPan color="secondary"/>
-                                            <span>{row.collection}</span>
+                                            {
+                                                row.imgurl ? <img src={row.imgurl} alt="" className="cellImage" style={{width: '22px', height: '22px', borderRadius: '50%'}}/> : <ImageIcon/>
+                                            }
+                                            <span>{row.brandname || 'brandName'}</span>
                                         </div>
                                     </StyledTableCell>
                                     <StyledTableCell align="center">{row.volume}</StyledTableCell>
-                                    <StyledTableCell align="center">{row.change}</StyledTableCell>
-                                    <StyledTableCell align="center">{row.totalVolume}</StyledTableCell>
-                                    <StyledTableCell align="center">{row.avgPrice}</StyledTableCell>
-                                    <StyledTableCell align="center">{row.owner}</StyledTableCell>
-                                    <StyledTableCell align="center">{row.assets}</StyledTableCell>
+                                    <StyledTableCell align="center">{formatMonney(row.change)}</StyledTableCell>
+                                    <StyledTableCell align="center">${formatMonney(row.total)}</StyledTableCell>
+                                    <StyledTableCell align="center">${formatMonney(row.avg)}</StyledTableCell>
+                                    <StyledTableCell align="center">{row.owners}</StyledTableCell>
+                                    <StyledTableCell align="center">{formatMonney(row.assets)}</StyledTableCell>
                                 </StyledTableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
+                { loading && <SkeletonTableRowCards n={4}/> }
                 </div>
             </RankingStyled>
         </>

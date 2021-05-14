@@ -41,3 +41,18 @@ export const InitAxios = () => {
 //     return { miniImg: ''}
 //   }
 // }
+
+export function throttle (func, ms) {
+  let timer = null;
+
+  return function () {
+    let context = this;
+    let args = arguments;
+    if (!timer) {
+      timer = setTimeout(() => {
+        func.apply(context, args);
+        timer = null;
+      }, ms)
+    }
+  }
+}
