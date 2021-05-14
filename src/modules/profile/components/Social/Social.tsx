@@ -5,6 +5,7 @@ import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
 import React from 'react';
 import { uid } from 'react-uid';
 import { useSocialStyles } from './useSocialStyles';
+import { t } from 'modules/i18n/utils/intl';
 
 interface ISocialProps {
   className?: string;
@@ -12,17 +13,17 @@ interface ISocialProps {
 
 const items = [
   {
-    title: 'Twitter',
+    title: t('social.twitter'),
     href: 'https://twitter.com/',
     icon: TwitterIcon,
   },
   {
-    title: 'Instagram',
+    title: t('social.instagram'),
     href: 'https://www.instagram.com/',
     icon: InstagramIcon,
   },
   {
-    title: 'Facebook',
+    title: t('social.facebook'),
     href: 'https://www.fb.com/',
     icon: FacebookIcon,
   },
