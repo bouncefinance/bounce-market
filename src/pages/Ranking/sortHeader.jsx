@@ -22,11 +22,11 @@ export default function SortHeader (props) {
                 {
                     headCells.map((headCell, index) => {
                         return !headCell.sortable ? 
-                        <Tooltip title={wrapperIntl(headCell.intlSpan)} placement="top" arrow key={index}>
-                            <TableCell key={headCell.key} align="center">{wrapperIntl(headCell.label)}</TableCell>
+                        <Tooltip title={wrapperIntl(headCell.intlSpan)} placement="top" arrow key={headCell.key}>
+                            <TableCell key={index} align="center">{wrapperIntl(headCell.label)}</TableCell>
                         </Tooltip>
                         :
-                        <Tooltip title={wrapperIntl(headCell.intlSpan)} placement="top" arrow>
+                        <Tooltip title={wrapperIntl(headCell.intlSpan)} placement="top" arrow key={index}>
                             <TableCell
                                 key={headCell.key}
                                 // align={headCell.numeric ? 'right' : 'left'}

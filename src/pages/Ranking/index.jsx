@@ -513,7 +513,7 @@ export default function Ranking () {
                         />
                         <TableBody>
                             {stableSort(tableData, getCompare(order, orderBy)).map((row, index) => (
-                                <StyledTableRow key={row.name} style={{height: '68px'}}>
+                                <StyledTableRow key={index} style={{height: '68px'}}>
                                     <StyledTableCell component="th" scope="row" align="left">
                                         <div className="headBox">
                                             <span>{index + 1}.</span>
