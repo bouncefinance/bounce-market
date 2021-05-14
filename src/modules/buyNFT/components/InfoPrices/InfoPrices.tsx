@@ -10,10 +10,10 @@ interface IInfoPricesProps {
   currency: string;
   cryptoPrice: BigNumber;
   cryptoCurrency: string;
+  disabled: boolean;
   onBuyClick?: () => void;
   onBidClick?: () => void;
   endDate?: Date;
-  disabled: boolean;
 }
 
 export const InfoPrices = ({
@@ -22,9 +22,9 @@ export const InfoPrices = ({
   currency,
   cryptoPrice,
   cryptoCurrency,
+  disabled,
   onBidClick,
   onBuyClick,
-  disabled,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
   return (
@@ -63,7 +63,7 @@ export const InfoPrices = ({
           fullWidth
           onClick={onBuyClick}
         >
-          {t('details-nft.buy-now')}
+          {disabled ? t('details-nft.sold-out') : t('details-nft.buy-now')}
         </Button>
       </Grid>
     </Grid>

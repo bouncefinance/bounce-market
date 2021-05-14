@@ -17,7 +17,7 @@ import BigNumber from 'bignumber.js';
 import { AuctionState } from './fetchPools';
 
 interface IFetchPoolDetailsByIdParams {
-  poolId: string;
+  poolId: number;
   poolType: AuctionType;
 }
 
@@ -55,31 +55,38 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   .pools(poolId)
                   .call();
 
-                const swappedAmount0P = await BounceFixedSwapNFT_CT.methods
+                const swappedAmount0Pool = await BounceFixedSwapNFT_CT.methods
                   .swappedAmount0P(poolId)
                   .call();
-                const creatorCanceledP = await BounceFixedSwapNFT_CT.methods
+                const creatorCanceledPool = await BounceFixedSwapNFT_CT.methods
                   .creatorCanceledP(poolId)
                   .call();
 
+                debugger;
                 return {
-                  quantity: pools.amountTotal0,
+                  quantity: parseInt(pools.amountTotal0),
                   totalPrice: new BigNumber(0),
                   createTime: new Date(),
                   creator: pools.creator,
                   name: pools.name,
-                  nftType: parseInt(pools.nftType, 10),
-                  poolId: pools.poolId,
-                  price: new BigNumber(0),
+                  nftType: parseInt(pools.nftType),
+                  poolId,
+                  price: new BigNumber(
+                    web3.utils.fromWei(pools.amountTotal1),
+                  ).dividedBy(pools.amountTotal0),
                   state: (() => {
                     if (
-                      parseInt(swappedAmount0P) < parseInt(pools.amountTotal0)
+                      parseInt(swappedAmount0Pool) <
+                      parseInt(pools.amountTotal0)
                     ) {
                       return AuctionState.Live;
                     } else if (
-                      parseInt(swappedAmount0P) === parseInt(pools.amountTotal0)
+                      parseInt(swappedAmount0Pool) ===
+                      parseInt(pools.amountTotal0)
                     ) {
                       return AuctionState.Filled;
+                    } else if (creatorCanceledPool) {
+                      return AuctionState.Canceled;
                     } else {
                       return AuctionState.Closed;
                     }
@@ -87,8 +94,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   tokenContract: pools.token0,
                   unitContract: pools.token1,
                   tokenId: parseInt(pools.tokenId),
-                  swappedAmount0P,
-                  creatorCanceledP,
+                  swappedAmount0Pool: new BigNumber(swappedAmount0Pool),
                 } as IFetchPoolDetailsData;
               } else {
                 const BounceEnglishAuctionNFT_CT = new web3.eth.Contract(
@@ -101,19 +107,19 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const currentBidderAmount = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderAmount1P(poolId)
                   .call();
-                const bidCountP = await BounceEnglishAuctionNFT_CT.methods
+                const bidCountPool = await BounceEnglishAuctionNFT_CT.methods
                   .bidCountP(poolId)
                   .call();
-                const myClaimedP = await BounceEnglishAuctionNFT_CT.methods
+                const myClaimedPool = await BounceEnglishAuctionNFT_CT.methods
                   .myClaimedP(address, poolId)
                   .call();
-                const creatorClaimedP = await BounceEnglishAuctionNFT_CT.methods
+                const creatorClaimedPool = await BounceEnglishAuctionNFT_CT.methods
                   .creatorClaimedP(poolId)
                   .call();
-                const reserveAmount1P = await BounceEnglishAuctionNFT_CT.methods
+                const reserveAmount1Pool = await BounceEnglishAuctionNFT_CT.methods
                   .reserveAmount1P(poolId)
                   .call();
-                const currentBidderP = await BounceEnglishAuctionNFT_CT.methods
+                const currentBidderPool = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderP(poolId)
                   .call();
                 let showPrice = pools.amountMin1;
@@ -137,13 +143,13 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   duration: pools.duration,
                   lastestBidAmount: new BigNumber(0),
                   name: pools.name,
-                  nftType: parseInt(pools.nftType, 10),
-                  poolId: pools.poolId,
+                  nftType: parseInt(pools.nftType),
+                  poolId,
                   state: (() => {
                     if (diffTime < 0) {
                       if (
                         new BigNumber(currentBidderAmount)
-                          .dividedBy(reserveAmount1P)
+                          .dividedBy(reserveAmount1Pool)
                           .isGreaterThanOrEqualTo(1) ||
                         new BigNumber(currentBidderAmount)
                           .dividedBy(pools.amountMax1)
@@ -152,7 +158,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                         return AuctionState.Closed;
                       } else if (
                         new BigNumber(currentBidderAmount)
-                          .dividedBy(reserveAmount1P)
+                          .dividedBy(reserveAmount1Pool)
                           .isLessThan(1)
                       ) {
                         return AuctionState.Failed;
@@ -168,11 +174,11 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   tokenAmount0: pools.tokenAmount0,
                   tokenId: parseInt(pools.tokenId),
 
-                  bidCountP,
-                  myClaimedP,
-                  currentBidderP,
-                  creatorClaimedP,
-                  reserveAmount1P,
+                  bidCountPool,
+                  myClaimedPool,
+                  currentBidderPool,
+                  creatorClaimedPool,
+                  reserveAmount1Pool,
                   showPrice,
                 } as IFetchPoolDetailsData;
               }

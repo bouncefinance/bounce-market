@@ -309,8 +309,7 @@ export const mainTheme = createMuiTheme({
         minWidth: 95,
 
         '&$disabled': {
-          cursor: 'not-allowed',
-          pointerEvents: 'auto',
+          pointerEvents: 'none',
           borderColor: fade(defaultTheme.palette.common.black, 0),
 
           '&:before': {

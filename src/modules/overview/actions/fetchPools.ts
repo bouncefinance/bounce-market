@@ -8,6 +8,7 @@ import { getApolloClient } from '../../common/api/getApolloClient';
 export enum AuctionState {
   Live,
   Filled,
+  Canceled,
   Closed,
   Failed,
 }

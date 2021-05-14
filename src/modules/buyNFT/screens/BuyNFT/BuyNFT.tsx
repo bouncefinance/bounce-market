@@ -212,7 +212,6 @@ export const BuyNFT = () => {
                   cryptoCurrency="BNB"
                   onBidClick={toggleBidDialog(true)}
                   onBuyClick={toggleBuyDialog(true)}
-                  // TODO Doesn't work
                   disabled={poolDetails.state === AuctionState.Filled}
                 />
               ) : (
