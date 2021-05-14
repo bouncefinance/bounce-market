@@ -62,7 +62,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   .creatorCanceledP(poolId)
                   .call();
 
-                debugger;
                 return {
                   quantity: parseInt(pools.amountTotal0),
                   totalPrice: new BigNumber(0),
