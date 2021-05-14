@@ -6,6 +6,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
+import { SocialShare } from 'modules/common/components/SocialShare';
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { convertWallet } from 'modules/common/utils/convertWallet';
@@ -22,6 +23,13 @@ interface IInfoPanelProps {
   subscribers?: ReactNode;
   social?: ReactNode;
 }
+
+// TODO: need receive profile user ID to url prop (now 1)
+const urlForSharing =
+  window.location.protocol +
+  '//' +
+  window.location.hostname +
+  ProfileRoutesConfig.Profile.generatePath(1);
 
 export const InfoPanel = ({
   name = 'Unnamed',
@@ -48,16 +56,24 @@ export const InfoPanel = ({
         </Grid>
 
         <Grid item>
-          <Tooltip title={t('profile.share')} arrow>
-            <IconButton>
-              <ShareIcon />
-            </IconButton>
+          <Tooltip title={t('social.share')} arrow placement="left">
+            <Box>
+              <SocialShare
+                titleString={name}
+                url={urlForSharing}
+                buttonContent={
+                  <IconButton>
+                    <ShareIcon />
+                  </IconButton>
+                }
+              />
+            </Box>
           </Tooltip>
         </Grid>
 
         <Grid item>
           <Link to={ProfileRoutesConfig.EditProfile.generatePath()}>
-            <Tooltip title={t('profile.edit-profile')} arrow>
+            <Tooltip title={t('profile.edit-profile')} arrow placement="right">
               <IconButton>
                 <CogIcon />
               </IconButton>
