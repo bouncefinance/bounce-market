@@ -1,4 +1,5 @@
 import { useQuery } from '@redux-requests/react';
+import { ZERO_ADDRESS } from 'modules/common/conts';
 import { useMemo } from 'react';
 import { setAccount } from '../../account/store/actions/setAccount';
 
@@ -71,8 +72,8 @@ export function useCurrencies() {
             options: [
               {
                 label: chainId === 56 ? Currency.BNB : Currency.ETH,
-                value: '0x0000000000000000000000000000000000000000',
-                contract: '0x0000000000000000000000000000000000000000',
+                value: ZERO_ADDRESS,
+                contract: ZERO_ADDRESS,
                 decimals: 18,
               },
               ...(chainId === 56
@@ -95,7 +96,7 @@ export function useCurrencies() {
                 decimals: 18,
               },
             ],
-            default: '0x0000000000000000000000000000000000000000',
+            default: ZERO_ADDRESS,
           }
         : { options: [], default: undefined },
     [chainId],

@@ -6,8 +6,10 @@ import { gql } from '@apollo/client';
 import { getApolloClient } from '../../common/api/getApolloClient';
 
 export enum AuctionState {
-  InProgress,
-  Done,
+  Live,
+  Filled,
+  Closed,
+  Failed,
 }
 
 interface IApiTradeItem {

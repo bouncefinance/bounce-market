@@ -3,16 +3,14 @@ import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { RootState } from '../../../store/store';
 import { setAccount } from '../../account/store/actions/setAccount';
-import BounceERC20 from '../contracts/BounceERC20.json';
 import { ZERO_ADDRESS } from '../../common/conts';
 import { NftType } from '../../createNFT/actions/createNft';
-import BounceFixedSwapNFT from '../../createNFT/contracts/BounceFixedSwapNFT.json';
-import { AbiItem } from 'web3-utils';
 import { getFixedSwapContract } from '../../createNFT/actions/publishNft';
 import { Address } from '../../common/types/unit';
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import Web3 from 'web3';
+import { BounceERC20, BounceFixedSwapNFT } from '../../web3/contracts';
 
 interface IBuyFixedPayload {
   nftType: NftType;
@@ -49,13 +47,13 @@ export const buyFixed = createSmartAction<
               });
 
               const BounceERC20_CT = new web3.eth.Contract(
-                (BounceERC20.abi as unknown) as AbiItem,
+                BounceERC20,
                 unitContract,
               );
 
               if (nftType === NftType.ERC721) {
                 const BounceFixedSwapNFT_CT = new web3.eth.Contract(
-                  (BounceFixedSwapNFT.abi as unknown) as AbiItem,
+                  BounceFixedSwapNFT,
                   getFixedSwapContract(chainId),
                 );
 
@@ -103,7 +101,7 @@ export const buyFixed = createSmartAction<
                 await bid();
               } else {
                 const BounceFixedSwapNFT_CT = new web3.eth.Contract(
-                  (BounceFixedSwapNFT.abi as unknown) as AbiItem,
+                  BounceFixedSwapNFT,
                   getFixedSwapContract(chainId),
                 );
 

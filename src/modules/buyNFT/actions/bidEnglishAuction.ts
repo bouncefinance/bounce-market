@@ -3,13 +3,11 @@ import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { RootState } from '../../../store/store';
 import { setAccount } from '../../account/store/actions/setAccount';
-import BounceEnglishAuctionNFT from '../../createNFT/contracts/BounceEnglishAuctionNFT.json';
-import { AbiItem } from 'web3-utils';
-import BounceERC20 from '../contracts/BounceERC20.json';
 import { ZERO_ADDRESS } from '../../common/conts';
 import BigNumber from 'bignumber.js';
-import { getEnglishAuctionNFT } from '../../createNFT/actions/publishNft';
+import { getEnglishAuctionContract } from '../../createNFT/actions/publishNft';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
+import { BounceEnglishAuctionNFT, BounceERC20 } from '../../web3/contracts';
 
 interface IBidEnglishAuctionPayload {
   amountMax1: BigNumber;
@@ -45,7 +43,7 @@ export const bidEnglishAuction = createSmartAction<
               });
 
               const BounceEnglishAuctionNFTContract = new web3.eth.Contract(
-                (BounceEnglishAuctionNFT as unknown) as AbiItem,
+                BounceEnglishAuctionNFT,
               );
               const amount =
                 amountMax1.toString() || web3.utils.toWei(bidPrice.toString());
@@ -70,12 +68,12 @@ export const bidEnglishAuction = createSmartAction<
                 bid(amount);
               } else {
                 const BounceERC20Contract = new web3.eth.Contract(
-                  (BounceERC20.abi as unknown) as AbiItem,
+                  BounceERC20,
                   unitContract,
                 );
 
                 const allowance = await BounceERC20Contract.methods
-                  .allowance(address, getEnglishAuctionNFT(chainId))
+                  .allowance(address, getEnglishAuctionContract(chainId))
                   .call();
 
                 if (
@@ -83,7 +81,7 @@ export const bidEnglishAuction = createSmartAction<
                 ) {
                   const approveRes = await BounceERC20Contract.methods
                     .approve(
-                      getEnglishAuctionNFT(chainId),
+                      getEnglishAuctionContract(chainId),
                       '0xffffffffffffffff',
                     )
                     .send({ from: address });

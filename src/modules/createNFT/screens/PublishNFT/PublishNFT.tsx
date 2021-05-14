@@ -41,7 +41,7 @@ import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
 
-// todo: get that values dynamic
+// TODO: get that values dynamic
 const DEMO_CURRENCY_PRICE = 2600;
 const FEE_PERCENTAGE = 1;
 

@@ -15,10 +15,7 @@ import { Queries } from '../../../common/components/Queries/Queries';
 import { useDialog } from './useDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { fetchItem } from '../../actions/fetchItem';
-import {
-  fetchPoolDetails,
-  isEnglishAuction,
-} from '../../../overview/actions/fetchPoolDetails';
+import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { AuctionType } from '../../../overview/api/auctionType';
 import { BuyDialog } from '../../components/BuyDialog';
@@ -26,6 +23,7 @@ import { NftType } from '../../../createNFT/actions/createNft';
 import { AuctionState } from '../../../overview/actions/fetchPools';
 import { buyFixed } from '../../actions/buyFixed';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
+import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -70,25 +68,29 @@ export const BuyNFT = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchPoolDetails({ poolId, poolType })).then(({ data, error }) => {
-      if (error) {
-        throw error;
-      }
+    dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(
+      ({ data, error }) => {
+        if (error) {
+          throw error;
+        }
 
-      if (!data) {
-        throw new Error('Empty response');
-      }
+        if (!data) {
+          throw new Error('Empty response');
+        }
 
-      dispatch(fetchItem({ contract: data?.tokenContract, id: data?.tokenId }));
-    });
+        dispatch(
+          fetchItem({ contract: data?.tokenContract, id: data?.tokenId }),
+        );
+      },
+    );
   }, [dispatch, poolType, poolId]);
 
   return (
     <Queries<
       ResponseData<typeof fetchItem>,
-      ResponseData<typeof fetchPoolDetails>
+      ResponseData<typeof fetchWeb3PoolDetails>
     >
-      requestActions={[fetchItem, fetchPoolDetails]}
+      requestActions={[fetchItem, fetchWeb3PoolDetails]}
     >
       {({ data: item }, { data: poolDetails }) => {
         const renderedCreator = (
@@ -211,7 +213,7 @@ export const BuyNFT = () => {
                   onBidClick={toggleBidDialog(true)}
                   onBuyClick={toggleBuyDialog(true)}
                   // TODO Doesn't work
-                  disabled={poolDetails.state === AuctionState.Done}
+                  disabled={poolDetails.state === AuctionState.Filled}
                 />
               ) : (
                 <InfoPrices
@@ -220,7 +222,7 @@ export const BuyNFT = () => {
                   cryptoPrice={poolDetails.price}
                   cryptoCurrency="BNB"
                   onBuyClick={toggleBuyDialog(true)}
-                  disabled={poolDetails.state === AuctionState.Done}
+                  disabled={poolDetails.state === AuctionState.Filled}
                 />
               )}
 

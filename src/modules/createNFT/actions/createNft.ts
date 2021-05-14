@@ -1,15 +1,16 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import { uploadFile } from 'modules/common/actions/uploadFile';
 import { Store } from 'redux';
+import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from '../../../store/store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
-import BounceERC721WithSign from '../contracts/BounceERC721WithSign.json';
-import { AbiItem } from 'web3-utils';
-import { TransactionReceipt } from '@ethersproject/abstract-provider';
-import BounceERC1155WithSign from '../contracts/BounceERC1155WithSign.json';
 import { addItem, IAddItemPayload } from './addItem';
-import { uploadFile } from './uploadFile';
+import {
+  BounceERC1155WithSign,
+  BounceERC721WithSign,
+} from '../../web3/contracts';
 
 export enum NftType {
   ERC721,
@@ -71,7 +72,7 @@ export const createNft = createSmartAction(
                   ? getBounceERC721WithSign(chainId)
                   : getBounceERC1155WithSign(chainId),
               description,
-              fileurl: data?.path || '',
+              fileurl: data?.result.path || '',
               itemname: name,
               itemsymbol: 'BOUNCE',
               owneraddress: address,
@@ -91,7 +92,7 @@ export const createNft = createSmartAction(
             if (standard === NftType.ERC721) {
               return await new Promise((resolve, reject) => {
                 const ContractBounceERC721WithSign = new web3.eth.Contract(
-                  (BounceERC721WithSign.abi as unknown) as AbiItem,
+                  BounceERC721WithSign,
                   getBounceERC721WithSign(chainId),
                 );
 
@@ -115,7 +116,7 @@ export const createNft = createSmartAction(
             } else {
               return await new Promise((resolve, reject) => {
                 const ContractBounceERC1155WithSign = new web3.eth.Contract(
-                  (BounceERC1155WithSign.abi as unknown) as AbiItem,
+                  BounceERC1155WithSign,
                   getBounceERC1155WithSign(chainId),
                 );
                 ContractBounceERC1155WithSign.methods

@@ -1,6 +1,6 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { NftType } from '../../createNFT/actions/createNft';
+import { AuctionType } from '../api/auctionType';
 
 interface IApiFetchPoolsWeightData {
   code: 1;
@@ -10,7 +10,7 @@ interface IApiFetchPoolsWeightData {
     id: number;
     poolid: number;
     poolweight: number;
-    standard: number;
+    standard: 1 | 2;
     updated_at: string;
   }[];
   total: number;
@@ -23,7 +23,7 @@ interface IFetchPoolsWeightData {
     id: number;
     poolId: number;
     poolWeight: number;
-    standard: NftType;
+    auctionType: AuctionType;
     updatedAt: Date;
   }[];
 }
@@ -60,7 +60,10 @@ export const fetchPoolsWeight = createSmartAction<
               id: item.id,
               poolId: item.poolid,
               poolWeight: item.poolweight,
-              standard: item.standard,
+              auctionType:
+                item.standard === 1
+                  ? AuctionType.FixedSwap
+                  : AuctionType.EnglishAuction,
               updatedAt: new Date(item.updated_at),
             };
           }),

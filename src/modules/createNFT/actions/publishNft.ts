@@ -4,17 +4,18 @@ import { AuctionType } from '../../overview/api/auctionType';
 import { Store } from 'redux';
 import { RootState } from '../../../store/store';
 import { setAccount } from '../../account/store/actions/setAccount';
-import BounceFixedSwapNFT from '../contracts/BounceFixedSwapNFT.json';
-import { AbiItem } from 'web3-utils';
 import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
-import BounceERC721WithSign from '../contracts/BounceERC721WithSign.json';
-import BounceERC1155WithSign from '../contracts/BounceERC1155WithSign.json';
-import BounceEnglishAuctionNFT from '../contracts/BounceEnglishAuctionNFT.json';
 import { NftType } from './createNft';
 import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { Seconds } from '../../common/types/unit';
+import {
+  BounceEnglishAuctionNFT,
+  BounceERC1155WithSign,
+  BounceERC721WithSign,
+  BounceFixedSwapNFT,
+} from '../../web3/contracts';
 
 export const getFixedSwapContract = (chainID: number) => {
   switch (chainID) {
@@ -24,19 +25,21 @@ export const getFixedSwapContract = (chainID: number) => {
       return '0x65B2FA838588003102fb3883e608f8b0049BFDD1';
     case 56:
       return '0x1C035FD1F11eA9Bb753625fD167205Cd40029607';
+    // return '0x58E84d90fd976A183bEfB36a69caB464bef18cC5';
     default:
       return '0x65B2FA838588003102fb3883e608f8b0049BFDD1';
   }
 };
 
-export const getEnglishAuctionNFT = (chainID: number) => {
+export const getEnglishAuctionContract = (chainID: number) => {
   switch (chainID) {
     case 1:
       return '';
     case 4:
       return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525';
     case 56:
-      return '0x780451a32959A96789F99398dEb6678d2c438EB4';
+      return '0x7eF2DECf116f8aeBb9a7940A4713C00997DF79fd';
+    // return '0x780451a32959A96789F99398dEb6678d2c438EB4';
     default:
       return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525';
   }
@@ -92,15 +95,15 @@ export const publishNft = createSmartAction<
             });
 
             const ContractBounceFixedSwapNFT = new web3.eth.Contract(
-              (BounceFixedSwapNFT.abi as unknown) as AbiItem,
+              BounceFixedSwapNFT,
               getFixedSwapContract(chainId),
             );
             const ContractBounceERC721WithSign = new web3.eth.Contract(
-              (BounceERC721WithSign.abi as unknown) as AbiItem,
+              BounceERC721WithSign,
               getBounceERC721WithSign(chainId),
             );
             const ContractBounceERC1155WithSign = new web3.eth.Contract(
-              (BounceERC1155WithSign.abi as unknown) as AbiItem,
+              BounceERC1155WithSign,
               getBounceERC1155WithSign(chainId),
             );
 
@@ -190,13 +193,13 @@ export const publishNft = createSmartAction<
               } = payload;
 
               const ContractBounceEnglishAuctionNFT = new web3.eth.Contract(
-                (BounceEnglishAuctionNFT.abi as unknown) as AbiItem,
-                getEnglishAuctionNFT(chainId),
+                BounceEnglishAuctionNFT,
+                getEnglishAuctionContract(chainId),
               );
 
               if (standard === NftType.ERC721) {
                 await ContractBounceERC721WithSign.methods
-                  .approve(getEnglishAuctionNFT(chainId), tokenId)
+                  .approve(getEnglishAuctionContract(chainId), tokenId)
                   .send({ from: address });
 
                 await new Promise((resolve, reject) => {
@@ -226,7 +229,7 @@ export const publishNft = createSmartAction<
                 });
               } else {
                 ContractBounceERC1155WithSign.methods
-                  .setApprovalForAll(getEnglishAuctionNFT(chainId), true)
+                  .setApprovalForAll(getEnglishAuctionContract(chainId), true)
                   .send({ from: address });
 
                 await new Promise((resolve, reject) => {

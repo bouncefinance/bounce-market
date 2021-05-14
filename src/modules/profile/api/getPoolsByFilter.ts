@@ -1,10 +1,10 @@
-import { createAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
+import BigNumber from 'bignumber.js';
+import { createAction } from 'redux-smart-actions';
+import Web3 from 'web3';
 import { Address, Seconds } from '../../common/types/unit';
 import { NftType } from '../../createNFT/actions/createNft';
-import BigNumber from 'bignumber.js';
 import { AuctionState } from '../../overview/actions/fetchPools';
-import Web3 from 'web3';
 
 interface IApiPool {
   amount_total0: number;
@@ -12,7 +12,7 @@ interface IApiPool {
   createTime: Seconds;
   creator: Address;
   name: string;
-  // TODO Check how it's mapping
+  // TODO: Check how it's mapping
   nftType: 0;
   poolId: number;
   price: string;
