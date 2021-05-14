@@ -212,7 +212,7 @@ export const BuyNFT = () => {
                   cryptoCurrency="BNB"
                   onBidClick={toggleBidDialog(true)}
                   onBuyClick={toggleBuyDialog(true)}
-                  disabled={poolDetails.state === AuctionState.Filled}
+                  disabled={poolDetails.state !== AuctionState.Live}
                 />
               ) : (
                 <InfoPrices
@@ -221,7 +221,7 @@ export const BuyNFT = () => {
                   cryptoPrice={poolDetails.price}
                   cryptoCurrency="BNB"
                   onBuyClick={toggleBuyDialog(true)}
-                  disabled={poolDetails.state === AuctionState.Filled}
+                  disabled={poolDetails.state !== AuctionState.Live}
                 />
               )}
 

@@ -130,17 +130,28 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const curTime = new Date().getTime() / 1000;
                 const diffTime = parseInt(pools.closeAt) - curTime;
 
+                const amountMin1 = new BigNumber(
+                  web3.utils.fromWei(pools.amountMin1),
+                );
+
                 return {
-                  amountMax1: new BigNumber(pools.amountMax1),
-                  amountMin1: new BigNumber(pools.amountMin1),
-                  amountMinIncr1: new BigNumber(pools.amountMinIncr1),
+                  amountMax1: new BigNumber(
+                    web3.utils.fromWei(pools.amountMax1),
+                  ),
+                  amountMin1,
+                  amountMinIncr1: new BigNumber(
+                    web3.utils.fromWei(pools.amountMinIncr1),
+                  ),
                   bidderClaimed: true, // TODO
-                  closeAt: new Date(pools.closeAt),
+                  closeAt: new Date(parseInt(pools.closeAt) * 1000),
                   createTime: new Date(), // TODO
                   creator: pools.creator,
                   creatorClaimed: true, // TODO
                   duration: pools.duration,
-                  lastestBidAmount: new BigNumber(0),
+                  lastestBidAmount:
+                    currentBidderAmount !== '0'
+                      ? new BigNumber(web3.utils.fromWei(currentBidderAmount))
+                      : amountMin1,
                   name: pools.name,
                   nftType: parseInt(pools.nftType),
                   poolId,

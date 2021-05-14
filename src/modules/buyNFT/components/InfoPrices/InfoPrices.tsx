@@ -49,7 +49,7 @@ export const InfoPrices = ({
       </Grid>
 
       <Grid item xs={12} sm={5}>
-        {onBidClick && (
+        {!disabled && onBidClick && (
           <Box mb={2}>
             <Button fullWidth onClick={onBidClick}>
               {t('details-nft.place-a-bid')}
