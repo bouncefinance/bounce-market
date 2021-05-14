@@ -4,13 +4,13 @@ import { useHistory, useParams } from 'react-router'
 import Search from '../component/Other/Search'
 import axios from 'axios'
 import { useActiveWeb3React } from '@/web3'
-import Typography from '@material-ui/core/Typography';
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import useAxios from '@/utils/useAxios'
+import SortHeader from './sortHeader';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -21,8 +21,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import icon_search from '../component/Other/assets/search.svg'
 import SvgIcon from '@material-ui/core/SvgIcon';
-import Tooltip from '@material-ui/core/Tooltip';
-
 
 
 const RankingStyled = styled.div`
@@ -201,7 +199,33 @@ const IconPan = (props) => {
     )
 }
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+      width: '100%',
+    },
+    paper: {
+      width: '100%',
+      marginBottom: theme.spacing(2),
+    },
+    table: {
+      minWidth: 750,
+    },
+    visuallyHidden: {
+      border: 0,
+      clip: 'rect(0 0 0 0)',
+      height: 1,
+      margin: -1,
+      overflow: 'hidden',
+      padding: 0,
+      position: 'absolute',
+      top: 20,
+      width: 1,
+    },
+  }));
+
 export default function Ranking () {
+
+    const classes = useStyles();
 
     const { wrapperIntl } = useWrapperIntl()
     const [loading, setLoading] = useState(true)
@@ -254,6 +278,10 @@ export default function Ranking () {
     /** Ranking列表数据 */
     const [tableData, setTableData] = useState([]);
     const [defaultValue, setDefaultValue] = useState('Search');
+
+    /** 排序参数 */
+    const [order, setOrder] = React.useState('asc');
+    const [orderBy, setOrderBy] = React.useState('dayVolume');
 
     const searchHandle = (searchData) => {
         console.log('data', searchData.target.value);
@@ -315,14 +343,14 @@ export default function Ranking () {
         ])
     }, []);
 
-    const initPools = async (params) => {
+    const initData = async (params) => {
         const res = await axios.get('/pools', { params: params })
         if (res.data.code === 200) {
           setTableData(res.data.data)
         }
     }
     // useEffect(() => {
-    //     initPools(poolsParmas)
+    //     initData(poolsParmas)
     // }, [])
 
     // useEffect(() => {
@@ -352,6 +380,51 @@ export default function Ranking () {
     //     }
     //     // eslint-disable-next-line
     //   }, [active, tableData])
+
+    const headerCellData = [
+        { key: 'collections', numeric: false, disablePadding: true, sortable: false, label: 'RankingTabs.Collections', intlSpan:'RankingDescribe.Collections' },
+        { key: 'dayVolume', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.7DAY.Volume', intlSpan: 'RankingDescribe.7DAY.Volume' },
+        { key: 'dayChange', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.7DAY.Change', intlSpan: 'RankingDescribe.7DAY.Change' },
+        { key: 'totalVolume', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Total.Volume', intlSpan: 'RankingDescribe.Total.Volume' },
+        { key: 'avgPrice', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Avg.Price', intlSpan: 'RankingDescribe.Avg.Price' },
+        { key: 'owners', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Owners', intlSpan: 'RankingDescribe.Owners' },
+        { key: 'asstes', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Assets', intlSpan: 'RankingDescribe.Assets' },
+    ]
+
+    /** 表头排序处理 */
+    const handleRequestSort = (e, property) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+        console.log('dddd', property);
+    }
+
+    const compareDescending = (a, b, orderBy) => {
+        if (b[orderBy] < a[orderBy]) {
+            return -1;
+        }
+        if (b[orderBy] > a[orderBy]) {
+            return 1;
+        }
+        return 0;
+    }
+
+    const getCompare = (order, orderBy) => {
+        return order === 'desc' ? 
+            (a, b) => compareDescending(a, b, orderBy) :
+            (a, b) => compareDescending(a, b, orderBy);
+    }
+
+    const stableSort = (arr, comparator) => {
+        const wrapperArr = arr.map((item, index) =>[item, index]);
+        wrapperArr.sort((a, b) => {
+            const order = comparator(a[0], b[0]);
+            if (order) return order;
+            return a[1] - b[1];
+        })
+
+        return wrapperArr.map(item => item[0]);
+    }
 
     return (
         <>
@@ -406,7 +479,7 @@ export default function Ranking () {
                 <div className="tableBox">
                 <TableContainer component={Paper}>
                     <Table aria-label="customized table">
-                        <TableHead>
+                        {/* <TableHead>
                             <TableRow>
                                 <Tooltip title={wrapperIntl('RankingDescribe.Collections')} placement="top" arrow>
                                     <StyledTableCell align="center">{wrapperIntl('RankingTabs.Collections')}</StyledTableCell>
@@ -430,9 +503,16 @@ export default function Ranking () {
                                     <StyledTableCell align="center">{wrapperIntl('RankingTabs.Assets')}</StyledTableCell>
                                 </Tooltip>
                             </TableRow>
-                        </TableHead>
+                        </TableHead> */}
+                        <SortHeader 
+                            classes={classes}
+                            order={order}
+                            orderBy={orderBy}
+                            onRequestSort={handleRequestSort}
+                            headCells={headerCellData}
+                        />
                         <TableBody>
-                            {tableData.map((row, index) => (
+                            {stableSort(tableData, getCompare(order, orderBy)).map((row, index) => (
                                 <StyledTableRow key={row.name} style={{height: '68px'}}>
                                     <StyledTableCell component="th" scope="row" align="left">
                                         <div className="headBox">
