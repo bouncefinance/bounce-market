@@ -13,7 +13,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
   () => {
     return {
       request: {
-        promise: (async function () { })(),
+        promise: (async function () {})(),
       },
       meta: {
         onRequest: (
@@ -28,7 +28,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 error: poolsInfoError,
               } = await store.dispatchRequest(
                 fetchPoolsWeight(
-                  { limit: 10, offset: 0, orderweight: 1 },
+                  { limit: 20, offset: 0, orderweight: 1 },
                   { silent: true },
                 ),
               );

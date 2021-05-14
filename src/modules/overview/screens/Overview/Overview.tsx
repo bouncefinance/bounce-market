@@ -16,6 +16,8 @@ import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 
+const PROMO_ITEMS_COUNT = 3;
+
 function mapPromoItem(item: IItem): IPromoItem {
   return {
     title: item.itemName || '',
@@ -29,10 +31,7 @@ function mapPromoItem(item: IItem): IPromoItem {
     thumbImg: item.fileUrl || '',
     href:
       item.poolId && item.poolType
-        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-            item.poolId,
-            item.poolType,
-          )
+        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
     authorHref: RoutesConfiguration.Overview.generatePath(),
   };
@@ -47,10 +46,7 @@ function mapMoversItem(item: IItem): ProductProps {
     likes: 100,
     href:
       item.poolId && item.poolType
-        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-            item.poolId,
-            item.poolType,
-          )
+        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
     img: item.fileUrl || '',
     ProfileInfoProps: {
@@ -73,7 +69,7 @@ export const Overview = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchPopularBrands())
+    dispatch(fetchPopularBrands());
   }, [dispatch]);
 
   return (
@@ -88,7 +84,7 @@ export const Overview = () => {
                 stackDown
                 error={error}
                 isLoading={loading}
-                items={data.map(mapPromoItem)}
+                items={data.splice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
               />
             </ThemeProvider>
             <Movers
@@ -96,7 +92,9 @@ export const Overview = () => {
               stackDown
               error={error}
               isLoading={loading}
-              items={data.map(mapMoversItem)}
+              items={data
+                .splice(PROMO_ITEMS_COUNT, data.length)
+                .map(mapMoversItem)}
             />
           </>
         )}
@@ -112,7 +110,7 @@ export const Overview = () => {
         {({ loading, error, data }) => (
           <ThemeProvider theme={darkTheme}>
             <Brands
-              stackUp 
+              stackUp
               stackDown
               isLoading={loading}
               error={error}
