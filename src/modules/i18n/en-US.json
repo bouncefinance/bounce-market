@@ -16,7 +16,11 @@
   },
   "social": {
     "share": "Share",
-    "title-for-socials": "{title} — {description}"
+    "title-for-socials": "{title} — {description}",
+    "instagram": "Instagram",
+    "twitter": "Twitter",
+    "facebook": "Facebook",
+    "telegram": "Telegram"
   },
   "wallet": {
     "unit": "{value, number} {unit}"
@@ -200,10 +204,7 @@
         "email": "Email",
         "custom-url": "Custom URL",
         "bio": "Bio",
-        "website": "Website",
-        "instagram": "Instagram",
-        "twitter": "Twitter",
-        "facebook": "Facebook"
+        "website": "Website"
       },
       "placeholder": {
         "instagram": "Instagram Username",

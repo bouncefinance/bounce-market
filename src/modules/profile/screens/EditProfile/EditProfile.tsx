@@ -125,7 +125,7 @@ export const EditProfile = () => {
             component={InputField}
             name="instagram"
             type="text"
-            label={t('profile.edit.label.instagram')}
+            label={t('social.instagram')}
             placeholder={t('profile.edit.placeholder.instagram')}
             color="primary"
             fullWidth={true}
@@ -136,7 +136,7 @@ export const EditProfile = () => {
             component={InputField}
             name="twitter"
             type="text"
-            label={t('profile.edit.label.twitter')}
+            label={t('social.twitter')}
             placeholder={t('profile.edit.placeholder.twitter')}
             color="primary"
             fullWidth={true}
@@ -147,7 +147,7 @@ export const EditProfile = () => {
             component={InputField}
             name="facebook"
             type="text"
-            label={t('profile.edit.label.facebook')}
+            label={t('social.facebook')}
             placeholder={t('profile.edit.placeholder.facebook')}
             color="primary"
             fullWidth={true}

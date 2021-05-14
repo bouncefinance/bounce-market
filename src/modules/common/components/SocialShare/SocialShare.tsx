@@ -63,7 +63,7 @@ export const SocialShare = ({
           related={['@Fangible_']}
         >
           <TwitterIcon className={classes.menuIcon} />
-          Twitter
+          {t('social.twitter')}
         </TwitterShareButton>
       </MenuItem>
 
@@ -76,7 +76,7 @@ export const SocialShare = ({
           hashtag="#Fangible"
         >
           <FacebookIcon className={classes.menuIcon} />
-          Facebook
+          {t('social.facebook')}
         </FacebookShareButton>
       </MenuItem>
 
@@ -88,7 +88,7 @@ export const SocialShare = ({
           title={`${titleForSocial} \n#Fangible #nft`}
         >
           <TelegramIcon className={classes.menuIcon} />
-          Telegram
+          {t('social.telegram')}
         </TelegramShareButton>
       </MenuItem>
     </MenuList>
