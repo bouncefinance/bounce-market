@@ -77,7 +77,9 @@ function createEventChannel(provider: any) {
       });
 
     return () => {
-      provider.disconnect();
+      if (provider.disconnect instanceof Function) {
+        provider.disconnect();
+      }
     };
   });
 }
