@@ -4,7 +4,7 @@ import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { Address, Seconds } from '../../common/types/unit';
 import { NftType } from '../../createNFT/actions/createNft';
-import { AuctionState } from '../../overview/actions/fetchPools';
+import { AuctionState } from '../../common/const/AuctionState';
 
 interface IApiPool {
   amount_total0: number;

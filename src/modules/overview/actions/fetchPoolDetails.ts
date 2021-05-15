@@ -3,9 +3,9 @@ import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { NftType } from '../../createNFT/actions/createNft';
 import BigNumber from 'bignumber.js';
 import { Address } from '../../common/types/unit';
-import { AuctionState } from './fetchPools';
 import Web3 from 'web3';
 import { AuctionType } from '../api/auctionType';
+import { AuctionState } from '../../common/const/AuctionState';
 
 interface IApiFixedAuctionDetails {
   amount_total0: number;

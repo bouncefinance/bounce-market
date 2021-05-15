@@ -20,11 +20,11 @@ import { ResponseData } from '../../../common/types/ResponseData';
 import { AuctionType } from '../../../overview/api/auctionType';
 import { BuyDialog } from '../../components/BuyDialog';
 import { NftType } from '../../../createNFT/actions/createNft';
-import { AuctionState } from '../../../overview/actions/fetchPools';
 import { buyFixed } from '../../actions/buyFixed';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
 import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { throwIfDataIsEmptyOrError } from '../../../common/utils/throwIfDataIsEmptyOrError';
+import { AuctionState } from '../../../common/const/AuctionState';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();

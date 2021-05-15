@@ -14,10 +14,10 @@ import {
 } from '../../createNFT/actions/publishNft';
 import { IFetchPoolDetailsData } from './fetchPoolDetails';
 import BigNumber from 'bignumber.js';
-import { AuctionState } from './fetchPools';
 import { fetchCurrency } from './fetchCurrency';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { fromWei } from '../../common/utils/fromWei';
+import { AuctionState } from '../../common/const/AuctionState';
 
 interface IFetchPoolDetailsByIdParams {
   poolId: number;

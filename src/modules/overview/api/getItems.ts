@@ -1,8 +1,8 @@
 import { Address } from '../../common/types/unit';
 import { NftType } from '../../createNFT/actions/createNft';
-import { AuctionState } from '../actions/fetchPools';
 import BigNumber from 'bignumber.js';
 import { AuctionType } from './auctionType';
+import { AuctionState } from '../../common/const/AuctionState';
 
 export interface IApiItem {
   likecount: number;
