@@ -145,6 +145,38 @@ const zh_CN = {
         Marketplace: "市场",
     },
 
+    Ranking: {
+        fangible: 'Fangible排名',
+        bsc: 'BSC排名',
+        placeholder: '搜索NFT'
+    },
+
+    RankingTabs: {
+        All: '所有物品',
+        New: '上新物品',
+        Art: '艺术品',
+        Sports: '运动',
+        Comics: '漫画',
+        Collections: '平台用户',
+        '7DAY.Volume': '7天成交量',
+        '7DAY.Change': '7天振幅',
+        'Total.Volume': '总量',
+        'Avg.Price': '均价',
+        'Owners': '所有者',
+        'Assets': '总NFT'
+    },
+
+    RankingDescribe: {
+        Collections: '平台用户',
+        '7DAY.Volume': '过去一周总销售额',
+        '7DAY.Change': '销售价值与前一周的变化百分比',
+        'Total.Volume': '总销售额',
+        'Avg.Price': '一件物品最后售出的平均价格',
+        'Owners': '持有代币的唯一钱包地址的数量',
+        'Assets': '项目总数'
+    },
+
+
     MarketPlace: {
         "CardItem.LoadingPrice": "正在加载价格",
         "CardItem.Price": "价格",

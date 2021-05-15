@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { PullRadioBox } from "../../../components/UI-kit";
+import Link from '@material-ui/core/Link';
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
 import link_media from '@assets/images/icon/link_media.svg'
@@ -34,6 +35,10 @@ const FooterStyled = styled.div`
         .right {
             display: flex;
             position: relative;
+            .ranking {
+                position: absolute;
+                left: -150px;
+            }
 
             .language_menu {
                 position: absolute;
@@ -94,6 +99,18 @@ export default function Index () {
                     <img className='logo' src={logo_bounce} alt="" />
 
                     <div className='right'>
+                        <Link
+                            component="button"
+                            variant="body2"
+                            color="inherit"
+                            className="ranking"
+                            onClick={() => {
+                                console.info("I'm a button.");
+                                history.push('/Ranking')
+                            }}
+                            >
+                            Ranking
+                        </Link>
                         <PullRadioBox
                             className='language_menu'
                             width={"120px"}
