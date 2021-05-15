@@ -16,7 +16,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import icon_search from '../component/Other/assets/search.svg'
-import SvgIcon from '@material-ui/core/SvgIcon';
 
 
 import { apiGetRankingList } from './APIController';
@@ -234,15 +233,17 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+const params = { offset: 0, count: 100 };
+
 export default function Ranking () {
 
     const classes = useStyles();
+    const { sign_Axios } = useAxios();
 
     const { wrapperIntl } = useWrapperIntl()
     const [loading, setLoading] = useState(true)
-    const params = { offset: 0, count: 100 };
+    // const params = { offset: 0, count: 100 };
     // const [params, setParams] = useState({ offset: 0, count: 100 });
-    const { sign_Axios } = useAxios();
     const [searchCount, setSearchCount] = useState(0)
 
     const NavList = [
@@ -361,10 +362,11 @@ export default function Ranking () {
             setLoading(false);
         }
     }
-
         initData(params)
         setChannel('Fangible')
+        // eslint-disable-next-line
     }, [active, searchCount])
+
 
     const headerCellData = [
         { key: 'collections', numeric: false, disablePadding: true, sortable: false, label: 'RankingTabs.Collections', intlSpan:'RankingDescribe.Collections' },
