@@ -21,8 +21,8 @@ import { useBrandInfo } from './useHook'
 import Snackbar from '@material-ui/core/Snackbar';
 import { useActiveWeb3React } from '@/web3'
 import { Controller } from '@/utils/controller'
-import { useLazyQuery } from '@apollo/client'
-import { QueryMyNFTByBrand } from '@/utils/apollo'
+// import { useLazyQuery } from '@apollo/client'
+// import { QueryMyNFTByBrand } from '@/utils/apollo'
 import UpdateTopBarImg from './updateTopBarImg'
 import { ImgToUrl } from '@/utils/imgToUrl'
 import { AutoStretchBaseWidthOrHeightImg } from '@/pages/component/Other/autoStretchBaseWidthOrHeightImg'
@@ -300,12 +300,16 @@ export default function BrandsByType() {
     }
 
     const [loading, setLoading] = useState(true);
-    const [tokenList, setTokenList] = useState();
+    // const [tokenList, setTokenList] = useState();
     const [tokenList_2, setTokenList_2] = useState();
 
     useEffect(() => {
-        // console.log("category:", category)
-        if (!account || !tokenList || !tokenList_2 || !brandInfo.contractaddress) return
+        if (!account  || !tokenList_2 || !brandInfo.contractaddress) return
+        // console.log(brandInfo)
+        
+        if(String(brandInfo.owneraddress).toLowerCase() !== String(account).toLowerCase()){
+            history.push(`/AirHome/${brandInfo.id}/FineArts`)
+        }
         // console.log(tokenList, tokenList_2)
         const brand_erc721 = tokenList_2.brandserc721.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
         const brand_erc1155 = tokenList_2.brandserc1155.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
@@ -323,7 +327,7 @@ export default function BrandsByType() {
         // console.log("pools: ", pools)
         pools && handleBrandTradeItems(pools)
         // eslint-disable-next-line
-    }, [account, tokenList, tokenList_2, brandInfo, category])
+    }, [account, tokenList_2, brandInfo, category])
 
     const handleBrandTradeItems = (pools) => {
         const ids = pools.map(item => (item.tokenId || parseInt(item.token_id)))
@@ -389,9 +393,6 @@ export default function BrandsByType() {
                 }
             })
     }
-    useEffect(() => {
-        console.log("statusList: ", statusList)
-    }, [statusList])
 
     const getBrandTradeItems = async () => {
         let brandData = {
@@ -442,31 +443,15 @@ export default function BrandsByType() {
     }
 
 
-    // 16806 正在列表
-    const [getBrandItems, { data: brandItems }] = useLazyQuery(QueryMyNFTByBrand, {
-        variables: { user: account && account.toLowerCase(), contract: contract && contract.toLowerCase() },
-        fetchPolicy: "network-only",
-        onCompleted: () => {
-            const brands = [...brandItems.nft721Items, ...brandItems.nft1155Items]
-            if (!brands) {
-                // handleBrandTradeItems([]);
-                setTokenList([]);
-            } else {
-                setTokenList(brands);
-            }
-        }
-    })
 
     useEffect(() => {
         if (!account || !contract) return;
         if (!!brandInfo.standard) {
-            getBrandItems()
 
             getBrandTradeItems()
-            // getBrandItems_2()
         }
         // eslint-disable-next-line
-    }, [account, contract, brandInfo.standard, getBrandItems]);
+    }, [account, contract, brandInfo.standard]);
 
     return (
         <BrandsByTypeStyled>

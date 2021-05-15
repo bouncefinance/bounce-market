@@ -8,6 +8,8 @@ export const getNFTFactory = (chainID) => {
             return ''
         case 4:
             return '0xb9BaC7b8C8ca157035E78e764bC3AD7D7BcCAb3A'
+        case 128:
+            return '0x41939809dB201c8531D082f95Fc5BEc187Fe2803'
         case 56:
             if (hostname.indexOf('market.bounce.finance') !== -1 || hostname.includes('127.0.0.1')
                 || hostname.includes('fangible') || hostname.includes('cnmarket.bounce.finance')) {
@@ -26,6 +28,8 @@ export const getBounceERC721WithSign = (chainID) => {
             return ''
         case 4:
             return '0xD9b73E3f331420C8bCBa26c98Fb7fbbCd2A682E7'
+        case 128:
+            return '0x25A836DCBD78dcC9D29FEb8010424c2E56017325'
         case 56:
             if (hostname.indexOf('market.bounce.finance') !== -1 || hostname.includes('127.0.0.1')
                 || hostname.includes('fangible') || hostname.includes('cnmarket.bounce.finance')) {
@@ -44,6 +48,8 @@ export const getBounceERC1155WithSign = (chainID) => {
             return ''
         case 4:
             return '0x57174694E5E1221709992B93C71d43eba7F5d73F'
+        case 128:
+            return '0x94E7d2a17EAA6A86DFD2Fddb639F9878d8377CC7'
         case 56:
             if (hostname.indexOf('market.bounce.finance') !== -1 || hostname.includes('127.0.0.1')
                 || hostname.includes('fangible') || hostname.includes('cnmarket.bounce.finance')) {
@@ -62,6 +68,8 @@ export const getFixedSwapNFT = (chainID) => {
             return ''
         case 4:
             return '0x65B2FA838588003102fb3883e608f8b0049BFDD1'
+        case 128:
+            return '0x194C02845d77ffCB8580D474Ca99013073C1eAb1'
         case 56:
             if (hostname.indexOf('market.bounce.finance') !== -1 || hostname.includes('127.0.0.1')
                 || hostname.includes('fangible') || hostname.includes('cnmarket.bounce.finance')) {
@@ -80,6 +88,8 @@ export const getEnglishAuctionNFT = (chainID) => {
             return ''
         case 4:
             return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525'
+        case 128:
+            return '0xFCEc495B3FbB41fC8034E4d2Fd85289F549922b1'
         case 56:
             if (hostname.indexOf('market.bounce.finance') !== -1 || hostname.includes('127.0.0.1')
                 || hostname.includes('fangible') || hostname.includes('cnmarket.bounce.finance')) {

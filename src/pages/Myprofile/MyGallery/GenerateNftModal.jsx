@@ -18,6 +18,10 @@ import useWrapperIntl from '@/locales/useWrapperIntl'
 import to from 'await-to-js'
 import { ImgToUrl } from '@/utils/imgToUrl'
 import { ImgCompressorCreate } from '@utils/img-compressor'
+import VideoFrame from '@/components/VideoFrame/VideoFrame';
+import Card from '@material-ui/core/Card';
+import { Image } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
 // import { numToWei } from '@/utils/useBigNumber'
 
@@ -44,6 +48,17 @@ const GenerateNFTModalStyled = styled.div`
 
 `
 
+const DeleteIconStyled = styled.div`
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width: 25px;
+`
+
+const ImageSpan = styled.div`
+    position: relative;
+`
+
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const { wrapperIntl } = useWrapperIntl()
     const history = useHistory();
@@ -56,16 +71,14 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
+    const [filePath, setFilePath] = useState('');
+    const [videoFramePath, setVideoFramePath] = useState({});
     const [nftType, setNftType] = useState('ERC-721')
     const [formData, setFormData] = useState({
         Category: 'image',
         Channel: NFT_CATEGORY.FineArts,
         Supply: 1
     })
-
-    useEffect(() => {
-        // console.log("formData:", formData)
-    }, [formData])
 
     useEffect(() => {
         if (!active) return
@@ -77,7 +90,6 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
             const requireArr = ['Name', 'Description', 'Supply']
             let errorCount = 0
             requireArr.forEach(item => {
-                console.log('---item---', item, formData)
                 if (!checkInput(formData[item]) || (item === 'Supply' && !ErrorStatus.intNum.reg.test(formData[item]))) {
                     errorCount++
                 }
@@ -202,7 +214,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                     const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, getBounceERC1155WithSign(chainId))
                     const _amount = formData.Supply
                     const _data = 0
-                    // console.log(_nftId, _amount, _data, _sign,_expiredtime)
+                    console.log(_nftId, _amount, _data, _sign,_expiredtime)
                     try {
                         BounceERC1155WithSign_CT.methods.mintUser(_nftId, _amount, _data, _sign, _expiredtime).send({ from: account })
                             .on('transactionHash', hash => {
@@ -324,36 +336,71 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                         setFormData({ ...formData, Description: val })
                     }}
                 />
-
-                <UploadAll
-                    // type={formData.Category}
-                    inputDisable={inputDisable}
-                    width='200px'
-                    /* height='200px' */
-                    height="100%"
-                    lockInput={inputDisable}
-                    infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')}
-                    onClick={() => {
-                        // setFileData(null)
-                    }}
-                    onFileChange={(formData, file, filetype) => {
-                        // console.log(filetype, file)
-                        if (filetype === 'video/avi') {
-                            dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
-                            setFileData(null)
-                            return
-                        }
-                        if (filetype.substring(0, 'video'.length) === 'video') {
-                            console.log('video')
-                        }
-                        setFileData({
-                            formData,
-                            file,
-                            type: filetype
-                        })
-                    }}
-                />
-
+                <div style={{width: '100%', display: 'flex', justifyContent: 'flex-start'}}>
+                    {
+                        fileData ? 
+                        <Card style={{display: 'flex', justifyContent: 'center'}}>
+                            {
+                                fileData?.type.substring(0, 'image'.length) === 'image' ? 
+                                <img
+                                width={280}
+                                height={135}
+                                src={filePath}
+                                style={{backgroundSize: 'cover'}}
+                              /> : 
+                              <div style={{display: 'flex', justifyContent: 'center'}}>
+                                  <VideoFrame src={filePath} videoWidth={280} videoHeight={135} onImageChangeCalback={(frameData) => {
+                                        setVideoFramePath(frameData);
+                                    }}/>
+                                {
+                                    videoFramePath?.url && <Image src={videoFramePath.url} width={280} height={135} style={{objectFit: 'cover'}}/>
+                                }
+                              </div>
+                            }
+                            <DeleteIconStyled>
+                                <CloseOutlined  style={{cursor: 'pointer'}} onClick={() => {
+                                    setVideoFramePath({});
+                                    setFilePath('');
+                                    setFileData(null);
+                                }}/>
+                            </DeleteIconStyled>
+                        </Card>
+                        :
+                        <UploadAll
+                        // type={formData.Category}
+                        inputDisable={inputDisable}
+                        width='200px'
+                        /* height='200px' */
+                        height="100%"
+                        lockInput={inputDisable}
+                        infoTitle={wrapperIntl('MyProfile.MyGallery.GenerateNewNFTModal.browseBrandPhoto')}
+                        onClick={() => {
+                            // setFileData(null)
+                        }}
+                        onFileChange={(formData, file, filetype) => {
+                            // console.log(filetype, file)
+                            if (filetype === 'video/avi') {
+                                dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl("UIKit.Input.Upload.infoTip.FormatIncorrect") })
+                                setFileData(null)
+                                return
+                            }
+                            if (filetype.substring(0, 'video'.length) === 'video') {
+                                console.log('video')
+                            }
+                            console.log('fileData', filetype);
+                            setFileData({
+                                formData,
+                                file,
+                                type: filetype
+                            })
+                        }}
+                        onFilePathChange={(videoPathUrl) => {
+                            setFilePath(videoPathUrl)
+                        }}
+                    />
+                    }
+                </div>
+                
                 <div className="button_group">
                     <Button height='48px' width='302px' onClick={() => {
                         setOpen(false)

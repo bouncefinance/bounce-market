@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
+import { PullRadioBox } from "../../../components/UI-kit";
+import Link from '@material-ui/core/Link';
 
 import logo_bounce from '@assets/images/logo/bounce.svg'
 import link_media from '@assets/images/icon/link_media.svg'
@@ -18,7 +20,7 @@ const FooterStyled = styled.div`
         bottom: 0px;
     }
     
-    .footer_wapper{
+    .footer_wrapper{
         width: 1100px;
         height: 100%;
         display: flex;
@@ -26,18 +28,37 @@ const FooterStyled = styled.div`
         align-items: center;
         justify-content:space-between;
 
-        img{
+        img.logo{
             width: 101px;
         }
 
-        ul{
+        .right {
             display: flex;
-            align-items: center;
+            position: relative;
+            .ranking {
+                position: absolute;
+                left: -150px;
+            }
 
-            li{
-                margin-left: 40px;
-                img{
-                    width: 18px;
+            .language_menu {
+                position: absolute;
+                left: -100px;
+                bottom: -12px;
+                
+                .options {
+                    margin-bottom: 5px;
+                }
+            }
+
+            ul.external_link {
+                display: flex;
+                align-items: center;
+
+                li{
+                    margin-left: 40px;
+                    img{
+                        width: 18px;
+                    }
                 }
             }
         }
@@ -74,25 +95,85 @@ export default function Index () {
             }}></div>}
 
             <FooterStyled className={!hasScroll ? 'lower' : ''}>
-                <div className="footer_wapper">
-                    <img src={logo_bounce} alt="" />
-                    <ul>
-                        <li>
-                            <a target="_blank" rel="noreferrer" href={'https://bouncefinance.medium.com'}>
-                                <img src={link_media} alt="" />
-                            </a>
-                        </li>
-                        <li>
-                            <a target="_blank" rel="noreferrer" href={'https://t.me/bounce_finance'}>
-                                <img src={link_telegram} alt="" />
-                            </a>
-                        </li>
-                        <li>
-                            <a target="_blank" rel="noreferrer" href={'https://twitter.com/bounce_finance?s=21'}>
-                                <img src={link_twitter} alt="" />
-                            </a>
-                        </li>
-                    </ul>
+                <div className="footer_wrapper">
+                    <img className='logo' src={logo_bounce} alt="" />
+
+                    <div className='right'>
+                        <Link
+                            component="button"
+                            variant="body2"
+                            color="inherit"
+                            className="ranking"
+                            onClick={() => {
+                                console.info("I'm a button.");
+                                history.push('/Ranking')
+                            }}
+                            >
+                            Ranking
+                        </Link>
+                        <PullRadioBox
+                            className='language_menu'
+                            width={"120px"}
+                            borderHidden
+                            popDirection='up'
+                            options={[
+                                {
+                                    value: "English",
+                                },
+                                {
+                                    value: "中文",
+                                },
+                            ]}
+                            defaultValue={() => {
+                                switch (window.localStorage.getItem("Language")) {
+                                    case 'en-US':
+                                        return('English')
+                                    case 'zh-CN':
+                                        return('中文')
+                                    default:
+                                        return('English')
+                                }
+                            }}
+                            onValChange={(item) => {
+                                console.log(item)
+                                switch (item) {
+                                    case 'English':
+                                        if (window.localStorage.getItem("Language") === 'en-US') break
+                                        window.localStorage.removeItem("Language")
+                                        window.localStorage.setItem("Language", 'en-US')
+                                        window.location.reload()
+                                        break;
+                                    case '中文':
+                                        if (window.localStorage.getItem("Language") === 'zh-CN') break
+                                        window.localStorage.removeItem("Language")
+                                        window.localStorage.setItem("Language", 'zh-CN')
+                                        window.location.reload()
+                                        break;
+                                
+                                    default:
+                                        break;
+                                }
+                            }}
+                        />
+                        <ul className='external_link'>
+                            <li>
+                                <a target="_blank" rel="noreferrer" href={'https://bouncefinance.medium.com'}>
+                                    <img src={link_media} alt="" />
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" rel="noreferrer" href={'https://t.me/bounce_finance'}>
+                                    <img src={link_telegram} alt="" />
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" rel="noreferrer" href={'https://twitter.com/bounce_finance?s=21'}>
+                                    <img src={link_twitter} alt="" />
+                                </a>
+                            </li>
+                        </ul>
+                        
+                    </div>
                 </div>
             </FooterStyled>
         </>

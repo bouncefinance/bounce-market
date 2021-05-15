@@ -34,6 +34,7 @@ import ErrorNotification from '@components/Modal/ErrorNotification'
 import { AirHome } from './AirHome/index'
 import  ArtistHome  from './ArtistHome/index'
 import MyLiked from './Myprofile/MyLiked'
+import Ranking from './Ranking';
 import { InitAxios } from '@/utils/utils'
 
 InitAxios()
@@ -77,11 +78,12 @@ export default function Index() {
                 <Route exact path='/MyActivities' component={MyActivities} />
 
                 <Route exact path='/MyLiked' component={MyLiked} />
+                <Route exact path='/Ranking' component={Ranking} />
 
                 <Route exact path='/MyP2P' render={() => { return <Redirect to='/MyP2P/Requests' /> }} />
                 <Route exact path='/MyP2P/:type' component={MyP2P} />
 
-                <Route exact path='/AirHome/:id/:standard/:channel' component={AirHome} />
+                <Route exact path='/AirHome/:id/:channel' component={AirHome} />
                 <Route exact path='/ArtistHome/:userName' component={ArtistHome} />
 
                 <Route exact path='/404' component={Page404} />

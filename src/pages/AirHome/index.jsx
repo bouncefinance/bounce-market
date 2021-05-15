@@ -144,13 +144,13 @@ const MarketplaceStyled = styled.div`
     }
 `
 
-export function AirHome() {
+export function AirHome () {
   const history = useHistory()
   const [openUpdateTopBarImg, setOpenUpdateTopBarImg] = useState(false)
   const run = () => { }
 
   const { account, active } = useActiveWeb3React();
-  const { id, standard, channel, /* type */ } = useParams();
+  const { id, channel, /* type */ } = useParams();
   const { sign_Axios } = useAxios();
 
   const [brandInfo, setBrandInfo] = useState({});
@@ -187,7 +187,7 @@ export function AirHome() {
 
 
   const handleBrandItems = (tradeData) => {
-console.log(tradeData)
+    // console.log(tradeData)
     const tradeAuctions = (tradeData.tradeAuctions || []).filter(item => {
       return item.state !== 1 && String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase()
     })
@@ -317,23 +317,11 @@ console.log(tradeData)
     </div>
     <MarketplaceStyled>
       <ul className="nav_wrapper">
-        {/* {'Fine Arts、Sports、Comic Books'.split('、').map(e => ({ name: e })).map((item) => {
-          return <li key={item.name} className={channel === item.name ? 'active' : ''} onClick={() => {
-            history.push(`/AirHome/${id}/${standard}/${item.name}`)
-          }}>
-            <p className="flex flex-center-y"><img src={
-              item.name === NFT_CATEGORY.FineArts ? icon_arts :
-                item.name === NFT_CATEGORY.Sports ? icon_sport :
-                  item.name === NFT_CATEGORY.ComicBooks ? icon_comics :
-                    ''
-            } alt="" />{item.name}</p>
-          </li>
-        })} */}
         {NavList.map(nav => {
           return <li key={nav.title} className={channel === nav.route ? 'active' : ''} onClick={
             () => {
               setChannelRequestParam(nav.channelRequestParam)
-              history.push(`/AirHome/${id}/${standard}/${nav.route}`)
+              history.push(`/AirHome/${id}/${nav.route}`)
               // setChannelRequestParam(item.name)
             }}>
             <p className="flex flex-center-y"><img src={

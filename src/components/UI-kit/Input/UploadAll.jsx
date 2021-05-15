@@ -68,6 +68,7 @@ const UploadStyled = styled.div`
 export default function UploadAll({
     // type = 'image',
     onFileChange,
+    onFilePathChange,
     defaultValue,
     disabled,
     lockInput,
@@ -97,9 +98,14 @@ export default function UploadAll({
             reader.onload = function (evt) {   //读取操作完成时触发。
                 setCoverSrc(evt.target.result)  //将img标签的src绑定为DataURL
                 setInfoTitle(file.name)
+                const data = reader.result.split(',')[1];
+                const bufferData = Buffer.from(data, 'base64');
+                const base64Path = window.URL.createObjectURL(new Blob([bufferData]));
+                onFilePathChange && onFilePathChange(base64Path);
             }
             let formData = new FormData()
             formData.append('filename', file)
+            
             onFileChange && onFileChange(formData, file, filetype)
             // setFormData(formData)
         } else if (file.type.includes('video/')) {
@@ -114,6 +120,11 @@ export default function UploadAll({
             reader.onload = function (evt) {   //读取操作完成时触发。
                 // setCoverSrc(evt.target.result)  //将img标签的src绑定为DataURL
                 setInfoTitle(file.name)
+                const data = reader.result.split(',')[1];
+                const bufferData = Buffer.from(data, 'base64');
+                const base64Path = window.URL.createObjectURL(new Blob([bufferData]));
+                /** 视频上传的回调, 用于接收视频base64地址 */
+                onFilePathChange && onFilePathChange(base64Path);
             }
             let formData = new FormData()
             formData.append('filename', file)

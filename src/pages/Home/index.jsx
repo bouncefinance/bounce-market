@@ -6,8 +6,8 @@ import PopularItem from './PopularItem'
 import BrandsItem from './BrandsItem'
 // import RequestsItem from './RequestsItem'
 import arrows_white from '@assets/images/icon/arrows-white.svg'
-// import img_banner from '@assets/images/banner2.png'
-import img_banner_fmg from './assets/FMG/FMG.jpg'
+import img_banner from '@assets/images/banner2.png'
+// import img_banner_fmg from './assets/FMG/FMG.jpg'
 
 import img_example_1 from '@assets/images/example_1.svg'
 // import img_alpaca_city from '@assets/images/alpaca_city.svg'
@@ -127,9 +127,10 @@ export default function Index () {
   const { wrapperIntl } = useWrapperIntl()
 
   const bannerSetting = {
-    img: img_banner_fmg,
+    // img: img_banner_fmg,
+    img: img_banner,
     // test cicd 2
-    href: 'https://fangible.com/AirHome/155/2/FineArts',
+    href: 'https://fangible.com/AirHome/155/FineArts',
     showText: false,
   }
 
@@ -167,10 +168,10 @@ export default function Index () {
         <div
           className="banner_wrapper"
           style={{ background: `url(${bannerSetting.img}) center center no-repeat`, backgroundSize: '100%!important', position: 'relative', cursor: 'pointer' }}
-          onClick={() => { 
-            history.push('/AirHome/155/2/FineArts')
-            // window.open(bannerSetting.href)
-           }}
+          // onClick={() => { 
+          //   // history.push('/AirHome/155/2/FineArts')
+          //   window.open(bannerSetting.href)
+          //  }}
           title={`jump to ${bannerSetting.href}`}
         >
           {

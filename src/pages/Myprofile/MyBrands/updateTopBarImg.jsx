@@ -49,7 +49,7 @@ box-sizing: border-box;
 const defaultSrc =
   "";
 
-export default function UpdateTopBarImg (props) {
+export default function UpdateTopBarImg(props) {
   const { wrapperIntl } = useWrapperIntl()
   const { brandId } = useParams()
   const ratio = [1440, 180]

@@ -52,7 +52,7 @@ export default function Index() {
     const { active, library, chainId, account } = useActiveWeb3React()
     const [brandAddress, setbrandAddress] = useState('')
     const [brandAddContract, setbrandAddContract] = useState(true)
-// eslint-disable-next-line
+    // eslint-disable-next-line
     const [brandList, setBrandList] = useState([])
 
     useEffect(() => {
