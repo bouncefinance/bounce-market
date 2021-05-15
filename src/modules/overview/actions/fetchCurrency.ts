@@ -14,6 +14,9 @@ import { fetchPriceBySymbol } from './fetchPriceBySymbol';
 import { BounceERC20 } from '../../web3/contracts';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { fromWei } from '../../common/utils/fromWei';
+import { Address, Seconds } from '../../common/types/unit';
+
+const CACHE_LIFETIME: Seconds = 180;
 
 interface IFetchCurrencyData {
   priceUsd: BigNumber;
@@ -22,7 +25,7 @@ interface IFetchCurrencyData {
 }
 
 interface IFetchCurrencyParams {
-  unitContract: string;
+  unitContract: Address;
 }
 
 export const fetchCurrency = createSmartAction<
@@ -37,6 +40,9 @@ export const fetchCurrency = createSmartAction<
       promise: (async function () {})(),
     },
     meta: {
+      cache: CACHE_LIFETIME,
+      requestKey: unitContract,
+      requestsCapacity: 10,
       onRequest: (
         request: { promise: Promise<any> },
         action: RequestAction,
@@ -61,7 +67,6 @@ export const fetchCurrency = createSmartAction<
                   }),
                 ),
               );
-
               return {
                 priceUsd: data.priceUsd,
                 decimals: data.decimals,

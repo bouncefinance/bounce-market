@@ -25,6 +25,7 @@ import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
 import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { throwIfDataIsEmptyOrError } from '../../../common/utils/throwIfDataIsEmptyOrError';
 import { AuctionState } from '../../../common/const/AuctionState';
+import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -72,6 +73,7 @@ export const BuyNFT = () => {
     dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(response => {
       const { data } = throwIfDataIsEmptyOrError(response);
       dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
+      dispatch(fetchCurrency({ unitContract: data.unitContract }));
     });
   }, [dispatch, poolType, poolId]);
 
@@ -82,172 +84,185 @@ export const BuyNFT = () => {
     >
       requestActions={[fetchItem, fetchWeb3PoolDetails]}
     >
-      {({ data: item }, { data: poolDetails }) => {
-        const renderedCreator = (
-          <ProfileInfo
-            subTitle="Creator"
-            title="VanHuiFirst"
-            users={[
-              {
-                name: 'VanHuiFirst',
-                avatar: 'https://picsum.photos/32?random=1',
-                verified: true,
-              },
-            ]}
-          />
-        );
-
-        const renderedOwner = (
-          <ProfileInfo
-            subTitle="Owner"
-            title="Bombist"
-            users={[
-              {
-                name: 'Bombist',
-                avatar: 'https://picsum.photos/32?random=2',
-              },
-            ]}
-          />
-        );
-
-        const renderedHistoryList = (
-          <InfoTabsList>
-            <InfoTabsItem
-              title="Offered 3 BNB for 1 edition"
-              author="yeah66"
-              date={new Date()}
-            />
-          </InfoTabsList>
-        );
-
-        const renderedBidsList = (
-          <InfoTabsList>
-            <InfoTabsItem
-              title="Bid placed"
-              author="Scarlett_vfx"
-              date={new Date()}
-              price={new BigNumber('10')}
-              currency="$"
-              cryptoCurrency="ETH"
-              cryptoPrice={new BigNumber(10.55413)}
-              href="//google.com"
-            />
-          </InfoTabsList>
-        );
-
-        const renderedOnwersList = (
-          <InfoTabsList>
-            <ProfileInfo
-              isTitleFirst
-              avatarSize="big"
-              title="Bombist"
-              subTitle="4 copies"
-              users={[
-                {
-                  name: 'Bombist',
-                  avatar: 'https://picsum.photos/44?random=1',
-                },
-              ]}
-            />
-          </InfoTabsList>
-        );
-
-        const renderedTokenInfoList = (
-          <InfoTabsList>
-            <InfoTabsItem
-              title="Offered 3 BNB for 1 edition"
-              author="yeah66"
-              date={new Date()}
-            />
-
-            <InfoTabsItem
-              title="Minted"
-              author="HumanFactory"
-              date={new Date()}
-            />
-
-            <InfoTabsItem
-              title="Put on sale 9 editions for 0.5 ETH "
-              author="0xc2...f6e5"
-              date={new Date()}
-            />
-          </InfoTabsList>
-        );
-
-        return (
-          <div className={classes.root}>
-            <ImgContainer
-              className={classes.imgContainer}
-              src={item.fileurl}
-              title={item.itemname}
-              description={item.description}
-            />
-
-            <Info className={classes.info}>
-              <InfoDescr
-                title={item.itemname}
-                description={item.description}
-                copiesCurrent={2}
-                copiesTotal={10}
-                creator={renderedCreator}
-                owner={renderedOwner}
+      {({ data: item }, { data: poolDetails }) => (
+        <Queries<ResponseData<typeof fetchCurrency>>
+          requestActions={[fetchCurrency]}
+          requestKeys={[poolDetails.unitContract]}
+        >
+          {({ data: currency }) => {
+            const renderedCreator = (
+              <ProfileInfo
+                subTitle="Creator"
+                title="VanHuiFirst"
+                users={[
+                  {
+                    name: 'VanHuiFirst',
+                    avatar: 'https://picsum.photos/32?random=1',
+                    verified: true,
+                  },
+                ]}
               />
+            );
 
-              {isEnglishAuction(poolDetails) ? (
-                <InfoPrices
-                  endDate={poolDetails.closeAt}
-                  price={new BigNumber(0)}
-                  currency="$"
-                  cryptoPrice={poolDetails.lastestBidAmount}
-                  cryptoCurrency="BNB"
-                  onBidClick={toggleBidDialog(true)}
-                  onBuyClick={toggleBuyDialog(true)}
-                  disabled={poolDetails.state !== AuctionState.Live}
-                />
-              ) : (
-                <InfoPrices
-                  price={new BigNumber(0)}
-                  currency="$"
-                  cryptoPrice={poolDetails.price}
-                  cryptoCurrency="BNB"
-                  onBuyClick={toggleBuyDialog(true)}
-                  disabled={poolDetails.state !== AuctionState.Live}
-                />
-              )}
-
-              <InfoTabs
-                history={renderedHistoryList}
-                bids={renderedBidsList}
-                owners={renderedOnwersList}
-                tokenInfo={renderedTokenInfoList}
+            const renderedOwner = (
+              <ProfileInfo
+                subTitle="Owner"
+                title="Bombist"
+                users={[
+                  {
+                    name: 'Bombist',
+                    avatar: 'https://picsum.photos/32?random=2',
+                  },
+                ]}
               />
-            </Info>
+            );
 
-            <BidDialog
-              name={item.itemname}
-              img={item.fileurl}
-              onSubmit={handleBid}
-              isOpen={openedBid}
-              onClose={toggleBidDialog(false)}
-              currency="BNB"
-              owner="Bombist"
-              ownerAvatar="https://picsum.photos/44?random=1"
-              isOwnerVerified={false}
-            />
-            <BuyDialog
-              name={item.itemname}
-              img={item.fileurl}
-              onSubmit={handleBuy}
-              isOpen={openedBuy}
-              onClose={toggleBuyDialog(false)}
-              owner="Bombist"
-              ownerAvatar="https://picsum.photos/44?random=1"
-              isOwnerVerified={false}
-              disabled={item.standard === NftType.ERC721}
-            />
-          </div>
-        );
-      }}
+            const renderedHistoryList = (
+              <InfoTabsList>
+                <InfoTabsItem
+                  title="Offered 3 BNB for 1 edition"
+                  author="yeah66"
+                  date={new Date()}
+                />
+              </InfoTabsList>
+            );
+
+            const renderedBidsList = (
+              <InfoTabsList>
+                <InfoTabsItem
+                  title="Bid placed"
+                  author="Scarlett_vfx"
+                  date={new Date()}
+                  price={new BigNumber('10')}
+                  currency="$"
+                  cryptoCurrency="ETH"
+                  cryptoPrice={new BigNumber(10.55413)}
+                  href="//google.com"
+                />
+              </InfoTabsList>
+            );
+
+            const renderedOnwersList = (
+              <InfoTabsList>
+                <ProfileInfo
+                  isTitleFirst
+                  avatarSize="big"
+                  title="Bombist"
+                  subTitle="4 copies"
+                  users={[
+                    {
+                      name: 'Bombist',
+                      avatar: 'https://picsum.photos/44?random=1',
+                    },
+                  ]}
+                />
+              </InfoTabsList>
+            );
+
+            const renderedTokenInfoList = (
+              <InfoTabsList>
+                <InfoTabsItem
+                  title="Offered 3 BNB for 1 edition"
+                  author="yeah66"
+                  date={new Date()}
+                />
+
+                <InfoTabsItem
+                  title="Minted"
+                  author="HumanFactory"
+                  date={new Date()}
+                />
+
+                <InfoTabsItem
+                  title="Put on sale 9 editions for 0.5 ETH "
+                  author="0xc2...f6e5"
+                  date={new Date()}
+                />
+              </InfoTabsList>
+            );
+
+            return (
+              <div className={classes.root}>
+                <ImgContainer
+                  className={classes.imgContainer}
+                  src={item.fileurl}
+                  title={item.itemname}
+                  description={item.description}
+                />
+
+                <Info className={classes.info}>
+                  <InfoDescr
+                    title={item.itemname}
+                    description={item.description}
+                    copiesCurrent={2}
+                    copiesTotal={10}
+                    creator={renderedCreator}
+                    owner={renderedOwner}
+                  />
+
+                  {isEnglishAuction(poolDetails) ? (
+                    <InfoPrices
+                      endDate={poolDetails.closeAt}
+                      price={
+                        new BigNumber(
+                          poolDetails.lastestBidAmount.multipliedBy(
+                            currency.priceUsd,
+                          ),
+                        )
+                      }
+                      currency="$"
+                      cryptoPrice={poolDetails.lastestBidAmount}
+                      cryptoCurrency="BNB"
+                      onBidClick={toggleBidDialog(true)}
+                      onBuyClick={toggleBuyDialog(true)}
+                      disabled={poolDetails.state !== AuctionState.Live}
+                    />
+                  ) : (
+                    <InfoPrices
+                      price={poolDetails.price.multipliedBy(currency.priceUsd)}
+                      currency="$"
+                      cryptoPrice={poolDetails.price}
+                      cryptoCurrency="BNB"
+                      onBuyClick={toggleBuyDialog(true)}
+                      disabled={poolDetails.state !== AuctionState.Live}
+                    />
+                  )}
+
+                  <InfoTabs
+                    history={renderedHistoryList}
+                    bids={renderedBidsList}
+                    owners={renderedOnwersList}
+                    tokenInfo={renderedTokenInfoList}
+                  />
+                </Info>
+
+                <BidDialog
+                  name={item.itemname}
+                  img={item.fileurl}
+                  onSubmit={handleBid}
+                  isOpen={openedBid}
+                  onClose={toggleBidDialog(false)}
+                  currency="BNB"
+                  owner="Bombist"
+                  ownerAvatar="https://picsum.photos/44?random=1"
+                  isOwnerVerified={false}
+                />
+                <BuyDialog
+                  name={item.itemname}
+                  img={item.fileurl}
+                  onSubmit={handleBuy}
+                  isOpen={openedBuy}
+                  onClose={toggleBuyDialog(false)}
+                  owner="Bombist"
+                  ownerAvatar="https://picsum.photos/44?random=1"
+                  isOwnerVerified={false}
+                  disabled={item.standard === NftType.ERC721}
+                />
+              </div>
+            );
+          }}
+        </Queries>
+      )}
     </Queries>
   );
 };
