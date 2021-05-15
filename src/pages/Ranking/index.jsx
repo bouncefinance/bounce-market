@@ -547,7 +547,7 @@ export default function Ranking () {
                                         </div>
                                     </StyledTableCell>
                                     <StyledTableCell align="center">{row.volume}</StyledTableCell>
-                                    <StyledTableCell align="center">{row.change}%</StyledTableCell>
+                                    <StyledTableCell align="center">{row.change / 100}%</StyledTableCell>
                                     <StyledTableCell align="center">${formatMonney(row.total)}</StyledTableCell>
                                     <StyledTableCell align="center">${formatMonney(row.avg)}</StyledTableCell>
                                     <StyledTableCell align="center">{row.owners}</StyledTableCell>
