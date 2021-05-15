@@ -7,7 +7,7 @@ import { Address } from '../../common/types/unit';
 import { connect } from '../store/actions/connect';
 import { setAccount } from '../store/actions/setAccount';
 
-// TODO Check disconnection, switch chain, switch account
+// TODO: Check disconnection, switch chain, switch account
 
 enum WalletEventType {
   'AccountChanged' = 'AccountChanged',

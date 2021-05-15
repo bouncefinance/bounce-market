@@ -73,6 +73,7 @@ export const BuyNFT = () => {
     dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(response => {
       const { data } = throwIfDataIsEmptyOrError(response);
       dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
+      // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
       dispatch(fetchCurrency({ unitContract: data.unitContract }));
     });
   }, [dispatch, poolType, poolId]);
