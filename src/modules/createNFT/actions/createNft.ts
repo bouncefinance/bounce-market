@@ -3,7 +3,7 @@ import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { uploadFile } from 'modules/common/actions/uploadFile';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
 import { addItem, IAddItemPayload } from './addItem';

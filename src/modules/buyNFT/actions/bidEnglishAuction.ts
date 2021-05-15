@@ -1,7 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { ZERO_ADDRESS } from '../../common/conts';
 import BigNumber from 'bignumber.js';

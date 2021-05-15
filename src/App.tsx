@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { AppBase } from './modules/layout/components/AppBase/AppBase';
 import { Routes } from './Routes';
-import { persistor, store } from './store/store';
+import { persistor, store } from 'store';
 import { NoSsr } from '@material-ui/core';
 import { Notifications } from './modules/notification/components/Notifications';
 import { PersistGate } from 'redux-persist/integration/react';

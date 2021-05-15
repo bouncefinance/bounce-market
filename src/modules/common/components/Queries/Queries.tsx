@@ -1,7 +1,7 @@
 import { Box } from '@material-ui/core';
 import { getQuery, QueryState, RequestAction } from '@redux-requests/core';
 import React, { ReactNode } from 'react';
-import { useAppSelector } from '../../../../store/useAppSelector';
+import { useAppSelector } from 'store/useAppSelector';
 import { QueryEmpty } from '../QueryEmpty/QueryEmpty';
 import { QueryError } from '../QueryError/QueryError';
 import { QueryLoadingCentered } from '../QueryLoading/QueryLoading';

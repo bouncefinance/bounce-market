@@ -6,7 +6,7 @@ import { ZERO_ADDRESS } from 'modules/common/conts';
 import { NftType } from 'modules/createNFT/actions/createNft';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { RootState } from 'store/store';
+import { RootState } from 'store';
 import { AbiItem } from 'web3-utils';
 import {
   default as BoucneErc721,

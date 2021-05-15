@@ -7,7 +7,7 @@ import {
   notificationSlice,
 } from '../../store/notificationSlice';
 import { Alert } from '@material-ui/lab';
-import { useAppSelector } from '../../../../store/useAppSelector';
+import { useAppSelector } from 'store/useAppSelector';
 
 interface IItemProps {
   data: INotificationProps;

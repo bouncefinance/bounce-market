@@ -1,7 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { fetchPoolsWeight } from './fetchPoolsWeight';
 import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
 import { fetchItemsByIds } from './fetchItemsByIds';
