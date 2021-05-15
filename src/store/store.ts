@@ -14,7 +14,6 @@ import { NotificationActions } from '../modules/notification/store/NotificationA
 import { extractMessage } from '../modules/common/utils/extractError';
 import { setAccount } from '../modules/account/store/actions/setAccount';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import { i18nPersistConfig } from './webStorageConfigs';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
