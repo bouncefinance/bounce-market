@@ -65,11 +65,6 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
 
 const sagaMiddleware = createSagaMiddleware();
 
-const persistConfig = {
-  key: 'root',
-  storage,
-};
-
 const rootReducer = combineReducers({
   i18n: persistReducer(i18nPersistConfig, i18nSlice.reducer),
   requests: requestsReducer,
@@ -77,10 +72,8 @@ const rootReducer = combineReducers({
   notifications: notificationSlice.reducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: [
     ...requestsMiddleware,
     routerMiddleware(historyInstance),
