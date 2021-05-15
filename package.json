@@ -72,7 +72,7 @@
     ]
   },
   "scripts": {
-    "start": "env-cmd -f .env.smartchain react-scripts start",
+    "start": "env-cmd -f .env.rinkeby react-scripts start",
     "start:rinkeby": "env-cmd -f .env.rinkeby react-scripts start",
     "build": "env-cmd -f .env.smartchain react-scripts build",
     "test": "react-scripts test",
