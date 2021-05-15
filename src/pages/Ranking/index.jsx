@@ -93,7 +93,7 @@ const RankingStyled = styled.div`
         display:flex;
         justify-content:flex-start;
         align-items:center;
-        margin-left: 20px;
+        margin-left: 20%;
         span {
             text-align: center
         }
@@ -499,7 +499,7 @@ export default function Ranking () {
                         <TableBody>
                             {stableSort(tableData, getCompare(order, orderBy)).map((row, index) => (
                                 <StyledTableRow key={index} style={{height: '68px'}}>
-                                    <StyledTableCell component="th" scope="row" align="center">
+                                    <StyledTableCell scope="row" align="right">
                                         <div className="headBox">
                                             <span style={{marginRight: '9px'}}>{index + 1}.</span>
                                                 {

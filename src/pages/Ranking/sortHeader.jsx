@@ -31,7 +31,7 @@ export default function SortHeader (props) {
                                 key={headCell.key}
                                 // align={headCell.numeric ? 'right' : 'left'}
                                 align="center"
-                                padding={headCell.disablePadding ? 'none' : 'default'}
+                                
                                 sortDirection={orderBy === headCell.key ? order : false}
                             >
                                 <TableSortLabel
