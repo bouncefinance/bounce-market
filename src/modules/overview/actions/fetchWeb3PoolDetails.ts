@@ -1,7 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { AuctionType } from '../api/auctionType';
 import { setAccount } from '../../account/store/actions/setAccount';
 import {

@@ -2,7 +2,7 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { AuctionType } from '../../overview/api/auctionType';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
 import { NftType } from './createNft';

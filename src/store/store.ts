@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { i18nSlice } from 'modules/i18n/i18nSlice';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { getQuery, handleRequests } from '@redux-requests/core';
@@ -13,6 +13,9 @@ import { notificationSlice } from '../modules/notification/store/notificationSli
 import { NotificationActions } from '../modules/notification/store/NotificationActions';
 import { extractMessage } from '../modules/common/utils/extractError';
 import { setAccount } from '../modules/account/store/actions/setAccount';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import { i18nPersistConfig } from './webStorageConfigs';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
   driver: {
@@ -62,19 +65,30 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
 
 const sagaMiddleware = createSagaMiddleware();
 
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const rootReducer = combineReducers({
+  i18n: persistReducer(i18nPersistConfig, i18nSlice.reducer),
+  requests: requestsReducer,
+  router: connectRouter(historyInstance),
+  notifications: notificationSlice.reducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const store = configureStore({
-  reducer: {
-    i18n: i18nSlice.reducer,
-    requests: requestsReducer,
-    router: connectRouter(historyInstance),
-    notifications: notificationSlice.reducer,
-  },
+  reducer: persistedReducer,
   middleware: [
     ...requestsMiddleware,
     routerMiddleware(historyInstance),
     sagaMiddleware,
   ],
 });
+
+export const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 

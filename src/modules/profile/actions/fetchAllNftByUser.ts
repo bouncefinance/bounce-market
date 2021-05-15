@@ -1,7 +1,7 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { fetchItemsByFilter } from '../../createNFT/actions/fetchItemsByFilter';
 import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
 import { IApiFetchNftByUserVariables } from '../../createNFT/api/fetchNftByUser';

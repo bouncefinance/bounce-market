@@ -32,8 +32,18 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
     },
   },
 
+  localeCol: {
+    '&&': {
+      [theme.breakpoints.up('md')]: {
+        justifyContent: 'flex-end',
+        paddingRight: theme.spacing(4),
+      },
+    },
+  },
+
   socialCol: {
     [theme.breakpoints.up('md')]: {
+      flexGrow: 0,
       justifyContent: 'flex-end',
     },
   },
