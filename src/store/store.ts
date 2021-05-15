@@ -14,7 +14,6 @@ import { NotificationActions } from '../modules/notification/store/NotificationA
 import { extractMessage } from '../modules/common/utils/extractError';
 import { setAccount } from '../modules/account/store/actions/setAccount';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import { i18nPersistConfig } from './webStorageConfigs';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
@@ -65,11 +64,6 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
 
 const sagaMiddleware = createSagaMiddleware();
 
-const persistConfig = {
-  key: 'root',
-  storage,
-};
-
 const rootReducer = combineReducers({
   i18n: persistReducer(i18nPersistConfig, i18nSlice.reducer),
   requests: requestsReducer,
@@ -77,10 +71,8 @@ const rootReducer = combineReducers({
   notifications: notificationSlice.reducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: [
     ...requestsMiddleware,
     routerMiddleware(historyInstance),
