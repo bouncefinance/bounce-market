@@ -280,10 +280,9 @@ export default function Ranking () {
         },
     ]
   
-    // let { channel } = useParams()
     const [channel, setChannel] = useState('Fangible');
     const history = useHistory()
-    const { active, chainId } = useActiveWeb3React()
+    const { active } = useActiveWeb3React()
     const [tabValue ,setTabValue] = useState('All');
 
     /** Ranking列表数据 */
@@ -359,6 +358,7 @@ export default function Ranking () {
     }
     useEffect(() => {
         initData(params)
+        setChannel('Fangible')
     }, [params, active])
 
     const headerCellData = [
@@ -405,6 +405,7 @@ export default function Ranking () {
         return wrapperArr.map(item => item[0]);
     }
 
+    /** 解析千分位数字 */
     const formatMonney = (str) => {
         return String(str).replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
     }
@@ -443,7 +444,6 @@ export default function Ranking () {
                             })
                         }
                     </AntTabs>
-                    {/* <Search placeholder={wrapperIntl('Ranking.placeholder')} onChange={searchHandle} width={'226px'}/> */}
                     <SearchStyled width={226}>
                     <input
                         type="text"
