@@ -15,6 +15,9 @@ import {
 import { IFetchPoolDetailsData } from './fetchPoolDetails';
 import BigNumber from 'bignumber.js';
 import { AuctionState } from './fetchPools';
+import { fetchCurrency } from './fetchCurrency';
+import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
+import { fromWei } from '../../common/utils/fromWei';
 
 interface IFetchPoolDetailsByIdParams {
   poolId: number;
@@ -62,6 +65,17 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   .creatorCanceledP(poolId)
                   .call();
 
+                const {
+                  data: { decimals },
+                } = throwIfDataIsEmptyOrError(
+                  await store.dispatchRequest(
+                    fetchCurrency(
+                      { unitContract: pools.token1 },
+                      { silent: true },
+                    ),
+                  ),
+                );
+
                 return {
                   quantity: parseInt(pools.amountTotal0),
                   totalPrice: new BigNumber(0),
@@ -71,7 +85,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   nftType: parseInt(pools.nftType),
                   poolId,
                   price: new BigNumber(
-                    web3.utils.fromWei(pools.amountTotal1),
+                    fromWei(pools.amountTotal1, decimals),
                   ).dividedBy(pools.amountTotal0),
                   state: (() => {
                     if (
@@ -130,17 +144,28 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const curTime = new Date().getTime() / 1000;
                 const diffTime = parseInt(pools.closeAt) - curTime;
 
+                const {
+                  data: { decimals },
+                } = throwIfDataIsEmptyOrError(
+                  await store.dispatchRequest(
+                    fetchCurrency(
+                      { unitContract: pools.token1 },
+                      { silent: true },
+                    ),
+                  ),
+                );
+
                 const amountMin1 = new BigNumber(
-                  web3.utils.fromWei(pools.amountMin1),
+                  fromWei(pools.amountMin1, decimals),
                 );
 
                 return {
                   amountMax1: new BigNumber(
-                    web3.utils.fromWei(pools.amountMax1),
+                    fromWei(pools.amountMax1, decimals),
                   ),
                   amountMin1,
                   amountMinIncr1: new BigNumber(
-                    web3.utils.fromWei(pools.amountMinIncr1),
+                    fromWei(pools.amountMinIncr1, decimals),
                   ),
                   bidderClaimed: true, // TODO
                   closeAt: new Date(parseInt(pools.closeAt) * 1000),
@@ -150,7 +175,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   duration: pools.duration,
                   lastestBidAmount:
                     currentBidderAmount !== '0'
-                      ? new BigNumber(web3.utils.fromWei(currentBidderAmount))
+                      ? new BigNumber(fromWei(currentBidderAmount, decimals))
                       : amountMin1,
                   name: pools.name,
                   nftType: parseInt(pools.nftType),

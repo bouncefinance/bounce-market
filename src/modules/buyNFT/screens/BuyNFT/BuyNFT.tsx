@@ -24,6 +24,7 @@ import { AuctionState } from '../../../overview/actions/fetchPools';
 import { buyFixed } from '../../actions/buyFixed';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
 import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
+import { throwIfDataIsEmptyOrError } from '../../../common/utils/throwIfDataIsEmptyOrError';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -68,21 +69,10 @@ export const BuyNFT = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(
-      ({ data, error }) => {
-        if (error) {
-          throw error;
-        }
-
-        if (!data) {
-          throw new Error('Empty response');
-        }
-
-        dispatch(
-          fetchItem({ contract: data?.tokenContract, id: data?.tokenId }),
-        );
-      },
-    );
+    dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(response => {
+      const { data } = throwIfDataIsEmptyOrError(response);
+      dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
+    });
   }, [dispatch, poolType, poolId]);
 
   return (

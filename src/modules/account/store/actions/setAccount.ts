@@ -3,6 +3,7 @@ import { connectWallet } from '../../api/connectWallet';
 import { getAuthToken } from '../../api/getAuthToken';
 import { RequestAction } from '@redux-requests/core';
 import Web3 from 'web3';
+import { BlockchainNetworkId } from '../../../common/conts';
 
 const SIGN_STR = 'Welcome to Bounce!';
 
@@ -10,7 +11,7 @@ export interface ISetAccountData {
   token: string;
   address: string;
   provider?: any;
-  chainId: number;
+  chainId: BlockchainNetworkId;
   web3: Web3;
 }
 

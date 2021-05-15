@@ -63,7 +63,8 @@
     "BNB-value": "{value, number} BNB"
   },
   "error": {
-    "unexpected": "Unexpected error"
+    "unexpected": "Unexpected error",
+    "data-is-not-available": "Data is not available"
   },
   "go-back": {
     "action": "Go back"
