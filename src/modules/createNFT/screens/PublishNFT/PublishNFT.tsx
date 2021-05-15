@@ -55,9 +55,9 @@ interface IPublishFixedSwap {
 
 interface IPublishEnglishAuction {
   type: AuctionType.EnglishAuction;
-  minBid: number;
-  purchasePrice: number;
-  reservePrice: number;
+  minBid: string;
+  purchasePrice: string;
+  reservePrice: string;
   quantity: string;
   duration: Days;
   unitContract: string;
@@ -217,7 +217,9 @@ export const PublishNFTComponent = ({
             type: payload.type,
             purchasePrice: payload.purchasePrice,
             minBid: payload.minBid,
-            minIncremental: payload.minBid * MIN_INCREMENTAL_PART,
+            minIncremental: new BigNumber(payload.minBid).multipliedBy(
+              MIN_INCREMENTAL_PART,
+            ),
             reservePrice: payload.reservePrice,
             duration: payload.duration * 60 * 60 * 24,
             name,

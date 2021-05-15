@@ -46,7 +46,7 @@ export const bidEnglishAuction = createSmartAction<
                 BounceEnglishAuctionNFT,
               );
               const amount =
-                amountMax1.toString() || web3.utils.toWei(bidPrice.toString());
+                amountMax1.toFixed() || web3.utils.toWei(bidPrice.toFixed());
 
               const bid = (value?: string) =>
                 new Promise((resolve, reject) => {

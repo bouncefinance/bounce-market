@@ -3,7 +3,7 @@ import { count } from './count';
 
 const UNIT_NOT_FOUND_ERROR = new Error('Unit not found');
 
-function getUnitPrecisionNameByPow(pow: number) {
+export function getUnitPrecisionNameByPow(pow: number) {
   const unitMap = (Web3.utils.unitMap as unknown) as ReturnType<
     typeof Web3.utils.unitMap
   >;
