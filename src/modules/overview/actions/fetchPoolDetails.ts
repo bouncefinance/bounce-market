@@ -106,6 +106,8 @@ interface IFetchPoolDetailsParams {
   poolType: AuctionType;
 }
 
+// TODO Replace Web3.utils.fromWei by fromWei
+
 export const fetchPoolDetails = createSmartAction<
   RequestAction<IApiFetchPoolDetails, IFetchPoolDetailsData>
 >(
