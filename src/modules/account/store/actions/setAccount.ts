@@ -39,15 +39,15 @@ export const setAccount = createSmartAction(
     meta: {
       getData: (data: ISetAccountData) => data,
       onSuccess: (
-        request: { data: ISetAccountData },
+        response: { data: ISetAccountData },
         action: RequestAction,
       ) => {
-        const provider = request.data.provider;
-        delete request.data.provider;
+        const provider = response.data.provider;
+        delete response.data.provider;
         if (action.meta) {
           action.meta.provider = provider;
         }
-        return request;
+        return response;
       },
     },
   }),

@@ -42,8 +42,8 @@ export const uploadFile: (
         return data;
       },
       onSuccess: (
-        request,
-        _action: RequestAction,
+        response,
+        action: RequestAction,
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
         const { data: profileInfo } = getQuery<IProfileInfo | null>(
@@ -53,24 +53,24 @@ export const uploadFile: (
           },
         );
 
-        const isSuccessfulUpload = request.data.code === 200;
+        const isSuccessfulUpload = response.data.code === 200;
 
         if (fileType === 'avatar' && isSuccessfulUpload) {
           store.dispatch(
             editProfile({
               ...(profileInfo || {}),
-              imgUrl: request.data.result.path,
+              imgUrl: response.data.result.path,
             }) as any,
           );
         } else if (fileType === 'bgImg' && isSuccessfulUpload) {
           store.dispatch(
             editProfileBgImg({
-              imgUrl: request.data.result.path,
+              imgUrl: response.data.result.path,
             }),
           );
         }
 
-        return request;
+        return response;
       },
     },
   };

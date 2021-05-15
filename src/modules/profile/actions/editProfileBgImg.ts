@@ -9,6 +9,14 @@ import { RootState } from 'store';
 import { IProfileInfo } from '../api/profileInfo';
 import { fetchProfileInfo } from './fetchProfileInfo';
 import { showSuccesNotify } from './showSuccesNotify';
+import { editProfile } from './editProfile';
+
+function isAccountNotExist(data: any) {
+  return (
+    data.code === 0 &&
+    data.msg === 'bandimg update:accountaddress is not existed.'
+  );
+}
 
 interface IEditProfileBgImgArgs {
   imgUrl: string;
@@ -77,14 +85,19 @@ export const editProfileBgImg = createSmartAction<RequestAction>(
           return data;
         },
       },
-      onSuccess: (
-        request,
-        _action: RequestAction,
+      onSuccess: async (
+        response,
+        action: RequestAction,
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
-        store.dispatch(showSuccesNotify());
+        if (isAccountNotExist(response.data)) {
+          await store.dispatchRequest(editProfile({}));
+          await store.dispatchRequest(action);
+        } else {
+          store.dispatch(showSuccesNotify());
+        }
 
-        return request;
+        return response;
       },
     },
   }),

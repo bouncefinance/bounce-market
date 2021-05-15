@@ -106,13 +106,13 @@ export const editProfile: (
         },
       },
       onSuccess: (
-        request,
-        _action: RequestAction,
+        response,
+        action: RequestAction,
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
         store.dispatch(showSuccesNotify());
 
-        return request;
+        return response;
       },
     },
   }),
