@@ -55,10 +55,6 @@ const DeleteIconStyled = styled.div`
     min-width: 25px;
 `
 
-// const ImageSpan = styled.div`
-//     position: relative;
-// `
-
 export default function GenerateNftModal({ open, setOpen, defaultValue }) {
     const { wrapperIntl } = useWrapperIntl()
     const history = useHistory();
@@ -343,6 +339,7 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                             {
                                 fileData?.type.substring(0, 'image'.length) === 'image' ? 
                                 <img
+                                alt="..."
                                 width={280}
                                 height={135}
                                 src={filePath}
