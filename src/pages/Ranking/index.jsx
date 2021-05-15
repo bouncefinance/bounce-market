@@ -202,13 +202,13 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const IconPan = (props) => {
-    return (
-        <SvgIcon {...props}>
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </SvgIcon>
-    )
-}
+// const IconPan = (props) => {
+//     return (
+//         <SvgIcon {...props}>
+//             <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+//         </SvgIcon>
+//     )
+// }
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -240,9 +240,10 @@ export default function Ranking () {
 
     const { wrapperIntl } = useWrapperIntl()
     const [loading, setLoading] = useState(true)
-    // const params = { offset: 0, count: 100 };
-    const [params, setParams] = useState({ offset: 0, count: 100 });
+    const params = { offset: 0, count: 100 };
+    // const [params, setParams] = useState({ offset: 0, count: 100 });
     const { sign_Axios } = useAxios();
+    const [searchCount, setSearchCount] = useState(0)
 
     const NavList = [
       {
@@ -300,7 +301,9 @@ export default function Ranking () {
         if (!searchValue) {
             setTableData([]);
             setLoading(true)
-            return initData();
+            setSearchCount(searchCount + 1);
+            return;
+            // return initData();
         }
         let result = tableData.filter(v => {
             if (v.brandname) {
@@ -327,7 +330,9 @@ export default function Ranking () {
         setTabValue(v);
     }
 
-    /** 初始化数据 */
+    useEffect(() => {
+
+            /** 初始化数据 */
     const initData = async (params) => {
         try {
             const res = await apiGetRankingList(params);
@@ -356,10 +361,10 @@ export default function Ranking () {
             setLoading(false);
         }
     }
-    useEffect(() => {
+
         initData(params)
         setChannel('Fangible')
-    }, [params, active])
+    }, [active, searchCount])
 
     const headerCellData = [
         { key: 'collections', numeric: false, disablePadding: true, sortable: false, label: 'RankingTabs.Collections', intlSpan:'RankingDescribe.Collections' },
