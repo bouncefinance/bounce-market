@@ -7,7 +7,6 @@ import { useInfoPricesStyles } from './useInfoPricesStyles';
 
 interface IInfoPricesProps {
   price: BigNumber;
-  currency: string;
   cryptoPrice: BigNumber;
   cryptoCurrency: string;
   disabled: boolean;
@@ -19,7 +18,6 @@ interface IInfoPricesProps {
 export const InfoPrices = ({
   endDate,
   price,
-  currency,
   cryptoPrice,
   cryptoCurrency,
   disabled,
@@ -44,7 +42,7 @@ export const InfoPrices = ({
         </Typography>
 
         <Typography className={classes.price} color="textSecondary">
-          {`${currency}${price.toFormat()}`}
+          {t('wallet.$-value', { value: price.toFormat() })}
         </Typography>
       </Grid>
 

@@ -135,7 +135,6 @@ export const BuyNFT = () => {
                   author="Scarlett_vfx"
                   date={new Date()}
                   price={new BigNumber('10')}
-                  currency="$"
                   cryptoCurrency="ETH"
                   cryptoPrice={new BigNumber(10.55413)}
                   href="//google.com"
@@ -211,7 +210,6 @@ export const BuyNFT = () => {
                           ),
                         )
                       }
-                      currency="$"
                       cryptoPrice={poolDetails.lastestBidAmount}
                       cryptoCurrency="BNB"
                       onBidClick={toggleBidDialog(true)}
@@ -221,7 +219,6 @@ export const BuyNFT = () => {
                   ) : (
                     <InfoPrices
                       price={poolDetails.price.multipliedBy(currency.priceUsd)}
-                      currency="$"
                       cryptoPrice={poolDetails.price}
                       cryptoCurrency="BNB"
                       onBuyClick={toggleBuyDialog(true)}

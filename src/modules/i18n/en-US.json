@@ -27,6 +27,7 @@
     "telegram": "Telegram"
   },
   "wallet": {
+    "$-value": "${value}",
     "unit": "{value, number} {unit}"
   },
   "connect-wallet": {
