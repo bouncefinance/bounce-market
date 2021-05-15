@@ -68,20 +68,22 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 ),
               );
 
-              return data?.map(item => {
-                const pool = poolDetailsList.find(pool => {
-                  return pool.data?.tokenId === item.id;
-                })?.data;
+              return data
+                ?.map(item => {
+                  const pool = poolDetailsList.find(pool => {
+                    return pool.data?.tokenId === item.id;
+                  })?.data;
 
-                return {
-                  ...item,
-                  poolId: pool?.poolId,
-                  poolType:
-                    pool && isEnglishAuction(pool)
-                      ? AuctionType.EnglishAuction
-                      : AuctionType.FixedSwap,
-                } as IItem;
-              });
+                  return {
+                    ...item,
+                    poolId: pool?.poolId,
+                    poolType:
+                      pool && isEnglishAuction(pool)
+                        ? AuctionType.EnglishAuction
+                        : AuctionType.FixedSwap,
+                  } as IItem;
+                })
+                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
             })(),
           };
         },
