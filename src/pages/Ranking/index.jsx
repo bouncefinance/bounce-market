@@ -100,8 +100,20 @@ const RankingStyled = styled.div`
     }
     .headBox {
         display:flex;
-        justify-content:center;
+        justify-content:flex-start;
         align-items:center;
+        margin-left: 20px;
+        span {
+            text-align: center
+        }
+        .boxImage {
+            width: 22px;
+            margin-right: 6px;
+            img {
+               width: 100%;
+               height: 22px; 
+            }
+        }
     }
 `
 
@@ -525,17 +537,17 @@ export default function Ranking () {
                         <TableBody>
                             {stableSort(tableData, getCompare(order, orderBy)).map((row, index) => (
                                 <StyledTableRow key={index} style={{height: '68px'}}>
-                                    <StyledTableCell component="th" scope="row" align="left">
+                                    <StyledTableCell component="th" scope="row" align="center">
                                         <div className="headBox">
-                                            <span>{index + 1}.</span>
-                                            {
-                                                row.imgurl ? <img src={row.imgurl} alt="" className="cellImage" style={{width: '22px', height: '22px', borderRadius: '50%'}}/> : <ImageIcon/>
-                                            }
+                                            <span style={{marginRight: '9px'}}>{index + 1}.</span>
+                                                {
+                                                    row.imgurl && <div className="boxImage"><img src={row.imgurl} alt="" className="cellImage" style={{width: '22px', height: '22px', borderRadius: '50%'}}/></div> 
+                                                }
                                             <span>{row.brandname || 'brandName'}</span>
                                         </div>
                                     </StyledTableCell>
                                     <StyledTableCell align="center">{row.volume}</StyledTableCell>
-                                    <StyledTableCell align="center">{formatMonney(row.change)}</StyledTableCell>
+                                    <StyledTableCell align="center">{row.change}%</StyledTableCell>
                                     <StyledTableCell align="center">${formatMonney(row.total)}</StyledTableCell>
                                     <StyledTableCell align="center">${formatMonney(row.avg)}</StyledTableCell>
                                     <StyledTableCell align="center">{row.owners}</StyledTableCell>
