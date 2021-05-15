@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
-import { useHistory, useParams } from 'react-router'
-import Search from '../component/Other/Search'
-import axios from 'axios'
+import { useHistory } from 'react-router'
 import { useActiveWeb3React } from '@/web3'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import ConnectWalletModal from '@components/Modal/ConnectWallet'
 import useAxios from '@/utils/useAxios'
 import SortHeader from './sortHeader';
 
@@ -16,12 +13,10 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import icon_search from '../component/Other/assets/search.svg'
 import SvgIcon from '@material-ui/core/SvgIcon';
-import ImageIcon from '@material-ui/icons/Image';
 
 
 import { apiGetRankingList } from './APIController';
@@ -41,9 +36,7 @@ const RankingStyled = styled.div`
         width: 1100px;
         margin: 0 auto;
         margin-top: 40px;
-        display: flex;
-        // padding-bottom: 16px;
-        // border-bottom: 2px solid rgba(0,0,0,.1);
+        display: flex;;
         position: relative;
         li{
             padding: 7px 20px;
@@ -57,7 +50,6 @@ const RankingStyled = styled.div`
             img{
                 margin-right: 7.15px;
             }
-
             &.active{
                 background-color: rgba(0,0,0,.1);
                 opacity: 1;
@@ -71,7 +63,6 @@ const RankingStyled = styled.div`
 
     .contentBox{
         margin-top: 32px;
-        /* margin-bottom: 50px; */
         display: flex;
         flex-direction:column;
         justify-content: center;
@@ -249,7 +240,8 @@ export default function Ranking () {
 
     const { wrapperIntl } = useWrapperIntl()
     const [loading, setLoading] = useState(true)
-    const [params, setParams] = useState({ offset: 0, count: 100 })
+    // const params = { offset: 0, count: 100 };
+    const [params, setParams] = useState({ offset: 0, count: 100 });
     const { sign_Axios } = useAxios();
 
     const NavList = [
@@ -364,46 +356,17 @@ export default function Ranking () {
             console.log('e', e);
             setLoading(false);
         }
-        
     }
     useEffect(() => {
         initData(params)
     }, [params, active])
 
-    // useEffect(() => {
-    
-    //     if (tableData) {
-    //       const tradePools = (tableData.tradePools || []).map(item => ({
-    //         ...item,
-    //       })).filter(item => item.state !== 1)
-    //       const tradeAuctions = (tableData.tradeAuctions || []).map(item => ({
-    //         ...item,
-    //         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
-    //       }))
-    //         .filter(item => item.state !== 1 && item.poolId !== 0)
-    
-    
-    //       setLoading(true)
-    //       sign_Axios.post('', {})
-    //         .then(res => {
-    //           if (res.status === 200 && res.data.code === 1) {
-    
-    //             setLoading(false)
-    //           }
-    //         })
-    //         .catch(() => {
-    //           setLoading(false)
-    //         })
-    //     }
-    //     // eslint-disable-next-line
-    //   }, [active, tableData])
-
     const headerCellData = [
         { key: 'collections', numeric: false, disablePadding: true, sortable: false, label: 'RankingTabs.Collections', intlSpan:'RankingDescribe.Collections' },
-        { key: 'dayVolume', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.7DAY.Volume', intlSpan: 'RankingDescribe.7DAY.Volume' },
-        { key: 'dayChange', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.7DAY.Change', intlSpan: 'RankingDescribe.7DAY.Change' },
-        { key: 'totalVolume', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Total.Volume', intlSpan: 'RankingDescribe.Total.Volume' },
-        { key: 'avgPrice', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Avg.Price', intlSpan: 'RankingDescribe.Avg.Price' },
+        { key: 'volume', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.7DAY.Volume', intlSpan: 'RankingDescribe.7DAY.Volume' },
+        { key: 'change', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.7DAY.Change', intlSpan: 'RankingDescribe.7DAY.Change' },
+        { key: 'total', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Total.Volume', intlSpan: 'RankingDescribe.Total.Volume' },
+        { key: 'avg', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Avg.Price', intlSpan: 'RankingDescribe.Avg.Price' },
         { key: 'owners', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Owners', intlSpan: 'RankingDescribe.Owners' },
         { key: 'asstes', numeric: false, disablePadding: true, sortable: true, label: 'RankingTabs.Assets', intlSpan: 'RankingDescribe.Assets' },
     ]
@@ -413,7 +376,6 @@ export default function Ranking () {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
-        console.log('dddd', property);
     }
 
     const compareDescending = (a, b, orderBy) => {
@@ -429,7 +391,7 @@ export default function Ranking () {
     const getCompare = (order, orderBy) => {
         return order === 'desc' ? 
             (a, b) => compareDescending(a, b, orderBy) :
-            (a, b) => compareDescending(a, b, orderBy);
+            (a, b) => -compareDescending(a, b, orderBy);
     }
 
     const stableSort = (arr, comparator) => {
@@ -547,7 +509,7 @@ export default function Ranking () {
                                         </div>
                                     </StyledTableCell>
                                     <StyledTableCell align="center">{row.volume}</StyledTableCell>
-                                    <StyledTableCell align="center">{row.change / 100}%</StyledTableCell>
+                                    <StyledTableCell align="center"><span style={{color: row.change >= 0 ? '#3ab971': '#de5a4d'}}>{row.change / 100}%</span></StyledTableCell>
                                     <StyledTableCell align="center">${formatMonney(row.total)}</StyledTableCell>
                                     <StyledTableCell align="center">${formatMonney(row.avg)}</StyledTableCell>
                                     <StyledTableCell align="center">{row.owners}</StyledTableCell>
