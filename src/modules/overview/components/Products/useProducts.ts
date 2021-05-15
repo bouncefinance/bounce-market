@@ -1,4 +1,6 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { useDispatchRequest } from '@redux-requests/react';
+import { fetchNFTItems } from 'modules/overview/actions/fetchNFTItems';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
 const categories = [
   {
@@ -47,6 +49,7 @@ const sortVariants = [
 ];
 
 export const useProducts = () => {
+  const dispatch = useDispatchRequest();
   const [sortBy, setSortBy] = useState<string>(sortVariants[0].value);
   const [catergory, setCategory] = useState<string>(categories[0].value);
 
@@ -67,6 +70,10 @@ export const useProducts = () => {
     },
     [],
   );
+
+  useEffect(() => {
+    dispatch(fetchNFTItems());
+  }, [dispatch]);
 
   return {
     onSortChange,
