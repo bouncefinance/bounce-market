@@ -12,12 +12,22 @@ import {
   getEnglishAuctionContract,
   getFixedSwapContract,
 } from '../../createNFT/actions/publishNft';
-import { IFetchPoolDetailsData } from './fetchPoolDetails';
+import {
+  IEnglishAuctionDetails,
+  IFixedAuctionDetails,
+} from './fetchPoolDetails';
 import BigNumber from 'bignumber.js';
 import { fetchCurrency } from './fetchCurrency';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { fromWei } from '../../common/utils/fromWei';
 import { AuctionState } from '../../common/const/AuctionState';
+
+interface IWeb3FixedAuctionDetails extends IFixedAuctionDetails {}
+interface IWeb3EnglishAuctionDetails extends IEnglishAuctionDetails {}
+
+export type IFetchWeb3PoolDetailsData =
+  | IWeb3FixedAuctionDetails
+  | IWeb3EnglishAuctionDetails;
 
 interface IFetchPoolDetailsByIdParams {
   poolId: number;
@@ -25,7 +35,7 @@ interface IFetchPoolDetailsByIdParams {
 }
 
 export const fetchWeb3PoolDetails = createSmartAction<
-  RequestAction<IFetchPoolDetailsData, IFetchPoolDetailsData>
+  RequestAction<IFetchWeb3PoolDetailsData, IFetchWeb3PoolDetailsData>
 >(
   'fetchWeb3PoolDetails',
   ({ poolId, poolType }: IFetchPoolDetailsByIdParams) => {
@@ -108,7 +118,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   unitContract: pools.token1,
                   tokenId: parseInt(pools.tokenId),
                   swappedAmount0Pool: new BigNumber(swappedAmount0Pool),
-                } as IFetchPoolDetailsData;
+                } as IFetchWeb3PoolDetailsData;
               } else {
                 const BounceEnglishAuctionNFT_CT = new web3.eth.Contract(
                   BounceEnglishAuctionNFT,
@@ -215,7 +225,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   creatorClaimedPool,
                   reserveAmount1Pool,
                   showPrice,
-                } as IFetchPoolDetailsData;
+                } as IFetchWeb3PoolDetailsData;
               }
             })(),
           };

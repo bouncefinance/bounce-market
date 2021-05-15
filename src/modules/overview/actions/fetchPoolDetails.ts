@@ -49,7 +49,7 @@ interface IApiFetchPoolDetails {
   msg: 'ok';
 }
 
-interface IFixedAuctionDetails {
+export interface IFixedAuctionDetails {
   quantity: number;
   totalPrice: BigNumber;
   createTime: Date;
@@ -64,7 +64,7 @@ interface IFixedAuctionDetails {
   tokenId: number;
 }
 
-interface IEnglishAuctionDetails {
+export interface IEnglishAuctionDetails {
   amountMax1: BigNumber;
   amountMin1: BigNumber;
   amountMinIncr1: BigNumber;
