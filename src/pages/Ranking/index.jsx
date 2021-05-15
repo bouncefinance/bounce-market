@@ -414,7 +414,9 @@ export default function Ranking () {
 
     /** 解析千分位数字 */
     const formatMonney = (str) => {
-        return String(str).replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
+        let splitStr = String(str).split('.');
+        let IntStr = String(splitStr[0]).replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,');
+        return splitStr.length === 2 ? IntStr + `.${splitStr[1]}` : IntStr;
     }
 
     return (
@@ -515,10 +517,10 @@ export default function Ranking () {
                                             <span>{row.brandname || 'brandName'}</span>
                                         </div>
                                     </StyledTableCell>
-                                    <StyledTableCell align="center">{row.volume}</StyledTableCell>
+                                    <StyledTableCell align="center">${formatMonney((row.volume / 1e4).toFixed(3).toString())}</StyledTableCell>
                                     <StyledTableCell align="center"><span style={{color: row.change >= 0 ? '#3ab971': '#de5a4d'}}>{row.change / 100}%</span></StyledTableCell>
-                                    <StyledTableCell align="center">${formatMonney(row.total)}</StyledTableCell>
-                                    <StyledTableCell align="center">${formatMonney(row.avg)}</StyledTableCell>
+                                    <StyledTableCell align="center">${formatMonney((row.total / 1e4).toFixed(3).toString())}</StyledTableCell>
+                                    <StyledTableCell align="center">${formatMonney((row.avg / 1e4).toFixed(3).toString())}</StyledTableCell>
                                     <StyledTableCell align="center">{row.owners}</StyledTableCell>
                                     <StyledTableCell align="center">{formatMonney(row.assets)}</StyledTableCell>
                                 </StyledTableRow>
