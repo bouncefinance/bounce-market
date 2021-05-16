@@ -233,7 +233,7 @@ export const PublishNFTComponent = ({
           }),
         ).then(({ error }) => {
           if (!error) {
-            console.log('sent');
+            onPublish();
           }
         });
       }
