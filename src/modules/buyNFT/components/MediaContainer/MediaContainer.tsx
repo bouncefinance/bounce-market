@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { Button } from 'modules/uiKit/Button';
-import { useImgContainerStyles } from './useImgContainerStyles';
+import { useMediaContainerStyles } from './useMediaContainerStyles';
 import { t } from 'modules/i18n/utils/intl';
 import { SocialShare } from 'modules/common/components/SocialShare';
 
@@ -12,20 +12,26 @@ interface INFTContentProps {
   src: string;
   title: string;
   description: string;
+  category: 'image' | 'video';
 }
 
-export const ImgContainer = ({
+export const MediaContainer = ({
   className,
   src,
   title,
   description,
+  category,
 }: INFTContentProps) => {
-  const classes = useImgContainerStyles();
+  const classes = useMediaContainerStyles();
 
   return (
     <Container className={classNames(classes.root, className)}>
       <div className={classes.content}>
-        <img className={classes.img} src={src} loading="lazy" alt="" />
+        {category === 'image' ? (
+          <img className={classes.img} src={src} loading="lazy" alt="" />
+        ) : (
+          <video src={src} autoPlay={true} />
+        )}
 
         <div className={classes.actions}>
           <Button variant="outlined" className={classes.btn} rounded>

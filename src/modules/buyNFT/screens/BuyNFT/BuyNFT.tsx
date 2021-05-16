@@ -2,7 +2,7 @@ import { useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
-import { ImgContainer } from 'modules/buyNFT/components/ImgContainer';
+import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
 import { InfoPrices } from 'modules/buyNFT/components/InfoPrices';
@@ -183,11 +183,12 @@ export const BuyNFT = () => {
 
             return (
               <div className={classes.root}>
-                <ImgContainer
+                <MediaContainer
                   className={classes.imgContainer}
                   src={item.fileurl}
                   title={item.itemname}
                   description={item.description}
+                  category={item.category}
                 />
 
                 <Info className={classes.info}>
