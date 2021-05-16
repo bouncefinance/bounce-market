@@ -24,7 +24,8 @@ export interface IWalletCardProps {
   logo?: string;
   currency?: string;
   name?: string;
-  handleDisconnect?: any;
+  handleDisconnect?: () => void;
+  handleClose?: () => void;
 }
 
 export const WalletCard = ({
@@ -34,6 +35,7 @@ export const WalletCard = ({
   currency = '',
   name,
   handleDisconnect,
+  handleClose,
 }: IWalletCardProps) => {
   const classes = useWalletCardStyles();
   const [isCopy, setCopy] = useState<boolean>(false);
@@ -104,7 +106,7 @@ export const WalletCard = ({
           component={RouterLink}
           to={ProfileRoutesConfig.UserProfile.generatePath()}
           className={classes.menuItem}
-          onClick={handleDisconnect}
+          onClick={handleClose}
         >
           {t('header.inventory')}
         </MenuItem>
@@ -112,7 +114,7 @@ export const WalletCard = ({
           component={RouterLink}
           to={ProfileRoutesConfig.EditProfile.generatePath()}
           className={classes.menuItem}
-          onClick={handleDisconnect}
+          onClick={handleClose}
         >
           {t('header.profile-settings')}
         </MenuItem>

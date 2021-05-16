@@ -12,6 +12,9 @@ export function useWalletDropdown() {
       dispatch(disconnect());
       setOpen(false);
     }, [dispatch]),
+    handleClose: useCallback(() => {
+      setOpen(false);
+    }, []),
     handleOpen: useCallback(() => {
       setOpen(true);
     }, []),

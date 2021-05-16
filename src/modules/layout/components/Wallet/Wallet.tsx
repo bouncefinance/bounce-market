@@ -37,7 +37,12 @@ export const WalletComponent = ({
   const classes = useWalletStyles();
   const isXLUp = useIsXLUp();
 
-  const { isOpened, handleDisconnect, handleOpen } = useWalletDropdown();
+  const {
+    isOpened,
+    handleDisconnect,
+    handleClose,
+    handleOpen,
+  } = useWalletDropdown();
 
   const controlRef = useRef<HTMLButtonElement>(null);
 
@@ -57,8 +62,8 @@ export const WalletComponent = ({
 
           <FocusOn
             enabled={isOpened}
-            onEscapeKey={handleDisconnect}
-            onClickOutside={handleDisconnect}
+            onEscapeKey={handleClose}
+            onClickOutside={handleClose}
             focusLock={true}
             scrollLock={false}
             shards={[controlRef]}
@@ -76,6 +81,7 @@ export const WalletComponent = ({
                 logo={logo}
                 balance={balance}
                 handleDisconnect={handleDisconnect}
+                handleClose={handleClose}
               />
             </div>
           </FocusOn>
