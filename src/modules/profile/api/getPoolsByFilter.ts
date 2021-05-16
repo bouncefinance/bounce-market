@@ -33,7 +33,7 @@ interface IApiPoolsData {
   msg: 'ok';
 }
 
-interface IPool {
+export interface IPool {
   quantity: number;
   totalPrice: BigNumber;
   createTime: Date;
@@ -81,7 +81,7 @@ export const getPoolsByFilter = createAction<
   request: {
     url: 'https://api1-bsc.fangible.com/v1/bsc_test/pools',
     method: 'get',
-    params: { user_address: params?.user, offset: 0, count: 100 },
+    params: { user_address: params?.user, offset: 0, count: 1000 },
   },
   meta: {
     driver: 'axios',

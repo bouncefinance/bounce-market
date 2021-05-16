@@ -5,10 +5,13 @@ import { SearchIcon } from 'modules/common/components/Icons/SearchIcon';
 import { Queries } from 'modules/common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
 import React, { useEffect, useRef, useState } from 'react';
-import { getByLikStr } from './getByLikeStr';
+import { getByLikeStr } from './getByLikeStr';
 import { SearchResult } from './SearchResult';
 import { useSearchStyles } from './SearchStyles';
 import debounce from 'lodash/debounce';
+import { getPoolsByFilter } from '../../../profile/api/getPoolsByFilter';
+
+const SEARCH_REQUEST_KEY = 'Search';
 
 const SEARCH_DELAY = 500;
 const ANIMATION_TIMEOUT = 200;
@@ -34,7 +37,8 @@ export const Search = ({ className, focus }: ISearchProps) => {
 
   const handleSearch = useRef(
     debounce((value: string) => {
-      dispatch(getByLikStr(value));
+      dispatch(getByLikeStr(value));
+      dispatch(getPoolsByFilter(undefined, { requestKey: SEARCH_REQUEST_KEY }));
       setShowResult(true);
     }, SEARCH_DELAY),
   ).current;
@@ -70,11 +74,19 @@ export const Search = ({ className, focus }: ISearchProps) => {
       {showResult && (
         <ClickAwayListener onClickAway={handleClickAway}>
           <div className={classes.searchResult}>
-            <Queries<ResponseData<typeof getByLikStr>>
-              requestActions={[getByLikStr]}
+            <Queries<
+              ResponseData<typeof getByLikeStr>,
+              ResponseData<typeof getPoolsByFilter>
             >
-              {({ loading, error, data }) => (
-                <SearchResult loading={loading} error={error} data={data} />
+              requestActions={[getByLikeStr, getPoolsByFilter]}
+              requestKeys={['', SEARCH_REQUEST_KEY]}
+            >
+              {({ loading, data }, { data: pools }) => (
+                <SearchResult
+                  loading={loading}
+                  data={data}
+                  pools={pools.list}
+                />
               )}
             </Queries>
           </div>

@@ -1,6 +1,16 @@
 import { fade, makeStyles, Theme } from '@material-ui/core';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
-import { ISearchAccount, ISearchBrand, ISearchItem, ISearchResult } from './getByLikeStr';
+import {
+  ISearchAccount,
+  ISearchBrand,
+  ISearchItem,
+  ISearchResult,
+} from './getByLikeStr';
+import { Link as RouterLink } from 'react-router-dom';
+import { BuyNFTRoutesConfig } from '../../../buyNFT/BuyNFTRoutes';
+import { AuctionType } from '../../../overview/api/auctionType';
+import { IPool } from '../../../profile/api/getPoolsByFilter';
+import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -25,11 +35,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     '& img': {
       width: '100%',
       height: '100%',
-    }
+    },
   },
-  item: {
-
-  },
+  item: {},
   name: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -37,97 +45,117 @@ const useStyles = makeStyles((theme: Theme) => ({
   address: {
     fontSize: 12,
     color: fade(theme.palette.common.black, 0.4),
-  }
-}))
+  },
+}));
 
 const SearchItems = ({
   data,
+  pools,
 }: {
   data: ISearchItem[];
+  pools: IPool[];
 }) => {
   const classes = useStyles();
-  return <div className={classes.root}>
-    <div className={classes.title}>
-      {"Items"}
-    </div>
-    {data.map((item: ISearchItem) => <div className={classes.content} key={item.id}>
-      <div className={classes.img}>
-        <img alt={item.name} src={item.imgUrl} />
-      </div>
-      <div className={classes.item}>
-        <div className={classes.name}>{item.name}</div>
-      </div>
-    </div>)}
-  </div>
-}
+  return (
+    <div className={classes.root}>
+      <div className={classes.title}>{'Items'}</div>
+      {data.map((item: ISearchItem) => {
+        const pool = pools.find(poolItem => poolItem.tokenId === item.id);
 
-const SearchBrand = ({
-  data,
-}: {
-  data: ISearchBrand[];
-}) => {
+        if (!pool) {
+          return undefined;
+        }
+
+        return (
+          <RouterLink
+            to={BuyNFTRoutesConfig.DetailsNFT.generatePath(
+              pool.poolId,
+              isEnglishAuction(pool)
+                ? AuctionType.EnglishAuction
+                : AuctionType.FixedSwap,
+            )}
+            className={classes.content}
+            key={item.id}
+          >
+            <div className={classes.img}>
+              <img alt={item.name} src={item.imgUrl} />
+            </div>
+            <div className={classes.item}>
+              <div className={classes.name}>{item.name}</div>
+            </div>
+          </RouterLink>
+        );
+      })}
+    </div>
+  );
+};
+
+const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
   const classes = useStyles();
 
-  return <div className={classes.root}>
-    <div className={classes.title}>
-      {"Brands"}
+  return (
+    <div className={classes.root}>
+      <div className={classes.title}>{'Brands'}</div>
+      {data.map((item: ISearchBrand) => (
+        <div className={classes.content} key={item.id}>
+          <div className={classes.img}>
+            <img alt={item.name} src={item.imgUrl} />
+          </div>
+          <div className={classes.item}>
+            <div className={classes.name}>{item.name}</div>
+            <div className={classes.address}>{item.address}</div>
+          </div>
+        </div>
+      ))}
     </div>
-    {data.map((item: ISearchBrand) => <div className={classes.content} key={item.id}>
-      <div className={classes.img}>
-        <img alt={item.name} src={item.imgUrl} />
-      </div>
-      <div className={classes.item}>
-        <div className={classes.name}>{item.name}</div>
-        <div className={classes.address}>{item.address}</div>
-      </div>
-    </div>)}
-  </div>
-}
+  );
+};
 
-const SearchAccount = ({
-  data
-}: {
-  data: ISearchAccount[];
-}) => {
+const SearchAccount = ({ data }: { data: ISearchAccount[] }) => {
   const classes = useStyles();
 
-  return <div className={classes.root}>
-    <div className={classes.title}>
-      {"Account"}
+  return (
+    <div className={classes.root}>
+      <div className={classes.title}>{'Account'}</div>
+      {data.map((item: ISearchAccount) => (
+        <div className={classes.content} key={item.id}>
+          <div className={classes.img}>
+            <img alt={item.name} src={item.imgUrl} />
+          </div>
+          <div className={classes.item}>
+            <div className={classes.name}>{item.name}</div>
+            <div className={classes.address}>{item.address}</div>
+          </div>
+        </div>
+      ))}
     </div>
-    {data.map((item: ISearchAccount) => <div className={classes.content} key={item.id}>
-      <div className={classes.img}>
-        <img alt={item.name} src={item.imgUrl} />
-      </div>
-      <div className={classes.item}>
-        <div className={classes.name}>{item.name}</div>
-        <div className={classes.address}>{item.address}</div>
-      </div>
-    </div>)}
-  </div>
-}
+  );
+};
 
 const SearchResult = ({
   loading,
-  error,
   data,
+  pools,
 }: {
   loading?: boolean;
-  error?: any;
   data: ISearchResult;
+  pools: IPool[];
 }) => {
+  return (
+    <div>
+      {loading ? (
+        <QueryLoadingCentered />
+      ) : (
+        <SearchItems data={data.items} pools={pools} />
+      )}
+      {loading ? <QueryLoadingCentered /> : <SearchBrand data={data.brands} />}
+      {loading ? (
+        <QueryLoadingCentered />
+      ) : (
+        <SearchAccount data={data.accounts} />
+      )}
+    </div>
+  );
+};
 
-  return <div>
-    {loading
-      ? <QueryLoadingCentered />
-      : <SearchItems data={data.items} />}
-    {loading
-      ? <QueryLoadingCentered />
-      : <SearchBrand data={data.brands} />}
-    {loading
-      ? <QueryLoadingCentered />
-      : <SearchAccount data={data.accounts} />}
-  </div>
-}
-
-export { SearchResult }
+export { SearchResult };

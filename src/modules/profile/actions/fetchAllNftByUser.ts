@@ -4,9 +4,12 @@ import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { fetchItemsByFilter } from '../../createNFT/actions/fetchItemsByFilter';
 import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
-import { IApiFetchNftByUserVariables } from '../../createNFT/api/fetchNftByUser';
 import { IItem } from '../../overview/api/getItems';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
+
+export interface IApiFetchNftByUserVariables {
+  user: string;
+}
 
 export const fetchAllNftByUser: (
   payload: IApiFetchNftByUserVariables,

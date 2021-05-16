@@ -2,7 +2,7 @@ import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 interface IApiSearchResult {
-  code: 1,
+  code: 1;
   data: {
     account: {
       accountaddress: string;
@@ -62,7 +62,7 @@ interface IApiSearchResult {
       unlockablecontent: number;
       updated_at: string;
     }[];
-  }
+  };
 }
 
 export interface ISearchItem {
@@ -86,9 +86,9 @@ export interface ISearchAccount {
 }
 
 export interface ISearchResult {
-  items: ISearchItem[],
-  brands: ISearchBrand[],
-  accounts: ISearchAccount[]
+  items: ISearchItem[];
+  brands: ISearchBrand[];
+  accounts: ISearchAccount[];
 }
 
 const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
@@ -96,29 +96,35 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
   const brands = result.data.brands;
   const accounts = result.data.account;
   return {
-    items: items.sort((a, b) => b.popularweight - a.popularweight)
+    items: items
+      .sort((a, b) => b.popularweight - a.popularweight)
       .map(item => ({
         id: item.id,
         name: item.itemname,
         imgUrl: item.fileurl,
-      })).slice(0, 3),
-    brands: brands.sort((a, b) => b.popularweight - a.popularweight)
+      }))
+      .slice(0, 3),
+    brands: brands
+      .sort((a, b) => b.popularweight - a.popularweight)
       .map(item => ({
         id: item.id,
         name: item.brandname,
         address: item.contractaddress,
         imgUrl: item.bandimgurl,
-      })).slice(0, 3),
-    accounts: accounts.map(item => ({
-      id: item.id,
-      name: item.fullnam,
-      address: item.accountaddress,
-      imgUrl: item.imgurl,
-    })).slice(0, 3)
-  }
-}
+      }))
+      .slice(0, 3),
+    accounts: accounts
+      .map(item => ({
+        id: item.id,
+        name: item.fullnam,
+        address: item.accountaddress,
+        imgUrl: item.imgurl,
+      }))
+      .slice(0, 3),
+  };
+};
 
-export const getByLikStr = createSmartAction<
+export const getByLikeStr = createSmartAction<
   RequestAction<IApiSearchResult, ISearchResult>
 >('getByLikeStr', (likestr: string) => ({
   request: {
@@ -126,8 +132,8 @@ export const getByLikStr = createSmartAction<
     method: 'post',
     data: {
       accountaddresss: '',
-      likestr: likestr
-    }
+      likestr: likestr,
+    },
   },
   meta: {
     auth: true,
@@ -135,6 +141,6 @@ export const getByLikStr = createSmartAction<
     asMutation: false,
     getData: data => {
       return mapSearchResult(data);
-    }
-  }
+    },
+  },
 }));
