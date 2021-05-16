@@ -43,7 +43,7 @@ interface IApiEnglishAuctionDetails {
   tokenId: number;
 }
 
-interface IApiFetchPoolDetails {
+export interface IApiFetchPoolDetails {
   code: 200;
   data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails;
   msg: 'ok';
@@ -89,7 +89,7 @@ export type IFetchPoolDetailsData =
   | IFixedAuctionDetails
   | IEnglishAuctionDetails;
 
-function isApiEnglishAuction(
+export function isApiEnglishAuction(
   data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails,
 ): data is IApiEnglishAuctionDetails {
   return (data as IApiEnglishAuctionDetails).amountMax1 !== undefined;

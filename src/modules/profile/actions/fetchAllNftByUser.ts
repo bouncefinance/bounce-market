@@ -97,7 +97,9 @@ export const fetchAllNftByUser: (
                       ? AuctionType.EnglishAuction
                       : AuctionType.FixedSwap,
                     price: isEnglishAuction(pool)
-                      ? pool.lastestBidAmount
+                      ? pool.lastestBidAmount.isEqualTo(0)
+                        ? pool.amountMin1
+                        : pool.lastestBidAmount
                       : pool.price,
                   };
                 }

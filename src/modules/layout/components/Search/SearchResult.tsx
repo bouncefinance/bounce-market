@@ -9,8 +9,10 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { BuyNFTRoutesConfig } from '../../../buyNFT/BuyNFTRoutes';
 import { AuctionType } from '../../../overview/api/auctionType';
-import { IPool } from '../../../profile/api/getPoolsByFilter';
-import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
+import {
+  IFetchPoolDetailsData,
+  isEnglishAuction,
+} from '../../../overview/actions/fetchPoolDetails';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -53,7 +55,7 @@ const SearchItems = ({
   pools,
 }: {
   data: ISearchItem[];
-  pools: IPool[];
+  pools: IFetchPoolDetailsData[];
 }) => {
   const classes = useStyles();
   return (
@@ -139,7 +141,7 @@ const SearchResult = ({
 }: {
   loading?: boolean;
   data: ISearchResult;
-  pools: IPool[];
+  pools: IFetchPoolDetailsData[];
 }) => {
   return (
     <div>

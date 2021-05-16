@@ -36,7 +36,14 @@ export const BuyNFT = () => {
   const poolId = parseInt(poolIdParam, 10);
   const dispatch = useDispatchRequest();
   const { opened: openedBid, toggleDialog: toggleBidDialog } = useDialog();
-  const { opened: openedBuy, toggleDialog: toggleBuyDialog } = useDialog();
+  const {
+    opened: openedFixedBuy,
+    toggleDialog: toggleFixedBuyDialog,
+  } = useDialog();
+  const {
+    opened: openedEnglishBuy,
+    toggleDialog: toggleEnglishBuyDialog,
+  } = useDialog();
 
   const handleBid = useCallback(
     values => {
@@ -211,10 +218,14 @@ export const BuyNFT = () => {
                           ),
                         )
                       }
-                      cryptoPrice={poolDetails.lastestBidAmount}
+                      cryptoPrice={
+                        poolDetails.lastestBidAmount.isEqualTo(0)
+                          ? poolDetails.amountMin1
+                          : poolDetails.lastestBidAmount
+                      }
                       cryptoCurrency="BNB"
                       onBidClick={toggleBidDialog(true)}
-                      onBuyClick={toggleBuyDialog(true)}
+                      onBuyClick={toggleEnglishBuyDialog(true)}
                       disabled={poolDetails.state !== AuctionState.Live}
                     />
                   ) : (
@@ -222,7 +233,7 @@ export const BuyNFT = () => {
                       price={poolDetails.price.multipliedBy(currency.priceUsd)}
                       cryptoPrice={poolDetails.price}
                       cryptoCurrency="BNB"
-                      onBuyClick={toggleBuyDialog(true)}
+                      onBuyClick={toggleFixedBuyDialog(true)}
                       disabled={poolDetails.state !== AuctionState.Live}
                     />
                   )}
@@ -251,8 +262,20 @@ export const BuyNFT = () => {
                   name={item.itemname}
                   filepath={item.fileurl}
                   onSubmit={handleBuy}
-                  isOpen={openedBuy}
-                  onClose={toggleBuyDialog(false)}
+                  isOpen={openedEnglishBuy}
+                  onClose={toggleEnglishBuyDialog(false)}
+                  owner="Bombist"
+                  ownerAvatar="https://picsum.photos/44?random=1"
+                  isOwnerVerified={false}
+                  disabled={item.standard === NftType.ERC721}
+                  category={item.category}
+                />
+                <BuyDialog
+                  name={item.itemname}
+                  filepath={item.fileurl}
+                  onSubmit={handleBuy}
+                  isOpen={openedFixedBuy}
+                  onClose={toggleFixedBuyDialog(false)}
                   owner="Bombist"
                   ownerAvatar="https://picsum.photos/44?random=1"
                   isOwnerVerified={false}
