@@ -37,6 +37,7 @@ export const setAccount = createSmartAction(
       })(),
     },
     meta: {
+      suppressErrorNotification: true,
       getData: (data: ISetAccountData) => data,
       onSuccess: (
         response: { data: ISetAccountData },

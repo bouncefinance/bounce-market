@@ -84,7 +84,7 @@ export const Overview = () => {
                 stackDown
                 error={error}
                 isLoading={loading}
-                items={data.splice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
+                items={data.slice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
               />
             </ThemeProvider>
             <Movers
@@ -93,7 +93,7 @@ export const Overview = () => {
               error={error}
               isLoading={loading}
               items={data
-                .splice(PROMO_ITEMS_COUNT, data.length)
+                .slice(PROMO_ITEMS_COUNT, data.length)
                 .map(mapMoversItem)}
             />
           </>

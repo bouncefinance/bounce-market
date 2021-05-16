@@ -85,7 +85,10 @@ function createEventChannel(provider: any) {
 }
 
 function* onConnectWallet() {
-  const { action } = yield putResolve(setAccount());
+  const { action, error } = yield putResolve(setAccount());
+  if (error) {
+    return;
+  }
   const provider = action.meta.provider;
   yield put(fetchProfileInfo());
 
