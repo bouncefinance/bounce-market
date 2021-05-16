@@ -86,20 +86,24 @@ export const fetchAllNftByUser: (
             }
 
             // TODO: How to manage pools, separated data or inline?
-            return data?.map(item => {
-              const pool = pools?.list.find(pool => pool.tokenId === item.id);
-              if (pool) {
-                return {
-                  ...item,
-                  poolId: pool.poolId,
-                  poolType: isEnglishAuction(pool)
-                    ? AuctionType.EnglishAuction
-                    : AuctionType.FixedSwap,
-                };
-              }
+            return data
+              ?.map(item => {
+                const pool = pools?.list.find(pool => pool.tokenId === item.id);
+                if (pool) {
+                  return {
+                    ...item,
+                    poolId: pool.poolId,
+                    poolType: isEnglishAuction(pool)
+                      ? AuctionType.EnglishAuction
+                      : AuctionType.FixedSwap,
+                  };
+                }
 
-              return item;
-            });
+                return item;
+              })
+              .sort((prev, next) => {
+                return next.createdAt.getTime() - prev.createdAt.getTime();
+              });
           })(),
         };
       },
