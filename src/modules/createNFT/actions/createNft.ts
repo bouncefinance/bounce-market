@@ -32,7 +32,7 @@ export interface ICreateNFTPayload {
   supply: number;
   file: File;
 }
-
+// TODO: Remove timers
 export const createNft = createSmartAction(
   'createNft',
   ({
@@ -108,7 +108,9 @@ export const createNft = createSmartAction(
                     // Pending status
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
-                    resolve(receipt);
+                    setTimeout(() => {
+                      resolve(receipt);
+                    }, 15000);
                   })
                   .on('error', (error: Error) => {
                     reject(error);
@@ -133,7 +135,9 @@ export const createNft = createSmartAction(
                     // Pending status
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
-                    resolve(receipt);
+                    setTimeout(() => {
+                      resolve(receipt);
+                    }, 15000);
                   })
                   .on('error', (error: Error) => {
                     reject(error);
