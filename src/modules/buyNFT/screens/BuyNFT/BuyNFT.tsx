@@ -237,7 +237,7 @@ export const BuyNFT = () => {
 
                 <BidDialog
                   name={item.itemname}
-                  img={item.fileurl}
+                  filepath={item.fileurl}
                   onSubmit={handleBid}
                   isOpen={openedBid}
                   onClose={toggleBidDialog(false)}
@@ -245,10 +245,11 @@ export const BuyNFT = () => {
                   owner="Bombist"
                   ownerAvatar="https://picsum.photos/44?random=1"
                   isOwnerVerified={false}
+                  category={item.category}
                 />
                 <BuyDialog
                   name={item.itemname}
-                  img={item.fileurl}
+                  filepath={item.fileurl}
                   onSubmit={handleBuy}
                   isOpen={openedBuy}
                   onClose={toggleBuyDialog(false)}
@@ -256,6 +257,7 @@ export const BuyNFT = () => {
                   ownerAvatar="https://picsum.photos/44?random=1"
                   isOwnerVerified={false}
                   disabled={item.standard === NftType.ERC721}
+                  category={item.category}
                 />
               </div>
             );
