@@ -1,21 +1,38 @@
 import loadable, { LoadableComponent } from '@loadable/component';
 import { generatePath } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
-import { RouteConfiguration } from '../common/types/RouteConfiguration';
 import { PrivateRoute } from '../router/components/PrivateRoute';
+import { useParams } from 'react-router';
 
-export const PATH_USER_PROFILE = '/profile';
+export const PATH_USER_PROFILE = '/profile/:tab?';
 export const PATH_PROFILE = '/profile/view/:id';
 export const PATH_EDIT_PROFILE = '/profile/edit';
 
-export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
+export enum ProfileTab {
+  items = 'items',
+  brands = 'brands',
+  activity = 'activity',
+  liked = 'liked',
+  following = 'following',
+  followers = 'followers',
+}
+
+export const ProfileRoutesConfig = {
   Profile: {
     path: PATH_PROFILE,
     generatePath: (id: string) => generatePath(PATH_PROFILE, { id }),
   },
   UserProfile: {
     path: PATH_USER_PROFILE,
-    generatePath: () => PATH_USER_PROFILE,
+    generatePath: (tab?: ProfileTab) =>
+      generatePath(PATH_USER_PROFILE, { tab }),
+    useParams: () => {
+      const { tab = ProfileTab.items } = useParams<{
+        tab: ProfileTab;
+      }>();
+
+      return { tab };
+    },
   },
   EditProfile: {
     path: PATH_EDIT_PROFILE,

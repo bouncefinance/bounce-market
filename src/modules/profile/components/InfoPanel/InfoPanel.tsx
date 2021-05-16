@@ -29,7 +29,7 @@ const urlForSharing =
   window.location.protocol +
   '//' +
   window.location.hostname +
-  ProfileRoutesConfig.Profile.generatePath(1);
+  ProfileRoutesConfig.Profile.generatePath('1');
 
 export const InfoPanel = ({
   name = 'Unnamed',
