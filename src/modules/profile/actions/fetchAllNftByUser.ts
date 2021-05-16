@@ -6,6 +6,8 @@ import { fetchItemsByFilter } from '../../createNFT/actions/fetchItemsByFilter';
 import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
 import { IItem } from '../../overview/api/getItems';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
+import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
+import { AuctionType } from '../../overview/api/auctionType';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
@@ -90,6 +92,9 @@ export const fetchAllNftByUser: (
                 return {
                   ...item,
                   poolId: pool.poolId,
+                  poolType: isEnglishAuction(pool)
+                    ? AuctionType.EnglishAuction
+                    : AuctionType.FixedSwap,
                 };
               }
 
