@@ -152,7 +152,9 @@ export const publishNft = createSmartAction<
                       // Pending status
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
-                      resolve(receipt);
+                      setTimeout(() => {
+                        resolve(receipt);
+                      }, 15000);
                     })
                     .on('error', (error: Error) => {
                       reject(error);
@@ -179,7 +181,9 @@ export const publishNft = createSmartAction<
                       // Pending status
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
-                      resolve(receipt);
+                      setTimeout(() => {
+                        resolve(receipt);
+                      }, 15000);
                     })
                     .on('error', (error: Error) => {
                       reject(error);
@@ -230,7 +234,9 @@ export const publishNft = createSmartAction<
                       // Pending status
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
-                      resolve(receipt);
+                      setTimeout(() => {
+                        resolve(receipt);
+                      }, 15000);
                     })
                     .on('error', (error: Error) => {
                       reject(error);
@@ -261,7 +267,9 @@ export const publishNft = createSmartAction<
                       // Pending status
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
-                      resolve(receipt);
+                      setTimeout(() => {
+                        resolve(receipt);
+                      }, 15000);
                     })
                     .on('error', (error: Error) => {
                       reject(error);
