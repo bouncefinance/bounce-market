@@ -1,6 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { IBrandCardProps } from 'modules/brand/components/BrandCard';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
@@ -235,7 +234,7 @@ export const Profile = () => {
                           }
                           // status={item.status}
                           // UPDATE price
-                          price={item.poolId ? new BigNumber(10) : undefined}
+                          price={item.poolId ? item.price : undefined}
                           copies={item.supply}
                           MediaProps={{
                             category: item.category,
