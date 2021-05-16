@@ -17,10 +17,11 @@ import { CopyIcon } from 'modules/common/components/Icons/CopyIcon';
 import { Link as RouterLink } from 'react-router-dom';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import classNames from 'classnames';
+import BigNumber from 'bignumber.js';
 
 export interface IWalletCardProps {
   address: string;
-  balance?: number;
+  balance?: BigNumber;
   logo?: string;
   currency?: string;
   name?: string;
@@ -30,7 +31,7 @@ export interface IWalletCardProps {
 
 export const WalletCard = ({
   address,
-  balance = 0,
+  balance,
   logo = '',
   currency = '',
   name,
@@ -94,7 +95,7 @@ export const WalletCard = ({
           <Box className={classes.walletBalance}>
             {logo ? <Avatar src={logo} className={classes.walletLogo} /> : null}
             {t('wallet.unit', {
-              value: balance,
+              value: balance.toFixed(),
               unit: currency,
             })}
           </Box>

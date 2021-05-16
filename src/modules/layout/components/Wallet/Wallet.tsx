@@ -13,6 +13,7 @@ import { FocusOn } from 'react-focus-on';
 import { WalletCard } from '../WalletCard';
 import { useWalletDropdown } from './useWalletDropdown';
 import { useWalletStyles } from './useWalletStyles';
+import { setAccount } from '../../../account/store/actions/setAccount';
 
 interface IWalletProps {
   address?: string;
@@ -23,11 +24,10 @@ interface IWalletProps {
 // TODO: replace with real data
 const walletCardData = {
   currency: 'BNB',
-  balance: 1000.34,
   logo: bnbLogo,
 };
 
-const { currency, logo, balance } = walletCardData;
+const { currency, logo } = walletCardData;
 
 export const WalletComponent = ({
   address = '',
@@ -45,6 +45,13 @@ export const WalletComponent = ({
   } = useWalletDropdown();
 
   const controlRef = useRef<HTMLButtonElement>(null);
+
+  const {
+    data: { balance },
+  } = useQuery({
+    type: setAccount.toString(),
+    action: setAccount,
+  });
 
   return (
     <>

@@ -4,15 +4,18 @@ import { getAuthToken } from '../../api/getAuthToken';
 import { RequestAction } from '@redux-requests/core';
 import Web3 from 'web3';
 import { BlockchainNetworkId } from '../../../common/conts';
+import BigNumber from 'bignumber.js';
 
 const SIGN_STR = 'Welcome to Bounce!';
 
+// TODO pass unit (now BNB hardcoded)
 export interface ISetAccountData {
   token: string;
   address: string;
   provider?: any;
   chainId: BlockchainNetworkId;
   web3: Web3;
+  balance: BigNumber;
 }
 
 export const setAccount = createSmartAction(
@@ -33,10 +36,19 @@ export const setAccount = createSmartAction(
         const authResponse = await getAuthToken(params);
         const token = authResponse.data.data.token;
         const chainId = await web3.eth.getChainId();
-        return { token, address, provider, chainId, web3 };
+        const balance = await web3.eth.getBalance(address);
+        return {
+          token,
+          address,
+          provider,
+          chainId,
+          web3,
+          balance: new BigNumber(web3.utils.fromWei(balance)),
+        };
       })(),
     },
     meta: {
+      // TODO custom notification. Filter close modal error
       suppressErrorNotification: true,
       getData: (data: ISetAccountData) => data,
       onSuccess: (
