@@ -1,7 +1,9 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
 export const useSearchStyles = makeStyles<Theme>(theme => ({
-  root: {},
+  root: {
+    position: 'relative',
+  },
 
   iconButton: {
     position: 'absolute',
@@ -49,4 +51,13 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
     padding: '0 20px 0 48px',
     height: '100%',
   },
+  searchResult: {
+    position: 'absolute',
+    top: 46,
+    width: 410,
+    borderRadius: 4,
+    zIndex: 10,
+    backgroundColor: theme.palette.common.white,
+    padding: 20,
+  }
 }));
