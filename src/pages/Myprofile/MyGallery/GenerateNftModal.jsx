@@ -343,7 +343,6 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
                                 width={280}
                                 height={135}
                                 src={filePath}
-                                alt=''
                                 style={{backgroundSize: 'cover'}}
                               /> : 
                               <div style={{display: 'flex', justifyContent: 'center'}}>
