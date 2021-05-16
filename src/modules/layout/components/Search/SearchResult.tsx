@@ -121,12 +121,12 @@ const SearchResult = ({
     {loading
       ? <QueryLoadingCentered />
       : <SearchItems data={data.items} />}
-      {loading
-      ? <QueryLoadingCentered />
-    :<SearchBrand data={data.brands} />}
     {loading
       ? <QueryLoadingCentered />
-    :<SearchAccount data={data.accounts} />}
+      : <SearchBrand data={data.brands} />}
+    {loading
+      ? <QueryLoadingCentered />
+      : <SearchAccount data={data.accounts} />}
   </div>
 }
 

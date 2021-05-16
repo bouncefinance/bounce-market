@@ -21,6 +21,7 @@ export const Search = ({ className, focus }: ISearchProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatchRequest();
   const [showResult, setShowResult] = useState(false);
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     if (focus) {
@@ -30,10 +31,18 @@ export const Search = ({ className, focus }: ISearchProps) => {
     }
   }, [focus]);
 
-  const handleSearch = (e: any) => {
-    const value = e.target.value;
+  const handleSearch = () => {
     dispatch(getByLikStr(value))
     setShowResult(true)
+  }
+
+  const handleKeyup = (event: any) => {
+    const value = event.target.value;
+    setValue(value);
+    if (event.keyCode === 13) {
+      handleSearch();
+    }
+
   }
 
   const handleClickAway = () => {
@@ -41,7 +50,7 @@ export const Search = ({ className, focus }: ISearchProps) => {
   }
 
   return (<div className={classes.root}>
-    <form className={classNames(classes.root, className)}>
+    <div className={classNames(classes.root, className)}>
       <InputBase
         required
         inputRef={inputRef}
@@ -50,10 +59,11 @@ export const Search = ({ className, focus }: ISearchProps) => {
           focused: classes.inputFocused,
           input: classes.inputBase,
         }}
-        onKeyUp={handleSearch}
+        onKeyUp={handleKeyup}
         placeholder="Search by name, creator, brand..."
         startAdornment={
           <IconButton
+            onClick={handleSearch}
             className={classes.iconButton}
             aria-label="search"
           >
@@ -61,7 +71,7 @@ export const Search = ({ className, focus }: ISearchProps) => {
           </IconButton>
         }
       />
-    </form>
+    </div>
     {showResult && <ClickAwayListener onClickAway={handleClickAway}>
       <div className={classes.searchResult}>
         <Queries<ResponseData<typeof getByLikStr>>
