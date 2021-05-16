@@ -6,6 +6,7 @@ import { RootState } from 'store';
 import { Address } from '../../common/types/unit';
 import { connect } from '../store/actions/connect';
 import { setAccount } from '../store/actions/setAccount';
+import { disconnect } from '../store/actions/disconnect';
 
 // TODO: Check disconnection, switch chain, switch account
 
@@ -97,7 +98,9 @@ function* onConnectWallet() {
     const event: ProviderEvent = yield take(channel);
 
     if (event.type === WalletEventType.ChainChanged) {
-      yield put(resetRequests([setAccount.toString()]));
+      yield put(
+        resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
+      );
     } else if (event.type === WalletEventType.AccountChanged) {
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
@@ -120,6 +123,13 @@ function* onConnectWallet() {
   }
 }
 
+function* onDisconnectWallet() {
+  yield put(
+    resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
+  );
+}
+
 export function* connectSaga() {
   yield takeEvery(connect.toString(), onConnectWallet);
+  yield takeEvery(disconnect.toString(), onDisconnectWallet);
 }
