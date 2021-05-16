@@ -270,6 +270,10 @@ export const PublishNFTComponent = ({
               <video src={file} autoPlay={true} loop={true} />
             )}
           </Paper>
+
+          <Box mt={2}>
+            <Typography variant="h2">{name}</Typography>
+          </Box>
         </div>
 
         <div>
