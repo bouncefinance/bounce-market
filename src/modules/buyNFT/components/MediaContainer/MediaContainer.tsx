@@ -6,6 +6,7 @@ import { Button } from 'modules/uiKit/Button';
 import { useMediaContainerStyles } from './useMediaContainerStyles';
 import { t } from 'modules/i18n/utils/intl';
 import { SocialShare } from 'modules/common/components/SocialShare';
+import React from 'react';
 
 interface INFTContentProps {
   className?: string;
@@ -30,7 +31,7 @@ export const MediaContainer = ({
         {category === 'image' ? (
           <img className={classes.img} src={src} loading="lazy" alt="" />
         ) : (
-          <video src={src} autoPlay={true} />
+          <video src={src} autoPlay={true} loop={true} />
         )}
 
         <div className={classes.actions}>

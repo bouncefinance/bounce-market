@@ -171,7 +171,12 @@ export const ProductCard = ({
           />
         ) : (
           <div className={classes.videoWrapper}>
-            <video src={MediaProps.src} className={classes.video} />
+            <video
+              src={MediaProps.src}
+              className={classes.video}
+              autoPlay={true}
+              loop={true}
+            />
           </div>
         )}
 
