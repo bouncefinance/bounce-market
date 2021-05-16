@@ -11,6 +11,7 @@ import {
   BounceERC1155WithSign,
   BounceERC721WithSign,
 } from '../../web3/contracts';
+import { isVideo } from '../../common/utils/isVideo';
 
 export enum NftType {
   ERC721,
@@ -33,7 +34,7 @@ export interface ICreateNFTPayload {
 }
 
 export const createNft = createSmartAction(
-  'MarketplaceActions/createNft',
+  'createNft',
   ({
     file,
     standard,
@@ -65,7 +66,7 @@ export const createNft = createSmartAction(
 
             const addItemPayload: IAddItemPayload = {
               brandid: standard === NftType.ERC721 ? 10 : 11,
-              category: 'image',
+              category: isVideo(file) ? 'video' : 'image',
               channel,
               contractaddress:
                 standard === NftType.ERC721

@@ -74,7 +74,8 @@ interface IPublishNFTComponentProps {
   tokenId: number;
   maxQuantity: number;
   onPublish: () => void;
-  img?: string;
+  category: 'image' | 'video';
+  file?: string;
 }
 
 export const PublishNFTComponent = ({
@@ -84,7 +85,8 @@ export const PublishNFTComponent = ({
   tokenId,
   maxQuantity,
   onPublish,
-  img,
+  category,
+  file,
 }: IPublishNFTComponentProps) => {
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
@@ -256,13 +258,17 @@ export const PublishNFTComponent = ({
       <Box className={classes.form} component="form" onSubmit={handleSubmit}>
         <div className={classes.formImgCol}>
           <Paper className={classes.formImgBox} variant="outlined">
-            <Img
-              src={img}
-              alt={name}
-              title={name}
-              ratio="1x1"
-              objectFit="scale-down"
-            />
+            {category === 'image' ? (
+              <Img
+                src={file}
+                alt={name}
+                title={name}
+                ratio="1x1"
+                objectFit="scale-down"
+              />
+            ) : (
+              <video src={file} />
+            )}
           </Paper>
         </div>
 
@@ -601,7 +607,8 @@ export const PublishNFT = () => {
             tokenContract={data.contractaddress}
             nftType={data.standard}
             tokenId={data.id}
-            img={data.fileurl}
+            file={data.fileurl}
+            category={data.category}
             maxQuantity={data.supply}
             onPublish={handlePublish}
           />

@@ -5,7 +5,7 @@ import { Channel } from './createNft';
 
 export interface IAddItemPayload {
   brandid: number;
-  category: 'image';
+  category: 'image' | 'video';
   channel: Channel;
   contractaddress: string;
   description: string;

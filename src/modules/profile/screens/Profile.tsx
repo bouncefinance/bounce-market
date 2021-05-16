@@ -237,7 +237,8 @@ export const Profile = () => {
                           // UPDATE price
                           price={item.poolId ? new BigNumber(10) : undefined}
                           copies={item.supply}
-                          ImgProps={{
+                          MediaProps={{
+                            category: item.category,
                             src: item.fileUrl,
                             objectFit: 'scale-down',
                             loading: 'lazy',

@@ -15,9 +15,15 @@ import { uid } from 'react-uid';
 import { useProducts } from './useProducts';
 import { useProductsStyles } from './useProductsStyles';
 
-type ProductProps = Omit<IProductCardProps, 'ImgProps'> & {
+type IImgProps = Omit<IProductCardProps, 'MediaProps'> & {
   img: string;
 };
+
+type IVideoProps = Omit<IProductCardProps, 'MediaProps'> & {
+  video: string;
+};
+
+export type ProductProps = IImgProps | IVideoProps;
 
 interface IProductsProps extends ISectionProps {
   items: ProductProps[];
@@ -51,11 +57,19 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
                   endDate={cardProps.endDate}
                   likes={cardProps.likes}
                   href={cardProps.href}
-                  ImgProps={{
-                    src: cardProps.img,
-                    objectFit: 'scale-down',
-                    loading: 'lazy',
-                  }}
+                  MediaProps={
+                    (cardProps as IImgProps).img
+                      ? {
+                          src: (cardProps as IImgProps).img,
+                          imgClassName: 'swiper-lazy',
+                          objectFit: 'scale-down',
+                          category: 'image',
+                        }
+                      : {
+                          src: (cardProps as IVideoProps).video,
+                          category: 'video',
+                        }
+                  }
                   ProfileInfoProps={cardProps.ProfileInfoProps}
                 />
               </Grid>
