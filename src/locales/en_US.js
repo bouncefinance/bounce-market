@@ -145,6 +145,36 @@ const en_US = {
         Marketplace: "Marketplace",
     },
 
+    Ranking: {
+        fangible: 'Fangible',
+        bsc: 'BSC',
+        placeholder: 'Search'
+    },
+    RankingTabs: {
+        All: 'All',
+        New: 'New',
+        Art: 'Art',
+        Sports: 'Sports',
+        Comics: 'Comics',
+        Collections: 'COLLECTION',
+        '7DAY.Volume': '7 DAY VOLUME',
+        '7DAY.Change': '7 DAY CHANGE',
+        'Total.Volume': 'TOTAL VOLUME',
+        'Avg.Price': 'AVG PRICE',
+        'Owners': 'OWNERS',
+        'Assets': 'ASSETS',
+    },
+
+    RankingDescribe: {
+        Collections: 'platform account',
+        '7DAY.Volume': 'total value of sales from the past week',
+        '7DAY.Change': '%change in value of sales from the previous week',
+        'Total.Volume': 'total value of sales for all time',
+        'Avg.Price': 'Average price an item was last sold for',
+        'Owners': 'Number of unique wallet address holding tokens ',
+        'Assets': 'Total number of items in this collection'
+    },
+
     MarketPlace: {
         "CardItem.LoadingPrice": "Loading Price",
         "CardItem.Price": "Price",

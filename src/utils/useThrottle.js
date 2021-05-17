@@ -1,15 +1,13 @@
 // Hook
 import { useEffect, useMemo, useState } from 'react';
 
-export function useThrottle(
-  func: (...args: any[]) => void,
-  delay: number,
-): (...args: any[]) => void {
+export function useThrottle(func, delay
+) {
   // State and setters for debounced value
   const [busy, setBusy] = useState(false);
 
   const memoizedCallback = useMemo(
-    () => (...args: any[]) => {
+    () => (...args) => {
       if (busy) return;
       setBusy(true);
       func(...args);
