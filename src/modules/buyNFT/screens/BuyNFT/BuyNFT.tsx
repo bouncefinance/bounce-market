@@ -60,7 +60,7 @@ export const BuyNFT = () => {
     [dispatch],
   );
 
-  const handleBuy = useCallback(
+  const handleBuyFixed = useCallback(
     values => {
       dispatch(
         buyFixed({
@@ -70,6 +70,21 @@ export const BuyNFT = () => {
           poolId: 0,
           amountTotal0: new BigNumber(1),
           amount: new BigNumber(0),
+        }),
+      );
+    },
+    [dispatch],
+  );
+
+  const handleBuyEnglish = useCallback(
+    values => {
+      dispatch(
+        bidEnglishAuction({
+          amountMax1: new BigNumber(0),
+          bidPrice: new BigNumber(0),
+          unitContract: '',
+          amountTotal1: new BigNumber(0),
+          poolId: 0,
         }),
       );
     },
@@ -261,7 +276,7 @@ export const BuyNFT = () => {
                 <BuyDialog
                   name={item.itemname}
                   filepath={item.fileurl}
-                  onSubmit={handleBuy}
+                  onSubmit={handleBuyEnglish}
                   isOpen={openedEnglishBuy}
                   onClose={toggleEnglishBuyDialog(false)}
                   owner="Bombist"
@@ -273,7 +288,7 @@ export const BuyNFT = () => {
                 <BuyDialog
                   name={item.itemname}
                   filepath={item.fileurl}
-                  onSubmit={handleBuy}
+                  onSubmit={handleBuyFixed}
                   isOpen={openedFixedBuy}
                   onClose={toggleFixedBuyDialog(false)}
                   owner="Bombist"
