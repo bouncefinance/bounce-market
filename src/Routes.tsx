@@ -89,7 +89,10 @@ export function Routes() {
 
       <Route
         exact
-        path={BrandRoutesConfig.CreateBrand.path}
+        path={[
+          BrandRoutesConfig.ListBrand.path,
+          BrandRoutesConfig.CreateBrand.path
+        ]}
         render={() => (
           <DefaultLayout>
             <BrandRoutes />

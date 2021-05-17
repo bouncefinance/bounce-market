@@ -1,4 +1,8 @@
 export const FetchBrandsAction = 'BrandActions/fetchBrands';
+export const ListBrandsAction = 'BrandActions/listBrands';
+export const QueryBrandByFilterAction = 'BrandActions/QueryBrandByFilter';
+export const QueryBrandItemsAction = 'BrandActions/QueryBrandItemsAction';
+export const FetchBrandListAction = 'BrandActions/fetchBrandList';
 export const FetchPopularBrandsAction = 'BrandActions/fetchPopularBrands';
 export const CreateBrandAction = 'BrandActions/createBrand';
 export const UpdateBrandInfoAction = 'BrandActions/updateBrandInfo';

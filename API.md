@@ -1287,3 +1287,12 @@ Note: The Graph can pass in account, token0 address, and state as filter conditi
 1. Request interface `/api/v2/main/getbylikestr` to pass in search keywords (see 2.7 for details)
 2. Account and brands data processing is relatively simple, only need to display and render the data items returned by the backend
 3. Item data needs to find out the detailed information of the pool through The Graph to assemble the complete data item display
+
+#### 5.11 Artist homepage function
+
+> Display all NFT for sale by artists, not limited to brand creation or platform direct GenRate and external import
+
+1. All the pools created by User can be found by passing user_account as an argument based on the https://api1-bsc.fangible.com/v1/bsc_test/pools interface
+2. Carry out data cleaning, and filter out the NFT that is not sold in the market and some that do not meet the specifications
+3. According to the situation to build params: {CTS, ids, cannel, category} request/API/v2 / main/getitemsbyfilter interface to get the data
+4. Connect the data and render it on the page
