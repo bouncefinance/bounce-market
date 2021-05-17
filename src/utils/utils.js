@@ -106,3 +106,9 @@ const KMPProcess = (target) => {
     }
     return next;
 }
+
+/** 指数计数法 */
+export function toNonExponential(num) {
+  var m = num.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
+  return num.toFixed(Math.max(0, (m[1] || '').length - m[2]));
+}

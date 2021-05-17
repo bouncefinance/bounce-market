@@ -67,7 +67,6 @@ function VideoFrame (props) {
         setPlayButtonVisiable(true)
     }
 
-    
     useEffect(() => {
         const generateFrame = (frameRate) => {
             const { image, currentTime } = generateCanvas(videoRef.current, videoRef.current.duration * frameRate);
