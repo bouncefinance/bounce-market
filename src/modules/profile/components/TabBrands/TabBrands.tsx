@@ -1,30 +1,41 @@
 import { Grid } from '@material-ui/core';
 import { BrandCard, IBrandCardProps } from 'modules/brand/components/BrandCard';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
 import { BrandEmptyCard } from 'modules/brand/components/BrandEmptyCard';
 import { useTabBrandStyles } from './useTabBrandsStyles';
+import { useDispatchRequest } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import { queryMyBrandItem } from 'modules/brand/actions/queryMyBrandItem';
 
-interface ITabBrandsProps {
-  items?: IBrandCardProps[];
-}
-
-export const TabBrands = ({ items }: ITabBrandsProps) => {
+export const TabBrands = () => {
   const classes = useTabBrandStyles();
+  const dispatch = useDispatchRequest();
+  const { address } = useAccount();
+  const [brands, setBrands] = useState<IBrandCardProps[]>();
+
+  useEffect(() => {
+    if (address) {
+    dispatch(queryMyBrandItem(address))
+      .then(res => {
+        setBrands(res.data);
+      })
+    }
+  }, [address, dispatch])
 
   const renderedBrands = useMemo(
     () =>
-      items?.map(brandProps => (
+      brands?.map((brandProps: IBrandCardProps) => (
         <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(brandProps)}>
           <BrandCard
             title={brandProps.title}
-            href={brandProps.href}
+            id={brandProps.id}
             itemsCount={brandProps.itemsCount}
             imgSrc={brandProps.imgSrc}
           />
         </Grid>
       )),
-    [items],
+    [brands],
   );
 
   const renderEmpty = (
@@ -35,7 +46,7 @@ export const TabBrands = ({ items }: ITabBrandsProps) => {
 
   return (
     <>
-      {items && (
+      {brands && (
         <Grid container spacing={4} className={classes.root}>
           {renderedBrands}
           {renderEmpty}

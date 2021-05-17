@@ -1,7 +1,6 @@
 import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { IBrandCardProps } from 'modules/brand/components/BrandCard';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
@@ -34,21 +33,6 @@ import { Tab } from '../components/Tabs/Tab';
 import { useProfileStyles } from './useProfileStyles';
 import { useHistory } from 'react-router';
 import { ProfileRoutesConfig, ProfileTab } from '../ProfileRoutes';
-
-const brands: IBrandCardProps[] = [
-  {
-    href: '#',
-    title: 'Polka Pet World',
-    imgSrc: 'https://picsum.photos/120?random=10',
-    itemsCount: 0,
-  },
-  {
-    href: '#',
-    title: 'Polka Pet World',
-    imgSrc: 'https://picsum.photos/120?random=20',
-    itemsCount: 20,
-  },
-];
 
 const followings: IFollowingItemProps[] = [
   {
@@ -267,7 +251,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.brands}>
-          <TabBrands items={brands} />
+          <TabBrands />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>

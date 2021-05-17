@@ -34,7 +34,7 @@ export interface IBrandInfo {
     status: number;
 }
 
-export interface IApiQueryBrandInfo {
+export interface IApiBrandInfo {
   code: 1 | number;
   data: IBrandInfo[];
 }

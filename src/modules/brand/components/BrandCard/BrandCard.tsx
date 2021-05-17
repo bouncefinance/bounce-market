@@ -12,11 +12,11 @@ export interface IBrandCardProps {
   title: string;
   itemsCount: number;
   imgSrc: string;
-  href: string;
+  id: number;
 }
 
 export const BrandCard = ({
-  href,
+  id,
   title,
   itemsCount,
   imgSrc,
@@ -45,7 +45,7 @@ export const BrandCard = ({
         </div>
       ) : null}
 
-      <Link to={href} className={classes.wrapLink}>
+      <Link to={`/brand/${id}`} className={classes.wrapLink}>
         <Box className={classes.imgBox}>
           <Img src={imgSrc} className={classes.imgWrap} ratio="1x1" />
         </Box>

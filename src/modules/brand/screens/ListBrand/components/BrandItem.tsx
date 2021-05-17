@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from "@material-ui/core";
 import { useDispatchRequest } from "@redux-requests/react";
-import { queryBrandItems } from "modules/brand/actions/queryBrandItems";
+import { queryBrandPools } from "modules/brand/actions/queryBrandPools";
 import { IBrandInfo } from "modules/brand/api/queryBrand";
 import { IItem } from "modules/pools/actions/queryItemByFilter";
 import { useEffect, useState } from "react";
@@ -54,7 +54,7 @@ export const BrandItem = ({
 
   useEffect(() => {
     if (data.owneraddress === '0x2d3fff58da3346dce601f6db8eec57906cdb17be') {
-      dispatch(queryBrandItems({
+      dispatch(queryBrandPools({
         owneraddress: data.owneraddress,
         contractaddress: data.contractaddress,
       }))

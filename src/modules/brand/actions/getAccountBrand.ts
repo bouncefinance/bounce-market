@@ -1,21 +1,24 @@
-
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { IApiBrandInfo, IBrandInfo } from '../api/queryBrand';
-import { QueryBrandByFilterAction } from './const';
+import { GetAccountBrandAction } from './const';
 
-export const queryBrandByFilter = createSmartAction<
-  RequestAction<IApiBrandInfo, IBrandInfo[]>
->(QueryBrandByFilterAction, data => {
-  return {
+export const getAccountBrand = createSmartAction<
+RequestAction<IApiBrandInfo, IBrandInfo[]>
+>(
+  GetAccountBrandAction,
+  (address: string) => ({
     request: {
-      url: `/api/v2/main/getbrandsbyfilter`,
+      url: `/api/v2/main/auth/getaccountbrands`,
       method: 'post',
-      data: data,
+      data: {
+        accountaddress: address
+      }
     },
     meta: {
+      auth: true,
       driver: 'axios',
-      asMutation: true,
+      asMutation: false,
       getData: data => {
         if (data.code !== 1) {
           throw new Error('Unexpected response');
@@ -23,5 +26,5 @@ export const queryBrandByFilter = createSmartAction<
         return data.data;
       }
     }
-  }
-})
+  })
+)
