@@ -148,7 +148,7 @@ const en_US = {
     Ranking: {
         fangible: 'Fangible',
         bsc: 'BSC',
-        placeholder: 'Search'
+        placeholder: 'Search + Enter'
     },
     RankingTabs: {
         All: 'All',
