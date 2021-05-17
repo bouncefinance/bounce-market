@@ -18,6 +18,27 @@ export interface IApiQueryBrand {
   };
 }
 
+export interface IBrandInfo {
+    bandimgurl: string;
+    brandname: string;
+    brandsymbol: string;
+    contractaddress: string;
+    description: string;
+    id: number;
+    imgurl: string;
+    owneraddress: string;
+    ownerimg: string;
+    ownername: string;
+    popularweight: number;
+    standard: number;
+    status: number;
+}
+
+export interface IApiQueryBrandInfo {
+  code: 1 | number;
+  data: IBrandInfo[];
+}
+
 export const compare = (a: string, b: string) => {
   return String(a).toLowerCase() === String(b).toLowerCase();
 };
@@ -32,8 +53,8 @@ export const mapQueryBrandAddress = (
   const brand1155:
     | IApiBrand
     | undefined = data.erc1155.find((item: IApiBrand) =>
-    compare(item.creator, address),
-  );
+      compare(item.creator, address),
+    );
   if (brand721) {
     return brand721.contract_address;
   } else if (brand1155) {
@@ -42,3 +63,9 @@ export const mapQueryBrandAddress = (
     return ZERO_ADDRESS;
   }
 };
+
+export const mapQueryBrandList = ({ data }: IApiQueryBrand): IApiBrand[] => {
+  const brand721: IApiBrand[] = data.erc721;
+  const brand1155: IApiBrand[] = data.erc1155;
+  return brand721.concat(brand1155);
+}

@@ -27,6 +27,16 @@ import { Spinner } from '../Spinner';
 import { useProductCardStyles } from './useProductCardStyles';
 import { Link as RouterLink } from 'react-router-dom';
 
+interface IImg extends IImgProps {
+  category: 'image';
+}
+interface IVideo {
+  category: 'video';
+  src: string;
+}
+
+type Media = IImg | IVideo;
+
 export enum ProductCardStatuses {
   minting,
   onSalePending,
@@ -40,7 +50,7 @@ export interface IProductCardProps {
   endDate?: Date;
   likes?: number;
   copies?: number;
-  ImgProps: IImgProps;
+  MediaProps: Media;
   ProfileInfoProps: IProfileInfoProps;
   href?: string;
   isLiked?: boolean;
@@ -63,7 +73,7 @@ export const ProductCard = ({
   likes,
   isLiked = false,
   onLikeClick,
-  ImgProps,
+  MediaProps,
   ProfileInfoProps,
   imgPreloader,
   status,
@@ -153,11 +163,22 @@ export const ProductCard = ({
   const renderContent = useCallback(
     () => (
       <>
-        <Img
-          {...ImgProps}
-          className={classNames(ImgProps.className, classes.imgWrap)}
-          ratio="1x1"
-        />
+        {MediaProps.category === 'image' ? (
+          <Img
+            {...MediaProps}
+            className={classNames(MediaProps.className, classes.imgWrap)}
+            ratio="1x1"
+          />
+        ) : (
+          <div className={classes.videoWrapper}>
+            <video
+              src={MediaProps.src}
+              className={classes.video}
+              autoPlay={true}
+              loop={true}
+            />
+          </div>
+        )}
 
         {imgPreloader}
 
@@ -169,8 +190,10 @@ export const ProductCard = ({
       </>
     ),
     [
-      ImgProps,
+      MediaProps,
       classes.imgWrap,
+      classes.video,
+      classes.videoWrapper,
       imgPreloader,
       isMinting,
       isOnSalePending,

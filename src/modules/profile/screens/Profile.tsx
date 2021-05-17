@@ -1,6 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { IBrandCardProps } from 'modules/brand/components/BrandCard';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
@@ -33,6 +32,8 @@ import { TabPanel } from '../components/TabPanel';
 import { Tabs } from '../components/Tabs';
 import { Tab } from '../components/Tabs/Tab';
 import { useProfileStyles } from './useProfileStyles';
+import { useHistory } from 'react-router';
+import { ProfileRoutesConfig, ProfileTab } from '../ProfileRoutes';
 
 const brands: IBrandCardProps[] = [
   {
@@ -78,22 +79,14 @@ const followings: IFollowingItemProps[] = [
 
 const followers = followings;
 
-enum TabList {
-  items,
-  brands,
-  activity,
-  liked,
-  following,
-  followers,
-}
-
 export const Profile = () => {
-  const [tab, setTab] = useState<TabList>(TabList.items);
+  const { tab } = ProfileRoutesConfig.UserProfile.useParams();
   const [isAvatarModalOpened, setAvatarModalOpened] = useState(false);
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const classes = useProfileStyles();
   const { address } = useAccount();
   const dispatchRequest = useDispatchRequest();
+  const { push } = useHistory();
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
@@ -127,9 +120,12 @@ export const Profile = () => {
     }
   }, [address, dispatchRequest]);
 
-  const onTabsChange = useCallback((_, value) => {
-    setTab(value);
-  }, []);
+  const onTabsChange = useCallback(
+    (_, value) => {
+      push(ProfileRoutesConfig.UserProfile.generatePath(value));
+    },
+    [push],
+  );
 
   const hasItems =
     !!allNftByUserQuery.data && allNftByUserQuery.data.length > 0;
@@ -137,29 +133,29 @@ export const Profile = () => {
   const tabs = useMemo(
     () => [
       {
-        value: TabList.items,
+        value: ProfileTab.items,
         label: t('profile.tabs.my-items'),
       },
       {
-        value: TabList.brands,
+        value: ProfileTab.brands,
         label: t('profile.tabs.my-brands'),
       },
       {
-        value: TabList.activity,
+        value: ProfileTab.activity,
         label: t('profile.tabs.activity'),
       },
       {
-        value: TabList.liked,
+        value: ProfileTab.liked,
         label: t('profile.tabs.liked'),
         count: 0,
       },
       {
-        value: TabList.following,
+        value: ProfileTab.following,
         label: t('profile.tabs.following'),
         count: 11,
       },
       {
-        value: TabList.followers,
+        value: ProfileTab.followers,
         label: t('profile.tabs.followers'),
         count: 150,
       },
@@ -214,7 +210,7 @@ export const Profile = () => {
           ))}
         </Tabs>
 
-        <TabPanel value={tab} index={TabList.items}>
+        <TabPanel value={tab} index={ProfileTab.items}>
           {hasItems || allNftByUserQuery.loading ? (
             <TabItems>
               <Grid container spacing={4}>
@@ -235,9 +231,10 @@ export const Profile = () => {
                           }
                           // status={item.status}
                           // UPDATE price
-                          price={item.poolId ? new BigNumber(10) : undefined}
+                          price={item.poolId ? item.price : undefined}
                           copies={item.supply}
-                          ImgProps={{
+                          MediaProps={{
+                            category: item.category,
                             src: item.fileUrl,
                             objectFit: 'scale-down',
                             loading: 'lazy',
@@ -269,19 +266,19 @@ export const Profile = () => {
           )}
         </TabPanel>
 
-        <TabPanel value={tab} index={TabList.brands}>
+        <TabPanel value={tab} index={ProfileTab.brands}>
           <TabBrands items={brands} />
         </TabPanel>
 
-        <TabPanel value={tab} index={TabList.activity}>
+        <TabPanel value={tab} index={ProfileTab.activity}>
           <ActivityTable />
         </TabPanel>
 
-        <TabPanel value={tab} index={TabList.following}>
+        <TabPanel value={tab} index={ProfileTab.following}>
           <TabFollowing items={followings} />
         </TabPanel>
 
-        <TabPanel value={tab} index={TabList.followers}>
+        <TabPanel value={tab} index={ProfileTab.followers}>
           <TabFollowing items={followers} />
         </TabPanel>
       </Container>

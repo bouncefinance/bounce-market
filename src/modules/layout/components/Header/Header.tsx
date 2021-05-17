@@ -24,6 +24,8 @@ import { Wallet } from '../Wallet';
 import { useHeaderStyles } from './HeaderStyles';
 import { useHeader } from './useHeader';
 
+const ENABLE_HOW_IT_WORKS_PAGE = false;
+
 export const Header = () => {
   const {
     mobileNavShowed,
@@ -44,7 +46,7 @@ export const Header = () => {
     <>
       <Search className={classes.search} />
       <HeaderLinks />
-      <HeaderLinksSecondary />
+      {ENABLE_HOW_IT_WORKS_PAGE && <HeaderLinksSecondary />}
       <Button
         rounded
         component={RouterLink}

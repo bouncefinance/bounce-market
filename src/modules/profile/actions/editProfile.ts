@@ -5,7 +5,7 @@ import {
 } from 'modules/account/store/actions/setAccount';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { RootState } from 'store/store';
+import { RootState } from 'store';
 import { IProfileInfo } from '../api/profileInfo';
 import { fetchProfileInfo } from './fetchProfileInfo';
 import { showSuccesNotify } from './showSuccesNotify';
@@ -106,13 +106,13 @@ export const editProfile: (
         },
       },
       onSuccess: (
-        request,
-        _action: RequestAction,
+        response,
+        action: RequestAction,
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
         store.dispatch(showSuccesNotify());
 
-        return request;
+        return response;
       },
     },
   }),

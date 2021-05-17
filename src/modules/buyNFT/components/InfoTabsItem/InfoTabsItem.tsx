@@ -10,7 +10,6 @@ interface IInfoTabsItemProps {
   title: string;
   date: Date;
   price?: BigNumber;
-  currency?: string;
   cryptoPrice?: BigNumber;
   cryptoCurrency?: string;
   className?: string;
@@ -22,7 +21,6 @@ export const InfoTabsItem = ({
   title,
   date,
   price,
-  currency,
   cryptoPrice,
   cryptoCurrency,
   className,
@@ -84,7 +82,7 @@ export const InfoTabsItem = ({
           variant="body2"
           color="textSecondary"
         >
-          {`${currency}${price.toFormat()}`}
+          {t('wallet.$-value', { value: price.toNumber() })}
         </Typography>
       )}
     </div>

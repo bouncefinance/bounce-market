@@ -2,12 +2,13 @@ import { getQuery, resetRequests } from '@redux-requests/core';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { END, eventChannel } from 'redux-saga';
 import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { Address } from '../../common/types/unit';
 import { connect } from '../store/actions/connect';
 import { setAccount } from '../store/actions/setAccount';
+import { disconnect } from '../store/actions/disconnect';
 
-// TODO Check disconnection, switch chain, switch account
+// TODO: Check disconnection, switch chain, switch account
 
 enum WalletEventType {
   'AccountChanged' = 'AccountChanged',
@@ -85,7 +86,10 @@ function createEventChannel(provider: any) {
 }
 
 function* onConnectWallet() {
-  const { action } = yield putResolve(setAccount());
+  const { action, error } = yield putResolve(setAccount());
+  if (error) {
+    return;
+  }
   const provider = action.meta.provider;
   yield put(fetchProfileInfo());
 
@@ -94,7 +98,9 @@ function* onConnectWallet() {
     const event: ProviderEvent = yield take(channel);
 
     if (event.type === WalletEventType.ChainChanged) {
-      yield put(resetRequests([setAccount.toString()]));
+      yield put(
+        resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
+      );
     } else if (event.type === WalletEventType.AccountChanged) {
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
@@ -117,6 +123,13 @@ function* onConnectWallet() {
   }
 }
 
+function* onDisconnectWallet() {
+  yield put(
+    resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
+  );
+}
+
 export function* connectSaga() {
   yield takeEvery(connect.toString(), onConnectWallet);
+  yield takeEvery(disconnect.toString(), onDisconnectWallet);
 }

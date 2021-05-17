@@ -1,10 +1,10 @@
 import { Box } from '@material-ui/core';
 import { getQuery, QueryState, RequestAction } from '@redux-requests/core';
 import React, { ReactNode } from 'react';
-import { useAppSelector } from '../../../../store/useAppSelector';
+import { useAppSelector } from 'store/useAppSelector';
 import { QueryEmpty } from '../QueryEmpty/QueryEmpty';
 import { QueryError } from '../QueryError/QueryError';
-import { QueryLoadingCentered } from '../QueryLoading/QueryLoading';
+import { QueryLoading } from '../QueryLoading/QueryLoading';
 
 interface ILoadingProps<T1, T2, T3, T4, T5> {
   requestActions: ((...args: any[]) => RequestAction)[];
@@ -57,8 +57,14 @@ export function Queries<T1 = void, T2 = void, T3 = void, T4 = void, T5 = void>({
 
   if (isLoading(queries)) {
     return (
-      <Box py={5} position="relative" width="100%">
-        <QueryLoadingCentered />
+      <Box
+        py={5}
+        position="relative"
+        width="100%"
+        display="flex"
+        justifyContent="center"
+      >
+        <QueryLoading />
       </Box>
     );
   }

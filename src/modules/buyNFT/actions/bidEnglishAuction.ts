@@ -1,7 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { ZERO_ADDRESS } from '../../common/conts';
 import BigNumber from 'bignumber.js';
@@ -46,7 +46,7 @@ export const bidEnglishAuction = createSmartAction<
                 BounceEnglishAuctionNFT,
               );
               const amount =
-                amountMax1.toString() || web3.utils.toWei(bidPrice.toString());
+                amountMax1.toFixed() || web3.utils.toWei(bidPrice.toFixed());
 
               const bid = (value?: string) =>
                 new Promise((resolve, reject) => {

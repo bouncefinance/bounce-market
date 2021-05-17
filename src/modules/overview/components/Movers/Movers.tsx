@@ -29,9 +29,15 @@ SwiperCore.use([Lazy, Navigation]);
 const prevId = getRandomId('prev');
 const nextId = getRandomId('next');
 
-export type ProductProps = Omit<IProductCardProps, 'ImgProps'> & {
+type IImgProps = Omit<IProductCardProps, 'MediaProps'> & {
   img: string;
 };
+
+type IVideoProps = Omit<IProductCardProps, 'MediaProps'> & {
+  video: string;
+};
+
+export type ProductProps = IImgProps | IVideoProps;
 
 interface IMoversProps extends ISectionProps {
   items?: ProductProps[];
@@ -83,12 +89,17 @@ export const Movers = ({
         endDate={cardProps.endDate}
         likes={cardProps.likes}
         href={cardProps.href}
-        ImgProps={{
-          src: cardProps.img,
-          imgClassName: 'swiper-lazy',
-          isNativeLazyLoading: false,
-          objectFit: 'scale-down',
-        }}
+        MediaProps={
+          (cardProps as IImgProps).img
+            ? {
+                src: (cardProps as IImgProps).img,
+                imgClassName: 'swiper-lazy',
+                isNativeLazyLoading: false,
+                objectFit: 'scale-down',
+                category: 'image',
+              }
+            : { src: (cardProps as IVideoProps).video, category: 'video' }
+        }
         ProfileInfoProps={cardProps.ProfileInfoProps}
         imgPreloader={<SwiperPreloader />}
       />

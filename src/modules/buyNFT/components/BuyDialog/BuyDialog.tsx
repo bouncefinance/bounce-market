@@ -26,7 +26,7 @@ interface IBuyFormValues {
 }
 
 interface IBuyDialogProps {
-  img: string;
+  filepath: string;
   isOpen?: boolean;
   isOwnerVerified?: boolean;
   name: string;
@@ -35,10 +35,11 @@ interface IBuyDialogProps {
   owner: string;
   ownerAvatar: string;
   disabled: boolean;
+  category: 'image' | 'video';
 }
 
 export const BuyDialog = ({
-  img,
+  filepath,
   isOpen = false,
   isOwnerVerified = false,
   name,
@@ -47,6 +48,7 @@ export const BuyDialog = ({
   owner,
   ownerAvatar,
   disabled,
+  category,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
 
@@ -142,7 +144,11 @@ export const BuyDialog = ({
       <Box mb={5}>
         <Grid container spacing={3} alignItems="center">
           <Grid item xs="auto">
-            <Img className={classes.imgWrap} src={img} ratio="1x1" />
+            {category === 'image' ? (
+              <Img className={classes.imgWrap} src={filepath} ratio="1x1" />
+            ) : (
+              <video src={filepath} autoPlay={true} loop={true} />
+            )}
           </Grid>
 
           <Grid item xs>

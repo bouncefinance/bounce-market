@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
-export const useImgContainerStyles = makeStyles<Theme>(theme => ({
+export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
   root: {
     paddingTop: theme.spacing(5),
     display: 'flex',

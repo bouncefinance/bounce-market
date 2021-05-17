@@ -5,7 +5,7 @@ import {
 } from 'modules/account/store/actions/setAccount';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { RootState } from 'store/store';
+import { RootState } from 'store';
 import { mapProfileInfo } from '../api/profileInfo';
 
 export const fetchProfileInfo = createSmartAction<RequestAction>(

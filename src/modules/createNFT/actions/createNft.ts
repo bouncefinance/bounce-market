@@ -3,7 +3,7 @@ import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { uploadFile } from 'modules/common/actions/uploadFile';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
 import { addItem, IAddItemPayload } from './addItem';
@@ -11,6 +11,7 @@ import {
   BounceERC1155WithSign,
   BounceERC721WithSign,
 } from '../../web3/contracts';
+import { isVideo } from '../../common/utils/isVideo';
 
 export enum NftType {
   ERC721,
@@ -31,9 +32,9 @@ export interface ICreateNFTPayload {
   supply: number;
   file: File;
 }
-
+// TODO: Remove timers
 export const createNft = createSmartAction(
-  'MarketplaceActions/createNft',
+  'createNft',
   ({
     file,
     standard,
@@ -65,7 +66,7 @@ export const createNft = createSmartAction(
 
             const addItemPayload: IAddItemPayload = {
               brandid: standard === NftType.ERC721 ? 10 : 11,
-              category: 'image',
+              category: isVideo(file) ? 'video' : 'image',
               channel,
               contractaddress:
                 standard === NftType.ERC721
@@ -107,7 +108,9 @@ export const createNft = createSmartAction(
                     // Pending status
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
-                    resolve(receipt);
+                    setTimeout(() => {
+                      resolve(receipt);
+                    }, 15000);
                   })
                   .on('error', (error: Error) => {
                     reject(error);
@@ -132,7 +135,9 @@ export const createNft = createSmartAction(
                     // Pending status
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
-                    resolve(receipt);
+                    setTimeout(() => {
+                      resolve(receipt);
+                    }, 15000);
                   })
                   .on('error', (error: Error) => {
                     reject(error);

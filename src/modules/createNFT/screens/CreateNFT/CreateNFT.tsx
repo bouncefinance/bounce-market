@@ -11,7 +11,6 @@ import { UploadFileField } from '../../../form/components/UploadFileField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
-import { RoutesConfiguration } from '../../../overview/Routes';
 import { useCreateNFTStyles } from './useCreateNFTStyles';
 import {
   Channel,
@@ -19,6 +18,7 @@ import {
   ICreateNFTPayload,
   NftType,
 } from '../../actions/createNft';
+import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -78,7 +78,7 @@ export const CreateNFT = () => {
         createNft({ ...payload, supply: parseInt(payload.supply, 10) }),
       ).then(({ error }) => {
         if (!error) {
-          push(RoutesConfiguration.Overview.generatePath());
+          push(ProfileRoutesConfig.UserProfile.generatePath());
         }
       });
     },

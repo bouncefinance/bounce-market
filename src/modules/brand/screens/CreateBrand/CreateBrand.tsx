@@ -13,6 +13,10 @@ import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory } from 'react-router';
 import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
 import { createBrand } from '../../actions/createBrand';
+import {
+  ProfileRoutesConfig,
+  ProfileTab,
+} from '../../../profile/ProfileRoutes';
 
 export interface ICreateBrand {
   brandName: string;
@@ -57,7 +61,7 @@ const DESCRIPTION_CHARACTER_LIMIT = 200;
 
 export const CreateBrand = () => {
   const dispatch = useDispatchRequest();
-  const { push } = useHistory();
+  const { replace } = useHistory();
 
   const standardOptions = useMemo(
     () => [
@@ -77,11 +81,13 @@ export const CreateBrand = () => {
     (payload: ICreateBrand) => {
       dispatch(createBrand(payload)).then(({ error }) => {
         if (!error) {
-          push('/');
+          replace(
+            ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands),
+          );
         }
       });
     },
-    [dispatch, push],
+    [dispatch, replace],
   );
 
   const renderForm = ({ handleSubmit }: FormRenderProps<ICreateBrand>) => {

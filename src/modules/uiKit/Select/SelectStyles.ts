@@ -4,6 +4,7 @@ export const useSelectStyles = makeStyles<Theme>(theme => ({
   menuPaper: {
     border: '1px solid #E6E6E6',
     marginTop: 5,
+    marginBottom: 5,
     borderRadius: 8,
 
     '& .MuiListItem-button': {

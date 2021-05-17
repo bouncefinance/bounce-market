@@ -1,7 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { ZERO_ADDRESS } from '../../common/conts';
 import { NftType } from '../../createNFT/actions/createNft';
@@ -74,7 +74,7 @@ export const buyFixed = createSmartAction<
                   );
 
                 if (unitContract === ZERO_ADDRESS) {
-                  await bid(amountTotal1.toString());
+                  await bid(amountTotal1.toFixed());
                 } else {
                   const allowance = await BounceERC20_CT.methods
                     .allowance(address, getFixedSwapContract(chainId))
@@ -107,10 +107,7 @@ export const buyFixed = createSmartAction<
 
                 const _amount0 = amount;
                 const _amount1 = Web3.utils.toWei(
-                  amountTotal1
-                    .div(amountTotal0)
-                    .multipliedBy(amount)
-                    .toString(),
+                  amountTotal1.div(amountTotal0).multipliedBy(amount).toFixed(),
                 );
 
                 const bid = (value?: string) =>

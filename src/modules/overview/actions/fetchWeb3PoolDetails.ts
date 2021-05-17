@@ -1,7 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { AuctionType } from '../api/auctionType';
 import { setAccount } from '../../account/store/actions/setAccount';
 import {
@@ -12,9 +12,22 @@ import {
   getEnglishAuctionContract,
   getFixedSwapContract,
 } from '../../createNFT/actions/publishNft';
-import { IFetchPoolDetailsData } from './fetchPoolDetails';
+import {
+  IEnglishAuctionDetails,
+  IFixedAuctionDetails,
+} from './fetchPoolDetails';
 import BigNumber from 'bignumber.js';
-import { AuctionState } from './fetchPools';
+import { fetchCurrency } from './fetchCurrency';
+import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
+import { fromWei } from '../../common/utils/fromWei';
+import { AuctionState } from '../../common/const/AuctionState';
+
+interface IWeb3FixedAuctionDetails extends IFixedAuctionDetails {}
+interface IWeb3EnglishAuctionDetails extends IEnglishAuctionDetails {}
+
+export type IFetchWeb3PoolDetailsData =
+  | IWeb3FixedAuctionDetails
+  | IWeb3EnglishAuctionDetails;
 
 interface IFetchPoolDetailsByIdParams {
   poolId: number;
@@ -22,7 +35,7 @@ interface IFetchPoolDetailsByIdParams {
 }
 
 export const fetchWeb3PoolDetails = createSmartAction<
-  RequestAction<IFetchPoolDetailsData, IFetchPoolDetailsData>
+  RequestAction<IFetchWeb3PoolDetailsData, IFetchWeb3PoolDetailsData>
 >(
   'fetchWeb3PoolDetails',
   ({ poolId, poolType }: IFetchPoolDetailsByIdParams) => {
@@ -62,6 +75,17 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   .creatorCanceledP(poolId)
                   .call();
 
+                const {
+                  data: { decimals },
+                } = throwIfDataIsEmptyOrError(
+                  await store.dispatchRequest(
+                    fetchCurrency(
+                      { unitContract: pools.token1 },
+                      { silent: true },
+                    ),
+                  ),
+                );
+
                 return {
                   quantity: parseInt(pools.amountTotal0),
                   totalPrice: new BigNumber(0),
@@ -71,7 +95,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   nftType: parseInt(pools.nftType),
                   poolId,
                   price: new BigNumber(
-                    web3.utils.fromWei(pools.amountTotal1),
+                    fromWei(pools.amountTotal1, decimals),
                   ).dividedBy(pools.amountTotal0),
                   state: (() => {
                     if (
@@ -94,7 +118,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   unitContract: pools.token1,
                   tokenId: parseInt(pools.tokenId),
                   swappedAmount0Pool: new BigNumber(swappedAmount0Pool),
-                } as IFetchPoolDetailsData;
+                } as IFetchWeb3PoolDetailsData;
               } else {
                 const BounceEnglishAuctionNFT_CT = new web3.eth.Contract(
                   BounceEnglishAuctionNFT,
@@ -130,17 +154,39 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const curTime = new Date().getTime() / 1000;
                 const diffTime = parseInt(pools.closeAt) - curTime;
 
+                const {
+                  data: { decimals },
+                } = throwIfDataIsEmptyOrError(
+                  await store.dispatchRequest(
+                    fetchCurrency(
+                      { unitContract: pools.token1 },
+                      { silent: true },
+                    ),
+                  ),
+                );
+
+                const amountMin1 = new BigNumber(
+                  fromWei(pools.amountMin1, decimals),
+                );
+
                 return {
-                  amountMax1: new BigNumber(pools.amountMax1),
-                  amountMin1: new BigNumber(pools.amountMin1),
-                  amountMinIncr1: new BigNumber(pools.amountMinIncr1),
+                  amountMax1: new BigNumber(
+                    fromWei(pools.amountMax1, decimals),
+                  ),
+                  amountMin1,
+                  amountMinIncr1: new BigNumber(
+                    fromWei(pools.amountMinIncr1, decimals),
+                  ),
                   bidderClaimed: true, // TODO
-                  closeAt: new Date(pools.closeAt),
+                  closeAt: new Date(parseInt(pools.closeAt) * 1000),
                   createTime: new Date(), // TODO
                   creator: pools.creator,
                   creatorClaimed: true, // TODO
                   duration: pools.duration,
-                  lastestBidAmount: new BigNumber(0),
+                  lastestBidAmount:
+                    currentBidderAmount !== '0'
+                      ? new BigNumber(fromWei(currentBidderAmount, decimals))
+                      : amountMin1,
                   name: pools.name,
                   nftType: parseInt(pools.nftType),
                   poolId,
@@ -179,7 +225,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   creatorClaimedPool,
                   reserveAmount1Pool,
                   showPrice,
-                } as IFetchPoolDetailsData;
+                } as IFetchWeb3PoolDetailsData;
               }
             })(),
           };

@@ -55,9 +55,9 @@ interface IPublishFixedSwap {
 
 interface IPublishEnglishAuction {
   type: AuctionType.EnglishAuction;
-  minBid: number;
-  purchasePrice: number;
-  reservePrice: number;
+  minBid: string;
+  purchasePrice: string;
+  reservePrice: string;
   quantity: string;
   duration: Days;
   unitContract: string;
@@ -74,7 +74,8 @@ interface IPublishNFTComponentProps {
   tokenId: number;
   maxQuantity: number;
   onPublish: () => void;
-  img?: string;
+  category: 'image' | 'video';
+  file?: string;
 }
 
 export const PublishNFTComponent = ({
@@ -84,7 +85,8 @@ export const PublishNFTComponent = ({
   tokenId,
   maxQuantity,
   onPublish,
-  img,
+  category,
+  file,
 }: IPublishNFTComponentProps) => {
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
@@ -217,7 +219,9 @@ export const PublishNFTComponent = ({
             type: payload.type,
             purchasePrice: payload.purchasePrice,
             minBid: payload.minBid,
-            minIncremental: payload.minBid * MIN_INCREMENTAL_PART,
+            minIncremental: new BigNumber(payload.minBid).multipliedBy(
+              MIN_INCREMENTAL_PART,
+            ),
             reservePrice: payload.reservePrice,
             duration: payload.duration * 60 * 60 * 24,
             name,
@@ -229,7 +233,7 @@ export const PublishNFTComponent = ({
           }),
         ).then(({ error }) => {
           if (!error) {
-            console.log('sent');
+            onPublish();
           }
         });
       }
@@ -254,14 +258,22 @@ export const PublishNFTComponent = ({
       <Box className={classes.form} component="form" onSubmit={handleSubmit}>
         <div className={classes.formImgCol}>
           <Paper className={classes.formImgBox} variant="outlined">
-            <Img
-              src={img}
-              alt={name}
-              title={name}
-              ratio="1x1"
-              objectFit="scale-down"
-            />
+            {category === 'image' ? (
+              <Img
+                src={file}
+                alt={name}
+                title={name}
+                ratio="1x1"
+                objectFit="scale-down"
+              />
+            ) : (
+              <video src={file} autoPlay={true} loop={true} />
+            )}
           </Paper>
+
+          <Box mt={2}>
+            <Typography variant="h2">{name}</Typography>
+          </Box>
         </div>
 
         <div>
@@ -599,7 +611,8 @@ export const PublishNFT = () => {
             tokenContract={data.contractaddress}
             nftType={data.standard}
             tokenId={data.id}
-            img={data.fileurl}
+            file={data.fileurl}
+            category={data.category}
             maxQuantity={data.supply}
             onPublish={handlePublish}
           />

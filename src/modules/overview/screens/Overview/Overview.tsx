@@ -16,6 +16,8 @@ import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 
+const ENABLE_ARTISTS = false;
+
 const PROMO_ITEMS_COUNT = 3;
 
 function mapPromoItem(item: IItem): IPromoItem {
@@ -84,7 +86,7 @@ export const Overview = () => {
                 stackDown
                 error={error}
                 isLoading={loading}
-                items={data.splice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
+                items={data.slice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
               />
             </ThemeProvider>
             <Movers
@@ -93,16 +95,18 @@ export const Overview = () => {
               error={error}
               isLoading={loading}
               items={data
-                .splice(PROMO_ITEMS_COUNT, data.length)
+                .slice(PROMO_ITEMS_COUNT, data.length)
                 .map(mapMoversItem)}
             />
           </>
         )}
       </Queries>
 
-      <ThemeProvider theme={darkTheme}>
-        <Artists />
-      </ThemeProvider>
+      {ENABLE_ARTISTS && (
+        <ThemeProvider theme={darkTheme}>
+          <Artists />
+        </ThemeProvider>
+      )}
 
       <Queries<ResponseData<typeof fetchPopularBrands>>
         requestActions={[fetchPopularBrands]}

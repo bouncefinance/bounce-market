@@ -52,7 +52,7 @@ const validateForm = ({ bid, quantity }: IBidFormValues) => {
 
 interface IBidDialogProps {
   currency?: string;
-  img: string;
+  filepath: string;
   isOpen?: boolean;
   isOwnerVerified?: boolean;
   name: string;
@@ -60,11 +60,12 @@ interface IBidDialogProps {
   onSubmit: (values: IBidFormValues, form: any, callback: any) => void;
   owner: string;
   ownerAvatar: string;
+  category: 'image' | 'video';
 }
 
 export const BidDialog = ({
   currency = 'ETH',
-  img,
+  filepath,
   isOpen = false,
   isOwnerVerified = false,
   name,
@@ -72,6 +73,7 @@ export const BidDialog = ({
   onSubmit,
   owner,
   ownerAvatar,
+  category,
 }: IBidDialogProps) => {
   const classes = useBidDialogStyles();
 
@@ -184,7 +186,11 @@ export const BidDialog = ({
       <Box mb={5}>
         <Grid container spacing={3} alignItems="center">
           <Grid item xs="auto">
-            <Img className={classes.imgWrap} src={img} ratio="1x1" />
+            {category === 'image' ? (
+              <Img className={classes.imgWrap} src={filepath} ratio="1x1" />
+            ) : (
+              <video src={filepath} autoPlay={true} loop={true} />
+            )}
           </Grid>
 
           <Grid item xs>

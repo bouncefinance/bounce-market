@@ -3,9 +3,9 @@ import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { NftType } from '../../createNFT/actions/createNft';
 import BigNumber from 'bignumber.js';
 import { Address } from '../../common/types/unit';
-import { AuctionState } from './fetchPools';
 import Web3 from 'web3';
 import { AuctionType } from '../api/auctionType';
+import { AuctionState } from '../../common/const/AuctionState';
 
 interface IApiFixedAuctionDetails {
   amount_total0: number;
@@ -43,13 +43,13 @@ interface IApiEnglishAuctionDetails {
   tokenId: number;
 }
 
-interface IApiFetchPoolDetails {
+export interface IApiFetchPoolDetails {
   code: 200;
   data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails;
   msg: 'ok';
 }
 
-interface IFixedAuctionDetails {
+export interface IFixedAuctionDetails {
   quantity: number;
   totalPrice: BigNumber;
   createTime: Date;
@@ -64,7 +64,7 @@ interface IFixedAuctionDetails {
   tokenId: number;
 }
 
-interface IEnglishAuctionDetails {
+export interface IEnglishAuctionDetails {
   amountMax1: BigNumber;
   amountMin1: BigNumber;
   amountMinIncr1: BigNumber;
@@ -89,7 +89,7 @@ export type IFetchPoolDetailsData =
   | IFixedAuctionDetails
   | IEnglishAuctionDetails;
 
-function isApiEnglishAuction(
+export function isApiEnglishAuction(
   data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails,
 ): data is IApiEnglishAuctionDetails {
   return (data as IApiEnglishAuctionDetails).amountMax1 !== undefined;
@@ -105,6 +105,8 @@ interface IFetchPoolDetailsParams {
   poolId: number;
   poolType: AuctionType;
 }
+
+// TODO Replace Web3.utils.fromWei by fromWei
 
 export const fetchPoolDetails = createSmartAction<
   RequestAction<IApiFetchPoolDetails, IFetchPoolDetailsData>

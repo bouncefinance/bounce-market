@@ -2,12 +2,11 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { AuctionType } from '../../overview/api/auctionType';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
 import { NftType } from './createNft';
 import BigNumber from 'bignumber.js';
-import Web3 from 'web3';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { Seconds } from '../../common/types/unit';
 import {
@@ -16,6 +15,9 @@ import {
   BounceERC721WithSign,
   BounceFixedSwapNFT,
 } from '../../web3/contracts';
+import { fetchCurrency } from '../../overview/actions/fetchCurrency';
+import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
+import { toWei } from '../../common/utils/toWei';
 
 export const getFixedSwapContract = (chainID: number) => {
   switch (chainID) {
@@ -58,10 +60,10 @@ type IPublishNftPayload =
     }
   | {
       type: AuctionType.EnglishAuction;
-      purchasePrice: number;
-      minBid: number;
-      minIncremental: number;
-      reservePrice: number;
+      purchasePrice: string;
+      minBid: string;
+      minIncremental: BigNumber;
+      reservePrice: string;
       duration: Seconds;
       name: string;
       tokenContract: string;
@@ -106,8 +108,15 @@ export const publishNft = createSmartAction<
               BounceERC1155WithSign,
               getBounceERC1155WithSign(chainId),
             );
-
             const onlyBOT = false;
+
+            const {
+              data: { decimals },
+            } = throwIfDataIsEmptyOrError(
+              await store.dispatchRequest(
+                fetchCurrency({ unitContract: payload.unitContract }),
+              ),
+            );
 
             // TODO isOwner
 
@@ -135,7 +144,7 @@ export const publishNft = createSmartAction<
                       tokenContract,
                       unitContract,
                       tokenId,
-                      Web3.utils.toWei(price.toString()),
+                      toWei(price.toFixed(), decimals),
                       onlyBOT,
                     )
                     .send({ from: address })
@@ -143,7 +152,9 @@ export const publishNft = createSmartAction<
                       // Pending status
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
-                      resolve(receipt);
+                      setTimeout(() => {
+                        resolve(receipt);
+                      }, 15000);
                     })
                     .on('error', (error: Error) => {
                       reject(error);
@@ -162,7 +173,7 @@ export const publishNft = createSmartAction<
                       unitContract,
                       tokenId,
                       quantity,
-                      Web3.utils.toWei(price.multipliedBy(quantity).toString()),
+                      toWei(price.multipliedBy(quantity).toFixed(), decimals),
                       onlyBOT,
                     )
                     .send({ from: address })
@@ -170,7 +181,9 @@ export const publishNft = createSmartAction<
                       // Pending status
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
-                      resolve(receipt);
+                      setTimeout(() => {
+                        resolve(receipt);
+                      }, 15000);
                     })
                     .on('error', (error: Error) => {
                       reject(error);
@@ -209,10 +222,10 @@ export const publishNft = createSmartAction<
                       tokenContract,
                       unitContract,
                       tokenId,
-                      Web3.utils.toWei(purchasePrice.toString()),
-                      Web3.utils.toWei(minBid.toString()),
-                      Web3.utils.toWei(minIncremental.toString()),
-                      Web3.utils.toWei(reservePrice.toString()),
+                      toWei(purchasePrice, decimals),
+                      toWei(minBid, decimals),
+                      toWei(minIncremental.toFixed(), decimals),
+                      toWei(reservePrice, decimals),
                       duration,
                       onlyBOT,
                     )
@@ -221,7 +234,9 @@ export const publishNft = createSmartAction<
                       // Pending status
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
-                      resolve(receipt);
+                      setTimeout(() => {
+                        resolve(receipt);
+                      }, 15000);
                     })
                     .on('error', (error: Error) => {
                       reject(error);
@@ -240,10 +255,10 @@ export const publishNft = createSmartAction<
                       unitContract,
                       tokenId,
                       quantity,
-                      Web3.utils.toWei(purchasePrice.toString()),
-                      Web3.utils.toWei(minBid.toString()),
-                      Web3.utils.toWei(minIncremental.toString()),
-                      Web3.utils.toWei(reservePrice.toString()),
+                      toWei(purchasePrice, decimals),
+                      toWei(minBid, decimals),
+                      toWei(minIncremental.toFixed(), decimals),
+                      toWei(reservePrice, decimals),
                       duration,
                       onlyBOT,
                     )
@@ -252,7 +267,9 @@ export const publishNft = createSmartAction<
                       // Pending status
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
-                      resolve(receipt);
+                      setTimeout(() => {
+                        resolve(receipt);
+                      }, 15000);
                     })
                     .on('error', (error: Error) => {
                       reject(error);

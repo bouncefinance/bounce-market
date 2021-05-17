@@ -1,7 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { fetchPoolsWeight } from './fetchPoolsWeight';
 import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
 import { fetchItemsByIds } from './fetchItemsByIds';
@@ -68,20 +68,22 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 ),
               );
 
-              return data?.map(item => {
-                const pool = poolDetailsList.find(pool => {
-                  return pool.data?.tokenId === item.id;
-                })?.data;
+              return data
+                ?.map(item => {
+                  const pool = poolDetailsList.find(pool => {
+                    return pool.data?.tokenId === item.id;
+                  })?.data;
 
-                return {
-                  ...item,
-                  poolId: pool?.poolId,
-                  poolType:
-                    pool && isEnglishAuction(pool)
-                      ? AuctionType.EnglishAuction
-                      : AuctionType.FixedSwap,
-                } as IItem;
-              });
+                  return {
+                    ...item,
+                    poolId: pool?.poolId,
+                    poolType:
+                      pool && isEnglishAuction(pool)
+                        ? AuctionType.EnglishAuction
+                        : AuctionType.FixedSwap,
+                  } as IItem;
+                })
+                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
             })(),
           };
         },

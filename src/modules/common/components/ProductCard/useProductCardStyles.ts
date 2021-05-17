@@ -176,4 +176,34 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     fontWeight: 500,
     minWidth: 170,
   },
+
+  videoWrapper: {
+    display: 'block',
+    position: 'relative',
+    backgroundPosition: 'center',
+    overflow: 'hidden',
+    '&:before': {
+      content: '""',
+      paddingTop: '100%',
+      display: 'block',
+    },
+    '&:after': {
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      content: '""',
+      position: 'absolute',
+      transition: '0.2s',
+    },
+  },
+
+  video: {
+    objectFit: 'scale-down',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
 }));

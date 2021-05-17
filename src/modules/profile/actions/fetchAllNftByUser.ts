@@ -1,12 +1,17 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { fetchItemsByFilter } from '../../createNFT/actions/fetchItemsByFilter';
 import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
-import { IApiFetchNftByUserVariables } from '../../createNFT/api/fetchNftByUser';
 import { IItem } from '../../overview/api/getItems';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
+import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
+import { AuctionType } from '../../overview/api/auctionType';
+
+export interface IApiFetchNftByUserVariables {
+  user: string;
+}
 
 export const fetchAllNftByUser: (
   payload: IApiFetchNftByUserVariables,
@@ -81,17 +86,29 @@ export const fetchAllNftByUser: (
             }
 
             // TODO: How to manage pools, separated data or inline?
-            return data?.map(item => {
-              const pool = pools?.list.find(pool => pool.tokenId === item.id);
-              if (pool) {
-                return {
-                  ...item,
-                  poolId: pool.poolId,
-                };
-              }
+            return data
+              ?.map(item => {
+                const pool = pools?.list.find(pool => pool.tokenId === item.id);
+                if (pool) {
+                  return {
+                    ...item,
+                    poolId: pool.poolId,
+                    poolType: isEnglishAuction(pool)
+                      ? AuctionType.EnglishAuction
+                      : AuctionType.FixedSwap,
+                    price: isEnglishAuction(pool)
+                      ? pool.lastestBidAmount.isEqualTo(0)
+                        ? pool.amountMin1
+                        : pool.lastestBidAmount
+                      : pool.price,
+                  };
+                }
 
-              return item;
-            });
+                return item;
+              })
+              .sort((prev, next) => {
+                return next.createdAt.getTime() - prev.createdAt.getTime();
+              });
           })(),
         };
       },

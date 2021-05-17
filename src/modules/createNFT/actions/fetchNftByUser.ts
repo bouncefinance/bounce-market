@@ -81,9 +81,9 @@ export const fetchNftByUser = createSmartAction<
   ) => ({
     request: {
       url:
-        'https://nftview.bounce.finance/v2/bsc/nft?user_address=0x5FE96748B9F9F6DF3b7f8C71Cbd6B62E12997Be2',
+        'https://nftview.bounce.finance/v2/bsc/nft',
       method: 'get',
-      data: { user_address: params.userId },
+      params: { user_address: params.userId },
     },
     meta: {
       driver: 'axios',

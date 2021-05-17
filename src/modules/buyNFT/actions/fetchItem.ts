@@ -2,7 +2,7 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { IApiNFTDetails, INFTDetails, mapNFTDetails } from '../api/NFTDetails';
 import { Store } from 'redux';
-import { RootState } from '../../../store/store';
+import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 
 export const fetchItem = createSmartAction<

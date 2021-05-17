@@ -14,6 +14,10 @@
     "profile-settings": "Profile settings",
     "disconnect": "Disconnect"
   },
+  "language": {
+    "en-US": "English",
+    "zh-CN": "中文"
+  },
   "social": {
     "share": "Share",
     "title-for-socials": "{title} — {description}",
@@ -23,6 +27,7 @@
     "telegram": "Telegram"
   },
   "wallet": {
+    "$-value": "${value}",
     "unit": "{value, number} {unit}"
   },
   "connect-wallet": {
@@ -59,7 +64,8 @@
     "BNB-value": "{value, number} BNB"
   },
   "error": {
-    "unexpected": "Unexpected error"
+    "unexpected": "Unexpected error",
+    "data-is-not-available": "Data is not available"
   },
   "go-back": {
     "action": "Go back"

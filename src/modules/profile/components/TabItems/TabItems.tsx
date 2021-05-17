@@ -9,7 +9,7 @@ import { uid } from 'react-uid';
 import { useTabItems } from './useTabItems';
 import { useTabItemsStyles } from './useTabItemsStyles';
 
-export type TabItemProps = Omit<IProductCardProps, 'ImgProps'> & {
+export type TabItemProps = Omit<IProductCardProps, 'MediaProps'> & {
   img: string;
 };
 
