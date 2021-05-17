@@ -2,6 +2,7 @@ import { Box, Typography } from '@material-ui/core';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { useNoItemsStyles } from './useNoItemsStyles';
 
 interface INoItemsProps {
@@ -22,7 +23,13 @@ export const NoItems = ({ href, onClick }: INoItemsProps) => {
         {t('profile.no-items.descr')}
       </Typography>
 
-      <Button href={href} onClick={onClick} size="large">
+      <Button
+        component={RouterLink}
+        to={href}
+        href={href}
+        onClick={onClick}
+        size="large"
+      >
         {t('profile.no-items.btn')}
       </Button>
     </Box>

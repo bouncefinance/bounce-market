@@ -1,9 +1,9 @@
+import { Button } from '@material-ui/core';
+import { MarketRoutesConfig } from 'modules/market/Routes';
 import React, { useMemo } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { useHeaderLinksStyles } from './HeaderLinksStyles';
-import { RoutesConfiguration } from '../../../overview/Routes';
-import { Link as RouterLink } from 'react-router-dom';
-import { Button } from '@material-ui/core';
 
 interface IHeaderLinksProps {
   items: {
@@ -38,7 +38,7 @@ export const HeaderLinks = () => {
     () => [
       {
         label: 'Market',
-        href: RoutesConfiguration.Overview.generatePath(),
+        href: MarketRoutesConfig.Market.generatePath(),
       },
       {
         label: 'Brands',

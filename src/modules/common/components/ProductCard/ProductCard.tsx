@@ -21,11 +21,10 @@ import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode, useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Link as RouterLink } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { useProductCardStyles } from './useProductCardStyles';
-import { Link as RouterLink } from 'react-router-dom';
 
 interface IImg extends IImgProps {
   category: 'image';
@@ -176,6 +175,7 @@ export const ProductCard = ({
               className={classes.video}
               autoPlay={true}
               loop={true}
+              muted
             />
           </div>
         )}
@@ -233,7 +233,7 @@ export const ProductCard = ({
 
               {!copies && endDate && renderTimer()}
 
-              {likes && renderedLikes}
+              {typeof likes === 'number' && renderedLikes}
             </>
           )}
 

@@ -1,5 +1,8 @@
 import { ThemeProvider } from '@material-ui/styles';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { featuresConfig } from 'modules/common/conts';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers, ProductProps } from 'modules/overview/components/Movers';
@@ -7,16 +10,12 @@ import { Products } from 'modules/overview/components/Products';
 import { IPromoItem, Promo } from 'modules/overview/components/Promo';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
-import { t } from '../../../i18n/utils/intl';
-import { RoutesConfiguration } from '../../Routes';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
-import { useDispatchRequest } from '@redux-requests/react';
+import { t } from '../../../i18n/utils/intl';
 import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
-import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
-
-const ENABLE_ARTISTS = false;
+import { RoutesConfiguration } from '../../Routes';
 
 const PROMO_ITEMS_COUNT = 3;
 
@@ -66,13 +65,20 @@ function mapMoversItem(item: IItem): ProductProps {
 
 export const Overview = () => {
   const dispatch = useDispatchRequest();
-  useEffect(() => {
-    dispatch(fetchOverview());
-  }, [dispatch]);
+  const overviewQuery = useQuery({ type: fetchOverview.toString() });
+  const popularBrandsQuery = useQuery({ type: fetchPopularBrands.toString() });
 
   useEffect(() => {
-    dispatch(fetchPopularBrands());
-  }, [dispatch]);
+    if (!overviewQuery.data) {
+      dispatch(fetchOverview());
+    }
+  }, [dispatch, overviewQuery.data]);
+
+  useEffect(() => {
+    if (!popularBrandsQuery.data) {
+      dispatch(fetchPopularBrands());
+    }
+  }, [dispatch, popularBrandsQuery.data]);
 
   return (
     <>
@@ -102,7 +108,7 @@ export const Overview = () => {
         )}
       </Queries>
 
-      {ENABLE_ARTISTS && (
+      {featuresConfig.artists && (
         <ThemeProvider theme={darkTheme}>
           <Artists />
         </ThemeProvider>
@@ -124,7 +130,7 @@ export const Overview = () => {
         )}
       </Queries>
 
-      <Products stackUp items={[]} />
+      <Products stackUp />
     </>
   );
 };

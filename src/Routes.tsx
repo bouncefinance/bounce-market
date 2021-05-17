@@ -1,16 +1,18 @@
+import { MarketRoutes, MarketRoutesConfig } from 'modules/market/Routes';
 import {
   ProfileRoutes,
   ProfileRoutesConfig,
 } from 'modules/profile/ProfileRoutes';
 import { Route, Switch } from 'react-router-dom';
-import {
-  Routes as CreateNFTRoutes,
-  RoutesConfiguration as CreateNFTRoutesConfig,
-} from './modules/createNFT/Routes';
+import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 import {
   BuyNFTRoutes,
   BuyNFTRoutesConfig,
 } from './modules/buyNFT/BuyNFTRoutes';
+import {
+  Routes as CreateNFTRoutes,
+  RoutesConfiguration as CreateNFTRoutesConfig,
+} from './modules/createNFT/Routes';
 import { DefaultLayout } from './modules/layout/components/DefautLayout';
 import {
   Routes as OverviewRoutes,
@@ -19,7 +21,6 @@ import {
 import { PageNotFound } from './modules/router/components/PageNotFound';
 import { PrivateRoute } from './modules/router/components/PrivateRoute';
 import { Themes } from './modules/themes/types';
-import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 
 export function Routes() {
   return (
@@ -30,6 +31,16 @@ export function Routes() {
         render={() => (
           <DefaultLayout headerTheme={Themes.dark}>
             <OverviewRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={MarketRoutesConfig.Market.path}
+        render={() => (
+          <DefaultLayout>
+            <MarketRoutes />
           </DefaultLayout>
         )}
       />
@@ -91,7 +102,7 @@ export function Routes() {
         exact
         path={[
           BrandRoutesConfig.ListBrand.path,
-          BrandRoutesConfig.CreateBrand.path
+          BrandRoutesConfig.CreateBrand.path,
         ]}
         render={() => (
           <DefaultLayout>

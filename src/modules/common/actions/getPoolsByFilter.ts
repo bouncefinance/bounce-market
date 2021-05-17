@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { NftType } from '../../createNFT/actions/createNft';
-import { AuctionState } from '../../overview/actions/fetchPools';
+import { AuctionState } from '../const/AuctionState';
 import { FANGIBLE_URL } from '../conts';
 import { Address, Seconds } from '../types/unit';
 
