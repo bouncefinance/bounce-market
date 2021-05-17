@@ -11,7 +11,6 @@ export const Logo = () => {
       className={classes.root}
     >
       <LogoImg className={classes.img} />
-      <span className={classes.text}>by Bounce</span>
     </Link>
   );
 };
