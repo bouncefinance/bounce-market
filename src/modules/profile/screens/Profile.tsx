@@ -4,9 +4,12 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
+import { MarketRoutesConfig } from 'modules/market/Routes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
+import { NoItems } from '../../common/components/NoItems';
 import { ProductCard } from '../../common/components/ProductCard';
 import { Queries } from '../../common/components/Queries/Queries';
 import { RoutesConfiguration } from '../../createNFT/Routes';
@@ -19,7 +22,6 @@ import { Avatar } from '../components/Avatar';
 import { Bio } from '../components/Bio';
 import { Header } from '../components/Header';
 import { InfoPanel } from '../components/InfoPanel';
-import { NoItems } from '../components/NoItems';
 import { SetAvatarModal } from '../components/SetAvatarModal';
 import { SetBgImgModal } from '../components/SetBgImgModal';
 import { Social } from '../components/Social';
@@ -30,9 +32,8 @@ import { TabItems } from '../components/TabItems';
 import { TabPanel } from '../components/TabPanel';
 import { Tabs } from '../components/Tabs';
 import { Tab } from '../components/Tabs/Tab';
-import { useProfileStyles } from './useProfileStyles';
-import { useHistory } from 'react-router';
 import { ProfileRoutesConfig, ProfileTab } from '../ProfileRoutes';
+import { useProfileStyles } from './useProfileStyles';
 
 const followings: IFollowingItemProps[] = [
   {
@@ -246,7 +247,7 @@ export const Profile = () => {
               </Grid>
             </TabItems>
           ) : (
-            <NoItems />
+            <NoItems href={MarketRoutesConfig.Market.generatePath()} />
           )}
         </TabPanel>
 

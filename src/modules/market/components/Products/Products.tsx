@@ -1,23 +1,28 @@
 import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { NoItems } from 'modules/common/components/NoItems';
+import { IProductCardProps } from 'modules/common/components/ProductCard';
 import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
-import { featuresConfig } from 'modules/common/conts';
-import { t } from 'modules/i18n/utils/intl';
-import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
   fetchNFTItems,
   INFTItem,
 } from 'modules/overview/actions/fetchNFTItems';
 import { mapNFTItems } from 'modules/overview/api/mapNFTItems';
-import { Button } from 'modules/uiKit/Button';
+import { ProductsList } from 'modules/overview/components/ProductsList';
+import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useState } from 'react';
-import { ProductsList } from '../ProductsList';
-import { ProductsPanel } from '../ProductsPanel';
-import { useProductsStyles } from './useProductsStyles';
+
+type IImgProps = Omit<IProductCardProps, 'MediaProps'> & {
+  img: string;
+};
+
+type IVideoProps = Omit<IProductCardProps, 'MediaProps'> & {
+  video: string;
+};
+
+export type ProductProps = IImgProps | IVideoProps;
 
 interface IProductsProps extends ISectionProps {
   cards?: JSX.Element;
@@ -31,8 +36,6 @@ export const ProductsComponent = ({
   loading = false,
   ...sectionProps
 }: IProductsProps) => {
-  const classes = useProductsStyles();
-
   return (
     <Section {...sectionProps}>
       <Container>
@@ -50,19 +53,6 @@ export const ProductsComponent = ({
           </Box>
         ) : (
           cards
-        )}
-
-        {featuresConfig.loadMoreNFTs && (
-          <Box display="flex" justifyContent="center" mt={5}>
-            <Button
-              variant="outlined"
-              className={classes.moreBtn}
-              fullWidth
-              rounded
-            >
-              {t('common.load-more')}
-            </Button>
-          </Box>
         )}
       </Container>
     </Section>
@@ -89,13 +79,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const onCategoryChange = useCallback(
     (value: string) => {
       setCategory(value as ItemsChannel);
-
-      dispatch(
-        fetchNFTItems({
-          channel: value as ItemsChannel,
-          count: 20,
-        }),
-      );
+      dispatch(fetchNFTItems({ channel: value as ItemsChannel }));
     },
     [dispatch],
   );
@@ -105,27 +89,13 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
       return;
     }
 
-    dispatch(
-      fetchNFTItems({
-        count: 20,
-      }),
-    );
+    dispatch(fetchNFTItems({}));
   }, [dispatch, isConnected]);
-
-  const nftItems = mapNFTItems(data || []);
-
-  const renderedNFTItems = nftItems.length ? (
-    <ProductsList items={nftItems} />
-  ) : (
-    <Box display="flex" justifyContent="center">
-      <NoItems href={MarketRoutesConfig.Market.generatePath()} />
-    </Box>
-  );
 
   return isConnected ? (
     <ProductsComponent
       {...sectionProps}
-      cards={renderedNFTItems}
+      cards={<ProductsList items={mapNFTItems(data || [])} />}
       loading={loading}
       panel={
         <ProductsPanel

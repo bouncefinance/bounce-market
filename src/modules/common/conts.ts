@@ -5,8 +5,11 @@ export const FANGIBLE_URL = process.env.REACT_APP_FANGIBLE_URL;
 export const NFTVIEW_URL_V2 = process.env.REACT_APP_NFTVIEW_URL_V2;
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
+// TODO: at the end all features should be activated
 export const featuresConfig = {
   profileSocialLinks: false,
+  artists: false,
+  loadMoreNFTs: false,
 };
 
 export enum BlockchainNetworkId {
