@@ -1,10 +1,14 @@
-import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
-import { END, eventChannel } from 'redux-saga';
-import { RootState } from '../../../store/store';
-import { AccountActions } from '../store/accountActions';
 import { getQuery, resetRequests } from '@redux-requests/core';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { END, eventChannel } from 'redux-saga';
+import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
+import { RootState } from 'store';
+import { Address } from '../../common/types/unit';
+import { connect } from '../store/actions/connect';
+import { setAccount } from '../store/actions/setAccount';
+import { disconnect } from '../store/actions/disconnect';
 
-// TODO Check disconnection, switch chain, switch account
+// TODO: Check disconnection, switch chain, switch account
 
 enum WalletEventType {
   'AccountChanged' = 'AccountChanged',
@@ -47,8 +51,6 @@ export type ProviderEvent =
   | IMessageEvent
   | IChainChangedEvent;
 
-export type Address = string;
-
 function createEventChannel(provider: any) {
   return eventChannel(emitter => {
     provider
@@ -76,21 +78,29 @@ function createEventChannel(provider: any) {
       });
 
     return () => {
-      provider.disconnect();
+      if (provider.disconnect instanceof Function) {
+        provider.disconnect();
+      }
     };
   });
 }
 
 function* onConnectWallet() {
-  const { action } = yield putResolve(AccountActions.setAccount());
+  const { action, error } = yield putResolve(setAccount());
+  if (error) {
+    return;
+  }
   const provider = action.meta.provider;
+  yield put(fetchProfileInfo());
 
   const channel = createEventChannel(provider);
   while (true) {
     const event: ProviderEvent = yield take(channel);
 
     if (event.type === WalletEventType.ChainChanged) {
-      yield put(resetRequests([AccountActions.setAccount.toString()]));
+      yield put(
+        resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
+      );
     } else if (event.type === WalletEventType.AccountChanged) {
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
@@ -99,20 +109,27 @@ function* onConnectWallet() {
         const {
           data: { address },
         } = getQuery(state, {
-          type: AccountActions.setAccount.toString(),
-          action: AccountActions.setAccount,
+          type: setAccount.toString(),
+          action: setAccount,
         });
 
         return { currentAddress: address };
       });
 
       if (currentAddress.toLowerCase() !== address?.toLowerCase()) {
-        yield put(AccountActions.connect());
+        yield put(connect());
       }
     }
   }
 }
 
+function* onDisconnectWallet() {
+  yield put(
+    resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
+  );
+}
+
 export function* connectSaga() {
-  yield takeEvery(AccountActions.connect.toString(), onConnectWallet);
+  yield takeEvery(connect.toString(), onConnectWallet);
+  yield takeEvery(disconnect.toString(), onDisconnectWallet);
 }

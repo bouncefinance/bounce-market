@@ -4,6 +4,7 @@ import React from 'react';
 import { Logo } from '../Logo';
 import { Social } from '../Social';
 import { useFooterStyles } from './FooterStyles';
+import { LocaleSwitcher } from 'modules/common/components/LocaleSwitcher';
 
 export const Footer = () => {
   const classes = useFooterStyles();
@@ -14,6 +15,15 @@ export const Footer = () => {
         <Grid container spacing={3} alignItems="center">
           <Grid item xs={12} md className={classes.col}>
             <Logo />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            md
+            className={classNames(classes.col, classes.localeCol)}
+          >
+            <LocaleSwitcher />
           </Grid>
 
           <Grid

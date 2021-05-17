@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
-const DEFAULT_SIZE = 54;
+const DEFAULT_SIZE = 40;
 
 export const useSpinnerStyles = makeStyles<Theme, { size?: number }>(() => ({
   component: {

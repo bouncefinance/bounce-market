@@ -1,9 +1,9 @@
 import { Typography } from '@material-ui/core';
 import classNames from 'classnames';
+import { UserIcon } from 'modules/common/components/Icons/UserIcon';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import { ReactNode } from 'react';
 import { useArtistsItemStyles } from './ArtistsItemStyles';
-import { UserIcon } from './assets/UserIcon';
 
 export interface IArtistsItemProps {
   className?: string;

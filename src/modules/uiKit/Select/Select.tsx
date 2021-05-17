@@ -1,4 +1,10 @@
-import { Select as SelectComponent, SelectProps } from '@material-ui/core';
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  Select as SelectComponent,
+  SelectProps,
+} from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
 import React, { ReactNode, useMemo } from 'react';
@@ -14,15 +20,23 @@ export interface ISelectOption {
 export interface ISelectProps extends Omit<SelectProps, 'variant'> {
   options?: ISelectOption[];
   children?: ReactNode;
+  helperText?: ReactNode;
+  label?: ReactNode;
 }
 
-export const Select = ({ children, options, ...restProps }: ISelectProps) => {
+export const Select = ({
+  children,
+  options,
+  helperText,
+  label,
+  fullWidth = true,
+  ...restProps
+}: ISelectProps) => {
   const classes = useSelectStyles();
 
   const items = useMemo(() => {
     return options?.map(option => (
       <MenuItem
-        disableRipple
         key={uid(option)}
         value={option.value}
         disabled={option.disabled}
@@ -56,8 +70,14 @@ export const Select = ({ children, options, ...restProps }: ISelectProps) => {
   );
 
   return (
-    <SelectComponent {...selectProps} {...restProps}>
-      {children || items}
-    </SelectComponent>
+    <FormControl fullWidth={fullWidth}>
+      {label && <InputLabel>{label}</InputLabel>}
+
+      <SelectComponent {...selectProps} {...restProps}>
+        {children || items}
+      </SelectComponent>
+
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+    </FormControl>
   );
 };

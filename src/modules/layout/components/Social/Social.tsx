@@ -1,9 +1,9 @@
 import { Box, BoxProps, IconButton } from '@material-ui/core';
+import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
-import { MediumIcon } from './assets/MediumIcon';
-import { TelegramIcon } from './assets/TelegramIcon';
-import { TwitterIcon } from './assets/TwitterIcon';
+import { MediumIcon } from 'modules/common/components/Icons/MediumIcon';
+import { TelegramIcon } from 'modules/common/components/Icons/TelegramIcon';
 import { useSocialStyles } from './SocialStyles';
 
 export const Social = (props: BoxProps) => {
@@ -19,12 +19,12 @@ export const Social = (props: BoxProps) => {
       {
         title: 'Twitter',
         icon: TwitterIcon,
-        href: 'https://twitter.com',
+        href: 'https://twitter.com/Fangible_',
       },
       {
         title: 'Telegram',
         icon: TelegramIcon,
-        href: 'https://t.me',
+        href: 'https://t.me/fangibleaa',
       },
     ],
     [],

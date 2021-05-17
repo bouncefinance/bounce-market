@@ -1,12 +1,16 @@
+import {
+  ProfileRoutes,
+  ProfileRoutesConfig,
+} from 'modules/profile/ProfileRoutes';
 import { Route, Switch } from 'react-router-dom';
 import {
   Routes as CreateNFTRoutes,
   RoutesConfiguration as CreateNFTRoutesConfig,
 } from './modules/createNFT/Routes';
 import {
-  DetailsNFTRoutes,
-  DetailsNFTRoutesConfig,
-} from './modules/detailsNFT/DetailsNFTRoutes';
+  BuyNFTRoutes,
+  BuyNFTRoutesConfig,
+} from './modules/buyNFT/BuyNFTRoutes';
 import { DefaultLayout } from './modules/layout/components/DefautLayout';
 import {
   Routes as OverviewRoutes,
@@ -15,6 +19,7 @@ import {
 import { PageNotFound } from './modules/router/components/PageNotFound';
 import { PrivateRoute } from './modules/router/components/PrivateRoute';
 import { Themes } from './modules/themes/types';
+import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 
 export function Routes() {
   return (
@@ -31,9 +36,12 @@ export function Routes() {
 
       <Route
         exact
-        path={CreateNFTRoutesConfig.CreateNft.path}
+        path={[
+          CreateNFTRoutesConfig.CreateNft.path,
+          CreateNFTRoutesConfig.PublishNft.path,
+        ]}
         render={() => (
-          <DefaultLayout headerTheme={Themes.dark}>
+          <DefaultLayout>
             <CreateNFTRoutes />
           </DefaultLayout>
         )}
@@ -41,10 +49,53 @@ export function Routes() {
 
       <Route
         exact
-        path={DetailsNFTRoutesConfig.DetailsNFT.path}
+        path={BuyNFTRoutesConfig.DetailsNFT.path}
         render={() => (
-          <DefaultLayout headerTheme={Themes.dark}>
-            <DetailsNFTRoutes />
+          <DefaultLayout>
+            <BuyNFTRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={ProfileRoutesConfig.EditProfile.path}
+        render={() => (
+          <DefaultLayout>
+            <ProfileRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={ProfileRoutesConfig.UserProfile.path}
+        render={() => (
+          <DefaultLayout>
+            <ProfileRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={ProfileRoutesConfig.Profile.path}
+        render={() => (
+          <DefaultLayout>
+            <ProfileRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={[
+          BrandRoutesConfig.ListBrand.path,
+          BrandRoutesConfig.CreateBrand.path
+        ]}
+        render={() => (
+          <DefaultLayout>
+            <BrandRoutes />
           </DefaultLayout>
         )}
       />

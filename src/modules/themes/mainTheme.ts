@@ -6,10 +6,10 @@ import {
   ThemeOptions,
 } from '@material-ui/core';
 import { PaletteOptions } from '@material-ui/core/styles/createPalette';
+import { BREAKPOINTS, BTN_TRANSITION_TIME } from './const';
 import { Themes } from './types';
 
 const TEN_SECONDS = 10 * 1000;
-const BTN_TRANSITION_TIME = 0.25;
 const NOTIFICATION_AUTO_HIDE_DURATION = 3000;
 
 export const FONTS = {
@@ -45,17 +45,6 @@ export const PALETTE = {
   },
 };
 
-const BREAKPOINTS = {
-  values: {
-    xs: 0,
-    sm: 576,
-    md: 768,
-    lg: 992,
-    xl: 1200,
-    xxl: 1600,
-  },
-};
-
 export const defaultTheme = createMuiTheme({
   spacing: 8,
   palette: PALETTE as PaletteOptions,
@@ -82,8 +71,10 @@ export const mainTheme = createMuiTheme({
     MuiContainer: {
       maxWidth: 'xl',
     },
-    MuiButton: {
+    MuiButtonBase: {
       disableRipple: true,
+    },
+    MuiButton: {
       variant: 'contained',
       disableElevation: true,
     },
@@ -93,9 +84,6 @@ export const mainTheme = createMuiTheme({
     MuiTooltip: {
       enterTouchDelay: 0,
       leaveTouchDelay: TEN_SECONDS,
-    },
-    MuiTab: {
-      disableRipple: true,
     },
     MuiTextField: {
       variant: 'outlined',
@@ -118,6 +106,14 @@ export const mainTheme = createMuiTheme({
           vertical: 'top',
           horizontal: 'left',
         },
+      },
+    },
+
+    MuiDialog: {
+      fullWidth: true,
+      maxWidth: 'md',
+      PaperProps: {
+        elevation: 0,
       },
     },
   },
@@ -184,6 +180,11 @@ export const mainTheme = createMuiTheme({
         },
       },
 
+      h4: {
+        fontSize: 18,
+        fontWeight: 700,
+      },
+
       h5: {
         fontSize: 15,
         fontWeight: 500,
@@ -205,7 +206,7 @@ export const mainTheme = createMuiTheme({
 
     MuiInputBase: {
       root: {
-        fontSize: 18,
+        fontSize: 16,
         border: `1px solid ${fade(defaultTheme.palette.common.black, 0.1)}`,
         transition: 'border 0.2s',
 
@@ -217,13 +218,27 @@ export const mainTheme = createMuiTheme({
           display: 'none',
         },
       },
+
+      input: {
+        '&[type=number]': {
+          '-moz-appearance': 'textfield',
+        },
+
+        '&::-webkit-outer-spin-button': {
+          '-webkit-appearance': 'none',
+        },
+
+        '&::-webkit-inner-spin-button': {
+          '-webkit-appearance': 'none',
+        },
+      },
     },
 
     MuiInputLabel: {
       shrink: {
         position: 'static',
         marginBottom: 20,
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 700,
         color: '#000',
         transform: 'none',
@@ -256,9 +271,31 @@ export const mainTheme = createMuiTheme({
       },
 
       iconOutlined: {
+        color: defaultTheme.palette.text.primary,
         fontSize: 20,
         right: 16,
         top: 'calc(50% - 10px)',
+      },
+    },
+
+    MuiButtonBase: {
+      root: {
+        '&:active': {
+          transform: 'translateY(1px)',
+        },
+      },
+    },
+
+    MuiIconButton: {
+      root: {
+        border: `1px solid ${fade(defaultTheme.palette.text.primary, 0.1)}`,
+        color: defaultTheme.palette.text.primary,
+        transition: `border ${BTN_TRANSITION_TIME}s`,
+
+        '&:hover': {
+          border: `1px solid ${fade(defaultTheme.palette.text.primary, 0.4)}`,
+          backgroundColor: 'none',
+        },
       },
     },
 
@@ -271,13 +308,8 @@ export const mainTheme = createMuiTheme({
         fontWeight: 500,
         minWidth: 95,
 
-        '&:active': {
-          transform: 'translateY(1px)',
-        },
-
         '&$disabled': {
-          cursor: 'not-allowed',
-          pointerEvents: 'auto',
+          pointerEvents: 'none',
           borderColor: fade(defaultTheme.palette.common.black, 0),
 
           '&:before': {
@@ -286,6 +318,10 @@ export const mainTheme = createMuiTheme({
 
           '&:active': {
             transform: 'none',
+          },
+
+          '&:hover': {
+            borderColor: fade(defaultTheme.palette.common.black, 0),
           },
         },
       },
@@ -296,7 +332,7 @@ export const mainTheme = createMuiTheme({
 
       sizeLarge: {
         height: 60,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 500,
       },
 
@@ -363,8 +399,7 @@ export const mainTheme = createMuiTheme({
           bottom: -1,
           width: 'auto',
           height: 'auto',
-          background:
-            'linear-gradient(360deg, #FFD18B 0%, rgba(255, 0, 0, 0) 50%), linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)',
+          background: defaultTheme.palette.text.primary,
           transition: `transform ${BTN_TRANSITION_TIME}s cubic-bezier(0.7, 0, 0.2, 1)`,
           transform: 'translateY(100%)',
         },
@@ -381,7 +416,34 @@ export const mainTheme = createMuiTheme({
       },
 
       outlinedPrimary: {
-        border: `1px solid ${PALETTE.primary.main}`,
+        color: defaultTheme.palette.text.primary,
+        border: `1px solid ${defaultTheme.palette.common.black}`,
+
+        '&:before': {
+          background:
+            'linear-gradient(360deg, #FFD18B 0%, rgba(255, 0, 0, 0) 50%), linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)',
+        },
+
+        '&:hover': {
+          color: defaultTheme.palette.common.white,
+          borderColor: fade(defaultTheme.palette.common.black, 0),
+        },
+      },
+
+      outlinedSecondary: {
+        border: `1px solid ${fade(defaultTheme.palette.text.primary, 0.1)}`,
+        transition: `background ${BTN_TRANSITION_TIME}s ease-in, border ${BTN_TRANSITION_TIME}s ease-in`,
+        color: defaultTheme.palette.text.primary,
+
+        '&:before': {
+          display: 'none',
+        },
+
+        '&:hover': {
+          backgroundColor: fade(defaultTheme.palette.text.primary, 0),
+          borderColor: fade(defaultTheme.palette.text.primary, 0.3),
+          color: defaultTheme.palette.text.primary,
+        },
       },
 
       text: {
@@ -404,12 +466,6 @@ export const mainTheme = createMuiTheme({
         minHeight: 40,
       },
 
-      flexContainer: {
-        display: 'inline-grid',
-        gridAutoFlow: 'column',
-        gap: defaultTheme.spacing(3),
-      },
-
       indicator: {
         background: defaultTheme.palette.text.primary,
       },
@@ -423,6 +479,7 @@ export const mainTheme = createMuiTheme({
         textTransform: 'none',
         fontWeight: 700,
         fontSize: 16,
+        transition: 'color 0.2s',
 
         [defaultTheme.breakpoints.up('sm')]: {
           minWidth: 0,
@@ -431,20 +488,27 @@ export const mainTheme = createMuiTheme({
         '&.Mui-selected': {
           color: defaultTheme.palette.text.primary,
         },
+
+        '& + &': {
+          marginLeft: defaultTheme.spacing(3),
+        },
       },
 
       textColorInherit: {
         opacity: 1,
-        color: defaultTheme.palette.text.secondary,
+        color: fade(defaultTheme.palette.text.primary, 0.3),
       },
     },
 
     MuiDialog: {
       paper: {
         margin: defaultTheme.spacing(4, 1),
+        padding: defaultTheme.spacing(4, 2.5),
+        borderRadius: 22,
 
         [defaultTheme.breakpoints.up('md')]: {
           margin: defaultTheme.spacing(4, 4),
+          padding: defaultTheme.spacing(3, 5),
         },
       },
 
@@ -454,8 +518,36 @@ export const mainTheme = createMuiTheme({
     },
 
     MuiPaper: {
+      rounded: {
+        borderRadius: 8,
+      },
+
       outlined: {
         border: `1px solid ${fade('#000', 0.1)}`,
+      },
+    },
+
+    MuiTableCell: {
+      root: {
+        padding: defaultTheme.spacing(2),
+      },
+
+      head: {
+        paddingTop: defaultTheme.spacing(1.75),
+        paddingBottom: defaultTheme.spacing(1.75),
+        lineHeight: 1.2,
+        fontWeight: 700,
+        color: defaultTheme.palette.text.secondary,
+        background: '#F3F3F3',
+        borderBottom: 'none',
+
+        '&:first-child': {
+          borderRadius: '8px 0 0 8px',
+        },
+
+        '&:last-child': {
+          borderRadius: '0 8px 8px 0',
+        },
       },
     },
 
@@ -489,13 +581,71 @@ export const mainTheme = createMuiTheme({
       },
       standardError: {
         backgroundColor: '#FF362D',
+        color: defaultTheme.palette.common.white,
+      },
+      standardSuccess: {
+        color: defaultTheme.palette.common.black,
       },
       message: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: '#fff',
         width: '100%',
         textAlign: 'center',
+      },
+    },
+
+    MuiSwitch: {
+      root: {
+        width: 60,
+        height: 32,
+        padding: 0,
+      },
+
+      switchBase: {
+        '&&': {
+          border: 'none',
+          padding: '4px 4px',
+        },
+
+        '&:active': {
+          transform: 'none',
+        },
+
+        '&&$checked': {
+          transform: 'translateX(28px)',
+        },
+      },
+
+      colorSecondary: {
+        '&$checked': {
+          color: defaultTheme.palette.text.primary,
+
+          '&:hover': {
+            backgroundColor: 'none',
+          },
+        },
+      },
+
+      disabled: {},
+
+      thumb: {
+        width: 24,
+        height: 24,
+        boxShadow: 'none',
+      },
+
+      track: {
+        borderRadius: 32,
+        opacity: 0.18,
+        backgroundColor: defaultTheme.palette.text.primary,
+
+        '$switchBase$checked + &': {
+          opacity: 0.08,
+        },
+
+        '$colorSecondary$checked + &': {
+          backgroundColor: defaultTheme.palette.text.primary,
+        },
       },
     },
   },

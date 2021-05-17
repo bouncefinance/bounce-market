@@ -22,10 +22,12 @@ export const useSocialStyles = makeStyles<Theme>(theme => ({
     padding: theme.spacing(1),
     minWidth: 0,
     height: 'auto',
+    border: 'none',
 
     '&:hover': {
       background: 'none',
       color: theme.palette.primary.main,
+      border: 'none',
     },
   },
 

@@ -1,23 +1,23 @@
 import {
   Box,
-  ButtonBase,
   Container,
   Grid,
+  IconButton,
   Typography,
   useTheme,
 } from '@material-ui/core';
 import classNames from 'classnames';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
+import {
+  IProductCardProps,
+  ProductCard,
+} from 'modules/common/components/ProductCard';
 import { QueryError } from 'modules/common/components/QueryError/QueryError';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { t } from 'modules/i18n/utils/intl';
-import {
-  IProductCardProps,
-  ProductCard,
-} from 'modules/overview/components/ProductCard';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
@@ -29,9 +29,15 @@ SwiperCore.use([Lazy, Navigation]);
 const prevId = getRandomId('prev');
 const nextId = getRandomId('next');
 
-type ProductProps = Omit<IProductCardProps, 'ImgProps'> & {
+type IImgProps = Omit<IProductCardProps, 'MediaProps'> & {
   img: string;
 };
+
+type IVideoProps = Omit<IProductCardProps, 'MediaProps'> & {
+  video: string;
+};
+
+export type ProductProps = IImgProps | IVideoProps;
 
 interface IMoversProps extends ISectionProps {
   items?: ProductProps[];
@@ -83,12 +89,17 @@ export const Movers = ({
         endDate={cardProps.endDate}
         likes={cardProps.likes}
         href={cardProps.href}
-        ImgProps={{
-          src: cardProps.img,
-          imgClassName: 'swiper-lazy',
-          isNativeLazyLoading: false,
-          objectFit: 'scale-down',
-        }}
+        MediaProps={
+          (cardProps as IImgProps).img
+            ? {
+                src: (cardProps as IImgProps).img,
+                imgClassName: 'swiper-lazy',
+                isNativeLazyLoading: false,
+                objectFit: 'scale-down',
+                category: 'image',
+              }
+            : { src: (cardProps as IVideoProps).video, category: 'video' }
+        }
         ProfileInfoProps={cardProps.ProfileInfoProps}
         imgPreloader={<SwiperPreloader />}
       />
@@ -106,13 +117,13 @@ export const Movers = ({
 
             <Grid item xs="auto">
               <div className={classes.buttons}>
-                <ButtonBase id={prevId} className={classes.navBtn}>
+                <IconButton id={prevId} className={classes.navBtn}>
                   <AngleLeftIcon className={classes.navBtnIcon} />
-                </ButtonBase>
+                </IconButton>
 
-                <ButtonBase id={nextId} className={classes.navBtn}>
+                <IconButton id={nextId} className={classes.navBtn}>
                   <AngleRightIcon className={classes.navBtnIcon} />
-                </ButtonBase>
+                </IconButton>
               </div>
             </Grid>
           </Grid>

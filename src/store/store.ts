@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { i18nSlice } from 'modules/i18n/i18nSlice';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { getQuery, handleRequests } from '@redux-requests/core';
@@ -8,11 +8,13 @@ import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './rootSaga';
 import { createDriver as createAxiosDriver } from '@redux-requests/axios';
 import axios from 'axios';
-import { BASE_URL } from '../modules/common/conts';
-import { AccountActions } from '../modules/account/store/accountActions';
+import { API_BASE } from '../modules/common/conts';
 import { notificationSlice } from '../modules/notification/store/notificationSlice';
 import { NotificationActions } from '../modules/notification/store/NotificationActions';
 import { extractMessage } from '../modules/common/utils/extractError';
+import { setAccount } from '../modules/account/store/actions/setAccount';
+import { persistStore, persistReducer } from 'redux-persist';
+import { i18nPersistConfig } from './webStorageConfigs';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
   driver: {
@@ -21,7 +23,7 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     }),
     axios: createAxiosDriver(
       axios.create({
-        baseURL: BASE_URL,
+        baseURL: API_BASE,
       }),
     ),
   },
@@ -29,8 +31,8 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     const rootState: RootState = store.getState();
 
     const { data } = getQuery(rootState, {
-      type: AccountActions.setAccount.toString(),
-      action: AccountActions.setAccount,
+      type: setAccount.toString(),
+      action: setAccount,
     });
 
     // TODO Throw exception if auth and no token?
@@ -40,9 +42,6 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
         ...request,
         headers: {
           ...request.headers,
-          ...(request.method !== 'GET'
-            ? { 'Content-Type': 'application/x-www-from-urlencoded' }
-            : {}),
           token: data?.token ?? '',
         },
       };
@@ -50,7 +49,7 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     return request;
   },
   onError: (error, action, store) => {
-    if (!action.meta?.suppressError) {
+    if (!action.meta?.suppressErrorNotification) {
       store.dispatch(
         NotificationActions.showNotification({
           message: extractMessage(error),
@@ -65,19 +64,23 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
 
 const sagaMiddleware = createSagaMiddleware();
 
+const rootReducer = combineReducers({
+  i18n: persistReducer(i18nPersistConfig, i18nSlice.reducer),
+  requests: requestsReducer,
+  router: connectRouter(historyInstance),
+  notifications: notificationSlice.reducer,
+});
+
 export const store = configureStore({
-  reducer: {
-    i18n: i18nSlice.reducer,
-    requests: requestsReducer,
-    router: connectRouter(historyInstance),
-    notifications: notificationSlice.reducer,
-  },
+  reducer: rootReducer,
   middleware: [
     ...requestsMiddleware,
     routerMiddleware(historyInstance),
     sagaMiddleware,
   ],
 });
+
+export const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 

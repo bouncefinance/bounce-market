@@ -1,4 +1,4 @@
-import { fade, lighten, makeStyles, Theme } from '@material-ui/core';
+import { fade, makeStyles, Theme } from '@material-ui/core';
 
 export const HEADER_HEIGHT_XS = 66;
 export const HEADER_HEIGHT_XL = 80;
@@ -73,28 +73,6 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
     [theme.breakpoints.up('xl')]: {
       marginLeft: theme.spacing(2),
     },
-  },
-
-  wallet: {
-    background: theme.palette.background.paper,
-    color: theme.palette.text.secondary,
-    padding: theme.spacing(0, 0, 0, 2.5),
-
-    '&:hover': {
-      background: lighten(theme.palette.background.paper, 0.05),
-    },
-  },
-
-  walletLogo: {
-    width: 44,
-    height: 44,
-    marginLeft: theme.spacing(1.5),
-    borderRadius: '50%',
-
-    background: `
-      linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 50%),
-      linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)
-    `,
   },
 
   buttons: {

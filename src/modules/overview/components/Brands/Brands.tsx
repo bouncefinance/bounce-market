@@ -1,5 +1,6 @@
 import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
 import classNames from 'classnames';
+import { IBrandItem } from 'modules/brand/actions/fetchPopularBrands';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
@@ -8,28 +9,22 @@ import { useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import alpacaLogo from './assets/alpaca.svg';
-import darkHorseLogo from './assets/darkHorse.svg';
-import polkaPetLogo from './assets/polkaPet.svg';
-import rockiLogo from './assets/rocki.svg';
-import sociosLogo from './assets/socios.svg';
 import { useBrandsStyles } from './BrandsStyles';
 
 SwiperCore.use([Lazy]);
 
-interface IBrandItemProps {
-  img: string;
-  theme?: 'light' | 'dark';
-}
-
 interface IBrandsProps extends ISectionProps {
   className?: string;
-  items: IBrandItemProps[];
+  items: IBrandItem[];
+  isLoading?: boolean;
+  error?: any;
 }
 
-export const BrandsComponent = ({
+export const Brands = ({
   className,
-  items,
+  items = [],
+  isLoading,
+  error,
   ...sectionProps
 }: IBrandsProps) => {
   const classes = useBrandsStyles();
@@ -58,16 +53,16 @@ export const BrandsComponent = ({
 
   const renderedSlides = useMemo(
     () =>
-      items.map(({ img, theme = 'light' }, i) => (
+      items.map(({ imgUrl, id }, i) => (
         <SwiperSlide className={classes.slide} key={uid(i)}>
           <div
             className={classNames(classes.brand, {
-              [classes.brandLight]: theme === 'light',
-              [classes.brandDark]: theme === 'dark',
+              [classes.brandLight]: i % 2 === 0,
+              [classes.brandDark]: i % 2 === 1,
             })}
           >
             <Img
-              src={img}
+              src={imgUrl}
               className={classes.brandImgWrap}
               isNativeLazyLoading={false}
               objectFit="scale-down"
@@ -102,31 +97,4 @@ export const BrandsComponent = ({
       </Container>
     </Section>
   );
-};
-
-export const Brands = () => {
-  const brands: IBrandItemProps[] = [
-    {
-      img: darkHorseLogo,
-      theme: 'dark',
-    },
-    {
-      img: sociosLogo,
-      theme: 'light',
-    },
-    {
-      img: alpacaLogo,
-      theme: 'light',
-    },
-    {
-      img: rockiLogo,
-      theme: 'dark',
-    },
-    {
-      img: polkaPetLogo,
-      theme: 'light',
-    },
-  ];
-
-  return <BrandsComponent items={brands} stackUp stackDown />;
 };

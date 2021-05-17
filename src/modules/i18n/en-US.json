@@ -2,13 +2,39 @@
   "common": {
     "load-more": "Load more",
     "read-more": "read more",
-    "view-all": "View all"
+    "view-all": "View all",
+    "submitting": "Submitting",
+    "copy-to-clipboard": "Copy to clipboard",
+    "copied": "Copied!"
   },
   "header": {
     "create": "Create",
-    "connect": "Connect Wallet"
+    "connect": "Connect Wallet",
+    "inventory": "My Inventory",
+    "profile-settings": "Profile settings",
+    "disconnect": "Disconnect"
+  },
+  "language": {
+    "en-US": "English",
+    "zh-CN": "中文"
+  },
+  "social": {
+    "share": "Share",
+    "title-for-socials": "{title} — {description}",
+    "instagram": "Instagram",
+    "twitter": "Twitter",
+    "facebook": "Facebook",
+    "telegram": "Telegram"
+  },
+  "wallet": {
+    "$-value": "${value}",
+    "unit": "{value, number} {unit}"
   },
   "connect-wallet": {
+    "placeholder": {
+      "title": "Connect your wallet",
+      "description": "The content of this page is only available with the connected wallet"
+    },
     "custom-binancewallet": {
       "name": "Binance Chain",
       "description": "Binance Chain & Smart Chain Wallet"
@@ -34,10 +60,12 @@
     "created-by": "Created by"
   },
   "unit": {
+    "day": "{value, plural, =0 {0 days} =1 {1 day} other {# days}}",
     "BNB-value": "{value, number} BNB"
   },
   "error": {
-    "unexpected": "Unexpected error"
+    "unexpected": "Unexpected error",
+    "data-is-not-available": "Data is not available"
   },
   "go-back": {
     "action": "Go back"
@@ -60,9 +88,6 @@
       "0": "ERC-721",
       "1": "ERC-1155"
     },
-    "validation": {
-      "max-size": "Max size is {value, number}MB"
-    },
     "submit": "Create",
     "submitting": "Creating"
   },
@@ -71,6 +96,7 @@
     "descr-short": "Collapse",
     "top-bid": "Top Bid",
     "buy-now": "Buy now",
+    "sold-out": "Sold out",
     "place-a-bid": "Place a bid",
     "tabs": {
       "history": "History",
@@ -87,16 +113,28 @@
       "footnote": "Bids placed in auction cannot be withdrawn"
     }
   },
+  "form": {
+    "limit-counter": "{value}/{maxLimit}"
+  },
   "validation": {
     "required": "This field is required",
     "min": "Must be greater than {value}",
-    "max": "Must be less than {value}"
+    "max": "Must be less than {value}",
+    "invalid-email": "Enter a valid Email",
+    "invalid-website": "Enter a valid Website URL",
+    "invalid-type": "Invalid file type",
+    "max-size": "Max size is {value, number}MB"
   },
-  "upload-image-field": {
+  "upload-file-field": {
+    "choose-file": "Choose file",
     "title": "Drop your item here",
-    "subtitle": "or <b>browse</b> to choose a file",
-    "formats": "PNG, GIF, WEBP, MP4 or MP3",
-    "max-size": "Max {value}MB"
+    "subtitle": "or <strong>browse</strong> to choose a file",
+    "formats-many": "Supports {firstTypes} or {lastType}",
+    "formats-one": "Supports {fileType} only",
+    "max-size": "Max {value}MB",
+    "reset": "Reset",
+    "file-uploaded": "File uploaded",
+    "file-data": "{fileName} {fileSize}MB"
   },
   "products": {
     "sort-label": "Sort by: {value}"
@@ -107,7 +145,110 @@
   "artists": {
     "title": "Top Artists"
   },
+  "brand": {
+    "create": {
+      "create-brand": "Create brand",
+      "label": {
+        "brand-name": "Brand name",
+        "brand-url": "Brand URL",
+        "description": "Description",
+        "brand-symbol": "Brand symbol",
+        "brand-avatar": "Brand avatar"
+      },
+      "avatar-accepts": "Supports JPG, PNG, JPEG2000",
+      "avatar-recommended-size": "300x300 Recommended"
+    },
+    "card": {
+      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}",
+      "addNewItem": "Add new item",
+      "createNewItem": "Create new item",
+      "createNewBrand": "Create new brand"
+    }
+  },
   "brands": {
     "title": "Hot Brands"
+  },
+  "publish-nft": {
+    "title": "Put on sale",
+    "submit": "Put on Sale",
+    "submitting": "Submitting",
+    "fee": "Fangible fee {value}%",
+    "recieve": "You will receive",
+    "expire": "Will expire on {value, date, medium} {value, time, short}",
+    "auction-amount": "In the auction you can only put up 1 copy for sale",
+    "auction-type": {
+      "fixed-swap": "Fixed Price",
+      "english-auction": "English auction"
+    },
+    "label": {
+      "type": "Type of Sale",
+      "price": "Sale price",
+      "amount": "Amount",
+      "minBid": "Minimum bid",
+      "directPurchase": "Direct purchase price",
+      "reservePrice": "Reserve price",
+      "count": "Count",
+      "duration": "Expiration Date"
+    },
+    "tooltip": {
+      "directPurchase": "TODO Direct purchase price description",
+      "reservePrice": "TODO Reserve price description",
+      "duration": "TODO Expiration Date description"
+    }
+  },
+  "profile": {
+    "customize-btn": "Customize",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "subscribers": "Subscribers",
+    "bio": "Bio",
+
+    "user-profile": "User profile",
+    "edit-profile": "Edit profile",
+    "edit-avatar": "Edit avatar",
+    "edit-cover": "Edit profile cover",
+    "no-items": {
+      "title": "No items found",
+      "descr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+      "btn": "Browse market"
+    },
+    "edit": {
+      "label": {
+        "username": "Username",
+        "full-name": "Full Name",
+        "email": "Email",
+        "custom-url": "Custom URL",
+        "bio": "Bio",
+        "website": "Website"
+      },
+      "placeholder": {
+        "instagram": "Instagram Username",
+        "twitter": "Twitter Username",
+        "facebook": "Facebook Username"
+      },
+      "save-changes": "Save Changes",
+      "success-message": "Changes have been applied successfully."
+    },
+    "tabs": {
+      "my-items": "My items",
+      "my-brands": "My brands",
+      "activity": "Activity",
+      "liked": "Liked",
+      "following": "Following",
+      "followers": "Followers"
+    },
+    "activity": {
+      "event": "Event",
+      "item": "Item",
+      "price": "Price",
+      "quantity": "Quantity",
+      "from": "From",
+      "to": "To",
+      "date": "Date"
+    }
+  },
+  "buy-dialog": {
+    "title": "Buy now",
+    "submit": "Buy"
   }
 }

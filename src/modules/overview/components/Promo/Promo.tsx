@@ -20,7 +20,7 @@ import { usePromoStyles } from './PromoStyles';
 SwiperCore.use([Pagination, EffectFade, Thumbs, Lazy, Autoplay]);
 const paginationId = 'pagination-alksjd';
 
-interface IPromoItem extends IPromoCardProps {
+export interface IPromoItem extends IPromoCardProps {
   thumbImg: string;
 }
 

@@ -1,9 +1,9 @@
 import { Box, Container, Fade, Grid, Hidden } from '@material-ui/core';
-import { t } from 'modules/i18n/utils/intl';
 import {
   IProductCardProps,
   ProductCard,
-} from 'modules/overview/components/ProductCard';
+} from 'modules/common/components/ProductCard';
+import { t } from 'modules/i18n/utils/intl';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { Button } from 'modules/uiKit/Button';
 import { FilledTab, FilledTabs } from 'modules/uiKit/FilledTabs';
@@ -12,12 +12,18 @@ import { Select } from 'modules/uiKit/Select';
 import { useMemo } from 'react';
 import InView from 'react-intersection-observer';
 import { uid } from 'react-uid';
-import { useProductsStyles } from './ProductsStyles';
 import { useProducts } from './useProducts';
+import { useProductsStyles } from './useProductsStyles';
 
-type ProductProps = Omit<IProductCardProps, 'ImgProps'> & {
+type IImgProps = Omit<IProductCardProps, 'MediaProps'> & {
   img: string;
 };
+
+type IVideoProps = Omit<IProductCardProps, 'MediaProps'> & {
+  video: string;
+};
+
+export type ProductProps = IImgProps | IVideoProps;
 
 interface IProductsProps extends ISectionProps {
   items: ProductProps[];
@@ -42,7 +48,7 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
         <InView key={uid(cardProps)} rootMargin="-10% 0% -10% 0%">
           {({ inView, ref }) => (
             <Fade in={inView}>
-              <Grid item xs={12} sm={6} md={4} lg={3} ref={ref}>
+              <Grid item xs={12} sm={6} lg={4} xl={3} ref={ref}>
                 <ProductCard
                   key={uid(cardProps)}
                   title={cardProps.title}
@@ -51,11 +57,19 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
                   endDate={cardProps.endDate}
                   likes={cardProps.likes}
                   href={cardProps.href}
-                  ImgProps={{
-                    src: cardProps.img,
-                    objectFit: 'scale-down',
-                    loading: 'lazy',
-                  }}
+                  MediaProps={
+                    (cardProps as IImgProps).img
+                      ? {
+                          src: (cardProps as IImgProps).img,
+                          imgClassName: 'swiper-lazy',
+                          objectFit: 'scale-down',
+                          category: 'image',
+                        }
+                      : {
+                          src: (cardProps as IVideoProps).video,
+                          category: 'video',
+                        }
+                  }
                   ProfileInfoProps={cardProps.ProfileInfoProps}
                 />
               </Grid>
@@ -80,7 +94,12 @@ export const Products = ({ items, ...sectionProps }: IProductsProps) => {
                   variant="scrollable"
                 >
                   {categories.map(({ label, value }) => (
-                    <FilledTab key={uid(label)} label={label} value={value} />
+                    <FilledTab
+                      className={classes.tab}
+                      key={uid(label)}
+                      label={label}
+                      value={value}
+                    />
                   ))}
                 </FilledTabs>
               </Hidden>
