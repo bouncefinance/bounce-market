@@ -24,6 +24,6 @@ export const Brands = ({
     <div className={classes.title}>
       {'Brands'}
     </div>
-    {data && data.map((item: IBrandInfo, index: number) => <BrandItem key={item.id} index={index} data={item} />)}
+    {data && data.map((item: IBrandInfo, index: number) => <BrandItem key={item.id} data={item} />)}
   </div>
 }

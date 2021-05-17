@@ -1,6 +1,10 @@
 import { makeStyles, Theme } from "@material-ui/core";
+import { useDispatchRequest } from "@redux-requests/react";
+import { queryBrandItems } from "modules/brand/actions/queryBrandItems";
 import { IBrandInfo } from "modules/brand/api/queryBrand";
-import { useEffect } from "react";
+import { IItem } from "modules/pools/actions/queryItemByFilter";
+import { useEffect, useState } from "react";
+import { Item } from "./Item";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -25,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'flex-start',
     fontSize: 24,
   },
-  logo:{
+  logo: {
     width: 64,
     height: 64,
     borderRadius: '50%',
@@ -40,19 +44,25 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const BrandItem = ({
-  index,
   data,
 }: {
-  index: number;
   data: IBrandInfo;
 }) => {
   const classes = useStyles();
+  const dispatch = useDispatchRequest();
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
-    if (index === 0) {
-      
-    }
-  }, [index])
+    if (data.owneraddress === '0x2d3fff58da3346dce601f6db8eec57906cdb17be') {
+      dispatch(queryBrandItems({
+        owneraddress: data.owneraddress,
+        contractaddress: data.contractaddress,
+      }))
+        .then(res => {
+          setItems(res.data);
+        })
+      }
+  }, [dispatch, data]);
 
   return <div className={classes.root}>
     <div className={classes.info}>
@@ -63,8 +73,9 @@ export const BrandItem = ({
       <div className={classes.desc}>{data.description}</div>
     </div>
     <div className={classes.content}>
-      {index === 0
-      && <></>}
+      {items && items.length === 0
+        ? 'no data'
+        : items.map((item:IItem) => <Item data={item} key={item.id} />)}
     </div>
   </div>
 }
