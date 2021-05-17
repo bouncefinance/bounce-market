@@ -1095,11 +1095,10 @@ export default function NewIndex () {
                             </NewPullDown>
 
 
-                            {supply &&
-                                <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.Supply' })}>
-                                    <div>{supply || "--"}</div>
-                                </NewPullDown>
-                            }
+                            <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.Supply' })}>
+                                <div>{supply || "--"}</div>
+                            </NewPullDown>
+
 
                             <NewPullDown open={false} title={intl.formatMessage({ id: 'pages.buy.TokenInfo' })}>
                                 <div className="token-info">

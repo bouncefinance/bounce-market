@@ -188,6 +188,7 @@ export default function Marketplace() {
         ...item,
         poolType: AUCTION_TYPE.FixedSwap
       })).filter(item => item.state !== 1)
+      
       const tradeAuctions = (data.tradeAuctions || []).map(item => ({
         ...item,
         price: item.lastestBidAmount !== '0' ? item.lastestBidAmount : item.amountMin1,
@@ -196,11 +197,13 @@ export default function Marketplace() {
         .filter(item => item.state !== 1 && item.poolId !== 0)
 
       const pools = tradePools.concat(tradeAuctions);
+      
+      console.log("pools: ",pools )
       // console.log(pools)
       const list = pools.map(item => item.tokenId);
       const cts_list = pools.map(item => item.token0);
       // console.log(pools)
-
+      console.log("cts_list: ",cts_list.find(item=>item==='0xe85d7B8f4c0C13806E158a1c9D7Dcb33140cdc46') )
       setLength(list.length);
       setLoading(true)
       sign_Axios.post(Controller.items.getitemsbyfilter, {
@@ -228,7 +231,7 @@ export default function Marketplace() {
               }
             }).filter(item => item.fileurl)
               .sort((a, b) => b.createTime - a.createTime);
-            console.log("list: ", list)
+            console.log("list: ", list.find(item=>item.itemname === 'CryptoPAV'))
             setTokenList(list);
             setFilterList(list);
             setLoading(false)
