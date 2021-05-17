@@ -43,6 +43,7 @@ export const InitAxios = () => {
 // }
 
 export function throttle (func, ms) {
+  console.log('ms', ms)
   let timer = null;
 
   return function () {
@@ -55,4 +56,53 @@ export function throttle (func, ms) {
       }, ms)
     }
   }
+}
+
+/** KMP 匹配字符串算法
+ *  常用于搜索场景
+ * isLike 模糊匹配
+ */
+export function KMPStringMatch (source, target, isLike = false) {
+    if (isLike) {
+      source = source.toLowerCase();
+      target = target.toLowerCase();
+    }
+    let m = source.length, n = target.length;
+    if (!n) return 0; //无匹配字符
+    let next = KMPProcess(target);
+    for (let i = 0, j = 0; i < m;) {
+      if (source[i] === target[j]) {
+        i++;
+        j++;
+      }
+      if (j === n) return i - j; //全匹配
+      if (source[i] !== target[j]) {
+       if (j > 0) {
+         j = next[j - 1];
+       } else { // i 右移一位，重新开始匹配字符
+         i++;
+       }
+      }
+    }
+    return -1;
+}
+
+/** 对 target字符串 进行向量初始化 */
+const KMPProcess = (target) => {
+    let x = 0;
+    let y = 0;
+    let next = new Array(target.length).fill(0);
+    while (x < target.length) {
+        if (target[x] === target[y]) {
+          y++;
+          next[x] = y;
+          x++;
+        } else if (y > 0) {
+          y = next[y - 1];
+        } else {
+          next[x] = 0;
+          x++;
+        }
+    }
+    return next;
 }
