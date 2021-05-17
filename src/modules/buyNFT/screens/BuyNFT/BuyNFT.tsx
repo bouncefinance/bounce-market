@@ -282,7 +282,7 @@ export const BuyNFT = () => {
                   owner="Bombist"
                   ownerAvatar="https://picsum.photos/44?random=1"
                   isOwnerVerified={false}
-                  disabled={item.standard === NftType.ERC721}
+                  readonly={item.standard === NftType.ERC721}
                   category={item.category}
                 />
                 <BuyDialog
@@ -294,7 +294,7 @@ export const BuyNFT = () => {
                   owner="Bombist"
                   ownerAvatar="https://picsum.photos/44?random=1"
                   isOwnerVerified={false}
-                  disabled={item.standard === NftType.ERC721}
+                  readonly={item.standard === NftType.ERC721}
                   category={item.category}
                 />
               </div>

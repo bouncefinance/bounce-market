@@ -34,7 +34,7 @@ interface IBuyDialogProps {
   onSubmit: (values: IBuyFormValues, form: any, callback: any) => void;
   owner: string;
   ownerAvatar: string;
-  disabled: boolean;
+  readonly: boolean;
   category: 'image' | 'video';
 }
 
@@ -47,7 +47,7 @@ export const BuyDialog = ({
   onSubmit,
   owner,
   ownerAvatar,
-  disabled,
+  readonly,
   category,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
@@ -81,7 +81,7 @@ export const BuyDialog = ({
                   label="Quantity"
                   parse={value => (value ? Math.round(+value) : 1)}
                   format={value => (value ? Math.round(+value) : 1)}
-                  disabled={disabled}
+                  disabled={readonly}
                   InputProps={{
                     classes: { adornedEnd: classes.adornedEnd },
                     endAdornment: (
@@ -92,7 +92,7 @@ export const BuyDialog = ({
                             classes.spinBtnUp,
                           )}
                           onClick={form.mutators.increaseQuantity}
-                          disabled={disabled}
+                          disabled={readonly}
                         >
                           <AngleUpIcon className={classes.spinBtnIcon} />
                         </IconButton>
@@ -102,7 +102,7 @@ export const BuyDialog = ({
                             classes.spinBtn,
                             classes.spinBtnDown,
                           )}
-                          disabled={disabled || isQuantityMinusDisabled}
+                          disabled={readonly || isQuantityMinusDisabled}
                           onClick={form.mutators.decreaseQuantity}
                         >
                           <AngleDownIcon className={classes.spinBtnIcon} />
@@ -121,7 +121,7 @@ export const BuyDialog = ({
         </>
       );
     },
-    [classes, disabled],
+    [classes, readonly],
   );
 
   return (
