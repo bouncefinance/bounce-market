@@ -36,6 +36,7 @@ interface IBuyDialogProps {
   ownerAvatar: string;
   readonly: boolean;
   category: 'image' | 'video';
+  disabled?: boolean;
 }
 
 export const BuyDialog = ({
@@ -48,6 +49,7 @@ export const BuyDialog = ({
   owner,
   ownerAvatar,
   readonly,
+  disabled,
   category,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
@@ -115,13 +117,18 @@ export const BuyDialog = ({
             </Grid>
           </Box>
 
-          <Button fullWidth size="large" onClick={handleSubmit}>
+          <Button
+            fullWidth
+            size="large"
+            onClick={handleSubmit}
+            disabled={disabled}
+          >
             {t('buy-dialog.submit')}
           </Button>
         </>
       );
     },
-    [classes, readonly],
+    [classes, disabled, readonly],
   );
 
   return (

@@ -1,4 +1,4 @@
-import { useDispatchRequest } from '@redux-requests/react';
+import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
@@ -261,42 +261,65 @@ export const BuyNFT = () => {
                   />
                 </Info>
 
-                <BidDialog
-                  name={item.itemname}
-                  filepath={item.fileurl}
-                  onSubmit={handleBid}
-                  isOpen={openedBid}
-                  onClose={toggleBidDialog(false)}
-                  currency="BNB"
-                  owner="Bombist"
-                  ownerAvatar="https://picsum.photos/44?random=1"
-                  isOwnerVerified={false}
-                  category={item.category}
-                />
-                <BuyDialog
-                  name={item.itemname}
-                  filepath={item.fileurl}
-                  onSubmit={handleBuyEnglish}
-                  isOpen={openedEnglishBuy}
-                  onClose={toggleEnglishBuyDialog(false)}
-                  owner="Bombist"
-                  ownerAvatar="https://picsum.photos/44?random=1"
-                  isOwnerVerified={false}
-                  readonly={item.standard === NftType.ERC721}
-                  category={item.category}
-                />
-                <BuyDialog
-                  name={item.itemname}
-                  filepath={item.fileurl}
-                  onSubmit={handleBuyFixed}
-                  isOpen={openedFixedBuy}
-                  onClose={toggleFixedBuyDialog(false)}
-                  owner="Bombist"
-                  ownerAvatar="https://picsum.photos/44?random=1"
-                  isOwnerVerified={false}
-                  readonly={item.standard === NftType.ERC721}
-                  category={item.category}
-                />
+                <Mutation
+                  type={bidEnglishAuction.toString()}
+                  action={bidEnglishAuction}
+                >
+                  {({ loading }) => (
+                    <BidDialog
+                      name={item.itemname}
+                      filepath={item.fileurl}
+                      onSubmit={handleBid}
+                      isOpen={openedBid}
+                      onClose={toggleBidDialog(false)}
+                      currency="BNB"
+                      owner="Bombist"
+                      ownerAvatar="https://picsum.photos/44?random=1"
+                      isOwnerVerified={false}
+                      category={item.category}
+                      disabled={loading}
+                    />
+                  )}
+                </Mutation>
+
+                <Mutation
+                  type={bidEnglishAuction.toString()}
+                  action={bidEnglishAuction}
+                >
+                  {({ loading }) => (
+                    <BuyDialog
+                      name={item.itemname}
+                      filepath={item.fileurl}
+                      onSubmit={handleBuyEnglish}
+                      isOpen={openedEnglishBuy}
+                      onClose={toggleEnglishBuyDialog(false)}
+                      owner="Bombist"
+                      ownerAvatar="https://picsum.photos/44?random=1"
+                      isOwnerVerified={false}
+                      readonly={item.standard === NftType.ERC721}
+                      category={item.category}
+                      disabled={loading}
+                    />
+                  )}
+                </Mutation>
+
+                <Mutation type={buyFixed.toString()} action={buyFixed}>
+                  {({ loading }) => (
+                    <BuyDialog
+                      name={item.itemname}
+                      filepath={item.fileurl}
+                      onSubmit={handleBuyFixed}
+                      isOpen={openedFixedBuy}
+                      onClose={toggleFixedBuyDialog(false)}
+                      owner="Bombist"
+                      ownerAvatar="https://picsum.photos/44?random=1"
+                      isOwnerVerified={false}
+                      readonly={item.standard === NftType.ERC721}
+                      category={item.category}
+                      disabled={loading}
+                    />
+                  )}
+                </Mutation>
               </div>
             );
           }}
