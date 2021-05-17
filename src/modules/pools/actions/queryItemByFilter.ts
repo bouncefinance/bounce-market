@@ -1,6 +1,8 @@
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
+// TODO: Merge with src/modules/createNFT/actions/fetchItemsByFilter.ts
+
 export interface IItem {
   category: string;
   channel: string;
@@ -27,23 +29,20 @@ interface IApiItem {
 
 export const queryItemByFilter = createSmartAction<
   RequestAction<IApiItem, IItem[]>
->(
-  'queryItemByFilterAction',
-  data => ({
-    request: {
-      url: `/api/v2/main/getitemsbyfilter`,
-      method: 'post',
-      data: data,
-    },
-    meta: {
-      driver: 'axios',
-      asMutation: true,
-      getData: data => {
-        if (data.code !== 1) {
-          throw new Error('Unexpected response');
-        }
-        return data.data;
+>('queryItemByFilterAction', data => ({
+  request: {
+    url: `/api/v2/main/getitemsbyfilter`,
+    method: 'post',
+    data: data,
+  },
+  meta: {
+    driver: 'axios',
+    asMutation: true,
+    getData: data => {
+      if (data.code !== 1) {
+        throw new Error('Unexpected response');
       }
-    }
-  })
-)
+      return data.data;
+    },
+  },
+}));
