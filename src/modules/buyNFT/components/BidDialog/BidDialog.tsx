@@ -61,6 +61,7 @@ interface IBidDialogProps {
   owner: string;
   ownerAvatar: string;
   category: 'image' | 'video';
+  disabled: boolean;
 }
 
 export const BidDialog = ({
@@ -74,6 +75,7 @@ export const BidDialog = ({
   owner,
   ownerAvatar,
   category,
+  disabled,
 }: IBidDialogProps) => {
   const classes = useBidDialogStyles();
 
@@ -156,7 +158,12 @@ export const BidDialog = ({
             </Typography>
           </Box>
 
-          <Button fullWidth size="large" onClick={handleSubmit}>
+          <Button
+            fullWidth
+            size="large"
+            onClick={handleSubmit}
+            disabled={disabled}
+          >
             {t('details-nft.place-a-bid')}
           </Button>
 
@@ -168,7 +175,7 @@ export const BidDialog = ({
         </>
       );
     },
-    [classes, currency],
+    [classes, currency, disabled],
   );
 
   return (

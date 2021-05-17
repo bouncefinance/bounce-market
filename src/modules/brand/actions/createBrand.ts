@@ -10,6 +10,8 @@ import { RootState } from 'store';
 import { AbiItem } from 'web3-utils';
 import {
   default as BoucneErc721,
+} from '../contract/BounceErc721.json';
+import {
   default as BounceErc1155,
 } from '../contract/BounceErc1155.json';
 import BounceNFTFactory from '../contract/BounceNFTFactory.json';
@@ -71,7 +73,7 @@ export const createBrand = createSmartAction(
               const _mode = 0; //0 only owner can mint; 1 whitelist address can mint; 2: everyone
               const bytecode_721 = BoucneErc721.bytecode;
               const bytecode_1155 = BounceErc1155.bytecode;
-
+              
               if (standard === NftType.ERC721) {
                 return await new Promise((resolve, reject) => {
                   contract.methods
