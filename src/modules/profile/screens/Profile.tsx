@@ -5,6 +5,7 @@ import { IBrandCardProps } from 'modules/brand/components/BrandCard';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
+import { MarketRoutesConfig } from 'modules/market/Routes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -262,7 +263,7 @@ export const Profile = () => {
               </Grid>
             </TabItems>
           ) : (
-            <NoItems />
+            <NoItems href={MarketRoutesConfig.Market.generatePath()} />
           )}
         </TabPanel>
 
