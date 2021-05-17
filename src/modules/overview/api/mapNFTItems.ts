@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import Web3 from 'web3';
 import { NFTCategoryType } from '../actions/fetchItemsByFilter';
 import { INFTItem } from '../actions/fetchNFTItems';
 import { ProductProps } from '../components/Movers';
@@ -14,7 +15,7 @@ export const mapNFTItems = (items: INFTItem[]): ProductProps[] =>
             nftItem.poolType,
           )
         : '',
-    price: new BigNumber(nftItem.price),
+    price: new BigNumber(Web3.utils.fromWei(nftItem.price)),
     title: nftItem.itemname || '',
     priceType: 'BNB',
     likes: nftItem.likecount,
