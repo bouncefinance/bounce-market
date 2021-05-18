@@ -80,7 +80,7 @@ export const Brands = ({
         <Box mb={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs>
-              <Typography variant="h2">{t('brands.title')}</Typography>
+              <Typography variant="h2">{t('overview.brands.title')}</Typography>
             </Grid>
 
             <Grid item xs="auto">

@@ -4,7 +4,7 @@ import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoa
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 import { PrivateRoute } from '../router/components/PrivateRoute';
 
-export const PATH_LIST_BRAND = '/brand';
+export const PATH_LIST_BRAND = '/brands';
 export const PATH_CREATE_BRAND = '/brand/create';
 export const PATH_CREATE_BRAND_ITEM = '/brand/create-item/:id';
 export const PATH_MY_BRAND = '/my-brand';
@@ -25,12 +25,11 @@ export const BrandRoutesConfig: { [key: string]: RouteConfiguration } = {
   MyBrand: {
     path: PATH_MY_BRAND,
     generatePath: () => generatePath(PATH_MY_BRAND),
-  }
+  },
 };
 
 const LoadableListBrandContainer: LoadableComponent<any> = loadable(
-  async () =>
-    import('./screens/ListBrand').then(module => module.ListBrand),
+  async () => import('./screens/Brands').then(module => module.Brands),
   {
     fallback: <QueryLoadingAbsolute />,
   },
@@ -53,8 +52,7 @@ const LoadableCreateBrandItemContainer: LoadableComponent<any> = loadable(
 );
 
 const LoadableMyBrandContainer: LoadableComponent<any> = loadable(
-  async () =>
-    import('./screens/MyBrand').then(module => module.MyBrand),
+  async () => import('./screens/MyBrand').then(module => module.MyBrand),
   {
     fallback: <QueryLoadingAbsolute />,
   },
