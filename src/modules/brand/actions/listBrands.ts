@@ -2,21 +2,19 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { IApiBrand } from '../api/queryBrand';
+import { IApiBrand, IBrandInfo } from '../api/queryBrand';
 import { ListBrandsAction } from './const';
 import { queryBrandByFilter } from './queryBrandByFilter';
 import { queryBrandList } from './queryBrandList';
-import { IBrandItem } from './fetchPopularBrands';
 
 export const listBrands = createSmartAction<
-  RequestAction<IBrandItem[], IBrandItem[]>
+  RequestAction<IBrandInfo[], IBrandInfo[]>
 >(ListBrandsAction, () => ({
   request: {
     promise: (async function () {})(),
   },
   meta: {
     getData: data => data,
-    asMutation: true,
     onRequest: (
       request: { promise: Promise<any> },
       action: RequestAction,
