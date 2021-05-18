@@ -103,6 +103,8 @@ export function Routes() {
         path={[
           BrandRoutesConfig.ListBrand.path,
           BrandRoutesConfig.CreateBrand.path,
+          BrandRoutesConfig.CreateBrandItem.path,
+          BrandRoutesConfig.MyBrand.path,
         ]}
         render={() => (
           <DefaultLayout>

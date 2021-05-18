@@ -49,7 +49,7 @@ export const TabBrands = () => {
       {brands && (
         <Grid container spacing={4} className={classes.root}>
           {renderedBrands}
-          {renderEmpty}
+          {brands.length === 0 && renderEmpty}
         </Grid>
       )}
     </>

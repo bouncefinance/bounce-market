@@ -22,6 +22,7 @@ interface IInfoPanelProps {
   address?: string;
   subscribers?: ReactNode;
   social?: ReactNode;
+  isBrand?: boolean;
 }
 
 // TODO: need receive profile user ID to url prop (now 1)
@@ -37,6 +38,7 @@ export const InfoPanel = ({
   address,
   subscribers,
   social,
+  isBrand,
 }: IInfoPanelProps) => {
   const classes = useInfoPanelStyles();
 
@@ -49,11 +51,11 @@ export const InfoPanel = ({
           {email && <Typography className={classes.url}>{email}</Typography>}
         </Grid>
 
-        <Grid item>
+        {!isBrand && <Grid item>
           <ButtonBase className={classes.address} title={address}>
             <Typography>{convertWallet(address || '')}</Typography>
           </ButtonBase>
-        </Grid>
+        </Grid>}
 
         <Grid item>
           <Tooltip title={t('social.share')} arrow placement="left">
@@ -71,7 +73,7 @@ export const InfoPanel = ({
           </Tooltip>
         </Grid>
 
-        <Grid item>
+        {!isBrand && <Grid item>
           <Link to={ProfileRoutesConfig.EditProfile.generatePath()}>
             <Tooltip title={t('profile.edit-profile')} arrow placement="right">
               <IconButton>
@@ -79,7 +81,7 @@ export const InfoPanel = ({
               </IconButton>
             </Tooltip>
           </Link>
-        </Grid>
+        </Grid>}
 
         <Grid item xs={12} lg="auto" className={classes.linksCol}>
           <Grid container spacing={2} alignItems="center">

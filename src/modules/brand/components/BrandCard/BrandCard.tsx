@@ -3,10 +3,11 @@ import classNames from 'classnames';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useBrandCardStyles } from './useBrandCardStyles';
 import { t } from 'modules/i18n/utils/intl';
 import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
+import { BrandRoutesConfig, PATH_MY_BRAND } from 'modules/brand/BrandRoutes';
 
 export interface IBrandCardProps {
   title: string;
@@ -22,6 +23,11 @@ export const BrandCard = ({
   imgSrc,
 }: IBrandCardProps) => {
   const classes = useBrandCardStyles();
+  const history = useHistory();
+
+  const handleAddItem = () => {
+    history.push(BrandRoutesConfig.CreateBrandItem.generatePath(id));
+  }
 
   return (
     <Card className={classes.root} variant="outlined">
@@ -33,6 +39,7 @@ export const BrandCard = ({
               variant="outlined"
               fullWidth={false}
               rounded
+              onClick={handleAddItem}
             >
               <PlusIcon
                 className={classNames(
@@ -45,7 +52,7 @@ export const BrandCard = ({
         </div>
       ) : null}
 
-      <Link to={`/brand/${id}`} className={classes.wrapLink}>
+      <Link to={PATH_MY_BRAND} className={classes.wrapLink}>
         <Box className={classes.imgBox}>
           <Img src={imgSrc} className={classes.imgWrap} ratio="1x1" />
         </Box>
@@ -77,6 +84,7 @@ export const BrandCard = ({
               className={classNames(classes.icon, classes.iconInheritFontSize)}
             />
           }
+          onClick={handleAddItem}
         >
           {t('brand.card.addNewItem')}
         </Button>

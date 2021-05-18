@@ -39,6 +39,11 @@ export interface IApiBrandInfo {
   data: IBrandInfo[];
 }
 
+export interface IApiBrandInfoItem {
+  code: 1 | number;
+  data: IBrandInfo;
+}
+
 export const compare = (a: string, b: string) => {
   return String(a).toLowerCase() === String(b).toLowerCase();
 };

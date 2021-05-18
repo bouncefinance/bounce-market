@@ -11,10 +11,10 @@ export interface IAddItemPayload {
   description: string;
   fileurl: string;
   itemname: string;
-  itemsymbol: 'BOUNCE';
+  itemsymbol: 'BOUNCE' | string;
   owneraddress: string;
   ownername: string;
-  standard: 1 | 2;
+  standard: 1 | 2 | number;
   supply: number; // is supply an integer?
 }
 

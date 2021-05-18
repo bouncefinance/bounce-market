@@ -166,6 +166,27 @@
       "createNewBrand": "Create new brand"
     }
   },
+  "create-brand-nft": {
+    "title": "Create Brand NFT",
+    "label": {
+      "name": "Name",
+      "description": "Description",
+      "channel": "Channel",
+      "standard": "Standard",
+      "supply": "Supply"
+    },
+    "channelOption": {
+      "Fine Arts": "Fine arts",
+      "Sports": "Sports",
+      "Comics": "Comicbooks"
+    },
+    "standardOption": {
+      "0": "ERC-721",
+      "1": "ERC-1155"
+    },
+    "submit": "Create",
+    "submitting": "Creating"
+  },
   "brands": {
     "title": "Hot Brands"
   },
