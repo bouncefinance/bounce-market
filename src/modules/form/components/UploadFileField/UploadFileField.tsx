@@ -128,7 +128,7 @@ interface IFieldProps extends FieldRenderProps<string> {
 export const UploadFileField = ({
   input: { name, onChange, value },
   meta,
-  disabled,
+  disabled = false,
   maxSize = MAX_SIZE,
   acceptsHint,
   accepts = [],
