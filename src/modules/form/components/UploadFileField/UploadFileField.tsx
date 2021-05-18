@@ -10,12 +10,12 @@ import {
   AUDIO_FILES_MIMES,
 } from 'modules/common/utils/mimeTypes';
 
-import { InitialBlock } from './components/InitialBlock';
-import { FilePreview } from './components/FilePreview';
-import { ImagePreview } from './components/ImagePreview';
-import { VideoPreview } from './components/VideoPreview';
-import { AudioPreview } from './components/AudioPreview';
-import { UploadedWrap } from './components/UploadedWrap';
+import { IInitialBlockProps, InitialBlock } from './components/InitialBlock';
+import { FilePreview, IFilePreviewProps } from './components/FilePreview';
+import { IImagePreviewProps, ImagePreview } from './components/ImagePreview';
+import { IVideoPreviewProps, VideoPreview } from './components/VideoPreview';
+import { AudioPreview, IAudioPreviewProps } from './components/AudioPreview';
+import { IUploadedWrapProps, UploadedWrap } from './components/UploadedWrap';
 import { Bytes } from 'modules/common/types/unit';
 import { dataUrlToFile } from '../../utils/dataUrlConvert';
 import classNames from 'classnames';
@@ -24,12 +24,15 @@ import classNames from 'classnames';
 
 const MAX_SIZE: Bytes = 31457280;
 
-const renderInitialBlock = (
-  InitialBlockComponent: any,
-  input: JSX.Element,
-  acceptsHint: string[] | undefined,
-  maxSize: Bytes,
-) => {
+interface IInitialBlock extends IInitialBlockProps {
+  InitialBlockComponent: any;
+}
+const renderInitialBlock = ({
+  InitialBlockComponent,
+  input,
+  acceptsHint,
+  maxSize,
+}: IInitialBlock) => {
   if (InitialBlockComponent) {
     return (
       <InitialBlockComponent
@@ -44,37 +47,46 @@ const renderInitialBlock = (
   );
 };
 
-const renderUploadedWrapPreview = (
-  UploadedWrapComponent: any,
-  input: JSX.Element,
-  cover: JSX.Element | null,
-  handleReset: () => void,
-): any => {
+interface IUploadedWrap extends IUploadedWrapProps {
+  UploadedWrapComponent: any;
+}
+const renderUploadedWrapPreview = ({
+  UploadedWrapComponent,
+  input,
+  cover,
+  handleReset,
+}: IUploadedWrap): any => {
   const UploadedWrapper = UploadedWrapComponent ?? UploadedWrap;
   return (
     <UploadedWrapper input={input} cover={cover} handleReset={handleReset} />
   );
 };
 
-const renderFilePreview = (
-  FilePreviewComponent: any,
-  fileName: string,
-  fileSize: number,
-) => {
+interface IFilePreview extends IFilePreviewProps {
+  FilePreviewComponent: any;
+}
+const renderFilePreview = ({
+  FilePreviewComponent,
+  fileName,
+  fileSize,
+}: IFilePreview) => {
   const FileComponent = FilePreviewComponent ?? FilePreview;
   return <FileComponent fileName={fileName} fileSize={fileSize} />;
 };
 
-const renderImagePreview = (
-  ImagePreviewComponent: any,
-  image: string | undefined,
-  fitView: boolean | undefined,
-  cropper: boolean | undefined,
-  cropHandle: any,
-  CropperPreviewComponent: any,
-  cropperAspect: number | undefined,
-  needShowCropper: boolean,
-) => {
+interface IImagePreview extends IImagePreviewProps {
+  ImagePreviewComponent: any;
+}
+const renderImagePreview = ({
+  ImagePreviewComponent,
+  image,
+  fitView,
+  cropper,
+  cropHandle,
+  CropperPreviewComponent,
+  cropperAspect,
+  needShowCropper,
+}: IImagePreview) => {
   const ImageComponent = ImagePreviewComponent ?? ImagePreview;
   return (
     <ImageComponent
@@ -89,20 +101,26 @@ const renderImagePreview = (
   );
 };
 
-const renderVideoPreview = (
-  VideoPreviewComponent: any,
-  fileName: string,
-  fileSize: number,
-) => {
+interface IVideoPreview extends IVideoPreviewProps {
+  VideoPreviewComponent: any;
+}
+const renderVideoPreview = ({
+  VideoPreviewComponent,
+  fileName,
+  fileSize,
+}: IVideoPreview) => {
   const VideoComponent = VideoPreviewComponent ?? VideoPreview;
   return <VideoComponent fileName={fileName} fileSize={fileSize} />;
 };
 
-const renderAudioPreview = (
-  AudioPreviewComponent: any,
-  fileName: string,
-  fileSize: number,
-) => {
+interface IAudioPreview extends IAudioPreviewProps {
+  AudioPreviewComponent: any;
+}
+const renderAudioPreview = ({
+  AudioPreviewComponent,
+  fileName,
+  fileSize,
+}: IAudioPreview) => {
   const AudioComponent = AudioPreviewComponent ?? AudioPreview;
   return <AudioComponent fileName={fileName} fileSize={fileSize} />;
 };
@@ -161,7 +179,7 @@ export const UploadFileField = ({
           renderPreview(file).catch(error => console.error(error));
         };
         let { image } = await readImage(file);
-        filePreview = renderImagePreview(
+        filePreview = renderImagePreview({
           ImagePreviewComponent,
           image,
           fitView,
@@ -169,26 +187,26 @@ export const UploadFileField = ({
           cropHandle,
           CropperPreviewComponent,
           cropperAspect,
-          needShowCropper.current,
-        );
+          needShowCropper: needShowCropper.current,
+        });
       } else if (VIDEO_FILES_MIMES.includes(file.type)) {
-        filePreview = renderVideoPreview(
+        filePreview = renderVideoPreview({
           VideoPreviewComponent,
-          file.name,
-          file.size,
-        );
+          fileName: file.name,
+          fileSize: file.size,
+        });
       } else if (AUDIO_FILES_MIMES.includes(file.type)) {
-        filePreview = renderAudioPreview(
+        filePreview = renderAudioPreview({
           AudioPreviewComponent,
-          file.name,
-          file.size,
-        );
+          fileName: file.name,
+          fileSize: file.size,
+        });
       } else {
-        filePreview = renderFilePreview(
+        filePreview = renderFilePreview({
           FilePreviewComponent,
-          file.name,
-          file.size,
-        );
+          fileName: file.name,
+          fileSize: file.size,
+        });
       }
       setCover(filePreview);
       onChange(file);
@@ -256,18 +274,18 @@ export const UploadFileField = ({
         {label && <InputLabel shrink>{label}</InputLabel>}
         <div className={classes.container}>
           {value
-            ? renderUploadedWrapPreview(
+            ? renderUploadedWrapPreview({
                 UploadedWrapComponent,
                 input,
                 cover,
                 handleReset,
-              )
-            : renderInitialBlock(
+              })
+            : renderInitialBlock({
                 InitialBlockComponent,
                 input,
                 acceptsHint,
                 maxSize,
-              )}
+              })}
         </div>
       </div>
       <FormHelperText error={true}>{getErrorText(meta)}</FormHelperText>

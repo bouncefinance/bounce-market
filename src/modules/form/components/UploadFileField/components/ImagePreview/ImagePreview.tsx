@@ -1,25 +1,18 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import { useUploadFileStyles } from '../../useUploadFileStyles';
-import { CropperBlock } from '../CropperBlock';
+import { CropperBlock, ICropperBlockProps } from '../CropperBlock';
 
-interface IImagePreviewProps {
-  image: string;
-  fitView: boolean;
-  cropper: boolean;
-  cropHandle: any;
-  cropperAspect: number;
-  CropperPreviewComponent?: JSX.Element;
-  needShowCropper: boolean;
+interface ICropperProps extends ICropperBlockProps {
+  CropperPreviewComponent: any;
 }
-
-const renderCropper = (
-  CropperPreviewComponent: any,
-  image: string,
-  cropperAspect: number,
-  cropHandle: any,
-  needShowCropper: boolean,
-) => {
+const renderCropper = ({
+  CropperPreviewComponent,
+  image,
+  cropperAspect,
+  cropHandle,
+  needShowCropper,
+}: ICropperProps) => {
   const CropperComponent = CropperPreviewComponent ?? CropperBlock;
   return (
     <CropperComponent
@@ -31,6 +24,15 @@ const renderCropper = (
   );
 };
 
+export interface IImagePreviewProps {
+  image?: string;
+  fitView?: boolean;
+  cropper?: boolean;
+  cropHandle: any;
+  cropperAspect?: number;
+  CropperPreviewComponent?: JSX.Element;
+  needShowCropper: boolean;
+}
 export const ImagePreview = ({
   image,
   fitView,
@@ -66,13 +68,13 @@ export const ImagePreview = ({
         />
       </div>
       {cropper &&
-        renderCropper(
+        renderCropper({
           CropperPreviewComponent,
           image,
           cropperAspect,
           cropHandle,
           needShowCropper,
-        )}
+        })}
     </>
   );
 };

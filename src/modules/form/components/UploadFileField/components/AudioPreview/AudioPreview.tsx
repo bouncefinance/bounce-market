@@ -6,7 +6,7 @@ import { ReactComponent as AudioPic } from './assets/audio.svg';
 import { t } from 'modules/i18n/utils/intl';
 import { convertBytesToMegabytes } from 'modules/common/types/unit';
 
-interface IAudioPreviewProps {
+export interface IAudioPreviewProps {
   fileName: string;
   fileSize: number;
 }

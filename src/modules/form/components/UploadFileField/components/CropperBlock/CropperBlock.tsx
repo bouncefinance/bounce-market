@@ -13,9 +13,9 @@ import { FlipHorizontalIcon } from 'modules/common/components/Icons/FlipHorizont
 import { FlipVerticalIcon } from 'modules/common/components/Icons/FlipVerticalIcon';
 import { RestoreIcon } from 'modules/common/components/Icons/RestoreIcon';
 
-interface ICropperBlockProps {
-  image: string;
-  cropperAspect: number;
+export interface ICropperBlockProps {
+  image?: string;
+  cropperAspect?: number;
   cropHandle: any;
   needShowCropper: boolean;
 }
@@ -50,29 +50,32 @@ export const CropperBlock = ({
   }, [cropper, cropHandle]);
 
   const handleRotate = useCallback(
-    degree => {
+    (degree: number) => () => {
       cropper.rotate(degree);
     },
     [cropper],
   );
 
-  const handleFlip = (horizontal: boolean) => {
-    if (horizontal) {
-      const newVal = flipH * -1;
-      cropper.scaleX(newVal);
-      setFlipH(newVal);
-    } else {
-      const newVal = flipV * -1;
-      cropper.scaleY(newVal);
-      setFlipV(newVal);
-    }
-  };
+  const handleFlip = useCallback(
+    (horizontal: boolean) => () => {
+      if (horizontal) {
+        const newVal = flipH * -1;
+        cropper.scaleX(newVal);
+        setFlipH(newVal);
+      } else {
+        const newVal = flipV * -1;
+        cropper.scaleY(newVal);
+        setFlipV(newVal);
+      }
+    },
+    [cropper, flipH, flipV],
+  );
 
   const handleReset = useCallback(() => {
     cropper.reset();
   }, [cropper]);
 
-  const renderCropperButtons = (
+  const renderedCropperButtons = (
     <div className={classes.cropperBtns}>
       <Tooltip title={t('common.restore')} arrow>
         <IconButton
@@ -88,7 +91,7 @@ export const CropperBlock = ({
 
       <Tooltip title={t('cropper.rotate-left')} arrow>
         <IconButton
-          onClick={() => handleRotate(-90)}
+          onClick={handleRotate(-90)}
           className={classes.cropperTransformBtn}
         >
           <RotateLeftIcon />
@@ -97,7 +100,7 @@ export const CropperBlock = ({
 
       <Tooltip title={t('cropper.rotate-right')} arrow>
         <IconButton
-          onClick={() => handleRotate(90)}
+          onClick={handleRotate(90)}
           className={classes.cropperTransformBtn}
         >
           <RotateRightIcon />
@@ -106,7 +109,7 @@ export const CropperBlock = ({
 
       <Tooltip title={t('cropper.flip-h')} arrow>
         <IconButton
-          onClick={() => handleFlip(true)}
+          onClick={handleFlip(true)}
           className={classes.cropperTransformBtn}
         >
           <FlipHorizontalIcon />
@@ -115,7 +118,7 @@ export const CropperBlock = ({
 
       <Tooltip title={t('cropper.flip-v')} arrow>
         <IconButton
-          onClick={() => handleFlip(false)}
+          onClick={handleFlip(false)}
           className={classes.cropperTransformBtn}
         >
           <FlipVerticalIcon />
@@ -172,7 +175,7 @@ export const CropperBlock = ({
         </IconButton>
       </Tooltip>
 
-      {renderCropperButtons}
+      {renderedCropperButtons}
     </div>
   );
 };

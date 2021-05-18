@@ -4,13 +4,17 @@ import { t } from 'modules/i18n/utils/intl';
 import { CloseIcon } from 'modules/common/components/Icons/CloseIcon';
 import { useUploadFileStyles } from '../../useUploadFileStyles';
 
-export interface IUploadedWrap {
+export interface IUploadedWrapProps {
   input: JSX.Element;
   cover: null | JSX.Element;
   handleReset: () => void;
 }
 
-export const UploadedWrap = ({ input, cover, handleReset }: IUploadedWrap) => {
+export const UploadedWrap = ({
+  input,
+  cover,
+  handleReset,
+}: IUploadedWrapProps) => {
   const classes = useUploadFileStyles();
 
   return (
