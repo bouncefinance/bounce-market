@@ -34,8 +34,9 @@ interface IBuyDialogProps {
   onSubmit: (values: IBuyFormValues, form: any, callback: any) => void;
   owner: string;
   ownerAvatar: string;
-  disabled: boolean;
+  readonly: boolean;
   category: 'image' | 'video';
+  disabled?: boolean;
 }
 
 export const BuyDialog = ({
@@ -47,6 +48,7 @@ export const BuyDialog = ({
   onSubmit,
   owner,
   ownerAvatar,
+  readonly,
   disabled,
   category,
 }: IBuyDialogProps) => {
@@ -81,7 +83,7 @@ export const BuyDialog = ({
                   label="Quantity"
                   parse={value => (value ? Math.round(+value) : 1)}
                   format={value => (value ? Math.round(+value) : 1)}
-                  disabled={disabled}
+                  disabled={readonly}
                   InputProps={{
                     classes: { adornedEnd: classes.adornedEnd },
                     endAdornment: (
@@ -92,7 +94,7 @@ export const BuyDialog = ({
                             classes.spinBtnUp,
                           )}
                           onClick={form.mutators.increaseQuantity}
-                          disabled={disabled}
+                          disabled={readonly}
                         >
                           <AngleUpIcon className={classes.spinBtnIcon} />
                         </IconButton>
@@ -102,7 +104,7 @@ export const BuyDialog = ({
                             classes.spinBtn,
                             classes.spinBtnDown,
                           )}
-                          disabled={disabled || isQuantityMinusDisabled}
+                          disabled={readonly || isQuantityMinusDisabled}
                           onClick={form.mutators.decreaseQuantity}
                         >
                           <AngleDownIcon className={classes.spinBtnIcon} />
@@ -115,13 +117,18 @@ export const BuyDialog = ({
             </Grid>
           </Box>
 
-          <Button fullWidth size="large" onClick={handleSubmit}>
+          <Button
+            fullWidth
+            size="large"
+            onClick={handleSubmit}
+            disabled={disabled}
+          >
             {t('buy-dialog.submit')}
           </Button>
         </>
       );
     },
-    [classes, disabled],
+    [classes, disabled, readonly],
   );
 
   return (

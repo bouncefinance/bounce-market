@@ -1,8 +1,18 @@
 export const FetchBrandsAction = 'BrandActions/fetchBrands';
+export const ListBrandsAction = 'BrandActions/listBrands';
+export const QueryBrandByFilterAction = 'BrandActions/QueryBrandByFilter';
+export const QueryBrandByIdAction = 'BrandActions/QueryBrandById';
+export const QueryBrandPoolsAction = 'BrandActions/QueryBrandPoolsAction';
+export const QueryBrandItems721Action = 'BrandActions/QueryBrandItems721Action';
+export const QueryBrandItems1155Action = 'BrandActions/QueryBrandItems1155Action';
+export const QueryBrandItemsAction = 'BrandActions/QueryBrandItemsAction';
+export const FetchBrandListAction = 'BrandActions/fetchBrandList';
 export const FetchPopularBrandsAction = 'BrandActions/fetchPopularBrands';
 export const CreateBrandAction = 'BrandActions/createBrand';
 export const UpdateBrandInfoAction = 'BrandActions/updateBrandInfo';
 export const QueryBrandAddressAction = 'BrandActions/queryBrandAddress';
+export const GetAccountBrandAction = 'BrandActions/getAccountBrand';
+export const QueryMyBrandItemAction = 'BrandActions/queryMyBrandItem';
 
 const FACTORY_CONTRACT_ADDRESS = {
   RINKEBY: '0xb9BaC7b8C8ca157035E78e764bC3AD7D7BcCAb3A',

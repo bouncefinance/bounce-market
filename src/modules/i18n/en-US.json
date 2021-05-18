@@ -16,6 +16,7 @@
     "create": "Create",
     "connect": "Connect Wallet",
     "inventory": "My Inventory",
+    "brands": "My Brands",
     "profile-settings": "Profile settings",
     "disconnect": "Disconnect"
   },
@@ -168,6 +169,27 @@
       "createNewItem": "Create new item",
       "createNewBrand": "Create new brand"
     }
+  },
+  "create-brand-nft": {
+    "title": "Create Brand NFT",
+    "label": {
+      "name": "Name",
+      "description": "Description",
+      "channel": "Channel",
+      "standard": "Standard",
+      "supply": "Supply"
+    },
+    "channelOption": {
+      "Fine Arts": "Fine arts",
+      "Sports": "Sports",
+      "Comics": "Comicbooks"
+    },
+    "standardOption": {
+      "0": "ERC-721",
+      "1": "ERC-1155"
+    },
+    "submit": "Create",
+    "submitting": "Creating"
   },
   "brands": {
     "title": "Hot Brands"

@@ -1,159 +1,141 @@
-import { Box, Container, Fade, Grid, Hidden } from '@material-ui/core';
-import {
-  IProductCardProps,
-  ProductCard,
-} from 'modules/common/components/ProductCard';
+import { Box, Container } from '@material-ui/core';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import { NoItems } from 'modules/common/components/NoItems';
+import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
+import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-import { useIsMDUp } from 'modules/themes/useTheme';
+import { MarketRoutesConfig } from 'modules/market/Routes';
+import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
+import {
+  fetchNFTItems,
+  INFTItem,
+} from 'modules/overview/actions/fetchNFTItems';
+import { mapNFTItems } from 'modules/overview/api/mapNFTItems';
 import { Button } from 'modules/uiKit/Button';
-import { FilledTab, FilledTabs } from 'modules/uiKit/FilledTabs';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import { Select } from 'modules/uiKit/Select';
-import { useMemo } from 'react';
-import InView from 'react-intersection-observer';
-import { uid } from 'react-uid';
-import { useProducts } from './useProducts';
+import { useCallback, useEffect, useState } from 'react';
+import { ProductsList } from '../ProductsList';
+import { ProductsPanel } from '../ProductsPanel';
 import { useProductsStyles } from './useProductsStyles';
 
-type IImgProps = Omit<IProductCardProps, 'MediaProps'> & {
-  img: string;
-};
-
-type IVideoProps = Omit<IProductCardProps, 'MediaProps'> & {
-  video: string;
-};
-
-export type ProductProps = IImgProps | IVideoProps;
-
 interface IProductsProps extends ISectionProps {
-  items: ProductProps[];
+  cards?: JSX.Element;
+  panel?: JSX.Element;
+  loading?: boolean;
 }
 
-export const Products = ({ items, ...sectionProps }: IProductsProps) => {
+export const ProductsComponent = ({
+  cards,
+  panel,
+  loading = false,
+  ...sectionProps
+}: IProductsProps) => {
   const classes = useProductsStyles();
-  const isMDUp = useIsMDUp();
-  const {
-    onSortChange,
-    onCategoryTabChange,
-    onCategorySelectChange,
-    sortBy,
-    catergory,
-    categories,
-    sortVariants,
-  } = useProducts();
-
-  const renderedProducts = useMemo(
-    () =>
-      items.map(cardProps => (
-        <InView key={uid(cardProps)} rootMargin="-10% 0% -10% 0%">
-          {({ inView, ref }) => (
-            <Fade in={inView}>
-              <Grid item xs={12} sm={6} lg={4} xl={3} ref={ref}>
-                <ProductCard
-                  key={uid(cardProps)}
-                  title={cardProps.title}
-                  price={cardProps.price}
-                  priceType={cardProps.priceType}
-                  endDate={cardProps.endDate}
-                  likes={cardProps.likes}
-                  href={cardProps.href}
-                  MediaProps={
-                    (cardProps as IImgProps).img
-                      ? {
-                          src: (cardProps as IImgProps).img,
-                          imgClassName: 'swiper-lazy',
-                          objectFit: 'scale-down',
-                          category: 'image',
-                        }
-                      : {
-                          src: (cardProps as IVideoProps).video,
-                          category: 'video',
-                        }
-                  }
-                  ProfileInfoProps={cardProps.ProfileInfoProps}
-                />
-              </Grid>
-            </Fade>
-          )}
-        </InView>
-      )),
-    [items],
-  );
 
   return (
     <Section {...sectionProps}>
       <Container>
-        <Box mb={6}>
-          <Grid container alignItems="center" spacing={3}>
-            <Grid item xs={6} md>
-              <Hidden mdDown>
-                <FilledTabs
-                  value={catergory}
-                  onChange={onCategoryTabChange as any}
-                  textColor="secondary"
-                  variant="scrollable"
-                >
-                  {categories.map(({ label, value }) => (
-                    <FilledTab
-                      className={classes.tab}
-                      key={uid(label)}
-                      label={label}
-                      value={value}
-                    />
-                  ))}
-                </FilledTabs>
-              </Hidden>
+        {panel && <Box mb={6}>{panel}</Box>}
 
-              <Hidden lgUp>
-                <Select
-                  className={classes.select}
-                  value={catergory}
-                  onChange={onCategorySelectChange}
-                  options={categories}
-                />
-              </Hidden>
-            </Grid>
-
-            <Grid item xs={6} md="auto">
-              <Select
-                className={classes.select}
-                value={sortBy}
-                onChange={onSortChange}
-                options={sortVariants}
-                renderValue={
-                  isMDUp
-                    ? (value: any) => {
-                        const sortVariant = sortVariants.find(
-                          variant => variant.value === value,
-                        );
-                        const label = sortVariant?.label.toLowerCase();
-
-                        return t('products.sort-label', {
-                          value: label,
-                        });
-                      }
-                    : undefined
-                }
-              />
-            </Grid>
-          </Grid>
-        </Box>
-
-        <Grid container spacing={4}>
-          {renderedProducts}
-        </Grid>
-
-        <Box display="flex" justifyContent="center" mt={5}>
-          <Button
-            variant="outlined"
-            className={classes.moreBtn}
-            fullWidth
-            rounded
+        {loading ? (
+          <Box
+            py={5}
+            position="relative"
+            width="100%"
+            display="flex"
+            justifyContent="center"
           >
-            {t('common.load-more')}
-          </Button>
-        </Box>
+            <QueryLoading />
+          </Box>
+        ) : (
+          cards
+        )}
+
+        {featuresConfig.loadMoreNFTs && (
+          <Box display="flex" justifyContent="center" mt={5}>
+            <Button
+              variant="outlined"
+              className={classes.moreBtn}
+              fullWidth
+              rounded
+            >
+              {t('common.load-more')}
+            </Button>
+          </Box>
+        )}
       </Container>
     </Section>
   );
+};
+
+export const Products = ({ ...sectionProps }: ISectionProps) => {
+  const { isConnected } = useAccount();
+  const dispatch = useDispatchRequest();
+
+  const { data, loading } = useQuery<INFTItem[] | null>({
+    type: fetchNFTItems.toString(),
+  });
+
+  const [sortBy, setSortBy] = useState<string>('0');
+  const [catergory, setCategory] = useState<ItemsChannel>(
+    ItemsChannel.fineArts,
+  );
+
+  const onSortChange = useCallback((value: string) => {
+    setSortBy(value);
+  }, []);
+
+  const onCategoryChange = useCallback(
+    (value: string) => {
+      setCategory(value as ItemsChannel);
+
+      dispatch(
+        fetchNFTItems({
+          channel: value as ItemsChannel,
+          count: 20,
+        }),
+      );
+    },
+    [dispatch],
+  );
+
+  useEffect(() => {
+    if (!isConnected) {
+      return;
+    }
+
+    dispatch(
+      fetchNFTItems({
+        count: 20,
+      }),
+    );
+  }, [dispatch, isConnected]);
+
+  const nftItems = mapNFTItems(data || []);
+
+  const renderedNFTItems = nftItems.length ? (
+    <ProductsList items={nftItems} />
+  ) : (
+    <Box display="flex" justifyContent="center">
+      <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+    </Box>
+  );
+
+  return isConnected ? (
+    <ProductsComponent
+      {...sectionProps}
+      cards={renderedNFTItems}
+      loading={loading}
+      panel={
+        <ProductsPanel
+          onSortChange={onSortChange}
+          onCategoryChange={onCategoryChange}
+          catergory={catergory}
+          sortBy={sortBy}
+          disabled={loading}
+        />
+      }
+    />
+  ) : null;
 };

@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
-export const useLogoStyles = makeStyles<Theme>(theme => ({
+export const useLogoStyles = makeStyles<Theme>(() => ({
   root: {
     color: 'inherit',
     textDecoration: 'none',
@@ -13,11 +13,5 @@ export const useLogoStyles = makeStyles<Theme>(theme => ({
   img: {
     display: 'block',
     height: 27,
-  },
-
-  text: {
-    display: 'block',
-    fontSize: 11,
-    marginLeft: 85,
   },
 }));
