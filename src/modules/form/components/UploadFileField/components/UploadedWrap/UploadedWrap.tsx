@@ -4,24 +4,20 @@ import { t } from 'modules/i18n/utils/intl';
 import { CloseIcon } from 'modules/common/components/Icons/CloseIcon';
 import { useUploadFileStyles } from '../../useUploadFileStyles';
 
-export interface IFileUploaded {
-  cover: null | JSX.Element;
+export interface IUploadedWrap {
   input: JSX.Element;
+  cover: null | JSX.Element;
   handleReset: () => void;
 }
 
-export const FileUploaded = ({ cover, input, handleReset }: IFileUploaded) => {
+export const UploadedWrap = ({ input, cover, handleReset }: IUploadedWrap) => {
   const classes = useUploadFileStyles();
 
   return (
-    <div className={classes.fileUploaded}>
+    <div className={classes.uploadedWrap}>
       {cover}
       {input}
-      <Tooltip
-        title={t('upload-file-field.reset')}
-        className={classes.clearBtn}
-        arrow
-      >
+      <Tooltip title={t('common.reset')} className={classes.clearBtn} arrow>
         <IconButton onClick={handleReset}>
           <CloseIcon />
         </IconButton>

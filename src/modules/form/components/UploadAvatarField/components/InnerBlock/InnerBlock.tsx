@@ -61,7 +61,7 @@ export const InnerBlock = ({
               onClick={handleReset}
               className={classes.button}
             >
-              {t('upload-file-field.reset')}
+              {t('common.reset')}
             </Button>
           )}
         </div>

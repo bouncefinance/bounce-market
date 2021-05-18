@@ -68,19 +68,23 @@ export const SetBgImgModal = ({
     dirty,
   }: FormRenderProps<ISetBgImgValues>) => {
     return (
-      <Box component="form" onSubmit={handleSubmit}>
-        <Box mb={5}>
-          <Field
-            component={UploadFileField}
-            name="bgImg"
-            accepts={FILE_ACCEPTS}
-            className={classes.fileBox}
-          />
-        </Box>
+      <Mutation type={uploadFile.toString()}>
+        {({ loading }) => (
+          <Box component="form" onSubmit={handleSubmit}>
+            <Box mb={5}>
+              <Field
+                component={UploadFileField}
+                name="bgImg"
+                disabled={loading}
+                acceptsHint={['PNG', 'JPG', 'JPEG2000']}
+                accepts={FILE_ACCEPTS}
+                className={classes.fileBox}
+                cropper={true}
+                cropperAspect={16 / 2}
+              />
+            </Box>
 
-        <Box>
-          <Mutation type={uploadFile.toString()}>
-            {({ loading }) => (
+            <Box>
               <Button
                 size="large"
                 type="submit"
@@ -91,15 +95,15 @@ export const SetBgImgModal = ({
                   ? t('common.submitting')
                   : t('profile.edit.save-changes')}
               </Button>
-            )}
-          </Mutation>
-        </Box>
-      </Box>
+            </Box>
+          </Box>
+        )}
+      </Mutation>
     );
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose} maxWidth="lg">
+    <Dialog open={isOpen} onClose={onClose} maxWidth="xl">
       <Box mb={3} textAlign="center">
         <Typography variant="h2">{t('profile.edit-cover')}</Typography>
       </Box>
