@@ -1,4 +1,3 @@
-
 import { Brands } from './components/Brands';
 import { useEffect, useState } from 'react';
 import { useDispatchRequest } from '@redux-requests/react';
@@ -15,16 +14,17 @@ export const ListBrand = () => {
 
   useEffect(() => {
     if (address) {
-      dispatch(listBrands())
-      .then(res=> {
-        setBrandList(res.data);
-      })
+      dispatch(listBrands()).then(res => {
+        setBrandList(res.data as any); // TODO: Wrong type
+      });
     }
   }, [address, dispatch]);
 
-  return <Section>
-    <Container maxWidth='lg'>
-      <Brands data={brandList} />
-    </Container>
-  </Section>
-}
+  return (
+    <Section>
+      <Container maxWidth="lg">
+        <Brands data={brandList} />
+      </Container>
+    </Section>
+  );
+};
