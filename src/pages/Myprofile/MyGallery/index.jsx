@@ -22,7 +22,7 @@ export default function Index() {
   // xxy: 0x4074A8deA884611F6553932CDF0B8390CDbA427E
   // homie: '0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE'
   // alpaca: 0xa43623da4ea64e98095c4bfc754ab32d8030310e
-  const current_account = '0xa43623da4ea64e98095c4bfc754ab32d8030310e' //account
+  const current_account = account //account
   const { sign_Axios, axios } = useAxios();
   const [itemList, setItemList] = useState([]);
   const [statusList, setStatusList] = useState([]);
