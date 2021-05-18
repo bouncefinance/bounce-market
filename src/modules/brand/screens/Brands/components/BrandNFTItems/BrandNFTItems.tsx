@@ -49,21 +49,16 @@ export const BrandNFTItems = ({
   const hasItems = !!items.length;
 
   useEffect(() => {
-    // const isDemoAddress =
-    //   ownerAddress === '0x2d3fff58da3346dce601f6db8eec57906cdb17be';
-
-    if (true) {
-      setLoading(true);
-      dispatch(
-        queryBrandPools({
-          owneraddress: ownerAddress,
-          contractaddress: contractAddress,
-        }),
-      ).then(res => {
-        setLoading(false);
-        setItems(res.data);
-      });
-    }
+    setLoading(true);
+    dispatch(
+      queryBrandPools({
+        owneraddress: ownerAddress,
+        contractaddress: contractAddress,
+      }),
+    ).then(res => {
+      setLoading(false);
+      setItems(res.data);
+    });
   }, [contractAddress, dispatch, ownerAddress]);
 
   useEffect(() => {
@@ -154,7 +149,7 @@ export const BrandNFTItems = ({
     </div>
   );
 
-  const redneredNoItems = (
+  const renderedNoItems = (
     <Typography variant="body2" color="textSecondary">
       {t('brands.no-items')}
     </Typography>
@@ -166,7 +161,7 @@ export const BrandNFTItems = ({
 
       {hasItems && !loading && rendered}
 
-      {!hasItems && !loading && redneredNoItems}
+      {!hasItems && !loading && renderedNoItems}
     </>
   );
 };
