@@ -1,4 +1,3 @@
-
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { IApiBrandInfo, IBrandInfo } from '../api/queryBrand';
@@ -21,7 +20,7 @@ export const queryBrandByFilter = createSmartAction<
           throw new Error('Unexpected response');
         }
         return data.data;
-      }
-    }
-  }
-})
+      },
+    },
+  };
+});
