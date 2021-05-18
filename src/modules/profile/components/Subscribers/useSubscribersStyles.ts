@@ -2,7 +2,7 @@ import { fade, makeStyles, Theme } from '@material-ui/core';
 
 export const useSubscribersStyles = makeStyles<Theme>(theme => ({
   root: {
-    display: 'flex',
+    display: 'inline-flex',
     border: `1px solid ${fade(theme.palette.text.primary, 0.1)}`,
     borderRadius: 50,
     height: 50,
