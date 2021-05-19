@@ -22,6 +22,7 @@ import { uid } from 'react-uid';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useBrandNFTItemsStyles } from './useBrandNFTItemsStyles';
+import { VideoPlayer } from '../../../../../common/components/VideoPlayer';
 
 SwiperCore.use([Lazy, Navigation]);
 
@@ -105,13 +106,9 @@ export const BrandNFTItems = ({
                 />
               ) : (
                 <div className={classes.videoWrapper}>
-                  <video
-                    src={fileurl}
-                    className={classNames(classes.video, 'swiper-lazy')}
-                    autoPlay={true}
-                    loop={true}
-                    muted
-                  />
+                  <div className={classNames(classes.video, 'swiper-lazy')}>
+                    <VideoPlayer src={fileurl} />
+                  </div>
                 </div>
               )}
 

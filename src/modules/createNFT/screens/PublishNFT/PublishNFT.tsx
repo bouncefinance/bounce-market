@@ -37,6 +37,7 @@ import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
+import { VideoPlayer } from '../../../common/components/VideoPlayer';
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
@@ -267,7 +268,7 @@ export const PublishNFTComponent = ({
                 objectFit="scale-down"
               />
             ) : (
-              <video src={file} autoPlay={true} loop={true} />
+              <VideoPlayer src={file} />
             )}
           </Paper>
 
