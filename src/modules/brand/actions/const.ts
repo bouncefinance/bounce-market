@@ -14,6 +14,7 @@ export const UpdateBrandInfoAction = 'BrandActions/updateBrandInfo';
 export const QueryBrandAddressAction = 'BrandActions/queryBrandAddress';
 export const GetAccountBrandAction = 'BrandActions/getAccountBrand';
 export const QueryMyBrandItemAction = 'BrandActions/queryMyBrandItem';
+export const EditBrandImgAction = 'BrandActions/editBrandImg';
 
 const FACTORY_CONTRACT_ADDRESS = {
   RINKEBY: '0xb9BaC7b8C8ca157035E78e764bC3AD7D7BcCAb3A',

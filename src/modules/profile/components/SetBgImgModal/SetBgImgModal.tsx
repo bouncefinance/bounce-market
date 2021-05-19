@@ -1,6 +1,6 @@
 import { Box, Dialog, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
-import { uploadFile } from 'modules/common/actions/uploadFile';
+import { uploadFile, IUploadFileArgs, UploadFileType } from 'modules/common/actions/uploadFile';
 import { Bytes, convertBytesToMegabytes } from 'modules/common/types/unit';
 import { UploadFileField } from 'modules/form/components/UploadFileField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
@@ -41,18 +41,29 @@ const validateForm = (payload: ISetBgImgValues) => {
 interface ISetBgImgModalProps {
   isOpen?: boolean;
   onClose?: () => void;
+  fileType: UploadFileType;
+  brandId?: number;
 }
 
 export const SetBgImgModal = ({
   onClose,
   isOpen = false,
+  fileType,
+  brandId,
 }: ISetBgImgModalProps) => {
   const classes = useSetBgImgModalStyles();
   const dispatch = useDispatchRequest();
 
   const onSubmit = useCallback(
     (payload: ISetBgImgValues) => {
-      dispatch(uploadFile({ file: payload.bgImg, fileType: 'bgImg' })).then(
+      const data: IUploadFileArgs = {
+        file: payload.bgImg,
+        fileType: fileType,
+      }
+      if (fileType === UploadFileType.BrandImg) {
+        data.brandId = brandId
+      }
+      dispatch(uploadFile(data)).then(
         ({ error }) => {
           if (!error && typeof onClose === 'function') {
             onClose();
@@ -60,7 +71,7 @@ export const SetBgImgModal = ({
         },
       );
     },
-    [dispatch, onClose],
+    [fileType, brandId, dispatch, onClose],
   );
 
   const renderForm = ({

@@ -1,6 +1,6 @@
 import { Box, Dialog, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest, useQuery } from '@redux-requests/react';
-import { uploadFile } from 'modules/common/actions/uploadFile';
+import { uploadFile, UploadFileType } from 'modules/common/actions/uploadFile';
 import { Bytes, convertBytesToMegabytes } from 'modules/common/types/unit';
 import { UploadAvatarField } from 'modules/form/components/UploadAvatarField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
@@ -52,7 +52,7 @@ export const SetAvatarModal = ({
 
   const onSubmit = useCallback(
     (payload: ISetAvatarValues) => {
-      dispatch(uploadFile({ file: payload.avatar, fileType: 'avatar' })).then(
+      dispatch(uploadFile({ file: payload.avatar, fileType: UploadFileType.Avatar })).then(
         ({ error }) => {
           if (!error && typeof onClose === 'function') {
             onClose();

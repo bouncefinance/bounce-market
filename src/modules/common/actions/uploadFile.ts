@@ -10,10 +10,18 @@ import {
   IApiUploadFileResponse,
   IApiUploadFileSuccess,
 } from '../api/uploadFile';
+import { editBrandImg } from '../../brand/actions/editBrandImg';
 
-interface IUploadFileArgs {
+export enum UploadFileType {
+  Avatar = 'avatar',
+  BgImg = 'bgImg',
+  BrandImg = 'brandImg',
+}
+
+export interface IUploadFileArgs {
   file: File;
-  fileType?: 'avatar' | 'bgImg';
+  fileType?: 'avatar' | 'bgImg' | 'brandImg';
+  brandId?: number;
 }
 
 export const uploadFile: (
@@ -21,7 +29,7 @@ export const uploadFile: (
 ) => RequestAction<
   IApiUploadFileResponse,
   IApiUploadFileSuccess
-> = createSmartAction('uploadFile', ({ file, fileType }: IUploadFileArgs) => {
+> = createSmartAction('uploadFile', ({ file, fileType, brandId }: IUploadFileArgs) => {
   const formData = new FormData();
   formData.append('filename', file);
 
@@ -55,20 +63,27 @@ export const uploadFile: (
 
         const isSuccessfulUpload = response.data.code === 200;
 
-        if (fileType === 'avatar' && isSuccessfulUpload) {
+        if (fileType === UploadFileType.Avatar && isSuccessfulUpload) {
           store.dispatch(
             editProfile({
               ...(profileInfo || {}),
               imgUrl: response.data.result.path,
             }) as any,
           );
-        } else if (fileType === 'bgImg' && isSuccessfulUpload) {
+        } else if (fileType === UploadFileType.BgImg && isSuccessfulUpload) {
           store.dispatch(
             editProfileBgImg({
               imgUrl: response.data.result.path,
             }),
           );
-        }
+        } else if (fileType === UploadFileType.BrandImg && isSuccessfulUpload) {
+          store.dispatch(
+            editBrandImg({
+              brandId: brandId,
+              imgUrl: response.data.result.path,
+            })
+          )
+        } 
 
         return response;
       },
