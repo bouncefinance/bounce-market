@@ -17,7 +17,7 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
   },
 
   container: {
-    '@media (min-width: 1400px)': {
+    [theme.breakpoints.up('WXGAPlus')]: {
       paddingLeft: theme.spacing(5.5),
       paddingRight: theme.spacing(5.5),
     },
