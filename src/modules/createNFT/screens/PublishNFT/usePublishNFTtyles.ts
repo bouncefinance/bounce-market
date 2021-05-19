@@ -6,7 +6,7 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
     gap: theme.spacing(5, 9),
 
     [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: '1fr minmax(380px, auto)',
+      gridTemplateColumns: '1fr minmax(380px, 50%)',
     },
   },
 
@@ -18,9 +18,18 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
   },
 
   formImgBox: {
+    maxWidth: 500,
+
     [theme.breakpoints.up('lg')]: {
+      maxWidth: 'none',
       position: 'sticky',
       top: theme.spacing(2),
+    },
+
+    '& video': {
+      display: 'block',
+      maxWidth: '100%',
+      borderRadius: 'inherit',
     },
   },
 

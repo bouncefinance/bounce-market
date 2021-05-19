@@ -1,4 +1,5 @@
 import { Button } from '@material-ui/core';
+import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import React, { useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -42,7 +43,7 @@ export const HeaderLinks = () => {
       },
       {
         label: 'Brands',
-        href: '/',
+        href: BrandRoutesConfig.ListBrand.generatePath(),
       },
     ],
     [],

@@ -1,10 +1,11 @@
 import { RequestAction } from '@redux-requests/core';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 // TODO: Merge with src/modules/createNFT/actions/fetchItemsByFilter.ts
 
 export interface IItem {
-  category: string;
+  category: NFTCategoryType;
   channel: string;
   contractaddress: string;
   created_at: string;

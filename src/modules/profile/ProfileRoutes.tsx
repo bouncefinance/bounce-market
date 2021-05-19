@@ -1,10 +1,10 @@
 import loadable, { LoadableComponent } from '@loadable/component';
+import { useParams } from 'react-router';
 import { generatePath } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { PrivateRoute } from '../router/components/PrivateRoute';
-import { useParams } from 'react-router';
 
-export const PATH_USER_PROFILE = '/profile/:tab?';
+export const PATH_USER_PROFILE = '/profile/tab/:tab?';
 export const PATH_PROFILE = '/profile/view/:id';
 export const PATH_EDIT_PROFILE = '/profile/edit';
 
