@@ -71,6 +71,7 @@ export const Movers = ({
         spaceBetween: 20,
       },
       [theme.breakpoints.values.WXGAPlus]: {
+        slidesPerView: 5,
         spaceBetween: 30,
       },
     },
