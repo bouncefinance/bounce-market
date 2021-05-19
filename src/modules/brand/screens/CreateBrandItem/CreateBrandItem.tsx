@@ -21,7 +21,7 @@ import {
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
-import { createBrandNFT } from 'modules/brand/actions/createBrandNft';
+import { createBrandNFT, NFTStandard } from 'modules/brand/actions/createBrandNft';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -169,6 +169,18 @@ export const CreateBrandItem = () => {
               options={channelOptions}
             />
           </Box>
+          {brandInfo?.standard === NFTStandard.ERC1155 && (
+            <Box mb={5}>
+              <Field
+                component={InputField}
+                name="supply"
+                type="number"
+                label={t('create-nft.label.supply')}
+                color="primary"
+                fullWidth={true}
+              />
+            </Box>
+          )}
           <Box>
             <Mutation type={createNft.toString()}>
               {({ loading }) => (
