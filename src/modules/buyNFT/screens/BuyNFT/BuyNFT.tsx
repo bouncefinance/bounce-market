@@ -48,21 +48,6 @@ export const BuyNFT = () => {
   } = useDialog();
   const { push } = useHistory();
 
-  const handleBid = useCallback(
-    values => {
-      dispatch(
-        bidEnglishAuction({
-          amountMax1: new BigNumber(0),
-          bidPrice: new BigNumber(0),
-          unitContract: '',
-          amountTotal1: new BigNumber(0),
-          poolId: 0,
-        }),
-      );
-    },
-    [dispatch],
-  );
-
   const handleBuyFixed = useCallback(
     (values: {
       nftType: NftType;
@@ -91,14 +76,29 @@ export const BuyNFT = () => {
   );
 
   const handleBuyEnglish = useCallback(
-    values => {
+    (
+      value:
+        | {
+            amountMax1?: BigNumber;
+            unitContract: string;
+            amountTotal1?: BigNumber;
+            poolId: number;
+          }
+        | {
+            bidPrice?: BigNumber;
+            unitContract: string;
+            amountTotal1?: BigNumber;
+            poolId: number;
+          },
+    ) => {
+      const { unitContract, amountTotal1, poolId } = value;
+
       dispatch(
         bidEnglishAuction({
-          amountMax1: new BigNumber(0),
-          bidPrice: new BigNumber(0),
-          unitContract: '',
-          amountTotal1: new BigNumber(0),
-          poolId: 0,
+          amount: (value as any).amountMax1 || (value as any).bidPrice,
+          unitContract,
+          amountTotal1,
+          poolId,
         }),
       ).then(({ error }) => {
         if (!error) {
@@ -279,47 +279,67 @@ export const BuyNFT = () => {
                   />
                 </Info>
 
-                <Mutation
-                  type={bidEnglishAuction.toString()}
-                  action={bidEnglishAuction}
-                >
-                  {({ loading }) => (
-                    <BidDialog
-                      name={item.itemname}
-                      filepath={item.fileurl}
-                      onSubmit={handleBid}
-                      isOpen={openedBid}
-                      onClose={toggleBidDialog(false)}
-                      currency="BNB"
-                      owner="Bombist"
-                      ownerAvatar="https://picsum.photos/44?random=1"
-                      isOwnerVerified={false}
-                      category={item.category}
-                      disabled={loading}
-                    />
-                  )}
-                </Mutation>
+                {isEnglishAuction(poolDetails) && (
+                  <Mutation
+                    type={bidEnglishAuction.toString()}
+                    action={bidEnglishAuction}
+                  >
+                    {({ loading }) => (
+                      <BidDialog
+                        name={item.itemname}
+                        filepath={item.fileurl}
+                        onSubmit={({ bid, quantity }) => {
+                          handleBuyEnglish({
+                            bidPrice: new BigNumber(bid),
+                            unitContract: poolDetails.unitContract,
+                            amountTotal1: new BigNumber(bid).multipliedBy(
+                              quantity,
+                            ),
+                            poolId: poolDetails.poolId,
+                          });
+                        }}
+                        isOpen={openedBid}
+                        onClose={toggleBidDialog(false)}
+                        currency="BNB"
+                        owner="Bombist"
+                        ownerAvatar="https://picsum.photos/44?random=1"
+                        isOwnerVerified={false}
+                        category={item.category}
+                        disabled={loading}
+                      />
+                    )}
+                  </Mutation>
+                )}
 
-                <Mutation
-                  type={bidEnglishAuction.toString()}
-                  action={bidEnglishAuction}
-                >
-                  {({ loading }) => (
-                    <BuyDialog
-                      name={item.itemname}
-                      filepath={item.fileurl}
-                      onSubmit={handleBuyEnglish}
-                      isOpen={openedEnglishBuy}
-                      onClose={toggleEnglishBuyDialog(false)}
-                      owner="Bombist"
-                      ownerAvatar="https://picsum.photos/44?random=1"
-                      isOwnerVerified={false}
-                      readonly={item.standard === NftType.ERC721}
-                      category={item.category}
-                      disabled={loading}
-                    />
-                  )}
-                </Mutation>
+                {isEnglishAuction(poolDetails) && (
+                  <Mutation
+                    type={bidEnglishAuction.toString()}
+                    action={bidEnglishAuction}
+                  >
+                    {({ loading }) => (
+                      <BuyDialog
+                        name={item.itemname}
+                        filepath={item.fileurl}
+                        onSubmit={() => {
+                          handleBuyEnglish({
+                            amountMax1: poolDetails.amountMax1,
+                            unitContract: poolDetails.unitContract,
+                            amountTotal1: undefined,
+                            poolId: poolDetails.poolId,
+                          });
+                        }}
+                        isOpen={openedEnglishBuy}
+                        onClose={toggleEnglishBuyDialog(false)}
+                        owner="Bombist"
+                        ownerAvatar="https://picsum.photos/44?random=1"
+                        isOwnerVerified={false}
+                        readonly={item.standard === NftType.ERC721}
+                        category={item.category}
+                        disabled={loading}
+                      />
+                    )}
+                  </Mutation>
+                )}
 
                 {!isEnglishAuction(poolDetails) && (
                   <Mutation type={buyFixed.toString()} action={buyFixed}>
