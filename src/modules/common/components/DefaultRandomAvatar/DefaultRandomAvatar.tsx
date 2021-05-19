@@ -1,28 +1,28 @@
-import React, { useRef } from 'react';
 import { Avatar, AvatarProps } from '@material-ui/core';
-import { useDefaultRandomAvatarStyles } from './useDefaultRandomAvatarStyles';
 import userPic from 'assets/img/logo-small.svg';
+import React, { useMemo } from 'react';
+import { useDefaultRandomAvatarStyles } from './useDefaultRandomAvatarStyles';
 
-export const DefaultRandomAvatar = ({ classes, ...restProps }: AvatarProps) => {
+export const DefaultRandomAvatar = ({
+  classes,
+  src,
+  ...restProps
+}: AvatarProps) => {
   const styles = useDefaultRandomAvatarStyles();
 
-  const randomBg = useRef(Math.floor(Math.random() * 19));
-  let rootRandomBg = '';
-  let imgFallbackStyle = '';
+  const randomBg = useMemo(() => Math.floor(Math.random() * 19), []);
+  const withoutImg = !src;
 
-  if (!restProps.src || !restProps.srcSet) {
-    restProps.src = userPic;
-    rootRandomBg = styles[`color${randomBg.current}`];
-    imgFallbackStyle = styles.img;
-  }
+  console.log(randomBg);
 
   return (
     <Avatar
       {...restProps}
+      src={withoutImg ? userPic : src}
       classes={{
         ...classes,
-        root: rootRandomBg,
-        img: imgFallbackStyle,
+        root: withoutImg ? styles[`color${randomBg}`] : '',
+        img: withoutImg ? styles.img : '',
       }}
     />
   );
