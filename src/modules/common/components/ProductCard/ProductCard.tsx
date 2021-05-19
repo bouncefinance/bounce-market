@@ -24,9 +24,8 @@ import React, { ReactNode, useCallback, useState } from 'react';
 import { Link, Link as RouterLink } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
-import { useProductCardStyles } from './useProductCardStyles';
 import { VideoPlayer } from '../VideoPlayer';
-import { ObjectFitType } from '../../types/ObjectFit';
+import { useProductCardStyles } from './useProductCardStyles';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
