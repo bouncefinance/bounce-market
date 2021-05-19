@@ -290,5 +290,8 @@
     "rotate-right": "Rotate right",
     "flip-v": "Flip vertical",
     "flip-h": "Flip horizontal"
+  },
+  "video-player": {
+    "unsupported": "Sorry, your browser doesn't support embedded videos or uploaded video file type!"
   }
 }

@@ -1,4 +1,3 @@
-import { Avatar } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
 import classNames from 'classnames';
 import bnbLogo from 'modules/account/assets/bnb.svg'; // TODO: need provide logo from API?
@@ -14,6 +13,7 @@ import { WalletCard } from '../WalletCard';
 import { useWalletDropdown } from './useWalletDropdown';
 import { useWalletStyles } from './useWalletStyles';
 import { setAccount } from '../../../account/store/actions/setAccount';
+import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 
 interface IWalletProps {
   address?: string;
@@ -64,7 +64,7 @@ export const WalletComponent = ({
             rounded
           >
             {convertWallet(address)}
-            <Avatar src={img} className={classes.walletLogo} />
+            <DefaultRandomAvatar src={img} className={classes.walletLogo} />
           </Button>
 
           <FocusOn

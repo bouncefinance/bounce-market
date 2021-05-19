@@ -135,6 +135,13 @@ export const mainTheme = createMuiTheme({
     },
 
     MuiContainer: {
+      root: {
+        [defaultTheme.breakpoints.up('xl')]: {
+          paddingLeft: defaultTheme.spacing(7.5),
+          paddingRight: defaultTheme.spacing(7.5),
+        },
+      },
+
       maxWidthXl: {
         [defaultTheme.breakpoints.up('xl')]: {
           maxWidth: 1520 + 48,
@@ -346,7 +353,6 @@ export const mainTheme = createMuiTheme({
         '&:before': {
           content: `''`,
           position: 'absolute',
-          borderRadius: 'inherit',
           top: -1,
           left: -1,
           right: -1,
@@ -392,7 +398,6 @@ export const mainTheme = createMuiTheme({
         '&:before': {
           content: `''`,
           position: 'absolute',
-          borderRadius: 'inherit',
           top: -1,
           left: -1,
           right: -1,

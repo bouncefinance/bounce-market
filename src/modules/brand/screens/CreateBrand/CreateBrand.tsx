@@ -45,10 +45,11 @@ const validateCreateBrand = (payload: ICreateBrand) => {
     errors.brandSymbol = t('validation.required');
   }
 
-  if (payload.file && !FILE_ACCEPTS.includes(payload.file.type)) {
+  if (!payload.file) {
+    errors.file = t('validation.required');
+  } else if (!FILE_ACCEPTS.includes(payload.file.type)) {
     errors.file = t('validation.invalid-type');
-  }
-  if (payload.file && payload.file.size > MAX_SIZE) {
+  } else if (payload.file.size > MAX_SIZE) {
     errors.file = t('validation.max-size', {
       value: convertBytesToMegabytes(MAX_SIZE),
     });

@@ -1,18 +1,22 @@
 import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { IProductCardProps } from 'modules/common/components/ProductCard';
+import {
+  IProductCardProps,
+  ProductCard,
+} from 'modules/common/components/ProductCard';
+import { ProductCards } from 'modules/common/components/ProductCards';
 import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
   fetchNFTItems,
   INFTItem,
 } from 'modules/overview/actions/fetchNFTItems';
-import { mapNFTItems } from 'modules/overview/api/mapNFTItems';
-import { ProductsList } from 'modules/overview/components/ProductsList';
+import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useState } from 'react';
+import { uid } from 'react-uid';
 
 type IImgProps = Omit<IProductCardProps, 'MediaProps'> & {
   img: string;
@@ -67,7 +71,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     type: fetchNFTItems.toString(),
   });
 
-  const [sortBy, setSortBy] = useState<string>('0');
+  const [sortBy, setSortBy] = useState<string>('1');
   const [catergory, setCategory] = useState<ItemsChannel>(
     ItemsChannel.fineArts,
   );
@@ -92,10 +96,35 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     dispatch(fetchNFTItems({}));
   }, [dispatch, isConnected]);
 
+  const nftItems = data?.map(mapNFTItem);
+
+  const rendrerdCards = (
+    <ProductCards>
+      {(nftItems || []).map(cardProps => (
+        <ProductCard
+          key={uid(cardProps)}
+          title={cardProps.title}
+          price={cardProps.price}
+          priceType={cardProps.priceType}
+          endDate={cardProps.endDate}
+          likes={cardProps.likes}
+          href={cardProps.href}
+          MediaProps={{
+            category: cardProps.category,
+            src: cardProps.src,
+            objectFit: 'scale-down',
+            loading: 'lazy',
+          }}
+          ProfileInfoProps={cardProps.ProfileInfoProps}
+        />
+      ))}
+    </ProductCards>
+  );
+
   return isConnected ? (
     <ProductsComponent
       {...sectionProps}
-      cards={<ProductsList items={mapNFTItems(data || [])} />}
+      cards={rendrerdCards}
       loading={loading}
       panel={
         <ProductsPanel

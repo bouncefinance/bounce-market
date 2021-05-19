@@ -2,6 +2,8 @@ import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { NoItems } from 'modules/common/components/NoItems';
+import { ProductCard } from 'modules/common/components/ProductCard';
+import { ProductCards } from 'modules/common/components/ProductCards';
 import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
@@ -11,11 +13,11 @@ import {
   fetchNFTItems,
   INFTItem,
 } from 'modules/overview/actions/fetchNFTItems';
-import { mapNFTItems } from 'modules/overview/api/mapNFTItems';
+import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
 import { Button } from 'modules/uiKit/Button';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useState } from 'react';
-import { ProductsList } from '../ProductsList';
+import { uid } from 'react-uid';
 import { ProductsPanel } from '../ProductsPanel';
 import { useProductsStyles } from './useProductsStyles';
 
@@ -77,7 +79,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     type: fetchNFTItems.toString(),
   });
 
-  const [sortBy, setSortBy] = useState<string>('0');
+  const [sortBy, setSortBy] = useState<string>('1');
   const [catergory, setCategory] = useState<ItemsChannel>(
     ItemsChannel.fineArts,
   );
@@ -112,15 +114,35 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     );
   }, [dispatch, isConnected]);
 
-  const nftItems = mapNFTItems(data || []);
+  const nftItems = data?.map(mapNFTItem);
 
-  const renderedNFTItems = nftItems.length ? (
-    <ProductsList items={nftItems} />
-  ) : (
-    <Box display="flex" justifyContent="center">
-      <NoItems href={MarketRoutesConfig.Market.generatePath()} />
-    </Box>
-  );
+  const renderedNFTItems =
+    nftItems && nftItems.length ? (
+      <ProductCards>
+        {(nftItems || []).map(cardProps => (
+          <ProductCard
+            key={uid(cardProps)}
+            title={cardProps.title}
+            price={cardProps.price}
+            priceType={cardProps.priceType}
+            endDate={cardProps.endDate}
+            likes={cardProps.likes}
+            href={cardProps.href}
+            MediaProps={{
+              category: cardProps.category,
+              src: cardProps.src,
+              objectFit: 'scale-down',
+              loading: 'lazy',
+            }}
+            ProfileInfoProps={cardProps.ProfileInfoProps}
+          />
+        ))}
+      </ProductCards>
+    ) : (
+      <Box display="flex" justifyContent="center">
+        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+      </Box>
+    );
 
   return isConnected ? (
     <ProductsComponent

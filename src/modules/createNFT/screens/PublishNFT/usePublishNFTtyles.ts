@@ -19,6 +19,7 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
 
   formImgBox: {
     maxWidth: 500,
+    overflow: 'hidden',
 
     [theme.breakpoints.up('lg')]: {
       maxWidth: 'none',

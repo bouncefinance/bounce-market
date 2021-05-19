@@ -7,6 +7,7 @@ import { useMediaContainerStyles } from './useMediaContainerStyles';
 import { t } from 'modules/i18n/utils/intl';
 import { SocialShare } from 'modules/common/components/SocialShare';
 import React from 'react';
+import { VideoPlayer } from '../../../common/components/VideoPlayer';
 
 interface INFTContentProps {
   className?: string;
@@ -31,7 +32,7 @@ export const MediaContainer = ({
         {category === 'image' ? (
           <img className={classes.img} src={src} loading="lazy" alt="" />
         ) : (
-          <video src={src} autoPlay={true} loop={true} />
+          <VideoPlayer src={src} />
         )}
 
         <div className={classes.actions}>

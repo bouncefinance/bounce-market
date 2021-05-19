@@ -29,18 +29,8 @@ SwiperCore.use([Lazy, Navigation]);
 const prevId = getRandomId('prev');
 const nextId = getRandomId('next');
 
-type IImgProps = Omit<IProductCardProps, 'MediaProps'> & {
-  img: string;
-};
-
-type IVideoProps = Omit<IProductCardProps, 'MediaProps'> & {
-  video: string;
-};
-
-export type ProductProps = IImgProps | IVideoProps;
-
 interface IMoversProps extends ISectionProps {
-  items?: ProductProps[];
+  items?: IProductCardProps[];
   isLoading?: boolean;
   error?: any;
 }
@@ -74,7 +64,14 @@ export const Movers = ({
     },
     breakpoints: {
       [theme.breakpoints.values.xl]: {
+        slidesPerView: 4,
+      },
+      [theme.breakpoints.values.HD]: {
         slidesPerView: 5,
+        spaceBetween: 20,
+      },
+      [theme.breakpoints.values.WXGAPlus]: {
+        spaceBetween: 30,
       },
     },
     onSwiper: setSwiper,
@@ -89,17 +86,13 @@ export const Movers = ({
         endDate={cardProps.endDate}
         likes={cardProps.likes}
         href={cardProps.href}
-        MediaProps={
-          (cardProps as IImgProps).img
-            ? {
-                src: (cardProps as IImgProps).img,
-                imgClassName: 'swiper-lazy',
-                isNativeLazyLoading: false,
-                objectFit: 'scale-down',
-                category: 'image',
-              }
-            : { src: (cardProps as IVideoProps).video, category: 'video' }
-        }
+        MediaProps={{
+          category: cardProps.MediaProps.category,
+          src: cardProps.MediaProps.src,
+          imgClassName: 'swiper-lazy',
+          isNativeLazyLoading: false,
+          objectFit: 'scale-down',
+        }}
         ProfileInfoProps={cardProps.ProfileInfoProps}
         imgPreloader={<SwiperPreloader />}
       />

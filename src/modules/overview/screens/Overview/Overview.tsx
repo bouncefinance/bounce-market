@@ -2,10 +2,11 @@ import { ThemeProvider } from '@material-ui/styles';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { featuresConfig } from 'modules/common/conts';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
-import { Movers, ProductProps } from 'modules/overview/components/Movers';
+import { Movers } from 'modules/overview/components/Movers';
 import { Products } from 'modules/overview/components/Products';
 import { IPromoItem, Promo } from 'modules/overview/components/Promo';
 import { darkTheme } from 'modules/themes/darkTheme';
@@ -38,7 +39,7 @@ function mapPromoItem(item: IItem): IPromoItem {
   };
 }
 
-function mapMoversItem(item: IItem): ProductProps {
+function mapMoversItem(item: IItem) {
   return {
     title: item.itemName || '',
     price: item.price,
@@ -49,7 +50,10 @@ function mapMoversItem(item: IItem): ProductProps {
       item.poolId && item.poolType
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
-    img: item.fileUrl || '',
+    MediaProps: {
+      category: 'image' as ProductCardCategoryType,
+      src: item.fileUrl || '',
+    },
     ProfileInfoProps: {
       subTitle: 'Owner',
       title: '1livinginzen',

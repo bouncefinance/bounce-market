@@ -28,11 +28,13 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
     justifyContent: 'space-between',
 
     [theme.breakpoints.up('xl')]: {
-      gridTemplateColumns: 'auto auto 1fr repeat(3, auto)',
+      gridTemplateColumns: 'auto auto 1fr repeat(2, auto)',
       justifyContent: 'initial',
+      paddingLeft: theme.spacing(3),
+      paddingRight: theme.spacing(3),
     },
 
-    '@media (min-width: 1400px)': {
+    [theme.breakpoints.up('WXGAPlus')]: {
       paddingLeft: theme.spacing(5.5),
       paddingRight: theme.spacing(5.5),
     },

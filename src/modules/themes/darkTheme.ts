@@ -79,7 +79,6 @@ export const darkTheme = createMuiTheme({
         '&:before': {
           content: `''`,
           position: 'absolute',
-          borderRadius: 'inherit',
           top: -1,
           left: -1,
           right: -1,
