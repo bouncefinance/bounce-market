@@ -3,40 +3,30 @@ import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import Web3 from 'web3';
 import { NFTCategoryType } from '../actions/fetchItemsByFilter';
 import { INFTItem } from '../actions/fetchNFTItems';
-import { ProductProps } from '../components/Movers';
 import { AuctionType } from './auctionType';
 
-export const mapNFTItems = (items: INFTItem[]): ProductProps[] =>
-  items.map(nftItem => ({
-    href:
-      nftItem.poolId && nftItem.poolType
-        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-            nftItem.poolId,
-            nftItem.poolType,
-          )
-        : '',
-    price: new BigNumber(Web3.utils.fromWei(nftItem.price)),
-    title: nftItem.itemname || '',
-    priceType: 'BNB',
-    likes: nftItem.likecount,
-    copies: nftItem.poolType === AuctionType.FixedSwap ? 3 : undefined,
-    endDate:
-      nftItem.poolType === AuctionType.EnglishAuction ? new Date() : undefined,
-    ProfileInfoProps: {
-      subTitle: 'Owner',
-      title: '1livinginzen',
-      users: [
-        {
-          name: 'name',
-          avatar: 'https://via.placeholder.com/32',
-        },
-      ],
-    },
-    ...(nftItem.category === NFTCategoryType.image
-      ? {
-          img: nftItem.fileurl || '',
-        }
-      : {
-          video: nftItem.fileurl || '',
-        }),
-  }));
+export const mapNFTItem = (item: INFTItem) => ({
+  href:
+    item.poolId && item.poolType
+      ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
+      : '',
+  price: new BigNumber(Web3.utils.fromWei(item.price)),
+  title: item.itemname || '',
+  priceType: 'BNB',
+  likes: item.likecount,
+  copies: item.poolType === AuctionType.FixedSwap ? 3 : undefined,
+  endDate:
+    item.poolType === AuctionType.EnglishAuction ? new Date() : undefined,
+  ProfileInfoProps: {
+    subTitle: 'Owner',
+    title: '1livinginzen',
+    users: [
+      {
+        name: 'name',
+        avatar: 'https://via.placeholder.com/32',
+      },
+    ],
+  },
+  category: item.category || NFTCategoryType.image,
+  src: item.fileurl,
+});

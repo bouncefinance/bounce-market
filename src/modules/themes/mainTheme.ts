@@ -135,6 +135,13 @@ export const mainTheme = createMuiTheme({
     },
 
     MuiContainer: {
+      root: {
+        [defaultTheme.breakpoints.up('xl')]: {
+          paddingLeft: defaultTheme.spacing(7.5),
+          paddingRight: defaultTheme.spacing(7.5),
+        },
+      },
+
       maxWidthXl: {
         [defaultTheme.breakpoints.up('xl')]: {
           maxWidth: 1520 + 48,

@@ -26,15 +26,7 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { useProductCardStyles } from './useProductCardStyles';
 
-interface IImg extends IImgProps {
-  category: 'image';
-}
-interface IVideo {
-  category: 'video';
-  src: string;
-}
-
-type Media = IImg | IVideo;
+export type ProductCardCategoryType = 'image' | 'video';
 
 export enum ProductCardStatuses {
   minting,
@@ -49,7 +41,9 @@ export interface IProductCardProps {
   endDate?: Date;
   likes?: number;
   copies?: number;
-  MediaProps: Media;
+  MediaProps: IImgProps & {
+    category: ProductCardCategoryType;
+  };
   ProfileInfoProps: IProfileInfoProps;
   href?: string;
   isLiked?: boolean;
