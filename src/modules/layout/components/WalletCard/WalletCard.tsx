@@ -15,7 +15,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { DoneIcon } from 'modules/common/components/Icons/DoneIcon';
 import { CopyIcon } from 'modules/common/components/Icons/CopyIcon';
 import { Link as RouterLink } from 'react-router-dom';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import classNames from 'classnames';
 import BigNumber from 'bignumber.js';
 
@@ -110,6 +110,14 @@ export const WalletCard = ({
           onClick={handleClose}
         >
           {t('header.inventory')}
+        </MenuItem>
+        <MenuItem
+          component={RouterLink}
+          to={ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands)}
+          className={classes.menuItem}
+          onClick={handleClose}
+        >
+          {t('header.brands')}
         </MenuItem>
         <MenuItem
           component={RouterLink}

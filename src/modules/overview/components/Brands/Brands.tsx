@@ -1,11 +1,13 @@
 import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
 import classNames from 'classnames';
 import { IBrandItem } from 'modules/brand/actions/fetchPopularBrands';
+import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -74,6 +76,11 @@ export const Brands = ({
     [classes, items],
   );
 
+  const history = useHistory();
+  const onViewBrand = () => {
+    history.replace(BrandRoutesConfig.ListBrand.generatePath())
+  }
+
   return (
     <Section {...sectionProps} className={classes.root}>
       <Container>
@@ -84,7 +91,7 @@ export const Brands = ({
             </Grid>
 
             <Grid item xs="auto">
-              <Button variant="outlined" className={classes.moreBtn} rounded>
+              <Button variant="outlined" className={classes.moreBtn} rounded onClick={onViewBrand}>
                 {t('common.view-all')}
               </Button>
             </Grid>

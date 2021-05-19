@@ -16,9 +16,9 @@ import { isVideo } from '../../common/utils/isVideo';
 import { IBrandInfo } from '../api/queryBrand';
 import { addItem, IAddItemPayload } from 'modules/createNFT/actions/addItem';
 
-export enum NftType {
-  ERC721,
-  ERC1155,
+export enum NFTStandard {
+  ERC721 = 1,
+  ERC1155 = 2,
 }
 
 export enum Channel {
@@ -31,7 +31,7 @@ export interface ICreateNFTPayload {
   name: string;
   description: string;
   channel: Channel;
-  standard: NftType;
+  standard: NFTStandard;
   supply: number;
   file: File;
 }
@@ -80,7 +80,7 @@ export const createBrandNFT = createSmartAction(
                 owneraddress: brandInfo.owneraddress,
                 ownername: brandInfo.ownername,
                 standard: brandInfo.standard,
-                supply: standard === NftType.ERC721 ? 1 : supply, // is supply an integer?
+                supply: standard === NFTStandard.ERC721 ? 1 : supply, 
               };
 
               const { data: addItemData } = await store.dispatchRequest(

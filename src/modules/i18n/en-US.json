@@ -191,8 +191,14 @@
     "submit": "Create",
     "submitting": "Creating"
   },
+  "overview": {
+    "brands": {
+      "title": "Hot Brands"
+    }
+  },
   "brands": {
-    "title": "Hot Brands"
+    "title": "Brands",
+    "no-items": "There is no items created yet."
   },
   "publish-nft": {
     "title": "Put on sale",
