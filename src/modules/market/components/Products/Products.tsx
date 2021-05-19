@@ -12,7 +12,7 @@ import {
   fetchNFTItems,
   INFTItem,
 } from 'modules/overview/actions/fetchNFTItems';
-import { mapNFTItem } from 'modules/overview/api/mapNFTItems';
+import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useState } from 'react';

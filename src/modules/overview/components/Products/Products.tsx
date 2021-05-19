@@ -13,7 +13,7 @@ import {
   fetchNFTItems,
   INFTItem,
 } from 'modules/overview/actions/fetchNFTItems';
-import { mapNFTItem } from 'modules/overview/api/mapNFTItems';
+import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
 import { Button } from 'modules/uiKit/Button';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useState } from 'react';
