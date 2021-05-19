@@ -199,11 +199,11 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   },
 
   video: {
-    objectFit: 'scale-down',
     top: 0,
     left: 0,
     width: '100%',
     height: '100%',
     position: 'absolute',
+    zIndex: 1,
   },
 }));

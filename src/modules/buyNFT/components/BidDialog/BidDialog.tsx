@@ -19,6 +19,7 @@ import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useBidDialogStyles } from './useBidDialogStyles';
+import { VideoPlayer } from '../../../common/components/VideoPlayer';
 
 const MIN_QUANTITY = 1;
 const MIN_BID = 0.5;
@@ -196,7 +197,7 @@ export const BidDialog = ({
             {category === 'image' ? (
               <Img className={classes.imgWrap} src={filepath} ratio="1x1" />
             ) : (
-              <video src={filepath} autoPlay={true} loop={true} />
+              <VideoPlayer src={filepath} />
             )}
           </Grid>
 

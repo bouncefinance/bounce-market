@@ -18,6 +18,7 @@ import { Img } from 'modules/uiKit/Img';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useBuyDialogStyles } from './useBuyDialogStyles';
+import { VideoPlayer } from '../../../common/components/VideoPlayer';
 
 const MIN_QUANTITY = 1;
 
@@ -154,7 +155,7 @@ export const BuyDialog = ({
             {category === 'image' ? (
               <Img className={classes.imgWrap} src={filepath} ratio="1x1" />
             ) : (
-              <video src={filepath} autoPlay={true} loop={true} />
+              <VideoPlayer src={filepath} />
             )}
           </Grid>
 

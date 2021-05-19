@@ -27,10 +27,11 @@ export interface ISetAvatarValues {
 const validateForm = (payload: ISetAvatarValues) => {
   const errors: FormErrors<ISetAvatarValues> = {};
 
-  if (payload.avatar && !FILE_ACCEPTS.includes(payload.avatar.type)) {
+  if (!payload.avatar) {
+    errors.avatar = t('validation.required');
+  } else if (!FILE_ACCEPTS.includes(payload.avatar.type)) {
     errors.avatar = t('validation.invalid-type');
-  }
-  if (payload.avatar && payload.avatar.size > MAX_SIZE) {
+  } else if (payload.avatar.size > MAX_SIZE) {
     errors.avatar = t('validation.max-size', {
       value: convertBytesToMegabytes(MAX_SIZE),
     });

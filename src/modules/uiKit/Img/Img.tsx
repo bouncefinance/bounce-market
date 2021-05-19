@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useImgStyles } from './ImgStyles';
+import { ObjectFitType } from '../../common/types/ObjectFit';
 
 export interface IImgProps {
   src?: string;
@@ -18,7 +19,7 @@ export interface IImgProps {
   style?: React.CSSProperties;
   className?: string;
   imgClassName?: string;
-  objectFit?: 'cover' | 'scale-down' | 'contain' | 'fill';
+  objectFit?: ObjectFitType;
   alt?: string;
   title?: string;
   isNativeLazyLoading?: boolean;

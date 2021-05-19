@@ -1,17 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useUploadFileStyles } from '../../useUploadFileStyles';
-import { Box, Typography } from '@material-ui/core';
-import { ReactComponent as VideoPic } from './assets/video.svg';
-import { t } from 'modules/i18n/utils/intl';
-import { convertBytesToMegabytes } from 'modules/common/types/unit';
+import { VideoPlayer } from 'modules/common/components/VideoPlayer';
 
 export interface IVideoPreviewProps {
-  fileName: string;
-  fileSize: number;
+  file: File;
 }
 
-export const VideoPreview = ({ fileName, fileSize }: IVideoPreviewProps) => {
+export const VideoPreview = ({ file }: IVideoPreviewProps) => {
   const classes = useUploadFileStyles();
 
   return (
@@ -21,18 +17,7 @@ export const VideoPreview = ({ fileName, fileSize }: IVideoPreviewProps) => {
         classes.previewContainerVideo,
       )}
     >
-      <VideoPic className={classes.filePic} />
-      <Box mb={1}>
-        <Typography variant="h2" align="center">
-          {t('upload-file-field.file-uploaded')}
-        </Typography>
-      </Box>
-      <Typography variant="h5" align="center" className={classes.fileText}>
-        {t('upload-file-field.file-data', {
-          fileName: fileName,
-          fileSize: convertBytesToMegabytes(fileSize, 2),
-        })}
-      </Typography>
+      <VideoPlayer file={file} objectFit="cover" controls={false} />
     </div>
   );
 };

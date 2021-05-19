@@ -104,13 +104,9 @@ const renderImagePreview = ({
 interface IVideoPreview extends IVideoPreviewProps {
   VideoPreviewComponent: any;
 }
-const renderVideoPreview = ({
-  VideoPreviewComponent,
-  fileName,
-  fileSize,
-}: IVideoPreview) => {
+const renderVideoPreview = ({ VideoPreviewComponent, file }: IVideoPreview) => {
   const VideoComponent = VideoPreviewComponent ?? VideoPreview;
-  return <VideoComponent fileName={fileName} fileSize={fileSize} />;
+  return <VideoComponent file={file} />;
 };
 
 interface IAudioPreview extends IAudioPreviewProps {
@@ -192,8 +188,7 @@ export const UploadFileField = ({
       } else if (VIDEO_FILES_MIMES.includes(file.type)) {
         filePreview = renderVideoPreview({
           VideoPreviewComponent,
-          fileName: file.name,
-          fileSize: file.size,
+          file,
         });
       } else if (AUDIO_FILES_MIMES.includes(file.type)) {
         filePreview = renderAudioPreview({

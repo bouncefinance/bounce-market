@@ -26,10 +26,11 @@ export interface ISetBgImgValues {
 const validateForm = (payload: ISetBgImgValues) => {
   const errors: FormErrors<ISetBgImgValues> = {};
 
-  if (payload.bgImg && !FILE_ACCEPTS.includes(payload.bgImg.type)) {
+  if (!payload.bgImg) {
+    errors.bgImg = t('validation.required');
+  } else if (!FILE_ACCEPTS.includes(payload.bgImg.type)) {
     errors.bgImg = t('validation.invalid-type');
-  }
-  if (payload.bgImg && payload.bgImg.size > MAX_SIZE) {
+  } else if (payload.bgImg.size > MAX_SIZE) {
     errors.bgImg = t('validation.max-size', {
       value: convertBytesToMegabytes(MAX_SIZE),
     });

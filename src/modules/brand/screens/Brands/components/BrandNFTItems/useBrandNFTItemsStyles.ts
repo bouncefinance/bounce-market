@@ -59,6 +59,7 @@ export const useBrandNFTItemsStyles = makeStyles<Theme>(theme => ({
 
   itemImgFrame: {
     position: 'relative',
+    overflow: 'hidden',
   },
 
   videoWrapper: {
