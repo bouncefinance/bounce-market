@@ -10,7 +10,7 @@ import { InfoTabs } from 'modules/buyNFT/components/InfoTabs';
 import { InfoTabsItem } from 'modules/buyNFT/components/InfoTabsItem';
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
 import { useCallback, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { useDialog } from './useDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
@@ -26,6 +26,8 @@ import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDet
 import { throwIfDataIsEmptyOrError } from '../../../common/utils/throwIfDataIsEmptyOrError';
 import { AuctionState } from '../../../common/const/AuctionState';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
+import { Address } from '../../../common/types/unit';
+import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -44,6 +46,7 @@ export const BuyNFT = () => {
     opened: openedEnglishBuy,
     toggleDialog: toggleEnglishBuyDialog,
   } = useDialog();
+  const { push } = useHistory();
 
   const handleBid = useCallback(
     values => {
@@ -61,19 +64,30 @@ export const BuyNFT = () => {
   );
 
   const handleBuyFixed = useCallback(
-    values => {
+    (values: {
+      nftType: NftType;
+      unitContract: Address;
+      amountTotal0: number;
+      amountTotal1: BigNumber;
+      poolId: number;
+      quantity: number;
+    }) => {
       dispatch(
         buyFixed({
-          nftType: NftType.ERC1155,
-          unitContract: '',
-          amountTotal1: new BigNumber(0),
-          poolId: 0,
-          amountTotal0: new BigNumber(1),
-          amount: new BigNumber(0),
+          nftType: values.nftType,
+          unitContract: values.unitContract,
+          amountTotal1: values.amountTotal1,
+          poolId: poolId,
+          amountTotal0: values.amountTotal0,
+          quantity: values.quantity,
         }),
-      );
+      ).then(({ error }) => {
+        if (!error) {
+          push(ProfileRoutesConfig.UserProfile.generatePath());
+        }
+      });
     },
-    [dispatch],
+    [dispatch, poolId, push],
   );
 
   const handleBuyEnglish = useCallback(
@@ -86,9 +100,13 @@ export const BuyNFT = () => {
           amountTotal1: new BigNumber(0),
           poolId: 0,
         }),
-      );
+      ).then(({ error }) => {
+        if (!error) {
+          push(ProfileRoutesConfig.UserProfile.generatePath());
+        }
+      });
     },
-    [dispatch],
+    [dispatch, push],
   );
 
   useEffect(() => {
@@ -303,23 +321,35 @@ export const BuyNFT = () => {
                   )}
                 </Mutation>
 
-                <Mutation type={buyFixed.toString()} action={buyFixed}>
-                  {({ loading }) => (
-                    <BuyDialog
-                      name={item.itemname}
-                      filepath={item.fileurl}
-                      onSubmit={handleBuyFixed}
-                      isOpen={openedFixedBuy}
-                      onClose={toggleFixedBuyDialog(false)}
-                      owner="Bombist"
-                      ownerAvatar="https://picsum.photos/44?random=1"
-                      isOwnerVerified={false}
-                      readonly={item.standard === NftType.ERC721}
-                      category={item.category}
-                      disabled={loading}
-                    />
-                  )}
-                </Mutation>
+                {!isEnglishAuction(poolDetails) && (
+                  <Mutation type={buyFixed.toString()} action={buyFixed}>
+                    {({ loading }) => (
+                      <BuyDialog
+                        name={item.itemname}
+                        filepath={item.fileurl}
+                        onSubmit={data => {
+                          handleBuyFixed({
+                            nftType: poolDetails.nftType,
+                            unitContract: poolDetails.unitContract,
+                            amountTotal0: poolDetails.quantity,
+                            amountTotal1: poolDetails.totalPrice,
+                            poolId: poolDetails.poolId,
+                            quantity: parseInt(data.quantity),
+                          });
+                        }}
+                        isOpen={openedFixedBuy}
+                        onClose={toggleFixedBuyDialog(false)}
+                        owner="Bombist"
+                        ownerAvatar="https://picsum.photos/44?random=1"
+                        isOwnerVerified={false}
+                        readonly={item.standard === NftType.ERC721}
+                        category={item.category}
+                        disabled={loading}
+                        maxQuantity={poolDetails.quantity}
+                      />
+                    )}
+                  </Mutation>
+                )}
               </div>
             );
           }}

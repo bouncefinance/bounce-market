@@ -44,6 +44,7 @@ export enum ProductCardStatuses {
 export interface IProductCardProps {
   className?: string;
   price?: BigNumber;
+  isOnSale?: boolean;
   title: string;
   priceType?: string;
   endDate?: Date;
@@ -65,6 +66,7 @@ export const ProductCard = ({
   className,
   href,
   price,
+  isOnSale,
   title,
   priceType,
   endDate,
@@ -82,7 +84,6 @@ export const ProductCard = ({
 }: IProductCardProps) => {
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const isOnSale = !!price;
   const isPopoverOpened = Boolean(anchorEl);
   const isMinting = status === ProductCardStatuses.minting;
   const isOnSalePending = status === ProductCardStatuses.onSalePending;
@@ -220,7 +221,7 @@ export const ProductCard = ({
 
         <hr className={classes.devider} />
 
-        {price && (
+        {isOnSale && price && (
           <div className={classes.price}>
             {price.toFormat()} {priceType}
           </div>

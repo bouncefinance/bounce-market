@@ -15,10 +15,10 @@ import { BounceERC20, BounceFixedSwapNFT } from '../../web3/contracts';
 interface IBuyFixedPayload {
   nftType: NftType;
   unitContract: Address;
+  amountTotal0: number;
   amountTotal1: BigNumber;
   poolId: number;
-  amountTotal0: BigNumber;
-  amount: BigNumber;
+  quantity: number;
 }
 
 export const buyFixed = createSmartAction<
@@ -26,7 +26,7 @@ export const buyFixed = createSmartAction<
   [IBuyFixedPayload]
 >(
   'buyFixed',
-  ({ nftType, unitContract, amountTotal1, poolId, amountTotal0, amount }) => {
+  ({ nftType, unitContract, amountTotal1, poolId, amountTotal0, quantity }) => {
     return {
       request: {
         promise: (async function () {})(),
@@ -57,11 +57,15 @@ export const buyFixed = createSmartAction<
                   getFixedSwapContract(chainId),
                 );
 
-                const bid = (value?: string) =>
-                  new Promise((resolve, reject) =>
+                const buy = (value?: string) => {
+                  return new Promise((resolve, reject) => {
                     BounceFixedSwapNFT_CT.methods
                       .swap(poolId, amountTotal0)
-                      .send({ from: address, value })
+                      // Apply precise
+                      .send({
+                        from: address,
+                        value: value ? web3.utils.toWei(value) : undefined,
+                      })
                       .on('transactionHash', (hash: string) => {
                         // Pending status
                       })
@@ -70,11 +74,12 @@ export const buyFixed = createSmartAction<
                       })
                       .on('error', (error: Error) => {
                         reject(error);
-                      }),
-                  );
+                      });
+                  });
+                };
 
                 if (unitContract === ZERO_ADDRESS) {
-                  await bid(amountTotal1.toFixed());
+                  await buy(amountTotal1.toFixed());
                 } else {
                   const allowance = await BounceERC20_CT.methods
                     .allowance(address, getFixedSwapContract(chainId))
@@ -96,18 +101,21 @@ export const buyFixed = createSmartAction<
                       throw new Error('TODO Error description');
                     }
                   }
-                }
 
-                await bid();
+                  await buy();
+                }
               } else {
                 const BounceFixedSwapNFT_CT = new web3.eth.Contract(
                   BounceFixedSwapNFT,
                   getFixedSwapContract(chainId),
                 );
 
-                const _amount0 = amount;
+                const _amount0 = quantity;
                 const _amount1 = Web3.utils.toWei(
-                  amountTotal1.div(amountTotal0).multipliedBy(amount).toFixed(),
+                  amountTotal1
+                    .div(amountTotal0)
+                    .multipliedBy(quantity)
+                    .toFixed(),
                 );
 
                 const bid = (value?: string) =>
@@ -149,9 +157,9 @@ export const buyFixed = createSmartAction<
                       throw new Error('TODO Error description');
                     }
                   }
-                }
 
-                await bid();
+                  await bid();
+                }
               }
             })(),
           };

@@ -88,7 +88,10 @@ export const fetchWeb3PoolDetails = createSmartAction<
 
                 return {
                   quantity: parseInt(pools.amountTotal0),
-                  totalPrice: new BigNumber(0),
+                  // TODO: Apply precision
+                  totalPrice: new BigNumber(
+                    web3.utils.fromWei(pools.amountTotal1),
+                  ),
                   createTime: new Date(),
                   creator: pools.creator,
                   name: pools.name,

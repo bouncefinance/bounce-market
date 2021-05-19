@@ -37,6 +37,7 @@ interface IBuyDialogProps {
   readonly: boolean;
   category: 'image' | 'video';
   disabled?: boolean;
+  maxQuantity?: number;
 }
 
 export const BuyDialog = ({
@@ -49,22 +50,28 @@ export const BuyDialog = ({
   owner,
   ownerAvatar,
   readonly,
-  disabled,
   category,
+  disabled,
+  maxQuantity,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
 
-  const validateForm = useCallback(({ quantity }: IBuyFormValues) => {
-    const errors: FormErrors<IBuyFormValues> = {};
+  const validateForm = useCallback(
+    ({ quantity }: IBuyFormValues) => {
+      const errors: FormErrors<IBuyFormValues> = {};
 
-    if (!quantity) {
-      errors.quantity = t('validation.required');
-    } else if (+quantity < MIN_QUANTITY) {
-      errors.quantity = `It must be grater than ${MIN_QUANTITY - 1}`;
-    }
+      if (!quantity) {
+        errors.quantity = t('validation.required');
+      } else if (+quantity < MIN_QUANTITY) {
+        errors.quantity = t('error.greater-than', { value: MIN_QUANTITY - 1 });
+      } else if (maxQuantity && +quantity > maxQuantity) {
+        errors.quantity = t('error.less-than', { value: maxQuantity + 1 });
+      }
 
-    return errors;
-  }, []);
+      return errors;
+    },
+    [maxQuantity],
+  );
 
   const renderForm = useCallback(
     ({ handleSubmit, values, form }: FormRenderProps<IBuyFormValues>) => {

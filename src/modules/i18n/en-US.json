@@ -71,7 +71,9 @@
   },
   "error": {
     "unexpected": "Unexpected error",
-    "data-is-not-available": "Data is not available"
+    "data-is-not-available": "Data is not available",
+    "greater-than": "It must be greater than {value}",
+    "less-than": "It must be less than {value}"
   },
   "go-back": {
     "action": "Go back"

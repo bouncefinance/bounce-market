@@ -101,6 +101,7 @@ export const fetchAllNftByUser: (
                         ? pool.amountMin1
                         : pool.lastestBidAmount
                       : pool.price,
+                    state: pool.state,
                   };
                 }
 

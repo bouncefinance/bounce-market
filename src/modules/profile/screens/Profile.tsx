@@ -35,6 +35,7 @@ import { Tabs } from '../components/Tabs';
 import { Tab } from '../components/Tabs/Tab';
 import { ProfileRoutesConfig, ProfileTab } from '../ProfileRoutes';
 import { useProfileStyles } from './useProfileStyles';
+import { AuctionState } from '../../common/const/AuctionState';
 
 const followings: IFollowingItemProps[] = [
   {
@@ -202,8 +203,8 @@ export const Profile = () => {
             <TabItems>
               <Grid container spacing={4}>
                 <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
-                  {({ data }) =>
-                    data?.map((item: IItem) => (
+                  {({ data }) => {
+                    return data?.map((item: IItem) => (
                       <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
                         <ProductCard
                           key={uid(item)}
@@ -219,6 +220,7 @@ export const Profile = () => {
                           // status={item.status}
                           // UPDATE price
                           price={item.poolId ? item.price : undefined}
+                          isOnSale={item.state === AuctionState.Live}
                           copies={item.supply}
                           MediaProps={{
                             category: item.category,
@@ -243,8 +245,8 @@ export const Profile = () => {
                           )}
                         />
                       </Grid>
-                    ))
-                  }
+                    ));
+                  }}
                 </Queries>
               </Grid>
             </TabItems>
