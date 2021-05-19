@@ -346,7 +346,6 @@ export const mainTheme = createMuiTheme({
         '&:before': {
           content: `''`,
           position: 'absolute',
-          borderRadius: 'inherit',
           top: -1,
           left: -1,
           right: -1,
@@ -392,7 +391,6 @@ export const mainTheme = createMuiTheme({
         '&:before': {
           content: `''`,
           position: 'absolute',
-          borderRadius: 'inherit',
           top: -1,
           left: -1,
           right: -1,
