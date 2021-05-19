@@ -1,4 +1,5 @@
 import { Grid, Hidden } from '@material-ui/core';
+import classNames from 'classnames';
 import { t } from 'modules/i18n/utils/intl';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import { useIsMDUp } from 'modules/themes/useTheme';
@@ -88,7 +89,7 @@ export const ProductsPanel = ({
   );
 
   return (
-    <div className={className}>
+    <div className={classNames(className, classes.root)}>
       <Grid container alignItems="center" spacing={3}>
         <Grid item xs={6} md>
           <Hidden mdDown>

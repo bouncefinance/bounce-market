@@ -1,8 +1,9 @@
-import { Container, Grid } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
+import { ProductCards } from 'modules/common/components/ProductCards';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
@@ -200,53 +201,51 @@ export const Profile = () => {
         <TabPanel value={tab} index={ProfileTab.items}>
           {hasItems || allNftByUserQuery.loading ? (
             <TabItems>
-              <Grid container spacing={4}>
+              <ProductCards>
                 <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
                   {({ data }) =>
                     data?.map((item: IItem) => (
-                      <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
-                        <ProductCard
-                          key={uid(item)}
-                          title={item.itemName}
-                          href={
-                            item.poolId && item.poolType
-                              ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                                  item.poolId,
-                                  item.poolType,
-                                )
-                              : ''
-                          }
-                          // status={item.status}
-                          // UPDATE price
-                          price={item.poolId ? item.price : undefined}
-                          copies={item.supply}
-                          MediaProps={{
-                            category: item.category,
-                            src: item.fileUrl,
-                            objectFit: 'scale-down',
-                            loading: 'lazy',
-                          }}
-                          ProfileInfoProps={{
-                            subTitle: 'Owner',
-                            title: '1livinginzen',
-                            users: [
-                              {
-                                name: 'name',
-                                avatar: 'https://via.placeholder.com/32',
-                                verified: true,
-                              },
-                            ],
-                          }}
-                          toSale={RoutesConfiguration.PublishNft.generatePath(
-                            item.contractAddress,
-                            item.id,
-                          )}
-                        />
-                      </Grid>
+                      <ProductCard
+                        key={uid(item)}
+                        title={item.itemName}
+                        href={
+                          item.poolId && item.poolType
+                            ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                                item.poolId,
+                                item.poolType,
+                              )
+                            : ''
+                        }
+                        // status={item.status}
+                        // UPDATE price
+                        price={item.poolId ? item.price : undefined}
+                        copies={item.supply}
+                        MediaProps={{
+                          category: item.category,
+                          src: item.fileUrl,
+                          objectFit: 'scale-down',
+                          loading: 'lazy',
+                        }}
+                        ProfileInfoProps={{
+                          subTitle: 'Owner',
+                          title: '1livinginzen',
+                          users: [
+                            {
+                              name: 'name',
+                              avatar: 'https://via.placeholder.com/32',
+                              verified: true,
+                            },
+                          ],
+                        }}
+                        toSale={RoutesConfiguration.PublishNft.generatePath(
+                          item.contractAddress,
+                          item.id,
+                        )}
+                      />
                     ))
                   }
                 </Queries>
-              </Grid>
+              </ProductCards>
             </TabItems>
           ) : (
             <NoItems href={MarketRoutesConfig.Market.generatePath()} />

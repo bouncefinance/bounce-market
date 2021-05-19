@@ -27,11 +27,6 @@ export const useWalletStyles = makeStyles<Theme>(theme => ({
     height: 44,
     marginLeft: theme.spacing(1.5),
     borderRadius: '50%',
-
-    background: `
-      linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 50%),
-      linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)
-    `,
   },
 
   dropdown: {

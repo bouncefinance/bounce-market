@@ -66,7 +66,6 @@ export const fetchNFTItems = createSmartAction<
               },
             ),
           );
-          console.log({ poolsData });
 
           if (!poolsData) {
             return [];
@@ -106,7 +105,6 @@ export const fetchNFTItems = createSmartAction<
               },
             ),
           );
-          console.log({ itemsByFilterData });
 
           if (!itemsByFilterData) {
             return [];
@@ -117,7 +115,6 @@ export const fetchNFTItems = createSmartAction<
               const poolInfo = itemsByFilterData.find(
                 r => r.id === pool.tokenId,
               );
-              // console.log(poolInfo)
               return {
                 ...poolInfo,
                 category: poolInfo?.category,
@@ -130,8 +127,6 @@ export const fetchNFTItems = createSmartAction<
             })
             .filter(item => item.fileurl)
             .sort((a, b) => b.createTime - a.createTime);
-
-          console.log({ mappedItems });
 
           return mappedItems;
         })(),

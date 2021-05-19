@@ -10,6 +10,7 @@ export const featuresConfig = {
   profileSocialLinks: false,
   artists: false,
   loadMoreNFTs: false,
+  howItWorkPage: false,
 };
 
 export enum BlockchainNetworkId {

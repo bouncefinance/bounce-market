@@ -7,6 +7,7 @@ import {
   ThemeProvider,
 } from '@material-ui/core';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { featuresConfig } from 'modules/common/conts';
 import { getTheme } from 'modules/common/utils/getTheme';
 import { t } from 'modules/i18n/utils/intl';
 import { Themes } from 'modules/themes/types';
@@ -23,8 +24,6 @@ import { Toggle } from '../Toggle';
 import { Wallet } from '../Wallet';
 import { useHeaderStyles } from './HeaderStyles';
 import { useHeader } from './useHeader';
-
-const ENABLE_HOW_IT_WORKS_PAGE = false;
 
 export const Header = () => {
   const {
@@ -46,7 +45,7 @@ export const Header = () => {
     <>
       <Search className={classes.search} />
       <HeaderLinks />
-      {ENABLE_HOW_IT_WORKS_PAGE && <HeaderLinksSecondary />}
+      {featuresConfig.howItWorkPage && <HeaderLinksSecondary />}
       <Button
         rounded
         component={RouterLink}
@@ -123,7 +122,7 @@ export const Header = () => {
                   <Box mb={5}>
                     <HeaderLinks />
 
-                    <HeaderLinksSecondary />
+                    {featuresConfig.howItWorkPage && <HeaderLinksSecondary />}
                   </Box>
 
                   <Box mt="auto" mb={3}>
