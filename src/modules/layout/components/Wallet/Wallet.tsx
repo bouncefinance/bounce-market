@@ -1,4 +1,3 @@
-import { Avatar } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
 import classNames from 'classnames';
 import bnbLogo from 'modules/account/assets/bnb.svg'; // TODO: need provide logo from API?
