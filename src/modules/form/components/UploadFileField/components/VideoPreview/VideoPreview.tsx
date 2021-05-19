@@ -6,7 +6,7 @@ import { ReactComponent as VideoPic } from './assets/video.svg';
 import { t } from 'modules/i18n/utils/intl';
 import { convertBytesToMegabytes } from 'modules/common/types/unit';
 
-interface IVideoPreviewProps {
+export interface IVideoPreviewProps {
   fileName: string;
   fileSize: number;
 }

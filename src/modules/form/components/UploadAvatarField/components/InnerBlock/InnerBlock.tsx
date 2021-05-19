@@ -6,7 +6,7 @@ import {
 import { PencilIcon } from 'modules/common/components/Icons/PencilIcon';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useUploadAvatarFieldStyles } from '../../useUploadAvatarFieldStyles';
 
 export interface IInitialBlock {
@@ -25,6 +25,10 @@ export const InnerBlock = ({
   handleReset,
 }: IInitialBlock) => {
   const classes = useUploadAvatarFieldStyles();
+
+  const handleClick = useCallback(() => {
+    inputRef.current.click();
+  }, [inputRef]);
 
   return (
     <div className={classes.innerBlock}>
@@ -49,7 +53,7 @@ export const InnerBlock = ({
           <Button
             variant="outlined"
             rounded
-            onClick={() => inputRef.current.click()}
+            onClick={handleClick}
             className={classes.button}
           >
             {t('upload-file-field.choose-file')}
@@ -61,7 +65,7 @@ export const InnerBlock = ({
               onClick={handleReset}
               className={classes.button}
             >
-              {t('upload-file-field.reset')}
+              {t('common.reset')}
             </Button>
           )}
         </div>

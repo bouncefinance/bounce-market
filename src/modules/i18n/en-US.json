@@ -5,7 +5,12 @@
     "view-all": "View all",
     "submitting": "Submitting",
     "copy-to-clipboard": "Copy to clipboard",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "save": "Save",
+    "apply": "Apply",
+    "close": "Close",
+    "reset": "Reset",
+    "restore": "Restore"
   },
   "header": {
     "create": "Create",
@@ -133,7 +138,6 @@
     "formats-many": "Supports {firstTypes} or {lastType}",
     "formats-one": "Supports {fileType} only",
     "max-size": "Max {value}MB",
-    "reset": "Reset",
     "file-uploaded": "File uploaded",
     "file-data": "{fileName} {fileSize}MB"
   },
@@ -278,5 +282,11 @@
   "buy-dialog": {
     "title": "Buy now",
     "submit": "Buy"
+  },
+  "cropper": {
+    "rotate-left": "Rotate left",
+    "rotate-right": "Rotate right",
+    "flip-v": "Flip vertical",
+    "flip-h": "Flip horizontal"
   }
 }

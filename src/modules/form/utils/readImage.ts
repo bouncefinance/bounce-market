@@ -1,17 +1,11 @@
+import { IMAGE_FILES_MIMES } from '../../common/utils/mimeTypes';
+
 const WrongFormatError = new Error('Wrong format');
 
 export function readImage(
   file: File,
 ): Promise<{ image: string; filename: string }> {
-  if (
-    file.type === 'image/png' ||
-    file.type === 'image/jpg' ||
-    file.type === 'image/jpeg' ||
-    file.type === 'image/jp2' ||
-    file.type === 'image/jpm' ||
-    file.type === 'image/webp' ||
-    file.type === 'image/gif'
-  ) {
+  if (IMAGE_FILES_MIMES.includes(file.type)) {
     const reader = new FileReader();
 
     reader.readAsDataURL(file);

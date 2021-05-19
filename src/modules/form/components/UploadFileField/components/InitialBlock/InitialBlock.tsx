@@ -5,7 +5,7 @@ import { t, tHTML } from 'modules/i18n/utils/intl';
 import { Bytes, convertBytesToMegabytes } from 'modules/common/types/unit';
 import { useUploadFileStyles } from '../../useUploadFileStyles';
 
-export interface IInitialBlock {
+export interface IInitialBlockProps {
   input: JSX.Element;
   acceptsHint?: string[];
   maxSize?: Bytes;
@@ -15,7 +15,7 @@ export const InitialBlock = ({
   input,
   acceptsHint,
   maxSize,
-}: IInitialBlock) => {
+}: IInitialBlockProps) => {
   const classes = useUploadFileStyles();
 
   const acceptsHintString = useCallback(() => {

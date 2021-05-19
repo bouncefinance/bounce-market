@@ -6,12 +6,12 @@ import { ReactComponent as FilePic } from './assets/file.svg';
 import { t } from 'modules/i18n/utils/intl';
 import { convertBytesToMegabytes } from 'modules/common/types/unit';
 
-interface IAudioPreviewProps {
+export interface IFilePreviewProps {
   fileName: string;
   fileSize: number;
 }
 
-export const FilePreview = ({ fileName, fileSize }: IAudioPreviewProps) => {
+export const FilePreview = ({ fileName, fileSize }: IFilePreviewProps) => {
   const classes = useUploadFileStyles();
 
   return (
