@@ -2,6 +2,7 @@ import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
@@ -158,6 +159,7 @@ export const Profile = () => {
       <SetBgImgModal
         isOpen={isBgImgModalOpened}
         onClose={toggleBgImgModal(false)}
+        fileType={UploadFileType.BgImg}
       />
 
       <Container>

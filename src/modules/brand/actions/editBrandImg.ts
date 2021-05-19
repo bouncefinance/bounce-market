@@ -3,32 +3,33 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
+import { showSuccesNotify } from 'modules/profile/actions/showSuccesNotify';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { IProfileInfo } from '../api/profileInfo';
-import { fetchProfileInfo } from './fetchProfileInfo';
-import { showSuccesNotify } from './showSuccesNotify';
-import { editProfile } from './editProfile';
+import { IBrandInfo } from '../api/queryBrand';
+import { EditBrandImgAction } from './const';
+import { getAccountBrand } from './getAccountBrand';
 
-function isAccountNotExist(data: any) {
+function isError(data: any) {
   return (
-    data.code === 0 &&
-    data.msg === 'bandimg update:accountaddress is not existed.'
+    data.code === 0 
   );
 }
 
-interface IEditProfileBgImgArgs {
-  imgUrl: string;
+interface IEditBrandImgArgs {
+  imgUrl: string,
+  brandId: number,
 }
 
-export const editProfileBgImg = createSmartAction<RequestAction>(
-  'editProfileBgImg',
-  ({ imgUrl }: IEditProfileBgImgArgs) => ({
+export const editBrandImg = createSmartAction<RequestAction>(
+  EditBrandImgAction,
+  ({ imgUrl, brandId }: IEditBrandImgArgs) => ({
     request: {
-      url: '/api/v2/main/auth/updateaccountbandimg',
+      url: '/api/v2/main/auth/updatebandimg',
       method: 'post',
       data: {
+        id: brandId,
         bandimgurl: imgUrl,
       },
     },
@@ -52,13 +53,13 @@ export const editProfileBgImg = createSmartAction<RequestAction>(
         return request;
       },
       mutations: {
-        [fetchProfileInfo.toString()]: (
-          data: IProfileInfo | undefined,
-          { code }: { code: number; msg: any },
-        ): IProfileInfo | undefined => {
+        [getAccountBrand.toString()]: (
+          data: IBrandInfo | undefined,
+          { code, msg }: { code: number; msg: any },
+        ): IBrandInfo | undefined => {
           if (code === 1) {
             const updatedData = {
-              bgImgUrl: imgUrl,
+              bandimgurl: imgUrl,
             };
 
             if (data) {
@@ -67,20 +68,9 @@ export const editProfileBgImg = createSmartAction<RequestAction>(
                 ...updatedData,
               };
             }
-
-            return {
-              imgUrl: '',
-              accountAddress: '',
-              followCount: 0,
-              bio: '',
-              email: '',
-              fullName: '',
-              username: '',
-              ...updatedData,
-            };
+            return data;
           }
 
-          return data;
         },
       },
       onSuccess: async (
@@ -88,8 +78,7 @@ export const editProfileBgImg = createSmartAction<RequestAction>(
         action: RequestAction,
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
-        if (isAccountNotExist(response.data)) {
-          await store.dispatchRequest(editProfile({}));
+        if (isError(response.data)) {
           await store.dispatchRequest(action);
         } else {
           store.dispatch(showSuccesNotify());
