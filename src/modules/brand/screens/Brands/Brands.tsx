@@ -3,15 +3,16 @@ import { useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { listBrands } from 'modules/brand/actions/listBrands';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
+import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { Subscribers } from 'modules/profile/components/Subscribers';
 import { Section } from 'modules/uiKit/Section';
 import React, { useEffect } from 'react';
+import { Queries } from '../../../common/components/Queries/Queries';
+import { ResponseData } from '../../../common/types/ResponseData';
 import { BrandNFTItems } from './components/BrandNFTItems';
 import { BrandsItem } from './components/BrandsItem';
 import { BrandsList } from './components/BrandsList';
-import { Queries } from '../../../common/components/Queries/Queries';
-import { ResponseData } from '../../../common/types/ResponseData';
 
 export const Brands = () => {
   const dispatch = useDispatchRequest();
@@ -52,7 +53,11 @@ export const Brands = () => {
                         contractAddress={contractaddress}
                       />
                     }
-                    followers={<Subscribers withFollow />}
+                    followers={
+                      featuresConfig.subscribers ? (
+                        <Subscribers withFollow />
+                      ) : undefined
+                    }
                   />
                 ),
               )}

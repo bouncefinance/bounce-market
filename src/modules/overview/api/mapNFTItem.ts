@@ -3,7 +3,6 @@ import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import Web3 from 'web3';
 import { NFTCategoryType } from '../actions/fetchItemsByFilter';
 import { INFTItem } from '../actions/fetchNFTItems';
-import { AuctionType } from './auctionType';
 
 export const mapNFTItem = (item: INFTItem) => ({
   href:
@@ -14,9 +13,10 @@ export const mapNFTItem = (item: INFTItem) => ({
   title: item.itemname || '',
   priceType: 'BNB',
   likes: item.likecount,
-  copies: item.poolType === AuctionType.FixedSwap ? 3 : undefined,
-  endDate:
-    item.poolType === AuctionType.EnglishAuction ? new Date() : undefined,
+  // TODO: get NFT item copies data
+  copies: undefined,
+  // TODO: get NFT item end date data
+  endDate: undefined,
   ProfileInfoProps: {
     subTitle: 'Owner',
     title: '1livinginzen',

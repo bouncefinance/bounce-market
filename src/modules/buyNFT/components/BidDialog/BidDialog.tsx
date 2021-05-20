@@ -18,8 +18,8 @@ import { Img } from 'modules/uiKit/Img';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
-import { useBidDialogStyles } from './useBidDialogStyles';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { useBidDialogStyles } from './useBidDialogStyles';
 
 const MIN_QUANTITY = 1;
 
@@ -37,7 +37,7 @@ interface IBidDialogProps {
   onClose?: () => void;
   onSubmit: (values: IBidFormValues, form: any, callback: any) => void;
   owner: string;
-  ownerAvatar: string;
+  ownerAvatar?: string;
   category: 'image' | 'video';
   disabled: boolean;
   maxQuantity: number;

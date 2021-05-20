@@ -1,5 +1,6 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
+import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import Truncate from 'react-truncate';
 import { useInfoDescrStyles } from './useInfoDescrStyles';
@@ -9,9 +10,9 @@ const DESCR_LINES = 3;
 
 interface IInfoDescrProps {
   title: string;
-  description: string;
-  creator: JSX.Element;
-  owner: JSX.Element;
+  description?: string;
+  creator?: JSX.Element;
+  owner?: JSX.Element;
   copiesCurrent?: string | number;
   copiesTotal?: string | number;
 }
@@ -41,57 +42,67 @@ export const InfoDescr = ({
       </Box>
 
       <Grid container spacing={3} alignItems="center">
-        <Grid item xs>
-          {creator}
-        </Grid>
+        {creator && featuresConfig.nftDetailsCreator && (
+          <Grid item xs>
+            {creator}
+          </Grid>
+        )}
 
-        <Grid item xs>
-          {owner}
-        </Grid>
+        {owner && (
+          <Grid item xs>
+            {owner}
+          </Grid>
+        )}
 
-        <Grid item xs="auto">
-          <div className={classes.copies}>
-            <LayersIcon className={classes.copiesIcon} />
-            {`${copiesCurrent}/${copiesTotal}`}
-          </div>
-        </Grid>
+        {featuresConfig.nftDetailsCount && (
+          <Grid item xs="auto">
+            <div className={classes.copies}>
+              <LayersIcon className={classes.copiesIcon} />
+              {`${copiesCurrent}/${copiesTotal}`}
+            </div>
+          </Grid>
+        )}
       </Grid>
 
-      <Box component="hr" className={classes.hr} my={3.5} />
+      {description && (
+        <>
+          <Box component="hr" className={classes.hr} my={3.5} />
 
-      <Box className={classes.description}>
-        <Truncate
-          lines={!expanded && DESCR_LINES}
-          onTruncate={onTruncate}
-          ellipsis={
-            <>
-              ...
-              <br />
-              <Button
-                className={classes.textToggle}
-                variant="text"
-                onClick={toggleExpanded(true)}
-              >
-                {t('details-nft.descr-full')} ⬇
-              </Button>
-            </>
-          }
-        >
-          {description}
-        </Truncate>
-
-        {!truncated && expanded && (
-          <Box>
-            <Button
-              className={classes.textToggle}
-              variant="text"
-              onClick={toggleExpanded(false)}
+          <Box className={classes.description}>
+            <Truncate
+              lines={!expanded && DESCR_LINES}
+              onTruncate={onTruncate}
+              ellipsis={
+                <>
+                  ...
+                  <br />
+                  <Button
+                    className={classes.textToggle}
+                    variant="text"
+                    onClick={toggleExpanded(true)}
+                  >
+                    {t('details-nft.descr-full')} ⬇
+                  </Button>
+                </>
+              }
             >
-              {t('details-nft.descr-short')} ⬆
-            </Button>
+              {description}
+            </Truncate>
+
+            {!truncated && expanded && (
+              <Box>
+                <Button
+                  className={classes.textToggle}
+                  variant="text"
+                  onClick={toggleExpanded(false)}
+                >
+                  {t('details-nft.descr-short')} ⬆
+                </Button>
+              </Box>
+            )}
           </Box>
-        )}
-      </Box>
+        </>
+      )}
     </>
   );
 };

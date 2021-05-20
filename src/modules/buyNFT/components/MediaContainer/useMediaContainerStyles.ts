@@ -1,4 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core';
+import { featuresConfig } from 'modules/common/conts';
 
 export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
   root: {
@@ -38,7 +39,7 @@ export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
     marginTop: theme.spacing(2.5),
     display: 'grid',
     gridTemplateColumns: 'repeat(2, auto)',
-    justifyContent: 'space-between',
+    justifyContent: featuresConfig.nftLikes ? 'space-between' : 'center',
   },
 
   btn: {

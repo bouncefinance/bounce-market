@@ -214,12 +214,14 @@ export const ProductCard = ({
           variant="h5"
           className={classes.title}
           title={title}
-          style={!featuresConfig.nftOwnerInfo ? { margin: 0 } : undefined}
+          style={!featuresConfig.nftCardOwnerInfo ? { margin: 0 } : undefined}
         >
           {title}
         </Typography>
 
-        {featuresConfig.nftOwnerInfo && <ProfileInfo {...ProfileInfoProps} />}
+        {featuresConfig.nftCardOwnerInfo && (
+          <ProfileInfo {...ProfileInfoProps} />
+        )}
 
         <hr className={classes.devider} />
 
@@ -236,7 +238,9 @@ export const ProductCard = ({
 
               {endDate && renderTimer()}
 
-              {typeof likes === 'number' && renderedLikes}
+              {typeof likes === 'number' &&
+                featuresConfig.nftLikes &&
+                renderedLikes}
             </>
           )}
 
