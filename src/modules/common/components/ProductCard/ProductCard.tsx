@@ -17,6 +17,7 @@ import {
   IProfileInfoProps,
   ProfileInfo,
 } from 'modules/common/components/ProfileInfo';
+import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
@@ -24,8 +25,8 @@ import React, { ReactNode, useCallback, useState } from 'react';
 import { Link, Link as RouterLink } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
-import { useProductCardStyles } from './useProductCardStyles';
 import { VideoPlayer } from '../VideoPlayer';
+import { useProductCardStyles } from './useProductCardStyles';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -209,11 +210,16 @@ export const ProductCard = ({
       )}
 
       <CardContent className={classes.content}>
-        <Typography variant="h5" className={classes.title} title={title}>
+        <Typography
+          variant="h5"
+          className={classes.title}
+          title={title}
+          style={!featuresConfig.nftOwnerInfo ? { margin: 0 } : undefined}
+        >
           {title}
         </Typography>
 
-        <ProfileInfo {...ProfileInfoProps} />
+        {featuresConfig.nftOwnerInfo && <ProfileInfo {...ProfileInfoProps} />}
 
         <hr className={classes.devider} />
 
