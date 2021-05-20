@@ -1,12 +1,12 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
+import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { fetchPoolsWeight } from './fetchPoolsWeight';
-import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
-import { fetchItemsByIds } from './fetchItemsByIds';
-import { IItem } from '../api/getItems';
 import { AuctionType } from '../api/auctionType';
+import { IItem } from '../api/getItems';
+import { fetchItemsByIds } from './fetchItemsByIds';
+import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
+import { fetchPoolsWeight } from './fetchPoolsWeight';
 
 export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
   'fetchOverview',
@@ -74,13 +74,23 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                     return pool.data?.tokenId === item.id;
                   })?.data;
 
+                  const price =
+                    pool && isEnglishAuction(pool)
+                      ? pool.lastestBidAmount.toString() !== '0'
+                        ? pool.lastestBidAmount
+                        : pool.amountMin1
+                      : pool?.price || item.price;
+
                   return {
                     ...item,
+                    price,
                     poolId: pool?.poolId,
                     poolType:
                       pool && isEnglishAuction(pool)
                         ? AuctionType.EnglishAuction
                         : AuctionType.FixedSwap,
+                    closeAt:
+                      pool && isEnglishAuction(pool) ? pool.closeAt : undefined,
                   } as IItem;
                 })
                 .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());

@@ -1,8 +1,8 @@
+import BigNumber from 'bignumber.js';
+import { AuctionState } from '../../common/const/AuctionState';
 import { Address } from '../../common/types/unit';
 import { NftType } from '../../createNFT/actions/createNft';
-import BigNumber from 'bignumber.js';
 import { AuctionType } from './auctionType';
-import { AuctionState } from '../../common/const/AuctionState';
 
 export interface IApiItem {
   likecount: number;
@@ -60,6 +60,7 @@ export interface IItem {
   unlockableContent: number;
   createdAt: Date;
   updateAt: Date;
+  closeAt?: Date;
   poolId?: number;
   poolType?: AuctionType;
   state?: AuctionState;

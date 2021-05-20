@@ -234,7 +234,7 @@ export const Profile = () => {
                           users: [
                             {
                               name: 'name',
-                              avatar: `${profileInfo?.imgUrl}`,
+                              avatar: profileInfo?.imgUrl,
                               verified: true,
                             },
                           ],

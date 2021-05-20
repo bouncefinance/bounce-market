@@ -13,7 +13,6 @@ import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
-import { t } from '../../../i18n/utils/intl';
 import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
 import { RoutesConfiguration } from '../../Routes';
@@ -23,12 +22,11 @@ const PROMO_ITEMS_COUNT = 3;
 function mapPromoItem(item: IItem): IPromoItem {
   return {
     title: item.itemName || '',
-    text: item.itemName || '',
-    createdBy: item.itemName || '',
-    avatar: 'https://via.placeholder.com/40x40',
-    price: t('unit.BNB-value', {
-      value: item.price.toNumber(),
-    }),
+    text: item.description || '',
+    createdBy: item.ownerName || '',
+    avatar: undefined,
+    price: item.price,
+    priceType: 'BNB',
     img: item.fileUrl,
     thumbImg: item.fileUrl || '',
     href:
@@ -43,9 +41,10 @@ function mapMoversItem(item: IItem) {
   return {
     title: item.itemName || '',
     price: item.price,
-    priceType: 'USDT',
-    endDate: new Date(2021, 3, 30),
-    likes: 100,
+    priceType: 'BNB',
+    endDate: item.closeAt,
+    likes: item.likeCount,
+    copies: item.supply,
     href:
       item.poolId && item.poolType
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
