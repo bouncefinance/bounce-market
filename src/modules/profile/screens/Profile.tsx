@@ -230,11 +230,11 @@ export const Profile = () => {
                         }}
                         ProfileInfoProps={{
                           subTitle: 'Owner',
-                          title: '1livinginzen',
+                          title: `${profileInfo?.username ?? ''}`,
                           users: [
                             {
                               name: 'name',
-                              avatar: 'https://via.placeholder.com/32',
+                              avatar: `${profileInfo?.imgUrl ??'https://via.placeholder.com/32'}`,
                               verified: true,
                             },
                           ],

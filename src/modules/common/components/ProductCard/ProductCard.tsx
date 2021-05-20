@@ -26,7 +26,6 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { useProductCardStyles } from './useProductCardStyles';
 import { VideoPlayer } from '../VideoPlayer';
-import { ObjectFitType } from '../../types/ObjectFit';
 
 export type ProductCardCategoryType = 'image' | 'video';
 

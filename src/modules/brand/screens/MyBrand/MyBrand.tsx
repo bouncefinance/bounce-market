@@ -1,5 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
-import { useDispatchRequest } from '@redux-requests/react';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { getAccountBrand } from 'modules/brand/actions/getAccountBrand';
 import { listBrandItems } from 'modules/brand/actions/listBrandItems';
@@ -9,6 +9,8 @@ import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
@@ -23,6 +25,11 @@ export const MyBrand = () => {
   const { address } = useAccount();
   const [brandInfo, setBrandInfo] = useState<IBrandInfo>();
   const [items, setItems] = useState([])
+
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
+  });
+
   useEffect(() => {
     if (address) {
       dispatch(getAccountBrand(address))
@@ -104,11 +111,11 @@ export const MyBrand = () => {
             }}
             ProfileInfoProps={{
               subTitle: 'Owner',
-              title: '1livinginzen',
+              title: `${profileInfo?.username}`,
               users: [
                 {
                   name: 'name',
-                  avatar: 'https://via.placeholder.com/32',
+                  avatar: `${profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'}`,
                   verified: true,
                 },
               ],
