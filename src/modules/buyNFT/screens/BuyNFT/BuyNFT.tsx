@@ -81,22 +81,19 @@ export const BuyNFT = () => {
         | {
             amountMax1?: BigNumber;
             unitContract: string;
-            amountTotal1?: BigNumber;
             poolId: number;
           }
         | {
             bidPrice?: BigNumber;
             unitContract: string;
-            amountTotal1?: BigNumber;
             poolId: number;
           },
     ) => {
-      const { unitContract, amountTotal1, poolId } = value;
+      const { unitContract, poolId } = value;
       dispatch(
         bidEnglishAuction({
           amount: (value as any).amountMax1 || (value as any).bidPrice,
           unitContract,
-          amountTotal1,
           poolId,
         }),
       ).then(({ error }) => {
@@ -287,13 +284,10 @@ export const BuyNFT = () => {
                       <BidDialog
                         name={item.itemname}
                         filepath={item.fileurl}
-                        onSubmit={({ bid, quantity }) => {
+                        onSubmit={({ bid }) => {
                           handleBuyEnglish({
                             bidPrice: new BigNumber(bid),
                             unitContract: poolDetails.unitContract,
-                            amountTotal1: new BigNumber(bid).multipliedBy(
-                              quantity,
-                            ),
                             poolId: poolDetails.poolId,
                           });
                         }}
@@ -305,7 +299,9 @@ export const BuyNFT = () => {
                         isOwnerVerified={false}
                         category={item.category}
                         disabled={loading}
-                        readonlyQuantity={item.standard === NftType.ERC721}
+                        maxQuantity={item.supply}
+                        minIncrease={poolDetails.amountMinIncr1}
+                        lastestBidAmount={poolDetails.lastestBidAmount}
                       />
                     )}
                   </Mutation>
@@ -324,7 +320,6 @@ export const BuyNFT = () => {
                           handleBuyEnglish({
                             amountMax1: poolDetails.amountMax1,
                             unitContract: poolDetails.unitContract,
-                            amountTotal1: undefined,
                             poolId: poolDetails.poolId,
                           });
                         }}
@@ -333,7 +328,7 @@ export const BuyNFT = () => {
                         owner="Bombist"
                         ownerAvatar="https://picsum.photos/44?random=1"
                         isOwnerVerified={false}
-                        readonly={item.standard === NftType.ERC721}
+                        readonly={true}
                         category={item.category}
                         disabled={loading}
                       />

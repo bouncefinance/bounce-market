@@ -129,9 +129,9 @@ export const PublishNFTComponent = ({
       if (!payload.quantity) {
         errors.quantity = t('validation.required');
       } else if (+payload.quantity < MIN_AMOUNT) {
-        errors.quantity = t('validation.min', { value: MIN_AMOUNT - 1 });
+        errors.quantity = t('validation.min', { value: MIN_AMOUNT });
       } else if (+payload.quantity > maxQuantity) {
-        errors.quantity = t('validation.max', { value: maxQuantity + 1 });
+        errors.quantity = t('validation.max', { value: maxQuantity });
       }
 
       if (payload.type === AuctionType.FixedSwap) {

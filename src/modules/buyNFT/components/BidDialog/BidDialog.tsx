@@ -22,34 +22,11 @@ import { useBidDialogStyles } from './useBidDialogStyles';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 
 const MIN_QUANTITY = 1;
-const MIN_BID = 0.5;
 
 interface IBidFormValues {
   bid: string;
   quantity: string;
 }
-
-const validateForm = ({ bid, quantity }: IBidFormValues) => {
-  const errors: FormErrors<IBidFormValues> = {};
-  const currentBid = new BigNumber(bid);
-  const minBid = new BigNumber(MIN_BID);
-
-  if (!bid) {
-    errors.bid = t('validation.required');
-  } else if (currentBid.isLessThan(minBid)) {
-    errors.bid = t('validation.min', {
-      value: MIN_BID,
-    });
-  }
-
-  if (!quantity) {
-    errors.quantity = t('validation.required');
-  } else if (+quantity < MIN_QUANTITY) {
-    errors.quantity = `It must be grater than ${MIN_QUANTITY - 1}`;
-  }
-
-  return errors;
-};
 
 interface IBidDialogProps {
   currency?: string;
@@ -63,7 +40,9 @@ interface IBidDialogProps {
   ownerAvatar: string;
   category: 'image' | 'video';
   disabled: boolean;
-  readonlyQuantity: boolean;
+  maxQuantity: number;
+  minIncrease: BigNumber;
+  lastestBidAmount: BigNumber;
 }
 
 export const BidDialog = ({
@@ -78,9 +57,38 @@ export const BidDialog = ({
   ownerAvatar,
   category,
   disabled,
-  readonlyQuantity,
+  maxQuantity,
+  minIncrease,
+  lastestBidAmount,
 }: IBidDialogProps) => {
   const classes = useBidDialogStyles();
+
+  const validateForm = useCallback(
+    ({ bid, quantity }: IBidFormValues) => {
+      const errors: FormErrors<IBidFormValues> = {};
+      const currentBid = new BigNumber(bid);
+      const minBid = lastestBidAmount.plus(minIncrease);
+
+      if (!bid) {
+        errors.bid = t('validation.required');
+      } else if (currentBid.isLessThan(minBid)) {
+        errors.bid = t('validation.min', {
+          value: minBid.toFormat(),
+        });
+      }
+
+      if (!quantity) {
+        errors.quantity = t('validation.required');
+      } else if (+quantity < MIN_QUANTITY) {
+        errors.quantity = t('error.greater-than', { value: MIN_QUANTITY - 1 });
+      } else if (maxQuantity && +quantity > maxQuantity) {
+        errors.quantity = t('error.less-than', { value: maxQuantity + 1 });
+      }
+
+      return errors;
+    },
+    [lastestBidAmount, maxQuantity, minIncrease],
+  );
 
   const renderForm = useCallback(
     ({ handleSubmit, values, form }: FormRenderProps<IBidFormValues>) => {
@@ -130,7 +138,7 @@ export const BidDialog = ({
                             classes.spinBtnUp,
                           )}
                           onClick={form.mutators.increaseQuantity}
-                          disabled={readonlyQuantity}
+                          disabled={true}
                         >
                           <AngleUpIcon className={classes.spinBtnIcon} />
                         </IconButton>
@@ -140,7 +148,7 @@ export const BidDialog = ({
                             classes.spinBtn,
                             classes.spinBtnDown,
                           )}
-                          disabled={readonlyQuantity || isQuantityMinusDisabled}
+                          disabled={true || isQuantityMinusDisabled} // TODO: Remove isQuantityMinusDisabled
                           onClick={form.mutators.decreaseQuantity}
                         >
                           <AngleDownIcon className={classes.spinBtnIcon} />
@@ -148,7 +156,7 @@ export const BidDialog = ({
                       </div>
                     ),
                   }}
-                  disabled={readonlyQuantity}
+                  disabled={true}
                 />
               </Grid>
             </Grid>
@@ -158,7 +166,7 @@ export const BidDialog = ({
             <Typography color="textSecondary">
               {t('details-nft.dialog.input-info', {
                 currency,
-                value: MIN_BID,
+                value: minIncrease.toFormat(),
               })}
             </Typography>
           </Box>
@@ -180,7 +188,7 @@ export const BidDialog = ({
         </>
       );
     },
-    [classes, currency, disabled, readonlyQuantity],
+    [classes, currency, disabled, minIncrease],
   );
 
   return (
@@ -239,7 +247,7 @@ export const BidDialog = ({
           },
         }}
         initialValues={{
-          quantity: '1',
+          quantity: maxQuantity.toString(),
         }}
       />
 

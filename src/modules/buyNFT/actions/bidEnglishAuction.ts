@@ -12,14 +12,13 @@ import { BounceEnglishAuctionNFT, BounceERC20 } from '../../web3/contracts';
 interface IBidEnglishAuctionPayload {
   amount: BigNumber;
   unitContract: string;
-  amountTotal1?: BigNumber;
   poolId: number;
 }
 
 export const bidEnglishAuction = createSmartAction<
   RequestAction<any, any>,
   [IBidEnglishAuctionPayload]
->('bidEnglishAuction', ({ amount, unitContract, amountTotal1, poolId }) => {
+>('bidEnglishAuction', ({ amount, unitContract, poolId }) => {
   return {
     request: {
       promise: (async function () {})(),
@@ -32,7 +31,6 @@ export const bidEnglishAuction = createSmartAction<
       ) => {
         return {
           promise: (async function () {
-            debugger;
             const {
               data: { chainId, address, web3 },
             } = getQuery(store.getState(), {

@@ -134,8 +134,8 @@
   },
   "validation": {
     "required": "This field is required",
-    "min": "Must be greater than {value}",
-    "max": "Must be less than {value}",
+    "min": "Smallest value is {value}",
+    "max": "Highest value is {value}",
     "invalid-email": "Enter a valid Email",
     "invalid-website": "Enter a valid Website URL",
     "invalid-type": "Invalid file type",
