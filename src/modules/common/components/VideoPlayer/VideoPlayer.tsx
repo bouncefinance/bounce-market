@@ -1,13 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { t } from 'modules/i18n/utils/intl';
-import { uid } from 'react-uid';
 import { useVideoPlayerStyles } from './useVideoPlayerStyles';
 import classNames from 'classnames';
 import { ObjectFitType } from '../../types/ObjectFit';
 
 interface IVideoPlayerProps {
-  file?: File;
-  src?: string;
   className?: string;
   width?: number;
   height?: number;
@@ -21,9 +18,15 @@ interface IVideoPlayerProps {
   fallbackText?: string;
 }
 
+type VideoPlayerType =
+  | (IVideoPlayerProps & {
+      file: File;
+    })
+  | (IVideoPlayerProps & {
+      src: string;
+    });
+
 export const VideoPlayer = ({
-  file,
-  src,
   className,
   width = 300,
   height = 300,
@@ -35,22 +38,28 @@ export const VideoPlayer = ({
   preload = 'auto',
   objectFit = 'fill',
   fallbackText = t('video-player.unsupported'),
-}: IVideoPlayerProps) => {
+  ...restProps
+}: VideoPlayerType) => {
   const classes = useVideoPlayerStyles();
 
-  const renderFile = useCallback(() => {
-    if (file) {
-      return <source src={URL.createObjectURL(file)} key={uid(file)} />;
-    }
-    return null;
-  }, [file]);
+  const creatObjectUrlDestructor = useRef<any>();
 
-  const renderSrc = useCallback(() => {
-    if (src) {
-      return <source src={src} key={uid(src)} />;
+  const video = useMemo(() => {
+    function hasFile(data: any): data is { file: File } {
+      return data.file;
     }
-    return null;
-  }, [src]);
+    return hasFile(restProps)
+      ? (creatObjectUrlDestructor.current = URL.createObjectURL(restProps.file))
+      : restProps.src;
+  }, [restProps]);
+
+  useEffect(() => {
+    return () => {
+      if (creatObjectUrlDestructor.current) {
+        URL.revokeObjectURL(video);
+      }
+    };
+  });
 
   return (
     <div className={classNames(classes.root, className)}>
@@ -65,8 +74,7 @@ export const VideoPlayer = ({
         preload={preload}
         className={classNames(classes.player, classes[objectFit])}
       >
-        {renderFile()}
-        {renderSrc()}
+        <source src={video} />
         {fallbackText}
       </video>
     </div>

@@ -1,12 +1,14 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
+const IMG_SIDE = 380;
+
 export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
   form: {
     display: 'grid',
     gap: theme.spacing(5, 9),
 
     [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: '1fr minmax(380px, 50%)',
+      gridTemplateColumns: `1fr minmax(${IMG_SIDE}px, 50%)`,
     },
   },
 
@@ -19,6 +21,7 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
 
   formImgBox: {
     maxWidth: 500,
+    height: IMG_SIDE,
     overflow: 'hidden',
 
     [theme.breakpoints.up('lg')]: {

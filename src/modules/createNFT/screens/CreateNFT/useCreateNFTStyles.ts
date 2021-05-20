@@ -8,7 +8,7 @@ export const useCreateNFTStyles = makeStyles<Theme>(theme => ({
     gap: theme.spacing(4, 9),
 
     [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: `1fr minmax(${IMG_SIDE}px, auto)`,
+      gridTemplateColumns: `1fr minmax(${IMG_SIDE}px, 50%)`,
     },
   },
 
