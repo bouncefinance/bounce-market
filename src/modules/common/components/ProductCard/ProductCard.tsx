@@ -167,10 +167,12 @@ export const ProductCard = ({
         ) : (
           <div className={classes.videoWrapper}>
             <div className={classes.video}>
-              <VideoPlayer
-                src={MediaProps.src}
-                objectFit={MediaProps.objectFit}
-              />
+              {MediaProps.src && (
+                <VideoPlayer
+                  src={MediaProps.src}
+                  objectFit={MediaProps.objectFit}
+                />
+              )}
             </div>
           </div>
         )}

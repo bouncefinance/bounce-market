@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { t } from 'modules/i18n/utils/intl';
 import { useVideoPlayerStyles } from './useVideoPlayerStyles';
 import classNames from 'classnames';
 import { ObjectFitType } from '../../types/ObjectFit';
 
 interface IVideoPlayerProps {
-  file?: File;
-  src?: string;
   className?: string;
   width?: number;
   height?: number;
@@ -20,9 +18,15 @@ interface IVideoPlayerProps {
   fallbackText?: string;
 }
 
+type VideoPlayerType =
+  | (IVideoPlayerProps & {
+      file: File;
+    })
+  | (IVideoPlayerProps & {
+      src: string;
+    });
+
 export const VideoPlayer = ({
-  file,
-  src,
   className,
   width = 300,
   height = 300,
@@ -34,23 +38,24 @@ export const VideoPlayer = ({
   preload = 'auto',
   objectFit = 'fill',
   fallbackText = t('video-player.unsupported'),
-}: IVideoPlayerProps) => {
+  ...restProps
+}: VideoPlayerType) => {
   const classes = useVideoPlayerStyles();
 
-  let isObjectUrl = false;
-  let video: string;
-  if (file) {
-    isObjectUrl = true;
-    video = URL.createObjectURL(file);
-  } else if (src) {
-    video = src;
-  } else {
-    throw new Error('No video');
-  }
+  const creatObjectUrlDestructor = useRef<any>();
+
+  const video = useMemo(() => {
+    function hasFile(data: any): data is { file: File } {
+      return data.file;
+    }
+    return hasFile(restProps)
+      ? (creatObjectUrlDestructor.current = URL.createObjectURL(restProps.file))
+      : restProps.src;
+  }, [restProps]);
 
   useEffect(() => {
     return () => {
-      if (isObjectUrl) {
+      if (creatObjectUrlDestructor.current) {
         URL.revokeObjectURL(video);
       }
     };
