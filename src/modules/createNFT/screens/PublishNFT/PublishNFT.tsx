@@ -268,7 +268,7 @@ export const PublishNFTComponent = ({
                 objectFit="scale-down"
               />
             ) : (
-              <VideoPlayer src={file} />
+              <VideoPlayer src={file} objectFit="cover" />
             )}
           </Paper>
 
