@@ -7,9 +7,7 @@ export const getDaysLeft = (endDate: Date) => {
     endDate.setFullYear(endDate.getFullYear() + 1);
   }
 
-  const daysLeft = Math.ceil((endDate.getTime() - today.getTime()) / ONE_DAY);
-
-  return daysLeft;
+  return Math.ceil((endDate.getTime() - today.getTime()) / ONE_DAY);
 };
 
 export function getTimeRemaining(endtime: Date) {
