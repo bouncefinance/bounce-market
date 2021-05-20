@@ -81,10 +81,12 @@ export const Movers = ({
   const renderedSlides = items.map(cardProps => (
     <SwiperSlide className={classes.slide} key={uid(cardProps)}>
       <ProductCard
+        isOnSale
         title={cardProps.title}
         price={cardProps.price}
         priceType={cardProps.priceType}
         endDate={cardProps.endDate}
+        copies={cardProps.copies}
         likes={cardProps.likes}
         href={cardProps.href}
         MediaProps={{

@@ -121,6 +121,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
       <ProductCards>
         {(nftItems || []).map(cardProps => (
           <ProductCard
+            isOnSale
             key={uid(cardProps)}
             title={cardProps.title}
             price={cardProps.price}

@@ -7,7 +7,7 @@ import { useProfileInfoStyles } from './ProfileInfoStyles';
 
 interface IUserInfo {
   name: string;
-  avatar: string;
+  avatar?: string;
   href?: string;
   verified?: boolean;
 }

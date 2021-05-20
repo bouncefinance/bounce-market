@@ -1,5 +1,7 @@
-import { Avatar, Box, Hidden, Typography } from '@material-ui/core';
+import { Box, Hidden, Typography } from '@material-ui/core';
+import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
+import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { t } from 'modules/i18n/utils/intl';
 import { IImgProps, Img } from 'modules/uiKit/Img';
@@ -13,8 +15,9 @@ export interface IPromoCardProps {
   title: string;
   text: string;
   createdBy: string;
-  avatar: any;
-  price: string | number;
+  avatar?: string;
+  price: BigNumber;
+  priceType: string;
   img?: string;
   srcset?: IImgProps['srcset'];
   href: string;
@@ -28,6 +31,7 @@ export const PromoCard = ({
   createdBy,
   avatar,
   price,
+  priceType,
   img,
   srcset,
   href,
@@ -67,7 +71,11 @@ export const PromoCard = ({
 
         <div className={classes.info}>
           <Link to={authorHref} className={classes.author}>
-            <Avatar className={classes.avatar} alt={createdBy} src={avatar} />
+            <DefaultRandomAvatar
+              className={classes.avatar}
+              alt={createdBy}
+              src={avatar}
+            />
 
             <Typography
               color="textSecondary"
@@ -82,7 +90,9 @@ export const PromoCard = ({
             </Typography>
           </Link>
 
-          <Typography className={classes.price}>{price}</Typography>
+          <Typography className={classes.price}>
+            {price.toFormat()} {priceType}
+          </Typography>
         </div>
       </div>
 
