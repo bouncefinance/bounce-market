@@ -92,7 +92,6 @@ export const BuyNFT = () => {
           },
     ) => {
       const { unitContract, amountTotal1, poolId } = value;
-
       dispatch(
         bidEnglishAuction({
           amount: (value as any).amountMax1 || (value as any).bidPrice,
@@ -306,6 +305,7 @@ export const BuyNFT = () => {
                         isOwnerVerified={false}
                         category={item.category}
                         disabled={loading}
+                        readonlyQuantity={item.standard === NftType.ERC721}
                       />
                     )}
                   </Mutation>

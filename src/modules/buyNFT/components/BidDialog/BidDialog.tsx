@@ -63,6 +63,7 @@ interface IBidDialogProps {
   ownerAvatar: string;
   category: 'image' | 'video';
   disabled: boolean;
+  readonlyQuantity: boolean;
 }
 
 export const BidDialog = ({
@@ -77,6 +78,7 @@ export const BidDialog = ({
   ownerAvatar,
   category,
   disabled,
+  readonlyQuantity,
 }: IBidDialogProps) => {
   const classes = useBidDialogStyles();
 
@@ -128,6 +130,7 @@ export const BidDialog = ({
                             classes.spinBtnUp,
                           )}
                           onClick={form.mutators.increaseQuantity}
+                          disabled={readonlyQuantity}
                         >
                           <AngleUpIcon className={classes.spinBtnIcon} />
                         </IconButton>
@@ -137,7 +140,7 @@ export const BidDialog = ({
                             classes.spinBtn,
                             classes.spinBtnDown,
                           )}
-                          disabled={isQuantityMinusDisabled}
+                          disabled={readonlyQuantity || isQuantityMinusDisabled}
                           onClick={form.mutators.decreaseQuantity}
                         >
                           <AngleDownIcon className={classes.spinBtnIcon} />
@@ -145,6 +148,7 @@ export const BidDialog = ({
                       </div>
                     ),
                   }}
+                  disabled={readonlyQuantity}
                 />
               </Grid>
             </Grid>
@@ -176,7 +180,7 @@ export const BidDialog = ({
         </>
       );
     },
-    [classes, currency, disabled],
+    [classes, currency, disabled, readonlyQuantity],
   );
 
   return (
