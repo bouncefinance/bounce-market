@@ -21,6 +21,8 @@ import { uid } from 'react-uid';
 import { ProductsPanel } from '../ProductsPanel';
 import { useProductsStyles } from './useProductsStyles';
 
+const NFT_ITEMS_COUNT = 30;
+
 interface IProductsProps extends ISectionProps {
   cards?: JSX.Element;
   panel?: JSX.Element;
@@ -95,7 +97,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
       dispatch(
         fetchNFTItems({
           channel: value as ItemsChannel,
-          count: 20,
+          count: NFT_ITEMS_COUNT,
         }),
       );
     },
@@ -109,7 +111,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
 
     dispatch(
       fetchNFTItems({
-        count: 20,
+        count: NFT_ITEMS_COUNT,
       }),
     );
   }, [dispatch, isConnected]);

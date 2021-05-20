@@ -17,8 +17,8 @@ import { t } from 'modules/i18n/utils/intl';
 import { Img } from 'modules/uiKit/Img';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
-import { useBuyDialogStyles } from './useBuyDialogStyles';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { useBuyDialogStyles } from './useBuyDialogStyles';
 
 const MIN_QUANTITY = 1;
 
@@ -34,7 +34,7 @@ interface IBuyDialogProps {
   onClose?: () => void;
   onSubmit: (values: IBuyFormValues, form: any, callback: any) => void;
   owner: string;
-  ownerAvatar: string;
+  ownerAvatar?: string;
   readonly: boolean;
   category: 'image' | 'video';
   disabled?: boolean;

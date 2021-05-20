@@ -10,7 +10,8 @@
     "apply": "Apply",
     "close": "Close",
     "reset": "Reset",
-    "restore": "Restore"
+    "restore": "Restore",
+    "coming-soon": "Coming soon..."
   },
   "time": {
     "time-over": "Time is over",

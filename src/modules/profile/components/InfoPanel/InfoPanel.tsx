@@ -6,15 +6,15 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { SocialShare } from 'modules/common/components/SocialShare';
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
+import { SocialShare } from 'modules/common/components/SocialShare';
 import { convertWallet } from 'modules/common/utils/convertWallet';
 import { t } from 'modules/i18n/utils/intl';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { useInfoPanelStyles } from './useInfoPanelStyles';
 import { ProfileRoutesConfig } from '../../ProfileRoutes';
+import { useInfoPanelStyles } from './useInfoPanelStyles';
 
 interface IInfoPanelProps {
   name?: string;
@@ -23,6 +23,7 @@ interface IInfoPanelProps {
   subscribers?: ReactNode;
   social?: ReactNode;
   isBrand?: boolean;
+  withSharing?: boolean;
 }
 
 // TODO: need receive profile user ID to url prop (now 1)
@@ -39,6 +40,7 @@ export const InfoPanel = ({
   subscribers,
   social,
   isBrand,
+  withSharing,
 }: IInfoPanelProps) => {
   const classes = useInfoPanelStyles();
 
@@ -51,37 +53,47 @@ export const InfoPanel = ({
           {email && <Typography className={classes.url}>{email}</Typography>}
         </Grid>
 
-        {!isBrand && <Grid item>
-          <ButtonBase className={classes.address} title={address}>
-            <Typography>{convertWallet(address || '')}</Typography>
-          </ButtonBase>
-        </Grid>}
+        {!isBrand && (
+          <Grid item>
+            <ButtonBase className={classes.address} title={address}>
+              <Typography>{convertWallet(address || '')}</Typography>
+            </ButtonBase>
+          </Grid>
+        )}
 
-        <Grid item>
-          <Tooltip title={t('social.share')} arrow placement="left">
-            <Box>
-              <SocialShare
-                titleString={name}
-                url={urlForSharing}
-                buttonContent={
-                  <IconButton>
-                    <ShareIcon />
-                  </IconButton>
-                }
-              />
-            </Box>
-          </Tooltip>
-        </Grid>
-
-        {!isBrand && <Grid item>
-          <Link to={ProfileRoutesConfig.EditProfile.generatePath()}>
-            <Tooltip title={t('profile.edit-profile')} arrow placement="right">
-              <IconButton>
-                <CogIcon />
-              </IconButton>
+        {withSharing && (
+          <Grid item>
+            <Tooltip title={t('social.share')} arrow placement="left">
+              <Box>
+                <SocialShare
+                  titleString={name}
+                  url={urlForSharing}
+                  buttonContent={
+                    <IconButton>
+                      <ShareIcon />
+                    </IconButton>
+                  }
+                />
+              </Box>
             </Tooltip>
-          </Link>
-        </Grid>}
+          </Grid>
+        )}
+
+        {!isBrand && (
+          <Grid item>
+            <Link to={ProfileRoutesConfig.EditProfile.generatePath()}>
+              <Tooltip
+                title={t('profile.edit-profile')}
+                arrow
+                placement="right"
+              >
+                <IconButton>
+                  <CogIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
+          </Grid>
+        )}
 
         <Grid item xs={12} lg="auto" className={classes.linksCol}>
           <Grid container spacing={2} alignItems="center">

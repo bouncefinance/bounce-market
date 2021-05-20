@@ -1,33 +1,37 @@
+import { Box } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
-import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
-import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
 import { InfoPrices } from 'modules/buyNFT/components/InfoPrices';
 import { InfoTabs } from 'modules/buyNFT/components/InfoTabs';
 import { InfoTabsItem } from 'modules/buyNFT/components/InfoTabsItem';
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
+import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { featuresConfig } from 'modules/common/conts';
+import { convertWallet } from 'modules/common/utils/convertWallet';
+import { t } from 'modules/i18n/utils/intl';
 import { useCallback, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Queries } from '../../../common/components/Queries/Queries';
-import { useDialog } from './useDialog';
-import { useBuyNFTStyles } from './useBuyNFTStyles';
-import { fetchItem } from '../../actions/fetchItem';
-import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
-import { ResponseData } from '../../../common/types/ResponseData';
-import { AuctionType } from '../../../overview/api/auctionType';
-import { BuyDialog } from '../../components/BuyDialog';
-import { NftType } from '../../../createNFT/actions/createNft';
-import { buyFixed } from '../../actions/buyFixed';
-import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
-import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
-import { throwIfDataIsEmptyOrError } from '../../../common/utils/throwIfDataIsEmptyOrError';
 import { AuctionState } from '../../../common/const/AuctionState';
-import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
+import { ResponseData } from '../../../common/types/ResponseData';
 import { Address } from '../../../common/types/unit';
+import { throwIfDataIsEmptyOrError } from '../../../common/utils/throwIfDataIsEmptyOrError';
+import { NftType } from '../../../createNFT/actions/createNft';
+import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
+import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
+import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
+import { AuctionType } from '../../../overview/api/auctionType';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
+import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
+import { buyFixed } from '../../actions/buyFixed';
+import { fetchItem } from '../../actions/fetchItem';
+import { BuyDialog } from '../../components/BuyDialog';
+import { useBuyNFTStyles } from './useBuyNFTStyles';
+import { useDialog } from './useDialog';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -145,14 +149,17 @@ export const BuyNFT = () => {
               />
             );
 
+            const ownerTitle =
+              item.ownername || convertWallet(item.owneraddress);
+
             const renderedOwner = (
               <ProfileInfo
                 subTitle="Owner"
-                title="Bombist"
+                title={ownerTitle}
                 users={[
                   {
-                    name: 'Bombist',
-                    avatar: 'https://picsum.photos/32?random=2',
+                    name: ownerTitle,
+                    avatar: undefined,
                   },
                 ]}
               />
@@ -221,6 +228,10 @@ export const BuyNFT = () => {
               </InfoTabsList>
             );
 
+            const renderedComingSoon = (
+              <Box mt={2}>{t('common.coming-soon')}</Box>
+            );
+
             return (
               <div className={classes.root}>
                 <MediaContainer
@@ -272,10 +283,26 @@ export const BuyNFT = () => {
                   )}
 
                   <InfoTabs
-                    history={renderedHistoryList}
-                    bids={renderedBidsList}
-                    owners={renderedOnwersList}
-                    tokenInfo={renderedTokenInfoList}
+                    history={
+                      featuresConfig.nftDetailsHistory
+                        ? renderedHistoryList
+                        : renderedComingSoon
+                    }
+                    bids={
+                      featuresConfig.nftDetailsBids
+                        ? renderedBidsList
+                        : renderedComingSoon
+                    }
+                    owners={
+                      featuresConfig.nftDetailsOwners
+                        ? renderedOnwersList
+                        : renderedComingSoon
+                    }
+                    tokenInfo={
+                      featuresConfig.nftDetailsTokenInfo
+                        ? renderedTokenInfoList
+                        : renderedComingSoon
+                    }
                   />
                 </Info>
 
@@ -301,8 +328,8 @@ export const BuyNFT = () => {
                         isOpen={openedBid}
                         onClose={toggleBidDialog(false)}
                         currency="BNB"
-                        owner="Bombist"
-                        ownerAvatar="https://picsum.photos/44?random=1"
+                        owner={ownerTitle}
+                        ownerAvatar={undefined}
                         isOwnerVerified={false}
                         category={item.category}
                         disabled={loading}
@@ -330,8 +357,8 @@ export const BuyNFT = () => {
                         }}
                         isOpen={openedEnglishBuy}
                         onClose={toggleEnglishBuyDialog(false)}
-                        owner="Bombist"
-                        ownerAvatar="https://picsum.photos/44?random=1"
+                        owner={ownerTitle}
+                        ownerAvatar={undefined}
                         isOwnerVerified={false}
                         readonly={item.standard === NftType.ERC721}
                         category={item.category}
@@ -359,8 +386,8 @@ export const BuyNFT = () => {
                         }}
                         isOpen={openedFixedBuy}
                         onClose={toggleFixedBuyDialog(false)}
-                        owner="Bombist"
-                        ownerAvatar="https://picsum.photos/44?random=1"
+                        owner={ownerTitle}
+                        ownerAvatar={undefined}
                         isOwnerVerified={false}
                         readonly={item.standard === NftType.ERC721}
                         category={item.category}

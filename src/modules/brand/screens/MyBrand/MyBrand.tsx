@@ -8,6 +8,7 @@ import { BrandAddItem } from 'modules/brand/components/BrandEmptyCard/BrandAddIt
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';
+import { featuresConfig } from 'modules/common/conts';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
@@ -24,7 +25,7 @@ export const MyBrand = () => {
   const dispatch = useDispatchRequest();
   const { address } = useAccount();
   const [brandInfo, setBrandInfo] = useState<IBrandInfo>();
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState([]);
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
@@ -32,25 +33,25 @@ export const MyBrand = () => {
 
   useEffect(() => {
     if (address) {
-      dispatch(getAccountBrand(address))
-        .then(res => {
-          const brandInfo = res.data;
-          if (brandInfo) {
-            setBrandInfo(brandInfo[0]);
-          }
-        })
+      dispatch(getAccountBrand(address)).then(res => {
+        const brandInfo = res.data;
+        if (brandInfo) {
+          setBrandInfo(brandInfo[0]);
+        }
+      });
     }
   }, [address, dispatch]);
 
   useEffect(() => {
     if (address && brandInfo) {
-      dispatch(listBrandItems({
-        userAddress: address,
-        contractAddress: brandInfo?.contractaddress
-      }))
-        .then(res => {
-          setItems(res.data)
-        })
+      dispatch(
+        listBrandItems({
+          userAddress: address,
+          contractAddress: brandInfo?.contractaddress,
+        }),
+      ).then(res => {
+        setItems(res.data);
+      });
     }
   }, [address, brandInfo, dispatch]);
 
@@ -63,70 +64,78 @@ export const MyBrand = () => {
     [],
   );
 
-  return <Section className={classes.root}>
-    <Header
-      img={brandInfo?.bandimgurl}
-      onEditClick={toggleBgImgModal(true)}
-    />
-
-    {brandInfo && <SetBgImgModal
-      isOpen={isBgImgModalOpened}
-      onClose={toggleBgImgModal(false)}
-      fileType={UploadFileType.BrandImg}
-      brandId={brandInfo.id}
-    />}
-
-    <Container>
-      <Avatar
-        className={classes.avatar}
-        src={brandInfo?.imgurl}
+  return (
+    <Section className={classes.root}>
+      <Header
+        img={brandInfo?.bandimgurl}
+        onEditClick={toggleBgImgModal(true)}
       />
 
-      <InfoPanel
-        name={brandInfo?.brandname}
-        isBrand={true}
-      />
+      {brandInfo && (
+        <SetBgImgModal
+          isOpen={isBgImgModalOpened}
+          onClose={toggleBgImgModal(false)}
+          fileType={UploadFileType.BrandImg}
+          brandId={brandInfo.id}
+        />
+      )}
 
-      <Grid container spacing={4}>
-        <Grid item xs={12} sm={6} lg={4} xl={3}>{brandInfo?.id && <BrandAddItem id={brandInfo.id} />}</Grid>
-        {items?.map((item: any) => <Grid item xs={12} sm={6} lg={4} xl={3} key={item.id}>
-          <ProductCard
-            key={item.id}
-            title={item.itemname}
-            href={
-              item.poolId && item.poolType
-                ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                  item.poolId,
-                  item.poolType,
-                )
-                : ''
-            }
-            price={item.poolId ? item.price : undefined}
-            copies={item.supply}
-            MediaProps={{
-              category: item.category,
-              src: item.fileurl,
-              objectFit: 'scale-down',
-              loading: 'lazy',
-            }}
-            ProfileInfoProps={{
-              subTitle: 'Owner',
-              title: `${profileInfo?.username}`,
-              users: [
-                {
-                  name: 'name',
-                  avatar: `${profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'}`,
-                  verified: true,
-                },
-              ],
-            }}
-            toSale={RoutesConfiguration.PublishNft.generatePath(
-              item.contractaddress,
-              item.id,
-            )}
-          />
-        </Grid>)}
-      </Grid>
-    </Container>
-  </Section>
-}
+      <Container>
+        <Avatar className={classes.avatar} src={brandInfo?.imgurl} />
+
+        <InfoPanel
+          name={brandInfo?.brandname}
+          isBrand={true}
+          withSharing={featuresConfig.ownBrandSharing}
+        />
+
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6} lg={4} xl={3}>
+            {brandInfo?.id && <BrandAddItem id={brandInfo.id} />}
+          </Grid>
+          {items?.map((item: any) => (
+            <Grid item xs={12} sm={6} lg={4} xl={3} key={item.id}>
+              <ProductCard
+                key={item.id}
+                title={item.itemname}
+                href={
+                  item.poolId && item.poolType
+                    ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                        item.poolId,
+                        item.poolType,
+                      )
+                    : ''
+                }
+                price={item.poolId ? item.price : undefined}
+                copies={item.supply}
+                MediaProps={{
+                  category: item.category,
+                  src: item.fileurl,
+                  objectFit: 'scale-down',
+                  loading: 'lazy',
+                }}
+                ProfileInfoProps={{
+                  subTitle: 'Owner',
+                  title: `${profileInfo?.username}`,
+                  users: [
+                    {
+                      name: 'name',
+                      avatar: `${
+                        profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
+                      }`,
+                      verified: true,
+                    },
+                  ],
+                }}
+                toSale={RoutesConfiguration.PublishNft.generatePath(
+                  item.contractaddress,
+                  item.id,
+                )}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </Section>
+  );
+};
