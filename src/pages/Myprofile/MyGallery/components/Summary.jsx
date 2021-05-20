@@ -17,6 +17,7 @@ import useNftInfo from "@/utils/useToken";
 // import { ZERO_ADDRESS } from "@/web3/address_list/token";
 
 import useWrapperIntl from '@/locales/useWrapperIntl'
+import useAxios from "@/utils/useAxios";
 
 const SummaryWrapper = styled.div`
 	grid-area: Summary;
@@ -156,22 +157,23 @@ const SummaryWrapper = styled.div`
 	}
 `;
 
-function smoothToTop(){
+function smoothToTop() {
 	var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
 	if (currentScroll > 0) {
-		 window.requestAnimationFrame(smoothToTop);
-		 window.scrollTo (0, currentScroll - (currentScroll/5));
+		window.requestAnimationFrame(smoothToTop);
+		window.scrollTo(0, currentScroll - (currentScroll / 5));
 	}
 }
 
 function Summary({ auctionType, price, amount, unit,
-	 duration, fees, nftInfo, minPrice, maxPrice, minIncr,
-	  newUnit,nftCount, setAlarm }) {
+	duration, fees, nftInfo, minPrice, maxPrice, minIncr,
+	newUnit, nftCount, setAlarm }) {
 	const { chainId, library, account } = useActiveWeb3React()
 	const { showTransferByStatus } = useTransferModal()
 	const [btnLock, setBtnLock] = useState(true);
 	const history = useHistory();
 	const { hasApprove_ERC_721, hasApprove_ERC_1155, isOwner_ERC_721 } = useNftInfo()
+	const { sign_Axios } = useAxios()
 
 	const { wrapperIntl } = useWrapperIntl()
 
@@ -190,7 +192,7 @@ function Summary({ auctionType, price, amount, unit,
 				setBtnLock(true)
 			}
 		}
-	}, [auctionType, price, unit, duration, fees, nftInfo, minPrice, maxPrice,nftCount])
+	}, [auctionType, price, unit, duration, fees, nftInfo, minPrice, maxPrice, nftCount])
 
 	const handelSubmit = async () => {
 		if (auctionType === 'setPrice') {
@@ -237,6 +239,7 @@ function Summary({ auctionType, price, amount, unit,
 							showTransferByStatus('pendingStatus')
 						})
 						.on('receipt', async (_, receipt) => {
+							dispatchEndUpload()
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
 
@@ -282,6 +285,7 @@ function Summary({ auctionType, price, amount, unit,
 							showTransferByStatus('pendingStatus')
 						})
 						.on('receipt', async (_, receipt) => {
+							dispatchEndUpload()
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
 							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
@@ -304,11 +308,11 @@ function Summary({ auctionType, price, amount, unit,
 			} catch (e) { console.log(e); showTransferByStatus('errorStatus') }
 		} else {
 			if (!(parseFloat(minPrice) < parseFloat(price)) || !(parseFloat(price) <= parseFloat(maxPrice)) || !(parseFloat(minPrice) < parseFloat(maxPrice))) {
-				setAlarm&&setAlarm('Make sure Minimum bid < Reserve price ≤ Direct purchase price')
-				
+				setAlarm && setAlarm('Make sure Minimum bid < Reserve price ≤ Direct purchase price')
+
 				// back to the top
-                smoothToTop();
-				
+				smoothToTop();
+
 				return
 			}
 			// console.log(unit)
@@ -363,6 +367,7 @@ function Summary({ auctionType, price, amount, unit,
 							showTransferByStatus('pendingStatus')
 						})
 						.on('receipt', async (_, receipt) => {
+							dispatchEndUpload()
 
 							// 成功后记录一个本地状态，view my nft碰到这个状态记录直接跳过不请求
 							const soldOutNft = {
@@ -408,6 +413,7 @@ function Summary({ auctionType, price, amount, unit,
 							showTransferByStatus('pendingStatus')
 						})
 						.on('receipt', async (_, receipt) => {
+							dispatchEndUpload()
 							// console.log('bid fixed swap receipt:', receipt)
 							// setBidStatus(successStatus)
 
@@ -428,6 +434,21 @@ function Summary({ auctionType, price, amount, unit,
 				}
 			} catch (e) { console.log(e); showTransferByStatus('errorStatus') }
 		}
+	}
+	const dispatchEndUpload = async () => {
+		if (!nftInfo) return
+		// console.log(nftInfo)
+		const params = {
+			contractaddress: nftInfo.contractaddress,
+			tokenid: nftInfo.id,
+			owneraddress: account
+		}
+		sign_Axios.post(`/api/v2/main/auth/addppoolsitem`, params)
+			.then(res => {
+				console.log(res)
+			}).catch(err => {
+				console.log(err)
+			})
 	}
 
 	return (
