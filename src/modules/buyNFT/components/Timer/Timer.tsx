@@ -26,7 +26,7 @@ export const Timer = ({ endDate, className, ...boxProps }: ITimerProps) => {
       : timeRemaining.total > 0
       ? SHORT_STEP
       : null;
-  }, [timeRemaining.minutes]);
+  }, [timeRemaining.minutes, timeRemaining.total]);
 
   useInterval(() => {
     setTimeRemaining(getTimeRemaining(endDate));
