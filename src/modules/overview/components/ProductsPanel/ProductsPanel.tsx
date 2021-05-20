@@ -1,5 +1,6 @@
 import { Grid, Hidden } from '@material-ui/core';
 import classNames from 'classnames';
+import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import { useIsMDUp } from 'modules/themes/useTheme';
@@ -123,29 +124,31 @@ export const ProductsPanel = ({
           </Hidden>
         </Grid>
 
-        <Grid item xs={6} md="auto">
-          <Select
-            className={classes.select}
-            value={sortBy}
-            onChange={sortChangeHandler}
-            options={sortVariants}
-            disabled={disabled}
-            renderValue={
-              isMDUp
-                ? (value: any) => {
-                    const sortVariant = sortVariants.find(
-                      variant => variant.value === value,
-                    );
-                    const label = sortVariant?.label.toLowerCase();
+        {featuresConfig.nftItemsSortSelect && (
+          <Grid item xs={6} md="auto">
+            <Select
+              className={classes.select}
+              value={sortBy}
+              onChange={sortChangeHandler}
+              options={sortVariants}
+              disabled={disabled}
+              renderValue={
+                isMDUp
+                  ? (value: any) => {
+                      const sortVariant = sortVariants.find(
+                        variant => variant.value === value,
+                      );
+                      const label = sortVariant?.label.toLowerCase();
 
-                    return t('products.sort-label', {
-                      value: label,
-                    });
-                  }
-                : undefined
-            }
-          />
-        </Grid>
+                      return t('products.sort-label', {
+                        value: label,
+                      });
+                    }
+                  : undefined
+              }
+            />
+          </Grid>
+        )}
       </Grid>
     </div>
   );

@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core';
+import { Box, Container, Typography } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
@@ -140,15 +140,21 @@ export const Profile = () => {
       {
         value: ProfileTab.following,
         label: t('profile.tabs.following'),
-        count: 11,
+        count: 0,
       },
       {
         value: ProfileTab.followers,
         label: t('profile.tabs.followers'),
-        count: 150,
+        count: 0,
       },
     ],
     [],
+  );
+
+  const renderedComingSoon = (
+    <Box>
+      <Typography>{t('common.coming-soon')}</Typography>
+    </Box>
   );
 
   return (
@@ -178,9 +184,14 @@ export const Profile = () => {
         />
 
         <InfoPanel
+          withSharing={featuresConfig.ownProfileSharing}
           name={profileInfo?.username}
           email={profileInfo?.email}
-          subscribers={<Subscribers count={profileInfo?.followCount} />}
+          subscribers={
+            featuresConfig.subscribers && (
+              <Subscribers count={profileInfo?.followCount} />
+            )
+          }
           // https://ankrnetwork.atlassian.net/browse/FE-3449
           // TODO: [FE-3449] add social links after it will be implemented on backend side
           social={featuresConfig.profileSocialLinks && <Social />}
@@ -259,15 +270,31 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>
-          <ActivityTable />
+          {featuresConfig.profileActivity ? (
+            <ActivityTable />
+          ) : (
+            renderedComingSoon
+          )}
+        </TabPanel>
+
+        <TabPanel value={tab} index={ProfileTab.liked}>
+          {renderedComingSoon}
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.following}>
-          <TabFollowing items={followings} />
+          {featuresConfig.profileFollowers ? (
+            <TabFollowing items={followings} />
+          ) : (
+            renderedComingSoon
+          )}
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.followers}>
-          <TabFollowing items={followers} />
+          {featuresConfig.profileFollowers ? (
+            <TabFollowing items={followers} />
+          ) : (
+            renderedComingSoon
+          )}
         </TabPanel>
       </Container>
     </Section>

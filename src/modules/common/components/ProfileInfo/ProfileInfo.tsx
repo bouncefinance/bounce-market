@@ -1,8 +1,9 @@
-import { Avatar, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
+import { DefaultRandomAvatar } from '../DefaultRandomAvatar';
 import { useProfileInfoStyles } from './ProfileInfoStyles';
 
 interface IUserInfo {
@@ -47,7 +48,7 @@ export const ProfileInfo = ({
 
       const renderedContent = (
         <>
-          <Avatar
+          <DefaultRandomAvatar
             className={classNames({
               [classes.avatarBig]: avatarSize === 'big',
               [classes.avatarMedium]: avatarSize === 'medium',
