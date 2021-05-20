@@ -1,6 +1,5 @@
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { t } from 'modules/i18n/utils/intl';
-import { uid } from 'react-uid';
 import { useVideoPlayerStyles } from './useVideoPlayerStyles';
 import classNames from 'classnames';
 import { ObjectFitType } from '../../types/ObjectFit';
@@ -38,19 +37,24 @@ export const VideoPlayer = ({
 }: IVideoPlayerProps) => {
   const classes = useVideoPlayerStyles();
 
-  const renderFile = useCallback(() => {
-    if (file) {
-      return <source src={URL.createObjectURL(file)} key={uid(file)} />;
-    }
-    return null;
-  }, [file]);
+  let isObjectUrl = false;
+  let video: string;
+  if (file) {
+    isObjectUrl = true;
+    video = URL.createObjectURL(file);
+  } else if (src) {
+    video = src;
+  } else {
+    throw new Error('No video');
+  }
 
-  const renderSrc = useCallback(() => {
-    if (src) {
-      return <source src={src} key={uid(src)} />;
-    }
-    return null;
-  }, [src]);
+  useEffect(() => {
+    return () => {
+      if (isObjectUrl) {
+        URL.revokeObjectURL(video);
+      }
+    };
+  });
 
   return (
     <div className={classNames(classes.root, className)}>
@@ -65,8 +69,7 @@ export const VideoPlayer = ({
         preload={preload}
         className={classNames(classes.player, classes[objectFit])}
       >
-        {renderFile()}
-        {renderSrc()}
+        <source src={video} />
         {fallbackText}
       </video>
     </div>
