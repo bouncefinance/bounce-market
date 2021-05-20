@@ -232,9 +232,9 @@ export const ProductCard = ({
         <div className={classes.infoContainer}>
           {isOnSale && (
             <>
-              {copies && renderedCopies}
+              {!endDate && copies && renderedCopies}
 
-              {!copies && endDate && renderTimer()}
+              {endDate && renderTimer()}
 
               {typeof likes === 'number' && renderedLikes}
             </>
