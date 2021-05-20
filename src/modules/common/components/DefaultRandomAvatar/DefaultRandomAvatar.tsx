@@ -3,6 +3,8 @@ import userPic from 'assets/img/logo-small.svg';
 import React, { useMemo } from 'react';
 import { useDefaultRandomAvatarStyles } from './useDefaultRandomAvatarStyles';
 
+const BG_PRESETS_COUNT = 19;
+
 export const DefaultRandomAvatar = ({
   classes,
   src,
@@ -10,7 +12,10 @@ export const DefaultRandomAvatar = ({
 }: AvatarProps) => {
   const styles = useDefaultRandomAvatarStyles();
 
-  const randomBg = useMemo(() => Math.floor(Math.random() * 19), []);
+  const randomBg = useMemo(
+    () => Math.floor(Math.random() * BG_PRESETS_COUNT),
+    [],
+  );
   const withoutImg = !src;
 
   return (
