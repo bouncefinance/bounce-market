@@ -12,6 +12,14 @@
     "reset": "Reset",
     "restore": "Restore"
   },
+  "time": {
+    "time-over": "Time is over",
+    "time-left-short": "{days} {hours} {minutes} {seconds} left",
+    "days-short": "{days}d",
+    "hours-short": "{hours}h",
+    "minutes-short": "{minutes}m",
+    "seconds-short": "{seconds}s"
+  },
   "header": {
     "create": "Create",
     "connect": "Connect Wallet",
