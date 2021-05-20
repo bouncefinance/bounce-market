@@ -13,8 +13,6 @@ export const DefaultRandomAvatar = ({
   const randomBg = useMemo(() => Math.floor(Math.random() * 19), []);
   const withoutImg = !src;
 
-  console.log(randomBg);
-
   return (
     <Avatar
       {...restProps}
