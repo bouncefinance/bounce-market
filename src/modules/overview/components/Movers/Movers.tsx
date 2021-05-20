@@ -86,6 +86,7 @@ export const Movers = ({
         price={cardProps.price}
         priceType={cardProps.priceType}
         endDate={cardProps.endDate}
+        copies={cardProps.copies}
         likes={cardProps.likes}
         href={cardProps.href}
         MediaProps={{

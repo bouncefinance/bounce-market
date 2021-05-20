@@ -43,9 +43,10 @@ function mapMoversItem(item: IItem) {
   return {
     title: item.itemName || '',
     price: item.price,
-    priceType: 'USDT',
-    endDate: new Date(2021, 3, 30),
-    likes: 100,
+    priceType: 'BNB',
+    endDate: item.closeAt,
+    likes: item.likeCount,
+    copies: item.supply,
     href:
       item.poolId && item.poolType
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
