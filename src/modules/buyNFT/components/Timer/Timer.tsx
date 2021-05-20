@@ -6,10 +6,11 @@ import { getTimeRemaining } from 'modules/common/utils/getTimeRemaining';
 import { useMemo, useState } from 'react';
 import { useTimerStyles } from './useTimerStyles';
 import { t } from '../../../i18n/utils/intl';
+import { Milliseconds, Minutes } from '../../../common/types/unit';
 
-const INTERVAL_BREAKPOINT = 2; // minutes
-const SHORT_STEP = 1000; // when time left less than INTERVAL_BREAKPOINT
-const NORMAL_STEP = 1000 * 30;
+const INTERVAL_BREAKPOINT: Minutes = 2; // minutes
+const SHORT_STEP: Milliseconds = 1000; // when time left less than INTERVAL_BREAKPOINT
+const NORMAL_STEP: Milliseconds = 1000 * 30;
 
 interface ITimerProps extends BoxProps {
   endDate: Date;
