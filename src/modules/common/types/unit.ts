@@ -1,5 +1,7 @@
 export type Bytes = number;
+export type Milliseconds = number;
 export type Seconds = number;
+export type Minutes = number;
 export type Days = number;
 export type Address = string;
 const BYTES_IN_MEGABYTE = 1048576;

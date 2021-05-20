@@ -32,7 +32,6 @@ export const InfoPrices = ({
           <div className={classes.bid}>
             {t('details-nft.top-bid')}
             <i className={classes.bidDevider} />
-            {/* new Date(2021, 3, 30) */}
             <Timer endDate={endDate} />
           </div>
         )}
