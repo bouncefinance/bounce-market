@@ -138,6 +138,10 @@ export default function PullRadioBox({
     const inputRef = useRef(null);
 
     useEffect(() => {
+        setCheckVal(defaultValue)
+    }, [defaultValue])
+
+    useEffect(() => {
         onChange && onChange(checkItem)
         console.log("checkVal 1: ", checkVal)
         onValChange && onValChange(checkVal)

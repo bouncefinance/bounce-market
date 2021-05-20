@@ -193,7 +193,7 @@ const ConnectToChain = async (chainName) => {
             params: chainName === "BSC" ? BSCInfo : HECOInfo,
         })
         .then(() => {
-            window.localStorage.setItem('currentChainId', chainName === "BSC" ? 56 : chainName === "HECO" ? 128 : 'Unsupported Chain')
+            // window.localStorage.setItem('currentChainId', chainName === "BSC" ? 56 : chainName === "HECO" ? 128 : 'Unsupported Chain')
             window.location.reload();
         })
         .catch((reason)=>{
@@ -218,9 +218,14 @@ export default function Index() {
     //const defaultNetwork = window.localStorage.getItem('currentChainId') === '128' ? 'HECO' : window.localStorage.getItem('currentChainId') === '56' ? 'BSC' : 'Unsupported Chain'
     // const currentChainName = window.localStorage.getItem('currentChainId') === '128' ? 'HECO' : window.localStorage.getItem('currentChainId') === '56' ? 'BSC' : 'Unsupported Chain'
     const [currentChainName, setCurrentChainName] = useState(
-		window.localStorage.getItem("currentChainId") === "56"
+		/* window.localStorage.getItem("currentChainId") === "56"
 			? "BSC"
 			: window.localStorage.getItem("currentChainId") === "128"
+			? "HECO"
+			: "Unsupported Chain" */
+		chainId === 56
+			? "BSC"
+			: chainId === 128
 			? "HECO"
 			: "Unsupported Chain"
 	);
@@ -296,7 +301,7 @@ export default function Index() {
     useEffect(() => {
         if (!chainId) return
         console.log("chainId000: ", chainId);
-        // window.localStorage.setItem('currentChainId', chainId === 56 ? 56 : chainId === 128 ? 128 : 'Unsupported Chain')
+        //window.localStorage.setItem('currentChainId', chainId === 56 ? 56 : chainId === 128 ? 128 : 'Unsupported Chain')
         setCurrentChainName(chainId === 56 ? 'BSC' : chainId === 128 ? 'HECO' : 'Unsupported Chain')
     }, [chainId])
 
