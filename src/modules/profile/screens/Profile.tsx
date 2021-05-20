@@ -14,6 +14,7 @@ import { uid } from 'react-uid';
 import { NoItems } from '../../common/components/NoItems';
 import { ProductCard } from '../../common/components/ProductCard';
 import { Queries } from '../../common/components/Queries/Queries';
+import { AuctionState } from '../../common/const/AuctionState';
 import { RoutesConfiguration } from '../../createNFT/Routes';
 import { IItem } from '../../overview/api/getItems';
 import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
@@ -36,7 +37,6 @@ import { Tabs } from '../components/Tabs';
 import { Tab } from '../components/Tabs/Tab';
 import { ProfileRoutesConfig, ProfileTab } from '../ProfileRoutes';
 import { useProfileStyles } from './useProfileStyles';
-import { AuctionState } from '../../common/const/AuctionState';
 
 const followings: IFollowingItemProps[] = [
   {
@@ -202,10 +202,10 @@ export const Profile = () => {
         <TabPanel value={tab} index={ProfileTab.items}>
           {hasItems || allNftByUserQuery.loading ? (
             <TabItems>
-              <ProductCards>
-                <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
-                  {({ data }) =>
-                    data?.map((item: IItem) => (
+              <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
+                {({ data }) => (
+                  <ProductCards>
+                    {data?.map((item: IItem) => (
                       <ProductCard
                         key={uid(item)}
                         title={item.itemName}
@@ -234,7 +234,7 @@ export const Profile = () => {
                           users: [
                             {
                               name: 'name',
-                              avatar: `${profileInfo?.imgUrl ??'https://via.placeholder.com/32'}`,
+                              avatar: `${profileInfo?.imgUrl}`,
                               verified: true,
                             },
                           ],
@@ -244,10 +244,10 @@ export const Profile = () => {
                           item.id,
                         )}
                       />
-                    ))
-                  }
-                </Queries>
-              </ProductCards>
+                    ))}
+                  </ProductCards>
+                )}
+              </Queries>
             </TabItems>
           ) : (
             <NoItems href={MarketRoutesConfig.Market.generatePath()} />
