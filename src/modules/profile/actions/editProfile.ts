@@ -35,7 +35,7 @@ export const editProfile: (
       data: {
         bio,
         email,
-        username,
+        username: username ? username : undefined,
         fullname: fullName,
         imgurl: imgUrl,
       },
