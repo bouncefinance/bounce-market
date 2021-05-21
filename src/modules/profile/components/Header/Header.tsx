@@ -16,6 +16,8 @@ interface IHeaderProps {
 export const Header = ({ className, onEditClick, img }: IHeaderProps) => {
   const classes = useHeaderStyles();
 
+  const isEditable = typeof onEditClick === 'function';
+
   return (
     <div className={classNames(classes.root, className)}>
       <Img
@@ -25,17 +27,19 @@ export const Header = ({ className, onEditClick, img }: IHeaderProps) => {
         loading="lazy"
       />
 
-      <Container className={classes.container}>
-        <Box
-          className={classes.visibleOnHover}
-          display="flex"
-          justifyContent="flex-end"
-        >
-          <Button startIcon={<PencilIcon />} onClick={onEditClick} rounded>
-            {t('profile.customize-btn')}
-          </Button>
-        </Box>
-      </Container>
+      {isEditable && (
+        <Container className={classes.container}>
+          <Box
+            className={classes.visibleOnHover}
+            display="flex"
+            justifyContent="flex-end"
+          >
+            <Button startIcon={<PencilIcon />} onClick={onEditClick} rounded>
+              {t('profile.customize-btn')}
+            </Button>
+          </Box>
+        </Container>
+      )}
     </div>
   );
 };

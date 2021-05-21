@@ -1,5 +1,6 @@
 import {
   Box,
+  BoxProps,
   ButtonBase,
   Grid,
   IconButton,
@@ -16,7 +17,7 @@ import { Link } from 'react-router-dom';
 import { ProfileRoutesConfig } from '../../ProfileRoutes';
 import { useInfoPanelStyles } from './useInfoPanelStyles';
 
-interface IInfoPanelProps {
+interface IInfoPanelProps extends BoxProps {
   name?: string;
   email?: string;
   address?: string;
@@ -41,11 +42,12 @@ export const InfoPanel = ({
   social,
   isBrand,
   withSharing,
+  ...boxProps
 }: IInfoPanelProps) => {
   const classes = useInfoPanelStyles();
 
   return (
-    <Box mb={8}>
+    <Box mb={8} {...boxProps}>
       <Grid container spacing={3} alignItems="center">
         <Grid item xs={12} sm="auto">
           <Typography variant="h2">{name}</Typography>

@@ -1,4 +1,4 @@
-interface ITradeAuction {
+export interface ITradeAuction {
   amountMax1: string;
   amountMin1: string;
   amountMinIncr1: string;
@@ -19,7 +19,7 @@ interface ITradeAuction {
   tokenId: number;
 }
 
-interface ITradePool {
+export interface ITradePool {
   amount_total0: number;
   amount_total1: string;
   createTime: number;
