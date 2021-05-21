@@ -90,14 +90,14 @@ export const createBrandNFT = createSmartAction(
               if (!addItemData) {
                 throw new Error("Item hasn't been added");
               }
-
+              
               if (standard === 1) {
                 return await new Promise((resolve, reject) => {
                   const ContractBounceERC72 = new web3.eth.Contract(
                     (BounceErc721.abi as unknown) as AbiItem,
                     brandInfo.contractaddress,
                   );
-
+                  
                   ContractBounceERC72.methods
                     .mint(
                       address,
