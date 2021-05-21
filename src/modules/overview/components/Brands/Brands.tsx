@@ -8,7 +8,7 @@ import { Img } from 'modules/uiKit/Img';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
-import { uid } from 'react-uid';
+import { Link } from 'react-router-dom';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useBrandsStyles } from './BrandsStyles';
@@ -56,8 +56,9 @@ export const Brands = ({
   const renderedSlides = useMemo(
     () =>
       items.map(({ imgUrl, id }, i) => (
-        <SwiperSlide className={classes.slide} key={uid(i)}>
-          <div
+        <SwiperSlide className={classes.slide} key={id}>
+          <Link
+            to={BrandRoutesConfig.Brand.generatePath(id)}
             className={classNames(classes.brand, {
               [classes.brandLight]: i % 2 === 0,
               [classes.brandDark]: i % 2 === 1,
@@ -70,7 +71,7 @@ export const Brands = ({
               objectFit="scale-down"
               imgClassName="swiper-lazy"
             />
-          </div>
+          </Link>
         </SwiperSlide>
       )),
     [classes, items],
@@ -78,8 +79,8 @@ export const Brands = ({
 
   const history = useHistory();
   const onViewBrand = () => {
-    history.replace(BrandRoutesConfig.ListBrand.generatePath())
-  }
+    history.replace(BrandRoutesConfig.ListBrand.generatePath());
+  };
 
   return (
     <Section {...sectionProps} className={classes.root}>
@@ -91,7 +92,12 @@ export const Brands = ({
             </Grid>
 
             <Grid item xs="auto">
-              <Button variant="outlined" className={classes.moreBtn} rounded onClick={onViewBrand}>
+              <Button
+                variant="outlined"
+                className={classes.moreBtn}
+                rounded
+                onClick={onViewBrand}
+              >
                 {t('common.view-all')}
               </Button>
             </Grid>

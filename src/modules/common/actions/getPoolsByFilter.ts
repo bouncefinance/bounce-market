@@ -24,10 +24,10 @@ interface IApiPool {
 }
 
 interface IApiPoolsData {
-  code: 200;
+  code: number;
   data: {
-    englishTotal: 0;
-    fixedSwapTotal: 0;
+    englishTotal: number;
+    fixedSwapTotal: number;
     tradeAuctions: null;
     tradePools?: IApiPool[];
   };

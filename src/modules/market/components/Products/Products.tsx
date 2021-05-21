@@ -1,10 +1,7 @@
 import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import {
-  IProductCardProps,
-  ProductCard,
-} from 'modules/common/components/ProductCard';
+import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
@@ -17,16 +14,6 @@ import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useState } from 'react';
 import { uid } from 'react-uid';
-
-type IImgProps = Omit<IProductCardProps, 'MediaProps'> & {
-  img: string;
-};
-
-type IVideoProps = Omit<IProductCardProps, 'MediaProps'> & {
-  video: string;
-};
-
-export type ProductProps = IImgProps | IVideoProps;
 
 interface IProductsProps extends ISectionProps {
   cards?: JSX.Element;

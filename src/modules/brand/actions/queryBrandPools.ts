@@ -1,4 +1,3 @@
-
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { setAccount } from 'modules/account/store/actions/setAccount';
 import { queryItemByFilter } from 'modules/pools/actions/queryItemByFilter';
@@ -9,16 +8,16 @@ import { RootState } from 'store';
 import { compare } from '../api/queryBrand';
 import { QueryBrandPoolsAction } from './const';
 
-export interface IQueryBrandItem {
+export interface IQueryBrandPoolsArgs {
   owneraddress: string;
   contractaddress: string;
 }
 
-export const queryBrandPools = createSmartAction(
+export const queryBrandPools = createSmartAction<RequestAction>(
   QueryBrandPoolsAction,
-  (data: IQueryBrandItem) => ({
+  (params: IQueryBrandPoolsArgs) => ({
     request: {
-      promise: (async function () { })(),
+      promise: (async function () {})(),
     },
     meta: {
       asMutation: true,
@@ -30,22 +29,28 @@ export const queryBrandPools = createSmartAction(
         return {
           promise: (async () => {
             const { data: poolData } = await store.dispatchRequest(
-              queryPools(data.owneraddress)
-            )
+              queryPools(params.owneraddress),
+            );
 
-            const fsPools = (poolData?.tradePools ?? [])
-              .filter(item => item.state !== 1 && compare(item.token0, data.contractaddress));
-            const eaPools = (poolData?.tradeAuctions ?? [])
-              .filter(item => item.state !== 1 && compare(item.token0, data.contractaddress));
+            const fsPools = (poolData?.tradePools ?? []).filter(
+              item =>
+                item.state !== 1 &&
+                compare(item.token0, params.contractaddress),
+            );
+            const eaPools = (poolData?.tradeAuctions ?? []).filter(
+              item =>
+                item.state !== 1 &&
+                compare(item.token0, params.contractaddress),
+            );
 
-            const fsToken = fsPools
-              .map(item => item.tokenId);
-            const eaToken = eaPools
-              .map(item => item.tokenId);
+            const fsToken = fsPools.map(item => item.tokenId);
+            const eaToken = eaPools.map(item => item.tokenId);
             const tokenList = fsToken.concat(eaToken);
 
             if (tokenList.length > 0) {
-              const { data: { address} } = getQuery(store.getState(), {
+              const {
+                data: { address },
+              } = getQuery(store.getState(), {
                 type: setAccount.toString(),
                 action: setAccount,
               });
@@ -53,19 +58,19 @@ export const queryBrandPools = createSmartAction(
               const { data: itemData } = await store.dispatchRequest(
                 queryItemByFilter({
                   accountaddress: address,
-                  category: "",
-                  channel: "",
-                  cts: new Array(tokenList.length).fill(data.contractaddress),
-                  ids: tokenList
-                })
-              )
+                  category: '',
+                  channel: '',
+                  cts: new Array(tokenList.length).fill(params.contractaddress),
+                  ids: tokenList,
+                }),
+              );
               return new Promise((resolve, reject) => resolve(itemData));
             } else {
               return new Promise((resolve, reject) => resolve([]));
             }
-          })()
-        }
-      }
-    }
-  })
-)
+          })(),
+        };
+      },
+    },
+  }),
+);
