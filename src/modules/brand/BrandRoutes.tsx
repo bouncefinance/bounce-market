@@ -1,5 +1,5 @@
 import loadable, { LoadableComponent } from '@loadable/component';
-import { generatePath } from 'react-router-dom';
+import { generatePath, Route } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 import { PrivateRoute } from '../router/components/PrivateRoute';
@@ -8,6 +8,7 @@ export const PATH_LIST_BRAND = '/brands';
 export const PATH_CREATE_BRAND = '/brand/create';
 export const PATH_CREATE_BRAND_ITEM = '/brand/create-item/:id';
 export const PATH_MY_BRAND = '/my-brand';
+export const PATH_BRAND = '/brand/:id';
 
 export const BrandRoutesConfig: { [key: string]: RouteConfiguration } = {
   ListBrand: {
@@ -25,6 +26,10 @@ export const BrandRoutesConfig: { [key: string]: RouteConfiguration } = {
   MyBrand: {
     path: PATH_MY_BRAND,
     generatePath: () => generatePath(PATH_MY_BRAND),
+  },
+  Brand: {
+    path: PATH_BRAND,
+    generatePath: (id: number) => generatePath(PATH_BRAND, { id }),
   },
 };
 
@@ -58,6 +63,13 @@ const LoadableMyBrandContainer: LoadableComponent<any> = loadable(
   },
 );
 
+const LoadableBrandContainer: LoadableComponent<any> = loadable(
+  async () => import('./screens/Brand').then(module => module.Brand),
+  {
+    fallback: <QueryLoadingAbsolute />,
+  },
+);
+
 export function BrandRoutes() {
   return (
     <>
@@ -83,6 +95,12 @@ export function BrandRoutes() {
         path={BrandRoutesConfig.MyBrand.path}
         exact={true}
         component={LoadableMyBrandContainer}
+      />
+
+      <Route
+        path={BrandRoutesConfig.Brand.path}
+        exact={true}
+        component={LoadableBrandContainer}
       />
     </>
   );

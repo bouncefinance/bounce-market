@@ -1,8 +1,9 @@
 import { Box, Container, Typography } from '@material-ui/core';
-import { useDispatchRequest } from '@redux-requests/react';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { listBrands } from 'modules/brand/actions/listBrands';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
+import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { Subscribers } from 'modules/profile/components/Subscribers';
@@ -18,11 +19,13 @@ export const Brands = () => {
   const dispatch = useDispatchRequest();
   const { isConnected } = useAccount();
 
+  const { data } = useQuery({ type: listBrands.toString() });
+
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && !data) {
       dispatch(listBrands());
     }
-  }, [isConnected, dispatch]);
+  }, [isConnected, dispatch, data]);
 
   return (
     <Section>
@@ -43,6 +46,7 @@ export const Brands = () => {
                   contractaddress,
                 }: IBrandInfo) => (
                   <BrandsItem
+                    href={BrandRoutesConfig.Brand.generatePath(id)}
                     key={id}
                     name={brandname}
                     descr={description}

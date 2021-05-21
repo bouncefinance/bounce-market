@@ -48,6 +48,7 @@
   "connect-wallet": {
     "placeholder": {
       "title": "Connect your wallet",
+      "brand-title": "To see the brand's items, you need to connect first.",
       "description": "The content of this page is only available with the connected wallet"
     },
     "custom-binancewallet": {

@@ -1,5 +1,18 @@
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import {
+  createBrandNFT,
+  NFTStandard,
+} from 'modules/brand/actions/createBrandNft';
+import { queryBrandById } from 'modules/brand/actions/getBrandById';
+import { IBrandInfo } from 'modules/brand/api/queryBrand';
+import {
+  Channel,
+  createNft,
+  ICreateNFTPayload,
+} from 'modules/createNFT/actions/createNft';
+import { useCreateNFTStyles } from 'modules/createNFT/screens/CreateNFT/useCreateNFTStyles';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
@@ -11,17 +24,10 @@ import { UploadFileField } from '../../../form/components/UploadFileField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
-import { ProfileRoutesConfig, ProfileTab } from '../../../profile/ProfileRoutes';
-import { useCreateNFTStyles } from 'modules/createNFT/screens/CreateNFT/useCreateNFTStyles';
 import {
-  Channel,
-  createNft,
-  ICreateNFTPayload,
-} from 'modules/createNFT/actions/createNft';
-import { queryBrandById } from 'modules/brand/actions/getBrandById';
-import { useAccount } from 'modules/account/hooks/useAccount';
-import { IBrandInfo } from 'modules/brand/api/queryBrand';
-import { createBrandNFT, NFTStandard } from 'modules/brand/actions/createBrandNft';
+  ProfileRoutesConfig,
+  ProfileTab,
+} from '../../../profile/ProfileRoutes';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -74,24 +80,39 @@ export const CreateBrandItem = () => {
 
   useEffect(() => {
     if (address && id) {
-      dispatch(queryBrandById({
-        id: parseInt(id),
-        accountaddress: address,
-      }))
-        .then(res => {
-          setBrandInfo(res.data);
-        })
+      dispatch(
+        queryBrandById(
+          {
+            id: parseInt(id),
+            accountaddress: address,
+          },
+          {
+            asMutation: true,
+          },
+        ),
+      ).then(res => {
+        setBrandInfo(res.data);
+      });
     }
-  }, [id, address, dispatch])
+  }, [id, address, dispatch]);
 
   const handleSubmit = useCallback(
     (payload: ICreateNFTFormData) => {
       if (brandInfo) {
         dispatch(
-          createBrandNFT({ ...payload, standard: brandInfo.standard, supply: parseInt(payload.supply, 10) }, brandInfo),
+          createBrandNFT(
+            {
+              ...payload,
+              standard: brandInfo.standard,
+              supply: parseInt(payload.supply, 10),
+            },
+            brandInfo,
+          ),
         ).then(({ error }) => {
           if (!error) {
-            push(ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands));
+            push(
+              ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands),
+            );
           }
         });
       }
@@ -184,8 +205,15 @@ export const CreateBrandItem = () => {
           <Box>
             <Mutation type={createNft.toString()}>
               {({ loading }) => (
-                <Button size="large" type="submit" fullWidth disabled={loading || !brandInfo}>
-                  {loading ? t('common.submitting') : t('create-brand-nft.submit')}
+                <Button
+                  size="large"
+                  type="submit"
+                  fullWidth
+                  disabled={loading || !brandInfo}
+                >
+                  {loading
+                    ? t('common.submitting')
+                    : t('create-brand-nft.submit')}
                 </Button>
               )}
             </Mutation>

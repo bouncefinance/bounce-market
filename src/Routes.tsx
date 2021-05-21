@@ -19,7 +19,6 @@ import {
   RoutesConfiguration as OverviewRoutesConfig,
 } from './modules/overview/Routes';
 import { PageNotFound } from './modules/router/components/PageNotFound';
-import { PrivateRoute } from './modules/router/components/PrivateRoute';
 import { Themes } from './modules/themes/types';
 
 export function Routes() {
@@ -105,6 +104,7 @@ export function Routes() {
           BrandRoutesConfig.CreateBrand.path,
           BrandRoutesConfig.CreateBrandItem.path,
           BrandRoutesConfig.MyBrand.path,
+          BrandRoutesConfig.Brand.path,
         ]}
         render={() => (
           <DefaultLayout>
@@ -113,7 +113,13 @@ export function Routes() {
         )}
       />
 
-      <PrivateRoute component={PageNotFound} />
+      <Route
+        render={() => (
+          <DefaultLayout>
+            <PageNotFound />
+          </DefaultLayout>
+        )}
+      />
     </Switch>
   );
 }
