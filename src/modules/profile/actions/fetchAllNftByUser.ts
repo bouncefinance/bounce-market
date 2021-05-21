@@ -8,6 +8,7 @@ import { IItem } from '../../overview/api/getItems';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
+import uniqBy from 'lodash/uniqBy';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
@@ -67,12 +68,23 @@ export const fetchAllNftByUser: (
               ...(pools?.list.map(item => item.tokenContract) ?? []),
             ];
 
+            const items = uniqBy(
+              ids.map((id, index) => ({
+                id,
+                contractAddress: cts[index],
+              })),
+              item => item.id,
+            );
+
             const {
               data,
               error: fetchItemsError,
             } = await store.dispatchRequest(
               fetchItemsByFilter(
-                { ids, cts },
+                {
+                  ids: items.map(item => item.id),
+                  cts: items.map(item => item.contractAddress),
+                },
                 {
                   silent: true,
                   suppressErrorNotification: true,
@@ -101,6 +113,7 @@ export const fetchAllNftByUser: (
                         ? pool.amountMin1
                         : pool.lastestBidAmount
                       : pool.price,
+                    state: pool.state,
                   };
                 }
 

@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core';
+import { Box, Container, Typography } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
@@ -14,6 +14,7 @@ import { uid } from 'react-uid';
 import { NoItems } from '../../common/components/NoItems';
 import { ProductCard } from '../../common/components/ProductCard';
 import { Queries } from '../../common/components/Queries/Queries';
+import { AuctionState } from '../../common/const/AuctionState';
 import { RoutesConfiguration } from '../../createNFT/Routes';
 import { IItem } from '../../overview/api/getItems';
 import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
@@ -139,15 +140,21 @@ export const Profile = () => {
       {
         value: ProfileTab.following,
         label: t('profile.tabs.following'),
-        count: 11,
+        count: 0,
       },
       {
         value: ProfileTab.followers,
         label: t('profile.tabs.followers'),
-        count: 150,
+        count: 0,
       },
     ],
     [],
+  );
+
+  const renderedComingSoon = (
+    <Box>
+      <Typography>{t('common.coming-soon')}</Typography>
+    </Box>
   );
 
   return (
@@ -177,9 +184,14 @@ export const Profile = () => {
         />
 
         <InfoPanel
+          withSharing={featuresConfig.ownProfileSharing}
           name={profileInfo?.username}
           email={profileInfo?.email}
-          subscribers={<Subscribers count={profileInfo?.followCount} />}
+          subscribers={
+            featuresConfig.subscribers && (
+              <Subscribers count={profileInfo?.followCount} />
+            )
+          }
           // https://ankrnetwork.atlassian.net/browse/FE-3449
           // TODO: [FE-3449] add social links after it will be implemented on backend side
           social={featuresConfig.profileSocialLinks && <Social />}
@@ -201,10 +213,10 @@ export const Profile = () => {
         <TabPanel value={tab} index={ProfileTab.items}>
           {hasItems || allNftByUserQuery.loading ? (
             <TabItems>
-              <ProductCards>
-                <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
-                  {({ data }) =>
-                    data?.map((item: IItem) => (
+              <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
+                {({ data }) => (
+                  <ProductCards>
+                    {data?.map((item: IItem) => (
                       <ProductCard
                         key={uid(item)}
                         title={item.itemName}
@@ -219,6 +231,7 @@ export const Profile = () => {
                         // status={item.status}
                         // UPDATE price
                         price={item.poolId ? item.price : undefined}
+                        isOnSale={item.state === AuctionState.Live}
                         copies={item.supply}
                         MediaProps={{
                           category: item.category,
@@ -228,11 +241,11 @@ export const Profile = () => {
                         }}
                         ProfileInfoProps={{
                           subTitle: 'Owner',
-                          title: '1livinginzen',
+                          title: `${profileInfo?.username ?? ''}`,
                           users: [
                             {
                               name: 'name',
-                              avatar: 'https://via.placeholder.com/32',
+                              avatar: profileInfo?.imgUrl,
                               verified: true,
                             },
                           ],
@@ -242,10 +255,10 @@ export const Profile = () => {
                           item.id,
                         )}
                       />
-                    ))
-                  }
-                </Queries>
-              </ProductCards>
+                    ))}
+                  </ProductCards>
+                )}
+              </Queries>
             </TabItems>
           ) : (
             <NoItems href={MarketRoutesConfig.Market.generatePath()} />
@@ -257,15 +270,31 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>
-          <ActivityTable />
+          {featuresConfig.profileActivity ? (
+            <ActivityTable />
+          ) : (
+            renderedComingSoon
+          )}
+        </TabPanel>
+
+        <TabPanel value={tab} index={ProfileTab.liked}>
+          {renderedComingSoon}
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.following}>
-          <TabFollowing items={followings} />
+          {featuresConfig.profileFollowers ? (
+            <TabFollowing items={followings} />
+          ) : (
+            renderedComingSoon
+          )}
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.followers}>
-          <TabFollowing items={followers} />
+          {featuresConfig.profileFollowers ? (
+            <TabFollowing items={followers} />
+          ) : (
+            renderedComingSoon
+          )}
         </TabPanel>
       </Container>
     </Section>

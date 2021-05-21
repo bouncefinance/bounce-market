@@ -7,10 +7,55 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 // TODO: at the end all features should be activated
 export const featuresConfig = {
+  /**
+   * There is no data on the backend side
+   */
   profileSocialLinks: false,
+  /**
+   * Feature is not implemented
+   */
   artists: false,
+  /**
+   * Feature is not implemented
+   */
   loadMoreNFTs: false,
+  /**
+   * Page is not created yet
+   */
   howItWorkPage: false,
+  /**
+   * No data provided for this
+   */
+  nftCardOwnerInfo: false,
+  /**
+   * Hidden, as for now the own profile is displayed without a unique URL
+   * and it cannot be shared
+   */
+  ownProfileSharing: false,
+  /**
+   * Hidden, as for now the own brand is displayed without a unique URL
+   * and it cannot be shared
+   */
+  ownBrandSharing: false,
+  /**
+   * Feature is not fully implemented
+   */
+  nftLikes: false,
+  /**
+   * Feature is not implemented
+   */
+  nftItemsSortSelect: false,
+  nftDetailsCreator: false,
+  nftDetailsCount: false,
+  nftDetailsHistory: false,
+  nftDetailsBids: false,
+  nftDetailsOwners: false,
+  nftDetailsTokenInfo: false,
+  subscribers: false,
+  profileSortTabs: false,
+  profileActivity: false,
+  profileLiked: false,
+  profileFollowers: false,
 };
 
 export enum BlockchainNetworkId {

@@ -243,7 +243,7 @@ export const publishNft = createSmartAction<
                     });
                 });
               } else {
-                ContractBounceERC1155WithSign.methods
+                await ContractBounceERC1155WithSign.methods
                   .setApprovalForAll(getEnglishAuctionContract(chainId), true)
                   .send({ from: address });
 

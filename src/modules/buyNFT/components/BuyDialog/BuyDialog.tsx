@@ -17,8 +17,8 @@ import { t } from 'modules/i18n/utils/intl';
 import { Img } from 'modules/uiKit/Img';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
-import { useBuyDialogStyles } from './useBuyDialogStyles';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { useBuyDialogStyles } from './useBuyDialogStyles';
 
 const MIN_QUANTITY = 1;
 
@@ -34,10 +34,11 @@ interface IBuyDialogProps {
   onClose?: () => void;
   onSubmit: (values: IBuyFormValues, form: any, callback: any) => void;
   owner: string;
-  ownerAvatar: string;
+  ownerAvatar?: string;
   readonly: boolean;
   category: 'image' | 'video';
   disabled?: boolean;
+  maxQuantity?: number;
 }
 
 export const BuyDialog = ({
@@ -50,22 +51,28 @@ export const BuyDialog = ({
   owner,
   ownerAvatar,
   readonly,
-  disabled,
   category,
+  disabled,
+  maxQuantity,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
 
-  const validateForm = useCallback(({ quantity }: IBuyFormValues) => {
-    const errors: FormErrors<IBuyFormValues> = {};
+  const validateForm = useCallback(
+    ({ quantity }: IBuyFormValues) => {
+      const errors: FormErrors<IBuyFormValues> = {};
 
-    if (!quantity) {
-      errors.quantity = t('validation.required');
-    } else if (+quantity < MIN_QUANTITY) {
-      errors.quantity = `It must be grater than ${MIN_QUANTITY - 1}`;
-    }
+      if (!quantity) {
+        errors.quantity = t('validation.required');
+      } else if (+quantity < MIN_QUANTITY) {
+        errors.quantity = t('error.greater-than', { value: MIN_QUANTITY - 1 });
+      } else if (maxQuantity && +quantity > maxQuantity) {
+        errors.quantity = t('error.less-than', { value: maxQuantity + 1 });
+      }
 
-    return errors;
-  }, []);
+      return errors;
+    },
+    [maxQuantity],
+  );
 
   const renderForm = useCallback(
     ({ handleSubmit, values, form }: FormRenderProps<IBuyFormValues>) => {

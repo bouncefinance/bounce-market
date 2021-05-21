@@ -129,9 +129,9 @@ export const PublishNFTComponent = ({
       if (!payload.quantity) {
         errors.quantity = t('validation.required');
       } else if (+payload.quantity < MIN_AMOUNT) {
-        errors.quantity = t('validation.min', { value: MIN_AMOUNT - 1 });
+        errors.quantity = t('validation.min', { value: MIN_AMOUNT });
       } else if (+payload.quantity > maxQuantity) {
-        errors.quantity = t('validation.max', { value: maxQuantity + 1 });
+        errors.quantity = t('validation.max', { value: maxQuantity });
       }
 
       if (payload.type === AuctionType.FixedSwap) {
@@ -258,19 +258,21 @@ export const PublishNFTComponent = ({
     return (
       <Box className={classes.form} component="form" onSubmit={handleSubmit}>
         <div className={classes.formImgCol}>
-          <Paper className={classes.formImgBox} variant="outlined">
-            {category === 'image' ? (
-              <Img
-                src={file}
-                alt={name}
-                title={name}
-                ratio="1x1"
-                objectFit="scale-down"
-              />
-            ) : (
-              <VideoPlayer src={file} />
-            )}
-          </Paper>
+          {file && (
+            <Paper className={classes.formImgBox} variant="outlined">
+              {category === 'image' ? (
+                <Img
+                  src={file}
+                  alt={name}
+                  title={name}
+                  ratio="1x1"
+                  objectFit="scale-down"
+                />
+              ) : (
+                <VideoPlayer src={file} objectFit="cover" />
+              )}
+            </Paper>
+          )}
 
           <Box mt={2}>
             <Typography variant="h2">{name}</Typography>

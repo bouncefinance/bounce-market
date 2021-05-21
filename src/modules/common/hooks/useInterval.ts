@@ -1,8 +1,14 @@
 import { useEffect, useRef } from 'react';
 
+/**
+ * The hook explanation is here:
+ * https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+ *
+ * If the delay is null, the interval will be paused.
+ */
 export function useInterval(
   callback: () => void,
-  delay?: number,
+  delay: number | null,
   immediately?: boolean,
 ) {
   const savedCallback = useRef<any>();
@@ -21,7 +27,7 @@ export function useInterval(
     function tick() {
       savedCallback.current();
     }
-    if (delay) {
+    if (delay !== null) {
       const id = setInterval(tick, delay);
       return () => clearInterval(id);
     }

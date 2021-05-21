@@ -17,6 +17,7 @@ import {
   IProfileInfoProps,
   ProfileInfo,
 } from 'modules/common/components/ProfileInfo';
+import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
@@ -37,6 +38,7 @@ export enum ProductCardStatuses {
 export interface IProductCardProps {
   className?: string;
   price?: BigNumber;
+  isOnSale?: boolean;
   title: string;
   priceType?: string;
   endDate?: Date;
@@ -60,6 +62,7 @@ export const ProductCard = ({
   className,
   href,
   price,
+  isOnSale,
   title,
   priceType,
   endDate,
@@ -77,7 +80,6 @@ export const ProductCard = ({
 }: IProductCardProps) => {
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const isOnSale = !!price;
   const isPopoverOpened = Boolean(anchorEl);
   const isMinting = status === ProductCardStatuses.minting;
   const isOnSalePending = status === ProductCardStatuses.onSalePending;
@@ -166,10 +168,12 @@ export const ProductCard = ({
         ) : (
           <div className={classes.videoWrapper}>
             <div className={classes.video}>
-              <VideoPlayer
-                src={MediaProps.src}
-                objectFit={MediaProps.objectFit}
-              />
+              {MediaProps.src && (
+                <VideoPlayer
+                  src={MediaProps.src}
+                  objectFit={MediaProps.objectFit}
+                />
+              )}
             </div>
           </div>
         )}
@@ -206,15 +210,22 @@ export const ProductCard = ({
       )}
 
       <CardContent className={classes.content}>
-        <Typography variant="h5" className={classes.title} title={title}>
+        <Typography
+          variant="h5"
+          className={classes.title}
+          title={title}
+          style={!featuresConfig.nftCardOwnerInfo ? { margin: 0 } : undefined}
+        >
           {title}
         </Typography>
 
-        <ProfileInfo {...ProfileInfoProps} />
+        {featuresConfig.nftCardOwnerInfo && (
+          <ProfileInfo {...ProfileInfoProps} />
+        )}
 
         <hr className={classes.devider} />
 
-        {price && (
+        {isOnSale && price && (
           <div className={classes.price}>
             {price.toFormat()} {priceType}
           </div>
@@ -223,11 +234,13 @@ export const ProductCard = ({
         <div className={classes.infoContainer}>
           {isOnSale && (
             <>
-              {copies && renderedCopies}
+              {!endDate && copies && renderedCopies}
 
-              {!copies && endDate && renderTimer()}
+              {endDate && renderTimer()}
 
-              {typeof likes === 'number' && renderedLikes}
+              {typeof likes === 'number' &&
+                featuresConfig.nftLikes &&
+                renderedLikes}
             </>
           )}
 

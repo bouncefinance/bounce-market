@@ -2,12 +2,13 @@ import { Container } from '@material-ui/core';
 import classNames from 'classnames';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
-import { Button } from 'modules/uiKit/Button';
-import { useMediaContainerStyles } from './useMediaContainerStyles';
-import { t } from 'modules/i18n/utils/intl';
 import { SocialShare } from 'modules/common/components/SocialShare';
+import { featuresConfig } from 'modules/common/conts';
+import { t } from 'modules/i18n/utils/intl';
+import { Button } from 'modules/uiKit/Button';
 import React from 'react';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { useMediaContainerStyles } from './useMediaContainerStyles';
 
 interface INFTContentProps {
   className?: string;
@@ -36,9 +37,11 @@ export const MediaContainer = ({
         )}
 
         <div className={classes.actions}>
-          <Button variant="outlined" className={classes.btn} rounded>
-            <HeartIcon className={classes.btnIcon} /> 150
-          </Button>
+          {featuresConfig.nftLikes && (
+            <Button variant="outlined" className={classes.btn} rounded>
+              <HeartIcon className={classes.btnIcon} /> 150
+            </Button>
+          )}
 
           <SocialShare
             titleString={title}

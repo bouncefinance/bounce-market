@@ -1,5 +1,6 @@
 import { Box, Grid, Hidden } from '@material-ui/core';
 import { IProductCardProps } from 'modules/common/components/ProductCard';
+import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { FilledTab, FilledTabs } from 'modules/uiKit/FilledTabs';
@@ -34,57 +35,63 @@ export const TabItems = ({ children }: ITabItemsProps) => {
     <>
       <Box mb={3}>
         <Grid container alignItems="center" spacing={3}>
-          <Grid item xs={6} md>
-            <Hidden mdDown>
-              <FilledTabs
-                value={catergory}
-                onChange={onCategoryTabChange as any}
-                textColor="secondary"
-                variant="scrollable"
-              >
-                {categories.map(({ label, value }) => (
-                  <FilledTab
-                    className={classes.tab}
-                    key={uid(label)}
-                    label={label}
-                    value={value}
-                  />
-                ))}
-              </FilledTabs>
-            </Hidden>
+          {featuresConfig.profileSortTabs && (
+            <>
+              <Grid item xs={6} md>
+                <Hidden mdDown>
+                  <FilledTabs
+                    value={catergory}
+                    onChange={onCategoryTabChange as any}
+                    textColor="secondary"
+                    variant="scrollable"
+                  >
+                    {categories.map(({ label, value }) => (
+                      <FilledTab
+                        className={classes.tab}
+                        key={uid(label)}
+                        label={label}
+                        value={value}
+                      />
+                    ))}
+                  </FilledTabs>
+                </Hidden>
 
-            <Hidden lgUp>
+                <Hidden lgUp>
+                  <Select
+                    className={classes.select}
+                    value={catergory}
+                    onChange={onCategorySelectChange}
+                    options={categories}
+                  />
+                </Hidden>
+              </Grid>
+            </>
+          )}
+
+          {featuresConfig.nftItemsSortSelect && (
+            <Grid item xs={6} md="auto">
               <Select
                 className={classes.select}
-                value={catergory}
-                onChange={onCategorySelectChange}
-                options={categories}
+                value={sortBy}
+                onChange={onSortChange}
+                options={sortVariants}
+                renderValue={
+                  isMDUp
+                    ? (value: any) => {
+                        const sortVariant = sortVariants.find(
+                          variant => variant.value === value,
+                        );
+                        const label = sortVariant?.label.toLowerCase();
+
+                        return t('products.sort-label', {
+                          value: label,
+                        });
+                      }
+                    : undefined
+                }
               />
-            </Hidden>
-          </Grid>
-
-          <Grid item xs={6} md="auto">
-            <Select
-              className={classes.select}
-              value={sortBy}
-              onChange={onSortChange}
-              options={sortVariants}
-              renderValue={
-                isMDUp
-                  ? (value: any) => {
-                      const sortVariant = sortVariants.find(
-                        variant => variant.value === value,
-                      );
-                      const label = sortVariant?.label.toLowerCase();
-
-                      return t('products.sort-label', {
-                        value: label,
-                      });
-                    }
-                  : undefined
-              }
-            />
-          </Grid>
+            </Grid>
+          )}
         </Grid>
       </Box>
 
