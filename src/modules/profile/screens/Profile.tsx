@@ -128,25 +128,37 @@ export const Profile = () => {
         value: ProfileTab.brands,
         label: t('profile.tabs.my-brands'),
       },
-      {
-        value: ProfileTab.activity,
-        label: t('profile.tabs.activity'),
-      },
-      {
-        value: ProfileTab.liked,
-        label: t('profile.tabs.liked'),
-        count: 0,
-      },
-      {
-        value: ProfileTab.following,
-        label: t('profile.tabs.following'),
-        count: 0,
-      },
-      {
-        value: ProfileTab.followers,
-        label: t('profile.tabs.followers'),
-        count: 0,
-      },
+      ...(featuresConfig.profileActivity
+        ? [
+            {
+              value: ProfileTab.activity,
+              label: t('profile.tabs.activity'),
+            },
+          ]
+        : []),
+      ...(featuresConfig.profileLiked
+        ? [
+            {
+              value: ProfileTab.liked,
+              label: t('profile.tabs.liked'),
+              count: 0,
+            },
+          ]
+        : []),
+      ...(featuresConfig.profileFollowers
+        ? [
+            {
+              value: ProfileTab.following,
+              label: t('profile.tabs.following'),
+              count: 0,
+            },
+            {
+              value: ProfileTab.followers,
+              label: t('profile.tabs.followers'),
+              count: 0,
+            },
+          ]
+        : []),
     ],
     [],
   );
@@ -270,11 +282,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>
-          {featuresConfig.profileActivity ? (
-            <ActivityTable />
-          ) : (
-            renderedComingSoon
-          )}
+          <ActivityTable />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.liked}>
@@ -282,19 +290,11 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.following}>
-          {featuresConfig.profileFollowers ? (
-            <TabFollowing items={followings} />
-          ) : (
-            renderedComingSoon
-          )}
+          <TabFollowing items={followings} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.followers}>
-          {featuresConfig.profileFollowers ? (
-            <TabFollowing items={followers} />
-          ) : (
-            renderedComingSoon
-          )}
+          <TabFollowing items={followers} />
         </TabPanel>
       </Container>
     </Section>

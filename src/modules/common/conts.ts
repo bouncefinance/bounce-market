@@ -56,6 +56,7 @@ export const featuresConfig = {
   profileActivity: false,
   profileLiked: false,
   profileFollowers: false,
+  infoTabs: false,
 };
 
 export enum BlockchainNetworkId {

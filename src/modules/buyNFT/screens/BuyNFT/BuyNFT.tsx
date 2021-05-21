@@ -278,28 +278,30 @@ export const BuyNFT = () => {
                     />
                   )}
 
-                  <InfoTabs
-                    history={
-                      featuresConfig.nftDetailsHistory
-                        ? renderedHistoryList
-                        : renderedComingSoon
-                    }
-                    bids={
-                      featuresConfig.nftDetailsBids
-                        ? renderedBidsList
-                        : renderedComingSoon
-                    }
-                    owners={
-                      featuresConfig.nftDetailsOwners
-                        ? renderedOnwersList
-                        : renderedComingSoon
-                    }
-                    tokenInfo={
-                      featuresConfig.nftDetailsTokenInfo
-                        ? renderedTokenInfoList
-                        : renderedComingSoon
-                    }
-                  />
+                  {featuresConfig.infoTabs && (
+                    <InfoTabs
+                      history={
+                        featuresConfig.nftDetailsHistory
+                          ? renderedHistoryList
+                          : renderedComingSoon
+                      }
+                      bids={
+                        featuresConfig.nftDetailsBids
+                          ? renderedBidsList
+                          : renderedComingSoon
+                      }
+                      owners={
+                        featuresConfig.nftDetailsOwners
+                          ? renderedOnwersList
+                          : renderedComingSoon
+                      }
+                      tokenInfo={
+                        featuresConfig.nftDetailsTokenInfo
+                          ? renderedTokenInfoList
+                          : renderedComingSoon
+                      }
+                    />
+                  )}
                 </Info>
 
                 {isEnglishAuction(poolDetails) && (
