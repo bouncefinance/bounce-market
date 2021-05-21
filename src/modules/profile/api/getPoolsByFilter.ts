@@ -8,6 +8,7 @@ import {
   IFetchPoolDetailsData,
   isApiEnglishAuction,
 } from '../../overview/actions/fetchPoolDetails';
+import { POOLS_URL } from '../../common/conts';
 
 interface IApiPoolsData {
   code: 200;
@@ -80,7 +81,7 @@ export const getPoolsByFilter = createAction<
   ]
 >('getPoolsByFilter', (params, meta) => ({
   request: {
-    url: 'https://api1-bsc.fangible.com/v1/bsc_test/pools',
+    url: POOLS_URL,
     method: 'get',
     params: { user_address: params?.user, offset: 0, count: 1000 },
   },

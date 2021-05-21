@@ -6,6 +6,7 @@ import { Address } from '../../common/types/unit';
 import Web3 from 'web3';
 import { AuctionType } from '../api/auctionType';
 import { AuctionState } from '../../common/const/AuctionState';
+import { POOL_DETAILS_URL } from '../../common/conts';
 
 interface IApiFixedAuctionDetails {
   amount_total0: number;
@@ -117,7 +118,7 @@ export const fetchPoolDetails = createSmartAction<
     meta?: RequestActionMeta<IApiFetchPoolDetails, IFetchPoolDetailsData>,
   ) => ({
     request: {
-      url: 'https://api1-bsc.fangible.com/v1/bsc_test/pool',
+      url: POOL_DETAILS_URL,
       method: 'get',
       params: {
         pool_id: params.poolId,

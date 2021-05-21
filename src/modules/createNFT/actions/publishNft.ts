@@ -26,8 +26,7 @@ export const getFixedSwapContract = (chainID: number) => {
     case 4:
       return '0x65B2FA838588003102fb3883e608f8b0049BFDD1';
     case 56:
-      return '0x1C035FD1F11eA9Bb753625fD167205Cd40029607';
-    // return '0x58E84d90fd976A183bEfB36a69caB464bef18cC5';
+      return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS;
     default:
       return '0x65B2FA838588003102fb3883e608f8b0049BFDD1';
   }
@@ -40,8 +39,7 @@ export const getEnglishAuctionContract = (chainID: number) => {
     case 4:
       return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525';
     case 56:
-      return '0x7eF2DECf116f8aeBb9a7940A4713C00997DF79fd';
-    // return '0x780451a32959A96789F99398dEb6678d2c438EB4';
+      return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS;
     default:
       return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525';
   }

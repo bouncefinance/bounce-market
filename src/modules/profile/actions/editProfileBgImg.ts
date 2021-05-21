@@ -90,6 +90,7 @@ export const editProfileBgImg = createSmartAction<RequestAction>(
       ) => {
         if (isAccountNotExist(response.data)) {
           await store.dispatchRequest(editProfile({}));
+          // TODO: Handle possible loop
           await store.dispatchRequest(action);
         } else {
           store.dispatch(showSuccesNotify());

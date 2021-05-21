@@ -76,8 +76,8 @@
   },
   "scripts": {
     "start": "env-cmd -f .env.smartchain react-scripts start",
-    "start:rinkeby": "env-cmd -f .env.rinkeby react-scripts start",
-    "build": "env-cmd -f .env.rinkeby react-scripts build",
+    "start:smartchain-test": "env-cmd -f .env.smartchain-test react-scripts start",
+    "build": "env-cmd -f .env.smartchain react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",

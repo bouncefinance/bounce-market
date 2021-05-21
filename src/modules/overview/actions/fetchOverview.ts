@@ -28,7 +28,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 error: poolsInfoError,
               } = await store.dispatchRequest(
                 fetchPoolsWeight(
-                  { limit: 20, offset: 0, orderweight: 1 },
+                  { limit: 10, offset: 0, orderweight: 1 },
                   { silent: true },
                 ),
               );
@@ -44,7 +44,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         poolId: item.poolId,
                         poolType: item.auctionType,
                       },
-                      { silent: true, requestKey: item.poolId },
+                      { requestKey: item.poolId },
                     ),
                   ),
                 ),
