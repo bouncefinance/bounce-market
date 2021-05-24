@@ -6,12 +6,8 @@ import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { AbiItem } from 'web3-utils';
-import {
-  default as BoucneErc721,
-} from '../contract/BounceErc721.json';
-import {
-  default as BounceErc1155,
-} from '../contract/BounceErc1155.json';
+import { default as BoucneErc721 } from '../contract/BounceErc721.json';
+import { default as BounceErc1155 } from '../contract/BounceErc1155.json';
 import BounceNFTFactory from '../contract/BounceNFTFactory.json';
 import { ICreateBrand } from '../screens/CreateBrand';
 import { CreateBrandAction, getBrandContract } from './const';
@@ -34,7 +30,6 @@ export const createBrand = createSmartAction(
       ) => {
         return {
           promise: (async () => {
-
             const {
               data: { address, chainId, web3 },
             } = getQuery(store.getState(), {
