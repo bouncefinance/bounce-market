@@ -1,4 +1,3 @@
-import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { setAccount } from 'modules/account/store/actions/setAccount';
 import { uploadFile } from 'modules/common/actions/uploadFile';
@@ -82,18 +81,13 @@ export const createBrand = createSmartAction(
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
                     })
-                    .on('receipt', async (receipt: TransactionReceipt) => {
-                      contract.events.Brand721Created()
-                        .on('data', async (event: any) => {
-                          brandInfo.contractaddress = event.data;
-                          resolve(
-                            await store.dispatchRequest(updateBrandInfo(brandInfo)),
-                          );
-                        })
-                        .on('error', (error: Error) => {
-                          console.log(error);
-                          reject(error);
-                        })
+                    .on('receipt', async (receipt: any) => {
+                      const createEvent = receipt.events.Brand721Created;
+                      const address = createEvent.address;
+                      brandInfo.contractaddress = address;
+                      resolve(
+                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      );
                     })
                     .on('error', (error: Error) => {
                       reject(error);
@@ -107,17 +101,13 @@ export const createBrand = createSmartAction(
                     .on('transactionHash', (hash: string) => {
                       // Pending status
                     })
-                    .on('receipt', async (receipt: TransactionReceipt) => {
-                      contract.events.Brand1155Created()
-                        .on('data', async (event: any) => {
-                          brandInfo.contractaddress = event.data;
-                          resolve(
-                            await store.dispatchRequest(updateBrandInfo(brandInfo)),
-                          );
-                        })
-                        .on('error', (error: Error) => {
-                          reject(error);
-                        })
+                    .on('receipt', async (receipt: any) => {
+                      const createEvent = receipt.events.Brand1155Created;
+                      const address = createEvent.address;
+                      brandInfo.contractaddress = address;
+                      resolve(
+                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      );
                     })
                     .on('error', (error: Error) => {
                       reject(error);
