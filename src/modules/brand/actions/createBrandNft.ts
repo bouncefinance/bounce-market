@@ -5,13 +5,11 @@ import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
-import { AbiItem } from 'web3-utils';
-import { default as BounceErc721 } from '../contract/BounceErc721.json';
-import { default as BounceErc1155 } from '../contract/BounceErc1155.json';
 import { isVideo } from '../../common/utils/isVideo';
 import { IBrandInfo } from '../api/queryBrand';
 import { addItem, IAddItemPayload } from 'modules/createNFT/actions/addItem';
 import { NftType } from '../../createNFT/actions/createNft';
+import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
 
 export enum NFTStandard {
   ERC721 = 1,
@@ -86,7 +84,7 @@ export const createBrandNFT = createSmartAction(
             if (standard === 1) {
               return await new Promise((resolve, reject) => {
                 const ContractBounceERC72 = new web3.eth.Contract(
-                  (BounceErc721.abi as unknown) as AbiItem,
+                  BounceErc721,
                   brandInfo.contractaddress,
                 );
 
@@ -108,7 +106,7 @@ export const createBrandNFT = createSmartAction(
             } else if (standard === 2) {
               return await new Promise((resolve, reject) => {
                 const ContractBounceERC1155 = new web3.eth.Contract(
-                  (BounceErc1155.abi as unknown) as AbiItem,
+                  BounceErc1155,
                   brandInfo.contractaddress,
                 );
                 ContractBounceERC1155.methods
