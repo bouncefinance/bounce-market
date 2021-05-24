@@ -57,6 +57,7 @@ export const createBrand = createSmartAction(
             };
 
             if (brandAddress.data !== ZERO_ADDRESS) {
+              await store.dispatchRequest(updateBrandInfo(brandInfo));
             } else {
               const contract = new web3.eth.Contract(
                 BounceNFTFactory,
@@ -108,8 +109,6 @@ export const createBrand = createSmartAction(
                     });
                 });
               }
-
-              await store.dispatchRequest(updateBrandInfo(brandInfo));
             }
           })(),
         };
