@@ -8,7 +8,7 @@ export const PATH_LIST_BRAND = '/brands';
 export const PATH_CREATE_BRAND = '/brand/create';
 export const PATH_CREATE_BRAND_ITEM = '/brand/create-item/:id';
 export const PATH_MY_BRAND = '/my-brand';
-export const PATH_BRAND = '/brand/:id';
+export const PATH_BRAND = '/brand/view/:id';
 
 export const BrandRoutesConfig: { [key: string]: RouteConfiguration } = {
   ListBrand: {
