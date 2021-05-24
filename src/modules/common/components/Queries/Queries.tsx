@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core';
 import { getQuery, QueryState, RequestAction } from '@redux-requests/core';
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { useAppSelector } from 'store/useAppSelector';
 import { QueryEmpty } from '../QueryEmpty/QueryEmpty';
 import { QueryError } from '../QueryError/QueryError';
@@ -18,6 +18,7 @@ interface ILoadingProps<T1, T2, T3, T4, T5> {
       T5 extends void ? void : QueryState<T5>,
     ]
   ) => ReactNode;
+  noDataMessage?: ReactElement;
 }
 
 function isLoading(queries: QueryState<any>[]) {
@@ -44,6 +45,7 @@ export function Queries<T1 = void, T2 = void, T3 = void, T4 = void, T5 = void>({
   requestActions,
   children,
   requestKeys,
+  noDataMessage,
 }: ILoadingProps<T1, T2, T3, T4, T5>) {
   const queries = useAppSelector(state =>
     requestActions.map((item, index) =>
@@ -57,15 +59,17 @@ export function Queries<T1 = void, T2 = void, T3 = void, T4 = void, T5 = void>({
 
   if (isLoading(queries)) {
     return (
-      <Box
-        py={5}
-        position="relative"
-        width="100%"
-        display="flex"
-        justifyContent="center"
-      >
-        <QueryLoading />
-      </Box>
+      noDataMessage || (
+        <Box
+          py={5}
+          position="relative"
+          width="100%"
+          display="flex"
+          justifyContent="center"
+        >
+          <QueryLoading />
+        </Box>
+      )
     );
   }
 
