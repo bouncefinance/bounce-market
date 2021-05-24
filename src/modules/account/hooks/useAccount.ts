@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useAppDispatch } from 'store/useAppDispatch';
 import { ISetAccountData, setAccount } from '../store/actions/setAccount';
 import { connect } from '../store/actions/connect';
+import { BlockchainNetworkId } from '../../common/conts';
 
 export const useAccount = () => {
   const dispatch = useAppDispatch();
@@ -13,10 +14,18 @@ export const useAccount = () => {
 
   const address = data?.address;
   const isConnected = !!address;
+  const isChainSupported = data?.chainId === BlockchainNetworkId.smartchain;
 
   const handleConnect = useCallback(() => {
     dispatch(connect());
   }, [dispatch]);
 
-  return { loading, isConnected, address, error, handleConnect };
+  return {
+    loading,
+    isConnected,
+    isChainSupported,
+    address,
+    error,
+    handleConnect,
+  };
 };
