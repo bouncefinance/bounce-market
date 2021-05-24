@@ -6,7 +6,7 @@ import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { ICreateBrand } from '../screens/CreateBrand';
-import { CreateBrandAction, getBrandContract } from './const';
+import { getBrandContract } from './const';
 import { queryBrandAddress } from './queryCreatedBrand';
 import { IUpdateBrandInfoPayload, updateBrandInfo } from './updateBrandInfo';
 import { NftType } from 'modules/createNFT/actions/createNft';
@@ -17,7 +17,7 @@ import {
 } from '../../web3/contracts';
 
 export const createBrand = createSmartAction(
-  CreateBrandAction,
+  'createBrand',
   ({ brandName, standard, description, brandSymbol, file }: ICreateBrand) => ({
     request: {
       promise: (async function () {})(),
