@@ -77,7 +77,7 @@ export const createBrand = createSmartAction(
                   })
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand721Created;
-                    const address = createEvent.address;
+                    const address = createEvent.returnValues.nft;
                     brandInfo.contractaddress = address;
                     resolve(
                       await store.dispatchRequest(updateBrandInfo(brandInfo)),
@@ -97,7 +97,7 @@ export const createBrand = createSmartAction(
                   })
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand1155Created;
-                    const address = createEvent.address;
+                    const address = createEvent.returnValues.nft;
                     brandInfo.contractaddress = address;
                     resolve(
                       await store.dispatchRequest(updateBrandInfo(brandInfo)),
