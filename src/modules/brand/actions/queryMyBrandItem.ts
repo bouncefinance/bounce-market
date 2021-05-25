@@ -49,9 +49,9 @@ export const queryMyBrandItem = createSmartAction<
                 } as IMyBrand;
               }),
             );
-            return new Promise((resolve, reject) => resolve(result));
+            return result;
           } else {
-            return new Promise((resolve, reject) => resolve([]));
+            return [];
           }
         })(),
       };
