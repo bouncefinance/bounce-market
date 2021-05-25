@@ -303,5 +303,10 @@
   },
   "video-player": {
     "unsupported": "Sorry, your browser doesn't support embedded videos or uploaded video file type!"
+  },
+  "change-wallet": {
+    "title": "Wrong network",
+    "description": "Change network to Binance SmartChain",
+    "submit": "Change to SmartChain"
   }
 }

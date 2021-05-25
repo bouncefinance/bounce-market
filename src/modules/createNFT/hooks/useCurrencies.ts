@@ -3,6 +3,8 @@ import { ZERO_ADDRESS } from 'modules/common/conts';
 import { useMemo } from 'react';
 import { setAccount } from '../../account/store/actions/setAccount';
 
+const ENABLE_FIXED_TOKENS = false;
+
 export enum Currency {
   BNB = 'BNB',
   ETH = 'ETH',
@@ -76,7 +78,7 @@ export function useCurrencies() {
                 contract: ZERO_ADDRESS,
                 decimals: 18,
               },
-              ...(chainId === 56
+              ...(chainId === 56 && ENABLE_FIXED_TOKENS
                 ? [
                     {
                       label: Currency.BUSD,
@@ -85,16 +87,20 @@ export function useCurrencies() {
                     },
                   ]
                 : []),
-              {
-                label: Currency.USDT,
-                value: getUSDTAddress(chainId),
-                decimals: chainId === 56 ? 18 : 6,
-              },
-              {
-                label: Currency.USDC,
-                value: getUSDCAddress(chainId),
-                decimals: 18,
-              },
+              ...(ENABLE_FIXED_TOKENS
+                ? [
+                    {
+                      label: Currency.USDT,
+                      value: getUSDTAddress(chainId),
+                      decimals: chainId === 56 ? 18 : 6,
+                    },
+                    {
+                      label: Currency.USDC,
+                      value: getUSDCAddress(chainId),
+                      decimals: 18,
+                    },
+                  ]
+                : []),
             ],
             default: ZERO_ADDRESS,
           }

@@ -12,6 +12,7 @@ export interface IUpdateBrandInfoPayload {
   imgurl: string;
   owneraddress: string;
   ownername: string;
+  txid: string;
 }
 
 export const updateBrandInfo = createSmartAction<

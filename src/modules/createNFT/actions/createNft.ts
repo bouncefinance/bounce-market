@@ -12,6 +12,7 @@ import {
   BounceERC721WithSign,
 } from '../../web3/contracts';
 import { isVideo } from '../../common/utils/isVideo';
+import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 
 export enum NftType {
   ERC721,
@@ -82,8 +83,8 @@ export const createNft = createSmartAction(
               supply: standard === NftType.ERC721 ? 1 : supply, // is supply an integer?
             };
 
-            const { data: addItemData } = await store.dispatchRequest(
-              addItem(addItemPayload),
+            const { data: addItemData } = throwIfDataIsEmptyOrError(
+              await store.dispatchRequest(addItem(addItemPayload)),
             );
 
             if (!addItemData) {
