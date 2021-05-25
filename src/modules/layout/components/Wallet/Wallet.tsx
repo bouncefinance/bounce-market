@@ -2,18 +2,18 @@ import { useQuery } from '@redux-requests/react';
 import classNames from 'classnames';
 import bnbLogo from 'modules/account/assets/bnb.svg'; // TODO: need provide logo from API?
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { convertWallet } from 'modules/common/utils/convertWallet';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { useIsXLUp } from 'modules/themes/useTheme';
 import { Button } from 'modules/uiKit/Button';
 import React, { useRef } from 'react';
 import { FocusOn } from 'react-focus-on';
+import { setAccount } from '../../../account/store/actions/setAccount';
+import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 import { WalletCard } from '../WalletCard';
 import { useWalletDropdown } from './useWalletDropdown';
 import { useWalletStyles } from './useWalletStyles';
-import { setAccount } from '../../../account/store/actions/setAccount';
-import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 
 interface IWalletProps {
   address?: string;
@@ -63,7 +63,7 @@ export const WalletComponent = ({
             ref={controlRef}
             rounded
           >
-            {convertWallet(address)}
+            {truncateWalletAddr(address)}
             <DefaultRandomAvatar src={img} className={classes.walletLogo} />
           </Button>
 
