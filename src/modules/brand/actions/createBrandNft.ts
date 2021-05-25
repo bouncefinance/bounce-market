@@ -11,11 +11,6 @@ import { addItem, IAddItemPayload } from 'modules/createNFT/actions/addItem';
 import { NftType } from '../../createNFT/actions/createNft';
 import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
 
-export enum NFTStandard {
-  ERC721 = 1,
-  ERC1155 = 2,
-}
-
 export enum Channel {
   FineArts = 'Fine Arts',
   Sports = 'Sports',
@@ -26,7 +21,7 @@ export interface ICreateNFTPayload {
   name: string;
   description: string;
   channel: Channel;
-  standard: NFTStandard;
+  standard: NftType;
   supply: number;
   file: File;
 }
@@ -49,6 +44,7 @@ export const createBrandNFT = createSmartAction(
       ) => {
         return {
           promise: (async function () {
+            debugger;
             const { data } = await store.dispatchRequest(uploadFile({ file }));
 
             const {
@@ -70,7 +66,7 @@ export const createBrandNFT = createSmartAction(
               owneraddress: brandInfo.owneraddress,
               ownername: brandInfo.ownername,
               standard: brandInfo.standard === NftType.ERC721 ? 1 : 2,
-              supply: standard === NFTStandard.ERC721 ? 1 : supply,
+              supply: standard === NftType.ERC721 ? 1 : supply,
             };
 
             const { data: addItemData } = await store.dispatchRequest(
@@ -81,7 +77,7 @@ export const createBrandNFT = createSmartAction(
               throw new Error("Item hasn't been added");
             }
 
-            if (standard === 1) {
+            if (standard === NftType.ERC721) {
               return await new Promise((resolve, reject) => {
                 const ContractBounceERC72 = new web3.eth.Contract(
                   BounceErc721,
@@ -103,7 +99,7 @@ export const createBrandNFT = createSmartAction(
                     reject(error);
                   });
               });
-            } else if (standard === 2) {
+            } else if (standard === NftType.ERC1155) {
               return await new Promise((resolve, reject) => {
                 const ContractBounceERC1155 = new web3.eth.Contract(
                   BounceErc1155,
