@@ -14,12 +14,13 @@ import {
   BoucneErc721Bytecode,
   BounceNFTFactory,
 } from '../../web3/contracts';
+import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 
 export const createBrand = createSmartAction(
   'createBrand',
   ({ brandName, standard, description, brandSymbol, file }: ICreateBrand) => ({
     request: {
-      promise: (async function () { })(),
+      promise: (async function () {})(),
     },
     meta: {
       asMutation: true,
@@ -72,7 +73,7 @@ export const createBrand = createSmartAction(
                 contract.methods
                   .createBrand721(bytecode_721, _name, _symbol, _mode)
                   .send({ from: address })
-                  .on('transactionHash', (hash: string) => { 
+                  .on('transactionHash', (hash: string) => {
                     brandInfo.txid = hash;
                   })
                   .on('receipt', async (receipt: any) => {
@@ -80,7 +81,9 @@ export const createBrand = createSmartAction(
                     const address = createEvent.address;
                     brandInfo.contractaddress = address;
                     resolve(
-                      await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      throwIfDataIsEmptyOrError(
+                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      ),
                     );
                   })
                   .on('error', (error: Error) => {
@@ -99,8 +102,11 @@ export const createBrand = createSmartAction(
                     const createEvent = receipt.events.Brand1155Created;
                     const address = createEvent.address;
                     brandInfo.contractaddress = address;
+
                     resolve(
-                      await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      throwIfDataIsEmptyOrError(
+                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      ),
                     );
                   })
                   .on('error', (error: Error) => {
