@@ -1,7 +1,7 @@
 import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { getAccountBrand } from 'modules/brand/actions/getAccountBrand';
+import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { listBrandItems } from 'modules/brand/actions/listBrandItems';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
 import { BrandAddItem } from 'modules/brand/components/BrandEmptyCard/BrandAddItem';
@@ -19,6 +19,7 @@ import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
 import { useProfileStyles } from 'modules/profile/screens/useProfileStyles';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
 export const MyBrand = () => {
   const classes = useProfileStyles();
@@ -26,21 +27,27 @@ export const MyBrand = () => {
   const { address } = useAccount();
   const [brandInfo, setBrandInfo] = useState<IBrandInfo>();
   const [items, setItems] = useState([]);
+  const { id } = useParams<any>();
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
   });
 
   useEffect(() => {
-    if (address) {
-      dispatch(getAccountBrand(address)).then(res => {
+    if (address && id) {
+      dispatch(queryBrandById({
+        id: parseInt(id),
+        accountaddress: address
+      }, {
+        asMutation: true,
+      })).then(res => {
         const brandInfo = res.data;
         if (brandInfo) {
-          setBrandInfo(brandInfo[0]);
+          setBrandInfo(brandInfo);
         }
       });
     }
-  }, [address, dispatch]);
+  }, [id, address, dispatch]);
 
   useEffect(() => {
     if (address && brandInfo) {
@@ -101,9 +108,9 @@ export const MyBrand = () => {
                 href={
                   item.poolId && item.poolType
                     ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                        item.poolId,
-                        item.poolType,
-                      )
+                      item.poolId,
+                      item.poolType,
+                    )
                     : ''
                 }
                 price={item.poolId ? item.price : undefined}
@@ -120,9 +127,8 @@ export const MyBrand = () => {
                   users: [
                     {
                       name: 'name',
-                      avatar: `${
-                        profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
-                      }`,
+                      avatar: `${profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
+                        }`,
                       verified: true,
                     },
                   ],
