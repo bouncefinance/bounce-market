@@ -1,12 +1,13 @@
 import { getQuery, resetRequests } from '@redux-requests/core';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { getAccountLikes } from 'modules/profile/actions/getAccountLikes';
 import { END, eventChannel } from 'redux-saga';
 import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
 import { RootState } from 'store';
 import { Address } from '../../common/types/unit';
 import { connect } from '../store/actions/connect';
-import { setAccount } from '../store/actions/setAccount';
 import { disconnect } from '../store/actions/disconnect';
+import { setAccount } from '../store/actions/setAccount';
 
 // TODO: Check disconnection, switch chain, switch account
 
@@ -92,6 +93,7 @@ function* onConnectWallet() {
   }
   const provider = action.meta.provider;
   yield put(fetchProfileInfo());
+  yield put(getAccountLikes());
 
   const channel = createEventChannel(provider);
   while (true) {
@@ -99,7 +101,11 @@ function* onConnectWallet() {
 
     if (event.type === WalletEventType.ChainChanged) {
       yield put(
-        resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
+        resetRequests([
+          setAccount.toString(),
+          fetchProfileInfo.toString(),
+          getAccountLikes.toString(),
+        ]),
       );
     } else if (event.type === WalletEventType.AccountChanged) {
       const address =
@@ -125,7 +131,11 @@ function* onConnectWallet() {
 
 function* onDisconnectWallet() {
   yield put(
-    resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
+    resetRequests([
+      setAccount.toString(),
+      fetchProfileInfo.toString(),
+      getAccountLikes.toString(),
+    ]),
   );
 }
 

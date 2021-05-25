@@ -1,6 +1,5 @@
 import { Container } from '@material-ui/core';
 import classNames from 'classnames';
-import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { SocialShare } from 'modules/common/components/SocialShare';
 import { featuresConfig } from 'modules/common/conts';
@@ -8,6 +7,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import React from 'react';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { LikeBtn } from '../LikeBtn';
 import { useMediaContainerStyles } from './useMediaContainerStyles';
 
 interface INFTContentProps {
@@ -15,7 +15,9 @@ interface INFTContentProps {
   src: string;
   title: string;
   description: string;
+  isLiked?: boolean;
   category: 'image' | 'video';
+  onLikeClick?: () => void;
 }
 
 export const MediaContainer = ({
@@ -24,6 +26,8 @@ export const MediaContainer = ({
   title,
   description,
   category,
+  isLiked,
+  onLikeClick,
 }: INFTContentProps) => {
   const classes = useMediaContainerStyles();
 
@@ -37,11 +41,7 @@ export const MediaContainer = ({
         )}
 
         <div className={classes.actions}>
-          {featuresConfig.nftLikes && (
-            <Button variant="outlined" className={classes.btn} rounded>
-              <HeartIcon className={classes.btnIcon} /> 150
-            </Button>
-          )}
+          {featuresConfig.nftLikes && <LikeBtn className={classes.btn} />}
 
           <SocialShare
             titleString={title}

@@ -1,41 +1,40 @@
-import { Box, Container, Typography } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
-import { ProductCards } from 'modules/common/components/ProductCards';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-import { MarketRoutesConfig } from 'modules/market/Routes';
+import {
+  getAccountLikes,
+  ILikedItem,
+} from 'modules/profile/actions/getAccountLikes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
-import { NoItems } from '../../common/components/NoItems';
-import { ProductCard } from '../../common/components/ProductCard';
-import { Queries } from '../../common/components/Queries/Queries';
-import { AuctionState } from '../../common/const/AuctionState';
-import { RoutesConfiguration } from '../../createNFT/Routes';
-import { IItem } from '../../overview/api/getItems';
-import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
-import { fetchProfileInfo } from '../actions/fetchProfileInfo';
-import { IProfileInfo } from '../api/profileInfo';
-import { ActivityTable } from '../components/ActivityTable';
-import { Avatar } from '../components/Avatar';
-import { Bio } from '../components/Bio';
-import { Header } from '../components/Header';
-import { InfoPanel } from '../components/InfoPanel';
-import { SetAvatarModal } from '../components/SetAvatarModal';
-import { SetBgImgModal } from '../components/SetBgImgModal';
-import { Social } from '../components/Social';
-import { Subscribers } from '../components/Subscribers';
-import { TabBrands } from '../components/TabBrands';
-import { IFollowingItemProps, TabFollowing } from '../components/TabFollowing';
-import { TabItems } from '../components/TabItems';
-import { TabPanel } from '../components/TabPanel';
-import { Tabs } from '../components/Tabs';
-import { Tab } from '../components/Tabs/Tab';
-import { ProfileRoutesConfig, ProfileTab } from '../ProfileRoutes';
+import { fetchAllNftByUser } from '../../actions/fetchAllNftByUser';
+import { fetchProfileInfo } from '../../actions/fetchProfileInfo';
+import { IProfileInfo } from '../../api/profileInfo';
+import { ActivityTable } from '../../components/ActivityTable';
+import { Avatar } from '../../components/Avatar';
+import { Bio } from '../../components/Bio';
+import { Header } from '../../components/Header';
+import { InfoPanel } from '../../components/InfoPanel';
+import { SetAvatarModal } from '../../components/SetAvatarModal';
+import { SetBgImgModal } from '../../components/SetBgImgModal';
+import { Social } from '../../components/Social';
+import { Subscribers } from '../../components/Subscribers';
+import { TabBrands } from '../../components/TabBrands';
+import {
+  IFollowingItemProps,
+  TabFollowing,
+} from '../../components/TabFollowing';
+import { TabPanel } from '../../components/TabPanel';
+import { Tabs } from '../../components/Tabs';
+import { Tab } from '../../components/Tabs/Tab';
+import { ProfileRoutesConfig, ProfileTab } from '../../ProfileRoutes';
+import { TabItems } from './components/TabItems';
+import { TabLiked } from './components/TabLiked';
 import { useProfileStyles } from './useProfileStyles';
 
 const followings: IFollowingItemProps[] = [
@@ -76,12 +75,12 @@ export const Profile = () => {
   const dispatchRequest = useDispatchRequest();
   const { push } = useHistory();
 
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
+  const { data: accountLikes } = useQuery<ILikedItem[] | null>({
+    type: getAccountLikes.toString(),
   });
 
-  const allNftByUserQuery = useQuery<IItem[] | null>({
-    type: fetchAllNftByUser.toString(),
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
   });
 
   const toggleAvatarModal = useCallback(
@@ -115,9 +114,6 @@ export const Profile = () => {
     [push],
   );
 
-  const hasItems =
-    !!allNftByUserQuery.data && allNftByUserQuery.data.length > 0;
-
   const tabs = useMemo(
     () => [
       {
@@ -136,12 +132,12 @@ export const Profile = () => {
             },
           ]
         : []),
-      ...(featuresConfig.profileLiked
+      ...(featuresConfig.nftLikes
         ? [
             {
               value: ProfileTab.liked,
               label: t('profile.tabs.liked'),
-              count: 0,
+              count: accountLikes ? accountLikes.length : 0,
             },
           ]
         : []),
@@ -160,13 +156,7 @@ export const Profile = () => {
           ]
         : []),
     ],
-    [],
-  );
-
-  const renderedComingSoon = (
-    <Box>
-      <Typography>{t('common.coming-soon')}</Typography>
-    </Box>
+    [accountLikes],
   );
 
   return (
@@ -223,58 +213,7 @@ export const Profile = () => {
         </Tabs>
 
         <TabPanel value={tab} index={ProfileTab.items}>
-          {hasItems || allNftByUserQuery.loading ? (
-            <TabItems>
-              <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
-                {({ data }) => (
-                  <ProductCards>
-                    {data?.map((item: IItem) => (
-                      <ProductCard
-                        key={uid(item)}
-                        title={item.itemName}
-                        href={
-                          item.poolId && item.poolType
-                            ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                                item.poolId,
-                                item.poolType,
-                              )
-                            : ''
-                        }
-                        // status={item.status}
-                        // UPDATE price
-                        price={item.poolId ? item.price : undefined}
-                        isOnSale={item.state === AuctionState.Live}
-                        copies={item.supply}
-                        MediaProps={{
-                          category: item.category,
-                          src: item.fileUrl,
-                          objectFit: 'scale-down',
-                          loading: 'lazy',
-                        }}
-                        ProfileInfoProps={{
-                          subTitle: 'Owner',
-                          title: `${profileInfo?.username ?? ''}`,
-                          users: [
-                            {
-                              name: 'name',
-                              avatar: profileInfo?.imgUrl,
-                              verified: true,
-                            },
-                          ],
-                        }}
-                        toSale={RoutesConfiguration.PublishNft.generatePath(
-                          item.contractAddress,
-                          item.id,
-                        )}
-                      />
-                    ))}
-                  </ProductCards>
-                )}
-              </Queries>
-            </TabItems>
-          ) : (
-            <NoItems href={MarketRoutesConfig.Market.generatePath()} />
-          )}
+          <TabItems />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.brands}>
@@ -286,7 +225,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.liked}>
-          {renderedComingSoon}
+          <TabLiked />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.following}>

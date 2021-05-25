@@ -42,7 +42,7 @@ export const featuresConfig = {
   /**
    * Feature is not fully implemented
    */
-  nftLikes: false,
+  nftLikes: true,
   /**
    * Feature is not implemented
    */
@@ -56,7 +56,6 @@ export const featuresConfig = {
   subscribers: false,
   profileSortTabs: false,
   profileActivity: false,
-  profileLiked: false,
   profileFollowers: false,
   infoTabs: false,
 };

@@ -2,13 +2,14 @@ import { ThemeProvider } from '@material-ui/styles';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { featuresConfig } from 'modules/common/conts';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers } from 'modules/overview/components/Movers';
 import { Products } from 'modules/overview/components/Products';
 import { IPromoItem, Promo } from 'modules/overview/components/Promo';
+import { PROMO_ITEMS_COUNT } from 'modules/overview/const';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
 import { Queries } from '../../../common/components/Queries/Queries';
@@ -17,13 +18,11 @@ import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
 import { RoutesConfiguration } from '../../Routes';
 
-const PROMO_ITEMS_COUNT = 3;
-
 function mapPromoItem(item: IItem): IPromoItem {
   return {
     title: item.itemName || '',
     text: item.description || '',
-    createdBy: item.ownerName || '',
+    createdBy: item.ownerName || truncateWalletAddr(item.ownerAddress),
     avatar: undefined,
     price: item.price,
     priceType: 'BNB',
@@ -34,35 +33,6 @@ function mapPromoItem(item: IItem): IPromoItem {
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
     authorHref: RoutesConfiguration.Overview.generatePath(),
-  };
-}
-
-function mapMoversItem(item: IItem) {
-  return {
-    title: item.itemName || '',
-    price: item.price,
-    priceType: 'BNB',
-    endDate: item.closeAt,
-    likes: item.likeCount,
-    copies: item.supply,
-    href:
-      item.poolId && item.poolType
-        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
-        : '',
-    MediaProps: {
-      category: 'image' as ProductCardCategoryType,
-      src: item.fileUrl || '',
-    },
-    ProfileInfoProps: {
-      subTitle: 'Owner',
-      title: '1livinginzen',
-      users: [
-        {
-          name: 'name',
-          avatar: 'https://via.placeholder.com/32',
-        },
-      ],
-    },
   };
 }
 
@@ -98,18 +68,11 @@ export const Overview = () => {
                 items={data.slice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
               />
             </ThemeProvider>
-            <Movers
-              stackUp
-              stackDown
-              error={error}
-              isLoading={loading}
-              items={data
-                .slice(PROMO_ITEMS_COUNT, data.length)
-                .map(mapMoversItem)}
-            />
           </>
         )}
       </Queries>
+
+      <Movers stackUp stackDown />
 
       {featuresConfig.artists && (
         <ThemeProvider theme={darkTheme}>

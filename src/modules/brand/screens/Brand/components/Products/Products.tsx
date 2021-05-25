@@ -43,24 +43,27 @@ export const Products = () => {
 
             return (
               <ProductCards>
-                {nftItems.map(cardProps => (
+                {nftItems.map(item => (
                   <ProductCard
                     isOnSale
-                    key={uid(cardProps)}
-                    title={cardProps.title}
-                    price={cardProps.price}
-                    priceType={cardProps.priceType}
-                    endDate={cardProps.endDate}
-                    copies={cardProps.copies}
-                    likes={cardProps.likes}
-                    href={cardProps.href}
+                    id={item.id}
+                    poolId={item.poolId}
+                    auctionType={item.poolType}
+                    key={uid(item)}
+                    title={item.title}
+                    price={item.price}
+                    priceType={item.priceType}
+                    endDate={item.endDate}
+                    copies={item.copies}
+                    likes={item.likes}
+                    href={item.href}
                     MediaProps={{
-                      category: cardProps.category,
-                      src: cardProps.src,
+                      category: item.category,
+                      src: item.src,
                       objectFit: 'scale-down',
                       loading: 'lazy',
                     }}
-                    ProfileInfoProps={cardProps.ProfileInfoProps}
+                    ProfileInfoProps={item.ProfileInfoProps}
                   />
                 ))}
               </ProductCards>

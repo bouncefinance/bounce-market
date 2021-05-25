@@ -1,6 +1,7 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import {
   fetchItemsByFilter,
+  IItemByFilter,
   ItemsChannel,
 } from 'modules/overview/actions/fetchItemsByFilter';
 import { INFTItem } from 'modules/overview/actions/fetchNFTItems';
@@ -103,7 +104,7 @@ export const queryBrandNfts = createAction<
             .map(pool => {
               const poolInfo = itemsByFilterData.find(
                 r => r.id === pool.tokenId,
-              );
+              ) as IItemByFilter;
               return {
                 ...poolInfo,
                 category: poolInfo?.category,

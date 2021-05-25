@@ -16,7 +16,7 @@ import { Avatar } from 'modules/profile/components/Avatar';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
-import { useProfileStyles } from 'modules/profile/screens/useProfileStyles';
+import { useProfileStyles } from 'modules/profile/screens/Profile/useProfileStyles';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -96,6 +96,9 @@ export const MyBrand = () => {
           {items?.map((item: any) => (
             <Grid item xs={12} sm={6} lg={4} xl={3} key={item.id}>
               <ProductCard
+                id={item.id}
+                poolId={item.poolId}
+                auctionType={item.poolType}
                 key={item.id}
                 title={item.itemname}
                 href={

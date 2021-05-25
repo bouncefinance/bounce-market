@@ -19,7 +19,7 @@ export interface INFTItem {
   description?: string;
   externallink?: string;
   fileurl?: string;
-  id?: number;
+  id: number;
   itemname?: string;
   itemsymbol?: string;
   likecount?: number;
@@ -116,7 +116,7 @@ export const fetchNFTItems = createSmartAction<
             .map(pool => {
               const poolInfo = itemsByFilterData.find(
                 r => r.id === pool.tokenId,
-              );
+              ) as IItemByFilter;
               return {
                 ...poolInfo,
                 category: poolInfo?.category,
