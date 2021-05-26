@@ -1,18 +1,18 @@
 import { fade, makeStyles, Theme } from '@material-ui/core';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
+import { Link as RouterLink } from 'react-router-dom';
+import { BuyNFTRoutesConfig } from '../../../buyNFT/BuyNFTRoutes';
+import {
+  IFetchPoolDetailsData,
+  isEnglishAuction,
+} from '../../../overview/actions/fetchPoolDetails';
+import { AuctionType } from '../../../overview/api/auctionType';
 import {
   ISearchAccount,
   ISearchBrand,
   ISearchItem,
   ISearchResult,
 } from './getByLikeStr';
-import { Link as RouterLink } from 'react-router-dom';
-import { BuyNFTRoutesConfig } from '../../../buyNFT/BuyNFTRoutes';
-import { AuctionType } from '../../../overview/api/auctionType';
-import {
-  IFetchPoolDetailsData,
-  isEnglishAuction,
-} from '../../../overview/actions/fetchPoolDetails';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -62,7 +62,7 @@ const SearchItems = ({
     <div className={classes.root}>
       <div className={classes.title}>{'Items'}</div>
       {data.map((item: ISearchItem) => {
-        const pool = pools.find(poolItem => poolItem.tokenId === item.id);
+        const pool = pools.find(poolItem => poolItem?.tokenId === item.id);
 
         if (!pool) {
           return undefined;

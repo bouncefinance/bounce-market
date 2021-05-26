@@ -53,7 +53,7 @@ export const TabItems = ({ className }: ITabItemsProps) => {
             {data?.map((item: IItem) => (
               <ProductCard
                 id={item.id}
-                poolId={item.poolId}
+                poolId={item.poolId || 0}
                 auctionType={item.poolType}
                 key={uid(item)}
                 title={item.itemName}

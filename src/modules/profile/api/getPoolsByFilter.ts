@@ -2,13 +2,13 @@ import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
+import { POOLS_URL } from '../../common/conts';
 import { NftType } from '../../createNFT/actions/createNft';
 import {
   IApiFetchPoolDetails,
   IFetchPoolDetailsData,
   isApiEnglishAuction,
 } from '../../overview/actions/fetchPoolDetails';
-import { POOLS_URL } from '../../common/conts';
 
 interface IApiPoolsData {
   code: 200;
@@ -22,7 +22,9 @@ interface IApiPoolsData {
 }
 
 function mapPool(data: IApiFetchPoolDetails['data']): IFetchPoolDetailsData {
-  if (isApiEnglishAuction(data)) {
+  if (!data) {
+    return null;
+  } else if (isApiEnglishAuction(data)) {
     return {
       amountMax1: new BigNumber(Web3.utils.fromWei(data.amountMax1)),
       amountMin1: new BigNumber(Web3.utils.fromWei(data.amountMin1)),

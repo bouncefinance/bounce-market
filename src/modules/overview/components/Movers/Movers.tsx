@@ -27,7 +27,7 @@ export const Movers = (sectionProps: ISectionProps) => {
     <ProductCard
       key={uid(item)}
       id={item.id}
-      poolId={item.poolId}
+      poolId={item.poolId || 0}
       auctionType={item.poolType}
       isOnSale
       title={item.itemName || ''}
