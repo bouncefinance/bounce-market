@@ -1,7 +1,9 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 export const useMoversStyles = makeStyles<Theme>(theme => ({
-  root: {},
+  root: {
+    minHeight: 300,
+  },
 
   slider: {
     [theme.breakpoints.down('md')]: {

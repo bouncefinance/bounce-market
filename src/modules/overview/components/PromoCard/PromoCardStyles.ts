@@ -13,7 +13,11 @@ export const usePromoCardStyles = makeStyles<Theme>(theme => ({
 
   content: {
     paddingRight: theme.spacing(3),
-
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    justifyContent: 'center',
+    alignItems: 'stretch',
     [theme.breakpoints.up('md')]: {
       paddingRight: 0,
     },
@@ -25,6 +29,7 @@ export const usePromoCardStyles = makeStyles<Theme>(theme => ({
     zIndex: 1,
     margin: theme.spacing(0, 0, 2.5),
     fontSize: 26,
+    fontWeight: 500,
     color: 'inherit',
 
     [theme.breakpoints.up('md')]: {
@@ -96,5 +101,6 @@ export const usePromoCardStyles = makeStyles<Theme>(theme => ({
   imgWrap: {
     minWidth: 180,
     borderRadius: 12,
+    overflow: 'hidden',
   },
 }));

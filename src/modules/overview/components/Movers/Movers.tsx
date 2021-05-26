@@ -54,6 +54,7 @@ export const Movers = ({
   }, [items, swiper]);
 
   const sliderProps: Swiper = {
+    loop: true,
     slidesPerView: 'auto',
     watchSlidesVisibility: true,
     spaceBetween: 30,

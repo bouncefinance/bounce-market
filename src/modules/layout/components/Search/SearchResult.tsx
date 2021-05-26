@@ -1,4 +1,3 @@
-import { fade, makeStyles, Theme } from '@material-ui/core';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import {
   ISearchAccount,
@@ -13,42 +12,12 @@ import {
   IFetchPoolDetailsData,
   isEnglishAuction,
 } from '../../../overview/actions/fetchPoolDetails';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    backgroundColor: theme.palette.common.white,
-    borderRadius: 4,
-    color: theme.palette.common.black,
-  },
-  title: {
-    fontSize: 16,
-    marginBottom: 12,
-  },
-  content: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginBottom: 18,
-  },
-  img: {
-    width: 40,
-    height: 40,
-    marginRight: 12,
-    '& img': {
-      width: '100%',
-      height: '100%',
-    },
-  },
-  item: {},
-  name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  address: {
-    fontSize: 12,
-    color: fade(theme.palette.common.black, 0.4),
-  },
-}));
+import { useSearchResultStyles } from './useSearchResultStyles';
+import { t } from '../../../i18n/utils/intl';
+import { Img } from '../../../uiKit/Img';
+import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import React from 'react';
+import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 
 const SearchItems = ({
   data,
@@ -57,15 +26,20 @@ const SearchItems = ({
   data: ISearchItem[];
   pools: IFetchPoolDetailsData[];
 }) => {
-  const classes = useStyles();
+  const classes = useSearchResultStyles();
+
+  if (!data.length) {
+    return null;
+  }
+
   return (
-    <div className={classes.root}>
-      <div className={classes.title}>{'Items'}</div>
+    <div className={classes.group}>
+      <div className={classes.title}>{t('header.search.items')}</div>
       {data.map((item: ISearchItem) => {
         const pool = pools.find(poolItem => poolItem.tokenId === item.id);
 
         if (!pool) {
-          return undefined;
+          return null;
         }
 
         return (
@@ -79,11 +53,31 @@ const SearchItems = ({
             className={classes.content}
             key={item.id}
           >
-            <div className={classes.img}>
-              <img alt={item.name} src={item.imgUrl} />
+            <div className={classes.preview}>
+              {item.category === 'image' ? (
+                <Img
+                  src={item.previewUrl}
+                  alt={item.name}
+                  ratio="1x1"
+                  objectFit="cover"
+                />
+              ) : (
+                <VideoPlayer
+                  src={item.previewUrl}
+                  objectFit="cover"
+                  autoPlay
+                  muted
+                  controls={false}
+                />
+              )}
             </div>
             <div className={classes.item}>
               <div className={classes.name}>{item.name}</div>
+              {item.price && (
+                <div className={classes.price}>
+                  {item.price} {item.priceType}
+                </div>
+              )}
             </div>
           </RouterLink>
         );
@@ -93,19 +87,28 @@ const SearchItems = ({
 };
 
 const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
-  const classes = useStyles();
+  const classes = useSearchResultStyles();
+
+  if (!data.length) {
+    return null;
+  }
 
   return (
-    <div className={classes.root}>
-      <div className={classes.title}>{'Brands'}</div>
+    <div className={classes.group}>
+      <div className={classes.title}>{t('header.search.brands')}</div>
       {data.map((item: ISearchBrand) => (
         <div className={classes.content} key={item.id}>
-          <div className={classes.img}>
-            <img alt={item.name} src={item.imgUrl} />
+          {/* TODO: need link to brand, task FAN-92 */}
+          <div className={classes.preview}>
+            <Img
+              src={item.previewUrl}
+              alt={item.name}
+              ratio="1x1"
+              objectFit="cover"
+            />
           </div>
           <div className={classes.item}>
             <div className={classes.name}>{item.name}</div>
-            <div className={classes.address}>{item.address}</div>
           </div>
         </div>
       ))}
@@ -114,19 +117,24 @@ const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
 };
 
 const SearchAccount = ({ data }: { data: ISearchAccount[] }) => {
-  const classes = useStyles();
+  const classes = useSearchResultStyles();
+
+  if (!data.length) {
+    return null;
+  }
 
   return (
-    <div className={classes.root}>
-      <div className={classes.title}>{'Account'}</div>
+    <div className={classes.group}>
+      <div className={classes.title}>{t('header.search.users')}</div>
       {data.map((item: ISearchAccount) => (
         <div className={classes.content} key={item.id}>
-          <div className={classes.img}>
-            <img alt={item.name} src={item.imgUrl} />
-          </div>
+          {/* TODO: need link to user account, task FAN-92 */}
+          <DefaultRandomAvatar
+            className={classes.avatar}
+            src={item.previewUrl}
+          />
           <div className={classes.item}>
             <div className={classes.name}>{item.name}</div>
-            <div className={classes.address}>{item.address}</div>
           </div>
         </div>
       ))}
@@ -143,8 +151,10 @@ const SearchResult = ({
   data: ISearchResult;
   pools: IFetchPoolDetailsData[];
 }) => {
+  const classes = useSearchResultStyles();
+
   return (
-    <div>
+    <div className={classes.root}>
       {loading ? (
         <QueryLoadingCentered />
       ) : (
@@ -156,6 +166,12 @@ const SearchResult = ({
       ) : (
         <SearchAccount data={data.accounts} />
       )}
+      {!loading &&
+        !data.items.length &&
+        !data.brands.length &&
+        !data.accounts.length && (
+          <div className={classes.empty}>{t('header.search.empty')}</div>
+        )}
     </div>
   );
 };
