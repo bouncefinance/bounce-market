@@ -55,6 +55,7 @@ export const featuresConfig = {
   nftDetailsTokenInfo: false,
   subscribers: false,
   profileSortTabs: false,
+  profileActivity: false,
   profileLiked: false,
   profileFollowers: false,
   infoTabs: false,
