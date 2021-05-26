@@ -16,6 +16,7 @@ import { ResponseData } from '../../../common/types/ResponseData';
 import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
 import { RoutesConfiguration } from '../../Routes';
+import { useOverviewStyles } from './useOverviewStyles';
 
 const PROMO_ITEMS_COUNT = 3;
 
@@ -70,6 +71,7 @@ export const Overview = () => {
   const dispatch = useDispatchRequest();
   const overviewQuery = useQuery({ type: fetchOverview.toString() });
   const popularBrandsQuery = useQuery({ type: fetchPopularBrands.toString() });
+  const classes = useOverviewStyles();
 
   useEffect(() => {
     if (!overviewQuery.data) {
@@ -84,32 +86,34 @@ export const Overview = () => {
   }, [dispatch, popularBrandsQuery.data]);
 
   return (
-    <>
-      <Queries<ResponseData<typeof fetchOverview>>
-        requestActions={[fetchOverview]}
-      >
-        {({ loading, error, data }) => (
-          <>
-            <ThemeProvider theme={darkTheme}>
-              <Promo
+    <div className={classes.root}>
+      <div className={classes.promoMoversWrap}>
+        <Queries<ResponseData<typeof fetchOverview>>
+          requestActions={[fetchOverview]}
+        >
+          {({ loading, error, data }) => (
+            <>
+              <ThemeProvider theme={darkTheme}>
+                <Promo
+                  stackDown
+                  error={error}
+                  isLoading={loading}
+                  items={data.slice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
+                />
+              </ThemeProvider>
+              <Movers
+                stackUp
                 stackDown
                 error={error}
                 isLoading={loading}
-                items={data.slice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
+                items={data
+                  .slice(PROMO_ITEMS_COUNT, data.length)
+                  .map(mapMoversItem)}
               />
-            </ThemeProvider>
-            <Movers
-              stackUp
-              stackDown
-              error={error}
-              isLoading={loading}
-              items={data
-                .slice(PROMO_ITEMS_COUNT, data.length)
-                .map(mapMoversItem)}
-            />
-          </>
-        )}
-      </Queries>
+            </>
+          )}
+        </Queries>
+      </div>
 
       {featuresConfig.artists && (
         <ThemeProvider theme={darkTheme}>
@@ -134,6 +138,6 @@ export const Overview = () => {
       </Queries>
 
       <Products stackUp />
-    </>
+    </div>
   );
 };

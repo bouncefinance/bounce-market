@@ -64,7 +64,7 @@ export const PromoCard = ({
           to={href}
           title={title}
         >
-          <Truncate lines={2}>{title}</Truncate>
+          <Truncate lines={3}>{title}</Truncate>
         </Typography>
 
         <Hidden smDown>{renderedText}</Hidden>
