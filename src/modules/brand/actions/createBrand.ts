@@ -14,7 +14,6 @@ import {
   BoucneErc721Bytecode,
   BounceNFTFactory,
 } from '../../web3/contracts';
-import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { throwIfError } from '../../common/utils/throwIfError';
 
 export const createBrand = createSmartAction(
@@ -103,7 +102,7 @@ export const createBrand = createSmartAction(
                     brandInfo.contractaddress = createEvent.returnValues.nft;
 
                     resolve(
-                      throwIfDataIsEmptyOrError(
+                      throwIfError(
                         await store.dispatchRequest(updateBrandInfo(brandInfo)),
                       ),
                     );
