@@ -31,7 +31,7 @@ export const updateBrandInfo = createSmartAction<
       asMutation: true,
       getData: (data: IApiUpdateBrandInfo) => {
         if (data.code !== 1) {
-          return new Error(data.msg);
+          throw new Error(data.msg);
         }
       },
     },

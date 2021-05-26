@@ -9,17 +9,15 @@ import { getBrandContract } from './const';
 import { queryBrandAddress } from './queryCreatedBrand';
 import { IUpdateBrandInfoPayload, updateBrandInfo } from './updateBrandInfo';
 import { NftType } from 'modules/createNFT/actions/createNft';
-import {
-  BoucneErc1155Bytecode,
-  BoucneErc721Bytecode,
-  BounceNFTFactory,
-} from '../../web3/contracts';
+import { BoucneErc1155Bytecode, BoucneErc721Bytecode, BounceNFTFactory } from '../../web3/contracts';
+import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
+import { throwIfError } from '../../common/utils/throwIfError';
 
 export const createBrand = createSmartAction(
   'createBrand',
   ({ brandName, standard, description, brandSymbol, file }: ICreateBrand) => ({
     request: {
-      promise: (async function () { })(),
+      promise: (async function () {})(),
     },
     meta: {
       asMutation: true,
@@ -48,7 +46,7 @@ export const createBrand = createSmartAction(
             const brandInfo: IUpdateBrandInfoPayload = {
               brandname: brandName,
               contractaddress: brandAddress.data ?? '',
-              standard: standard === NftType.ERC721 ? 1 : 2,
+              standard: standard,
               description: description,
               imgurl: uploadFileResult.data?.result.path ?? '',
               owneraddress: address,
@@ -72,15 +70,16 @@ export const createBrand = createSmartAction(
                 contract.methods
                   .createBrand721(bytecode_721, _name, _symbol, _mode)
                   .send({ from: address })
-                  .on('transactionHash', (hash: string) => { 
+                  .on('transactionHash', (hash: string) => {
                     brandInfo.txid = hash;
                   })
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand721Created;
-                    const address = createEvent.address;
-                    brandInfo.contractaddress = address;
+                    brandInfo.contractaddress = createEvent.returnValues.nft;
                     resolve(
-                      await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      throwIfError(
+                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      ),
                     );
                   })
                   .on('error', (error: Error) => {
@@ -97,10 +96,12 @@ export const createBrand = createSmartAction(
                   })
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand1155Created;
-                    const address = createEvent.address;
-                    brandInfo.contractaddress = address;
+                    brandInfo.contractaddress = createEvent.returnValues.nft;
+
                     resolve(
-                      await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      throwIfDataIsEmptyOrError(
+                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                      ),
                     );
                   })
                   .on('error', (error: Error) => {
