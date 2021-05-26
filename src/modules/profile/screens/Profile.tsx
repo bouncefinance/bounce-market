@@ -20,7 +20,7 @@ import { IItem } from '../../overview/api/getItems';
 import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
 import { fetchProfileInfo } from '../actions/fetchProfileInfo';
 import { IProfileInfo } from '../api/profileInfo';
-import { ActivityTable } from '../components/ActivityTable';
+import { TabActivity } from '../components/TabActivity';
 import { Avatar } from '../components/Avatar';
 import { Bio } from '../components/Bio';
 import { Header } from '../components/Header';
@@ -128,14 +128,10 @@ export const Profile = () => {
         value: ProfileTab.brands,
         label: t('profile.tabs.my-brands'),
       },
-      ...(featuresConfig.profileActivity
-        ? [
-            {
-              value: ProfileTab.activity,
-              label: t('profile.tabs.activity'),
-            },
-          ]
-        : []),
+      {
+        value: ProfileTab.activity,
+        label: t('profile.tabs.activity'),
+      },
       ...(featuresConfig.profileLiked
         ? [
             {
@@ -282,7 +278,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>
-          <ActivityTable />
+          <TabActivity />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.liked}>
