@@ -209,7 +209,7 @@ export const BidDialog = ({
             {category === 'image' ? (
               <Img className={classes.imgWrap} src={filepath} ratio="1x1" />
             ) : (
-              <VideoPlayer src={filepath} autoPlay={true} />
+              <VideoPlayer src={filepath} autoPlay />
             )}
           </Grid>
 

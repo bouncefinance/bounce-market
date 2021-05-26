@@ -17,12 +17,7 @@ export const VideoPreview = ({ file }: IVideoPreviewProps) => {
         classes.previewContainerVideo,
       )}
     >
-      <VideoPlayer
-        file={file}
-        objectFit="cover"
-        autoPlay={true}
-        controls={true}
-      />
+      <VideoPlayer file={file} objectFit="cover" autoPlay controls />
     </div>
   );
 };
