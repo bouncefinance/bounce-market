@@ -8,6 +8,7 @@ import {
   ILikedItem,
   queryLikedItems,
 } from 'modules/profile/actions/queryLikedItems';
+import { TabActivity } from 'modules/profile/components/TabActivity';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -15,7 +16,6 @@ import { uid } from 'react-uid';
 import { fetchAllNftByUser } from '../../actions/fetchAllNftByUser';
 import { fetchProfileInfo } from '../../actions/fetchProfileInfo';
 import { IProfileInfo } from '../../api/profileInfo';
-import { ActivityTable } from '../../components/ActivityTable';
 import { Avatar } from '../../components/Avatar';
 import { Bio } from '../../components/Bio';
 import { Header } from '../../components/Header';
@@ -124,14 +124,10 @@ export const Profile = () => {
         value: ProfileTab.brands,
         label: t('profile.tabs.my-brands'),
       },
-      ...(featuresConfig.profileActivity
-        ? [
-            {
-              value: ProfileTab.activity,
-              label: t('profile.tabs.activity'),
-            },
-          ]
-        : []),
+      {
+        value: ProfileTab.activity,
+        label: t('profile.tabs.activity'),
+      },
       ...(featuresConfig.nftLikes
         ? [
             {
@@ -221,7 +217,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>
-          <ActivityTable />
+          <TabActivity />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.liked}>

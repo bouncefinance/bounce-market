@@ -1,16 +1,14 @@
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import {
-  createBrandNFT,
-  NFTStandard,
-} from 'modules/brand/actions/createBrandNft';
+import { createBrandNFT } from 'modules/brand/actions/createBrandNft';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
 import {
   Channel,
   createNft,
   ICreateNFTPayload,
+  NftType,
 } from 'modules/createNFT/actions/createNft';
 import { useCreateNFTStyles } from 'modules/createNFT/screens/CreateNFT/useCreateNFTStyles';
 import { Section } from 'modules/uiKit/Section';
@@ -190,7 +188,7 @@ export const CreateBrandItem = () => {
               options={channelOptions}
             />
           </Box>
-          {brandInfo?.standard === NFTStandard.ERC1155 && (
+          {brandInfo?.standard === NftType.ERC1155 && (
             <Box mb={5}>
               <Field
                 component={InputField}

@@ -15,6 +15,7 @@ import {
   BounceNFTFactory,
 } from '../../web3/contracts';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
+import { throwIfError } from '../../common/utils/throwIfError';
 
 export const createBrand = createSmartAction(
   'createBrand',
@@ -49,7 +50,7 @@ export const createBrand = createSmartAction(
             const brandInfo: IUpdateBrandInfoPayload = {
               brandname: brandName,
               contractaddress: brandAddress.data ?? '',
-              standard: standard === NftType.ERC721 ? 1 : 2,
+              standard: standard,
               description: description,
               imgurl: uploadFileResult.data?.result.path ?? '',
               owneraddress: address,
@@ -78,10 +79,9 @@ export const createBrand = createSmartAction(
                   })
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand721Created;
-                    const address = createEvent.returnValues.nft;
-                    brandInfo.contractaddress = address;
+                    brandInfo.contractaddress = createEvent.returnValues.nft;
                     resolve(
-                      throwIfDataIsEmptyOrError(
+                      throwIfError(
                         await store.dispatchRequest(updateBrandInfo(brandInfo)),
                       ),
                     );
@@ -100,8 +100,7 @@ export const createBrand = createSmartAction(
                   })
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand1155Created;
-                    const address = createEvent.returnValues.nft;
-                    brandInfo.contractaddress = address;
+                    brandInfo.contractaddress = createEvent.returnValues.nft;
 
                     resolve(
                       throwIfDataIsEmptyOrError(

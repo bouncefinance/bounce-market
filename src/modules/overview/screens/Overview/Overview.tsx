@@ -17,6 +17,7 @@ import { ResponseData } from '../../../common/types/ResponseData';
 import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
 import { RoutesConfiguration } from '../../Routes';
+import { useOverviewStyles } from './useOverviewStyles';
 
 function mapPromoItem(item: IItem): IPromoItem {
   return {
@@ -40,6 +41,7 @@ export const Overview = () => {
   const dispatch = useDispatchRequest();
   const overviewQuery = useQuery({ type: fetchOverview.toString() });
   const popularBrandsQuery = useQuery({ type: fetchPopularBrands.toString() });
+  const classes = useOverviewStyles();
 
   useEffect(() => {
     if (!overviewQuery.data) {
@@ -54,12 +56,12 @@ export const Overview = () => {
   }, [dispatch, popularBrandsQuery.data]);
 
   return (
-    <>
-      <Queries<ResponseData<typeof fetchOverview>>
-        requestActions={[fetchOverview]}
-      >
-        {({ loading, error, data }) => (
-          <>
+    <div className={classes.root}>
+      <div className={classes.promoMoversWrap}>
+        <Queries<ResponseData<typeof fetchOverview>>
+          requestActions={[fetchOverview]}
+        >
+          {({ loading, error, data }) => (
             <ThemeProvider theme={darkTheme}>
               <Promo
                 stackDown
@@ -68,9 +70,9 @@ export const Overview = () => {
                 items={data.slice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
               />
             </ThemeProvider>
-          </>
-        )}
-      </Queries>
+          )}
+        </Queries>
+      </div>
 
       <Movers stackUp stackDown />
 
@@ -97,6 +99,6 @@ export const Overview = () => {
       </Queries>
 
       <Products stackUp />
-    </>
+    </div>
   );
 };

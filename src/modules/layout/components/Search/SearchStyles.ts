@@ -1,4 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core';
+import { fade } from '@material-ui/core/styles';
 
 export const useSearchStyles = makeStyles<Theme>(theme => ({
   root: {
@@ -35,15 +36,15 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
     },
 
     '$root:hover &': {
-      background: theme.palette.common.white,
-      color: theme.palette.common.black,
+      borderColor: fade(theme.palette.text.primary, 0.1),
     },
   },
 
   inputFocused: {
-    '&&': {
+    '$root &&': {
       background: theme.palette.common.white,
       color: theme.palette.common.black,
+      borderColor: fade(theme.palette.text.primary, 0.7),
     },
   },
 
@@ -53,11 +54,14 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
   },
   searchResult: {
     position: 'absolute',
-    top: 46,
+    top: '100%',
+    marginTop: 10,
     width: 410,
-    borderRadius: 4,
-    zIndex: 10,
+    borderRadius: 12,
+    border: `1px solid ${theme.palette.grey['300']}`,
     backgroundColor: theme.palette.common.white,
-    padding: 20,
-  }
+    color: theme.palette.common.black,
+    padding: theme.spacing(3, 0),
+    zIndex: 10,
+  },
 }));
