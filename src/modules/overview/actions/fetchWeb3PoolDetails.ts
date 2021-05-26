@@ -142,10 +142,10 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const creatorClaimedPool = await BounceEnglishAuctionNFT_CT.methods
                   .creatorClaimedP(poolId)
                   .call();
-                const reserveAmount1Pool = await BounceEnglishAuctionNFT_CT.methods
+                const reserveAmount = await BounceEnglishAuctionNFT_CT.methods
                   .reserveAmount1P(poolId)
                   .call();
-                const currentBidderPool = await BounceEnglishAuctionNFT_CT.methods
+                const lastBidderAddress = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderP(poolId)
                   .call();
                 let showPrice = pools.amountMin1;
@@ -197,7 +197,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                     if (diffTime < 0) {
                       if (
                         new BigNumber(currentBidderAmount)
-                          .dividedBy(reserveAmount1Pool)
+                          .dividedBy(reserveAmount)
                           .isGreaterThanOrEqualTo(1) ||
                         new BigNumber(currentBidderAmount)
                           .dividedBy(pools.amountMax1)
@@ -206,7 +206,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                         return AuctionState.Closed;
                       } else if (
                         new BigNumber(currentBidderAmount)
-                          .dividedBy(reserveAmount1Pool)
+                          .dividedBy(reserveAmount)
                           .isLessThan(1)
                       ) {
                         return AuctionState.Failed;
@@ -224,9 +224,9 @@ export const fetchWeb3PoolDetails = createSmartAction<
 
                   bidCountPool,
                   myClaimedPool,
-                  currentBidderPool,
+                  currentBidderPool: lastBidderAddress,
                   creatorClaimedPool,
-                  reserveAmount1Pool,
+                  reserveAmount1Pool: reserveAmount,
                   showPrice,
                 } as IFetchWeb3PoolDetailsData;
               }
