@@ -241,6 +241,8 @@ export const ProductCardComponent = ({
 
               {endDate && renderTimer()}
 
+              {!endDate && !copies && <i />}
+
               {featuresConfig.nftLikes && renderedLikes}
             </>
           )}
