@@ -93,13 +93,13 @@ export type IFetchPoolDetailsData =
 export function isApiEnglishAuction(
   data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails,
 ): data is IApiEnglishAuctionDetails {
-  return (data as IApiEnglishAuctionDetails).amountMax1 !== undefined;
+  return !!(data as IApiEnglishAuctionDetails)?.amountMax1;
 }
 
 export function isEnglishAuction(
   data: IFetchPoolDetailsData,
 ): data is IEnglishAuctionDetails {
-  return (data as IEnglishAuctionDetails).amountMax1 !== undefined;
+  return (data as IEnglishAuctionDetails)?.amountMax1 instanceof BigNumber;
 }
 
 interface IFetchPoolDetailsParams {

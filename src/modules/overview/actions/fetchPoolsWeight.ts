@@ -10,7 +10,7 @@ interface IApiFetchPoolsWeightData {
     id: number;
     poolid: number;
     poolweight: number;
-    standard: 1 | 2;
+    standard: 0 | 1 | 2;
     updated_at: string;
   }[];
   total: number;
@@ -61,7 +61,7 @@ export const fetchPoolsWeight = createSmartAction<
               poolId: item.poolid,
               poolWeight: item.poolweight,
               auctionType:
-                item.standard === 1
+                item.standard === 0
                   ? AuctionType.FixedSwap
                   : AuctionType.EnglishAuction,
               updatedAt: new Date(item.updated_at),
