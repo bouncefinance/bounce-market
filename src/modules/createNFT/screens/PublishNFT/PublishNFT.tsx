@@ -224,7 +224,8 @@ export const PublishNFTComponent = ({
               MIN_INCREMENTAL_PART,
             ),
             reservePrice: payload.reservePrice,
-            duration: payload.duration * 60 * 60 * 24,
+            // TODO: Revert
+            duration: 300,
             name,
             tokenContract,
             unitContract: payload.unitContract,
