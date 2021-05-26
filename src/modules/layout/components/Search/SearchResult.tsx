@@ -153,7 +153,6 @@ const SearchResult = ({
 }) => {
   const classes = useSearchResultStyles();
 
-  console.log(data);
   return (
     <div className={classes.root}>
       {loading ? (
