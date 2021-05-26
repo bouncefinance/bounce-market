@@ -360,6 +360,7 @@ export const BuyNFT = () => {
                         readonly={true}
                         category={item.category}
                         disabled={loading}
+                        maxQuantity={item.supply}
                       />
                     )}
                   </Mutation>
@@ -386,7 +387,7 @@ export const BuyNFT = () => {
                         owner={ownerTitle}
                         ownerAvatar={undefined}
                         isOwnerVerified={false}
-                        readonly={item.standard === NftType.ERC721}
+                        readonly={true}
                         category={item.category}
                         disabled={loading}
                         maxQuantity={poolDetails.quantity}
