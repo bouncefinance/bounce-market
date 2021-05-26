@@ -44,7 +44,6 @@ export const createBrandNFT = createSmartAction(
       ) => {
         return {
           promise: (async function () {
-            debugger;
             const { data } = await store.dispatchRequest(uploadFile({ file }));
 
             const {

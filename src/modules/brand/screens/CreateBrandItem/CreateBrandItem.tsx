@@ -6,7 +6,6 @@ import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
 import {
   Channel,
-  createNft,
   ICreateNFTPayload,
   NftType,
 } from 'modules/createNFT/actions/createNft';
@@ -201,7 +200,7 @@ export const CreateBrandItem = () => {
             </Box>
           )}
           <Box>
-            <Mutation type={createNft.toString()}>
+            <Mutation type={createBrandNFT.toString()}>
               {({ loading }) => (
                 <Button
                   size="large"
