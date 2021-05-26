@@ -7,7 +7,7 @@ import { RootState } from 'store';
 import { Address } from '../../common/types/unit';
 import { connect } from '../store/actions/connect';
 import { disconnect } from '../store/actions/disconnect';
-import { setAccount } from '../store/actions/setAccount';
+import { ISetAccountData, setAccount } from '../store/actions/setAccount';
 
 // TODO: Check disconnection, switch chain, switch account
 
@@ -111,18 +111,18 @@ function* onConnectWallet() {
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
 
-      const { currentAddress } = yield select((state: RootState) => {
-        const {
-          data: { address },
-        } = getQuery(state, {
-          type: setAccount.toString(),
-          action: setAccount,
-        });
+      const { currentAddress }: { currentAddress?: string } = yield select(
+        (state: RootState) => {
+          const { data } = getQuery<ISetAccountData | null>(state, {
+            type: setAccount.toString(),
+            action: setAccount,
+          });
 
-        return { currentAddress: address };
-      });
+          return { currentAddress: data?.address };
+        },
+      );
 
-      if (currentAddress.toLowerCase() !== address?.toLowerCase()) {
+      if (currentAddress?.toLowerCase() !== address?.toLowerCase()) {
         yield put(connect());
       }
     }
