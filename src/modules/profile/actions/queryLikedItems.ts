@@ -6,6 +6,7 @@ import { AuctionType } from 'modules/overview/api/auctionType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
+import Web3 from 'web3';
 import { getAccountLikes, IAccountLike } from './getAccountLikes';
 
 export interface ILikedItem extends IAccountLike {
@@ -79,7 +80,7 @@ export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
                   return {
                     ...accountLike,
                     poolType: poolInfo.poolType,
-                    price: new BigNumber(poolInfo.price),
+                    price: new BigNumber(Web3.utils.fromWei(poolInfo.price)),
                     createTime: poolInfo.createTime,
                     token1: poolInfo.token1,
                   };
