@@ -1,12 +1,11 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
-const MAX_TITLE_LINES = 3;
-
 export const usePromoThumbStyles = makeStyles<Theme>(theme => ({
   root: {
     background: theme.palette.background.default,
+    width: '100%',
     display: 'grid',
-    gridTemplateColumns: '64px 1fr',
+    gridTemplateColumns: '64px auto',
     gap: theme.spacing(0, 2.5),
     alignItems: 'center',
   },
@@ -16,8 +15,7 @@ export const usePromoThumbStyles = makeStyles<Theme>(theme => ({
   },
 
   title: {
-    lineHeight: 1.4,
-    maxHeight: `${MAX_TITLE_LINES * 1.4}em`,
-    overflow: 'hidden',
+    fontSize: 15,
+    fontWeight: 500,
   },
 }));

@@ -1,7 +1,9 @@
 import { fade, makeStyles, Theme } from '@material-ui/core/styles';
 
 export const usePromoStyles = makeStyles<Theme>(theme => ({
-  root: {},
+  root: {
+    minHeight: 300,
+  },
 
   container: {
     maxWidth: 1095,

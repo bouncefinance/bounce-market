@@ -27,7 +27,14 @@
     "inventory": "My Inventory",
     "brands": "My Brands",
     "profile-settings": "Profile settings",
-    "disconnect": "Disconnect"
+    "disconnect": "Disconnect",
+    "search": {
+      "placeholder": "Search by name, creator, brand...",
+      "empty": "No results found",
+      "items": "Items",
+      "brands": "Brands",
+      "users": "Users"
+    }
   },
   "language": {
     "en-US": "English",

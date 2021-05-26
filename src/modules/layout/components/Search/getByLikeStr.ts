@@ -37,7 +37,7 @@ interface IApiSearchResult {
     }[];
     items: {
       brandid: number;
-      category: string;
+      category: 'image' | 'video';
       channel: string;
       contractaddress: string;
       created_at: string;
@@ -68,21 +68,22 @@ interface IApiSearchResult {
 export interface ISearchItem {
   id: number;
   name: string;
-  imgUrl: string;
+  previewUrl: string;
+  category: 'image' | 'video';
+  price: string;
+  priceType: string;
 }
 
 export interface ISearchBrand {
   id: number;
   name: string;
-  address: string;
-  imgUrl: string;
+  previewUrl: string;
 }
 
 export interface ISearchAccount {
   id: number;
   name: string;
-  address: string;
-  imgUrl: string;
+  previewUrl: string;
 }
 
 export interface ISearchResult {
@@ -101,7 +102,10 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
       .map(item => ({
         id: item.id,
         name: item.itemname,
-        imgUrl: item.fileurl,
+        category: item.category,
+        previewUrl: item.fileurl,
+        price: item.price,
+        priceType: 'BNB',
       }))
       .slice(0, 3),
     brands: brands
@@ -109,16 +113,14 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
       .map(item => ({
         id: item.id,
         name: item.brandname,
-        address: item.contractaddress,
-        imgUrl: item.bandimgurl,
+        previewUrl: item.bandimgurl,
       }))
       .slice(0, 3),
     accounts: accounts
       .map(item => ({
         id: item.id,
         name: item.fullnam,
-        address: item.accountaddress,
-        imgUrl: item.imgurl,
+        previewUrl: item.imgurl,
       }))
       .slice(0, 3),
   };

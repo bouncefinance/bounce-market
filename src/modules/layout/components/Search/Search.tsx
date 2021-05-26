@@ -10,6 +10,7 @@ import { SearchResult } from './SearchResult';
 import { useSearchStyles } from './SearchStyles';
 import debounce from 'lodash/debounce';
 import { getPoolsByFilter } from '../../../profile/api/getPoolsByFilter';
+import { t } from '../../../i18n/utils/intl';
 
 const SEARCH_REQUEST_KEY = 'Search';
 
@@ -37,9 +38,15 @@ export const Search = ({ className, focus }: ISearchProps) => {
 
   const handleSearch = useRef(
     debounce((value: string) => {
-      dispatch(getByLikeStr(value));
-      dispatch(getPoolsByFilter(undefined, { requestKey: SEARCH_REQUEST_KEY }));
-      setShowResult(true);
+      if (value.length) {
+        dispatch(getByLikeStr(value));
+        dispatch(
+          getPoolsByFilter(undefined, { requestKey: SEARCH_REQUEST_KEY }),
+        );
+        setShowResult(true);
+      } else {
+        setShowResult(false);
+      }
     }, SEARCH_DELAY),
   ).current;
 
@@ -57,13 +64,16 @@ export const Search = ({ className, focus }: ISearchProps) => {
         <InputBase
           required
           inputRef={inputRef}
-          className={classes.input}
+          className={classNames(
+            classes.input,
+            showResult && classes.inputFocused,
+          )}
           classes={{
             focused: classes.inputFocused,
             input: classes.inputBase,
           }}
           onKeyUp={handleKeyup}
-          placeholder="Search by name, creator, brand..."
+          placeholder={t('header.search.placeholder')}
           startAdornment={
             <IconButton className={classes.iconButton} aria-label="search">
               <SearchIcon />
