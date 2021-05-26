@@ -295,11 +295,7 @@
       "quantity": "Quantity",
       "from": "From",
       "to": "To",
-      "date": "Date",
-      "transfer": "Transfer",
-      "created": "Created",
-      "canceled": "Canceled",
-      "claimed": "Claimed"
+      "date": "Date"
     }
   },
   "buy-dialog": {

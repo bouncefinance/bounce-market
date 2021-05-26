@@ -4,35 +4,35 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
+import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import {
   ILikedItem,
   queryLikedItems,
 } from 'modules/profile/actions/queryLikedItems';
-import { TabActivity } from 'modules/profile/components/TabActivity';
-import { Section } from 'modules/uiKit/Section';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router';
-import { uid } from 'react-uid';
-import { fetchAllNftByUser } from '../../actions/fetchAllNftByUser';
-import { fetchProfileInfo } from '../../actions/fetchProfileInfo';
-import { IProfileInfo } from '../../api/profileInfo';
-import { Avatar } from '../../components/Avatar';
-import { Bio } from '../../components/Bio';
-import { Header } from '../../components/Header';
-import { InfoPanel } from '../../components/InfoPanel';
-import { SetAvatarModal } from '../../components/SetAvatarModal';
-import { SetBgImgModal } from '../../components/SetBgImgModal';
-import { Social } from '../../components/Social';
-import { Subscribers } from '../../components/Subscribers';
-import { TabBrands } from '../../components/TabBrands';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
+import { ActivityTable } from 'modules/profile/components/ActivityTable';
+import { Avatar } from 'modules/profile/components/Avatar';
+import { Bio } from 'modules/profile/components/Bio';
+import { Header } from 'modules/profile/components/Header';
+import { InfoPanel } from 'modules/profile/components/InfoPanel';
+import { SetAvatarModal } from 'modules/profile/components/SetAvatarModal';
+import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
+import { Social } from 'modules/profile/components/Social';
+import { Subscribers } from 'modules/profile/components/Subscribers';
+import { TabBrands } from 'modules/profile/components/TabBrands';
 import {
   IFollowingItemProps,
   TabFollowing,
-} from '../../components/TabFollowing';
-import { TabPanel } from '../../components/TabPanel';
-import { Tabs } from '../../components/Tabs';
-import { Tab } from '../../components/Tabs/Tab';
-import { ProfileRoutesConfig, ProfileTab } from '../../ProfileRoutes';
+} from 'modules/profile/components/TabFollowing';
+import { TabPanel } from 'modules/profile/components/TabPanel';
+import { Tabs } from 'modules/profile/components/Tabs';
+import { Tab } from 'modules/profile/components/Tabs/Tab';
+import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
+import { Section } from 'modules/uiKit/Section';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { uid } from 'react-uid';
 import { TabItems } from './components/TabItems';
 import { TabLiked } from './components/TabLiked';
 import { useProfileStyles } from './useProfileStyles';
@@ -125,18 +125,10 @@ export const Profile = () => {
         label: t('profile.tabs.my-brands'),
       },
       {
-        value: ProfileTab.activity,
-        label: t('profile.tabs.activity'),
+        value: ProfileTab.liked,
+        label: t('profile.tabs.liked'),
+        count: likedItems ? likedItems.length : 0,
       },
-      ...(featuresConfig.nftLikes
-        ? [
-            {
-              value: ProfileTab.liked,
-              label: t('profile.tabs.liked'),
-              count: likedItems ? likedItems.length : 0,
-            },
-          ]
-        : []),
       ...(featuresConfig.profileFollowers
         ? [
             {
@@ -217,7 +209,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>
-          <TabActivity />
+          <ActivityTable />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.liked}>

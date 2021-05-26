@@ -37,7 +37,7 @@ export const MediaContainer = ({
         {category === 'image' ? (
           <img className={classes.img} src={src} loading="lazy" alt="" />
         ) : (
-          <VideoPlayer src={src} autoPlay />
+          <VideoPlayer src={src} />
         )}
 
         <div className={classes.actions}>
