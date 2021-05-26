@@ -1,14 +1,14 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
-import uniqBy from 'lodash/uniqBy';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { fetchItemsByFilter } from '../../createNFT/actions/fetchItemsByFilter';
 import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
-import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
-import { AuctionType } from '../../overview/api/auctionType';
 import { IItem } from '../../overview/api/getItems';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
+import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
+import { AuctionType } from '../../overview/api/auctionType';
+import uniqBy from 'lodash/uniqBy';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
@@ -56,7 +56,7 @@ export const fetchAllNftByUser: (
             const ids = [
               ...(fetchNftByUserData?.nfts721.map(item => item.tokenId) ?? []),
               ...(fetchNftByUserData?.nfts1155.map(item => item.tokenId) ?? []),
-              ...(pools?.list.map(item => item?.tokenId) ?? []),
+              ...(pools?.list.map(item => item.tokenId) ?? []),
             ];
             const cts = [
               ...(fetchNftByUserData?.nfts721.map(
@@ -65,7 +65,7 @@ export const fetchAllNftByUser: (
               ...(fetchNftByUserData?.nfts1155.map(
                 item => item.contractAddress,
               ) ?? []),
-              ...(pools?.list.map(item => item?.tokenContract) ?? []),
+              ...(pools?.list.map(item => item.tokenContract) ?? []),
             ];
 
             const items = uniqBy(
@@ -82,10 +82,8 @@ export const fetchAllNftByUser: (
             } = await store.dispatchRequest(
               fetchItemsByFilter(
                 {
-                  ids: items.map(item => item.id).filter(e => e) as number[],
-                  cts: items
-                    .map(item => item.contractAddress)
-                    .filter(e => e) as string[],
+                  ids: items.map(item => item.id),
+                  cts: items.map(item => item.contractAddress),
                 },
                 {
                   silent: true,
@@ -102,9 +100,7 @@ export const fetchAllNftByUser: (
             // TODO: How to manage pools, separated data or inline?
             return data
               ?.map(item => {
-                const pool = pools?.list.find(
-                  pool => pool?.tokenId === item.id,
-                );
+                const pool = pools?.list.find(pool => pool.tokenId === item.id);
                 if (pool) {
                   return {
                     ...item,

@@ -36,7 +36,7 @@ const SearchItems = ({
     <div className={classes.group}>
       <div className={classes.title}>{t('header.search.items')}</div>
       {data.map((item: ISearchItem) => {
-        const pool = pools.find(poolItem => poolItem?.tokenId === item.id);
+        const pool = pools.find(poolItem => poolItem.tokenId === item.id);
 
         if (!pool) {
           return null;

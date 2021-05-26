@@ -1,12 +1,12 @@
-import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import BigNumber from 'bignumber.js';
 import { createAction as createSmartAction } from 'redux-smart-actions';
+import { RequestAction, RequestActionMeta } from '@redux-requests/core';
+import { NftType } from '../../createNFT/actions/createNft';
+import BigNumber from 'bignumber.js';
+import { Address } from '../../common/types/unit';
 import Web3 from 'web3';
+import { AuctionType } from '../api/auctionType';
 import { AuctionState } from '../../common/const/AuctionState';
 import { POOL_DETAILS_URL } from '../../common/conts';
-import { Address } from '../../common/types/unit';
-import { NftType } from '../../createNFT/actions/createNft';
-import { AuctionType } from '../api/auctionType';
 
 interface IApiFixedAuctionDetails {
   amount_total0: number;
@@ -46,7 +46,7 @@ interface IApiEnglishAuctionDetails {
 
 export interface IApiFetchPoolDetails {
   code: 200;
-  data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails | null;
+  data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails;
   msg: 'ok';
 }
 
@@ -88,8 +88,7 @@ export interface IEnglishAuctionDetails {
 
 export type IFetchPoolDetailsData =
   | IFixedAuctionDetails
-  | IEnglishAuctionDetails
-  | null;
+  | IEnglishAuctionDetails;
 
 export function isApiEnglishAuction(
   data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails,
@@ -132,10 +131,6 @@ export const fetchPoolDetails = createSmartAction<
       driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
-        if (!data) {
-          return null;
-        }
-
         if (isApiEnglishAuction(data)) {
           return {
             amountMax1: new BigNumber(Web3.utils.fromWei(data.amountMax1)),
