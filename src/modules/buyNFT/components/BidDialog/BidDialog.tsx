@@ -46,7 +46,7 @@ interface IBidDialogProps {
 }
 
 export const BidDialog = ({
-  currency = 'ETH',
+  currency = 'BNB',
   filepath,
   isOpen = false,
   isOwnerVerified = false,
