@@ -21,7 +21,7 @@ export interface IApiNFTDetails {
     popularweight: number;
     price: string;
     properties: string;
-    standard: 1 | 2;
+    standard: 0 | 1;
     stats: string;
     status: number;
     supply: number;
@@ -63,7 +63,7 @@ export function mapNFTDetails({
   return {
     createdAt: new Date(created_at),
     updatedAt: new Date(updated_at),
-    standard: standard === 1 ? NftType.ERC721 : NftType.ERC1155,
+    standard: standard,
     ...rest,
   };
 }

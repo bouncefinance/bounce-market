@@ -65,7 +65,7 @@ export const createBrandNFT = createSmartAction(
               itemsymbol: brandInfo.brandsymbol,
               owneraddress: brandInfo.owneraddress,
               ownername: brandInfo.ownername,
-              standard: brandInfo.standard === NftType.ERC721 ? 1 : 2,
+              standard: brandInfo.standard,
               supply: standard === NftType.ERC721 ? 1 : supply,
             };
 

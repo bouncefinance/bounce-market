@@ -2,7 +2,6 @@ import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { IApiBrandInfoItem, IBrandInfo } from '../api/queryBrand';
 import { QueryBrandByIdAction } from './const';
-import { NftType } from '../../createNFT/actions/createNft';
 
 export const queryBrandById = createSmartAction<
   RequestAction<IApiBrandInfoItem, IBrandInfo>,
@@ -27,7 +26,7 @@ export const queryBrandById = createSmartAction<
 
         return {
           ...data.data,
-          standard: data.data.standard === 1 ? NftType.ERC721 : NftType.ERC1155,
+          standard: data.data.standard,
         };
       },
     },
