@@ -8,7 +8,7 @@ import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 
-export interface ILikedItem {
+export interface IApiAccountLike {
   accountaddress: string;
   auctiontype: number;
   brandid: number;
@@ -23,18 +23,42 @@ export interface ILikedItem {
 interface IApiAccountLikes {
   code: number;
   msg?: string;
-  data: ILikedItem[];
+  data: IApiAccountLike[];
 }
 
+export interface IAccountLike {
+  accountAddress: string;
+  auctionType: number;
+  brandId: number;
+  category: NFTCategoryType;
+  isLiked: number;
+  imageUrl: string;
+  itemId: number;
+  itemName: string;
+  poolId: number;
+}
+
+const mapAccountLike = (item: IApiAccountLike): IAccountLike => ({
+  accountAddress: item.accountaddress,
+  auctionType: item.auctiontype,
+  brandId: item.brandid,
+  category: item.category,
+  isLiked: item.iflike,
+  imageUrl: item.imageurl,
+  itemId: item.itemid,
+  itemName: item.itemname,
+  poolId: item.poolid,
+});
+
 export const getAccountLikes = createAction<
-  RequestAction<IApiAccountLikes, ILikedItem[]>
+  RequestAction<IApiAccountLikes, IAccountLike[]>
 >('getAccountLikes', () => ({
   request: {
     url: '/api/v2/main/auth/getaccountlike',
     method: 'post',
   },
   meta: {
-    asMutation: false,
+    asMutation: true,
     auth: true,
     driver: 'axios',
     onRequest: (
@@ -57,7 +81,7 @@ export const getAccountLikes = createAction<
         throw new Error(data.msg);
       }
 
-      return data.data;
+      return data.data.map(mapAccountLike);
     },
   },
 }));

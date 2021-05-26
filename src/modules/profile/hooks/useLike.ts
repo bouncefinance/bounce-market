@@ -7,21 +7,17 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { AuctionType } from 'modules/overview/api/auctionType';
 import { useCallback, useState } from 'react';
 import { dealAccountLike } from '../actions/dealAccountLike';
-import { getAccountLikes, ILikedItem } from '../actions/getAccountLikes';
+import { ILikedItem, queryLikedItems } from '../actions/queryLikedItems';
 
-/**
- * It useful when you need to check is NFT item already liked by user
- *
- * @param  id  NFT item ID
- * @return  `true` if NFT is already liked
- */
-export const useIsLiked = (id: number) => {
+export const useIsLiked = (id: number, poolId: number) => {
   const { data } = useQuery<ILikedItem[] | null>({
-    type: getAccountLikes.toString(),
+    type: queryLikedItems.toString(),
   });
 
   const isLiked = data
-    ? !!data.find(likedItem => likedItem.itemid === id)
+    ? !!data.find(
+        likedItem => likedItem.itemId === id && likedItem.poolId === poolId,
+      )
     : false;
 
   return { isLiked };
@@ -31,7 +27,7 @@ interface IUseLikeProps {
   id: number;
   category: string;
   auctionType?: AuctionType;
-  poolId?: number;
+  poolId: number;
   count?: number;
 }
 
@@ -48,7 +44,7 @@ export const useLike = ({
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
   const requestKey = `/${id}`;
-  const { isLiked } = useIsLiked(id);
+  const { isLiked } = useIsLiked(id, poolId);
   const [likeCount, setLikeCount] = useState(count);
 
   const { loading } = useMutation({

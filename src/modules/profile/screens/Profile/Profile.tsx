@@ -5,9 +5,9 @@ import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import {
-  getAccountLikes,
   ILikedItem,
-} from 'modules/profile/actions/getAccountLikes';
+  queryLikedItems,
+} from 'modules/profile/actions/queryLikedItems';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -75,8 +75,8 @@ export const Profile = () => {
   const dispatchRequest = useDispatchRequest();
   const { push } = useHistory();
 
-  const { data: accountLikes } = useQuery<ILikedItem[] | null>({
-    type: getAccountLikes.toString(),
+  const { data: likedItems } = useQuery<ILikedItem[] | null>({
+    type: queryLikedItems.toString(),
   });
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
@@ -137,7 +137,7 @@ export const Profile = () => {
             {
               value: ProfileTab.liked,
               label: t('profile.tabs.liked'),
-              count: accountLikes ? accountLikes.length : 0,
+              count: likedItems ? likedItems.length : 0,
             },
           ]
         : []),
@@ -156,7 +156,7 @@ export const Profile = () => {
           ]
         : []),
     ],
-    [accountLikes],
+    [likedItems],
   );
 
   return (

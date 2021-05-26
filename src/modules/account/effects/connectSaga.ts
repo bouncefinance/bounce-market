@@ -1,6 +1,6 @@
 import { getQuery, resetRequests } from '@redux-requests/core';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
-import { getAccountLikes } from 'modules/profile/actions/getAccountLikes';
+import { queryLikedItems } from 'modules/profile/actions/queryLikedItems';
 import { END, eventChannel } from 'redux-saga';
 import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
 import { RootState } from 'store';
@@ -93,7 +93,7 @@ function* onConnectWallet() {
   }
   const provider = action.meta.provider;
   yield put(fetchProfileInfo());
-  yield put(getAccountLikes());
+  yield put(queryLikedItems());
 
   const channel = createEventChannel(provider);
   while (true) {
@@ -104,7 +104,7 @@ function* onConnectWallet() {
         resetRequests([
           setAccount.toString(),
           fetchProfileInfo.toString(),
-          getAccountLikes.toString(),
+          queryLikedItems.toString(),
         ]),
       );
     } else if (event.type === WalletEventType.AccountChanged) {
@@ -134,7 +134,7 @@ function* onDisconnectWallet() {
     resetRequests([
       setAccount.toString(),
       fetchProfileInfo.toString(),
-      getAccountLikes.toString(),
+      queryLikedItems.toString(),
     ]),
   );
 }

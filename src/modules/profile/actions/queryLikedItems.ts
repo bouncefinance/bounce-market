@@ -1,12 +1,21 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import BigNumber from 'bignumber.js';
+import { throwIfDataIsEmptyOrError } from 'modules/common/utils/throwIfDataIsEmptyOrError';
 import { fetchPools } from 'modules/overview/actions/fetchPools';
 import { AuctionType } from 'modules/overview/api/auctionType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { getAccountLikes } from './getAccountLikes';
+import { getAccountLikes, IAccountLike } from './getAccountLikes';
 
-export const queryLikedItems = createAction<RequestAction>(
+export interface ILikedItem extends IAccountLike {
+  poolType: AuctionType;
+  price: BigNumber;
+  createTime: number;
+  token1: string;
+}
+
+export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
   'queryLikedItems',
   () => ({
     request: {
@@ -20,20 +29,18 @@ export const queryLikedItems = createAction<RequestAction>(
       ) => {
         return {
           promise: (async () => {
-            const { data: poolsData } = await store.dispatchRequest(
-              fetchPools(
-                {
-                  count: 1000,
-                },
-                {
-                  asMutation: true,
-                },
+            const { data: poolsData } = throwIfDataIsEmptyOrError(
+              await store.dispatchRequest(
+                fetchPools(
+                  {
+                    count: 1000,
+                  },
+                  {
+                    asMutation: true,
+                  },
+                ),
               ),
             );
-
-            if (!poolsData) {
-              return [];
-            }
 
             const tradePools = (poolsData.tradePools || [])
               .map(item => ({
@@ -55,36 +62,33 @@ export const queryLikedItems = createAction<RequestAction>(
 
             const pools = [...tradePools, ...tradeAuctions];
 
-            const { data: accountLikes } = await store.dispatchRequest(
-              getAccountLikes(),
+            const { data: accountLikes } = throwIfDataIsEmptyOrError(
+              await store.dispatchRequest(getAccountLikes()),
             );
 
-            if (!accountLikes) {
-              return [];
-            }
-
-            const mappedItems = accountLikes
-              .map(item => {
+            const likedItems = accountLikes
+              .map(accountLike => {
                 const poolInfo = pools.find(
                   pool =>
-                    pool.tokenId === item.itemid && pool.poolId === item.poolid,
+                    pool.tokenId === accountLike.itemId &&
+                    pool.poolId === accountLike.poolId,
                 );
                 if (!poolInfo) {
                   return null;
                 } else {
                   return {
-                    ...poolInfo,
+                    ...accountLike,
                     poolType: poolInfo.poolType,
-                    poolId: poolInfo.poolId,
-                    price: poolInfo.price,
+                    price: new BigNumber(poolInfo.price),
                     createTime: poolInfo.createTime,
                     token1: poolInfo.token1,
                   };
                 }
               })
-              .filter(e => e);
+              // filter out the null elements
+              .filter(e => e) as ILikedItem[];
 
-            return mappedItems;
+            return likedItems;
           })(),
         };
       },

@@ -9,7 +9,7 @@ import {
 export interface IProductCardProps
   extends Omit<IProductCardComponentProps, 'isLiked'> {
   id: number;
-  poolId?: number;
+  poolId: number;
   auctionType?: AuctionType;
 }
 

@@ -26,7 +26,7 @@ export interface INFTItem {
   litimgurl?: string;
   metadata?: string;
   owneraddress?: string;
-  poolId?: number;
+  poolId: number;
   poolType: AuctionType;
   price: string;
   standard?: number;
