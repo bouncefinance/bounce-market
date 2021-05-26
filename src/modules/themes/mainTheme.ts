@@ -217,8 +217,8 @@ export const mainTheme = createMuiTheme({
         border: `1px solid ${fade(defaultTheme.palette.common.black, 0.1)}`,
         transition: 'border 0.2s',
 
-        '&.Mui-focused': {
-          border: `1px solid ${fade(defaultTheme.palette.common.black, 0.7)}`,
+        '&:hover, &.Mui-focused': {
+          borderColor: fade(defaultTheme.palette.common.black, 0.3),
         },
 
         '& fieldset': {
@@ -295,12 +295,12 @@ export const mainTheme = createMuiTheme({
 
     MuiIconButton: {
       root: {
-        border: `1px solid ${fade(defaultTheme.palette.text.primary, 0.1)}`,
+        border: `1px solid ${fade(defaultTheme.palette.common.black, 0.1)}`,
         color: defaultTheme.palette.text.primary,
         transition: `border ${BTN_TRANSITION_TIME}s`,
 
         '&:hover': {
-          border: `1px solid ${fade(defaultTheme.palette.text.primary, 0.4)}`,
+          borderColor: fade(defaultTheme.palette.common.black, 0.3),
           backgroundColor: 'none',
         },
       },
@@ -386,7 +386,7 @@ export const mainTheme = createMuiTheme({
       outlined: {
         textTransform: 'none',
         fontWeight: 500,
-        border: `1px solid ${defaultTheme.palette.common.black}`,
+        border: `1px solid ${fade(defaultTheme.palette.common.black, 0.1)}`,
         overflow: 'hidden',
         transition: `color ${BTN_TRANSITION_TIME}s ease-in, border ${BTN_TRANSITION_TIME}s ease-in`,
 
@@ -412,7 +412,7 @@ export const mainTheme = createMuiTheme({
         '&:hover': {
           color: defaultTheme.palette.common.white,
           background: 'none',
-          borderColor: fade(defaultTheme.palette.common.black, 0),
+          borderColor: fade(defaultTheme.palette.common.black, 0.3),
 
           '&:before': {
             transform: 'translateY(0)',
