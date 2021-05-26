@@ -45,7 +45,6 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         poolType: item.auctionType,
                       },
                       { requestKey: item.poolId },
-                      { silent: true },
                     ),
                   ),
                 ),
