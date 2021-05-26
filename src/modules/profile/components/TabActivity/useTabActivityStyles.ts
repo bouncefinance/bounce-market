@@ -1,18 +1,28 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
-export const useActivityTableStyles = makeStyles<Theme>(theme => ({
-  table: {
-    minWidth: 1240,
+export const useTabActivityStyles = makeStyles<Theme>(theme => ({
+  table: {},
+
+  empty: {
+    textAlign: 'center',
+    margin: theme.spacing(2),
   },
 
   eventIcon: {
     marginRight: theme.spacing(1),
   },
+  eventIconPlus: {
+    fontSize: '1rem',
+    marginLeft: '4px',
+    marginRight: '12px',
+  },
 
-  itemImg: {
+  itemPreview: {
     width: 52,
+    height: 52,
     marginRight: theme.spacing(2),
     borderRadius: 4,
+    overflow: 'hidden',
   },
 
   itemTitle: {
