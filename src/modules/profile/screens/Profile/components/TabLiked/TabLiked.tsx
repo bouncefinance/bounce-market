@@ -24,6 +24,8 @@ export const TabLiked = ({ className }: ITabLikedProps) => {
     type: queryLikedItems.toString(),
   });
 
+  console.log({ likedItems });
+
   useEffect(() => {
     dispatch(queryLikedItems());
   }, [dispatch]);

@@ -11,7 +11,7 @@ export const useBrandProducts = () => {
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
 
-  const { loading, data: brandNfts } = useQuery<INFTItem[] | null>({
+  const { loading } = useQuery<INFTItem[] | null>({
     type: queryBrandNfts.toString(),
   });
 
@@ -72,6 +72,5 @@ export const useBrandProducts = () => {
     onCategoryChange,
     onSortChange,
     sortBy,
-    brandNfts,
   };
 };
