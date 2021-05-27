@@ -1,29 +1,34 @@
 import { RequestAction } from '@redux-requests/core';
-import { FANGIBLE_URL } from 'modules/common/conts';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import {
   IApiBrand,
-  IApiQueryBrand,
-  mapQueryBrandList,
+  IApiListBrand,
+  mapListBrands,
 } from '../api/queryBrand';
 import { FetchBrandListAction } from './const';
 
 export const queryBrandList = createSmartAction<
-  RequestAction<IApiQueryBrand, IApiBrand[]>
+  RequestAction<IApiListBrand, IApiBrand[]>
 >(FetchBrandListAction, () => {
   return {
     request: {
-      url: `${FANGIBLE_URL}/brands?offset=0&count=1000`,
-      method: 'get',
+      url: `/api/v2/main/getbrandsbypage`,
+      method: 'post',
+      data: {
+        limit: 10000,
+        offset: 0,
+        orderfield: 1,
+      }
     },
     meta: {
+      auth: true,
       driver: 'axios',
       asMutation: true,
       getData: data => {
-        if (data.code !== 200) {
+        if (data.code !== 1) {
           throw new Error('Unexpected response');
         }
-        return mapQueryBrandList(data);
+        return mapListBrands(data.data);
       },
     },
   };

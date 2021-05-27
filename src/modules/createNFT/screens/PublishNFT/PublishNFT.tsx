@@ -38,6 +38,7 @@ import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { PublishNFTType } from 'modules/createNFT/Routes';
 
 const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
 
@@ -72,6 +73,7 @@ const formatAmount = (value: string) => (value ? `${Math.round(+value)}` : '1');
 
 interface IPublishNFTComponentProps {
   name: string;
+  publishType: PublishNFTType;
   tokenContract: string;
   nftType: NftType;
   tokenId: number;
@@ -83,6 +85,7 @@ interface IPublishNFTComponentProps {
 
 export const PublishNFTComponent = ({
   name,
+  publishType,
   tokenContract,
   nftType,
   tokenId,
@@ -214,6 +217,7 @@ export const PublishNFTComponent = ({
         dispatch(
           publishNft({
             type: payload.type,
+            publishType: publishType,
             name,
             tokenContract,
             unitContract: payload.unitContract,
@@ -231,6 +235,7 @@ export const PublishNFTComponent = ({
         dispatch(
           publishNft({
             type: payload.type,
+            publishType: publishType,
             purchasePrice: payload.purchasePrice,
             minBid: payload.minBid,
             minIncremental: new BigNumber(payload.minBid).multipliedBy(
@@ -253,7 +258,7 @@ export const PublishNFTComponent = ({
         });
       }
     },
-    [dispatch, name, nftType, onPublish, tokenContract, tokenId],
+    [dispatch, name, publishType, nftType, onPublish, tokenContract, tokenId],
   );
 
   const renderForm = ({
@@ -604,7 +609,8 @@ export const PublishNFTComponent = ({
 
 export const PublishNFT = () => {
   const dispatch = useDispatchRequest();
-  const { id: idParam, contract } = useParams<{
+  const { type: publishType, id: idParam, contract } = useParams<{
+    type: PublishNFTType,
     contract: string;
     id: string;
   }>();
@@ -625,6 +631,7 @@ export const PublishNFT = () => {
         return (
           <PublishNFTComponent
             name={data.itemname}
+            publishType={publishType}
             tokenContract={data.contractaddress}
             nftType={data.standard}
             tokenId={data.id}
