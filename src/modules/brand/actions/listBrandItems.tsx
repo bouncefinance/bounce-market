@@ -38,7 +38,7 @@ export const listBrandItems = createSmartAction(
             )
 
             const { data: pools } = await store.dispatchRequest(
-              queryPools(contractAddress)
+              queryPools(userAddress)
             )
 
             const tradePools = pools?.tradePools?.filter(item => item.state !== 1 && compare(item.token0, contractAddress))
@@ -82,7 +82,6 @@ export const listBrandItems = createSmartAction(
                 return null
               }
             })
-
             return poolList;
           })()
         }

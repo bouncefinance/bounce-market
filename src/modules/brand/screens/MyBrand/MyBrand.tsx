@@ -1,5 +1,6 @@
 import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { listBrandItems } from 'modules/brand/actions/listBrandItems';
@@ -20,6 +21,7 @@ import { useProfileStyles } from 'modules/profile/screens/useProfileStyles';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import Web3 from 'web3';
 
 export const MyBrand = () => {
   const classes = useProfileStyles();
@@ -104,6 +106,7 @@ export const MyBrand = () => {
             <Grid item xs={12} sm={6} lg={4} xl={3} key={item.id}>
               <ProductCard
                 key={item.id}
+                isOnSale={!!item.poolId}
                 title={item.itemname}
                 href={
                   item.poolId && item.poolType
@@ -113,7 +116,7 @@ export const MyBrand = () => {
                     )
                     : ''
                 }
-                price={item.poolId ? item.price : undefined}
+                price={item.poolId && item.price ? new BigNumber(Web3.utils.fromWei(item.price)) : undefined}
                 copies={item.supply}
                 MediaProps={{
                   category: item.category,
