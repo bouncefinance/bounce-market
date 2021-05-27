@@ -305,7 +305,7 @@ export default function BrandsByType() {
 
     useEffect(() => {
         if (!account  || !tokenList_2 || !brandInfo.contractaddress) return
-        // console.log(brandInfo)
+        console.log('brandInfo',brandInfo)
         
         if(String(brandInfo.owneraddress).toLowerCase() !== String(account).toLowerCase()){
             history.push(`/AirHome/${brandInfo.id}/FineArts`)
@@ -438,6 +438,7 @@ export default function BrandsByType() {
         } catch (error) {
 
         }
+        alert(31)
 
         setTokenList_2(brandData)
     }
@@ -446,10 +447,7 @@ export default function BrandsByType() {
 
     useEffect(() => {
         if (!account || !contract) return;
-        if (!!brandInfo.standard) {
-
-            getBrandTradeItems()
-        }
+        getBrandTradeItems()
         // eslint-disable-next-line
     }, [account, contract, brandInfo.standard]);
 
