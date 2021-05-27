@@ -73,5 +73,6 @@ export const useBrandProducts = () => {
     onSortChange,
     sortBy,
     brandNfts,
+    isConnected,
   };
 };

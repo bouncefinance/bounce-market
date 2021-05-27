@@ -1,7 +1,9 @@
 import { Box } from '@material-ui/core';
-import { useAccount } from 'modules/account/hooks/useAccount';
+import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
+import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
+import { MarketRoutesConfig } from 'modules/market/Routes';
 import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import React, { useMemo } from 'react';
@@ -10,7 +12,6 @@ import { NotConnected } from '../NotConnected';
 import { useBrandProducts } from './useBrandProducts';
 
 export const Products = () => {
-  const { isConnected } = useAccount();
   const {
     catergory,
     loading,
@@ -18,7 +19,10 @@ export const Products = () => {
     onSortChange,
     sortBy,
     brandNfts,
+    isConnected,
   } = useBrandProducts();
+
+  const hasItems = Boolean(brandNfts && brandNfts.length);
 
   const renderedCards = useMemo(
     () =>
@@ -60,10 +64,16 @@ export const Products = () => {
         />
       </Box>
 
-      {isConnected ? (
+      {!isConnected && <NotConnected />}
+
+      {isConnected && loading && <QueryLoadingCentered mt={4} />}
+
+      {isConnected && !loading && !hasItems && (
+        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+      )}
+
+      {isConnected && !loading && hasItems && (
         <ProductCards>{renderedCards}</ProductCards>
-      ) : (
-        <NotConnected />
       )}
     </>
   );
