@@ -238,7 +238,9 @@ const params = { offset: 0, count: 100 };
 export default function Ranking () {
 
     const classes = useStyles();
+    const currentValueAxios = useRef(null);
     const { sign_Axios } = useAxios();
+    currentValueAxios.current = sign_Axios;
 
     const { wrapperIntl } = useWrapperIntl()
     const [loading, setLoading] = useState(true)
@@ -297,6 +299,10 @@ export default function Ranking () {
 
     const searchRef = useRef(null);
 
+    const throttleHandleWrapper = (func, e, ms) => {
+        return throttle(func(e), ms)
+    }
+
     const searchHandle = (event) => {
         let searchValue = event.target.value
         if (!searchValue) {
@@ -332,22 +338,21 @@ export default function Ranking () {
     }
 
     useEffect(() => {
-
             /** 初始化数据 */
     const initData = async (params) => {
         try {
             const res = await apiGetRankingList(params);
             if (res?.data?.code === 200) {
-                let tokens = res?.data.data.map(item => item.token);
+                let tokens = res?.data?.data.map(item => item.token);
 
                 let contractData = [];
-                let rt = await sign_Axios.post(Controller.brands.getbrandsbyfilter, { Brandcontractaddressess: tokens });
+                let rt = await currentValueAxios.current.post(Controller.brands.getbrandsbyfilter, { Brandcontractaddressess: tokens });
                 if (rt && rt.data.code === 1) {
                     contractData = rt.data.data;
                     setLoading(false)
                 }
                 
-                let realData = res.data.data.map(v => {
+                let realData = res?.data?.data.map(v => {
                     let indexContractData = contractData?.find(c => c.contractaddress.toLowerCase() === v.token.toLowerCase());
                     v.imgurl = indexContractData?.imgurl;
                     v.brandname = indexContractData?.brandname;
@@ -364,9 +369,10 @@ export default function Ranking () {
     }
         initData(params)
         setChannel('Fangible')
-        // eslint-disable-next-line
+
     }, [active, searchCount])
 
+    // eslint-disable-next-line
 
     const headerCellData = [
         { key: 'collections', numeric: false, disablePadding: true, sortable: false, label: 'RankingTabs.Collections', intlSpan:'RankingDescribe.Collections' },
@@ -460,13 +466,12 @@ export default function Ranking () {
                         placeholder={wrapperIntl('Ranking.placeholder')}
                         defaultValue={defaultValue}
                         onKeyUp={(e) => {
-                            console.log('up');
                             e.stopPropagation();
                             e.nativeEvent.stopImmediatePropagation();
-                            throttle(searchHandleKey(e), 1000)
+                            throttleHandleWrapper(searchHandleKey, e, 1000)
                         }}
-                        onChange={(e) => throttle(searchHandle(e), 1000) }
-                        onFocus={() => {handleFocus()}}
+                        onChange={(e) => throttleHandleWrapper(searchHandle, e, 1000) }
+                        onFocus={(e) => {handleFocus(e)}}
                     />
                     </SearchStyled>
                 </div>

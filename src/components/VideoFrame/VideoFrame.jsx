@@ -67,7 +67,6 @@ function VideoFrame (props) {
         setPlayButtonVisiable(true)
     }
 
-    
     useEffect(() => {
         const generateFrame = (frameRate) => {
             const { image, currentTime } = generateCanvas(videoRef.current, videoRef.current.duration * frameRate);
@@ -162,7 +161,7 @@ function VideoFrame (props) {
                     </Grow>
                 }
                 <div className="frameControl" ref={frameControlRef}>
-                    {rate && <div style={{width: '4px', height: '100%', backgroundColor: '#fff', borderRadius: '100%', position: 'absolute', left: `${props.videoWidth * rate}px`}}></div>}
+                    {rate ? <div style={{width: '4px', height: '100%', backgroundColor: '#fff', borderRadius: '100%', position: 'absolute', left: `${props.videoWidth * rate}px`}}></div> : <div></div>}
                 </div>
             </div>
         </VideoDebugs>

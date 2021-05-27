@@ -148,7 +148,7 @@ const zh_CN = {
     Ranking: {
         fangible: 'Fangible排名',
         bsc: 'BSC排名',
-        placeholder: '搜索NFT'
+        placeholder: '按Enter搜索NFT'
     },
 
     RankingTabs: {
