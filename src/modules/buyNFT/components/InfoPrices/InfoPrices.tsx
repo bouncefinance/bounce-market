@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import { t } from 'modules/i18n/utils/intl';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
 import { AuctionState } from '../../../common/const/AuctionState';
@@ -34,10 +34,7 @@ export const InfoPrices = ({
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
 
-  const isTimeOver = useMemo(
-    () => endDate && new Date().getTime() > endDate.getTime(),
-    [endDate],
-  );
+  const isTimeOver = endDate && new Date().getTime() > endDate.getTime();
 
   const renderButtons = useCallback(() => {
     if (
