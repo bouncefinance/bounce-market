@@ -200,7 +200,7 @@ export const BuyDialog = ({
           },
         }}
         initialValues={{
-          quantity: '1',
+          quantity: maxQuantity ? maxQuantity.toString() : '1',
         }}
       />
 

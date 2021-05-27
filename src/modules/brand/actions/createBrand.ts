@@ -14,7 +14,6 @@ import {
   BoucneErc721Bytecode,
   BounceNFTFactory,
 } from '../../web3/contracts';
-import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { throwIfError } from '../../common/utils/throwIfError';
 
 export const createBrand = createSmartAction(
@@ -64,7 +63,7 @@ export const createBrand = createSmartAction(
             );
             const _name = brandName;
             const _symbol = brandSymbol;
-            const _uri = 'http://fangible.com/';
+            const _uri = '';
             const _mode = 0; //0 only owner can mint; 1 whitelist address can mint; 2: everyone
             const bytecode_721 = BoucneErc721Bytecode;
             const bytecode_1155 = BoucneErc1155Bytecode;
@@ -103,7 +102,7 @@ export const createBrand = createSmartAction(
                     brandInfo.contractaddress = createEvent.returnValues.nft;
 
                     resolve(
-                      throwIfDataIsEmptyOrError(
+                      throwIfError(
                         await store.dispatchRequest(updateBrandInfo(brandInfo)),
                       ),
                     );

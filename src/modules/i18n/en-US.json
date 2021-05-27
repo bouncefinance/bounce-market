@@ -245,6 +245,9 @@
       "directPurchase": "TODO Direct purchase price description",
       "reservePrice": "TODO Reserve price description",
       "duration": "TODO Expiration Date description"
+    },
+    "error": {
+      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid < Reserve price ≤ Direct purchase price"
     }
   },
   "profile": {
