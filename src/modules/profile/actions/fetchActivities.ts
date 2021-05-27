@@ -25,7 +25,11 @@ export const fetchActivities = createSmartAction<
         throw new Error('Unexpected response');
       }
 
-      return data.data
+      const activities = data.data;
+
+      if (!activities) return [];
+
+      return activities
         .map(item => {
           return {
             id: item.id,
