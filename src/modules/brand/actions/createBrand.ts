@@ -20,7 +20,7 @@ export const createBrand = createSmartAction(
   'createBrand',
   ({ brandName, standard, description, brandSymbol, file }: ICreateBrand) => ({
     request: {
-      promise: (async function () {})(),
+      promise: (async function () { })(),
     },
     meta: {
       asMutation: true,
@@ -79,11 +79,16 @@ export const createBrand = createSmartAction(
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand721Created;
                     brandInfo.contractaddress = createEvent.returnValues.nft;
-                    resolve(
-                      throwIfError(
-                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
-                      ),
-                    );
+                    brandInfo.contractaddress = '0x299537a6d44ec0Bb68d524E416fb8Ed76d30983f';
+                    try {
+                      resolve(
+                        throwIfError(
+                          await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                        ),
+                      );
+                    } catch (error) {
+                      reject(error);
+                    }
                   })
                   .on('error', (error: Error) => {
                     reject(error);
@@ -100,11 +105,15 @@ export const createBrand = createSmartAction(
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand1155Created;
                     brandInfo.contractaddress = createEvent.returnValues.nft;
-                    resolve(
-                      throwIfError(
-                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
-                      ),
-                    );
+                    try {
+                      resolve(
+                        throwIfError(
+                          await store.dispatchRequest(updateBrandInfo(brandInfo)),
+                        ),
+                      );
+                    } catch (error) {
+                      reject(error);
+                    }
                   })
                   .on('error', (error: Error) => {
                     reject(error);

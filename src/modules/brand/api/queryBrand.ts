@@ -18,20 +18,44 @@ export interface IApiQueryBrand {
   };
 }
 
+export interface IApiListBrand {
+  code: 1 | number;
+  total: number;
+  data: IApiListBrandItem[];
+}
+
+export interface IApiListBrandItem {
+  bandimgurl: string;
+  brandname: string;
+  brandsymbol: string;
+  contractaddress: string;
+  creator: string;
+  description: string;
+  id: number;
+  imgurl: string;
+  owneraddress: string;
+  ownerimg: string;
+  ownername: string;
+  popularweight: number;
+  standard: number;
+  status: number;
+  totalcount: number;
+}
+
 export interface IBrandInfo {
-    bandimgurl: string;
-    brandname: string;
-    brandsymbol: string;
-    contractaddress: string;
-    description: string;
-    id: number;
-    imgurl: string;
-    owneraddress: string;
-    ownerimg: string;
-    ownername: string;
-    popularweight: number;
-    standard: number;
-    status: number;
+  bandimgurl: string;
+  brandname: string;
+  brandsymbol: string;
+  contractaddress: string;
+  description: string;
+  id: number;
+  imgurl: string;
+  owneraddress: string;
+  ownerimg: string;
+  ownername: string;
+  popularweight: number;
+  standard: number;
+  status: number;
 }
 
 export interface IApiBrandInfo {
@@ -68,6 +92,15 @@ export const mapQueryBrandAddress = (
     return ZERO_ADDRESS;
   }
 };
+
+export const mapListBrands = (data: IApiListBrandItem[]): IApiBrand[] => {
+  return data.map((item: IApiListBrandItem) => ({
+    contract_address: item.contractaddress,
+    creator: item.creator,
+    owner: item.ownername,
+    timestamp: 0
+  }));
+}
 
 export const mapQueryBrandList = ({ data }: IApiQueryBrand): IApiBrand[] => {
   const brand721: IApiBrand[] = data.erc721;
