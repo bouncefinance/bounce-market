@@ -12,6 +12,7 @@ interface INoItemsProps {
 
 export const NoItems = ({ href, onClick }: INoItemsProps) => {
   const classes = useNoItemsStyles();
+  const withBtn = !!href || !!onClick;
 
   return (
     <Box py={5} textAlign="center">
@@ -23,15 +24,17 @@ export const NoItems = ({ href, onClick }: INoItemsProps) => {
         {t('profile.no-items.descr')}
       </Typography>
 
-      <Button
-        component={RouterLink}
-        to={href}
-        href={href}
-        onClick={onClick}
-        size="large"
-      >
-        {t('profile.no-items.btn')}
-      </Button>
+      {withBtn && (
+        <Button
+          component={RouterLink}
+          to={href}
+          href={href}
+          onClick={onClick}
+          size="large"
+        >
+          {t('profile.no-items.btn')}
+        </Button>
+      )}
     </Box>
   );
 };
