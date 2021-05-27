@@ -2,16 +2,17 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { fetchItemsByFilter } from '../../createNFT/actions/fetchItemsByFilter';
 import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
 import { IItem } from '../../overview/api/getItems';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
 import uniqBy from 'lodash/uniqBy';
+import { fetchItem } from '../../buyNFT/actions/fetchItem';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
+  ignoreBrands?: boolean;
 }
 
 export const fetchAllNftByUser: (
@@ -76,29 +77,30 @@ export const fetchAllNftByUser: (
               item => item.id,
             );
 
-            const {
-              data,
-              error: fetchItemsError,
-            } = await store.dispatchRequest(
-              fetchItemsByFilter(
-                {
-                  ids: items.map(item => item.id),
-                  cts: items.map(item => item.contractAddress),
-                },
-                {
-                  silent: true,
-                  suppressErrorNotification: true,
-                  requestKey: action.type,
-                },
-              ),
-            );
-
-            if (fetchItemsError) {
-              throw fetchItemsError;
-            }
+            const data = (
+              await Promise.all(
+                items.map((item, index) =>
+                  store.dispatchRequest(
+                    fetchItem(
+                      { id: item.id, contract: item.contractAddress },
+                      {
+                        silent: true,
+                        suppressErrorNotification: true,
+                        requestKey: item.id + item.contractAddress,
+                      },
+                    ),
+                  ),
+                ),
+              )
+            ).map(response => {
+              return response.data!;
+            }); // TODO: Revert to bulk method
 
             // TODO: How to manage pools, separated data or inline?
             return data
+              ?.filter(item => {
+                return payload.ignoreBrands ? item.brandid === 10 : true;
+              })
               ?.map(item => {
                 const pool = pools?.list.find(pool => pool.tokenId === item.id);
                 if (pool) {
