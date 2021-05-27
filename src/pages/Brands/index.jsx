@@ -176,7 +176,7 @@ export default function Index() {
                   avatar={cardsInfo.avatar}
                   ownerName={cardsInfo.ownerName}
                   id={cardsInfo.id}
-                  standard={cardsInfo.standard} //1: 721 2: 1155
+                  standard={cardsInfo.standard} //0: 721 1: 1155
                   owneraddress={cardsInfo.owneraddress}
                 />
               )

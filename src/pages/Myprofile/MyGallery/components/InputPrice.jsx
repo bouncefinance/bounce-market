@@ -53,7 +53,7 @@ function InputPrice ({
 		if (!active || !nftInfo || !nftInfo.standard) return;
 		// console.log(nftInfo.contractaddress, nftInfo.id)
 		let getBalance
-		if (nftInfo.standard === 2) {
+		if (nftInfo.standard === 1) {
 			getBalance = async () => {
 				const balance = await getBalance_ERC_1155(nftInfo.contractaddress, nftInfo.id)
 				setBalance(balance)
@@ -61,7 +61,7 @@ function InputPrice ({
 					setNftCount(balance)
 				}
 			}
-		} else if (nftInfo.standard === 1) {
+		} else if (nftInfo.standard === 0) {
 			getBalance = async () => {
 				const balance = await getBalance_ERC_721(nftInfo.contractaddress, nftInfo.id)
 				setBalance(balance)
@@ -175,7 +175,7 @@ function InputPrice ({
 							/* placeholder="Amount" */
 							placeholder={wrapperIntl("MyProfile.MyGallery.InputPrice.Amount")}
 							maxLength={18}
-							disabled={nftInfo && nftInfo.standard === 1}
+							disabled={nftInfo && nftInfo.standard === 0}
 							value={amountValue}
 							onChange={checkAmountVal}
 						/>

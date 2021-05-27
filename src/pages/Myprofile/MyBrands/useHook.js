@@ -49,6 +49,8 @@ export const useBrandInfo = (brandId) => {
          })
             .then(res => {
                 if (res.status === 200 && res.data.code === 1) {
+                    const data = res.data.data
+                    data.contractaddress = '0xaF6dB20E0e3d0212Fc0919ea876153A1dcDCB410'
                     setBrandInfo(res.data.data)
                 }
             }).catch(err => {

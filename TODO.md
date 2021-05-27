@@ -79,9 +79,9 @@ HOME
     })
     const standards = pools.map(item => {
       if (item.poolType === 'fixed-swap') {
-        return 1
+        return 0
       } else {
-        return 2
+        return 1
       }
     })
     sign_Axios.post(Controller.items.getitemsbyids, { ids: list })

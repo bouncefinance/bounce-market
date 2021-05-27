@@ -160,8 +160,8 @@ export default function GenerateNftModal({ open, setOpen, defaultValue }) {
             itemsymbol: 'BOUNCE',
             owneraddress: account,
             ownername: state.username,
-            standard: nftType === 'ERC-721' ? 1 : 2,
-            supply: nftType === 'ERC-721' ? 1 : parseInt(formData.Supply)
+            standard: nftType === 'ERC-721' ? 0 : 1,
+            supply: nftType === 'ERC-721' ? 0 : parseInt(formData.Supply)
         }
         // console.log(params)
         sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {

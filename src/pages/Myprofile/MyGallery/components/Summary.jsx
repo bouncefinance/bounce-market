@@ -215,7 +215,7 @@ function Summary({ auctionType, price, amount, unit,
 			// console.log(_name, _token0, _token1, _tokenId, _amountTotal1, _onlyBot)
 
 			try {
-				if (nftInfo.standard === 1) {
+				if (nftInfo.standard === 0) {
 
 					// approve
 					showTransferByStatus('approveStatus')
@@ -258,7 +258,7 @@ function Summary({ auctionType, price, amount, unit,
 							// setBidStatus(errorStatus)
 							showTransferByStatus('errorStatus')
 						})
-				} else if (nftInfo.standard === 2) {
+				} else if (nftInfo.standard === 1) {
 					// approve
 					// console.log(amount, price)
 
@@ -341,7 +341,7 @@ function Summary({ auctionType, price, amount, unit,
 				const BounceERC721WithSign_CT = getContract(library, BounceERC721WithSign.abi, _token0)
 				const BounceERC1155WithSign_CT = getContract(library, BounceERC1155WithSign.abi, _token0)
 
-				if (nftInfo.standard === 1) {
+				if (nftInfo.standard === 0) {
 
 					// approve
 					showTransferByStatus('approveStatus')
@@ -384,7 +384,7 @@ function Summary({ auctionType, price, amount, unit,
 							// setBidStatus(errorStatus)
 							showTransferByStatus('errorStatus')
 						})
-				} else if (nftInfo.standard === 2) {
+				} else if (nftInfo.standard === 1) {
 					// approve
 					// console.log(amount, price)
 

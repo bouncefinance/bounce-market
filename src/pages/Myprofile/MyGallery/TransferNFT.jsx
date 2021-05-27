@@ -118,7 +118,7 @@ function TransferNFT() {
 			let params = {};
 
 			if (NFTInfo) {
-				if (parseInt(NFTInfo.standard) === 1) {
+				if (parseInt(NFTInfo.standard) === 0) {
 					params = {
 						from: account,
 						to: receiverAddress,
@@ -153,7 +153,7 @@ function TransferNFT() {
 							// setBidStatus(errorStatus)
 							showTransferByStatus("errorStatus");
 						});
-				} else if (parseInt(NFTInfo.standard) === 2) {
+				} else if (parseInt(NFTInfo.standard) === 1) {
 					params = {
 						from: account,
 						to: receiverAddress,

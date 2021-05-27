@@ -79,7 +79,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
         }
     }, [formData, fileData])
 
-    
+
     const handelSubmit = () => {
         const IMAGE = 'image/'
         const category = fileOrigin.type.substring(0, IMAGE.length) === IMAGE ? "image" : "video"
@@ -116,15 +116,16 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                     supply: parseInt(formData.Supply)
                 }
 
-                console.log(params)
+                // console.log(params)
 
                 sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {
                     const nftId = res.data.data.id
                     if (res.data.code === 1) {
                         // console.log(nftId, brandInfo.standard)
-                        if (brandInfo.standard === 1) {
-                            // console.log('参数',library, BounceERC721.abi, brandInfo.contractaddress)
+                        if (brandInfo.standard === 0) {
                             const BounceERC721_CT = getContract(library, BounceERC721.abi, brandInfo.contractaddress)
+                            // const BounceERC721_CT = getContract(library, BounceERC721.abi, '0xaF6dB20E0e3d0212Fc0919ea876153A1dcDCB410')
+
                             try {
                                 BounceERC721_CT.methods.mint(account, nftId).send({ from: account })
                                     .on('transactionHash', hash => {
@@ -136,9 +137,9 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                                         // console.log('bid fixed swap receipt:', receipt)
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl('MyProfile.MyBrands.AddNewItemModal.SuccessfullyGenerate') });
-                                        setTimeout(function(){
+                                        setTimeout(function () {
                                             window.location.reload()
-                                        },3000)
+                                        }, 3000)
                                     })
                                     .on('error', (err, receipt) => {
                                         // setBidStatus(errorStatus)
@@ -157,6 +158,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                             const BounceERC1155_CT = getContract(library, BounceERC1155.abi, brandInfo.contractaddress)
                             const _amount = formData.Supply
                             const _data = 0
+                            console.log('BounceERC1155_CT', account, nftId, _amount, _data)
                             try {
                                 BounceERC1155_CT.methods.mint(account, nftId, _amount, _data).send({ from: account })
                                     .on('transactionHash', hash => {
@@ -168,9 +170,9 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                                         // console.log('bid fixed swap receipt:', receipt)
                                         dispatch({ type: 'TransferModal', TransferModal: "" });
                                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl('MyProfile.MyBrands.AddNewItemModal.SuccessfullyGenerate') });
-                                        setTimeout(function(){
+                                        setTimeout(function () {
                                             window.location.reload()
-                                        },3000)
+                                        }, 3000)
                                     })
                                     .on('error', (err, receipt) => {
                                         setBtnLock(false);
@@ -185,7 +187,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                                 console.log('BounceERC1155_CT.methods.mint', error)
                             }
                         }
-                    }else{
+                    } else {
                         dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'error', modelMessage: wrapperIntl('MyProfile.MyBrands.AddNewItemModal.TryAgainNotice') });
                     }
 
@@ -227,7 +229,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                         onChange={(item) => {
                             setFormData({ ...formData, Category: item.value })
                         }} /> */}
-                    
+
 
                     <PullRadioBox title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Channel')} marginTop='24px' width='150px' options={[{
                         value: 'FineArts'
@@ -245,10 +247,10 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                     }, {
                         name: 'ERC-1155',
                         value: '1155'
-                    }]} defaultValue={brandInfo.standard === 1 ? '721' : '1155'} disabled />
+                    }]} defaultValue={brandInfo.standard === 0 ? '721' : '1155'} disabled />
                 </div>
 
-                {brandInfo.standard === 2 && <TextInput
+                {brandInfo.standard === 1 && <TextInput
                     title={wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Supply')}
                     width='620px'
                     defaultValue={1}

@@ -15,7 +15,9 @@ export const getNFTFactory = (chainID) => {
                 || hostname.includes('fangible') || hostname.includes('cnmarket.bounce.finance')) {
                 return '0xd0DAb597286e248fE5c30494a2D2ea138652890c'
             }
-            return '0xf3af2a1b601c84033F1dEcc4aFE37E586A49f990'
+            // return '0xf3af2a1b601c84033F1dEcc4aFE37E586A49f990'
+            return '0x167544766d084a048d109ad0e1d95b19198c5af1'
+            
 
         default:
             return '0xf3af2a1b601c84033F1dEcc4aFE37E586A49f990'

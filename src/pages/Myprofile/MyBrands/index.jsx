@@ -122,14 +122,14 @@ export default function Index() {
 
                 const brandList_721 = (data.erc721 || []).map(item => {
                     return {
-                        standard: 1,
+                        standard: 0,
                         ...item
                     }
                 })
 
                 const brandList_1155 = (data.erc1155 || []).map(item => {
                     return {
-                        standard: 2,
+                        standard: 1,
                         ...item
                     }
                 })

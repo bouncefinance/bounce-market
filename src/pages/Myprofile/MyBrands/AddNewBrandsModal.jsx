@@ -214,7 +214,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
         const params = {
             brandname: formData.Brand_Name,
             contractaddress: brandAddress,
-            standard: nftType === 'ERC-721' ? 1 : 2,
+            standard: nftType === 'ERC-721' ? 0 : 1,
             description: formData.Description,
             imgurl: imgUrl,
             owneraddress: account,

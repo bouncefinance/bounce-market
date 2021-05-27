@@ -304,13 +304,12 @@ export default function BrandsByType() {
     const [tokenList_2, setTokenList_2] = useState();
 
     useEffect(() => {
-        if (!account  || !tokenList_2 || !brandInfo.contractaddress) return
-        // console.log(brandInfo)
-        
-        if(String(brandInfo.owneraddress).toLowerCase() !== String(account).toLowerCase()){
+        if (!account || !tokenList_2 || !brandInfo.contractaddress) return
+        console.log(tokenList_2)
+
+        if (String(brandInfo.owneraddress).toLowerCase() !== String(account).toLowerCase()) {
             history.push(`/AirHome/${brandInfo.id}/FineArts`)
         }
-        // console.log(tokenList, tokenList_2)
         const brand_erc721 = tokenList_2.brandserc721.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
         const brand_erc1155 = tokenList_2.brandserc1155.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
         const brandTradeList_fs = tokenList_2.tradePools.filter(item =>
@@ -324,7 +323,7 @@ export default function BrandsByType() {
 
         const pools = brandErcList.concat(brandTradeList)
 
-        // console.log("pools: ", pools)
+        console.log("pools: ", pools)
         pools && handleBrandTradeItems(pools)
         // eslint-disable-next-line
     }, [account, tokenList_2, brandInfo, category])
@@ -436,7 +435,7 @@ export default function BrandsByType() {
 
 
         } catch (error) {
-
+            console.log('error', error)
         }
 
         setTokenList_2(brandData)
@@ -446,10 +445,8 @@ export default function BrandsByType() {
 
     useEffect(() => {
         if (!account || !contract) return;
-        if (!!brandInfo.standard) {
 
-            getBrandTradeItems()
-        }
+        getBrandTradeItems()
         // eslint-disable-next-line
     }, [account, contract, brandInfo.standard]);
 
