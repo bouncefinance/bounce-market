@@ -103,7 +103,6 @@ export const Profile = () => {
       dispatchRequest(
         fetchAllNftByUser({
           user: address,
-          ignoreBrands: true,
         }),
       );
     }

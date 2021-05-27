@@ -7,7 +7,7 @@ import { setAccount } from '../../account/store/actions/setAccount';
 
 export const fetchItem = createSmartAction<
   RequestAction<IApiNFTDetails, INFTDetails>
->('fetchItem', (params: { contract: string; id: number }, meta) => ({
+>('fetchItem', (params: { contract: string; id: number }) => ({
   request: {
     url: '/api/v2/main/auth/getoneitembyid',
     method: 'post',
@@ -30,6 +30,5 @@ export const fetchItem = createSmartAction<
     auth: true,
     driver: 'axios',
     asMutation: false,
-    ...meta,
   },
 }));
