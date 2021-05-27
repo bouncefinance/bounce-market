@@ -11,6 +11,7 @@ export interface IApiNFTDetails {
     description: string;
     externallink: string;
     fileurl: string;
+    fileUrl: string;
     id: number;
     itemname: string;
     itemsymbol: 'BOUNCE';
@@ -32,15 +33,19 @@ export interface IApiNFTDetails {
 
 export interface INFTDetails {
   brandid: number;
+  brandId: number;
   category: 'image';
   channel: Channel;
   contractaddress: string;
+  contractAddress: string;
   createdAt: Date;
   description: string;
   externallink: string;
   fileurl: string;
+  fileUrl: string;
   id: number;
   itemname: string;
+  itemName: string;
   itemsymbol: 'BOUNCE';
   levels: string;
   metadata: string;
@@ -58,12 +63,17 @@ export interface INFTDetails {
 }
 
 export function mapNFTDetails({
-  data: { created_at, updated_at, standard, ...rest },
+  data: { created_at, updated_at, standard, fileurl, fileUrl, ...rest },
 }: IApiNFTDetails): INFTDetails {
   return {
     createdAt: new Date(created_at),
     updatedAt: new Date(updated_at),
     standard: standard,
+    contractAddress: rest.contractaddress,
+    fileUrl: fileurl,
+    fileurl,
+    brandId: rest.brandid,
+    itemName: rest.itemname,
     ...rest,
   };
 }

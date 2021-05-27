@@ -104,7 +104,7 @@ export const Profile = () => {
         fetchAllNftByUser({
           user: address,
         }),
-      );
+      )
     }
   }, [address, dispatchRequest]);
 
@@ -130,34 +130,34 @@ export const Profile = () => {
       },
       ...(featuresConfig.profileActivity
         ? [
-            {
-              value: ProfileTab.activity,
-              label: t('profile.tabs.activity'),
-            },
-          ]
+          {
+            value: ProfileTab.activity,
+            label: t('profile.tabs.activity'),
+          },
+        ]
         : []),
       ...(featuresConfig.profileLiked
         ? [
-            {
-              value: ProfileTab.liked,
-              label: t('profile.tabs.liked'),
-              count: 0,
-            },
-          ]
+          {
+            value: ProfileTab.liked,
+            label: t('profile.tabs.liked'),
+            count: 0,
+          },
+        ]
         : []),
       ...(featuresConfig.profileFollowers
         ? [
-            {
-              value: ProfileTab.following,
-              label: t('profile.tabs.following'),
-              count: 0,
-            },
-            {
-              value: ProfileTab.followers,
-              label: t('profile.tabs.followers'),
-              count: 0,
-            },
-          ]
+          {
+            value: ProfileTab.following,
+            label: t('profile.tabs.following'),
+            count: 0,
+          },
+          {
+            value: ProfileTab.followers,
+            label: t('profile.tabs.followers'),
+            count: 0,
+          },
+        ]
         : []),
     ],
     [],
@@ -235,9 +235,9 @@ export const Profile = () => {
                         href={
                           item.poolId && item.poolType
                             ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                                item.poolId,
-                                item.poolType,
-                              )
+                              item.poolId,
+                              item.poolType,
+                            )
                             : ''
                         }
                         // status={item.status}
@@ -262,11 +262,17 @@ export const Profile = () => {
                             },
                           ],
                         }}
-                        toSale={RoutesConfiguration.PublishNft.generatePath(
-                          PublishNFTType.NFT,
-                          item.contractAddress,
-                          item.id,
-                        )}
+                        toSale={item.brandId === 10
+                          ? RoutesConfiguration.PublishNft.generatePath(
+                            PublishNFTType.NFT,
+                            item.contractAddress,
+                            item.id,
+                          )
+                          : RoutesConfiguration.PublishNft.generatePath(
+                            PublishNFTType.BrandNFT,
+                            item.contractAddress,
+                            item.id,
+                          )}
                       />
                     ))}
                   </ProductCards>
