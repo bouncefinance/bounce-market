@@ -1,7 +1,7 @@
 export enum AuctionState {
   Live,
-  Filled,
-  Canceled,
-  Closed,
-  Failed,
+  CompletedByTime,
+  CompletedByDirectPurchase,
+  NotSoldByReservePrice,
+  Claimed,
 }

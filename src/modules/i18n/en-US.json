@@ -247,7 +247,7 @@
       "duration": "TODO Expiration Date description"
     },
     "error": {
-      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid < Reserve price ≤ Direct purchase price"
+      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price < Direct purchase price"
     }
   },
   "profile": {
@@ -318,5 +318,23 @@
     "title": "Wrong network",
     "description": "Change network to Binance SmartChain",
     "submit": "Change to SmartChain"
+  },
+  "info-prices": {
+    "claim": "Claim",
+    "status": {
+      "CompletedByDirectPurchase": {
+        "owner": "Item has been sold",
+        "buyer": "Item has been sold",
+        "others": "Item has been sold"
+      },
+      "NotSoldByReservePrice": {
+        "owner": "Item has been sold",
+        "buyer": "Item has been sold",
+        "others": "Item has been sold"
+      },
+      "Claimed": {
+        "default": "Item has been sold"
+      }
+    }
   }
 }
