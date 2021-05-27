@@ -438,7 +438,6 @@ export default function BrandsByType() {
         } catch (error) {
 
         }
-        alert(31)
 
         setTokenList_2(brandData)
     }
