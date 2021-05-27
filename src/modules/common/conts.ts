@@ -47,6 +47,7 @@ export const featuresConfig = {
    * Feature is not implemented
    */
   nftItemsSortSelect: false,
+  nftDetailsLikesCount: false,
   nftDetailsCreator: false,
   nftDetailsCount: false,
   nftDetailsHistory: false,

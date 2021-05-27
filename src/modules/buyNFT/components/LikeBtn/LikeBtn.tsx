@@ -3,6 +3,7 @@ import { useQuery } from '@redux-requests/react';
 import classNames from 'classnames';
 import { fetchItem } from 'modules/buyNFT/actions/fetchItem';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
+import { featuresConfig } from 'modules/common/conts';
 import { AuctionType } from 'modules/overview/api/auctionType';
 import { useLike } from 'modules/profile/hooks/useLike';
 import { Button } from 'modules/uiKit/Button';
@@ -47,7 +48,10 @@ export const LikeBtn = ({ className, count = 0 }: ILikeBtnProps) => {
           isLiked && classes.btnIconActive,
         )}
       />
-      {` ${likeCount}`}
+
+      {featuresConfig.nftDetailsLikesCount && (
+        <span className={classes.btnText}>{likeCount}</span>
+      )}
     </Button>
   );
 };

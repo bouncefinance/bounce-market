@@ -35,6 +35,7 @@ export const dealAccountLike = createAction<
   },
   meta: {
     requestKey: params.requestKey,
+    requestsCapacity: 2,
     asMutation: true,
     auth: true,
     driver: 'axios',
