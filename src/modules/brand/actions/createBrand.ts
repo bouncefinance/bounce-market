@@ -12,7 +12,7 @@ import { NftType } from 'modules/createNFT/actions/createNft';
 import {
   BoucneErc1155Bytecode,
   BoucneErc721Bytecode,
-  BounceNFTFactory,
+  BounceNFTFactoryV2,
 } from '../../web3/contracts';
 import { throwIfError } from '../../common/utils/throwIfError';
 
@@ -58,7 +58,7 @@ export const createBrand = createSmartAction(
             };
 
             const contract = new web3.eth.Contract(
-              BounceNFTFactory,
+              BounceNFTFactoryV2,
               getBrandContract(chainId),
             );
             const _name = brandName;
@@ -100,7 +100,6 @@ export const createBrand = createSmartAction(
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand1155Created;
                     brandInfo.contractaddress = createEvent.returnValues.nft;
-
                     resolve(
                       throwIfError(
                         await store.dispatchRequest(updateBrandInfo(brandInfo)),

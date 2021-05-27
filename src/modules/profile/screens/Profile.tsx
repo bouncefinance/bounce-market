@@ -15,7 +15,7 @@ import { NoItems } from '../../common/components/NoItems';
 import { ProductCard } from '../../common/components/ProductCard';
 import { Queries } from '../../common/components/Queries/Queries';
 import { AuctionState } from '../../common/const/AuctionState';
-import { RoutesConfiguration } from '../../createNFT/Routes';
+import { PublishNFTType, RoutesConfiguration } from '../../createNFT/Routes';
 import { IItem } from '../../overview/api/getItems';
 import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
 import { fetchProfileInfo } from '../actions/fetchProfileInfo';
@@ -263,6 +263,7 @@ export const Profile = () => {
                           ],
                         }}
                         toSale={RoutesConfiguration.PublishNft.generatePath(
+                          PublishNFTType.NFT,
                           item.contractAddress,
                           item.id,
                         )}
