@@ -19,6 +19,7 @@ import {
 } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
+import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode, useCallback, useState } from 'react';
@@ -97,7 +98,7 @@ export const ProductCard = ({
 
   const renderTimer = useCallback(() => {
     const daysLeft = endDate ? getDaysLeft(endDate) : 0;
-    const isLastDay = daysLeft <= 0;
+    const isTimeOver = daysLeft <= 0;
 
     return (
       <div className={classes.info}>
@@ -105,9 +106,12 @@ export const ProductCard = ({
           className={classNames(classes.icon, classes.iconRightOffset)}
         />
 
-        {isLastDay && 'the last day'}
+        {isTimeOver && t('time.time-over')}
 
-        {!isLastDay && `${daysLeft} days left`}
+        {!isTimeOver &&
+          t('time.days-left', {
+            days: daysLeft,
+          })}
       </div>
     );
   }, [classes, endDate]);
