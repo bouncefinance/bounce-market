@@ -15,6 +15,7 @@
   },
   "time": {
     "time-over": "Time is over",
+    "days-left": "{days} days left",
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
     "days-short": "{days}d",
     "hours-short": "{hours}h",
@@ -285,6 +286,7 @@
     },
     "tabs": {
       "my-items": "My items",
+      "my-bids": "My bids",
       "my-brands": "My brands",
       "activity": "Activity",
       "liked": "Liked",
