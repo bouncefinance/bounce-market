@@ -6,6 +6,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { useHeaderLinksStyles } from './HeaderLinksStyles';
 import classNames from 'classnames';
+import { matchPath } from 'react-router';
 
 interface IHeaderLinksProps {
   items: {
@@ -19,21 +20,29 @@ export const HeaderLinksComponent = ({ items }: IHeaderLinksProps) => {
 
   return (
     <nav className={classes.root}>
-      {items.map(({ label, href }) => (
-        <Button
-          component={RouterLink}
-          to={href}
-          key={uid(label)}
-          href={href}
-          variant="text"
-          className={classNames(
-            classes.link,
-            window.location.pathname.indexOf(href) !== -1 && classes.activeLink,
-          )}
-        >
-          {label}
-        </Button>
-      ))}
+      {items.map(({ label, href }) => {
+        const match = matchPath(window.location.pathname, {
+          path: href,
+          exact: true,
+          strict: false,
+        });
+
+        return (
+          <Button
+            component={RouterLink}
+            to={href}
+            key={uid(label)}
+            href={href}
+            variant="text"
+            className={classNames(
+              classes.link,
+              match?.isExact && classes.activeLink,
+            )}
+          >
+            {label}
+          </Button>
+        );
+      })}
     </nav>
   );
 };
