@@ -23,7 +23,7 @@ import { fromWei } from '../../common/utils/fromWei';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 
-export type AuctionRole = 'owner' | 'buyer' | 'others';
+export type AuctionRole = 'creator' | 'buyer' | 'others';
 
 interface IWeb3FixedAuctionDetails extends IFixedAuctionDetails {}
 interface IWeb3EnglishAuctionDetails extends IEnglishAuctionDetails {

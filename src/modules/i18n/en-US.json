@@ -324,17 +324,20 @@
     "claim": "Claim",
     "status": {
       "CompletedByDirectPurchase": {
-        "owner": "Item has been sold",
+        "creator": "Item has been sold",
         "buyer": "Item has been sold",
         "others": "Item has been sold"
       },
       "NotSoldByReservePrice": {
-        "owner": "Item has been sold",
+        "creator": "Item has been sold",
         "buyer": "Item has been sold",
         "others": "Item has been sold"
       },
       "Claimed": {
         "default": "Item has been sold"
+      },
+      "Live": {
+        "creator": "Auction is in progress"
       }
     }
   }

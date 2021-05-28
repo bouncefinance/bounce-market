@@ -42,11 +42,11 @@ export const InfoPrices = ({
       state === AuctionState.CompletedByTime ||
       (state === AuctionState.Live && isTimeOver)
     ) {
-      if (role === 'owner') {
+      if (role === 'creator') {
         return (
           <>
             <Box mb={2}>
-              {t('info-prices.status.CompletedByDirectPurchase.owner')}
+              {t('info-prices.status.CompletedByDirectPurchase.creator')}
             </Box>
             <Button variant="outlined" fullWidth onClick={onClaim}>
               {t('info-prices.claim')}
@@ -74,11 +74,11 @@ export const InfoPrices = ({
     }
 
     if (state === AuctionState.NotSoldByReservePrice) {
-      if (role === 'owner') {
+      if (role === 'creator') {
         return (
           <>
             <Box mb={2}>
-              {t('info-prices.status.NotSoldByReservePrice.owner')}
+              {t('info-prices.status.NotSoldByReservePrice.creator')}
             </Box>
             <Button variant="outlined" fullWidth onClick={onClaim}>
               {t('info-prices.claim')}
@@ -98,23 +98,23 @@ export const InfoPrices = ({
         );
       } else {
         return (
-          <>
-            <Box mb={2}>
-              {t('info-prices.status.NotSoldByReservePrice.others')}
-            </Box>
-          </>
+          <Box mb={2}>
+            {t('info-prices.status.NotSoldByReservePrice.others')}
+          </Box>
         );
       }
     }
 
     if (state === AuctionState.Claimed) {
       return (
-        <>
-          <Box mb={2}>
-            {t('info-prices.status.NotSoldByReservePrice.default')}
-          </Box>
-        </>
+        <Box mb={2}>
+          {t('info-prices.status.NotSoldByReservePrice.default')}
+        </Box>
       );
+    }
+
+    if (state === AuctionState.Live && role === 'creator') {
+      return <Box mb={2}>{t('info-prices.status.Live.creator')}</Box>;
     }
 
     return (
