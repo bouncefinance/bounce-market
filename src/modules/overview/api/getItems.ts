@@ -66,6 +66,10 @@ export interface IItem {
   state?: AuctionState;
 }
 
+export function hasBrand(item: IItem) {
+  return item.brandId && item.brandId !== 10;
+}
+
 export function mapItem(item: IApiItem): IItem {
   return {
     likeCount: item.likecount,

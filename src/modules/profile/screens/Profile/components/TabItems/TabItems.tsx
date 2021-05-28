@@ -8,7 +8,7 @@ import { Queries } from 'modules/common/components/Queries/Queries';
 import { AuctionState } from 'modules/common/const/AuctionState';
 import { PublishNFTType, RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { IItem } from 'modules/overview/api/getItems';
+import { hasBrand, IItem } from 'modules/overview/api/getItems';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
@@ -16,11 +16,7 @@ import { TabItems as TabItemsComponent } from 'modules/profile/components/TabIte
 import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
 
-interface ITabItemsProps {
-  className?: string;
-}
-
-export const TabItems = ({ className }: ITabItemsProps) => {
+export const TabItems = () => {
   const dispatch = useDispatchRequest();
   const { address } = useAccount();
 
@@ -85,14 +81,14 @@ export const TabItems = ({ className }: ITabItemsProps) => {
                   ],
                 }}
                 toSale={
-                  item.brandId === 10
+                  hasBrand(item)
                     ? RoutesConfiguration.PublishNft.generatePath(
-                        PublishNFTType.NFT,
+                        PublishNFTType.BrandNFT,
                         item.contractAddress,
                         item.id,
                       )
                     : RoutesConfiguration.PublishNft.generatePath(
-                        PublishNFTType.BrandNFT,
+                        PublishNFTType.NFT,
                         item.contractAddress,
                         item.id,
                       )
