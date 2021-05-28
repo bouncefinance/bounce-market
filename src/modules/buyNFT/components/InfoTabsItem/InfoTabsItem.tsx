@@ -82,7 +82,7 @@ export const InfoTabsItem = ({
           variant="body2"
           color="textSecondary"
         >
-          {t('wallet.$-value', { value: price.toNumber() })}
+          {t('unit.$-value', { value: price.toNumber() })}
         </Typography>
       )}
     </div>

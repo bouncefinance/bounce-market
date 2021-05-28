@@ -49,10 +49,6 @@
     "facebook": "Facebook",
     "telegram": "Telegram"
   },
-  "wallet": {
-    "$-value": "${value}",
-    "unit": "{value, number} {unit}"
-  },
   "connect-wallet": {
     "placeholder": {
       "title": "Connect your wallet",
@@ -85,7 +81,9 @@
   },
   "unit": {
     "day": "{value, plural, =0 {0 days} =1 {1 day} other {# days}}",
-    "BNB-value": "{value, number} BNB"
+    "BNB-value": "{value, number} BNB",
+    "$-value": "${value}",
+    "custom-unit": "{value, number} {unit}"
   },
   "error": {
     "unexpected": "Unexpected error",
@@ -225,7 +223,7 @@
     "submit": "Put on Sale",
     "submitting": "Submitting",
     "fee": "Fangible fee {value}%",
-    "recieve": "You will receive",
+    "receive": "You will receive <b>{value} {unit}</b>",
     "expire": "Will expire on {value, date, medium} {value, time, short}",
     "auction-amount": "In the auction you can only put up 1 copy for sale",
     "auction-type": {

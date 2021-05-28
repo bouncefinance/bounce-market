@@ -155,7 +155,7 @@ export const InfoPrices = ({
         </Typography>
 
         <Typography className={classes.price} color="textSecondary">
-          {t('wallet.$-value', { value: price.toFormat() })}
+          {t('unit.$-value', { value: price.toFormat() })}
         </Typography>
       </Grid>
 

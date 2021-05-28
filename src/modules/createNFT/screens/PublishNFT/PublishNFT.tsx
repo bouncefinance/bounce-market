@@ -23,13 +23,13 @@ import { useHistory, useParams } from 'react-router';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
-import { Days } from '../../../common/types/unit';
+import { Address, Days } from '../../../common/types/unit';
 import { fetchItem } from '../../../buyNFT/actions/fetchItem';
 import { ButtonGroupField } from '../../../form/components/ButtonGroupField/ButtonGroupField';
 import { InputField } from '../../../form/components/InputField';
 import { SelectField } from '../../../form/components/SelectField';
 import { FormErrors } from '../../../form/utils/FormErrors';
-import { t } from '../../../i18n/utils/intl';
+import { t, tHTML } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
 import { AuctionType } from '../../../overview/api/auctionType';
 import { NftType } from '../../actions/createNft';
@@ -39,14 +39,14 @@ import { usePublishNFTtyles } from './usePublishNFTtyles';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { PublishNFTType } from 'modules/createNFT/Routes';
+import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
+import { OnChange } from '../../../form/utils/OnChange';
 
 const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
 
-// TODO: get that values dynamic
-const DEMO_CURRENCY_PRICE = 2600;
 const FEE_PERCENTAGE = 1;
 
 interface IPublishFixedSwap {
@@ -126,6 +126,13 @@ export const PublishNFTComponent = ({
     options: currencyOptions,
     default: defaultCurrency,
   } = useCurrencies();
+
+  const handleUnitChange = useCallback(
+    (value: Address) => {
+      dispatch(fetchCurrency({ unitContract: value }));
+    },
+    [dispatch],
+  );
 
   const validateCreateNFT = useCallback(
     (payload: IPublishNFTFormData) => {
@@ -276,6 +283,7 @@ export const PublishNFTComponent = ({
 
     return (
       <Box className={classes.form} component="form" onSubmit={handleSubmit}>
+        <OnChange name="unitContract">{handleUnitChange}</OnChange>
         <div className={classes.formImgCol}>
           {file && (
             <Paper className={classes.formImgBox} variant="outlined">
@@ -346,24 +354,30 @@ export const PublishNFTComponent = ({
                     <Grid item xs>
                       {t('publish-nft.fee', { value: FEE_PERCENTAGE })}
                     </Grid>
-
                     {values.price && +values.price > 0 && (
                       <Grid item>
-                        {t('publish-nft.recieve')}{' '}
-                        <b>
-                          {reciveValue?.decimalPlaces(6).toFormat()}{' '}
-                          {currentCryptoCurrencyLabel}
-                        </b>{' '}
-                        <Box
-                          component="span"
-                          color={theme.palette.text.secondary}
+                        {tHTML('publish-nft.receive', {
+                          value: reciveValue?.decimalPlaces(6).toFormat(),
+                          unit: currentCryptoCurrencyLabel,
+                        })}{' '}
+                        <Queries<ResponseData<typeof fetchCurrency>>
+                          requestActions={[fetchCurrency]}
+                          requestKeys={[values.unitContract]}
                         >
-                          $
-                          {reciveValue
-                            ?.multipliedBy(DEMO_CURRENCY_PRICE)
-                            .decimalPlaces(2)
-                            .toFormat()}
-                        </Box>
+                          {({ data }) => (
+                            <Box
+                              component="span"
+                              color={theme.palette.text.secondary}
+                            >
+                              {t('unit.$-value', {
+                                value: reciveValue
+                                  ?.multipliedBy(data.priceUsd)
+                                  .decimalPlaces(2)
+                                  .toFormat(),
+                              })}
+                            </Box>
+                          )}
+                        </Queries>
                       </Grid>
                     )}
                   </Grid>
@@ -610,7 +624,7 @@ export const PublishNFTComponent = ({
 export const PublishNFT = () => {
   const dispatch = useDispatchRequest();
   const { type: publishType, id: idParam, contract } = useParams<{
-    type: PublishNFTType,
+    type: PublishNFTType;
     contract: string;
     id: string;
   }>();
@@ -627,21 +641,19 @@ export const PublishNFT = () => {
 
   return (
     <Queries<ResponseData<typeof fetchItem>> requestActions={[fetchItem]}>
-      {({ data }) => {
-        return (
-          <PublishNFTComponent
-            name={data.itemname}
-            publishType={publishType}
-            tokenContract={data.contractaddress}
-            nftType={data.standard}
-            tokenId={data.id}
-            file={data.fileurl}
-            category={data.category}
-            maxQuantity={data.supply}
-            onPublish={handlePublish}
-          />
-        );
-      }}
+      {({ data }) => (
+        <PublishNFTComponent
+          name={data.itemname}
+          publishType={publishType}
+          tokenContract={data.contractaddress}
+          nftType={data.standard}
+          tokenId={data.id}
+          file={data.fileurl}
+          category={data.category}
+          maxQuantity={data.supply}
+          onPublish={handlePublish}
+        />
+      )}
     </Queries>
   );
 };
