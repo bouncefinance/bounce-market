@@ -18,20 +18,44 @@ export interface IApiQueryBrand {
   };
 }
 
+export interface IApiListBrand {
+  code: 1 | number;
+  total: number;
+  data: IApiListBrandItem[];
+}
+
+export interface IApiListBrandItem {
+  bandimgurl: string;
+  brandname: string;
+  brandsymbol: string;
+  contractaddress: string;
+  creator: string;
+  description: string;
+  id: number;
+  imgurl: string;
+  owneraddress: string;
+  ownerimg: string;
+  ownername: string;
+  popularweight: number;
+  standard: number;
+  status: number;
+  totalcount: number;
+}
+
 export interface IBrandInfo {
-    bandimgurl: string;
-    brandname: string;
-    brandsymbol: string;
-    contractaddress: string;
-    description: string;
-    id: number;
-    imgurl: string;
-    owneraddress: string;
-    ownerimg: string;
-    ownername: string;
-    popularweight: number;
-    standard: number;
-    status: number;
+  bandimgurl: string;
+  brandname: string;
+  brandsymbol: string;
+  contractaddress: string;
+  description: string;
+  id: number;
+  imgurl: string;
+  owneraddress: string;
+  ownerimg: string;
+  ownername: string;
+  popularweight: number;
+  standard: number;
+  status: number;
 }
 
 export interface IApiBrandInfo {
@@ -58,8 +82,8 @@ export const mapQueryBrandAddress = (
   const brand1155:
     | IApiBrand
     | undefined = data.erc1155.find((item: IApiBrand) =>
-      compare(item.creator, address),
-    );
+    compare(item.creator, address),
+  );
   if (brand721) {
     return brand721.contract_address;
   } else if (brand1155) {
@@ -69,8 +93,17 @@ export const mapQueryBrandAddress = (
   }
 };
 
+export const mapListBrands = (data: IApiListBrandItem[]): IApiBrand[] => {
+  return data.map((item: IApiListBrandItem) => ({
+    contract_address: item.contractaddress,
+    creator: item.creator,
+    owner: item.ownername,
+    timestamp: 0,
+  }));
+};
+
 export const mapQueryBrandList = ({ data }: IApiQueryBrand): IApiBrand[] => {
   const brand721: IApiBrand[] = data.erc721;
   const brand1155: IApiBrand[] = data.erc1155;
   return brand721.concat(brand1155);
-}
+};

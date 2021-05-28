@@ -129,6 +129,14 @@ export const Profile = () => {
         label: t('profile.tabs.liked'),
         count: likedItems ? likedItems.length : 0,
       },
+      ...(featuresConfig.profileActivity
+        ? [
+            {
+              value: ProfileTab.activity,
+              label: t('profile.tabs.activity'),
+            },
+          ]
+        : []),
       ...(featuresConfig.profileFollowers
         ? [
             {

@@ -6,7 +6,7 @@ import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { Queries } from 'modules/common/components/Queries/Queries';
 import { AuctionState } from 'modules/common/const/AuctionState';
-import { RoutesConfiguration } from 'modules/createNFT/Routes';
+import { PublishNFTType, RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { IItem } from 'modules/overview/api/getItems';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
@@ -87,10 +87,19 @@ export const TabItems = ({ className }: ITabItemsProps) => {
                     },
                   ],
                 }}
-                toSale={RoutesConfiguration.PublishNft.generatePath(
-                  item.contractAddress,
-                  item.id,
-                )}
+                toSale={
+                  item.brandId === 10
+                    ? RoutesConfiguration.PublishNft.generatePath(
+                        PublishNFTType.NFT,
+                        item.contractAddress,
+                        item.id,
+                      )
+                    : RoutesConfiguration.PublishNft.generatePath(
+                        PublishNFTType.BrandNFT,
+                        item.contractAddress,
+                        item.id,
+                      )
+                }
               />
             ))}
           </ProductCards>

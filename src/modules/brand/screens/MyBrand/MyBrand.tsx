@@ -1,5 +1,6 @@
 import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { listBrandItems } from 'modules/brand/actions/listBrandItems';
@@ -9,7 +10,7 @@ import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { featuresConfig } from 'modules/common/conts';
-import { RoutesConfiguration } from 'modules/createNFT/Routes';
+import { PublishNFTType, RoutesConfiguration } from 'modules/createNFT/Routes';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
@@ -20,6 +21,7 @@ import { useProfileStyles } from 'modules/profile/screens/Profile/useProfileStyl
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import Web3 from 'web3';
 
 export const MyBrand = () => {
   const classes = useProfileStyles();
@@ -35,12 +37,17 @@ export const MyBrand = () => {
 
   useEffect(() => {
     if (address && id) {
-      dispatch(queryBrandById({
-        id: parseInt(id),
-        accountaddress: address
-      }, {
-        asMutation: true,
-      })).then(res => {
+      dispatch(
+        queryBrandById(
+          {
+            id: parseInt(id),
+            accountaddress: address,
+          },
+          {
+            asMutation: true,
+          },
+        ),
+      ).then(res => {
         const brandInfo = res.data;
         if (brandInfo) {
           setBrandInfo(brandInfo);
@@ -107,16 +114,21 @@ export const MyBrand = () => {
                 poolId={item.poolId}
                 auctionType={item.poolType}
                 key={item.id}
+                isOnSale={!!item.poolId}
                 title={item.itemname}
                 href={
                   item.poolId && item.poolType
                     ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                      item.poolId,
-                      item.poolType,
-                    )
+                        item.poolId,
+                        item.poolType,
+                      )
                     : ''
                 }
-                price={item.poolId ? item.price : undefined}
+                price={
+                  item.poolId && item.price
+                    ? new BigNumber(Web3.utils.fromWei(item.price))
+                    : undefined
+                }
                 copies={item.supply}
                 MediaProps={{
                   category: item.category,
@@ -130,13 +142,15 @@ export const MyBrand = () => {
                   users: [
                     {
                       name: 'name',
-                      avatar: `${profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
-                        }`,
+                      avatar: `${
+                        profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
+                      }`,
                       verified: true,
                     },
                   ],
                 }}
                 toSale={RoutesConfiguration.PublishNft.generatePath(
+                  PublishNFTType.BrandNFT,
                   item.contractaddress,
                   item.id,
                 )}

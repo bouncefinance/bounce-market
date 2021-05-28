@@ -32,6 +32,8 @@ import { fetchItem } from '../../actions/fetchItem';
 import { BuyDialog } from '../../components/BuyDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
+import { FixedSwapState } from '../../../common/const/FixedSwapState';
+import { claim } from '../../../overview/actions/claim';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -70,6 +72,14 @@ export const BuyNFT = () => {
   useEffect(() => {
     init();
   }, [init]);
+
+  const handleClaim = useCallback(() => {
+    dispatch(claim({ poolId })).then(({ error }) => {
+      if (!error) {
+        push(ProfileRoutesConfig.UserProfile.generatePath());
+      }
+    });
+  }, [dispatch, poolId, push]);
 
   const handleBuyFixed = useCallback(
     (values: {
@@ -286,6 +296,9 @@ export const BuyNFT = () => {
                       onBidClick={openBidDialog}
                       onBuyClick={openEnglishBuyDialog}
                       disabled={poolDetails.state !== AuctionState.Live}
+                      state={poolDetails.state}
+                      role={poolDetails.role}
+                      onClaim={handleClaim}
                     />
                   ) : (
                     <InfoPrices
@@ -293,7 +306,8 @@ export const BuyNFT = () => {
                       cryptoPrice={poolDetails.price}
                       cryptoCurrency="BNB"
                       onBuyClick={openFixedBuyDialog}
-                      disabled={poolDetails.state !== AuctionState.Live}
+                      disabled={poolDetails.state !== FixedSwapState.Live}
+                      onClaim={handleClaim}
                     />
                   )}
 
