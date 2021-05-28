@@ -7,7 +7,6 @@ import { IItem } from '../../overview/api/getItems';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
-import uniqBy from 'lodash/uniqBy';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
 
 export interface IApiFetchNftByUserVariables {
@@ -20,7 +19,7 @@ export const fetchAllNftByUser: (
   'fetchAllNftByUser',
   (payload: IApiFetchNftByUserVariables) => ({
     request: {
-      promise: (async function () { })(),
+      promise: (async function () {})(),
     },
     meta: {
       getData: data => data,
@@ -54,54 +53,61 @@ export const fetchAllNftByUser: (
             );
 
             const ids = [
+              ...(pools?.list.map(item => item.tokenId) ?? []),
               ...(fetchNftByUserData?.nfts721.map(item => item.tokenId) ?? []),
               ...(fetchNftByUserData?.nfts1155.map(item => item.tokenId) ?? []),
-              ...(pools?.list.map(item => item.tokenId) ?? []),
             ];
             const cts = [
+              ...(pools?.list.map(item => item.tokenContract) ?? []),
               ...(fetchNftByUserData?.nfts721.map(
                 item => item.contractAddress,
               ) ?? []),
               ...(fetchNftByUserData?.nfts1155.map(
                 item => item.contractAddress,
               ) ?? []),
-              ...(pools?.list.map(item => item.tokenContract) ?? []),
             ];
 
-            const items = uniqBy(
-              ids.map((id, index) => ({
-                id,
-                contractAddress: cts[index],
-              })),
-              item => item.id,
-            );
+            const items = ids.map((id, index) => ({
+              id,
+              contractAddress: cts[index],
+            }));
 
             const data = (
               await Promise.all(
-                items.map((item, index) =>
-                  store.dispatchRequest(
+                items.map(item => {
+                  return store.dispatchRequest(
                     fetchItem(
                       { id: item.id, contract: item.contractAddress },
                       {
                         silent: true,
                         suppressErrorNotification: true,
-                        requestKey: item.id + item.contractAddress,
+                        requestKey:
+                          item.id + item.contractAddress + Math.random(),
                       },
                     ),
-                  ),
-                ),
+                  );
+                }),
               )
             ).map(response => {
               return response.data!;
             });
-            
-            // TODO: How to manage pools, separated data or inline?
+
+            const poolsCopy = pools ? [...pools.list] : [];
+
             return data
               ?.map(item => {
-                const pool = pools?.list.find(pool => pool.tokenId === item.id);
+                const poolIndex = poolsCopy.findIndex(
+                  pool => pool.tokenId === item.id,
+                );
+                const pool = poolsCopy[poolIndex];
+
                 if (pool) {
+                  poolsCopy.splice(poolIndex, 1);
                   return {
                     ...item,
+                    supply: isEnglishAuction(pool)
+                      ? pool.tokenAmount0
+                      : pool.quantity,
                     poolId: pool.poolId,
                     poolType: isEnglishAuction(pool)
                       ? AuctionType.EnglishAuction
@@ -114,7 +120,22 @@ export const fetchAllNftByUser: (
                     state: pool.state,
                   };
                 }
-                return item;
+
+                const publishedCount =
+                  pools?.list.reduce((acc, pool) => {
+                    if (pool.tokenId === item.id) {
+                      return (
+                        acc +
+                        (isEnglishAuction(pool)
+                          ? pool.tokenAmount0
+                          : pool.quantity)
+                      );
+                    }
+
+                    return acc;
+                  }, 0) ?? 0;
+
+                return { ...item, supply: item.supply - publishedCount };
               })
               .sort((prev, next) => {
                 return next.createdAt.getTime() - prev.createdAt.getTime();

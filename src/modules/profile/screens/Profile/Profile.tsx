@@ -1,10 +1,9 @@
 import { Container } from '@material-ui/core';
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { ActivityTable } from 'modules/profile/components/ActivityTable';
@@ -26,7 +25,7 @@ import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import { Section } from 'modules/uiKit/Section';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { TabBids } from './components/TabBids';
@@ -68,7 +67,6 @@ export const Profile = () => {
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const classes = useProfileStyles();
   const { address } = useAccount();
-  const dispatchRequest = useDispatchRequest();
   const { push } = useHistory();
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
@@ -88,16 +86,6 @@ export const Profile = () => {
     },
     [],
   );
-
-  useEffect(() => {
-    if (address) {
-      dispatchRequest(
-        fetchAllNftByUser({
-          user: address,
-        }),
-      );
-    }
-  }, [address, dispatchRequest]);
 
   const onTabsChange = useCallback(
     (_, value) => {

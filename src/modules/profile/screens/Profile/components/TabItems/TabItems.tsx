@@ -5,7 +5,6 @@ import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { Queries } from 'modules/common/components/Queries/Queries';
-import { AuctionState } from 'modules/common/const/AuctionState';
 import { PublishNFTType, RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { hasBrand, IItem } from 'modules/overview/api/getItems';
@@ -15,6 +14,7 @@ import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
+import { AuctionState } from '../../../../../common/const/AuctionState';
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();
