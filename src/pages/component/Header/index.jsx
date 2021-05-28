@@ -152,51 +152,51 @@ const HeaderStyled = styled.div`
 
 
 const ConnectToChain = async (chainName) => {
-    let ethereum = window.ethereum;
+	let ethereum = window.ethereum;
+	// if (typeof ethereum !== "undefined") {
+	//     console.log("MetaMask is installed!");
+	// }
 
-    // if (typeof ethereum !== "undefined") {
-    //     console.log("MetaMask is installed!");
-    // }
+	const BSCInfo = [
+		{
+			chainId: "0x38",
+			chainName: "Binance Smart Chain Mainnet",
+			nativeCurrency: {
+				name: "BNB",
+				symbol: "BNB",
+				decimals: 18,
+			},
+			/* rpcUrls: ["https://bsc-dataseed.binance.org/"], */
+			rpcUrls: ["https://bsc-dataseed4.binance.org"],
+			blockExplorerUrls: ["https://bscscan.com/"],
+		},
+	];
 
-    const BSCInfo = [
-        {
-            chainId: "0x38",
-            chainName: "Binance Smart Chain Mainnet",
-            nativeCurrency: {
-                name: "BNB",
-                symbol: "BNB",
-                decimals: 18,
-            },
-            /* rpcUrls: ["https://bsc-dataseed.binance.org/"], */
-            rpcUrls: ["https://bsc-dataseed4.binance.org"],
-            blockExplorerUrls: ["https://bscscan.com/"],
-        },
-    ];
+	const HECOInfo = [
+		{
+			chainId: "0x80",
+			chainName: "Huobi ECO Chain Mainnet",
+			nativeCurrency: {
+				name: "HT",
+				symbol: "HR",
+				decimals: 18,
+			},
+			rpcUrls: ["https://http-mainnet.hecochain.com"],
+			blockExplorerUrls: ["https://scan.hecochain.com"],
+		},
+	];
 
-    const HECOInfo = [
-        {
-            chainId: "0x80",
-            chainName: "Huobi ECO Chain Mainnet",
-            nativeCurrency: {
-                name: "HT",
-                symbol: "HR",
-                decimals: 18,
-            },
-            rpcUrls: ["https://http-mainnet.hecochain.com"],
-            blockExplorerUrls: ["https://scan.hecochain.com"],
-        },
-    ];
-
-    await ethereum
-        .request({
-            method: "wallet_addEthereumChain",
-            params: chainName === "BSC" ? BSCInfo : HECOInfo,
-        })
-        .then(() => {
-            // window.localStorage.setItem('currentChainId', chainName === "BSC" ? 56 : chainName === "HECO" ? 128 : 'Unsupported Chain')
-            window.location.reload();
-        })
-        .catch((reason)=>{
+	await ethereum
+		.request({
+			method: "wallet_addEthereumChain",
+			params: chainName === "BSC" ? BSCInfo : HECOInfo,
+		})
+		.then((res) => {
+			// window.localStorage.setItem('currentChainId', chainName === "BSC" ? 56 : chainName === "HECO" ? 128 : 'Unsupported Chain')
+			// console.log('wallet_addEthereumChain', res)
+			window.location.reload();
+		})
+		.catch((reason) => {
 			console.log("reason: ", reason)
 			window.location.reload();
 		});
@@ -204,20 +204,20 @@ const ConnectToChain = async (chainName) => {
 };
 
 export default function Index() {
-    const [isConnectWallect, setIsConnectWallect] = useState(false);
-    const { onConnect } = useWalletConnect();
-    const [curNav, setCurNav] = useState("Home");
-    const { account, chainId, active } = useActiveWeb3React();
-    const [isShowInfo, setIsShowInfo] = useState(!true);
-    const { getUserInfo } = useUserInfo();
-    const history = useHistory();
-    const { state, dispatch } = useContext(myContext);
-    // const { dispatch } = useContext(myContext);
-    /* const [isFangible, setIsFangible] = useState(false) */
-    const { wrapperIntl } = useWrapperIntl();
-    //const defaultNetwork = window.localStorage.getItem('currentChainId') === '128' ? 'HECO' : window.localStorage.getItem('currentChainId') === '56' ? 'BSC' : 'Unsupported Chain'
-    // const currentChainName = window.localStorage.getItem('currentChainId') === '128' ? 'HECO' : window.localStorage.getItem('currentChainId') === '56' ? 'BSC' : 'Unsupported Chain'
-    const [currentChainName, setCurrentChainName] = useState(
+	const [isConnectWallect, setIsConnectWallect] = useState(false);
+	const { onConnect } = useWalletConnect();
+	const [curNav, setCurNav] = useState("Home");
+	const { account, chainId, active } = useActiveWeb3React();
+	const [isShowInfo, setIsShowInfo] = useState(!true);
+	const { getUserInfo } = useUserInfo();
+	const history = useHistory();
+	const { state, dispatch } = useContext(myContext);
+	// const { dispatch } = useContext(myContext);
+	/* const [isFangible, setIsFangible] = useState(false) */
+	const { wrapperIntl } = useWrapperIntl();
+	//const defaultNetwork = window.localStorage.getItem('currentChainId') === '128' ? 'HECO' : window.localStorage.getItem('currentChainId') === '56' ? 'BSC' : 'Unsupported Chain'
+	// const currentChainName = window.localStorage.getItem('currentChainId') === '128' ? 'HECO' : window.localStorage.getItem('currentChainId') === '56' ? 'BSC' : 'Unsupported Chain'
+	const [currentChainName, setCurrentChainName] = useState(
 		/* window.localStorage.getItem("currentChainId") === "56"
 			? "BSC"
 			: window.localStorage.getItem("currentChainId") === "128"
@@ -226,11 +226,11 @@ export default function Index() {
 		chainId === 56
 			? "BSC"
 			: chainId === 128
-			? "HECO"
-			: "Unsupported Chain"
+				? "HECO"
+				: "Unsupported Chain"
 	);
 
-    const Nav_list = [
+	const Nav_list = [
 		{
 			name: wrapperIntl("header.home"),
 			route: "/Home",
@@ -248,47 +248,47 @@ export default function Index() {
 		},
 	];
 
-    const updateActive = () => {
-        const pathName = window.location.pathname;
-        Nav_list.forEach((element) => {
-            if (pathName.indexOf(element.route) !== -1) {
-                setCurNav(element.name);
-            }
-        });
-        /* if (
-            pathName === '/MyGallery' ||
-            pathName === '/MyActivities' ||
-            pathName === '/MyLiked' ||
-            pathName === '/MyBrands'
-        ) {
-            setIsFangible(true)
-        } else {
-            setIsFangible(false)
-        } */
-    };
-    const connectWallet = (historyLocation) => {
-        const match = [
-            /* '/Marketplace/FineArts/english-auction/',
-            '/Marketplace/FineArts/fixed-swap/',
-            '/AirHome/', */
-        ];
-        if (
-            match.some(
-                (path) =>
-                    historyLocation.pathname.substring(0, path.length) === path
-            )
-        ) {
-            onConnect();
-        }
-        updateActive();
-    };
+	const updateActive = () => {
+		const pathName = window.location.pathname;
+		Nav_list.forEach((element) => {
+			if (pathName.indexOf(element.route) !== -1) {
+				setCurNav(element.name);
+			}
+		});
+		/* if (
+			pathName === '/MyGallery' ||
+			pathName === '/MyActivities' ||
+			pathName === '/MyLiked' ||
+			pathName === '/MyBrands'
+		) {
+			setIsFangible(true)
+		} else {
+			setIsFangible(false)
+		} */
+	};
+	const connectWallet = (historyLocation) => {
+		const match = [
+			/* '/Marketplace/FineArts/english-auction/',
+			'/Marketplace/FineArts/fixed-swap/',
+			'/AirHome/', */
+		];
+		if (
+			match.some(
+				(path) =>
+					historyLocation.pathname.substring(0, path.length) === path
+			)
+		) {
+			onConnect();
+		}
+		updateActive();
+	};
 
-    
-    let ethereum = window.ethereum;
-    ethereum?.on("chainChanged", (_chainId) => {
+
+	let ethereum = window.ethereum;
+	ethereum?.on("chainChanged", (_chainId) => {
 		// if (_chainId !== 56 || _chainId !== 128) window.location.reload();
-		console.log("chainChanged _chainId: ", _chainId)
-		window.localStorage.setItem('currentChainId', _chainId === '0x38' ? 56 : _chainId === '0x80' ? 128 : 'Unsupported Chain')
+		// console.log("chainChanged _chainId: ", _chainId)
+		// window.localStorage.setItem('currentChainId', _chainId === '0x38' ? 56 : _chainId === '0x80' ? 128 : 'Unsupported Chain')
 		window.location.reload();
 	});
 
@@ -298,115 +298,115 @@ export default function Index() {
 			window.location.reload(); */
 	}, [currentChainName])
 
-    useEffect(() => {
-        if (!chainId) return
-        console.log("chainId000: ", chainId);
-        //window.localStorage.setItem('currentChainId', chainId === 56 ? 56 : chainId === 128 ? 128 : 'Unsupported Chain')
-        setCurrentChainName(chainId === 56 ? 'BSC' : chainId === 128 ? 'HECO' : 'Unsupported Chain')
-    }, [chainId])
+	useEffect(() => {
+		if (!chainId) return
+		console.log("chainId: ", chainId);
+		// window.localStorage.setItem('')
+		setCurrentChainName(chainId === 56 ? 'BSC' : chainId === 128 ? 'HECO' : 'Unsupported Chain')
+	}, [chainId])
 
-    useEffect(() => {
-        const type = window.localStorage.getItem("BOUNCE_SELECT_WALLET");
-        if (type) {
-            onConnect(type);
-        }
+	useEffect(() => {
+		const type = window.localStorage.getItem("BOUNCE_SELECT_WALLET");
+		if (type) {
+			onConnect(type);
+		}
 
-        updateActive();
-        connectWallet(history.location);
-        history.listen(connectWallet);
+		updateActive();
+		connectWallet(history.location);
+		history.listen(connectWallet);
 
-        // eslint-disable-next-line
-    }, [history]);
+		// eslint-disable-next-line
+	}, [history]);
 
-    const findTopElement = (e) => {
-        if (e.tagName === "BODY") return false;
-        // console.log(e, e.getAttribute('class'))
-        if (e.getAttribute("class")?.indexOf("setting-account-modal") >= 0) {
-            return true;
-        } else {
-            if (e && e.parentNode) {
-                return findTopElement(e.parentNode);
-            } else {
-                return false;
-            }
-        }
-    };
-    const eventShowInfo = (e) => {
-        try {
-            if (
-                [
-                    ...document.getElementsByClassName("setting-account-modal"),
-                ].findIndex((t) => t.contains(e.target)) !== -1
-            ) {
-                return;
-            }
-        } catch (error) {
-            if (findTopElement(e.target)) return;
-        }
+	const findTopElement = (e) => {
+		if (e.tagName === "BODY") return false;
+		// console.log(e, e.getAttribute('class'))
+		if (e.getAttribute("class")?.indexOf("setting-account-modal") >= 0) {
+			return true;
+		} else {
+			if (e && e.parentNode) {
+				return findTopElement(e.parentNode);
+			} else {
+				return false;
+			}
+		}
+	};
+	const eventShowInfo = (e) => {
+		try {
+			if (
+				[
+					...document.getElementsByClassName("setting-account-modal"),
+				].findIndex((t) => t.contains(e.target)) !== -1
+			) {
+				return;
+			}
+		} catch (error) {
+			if (findTopElement(e.target)) return;
+		}
 
-        // SettingAccountModal
-        setIsShowInfo(false);
-    };
-    const onBodyHandle = () =>
-        document.body.addEventListener("click", eventShowInfo);
-    const offBodyHandle = () =>
-        document.body.removeEventListener("click", eventShowInfo);
-    useEffect(() => {
-        onBodyHandle();
-        return offBodyHandle;
-        // eslint-disable-next-line
-    }, []);
+		// SettingAccountModal
+		setIsShowInfo(false);
+	};
+	const onBodyHandle = () =>
+		document.body.addEventListener("click", eventShowInfo);
+	const offBodyHandle = () =>
+		document.body.removeEventListener("click", eventShowInfo);
+	useEffect(() => {
+		onBodyHandle();
+		return offBodyHandle;
+		// eslint-disable-next-line
+	}, []);
 
-    useEffect(() => {
-        /* console.log("active: ", active) */
-        let activeTimeout;
-        if (!active) {
-            activeTimeout = setTimeout(() => {
-                dispatch({
-                    type: "Modal_Message",
-                    showMessageModal: true,
-                    modelType: "error",
-                    modelMessage: wrapperIntl("ConnectWallet"),
-                    modelTimer: 24 * 60 * 60 * 1000,
-                    subsequentActionType: "connectWallet",
-                    modelUrlMessage: wrapperIntl("header.ConnectWallet"),
-                    subsequentActionFunc: setIsConnectWallect,
-                });
-            }, 2000);
-            return () => {
-                clearTimeout(activeTimeout);
-            };
-        }
-        // eslint-disable-next-line
-    }, [active]);
+	useEffect(() => {
+		/* console.log("active: ", active) */
+		let activeTimeout;
+		if (!active) {
+			activeTimeout = setTimeout(() => {
+				dispatch({
+					type: "Modal_Message",
+					showMessageModal: true,
+					modelType: "error",
+					modelMessage: wrapperIntl("ConnectWallet"),
+					modelTimer: 24 * 60 * 60 * 1000,
+					subsequentActionType: "connectWallet",
+					modelUrlMessage: wrapperIntl("header.ConnectWallet"),
+					subsequentActionFunc: setIsConnectWallect,
+				});
+			}, 2000);
+			return () => {
+				clearTimeout(activeTimeout);
+			};
+		}
+		// eslint-disable-next-line
+	}, [active]);
 
-    useEffect(() => {
-        dispatch({
-            type: "Modal_Message",
-            showMessageModal: false,
-            modelType: "error",
-            modelMessage: "",
-            modelUrlMessage: "",
-        });
+	useEffect(() => {
+		dispatch({
+			type: "Modal_Message",
+			showMessageModal: false,
+			modelType: "error",
+			modelMessage: "",
+			modelUrlMessage: "",
+		});
 
-        if (active && chainId === 56) {
-            getUserInfo();
+		if (active && (chainId === 56 || chainId === 128)) {
+			getUserInfo();
 			window.localStorage.LastChainId = chainId;
-            return;
-        }
+			return;
+		}
 
-        window.localStorage.LastChainId = chainId;
+		window.localStorage.LastChainId = chainId;
 
-        getUserInfo();
-        // eslint-disable-next-line
-    }, [account, chainId, active]);
+		getUserInfo();
+		// eslint-disable-next-line
+	}, [account, chainId, active]);
 
-    const onHandleShowInfo = (e) => {
-        window.event ? (window.event.cancelBubble = true) : e.stopPropagation();
-        setIsShowInfo(!isShowInfo);
-    };
+	const onHandleShowInfo = (e) => {
+		window.event ? (window.event.cancelBubble = true) : e.stopPropagation();
+		setIsShowInfo(!isShowInfo);
+	};
 
-    return (
+	return (
 		<>
 			<HeaderStyled>
 				<div className="wrapper">
@@ -466,7 +466,7 @@ export default function Index() {
 						/>
 
 						{/* <ChainMenu/> */}
-						
+
 						<PullRadioBox
 							className="chain_menu"
 							width={"110px"}
@@ -481,22 +481,21 @@ export default function Index() {
 							]}
 							//borderHidden
 							defaultValue={
-                                currentChainName
+								currentChainName
 							}
 							onValChange={async (item) => {
 								if (currentChainName !== item) {
-                                    //debugger
+									//debugger
 									await ConnectToChain(item);
-                                    // window.location.reload()
+									// window.location.reload()
 								}
 							}}
 						/>
 
 						{active ? (
 							<div
-								className={`avatar_box ${
-									isShowInfo ? "open" : ""
-								}`}
+								className={`avatar_box ${isShowInfo ? "open" : ""
+									}`}
 							>
 								{state.userInfo && state.userInfo.imgurl ? (
 									<img
