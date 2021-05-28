@@ -115,7 +115,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                 const brandAddress = await getCreatedBrand()
                 console.log(brandAddress)
                 if (brandAddress !== ZERO_ADDRESS) {
-                    uploadData(imgUrl, brandAddress)
+                    uploadData(imgUrl, brandAddress, '')
                     dispatch({ type: 'TransferModal', TransferModal: "" });
                     dispatch({ type: 'Modal_Message', showMessageModal: true, modelType: 'success', modelMessage: wrapperIntl("MyProfile.MyBrands.AddNewBrandsModal.SuccessfullyBuild") });
                     return
@@ -132,6 +132,8 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
                     if (nftType === 'ERC-721') {
                         Factory_CT.methods.createBrand721(bytecode_721, _name, _symbol, _mode).send({ from: account })
                             .on('transactionHash', hash => {
+
+                                uploadData(imgUrl, brandAddress, hash)
                                 setOpen(false)
                                 // setBidStatus(pendingStatus)
                                 showTransferByStatus('pendingStatus')
@@ -209,7 +211,7 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
         // return brand_address
     }
 
-    const uploadData = async (imgUrl, brandAddress) => {
+    const uploadData = async (imgUrl, brandAddress,hash) => {
         // 第三步 传入将信息后端
         const params = {
             brandname: formData.Brand_Name,
@@ -218,7 +220,8 @@ export default function AddNewBrandsModal({ run, hasAddressButNotBrand, brandAdd
             description: formData.Description,
             imgurl: imgUrl,
             owneraddress: account,
-            ownername: state.userInfo.username
+            ownername: state.userInfo.username,
+            txid: hash
         }
 
         sign_Axios.post('/api/v2/main/auth/addbrand', params).then(res => {

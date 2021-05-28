@@ -162,7 +162,7 @@ export function AddCardItem({
 	run,
 	hasAddressButNotBrand,
 	brandAddress,
-	isCreate,
+	isCreate
 }) {
 	const [showCreateModal, setShowCreateModal] = useState(false);
 

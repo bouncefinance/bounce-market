@@ -202,7 +202,7 @@ export default function BrandsByType() {
     const [statusList, setStatusList] = useState([]);
     const { brandInfo, run } = useBrandInfo(brandId)
     const { state } = useContext(myContext)
-    const { sign_Axios, axios } = useAxios()
+    const { sign_Axios, Axios,axios } = useAxios()
     const [fileData, setFileData] = useState(null)
     const { account } = useActiveWeb3React();
 
@@ -305,18 +305,18 @@ export default function BrandsByType() {
 
     useEffect(() => {
         if (!account  || !tokenList_2 || !brandInfo.contractaddress) return
-        // console.log('brandInfo',brandInfo)
+        // console.log('tokenList_2',tokenList_2)
         
         if(String(brandInfo.owneraddress).toLowerCase() !== String(account).toLowerCase()){
             history.push(`/AirHome/${brandInfo.id}/FineArts`)
         }
-        const brand_erc721 = tokenList_2.brandserc721.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
-        const brand_erc1155 = tokenList_2.brandserc1155.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
+        const brand_erc721 = tokenList_2.brandserc721.filter(item => String(item.contract_addr).toLowerCase() === String(contract).toLowerCase())
+        const brand_erc1155 = tokenList_2.brandserc1155.filter(item => String(item.contract_addr).toLowerCase() === String(contract).toLowerCase())
         const brandTradeList_fs = tokenList_2.tradePools.filter(item =>
-            String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase() && item.state !== 1
+            String(item.token0).toLowerCase() === String(contract).toLowerCase() && item.state !== 1
         )
         const brandTradeList_ea = tokenList_2.tradeAuctions.filter(item =>
-            String(item.token0).toLowerCase() === String(brandInfo.contractaddress).toLowerCase() && item.state !== 1
+            String(item.token0).toLowerCase() === String(contract).toLowerCase() && item.state !== 1
         )
         const brandErcList = brand_erc721.concat(brand_erc1155)
         const brandTradeList = brandTradeList_fs.concat(brandTradeList_ea)
@@ -352,7 +352,7 @@ export default function BrandsByType() {
                 break;
         }
 
-        sign_Axios.post(Controller.items.getitemsbyfilter, {
+        Axios.post(Controller.items.getitemsbyfilter, {
             ids: ids,
             cts: cts,
             category: categoryParam,
@@ -404,7 +404,7 @@ export default function BrandsByType() {
         try {
             const ErcParams = {
                 user_address: account,
-                contract_address: brandInfo.contractaddress,
+                contract_address: contract,
             }
 
             const TradeParams = {
@@ -506,7 +506,7 @@ export default function BrandsByType() {
             </div>
             <ul className="list_wrapper">
                 <li>
-                    <AddCardItem type={category} nftType={brandInfo.standard} brandInfo={brandInfo} />
+                    <AddCardItem type={category} nftType={brandInfo.standard} brandInfo={brandInfo} contract={contract}/>
                 </li>
                 {statusList.map((item, index) => {
                     /* debugger */

@@ -23,7 +23,7 @@ const getBaseUrl = (chainID) => {
             return 'https://heco-api.bounce.finance'
 
         default:
-            return 'https://bounce-market.bounce.finance'
+            return 'https://heco-api.bounce.finance'
     }
 }
 

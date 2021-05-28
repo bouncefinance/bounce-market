@@ -64,7 +64,7 @@ export default function Index () {
           poolsPromise.push( to (axios.get('/pool', {
             params: {
               pool_id: weightItem.poolid,
-              pool_type: weightItem.standard === 0 ? 'fixedswap' : 'english'
+              pool_type: weightItem.standard === 0? 'fixedswap' : 'english'
             }
           })))
         }

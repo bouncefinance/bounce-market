@@ -9,7 +9,7 @@ export const getNFTFactory = (chainID) => {
         case 4:
             return '0xb9BaC7b8C8ca157035E78e764bC3AD7D7BcCAb3A'
         case 128:
-            return '0x41939809dB201c8531D082f95Fc5BEc187Fe2803'
+            return '0xeCd2B33C4e80f284c3d0BDc8147Fdf02Ca30a737'
         case 56:
             if (hostname.indexOf('market.bounce.finance') !== -1 || hostname.includes('127.0.0.1')
                 || hostname.includes('fangible') || hostname.includes('cnmarket.bounce.finance')) {

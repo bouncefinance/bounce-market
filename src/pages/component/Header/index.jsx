@@ -223,9 +223,7 @@ export default function Index() {
 			: window.localStorage.getItem("currentChainId") === "128"
 			? "HECO"
 			: "Unsupported Chain" */
-		chainId === 56
-			? "BSC"
-			: chainId === 128
+		chainId === 128
 				? "HECO"
 				: "Unsupported Chain"
 	);
@@ -302,7 +300,7 @@ export default function Index() {
 		if (!chainId) return
 		console.log("chainId: ", chainId);
 		// window.localStorage.setItem('')
-		setCurrentChainName(chainId === 56 ? 'BSC' : chainId === 128 ? 'HECO' : 'Unsupported Chain')
+		setCurrentChainName(chainId === 128 ? 'HECO' : 'Unsupported Chain')
 	}, [chainId])
 
 	useEffect(() => {
@@ -474,9 +472,9 @@ export default function Index() {
 							width={"110px"}
 							height={"36px"}
 							options={[
-								{
-									value: "BSC",
-								},
+								// {
+								// 	value: "BSC",
+								// },
 								{
 									value: "HECO",
 								},

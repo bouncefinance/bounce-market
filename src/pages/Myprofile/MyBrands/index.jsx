@@ -10,7 +10,7 @@ import { getContract, useActiveWeb3React } from '@/web3'
 import { getNFTFactory } from '@/web3/address_list/contract'
 import BounceNFTFactory from '@/web3/abi/BounceNFTFactory.json'
 import { ZERO_ADDRESS } from '@/web3/address_list/token'
-import axios from 'axios'
+// import axios from 'axios'
 import useAxios from '@/utils/useAxios'
 import { Controller } from '@/utils/controller'
 
@@ -103,60 +103,65 @@ export default function Index() {
 
     useEffect(() => {
         if (!active) return
-        getBrandListByChain()
+        // getBrandListByChain()
+        getBrandList_too()
         // eslint-disable-next-line
     }, [active])
-
-    const getBrandListByChain = async () => {
-
-        try {
-            const params = {
-                offset: 0,
-                count: 100,
-                user_address: account
-            }
-
-            const brandListRes = await axios.get('/brands', { params })
-            if (brandListRes.status === 200 && brandListRes.data.code === 200) {
-                const data = brandListRes.data.data
-
-                const brandList_721 = (data.erc721 || []).map(item => {
-                    return {
-                        standard: 0,
-                        ...item
-                    }
-                })
-
-                const brandList_1155 = (data.erc1155 || []).map(item => {
-                    return {
-                        standard: 1,
-                        ...item
-                    }
-                })
-
-                const brandList = [...brandList_721, ...brandList_1155]
-                linkBrandInfo(brandList)
-            }
-        } catch (error) {
-            console.error('Failed to obtain brand information')
-        }
-    }
-
-    const linkBrandInfo = async (brandList) => {
+    const getBrandList_too = async ()=>{
         const brandInfo = await getBrandInfoByAccount()
-        console.log(brandList, brandInfo)
-        const list = brandList.map(listItem => {
-            // console.log(listItem, brandInfo)
-            const tarItem = brandInfo.find(brandItem => String(brandItem.contractaddress || brandItem.contract_address).toLowerCase() === String(listItem.contract_address).toLowerCase())
-            return {
-                ...listItem,
-                ...tarItem
-            }
-        })
-            .filter(item => item.contract_address && item.contractaddress)
-        console.log(list)
-        setBrandList(list)
+        setBrandList(brandInfo)
     }
+
+    // const getBrandListByChain = async () => {
+
+    //     try {
+    //         const params = {
+    //             offset: 0,
+    //             count: 100,
+    //             user_address: account
+    //         }
+
+    //         const brandListRes = await axios.get('/brands', { params })
+    //         if (brandListRes.status === 200 && brandListRes.data.code === 200) {
+    //             const data = brandListRes.data.data
+
+    //             const brandList_721 = (data.erc721 || []).map(item => {
+    //                 return {
+    //                     standard: 0,
+    //                     ...item
+    //                 }
+    //             })
+
+    //             const brandList_1155 = (data.erc1155 || []).map(item => {
+    //                 return {
+    //                     standard: 1,
+    //                     ...item
+    //                 }
+    //             })
+
+    //             const brandList = [...brandList_721, ...brandList_1155]
+    //             linkBrandInfo(brandList)
+    //         }
+    //     } catch (error) {
+    //         console.error('Failed to obtain brand information')
+    //     }
+    // }
+
+    // const linkBrandInfo = async (brandList) => {
+    //     const brandInfo = await getBrandInfoByAccount()
+    //     console.log(brandList, brandInfo)
+    //     const list = brandList.map(listItem => {
+    //         // console.log(listItem, brandInfo)
+    //         const tarItem = brandInfo.find(brandItem => String(brandItem.contractaddress || brandItem.contract_address).toLowerCase() === String(listItem.contract_address).toLowerCase())
+    //         return {
+    //             ...listItem,
+    //             ...tarItem
+    //         }
+    //     })
+    //         .filter(item => item.contract_address && item.contractaddress)
+    //     console.log(list)
+    //     setBrandList(list)
+    // }
 
     const getBrandInfoByAccount = async () => {
         try {
@@ -177,7 +182,12 @@ export default function Index() {
             <CommonHeader />
 
             <BrandsStyled>
-                <AddCardItem run={getBrandList} hasAddressButNotBrand={hasAddressButNotBrand} brandAddress={brandAddress} isCreate={hasAddressButNotBrand ? true : !brandAddContract} />
+                <AddCardItem 
+                run={getBrandList}
+                 hasAddressButNotBrand={hasAddressButNotBrand}
+                  brandAddress={brandAddress}
+                   isCreate={hasAddressButNotBrand ? true : !brandAddContract}
+                    />
 
                 {
                     active && brand_list.length > 0

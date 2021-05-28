@@ -14,6 +14,7 @@ import { myContext } from '@/redux'
 import { ErrorStatus } from '@/components/UI-kit/Input/error_config'
 import useWrapperIntl from '@/locales/useWrapperIntl'
 import UploadAll from '@/components/UI-kit/Input/UploadAll'
+import { useParams } from 'react-router'
 
 // import { numToWei } from '@/utils/useBigNumber'
 const DEBOUNCE = 500;
@@ -39,15 +40,17 @@ const AddNewBrandsModalStyled = styled.div`
 
 `
 
-export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandInfo = {} }) {
+export default function AddNewItemModal({ open, setOpen, defaultValue, brandInfo = {} }) {
     const { active, library, account } = useActiveWeb3React()
     const { wrapperIntl } = useWrapperIntl()
+    const { brandId } = useParams()
     const { sign_Axios } = useAxios()
     const { showTransferByStatus } = useTransferModal()
     const [btnText, setBtnText] = useState(wrapperIntl('MyProfile.MyBrands.AddNewItemModal.Submit'))
     const [inputDisable, setInputDisable] = useState(false)
     const [btnLock, setBtnLock] = useState(true)
     const [fileData, setFileData] = useState(null)
+    const [contract_B, setContract_B] = useState()
     const [formData, setFormData] = useState({
         Category: 'image',
         Channel: 'FineArts',
@@ -55,6 +58,17 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
     })
     const [fileOrigin, setFileOrigin] = useState(null)
     const { dispatch } = useContext(myContext);
+
+    useEffect(() => {
+        sign_Axios.post('/api/v2/main/getbrandbyid', { id: parseInt(brandId) })
+            .then(res => {
+                // console.log(res)
+                if (res.status === 200 && res.data.code === 1) {
+                    setContract_B(res.data.data.contractaddress)
+                }
+            })
+            // eslint-disable-next-line
+    }, [])
 
     useEffect(() => {
         if (!active) return
@@ -105,7 +119,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                     brandid: brandInfo.id,
                     category,
                     channel: formData.Channel,
-                    contractaddress: brandInfo.contractaddress,
+                    contractaddress: contract_B,
                     description: formData.Description,
                     fileurl: imgUrl,
                     itemname: formData.Name,
@@ -121,11 +135,10 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                 sign_Axios.post('/api/v2/main/auth/additem', params).then(res => {
                     const nftId = res.data.data.id
                     if (res.data.code === 1) {
-                        // console.log(nftId, brandInfo.standard)
                         if (brandInfo.standard === 0) {
-                            const BounceERC721_CT = getContract(library, BounceERC721.abi, brandInfo.contractaddress)
-                            // const BounceERC721_CT = getContract(library, BounceERC721.abi, '0xaF6dB20E0e3d0212Fc0919ea876153A1dcDCB410')
-
+                            const BounceERC721_CT = getContract(library, BounceERC721.abi, contract_B)
+                            // const BounceERC721_CT = getContract(library, BounceERC721.abi, '0xf50837ec99305358bac565baa0a9d0e24db0a152')
+                            console.log('BounceERC721_CT', account, nftId, BounceERC721_CT)
                             try {
                                 BounceERC721_CT.methods.mint(account, nftId).send({ from: account })
                                     .on('transactionHash', hash => {
@@ -155,7 +168,7 @@ export default function AddNewBrandsModal({ open, setOpen, defaultValue, brandIn
                             }
 
                         } else {
-                            const BounceERC1155_CT = getContract(library, BounceERC1155.abi, brandInfo.contractaddress)
+                            const BounceERC1155_CT = getContract(library, BounceERC1155.abi,contract_B)
                             const _amount = formData.Supply
                             const _data = 0
                             console.log('BounceERC1155_CT', account, nftId, _amount, _data)

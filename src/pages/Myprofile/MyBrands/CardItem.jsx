@@ -66,7 +66,7 @@ const AddCardItemStyled = styled(CardItemStyled)`
     }
 `
 
-export function AddCardItem ({ type, brandInfo }) {
+export function AddCardItem ({ type, brandInfo ,contract}) {
     const [showCreateModal, setShowCreateModal] = useState(false)
     const { wrapperIntl } = useWrapperIntl()
 
@@ -80,7 +80,7 @@ export function AddCardItem ({ type, brandInfo }) {
                     }} />
                 </div>
             </AddCardItemStyled>
-            <AddNewItemModal open={showCreateModal} setOpen={setShowCreateModal} defaultValue={type} brandInfo={brandInfo} />
+            <AddNewItemModal open={showCreateModal} setOpen={setShowCreateModal} defaultValue={type} brandInfo={brandInfo} contract={contract}/>
         </>
     )
 }
