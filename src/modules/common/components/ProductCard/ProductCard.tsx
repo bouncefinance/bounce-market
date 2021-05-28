@@ -29,6 +29,8 @@ import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
 import { useProductCardStyles } from './useProductCardStyles';
 
+const ENABLE_TRANSFER = false;
+
 export type ProductCardCategoryType = 'image' | 'video';
 
 export enum ProductCardStatuses {
@@ -267,42 +269,50 @@ export const ProductCard = ({
                   >
                     {t('product-card.put-on-sale')}
                   </Button>
-                  <ButtonBase className={classes.menuBtn} onClick={handleClick}>
-                    <VerticalDotsIcon className={classes.menuIcon} />
-                  </ButtonBase>
-                  <Popover
-                    className={classes.menuPopover}
-                    open={isPopoverOpened}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    PaperProps={{
-                      variant: 'outlined',
-                    }}
-                  >
-                    <MenuList>
-                      <MenuItem
-                        className={classes.menuItem}
-                        onClick={onTransferClick}
-                      >
-                        Transfer token
-                      </MenuItem>
 
-                      <MenuItem
-                        className={classes.menuItem}
-                        onClick={onBurnClick}
+                  {ENABLE_TRANSFER && (
+                    <>
+                      <ButtonBase
+                        className={classes.menuBtn}
+                        onClick={handleClick}
                       >
-                        Burn token
-                      </MenuItem>
-                    </MenuList>
-                  </Popover>
+                        <VerticalDotsIcon className={classes.menuIcon} />
+                      </ButtonBase>
+                      <Popover
+                        className={classes.menuPopover}
+                        open={isPopoverOpened}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        PaperProps={{
+                          variant: 'outlined',
+                        }}
+                      >
+                        <MenuList>
+                          <MenuItem
+                            className={classes.menuItem}
+                            onClick={onTransferClick}
+                          >
+                            {t('product-card.transfer')}
+                          </MenuItem>
+
+                          <MenuItem
+                            className={classes.menuItem}
+                            onClick={onBurnClick}
+                          >
+                            {t('product-card.burn')}
+                          </MenuItem>
+                        </MenuList>
+                      </Popover>
+                    </>
+                  )}
                 </Box>
               )}
             </>

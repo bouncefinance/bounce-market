@@ -342,6 +342,8 @@
     }
   },
   "product-card": {
-    "put-on-sale": "Put on sale"
+    "put-on-sale": "Put on sale",
+    "transfer": "Transfer token",
+    "burn": "Burn token"
   }
 }
