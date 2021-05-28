@@ -72,6 +72,7 @@ export const Search = ({ className, focus }: ISearchProps) => {
             focused: classes.inputFocused,
             input: classes.inputBase,
           }}
+          type="search"
           onKeyUp={handleKeyup}
           placeholder={t('header.search.placeholder')}
           startAdornment={
