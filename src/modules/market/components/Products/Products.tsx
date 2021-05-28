@@ -1,6 +1,7 @@
 import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
@@ -104,7 +105,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           MediaProps={{
             category: item.category,
             src: item.src,
-            objectFit: 'scale-down',
+            objectFit: 'contain',
             loading: 'lazy',
           }}
           ProfileInfoProps={item.ProfileInfoProps}
@@ -116,7 +117,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   return isConnected ? (
     <ProductsComponent
       {...sectionProps}
-      cards={rendrerdCards}
+      cards={nftItems && nftItems.length ? rendrerdCards : <NoItems />}
       loading={loading}
       panel={
         <ProductsPanel
