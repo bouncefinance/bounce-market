@@ -106,18 +106,18 @@ workflows:
           requires:
             - build-prod
       # heco
-      - approve-prod:
+      - approve-heco:
           type: approval
           filters:
             branches:
               only: [ heco ]
-      - build-prod:
-          context: bounce_build_prod
+      - build-heco:
+          context: bounce_build_heco
           requires:
-            - approve-prod
-      - upload-prod:
+            - approve-heco
+      - upload-heco:
           context:
             - cicd
-            - bounce_build_prod
+            - bounce_build_heco
           requires:
-            - build-prod
+            - build-heco
