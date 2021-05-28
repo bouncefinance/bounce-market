@@ -340,5 +340,8 @@
         "creator": "Auction is in progress"
       }
     }
+  },
+  "product-card": {
+    "put-on-sale": "Put on sale"
   }
 }

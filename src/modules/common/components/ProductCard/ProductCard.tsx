@@ -265,7 +265,7 @@ export const ProductCard = ({
                     rounded
                     to={toSale}
                   >
-                    Put on sale
+                    {t('product-card.put-on-sale')}
                   </Button>
                   <ButtonBase className={classes.menuBtn} onClick={handleClick}>
                     <VerticalDotsIcon className={classes.menuIcon} />
