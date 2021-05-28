@@ -197,7 +197,7 @@ const ConnectToChain = async (chainName) => {
 			window.location.reload();
 		})
 		.catch((reason) => {
-			console.log("reason: ", reason)
+			// console.log("reason: ", reason)
 			window.location.reload();
 		});
 
