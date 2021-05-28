@@ -43,12 +43,16 @@ jobs:
     <<: *build-template
   build-cn:
     <<: *build-template
+  build-heco:
+    <<: *build-template
   # upload
   upload-stage:
     <<: *upload-template
   upload-prod:
     <<: *upload-template
   upload-cn:
+    <<: *upload-template
+  upload-heco:
     <<: *upload-template
 
 workflows:
@@ -112,7 +116,8 @@ workflows:
             branches:
               only: [ heco ]
       - build-heco:
-          context: bounce_build_heco
+          context:
+            - bounce_build_heco
           requires:
             - approve-heco
       - upload-heco:
