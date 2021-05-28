@@ -4,6 +4,8 @@ import { useAppDispatch } from 'store/useAppDispatch';
 import { ISetAccountData, setAccount } from '../store/actions/setAccount';
 import { connect } from '../store/actions/connect';
 import { BlockchainNetworkId } from '../../common/conts';
+import { changeNetworkToSupported } from '../store/actions/changeNetworkToSupported';
+import { updateAccount } from '../store/actions/updateAccount';
 
 export const useAccount = () => {
   const dispatch = useAppDispatch();
@@ -14,18 +16,37 @@ export const useAccount = () => {
 
   const address = data?.address;
   const isConnected = !!address;
-  const isChainSupported = data?.chainId === BlockchainNetworkId.smartchain;
+
+  const isChainSupported =
+    parseInt((data?.chainId ?? 0).toString()) ===
+    BlockchainNetworkId.smartchain;
+
+  const walletSupportNetworkChange = !!data?.web3?.givenProvider;
 
   const handleConnect = useCallback(() => {
     dispatch(connect());
   }, [dispatch]);
 
+  const handleChangeNetworkToSupported = useCallback(() => {
+    dispatch(changeNetworkToSupported());
+  }, [dispatch]);
+
+  const handleUpdate = useCallback(
+    updatedData => {
+      dispatch(updateAccount(updatedData));
+    },
+    [dispatch],
+  );
+
   return {
     loading,
     isConnected,
     isChainSupported,
+    walletSupportNetworkChange,
     address,
     error,
     handleConnect,
+    handleChangeNetworkToSupported,
+    handleUpdate,
   };
 };

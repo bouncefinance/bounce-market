@@ -316,7 +316,8 @@
   },
   "change-wallet": {
     "title": "Wrong network",
-    "description": "Change network to Binance SmartChain",
-    "submit": "Change to SmartChain"
+    "description": "Change network to Binance Smart Chain",
+    "submit": "Change to Smart Chain",
+    "network-change-error": "Can't setup the BSC network on metamask because provider is undefined."
   }
 }

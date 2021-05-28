@@ -6,7 +6,7 @@ import Web3 from 'web3';
 import { BlockchainNetworkId } from '../../../common/conts';
 import BigNumber from 'bignumber.js';
 
-const SIGN_STR = 'Welcome to Bounce!';
+const SIGN_STR = 'Welcome to Fangible!';
 
 // TODO pass unit (now BNB hardcoded)
 export interface ISetAccountData {
