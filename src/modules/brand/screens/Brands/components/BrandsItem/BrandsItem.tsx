@@ -1,5 +1,6 @@
 import { Avatar, Grid, Paper, Typography } from '@material-ui/core';
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { useBrandsItemStyles } from './useBrandsItemStyles';
 
@@ -22,8 +23,13 @@ export const BrandsItem = ({
 }: IBrandsItemProps) => {
   const classes = useBrandsItemStyles();
 
+  const { ref, inView } = useInView({
+    rootMargin: '-10% 0% -10% 0%',
+    triggerOnce: true,
+  });
+
   return (
-    <Paper className={classes.root} variant="outlined">
+    <Paper className={classes.root} variant="outlined" ref={ref}>
       <Grid className={classes.row} container spacing={4} alignItems="center">
         <Grid item xs={12} md={6}>
           <Link to={href} className={classes.header}>
@@ -40,7 +46,7 @@ export const BrandsItem = ({
         </Grid>
 
         <Grid item xs={12} md={6}>
-          {nftItems}
+          {inView && nftItems}
         </Grid>
       </Grid>
     </Paper>
