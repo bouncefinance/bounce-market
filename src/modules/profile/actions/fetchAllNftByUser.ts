@@ -8,6 +8,7 @@ import { getPoolsByFilter } from '../api/getPoolsByFilter';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
+import { getPublishedCount } from '../../createNFT/utils/getPublishedCount';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
@@ -121,19 +122,10 @@ export const fetchAllNftByUser: (
                   };
                 }
 
-                const publishedCount =
-                  pools?.list.reduce((acc, pool) => {
-                    if (pool.tokenId === item.id) {
-                      return (
-                        acc +
-                        (isEnglishAuction(pool)
-                          ? pool.tokenAmount0
-                          : pool.quantity)
-                      );
-                    }
-
-                    return acc;
-                  }, 0) ?? 0;
+                const publishedCount = getPublishedCount(
+                  pools?.list ?? [],
+                  item.id,
+                );
 
                 return { ...item, supply: item.supply - publishedCount };
               })

@@ -41,6 +41,9 @@ import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { PublishNFTType } from 'modules/createNFT/Routes';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { OnChange } from '../../../form/utils/OnChange';
+import { getPoolsByFilter } from '../../../profile/api/getPoolsByFilter';
+import { useAccount } from '../../../account/hooks/useAccount';
+import { getPublishedCount } from '../../utils/getPublishedCount';
 
 const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
 
@@ -633,26 +636,37 @@ export const PublishNFT = () => {
   const handlePublish = useCallback(() => {
     replace(ProfileRoutesConfig.UserProfile.generatePath());
   }, [replace]);
+  const { address } = useAccount();
 
   useEffect(() => {
     dispatch(fetchItem({ contract, id }));
-  }, [contract, dispatch, id]);
+    dispatch(getPoolsByFilter({ user: address }));
+  }, [address, contract, dispatch, id]);
 
   return (
-    <Queries<ResponseData<typeof fetchItem>> requestActions={[fetchItem]}>
-      {({ data }) => (
-        <PublishNFTComponent
-          name={data.itemname}
-          publishType={publishType}
-          tokenContract={data.contractaddress}
-          nftType={data.standard}
-          tokenId={data.id}
-          file={data.fileurl}
-          category={data.category}
-          maxQuantity={data.supply}
-          onPublish={handlePublish}
-        />
-      )}
+    <Queries<
+      ResponseData<typeof fetchItem>,
+      ResponseData<typeof getPoolsByFilter>
+    >
+      requestActions={[fetchItem, getPoolsByFilter]}
+    >
+      {({ data }, { data: pools }) => {
+        const publishedCount = getPublishedCount(pools.list, data.id);
+
+        return (
+          <PublishNFTComponent
+            name={data.itemname}
+            publishType={publishType}
+            tokenContract={data.contractaddress}
+            nftType={data.standard}
+            tokenId={data.id}
+            file={data.fileurl}
+            category={data.category}
+            maxQuantity={data.supply - publishedCount}
+            onPublish={handlePublish}
+          />
+        );
+      }}
     </Queries>
   );
 };
