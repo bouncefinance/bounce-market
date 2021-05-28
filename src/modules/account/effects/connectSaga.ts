@@ -88,7 +88,7 @@ function createEventChannel(provider: any) {
 
 function* onConnectWallet() {
   const { action, error } = yield putResolve(setAccount());
-  if (error || action.type === 'AccountActions/setAccount_ERROR') {
+  if (error || action.type === setAccount.toString() + '_ERROR') {
     return;
   }
   const provider = action.meta.provider;
