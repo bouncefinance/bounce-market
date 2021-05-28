@@ -6,7 +6,6 @@ import intl from 'react-intl-universal';
 import { ReactReduxContext } from 'react-redux';
 import 'swiper/swiper-bundle.min.css';
 import '../../../../assets/fonts/style.css';
-import '../../../../assets/styles/connect-walet-qr-code-modal.css';
 import { QueryLoadingAbsolute } from '../../../common/components/QueryLoading/QueryLoading';
 import { historyInstance } from '../../../common/utils/historyInstance';
 import { locales } from '../../../i18n';

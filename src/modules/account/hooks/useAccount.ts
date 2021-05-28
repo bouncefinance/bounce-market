@@ -6,6 +6,7 @@ import { connect } from '../store/actions/connect';
 import { BlockchainNetworkId } from '../../common/conts';
 import { changeNetworkToSupported } from '../store/actions/changeNetworkToSupported';
 import { updateAccount } from '../store/actions/updateAccount';
+import { makeStyles } from '@material-ui/styles';
 
 export const useAccount = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +31,22 @@ export const useAccount = () => {
   const handleChangeNetworkToSupported = useCallback(() => {
     dispatch(changeNetworkToSupported());
   }, [dispatch]);
+
+  // Fix styles for wallet connection QR-code modal
+  const useStyles = makeStyles({
+    '@global': {
+      '#walletconnect-qrcode-modal': {
+        overflow: 'auto',
+      },
+      '#walletconnect-qrcode-modal .walletconnect-modal__base': {
+        top: 'auto',
+        transform: 'none',
+        margin: '50px auto',
+        maxWidth: '400px',
+      },
+    },
+  });
+  useStyles();
 
   const handleUpdate = useCallback(
     updatedData => {

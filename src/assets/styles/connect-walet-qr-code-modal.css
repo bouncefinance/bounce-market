@@ -1,9 +1,0 @@
-#walletconnect-qrcode-modal {
-    overflow: auto;
-}
-#walletconnect-qrcode-modal .walletconnect-modal__base {
-    top: auto;
-    transform: none;
-    margin: 50px auto;
-    max-width: 400px;
-}
