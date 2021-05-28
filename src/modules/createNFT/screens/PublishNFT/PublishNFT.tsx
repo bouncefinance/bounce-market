@@ -38,6 +38,9 @@ import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { PublishNFTType } from 'modules/createNFT/Routes';
+
+const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
@@ -70,6 +73,7 @@ const formatAmount = (value: string) => (value ? `${Math.round(+value)}` : '1');
 
 interface IPublishNFTComponentProps {
   name: string;
+  publishType: PublishNFTType;
   tokenContract: string;
   nftType: NftType;
   tokenId: number;
@@ -81,6 +85,7 @@ interface IPublishNFTComponentProps {
 
 export const PublishNFTComponent = ({
   name,
+  publishType,
   tokenContract,
   nftType,
   tokenId,
@@ -92,8 +97,8 @@ export const PublishNFTComponent = ({
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
   const theme = useTheme();
-  const [purchasePriceChecked, setPurchasePriceChecked] = useState(false);
-  const [reservePriceChecked, setReservePriceChecked] = useState(false);
+  const [purchasePriceChecked, setPurchasePriceChecked] = useState(true);
+  const [reservePriceChecked, setReservePriceChecked] = useState(true);
 
   const togglePurchasePriceChecked = useCallback(() => {
     setPurchasePriceChecked(prev => !prev);
@@ -125,42 +130,53 @@ export const PublishNFTComponent = ({
   const validateCreateNFT = useCallback(
     (payload: IPublishNFTFormData) => {
       const errors: FormErrors<IPublishNFTFormData> = {};
+      const quantity = +payload.quantity;
 
-      if (!payload.quantity) {
+      if (!quantity) {
         errors.quantity = t('validation.required');
-      } else if (+payload.quantity < MIN_AMOUNT) {
+      } else if (quantity < MIN_AMOUNT) {
         errors.quantity = t('validation.min', { value: MIN_AMOUNT });
-      } else if (+payload.quantity > maxQuantity) {
+      } else if (quantity > maxQuantity) {
         errors.quantity = t('validation.max', { value: maxQuantity });
       }
 
       if (payload.type === AuctionType.FixedSwap) {
-        if (!payload.price) {
-          (errors as any).price = t('validation.required');
-        } else if (+payload.price <= 0) {
-          (errors as any).price = t('validation.min', { value: 0 });
+        const price = +payload.price;
+        if (!price) {
+          errors.price = t('validation.required');
+        } else if (price <= 0) {
+          errors.price = t('validation.min', { value: 0 });
         }
       } else {
-        if (!payload.minBid) {
-          (errors as any).minBid = t('validation.required');
-        } else if (+payload.minBid <= 0) {
-          (errors as any).minBid = t('validation.min', { value: 0 });
+        const minBid = +payload.minBid;
+        const purchasePrice = +payload.purchasePrice;
+        const reservePrice = +payload.reservePrice;
+        if (!minBid) {
+          errors.minBid = t('validation.required');
+        } else if (minBid <= 0) {
+          errors.minBid = t('validation.min', { value: 0 });
         }
 
-        if (purchasePriceChecked) {
-          if (!payload.purchasePrice) {
-            (errors as any).purchasePrice = t('validation.required');
-          } else if (+payload.purchasePrice <= 0) {
-            (errors as any).purchasePrice = t('validation.min', { value: 0 });
+        if (purchasePriceChecked || ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED) {
+          if (!purchasePrice) {
+            errors.purchasePrice = t('validation.required');
+          } else if (purchasePrice <= 0) {
+            errors.purchasePrice = t('validation.min', { value: 0 });
           }
         }
 
-        if (reservePriceChecked) {
-          if (!payload.reservePrice) {
-            (errors as any).reservePrice = t('validation.required');
-          } else if (+payload.reservePrice <= 0) {
-            (errors as any).reservePrice = t('validation.min', { value: 0 });
+        if (reservePriceChecked || ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED) {
+          if (!reservePrice) {
+            errors.reservePrice = t('validation.required');
+          } else if (reservePrice <= 0) {
+            errors.reservePrice = t('validation.min', { value: 0 });
           }
+        }
+
+        if (!(minBid <= reservePrice && reservePrice <= purchasePrice)) {
+          errors.minBid = t(
+            'publish-nft.error.wrong-direct-reserve-bid-amount',
+          );
         }
       }
 
@@ -201,6 +217,7 @@ export const PublishNFTComponent = ({
         dispatch(
           publishNft({
             type: payload.type,
+            publishType: publishType,
             name,
             tokenContract,
             unitContract: payload.unitContract,
@@ -218,13 +235,15 @@ export const PublishNFTComponent = ({
         dispatch(
           publishNft({
             type: payload.type,
+            publishType: publishType,
             purchasePrice: payload.purchasePrice,
             minBid: payload.minBid,
             minIncremental: new BigNumber(payload.minBid).multipliedBy(
               MIN_INCREMENTAL_PART,
             ),
             reservePrice: payload.reservePrice,
-            duration: payload.duration * 60 * 60 * 24,
+            // TODO: Revert
+            duration: 300,
             name,
             tokenContract,
             unitContract: payload.unitContract,
@@ -239,7 +258,7 @@ export const PublishNFTComponent = ({
         });
       }
     },
-    [dispatch, name, nftType, onPublish, tokenContract, tokenId],
+    [dispatch, name, publishType, nftType, onPublish, tokenContract, tokenId],
   );
 
   const renderForm = ({
@@ -590,7 +609,8 @@ export const PublishNFTComponent = ({
 
 export const PublishNFT = () => {
   const dispatch = useDispatchRequest();
-  const { id: idParam, contract } = useParams<{
+  const { type: publishType, id: idParam, contract } = useParams<{
+    type: PublishNFTType,
     contract: string;
     id: string;
   }>();
@@ -611,6 +631,7 @@ export const PublishNFT = () => {
         return (
           <PublishNFTComponent
             name={data.itemname}
+            publishType={publishType}
             tokenContract={data.contractaddress}
             nftType={data.standard}
             tokenId={data.id}

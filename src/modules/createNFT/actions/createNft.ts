@@ -78,8 +78,8 @@ export const createNft = createSmartAction(
               itemname: name,
               itemsymbol: 'BOUNCE',
               owneraddress: address,
-              ownername: 'foobar',
-              standard: standard === NftType.ERC721 ? 1 : 2,
+              ownername: '', // TODO: Update
+              standard: standard,
               supply: standard === NftType.ERC721 ? 1 : supply, // is supply an integer?
             };
 

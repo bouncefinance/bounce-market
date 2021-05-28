@@ -21,9 +21,14 @@ import { fetchCurrency } from './fetchCurrency';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { fromWei } from '../../common/utils/fromWei';
 import { AuctionState } from '../../common/const/AuctionState';
+import { FixedSwapState } from '../../common/const/FixedSwapState';
+
+export type AuctionRole = 'owner' | 'buyer' | 'others';
 
 interface IWeb3FixedAuctionDetails extends IFixedAuctionDetails {}
-interface IWeb3EnglishAuctionDetails extends IEnglishAuctionDetails {}
+interface IWeb3EnglishAuctionDetails extends IEnglishAuctionDetails {
+  role: AuctionRole;
+}
 
 export type IFetchWeb3PoolDetailsData =
   | IWeb3FixedAuctionDetails
@@ -105,16 +110,16 @@ export const fetchWeb3PoolDetails = createSmartAction<
                       parseInt(swappedAmount0Pool) <
                       parseInt(pools.amountTotal0)
                     ) {
-                      return AuctionState.Live;
+                      return FixedSwapState.Live;
                     } else if (
                       parseInt(swappedAmount0Pool) ===
                       parseInt(pools.amountTotal0)
                     ) {
-                      return AuctionState.Filled;
+                      return FixedSwapState.Completed;
                     } else if (creatorCanceledPool) {
-                      return AuctionState.Canceled;
+                      return FixedSwapState.Canceled;
                     } else {
-                      return AuctionState.Closed;
+                      return FixedSwapState.Claimed;
                     }
                   })(),
                   tokenContract: pools.token0,
@@ -127,7 +132,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   BounceEnglishAuctionNFT,
                   getEnglishAuctionContract(chainId),
                 );
-                const pools = await BounceEnglishAuctionNFT_CT.methods
+                const pool = await BounceEnglishAuctionNFT_CT.methods
                   .pools(poolId)
                   .call();
                 const currentBidderAmount = await BounceEnglishAuctionNFT_CT.methods
@@ -142,91 +147,105 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const creatorClaimedPool = await BounceEnglishAuctionNFT_CT.methods
                   .creatorClaimedP(poolId)
                   .call();
-                const reserveAmount1Pool = await BounceEnglishAuctionNFT_CT.methods
+                const reserveAmount = await BounceEnglishAuctionNFT_CT.methods
                   .reserveAmount1P(poolId)
                   .call();
-                const currentBidderPool = await BounceEnglishAuctionNFT_CT.methods
+                const lastBidderAddress = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderP(poolId)
                   .call();
-                let showPrice = pools.amountMin1;
+                let showPrice = pool.amountMin1;
 
                 if (currentBidderAmount !== '0') {
                   showPrice = currentBidderAmount;
                 }
 
                 const curTime = new Date().getTime() / 1000;
-                const diffTime = parseInt(pools.closeAt) - curTime;
+                const diffTime = parseInt(pool.closeAt) - curTime;
 
                 const {
                   data: { decimals },
                 } = throwIfDataIsEmptyOrError(
                   await store.dispatchRequest(
                     fetchCurrency(
-                      { unitContract: pools.token1 },
+                      { unitContract: pool.token1 },
                       { silent: true },
                     ),
                   ),
                 );
 
                 const amountMin1 = new BigNumber(
-                  fromWei(pools.amountMin1, decimals),
+                  fromWei(pool.amountMin1, decimals),
                 );
 
                 return {
-                  amountMax1: new BigNumber(
-                    fromWei(pools.amountMax1, decimals),
-                  ),
+                  amountMax1: new BigNumber(fromWei(pool.amountMax1, decimals)),
                   amountMin1,
                   amountMinIncr1: new BigNumber(
-                    fromWei(pools.amountMinIncr1, decimals),
+                    fromWei(pool.amountMinIncr1, decimals),
                   ),
                   bidderClaimed: true, // TODO
-                  closeAt: new Date(parseInt(pools.closeAt) * 1000),
+                  closeAt: new Date(parseInt(pool.closeAt) * 1000),
                   createTime: new Date(), // TODO
-                  creator: pools.creator,
+                  creator: pool.creator,
                   creatorClaimed: true, // TODO
-                  duration: pools.duration,
+                  duration: pool.duration,
                   lastestBidAmount:
                     currentBidderAmount !== '0'
                       ? new BigNumber(fromWei(currentBidderAmount, decimals))
                       : amountMin1,
-                  name: pools.name,
-                  nftType: parseInt(pools.nftType),
+                  name: pool.name,
+                  nftType: parseInt(pool.nftType),
                   poolId,
                   state: (() => {
-                    if (diffTime < 0) {
-                      if (
-                        new BigNumber(currentBidderAmount)
-                          .dividedBy(reserveAmount1Pool)
-                          .isGreaterThanOrEqualTo(1) ||
-                        new BigNumber(currentBidderAmount)
-                          .dividedBy(pools.amountMax1)
-                          .isGreaterThanOrEqualTo(1)
-                      ) {
-                        return AuctionState.Closed;
-                      } else if (
-                        new BigNumber(currentBidderAmount)
-                          .dividedBy(reserveAmount1Pool)
-                          .isLessThan(1)
-                      ) {
-                        return AuctionState.Failed;
-                      } else {
-                        return AuctionState.Closed;
-                      }
-                    } else {
-                      return AuctionState.Live;
+                    if (
+                      new BigNumber(currentBidderAmount).isGreaterThanOrEqualTo(
+                        pool.amountMax1,
+                      )
+                    ) {
+                      return AuctionState.CompletedByDirectPurchase;
                     }
-                  })(),
-                  tokenContract: pools.token0,
-                  unitContract: pools.token1,
-                  tokenAmount0: pools.tokenAmount0,
-                  tokenId: parseInt(pools.tokenId),
 
+                    if (
+                      diffTime < 0 &&
+                      new BigNumber(currentBidderAmount).isGreaterThanOrEqualTo(
+                        reserveAmount,
+                      )
+                    ) {
+                      return AuctionState.CompletedByTime;
+                    }
+
+                    if (
+                      diffTime < 0 &&
+                      new BigNumber(currentBidderAmount).isLessThan(
+                        reserveAmount,
+                      )
+                    ) {
+                      return AuctionState.NotSoldByReservePrice;
+                    }
+
+                    return AuctionState.Live;
+                  })(),
+                  tokenContract: pool.token0,
+                  unitContract: pool.token1,
+                  tokenAmount0: pool.tokenAmount0,
+                  tokenId: parseInt(pool.tokenId),
+
+                  role: (() => {
+                    if (lastBidderAddress === address) {
+                      return 'buyer';
+                    }
+
+                    if (pool.creator === address) {
+                      return 'creator';
+                    }
+
+                    return 'others';
+                  })(),
                   bidCountPool,
                   myClaimedPool,
-                  currentBidderPool,
+                  currentBidderPool: lastBidderAddress,
                   creatorClaimedPool,
-                  reserveAmount1Pool,
+                  reserveAmount1Pool: reserveAmount,
                   showPrice,
                 } as IFetchWeb3PoolDetailsData;
               }

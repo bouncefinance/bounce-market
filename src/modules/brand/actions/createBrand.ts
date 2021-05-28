@@ -9,8 +9,11 @@ import { getBrandContract } from './const';
 import { queryBrandAddress } from './queryCreatedBrand';
 import { IUpdateBrandInfoPayload, updateBrandInfo } from './updateBrandInfo';
 import { NftType } from 'modules/createNFT/actions/createNft';
-import { BoucneErc1155Bytecode, BoucneErc721Bytecode, BounceNFTFactory } from '../../web3/contracts';
-import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
+import {
+  BoucneErc1155Bytecode,
+  BoucneErc721Bytecode,
+  BounceNFTFactoryV2,
+} from '../../web3/contracts';
 import { throwIfError } from '../../common/utils/throwIfError';
 
 export const createBrand = createSmartAction(
@@ -55,12 +58,12 @@ export const createBrand = createSmartAction(
             };
 
             const contract = new web3.eth.Contract(
-              BounceNFTFactory,
+              BounceNFTFactoryV2,
               getBrandContract(chainId),
             );
             const _name = brandName;
             const _symbol = brandSymbol;
-            const _uri = 'http://fangible.com/';
+            const _uri = '';
             const _mode = 0; //0 only owner can mint; 1 whitelist address can mint; 2: everyone
             const bytecode_721 = BoucneErc721Bytecode;
             const bytecode_1155 = BoucneErc1155Bytecode;
@@ -76,11 +79,17 @@ export const createBrand = createSmartAction(
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand721Created;
                     brandInfo.contractaddress = createEvent.returnValues.nft;
-                    resolve(
-                      throwIfError(
-                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
-                      ),
-                    );
+                    try {
+                      resolve(
+                        throwIfError(
+                          await store.dispatchRequest(
+                            updateBrandInfo(brandInfo),
+                          ),
+                        ),
+                      );
+                    } catch (error) {
+                      reject(error);
+                    }
                   })
                   .on('error', (error: Error) => {
                     reject(error);
@@ -97,12 +106,17 @@ export const createBrand = createSmartAction(
                   .on('receipt', async (receipt: any) => {
                     const createEvent = receipt.events.Brand1155Created;
                     brandInfo.contractaddress = createEvent.returnValues.nft;
-
-                    resolve(
-                      throwIfDataIsEmptyOrError(
-                        await store.dispatchRequest(updateBrandInfo(brandInfo)),
-                      ),
-                    );
+                    try {
+                      resolve(
+                        throwIfError(
+                          await store.dispatchRequest(
+                            updateBrandInfo(brandInfo),
+                          ),
+                        ),
+                      );
+                    } catch (error) {
+                      reject(error);
+                    }
                   })
                   .on('error', (error: Error) => {
                     reject(error);

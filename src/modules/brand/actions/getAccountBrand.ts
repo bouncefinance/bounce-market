@@ -9,10 +9,13 @@ RequestAction<IApiBrandInfo, IBrandInfo[]>
   GetAccountBrandAction,
   (address: string) => ({
     request: {
-      url: `/api/v2/main/auth/getaccountbrands`,
+      url: `/api/v2/main/getbrandsbypage`,
       method: 'post',
       data: {
-        accountaddress: address
+        accountaddress: address,
+        limit: 1000,
+        offset: 0,
+        orderfiled: 1,
       }
     },
     meta: {

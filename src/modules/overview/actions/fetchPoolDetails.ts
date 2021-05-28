@@ -7,6 +7,7 @@ import Web3 from 'web3';
 import { AuctionType } from '../api/auctionType';
 import { AuctionState } from '../../common/const/AuctionState';
 import { POOL_DETAILS_URL } from '../../common/conts';
+import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 interface IApiFixedAuctionDetails {
   amount_total0: number;
@@ -17,7 +18,7 @@ interface IApiFixedAuctionDetails {
   nftType: 0;
   poolId: number;
   price: string;
-  state: AuctionState;
+  state: FixedSwapState; // Update
   token0: string;
   token1: string;
   tokenId: number;
@@ -59,7 +60,7 @@ export interface IFixedAuctionDetails {
   nftType: NftType;
   poolId: number;
   price: BigNumber;
-  state: AuctionState;
+  state: FixedSwapState;
   tokenContract: Address;
   unitContract: Address;
   tokenId: number;

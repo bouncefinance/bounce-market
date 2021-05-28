@@ -18,6 +18,7 @@ import { Img } from '../../../uiKit/Img';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import React from 'react';
 import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
+import { BrandRoutesConfig } from '../../../brand/BrandRoutes';
 
 const SearchItems = ({
   data,
@@ -97,8 +98,11 @@ const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
     <div className={classes.group}>
       <div className={classes.title}>{t('header.search.brands')}</div>
       {data.map((item: ISearchBrand) => (
-        <div className={classes.content} key={item.id}>
-          {/* TODO: need link to brand, task FAN-92 */}
+        <RouterLink
+          to={BrandRoutesConfig.Brand.generatePath(item.id)}
+          className={classes.content}
+          key={item.id}
+        >
           <div className={classes.preview}>
             <Img
               src={item.previewUrl}
@@ -110,7 +114,7 @@ const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
           <div className={classes.item}>
             <div className={classes.name}>{item.name}</div>
           </div>
-        </div>
+        </RouterLink>
       ))}
     </div>
   );
@@ -128,7 +132,6 @@ const SearchAccount = ({ data }: { data: ISearchAccount[] }) => {
       <div className={classes.title}>{t('header.search.users')}</div>
       {data.map((item: ISearchAccount) => (
         <div className={classes.content} key={item.id}>
-          {/* TODO: need link to user account, task FAN-92 */}
           <DefaultRandomAvatar
             className={classes.avatar}
             src={item.previewUrl}
@@ -146,15 +149,17 @@ const SearchResult = ({
   loading,
   data,
   pools,
+  handleClose,
 }: {
   loading?: boolean;
   data: ISearchResult;
   pools: IFetchPoolDetailsData[];
+  handleClose: () => void;
 }) => {
   const classes = useSearchResultStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={handleClose}>
       {loading ? (
         <QueryLoadingCentered />
       ) : (

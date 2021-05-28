@@ -10,7 +10,7 @@ interface IApiFetchPoolsWeightData {
     id: number;
     poolid: number;
     poolweight: number;
-    standard: 0 | 1 | 2;
+    standard: 0 | 1;
     updated_at: string;
   }[];
   total: number;

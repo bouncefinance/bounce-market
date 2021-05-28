@@ -32,6 +32,8 @@ import { fetchItem } from '../../actions/fetchItem';
 import { BuyDialog } from '../../components/BuyDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
+import { FixedSwapState } from '../../../common/const/FixedSwapState';
+import { claim } from '../../../overview/actions/claim';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -41,16 +43,43 @@ export const BuyNFT = () => {
   }>();
   const poolId = parseInt(poolIdParam, 10);
   const dispatch = useDispatchRequest();
-  const { opened: openedBid, toggleDialog: toggleBidDialog } = useDialog();
+  const {
+    opened: openedBid,
+    open: openBidDialog,
+    close: closeBidDialog,
+  } = useDialog();
   const {
     opened: openedFixedBuy,
-    toggleDialog: toggleFixedBuyDialog,
+    open: openFixedBuyDialog,
+    close: closeFixedBuyDialog,
   } = useDialog();
   const {
     opened: openedEnglishBuy,
-    toggleDialog: toggleEnglishBuyDialog,
+    open: openEnglishBuyDialog,
+    close: closeEnglishBuyDialog,
   } = useDialog();
   const { push } = useHistory();
+
+  const init = useCallback(() => {
+    dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(response => {
+      const { data } = throwIfDataIsEmptyOrError(response);
+      dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
+      // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
+      dispatch(fetchCurrency({ unitContract: data.unitContract }));
+    });
+  }, [dispatch, poolType, poolId]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
+
+  const handleClaim = useCallback(() => {
+    dispatch(claim({ poolId })).then(({ error }) => {
+      if (!error) {
+        push(ProfileRoutesConfig.UserProfile.generatePath());
+      }
+    });
+  }, [dispatch, poolId, push]);
 
   const handleBuyFixed = useCallback(
     (values: {
@@ -102,21 +131,21 @@ export const BuyNFT = () => {
         }),
       ).then(({ error }) => {
         if (!error) {
-          push(ProfileRoutesConfig.UserProfile.generatePath());
+          closeBidDialog();
+          closeFixedBuyDialog();
+          closeEnglishBuyDialog();
+          init();
         }
       });
     },
-    [dispatch, push],
+    [
+      closeBidDialog,
+      closeEnglishBuyDialog,
+      closeFixedBuyDialog,
+      dispatch,
+      init,
+    ],
   );
-
-  useEffect(() => {
-    dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(response => {
-      const { data } = throwIfDataIsEmptyOrError(response);
-      dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
-      // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
-      dispatch(fetchCurrency({ unitContract: data.unitContract }));
-    });
-  }, [dispatch, poolType, poolId]);
 
   return (
     <Queries<
@@ -264,17 +293,21 @@ export const BuyNFT = () => {
                           : poolDetails.lastestBidAmount
                       }
                       cryptoCurrency="BNB"
-                      onBidClick={toggleBidDialog(true)}
-                      onBuyClick={toggleEnglishBuyDialog(true)}
+                      onBidClick={openBidDialog}
+                      onBuyClick={openEnglishBuyDialog}
                       disabled={poolDetails.state !== AuctionState.Live}
+                      state={poolDetails.state}
+                      role={poolDetails.role}
+                      onClaim={handleClaim}
                     />
                   ) : (
                     <InfoPrices
                       price={poolDetails.price.multipliedBy(currency.priceUsd)}
                       cryptoPrice={poolDetails.price}
                       cryptoCurrency="BNB"
-                      onBuyClick={toggleFixedBuyDialog(true)}
-                      disabled={poolDetails.state !== AuctionState.Live}
+                      onBuyClick={openFixedBuyDialog}
+                      disabled={poolDetails.state !== FixedSwapState.Live}
+                      onClaim={handleClaim}
                     />
                   )}
 
@@ -321,7 +354,7 @@ export const BuyNFT = () => {
                           });
                         }}
                         isOpen={openedBid}
-                        onClose={toggleBidDialog(false)}
+                        onClose={closeBidDialog}
                         currency="BNB"
                         owner={ownerTitle}
                         ownerAvatar={undefined}
@@ -353,13 +386,14 @@ export const BuyNFT = () => {
                           });
                         }}
                         isOpen={openedEnglishBuy}
-                        onClose={toggleEnglishBuyDialog(false)}
+                        onClose={closeEnglishBuyDialog}
                         owner={ownerTitle}
                         ownerAvatar={undefined}
                         isOwnerVerified={false}
                         readonly={true}
                         category={item.category}
                         disabled={loading}
+                        maxQuantity={item.supply}
                       />
                     )}
                   </Mutation>
@@ -382,11 +416,11 @@ export const BuyNFT = () => {
                           });
                         }}
                         isOpen={openedFixedBuy}
-                        onClose={toggleFixedBuyDialog(false)}
+                        onClose={closeFixedBuyDialog}
                         owner={ownerTitle}
                         ownerAvatar={undefined}
                         isOwnerVerified={false}
-                        readonly={item.standard === NftType.ERC721}
+                        readonly={true}
                         category={item.category}
                         disabled={loading}
                         maxQuantity={poolDetails.quantity}

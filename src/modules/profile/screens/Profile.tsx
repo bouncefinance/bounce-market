@@ -15,7 +15,7 @@ import { NoItems } from '../../common/components/NoItems';
 import { ProductCard } from '../../common/components/ProductCard';
 import { Queries } from '../../common/components/Queries/Queries';
 import { AuctionState } from '../../common/const/AuctionState';
-import { RoutesConfiguration } from '../../createNFT/Routes';
+import { PublishNFTType, RoutesConfiguration } from '../../createNFT/Routes';
 import { IItem } from '../../overview/api/getItems';
 import { fetchAllNftByUser } from '../actions/fetchAllNftByUser';
 import { fetchProfileInfo } from '../actions/fetchProfileInfo';
@@ -134,26 +134,26 @@ export const Profile = () => {
       },
       ...(featuresConfig.profileLiked
         ? [
-            {
-              value: ProfileTab.liked,
-              label: t('profile.tabs.liked'),
-              count: 0,
-            },
-          ]
+          {
+            value: ProfileTab.liked,
+            label: t('profile.tabs.liked'),
+            count: 0,
+          },
+        ]
         : []),
       ...(featuresConfig.profileFollowers
         ? [
-            {
-              value: ProfileTab.following,
-              label: t('profile.tabs.following'),
-              count: 0,
-            },
-            {
-              value: ProfileTab.followers,
-              label: t('profile.tabs.followers'),
-              count: 0,
-            },
-          ]
+          {
+            value: ProfileTab.following,
+            label: t('profile.tabs.following'),
+            count: 0,
+          },
+          {
+            value: ProfileTab.followers,
+            label: t('profile.tabs.followers'),
+            count: 0,
+          },
+        ]
         : []),
     ],
     [],
@@ -231,9 +231,9 @@ export const Profile = () => {
                         href={
                           item.poolId && item.poolType
                             ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                                item.poolId,
-                                item.poolType,
-                              )
+                              item.poolId,
+                              item.poolType,
+                            )
                             : ''
                         }
                         // status={item.status}
@@ -258,10 +258,17 @@ export const Profile = () => {
                             },
                           ],
                         }}
-                        toSale={RoutesConfiguration.PublishNft.generatePath(
-                          item.contractAddress,
-                          item.id,
-                        )}
+                        toSale={item.brandId === 10
+                          ? RoutesConfiguration.PublishNft.generatePath(
+                            PublishNFTType.NFT,
+                            item.contractAddress,
+                            item.id,
+                          )
+                          : RoutesConfiguration.PublishNft.generatePath(
+                            PublishNFTType.BrandNFT,
+                            item.contractAddress,
+                            item.id,
+                          )}
                       />
                     ))}
                   </ProductCards>

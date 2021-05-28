@@ -19,7 +19,7 @@ export const EditBrandImgAction = 'BrandActions/editBrandImg';
 const FACTORY_CONTRACT_ADDRESS = {
   RINKEBY: '0xb9BaC7b8C8ca157035E78e764bC3AD7D7BcCAb3A',
   HOBI: '0x41939809dB201c8531D082f95Fc5BEc187Fe2803',
-  BNB_MAINNET_TEST_ENV: process.env.REACT_APP_BRAND_CONTRACT_ADDRESS,
+  BNB_MAINNET_TEST_ENV: process.env.REACT_APP_BRAND_CONTRACT_ADDRESS_V2,
 };
 
 export const getBrandContract = (chainID: number) => {

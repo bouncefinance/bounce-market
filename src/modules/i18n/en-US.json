@@ -242,9 +242,12 @@
       "duration": "Expiration Date"
     },
     "tooltip": {
-      "directPurchase": "TODO Direct purchase price description",
-      "reservePrice": "TODO Reserve price description",
-      "duration": "TODO Expiration Date description"
+      "directPurchase": "A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price.",
+      "reservePrice": "Setting a reserve price creates a hidden limit,If you receive no bids equal to or greater than your reserve,your auction will not be sold.",
+      "duration": "Auction will be completed in this time"
+    },
+    "error": {
+      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price < Direct purchase price"
     }
   },
   "profile": {
@@ -260,7 +263,7 @@
     "edit-cover": "Edit profile cover",
     "no-items": {
       "title": "No items found",
-      "descr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+      "descr": "You have not created any NFTs yet",
       "btn": "Browse market"
     },
     "edit": {
@@ -317,7 +320,26 @@
   },
   "change-wallet": {
     "title": "Wrong network",
-    "description": "Change network to Binance SmartChain",
-    "submit": "Change to SmartChain"
+    "description": "Change network to Binance Smart Chain",
+    "submit": "Change to Smart Chain",
+    "network-change-error": "Can't setup the BSC network on metamask because provider is undefined."
+  },
+  "info-prices": {
+    "claim": "Claim",
+    "status": {
+      "CompletedByDirectPurchase": {
+        "owner": "Item has been sold",
+        "buyer": "Item has been sold",
+        "others": "Item has been sold"
+      },
+      "NotSoldByReservePrice": {
+        "owner": "Item has been sold",
+        "buyer": "Item has been sold",
+        "others": "Item has been sold"
+      },
+      "Claimed": {
+        "default": "Item has been sold"
+      }
+    }
   }
 }
