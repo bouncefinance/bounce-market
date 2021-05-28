@@ -15,6 +15,7 @@ import { TabItems as TabItemsComponent } from 'modules/profile/components/TabIte
 import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
+import { ResponseData } from '../../../../../common/types/ResponseData';
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();
@@ -43,7 +44,9 @@ export const TabItems = () => {
 
   return hasItems || allNftByUserQuery.loading ? (
     <TabItemsComponent>
-      <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
+      <Queries<ResponseData<typeof fetchAllNftByUser>>
+        requestActions={[fetchAllNftByUser]}
+      >
         {({ data }) => (
           <ProductCards>
             {data?.map((item: IItem) => (
