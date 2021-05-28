@@ -35,7 +35,8 @@ export const Movers = (sectionProps: ISectionProps) => {
       priceType="BNB"
       endDate={item.closeAt}
       copies={item.supply}
-      likes={item.likeCount || 0}
+      //TODO: https://fangible.atlassian.net/browse/FAN-124
+      likes={undefined}
       href={
         item.poolId && item.poolType
           ? BuyNFTRoutesConfig.DetailsNFT.generatePath(

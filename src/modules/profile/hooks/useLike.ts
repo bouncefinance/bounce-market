@@ -37,9 +37,9 @@ export const useLike = ({
   category,
   poolId,
   /**
-   * required for urgent counter update
+   * likes count required for urgent counter update
    */
-  count = 0,
+  count,
 }: IUseLikeProps) => {
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
@@ -59,7 +59,12 @@ export const useLike = ({
       return;
     }
 
-    setLikeCount(val => (isLiked ? (val === 0 ? val : val - 1) : val + 1));
+    setLikeCount(val => {
+      if (typeof val !== 'number') {
+        return val;
+      }
+      return isLiked ? val - 1 : val + 1;
+    });
 
     dispatch(
       dealAccountLike({
@@ -86,6 +91,6 @@ export const useLike = ({
     isLikeDisabled,
     isLiked,
     onLikeClick,
-    likeCount: likeCount === 0 && isLiked ? 1 : likeCount,
+    likeCount,
   };
 };

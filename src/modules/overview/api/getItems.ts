@@ -5,7 +5,6 @@ import { NftType } from '../../createNFT/actions/createNft';
 import { AuctionType } from './auctionType';
 
 export interface IApiItem {
-  likecount: number;
   brandid: number;
   category: 'image';
   channel: string;
@@ -34,7 +33,6 @@ export interface IApiItem {
 }
 
 export interface IItem {
-  likeCount: number;
   brandId: number;
   category: 'image';
   channel: string;
@@ -68,7 +66,6 @@ export interface IItem {
 
 export function mapItem(item: IApiItem): IItem {
   return {
-    likeCount: item.likecount,
     brandId: item.brandid,
     category: item.category,
     channel: item.channel,

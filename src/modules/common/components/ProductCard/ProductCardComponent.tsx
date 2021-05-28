@@ -68,7 +68,7 @@ export const ProductCardComponent = ({
   priceType,
   endDate,
   copies,
-  likes = 0,
+  likes,
   isLikeDisabled = false,
   isLiked = false,
   onLikeClick,
@@ -155,7 +155,7 @@ export const ProductCardComponent = ({
         <HeartIcon className={classes.icon} />
       </ButtonBase>
 
-      {isLiked && likes === 0 ? 1 : likes}
+      {likes}
     </div>
   );
 
