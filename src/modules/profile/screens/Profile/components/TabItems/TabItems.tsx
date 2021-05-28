@@ -64,6 +64,7 @@ export const TabItems = () => {
                 // status={item.status}
                 // UPDATE price
                 price={item.poolId ? item.price : undefined}
+                priceType="BNB"
                 isOnSale={item.state === AuctionState.Live}
                 copies={item.supply}
                 MediaProps={{
