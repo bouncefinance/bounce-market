@@ -1,5 +1,6 @@
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
+import { featuresConfig } from '../../../common/conts';
 
 interface IApiSearchResult {
   code: 1;
@@ -113,16 +114,18 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
       .map(item => ({
         id: item.id,
         name: item.brandname,
-        previewUrl: item.bandimgurl,
-      }))
-      .slice(0, 3),
-    accounts: accounts
-      .map(item => ({
-        id: item.id,
-        name: item.fullnam,
         previewUrl: item.imgurl,
       }))
       .slice(0, 3),
+    accounts: featuresConfig.usersInSearch
+      ? accounts
+          .map(item => ({
+            id: item.id,
+            name: item.fullnam,
+            previewUrl: item.imgurl,
+          }))
+          .slice(0, 3)
+      : [],
   };
 };
 
