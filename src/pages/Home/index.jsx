@@ -35,7 +35,6 @@ import to from 'await-to-js'
 
 
 const HOMETOPLISTNUMBER = 8
-const HOMETOPFORNUMBER = 10
 export default function Index () {
   // const { state } = useContext(myContext);
   const { sign_Axios } = useAxios()
@@ -45,10 +44,10 @@ export default function Index () {
   // const { data } = useQuery(QueryTradePools)
 
   const initPools = async () => {
-    let offset = 0
+    // let offset = 0
     let items = [], nftMap = new Map()
     const getNftList = async () => {
-      const weightRes = await sign_Axios.post(Controller.pools.getpoolsinfobypage, { offset, limit: HOMETOPFORNUMBER, orderweight: 1 })
+      const weightRes = await sign_Axios.post('/api/v2/main/getfastmoves', { limit: 25 })
       if (weightRes.data.code === 1) {
         // artistpoolweight poolweight poolid id standard
         
@@ -109,7 +108,7 @@ export default function Index () {
         items = items.filter(e => e.contractaddress)
         // console.log('items:', items)
         if (items.length < HOMETOPLISTNUMBER) {
-            offset+=1
+            // offset+=1
             getNftList()
         }
         setItemList(items.filter((_, i) => i < HOMETOPLISTNUMBER))
