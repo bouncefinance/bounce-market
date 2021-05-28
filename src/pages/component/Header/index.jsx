@@ -392,10 +392,12 @@ export default function Index() {
 		if (active && (chainId === 56 || chainId === 128)) {
 			getUserInfo();
 			window.localStorage.LastChainId = chainId;
+			window.localStorage.currentChainId = chainId;
 			return;
 		}
 
 		window.localStorage.LastChainId = chainId;
+		window.localStorage.currentChainId = chainId;
 
 		getUserInfo();
 		// eslint-disable-next-line
