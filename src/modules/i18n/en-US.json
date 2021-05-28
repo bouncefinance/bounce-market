@@ -104,7 +104,7 @@
       "supply": "Supply"
     },
     "channelOption": {
-      "Fine Arts": "Fine arts",
+      "FineArts": "Fine arts",
       "Sports": "Sports",
       "Comics": "Comicbooks"
     },
@@ -198,7 +198,7 @@
       "supply": "Supply"
     },
     "channelOption": {
-      "Fine Arts": "Fine arts",
+      "FineArts": "Fine arts",
       "Sports": "Sports",
       "Comics": "Comicbooks"
     },
