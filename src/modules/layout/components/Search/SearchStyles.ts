@@ -51,6 +51,9 @@ export const useSearchStyles = makeStyles<Theme>(theme => ({
   inputBase: {
     padding: '0 20px 0 48px',
     height: '100%',
+    '&::-webkit-search-decoration, &::-webkit-search-results-button, &::-webkit-search-results-decoration, &::-webkit-search-cancel-button': {
+      appearance: 'none',
+    },
   },
   searchResult: {
     position: 'absolute',
