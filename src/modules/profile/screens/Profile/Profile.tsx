@@ -29,6 +29,7 @@ import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { uid } from 'react-uid';
+import { TabBids } from './components/TabBids';
 import { TabItems } from './components/TabItems';
 import { useProfileStyles } from './useProfileStyles';
 
@@ -110,6 +111,10 @@ export const Profile = () => {
       {
         value: ProfileTab.items,
         label: t('profile.tabs.my-items'),
+      },
+      {
+        value: ProfileTab.bids,
+        label: t('profile.tabs.my-bids'),
       },
       {
         value: ProfileTab.brands,
@@ -209,6 +214,10 @@ export const Profile = () => {
 
         <TabPanel value={tab} index={ProfileTab.brands}>
           <TabBrands />
+        </TabPanel>
+
+        <TabPanel value={tab} index={ProfileTab.bids}>
+          <TabBids />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>
