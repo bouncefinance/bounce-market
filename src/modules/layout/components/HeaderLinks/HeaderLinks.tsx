@@ -5,6 +5,7 @@ import React, { useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { useHeaderLinksStyles } from './HeaderLinksStyles';
+import classNames from 'classnames';
 
 interface IHeaderLinksProps {
   items: {
@@ -25,7 +26,10 @@ export const HeaderLinksComponent = ({ items }: IHeaderLinksProps) => {
           key={uid(label)}
           href={href}
           variant="text"
-          className={classes.link}
+          className={classNames(
+            classes.link,
+            window.location.pathname.indexOf(href) !== -1 && classes.activeLink,
+          )}
         >
           {label}
         </Button>
