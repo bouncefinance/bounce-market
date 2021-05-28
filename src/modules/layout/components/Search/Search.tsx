@@ -54,7 +54,7 @@ export const Search = ({ className, focus }: ISearchProps) => {
     handleSearch(event.target.value);
   };
 
-  const handleClickAway = () => {
+  const handleClose = () => {
     setShowResult(false);
   };
 
@@ -82,7 +82,7 @@ export const Search = ({ className, focus }: ISearchProps) => {
         />
       </div>
       {showResult && (
-        <ClickAwayListener onClickAway={handleClickAway}>
+        <ClickAwayListener onClickAway={handleClose}>
           <div className={classes.searchResult}>
             <Queries<
               ResponseData<typeof getByLikeStr>,
@@ -96,6 +96,7 @@ export const Search = ({ className, focus }: ISearchProps) => {
                   loading={loading}
                   data={data}
                   pools={pools.list}
+                  handleClose={handleClose}
                 />
               )}
             </Queries>

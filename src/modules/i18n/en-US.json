@@ -263,7 +263,7 @@
     "edit-cover": "Edit profile cover",
     "no-items": {
       "title": "No items found",
-      "descr": " ",
+      "descr": "You have not created any NFTs yet",
       "btn": "Browse market"
     },
     "edit": {
@@ -316,8 +316,9 @@
   },
   "change-wallet": {
     "title": "Wrong network",
-    "description": "Change network to Binance SmartChain",
-    "submit": "Change to SmartChain"
+    "description": "Change network to Binance Smart Chain",
+    "submit": "Change to Smart Chain",
+    "network-change-error": "Can't setup the BSC network on metamask because provider is undefined."
   },
   "info-prices": {
     "claim": "Claim",

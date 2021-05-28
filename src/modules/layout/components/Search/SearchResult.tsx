@@ -146,15 +146,17 @@ const SearchResult = ({
   loading,
   data,
   pools,
+  handleClose,
 }: {
   loading?: boolean;
   data: ISearchResult;
   pools: IFetchPoolDetailsData[];
+  handleClose: () => void;
 }) => {
   const classes = useSearchResultStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={handleClose}>
       {loading ? (
         <QueryLoadingCentered />
       ) : (
