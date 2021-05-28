@@ -304,10 +304,10 @@ export default function BrandsByType() {
     const [tokenList_2, setTokenList_2] = useState();
 
     useEffect(() => {
-        if (!account || !tokenList_2 || !brandInfo.contractaddress) return
-        console.log(tokenList_2)
-
-        if (String(brandInfo.owneraddress).toLowerCase() !== String(account).toLowerCase()) {
+        if (!account  || !tokenList_2 || !brandInfo.contractaddress) return
+        // console.log('brandInfo',brandInfo)
+        
+        if(String(brandInfo.owneraddress).toLowerCase() !== String(account).toLowerCase()){
             history.push(`/AirHome/${brandInfo.id}/FineArts`)
         }
         const brand_erc721 = tokenList_2.brandserc721.filter(item => String(item.contract_addr).toLowerCase() === String(brandInfo.contractaddress).toLowerCase())
@@ -445,7 +445,6 @@ export default function BrandsByType() {
 
     useEffect(() => {
         if (!account || !contract) return;
-
         getBrandTradeItems()
         // eslint-disable-next-line
     }, [account, contract, brandInfo.standard]);
