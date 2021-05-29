@@ -68,7 +68,6 @@ export const createBrand = createSmartAction(
             const _mode = 0; //0 only owner can mint; 1 whitelist address can mint; 2: everyone
             const bytecode_721 = BoucneErc721Bytecode;
             const bytecode_1155 = BoucneErc1155Bytecode;
-            debugger;
             if (standard === NftType.ERC721) {
               return await new Promise((resolve, reject) => {
                 contract.methods
