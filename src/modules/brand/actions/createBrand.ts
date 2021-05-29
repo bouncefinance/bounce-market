@@ -15,6 +15,7 @@ import {
   BounceNFTFactoryV2,
 } from '../../web3/contracts';
 import { throwIfError } from '../../common/utils/throwIfError';
+import { REACT_APP_BRAND_BASEURI } from 'modules/common/conts';
 
 export const createBrand = createSmartAction(
   'createBrand',
@@ -63,15 +64,15 @@ export const createBrand = createSmartAction(
             );
             const _name = brandName;
             const _symbol = brandSymbol;
-            const _uri = '';
+            const _uri = REACT_APP_BRAND_BASEURI;
             const _mode = 0; //0 only owner can mint; 1 whitelist address can mint; 2: everyone
             const bytecode_721 = BoucneErc721Bytecode;
             const bytecode_1155 = BoucneErc1155Bytecode;
-
+            debugger;
             if (standard === NftType.ERC721) {
               return await new Promise((resolve, reject) => {
                 contract.methods
-                  .createBrand721(bytecode_721, _name, _symbol, _mode)
+                  .createBrand721(bytecode_721, _uri, _name, _symbol, _mode)
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     brandInfo.txid = hash;
