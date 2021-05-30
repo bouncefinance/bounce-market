@@ -1,6 +1,6 @@
 export enum FixedSwapState {
-  Live,
-  Completed,
-  Canceled,
-  Claimed,
+  Live = 101,
+  Completed = 102,
+  Canceled = 103,
+  Claimed = 104,
 }

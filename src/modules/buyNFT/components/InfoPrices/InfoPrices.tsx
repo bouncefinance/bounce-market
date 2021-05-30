@@ -5,7 +5,8 @@ import React, { useCallback } from 'react';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
 import { AuctionState } from '../../../common/const/AuctionState';
-import { AuctionRole } from '../../../overview/actions/fetchWeb3PoolDetails';
+import { UserRole } from '../../../overview/actions/fetchWeb3PoolDetails';
+import { FixedSwapState } from '../../../common/const/FixedSwapState';
 
 interface IInfoPricesProps {
   price: BigNumber;
@@ -16,8 +17,9 @@ interface IInfoPricesProps {
   onBidClick?: () => void;
   onClaim?: () => void;
   endDate?: Date;
-  state?: AuctionState;
-  role?: AuctionRole;
+  state: AuctionState | FixedSwapState;
+  role?: UserRole;
+  onCancel?: () => void;
 }
 
 export const InfoPrices = ({
@@ -31,6 +33,7 @@ export const InfoPrices = ({
   onClaim,
   state,
   role,
+  onCancel,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
 
@@ -38,6 +41,23 @@ export const InfoPrices = ({
   const isTimeOver = endDate && new Date().getTime() > endDate.getTime();
 
   const renderButtons = useCallback(() => {
+    if (state === FixedSwapState.Live && role === 'creator') {
+      return (
+        <Button
+          variant="outlined"
+          fullWidth
+          onClick={onCancel}
+          disabled={disabled}
+        >
+          {t('info-prices.cancel')}
+        </Button>
+      );
+    }
+
+    if (state === FixedSwapState.Canceled) {
+      return <Typography>{t('info-prices.canceled')}</Typography>;
+    }
+
     if (
       state === AuctionState.CompletedByDirectPurchase ||
       state === AuctionState.CompletedByTime ||
@@ -138,7 +158,16 @@ export const InfoPrices = ({
         </Button>
       </>
     );
-  }, [disabled, isTimeOver, onBidClick, onBuyClick, onClaim, role, state]);
+  }, [
+    disabled,
+    isTimeOver,
+    onBidClick,
+    onBuyClick,
+    onCancel,
+    onClaim,
+    role,
+    state,
+  ]);
 
   return (
     <Grid container spacing={3} alignItems="center">

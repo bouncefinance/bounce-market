@@ -9,6 +9,8 @@ import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
 import { getPublishedCount } from '../../createNFT/utils/getPublishedCount';
+import { AuctionState } from '../../common/const/AuctionState';
+import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
@@ -109,9 +111,21 @@ export const fetchAllNftByUser: (
                   poolsCopy.splice(poolIndex, 1);
                   return {
                     ...item,
-                    supply: isEnglishAuction(pool)
-                      ? pool.tokenAmount0
-                      : pool.quantity,
+                    supply: (() => {
+                      if (isEnglishAuction(pool)) {
+                        if (pool.state <= AuctionState.Live) {
+                          return pool.tokenAmount0;
+                        }
+
+                        return 0;
+                      } else {
+                        if (pool.state <= FixedSwapState.Live) {
+                          return pool.quantity;
+                        } else {
+                          return 0;
+                        }
+                      }
+                    })(),
                     poolId: pool.poolId,
                     poolType: isEnglishAuction(pool)
                       ? AuctionType.EnglishAuction

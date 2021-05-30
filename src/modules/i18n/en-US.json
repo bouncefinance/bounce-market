@@ -322,6 +322,8 @@
   },
   "info-prices": {
     "claim": "Claim",
+    "cancel": "Cancel",
+    "canceled": "Canceled",
     "status": {
       "CompletedByDirectPurchase": {
         "creator": "Item has been sold",
