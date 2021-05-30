@@ -68,10 +68,12 @@ export const fetchAllNftByUser: (
               ) ?? []),
             ];
 
-            const items = ids.map((id, index) => ({
-              id,
-              contractAddress: cts[index],
-            }));
+            const items = ids
+              .map((id, index) => ({
+                id,
+                contractAddress: cts[index],
+              }))
+              .filter(item => item.id < 999999999);
 
             const data = (
               await Promise.all(
@@ -94,9 +96,9 @@ export const fetchAllNftByUser: (
             });
 
             const poolsCopy = pools ? [...pools.list] : [];
-
             return data
-              ?.map(item => {
+              ?.filter(item => item)
+              .map(item => {
                 const poolIndex = poolsCopy.findIndex(
                   pool => pool.tokenId === item.id,
                 );
