@@ -1,20 +1,22 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
+import { Address } from '../../common/types/unit';
+import { NftType } from './createNft';
 
 interface IApiItem {
-  balance: '1';
-  contract_addr: '0x479fce86f116665b8a4d07165a0eb7799a4aeb30';
+  balance: string;
+  contract_addr: string;
   contract_name: 'bounceNFT';
   description?: string;
   id: number;
   image: null;
   metadata: null;
   name: null;
-  owner_addr: '0x5fe96748b9f9f6df3b7f8c71cbd6b62e12997be2';
+  owner_addr: Address;
   provider_link: '';
-  token_id: '17102';
-  token_type: '721';
+  token_id: string;
+  token_type: '721' | '1155';
   token_uri: '';
 }
 
@@ -37,7 +39,7 @@ interface IItem {
   ownerAddress: string;
   providerLink: string;
   tokenId: number;
-  tokenType: '721';
+  tokenType: NftType;
   tokenUri: string;
 }
 
@@ -59,7 +61,7 @@ function mapItem(item: IApiItem): IItem {
     ownerAddress: item.owner_addr,
     providerLink: item.provider_link,
     tokenId: parseInt(item.token_id, 10),
-    tokenType: item.token_type,
+    tokenType: item.token_type === '721' ? NftType.ERC721 : NftType.ERC1155,
     tokenUri: item.token_uri,
   };
 }
