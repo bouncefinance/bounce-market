@@ -146,9 +146,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const currentBidderAmount = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderAmount1P(poolId)
                   .call();
-                const bidCountPool = await BounceEnglishAuctionNFT_CT.methods
-                  .bidCountP(poolId)
-                  .call();
                 const myClaimedPool = await BounceEnglishAuctionNFT_CT.methods
                   .myClaimedP(address, poolId)
                   .call();
@@ -161,11 +158,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const lastBidderAddress = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderP(poolId)
                   .call();
-                let showPrice = pool.amountMin1;
-
-                if (currentBidderAmount !== '0') {
-                  showPrice = currentBidderAmount;
-                }
 
                 const curTime = new Date().getTime() / 1000;
                 const diffTime = parseInt(pool.closeAt) - curTime;
@@ -241,7 +233,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   unitContract: pool.token1,
                   tokenAmount0: pool.tokenAmount0,
                   tokenId: parseInt(pool.tokenId),
-
                   role: (() => {
                     if (lastBidderAddress === address) {
                       return 'buyer';
@@ -253,12 +244,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
 
                     return 'others';
                   })(),
-                  bidCountPool,
-                  myClaimedPool,
-                  currentBidderPool: lastBidderAddress,
-                  creatorClaimedPool,
-                  reserveAmount1Pool: reserveAmount,
-                  showPrice,
                 } as IFetchWeb3PoolDetailsData;
               }
             })(),
