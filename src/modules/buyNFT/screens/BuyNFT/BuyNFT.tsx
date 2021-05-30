@@ -33,7 +33,9 @@ import { BuyDialog } from '../../components/BuyDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
 import { FixedSwapState } from '../../../common/const/FixedSwapState';
-import { claim } from '../../../overview/actions/claim';
+import { bidderClaim } from '../../../overview/actions/bidderClaim';
+import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
+import { creatorClaim } from '../../../overview/actions/creatorClaim';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -73,13 +75,29 @@ export const BuyNFT = () => {
     init();
   }, [init]);
 
-  const handleClaim = useCallback(() => {
-    dispatch(claim({ poolId })).then(({ error }) => {
+  const handleBidderClaim = useCallback(() => {
+    dispatch(bidderClaim({ poolId })).then(({ error }) => {
       if (!error) {
         push(ProfileRoutesConfig.UserProfile.generatePath());
       }
     });
   }, [dispatch, poolId, push]);
+
+  const handleCreatorClaim = useCallback(() => {
+    dispatch(creatorClaim({ poolId })).then(({ error }) => {
+      if (!error) {
+        push(ProfileRoutesConfig.UserProfile.generatePath());
+      }
+    });
+  }, [dispatch, poolId, push]);
+
+  const handleFixedSwapCancel = useCallback(() => {
+    dispatch(fixedSwapCancel({ poolId })).then(({ error }) => {
+      if (!error) {
+        init();
+      }
+    });
+  }, [dispatch, init, poolId]);
 
   const handleBuyFixed = useCallback(
     (values: {
@@ -298,17 +316,30 @@ export const BuyNFT = () => {
                       disabled={poolDetails.state !== AuctionState.Live}
                       state={poolDetails.state}
                       role={poolDetails.role}
-                      onClaim={handleClaim}
+                      onBidderClaim={handleBidderClaim}
+                      onCreatorClaim={handleCreatorClaim}
                     />
                   ) : (
-                    <InfoPrices
-                      price={poolDetails.price.multipliedBy(currency.priceUsd)}
-                      cryptoPrice={poolDetails.price}
-                      cryptoCurrency="BNB"
-                      onBuyClick={openFixedBuyDialog}
-                      disabled={poolDetails.state !== FixedSwapState.Live}
-                      onClaim={handleClaim}
-                    />
+                    <Mutation type={fixedSwapCancel.toString()}>
+                      {({ loading }) => (
+                        <InfoPrices
+                          price={poolDetails.price.multipliedBy(
+                            currency.priceUsd,
+                          )}
+                          cryptoPrice={poolDetails.price}
+                          cryptoCurrency="BNB"
+                          onBuyClick={openFixedBuyDialog}
+                          disabled={
+                            loading || poolDetails.state !== FixedSwapState.Live
+                          }
+                          onBidderClaim={handleBidderClaim}
+                          onCreatorClaim={handleCreatorClaim}
+                          state={poolDetails.state}
+                          role={poolDetails.role}
+                          onCancel={handleFixedSwapCancel}
+                        />
+                      )}
+                    </Mutation>
                   )}
 
                   {featuresConfig.infoTabs && (

@@ -16,6 +16,7 @@ import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { ResponseData } from '../../../../../common/types/ResponseData';
+import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();
@@ -49,56 +50,61 @@ export const TabItems = () => {
       >
         {({ data }) => (
           <ProductCards>
-            {data?.map((item: IItem) => (
-              <ProductCard
-                key={uid(item)}
-                title={item.itemName}
-                href={
-                  item.poolId && item.poolType
-                    ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                        item.poolId,
-                        item.poolType,
-                      )
-                    : ''
-                }
-                // status={item.status}
-                // UPDATE price
-                price={item.poolId ? item.price : undefined}
-                priceType="BNB"
-                isOnSale={item.state === AuctionState.Live}
-                copies={item.supply}
-                MediaProps={{
-                  category: item.category,
-                  src: item.fileUrl,
-                  objectFit: 'contain',
-                  loading: 'lazy',
-                }}
-                ProfileInfoProps={{
-                  subTitle: 'Owner',
-                  title: `${profileInfo?.username ?? ''}`,
-                  users: [
-                    {
-                      name: 'name',
-                      avatar: profileInfo?.imgUrl,
-                      verified: true,
-                    },
-                  ],
-                }}
-                toSale={
-                  hasBrand(item)
-                    ? RoutesConfiguration.PublishNft.generatePath(
-                        PublishNFTType.BrandNFT,
-                        item.contractAddress,
-                        item.id,
-                      )
-                    : RoutesConfiguration.PublishNft.generatePath(
-                        PublishNFTType.NFT,
-                        item.contractAddress,
-                        item.id,
-                      )
-                }
-              />
-            ))}
+            {data?.map((item: IItem) => {
+              return (
+                <ProductCard
+                  key={uid(item)}
+                  title={item.itemName}
+                  href={
+                    item.poolId && item.poolType
+                      ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                          item.poolId,
+                          item.poolType,
+                        )
+                      : ''
+                  }
+                  // status={item.status}
+                  // UPDATE price
+                  price={item.poolId ? item.price : undefined}
+                  priceType="BNB"
+                  isOnSale={
+                    item.state === AuctionState.Live ||
+                    item.state === FixedSwapState.Live
+                  }
+                  copies={item.supply}
+                  MediaProps={{
+                    category: item.category,
+                    src: item.fileUrl,
+                    objectFit: 'contain',
+                    loading: 'lazy',
+                  }}
+                  ProfileInfoProps={{
+                    subTitle: 'Owner',
+                    title: `${profileInfo?.username ?? ''}`,
+                    users: [
+                      {
+                        name: 'name',
+                        avatar: profileInfo?.imgUrl,
+                        verified: true,
+                      },
+                    ],
+                  }}
+                  toSale={
+                    hasBrand(item)
+                      ? RoutesConfiguration.PublishNft.generatePath(
+                          PublishNFTType.BrandNFT,
+                          item.contractAddress,
+                          item.id,
+                        )
+                      : RoutesConfiguration.PublishNft.generatePath(
+                          PublishNFTType.NFT,
+                          item.contractAddress,
+                          item.id,
+                        )
+                  }
+                />
+              );
+            })}
           </ProductCards>
         )}
       </Queries>

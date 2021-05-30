@@ -322,6 +322,8 @@
   },
   "info-prices": {
     "claim": "Claim",
+    "cancel": "Cancel",
+    "canceled": "Canceled",
     "status": {
       "CompletedByDirectPurchase": {
         "creator": "Item has been sold",
@@ -329,12 +331,12 @@
         "others": "Item has been sold"
       },
       "NotSoldByReservePrice": {
-        "creator": "Item has been sold",
-        "buyer": "Item has been sold",
-        "others": "Item has been sold"
+        "creator": "Item hasn't been sold. Claim your NFT back",
+        "buyer": "Item hasn't been sold. Claim your tokens NFT back",
+        "others": "Item hasn't been sold"
       },
       "Claimed": {
-        "default": "Item has been sold"
+        "default": "Item has been claimed"
       },
       "Live": {
         "creator": "Auction is in progress"

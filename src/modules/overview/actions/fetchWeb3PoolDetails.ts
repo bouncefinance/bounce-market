@@ -23,11 +23,13 @@ import { fromWei } from '../../common/utils/fromWei';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 
-export type AuctionRole = 'creator' | 'buyer' | 'others';
+export type UserRole = 'creator' | 'buyer' | 'others';
 
-interface IWeb3FixedAuctionDetails extends IFixedAuctionDetails {}
+interface IWeb3FixedAuctionDetails extends IFixedAuctionDetails {
+  role: UserRole;
+}
 interface IWeb3EnglishAuctionDetails extends IEnglishAuctionDetails {
-  role: AuctionRole;
+  role: UserRole;
 }
 
 export type IFetchWeb3PoolDetailsData =
@@ -69,7 +71,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   getFixedSwapContract(chainId),
                 );
 
-                const pools = await BounceFixedSwapNFT_CT.methods
+                const pool = await BounceFixedSwapNFT_CT.methods
                   .pools(poolId)
                   .call();
 
@@ -85,46 +87,52 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 } = throwIfDataIsEmptyOrError(
                   await store.dispatchRequest(
                     fetchCurrency(
-                      { unitContract: pools.token1 },
+                      { unitContract: pool.token1 },
                       { silent: true },
                     ),
                   ),
                 );
 
                 return {
-                  quantity: parseInt(pools.amountTotal0),
+                  quantity: parseInt(pool.amountTotal0),
                   // TODO: Apply precision
                   totalPrice: new BigNumber(
-                    web3.utils.fromWei(pools.amountTotal1),
+                    web3.utils.fromWei(pool.amountTotal1),
                   ),
                   createTime: new Date(),
-                  creator: pools.creator,
-                  name: pools.name,
-                  nftType: parseInt(pools.nftType),
+                  creator: pool.creator,
+                  name: pool.name,
+                  nftType: parseInt(pool.nftType),
                   poolId,
                   price: new BigNumber(
-                    fromWei(pools.amountTotal1, decimals),
-                  ).dividedBy(pools.amountTotal0),
+                    fromWei(pool.amountTotal1, decimals),
+                  ).dividedBy(pool.amountTotal0),
                   state: (() => {
-                    if (
-                      parseInt(swappedAmount0Pool) <
-                      parseInt(pools.amountTotal0)
+                    if (creatorCanceledPool) {
+                      return FixedSwapState.Canceled;
+                    } else if (
+                      parseInt(swappedAmount0Pool) < parseInt(pool.amountTotal0)
                     ) {
                       return FixedSwapState.Live;
                     } else if (
                       parseInt(swappedAmount0Pool) ===
-                      parseInt(pools.amountTotal0)
+                      parseInt(pool.amountTotal0)
                     ) {
                       return FixedSwapState.Completed;
-                    } else if (creatorCanceledPool) {
-                      return FixedSwapState.Canceled;
                     } else {
                       return FixedSwapState.Claimed;
                     }
                   })(),
-                  tokenContract: pools.token0,
-                  unitContract: pools.token1,
-                  tokenId: parseInt(pools.tokenId),
+                  role: (() => {
+                    if (pool.creator === address) {
+                      return 'creator';
+                    }
+
+                    return 'others';
+                  })(),
+                  tokenContract: pool.token0,
+                  unitContract: pool.token1,
+                  tokenId: parseInt(pool.tokenId),
                   swappedAmount0Pool: new BigNumber(swappedAmount0Pool),
                 } as IFetchWeb3PoolDetailsData;
               } else {
@@ -197,6 +205,10 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   nftType: parseInt(pool.nftType),
                   poolId,
                   state: (() => {
+                    if (myClaimedPool || creatorClaimedPool) {
+                      return AuctionState.Claimed;
+                    }
+
                     if (
                       new BigNumber(currentBidderAmount).isGreaterThanOrEqualTo(
                         pool.amountMax1,

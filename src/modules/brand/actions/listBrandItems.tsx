@@ -8,6 +8,8 @@ import { fetchItem } from '../../buyNFT/actions/fetchItem';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
 import { getPublishedCount } from '../../createNFT/utils/getPublishedCount';
+import { AuctionState } from '../../common/const/AuctionState';
+import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 // TODO: Merge with src/modules/profile/actions/fetchAllNftByUser.ts
 
@@ -99,9 +101,21 @@ export const listBrandItems = createSmartAction(
                   poolsCopy.splice(poolIndex, 1);
                   return {
                     ...item,
-                    supply: isEnglishAuction(pool)
-                      ? pool.tokenAmount0
-                      : pool.quantity,
+                    supply: (() => {
+                      if (isEnglishAuction(pool)) {
+                        if (pool.state < AuctionState.NotSoldByReservePrice) {
+                          return pool.tokenAmount0;
+                        }
+
+                        return 0;
+                      } else {
+                        if (pool.state < FixedSwapState.Canceled) {
+                          return pool.quantity;
+                        } else {
+                          return 0;
+                        }
+                      }
+                    })(),
                     poolId: pool.poolId,
                     poolType: isEnglishAuction(pool)
                       ? AuctionType.EnglishAuction
@@ -122,6 +136,7 @@ export const listBrandItems = createSmartAction(
 
                 return { ...item, supply: item.supply - publishedCount };
               })
+              .filter(item => item.supply > 0)
               .sort((prev, next) => {
                 return next.createdAt.getTime() - prev.createdAt.getTime();
               });

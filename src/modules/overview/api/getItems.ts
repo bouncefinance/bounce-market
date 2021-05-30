@@ -3,6 +3,7 @@ import { AuctionState } from '../../common/const/AuctionState';
 import { Address } from '../../common/types/unit';
 import { NftType } from '../../createNFT/actions/createNft';
 import { AuctionType } from './auctionType';
+import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 export interface IApiItem {
   likecount: number;
@@ -63,7 +64,7 @@ export interface IItem {
   closeAt?: Date;
   poolId?: number;
   poolType?: AuctionType;
-  state?: AuctionState;
+  state?: AuctionState | FixedSwapState;
 }
 
 export function hasBrand(item: IItem) {

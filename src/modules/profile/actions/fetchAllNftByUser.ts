@@ -9,6 +9,8 @@ import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
 import { getPublishedCount } from '../../createNFT/utils/getPublishedCount';
+import { AuctionState } from '../../common/const/AuctionState';
+import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
@@ -116,12 +118,25 @@ export const fetchAllNftByUser: (
                 const pool = poolsCopy[poolIndex];
 
                 if (pool) {
+                  // TODO: Ignore completed claimed auction?
                   poolsCopy.splice(poolIndex, 1);
                   return {
                     ...item,
-                    supply: isEnglishAuction(pool)
-                      ? pool.tokenAmount0
-                      : pool.quantity,
+                    supply: (() => {
+                      if (isEnglishAuction(pool)) {
+                        if (pool.state < AuctionState.Claimed) {
+                          return pool.tokenAmount0;
+                        }
+
+                        return 0;
+                      } else {
+                        if (pool.state < FixedSwapState.Claimed) {
+                          return pool.quantity;
+                        } else {
+                          return 0;
+                        }
+                      }
+                    })(),
                     poolId: pool.poolId,
                     poolType: isEnglishAuction(pool)
                       ? AuctionType.EnglishAuction
@@ -142,6 +157,7 @@ export const fetchAllNftByUser: (
 
                 return { ...item, supply: item.supply - publishedCount };
               })
+              .filter(item => item.supply > 0)
               .sort((prev, next) => {
                 return next.createdAt.getTime() - prev.createdAt.getTime();
               });
