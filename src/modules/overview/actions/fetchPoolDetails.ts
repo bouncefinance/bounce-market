@@ -18,7 +18,7 @@ interface IApiFixedAuctionDetails {
   nftType: 0;
   poolId: number;
   price: string;
-  state: FixedSwapState; // Update
+  state: 0 | 1;
   token0: string;
   token1: string;
   tokenId: number;
@@ -38,7 +38,7 @@ interface IApiEnglishAuctionDetails {
   name: string;
   nftType: 1;
   poolId: number;
-  state: AuctionState;
+  state: 0 | 1;
   token0: string;
   token1: string;
   tokenAmount0: number;

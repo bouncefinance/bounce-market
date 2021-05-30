@@ -36,11 +36,7 @@ const categories = [
   },
 ];
 
-interface ITabBidsProps {
-  className?: string;
-}
-
-export const TabBids = ({ className }: ITabBidsProps) => {
+export const TabBids = () => {
   const classes = useTabBidsStyles();
   const dispatch = useDispatchRequest();
   const [catergory, setCategory] = useState<ItemsChannel>(
@@ -95,6 +91,7 @@ export const TabBids = ({ className }: ITabBidsProps) => {
   const renderedCards = useMemo(() => {
     return items.map(item => (
       <ProductCard
+        key={uid(item)}
         isOnSale
         href={
           item.poolId && item.poolType

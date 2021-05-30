@@ -113,13 +113,13 @@ export const fetchAllNftByUser: (
                     ...item,
                     supply: (() => {
                       if (isEnglishAuction(pool)) {
-                        if (pool.state <= AuctionState.Live) {
+                        if (pool.state < AuctionState.Claimed) {
                           return pool.tokenAmount0;
                         }
 
                         return 0;
                       } else {
-                        if (pool.state <= FixedSwapState.Live) {
+                        if (pool.state < FixedSwapState.Claimed) {
                           return pool.quantity;
                         } else {
                           return 0;

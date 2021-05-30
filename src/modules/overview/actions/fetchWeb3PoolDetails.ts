@@ -205,6 +205,10 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   nftType: parseInt(pool.nftType),
                   poolId,
                   state: (() => {
+                    if (myClaimedPool || creatorClaimedPool) {
+                      return AuctionState.Claimed;
+                    }
+
                     if (
                       new BigNumber(currentBidderAmount).isGreaterThanOrEqualTo(
                         pool.amountMax1,

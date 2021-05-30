@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import { t } from 'modules/i18n/utils/intl';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
 import { AuctionState } from '../../../common/const/AuctionState';
@@ -15,7 +15,8 @@ interface IInfoPricesProps {
   disabled: boolean;
   onBuyClick?: () => void;
   onBidClick?: () => void;
-  onClaim?: () => void;
+  onBidderClaim?: () => void;
+  onCreatorClaim?: () => void;
   endDate?: Date;
   state: AuctionState | FixedSwapState;
   role?: UserRole;
@@ -30,15 +31,19 @@ export const InfoPrices = ({
   disabled,
   onBuyClick,
   onBidClick,
-  onClaim,
+  onBidderClaim,
+  onCreatorClaim,
   state,
   role,
   onCancel,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
 
-  // TODO: doesn't work since it's not in state
-  const isTimeOver = endDate && new Date().getTime() > endDate.getTime();
+  const [isTimeOver, setTimeOver] = useState(false);
+
+  const handleComplete = useCallback(() => {
+    setTimeOver(true);
+  }, []);
 
   const renderButtons = useCallback(() => {
     if (state === FixedSwapState.Live && role === 'creator') {
@@ -60,8 +65,8 @@ export const InfoPrices = ({
 
     if (
       state === AuctionState.CompletedByDirectPurchase ||
-      state === AuctionState.CompletedByTime ||
-      (state === AuctionState.Live && isTimeOver)
+      (state === AuctionState.CompletedByTime && role === 'buyer') ||
+      (state === AuctionState.Live && isTimeOver && role === 'buyer')
     ) {
       if (role === 'creator') {
         return (
@@ -69,9 +74,6 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.CompletedByDirectPurchase.creator')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onClaim}>
-              {t('info-prices.claim')}
-            </Button>
           </>
         );
       } else if (role === 'buyer') {
@@ -80,7 +82,7 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.CompletedByDirectPurchase.buyer')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onClaim}>
+            <Button variant="outlined" fullWidth onClick={onBidderClaim}>
               {t('info-prices.claim')}
             </Button>
           </>
@@ -101,7 +103,7 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.NotSoldByReservePrice.creator')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onClaim}>
+            <Button variant="outlined" fullWidth onClick={onCreatorClaim}>
               {t('info-prices.claim')}
             </Button>
           </>
@@ -112,7 +114,7 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.NotSoldByReservePrice.buyer')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onClaim}>
+            <Button variant="outlined" fullWidth onClick={onBidderClaim}>
               {t('info-prices.claim')}
             </Button>
           </>
@@ -127,11 +129,7 @@ export const InfoPrices = ({
     }
 
     if (state === AuctionState.Claimed) {
-      return (
-        <Box mb={2}>
-          {t('info-prices.status.NotSoldByReservePrice.default')}
-        </Box>
-      );
+      return <Box mb={2}>{t('info-prices.status.Claimed.default')}</Box>;
     }
 
     if (state === AuctionState.Live && role === 'creator') {
@@ -159,14 +157,15 @@ export const InfoPrices = ({
       </>
     );
   }, [
-    disabled,
+    state,
+    role,
     isTimeOver,
+    disabled,
     onBidClick,
     onBuyClick,
     onCancel,
-    onClaim,
-    role,
-    state,
+    onBidderClaim,
+    onCreatorClaim,
   ]);
 
   return (
@@ -176,7 +175,7 @@ export const InfoPrices = ({
           <div className={classes.bid}>
             {t('details-nft.top-bid')}
             <i className={classes.bidDevider} />
-            <Timer endDate={endDate} />
+            <Timer onComplete={handleComplete} endDate={endDate} />
           </div>
         )}
 

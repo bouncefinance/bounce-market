@@ -35,6 +35,7 @@ import { useDialog } from './useDialog';
 import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
+import { creatorClaim } from '../../../overview/actions/creatorClaim';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -74,8 +75,16 @@ export const BuyNFT = () => {
     init();
   }, [init]);
 
-  const handleClaim = useCallback(() => {
+  const handleBidderClaim = useCallback(() => {
     dispatch(bidderClaim({ poolId })).then(({ error }) => {
+      if (!error) {
+        push(ProfileRoutesConfig.UserProfile.generatePath());
+      }
+    });
+  }, [dispatch, poolId, push]);
+
+  const handleCreatorClaim = useCallback(() => {
+    dispatch(creatorClaim({ poolId })).then(({ error }) => {
       if (!error) {
         push(ProfileRoutesConfig.UserProfile.generatePath());
       }
@@ -307,7 +316,8 @@ export const BuyNFT = () => {
                       disabled={poolDetails.state !== AuctionState.Live}
                       state={poolDetails.state}
                       role={poolDetails.role}
-                      onClaim={handleClaim}
+                      onBidderClaim={handleBidderClaim}
+                      onCreatorClaim={handleCreatorClaim}
                     />
                   ) : (
                     <Mutation type={fixedSwapCancel.toString()}>
@@ -322,7 +332,8 @@ export const BuyNFT = () => {
                           disabled={
                             loading || poolDetails.state !== FixedSwapState.Live
                           }
-                          onClaim={handleClaim}
+                          onBidderClaim={handleBidderClaim}
+                          onCreatorClaim={handleCreatorClaim}
                           state={poolDetails.state}
                           role={poolDetails.role}
                           onCancel={handleFixedSwapCancel}

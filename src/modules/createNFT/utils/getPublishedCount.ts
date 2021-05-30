@@ -13,13 +13,13 @@ export function getPublishedCount(
     data.reduce((acc, pool) => {
       if (pool.tokenId === tokenId) {
         if (isEnglishAuction(pool)) {
-          if (pool.state <= AuctionState.Live) {
+          if (pool.state < AuctionState.Claimed) {
             return acc + pool.tokenAmount0;
           }
 
           return acc;
         } else {
-          if (pool.state <= FixedSwapState.Live) {
+          if (pool.state < FixedSwapState.Claimed) {
             return acc + pool.quantity;
           } else {
             return acc;

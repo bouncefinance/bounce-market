@@ -103,13 +103,13 @@ export const listBrandItems = createSmartAction(
                     ...item,
                     supply: (() => {
                       if (isEnglishAuction(pool)) {
-                        if (pool.state <= AuctionState.Live) {
+                        if (pool.state < AuctionState.NotSoldByReservePrice) {
                           return pool.tokenAmount0;
                         }
 
                         return 0;
                       } else {
-                        if (pool.state <= FixedSwapState.Live) {
+                        if (pool.state < FixedSwapState.Canceled) {
                           return pool.quantity;
                         } else {
                           return 0;
