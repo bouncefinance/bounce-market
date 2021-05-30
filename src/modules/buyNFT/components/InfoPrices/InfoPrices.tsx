@@ -34,6 +34,7 @@ export const InfoPrices = ({
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
 
+  // TODO: doesn't work since it's not in state
   const isTimeOver = endDate && new Date().getTime() > endDate.getTime();
 
   const renderButtons = useCallback(() => {
