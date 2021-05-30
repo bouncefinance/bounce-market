@@ -10,6 +10,7 @@ import { AuctionType } from '../../overview/api/auctionType';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
+import { throwIfError } from '../../common/utils/throwIfError';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
@@ -32,17 +33,16 @@ export const fetchAllNftByUser: (
       ) => {
         return {
           promise: (async function () {
-            const {
-              data: fetchNftByUserData,
-              error: fetchNftByUserError,
-            } = await store.dispatchRequest(
-              fetchNftByUser(
-                { userId: payload.user },
-                {
-                  silent: true,
-                  suppressErrorNotification: true,
-                  requestKey: action.type,
-                },
+            const { data: fetchNftByUserData } = throwIfError(
+              await store.dispatchRequest(
+                fetchNftByUser(
+                  { userId: payload.user },
+                  {
+                    silent: true,
+                    suppressErrorNotification: true,
+                    requestKey: action.type,
+                  },
+                ),
               ),
             );
 
@@ -50,10 +50,6 @@ export const fetchAllNftByUser: (
               ...(fetchNftByUserData?.nfts721 ?? []),
               ...(fetchNftByUserData?.nfts1155 ?? []),
             ];
-
-            if (fetchNftByUserError) {
-              throw fetchNftByUserError;
-            }
 
             const { data: pools } = await store.dispatchRequest(
               getPoolsByFilter(payload),
