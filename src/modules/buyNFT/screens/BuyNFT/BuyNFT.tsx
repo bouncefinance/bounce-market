@@ -33,7 +33,7 @@ import { BuyDialog } from '../../components/BuyDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
 import { FixedSwapState } from '../../../common/const/FixedSwapState';
-import { claim } from '../../../overview/actions/claim';
+import { bidderClaim } from '../../../overview/actions/bidderClaim';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -74,7 +74,7 @@ export const BuyNFT = () => {
   }, [init]);
 
   const handleClaim = useCallback(() => {
-    dispatch(claim({ poolId })).then(({ error }) => {
+    dispatch(bidderClaim({ poolId })).then(({ error }) => {
       if (!error) {
         push(ProfileRoutesConfig.UserProfile.generatePath());
       }

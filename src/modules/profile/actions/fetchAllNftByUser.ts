@@ -103,6 +103,7 @@ export const fetchAllNftByUser: (
                 const pool = poolsCopy[poolIndex];
 
                 if (pool) {
+                  // TODO: Ignore completed claimed auction?
                   poolsCopy.splice(poolIndex, 1);
                   return {
                     ...item,
