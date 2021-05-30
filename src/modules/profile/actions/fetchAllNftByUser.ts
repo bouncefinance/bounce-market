@@ -132,6 +132,7 @@ export const fetchAllNftByUser: (
 
                 return { ...item, supply: item.supply - publishedCount };
               })
+              .filter(item => item.supply > 0)
               .sort((prev, next) => {
                 return next.createdAt.getTime() - prev.createdAt.getTime();
               });
