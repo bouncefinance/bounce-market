@@ -41,9 +41,8 @@ import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { PublishNFTType } from 'modules/createNFT/Routes';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { OnChange } from '../../../form/utils/OnChange';
-import { getPoolsByFilter } from '../../../profile/api/getPoolsByFilter';
 import { useAccount } from '../../../account/hooks/useAccount';
-import { getPublishedCount } from '../../utils/getPublishedCount';
+import { fetchNftByUser } from '../../actions/fetchNftByUser';
 
 const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
 
@@ -641,18 +640,20 @@ export const PublishNFT = () => {
 
   useEffect(() => {
     dispatch(fetchItem({ contract, id }));
-    dispatch(getPoolsByFilter({ user: address }));
+    dispatch(fetchNftByUser({ userId: address }));
   }, [address, contract, dispatch, id]);
 
   return (
     <Queries<
       ResponseData<typeof fetchItem>,
-      ResponseData<typeof getPoolsByFilter>
+      ResponseData<typeof fetchNftByUser>
     >
-      requestActions={[fetchItem, getPoolsByFilter]}
+      requestActions={[fetchItem, fetchNftByUser]}
     >
-      {({ data }, { data: pools }) => {
-        const publishedCount = getPublishedCount(pools.list, data.id);
+      {({ data }, { data: nftData }) => {
+        const nfts = [...(nftData.nfts721 ?? []), ...(nftData.nfts1155 ?? [])];
+        const maxQuantity =
+          nfts.find(item => item.tokenId === id)?.balance ?? 0;
 
         return (
           <PublishNFTComponent
@@ -663,7 +664,7 @@ export const PublishNFT = () => {
             tokenId={data.id}
             file={data.fileurl}
             category={data.category}
-            maxQuantity={data.supply - publishedCount}
+            maxQuantity={maxQuantity}
             onPublish={handlePublish}
           />
         );

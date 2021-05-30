@@ -7,7 +7,6 @@ import { getPoolsByFilter } from '../../profile/api/getPoolsByFilter';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
-import { getPublishedCount } from '../../createNFT/utils/getPublishedCount';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 
@@ -42,25 +41,21 @@ export const listBrandItems = createSmartAction(
               }),
             );
 
+            const nfts = [...(items721 ?? []), ...(items1155 ?? [])];
+
             const { data: pools } = await store.dispatchRequest(
               getPoolsByFilter({ user: userAddress }),
             );
 
             const ids = [
               ...(pools?.list.map(item => item.tokenId) ?? []),
-              ...items721.map(
-                (item: any) => item.tokenId || parseInt(item.token_id),
-              ),
-              ...items1155.map(
+              ...nfts.map(
                 (item: any) => item.tokenId || parseInt(item.token_id),
               ),
             ];
             const cts = [
               ...(pools?.list.map(item => item.tokenContract) ?? []),
-              ...items721.map((item: any) => item.token0 || item.contract_addr),
-              ...items1155.map(
-                (item: any) => item.token0 || item.contract_addr,
-              ),
+              ...nfts.map((item: any) => item.token0 || item.contract_addr),
             ];
 
             const items = ids.map((id, index) => ({
@@ -129,12 +124,10 @@ export const listBrandItems = createSmartAction(
                   };
                 }
 
-                const publishedCount = getPublishedCount(
-                  pools?.list ?? [],
-                  item.id,
-                );
+                const supply = nfts.find(nftItem => nftItem.tokenId === item.id)
+                  ?.balance;
 
-                return { ...item, supply: item.supply - publishedCount };
+                return { ...item, supply: supply };
               })
               .filter(item => item.supply > 0)
               .sort((prev, next) => {

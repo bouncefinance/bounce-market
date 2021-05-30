@@ -8,7 +8,6 @@ import { getPoolsByFilter } from '../api/getPoolsByFilter';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
-import { getPublishedCount } from '../../createNFT/utils/getPublishedCount';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 
@@ -47,6 +46,11 @@ export const fetchAllNftByUser: (
               ),
             );
 
+            const nfts = [
+              ...(fetchNftByUserData?.nfts721 ?? []),
+              ...(fetchNftByUserData?.nfts1155 ?? []),
+            ];
+
             if (fetchNftByUserError) {
               throw fetchNftByUserError;
             }
@@ -63,19 +67,13 @@ export const fetchAllNftByUser: (
             const ids = [
               ...(poolsByStateFilterResult?.list!.map(item => item.tokenId) ??
                 []),
-              ...(fetchNftByUserData?.nfts721.map(item => item.tokenId) ?? []),
-              ...(fetchNftByUserData?.nfts1155.map(item => item.tokenId) ?? []),
+              ...(nfts.map(item => item.tokenId) ?? []),
             ];
             const cts = [
               ...(poolsByStateFilterResult?.list!.map(
                 item => item.tokenContract,
               ) ?? []),
-              ...(fetchNftByUserData?.nfts721.map(
-                item => item.contractAddress,
-              ) ?? []),
-              ...(fetchNftByUserData?.nfts1155.map(
-                item => item.contractAddress,
-              ) ?? []),
+              ...(nfts.map(item => item.contractAddress) ?? []),
             ];
 
             const items = ids
@@ -150,12 +148,10 @@ export const fetchAllNftByUser: (
                   };
                 }
 
-                const publishedCount = getPublishedCount(
-                  pools?.list ?? [],
-                  item.id,
-                );
+                const supply = nfts.find(nftItem => nftItem.tokenId === item.id)
+                  ?.balance;
 
-                return { ...item, supply: item.supply - publishedCount };
+                return { ...item, supply: supply ?? 0 };
               })
               .filter(item => item.supply > 0)
               .sort((prev, next) => {

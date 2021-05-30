@@ -1,6 +1,5 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import BigNumber from 'bignumber.js';
 import { Address } from '../../common/types/unit';
 import { NftType } from './createNft';
 
@@ -28,7 +27,7 @@ interface IApiResponse {
 }
 
 interface IItem {
-  balance: BigNumber;
+  balance: number;
   contractAddress: string;
   contractName: string;
   description?: string;
@@ -50,7 +49,7 @@ interface IResponse {
 
 function mapItem(item: IApiItem): IItem {
   return {
-    balance: new BigNumber(item.balance),
+    balance: parseInt(item.balance, 10),
     contractAddress: item.contract_addr,
     contractName: item.contract_name,
     description: item.description,
