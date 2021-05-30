@@ -55,13 +55,21 @@ export const fetchAllNftByUser: (
               getPoolsByFilter(payload),
             );
 
+            // Filter out the pools that have been closed
+            const poolsByStateFilterResult = {
+              list: pools?.list.filter(item => item.state !== 1),
+            };
+
             const ids = [
-              ...(pools?.list.map(item => item.tokenId) ?? []),
+              ...(poolsByStateFilterResult?.list!.map(item => item.tokenId) ??
+                []),
               ...(fetchNftByUserData?.nfts721.map(item => item.tokenId) ?? []),
               ...(fetchNftByUserData?.nfts1155.map(item => item.tokenId) ?? []),
             ];
             const cts = [
-              ...(pools?.list.map(item => item.tokenContract) ?? []),
+              ...(poolsByStateFilterResult?.list!.map(
+                item => item.tokenContract,
+              ) ?? []),
               ...(fetchNftByUserData?.nfts721.map(
                 item => item.contractAddress,
               ) ?? []),
@@ -97,9 +105,12 @@ export const fetchAllNftByUser: (
               return response.data!;
             });
 
-            const poolsCopy = pools ? [...pools.list] : [];
+            const poolsCopy = poolsByStateFilterResult
+              ? [...poolsByStateFilterResult?.list!]
+              : [];
+
             return data
-              ?.filter(item => item)
+              ?.filter(item => item.status !== 1)
               .map(item => {
                 const poolIndex = poolsCopy.findIndex(
                   pool => pool.tokenId === item.id,
