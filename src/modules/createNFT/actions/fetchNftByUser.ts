@@ -74,14 +74,13 @@ function mapData(response: IApiResponse): IResponse {
 export const fetchNftByUser = createSmartAction<
   RequestAction<IApiResponse, IResponse>
 >(
-  'CreateNftActions/fetchNftByUser',
+  'fetchNftByUser',
   (
     params: { userId: string },
     meta?: RequestActionMeta<IApiResponse, IResponse>,
   ) => ({
     request: {
-      url:
-        'https://nftview.bounce.finance/v2/bsc/nft',
+      url: 'https://nftview.bounce.finance/v2/bsc/nft',
       method: 'get',
       params: { user_address: params.userId },
     },
