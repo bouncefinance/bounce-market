@@ -22,6 +22,8 @@ import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmpty
 import { fromWei } from '../../common/utils/fromWei';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
+import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
+import { throwIfError } from '../../common/utils/throwIfError';
 
 export type UserRole = 'creator' | 'buyer' | 'others';
 
@@ -58,6 +60,26 @@ export const fetchWeb3PoolDetails = createSmartAction<
         ) => {
           return {
             promise: (async function () {
+              // eslint-disable-next-line
+              const getNftCount = async (userId: string, tokenId: number) => {
+                const { data: fetchNftByUserData } = throwIfError(
+                  await store.dispatchRequest(
+                    fetchNftByUser(
+                      { userId },
+                      {
+                        silent: true,
+                        suppressErrorNotification: true,
+                        requestKey: action.type,
+                      },
+                    ),
+                  ),
+                );
+                return [
+                  ...(fetchNftByUserData?.nfts721 ?? []),
+                  ...(fetchNftByUserData?.nfts1155 ?? []),
+                ].find(nftItem => nftItem.tokenId === tokenId)?.balance;
+              };
+
               const {
                 data: { chainId, address, web3 },
               } = getQuery(store.getState(), {
@@ -92,9 +114,13 @@ export const fetchWeb3PoolDetails = createSmartAction<
                     ),
                   ),
                 );
-
                 return {
-                  quantity: parseInt(pool.amountTotal0),
+                  quantity:
+                    parseInt(pool.amountTotal0) - parseInt(swappedAmount0Pool),
+                  // await getNftCount(
+                  //   address,
+                  //   parseInt(pool.tokenId, 10),
+                  // ),
                   // TODO: Apply precision
                   totalPrice: new BigNumber(
                     web3.utils.fromWei(pool.amountTotal1),
@@ -133,7 +159,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   tokenContract: pool.token0,
                   unitContract: pool.token1,
                   tokenId: parseInt(pool.tokenId),
-                  swappedAmount0Pool: new BigNumber(swappedAmount0Pool),
                 } as IFetchWeb3PoolDetailsData;
               } else {
                 const BounceEnglishAuctionNFT_CT = new web3.eth.Contract(
@@ -145,9 +170,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   .call();
                 const currentBidderAmount = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderAmount1P(poolId)
-                  .call();
-                const bidCountPool = await BounceEnglishAuctionNFT_CT.methods
-                  .bidCountP(poolId)
                   .call();
                 const myClaimedPool = await BounceEnglishAuctionNFT_CT.methods
                   .myClaimedP(address, poolId)
@@ -161,11 +183,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const lastBidderAddress = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderP(poolId)
                   .call();
-                let showPrice = pool.amountMin1;
-
-                if (currentBidderAmount !== '0') {
-                  showPrice = currentBidderAmount;
-                }
 
                 const curTime = new Date().getTime() / 1000;
                 const diffTime = parseInt(pool.closeAt) - curTime;
@@ -241,7 +258,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   unitContract: pool.token1,
                   tokenAmount0: pool.tokenAmount0,
                   tokenId: parseInt(pool.tokenId),
-
                   role: (() => {
                     if (lastBidderAddress === address) {
                       return 'buyer';
@@ -253,12 +269,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
 
                     return 'others';
                   })(),
-                  bidCountPool,
-                  myClaimedPool,
-                  currentBidderPool: lastBidderAddress,
-                  creatorClaimedPool,
-                  reserveAmount1Pool: reserveAmount,
-                  showPrice,
                 } as IFetchWeb3PoolDetailsData;
               }
             })(),

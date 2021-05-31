@@ -451,7 +451,7 @@ export const BuyNFT = () => {
                         owner={ownerTitle}
                         ownerAvatar={undefined}
                         isOwnerVerified={false}
-                        readonly={true}
+                        readonly={item.standard === NftType.ERC721}
                         category={item.category}
                         disabled={loading}
                         maxQuantity={poolDetails.quantity}

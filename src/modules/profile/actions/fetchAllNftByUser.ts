@@ -8,9 +8,9 @@ import { getPoolsByFilter } from '../api/getPoolsByFilter';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
 import { AuctionType } from '../../overview/api/auctionType';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
-import { getPublishedCount } from '../../createNFT/utils/getPublishedCount';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
+import { throwIfError } from '../../common/utils/throwIfError';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
@@ -33,23 +33,23 @@ export const fetchAllNftByUser: (
       ) => {
         return {
           promise: (async function () {
-            const {
-              data: fetchNftByUserData,
-              error: fetchNftByUserError,
-            } = await store.dispatchRequest(
-              fetchNftByUser(
-                { userId: payload.user },
-                {
-                  silent: true,
-                  suppressErrorNotification: true,
-                  requestKey: action.type,
-                },
+            const { data: fetchNftByUserData } = throwIfError(
+              await store.dispatchRequest(
+                fetchNftByUser(
+                  { userId: payload.user },
+                  {
+                    silent: true,
+                    suppressErrorNotification: true,
+                    requestKey: action.type,
+                  },
+                ),
               ),
             );
 
-            if (fetchNftByUserError) {
-              throw fetchNftByUserError;
-            }
+            const nfts = [
+              ...(fetchNftByUserData?.nfts721 ?? []),
+              ...(fetchNftByUserData?.nfts1155 ?? []),
+            ];
 
             const { data: pools } = await store.dispatchRequest(
               getPoolsByFilter(payload),
@@ -63,19 +63,13 @@ export const fetchAllNftByUser: (
             const ids = [
               ...(poolsByStateFilterResult?.list!.map(item => item.tokenId) ??
                 []),
-              ...(fetchNftByUserData?.nfts721.map(item => item.tokenId) ?? []),
-              ...(fetchNftByUserData?.nfts1155.map(item => item.tokenId) ?? []),
+              ...(nfts.map(item => item.tokenId) ?? []),
             ];
             const cts = [
               ...(poolsByStateFilterResult?.list!.map(
                 item => item.tokenContract,
               ) ?? []),
-              ...(fetchNftByUserData?.nfts721.map(
-                item => item.contractAddress,
-              ) ?? []),
-              ...(fetchNftByUserData?.nfts1155.map(
-                item => item.contractAddress,
-              ) ?? []),
+              ...(nfts.map(item => item.contractAddress) ?? []),
             ];
 
             const items = ids
@@ -109,58 +103,64 @@ export const fetchAllNftByUser: (
               ? [...poolsByStateFilterResult?.list!]
               : [];
 
-            return data
-              ?.filter(item => item.status !== 1)
-              .map(item => {
-                const poolIndex = poolsCopy.findIndex(
-                  pool => pool.tokenId === item.id,
-                );
-                const pool = poolsCopy[poolIndex];
+            return (
+              data
+                // ?.filter(item => item.status !== 1)
+                .map(item => {
+                  const poolIndex = poolsCopy.findIndex(
+                    pool => pool.tokenId === item.id,
+                  );
+                  const pool = poolsCopy[poolIndex];
 
-                if (pool) {
-                  // TODO: Ignore completed claimed auction?
-                  poolsCopy.splice(poolIndex, 1);
-                  return {
-                    ...item,
-                    supply: (() => {
-                      if (isEnglishAuction(pool)) {
-                        if (pool.state < AuctionState.Claimed) {
-                          return pool.tokenAmount0;
-                        }
+                  if (pool) {
+                    // TODO: Ignore completed claimed auction?
+                    poolsCopy.splice(poolIndex, 1);
+                    return {
+                      ...item,
+                      supply: (() => {
+                        if (isEnglishAuction(pool)) {
+                          if (pool.state < AuctionState.Claimed) {
+                            return pool.tokenAmount0;
+                          }
 
-                        return 0;
-                      } else {
-                        if (pool.state < FixedSwapState.Claimed) {
-                          return pool.quantity;
-                        } else {
                           return 0;
+                        } else {
+                          if (pool.state < FixedSwapState.Claimed) {
+                            return pool.quantity;
+                          } else {
+                            return 0;
+                          }
                         }
-                      }
-                    })(),
-                    poolId: pool.poolId,
-                    poolType: isEnglishAuction(pool)
-                      ? AuctionType.EnglishAuction
-                      : AuctionType.FixedSwap,
-                    price: isEnglishAuction(pool)
-                      ? pool.lastestBidAmount.isEqualTo(0)
-                        ? pool.amountMin1
-                        : pool.lastestBidAmount
-                      : pool.price,
-                    state: pool.state,
-                  };
-                }
+                      })(),
+                      poolId: pool.poolId,
+                      poolType: isEnglishAuction(pool)
+                        ? AuctionType.EnglishAuction
+                        : AuctionType.FixedSwap,
+                      price: isEnglishAuction(pool)
+                        ? pool.lastestBidAmount.isEqualTo(0)
+                          ? pool.amountMin1
+                          : pool.lastestBidAmount
+                        : pool.price,
+                      state: pool.state,
+                    };
+                  }
 
-                const publishedCount = getPublishedCount(
-                  pools?.list ?? [],
-                  item.id,
-                );
+                  const supply = nfts.find(
+                    nftItem => nftItem.tokenId === item.id,
+                  )?.balance;
 
-                return { ...item, supply: item.supply - publishedCount };
-              })
-              .filter(item => item.supply > 0)
-              .sort((prev, next) => {
-                return next.createdAt.getTime() - prev.createdAt.getTime();
-              });
+                  return { ...item, supply: supply ?? 0 };
+                })
+                // Meaningless NFT will be temporarily shielded to reduce interference
+                .filter(
+                  item =>
+                    item.supply > 0 &&
+                    item.itemname !== 'Untitled (External import)',
+                )
+                .sort((prev, next) => {
+                  return next.createdAt.getTime() - prev.createdAt.getTime();
+                })
+            );
           })(),
         };
       },

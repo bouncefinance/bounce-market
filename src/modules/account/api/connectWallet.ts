@@ -4,10 +4,6 @@ import { fade, lighten } from '@material-ui/core';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import binanceWalletLogo from '../assets/binanceWallet.svg';
 import { BscConnector } from '@binance-chain/bsc-connector';
-import huobiLogo from '../assets/huobi.svg';
-import imTokenLogo from '../assets/imToken.svg';
-import mathLogo from '../assets/math.svg';
-import trustWalletLogo from '../assets/trust.svg';
 import Web3 from 'web3';
 import { t } from '../../i18n/utils/intl';
 
@@ -41,70 +37,6 @@ export async function connectWallet() {
           },
         }
       : {}),
-    'custom-imtoken': {
-      display: {
-        logo: imTokenLogo,
-        name: t('connect-wallet.custom-imtoken.name'),
-        description: t('connect-wallet.custom-imtoken.description'),
-      },
-      package: WalletConnectProvider,
-      options: {
-        rpc: RPC,
-      },
-      connector: async (ProviderPackage: any, options: any) => {
-        const provider = new ProviderPackage(options);
-        await provider.enable();
-        return provider;
-      },
-    },
-    'custom-math': {
-      display: {
-        logo: mathLogo,
-        name: t('connect-wallet.custom-math.name'),
-        description: t('connect-wallet.custom-math.description'),
-      },
-      package: WalletConnectProvider,
-      options: {
-        rpc: RPC,
-      },
-      connector: async (ProviderPackage: any, options: any) => {
-        const provider = new ProviderPackage(options);
-        await provider.enable();
-        return provider;
-      },
-    },
-    'custom-trust': {
-      display: {
-        logo: trustWalletLogo,
-        name: t('connect-wallet.custom-trust.name'),
-        description: t('connect-wallet.custom-trust.description'),
-      },
-      package: WalletConnectProvider,
-      options: {
-        rpc: RPC,
-      },
-      connector: async (ProviderPackage: any, options: any) => {
-        const provider = new ProviderPackage(options);
-        await provider.enable();
-        return provider;
-      },
-    },
-    'custom-huobi': {
-      display: {
-        logo: huobiLogo,
-        name: t('connect-wallet.custom-huobi.name'),
-        description: t('connect-wallet.custom-huobi.description'),
-      },
-      package: WalletConnectProvider,
-      options: {
-        rpc: RPC,
-      },
-      connector: async (ProviderPackage: any, options: any) => {
-        const provider = new ProviderPackage(options);
-        await provider.enable();
-        return provider;
-      },
-    },
     walletconnect: {
       package: WalletConnectProvider,
       options: {
