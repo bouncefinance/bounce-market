@@ -22,8 +22,6 @@ import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmpty
 import { fromWei } from '../../common/utils/fromWei';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
-import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
-import { throwIfError } from '../../common/utils/throwIfError';
 
 export type UserRole = 'creator' | 'buyer' | 'others';
 
