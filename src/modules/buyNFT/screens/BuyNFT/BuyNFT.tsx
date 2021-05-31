@@ -1,5 +1,9 @@
 import { Box } from '@material-ui/core';
-import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import {
+  Mutation,
+  useDispatchRequest,
+  useMutation,
+} from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
@@ -125,6 +129,18 @@ export const BuyNFT = () => {
     },
     [dispatch, poolId, push],
   );
+
+  const { loading: fixedSwapCancelLoading } = useMutation({
+    type: fixedSwapCancel.toString(),
+  });
+
+  const { loading: creatorClaimLoading } = useMutation({
+    type: creatorClaim.toString(),
+  });
+
+  const { loading: bidderClaimLoading } = useMutation({
+    type: bidderClaim.toString(),
+  });
 
   const handleBuyEnglish = useCallback(
     (
@@ -313,33 +329,35 @@ export const BuyNFT = () => {
                       cryptoCurrency="BNB"
                       onBidClick={openBidDialog}
                       onBuyClick={openEnglishBuyDialog}
-                      disabled={poolDetails.state !== AuctionState.Live}
+                      disabled={
+                        fixedSwapCancelLoading ||
+                        creatorClaimLoading ||
+                        bidderClaimLoading ||
+                        poolDetails.state !== AuctionState.Live
+                      }
                       state={poolDetails.state}
                       role={poolDetails.role}
                       onBidderClaim={handleBidderClaim}
                       onCreatorClaim={handleCreatorClaim}
                     />
                   ) : (
-                    <Mutation type={fixedSwapCancel.toString()}>
-                      {({ loading }) => (
-                        <InfoPrices
-                          price={poolDetails.price.multipliedBy(
-                            currency.priceUsd,
-                          )}
-                          cryptoPrice={poolDetails.price}
-                          cryptoCurrency="BNB"
-                          onBuyClick={openFixedBuyDialog}
-                          disabled={
-                            loading || poolDetails.state !== FixedSwapState.Live
-                          }
-                          onBidderClaim={handleBidderClaim}
-                          onCreatorClaim={handleCreatorClaim}
-                          state={poolDetails.state}
-                          role={poolDetails.role}
-                          onCancel={handleFixedSwapCancel}
-                        />
-                      )}
-                    </Mutation>
+                    <InfoPrices
+                      price={poolDetails.price.multipliedBy(currency.priceUsd)}
+                      cryptoPrice={poolDetails.price}
+                      cryptoCurrency="BNB"
+                      onBuyClick={openFixedBuyDialog}
+                      disabled={
+                        fixedSwapCancelLoading ||
+                        creatorClaimLoading ||
+                        bidderClaimLoading ||
+                        poolDetails.state !== FixedSwapState.Live
+                      }
+                      onBidderClaim={handleBidderClaim}
+                      onCreatorClaim={handleCreatorClaim}
+                      state={poolDetails.state}
+                      role={poolDetails.role}
+                      onCancel={handleFixedSwapCancel}
+                    />
                   )}
 
                   {featuresConfig.infoTabs && (

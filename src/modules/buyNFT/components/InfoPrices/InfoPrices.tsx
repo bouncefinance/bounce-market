@@ -82,7 +82,12 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.CompletedByDirectPurchase.buyer')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onBidderClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onBidderClaim}
+              disabled={disabled}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
@@ -103,7 +108,12 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.NotSoldByReservePrice.creator')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onCreatorClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onCreatorClaim}
+              disabled={disabled}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
@@ -114,7 +124,12 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.NotSoldByReservePrice.buyer')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onBidderClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onBidderClaim}
+              disabled={disabled}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
@@ -140,7 +155,7 @@ export const InfoPrices = ({
       <>
         {!disabled && onBidClick && (
           <Box mb={2}>
-            <Button fullWidth onClick={onBidClick}>
+            <Button fullWidth onClick={onBidClick} disabled={disabled}>
               {t('details-nft.place-a-bid')}
             </Button>
           </Box>
