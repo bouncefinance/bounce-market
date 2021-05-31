@@ -14,7 +14,13 @@ export const PromoThumb = ({ img, title, className }: PromoThumbProps) => {
 
   return (
     <div className={classNames(classes.root, className)}>
-      <Img src={img} ratio="1x1" className={classes.imgWrap} loading="lazy" />
+      <Img
+        src={img}
+        ratio="1x1"
+        className={classes.imgWrap}
+        loading="lazy"
+        objectFit="contain"
+      />
 
       <div className={classes.title} title={title}>
         <Truncate lines={3}>{title}</Truncate>
