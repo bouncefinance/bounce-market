@@ -1,10 +1,9 @@
-import { Button } from '@material-ui/core';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import React, { useMemo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { useHeaderLinksStyles } from './HeaderLinksStyles';
+import { HeaderLinkItem } from './HeaderLinkItem';
 
 interface IHeaderLinksProps {
   items: {
@@ -18,18 +17,16 @@ export const HeaderLinksComponent = ({ items }: IHeaderLinksProps) => {
 
   return (
     <nav className={classes.root}>
-      {items.map(({ label, href }) => (
-        <Button
-          component={RouterLink}
-          to={href}
-          key={uid(label)}
-          href={href}
-          variant="text"
-          className={classes.link}
-        >
-          {label}
-        </Button>
-      ))}
+      {items.map(({ label, href }) => {
+        return (
+          <HeaderLinkItem
+            label={label}
+            href={href}
+            classes={classes}
+            key={uid(label)}
+          />
+        );
+      })}
     </nav>
   );
 };

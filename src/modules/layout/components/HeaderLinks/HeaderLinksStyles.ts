@@ -1,4 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core';
+import { fade } from '@material-ui/core/styles';
 
 export const useHeaderLinksStyles = makeStyles<Theme>(theme => ({
   root: {
@@ -17,17 +18,15 @@ export const useHeaderLinksStyles = makeStyles<Theme>(theme => ({
     justifyContent: 'flex-start',
     padding: theme.spacing(1, 0),
     minWidth: 0,
-
-    [theme.breakpoints.up('xl')]: {
-      color: theme.palette.text.secondary,
-    },
+    color: theme.palette.text.secondary,
 
     '&:hover': {
-      background: 'none',
-
       [theme.breakpoints.up('xl')]: {
         color: theme.palette.text.primary,
       },
     },
+  },
+  activeLink: {
+    color: fade(theme.palette.text.primary, 0.8),
   },
 }));

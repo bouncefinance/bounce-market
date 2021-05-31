@@ -18,17 +18,17 @@ interface ISocialShareProps {
   description?: string;
 }
 
-const currentUrl = window.location.href;
-
 export const SocialShare = ({
   buttonContent,
-  url = currentUrl,
+  url,
   titleString,
   description,
 }: ISocialShareProps) => {
   const classes = useSocialShareStyles();
 
   const [anchorEl, setAnchorEl] = useState(null);
+
+  url = url ?? window.location.href;
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
