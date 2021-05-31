@@ -332,8 +332,8 @@
     "canceled": "Canceled",
     "status": {
       "CompletedByDirectPurchase": {
-        "creator": "Item has been sold",
-        "buyer": "Item has been sold",
+        "creator": "Item has been sold, you can claim your money",
+        "buyer": "Item has been sold, you can claim your nft",
         "others": "Item has been sold"
       },
       "NotSoldByReservePrice": {
@@ -342,7 +342,8 @@
         "others": "Item hasn't been sold"
       },
       "Claimed": {
-        "default": "Item has been claimed"
+        "default": "Item has been claimed",
+        "creator": "Item has been sold"
       },
       "Live": {
         "creator": "Auction is in progress"

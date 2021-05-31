@@ -64,8 +64,11 @@ export const InfoPrices = ({
 
     if (
       state === AuctionState.CompletedByDirectPurchase ||
-      (state === AuctionState.CompletedByTime && role === 'buyer') ||
-      (state === AuctionState.Live && isTimeOver && role === 'buyer')
+      (state === AuctionState.CompletedByTime &&
+        (role === 'buyer' || role === 'creator')) ||
+      (state === AuctionState.Live &&
+        isTimeOver &&
+        (role === 'buyer' || role === 'creator'))
     ) {
       if (role === 'creator') {
         return (
@@ -73,6 +76,14 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.CompletedByDirectPurchase.creator')}
             </Box>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onCreatorClaim}
+              disabled={loading}
+            >
+              {t('info-prices.claim')}
+            </Button>
           </>
         );
       } else if (role === 'buyer') {
@@ -85,7 +96,7 @@ export const InfoPrices = ({
               variant="outlined"
               fullWidth
               onClick={onBidderClaim}
-              disabled={disabled || loading}
+              disabled={loading}
             >
               {t('info-prices.claim')}
             </Button>
@@ -143,6 +154,10 @@ export const InfoPrices = ({
     }
 
     if (state === AuctionState.Claimed) {
+      if (role === 'creator') {
+        return <Box mb={2}>{t('info-prices.status.Claimed.creator')}</Box>;
+      }
+
       return <Box mb={2}>{t('info-prices.status.Claimed.default')}</Box>;
     }
 
