@@ -153,22 +153,22 @@ export const EditProfile = () => {
         <Box mb={3.5}>
           <GoBack />
         </Box>
+
         <Box mb={6}>
           <Typography variant="h1">{t('profile.user-profile')}</Typography>
         </Box>
-        <Box>
-          <Form
-            onSubmit={handleSubmit}
-            render={renderForm}
-            validate={validateEditProfile}
-            initialValues={{
-              username: profileInfo?.username,
-              email: profileInfo?.email,
-              bio: profileInfo?.bio,
-              fullName: profileInfo?.fullName,
-            }}
-          />
-        </Box>
+
+        <Form
+          onSubmit={handleSubmit}
+          render={renderForm}
+          validate={validateEditProfile}
+          initialValues={{
+            username: profileInfo?.username,
+            email: profileInfo?.email,
+            bio: profileInfo?.bio,
+            fullName: profileInfo?.fullName,
+          }}
+        />
       </Container>
     </Section>
   );
