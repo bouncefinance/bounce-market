@@ -299,6 +299,12 @@
       "from": "From",
       "to": "To",
       "date": "Date"
+    },
+    "bids-categories": {
+      "all": "All",
+      "art": "Art",
+      "sport": "Sport",
+      "comics": "Comics"
     }
   },
   "buy-dialog": {

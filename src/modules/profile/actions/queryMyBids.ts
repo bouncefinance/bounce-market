@@ -14,7 +14,6 @@ import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import Web3 from 'web3';
-import { IRecords } from '../api/records';
 import { getRecords } from './getRecords';
 
 export interface IMyBid extends IItemByFilter {
@@ -31,12 +30,12 @@ export interface IQueryMyBids {
 }
 
 interface IQueryMyBidsArgs {
-  channel: ItemsChannel;
+  channel?: ItemsChannel;
 }
 
 export const queryMyBids = createAction<
   RequestAction<any, IQueryMyBids>,
-  [IQueryMyBidsArgs]
+  [IQueryMyBidsArgs?]
 >('queryMyBids', params => ({
   request: {
     promise: (async function () {})(),
@@ -49,18 +48,23 @@ export const queryMyBids = createAction<
       store: Store<RootState> & { dispatchRequest: DispatchRequest },
     ) => ({
       promise: (async () => {
+        const response: IQueryMyBids = {
+          claimList: [],
+          soldList: [],
+        };
+
         const {
           data: { address },
         } = getQuery<ISetAccountData>(store.getState(), {
           type: setAccount.toString(),
         });
 
-        const { data: records } = getQuery<IRecords | null>(store.getState(), {
-          type: getRecords.toString(),
-        });
+        const { data: records } = await store.dispatchRequest(
+          getRecords({ count: 1000 }),
+        );
 
         if (!records) {
-          return [];
+          return response;
         }
 
         const tradeAuctions = records.tradeAuctions.map(item => ({
@@ -76,12 +80,12 @@ export const queryMyBids = createAction<
           fetchItemsByFilter({
             ids: tradeAuctions.map(item => item.tokenId),
             cts: tradeAuctions.map(item => item.token0),
-            channel: params.channel,
+            channel: params?.channel || ItemsChannel.all,
           }),
         );
 
-        if (!itemsByFilter) {
-          return [];
+        if (!itemsByFilter || !itemsByFilter?.length) {
+          return response;
         }
 
         const claimTradeAuctions = tradeAuctions
@@ -129,10 +133,10 @@ export const queryMyBids = createAction<
           })
           .sort((a, b) => b.createTime - a.createTime);
 
-        return {
-          claimList,
-          soldList,
-        } as IQueryMyBids;
+        response.claimList = claimList;
+        response.soldList = soldList;
+
+        return response;
       })(),
     }),
   },
