@@ -5,9 +5,9 @@ import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
+import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
-import { getRecords } from 'modules/profile/actions/getRecords';
 import { IQueryMyBids, queryMyBids } from 'modules/profile/actions/queryMyBids';
 import { FilledTab, FilledTabs } from 'modules/uiKit/FilledTabs';
 import { Select } from 'modules/uiKit/Select';
@@ -23,25 +23,27 @@ import { useTabBidsStyles } from './useTabBidsStyles';
 
 const categories = [
   {
+    value: ItemsChannel.all,
+    label: t('profile.bids-categories.all'),
+  },
+  {
     value: ItemsChannel.fineArts,
-    label: 'Art',
+    label: t('profile.bids-categories.art'),
   },
   {
     value: ItemsChannel.sports,
-    label: 'Sport',
+    label: t('profile.bids-categories.sport'),
   },
   {
     value: ItemsChannel.comics,
-    label: 'Comics',
+    label: t('profile.bids-categories.comics'),
   },
 ];
 
 export const TabBids = () => {
   const classes = useTabBidsStyles();
   const dispatch = useDispatchRequest();
-  const [catergory, setCategory] = useState<ItemsChannel>(
-    ItemsChannel.fineArts,
-  );
+  const [catergory, setCategory] = useState<ItemsChannel>(ItemsChannel.all);
 
   const onCategoryTabChange = useCallback(
     (_e: ChangeEvent<{}>, newValue: ItemsChannel) => {
@@ -57,34 +59,29 @@ export const TabBids = () => {
     [],
   );
 
-  const recordsQuery = useQuery({ type: getRecords.toString() });
   const bidsQuery = useQuery<IQueryMyBids | null>({
     type: queryMyBids.toString(),
   });
 
   useEffect(() => {
-    dispatch(getRecords());
+    dispatch(queryMyBids());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (!recordsQuery.data) {
-      return;
-    }
-    dispatch(
-      queryMyBids({
-        channel: catergory,
-      }),
-    );
-  }, [catergory, dispatch, recordsQuery.data]);
-
-  const isLoading = recordsQuery.loading || bidsQuery.loading;
+  const isLoading = bidsQuery.loading;
 
   const items = useMemo(() => {
     if (!bidsQuery.data) {
       return [];
     }
-    return [...bidsQuery.data.claimList, ...bidsQuery.data.soldList];
-  }, [bidsQuery.data]);
+
+    const allItems = [...bidsQuery.data.claimList, ...bidsQuery.data.soldList];
+    const filteredItems =
+      catergory === ItemsChannel.all
+        ? allItems
+        : allItems.filter(item => item.channel === catergory);
+
+    return filteredItems;
+  }, [bidsQuery.data, catergory]);
 
   const hasItems = !!items.length;
 
