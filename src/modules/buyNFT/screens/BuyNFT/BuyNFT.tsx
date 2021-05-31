@@ -329,11 +329,11 @@ export const BuyNFT = () => {
                       cryptoCurrency="BNB"
                       onBidClick={openBidDialog}
                       onBuyClick={openEnglishBuyDialog}
-                      disabled={
+                      disabled={poolDetails.state !== AuctionState.Live}
+                      loading={
                         fixedSwapCancelLoading ||
                         creatorClaimLoading ||
-                        bidderClaimLoading ||
-                        poolDetails.state !== AuctionState.Live
+                        bidderClaimLoading
                       }
                       state={poolDetails.state}
                       role={poolDetails.role}
@@ -346,11 +346,11 @@ export const BuyNFT = () => {
                       cryptoPrice={poolDetails.price}
                       cryptoCurrency="BNB"
                       onBuyClick={openFixedBuyDialog}
-                      disabled={
+                      disabled={poolDetails.state !== FixedSwapState.Live}
+                      loading={
                         fixedSwapCancelLoading ||
                         creatorClaimLoading ||
-                        bidderClaimLoading ||
-                        poolDetails.state !== FixedSwapState.Live
+                        bidderClaimLoading
                       }
                       onBidderClaim={handleBidderClaim}
                       onCreatorClaim={handleCreatorClaim}

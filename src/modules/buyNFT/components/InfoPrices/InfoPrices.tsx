@@ -13,6 +13,7 @@ interface IInfoPricesProps {
   cryptoPrice: BigNumber;
   cryptoCurrency: string;
   disabled: boolean;
+  loading: boolean;
   onBuyClick?: () => void;
   onBidClick?: () => void;
   onBidderClaim?: () => void;
@@ -29,6 +30,7 @@ export const InfoPrices = ({
   cryptoPrice,
   cryptoCurrency,
   disabled,
+  loading,
   onBuyClick,
   onBidClick,
   onBidderClaim,
@@ -39,11 +41,8 @@ export const InfoPrices = ({
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
 
-  const [isTimeOver, setTimeOver] = useState(false);
-
-  const handleComplete = useCallback(() => {
-    setTimeOver(true);
-  }, []);
+  // TODO: Update it on time over https://fangible.atlassian.net/browse/FAN-157
+  const [isTimeOver] = useState(false);
 
   const renderButtons = useCallback(() => {
     if (state === FixedSwapState.Live && role === 'creator') {
@@ -52,7 +51,7 @@ export const InfoPrices = ({
           variant="outlined"
           fullWidth
           onClick={onCancel}
-          disabled={disabled}
+          disabled={loading}
         >
           {t('info-prices.cancel')}
         </Button>
@@ -86,7 +85,7 @@ export const InfoPrices = ({
               variant="outlined"
               fullWidth
               onClick={onBidderClaim}
-              disabled={disabled}
+              disabled={disabled || loading}
             >
               {t('info-prices.claim')}
             </Button>
@@ -112,7 +111,7 @@ export const InfoPrices = ({
               variant="outlined"
               fullWidth
               onClick={onCreatorClaim}
-              disabled={disabled}
+              disabled={loading}
             >
               {t('info-prices.claim')}
             </Button>
@@ -128,7 +127,7 @@ export const InfoPrices = ({
               variant="outlined"
               fullWidth
               onClick={onBidderClaim}
-              disabled={disabled}
+              disabled={loading}
             >
               {t('info-prices.claim')}
             </Button>
@@ -155,7 +154,7 @@ export const InfoPrices = ({
       <>
         {!disabled && onBidClick && (
           <Box mb={2}>
-            <Button fullWidth onClick={onBidClick} disabled={disabled}>
+            <Button fullWidth onClick={onBidClick}>
               {t('details-nft.place-a-bid')}
             </Button>
           </Box>
@@ -179,6 +178,7 @@ export const InfoPrices = ({
     onBidClick,
     onBuyClick,
     onCancel,
+    loading,
     onBidderClaim,
     onCreatorClaim,
   ]);
@@ -190,7 +190,7 @@ export const InfoPrices = ({
           <div className={classes.bid}>
             {t('details-nft.top-bid')}
             <i className={classes.bidDevider} />
-            <Timer onComplete={handleComplete} endDate={endDate} />
+            <Timer endDate={endDate} />
           </div>
         )}
 
