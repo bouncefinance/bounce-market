@@ -105,7 +105,6 @@ export const fetchAllNftByUser: (
 
             return (
               data
-                // ?.filter(item => item.status !== 1)
                 .map(item => {
                   const poolIndex = poolsCopy.findIndex(
                     pool => pool.tokenId === item.id,
