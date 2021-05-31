@@ -3,12 +3,19 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
+import { NotificationActions } from 'modules/notification/store/NotificationActions';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { IProfileInfo } from '../api/profileInfo';
 import { fetchProfileInfo } from './fetchProfileInfo';
 import { showSuccesNotify } from './showSuccesNotify';
+
+interface IApiResponse {
+  data?: any;
+  code: number;
+  msg: string;
+}
 
 interface IEditProfileArgs {
   fullName?: string;
@@ -75,7 +82,7 @@ export const editProfile: (
       mutations: {
         [fetchProfileInfo.toString()]: (
           data: IProfileInfo | undefined,
-          { code }: { code: number; msg: any },
+          { code }: IApiResponse,
         ): IProfileInfo | undefined => {
           if (code === 1) {
             const updatedData = {
@@ -106,11 +113,21 @@ export const editProfile: (
         },
       },
       onSuccess: (
-        response,
+        response: { data: IApiResponse },
         action: RequestAction,
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
-        store.dispatch(showSuccesNotify());
+        if (response.data.code === 1) {
+          store.dispatch(showSuccesNotify());
+        } else {
+          console.error(response.data.msg);
+          store.dispatch(
+            NotificationActions.showNotification({
+              message: response.data.msg,
+              severity: 'error',
+            }),
+          );
+        }
 
         return response;
       },
