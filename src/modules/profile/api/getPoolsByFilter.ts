@@ -9,6 +9,8 @@ import {
   isApiEnglishAuction,
 } from '../../overview/actions/fetchPoolDetails';
 import { POOLS_URL } from '../../common/conts';
+import { AuctionState } from '../../common/const/AuctionState';
+import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 interface IApiPoolsData {
   code: 200;
@@ -43,7 +45,7 @@ function mapPool(data: IApiFetchPoolDetails['data']): IFetchPoolDetailsData {
        */
       nftType: NftType.ERC1155,
       poolId: data.poolId,
-      state: data.state,
+      state: data.state === 0 ? AuctionState.Live : AuctionState.Claimed,
       tokenContract: data.token0,
       unitContract: data.token0,
       tokenAmount0: data.tokenAmount0,
@@ -59,7 +61,7 @@ function mapPool(data: IApiFetchPoolDetails['data']): IFetchPoolDetailsData {
       nftType: NftType.ERC721,
       poolId: data.poolId,
       price: new BigNumber(Web3.utils.fromWei(data.price)),
-      state: data.state,
+      state: data.state === 0 ? FixedSwapState.Live : FixedSwapState.Completed,
       tokenContract: data.token0,
       unitContract: data.token1,
       tokenId: data.tokenId,

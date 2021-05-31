@@ -38,8 +38,8 @@ interface IApiFetchItemsByFilter {
 }
 
 interface IFetchItemsByFilterArgs {
-  ids: any[];
-  cts: any[];
+  ids: number[];
+  cts: string[];
   category?: NFTCategoryType;
   channel: ItemsChannel;
 }

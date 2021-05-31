@@ -116,11 +116,11 @@ export const publishNft = createSmartAction<
             const ContractBounceERC721 = new web3.eth.Contract(
               BounceErc721,
               payload.tokenContract,
-            )
+            );
             const ContractBounceERC1155 = new web3.eth.Contract(
               BounceErc1155,
               payload.tokenContract,
-            )
+            );
             const onlyBOT = false;
 
             const {
@@ -151,7 +151,7 @@ export const publishNft = createSmartAction<
                 if (publishType === PublishNFTType.BrandNFT) {
                   ApproveContract = ContractBounceERC721;
                 }
-                
+
                 await ApproveContract.methods
                   .approve(getFixedSwapContract(chainId), tokenId)
                   .send({ from: address });
@@ -184,7 +184,7 @@ export const publishNft = createSmartAction<
                 if (publishType === PublishNFTType.BrandNFT) {
                   ApproveContract = ContractBounceERC1155;
                 }
-                
+
                 await ApproveContract.methods
                   .setApprovalForAll(getFixedSwapContract(chainId), true)
                   .send({ from: address });

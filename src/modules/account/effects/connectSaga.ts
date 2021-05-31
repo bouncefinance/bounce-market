@@ -7,6 +7,7 @@ import { Address } from '../../common/types/unit';
 import { connect } from '../store/actions/connect';
 import { setAccount } from '../store/actions/setAccount';
 import { disconnect } from '../store/actions/disconnect';
+import { updateAccount } from '../store/actions/updateAccount';
 
 // TODO: Check disconnection, switch chain, switch account
 
@@ -87,7 +88,7 @@ function createEventChannel(provider: any) {
 
 function* onConnectWallet() {
   const { action, error } = yield putResolve(setAccount());
-  if (error) {
+  if (error || action.type === setAccount.toString() + '_ERROR') {
     return;
   }
   const provider = action.meta.provider;
@@ -98,9 +99,9 @@ function* onConnectWallet() {
     const event: ProviderEvent = yield take(channel);
 
     if (event.type === WalletEventType.ChainChanged) {
-      yield put(
-        resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
-      );
+      if (event.data.chainId) {
+        yield put(updateAccount({ chainId: event.data.chainId }));
+      }
     } else if (event.type === WalletEventType.AccountChanged) {
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
@@ -117,6 +118,7 @@ function* onConnectWallet() {
       });
 
       if (currentAddress.toLowerCase() !== address?.toLowerCase()) {
+        yield put(disconnect());
         yield put(connect());
       }
     }

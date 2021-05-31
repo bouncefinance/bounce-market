@@ -1,18 +1,22 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
-import { queryItemByFilter } from 'modules/pools/actions/queryItemByFilter';
-import { queryPools } from 'modules/pools/actions/queryPools';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { compare } from '../api/queryBrand';
-import { ListBrandItemsAction } from './const';
 import { queryBrandItem1155, queryBrandItem721 } from './queryBrandItems';
+import { getPoolsByFilter } from '../../profile/api/getPoolsByFilter';
+import { fetchItem } from '../../buyNFT/actions/fetchItem';
+import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
+import { AuctionType } from '../../overview/api/auctionType';
+import { AuctionState } from '../../common/const/AuctionState';
+import { FixedSwapState } from '../../common/const/FixedSwapState';
+
+// TODO: Merge with src/modules/profile/actions/fetchAllNftByUser.ts
 
 export const listBrandItems = createSmartAction(
-  ListBrandItemsAction,
+  'listBrandItems',
   ({ userAddress, contractAddress }) => ({
     request: {
-      promise: (async function () { })(),
+      promise: (async function () {})(),
     },
     meta: {
       asMutation: true,
@@ -22,70 +26,116 @@ export const listBrandItems = createSmartAction(
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
         return {
-          promise: (async () => {
+          promise: (async function () {
             const { data: items721 } = await store.dispatchRequest(
               queryBrandItem721({
                 user_address: userAddress,
-                contract_address: contractAddress
-              })
-            )
+                contract_address: contractAddress,
+              }),
+            );
 
             const { data: items1155 } = await store.dispatchRequest(
               queryBrandItem1155({
                 user_address: userAddress,
-                contract_address: contractAddress
-              })
-            )
+                contract_address: contractAddress,
+              }),
+            );
+
+            const nfts = [...(items721 ?? []), ...(items1155 ?? [])];
 
             const { data: pools } = await store.dispatchRequest(
-              queryPools(userAddress)
-            )
+              getPoolsByFilter({ user: userAddress }),
+            );
 
-            const tradePools = pools?.tradePools?.filter(item => item.state !== 1 && compare(item.token0, contractAddress))
-              ?? [];
-            const tradeAuctions = pools?.tradeAuctions?.filter(item => item.state !== 1 && compare(item.token0, contractAddress))
-              ?? [];
+            const ids = [
+              ...(pools?.list.map(item => item.tokenId) ?? []),
+              ...nfts.map(
+                (item: any) => item.tokenId || parseInt(item.token_id),
+              ),
+            ];
+            const cts = [
+              ...(pools?.list.map(item => item.tokenContract) ?? []),
+              ...nfts.map((item: any) => item.token0 || item.contract_addr),
+            ];
 
-            const list = items721.concat(items1155).concat(tradePools).concat(tradeAuctions);
+            const items = ids.map((id, index) => ({
+              id,
+              contractAddress: cts[index],
+            }));
 
-            const ids = list.map((item: any) => item.tokenId || parseInt(item.token_id));
-            const cts = list.map((item: any) => item.token0 || item.contract_addr)
+            const data = (
+              await Promise.all(
+                items.map(item => {
+                  return store.dispatchRequest(
+                    fetchItem(
+                      { id: item.id, contract: item.contractAddress },
+                      {
+                        silent: true,
+                        suppressErrorNotification: true,
+                        requestKey:
+                          item.id + item.contractAddress + Math.random(),
+                      },
+                    ),
+                  );
+                }),
+              )
+            ).map(response => {
+              return response.data!;
+            });
 
-            const { data: items } = await store.dispatchRequest(
-              queryItemByFilter({
-                ids: ids,
-                cts: cts,
-                category: '',
-                channel: '',
-              })
-            )
+            const poolsCopy = pools ? [...pools.list] : [];
 
-            const poolList = list.map((item: any) => {
-              const poolInfo = items?.find((pool: any) => {
-                return (parseInt(item.token_id) === pool.id || item.tokenId === pool.id)
-                  && (
-                    compare(item.contract_addr, pool.contractaddress) ||
-                    compare(item.contract_addr, pool.token0)
-                  )
-              })
+            return data
+              ?.map(item => {
+                const poolIndex = poolsCopy.findIndex(
+                  pool => pool.tokenId === item.id,
+                );
+                const pool = poolsCopy[poolIndex];
 
-              if (poolInfo) {
-                return {
-                  ...poolInfo,
-                  poolType: item && item.amount_total0 ? 'fixedSwap' : 'englishAuction',
-                  poolId: item && item.poolId,
-                  price: item && (item.lastestBidAmount || item.amountMin1),
-                  token1: item && item.token1,
-                  createTime: item && item.createTime
+                if (pool) {
+                  poolsCopy.splice(poolIndex, 1);
+                  return {
+                    ...item,
+                    supply: (() => {
+                      if (isEnglishAuction(pool)) {
+                        if (pool.state < AuctionState.NotSoldByReservePrice) {
+                          return pool.tokenAmount0;
+                        }
+
+                        return 0;
+                      } else {
+                        if (pool.state < FixedSwapState.Canceled) {
+                          return pool.quantity;
+                        } else {
+                          return 0;
+                        }
+                      }
+                    })(),
+                    poolId: pool.poolId,
+                    poolType: isEnglishAuction(pool)
+                      ? AuctionType.EnglishAuction
+                      : AuctionType.FixedSwap,
+                    price: isEnglishAuction(pool)
+                      ? pool.lastestBidAmount.isEqualTo(0)
+                        ? pool.amountMin1
+                        : pool.lastestBidAmount
+                      : pool.price,
+                    state: pool.state,
+                  };
                 }
-              } else {
-                return null
-              }
-            })
-            return poolList;
-          })()
-        }
-      }
-    }
-  })
-)
+
+                const supply = nfts.find(nftItem => nftItem.tokenId === item.id)
+                  ?.balance;
+
+                return { ...item, supply: supply };
+              })
+              .filter(item => item.supply > 0)
+              .sort((prev, next) => {
+                return next.createdAt.getTime() - prev.createdAt.getTime();
+              });
+          })(),
+        };
+      },
+    },
+  }),
+);

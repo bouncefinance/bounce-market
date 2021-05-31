@@ -19,6 +19,7 @@ import {
 } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
+import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode, useCallback, useState } from 'react';
@@ -27,6 +28,8 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
 import { useProductCardStyles } from './useProductCardStyles';
+
+const ENABLE_TRANSFER = false;
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -97,7 +100,7 @@ export const ProductCard = ({
 
   const renderTimer = useCallback(() => {
     const daysLeft = endDate ? getDaysLeft(endDate) : 0;
-    const isLastDay = daysLeft <= 0;
+    const isTimeOver = daysLeft <= 0;
 
     return (
       <div className={classes.info}>
@@ -105,9 +108,12 @@ export const ProductCard = ({
           className={classNames(classes.icon, classes.iconRightOffset)}
         />
 
-        {isLastDay && 'the last day'}
+        {isTimeOver && t('time.time-over')}
 
-        {!isLastDay && `${daysLeft} days left`}
+        {!isTimeOver &&
+          t('time.days-left', {
+            days: daysLeft,
+          })}
       </div>
     );
   }, [classes, endDate]);
@@ -261,44 +267,52 @@ export const ProductCard = ({
                     rounded
                     to={toSale}
                   >
-                    Put on sale
+                    {t('product-card.put-on-sale')}
                   </Button>
-                  <ButtonBase className={classes.menuBtn} onClick={handleClick}>
-                    <VerticalDotsIcon className={classes.menuIcon} />
-                  </ButtonBase>
-                  <Popover
-                    className={classes.menuPopover}
-                    open={isPopoverOpened}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    PaperProps={{
-                      variant: 'outlined',
-                    }}
-                  >
-                    <MenuList>
-                      <MenuItem
-                        className={classes.menuItem}
-                        onClick={onTransferClick}
-                      >
-                        Transfer token
-                      </MenuItem>
 
-                      <MenuItem
-                        className={classes.menuItem}
-                        onClick={onBurnClick}
+                  {ENABLE_TRANSFER && (
+                    <>
+                      <ButtonBase
+                        className={classes.menuBtn}
+                        onClick={handleClick}
                       >
-                        Burn token
-                      </MenuItem>
-                    </MenuList>
-                  </Popover>
+                        <VerticalDotsIcon className={classes.menuIcon} />
+                      </ButtonBase>
+                      <Popover
+                        className={classes.menuPopover}
+                        open={isPopoverOpened}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        PaperProps={{
+                          variant: 'outlined',
+                        }}
+                      >
+                        <MenuList>
+                          <MenuItem
+                            className={classes.menuItem}
+                            onClick={onTransferClick}
+                          >
+                            {t('product-card.transfer')}
+                          </MenuItem>
+
+                          <MenuItem
+                            className={classes.menuItem}
+                            onClick={onBurnClick}
+                          >
+                            {t('product-card.burn')}
+                          </MenuItem>
+                        </MenuList>
+                      </Popover>
+                    </>
+                  )}
                 </Box>
               )}
             </>
