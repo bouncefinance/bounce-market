@@ -118,6 +118,7 @@ function* onConnectWallet() {
       });
 
       if (currentAddress.toLowerCase() !== address?.toLowerCase()) {
+        yield put(disconnect());
         yield put(connect());
       }
     }

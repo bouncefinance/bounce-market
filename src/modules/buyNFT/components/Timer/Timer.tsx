@@ -14,20 +14,34 @@ const NORMAL_STEP: Milliseconds = 1000 * 30;
 
 interface ITimerProps extends BoxProps {
   endDate: Date;
+  onComplete?: () => void;
 }
 
-export const Timer = ({ endDate, className, ...boxProps }: ITimerProps) => {
+export const Timer = ({
+  endDate,
+  onComplete,
+  className,
+  ...boxProps
+}: ITimerProps) => {
   const classes = useTimerStyles();
 
   const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining(endDate));
 
   const delayInterval = useMemo(() => {
-    return timeRemaining.minutes >= INTERVAL_BREAKPOINT
-      ? NORMAL_STEP
-      : timeRemaining.total > 0
-      ? SHORT_STEP
-      : null;
-  }, [timeRemaining.minutes, timeRemaining.total]);
+    if (timeRemaining.minutes >= INTERVAL_BREAKPOINT) {
+      return NORMAL_STEP;
+    }
+
+    if (timeRemaining.total > 0) {
+      return SHORT_STEP;
+    }
+
+    if (onComplete) {
+      onComplete();
+    }
+
+    return null;
+  }, [onComplete, timeRemaining.minutes, timeRemaining.total]);
 
   useInterval(() => {
     setTimeRemaining(getTimeRemaining(endDate));

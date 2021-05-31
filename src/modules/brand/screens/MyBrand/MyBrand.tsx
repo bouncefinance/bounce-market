@@ -1,6 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { listBrandItems } from 'modules/brand/actions/listBrandItems';
@@ -17,11 +16,11 @@ import { Avatar } from 'modules/profile/components/Avatar';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
-import { useProfileStyles } from 'modules/profile/screens/useProfileStyles';
+import { useProfileStyles } from 'modules/profile/screens/Profile/useProfileStyles';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import Web3 from 'web3';
+import { uid } from 'react-uid';
 
 export const MyBrand = () => {
   const classes = useProfileStyles();
@@ -37,12 +36,17 @@ export const MyBrand = () => {
 
   useEffect(() => {
     if (address && id) {
-      dispatch(queryBrandById({
-        id: parseInt(id),
-        accountaddress: address
-      }, {
-        asMutation: true,
-      })).then(res => {
+      dispatch(
+        queryBrandById(
+          {
+            id: parseInt(id),
+            accountaddress: address,
+          },
+          {
+            asMutation: true,
+          },
+        ),
+      ).then(res => {
         const brandInfo = res.data;
         if (brandInfo) {
           setBrandInfo(brandInfo);
@@ -103,7 +107,7 @@ export const MyBrand = () => {
             {brandInfo?.id && <BrandAddItem id={brandInfo.id} />}
           </Grid>
           {items?.map((item: any) => (
-            <Grid item xs={12} sm={6} lg={4} xl={3} key={item.id}>
+            <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
               <ProductCard
                 key={item.id}
                 isOnSale={!!item.poolId}
@@ -111,12 +115,12 @@ export const MyBrand = () => {
                 href={
                   item.poolId && item.poolType
                     ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                      item.poolId,
-                      item.poolType,
-                    )
+                        item.poolId,
+                        item.poolType,
+                      )
                     : ''
                 }
-                price={item.poolId && item.price ? new BigNumber(Web3.utils.fromWei(item.price)) : undefined}
+                price={item.poolId && item.price ? item.price : undefined}
                 copies={item.supply}
                 MediaProps={{
                   category: item.category,
@@ -130,8 +134,9 @@ export const MyBrand = () => {
                   users: [
                     {
                       name: 'name',
-                      avatar: `${profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
-                        }`,
+                      avatar: `${
+                        profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
+                      }`,
                       verified: true,
                     },
                   ],

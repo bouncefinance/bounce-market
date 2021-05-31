@@ -1,5 +1,5 @@
 import { makeStyles, Theme } from '@material-ui/core';
-import { PROFILE_AVATAR_SIZE } from '../components/Avatar/useAvatarStyles';
+import { PROFILE_AVATAR_SIZE } from '../../components/Avatar/useAvatarStyles';
 
 export const useProfileStyles = makeStyles<Theme>(theme => ({
   root: {

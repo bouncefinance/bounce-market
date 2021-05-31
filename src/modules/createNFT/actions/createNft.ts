@@ -20,7 +20,7 @@ export enum NftType {
 }
 
 export enum Channel {
-  FineArts = 'Fine Arts',
+  FineArts = 'FineArts',
   Sports = 'Sports',
   Conicbooks = 'Comics',
 }
