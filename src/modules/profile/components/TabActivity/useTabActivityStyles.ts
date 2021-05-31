@@ -3,11 +3,6 @@ import { makeStyles, Theme } from '@material-ui/core';
 export const useTabActivityStyles = makeStyles<Theme>(theme => ({
   table: {},
 
-  empty: {
-    textAlign: 'center',
-    margin: theme.spacing(2),
-  },
-
   eventIcon: {
     marginRight: theme.spacing(1),
   },
@@ -43,5 +38,14 @@ export const useTabActivityStyles = makeStyles<Theme>(theme => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+  },
+
+  emptyTitle: {
+    marginBottom: theme.spacing(1.5),
+  },
+
+  emptyDescription: {
+    margin: theme.spacing(0, 'auto', 3.5),
+    maxWidth: 480,
   },
 }));

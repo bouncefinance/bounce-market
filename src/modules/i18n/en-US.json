@@ -302,7 +302,9 @@
       "transfer": "Transfer",
       "created": "Created",
       "canceled": "Canceled",
-      "claimed": "Claimed"
+      "claimed": "Claimed",
+      "empty-title": "No activities found",
+      "empty-description": "You have not any activities yet"
     }
   },
   "buy-dialog": {

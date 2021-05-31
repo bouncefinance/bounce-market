@@ -6,7 +6,7 @@ import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
-import { ActivityTable } from 'modules/profile/components/ActivityTable';
+import { TabActivity } from '../../components/TabActivity';
 import { Avatar } from 'modules/profile/components/Avatar';
 import { Bio } from 'modules/profile/components/Bio';
 import { Header } from 'modules/profile/components/Header';
@@ -108,14 +108,10 @@ export const Profile = () => {
         value: ProfileTab.brands,
         label: t('profile.tabs.my-brands'),
       },
-      ...(featuresConfig.profileActivity
-        ? [
-            {
-              value: ProfileTab.activity,
-              label: t('profile.tabs.activity'),
-            },
-          ]
-        : []),
+      {
+        value: ProfileTab.activity,
+        label: t('profile.tabs.activity'),
+      },
       ...(featuresConfig.profileLiked
         ? [
             {
@@ -209,7 +205,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>
-          <ActivityTable />
+          <TabActivity />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.following}>
