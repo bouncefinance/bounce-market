@@ -53,7 +53,7 @@ export const featuresConfig = {
    */
   nftItemsSortSelect: false,
   nftDetailsCreator: false,
-  nftDetailsCount: false,
+  nftDetailsCount: true,
   nftDetailsHistory: false,
   nftDetailsBids: false,
   nftDetailsOwners: false,

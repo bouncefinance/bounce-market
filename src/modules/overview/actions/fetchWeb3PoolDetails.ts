@@ -4,9 +4,18 @@ import { Store } from 'redux';
 import { RootState } from 'store';
 import { AuctionType } from '../api/auctionType';
 import { setAccount } from '../../account/store/actions/setAccount';
-import { BounceEnglishAuctionNFT, BounceFixedSwapNFT } from '../../web3/contracts';
-import { getEnglishAuctionContract, getFixedSwapContract } from '../../createNFT/actions/publishNft';
-import { IEnglishAuctionDetails, IFixedAuctionDetails } from './fetchPoolDetails';
+import {
+  BounceEnglishAuctionNFT,
+  BounceFixedSwapNFT,
+} from '../../web3/contracts';
+import {
+  getEnglishAuctionContract,
+  getFixedSwapContract,
+} from '../../createNFT/actions/publishNft';
+import {
+  IEnglishAuctionDetails,
+  IFixedAuctionDetails,
+} from './fetchPoolDetails';
 import BigNumber from 'bignumber.js';
 import { fetchCurrency } from './fetchCurrency';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
@@ -84,6 +93,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   ),
                 );
                 return {
+                  totalQuantity: pool.amountTotal0,
                   quantity:
                     parseInt(pool.amountTotal0) - parseInt(swappedAmount0Pool),
                   // TODO: Apply precision

@@ -52,6 +52,7 @@ export interface IApiFetchPoolDetails {
 }
 
 export interface IFixedAuctionDetails {
+  totalQuantity?: number;
   quantity: number;
   totalPrice: BigNumber;
   createTime: Date;

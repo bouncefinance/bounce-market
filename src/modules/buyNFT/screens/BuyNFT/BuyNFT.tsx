@@ -305,8 +305,16 @@ export const BuyNFT = () => {
                   <InfoDescr
                     title={item.itemname}
                     description={item.description}
-                    copiesCurrent={2}
-                    copiesTotal={10}
+                    copiesCurrent={
+                      isEnglishAuction(poolDetails)
+                        ? undefined
+                        : poolDetails.quantity
+                    }
+                    copiesTotal={
+                      isEnglishAuction(poolDetails)
+                        ? poolDetails.tokenAmount0
+                        : poolDetails.totalQuantity
+                    }
                     creator={renderedCreator}
                     owner={renderedOwner}
                   />
