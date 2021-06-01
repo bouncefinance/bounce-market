@@ -1,23 +1,27 @@
 import { Box, Button, Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import { t } from 'modules/i18n/utils/intl';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
 import { AuctionState } from '../../../common/const/AuctionState';
-import { AuctionRole } from '../../../overview/actions/fetchWeb3PoolDetails';
+import { UserRole } from '../../../overview/actions/fetchWeb3PoolDetails';
+import { FixedSwapState } from '../../../common/const/FixedSwapState';
 
 interface IInfoPricesProps {
   price: BigNumber;
   cryptoPrice: BigNumber;
   cryptoCurrency: string;
   disabled: boolean;
+  loading: boolean;
   onBuyClick?: () => void;
   onBidClick?: () => void;
-  onClaim?: () => void;
+  onBidderClaim?: () => void;
+  onCreatorClaim?: () => void;
   endDate?: Date;
-  state?: AuctionState;
-  role?: AuctionRole;
+  state: AuctionState | FixedSwapState;
+  role?: UserRole;
+  onCancel?: () => void;
 }
 
 export const InfoPrices = ({
@@ -26,29 +30,58 @@ export const InfoPrices = ({
   cryptoPrice,
   cryptoCurrency,
   disabled,
+  loading,
   onBuyClick,
   onBidClick,
-  onClaim,
+  onBidderClaim,
+  onCreatorClaim,
   state,
   role,
+  onCancel,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
 
-  const isTimeOver = endDate && new Date().getTime() > endDate.getTime();
+  // TODO: Update it on time over https://fangible.atlassian.net/browse/FAN-157
+  const [isTimeOver] = useState(false);
 
   const renderButtons = useCallback(() => {
+    if (state === FixedSwapState.Live && role === 'creator') {
+      return (
+        <Button
+          variant="outlined"
+          fullWidth
+          onClick={onCancel}
+          disabled={loading}
+        >
+          {t('info-prices.cancel')}
+        </Button>
+      );
+    }
+
+    if (state === FixedSwapState.Canceled) {
+      return <Typography>{t('info-prices.canceled')}</Typography>;
+    }
+
     if (
       state === AuctionState.CompletedByDirectPurchase ||
-      state === AuctionState.CompletedByTime ||
-      (state === AuctionState.Live && isTimeOver)
+      (state === AuctionState.CompletedByTime &&
+        (role === 'buyer' || role === 'creator')) ||
+      (state === AuctionState.Live &&
+        isTimeOver &&
+        (role === 'buyer' || role === 'creator'))
     ) {
-      if (role === 'owner') {
+      if (role === 'creator') {
         return (
           <>
             <Box mb={2}>
-              {t('info-prices.status.CompletedByDirectPurchase.owner')}
+              {t('info-prices.status.CompletedByDirectPurchase.creator')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onCreatorClaim}
+              disabled={loading}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
@@ -59,7 +92,12 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.CompletedByDirectPurchase.buyer')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onBidderClaim}
+              disabled={loading}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
@@ -74,13 +112,18 @@ export const InfoPrices = ({
     }
 
     if (state === AuctionState.NotSoldByReservePrice) {
-      if (role === 'owner') {
+      if (role === 'creator') {
         return (
           <>
             <Box mb={2}>
-              {t('info-prices.status.NotSoldByReservePrice.owner')}
+              {t('info-prices.status.NotSoldByReservePrice.creator')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onCreatorClaim}
+              disabled={loading}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
@@ -91,30 +134,35 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.NotSoldByReservePrice.buyer')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onBidderClaim}
+              disabled={loading}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
         );
       } else {
         return (
-          <>
-            <Box mb={2}>
-              {t('info-prices.status.NotSoldByReservePrice.others')}
-            </Box>
-          </>
+          <Box mb={2}>
+            {t('info-prices.status.NotSoldByReservePrice.others')}
+          </Box>
         );
       }
     }
 
     if (state === AuctionState.Claimed) {
-      return (
-        <>
-          <Box mb={2}>
-            {t('info-prices.status.NotSoldByReservePrice.default')}
-          </Box>
-        </>
-      );
+      if (role === 'creator') {
+        return <Box mb={2}>{t('info-prices.status.Claimed.creator')}</Box>;
+      }
+
+      return <Box mb={2}>{t('info-prices.status.Claimed.default')}</Box>;
+    }
+
+    if (state === AuctionState.Live && role === 'creator') {
+      return <Box mb={2}>{t('info-prices.status.Live.creator')}</Box>;
     }
 
     return (
@@ -137,7 +185,18 @@ export const InfoPrices = ({
         </Button>
       </>
     );
-  }, [disabled, isTimeOver, onBidClick, onBuyClick, onClaim, role, state]);
+  }, [
+    state,
+    role,
+    isTimeOver,
+    disabled,
+    onBidClick,
+    onBuyClick,
+    onCancel,
+    loading,
+    onBidderClaim,
+    onCreatorClaim,
+  ]);
 
   return (
     <Grid container spacing={3} alignItems="center">
@@ -155,7 +214,7 @@ export const InfoPrices = ({
         </Typography>
 
         <Typography className={classes.price} color="textSecondary">
-          {t('wallet.$-value', { value: price.toFormat() })}
+          {t('unit.$-value', { value: price.toFormat() })}
         </Typography>
       </Grid>
 

@@ -22,11 +22,15 @@ export const Timer = ({ endDate, className, ...boxProps }: ITimerProps) => {
   const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining(endDate));
 
   const delayInterval = useMemo(() => {
-    return timeRemaining.minutes >= INTERVAL_BREAKPOINT
-      ? NORMAL_STEP
-      : timeRemaining.total > 0
-      ? SHORT_STEP
-      : null;
+    if (timeRemaining.minutes >= INTERVAL_BREAKPOINT) {
+      return NORMAL_STEP;
+    }
+
+    if (timeRemaining.total > 0) {
+      return SHORT_STEP;
+    }
+
+    return null;
   }, [timeRemaining.minutes, timeRemaining.total]);
 
   useInterval(() => {

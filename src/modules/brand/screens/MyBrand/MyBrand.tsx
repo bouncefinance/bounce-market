@@ -21,6 +21,7 @@ import { useProfileStyles } from 'modules/profile/screens/Profile/useProfileStyl
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { uid } from 'react-uid';
 import Web3 from 'web3';
 
 export const MyBrand = () => {
@@ -108,7 +109,7 @@ export const MyBrand = () => {
             {brandInfo?.id && <BrandAddItem id={brandInfo.id} />}
           </Grid>
           {items?.map((item: any) => (
-            <Grid item xs={12} sm={6} lg={4} xl={3} key={item.id}>
+            <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
               <ProductCard
                 id={item.id}
                 poolId={item.poolId}

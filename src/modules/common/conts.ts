@@ -5,6 +5,7 @@ export const POOLS_URL = process.env.REACT_APP_POOLS_URL;
 export const POOL_DETAILS_URL = process.env.REACT_APP_POOL_DETAILS_URL;
 export const FANGIBLE_URL = process.env.REACT_APP_FANGIBLE_URL;
 export const NFTVIEW_URL_V2 = process.env.REACT_APP_NFTVIEW_URL_V2;
+export const REACT_APP_BRAND_BASEURI = process.env.REACT_APP_BRAND_BASEURI;
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 // TODO: at the end all features should be activated
@@ -30,6 +31,10 @@ export const featuresConfig = {
    */
   nftCardOwnerInfo: false,
   /**
+   * No has profile pages yet
+   */
+  usersInSearch: false,
+  /**
    * Hidden, as for now the own profile is displayed without a unique URL
    * and it cannot be shared
    */
@@ -39,17 +44,11 @@ export const featuresConfig = {
    * and it cannot be shared
    */
   ownBrandSharing: false,
-  /**
-   * Feature is not fully implemented
-   */
-  nftLikes: true,
-  /**
-   * Feature is not implemented
-   */
+  nftLikes: false,
   nftItemsSortSelect: false,
   nftDetailsLikesCount: false,
   nftDetailsCreator: false,
-  nftDetailsCount: false,
+  nftDetailsCount: true,
   nftDetailsHistory: false,
   nftDetailsBids: false,
   nftDetailsOwners: false,

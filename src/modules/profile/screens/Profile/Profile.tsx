@@ -1,10 +1,9 @@
 import { Container } from '@material-ui/core';
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import {
   ILikedItem,
@@ -30,9 +29,10 @@ import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import { Section } from 'modules/uiKit/Section';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { uid } from 'react-uid';
+import { TabBids } from './components/TabBids';
 import { TabItems } from './components/TabItems';
 import { TabLiked } from './components/TabLiked';
 import { useProfileStyles } from './useProfileStyles';
@@ -72,7 +72,6 @@ export const Profile = () => {
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const classes = useProfileStyles();
   const { address } = useAccount();
-  const dispatchRequest = useDispatchRequest();
   const { push } = useHistory();
 
   const { data: likedItems } = useQuery<ILikedItem[] | null>({
@@ -97,16 +96,6 @@ export const Profile = () => {
     [],
   );
 
-  useEffect(() => {
-    if (address) {
-      dispatchRequest(
-        fetchAllNftByUser({
-          user: address,
-        }),
-      );
-    }
-  }, [address, dispatchRequest]);
-
   const onTabsChange = useCallback(
     (_, value) => {
       push(ProfileRoutesConfig.UserProfile.generatePath(value));
@@ -121,19 +110,27 @@ export const Profile = () => {
         label: t('profile.tabs.my-items'),
       },
       {
-        value: ProfileTab.brands,
-        label: t('profile.tabs.my-brands'),
+        value: ProfileTab.bids,
+        label: t('profile.tabs.my-bids'),
       },
       {
-        value: ProfileTab.liked,
-        label: t('profile.tabs.liked'),
-        count: likedItems ? likedItems.length : 0,
+        value: ProfileTab.brands,
+        label: t('profile.tabs.my-brands'),
       },
       ...(featuresConfig.profileActivity
         ? [
             {
               value: ProfileTab.activity,
               label: t('profile.tabs.activity'),
+            },
+          ]
+        : []),
+      ...(featuresConfig.nftLikes
+        ? [
+            {
+              value: ProfileTab.liked,
+              label: t('profile.tabs.liked'),
+              count: likedItems ? likedItems.length : 0,
             },
           ]
         : []),
@@ -216,13 +213,19 @@ export const Profile = () => {
           <TabBrands />
         </TabPanel>
 
+        <TabPanel value={tab} index={ProfileTab.bids}>
+          <TabBids />
+        </TabPanel>
+
         <TabPanel value={tab} index={ProfileTab.activity}>
           <ActivityTable />
         </TabPanel>
 
-        <TabPanel value={tab} index={ProfileTab.liked}>
-          <TabLiked />
-        </TabPanel>
+        {featuresConfig.nftLikes && (
+          <TabPanel value={tab} index={ProfileTab.liked}>
+            <TabLiked />
+          </TabPanel>
+        )}
 
         <TabPanel value={tab} index={ProfileTab.following}>
           <TabFollowing items={followings} />

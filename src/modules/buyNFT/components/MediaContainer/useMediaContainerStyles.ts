@@ -22,10 +22,12 @@ export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
     maxWidth: '100%',
     maxHeight: '100%',
     minWidth: 240,
+    textAlign: 'center',
   },
 
   img: {
     display: 'block',
+    margin: theme.spacing(0, 'auto'),
     maxWidth: '100%',
     objectFit: 'scale-down',
     borderRadius: 12,

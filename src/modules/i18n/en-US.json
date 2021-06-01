@@ -15,6 +15,7 @@
   },
   "time": {
     "time-over": "Time is over",
+    "days-left": "{days} days left",
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
     "days-short": "{days}d",
     "hours-short": "{hours}h",
@@ -48,10 +49,6 @@
     "facebook": "Facebook",
     "telegram": "Telegram"
   },
-  "wallet": {
-    "$-value": "${value}",
-    "unit": "{value, number} {unit}"
-  },
   "connect-wallet": {
     "placeholder": {
       "title": "Connect your wallet",
@@ -84,7 +81,9 @@
   },
   "unit": {
     "day": "{value, plural, =0 {0 days} =1 {1 day} other {# days}}",
-    "BNB-value": "{value, number} BNB"
+    "BNB-value": "{value, number} BNB",
+    "$-value": "${value}",
+    "custom-unit": "{value, number} {unit}"
   },
   "error": {
     "unexpected": "Unexpected error",
@@ -105,7 +104,7 @@
       "supply": "Supply"
     },
     "channelOption": {
-      "Fine Arts": "Fine arts",
+      "FineArts": "Fine arts",
       "Sports": "Sports",
       "Comics": "Comicbooks"
     },
@@ -199,7 +198,7 @@
       "supply": "Supply"
     },
     "channelOption": {
-      "Fine Arts": "Fine arts",
+      "FineArts": "Fine arts",
       "Sports": "Sports",
       "Comics": "Comicbooks"
     },
@@ -224,7 +223,7 @@
     "submit": "Put on Sale",
     "submitting": "Submitting",
     "fee": "Fangible fee {value}%",
-    "recieve": "You will receive",
+    "receive": "You will receive <b>{value} {unit}</b>",
     "expire": "Will expire on {value, date, medium} {value, time, short}",
     "auction-amount": "In the auction you can only put up 1 copy for sale",
     "auction-type": {
@@ -263,7 +262,7 @@
     "edit-cover": "Edit profile cover",
     "no-items": {
       "title": "No items found",
-      "descr": "Sorry mate... for some reason nothing was found",
+      "descr": "You have not created any NFTs yet",
       "btn": "Browse market"
     },
     "edit": {
@@ -285,6 +284,7 @@
     },
     "tabs": {
       "my-items": "My items",
+      "my-bids": "My bids",
       "my-brands": "My brands",
       "activity": "Activity",
       "liked": "Liked",
@@ -299,6 +299,12 @@
       "from": "From",
       "to": "To",
       "date": "Date"
+    },
+    "bids-categories": {
+      "all": "All",
+      "art": "Art",
+      "sport": "Sport",
+      "comics": "Comics"
     }
   },
   "buy-dialog": {
@@ -316,25 +322,37 @@
   },
   "change-wallet": {
     "title": "Wrong network",
-    "description": "Change network to Binance SmartChain",
-    "submit": "Change to SmartChain"
+    "description": "Change network to Binance Smart Chain",
+    "submit": "Change to Smart Chain",
+    "network-change-error": "Can't setup the BSC network on metamask because provider is undefined."
   },
   "info-prices": {
     "claim": "Claim",
+    "cancel": "Cancel",
+    "canceled": "Canceled",
     "status": {
       "CompletedByDirectPurchase": {
-        "owner": "Item has been sold",
-        "buyer": "Item has been sold",
+        "creator": "Item has been sold, you can claim your money",
+        "buyer": "Item has been sold, you can claim your nft",
         "others": "Item has been sold"
       },
       "NotSoldByReservePrice": {
-        "owner": "Item has been sold",
-        "buyer": "Item has been sold",
-        "others": "Item has been sold"
+        "creator": "Item hasn't been sold. Claim your NFT back",
+        "buyer": "Item hasn't been sold. Claim your tokens NFT back",
+        "others": "Item hasn't been sold"
       },
       "Claimed": {
-        "default": "Item has been sold"
+        "default": "Item has been claimed",
+        "creator": "Item has been sold"
+      },
+      "Live": {
+        "creator": "Auction is in progress"
       }
     }
+  },
+  "product-card": {
+    "put-on-sale": "Put on sale",
+    "transfer": "Transfer token",
+    "burn": "Burn token"
   }
 }

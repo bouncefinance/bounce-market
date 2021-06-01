@@ -12,7 +12,7 @@ import { NftType } from '../../createNFT/actions/createNft';
 import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
 
 export enum Channel {
-  FineArts = 'Fine Arts',
+  FineArts = 'FineArts',
   Sports = 'Sports',
   Conicbooks = 'Comics',
 }

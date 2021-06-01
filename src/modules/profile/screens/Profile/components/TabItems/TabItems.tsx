@@ -5,22 +5,20 @@ import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { Queries } from 'modules/common/components/Queries/Queries';
-import { AuctionState } from 'modules/common/const/AuctionState';
 import { PublishNFTType, RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { IItem } from 'modules/overview/api/getItems';
+import { hasBrand, IItem } from 'modules/overview/api/getItems';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
+import { AuctionState } from '../../../../../common/const/AuctionState';
+import { ResponseData } from '../../../../../common/types/ResponseData';
+import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
 
-interface ITabItemsProps {
-  className?: string;
-}
-
-export const TabItems = ({ className }: ITabItemsProps) => {
+export const TabItems = () => {
   const dispatch = useDispatchRequest();
   const { address } = useAccount();
 
@@ -47,61 +45,69 @@ export const TabItems = ({ className }: ITabItemsProps) => {
 
   return hasItems || allNftByUserQuery.loading ? (
     <TabItemsComponent>
-      <Queries<IItem[]> requestActions={[fetchAllNftByUser]}>
+      <Queries<ResponseData<typeof fetchAllNftByUser>>
+        requestActions={[fetchAllNftByUser]}
+      >
         {({ data }) => (
           <ProductCards>
-            {data?.map((item: IItem) => (
-              <ProductCard
-                id={item.id}
-                poolId={item.poolId || 0}
-                auctionType={item.poolType}
-                key={uid(item)}
-                title={item.itemName}
-                href={
-                  item.poolId && item.poolType
-                    ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                        item.poolId,
-                        item.poolType,
-                      )
-                    : ''
-                }
-                // status={item.status}
-                // UPDATE price
-                price={item.poolId ? item.price : undefined}
-                isOnSale={item.state === AuctionState.Live}
-                copies={item.supply}
-                MediaProps={{
-                  category: item.category,
-                  src: item.fileUrl,
-                  objectFit: 'contain',
-                  loading: 'lazy',
-                }}
-                ProfileInfoProps={{
-                  subTitle: 'Owner',
-                  title: `${profileInfo?.username ?? ''}`,
-                  users: [
-                    {
-                      name: 'name',
-                      avatar: profileInfo?.imgUrl,
-                      verified: true,
-                    },
-                  ],
-                }}
-                toSale={
-                  item.brandId === 10
-                    ? RoutesConfiguration.PublishNft.generatePath(
-                        PublishNFTType.NFT,
-                        item.contractAddress,
-                        item.id,
-                      )
-                    : RoutesConfiguration.PublishNft.generatePath(
-                        PublishNFTType.BrandNFT,
-                        item.contractAddress,
-                        item.id,
-                      )
-                }
-              />
-            ))}
+            {data?.map((item: IItem) => {
+              return (
+                <ProductCard
+                  id={item.id}
+                  poolId={item.poolId || 0}
+                  auctionType={item.poolType}
+                  key={uid(item)}
+                  title={item.itemName}
+                  href={
+                    item.poolId && item.poolType
+                      ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                          item.poolId,
+                          item.poolType,
+                        )
+                      : ''
+                  }
+                  // status={item.status}
+                  // UPDATE price
+                  price={item.poolId ? item.price : undefined}
+                  priceType="BNB"
+                  isOnSale={
+                    item.state === AuctionState.Live ||
+                    item.state === FixedSwapState.Live
+                  }
+                  copies={item.supply}
+                  MediaProps={{
+                    category: item.category,
+                    src: item.fileUrl,
+                    objectFit: 'contain',
+                    loading: 'lazy',
+                  }}
+                  ProfileInfoProps={{
+                    subTitle: 'Owner',
+                    title: `${profileInfo?.username ?? ''}`,
+                    users: [
+                      {
+                        name: 'name',
+                        avatar: profileInfo?.imgUrl,
+                        verified: true,
+                      },
+                    ],
+                  }}
+                  toSale={
+                    hasBrand(item)
+                      ? RoutesConfiguration.PublishNft.generatePath(
+                          PublishNFTType.BrandNFT,
+                          item.contractAddress,
+                          item.id,
+                        )
+                      : RoutesConfiguration.PublishNft.generatePath(
+                          PublishNFTType.NFT,
+                          item.contractAddress,
+                          item.id,
+                        )
+                  }
+                />
+              );
+            })}
           </ProductCards>
         )}
       </Queries>

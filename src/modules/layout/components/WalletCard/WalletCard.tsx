@@ -94,7 +94,7 @@ export const WalletCard = ({
         <Box className={classes.row}>
           <Box className={classes.walletBalance}>
             {logo ? <Avatar src={logo} className={classes.walletLogo} /> : null}
-            {t('wallet.unit', {
+            {t('unit.custom-unit', {
               value: balance.toFixed(),
               unit: currency,
             })}

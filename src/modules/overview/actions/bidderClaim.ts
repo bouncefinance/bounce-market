@@ -16,8 +16,8 @@ interface IClaimParams {
   poolId: string;
 }
 
-export const claim = createSmartAction<RequestAction<void, void>>(
-  'claim',
+export const bidderClaim = createSmartAction<RequestAction<void, void>>(
+  'bidderClaim',
   ({ poolId }: IClaimParams, meta?: RequestActionMeta<void, void>) => ({
     request: {
       promise: (async function () {})(),
@@ -60,6 +60,7 @@ export const claim = createSmartAction<RequestAction<void, void>>(
         };
       },
       asMutation: true,
+      ...meta,
     },
   }),
 );
