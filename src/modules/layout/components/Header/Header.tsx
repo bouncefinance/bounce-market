@@ -27,16 +27,18 @@ import { useHeader } from './useHeader';
 
 export const Header = () => {
   const {
+    onNavClose,
+    onNavOpen,
+    onSearchClose,
+    onSearchOpen,
+    onClickAwaySearch,
+    onClickAwayNav,
     mobileNavShowed,
-    toggleNav,
     searchShowed,
-    toggleSearch,
   } = useHeader();
 
   const { isConnected, handleConnect, loading } = useAccount();
-
   const classes = useHeaderStyles();
-
   const isXLUp = useIsXLUp();
 
   const renderedWallet = <Wallet />;
@@ -69,11 +71,11 @@ export const Header = () => {
   const renderedMobile = (
     <>
       <div className={classes.buttons}>
-        <ClickAwayListener onClickAway={toggleSearch(false)}>
+        <ClickAwayListener onClickAway={onClickAwaySearch}>
           <div>
             <SearchTrigger
               isActive={searchShowed}
-              onClick={searchShowed ? toggleSearch(false) : toggleSearch(true)}
+              onClick={searchShowed ? onSearchClose : onSearchOpen}
             />
 
             <Fade in={searchShowed}>
@@ -83,20 +85,17 @@ export const Header = () => {
                     className={classes.searchMobile}
                     focus={searchShowed}
                   />
-                  <Toggle
-                    onClick={toggleSearch(false)}
-                    isActive={searchShowed}
-                  />
+                  <Toggle onClick={onSearchClose} isActive={searchShowed} />
                 </Container>
               </div>
             </Fade>
           </div>
         </ClickAwayListener>
 
-        <ClickAwayListener onClickAway={toggleNav(false)}>
+        <ClickAwayListener onClickAway={onClickAwayNav}>
           <div>
             <Toggle
-              onClick={mobileNavShowed ? toggleNav(false) : toggleNav(true)}
+              onClick={mobileNavShowed ? onNavClose : onNavOpen}
               isActive={mobileNavShowed}
             />
 
@@ -116,7 +115,7 @@ export const Header = () => {
                 elevation={0}
                 anchor="right"
                 open={mobileNavShowed}
-                onClose={toggleNav(false)}
+                onClose={onNavClose}
               >
                 <Container className={classes.navInner}>
                   <Box mb={5}>

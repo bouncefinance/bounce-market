@@ -3,8 +3,9 @@ import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { MediumIcon } from 'modules/common/components/Icons/MediumIcon';
-import { TelegramIcon } from 'modules/common/components/Icons/TelegramIcon';
 import { useSocialStyles } from './SocialStyles';
+import { InstagramIcon } from '../../../common/components/Icons/InstagramIcon';
+import { DiscordIcon } from '../../../common/components/Icons/DiscordIcon';
 
 export const Social = (props: BoxProps) => {
   const classes = useSocialStyles();
@@ -22,9 +23,14 @@ export const Social = (props: BoxProps) => {
         href: 'https://twitter.com/Fangible_',
       },
       {
-        title: 'Telegram',
-        icon: TelegramIcon,
-        href: 'https://t.me/fangibleaa',
+        title: 'Instagram',
+        icon: InstagramIcon,
+        href: 'https://instagram.com/fangible',
+      },
+      {
+        title: 'Discord',
+        icon: DiscordIcon,
+        href: 'https://discord.gg/wFDaFd7U',
       },
     ],
     [],

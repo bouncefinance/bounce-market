@@ -2,6 +2,7 @@ import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { createAction } from 'redux-smart-actions';
 
 export enum ItemsChannel {
+  all = 'All',
   fineArts = 'FineArts',
   sports = 'Sports',
   comics = 'Conicbooks',
@@ -54,7 +55,10 @@ export const fetchItemsByFilter = createAction<
   request: {
     url: '/api/v2/main/getitemsbyfilter',
     method: 'post',
-    data: params,
+    data: {
+      ...params,
+      channel: params.channel === ItemsChannel.all ? undefined : params.channel,
+    },
   },
   meta: {
     auth: true,

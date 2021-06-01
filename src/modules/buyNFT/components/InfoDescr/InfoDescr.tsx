@@ -58,7 +58,8 @@ export const InfoDescr = ({
           <Grid item xs="auto">
             <div className={classes.copies}>
               <LayersIcon className={classes.copiesIcon} />
-              {`${copiesCurrent}/${copiesTotal}`}
+              {copiesCurrent ? `${copiesCurrent} / ` : ''}
+              {copiesTotal}
             </div>
           </Grid>
         )}

@@ -7,7 +7,7 @@ export const usePromoCardStyles = makeStyles<Theme>(theme => ({
 
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: 'minmax(100px, 60%) 360px',
-      gap: theme.spacing(0, 6),
+      gap: theme.spacing(0, 7),
     },
   },
 

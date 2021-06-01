@@ -4,6 +4,7 @@ import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { featuresConfig } from 'modules/common/conts';
+import { convertWallet } from 'modules/common/utils/convertWallet';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers } from 'modules/overview/components/Movers';
@@ -24,7 +25,7 @@ function mapPromoItem(item: IItem): IPromoItem {
   return {
     title: item.itemName || '',
     text: item.description || '',
-    createdBy: item.ownerName || '',
+    createdBy: item.ownerName || convertWallet(item.ownerAddress),
     avatar: undefined,
     price: item.price,
     priceType: 'BNB',

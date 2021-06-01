@@ -13,6 +13,7 @@ interface IInfoPricesProps {
   cryptoPrice: BigNumber;
   cryptoCurrency: string;
   disabled: boolean;
+  loading: boolean;
   onBuyClick?: () => void;
   onBidClick?: () => void;
   onBidderClaim?: () => void;
@@ -29,6 +30,7 @@ export const InfoPrices = ({
   cryptoPrice,
   cryptoCurrency,
   disabled,
+  loading,
   onBuyClick,
   onBidClick,
   onBidderClaim,
@@ -39,11 +41,8 @@ export const InfoPrices = ({
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
 
-  const [isTimeOver, setTimeOver] = useState(false);
-
-  const handleComplete = useCallback(() => {
-    setTimeOver(true);
-  }, []);
+  // TODO: Update it on time over https://fangible.atlassian.net/browse/FAN-157
+  const [isTimeOver] = useState(false);
 
   const renderButtons = useCallback(() => {
     if (state === FixedSwapState.Live && role === 'creator') {
@@ -52,7 +51,7 @@ export const InfoPrices = ({
           variant="outlined"
           fullWidth
           onClick={onCancel}
-          disabled={disabled}
+          disabled={loading}
         >
           {t('info-prices.cancel')}
         </Button>
@@ -65,8 +64,11 @@ export const InfoPrices = ({
 
     if (
       state === AuctionState.CompletedByDirectPurchase ||
-      (state === AuctionState.CompletedByTime && role === 'buyer') ||
-      (state === AuctionState.Live && isTimeOver && role === 'buyer')
+      (state === AuctionState.CompletedByTime &&
+        (role === 'buyer' || role === 'creator')) ||
+      (state === AuctionState.Live &&
+        isTimeOver &&
+        (role === 'buyer' || role === 'creator'))
     ) {
       if (role === 'creator') {
         return (
@@ -74,6 +76,14 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.CompletedByDirectPurchase.creator')}
             </Box>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onCreatorClaim}
+              disabled={loading}
+            >
+              {t('info-prices.claim')}
+            </Button>
           </>
         );
       } else if (role === 'buyer') {
@@ -82,7 +92,12 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.CompletedByDirectPurchase.buyer')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onBidderClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onBidderClaim}
+              disabled={loading}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
@@ -103,7 +118,12 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.NotSoldByReservePrice.creator')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onCreatorClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onCreatorClaim}
+              disabled={loading}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
@@ -114,7 +134,12 @@ export const InfoPrices = ({
             <Box mb={2}>
               {t('info-prices.status.NotSoldByReservePrice.buyer')}
             </Box>
-            <Button variant="outlined" fullWidth onClick={onBidderClaim}>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={onBidderClaim}
+              disabled={loading}
+            >
               {t('info-prices.claim')}
             </Button>
           </>
@@ -129,6 +154,10 @@ export const InfoPrices = ({
     }
 
     if (state === AuctionState.Claimed) {
+      if (role === 'creator') {
+        return <Box mb={2}>{t('info-prices.status.Claimed.creator')}</Box>;
+      }
+
       return <Box mb={2}>{t('info-prices.status.Claimed.default')}</Box>;
     }
 
@@ -164,6 +193,7 @@ export const InfoPrices = ({
     onBidClick,
     onBuyClick,
     onCancel,
+    loading,
     onBidderClaim,
     onCreatorClaim,
   ]);
@@ -175,7 +205,7 @@ export const InfoPrices = ({
           <div className={classes.bid}>
             {t('details-nft.top-bid')}
             <i className={classes.bidDevider} />
-            <Timer onComplete={handleComplete} endDate={endDate} />
+            <Timer endDate={endDate} />
           </div>
         )}
 

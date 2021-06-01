@@ -22,8 +22,6 @@ import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmpty
 import { fromWei } from '../../common/utils/fromWei';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
-import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
-import { throwIfError } from '../../common/utils/throwIfError';
 
 export type UserRole = 'creator' | 'buyer' | 'others';
 
@@ -60,26 +58,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
         ) => {
           return {
             promise: (async function () {
-              const getNftCount = async (userId: string, tokenId: number) => {
-                const { data: fetchNftByUserData } = throwIfError(
-                  await store.dispatchRequest(
-                    fetchNftByUser(
-                      { userId },
-                      {
-                        silent: true,
-                        suppressErrorNotification: true,
-                        requestKey: action.type,
-                      },
-                    ),
-                  ),
-                );
-
-                return [
-                  ...(fetchNftByUserData?.nfts721 ?? []),
-                  ...(fetchNftByUserData?.nfts1155 ?? []),
-                ].find(nftItem => nftItem.tokenId === tokenId)?.balance;
-              };
-
               const {
                 data: { chainId, address, web3 },
               } = getQuery(store.getState(), {
@@ -114,12 +92,10 @@ export const fetchWeb3PoolDetails = createSmartAction<
                     ),
                   ),
                 );
-
                 return {
-                  quantity: await getNftCount(
-                    address,
-                    parseInt(pool.tokenId, 10),
-                  ),
+                  totalQuantity: pool.amountTotal0,
+                  quantity:
+                    parseInt(pool.amountTotal0) - parseInt(swappedAmount0Pool),
                   // TODO: Apply precision
                   totalPrice: new BigNumber(
                     web3.utils.fromWei(pool.amountTotal1),

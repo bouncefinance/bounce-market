@@ -1,40 +1,55 @@
-import { Button } from '@material-ui/core';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
+import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import React, { useMemo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useCallback, useMemo } from 'react';
 import { uid } from 'react-uid';
+import { HeaderLinkItem } from './HeaderLinkItem';
 import { useHeaderLinksStyles } from './HeaderLinksStyles';
+
+const useHeaderLinks = () => {
+  const { toggleNav, mobileNavShowed } = useLayout();
+
+  const onItemClick = useCallback(() => {
+    if (mobileNavShowed) {
+      toggleNav(false);
+    }
+  }, [mobileNavShowed, toggleNav]);
+  return { onItemClick };
+};
 
 interface IHeaderLinksProps {
   items: {
     label: string;
     href: string;
   }[];
+  onItemClick?: () => void;
 }
 
-export const HeaderLinksComponent = ({ items }: IHeaderLinksProps) => {
+export const HeaderLinksComponent = ({
+  items,
+  onItemClick,
+}: IHeaderLinksProps) => {
   const classes = useHeaderLinksStyles();
 
   return (
     <nav className={classes.root}>
-      {items.map(({ label, href }) => (
-        <Button
-          component={RouterLink}
-          to={href}
-          key={uid(label)}
-          href={href}
-          variant="text"
-          className={classes.link}
-        >
-          {label}
-        </Button>
-      ))}
+      {items.map(({ label, href }) => {
+        return (
+          <HeaderLinkItem
+            label={label}
+            href={href}
+            classes={classes}
+            key={uid(label)}
+            onClick={onItemClick}
+          />
+        );
+      })}
     </nav>
   );
 };
 
 export const HeaderLinks = () => {
+  const { onItemClick } = useHeaderLinks();
   const items = useMemo(
     () => [
       {
@@ -49,10 +64,11 @@ export const HeaderLinks = () => {
     [],
   );
 
-  return <HeaderLinksComponent items={items} />;
+  return <HeaderLinksComponent items={items} onItemClick={onItemClick} />;
 };
 
 export const HeaderLinksSecondary = () => {
+  const { onItemClick } = useHeaderLinks();
   const items = useMemo(
     () => [
       {
@@ -63,5 +79,5 @@ export const HeaderLinksSecondary = () => {
     [],
   );
 
-  return <HeaderLinksComponent items={items} />;
+  return <HeaderLinksComponent items={items} onItemClick={onItemClick} />;
 };

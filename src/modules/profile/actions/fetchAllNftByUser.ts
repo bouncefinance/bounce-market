@@ -103,56 +103,63 @@ export const fetchAllNftByUser: (
               ? [...poolsByStateFilterResult?.list!]
               : [];
 
-            return data
-              ?.filter(item => item.status !== 1)
-              .map(item => {
-                const poolIndex = poolsCopy.findIndex(
-                  pool => pool.tokenId === item.id,
-                );
-                const pool = poolsCopy[poolIndex];
+            return (
+              data
+                .map(item => {
+                  const poolIndex = poolsCopy.findIndex(
+                    pool => pool.tokenId === item.id,
+                  );
+                  const pool = poolsCopy[poolIndex];
 
-                if (pool) {
-                  // TODO: Ignore completed claimed auction?
-                  poolsCopy.splice(poolIndex, 1);
-                  return {
-                    ...item,
-                    supply: (() => {
-                      if (isEnglishAuction(pool)) {
-                        if (pool.state < AuctionState.Claimed) {
-                          return pool.tokenAmount0;
-                        }
+                  if (pool) {
+                    // TODO: Ignore completed claimed auction?
+                    poolsCopy.splice(poolIndex, 1);
+                    return {
+                      ...item,
+                      supply: (() => {
+                        if (isEnglishAuction(pool)) {
+                          if (pool.state < AuctionState.Claimed) {
+                            return pool.tokenAmount0;
+                          }
 
-                        return 0;
-                      } else {
-                        if (pool.state < FixedSwapState.Claimed) {
-                          return pool.quantity;
-                        } else {
                           return 0;
+                        } else {
+                          if (pool.state < FixedSwapState.Claimed) {
+                            return pool.quantity;
+                          } else {
+                            return 0;
+                          }
                         }
-                      }
-                    })(),
-                    poolId: pool.poolId,
-                    poolType: isEnglishAuction(pool)
-                      ? AuctionType.EnglishAuction
-                      : AuctionType.FixedSwap,
-                    price: isEnglishAuction(pool)
-                      ? pool.lastestBidAmount.isEqualTo(0)
-                        ? pool.amountMin1
-                        : pool.lastestBidAmount
-                      : pool.price,
-                    state: pool.state,
-                  };
-                }
+                      })(),
+                      poolId: pool.poolId,
+                      poolType: isEnglishAuction(pool)
+                        ? AuctionType.EnglishAuction
+                        : AuctionType.FixedSwap,
+                      price: isEnglishAuction(pool)
+                        ? pool.lastestBidAmount.isEqualTo(0)
+                          ? pool.amountMin1
+                          : pool.lastestBidAmount
+                        : pool.price,
+                      state: pool.state,
+                    };
+                  }
 
-                const supply = nfts.find(nftItem => nftItem.tokenId === item.id)
-                  ?.balance;
+                  const supply = nfts.find(
+                    nftItem => nftItem.tokenId === item.id,
+                  )?.balance;
 
-                return { ...item, supply: supply ?? 0 };
-              })
-              .filter(item => item.supply > 0)
-              .sort((prev, next) => {
-                return next.createdAt.getTime() - prev.createdAt.getTime();
-              });
+                  return { ...item, supply: supply ?? 0 };
+                })
+                // Meaningless NFT will be temporarily shielded to reduce interference
+                .filter(
+                  item =>
+                    item.supply > 0 &&
+                    item.itemname !== 'Untitled (External import)',
+                )
+                .sort((prev, next) => {
+                  return next.createdAt.getTime() - prev.createdAt.getTime();
+                })
+            );
           })(),
         };
       },

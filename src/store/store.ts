@@ -1,19 +1,20 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { i18nSlice } from 'modules/i18n/i18nSlice';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
+import { createDriver as createAxiosDriver } from '@redux-requests/axios';
 import { getQuery, handleRequests } from '@redux-requests/core';
 import { createDriver } from '@redux-requests/promise';
-import { historyInstance } from '../modules/common/utils/historyInstance';
-import createSagaMiddleware from 'redux-saga';
-import { rootSaga } from './rootSaga';
-import { createDriver as createAxiosDriver } from '@redux-requests/axios';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_BASE } from '../modules/common/conts';
-import { notificationSlice } from '../modules/notification/store/notificationSlice';
-import { NotificationActions } from '../modules/notification/store/NotificationActions';
-import { extractMessage } from '../modules/common/utils/extractError';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
+import { i18nSlice } from 'modules/i18n/i18nSlice';
+import { layoutReducer, LAYOUT_STATE_NAME } from 'modules/layout/store/layout';
+import { persistReducer, persistStore } from 'redux-persist';
+import createSagaMiddleware from 'redux-saga';
 import { setAccount } from '../modules/account/store/actions/setAccount';
-import { persistStore, persistReducer } from 'redux-persist';
+import { API_BASE } from '../modules/common/conts';
+import { extractMessage } from '../modules/common/utils/extractError';
+import { historyInstance } from '../modules/common/utils/historyInstance';
+import { NotificationActions } from '../modules/notification/store/NotificationActions';
+import { notificationSlice } from '../modules/notification/store/notificationSlice';
+import { rootSaga } from './rootSaga';
 import { i18nPersistConfig } from './webStorageConfigs';
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
@@ -69,6 +70,7 @@ const rootReducer = combineReducers({
   requests: requestsReducer,
   router: connectRouter(historyInstance),
   notifications: notificationSlice.reducer,
+  [LAYOUT_STATE_NAME]: layoutReducer,
 });
 
 export const store = configureStore({

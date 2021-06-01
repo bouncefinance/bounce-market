@@ -89,9 +89,9 @@ workflows:
       # prod
       - approve-prod:
           type: approval
-          filters:
-            branches:
-              only: [ master ]
+#          filters:
+#            branches:
+#              only: [ master ]
       - build-prod:
           context: bounce_build_prod
           requires:
