@@ -1,16 +1,23 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import classNames from 'classnames';
 import { Button } from '@material-ui/core';
+import { ClassNameMap } from '@material-ui/styles';
+import classNames from 'classnames';
+import React, { MouseEventHandler } from 'react';
 import { useRouteMatch } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface ILinkItemProps {
   label: string;
   href: string;
-  classes: any;
+  classes: ClassNameMap<string>;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
-export const HeaderLinkItem = ({ label, href, classes }: ILinkItemProps) => {
+export const HeaderLinkItem = ({
+  label,
+  href,
+  classes,
+  onClick,
+}: ILinkItemProps) => {
   const match = useRouteMatch(href);
 
   return (
@@ -20,6 +27,7 @@ export const HeaderLinkItem = ({ label, href, classes }: ILinkItemProps) => {
       href={href}
       variant="text"
       className={classNames(classes, match?.isExact && classes.activeLink)}
+      onClick={onClick}
     >
       {label}
     </Button>
