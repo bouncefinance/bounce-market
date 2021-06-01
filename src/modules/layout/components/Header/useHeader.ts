@@ -1,43 +1,70 @@
-import React, { useCallback, useState } from 'react';
+import { useLayout } from 'modules/layout/hooks/useLayout';
+import React, { useCallback } from 'react';
+
+const getIsTabKeyOrShiftKey = (event: React.KeyboardEvent) => {
+  return (
+    event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')
+  );
+};
 
 export const useHeader = () => {
-  const [mobileNavShowed, setMobileNavShowed] = useState(false);
-  const [searchShowed, setSearchShowed] = useState(false);
+  const {
+    toggleNav,
+    toggleSearch,
+    mobileNavShowed,
+    searchShowed,
+  } = useLayout();
 
-  const toggleNav = useCallback(
-    (isOpen: boolean) => (event: any) => {
-      if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
-      ) {
+  const onNavClose = useCallback(
+    (event: any) => {
+      if (getIsTabKeyOrShiftKey(event)) {
         return;
       }
 
-      setMobileNavShowed(isOpen);
+      toggleNav(false);
     },
-    [],
+    [toggleNav],
   );
 
-  const toggleSearch = useCallback(
-    (isOpen: boolean) => (event: any) => {
-      if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
-      ) {
+  const onNavOpen = useCallback(() => {
+    toggleNav(true);
+  }, [toggleNav]);
+
+  const onSearchClose = useCallback(
+    (event: any) => {
+      if (getIsTabKeyOrShiftKey(event)) {
         return;
       }
 
-      setSearchShowed(isOpen);
+      toggleSearch(false);
     },
-    [],
+    [toggleSearch],
   );
+
+  const onSearchOpen = useCallback(() => {
+    toggleSearch(true);
+  }, [toggleSearch]);
+
+  const onClickAwaySearch = useCallback(() => {
+    if (searchShowed) {
+      toggleSearch(false);
+    }
+  }, [searchShowed, toggleSearch]);
+
+  const onClickAwayNav = useCallback(() => {
+    if (mobileNavShowed) {
+      toggleNav(false);
+    }
+  }, [mobileNavShowed, toggleNav]);
 
   return {
+    onNavClose,
+    onNavOpen,
+    onSearchClose,
+    onSearchOpen,
+    onClickAwaySearch,
+    onClickAwayNav,
     mobileNavShowed,
-    toggleNav,
     searchShowed,
-    toggleSearch,
   };
 };
