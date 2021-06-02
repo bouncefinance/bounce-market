@@ -4,15 +4,12 @@ import { AuctionType } from '../../overview/api/auctionType';
 import { Store } from 'redux';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
-import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
 import { NftType } from './createNft';
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { Seconds } from '../../common/types/unit';
 import {
   BounceEnglishAuctionNFT,
-  BounceERC1155WithSign,
-  BounceERC721WithSign,
   BounceFixedSwapNFT,
   BounceErc721,
   BounceErc1155,
@@ -20,7 +17,6 @@ import {
 import { fetchCurrency } from '../../overview/actions/fetchCurrency';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { toWei } from '../../common/utils/toWei';
-import { PublishNFTType } from '../Routes';
 
 export const getFixedSwapContract = (chainID: number) => {
   switch (chainID) {
@@ -51,7 +47,6 @@ export const getEnglishAuctionContract = (chainID: number) => {
 type IPublishNftPayload =
   | {
       type: AuctionType.FixedSwap;
-      publishType: PublishNFTType;
       name: string;
       tokenContract: string;
       unitContract: string;
@@ -62,7 +57,6 @@ type IPublishNftPayload =
     }
   | {
       type: AuctionType.EnglishAuction;
-      publishType: PublishNFTType;
       purchasePrice: string;
       minBid: string;
       minIncremental: BigNumber;
@@ -104,15 +98,6 @@ export const publishNft = createSmartAction<
               getFixedSwapContract(chainId),
             );
 
-            const ContractBounceERC721WithSign = new web3.eth.Contract(
-              BounceERC721WithSign,
-              getBounceERC721WithSign(chainId),
-            );
-            const ContractBounceERC1155WithSign = new web3.eth.Contract(
-              BounceERC1155WithSign,
-              getBounceERC1155WithSign(chainId),
-            );
-
             const ContractBounceERC721 = new web3.eth.Contract(
               BounceErc721,
               payload.tokenContract,
@@ -136,7 +121,6 @@ export const publishNft = createSmartAction<
             if (payload.type === AuctionType.FixedSwap) {
               const {
                 name,
-                publishType,
                 tokenContract,
                 unitContract,
                 standard,
@@ -147,12 +131,7 @@ export const publishNft = createSmartAction<
 
               if (standard === NftType.ERC721) {
                 // TODO Has approve
-                let ApproveContract = ContractBounceERC721WithSign;
-                if (publishType === PublishNFTType.BrandNFT) {
-                  ApproveContract = ContractBounceERC721;
-                }
-
-                await ApproveContract.methods
+                await ContractBounceERC721.methods
                   .approve(getFixedSwapContract(chainId), tokenId)
                   .send({ from: address });
 
@@ -180,12 +159,7 @@ export const publishNft = createSmartAction<
                     });
                 });
               } else {
-                let ApproveContract = ContractBounceERC1155WithSign;
-                if (publishType === PublishNFTType.BrandNFT) {
-                  ApproveContract = ContractBounceERC1155;
-                }
-
-                await ApproveContract.methods
+                await ContractBounceERC1155.methods
                   .setApprovalForAll(getFixedSwapContract(chainId), true)
                   .send({ from: address });
 
@@ -217,7 +191,6 @@ export const publishNft = createSmartAction<
             } else {
               const {
                 name,
-                publishType,
                 tokenContract,
                 unitContract,
                 standard,
@@ -236,12 +209,7 @@ export const publishNft = createSmartAction<
               );
 
               if (standard === NftType.ERC721) {
-                let ApproveContract = ContractBounceERC721WithSign;
-                if (publishType === PublishNFTType.BrandNFT) {
-                  ApproveContract = ContractBounceERC721;
-                }
-
-                await ApproveContract.methods
+                await ContractBounceERC721.methods
                   .approve(getEnglishAuctionContract(chainId), tokenId)
                   .send({ from: address });
 
@@ -273,12 +241,7 @@ export const publishNft = createSmartAction<
                     });
                 });
               } else {
-                let ApproveContract = ContractBounceERC1155WithSign;
-                if (publishType === PublishNFTType.BrandNFT) {
-                  ApproveContract = ContractBounceERC1155;
-                }
-
-                await ApproveContract.methods
+                await ContractBounceERC1155.methods
                   .setApprovalForAll(getEnglishAuctionContract(chainId), true)
                   .send({ from: address });
 

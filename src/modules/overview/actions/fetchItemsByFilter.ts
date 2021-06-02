@@ -11,6 +11,7 @@ export enum ItemsChannel {
 export enum NFTCategoryType {
   video = 'video',
   image = 'image',
+  default = '',
 }
 
 export interface IItemByFilter {

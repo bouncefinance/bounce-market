@@ -109,7 +109,6 @@ export const buyFixed = createSmartAction<
                   BounceFixedSwapNFT,
                   getFixedSwapContract(chainId),
                 );
-
                 const _amount0 = quantity;
                 const _amount1 = Web3.utils.toWei(
                   amountTotal1
