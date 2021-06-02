@@ -7,6 +7,7 @@ import {
   fetchItemsByFilter,
   IItemByFilter,
   ItemsChannel,
+  NFTCategoryType,
 } from './fetchItemsByFilter';
 import { fetchPools } from './fetchPools';
 
@@ -101,6 +102,7 @@ export const fetchNFTItems = createSmartAction<
                 ids: list,
                 cts: ctsList,
                 channel: params?.channel || ItemsChannel.fineArts,
+                category: NFTCategoryType.default,
               },
               {
                 asMutation: true,

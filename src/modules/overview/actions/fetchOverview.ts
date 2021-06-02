@@ -28,7 +28,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 error: poolsInfoError,
               } = await store.dispatchRequest(
                 fetchPoolsWeight(
-                  { limit: 10, offset: 0, orderweight: 1 },
+                  { limit: 11, offset: 0, orderweight: 1 },
                   { silent: true },
                 ),
               );
@@ -71,7 +71,10 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
               return data
                 ?.map(item => {
                   const pool = poolDetailsList.find(pool => {
-                    return pool.data?.tokenId === item.id;
+                    return (
+                      pool.data?.tokenId === item.id &&
+                      pool.data?.tokenContract === item.contractAddress
+                    );
                   })?.data;
 
                   const price =
@@ -93,7 +96,9 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                       pool && isEnglishAuction(pool) ? pool.closeAt : undefined,
                   } as IItem;
                 })
-                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+                .sort((a, b) => {
+                  return b.popularWeight - a.popularWeight;
+                });
             })(),
           };
         },
