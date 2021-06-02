@@ -31,7 +31,7 @@ import { useProductCardStyles } from './useProductCardStyles';
 
 const ENABLE_TRANSFER = false;
 
-export type ProductCardCategoryType = 'image' | 'video';
+export type ProductCardCategoryType = 'image' | 'video' | '';
 
 export enum ProductCardStatuses {
   minting,
