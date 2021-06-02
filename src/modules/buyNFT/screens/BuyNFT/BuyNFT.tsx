@@ -466,7 +466,9 @@ export const BuyNFT = () => {
                           handleBuyFixed({
                             nftType: poolDetails.nftType,
                             unitContract: poolDetails.unitContract,
-                            amountTotal0: poolDetails.quantity,
+                            amountTotal0: parseInt(
+                              poolDetails.totalQuantity?.toString() ?? '0',
+                            ),
                             amountTotal1: poolDetails.totalPrice,
                             poolId: poolDetails.poolId,
                             quantity: parseInt(data.quantity),
