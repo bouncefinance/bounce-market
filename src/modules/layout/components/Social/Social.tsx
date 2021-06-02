@@ -30,7 +30,7 @@ export const Social = (props: BoxProps) => {
       {
         title: 'Discord',
         icon: DiscordIcon,
-        href: 'https://discord.gg/wFDaFd7U',
+        href: 'https://discord.gg/96K94raRKZ',
       },
     ],
     [],
