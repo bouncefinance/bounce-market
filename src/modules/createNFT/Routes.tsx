@@ -6,12 +6,7 @@ import { PrivateRoute } from '../router/components/PrivateRoute';
 import { generatePath } from 'react-router-dom';
 
 const PATH_CREATE_NFT = '/nft/create';
-const PATH_PUBLISH_NFT = '/:type/publish/:contract/:id';
-
-export enum PublishNFTType {
-  NFT = 'nft',
-  BrandNFT = 'brand-nft',
-}
+const PATH_PUBLISH_NFT = '/publish/:contract/:id';
 
 export const RoutesConfiguration: { [key: string]: RouteConfiguration } = {
   CreateNft: {
@@ -20,8 +15,8 @@ export const RoutesConfiguration: { [key: string]: RouteConfiguration } = {
   },
   PublishNft: {
     path: PATH_PUBLISH_NFT,
-    generatePath: (type: PublishNFTType, contract: string, id: number) =>
-      generatePath(PATH_PUBLISH_NFT, { type, contract, id }),
+    generatePath: (contract: string, id: number) =>
+      generatePath(PATH_PUBLISH_NFT, { contract, id }),
   },
 };
 
