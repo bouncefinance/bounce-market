@@ -252,7 +252,7 @@ export const PublishNFTComponent = ({
             ),
             reservePrice: payload.reservePrice,
             // duration: payload.duration * 60 * 60 * 24,
-            duration: 60 * 2,
+            duration: 60 * 60 * 1,
             name,
             tokenContract,
             unitContract: payload.unitContract,
