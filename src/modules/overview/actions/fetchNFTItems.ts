@@ -1,4 +1,5 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import { ZERO_ADDRESS } from 'modules/common/conts';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
@@ -60,41 +61,52 @@ export const fetchNFTItems = createSmartAction<
           const { data: poolsData } = await store.dispatchRequest(
             fetchPools(
               {
-                offset: params?.offset,
-                count: params?.count,
-                user: params?.address,
+                category: '',
+                channel: 'FineArts',
+                currency: ZERO_ADDRESS,
+                limit: 10,
+                offset: 0,
+                orderfield: 1,
               },
               {
                 asMutation: true,
               },
             ),
           );
-
           if (!poolsData) {
             return [];
           }
 
-          const tradePools = (poolsData.tradePools || [])
+          // const tradePools = (poolsData.tradePools || [])
+          //   .map(item => ({
+          //     ...item,
+          //     poolType: AuctionType.FixedSwap,
+          //   }))
+          //   .filter(item => item.state !== 1);
+
+          // const tradeAuctions = (poolsData.tradeAuctions || [])
+          //   .map(item => ({
+          //     ...item,
+          //     price:
+          //       item.lastestBidAmount !== '0'
+          //         ? item.lastestBidAmount
+          //         : item.amountMin1,
+          //     poolType: AuctionType.EnglishAuction,
+          //   }))
+          //   .filter(item => item.state !== 1 && item.poolId !== 0);
+
+          const tradePools = (poolsData || [])
             .map(item => ({
               ...item,
-              poolType: AuctionType.FixedSwap,
+              poolType:
+                item.pooltype === 1
+                  ? AuctionType.FixedSwap
+                  : AuctionType.EnglishAuction,
             }))
             .filter(item => item.state !== 1);
 
-          const tradeAuctions = (poolsData.tradeAuctions || [])
-            .map(item => ({
-              ...item,
-              price:
-                item.lastestBidAmount !== '0'
-                  ? item.lastestBidAmount
-                  : item.amountMin1,
-              poolType: AuctionType.EnglishAuction,
-            }))
-            .filter(item => item.state !== 1 && item.poolId !== 0);
-
-          const pools = [...tradePools, ...tradeAuctions];
-          const list = pools.map(item => item.tokenId);
-          const ctsList = pools.map(item => item.token0);
+          const list = tradePools.map(item => item.tokenid);
+          const ctsList = tradePools.map(item => item.token0);
 
           const { data: itemsByFilterData } = await store.dispatchRequest(
             fetchItemsByFilter(
@@ -113,24 +125,27 @@ export const fetchNFTItems = createSmartAction<
           if (!itemsByFilterData) {
             return [];
           }
-
-          const mappedItems: INFTItem[] = pools
+          const mappedItems: INFTItem[] = tradePools
             .map(pool => {
               const poolInfo = itemsByFilterData.find(
-                r => r.id === pool.tokenId,
+                r => r.id === pool.tokenid,
               );
               return {
                 ...poolInfo,
                 category: poolInfo?.category,
                 poolType: pool.poolType,
-                poolId: pool.poolId,
+                poolId: pool.poolid,
                 price: pool.price,
-                createTime: pool.createTime,
+                createTime: new Date(pool.created_at).getTime(),
                 token1: pool.token1,
               };
             })
             .filter(item => item.fileurl)
-            .sort((a, b) => b.createTime - a.createTime);
+            .sort(
+              (a, b) =>
+                new Date(b.createTime).getTime() -
+                new Date(a.createTime).getTime(),
+            );
 
           return mappedItems;
         })(),

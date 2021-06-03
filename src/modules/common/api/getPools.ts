@@ -34,6 +34,24 @@ export interface ITradePool {
   tokenId: number;
 }
 
+export interface ITradePool_V2 {
+  balance: string;
+  created_at: string;
+  creatorurl: string;
+  fileurl: string;
+  itemname: string;
+  likecount: number;
+  poolid: number;
+  pooltype: number;
+  poolweight: number;
+  price: string;
+  state: number;
+  token0: string;
+  token1: string;
+  tokenid: number;
+  username: string;
+}
+
 export interface IGetPoolsApi {
   code: number;
   msg: any;
@@ -46,6 +64,20 @@ export interface IGetPoolsApi {
 }
 
 export interface IGetPools {
+  englishTotal: number;
+  fixedSwapTotal: number;
+  tradeAuctions: ITradeAuction[];
+  tradePools: ITradePool[];
+}
+
+export interface IGetPoolsApi_V2 {
+  code: number;
+  msg?: any;
+  data: ITradePool_V2[];
+  total: number;
+}
+
+export interface IGetPools_V2 {
   englishTotal: number;
   fixedSwapTotal: number;
   tradeAuctions: ITradeAuction[];

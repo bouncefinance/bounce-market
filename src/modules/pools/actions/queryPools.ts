@@ -52,7 +52,7 @@ export const queryPools = createSmartAction<
   RequestAction<IApiQueryPool, IQueryPool>
 >('queryPoolsAction', (address: string) => ({
   request: {
-    url: `${FANGIBLE_URL}/pools?offset=0&count=10000&user_address=${address}`,
+    url: `${FANGIBLE_URL}/pools?offset=0&count=1000&user_address=${address}`,
     method: 'get',
   },
   meta: {
