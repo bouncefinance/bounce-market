@@ -11,6 +11,7 @@ import {
   IApiUploadFileSuccess,
 } from '../api/uploadFile';
 import { editBrandImg } from '../../brand/actions/editBrandImg';
+import { setAccount } from 'modules/account/store/actions/setAccount';
 
 export enum UploadFileType {
   Avatar = 'avatar',
@@ -21,7 +22,7 @@ export enum UploadFileType {
 export interface IUploadFileArgs {
   file: File;
   fileType?: 'avatar' | 'bgImg' | 'brandImg';
-  brandId?: number;
+  contractaddress?: string;
 }
 
 export const uploadFile: (
@@ -29,7 +30,7 @@ export const uploadFile: (
 ) => RequestAction<
   IApiUploadFileResponse,
   IApiUploadFileSuccess
-> = createSmartAction('uploadFile', ({ file, fileType, brandId }: IUploadFileArgs) => {
+> = createSmartAction('uploadFile', ({ file, fileType, contractaddress }: IUploadFileArgs) => {
   const formData = new FormData();
   formData.append('filename', file);
 
@@ -61,6 +62,13 @@ export const uploadFile: (
           },
         );
 
+        const {
+          data: { address }
+        } = getQuery(store.getState(), {
+          type: setAccount.toString(),
+          action: setAccount,
+        })
+
         const isSuccessfulUpload = response.data.code === 200;
 
         if (fileType === UploadFileType.Avatar && isSuccessfulUpload) {
@@ -79,8 +87,9 @@ export const uploadFile: (
         } else if (fileType === UploadFileType.BrandImg && isSuccessfulUpload) {
           store.dispatch(
             editBrandImg({
-              brandId: brandId,
+              contractaddress: contractaddress,
               imgUrl: response.data.result.path,
+              accountaddress: address,
             })
           )
         } 

@@ -43,14 +43,14 @@ interface ISetBgImgModalProps {
   isOpen?: boolean;
   onClose?: () => void;
   fileType: UploadFileType;
-  brandId?: number;
+  contractaddress?: string;
 }
 
 export const SetBgImgModal = ({
   onClose,
   isOpen = false,
   fileType,
-  brandId,
+  contractaddress,
 }: ISetBgImgModalProps) => {
   const classes = useSetBgImgModalStyles();
   const dispatch = useDispatchRequest();
@@ -62,7 +62,7 @@ export const SetBgImgModal = ({
         fileType: fileType,
       }
       if (fileType === UploadFileType.BrandImg) {
-        data.brandId = brandId
+        data.contractaddress = contractaddress;
       }
       dispatch(uploadFile(data)).then(
         ({ error }) => {
@@ -72,7 +72,7 @@ export const SetBgImgModal = ({
         },
       );
     },
-    [fileType, brandId, dispatch, onClose],
+    [fileType, contractaddress, dispatch, onClose],
   );
 
   const renderForm = ({
