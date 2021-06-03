@@ -77,7 +77,8 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                   const pool = poolDetailsList.find(pool => {
                     return (
                       pool.data?.tokenId === item.id &&
-                      pool.data?.tokenContract === item.contractAddress
+                      String(pool.data?.tokenContract).toLowerCase() ===
+                        String(item.contractAddress).toLowerCase()
                     );
                   })?.data;
 
