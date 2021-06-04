@@ -1,6 +1,5 @@
 import { TokenSymbol } from './types/TokenSymbol';
 
-export const REACT_APP_BRAND_BASEURI = process.env.REACT_APP_BRAND_BASEURI;
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 // TODO: at the end all features should be activated
