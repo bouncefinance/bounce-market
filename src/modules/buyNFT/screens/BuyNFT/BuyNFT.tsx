@@ -418,7 +418,7 @@ export const BuyNFT = () => {
                         isOwnerVerified={false}
                         category={item.category}
                         disabled={loading}
-                        maxQuantity={item.supply}
+                        maxQuantity={poolDetails.tokenAmount0}
                         minIncrease={poolDetails.amountMinIncr1}
                         lastestBidAmount={poolDetails.lastestBidAmount}
                       />
@@ -450,7 +450,7 @@ export const BuyNFT = () => {
                         readonly={true}
                         category={item.category}
                         disabled={loading}
-                        maxQuantity={item.supply}
+                        maxQuantity={poolDetails.tokenAmount0}
                       />
                     )}
                   </Mutation>

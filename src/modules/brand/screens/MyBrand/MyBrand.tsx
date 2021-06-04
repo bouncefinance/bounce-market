@@ -76,7 +76,7 @@ export const MyBrand = () => {
     },
     [],
   );
-
+  
   return (
     <Section className={classes.root}>
       <Header
@@ -89,7 +89,7 @@ export const MyBrand = () => {
           isOpen={isBgImgModalOpened}
           onClose={toggleBgImgModal(false)}
           fileType={UploadFileType.BrandImg}
-          brandId={brandInfo.id}
+          contractaddress={brandInfo.contractaddress}
         />
       )}
 

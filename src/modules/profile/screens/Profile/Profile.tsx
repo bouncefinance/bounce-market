@@ -72,7 +72,7 @@ export const Profile = () => {
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
   });
-
+  
   const toggleAvatarModal = useCallback(
     (isOpen: boolean) => () => {
       setAvatarModalOpened(isOpen);

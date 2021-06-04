@@ -15,7 +15,7 @@ export const Social = (props: BoxProps) => {
       {
         title: 'Medium',
         icon: MediumIcon,
-        href: 'https://bouncefinance.medium.com',
+        href: 'https://fangible.medium.com',
       },
       {
         title: 'Twitter',
@@ -30,7 +30,7 @@ export const Social = (props: BoxProps) => {
       {
         title: 'Discord',
         icon: DiscordIcon,
-        href: 'https://discord.gg/wFDaFd7U',
+        href: 'https://discord.gg/96K94raRKZ',
       },
     ],
     [],

@@ -19,18 +19,20 @@ function isError(data: any) {
 
 interface IEditBrandImgArgs {
   imgUrl: string,
-  brandId: number,
+  accountaddress: string,
+  contractaddress: string;
 }
 
 export const editBrandImg = createSmartAction<RequestAction>(
   EditBrandImgAction,
-  ({ imgUrl, brandId }: IEditBrandImgArgs) => ({
+  ({ imgUrl, accountaddress, contractaddress }: IEditBrandImgArgs) => ({
     request: {
-      url: '/api/v2/main/auth/updatebandimg',
+      url: '/api/v2/main/auth/updatebandimgbycontract',
       method: 'post',
       data: {
-        id: brandId,
+        accountaddress: accountaddress,
         bandimgurl: imgUrl,
+        contractaddress: contractaddress,
       },
     },
     meta: {

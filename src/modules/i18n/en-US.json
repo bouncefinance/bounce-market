@@ -225,7 +225,7 @@
     "fee": "Fangible fee {value}%",
     "receive": "You will receive <b>{value} {unit}</b>",
     "expire": "Will expire on {value, date, medium} {value, time, short}",
-    "auction-amount": "In the auction you can only put up 1 copy for sale",
+    "auction-amount": "In the auction, the copies you put on sale will be sold all at once.",
     "auction-type": {
       "fixed-swap": "Fixed Price",
       "english-auction": "English auction"
@@ -338,7 +338,7 @@
       },
       "NotSoldByReservePrice": {
         "creator": "Item hasn't been sold. Claim your NFT back",
-        "buyer": "Item hasn't been sold. Claim your tokens NFT back",
+        "buyer": "Item hasn't been sold. Claim your tokens back",
         "others": "Item hasn't been sold"
       },
       "Claimed": {

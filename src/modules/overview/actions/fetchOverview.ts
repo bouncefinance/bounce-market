@@ -36,9 +36,10 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 throw poolsInfoError;
               }
 
+              const poolWidthMap = new Map<number, number>([]);
               const poolDetailsList = await Promise.all(
-                poolsInfoData.list.reverse().map(item =>
-                  store.dispatchRequest(
+                poolsInfoData.list.reverse().map(item => {
+                  return store.dispatchRequest(
                     fetchPoolDetails(
                       {
                         poolId: item.poolId,
@@ -46,8 +47,8 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                       },
                       { requestKey: item.poolId },
                     ),
-                  ),
-                ),
+                  );
+                }),
               );
 
               const { data } = await store.dispatchRequest(
@@ -68,12 +69,16 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 ),
               );
 
+              interface dataType extends IItem {
+                poolWight: number;
+              }
               return data
                 ?.map(item => {
                   const pool = poolDetailsList.find(pool => {
                     return (
                       pool.data?.tokenId === item.id &&
-                      pool.data?.tokenContract === item.contractAddress
+                      String(pool.data?.tokenContract).toLowerCase() ===
+                        String(item.contractAddress).toLowerCase()
                     );
                   })?.data;
 
@@ -94,10 +99,12 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         : AuctionType.FixedSwap,
                     closeAt:
                       pool && isEnglishAuction(pool) ? pool.closeAt : undefined,
-                  } as IItem;
+                    poolWight: poolWidthMap.get(item.poolId ?? 0),
+                  } as dataType;
                 })
                 .sort((a, b) => {
-                  return b.popularWeight - a.popularWeight;
+                  // debugger
+                  return b.poolWight - a.poolWight;
                 });
             })(),
           };
