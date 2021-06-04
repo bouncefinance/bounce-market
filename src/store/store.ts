@@ -22,7 +22,7 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     default: createDriver({
       processResponse: response => ({ data: response }),
     }),
-    axios: createAxiosDriver(
+    axiosSmartchain: createAxiosDriver(
       axios.create({
         baseURL: API_BASE,
       }),

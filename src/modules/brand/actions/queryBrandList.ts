@@ -1,10 +1,6 @@
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import {
-  IApiBrand,
-  IApiListBrand,
-  mapListBrands,
-} from '../api/queryBrand';
+import { IApiBrand, IApiListBrand, mapListBrands } from '../api/queryBrand';
 import { FetchBrandListAction } from './const';
 
 export const queryBrandList = createSmartAction<
@@ -18,11 +14,11 @@ export const queryBrandList = createSmartAction<
         limit: 10000,
         offset: 0,
         orderfield: 1,
-      }
+      },
     },
     meta: {
       auth: true,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       asMutation: true,
       getData: data => {
         if (data.code !== 1) {

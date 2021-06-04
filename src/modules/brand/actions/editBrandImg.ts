@@ -12,14 +12,12 @@ import { EditBrandImgAction } from './const';
 import { getAccountBrand } from './getAccountBrand';
 
 function isError(data: any) {
-  return (
-    data.code === 0 
-  );
+  return data.code === 0;
 }
 
 interface IEditBrandImgArgs {
-  imgUrl: string,
-  accountaddress: string,
+  imgUrl: string;
+  accountaddress: string;
   contractaddress: string;
 }
 
@@ -38,7 +36,7 @@ export const editBrandImg = createSmartAction<RequestAction>(
     meta: {
       asMutation: true,
       auth: true,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       onRequest: (
         request,
         _action: RequestAction,
@@ -72,7 +70,6 @@ export const editBrandImg = createSmartAction<RequestAction>(
             }
             return data;
           }
-
         },
       },
       onSuccess: async (

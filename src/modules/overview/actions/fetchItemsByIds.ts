@@ -26,7 +26,7 @@ export const fetchItemsByIds = createSmartAction<
     },
     meta: {
       auth: true,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       asMutation: false,
       getData: data => {
         if (data.code === 0 && data.msg) {

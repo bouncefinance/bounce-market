@@ -78,7 +78,7 @@ export const getPoolsByFilter = createAction<
   [
     {
       user?: string;
-      contract_address?: string,
+      contract_address?: string;
     }?,
     RequestActionMeta<IApiPoolsData, IPoolsData>?,
   ]
@@ -86,14 +86,15 @@ export const getPoolsByFilter = createAction<
   request: {
     url: POOLS_URL,
     method: 'get',
-    params: { 
-      user_address: params?.user, 
+    params: {
+      user_address: params?.user,
       contract_address: params?.contract_address,
-      offset: 0, count: 1000 
+      offset: 0,
+      count: 1000,
     },
   },
   meta: {
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     getData: response => {
       // TODO parse the response
       if (response.code !== 200) {

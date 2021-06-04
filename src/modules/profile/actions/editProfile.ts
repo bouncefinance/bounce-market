@@ -50,7 +50,7 @@ export const editProfile: (
     meta: {
       asMutation: true,
       auth: true,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       onRequest: (
         request,
         _action: RequestAction,

@@ -30,72 +30,78 @@ export const uploadFile: (
 ) => RequestAction<
   IApiUploadFileResponse,
   IApiUploadFileSuccess
-> = createSmartAction('uploadFile', ({ file, fileType, contractaddress }: IUploadFileArgs) => {
-  const formData = new FormData();
-  formData.append('filename', file);
+> = createSmartAction(
+  'uploadFile',
+  ({ file, fileType, contractaddress }: IUploadFileArgs) => {
+    const formData = new FormData();
+    formData.append('filename', file);
 
-  return {
-    request: {
-      url: '/api/v2/main/auth/fileupload',
-      method: 'post',
-      data: formData,
-    },
-    meta: {
-      asMutation: true,
-      auth: true,
-      driver: 'axios',
-      getData: data => {
-        if (data.code !== 200) {
-          throw new Error(data.msg);
-        }
-        return data;
+    return {
+      request: {
+        url: '/api/v2/main/auth/fileupload',
+        method: 'post',
+        data: formData,
       },
-      onSuccess: (
-        response,
-        action: RequestAction,
-        store: Store<RootState> & { dispatchRequest: DispatchRequest },
-      ) => {
-        const { data: profileInfo } = getQuery<IProfileInfo | null>(
-          store.getState(),
-          {
-            type: fetchProfileInfo.toString(),
-          },
-        );
-
-        const {
-          data: { address }
-        } = getQuery(store.getState(), {
-          type: setAccount.toString(),
-          action: setAccount,
-        })
-
-        const isSuccessfulUpload = response.data.code === 200;
-
-        if (fileType === UploadFileType.Avatar && isSuccessfulUpload) {
-          store.dispatch(
-            editProfile({
-              ...(profileInfo || {}),
-              imgUrl: response.data.result.path,
-            }) as any,
+      meta: {
+        asMutation: true,
+        auth: true,
+        driver: 'axiosSmartchain',
+        getData: data => {
+          if (data.code !== 200) {
+            throw new Error(data.msg);
+          }
+          return data;
+        },
+        onSuccess: (
+          response,
+          action: RequestAction,
+          store: Store<RootState> & { dispatchRequest: DispatchRequest },
+        ) => {
+          const { data: profileInfo } = getQuery<IProfileInfo | null>(
+            store.getState(),
+            {
+              type: fetchProfileInfo.toString(),
+            },
           );
-        } else if (fileType === UploadFileType.BgImg && isSuccessfulUpload) {
-          store.dispatch(
-            editProfileBgImg({
-              imgUrl: response.data.result.path,
-            }),
-          );
-        } else if (fileType === UploadFileType.BrandImg && isSuccessfulUpload) {
-          store.dispatch(
-            editBrandImg({
-              contractaddress: contractaddress,
-              imgUrl: response.data.result.path,
-              accountaddress: address,
-            })
-          )
-        } 
 
-        return response;
+          const {
+            data: { address },
+          } = getQuery(store.getState(), {
+            type: setAccount.toString(),
+            action: setAccount,
+          });
+
+          const isSuccessfulUpload = response.data.code === 200;
+
+          if (fileType === UploadFileType.Avatar && isSuccessfulUpload) {
+            store.dispatch(
+              editProfile({
+                ...(profileInfo || {}),
+                imgUrl: response.data.result.path,
+              }) as any,
+            );
+          } else if (fileType === UploadFileType.BgImg && isSuccessfulUpload) {
+            store.dispatch(
+              editProfileBgImg({
+                imgUrl: response.data.result.path,
+              }),
+            );
+          } else if (
+            fileType === UploadFileType.BrandImg &&
+            isSuccessfulUpload
+          ) {
+            store.dispatch(
+              editBrandImg({
+                contractaddress: contractaddress,
+                imgUrl: response.data.result.path,
+                accountaddress: address,
+              }),
+            );
+          }
+
+          return response;
+        },
       },
-    },
-  };
-});
+    };
+  },
+);
