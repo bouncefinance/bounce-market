@@ -50,6 +50,9 @@ export interface ITradePool_V2 {
   token1: string;
   tokenid: number;
   username: string;
+  category: string;
+  channel: string;
+  creator: string;
 }
 
 export interface IGetPoolsApi {

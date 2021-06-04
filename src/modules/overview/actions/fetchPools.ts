@@ -7,9 +7,6 @@ export const fetchPools = createSmartAction<
   RequestAction<IGetPoolsApi_V2, ITradePool_V2[]>,
   [
     {
-      // user?: string;
-      // offset?: number;
-      // count?: number;
       category: string;
       channel: string;
       currency: string;
