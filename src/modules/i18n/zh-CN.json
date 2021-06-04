@@ -173,10 +173,10 @@
       "create-brand": "创建品牌",
       "label": {
         "brand-name": "品牌名称",
-        "brand-url": "品牌网址Brand URL",
+        "brand-url": "品牌网址",
         "description": "描述",
-        "brand-symbol": "品牌标识Brand symbol",
-        "brand-avatar": "品牌头像Brand avatar"
+        "brand-symbol": "品牌标识",
+        "brand-avatar": "品牌头像"
       },
       "avatar-accepts": "支持 JPG, PNG, JPEG2000",
       "avatar-recommended-size": "推荐300x300"
@@ -225,13 +225,13 @@
     "fee": "Fangible平台费{value}%",
     "receive": "商品成功出售后，您将收到 <b>{value} {unit}</b>",
     "expire": "将于 {value, date, medium} {value, time, short}结束",
-    "auction-amount": "您只能出售1个商品",
+    "auction-amount": "在拍卖方式中，您输出商品数量会被打包销售",
     "auction-type": {
       "fixed-swap": "固价出售",
       "english-auction": "英式拍卖"
     },
     "label": {
-      "type": "销售方式",
+      "type": "出售方式",
       "price": "价格",
       "amount": "数量",
       "minBid": "最低出价",

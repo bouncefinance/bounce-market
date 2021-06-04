@@ -225,7 +225,7 @@
     "fee": "Fangible fee {value}%",
     "receive": "You will receive <b>{value} {unit}</b>",
     "expire": "Will expire on {value, date, medium} {value, time, short}",
-    "auction-amount": "In the auction you can only put up 1 copy for sale",
+    "auction-amount": "In the auction, the copies you put on sale will be sold all at once.",
     "auction-type": {
       "fixed-swap": "Fixed Price",
       "english-auction": "English auction"
