@@ -68,5 +68,6 @@ export const useAccount = () => {
     handleConnect,
     handleChangeNetworkToSupported,
     handleUpdate,
+    chainId,
   };
 };

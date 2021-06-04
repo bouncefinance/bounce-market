@@ -14,6 +14,7 @@ import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAva
 import { WalletCard } from '../WalletCard';
 import { useWalletDropdown } from './useWalletDropdown';
 import { useWalletStyles } from './useWalletStyles';
+import { getNativeTokenSymbol } from '../../../common/conts';
 
 interface IWalletProps {
   address?: string;
@@ -22,12 +23,7 @@ interface IWalletProps {
 }
 
 // TODO: replace with real data
-const walletCardData = {
-  currency: 'BNB',
-  logo: bnbLogo,
-};
-
-const { currency, logo } = walletCardData;
+const logo = bnbLogo;
 
 export const WalletComponent = ({
   address = '',
@@ -36,6 +32,9 @@ export const WalletComponent = ({
 }: IWalletProps) => {
   const classes = useWalletStyles();
   const isXLUp = useIsXLUp();
+
+  const { chainId } = useAccount();
+  const currency = getNativeTokenSymbol(chainId);
 
   const {
     isOpened,
