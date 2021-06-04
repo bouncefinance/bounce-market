@@ -19,6 +19,8 @@ import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import classNames from 'classnames';
 import BigNumber from 'bignumber.js';
 
+const ENABLE_CURRENCY_ICON = false;
+
 export interface IWalletCardProps {
   address: string;
   balance?: BigNumber;
@@ -93,7 +95,9 @@ export const WalletCard = ({
       {balance ? (
         <Box className={classes.row}>
           <Box className={classes.walletBalance}>
-            {logo ? <Avatar src={logo} className={classes.walletLogo} /> : null}
+            {logo && ENABLE_CURRENCY_ICON ? (
+              <Avatar src={logo} className={classes.walletLogo} />
+            ) : null}
             {t('unit.custom-unit', {
               value: balance.toFixed(),
               unit: currency,
