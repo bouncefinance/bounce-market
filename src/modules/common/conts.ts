@@ -1,10 +1,5 @@
 import { TokenSymbol } from './types/TokenSymbol';
 
-export const API_BASE = process.env.REACT_APP_API_BASE;
-export const POOLS_URL = process.env.REACT_APP_POOLS_URL;
-export const POOL_DETAILS_URL = process.env.REACT_APP_POOL_DETAILS_URL;
-export const FANGIBLE_URL = process.env.REACT_APP_FANGIBLE_URL;
-export const NFTVIEW_URL_V2 = process.env.REACT_APP_NFTVIEW_URL_V2;
 export const REACT_APP_BRAND_BASEURI = process.env.REACT_APP_BRAND_BASEURI;
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 

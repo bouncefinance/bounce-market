@@ -27,7 +27,7 @@ export const updateBrandInfo = createSmartAction<
     },
     meta: {
       auth: true,
-      driver: 'axiosSmartchain',
+      driver: 'axios',
       asMutation: true,
       getData: (data: IApiUpdateBrandInfo) => {
         if (data.code !== 1) {

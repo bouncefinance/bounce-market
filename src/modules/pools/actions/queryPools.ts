@@ -1,5 +1,4 @@
 import { RequestAction } from '@redux-requests/core';
-import { FANGIBLE_URL } from 'modules/common/conts';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 // TODO: Merge with src/modules/profile/api/getPoolsByFilter.ts
@@ -52,11 +51,11 @@ export const queryPools = createSmartAction<
   RequestAction<IApiQueryPool, IQueryPool>
 >('queryPoolsAction', (address: string) => ({
   request: {
-    url: `${FANGIBLE_URL}/pools?offset=0&count=10000&user_address=${address}`,
+    url: `/pools?offset=0&count=10000&user_address=${address}`,
     method: 'get',
   },
   meta: {
-    driver: 'axiosSmartchain',
+    driver: 'nftview',
     asMutation: true,
     getData: data => {
       if (data.code !== 200) {

@@ -81,12 +81,12 @@ export const fetchNftByUser = createSmartAction<
     meta?: RequestActionMeta<IApiResponse, IResponse>,
   ) => ({
     request: {
-      url: 'https://nftview.bounce.finance/v2/bsc/nft',
+      url: '/nft',
       method: 'get',
       params: { user_address: params.userId },
     },
     meta: {
-      driver: 'axiosSmartchain',
+      driver: 'nftview2',
       getData: response => mapData(response),
       ...meta,
     },

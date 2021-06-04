@@ -16,7 +16,7 @@ export const getAuthToken = createSmartAction<RequestAction>(
       data: params,
     },
     meta: {
-      driver: 'axiosSmartchain',
+      driver: 'axios',
     },
   }),
 );

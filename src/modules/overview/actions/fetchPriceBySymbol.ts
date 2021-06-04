@@ -103,7 +103,7 @@ export const fetchPriceBySymbol = createSmartAction<
         },
       },
       meta: {
-        driver: 'axiosSmartchain',
+        driver: 'axios',
         asMutation: false,
         getData: ({ data }) => {
           return {

@@ -1,6 +1,5 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { IGetPools, IGetPoolsApi } from 'modules/common/api/getPools';
-import { FANGIBLE_URL } from 'modules/common/conts';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 export const fetchPools = createSmartAction<
@@ -17,7 +16,6 @@ export const fetchPools = createSmartAction<
   request: {
     url: '/pools',
     method: 'get',
-    baseURL: FANGIBLE_URL,
     params: {
       user_address: params?.user,
       offset: params?.offset || 0,
@@ -25,7 +23,7 @@ export const fetchPools = createSmartAction<
     },
   },
   meta: {
-    driver: 'axiosSmartchain',
+    driver: 'nftview',
     getData: response => {
       if (response.code !== 200) {
         throw new Error(response.msg);

@@ -18,7 +18,7 @@ export const fetchProfileInfo = createSmartAction<RequestAction>(
     meta: {
       asMutation: false,
       auth: true,
-      driver: 'axiosSmartchain',
+      driver: 'axios',
       onRequest: (
         request,
         _action: RequestAction,

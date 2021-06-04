@@ -70,15 +70,12 @@ function mapMoversItem(item: IItem) {
 
 export const Overview = () => {
   const dispatch = useDispatchRequest();
-  const overviewQuery = useQuery({ type: fetchOverview.toString() });
   const popularBrandsQuery = useQuery({ type: fetchPopularBrands.toString() });
   const classes = useOverviewStyles();
 
   useEffect(() => {
-    if (!overviewQuery.data) {
-      dispatch(fetchOverview());
-    }
-  }, [dispatch, overviewQuery.data]);
+    dispatch(fetchOverview());
+  }, [dispatch]);
 
   useEffect(() => {
     if (!popularBrandsQuery.data) {

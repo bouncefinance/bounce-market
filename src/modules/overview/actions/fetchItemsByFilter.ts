@@ -63,7 +63,7 @@ export const fetchItemsByFilter = createAction<
   },
   meta: {
     auth: true,
-    driver: 'axiosSmartchain',
+    driver: 'axios',
     getData: response => {
       if (response.code !== 1) {
         throw new Error(response.msg);
