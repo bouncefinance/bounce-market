@@ -338,7 +338,7 @@
       },
       "NotSoldByReservePrice": {
         "creator": "Item hasn't been sold. Claim your NFT back",
-        "buyer": "Item hasn't been sold. Claim your tokens NFT back",
+        "buyer": "Item hasn't been sold. Claim your tokens back",
         "others": "Item hasn't been sold"
       },
       "Claimed": {

@@ -15,7 +15,7 @@ export const Social = (props: BoxProps) => {
       {
         title: 'Medium',
         icon: MediumIcon,
-        href: 'https://bouncefinance.medium.com',
+        href: 'https://fangible.medium.com',
       },
       {
         title: 'Twitter',
