@@ -14,7 +14,7 @@ import { InfoTabsItem } from 'modules/buyNFT/components/InfoTabsItem';
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { featuresConfig } from 'modules/common/conts';
+import { featuresConfig, getNativeTokenSymbol } from 'modules/common/conts';
 import { convertWallet } from 'modules/common/utils/convertWallet';
 import { t } from 'modules/i18n/utils/intl';
 import { useCallback, useEffect } from 'react';
@@ -40,9 +40,11 @@ import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
+import { useAccount } from '../../../account/hooks/useAccount';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
+  const { chainId } = useAccount();
   const { poolId: poolIdParam, poolType } = useParams<{
     poolId: string;
     poolType: AuctionType;
@@ -412,7 +414,7 @@ export const BuyNFT = () => {
                         }}
                         isOpen={openedBid}
                         onClose={closeBidDialog}
-                        currency="BNB"
+                        currency={getNativeTokenSymbol(chainId)}
                         owner={ownerTitle}
                         ownerAvatar={undefined}
                         isOwnerVerified={false}
