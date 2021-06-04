@@ -1,9 +1,10 @@
-export type TokenSymbol =
-  | 'ETH'
-  | 'BNB'
-  | 'AUCTION'
-  | 'BTC'
-  | 'USDT'
-  | 'BUSD'
-  | 'USDC'
-  | 'HT';
+export enum TokenSymbol {
+  BNB = 'BNB',
+  ETH = 'ETH',
+  BUSD = 'BUSD',
+  USDT = 'USDT',
+  USDC = 'USDC',
+  AUCTION = 'AUCTION',
+  BTC = 'BTC',
+  HT = 'HT',
+}

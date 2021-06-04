@@ -64,9 +64,9 @@ export const fetchPriceBySymbol = createSmartAction<
     >,
   ) => {
     if (
-      tokenSymbol === 'USDT' ||
-      tokenSymbol === 'BUSD' ||
-      tokenSymbol === 'USDC'
+      tokenSymbol === TokenSymbol.USDT ||
+      tokenSymbol === TokenSymbol.BUSD ||
+      tokenSymbol === TokenSymbol.USDC
     ) {
       return {
         request: {

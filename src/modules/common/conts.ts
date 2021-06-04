@@ -77,17 +77,17 @@ export enum BlockchainNetworkId {
 const NativeTokens: {
   [key in BlockchainNetworkId]: TokenSymbol;
 } = {
-  [BlockchainNetworkId.mainnet]: 'ETH',
-  [BlockchainNetworkId.ropsten]: 'ETH',
-  [BlockchainNetworkId.rinkeby]: 'ETH',
-  [BlockchainNetworkId.goerli]: 'ETH',
-  [BlockchainNetworkId.dev]: 'ETH',
-  [BlockchainNetworkId.classic]: 'ETH',
-  [BlockchainNetworkId.mordor]: 'ETH',
-  [BlockchainNetworkId.kotti]: 'ETH',
-  [BlockchainNetworkId.smartchain]: 'BNB',
-  [BlockchainNetworkId.smartchainTestnet]: 'BNB',
-  [BlockchainNetworkId.heco]: 'HT',
+  [BlockchainNetworkId.mainnet]: TokenSymbol.ETH,
+  [BlockchainNetworkId.ropsten]: TokenSymbol.ETH,
+  [BlockchainNetworkId.rinkeby]: TokenSymbol.ETH,
+  [BlockchainNetworkId.goerli]: TokenSymbol.ETH,
+  [BlockchainNetworkId.dev]: TokenSymbol.ETH,
+  [BlockchainNetworkId.classic]: TokenSymbol.ETH,
+  [BlockchainNetworkId.mordor]: TokenSymbol.ETH,
+  [BlockchainNetworkId.kotti]: TokenSymbol.ETH,
+  [BlockchainNetworkId.smartchain]: TokenSymbol.BNB,
+  [BlockchainNetworkId.smartchainTestnet]: TokenSymbol.BNB,
+  [BlockchainNetworkId.heco]: TokenSymbol.HT,
 };
 
 export function getNativeTokenSymbol(chainId: BlockchainNetworkId) {
