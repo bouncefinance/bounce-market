@@ -25,9 +25,6 @@ export const fetchPools = createSmartAction<
     method: 'post',
     baseURL: API_BASE,
     data: {
-      // user_address: params?.user,
-      // offset: params?.offset || 0,
-      // count: params?.count || 100,
       category: params?.category || '',
       channel: params?.channel || 'FineArts',
       currency: params?.currency || ZERO_ADDRESS,

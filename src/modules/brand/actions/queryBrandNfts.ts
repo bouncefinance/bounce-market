@@ -38,9 +38,9 @@ export const queryBrandNfts = createAction<
             fetchPools(
               {
                 category: '',
-                channel: 'FineArts',
+                channel: params?.channel || 'FineArts',
                 currency: ZERO_ADDRESS,
-                limit: 10,
+                limit: 1000,
                 offset: 0,
                 orderfield: 1,
               },

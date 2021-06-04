@@ -13,7 +13,7 @@ import { useBrandStyles } from './useBrandStyles';
 export const Brand = () => {
   const classes = useBrandStyles();
   const { brandInfoLoading, brandInfo } = useBrand();
-  debugger;
+
   return (
     <Section className={classes.root}>
       <Header img={brandInfoLoading ? '' : brandInfo?.bandimgurl} />
