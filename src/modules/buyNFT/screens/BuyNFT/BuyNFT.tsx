@@ -336,7 +336,7 @@ export const BuyNFT = () => {
                           ? poolDetails.amountMin1
                           : poolDetails.lastestBidAmount
                       }
-                      cryptoCurrency="BNB"
+                      cryptoCurrency={getNativeTokenSymbol(chainId)}
                       onBidClick={openBidDialog}
                       onBuyClick={openEnglishBuyDialog}
                       disabled={poolDetails.state !== AuctionState.Live}
@@ -354,7 +354,7 @@ export const BuyNFT = () => {
                     <InfoPrices
                       price={poolDetails.price.multipliedBy(currency.priceUsd)}
                       cryptoPrice={poolDetails.price}
-                      cryptoCurrency="BNB"
+                      cryptoCurrency={getNativeTokenSymbol(chainId)}
                       onBuyClick={openFixedBuyDialog}
                       disabled={poolDetails.state !== FixedSwapState.Live}
                       loading={
