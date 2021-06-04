@@ -1,5 +1,5 @@
 import { useQuery } from '@redux-requests/react';
-import { ZERO_ADDRESS } from 'modules/common/conts';
+import { getNativeTokenSymbol, ZERO_ADDRESS } from 'modules/common/conts';
 import { useMemo } from 'react';
 import { setAccount } from '../../account/store/actions/setAccount';
 
@@ -73,7 +73,7 @@ export function useCurrencies() {
         ? {
             options: [
               {
-                label: chainId === 56 ? Currency.BNB : Currency.ETH,
+                label: getNativeTokenSymbol(chainId),
                 value: ZERO_ADDRESS,
                 contract: ZERO_ADDRESS,
                 decimals: 18,
