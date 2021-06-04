@@ -10,6 +10,7 @@ import {
   NFTCategoryType,
 } from './fetchItemsByFilter';
 import { fetchPools } from './fetchPools';
+import { TokenSymbol } from '../../common/types/TokenSymbol';
 
 export interface INFTItem {
   category?: IItemByFilter['category'];
@@ -33,6 +34,7 @@ export interface INFTItem {
   standard?: number;
   supply?: number;
   token1: string;
+  tokenSymbol: TokenSymbol;
 }
 
 interface IFetchNFTItemsArgs {
@@ -116,17 +118,16 @@ export const fetchNFTItems = createSmartAction<
 
           const mappedItems: INFTItem[] = pools
             .map(pool => {
-              const poolInfo = itemsByFilterData.find(
-                r => r.id === pool.tokenId,
-              );
+              const item = itemsByFilterData.find(r => r.id === pool.tokenId);
               return {
-                ...poolInfo,
-                category: poolInfo?.category,
+                ...item,
+                category: item?.category,
                 poolType: pool.poolType,
                 poolId: pool.poolId,
                 price: pool.price,
                 createTime: pool.createTime,
                 token1: pool.token1,
+                tokenSymbol: item ? item.tokenSymbol : TokenSymbol.BNB,
               };
             })
             .filter(item => item.fileurl)

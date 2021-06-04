@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/styles';
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { useDispatchRequest } from '@redux-requests/react';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
@@ -70,18 +70,12 @@ function mapMoversItem(item: IItem) {
 
 export const Overview = () => {
   const dispatch = useDispatchRequest();
-  const popularBrandsQuery = useQuery({ type: fetchPopularBrands.toString() });
   const classes = useOverviewStyles();
 
   useEffect(() => {
     dispatch(fetchOverview());
+    dispatch(fetchPopularBrands());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (!popularBrandsQuery.data) {
-      dispatch(fetchPopularBrands());
-    }
-  }, [dispatch, popularBrandsQuery.data]);
 
   return (
     <div className={classes.root}>

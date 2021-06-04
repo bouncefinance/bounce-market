@@ -1,5 +1,7 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { createAction } from 'redux-smart-actions';
+import { TokenSymbol } from '../../common/types/TokenSymbol';
+import { addTokenSymbolToArrayByDriver } from '../../common/utils/addTokenSymbolToArrayByDriver';
 
 export enum ItemsChannel {
   all = 'All',
@@ -31,6 +33,7 @@ export interface IItemByFilter {
   owneraddress: string;
   standard: number;
   supply: number;
+  tokenSymbol: TokenSymbol;
 }
 
 interface IApiFetchItemsByFilter {
@@ -71,6 +74,7 @@ export const fetchItemsByFilter = createAction<
 
       return response.data;
     },
+    onSuccess: addTokenSymbolToArrayByDriver,
     ...meta,
   },
 }));

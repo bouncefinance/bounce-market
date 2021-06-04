@@ -6,6 +6,7 @@ import { IApiBrand, IBrandInfo } from '../api/queryBrand';
 import { ListBrandsAction } from './const';
 import { queryBrandByFilter } from './queryBrandByFilter';
 import { queryBrandList } from './queryBrandList';
+import { throwIfError } from '../../common/utils/throwIfError';
 
 export const listBrands = createSmartAction<
   RequestAction<IBrandInfo[], IBrandInfo[]>
@@ -25,16 +26,18 @@ export const listBrands = createSmartAction<
           const { data: brandList } = await store.dispatchRequest(
             queryBrandList(),
           );
-          return await new Promise(async (resolve, reject) => {
+          return await new Promise(async resolve => {
             if (brandList) {
               const addressList = brandList.map(
                 (item: IApiBrand) => item.contract_address,
               );
-              const { data: brandInfo } = await store.dispatchRequest(
-                queryBrandByFilter({
-                  Brandcontractaddressess: addressList,
-                  accountaddress: '',
-                }),
+              const { data: brandInfo } = throwIfError(
+                await store.dispatchRequest(
+                  queryBrandByFilter({
+                    Brandcontractaddressess: addressList,
+                    accountaddress: '',
+                  }),
+                ),
               );
               resolve(brandInfo);
             } else {

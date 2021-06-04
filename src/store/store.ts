@@ -15,7 +15,9 @@ import { NotificationActions } from '../modules/notification/store/NotificationA
 import { notificationSlice } from '../modules/notification/store/notificationSlice';
 import { rootSaga } from './rootSaga';
 import { i18nPersistConfig } from './webStorageConfigs';
-import { BlockchainNetworkId } from '../modules/common/conts';
+import { BlockchainNetworkId, ZERO_ADDRESS } from '../modules/common/conts';
+import { Address } from '../modules/common/types/unit';
+import { TokenSymbol } from '../modules/common/types/TokenSymbol';
 
 type MainApiDriverName =
   | 'mainApiEthMainnet'
@@ -94,6 +96,36 @@ function getNftView2ApiDriverName(
   chainId: BlockchainNetworkId,
 ): NftView2ApiDriverName {
   return chainNftView2ApiDriver[chainId] || 'nftView2ApiSmartchain';
+}
+
+export type DriverName =
+  | MainApiDriverName
+  | NftViewApiDriverName
+  | NftView2ApiDriverName;
+
+export function getTokenByDriver(
+  driverName: DriverName,
+  unitAddress?: Address,
+) {
+  if (driverName === 'mainApiEthMainnet') {
+    if (unitAddress === ZERO_ADDRESS) {
+      return TokenSymbol.ETH;
+    }
+  }
+
+  if (driverName === 'mainApiSmartchain') {
+    if (unitAddress === ZERO_ADDRESS) {
+      return TokenSymbol.BNB;
+    }
+  }
+
+  if (driverName === 'mainApiHeco') {
+    if (unitAddress === ZERO_ADDRESS) {
+      return TokenSymbol.HT;
+    }
+  }
+
+  return TokenSymbol.BNB;
 }
 
 const { requestsReducer, requestsMiddleware } = handleRequests({

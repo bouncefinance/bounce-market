@@ -4,6 +4,7 @@ import { Address } from '../../common/types/unit';
 import { NftType } from '../../createNFT/actions/createNft';
 import { AuctionType } from './auctionType';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
+import { TokenSymbol } from '../../common/types/TokenSymbol';
 
 export interface IApiItem {
   likecount: number;
@@ -65,6 +66,7 @@ export interface IItem {
   poolId?: number;
   poolType?: AuctionType;
   state?: AuctionState | FixedSwapState;
+  tokenSymbol: TokenSymbol;
 }
 
 export function hasBrand(item: IItem) {
@@ -99,5 +101,6 @@ export function mapItem(item: IApiItem): IItem {
     unlockableContent: item.unlockablecontent,
     createdAt: new Date(item.created_at),
     updateAt: new Date(item.updated_at),
+    tokenSymbol: TokenSymbol.BNB,
   };
 }
