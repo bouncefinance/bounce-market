@@ -21,11 +21,13 @@ import { toWei } from '../../common/utils/toWei';
 export const getFixedSwapContract = (chainID: number) => {
   switch (chainID) {
     case 1:
-      return '';
+      return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_ETH_MAINNET;
     case 4:
       return '0x65B2FA838588003102fb3883e608f8b0049BFDD1';
     case 56:
       return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS;
+    case 128:
+      return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_HECO;
     default:
       return '0x65B2FA838588003102fb3883e608f8b0049BFDD1';
   }
@@ -34,11 +36,13 @@ export const getFixedSwapContract = (chainID: number) => {
 export const getEnglishAuctionContract = (chainID: number) => {
   switch (chainID) {
     case 1:
-      return '';
+      return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_ETH_MAINNET;
     case 4:
       return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525';
     case 56:
       return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS;
+    case 128:
+      return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_HECO;
     default:
       return '0xFe8f5BaB50ff6a9d5C7eE4b598efDF792a6a5525';
   }
