@@ -10,6 +10,7 @@ export const PATH_EDIT_PROFILE = '/profile/edit';
 
 export enum ProfileTab {
   items = 'items',
+  sells = 'sells',
   bids = 'bids',
   brands = 'brands',
   activity = 'activity',

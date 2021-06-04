@@ -72,7 +72,7 @@ export const Profile = () => {
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
   });
-  
+
   const toggleAvatarModal = useCallback(
     (isOpen: boolean) => () => {
       setAvatarModalOpened(isOpen);
@@ -99,6 +99,10 @@ export const Profile = () => {
       {
         value: ProfileTab.items,
         label: t('profile.tabs.my-items'),
+      },
+      {
+        value: ProfileTab.sells,
+        label: t('profile.tabs.my-sells'),
       },
       {
         value: ProfileTab.bids,
@@ -202,6 +206,10 @@ export const Profile = () => {
 
         <TabPanel value={tab} index={ProfileTab.brands}>
           <TabBrands />
+        </TabPanel>
+
+        <TabPanel value={tab} index={ProfileTab.sells}>
+          <TabBids />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.bids}>

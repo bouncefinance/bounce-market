@@ -1,14 +1,10 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import { ZERO_ADDRESS } from 'modules/common/conts';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
 import { AuctionType } from '../api/auctionType';
-import {
-  fetchItemsByFilter,
-  IItemByFilter,
-  ItemsChannel,
-  NFTCategoryType,
-} from './fetchItemsByFilter';
+import { IItemByFilter, ItemsChannel } from './fetchItemsByFilter';
 import { fetchPools } from './fetchPools';
 
 export interface INFTItem {
@@ -60,9 +56,12 @@ export const fetchNFTItems = createSmartAction<
           const { data: poolsData } = await store.dispatchRequest(
             fetchPools(
               {
-                offset: params?.offset,
-                count: params?.count,
-                user: params?.address,
+                category: '',
+                channel: params?.channel || 'FineArts',
+                currency: ZERO_ADDRESS,
+                limit: 1000,
+                offset: 0,
+                orderfield: 1,
               },
               {
                 asMutation: true,
@@ -74,65 +73,37 @@ export const fetchNFTItems = createSmartAction<
             return [];
           }
 
-          const tradePools = (poolsData.tradePools || [])
-            .map(item => ({
-              ...item,
-              poolType: AuctionType.FixedSwap,
-            }))
-            .filter(item => item.state !== 1);
-
-          const tradeAuctions = (poolsData.tradeAuctions || [])
-            .map(item => ({
-              ...item,
-              price:
-                item.lastestBidAmount !== '0'
-                  ? item.lastestBidAmount
-                  : item.amountMin1,
-              poolType: AuctionType.EnglishAuction,
-            }))
-            .filter(item => item.state !== 1 && item.poolId !== 0);
-
-          const pools = [...tradePools, ...tradeAuctions];
-          const list = pools.map(item => item.tokenId);
-          const ctsList = pools.map(item => item.token0);
-
-          const { data: itemsByFilterData } = await store.dispatchRequest(
-            fetchItemsByFilter(
-              {
-                ids: list,
-                cts: ctsList,
-                channel: params?.channel || ItemsChannel.fineArts,
-                category: NFTCategoryType.default,
-              },
-              {
-                asMutation: true,
-              },
-            ),
-          );
-
-          if (!itemsByFilterData) {
-            return [];
-          }
-
-          const mappedItems: INFTItem[] = pools
-            .map(pool => {
-              const poolInfo = itemsByFilterData.find(
-                r => r.id === pool.tokenId,
-              );
+          const tradePools = poolsData
+            ?.filter(item => item.state !== 1)
+            ?.map(item => {
               return {
-                ...poolInfo,
-                category: poolInfo?.category,
-                poolType: pool.poolType,
-                poolId: pool.poolId,
-                price: pool.price,
-                createTime: pool.createTime,
-                token1: pool.token1,
+                category: 'image',
+                channel: 'FineArts',
+                contractaddress: item.token0,
+                createTime: new Date(item.created_at).getTime(),
+                created_at: item.created_at,
+                description: 'description',
+                externallink: 'externallink',
+                fileurl: item.fileurl,
+                id: item.tokenid,
+                itemname: item.itemname,
+                itemsymbol: 'itemsymbol',
+                likecount: item.likecount,
+                litimgurl: item.creatorurl,
+                metadata: 'metadata',
+                owneraddress: '0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE',
+                poolId: item.poolid,
+                poolType: item.pooltype
+                  ? AuctionType.FixedSwap
+                  : AuctionType.EnglishAuction,
+                price: item.price,
+                standard: 0,
+                supply: 100,
+                token1: item.token1,
               };
-            })
-            .filter(item => item.fileurl)
-            .sort((a, b) => b.createTime - a.createTime);
+            });
 
-          return mappedItems;
+          return tradePools;
         })(),
       };
     },

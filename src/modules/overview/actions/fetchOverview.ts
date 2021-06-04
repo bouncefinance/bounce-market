@@ -38,7 +38,9 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
 
               const poolWidthMap = new Map<number, number>([]);
               const poolDetailsList = await Promise.all(
-                poolsInfoData.list.reverse().map(item => {
+                poolsInfoData.list.map(item => {
+                  poolWidthMap.set(item.poolId, item.poolWeight);
+
                   return store.dispatchRequest(
                     fetchPoolDetails(
                       {
@@ -72,6 +74,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
               interface dataType extends IItem {
                 poolWight: number;
               }
+
               return data
                 ?.map(item => {
                   const pool = poolDetailsList.find(pool => {
@@ -99,7 +102,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         : AuctionType.FixedSwap,
                     closeAt:
                       pool && isEnglishAuction(pool) ? pool.closeAt : undefined,
-                    poolWight: poolWidthMap.get(item.poolId ?? 0),
+                    poolWight: poolWidthMap.get(pool?.poolId as number) || 0,
                   } as dataType;
                 })
                 .sort((a, b) => {
