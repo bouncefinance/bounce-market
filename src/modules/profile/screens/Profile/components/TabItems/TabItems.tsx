@@ -17,10 +17,11 @@ import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { ResponseData } from '../../../../../common/types/ResponseData';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
+import { getNativeTokenSymbol } from '../../../../../common/conts';
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
@@ -66,7 +67,7 @@ export const TabItems = () => {
                   // status={item.status}
                   // UPDATE price
                   price={item.poolId ? item.price : undefined}
-                  priceType="BNB"
+                  priceType={getNativeTokenSymbol(chainId)}
                   isOnSale={
                     item.state === AuctionState.Live ||
                     item.state === FixedSwapState.Live
