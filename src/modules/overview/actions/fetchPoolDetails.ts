@@ -130,7 +130,7 @@ export const fetchPoolDetails = createSmartAction<
     },
     meta: {
       auth: true,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       asMutation: false,
       getData: ({ data }) => {
         if (isApiEnglishAuction(data)) {

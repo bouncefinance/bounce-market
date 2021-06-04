@@ -18,7 +18,7 @@ export const queryBrandById = createSmartAction<
     },
     meta: {
       ...meta,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       getData: data => {
         if (data.code !== 1) {
           throw new Error('Unexpected response');

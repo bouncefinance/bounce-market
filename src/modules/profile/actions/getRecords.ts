@@ -35,7 +35,7 @@ export const getRecords = createAction<
   },
   meta: {
     ...meta,
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     onRequest: (
       request,
       _action: RequestAction,

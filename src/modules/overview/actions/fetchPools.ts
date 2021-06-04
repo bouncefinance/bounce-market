@@ -25,7 +25,7 @@ export const fetchPools = createSmartAction<
     },
   },
   meta: {
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     getData: response => {
       if (response.code !== 200) {
         throw new Error(response.msg);
