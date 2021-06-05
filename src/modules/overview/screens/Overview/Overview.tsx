@@ -29,6 +29,7 @@ function mapPromoItem(item: IItem): IPromoItem {
     avatar: undefined,
     price: item.price,
     priceType: 'BNB',
+    category: item?.category,
     img: item.fileUrl,
     thumbImg: item.fileUrl || '',
     href:
@@ -36,6 +37,10 @@ function mapPromoItem(item: IItem): IPromoItem {
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
     authorHref: RoutesConfiguration.Overview.generatePath(),
+    MediaProps: {
+      category: item.category as ProductCardCategoryType,
+      src: item.fileUrl || '',
+    },
   };
 }
 
@@ -52,7 +57,7 @@ function mapMoversItem(item: IItem) {
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
     MediaProps: {
-      category: 'image' as ProductCardCategoryType,
+      category: item.category as ProductCardCategoryType,
       src: item.fileUrl || '',
     },
     ProfileInfoProps: {
@@ -85,7 +90,6 @@ export const Overview = () => {
       dispatch(fetchPopularBrands());
     }
   }, [dispatch, popularBrandsQuery.data]);
-
   return (
     <div className={classes.root}>
       <div className={classes.promoMoversWrap}>

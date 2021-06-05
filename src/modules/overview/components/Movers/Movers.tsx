@@ -78,7 +78,6 @@ export const Movers = ({
     },
     onSwiper: setSwiper,
   };
-
   const renderedSlides = items.map(cardProps => (
     <SwiperSlide className={classes.slide} key={uid(cardProps)}>
       <ProductCard

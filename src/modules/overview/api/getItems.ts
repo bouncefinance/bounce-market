@@ -4,11 +4,12 @@ import { Address } from '../../common/types/unit';
 import { NftType } from '../../createNFT/actions/createNft';
 import { AuctionType } from './auctionType';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
+import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 
 export interface IApiItem {
   likecount: number;
   brandid: number;
-  category: 'image';
+  category: ProductCardCategoryType;
   channel: string;
   contractaddress: Address;
   created_at: string;
@@ -37,7 +38,7 @@ export interface IApiItem {
 export interface IItem {
   likeCount: number;
   brandId: number;
-  category: 'image';
+  category: ProductCardCategoryType;
   channel: string;
   contractAddress: Address;
   description: string;
