@@ -93,9 +93,10 @@ export const fetchNFTItems = createSmartAction<
                 metadata: 'metadata',
                 owneraddress: item.creator,
                 poolId: item.poolid,
-                poolType: item.pooltype
-                  ? AuctionType.FixedSwap
-                  : AuctionType.EnglishAuction,
+                poolType:
+                  item.pooltype === 1
+                    ? AuctionType.FixedSwap
+                    : AuctionType.EnglishAuction,
                 price: item.price,
                 standard: 0,
                 supply: 100,
