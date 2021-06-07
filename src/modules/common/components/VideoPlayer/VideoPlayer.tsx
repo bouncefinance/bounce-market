@@ -13,7 +13,7 @@ interface IVideoPlayerProps {
   loop?: boolean;
   autoPlay?: boolean;
   muted?: boolean;
-  preload?: string;
+  preload?: 'none' | 'metadata' | 'auto';
   objectFit?: ObjectFitType;
   fallbackText?: string;
 }
@@ -33,9 +33,9 @@ export const VideoPlayer = ({
   poster,
   controls = true,
   loop = true,
-  autoPlay = true,
+  autoPlay = false,
   muted = true,
-  preload = 'auto',
+  preload = 'metadata',
   objectFit = 'fill',
   fallbackText = t('video-player.unsupported'),
   ...restProps
