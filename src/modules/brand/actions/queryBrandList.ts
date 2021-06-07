@@ -18,7 +18,7 @@ export const queryBrandList = createSmartAction<
     },
     meta: {
       auth: true,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       asMutation: true,
       getData: data => {
         if (data.code !== 1) {

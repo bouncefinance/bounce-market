@@ -418,7 +418,7 @@ export const BuyNFT = () => {
                         isOwnerVerified={false}
                         category={item.category}
                         disabled={loading}
-                        maxQuantity={item.supply}
+                        maxQuantity={poolDetails.tokenAmount0}
                         minIncrease={poolDetails.amountMinIncr1}
                         lastestBidAmount={poolDetails.lastestBidAmount}
                       />
@@ -450,7 +450,7 @@ export const BuyNFT = () => {
                         readonly={true}
                         category={item.category}
                         disabled={loading}
-                        maxQuantity={item.supply}
+                        maxQuantity={poolDetails.tokenAmount0}
                       />
                     )}
                   </Mutation>
@@ -466,7 +466,9 @@ export const BuyNFT = () => {
                           handleBuyFixed({
                             nftType: poolDetails.nftType,
                             unitContract: poolDetails.unitContract,
-                            amountTotal0: poolDetails.quantity,
+                            amountTotal0: parseInt(
+                              poolDetails.totalQuantity?.toString() ?? '0',
+                            ),
                             amountTotal1: poolDetails.totalPrice,
                             poolId: poolDetails.poolId,
                             quantity: parseInt(data.quantity),

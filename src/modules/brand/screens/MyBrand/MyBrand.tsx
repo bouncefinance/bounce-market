@@ -10,7 +10,7 @@ import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { featuresConfig } from 'modules/common/conts';
-import { PublishNFTType, RoutesConfiguration } from 'modules/createNFT/Routes';
+import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
@@ -91,7 +91,7 @@ export const MyBrand = () => {
           isOpen={isBgImgModalOpened}
           onClose={toggleBgImgModal(false)}
           fileType={UploadFileType.BrandImg}
-          brandId={brandInfo.id}
+          contractaddress={brandInfo.contractaddress}
         />
       )}
 
@@ -151,7 +151,6 @@ export const MyBrand = () => {
                   ],
                 }}
                 toSale={RoutesConfiguration.PublishNft.generatePath(
-                  PublishNFTType.BrandNFT,
                   item.contractaddress,
                   item.id,
                 )}

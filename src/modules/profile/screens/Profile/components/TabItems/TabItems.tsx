@@ -5,7 +5,7 @@ import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { Queries } from 'modules/common/components/Queries/Queries';
-import { PublishNFTType, RoutesConfiguration } from 'modules/createNFT/Routes';
+import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { hasBrand, IItem } from 'modules/overview/api/getItems';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
@@ -95,12 +95,10 @@ export const TabItems = () => {
                   toSale={
                     hasBrand(item)
                       ? RoutesConfiguration.PublishNft.generatePath(
-                          PublishNFTType.BrandNFT,
                           item.contractAddress,
                           item.id,
                         )
                       : RoutesConfiguration.PublishNft.generatePath(
-                          PublishNFTType.NFT,
                           item.contractAddress,
                           item.id,
                         )

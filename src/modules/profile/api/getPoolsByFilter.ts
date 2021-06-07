@@ -94,7 +94,7 @@ export const getPoolsByFilter = createAction<
     },
   },
   meta: {
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     getData: response => {
       // TODO parse the response
       if (response.code !== 200) {

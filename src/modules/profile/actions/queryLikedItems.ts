@@ -12,7 +12,7 @@ import { getAccountLikes, IAccountLike } from './getAccountLikes';
 export interface ILikedItem extends IAccountLike {
   poolType: AuctionType;
   price: BigNumber;
-  createTime: number;
+  createTime: string;
   token1: string;
 }
 
@@ -30,11 +30,11 @@ export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
       ) => {
         return {
           promise: (async () => {
-            const { data: poolsData } = throwIfDataIsEmptyOrError(
+            const { data: pools } = throwIfDataIsEmptyOrError(
               await store.dispatchRequest(
                 fetchPools(
                   {
-                    count: 1000,
+                    limit: 1000,
                   },
                   {
                     asMutation: true,
@@ -42,26 +42,6 @@ export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
                 ),
               ),
             );
-
-            const tradePools = (poolsData.tradePools || [])
-              .map(item => ({
-                ...item,
-                poolType: AuctionType.FixedSwap,
-              }))
-              .filter(item => item.state !== 1);
-
-            const tradeAuctions = (poolsData.tradeAuctions || [])
-              .map(item => ({
-                ...item,
-                price:
-                  item.lastestBidAmount !== '0'
-                    ? item.lastestBidAmount
-                    : item.amountMin1,
-                poolType: AuctionType.EnglishAuction,
-              }))
-              .filter(item => item.state !== 1);
-
-            const pools = [...tradePools, ...tradeAuctions];
 
             const { data: accountLikes } = throwIfDataIsEmptyOrError(
               await store.dispatchRequest(getAccountLikes()),
@@ -71,17 +51,17 @@ export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
               .map(accountLike => {
                 const poolInfo = pools.find(
                   pool =>
-                    pool.tokenId === accountLike.itemId &&
-                    pool.poolId === accountLike.poolId,
+                    pool.tokenid === accountLike.itemId &&
+                    pool.poolid === accountLike.poolId,
                 );
                 if (!poolInfo) {
                   return null;
                 } else {
                   return {
                     ...accountLike,
-                    poolType: poolInfo.poolType,
+                    poolType: poolInfo.pooltype as any,
                     price: new BigNumber(Web3.utils.fromWei(poolInfo.price)),
-                    createTime: poolInfo.createTime,
+                    createTime: poolInfo.created_at,
                     token1: poolInfo.token1,
                   };
                 }

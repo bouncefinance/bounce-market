@@ -3,7 +3,7 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { FetchPopularBrandsAction } from './const';
 
 interface IApiFetchPopularBrandsData {
-  code: 1,
+  code: 1;
   data: {
     auditor: string;
     bandimgurl: string;
@@ -21,7 +21,7 @@ interface IApiFetchPopularBrandsData {
     standard: 1 | 2;
     status: number;
     updated_at: number;
-  }[]
+  }[];
 }
 
 export interface IBrandItem {
@@ -36,18 +36,18 @@ export const fetchPopularBrands = createSmartAction<
     url: '/api/v2/main/getpopularbrands',
     method: 'post',
     data: {
-      accountaddress: ''
-    }
+      accountaddress: '',
+    },
   },
   meta: {
     auth: true,
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     asMutation: false,
     getData: data => {
       return data.data.map(item => ({
         imgUrl: item.imgurl,
-        id: item.id
-      }))
-    }
-  }
-}))
+        id: item.id,
+      }));
+    },
+  },
+}));

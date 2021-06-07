@@ -11,6 +11,7 @@ export enum ItemsChannel {
 export enum NFTCategoryType {
   video = 'video',
   image = 'image',
+  default = '',
 }
 
 export interface IItemByFilter {
@@ -62,7 +63,7 @@ export const fetchItemsByFilter = createAction<
   },
   meta: {
     auth: true,
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     getData: response => {
       if (response.code !== 1) {
         throw new Error(response.msg);

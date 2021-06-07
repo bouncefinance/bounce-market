@@ -28,7 +28,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 error: poolsInfoError,
               } = await store.dispatchRequest(
                 fetchPoolsWeight(
-                  { limit: 10, offset: 0, orderweight: 1 },
+                  { limit: 11, offset: 0, orderweight: 1 },
                   { silent: true },
                 ),
               );
@@ -36,18 +36,22 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 throw poolsInfoError;
               }
 
+              const poolWidthMap = new Map<number, number>([]);
               const poolDetailsList = await Promise.all(
-                poolsInfoData.list.reverse().map(item =>
-                  store.dispatchRequest(
+                poolsInfoData.list.map(item => {
+                  poolWidthMap.set(item.poolId, item.poolWeight);
+
+                  return store.dispatchRequest(
                     fetchPoolDetails(
                       {
                         poolId: item.poolId,
                         poolType: item.auctionType,
                       },
                       { requestKey: item.poolId },
+                      { silent: true },
                     ),
-                  ),
-                ),
+                  );
+                }),
               );
 
               const { data } = await store.dispatchRequest(
@@ -68,10 +72,18 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 ),
               );
 
-              return data
+              interface dataType extends IItem {
+                poolWight: number;
+              }
+
+              const WashData = data
                 ?.map(item => {
                   const pool = poolDetailsList.find(pool => {
-                    return pool.data?.tokenId === item.id;
+                    return (
+                      pool.data?.tokenId === item.id &&
+                      String(pool.data?.tokenContract).toLowerCase() ===
+                        String(item.contractAddress).toLowerCase()
+                    );
                   })?.data;
 
                   const price =
@@ -80,7 +92,6 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         ? pool.lastestBidAmount
                         : pool.amountMin1
                       : pool?.price || item.price;
-
                   return {
                     ...item,
                     price,
@@ -91,9 +102,13 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         : AuctionType.FixedSwap,
                     closeAt:
                       pool && isEnglishAuction(pool) ? pool.closeAt : undefined,
-                  } as IItem;
+                    poolWight: poolWidthMap.get(pool?.poolId as number) || 0,
+                  } as dataType;
                 })
-                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+                .sort((a, b) => {
+                  return b.poolWight - a.poolWight;
+                });
+              return WashData;
             })(),
           };
         },

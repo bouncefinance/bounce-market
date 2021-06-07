@@ -55,7 +55,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
 
-  const { data, loading } = useQuery<INFTItem[] | null>({
+  const { data, loading } = useQuery<INFTItem[]>({
     type: fetchNFTItems.toString(),
   });
 

@@ -15,7 +15,12 @@ build-template: &build-template
     - run:
         no_output_timeout: 10m
         name: Building ...
-        command: yarn build
+        command: |
+          if [[ "$ENVIRONMENT" == "stage" ]]; then
+            yarn build-stage
+          else
+            yarn build
+          fi
     - persist_to_workspace:
         root: '.'
         paths:
@@ -89,9 +94,9 @@ workflows:
       # prod
       - approve-prod:
           type: approval
-#          filters:
-#            branches:
-#              only: [ master ]
+          filters:
+            branches:
+              only: [ master, stage ]
       - build-prod:
           context: bounce_build_prod
           requires:

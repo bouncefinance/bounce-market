@@ -27,6 +27,7 @@ function mapPromoItem(item: IItem): IPromoItem {
     avatar: undefined,
     price: item.price,
     priceType: 'BNB',
+    category: item?.category,
     img: item.fileUrl,
     thumbImg: item.fileUrl || '',
     href:
@@ -34,6 +35,10 @@ function mapPromoItem(item: IItem): IPromoItem {
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
     authorHref: RoutesConfiguration.Overview.generatePath(),
+    MediaProps: {
+      category: item.category,
+      src: item.fileUrl || '',
+    },
   };
 }
 
@@ -54,7 +59,6 @@ export const Overview = () => {
       dispatch(fetchPopularBrands());
     }
   }, [dispatch, popularBrandsQuery.data]);
-
   return (
     <div className={classes.root}>
       <div className={classes.promoMoversWrap}>

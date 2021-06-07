@@ -49,15 +49,17 @@ export const featuresConfig = {
   nftDetailsLikesCount: false,
   nftDetailsCreator: false,
   nftDetailsCount: true,
+  subscribers: false,
+  profileSortTabs: false,
+  profileFollowers: false,
+  /**
+   * poolDetail config
+   */
+  infoTabs: false,
   nftDetailsHistory: false,
   nftDetailsBids: false,
   nftDetailsOwners: false,
   nftDetailsTokenInfo: false,
-  subscribers: false,
-  profileSortTabs: false,
-  profileActivity: false,
-  profileFollowers: false,
-  infoTabs: false,
 };
 
 export enum BlockchainNetworkId {

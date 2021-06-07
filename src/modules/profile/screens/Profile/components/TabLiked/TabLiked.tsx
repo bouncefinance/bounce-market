@@ -1,7 +1,10 @@
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { NoItems } from 'modules/common/components/NoItems';
-import { ProductCard } from 'modules/common/components/ProductCard';
+import {
+  ProductCard,
+  ProductCardCategoryType,
+} from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { Queries } from 'modules/common/components/Queries/Queries';
 import { MarketRoutesConfig } from 'modules/market/Routes';
@@ -53,7 +56,7 @@ export const TabLiked = ({ className }: ITabLikedProps) => {
                 }
                 price={item.price}
                 MediaProps={{
-                  category: item.category,
+                  category: item.category as ProductCardCategoryType,
                   src: item.imageUrl,
                   objectFit: 'contain',
                   loading: 'lazy',

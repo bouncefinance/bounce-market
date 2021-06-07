@@ -30,7 +30,7 @@ export const addItem = createSmartAction<
     },
     meta: {
       auth: true,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       asMutation: true,
       getData: data => {
         if (data.code !== 1) {

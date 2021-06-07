@@ -2,7 +2,10 @@ import { Box, Hidden } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { NoItems } from 'modules/common/components/NoItems';
-import { ProductCard } from 'modules/common/components/ProductCard';
+import {
+  ProductCard,
+  ProductCardCategoryType,
+} from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { t } from 'modules/i18n/utils/intl';
@@ -108,7 +111,7 @@ export const TabBids = () => {
         copies={item.supply}
         likes={undefined}
         MediaProps={{
-          category: item.category,
+          category: item.category as ProductCardCategoryType,
           src: item.fileurl,
           objectFit: 'contain',
           loading: 'lazy',

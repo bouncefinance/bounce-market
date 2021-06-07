@@ -101,6 +101,7 @@ export const WalletComponent = ({
             currency={currency}
             logo={logo}
             balance={balance}
+            handleClose={handleClose}
           />
         </>
       )}

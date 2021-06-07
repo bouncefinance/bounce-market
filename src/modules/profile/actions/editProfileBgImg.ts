@@ -9,7 +9,7 @@ import { RootState } from 'store';
 import { IProfileInfo } from '../api/profileInfo';
 import { fetchProfileInfo } from './fetchProfileInfo';
 import { showSuccesNotify } from './showSuccesNotify';
-import { editProfile } from './editProfile';
+import { NotificationActions } from 'modules/notification/store/NotificationActions';
 
 function isAccountNotExist(data: any) {
   return (
@@ -35,7 +35,7 @@ export const editProfileBgImg = createSmartAction<RequestAction>(
     meta: {
       asMutation: true,
       auth: true,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       onRequest: (
         request,
         _action: RequestAction,
@@ -89,9 +89,16 @@ export const editProfileBgImg = createSmartAction<RequestAction>(
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
         if (isAccountNotExist(response.data)) {
-          await store.dispatchRequest(editProfile({}));
-          // TODO: Handle possible loop
-          await store.dispatchRequest(action);
+          if (response.data.code === 1) {
+            await store.dispatchRequest(action);
+          } else {
+            store.dispatch(
+              NotificationActions.showNotification({
+                message: `${response.data.msg} you should setup your profile first.`,
+                severity: 'error',
+              }),
+            );
+          }
         } else {
           store.dispatch(showSuccesNotify());
         }
