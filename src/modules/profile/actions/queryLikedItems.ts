@@ -1,8 +1,8 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
+import { PoolType } from 'modules/common/api/poolType';
 import { throwIfDataIsEmptyOrError } from 'modules/common/utils/throwIfDataIsEmptyOrError';
 import { fetchPools } from 'modules/overview/actions/fetchPools';
-import { AuctionType } from 'modules/overview/api/auctionType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
@@ -10,7 +10,7 @@ import Web3 from 'web3';
 import { getAccountLikes, IAccountLike } from './getAccountLikes';
 
 export interface ILikedItem extends IAccountLike {
-  poolType: AuctionType;
+  poolType: PoolType;
   price: BigNumber;
   createTime: string;
   token1: string;
@@ -59,7 +59,7 @@ export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
                 } else {
                   return {
                     ...accountLike,
-                    poolType: poolInfo.pooltype as any,
+                    poolType: accountLike.auctionType,
                     price: new BigNumber(Web3.utils.fromWei(poolInfo.price)),
                     createTime: poolInfo.created_at,
                     token1: poolInfo.token1,

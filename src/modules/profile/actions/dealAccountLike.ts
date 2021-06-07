@@ -3,7 +3,7 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
-import { AuctionType } from 'modules/overview/api/auctionType';
+import { PoolType } from 'modules/common/api/poolType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
@@ -12,7 +12,7 @@ import { ILikedItem, queryLikedItems } from './queryLikedItems';
 interface IDealAccountLikeArgs {
   isLiked: boolean;
   category: string;
-  auctionType?: AuctionType;
+  poolType?: PoolType;
   itemId: number;
   poolId: number;
   requestKey?: string;
@@ -26,7 +26,7 @@ export const dealAccountLike = createAction<
     url: '/api/v2/main/auth/dealaccountlike',
     method: 'post',
     data: {
-      auctiontype: params.auctionType === AuctionType.EnglishAuction ? 1 : 0,
+      auctiontype: params.poolType ?? 0,
       category: params.category,
       ifLike: params.isLiked ? 1 : 0,
       itemid: params.itemId,
@@ -38,7 +38,7 @@ export const dealAccountLike = createAction<
     requestsCapacity: 2,
     asMutation: true,
     auth: true,
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     onRequest: (
       request,
       _action: RequestAction,

@@ -1,5 +1,6 @@
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { auctionTypeMap } from 'modules/common/api/poolType';
 import { NoItems } from 'modules/common/components/NoItems';
 import {
   ProductCard,
@@ -43,14 +44,14 @@ export const TabLiked = ({ className }: ITabLikedProps) => {
                 isOnSale
                 id={item.itemId}
                 poolId={item.poolId}
-                auctionType={item.poolType}
+                auctionType={auctionTypeMap[`${item.poolType}`]}
                 key={uid(item)}
                 title={item.itemName}
                 href={
                   item.poolId && item.poolType
                     ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
                         item.poolId,
-                        item.poolType,
+                        auctionTypeMap[item.poolType],
                       )
                     : ''
                 }

@@ -23,7 +23,7 @@ export const fetchPools = createSmartAction<
     baseURL: API_BASE,
     data: {
       category: params?.category || '',
-      channel: params?.channel || 'FineArts',
+      channel: params?.channel,
       currency: params?.currency || ZERO_ADDRESS,
       limit: params?.limit || 10,
       offset: params?.offset || 0,

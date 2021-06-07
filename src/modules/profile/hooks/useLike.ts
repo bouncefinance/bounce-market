@@ -4,7 +4,7 @@ import {
   useQuery,
 } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { AuctionType } from 'modules/overview/api/auctionType';
+import { PoolType } from 'modules/common/api/poolType';
 import { useCallback, useState } from 'react';
 import { dealAccountLike } from '../actions/dealAccountLike';
 import { ILikedItem, queryLikedItems } from '../actions/queryLikedItems';
@@ -26,14 +26,14 @@ export const useIsLiked = (id: number, poolId: number) => {
 interface IUseLikeProps {
   id: number;
   category: string;
-  auctionType?: AuctionType;
+  poolType?: PoolType;
   poolId: number;
   count?: number;
 }
 
 export const useLike = ({
   id,
-  auctionType,
+  poolType,
   category,
   poolId,
   /**
@@ -69,7 +69,7 @@ export const useLike = ({
     dispatch(
       dealAccountLike({
         requestKey,
-        auctionType,
+        poolType,
         category,
         poolId,
         isLiked: !isLiked,
@@ -77,7 +77,7 @@ export const useLike = ({
       }),
     );
   }, [
-    auctionType,
+    poolType,
     category,
     dispatch,
     id,

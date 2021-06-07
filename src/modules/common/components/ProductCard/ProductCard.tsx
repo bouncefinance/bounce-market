@@ -1,3 +1,4 @@
+import { poolTypeMap } from 'modules/common/api/poolType';
 import { AuctionType } from 'modules/overview/api/auctionType';
 import { useLike } from 'modules/profile/hooks/useLike';
 import React, { useCallback } from 'react';
@@ -30,7 +31,7 @@ export const ProductCard = ({
   } = useLike({
     id,
     poolId,
-    auctionType,
+    poolType: auctionType ? +poolTypeMap[auctionType] : undefined,
     category: MediaProps.category,
     count: likes,
   });
