@@ -1,7 +1,7 @@
 import { RequestAction } from '@redux-requests/core';
+import BigNumber from 'bignumber.js';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import Web3 from 'web3';
-import BigNumber from 'bignumber.js';
 import { IActivityData, IActivityItem } from '../api/getActivity';
 
 interface IFetchActivitiesVariables {
@@ -18,7 +18,7 @@ export const fetchActivities = createSmartAction<
   },
   meta: {
     auth: true,
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     asMutation: false,
     getData: data => {
       if (data.code !== 1 && data.code !== 200) {
