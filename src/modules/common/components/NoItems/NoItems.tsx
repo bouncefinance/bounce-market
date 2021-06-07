@@ -8,9 +8,10 @@ import { useNoItemsStyles } from './useNoItemsStyles';
 interface INoItemsProps {
   href?: string;
   onClick?: () => void;
+  descr?: string;
 }
 
-export const NoItems = ({ href, onClick }: INoItemsProps) => {
+export const NoItems = ({ href, onClick, descr }: INoItemsProps) => {
   const classes = useNoItemsStyles();
   const withBtn = !!href || !!onClick;
 
@@ -20,20 +21,20 @@ export const NoItems = ({ href, onClick }: INoItemsProps) => {
         {t('profile.no-items.title')}
       </Typography>
 
-      <Typography className={classes.descr}>
-        {t('profile.no-items.descr')}
-      </Typography>
+      {descr && <Typography className={classes.descr}>{descr}</Typography>}
 
       {withBtn && (
-        <Button
-          component={RouterLink}
-          to={href}
-          href={href}
-          onClick={onClick}
-          size="large"
-        >
-          {t('profile.no-items.btn')}
-        </Button>
+        <Box mt={4}>
+          <Button
+            component={RouterLink}
+            to={href}
+            href={href}
+            onClick={onClick}
+            size="large"
+          >
+            {t('profile.no-items.btn')}
+          </Button>
+        </Box>
       )}
     </Box>
   );

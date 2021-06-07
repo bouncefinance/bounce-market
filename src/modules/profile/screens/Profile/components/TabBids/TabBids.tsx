@@ -163,7 +163,10 @@ export const TabBids = () => {
       {isLoading && <QueryLoadingCentered />}
       {!isLoading && hasItems && <ProductCards>{renderedCards}</ProductCards>}
       {!isLoading && !hasItems && (
-        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+        <NoItems
+          href={MarketRoutesConfig.Market.generatePath()}
+          descr={t('profile.no-items.descr')}
+        />
       )}
     </>
   );
