@@ -9,22 +9,17 @@ import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { hasBrand, IItem } from 'modules/overview/api/getItems';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
-import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
-import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { ResponseData } from '../../../../../common/types/ResponseData';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
+import { IAccountInfo, queryAccountInfo } from 'modules/common/actions/queryAccountInfo';
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();
   const { address } = useAccount();
-
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
-  });
 
   const allNftByUserQuery = useQuery<IItem[] | null>({
     type: fetchAllNftByUser.toString(),
@@ -39,6 +34,15 @@ export const TabItems = () => {
       );
     }
   }, [address, dispatch]);
+
+  const [accountInfo, setAccountInfo] = useState<IAccountInfo>();
+
+  useEffect(() => {
+    dispatch(queryAccountInfo(address))
+      .then(res => {
+        setAccountInfo(res.data);
+      })
+  }, [address, dispatch])
 
   const hasItems =
     !!allNftByUserQuery.data && allNftByUserQuery.data.length > 0;
@@ -83,11 +87,12 @@ export const TabItems = () => {
                   }}
                   ProfileInfoProps={{
                     subTitle: 'Owner',
-                    title: `${profileInfo?.accountAddress ?? ''}`,
+                    title: `${accountInfo?.username}`,
+                    isOwner: true,
                     users: [
                       {
                         name: 'name',
-                        avatar: profileInfo?.imgUrl,
+                        avatar: `${accountInfo?.imgurl}`,
                       },
                     ],
                   }}

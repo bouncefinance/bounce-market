@@ -1,18 +1,16 @@
 import { Container, Grid } from '@material-ui/core';
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import BigNumber from 'bignumber.js';
+import { useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { listBrandItems } from 'modules/brand/actions/listBrandItems';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
 import { BrandAddItem } from 'modules/brand/components/BrandEmptyCard/BrandAddItem';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { IAccountInfo, queryAccountInfo } from 'modules/common/actions/queryAccountInfo';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { featuresConfig } from 'modules/common/conts';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
-import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
-import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
@@ -22,7 +20,6 @@ import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { uid } from 'react-uid';
-import Web3 from 'web3';
 
 export const MyBrand = () => {
   const classes = useProfileStyles();
@@ -31,10 +28,6 @@ export const MyBrand = () => {
   const [brandInfo, setBrandInfo] = useState<IBrandInfo>();
   const [items, setItems] = useState([]);
   const { id } = useParams<any>();
-
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
-  });
 
   useEffect(() => {
     if (address && id) {
@@ -71,6 +64,15 @@ export const MyBrand = () => {
   }, [address, brandInfo, dispatch]);
 
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
+
+  const [accountInfo, setAccountInfo] = useState<IAccountInfo>();
+
+  useEffect(() => {
+    dispatch(queryAccountInfo(address))
+      .then(res => {
+        setAccountInfo(res.data);
+      })
+  }, [address, dispatch])
 
   const toggleBgImgModal = useCallback(
     (isOpen: boolean) => () => {
@@ -125,11 +127,7 @@ export const MyBrand = () => {
                       )
                     : ''
                 }
-                price={
-                  item.poolId && item.price
-                    ? new BigNumber(Web3.utils.fromWei(item.price))
-                    : undefined
-                }
+                price={item.poolId && item.price ? item.price : undefined}
                 copies={item.supply}
                 MediaProps={{
                   category: item.category,
@@ -139,14 +137,12 @@ export const MyBrand = () => {
                 }}
                 ProfileInfoProps={{
                   subTitle: 'Owner',
-                  title: `${profileInfo?.username}`,
+                  title: `${accountInfo?.username}`,
+                  isOwner: true,
                   users: [
                     {
                       name: 'name',
-                      avatar: `${
-                        profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
-                      }`,
-                      verified: true,
+                      avatar: `${accountInfo?.imgurl}`,
                     },
                   ],
                 }}
