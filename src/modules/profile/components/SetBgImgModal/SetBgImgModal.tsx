@@ -1,6 +1,10 @@
 import { Box, Dialog, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
-import { uploadFile, IUploadFileArgs, UploadFileType } from 'modules/common/actions/uploadFile';
+import {
+  uploadFile,
+  IUploadFileArgs,
+  UploadFileType,
+} from 'modules/common/actions/uploadFile';
 import { Bytes, convertBytesToMegabytes } from 'modules/common/types/unit';
 import { UploadFileField } from 'modules/form/components/UploadFileField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
@@ -60,17 +64,15 @@ export const SetBgImgModal = ({
       const data: IUploadFileArgs = {
         file: payload.bgImg,
         fileType: fileType,
-      }
+      };
       if (fileType === UploadFileType.BrandImg) {
         data.contractaddress = contractaddress;
       }
-      dispatch(uploadFile(data)).then(
-        ({ error }) => {
-          if (!error && typeof onClose === 'function') {
-            onClose();
-          }
-        },
-      );
+      dispatch(uploadFile(data)).then(({ error }) => {
+        if (!error && typeof onClose === 'function') {
+          onClose();
+        }
+      });
     },
     [fileType, contractaddress, dispatch, onClose],
   );

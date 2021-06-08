@@ -5,6 +5,10 @@ import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import {
+  ILikedItem,
+  queryLikedItems,
+} from 'modules/profile/actions/queryLikedItems';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabActivity } from '../../components/TabActivity';
 import { Avatar } from 'modules/profile/components/Avatar';
@@ -30,6 +34,7 @@ import { useHistory } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { TabBids } from './components/TabBids';
 import { TabItems } from './components/TabItems';
+import { TabLiked } from './components/TabLiked';
 import { useProfileStyles } from './useProfileStyles';
 
 const followings: IFollowingItemProps[] = [
@@ -68,6 +73,10 @@ export const Profile = () => {
   const classes = useProfileStyles();
   const { address } = useAccount();
   const { push } = useHistory();
+
+  const { data: likedItems } = useQuery<ILikedItem[] | null>({
+    type: queryLikedItems.toString(),
+  });
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
@@ -116,12 +125,12 @@ export const Profile = () => {
         value: ProfileTab.activity,
         label: t('profile.tabs.activity'),
       },
-      ...(featuresConfig.profileLiked
+      ...(featuresConfig.nftLikes
         ? [
             {
               value: ProfileTab.liked,
               label: t('profile.tabs.liked'),
-              count: 0,
+              count: likedItems ? likedItems.length : 0,
             },
           ]
         : []),
@@ -140,7 +149,7 @@ export const Profile = () => {
           ]
         : []),
     ],
-    [],
+    [likedItems],
   );
 
   return (
@@ -215,6 +224,12 @@ export const Profile = () => {
         <TabPanel value={tab} index={ProfileTab.activity}>
           <TabActivity />
         </TabPanel>
+
+        {featuresConfig.nftLikes && (
+          <TabPanel value={tab} index={ProfileTab.liked}>
+            <TabLiked />
+          </TabPanel>
+        )}
 
         <TabPanel value={tab} index={ProfileTab.following}>
           <TabFollowing items={followings} />

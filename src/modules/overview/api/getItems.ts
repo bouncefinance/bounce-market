@@ -7,7 +7,6 @@ import { FixedSwapState } from '../../common/const/FixedSwapState';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 
 export interface IApiItem {
-  likecount: number;
   brandid: number;
   category: ProductCardCategoryType;
   channel: string;
@@ -36,7 +35,6 @@ export interface IApiItem {
 }
 
 export interface IItem {
-  likeCount: number;
   brandId: number;
   category: ProductCardCategoryType;
   channel: string;
@@ -74,7 +72,6 @@ export function hasBrand(item: IItem) {
 
 export function mapItem(item: IApiItem): IItem {
   return {
-    likeCount: item.likecount,
     brandId: item.brandid,
     category: item.category,
     channel: item.channel,

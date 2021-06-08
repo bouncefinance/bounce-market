@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, BoxProps } from '@material-ui/core';
 import { LoadingProps } from '@redux-requests/react';
 import React from 'react';
 import { Spinner } from '../Spinner';
@@ -15,9 +15,9 @@ export const QueryLoadingAbsolute = () => {
   return <Spinner centered={true} />;
 };
 
-export const QueryLoadingCentered = () => {
+export const QueryLoadingCentered = (props: BoxProps) => {
   return (
-    <Box display="flex" justifyContent="center">
+    <Box display="flex" justifyContent="center" {...props}>
       <Spinner />
     </Box>
   );

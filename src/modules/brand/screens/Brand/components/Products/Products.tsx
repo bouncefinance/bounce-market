@@ -1,26 +1,56 @@
 import { Box } from '@material-ui/core';
-import { useAccount } from 'modules/account/hooks/useAccount';
-import { queryBrandNfts } from 'modules/brand/actions/queryBrandNfts';
+import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { Queries } from 'modules/common/components/Queries/Queries';
-import { ResponseData } from 'modules/common/types/ResponseData';
+import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
+import { MarketRoutesConfig } from 'modules/market/Routes';
 import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { NotConnected } from '../NotConnected';
 import { useBrandProducts } from './useBrandProducts';
 
 export const Products = () => {
-  const { isConnected } = useAccount();
   const {
     catergory,
     loading,
     onCategoryChange,
     onSortChange,
     sortBy,
+    brandNfts,
+    isConnected,
   } = useBrandProducts();
+
+  const hasItems = Boolean(brandNfts && brandNfts.length);
+
+  const renderedCards = useMemo(
+    () =>
+      brandNfts?.map(mapNFTItem).map(item => (
+        <ProductCard
+          isOnSale
+          id={item.id}
+          poolId={item.poolId}
+          auctionType={item.poolType}
+          key={uid(item)}
+          title={item.title}
+          price={item.price}
+          priceType={item.priceType}
+          endDate={item.endDate}
+          copies={item.copies}
+          likes={item.likes}
+          href={item.href}
+          MediaProps={{
+            category: item.category,
+            src: item.src,
+            objectFit: 'contain',
+            loading: 'lazy',
+          }}
+          ProfileInfoProps={item.ProfileInfoProps}
+        />
+      )),
+    [brandNfts],
+  );
 
   return (
     <>
@@ -34,41 +64,16 @@ export const Products = () => {
         />
       </Box>
 
-      {isConnected ? (
-        <Queries<ResponseData<typeof queryBrandNfts>>
-          requestActions={[queryBrandNfts]}
-        >
-          {({ data }) => {
-            const nftItems = data.map(mapNFTItem);
+      {!isConnected && <NotConnected />}
 
-            return (
-              <ProductCards>
-                {nftItems.map(cardProps => (
-                  <ProductCard
-                    isOnSale
-                    key={uid(cardProps)}
-                    title={cardProps.title}
-                    price={cardProps.price}
-                    priceType={cardProps.priceType}
-                    endDate={cardProps.endDate}
-                    copies={cardProps.copies}
-                    likes={cardProps.likes}
-                    href={cardProps.href}
-                    MediaProps={{
-                      category: cardProps.category,
-                      src: cardProps.src,
-                      objectFit: 'scale-down',
-                      loading: 'lazy',
-                    }}
-                    ProfileInfoProps={cardProps.ProfileInfoProps}
-                  />
-                ))}
-              </ProductCards>
-            );
-          }}
-        </Queries>
-      ) : (
-        <NotConnected />
+      {isConnected && loading && <QueryLoadingCentered mt={4} />}
+
+      {isConnected && !loading && !hasItems && (
+        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+      )}
+
+      {isConnected && !loading && hasItems && (
+        <ProductCards>{renderedCards}</ProductCards>
       )}
     </>
   );
