@@ -22,7 +22,7 @@ export const mapNFTItem = (item: INFTItem) => ({
   endDate: undefined,
   ProfileInfoProps: {
     subTitle: 'Owner',
-    title: '1livinginzen',
+    title: `${item.owneraddress ?? ''}`,
     users: [
       {
         name: 'name',

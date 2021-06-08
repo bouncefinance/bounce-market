@@ -29,7 +29,7 @@ export const featuresConfig = {
   /**
    * No data provided for this
    */
-  nftCardOwnerInfo: false,
+  nftCardOwnerInfo: true,
   /**
    * No has profile pages yet
    */
