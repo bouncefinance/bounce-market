@@ -10,7 +10,7 @@ import { MarketRoutesConfig } from 'modules/market/Routes';
 import { hasBrand, IItem } from 'modules/overview/api/getItems';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { ResponseData } from '../../../../../common/types/ResponseData';
@@ -25,6 +25,12 @@ export const TabItems = () => {
     type: fetchAllNftByUser.toString(),
   });
 
+  const { data: accountInfo } = useQuery<IAccountInfo | null>({
+    type: queryAccountInfo.toString(),
+  })
+  console.log(allNftByUserQuery.data)
+  console.log(accountInfo)
+
   useEffect(() => {
     if (address) {
       dispatch(
@@ -32,22 +38,17 @@ export const TabItems = () => {
           user: address,
         }),
       );
+
+      dispatch(
+        queryAccountInfo(address)
+      )
     }
   }, [address, dispatch]);
-
-  const [accountInfo, setAccountInfo] = useState<IAccountInfo>();
-
-  useEffect(() => {
-    dispatch(queryAccountInfo(address))
-      .then(res => {
-        setAccountInfo(res.data);
-      })
-  }, [address, dispatch])
 
   const hasItems =
     !!allNftByUserQuery.data && allNftByUserQuery.data.length > 0;
 
-  return hasItems || allNftByUserQuery.loading ? (
+  return hasItems || allNftByUserQuery.loading ? (  
     <TabItemsComponent>
       <Queries<ResponseData<typeof fetchAllNftByUser>>
         requestActions={[fetchAllNftByUser]}
@@ -88,7 +89,6 @@ export const TabItems = () => {
                   ProfileInfoProps={{
                     subTitle: 'Owner',
                     title: `${accountInfo?.username}`,
-                    isOwner: true,
                     users: [
                       {
                         name: 'name',
