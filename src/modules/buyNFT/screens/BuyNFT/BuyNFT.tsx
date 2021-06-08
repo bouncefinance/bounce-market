@@ -15,7 +15,7 @@ import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
-import { convertWallet } from 'modules/common/utils/convertWallet';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { useCallback, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
@@ -209,7 +209,7 @@ export const BuyNFT = () => {
             );
 
             const ownerTitle =
-              item.ownername || convertWallet(item.owneraddress);
+              item.ownername || truncateWalletAddr(item.owneraddress);
 
             const renderedOwner = (
               <ProfileInfo

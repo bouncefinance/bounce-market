@@ -10,7 +10,7 @@ import {
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { SocialShare } from 'modules/common/components/SocialShare';
-import { convertWallet } from 'modules/common/utils/convertWallet';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
@@ -58,7 +58,7 @@ export const InfoPanel = ({
         {!isBrand && (
           <Grid item>
             <ButtonBase className={classes.address} title={address}>
-              <Typography>{convertWallet(address || '')}</Typography>
+              <Typography>{truncateWalletAddr(address || '')}</Typography>
             </ButtonBase>
           </Grid>
         )}

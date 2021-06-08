@@ -82,8 +82,8 @@ export const mapQueryBrandAddress = (
   const brand1155:
     | IApiBrand
     | undefined = data.erc1155.find((item: IApiBrand) =>
-      compare(item.creator, address),
-    );
+    compare(item.creator, address),
+  );
   if (brand721) {
     return brand721.contract_address;
   } else if (brand1155) {
@@ -98,12 +98,12 @@ export const mapListBrands = (data: IApiListBrandItem[]): IApiBrand[] => {
     contract_address: item.contractaddress,
     creator: item.creator,
     owner: item.ownername,
-    timestamp: 0
+    timestamp: 0,
   }));
-}
+};
 
 export const mapQueryBrandList = ({ data }: IApiQueryBrand): IApiBrand[] => {
   const brand721: IApiBrand[] = data.erc721;
   const brand1155: IApiBrand[] = data.erc1155;
   return brand721.concat(brand1155);
-}
+};
