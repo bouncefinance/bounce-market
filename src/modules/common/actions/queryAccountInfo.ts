@@ -1,7 +1,7 @@
 
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { convertWallet } from '../utils/convertWallet';
+import { truncateWalletAddr } from '../utils/truncateWalletAddr';
 
 interface IApiAccountInfo {
   code: 1 | number,
@@ -32,8 +32,8 @@ export const queryAccountInfo = createSmartAction<
         if (data.code !== 1) {
           return {
             imgurl: undefined,
-            username: convertWallet(accountAddress),
-            fullname: convertWallet(accountAddress),
+            username: truncateWalletAddr(accountAddress),
+            fullname: truncateWalletAddr(accountAddress),
           }
         } else {
           return data.data;

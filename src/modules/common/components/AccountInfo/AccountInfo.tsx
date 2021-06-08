@@ -1,5 +1,5 @@
 import { useDispatchRequest } from '@redux-requests/react';
-import { convertWallet } from 'modules/common/utils/convertWallet';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import React, { useEffect, useState } from 'react';
 import { IAccountInfo, queryAccountInfo } from '../../../common/actions/queryAccountInfo';
 import { ProfileInfo } from '../ProfileInfo';
@@ -23,10 +23,10 @@ export const AccountInfo = ({
 
   return <ProfileInfo
       subTitle="Owner"
-      title={accountInfo?.username ?? convertWallet(account)}
+      title={accountInfo?.username ?? truncateWalletAddr(account)}
       users={[
         {
-          name: accountInfo?.username ?? convertWallet(account),
+          name: accountInfo?.username ?? truncateWalletAddr(account),
           avatar: accountInfo?.imgurl,
         },
       ]}
