@@ -62,11 +62,11 @@ export const featuresConfig = {
   /**
    * poolDetail config
    */
-  infoTabs: false,
-  nftDetailsHistory: false,
-  nftDetailsBids: false,
-  nftDetailsOwners: false,
-  nftDetailsTokenInfo: false,
+  infoTabs: true,
+  nftDetailsHistory: true,
+  nftDetailsBids: true,
+  nftDetailsOwners: true,
+  nftDetailsTokenInfo: true,
 };
 
 export enum BlockchainNetworkId {
