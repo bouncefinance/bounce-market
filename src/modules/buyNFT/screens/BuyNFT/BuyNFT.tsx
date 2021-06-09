@@ -10,7 +10,10 @@ import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
 import { InfoPrices } from 'modules/buyNFT/components/InfoPrices';
 import { InfoTabs } from 'modules/buyNFT/components/InfoTabs';
-import { InfoTabsItem } from 'modules/buyNFT/components/InfoTabsItem';
+import {
+  InfoTabsItem,
+  InfoTabsIsTokenInfo,
+} from 'modules/buyNFT/components/InfoTabsItem';
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
@@ -28,6 +31,7 @@ import { NftType } from '../../../createNFT/actions/createNft';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
 import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
+import { fetchRoleInfo } from '../../../overview/actions/fetchRoleInfo';
 import { AuctionType } from '../../../overview/api/auctionType';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
@@ -40,6 +44,7 @@ import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
+import { INFTDetails } from 'modules/buyNFT/api/NFTDetails';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -69,6 +74,7 @@ export const BuyNFT = () => {
   const init = useCallback(() => {
     dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(response => {
       const { data } = throwIfDataIsEmptyOrError(response);
+      dispatch(fetchRoleInfo({ poolId, poolType }));
       dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
       // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
       dispatch(fetchCurrency({ unitContract: data.unitContract }));
@@ -184,41 +190,58 @@ export const BuyNFT = () => {
   return (
     <Queries<
       ResponseData<typeof fetchItem>,
-      ResponseData<typeof fetchWeb3PoolDetails>
+      ResponseData<typeof fetchWeb3PoolDetails>,
+      ResponseData<typeof fetchRoleInfo>
     >
-      requestActions={[fetchItem, fetchWeb3PoolDetails]}
+      requestActions={[fetchItem, fetchWeb3PoolDetails, fetchRoleInfo]}
     >
-      {({ data: item }, { data: poolDetails }) => (
+      {({ data: item }, { data: poolDetails }, { data: RoleInfos }) => (
         <Queries<ResponseData<typeof fetchCurrency>>
           requestActions={[fetchCurrency]}
           requestKeys={[poolDetails.unitContract]}
         >
           {({ data: currency }) => {
+            const wrapperTitle = (name: string, address: string) => {
+              return name || convertWallet(address);
+            };
+
+            const ownerTitle =
+              item.ownername || convertWallet(item.owneraddress);
+
             const renderedCreator = (
               <ProfileInfo
-                subTitle="Creator"
-                title="VanHuiFirst"
+                subTitle="Minter"
+                title={wrapperTitle(
+                  RoleInfos.minter.username,
+                  RoleInfos.minter.address,
+                )}
                 users={[
                   {
-                    name: 'VanHuiFirst',
-                    avatar: 'https://picsum.photos/32?random=1',
-                    verified: true,
+                    name: wrapperTitle(
+                      RoleInfos.minter.username,
+                      RoleInfos.minter.address,
+                    ),
+                    avatar: RoleInfos.minter.avatar,
+                    verified: false,
                   },
                 ]}
               />
             );
 
-            const ownerTitle =
-              item.ownername || convertWallet(item.owneraddress);
-
             const renderedOwner = (
               <ProfileInfo
-                subTitle="Owner"
-                title={ownerTitle}
+                subTitle="Seller"
+                title={wrapperTitle(
+                  RoleInfos.creator.username,
+                  RoleInfos.creator.address,
+                )}
                 users={[
                   {
-                    name: ownerTitle,
-                    avatar: undefined,
+                    name: wrapperTitle(
+                      RoleInfos.creator.username,
+                      RoleInfos.creator.address,
+                    ),
+                    avatar: RoleInfos.creator.avatar,
                   },
                 ]}
               />
@@ -229,6 +252,18 @@ export const BuyNFT = () => {
                 <InfoTabsItem
                   title="Offered 3 BNB for 1 edition"
                   author="yeah66"
+                  date={new Date()}
+                />
+
+                <InfoTabsItem
+                  title="Minted"
+                  author="HumanFactory"
+                  date={new Date()}
+                />
+
+                <InfoTabsItem
+                  title="Put on sale 9 editions for 0.5 ETH "
+                  author="0xc2...f6e5"
                   date={new Date()}
                 />
               </InfoTabsList>
@@ -265,24 +300,55 @@ export const BuyNFT = () => {
               </InfoTabsList>
             );
 
+            const renderTokenInfo = ({
+              itemName,
+              itemsymbol,
+              standard,
+              contractAddress,
+              supply,
+              id,
+            }: INFTDetails) => {
+              return (
+                <div>
+                  {contractAddress && (
+                    <p>
+                      <span>Contract: </span>
+                      {`${contractAddress}`}
+                    </p>
+                  )}
+                  {id && <p>{`Token ID: ${id}`}</p>}
+                  {itemName && (
+                    <p>
+                      <span>Name Tags:</span>
+                      {` ${itemName} ${itemsymbol && `(${itemsymbol})`}`}
+                    </p>
+                  )}
+                  {(standard || standard === 0) && (
+                    <p>
+                      <span>Standard:</span>
+                      {` ${standard === 1 ? 'ERC-1155' : 'ERC-721'}`}
+                    </p>
+                  )}
+                  {(supply || supply === 0) && (
+                    <p>
+                      <span>Total Supply:</span>
+                      {` ${supply}`}
+                    </p>
+                  )}
+                </div>
+              );
+            };
+
             const renderedTokenInfoList = (
               <InfoTabsList>
-                <InfoTabsItem
-                  title="Offered 3 BNB for 1 edition"
-                  author="yeah66"
-                  date={new Date()}
+                <InfoTabsIsTokenInfo
+                  contract={item.contractAddress}
+                  isScan={true}
                 />
 
-                <InfoTabsItem
-                  title="Minted"
-                  author="HumanFactory"
-                  date={new Date()}
-                />
-
-                <InfoTabsItem
-                  title="Put on sale 9 editions for 0.5 ETH "
-                  author="0xc2...f6e5"
-                  date={new Date()}
+                <InfoTabsIsTokenInfo
+                  // title="NFT Token Info"
+                  desc={renderTokenInfo(item)}
                 />
               </InfoTabsList>
             );
