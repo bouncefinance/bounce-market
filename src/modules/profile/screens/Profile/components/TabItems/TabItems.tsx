@@ -15,7 +15,9 @@ import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { ResponseData } from '../../../../../common/types/ResponseData';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
-import { IAccountInfo, queryAccountInfo } from 'modules/common/actions/queryAccountInfo';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();
@@ -25,11 +27,9 @@ export const TabItems = () => {
     type: fetchAllNftByUser.toString(),
   });
 
-  const { data: accountInfo } = useQuery<IAccountInfo | null>({
-    type: queryAccountInfo.toString(),
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
   })
-  console.log(allNftByUserQuery.data)
-  console.log(accountInfo)
 
   useEffect(() => {
     if (address) {
@@ -38,10 +38,6 @@ export const TabItems = () => {
           user: address,
         }),
       );
-
-      dispatch(
-        queryAccountInfo(address)
-      )
     }
   }, [address, dispatch]);
 
@@ -88,11 +84,12 @@ export const TabItems = () => {
                   }}
                   ProfileInfoProps={{
                     subTitle: 'Owner',
-                    title: `${accountInfo?.username}`,
+                    title: `${profileInfo?.username ?? truncateWalletAddr(String(address))}`,
+                    isOwner: true,
                     users: [
                       {
                         name: 'name',
-                        avatar: `${accountInfo?.imgurl}`,
+                        avatar: `${profileInfo?.imgUrl}`,
                       },
                     ],
                   }}
