@@ -1,14 +1,14 @@
 import { createDriver as createAxiosDriver } from '@redux-requests/axios';
-import { getQuery, handleRequests } from '@redux-requests/core';
+import { handleRequests } from '@redux-requests/core';
 import { createDriver } from '@redux-requests/promise';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
+import { tokenLocalStorageKey } from 'constants/index';
 import { i18nSlice } from 'modules/i18n/i18nSlice';
 import { layoutReducer, LAYOUT_STATE_NAME } from 'modules/layout/store/layout';
 import { persistReducer, persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
-import { setAccount } from '../modules/account/store/actions/setAccount';
 import { API_BASE } from '../modules/common/conts';
 import { extractMessage } from '../modules/common/utils/extractError';
 import { historyInstance } from '../modules/common/utils/historyInstance';
@@ -29,12 +29,10 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     ),
   },
   onRequest: (request, action, store) => {
-    const rootState: RootState = store.getState();
 
-    const { data } = getQuery(rootState, {
-      type: setAccount.toString(),
-      action: setAccount,
-    });
+    const data = {
+      token: localStorage.getItem(tokenLocalStorageKey),
+    };
 
     // TODO Throw exception if auth and no token?
 

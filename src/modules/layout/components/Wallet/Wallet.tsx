@@ -1,3 +1,4 @@
+import React, { useRef } from 'react';
 import { useQuery } from '@redux-requests/react';
 import classNames from 'classnames';
 import bnbLogo from 'modules/account/assets/bnb.svg'; // TODO: need provide logo from API?
@@ -7,9 +8,7 @@ import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { useIsXLUp } from 'modules/themes/useTheme';
 import { Button } from 'modules/uiKit/Button';
-import React, { useRef } from 'react';
 import { FocusOn } from 'react-focus-on';
-import { setAccount } from '../../../account/store/actions/setAccount';
 import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 import { WalletCard } from '../WalletCard';
 import { useWalletDropdown } from './useWalletDropdown';
@@ -46,12 +45,7 @@ export const WalletComponent = ({
 
   const controlRef = useRef<HTMLButtonElement>(null);
 
-  const {
-    data: { balance },
-  } = useQuery({
-    type: setAccount.toString(),
-    action: setAccount,
-  });
+  const { balance } = useAccount();
 
   return (
     <>

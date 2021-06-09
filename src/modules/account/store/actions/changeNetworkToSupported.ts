@@ -1,5 +1,4 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { RPC } from '../../api/connectWallet';
 import { BlockchainNetworkId } from '../../../common/conts';
 import Web3 from 'web3';
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
@@ -7,6 +6,7 @@ import { Store } from 'redux';
 import { RootState } from '../../../../store';
 import { updateAccount } from './updateAccount';
 import { t } from '../../../i18n/utils/intl';
+import { RPC } from 'constants/index';
 
 export const changeNetworkToSupported = createSmartAction(
   'AccountActions/changeNetworkToSupported',

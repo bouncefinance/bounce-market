@@ -18,6 +18,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import classNames from 'classnames';
 import BigNumber from 'bignumber.js';
+import { useWeb3React } from '@web3-react/core';
 
 export interface IWalletCardProps {
   address: string;
@@ -39,6 +40,7 @@ export const WalletCard = ({
   handleClose,
 }: IWalletCardProps) => {
   const classes = useWalletCardStyles();
+  const { deactivate } = useWeb3React();
   const [isCopy, setCopy] = useState<boolean>(false);
 
   useEffect(() => {
@@ -127,7 +129,14 @@ export const WalletCard = ({
         >
           {t('header.profile-settings')}
         </MenuItem>
-        <MenuItem className={classes.menuItem} onClick={handleDisconnect}>
+        <MenuItem
+          className={classes.menuItem}
+          onClick={() => {
+            localStorage.clear();
+            deactivate();
+            handleDisconnect && handleDisconnect();
+          }}
+        >
           {t('header.disconnect')}
         </MenuItem>
       </MenuList>

@@ -1,4 +1,8 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
+import {
+  connectorLocalStorageKey,
+  tokenLocalStorageKey,
+} from 'constants/index';
 import { connectWallet } from '../../api/connectWallet';
 import { getAuthToken } from '../../api/getAuthToken';
 import { RequestAction } from '@redux-requests/core';
@@ -37,6 +41,13 @@ export const setAccount = createSmartAction(
         const token = authResponse.data.data.token;
         const chainId = await web3.eth.getChainId();
         const balance = await web3.eth.getBalance(address);
+
+        window.localStorage.setItem(
+          connectorLocalStorageKey,
+          chainId.toString(),
+        );
+        window.localStorage.setItem(tokenLocalStorageKey, token);
+
         return {
           token,
           address,
