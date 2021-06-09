@@ -4,7 +4,6 @@ import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { Queries } from 'modules/common/components/Queries/Queries';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { hasBrand, IItem } from 'modules/overview/api/getItems';
@@ -15,7 +14,6 @@ import { TabItems as TabItemsComponent } from 'modules/profile/components/TabIte
 import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
-import { ResponseData } from '../../../../../common/types/ResponseData';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
 
 export const TabItems = () => {
@@ -45,70 +43,62 @@ export const TabItems = () => {
 
   return hasItems || allNftByUserQuery.loading ? (
     <TabItemsComponent>
-      <Queries<ResponseData<typeof fetchAllNftByUser>>
-        requestActions={[fetchAllNftByUser]}
-      >
-        {({ data }) => (
-          <ProductCards>
-            {data?.map((item: IItem) => {
-              return (
-                <ProductCard
-                  id={item.id}
-                  poolId={item.poolId || 0}
-                  auctionType={item.poolType}
-                  key={uid(item)}
-                  title={item.itemName}
-                  href={
-                    item.poolId && item.poolType
-                      ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                          item.poolId,
-                          item.poolType,
-                        )
-                      : ''
-                  }
-                  // status={item.status}
-                  // UPDATE price
-                  price={item.poolId ? item.price : undefined}
-                  priceType="BNB"
-                  isOnSale={
-                    item.state === AuctionState.Live ||
-                    item.state === FixedSwapState.Live
-                  }
-                  copies={item.supply}
-                  MediaProps={{
-                    category: item.category,
-                    src: item.fileUrl,
-                    objectFit: 'contain',
-                    loading: 'lazy',
-                  }}
-                  ProfileInfoProps={{
-                    subTitle: 'Owner',
-                    title: `${profileInfo?.username ?? ''}`,
-                    users: [
-                      {
-                        name: 'name',
-                        avatar: profileInfo?.imgUrl,
-                        verified: true,
-                      },
-                    ],
-                  }}
-                  toSale={
-                    hasBrand(item)
-                      ? RoutesConfiguration.PublishNft.generatePath(
-                          item.contractAddress,
-                          item.id,
-                        )
-                      : RoutesConfiguration.PublishNft.generatePath(
-                          item.contractAddress,
-                          item.id,
-                        )
-                  }
-                />
-              );
-            })}
-          </ProductCards>
-        )}
-      </Queries>
+      <ProductCards isLoading={allNftByUserQuery.loading}>
+        {allNftByUserQuery.data?.map((item: IItem) => (
+          <ProductCard
+            id={item.id}
+            poolId={item.poolId || 0}
+            auctionType={item.poolType}
+            key={uid(item)}
+            title={item.itemName}
+            href={
+              item.poolId && item.poolType
+                ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                    item.poolId,
+                    item.poolType,
+                  )
+                : ''
+            }
+            // status={item.status}
+            // UPDATE price
+            price={item.poolId ? item.price : undefined}
+            priceType="BNB"
+            isOnSale={
+              item.state === AuctionState.Live ||
+              item.state === FixedSwapState.Live
+            }
+            copies={item.supply}
+            MediaProps={{
+              category: item.category,
+              src: item.fileUrl,
+              objectFit: 'contain',
+              loading: 'lazy',
+            }}
+            ProfileInfoProps={{
+              subTitle: 'Owner',
+              title: `${profileInfo?.username ?? ''}`,
+              users: [
+                {
+                  name: 'name',
+                  avatar: profileInfo?.imgUrl,
+                  verified: true,
+                },
+              ],
+            }}
+            toSale={
+              hasBrand(item)
+                ? RoutesConfiguration.PublishNft.generatePath(
+                    item.contractAddress,
+                    item.id,
+                  )
+                : RoutesConfiguration.PublishNft.generatePath(
+                    item.contractAddress,
+                    item.id,
+                  )
+            }
+          />
+        ))}
+      </ProductCards>
     </TabItemsComponent>
   ) : (
     <NoItems href={MarketRoutesConfig.Market.generatePath()} />

@@ -14,7 +14,7 @@ interface IProductCardsProps {
 export const ProductCards = ({
   children,
   isLoading,
-  skeletonsCount = 10,
+  skeletonsCount = 5,
 }: IProductCardsProps) => {
   const classes = useProductCardsStyles();
 
