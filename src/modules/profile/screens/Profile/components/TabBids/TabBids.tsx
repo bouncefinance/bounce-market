@@ -117,7 +117,7 @@ export const TabBids = () => {
         }}
         ProfileInfoProps={{
           subTitle: 'Owner',
-          title: 'Owner title',
+          title: `${item.owneraddress ?? ''}`,
           users: [
             {
               name: 'Owner name',

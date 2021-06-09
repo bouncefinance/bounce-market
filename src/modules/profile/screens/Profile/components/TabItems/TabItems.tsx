@@ -76,7 +76,7 @@ export const TabItems = () => {
             }}
             ProfileInfoProps={{
               subTitle: 'Owner',
-              title: `${profileInfo?.username ?? ''}`,
+              title: `${profileInfo?.accountAddress ?? ''}`,
               users: [
                 {
                   name: 'name',

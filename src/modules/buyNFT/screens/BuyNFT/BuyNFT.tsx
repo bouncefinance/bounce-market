@@ -40,6 +40,7 @@ import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
+import { AccountInfo } from '../../../common/components/AccountInfo';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -211,19 +212,6 @@ export const BuyNFT = () => {
             const ownerTitle =
               item.ownername || truncateWalletAddr(item.owneraddress);
 
-            const renderedOwner = (
-              <ProfileInfo
-                subTitle="Owner"
-                title={ownerTitle}
-                users={[
-                  {
-                    name: ownerTitle,
-                    avatar: undefined,
-                  },
-                ]}
-              />
-            );
-
             const renderedHistoryList = (
               <InfoTabsList>
                 <InfoTabsItem
@@ -316,7 +304,7 @@ export const BuyNFT = () => {
                         : poolDetails.totalQuantity
                     }
                     creator={renderedCreator}
-                    owner={renderedOwner}
+                    owner={<AccountInfo account={item.owneraddress} />}
                   />
 
                   {isEnglishAuction(poolDetails) ? (

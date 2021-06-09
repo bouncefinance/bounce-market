@@ -55,7 +55,7 @@ export const Movers = (sectionProps: ISectionProps) => {
       }}
       ProfileInfoProps={{
         subTitle: 'Owner',
-        title: '1livinginzen',
+        title: `${item.ownerAddress ?? ''}`,
         users: [
           {
             name: 'name',

@@ -13,16 +13,14 @@ import classNames from 'classnames';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
-import {
-  IProfileInfoProps,
-  ProfileInfo,
-} from 'modules/common/components/ProfileInfo';
+import { IProfileInfoProps } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { Link, Link as RouterLink } from 'react-router-dom';
+import { AccountInfo } from '../AccountInfo';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
@@ -213,18 +211,11 @@ export const ProductCardComponent = ({
       )}
 
       <CardContent className={classes.content}>
-        <Typography
-          variant="h5"
-          className={classes.title}
-          title={title}
-          style={!featuresConfig.nftCardOwnerInfo ? { margin: 0 } : undefined}
-        >
+        <Typography variant="h5" className={classes.title} title={title}>
           {title}
         </Typography>
 
-        {featuresConfig.nftCardOwnerInfo && (
-          <ProfileInfo {...ProfileInfoProps} />
-        )}
+        <AccountInfo account={ProfileInfoProps.title} />
 
         <hr className={classes.devider} />
 
