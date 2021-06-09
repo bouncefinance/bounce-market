@@ -118,29 +118,34 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
 
   const nftItems = data?.map(mapNFTItem);
 
-  const renderedNFTItems =
+  const renderedItems = (nftItems || []).map(item => {
+    return (
+      <ProductCard
+        isOnSale
+        id={item.id}
+        poolId={item.poolId}
+        auctionType={item.poolType}
+        key={uid(item)}
+        title={item.title}
+        price={item.price}
+        priceType={item.priceType}
+        endDate={item.endDate}
+        likes={item.likes}
+        href={item.href}
+        MediaProps={{
+          category: item.category,
+          src: item.src,
+          objectFit: 'scale-down',
+          loading: 'lazy',
+        }}
+        ProfileInfoProps={item.ProfileInfoProps}
+      />
+    );
+  });
+
+  const renderedCards =
     nftItems && nftItems.length ? (
-      <ProductCards>
-        {(nftItems || []).map(cardProps => (
-          <ProductCard
-            isOnSale
-            key={uid(cardProps)}
-            title={cardProps.title}
-            price={cardProps.price}
-            priceType={cardProps.priceType}
-            endDate={cardProps.endDate}
-            likes={cardProps.likes}
-            href={cardProps.href}
-            MediaProps={{
-              category: cardProps.category,
-              src: cardProps.src,
-              objectFit: 'scale-down',
-              loading: 'lazy',
-            }}
-            ProfileInfoProps={cardProps.ProfileInfoProps}
-          />
-        ))}
-      </ProductCards>
+      <ProductCards>{renderedItems}</ProductCards>
     ) : (
       <Box display="flex" justifyContent="center">
         <NoItems href={MarketRoutesConfig.Market.generatePath()} />
@@ -150,7 +155,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   return isConnected ? (
     <ProductsComponent
       {...sectionProps}
-      cards={renderedNFTItems}
+      cards={renderedCards}
       loading={loading}
       panel={
         <ProductsPanel

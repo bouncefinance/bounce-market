@@ -1,16 +1,16 @@
-import React, { useCallback } from 'react';
 import { Box, TableCell, TableRow } from '@material-ui/core';
-import { t } from '../../../i18n/utils/intl';
-import { IActivityTableItem } from '../../api/getActivity';
-import { TransferIcon } from '../../../common/components/Icons/TransferIcon';
-import { PlusIcon } from '../../../common/components/Icons/PlusIcon';
 import classNames from 'classnames';
+import { formatDistance } from 'date-fns';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import React, { useCallback } from 'react';
 import { CloseIcon } from '../../../common/components/Icons/CloseIcon';
 import { DoneIcon } from '../../../common/components/Icons/DoneIcon';
-import { formatDistance } from 'date-fns';
-import { Img } from '../../../uiKit/Img';
+import { PlusIcon } from '../../../common/components/Icons/PlusIcon';
+import { TransferIcon } from '../../../common/components/Icons/TransferIcon';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
-import { convertWallet } from '../../../common/utils/convertWallet';
+import { t } from '../../../i18n/utils/intl';
+import { Img } from '../../../uiKit/Img';
+import { IActivityTableItem } from '../../api/getActivity';
 
 interface IActivitiesTableProps {
   item: IActivityTableItem;
@@ -102,9 +102,9 @@ export const ActivitiesTableRow = ({
 
       <TableCell>{item.quantity}</TableCell>
 
-      <TableCell>{convertWallet(item.from)}</TableCell>
+      <TableCell>{truncateWalletAddr(item.from)}</TableCell>
 
-      <TableCell>{convertWallet(item.to)}</TableCell>
+      <TableCell>{truncateWalletAddr(item.to)}</TableCell>
 
       <TableCell>
         {formatDistance(item.timestamp, new Date(), {

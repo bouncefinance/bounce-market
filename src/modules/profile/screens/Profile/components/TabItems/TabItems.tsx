@@ -53,6 +53,9 @@ export const TabItems = () => {
             {data?.map((item: IItem) => {
               return (
                 <ProductCard
+                  id={item.id}
+                  poolId={item.poolId || 0}
+                  auctionType={item.poolType}
                   key={uid(item)}
                   title={item.itemName}
                   href={
@@ -80,12 +83,11 @@ export const TabItems = () => {
                   }}
                   ProfileInfoProps={{
                     subTitle: 'Owner',
-                    title: `${profileInfo?.username ?? ''}`,
+                    title: `${profileInfo?.accountAddress ?? ''}`,
                     users: [
                       {
                         name: 'name',
                         avatar: profileInfo?.imgUrl,
-                        verified: true,
                       },
                     ],
                   }}

@@ -2,14 +2,14 @@ import { ThemeProvider } from '@material-ui/styles';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { featuresConfig } from 'modules/common/conts';
-import { convertWallet } from 'modules/common/utils/convertWallet';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers } from 'modules/overview/components/Movers';
 import { Products } from 'modules/overview/components/Products';
 import { IPromoItem, Promo } from 'modules/overview/components/Promo';
+import { PROMO_ITEMS_COUNT } from 'modules/overview/const';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
 import { Queries } from '../../../common/components/Queries/Queries';
@@ -19,13 +19,11 @@ import { IItem } from '../../api/getItems';
 import { RoutesConfiguration } from '../../Routes';
 import { useOverviewStyles } from './useOverviewStyles';
 
-const PROMO_ITEMS_COUNT = 3;
-
 function mapPromoItem(item: IItem): IPromoItem {
   return {
     title: item.itemName || '',
     text: item.description || '',
-    createdBy: item.ownerName || convertWallet(item.ownerAddress),
+    createdBy: item.ownerName || truncateWalletAddr(item.ownerAddress),
     avatar: undefined,
     price: item.price,
     priceType: 'BNB',
@@ -38,37 +36,8 @@ function mapPromoItem(item: IItem): IPromoItem {
         : '',
     authorHref: RoutesConfiguration.Overview.generatePath(),
     MediaProps: {
-      category: item.category as ProductCardCategoryType,
+      category: item.category,
       src: item.fileUrl || '',
-    },
-  };
-}
-
-function mapMoversItem(item: IItem) {
-  return {
-    title: item.itemName || '',
-    price: item.price,
-    priceType: 'BNB',
-    endDate: item.closeAt,
-    likes: item.likeCount,
-    copies: item.supply,
-    href:
-      item.poolId && item.poolType
-        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
-        : '',
-    MediaProps: {
-      category: item.category as ProductCardCategoryType,
-      src: item.fileUrl || '',
-    },
-    ProfileInfoProps: {
-      subTitle: 'Owner',
-      title: '1livinginzen',
-      users: [
-        {
-          name: 'name',
-          avatar: 'https://via.placeholder.com/32',
-        },
-      ],
     },
   };
 }
@@ -97,28 +66,19 @@ export const Overview = () => {
           requestActions={[fetchOverview]}
         >
           {({ loading, error, data }) => (
-            <>
-              <ThemeProvider theme={darkTheme}>
-                <Promo
-                  stackDown
-                  error={error}
-                  isLoading={loading}
-                  items={data.slice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
-                />
-              </ThemeProvider>
-              <Movers
-                stackUp
+            <ThemeProvider theme={darkTheme}>
+              <Promo
                 stackDown
                 error={error}
                 isLoading={loading}
-                items={data
-                  .slice(PROMO_ITEMS_COUNT, data.length)
-                  .map(mapMoversItem)}
+                items={data.slice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
               />
-            </>
+            </ThemeProvider>
           )}
         </Queries>
       </div>
+
+      <Movers stackUp stackDown />
 
       {featuresConfig.artists && (
         <ThemeProvider theme={darkTheme}>

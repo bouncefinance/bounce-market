@@ -29,7 +29,7 @@ export const featuresConfig = {
   /**
    * No data provided for this
    */
-  nftCardOwnerInfo: false,
+  nftCardOwnerInfo: true,
   /**
    * No has profile pages yet
    */
@@ -44,19 +44,13 @@ export const featuresConfig = {
    * and it cannot be shared
    */
   ownBrandSharing: false,
-  /**
-   * Feature is not fully implemented
-   */
   nftLikes: false,
-  /**
-   * Feature is not implemented
-   */
   nftItemsSortSelect: false,
+  nftDetailsLikesCount: false,
   nftDetailsCreator: false,
   nftDetailsCount: true,
   subscribers: false,
   profileSortTabs: false,
-  profileLiked: false,
   profileFollowers: false,
   /**
    * poolDetail config

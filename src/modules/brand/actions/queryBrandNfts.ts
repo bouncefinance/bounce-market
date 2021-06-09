@@ -118,11 +118,14 @@ export const queryBrandNfts = createAction<
             return [];
           }
 
-          const mappedItems: INFTItem[] = pools
+          const mappedItems = pools
             .map(pool => {
               const poolInfo = itemsByFilterData.find(
                 r => r.id === pool.tokenid,
               );
+              if (!poolInfo) {
+                return null;
+              }
               return {
                 ...poolInfo,
                 category: poolInfo?.category,
@@ -133,8 +136,9 @@ export const queryBrandNfts = createAction<
                 token1: pool.token1,
               };
             })
-            .filter(item => item.itemname)
-            .sort((a, b) => b.createTime - a.createTime);
+            .filter(item => item && item.itemname) as INFTItem[];
+
+          mappedItems.sort((a, b) => b.createTime - a.createTime);
 
           return mappedItems;
         })(),

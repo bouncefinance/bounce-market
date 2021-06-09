@@ -3,7 +3,7 @@ import { useQuery } from '@redux-requests/react';
 import classNames from 'classnames';
 import bnbLogo from 'modules/account/assets/bnb.svg'; // TODO: need provide logo from API?
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { convertWallet } from 'modules/common/utils/convertWallet';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { useIsXLUp } from 'modules/themes/useTheme';
@@ -57,7 +57,7 @@ export const WalletComponent = ({
             ref={controlRef}
             rounded
           >
-            {convertWallet(address)}
+            {truncateWalletAddr(address)}
             <DefaultRandomAvatar src={img} className={classes.walletLogo} />
           </Button>
 

@@ -43,7 +43,7 @@ export const ProfileRoutesConfig = {
 };
 
 const LoadableProfileContainer: LoadableComponent<any> = loadable(
-  async () => import('./screens/Profile').then(module => module.Profile),
+  async () => import('./screens/Profile/index').then(module => module.Profile),
   {
     fallback: <QueryLoadingAbsolute />,
   },

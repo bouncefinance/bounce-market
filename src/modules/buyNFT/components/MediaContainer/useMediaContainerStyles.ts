@@ -45,8 +45,20 @@ export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
   },
 
   btn: {
+    color: theme.palette.text.secondary,
+    borderColor: 'inherit',
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
+    minWidth: 115,
+
+    '&:hover': {
+      color: theme.palette.text.primary,
+      borderColor: 'inherit',
+
+      '&:before': {
+        display: 'none',
+      },
+    },
   },
 
   btnIcon: {
