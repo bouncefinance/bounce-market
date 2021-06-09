@@ -29,13 +29,13 @@ export const ProductCards = ({
     [classes.col],
   );
 
-  const rendrerdSkeletons = Array(skeletonsCount)
+  const renderedSkeletons = Array(skeletonsCount)
     .fill(0)
     .map((_, i) => <ProductCardSkeleton key={uid(i)} />);
 
   return (
     <Grid container className={classes.row}>
-      {React.Children.map(isLoading ? rendrerdSkeletons : children, child =>
+      {React.Children.map(isLoading ? renderedSkeletons : children, child =>
         modifyChildren(child),
       )}
     </Grid>

@@ -76,7 +76,7 @@ export const MoversComponent = ({
     <SwiperSlide className={classes.slide}>{child}</SwiperSlide>
   );
 
-  const rendrerdSkeletons = Array(5)
+  const renderedSkeletons = Array(5)
     .fill(0)
     .map((_, i) => <ProductCardSkeleton key={uid(i)} />);
 
@@ -106,7 +106,7 @@ export const MoversComponent = ({
         {(isLoading || itemCount) && (
           <Swiper {...sliderProps} className={classes.slider}>
             {React.Children.map(
-              isLoading ? rendrerdSkeletons : children,
+              isLoading ? renderedSkeletons : children,
               modifyChildren,
             )}
           </Swiper>
