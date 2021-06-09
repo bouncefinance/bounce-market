@@ -38,7 +38,7 @@ export const LikeBtn = ({ className, count = 0 }: ILikeBtnProps) => {
   return (
     <Button
       variant="outlined"
-      className={className}
+      className={classNames(classes.root, className)}
       onClick={onLikeClick}
       disabled={isLikeDisabled}
       rounded
