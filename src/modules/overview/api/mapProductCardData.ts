@@ -1,10 +1,9 @@
 import BigNumber from 'bignumber.js';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import Web3 from 'web3';
-import { NFTCategoryType } from '../actions/fetchItemsByFilter';
 import { INFTItem } from '../actions/fetchNFTItems';
 
-export const mapNFTItem = (item: INFTItem) => ({
+export const mapProductCardData = (item: INFTItem) => ({
   id: item.id,
   poolId: item.poolId,
   poolType: item.poolType,
@@ -30,6 +29,6 @@ export const mapNFTItem = (item: INFTItem) => ({
       },
     ],
   },
-  category: item.category || NFTCategoryType.image,
+  category: item.category || 'image',
   src: item.fileurl,
 });

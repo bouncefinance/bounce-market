@@ -1,68 +1,46 @@
 import { Box, Container } from '@material-ui/core';
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import {
+  useDispatchRequest,
+  useMutation,
+  useQuery,
+} from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
+import { ScrollLoader } from 'modules/common/components/ScrollLoader';
+import { updateNFTItems } from 'modules/market/actions/updateNFTItems';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
   fetchNFTItems,
-  INFTItem,
+  FetchNFTItemsStatus,
+  IFetchNFTItems,
 } from 'modules/overview/actions/fetchNFTItems';
-import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
+import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
 
-interface IProductsProps extends ISectionProps {
-  cards?: JSX.Element;
-  panel?: JSX.Element;
-  loading?: boolean;
-}
-
-export const ProductsComponent = ({
-  cards,
-  panel,
-  loading = false,
-  ...sectionProps
-}: IProductsProps) => {
-  return (
-    <Section {...sectionProps}>
-      <Container>
-        {panel && <Box mb={6}>{panel}</Box>}
-
-        {loading ? (
-          <Box
-            py={5}
-            position="relative"
-            width="100%"
-            display="flex"
-            justifyContent="center"
-          >
-            <QueryLoading />
-          </Box>
-        ) : (
-          cards
-        )}
-      </Container>
-    </Section>
-  );
-};
+const ITEMS_PORTION_COUNT = 20;
 
 export const Products = ({ ...sectionProps }: ISectionProps) => {
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
 
-  const { data, loading } = useQuery<INFTItem[]>({
+  const [sortBy, setSortBy] = useState<string>('1');
+  const [category, setCategory] = useState<ItemsChannel>(ItemsChannel.fineArts);
+
+  const {
+    data: nftItemsData,
+    loading: nftItemsLoading,
+  } = useQuery<IFetchNFTItems | null>({
     type: fetchNFTItems.toString(),
   });
 
-  const [sortBy, setSortBy] = useState<string>('1');
-  const [catergory, setCategory] = useState<ItemsChannel>(
-    ItemsChannel.fineArts,
-  );
+  const { loading: updateLoading } = useMutation({
+    type: updateNFTItems.toString(),
+  });
 
   const onSortChange = useCallback((value: string) => {
     setSortBy(value);
@@ -71,24 +49,53 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const onCategoryChange = useCallback(
     (value: string) => {
       setCategory(value as ItemsChannel);
-      dispatch(fetchNFTItems({ channel: value as ItemsChannel }));
+      dispatch(
+        fetchNFTItems({
+          limit: ITEMS_PORTION_COUNT,
+          channel: value as ItemsChannel,
+        }),
+      );
     },
     [dispatch],
   );
+
+  const onLoadMore = useCallback(() => {
+    if (!nftItemsData) {
+      return;
+    }
+
+    dispatch(
+      updateNFTItems({
+        offset: nftItemsData.offset + ITEMS_PORTION_COUNT,
+        limit: ITEMS_PORTION_COUNT,
+        channel: category,
+      }),
+    );
+  }, [category, dispatch, nftItemsData]);
 
   useEffect(() => {
     if (!isConnected) {
       return;
     }
 
-    dispatch(fetchNFTItems({}));
+    dispatch(
+      fetchNFTItems({
+        limit: ITEMS_PORTION_COUNT,
+        channel: ItemsChannel.fineArts,
+      }),
+    );
   }, [dispatch, isConnected]);
 
-  const nftItems = data?.map(mapNFTItem);
+  const nftItems = useMemo(
+    () => (nftItemsData ? nftItemsData.items.map(mapProductCardData) : []),
+    [nftItemsData],
+  );
 
-  const rendrerdCards = (
-    <ProductCards>
-      {(nftItems || []).map(item => (
+  const hasItems = !!nftItems.length;
+
+  const rendrerdCards = useMemo(
+    () =>
+      nftItems.map(item => (
         <ProductCard
           isOnSale
           id={item.id}
@@ -110,24 +117,57 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           }}
           ProfileInfoProps={item.ProfileInfoProps}
         />
-      ))}
-    </ProductCards>
+      )),
+    [nftItems],
   );
 
-  return isConnected ? (
-    <ProductsComponent
-      {...sectionProps}
-      cards={nftItems && nftItems.length ? rendrerdCards : <NoItems />}
-      loading={loading}
-      panel={
-        <ProductsPanel
-          onSortChange={onSortChange}
-          onCategoryChange={onCategoryChange}
-          catergory={catergory}
-          sortBy={sortBy}
-          disabled={loading}
-        />
-      }
-    />
-  ) : null;
+  if (!isConnected) {
+    return null;
+  }
+
+  return (
+    <Section {...sectionProps}>
+      <Container>
+        <Box mb={6}>
+          <ProductsPanel
+            onSortChange={onSortChange}
+            onCategoryChange={onCategoryChange}
+            catergory={category}
+            sortBy={sortBy}
+            disabled={nftItemsLoading}
+          />
+        </Box>
+
+        {nftItemsLoading || hasItems ? (
+          <>
+            <ProductCards
+              isLoading={nftItemsLoading}
+              skeletonsCount={ITEMS_PORTION_COUNT}
+            >
+              {rendrerdCards}
+            </ProductCards>
+
+            <ScrollLoader
+              disabled={
+                nftItemsLoading ||
+                nftItemsData?.status === FetchNFTItemsStatus.done
+              }
+              isLoading={updateLoading}
+              onLoadMore={onLoadMore}
+              loadingComponent={
+                <Box mt={4}>
+                  <ProductCards
+                    isLoading
+                    skeletonsCount={ITEMS_PORTION_COUNT}
+                  />
+                </Box>
+              }
+            />
+          </>
+        ) : (
+          <NoItems />
+        )}
+      </Container>
+    </Section>
+  );
 };

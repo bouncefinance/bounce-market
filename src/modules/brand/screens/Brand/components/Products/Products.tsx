@@ -3,7 +3,7 @@ import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
+import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
@@ -25,7 +25,7 @@ export const Products = () => {
 
   const renderedCards = useMemo(
     () =>
-      brandNfts?.map(mapNFTItem).map(item => (
+      brandNfts?.map(mapProductCardData).map(item => (
         <ProductCard
           isOnSale
           id={item.id}
