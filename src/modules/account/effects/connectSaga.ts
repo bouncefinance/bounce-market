@@ -1,12 +1,14 @@
 import { getQuery, resetRequests } from '@redux-requests/core';
+import { featuresConfig } from 'modules/common/conts';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { queryLikedItems } from 'modules/profile/actions/queryLikedItems';
 import { END, eventChannel } from 'redux-saga';
 import { put, putResolve, select, take, takeEvery } from 'redux-saga/effects';
 import { RootState } from 'store';
 import { Address } from '../../common/types/unit';
 import { connect } from '../store/actions/connect';
-import { setAccount } from '../store/actions/setAccount';
 import { disconnect } from '../store/actions/disconnect';
+import { ISetAccountData, setAccount } from '../store/actions/setAccount';
 import { updateAccount } from '../store/actions/updateAccount';
 
 // TODO: Check disconnection, switch chain, switch account
@@ -94,6 +96,10 @@ function* onConnectWallet() {
   const provider = action.meta.provider;
   yield put(fetchProfileInfo());
 
+  if (featuresConfig.nftLikes) {
+    yield put(queryLikedItems());
+  }
+
   const channel = createEventChannel(provider);
   while (true) {
     const event: ProviderEvent = yield take(channel);
@@ -106,18 +112,18 @@ function* onConnectWallet() {
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
 
-      const { currentAddress } = yield select((state: RootState) => {
-        const {
-          data: { address },
-        } = getQuery(state, {
-          type: setAccount.toString(),
-          action: setAccount,
-        });
+      const { currentAddress }: { currentAddress?: string } = yield select(
+        (state: RootState) => {
+          const { data } = getQuery<ISetAccountData | null>(state, {
+            type: setAccount.toString(),
+            action: setAccount,
+          });
 
-        return { currentAddress: address };
-      });
+          return { currentAddress: data?.address };
+        },
+      );
 
-      if (currentAddress.toLowerCase() !== address?.toLowerCase()) {
+      if (currentAddress?.toLowerCase() !== address?.toLowerCase()) {
         yield put(disconnect());
         yield put(connect());
       }
@@ -126,9 +132,16 @@ function* onConnectWallet() {
 }
 
 function* onDisconnectWallet() {
-  yield put(
-    resetRequests([setAccount.toString(), fetchProfileInfo.toString()]),
-  );
+  const requestToReset: string[] = [
+    setAccount.toString(),
+    fetchProfileInfo.toString(),
+  ];
+
+  if (featuresConfig.nftLikes) {
+    requestToReset.push(queryLikedItems.toString());
+  }
+
+  yield put(resetRequests(requestToReset));
 }
 
 export function* connectSaga() {

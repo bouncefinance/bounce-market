@@ -16,14 +16,14 @@ export interface INFTItem {
   description?: string;
   externallink?: string;
   fileurl?: string;
-  id?: number;
+  id: number;
   itemname?: string;
   itemsymbol?: string;
   likecount?: number;
   litimgurl?: string;
   metadata?: string;
   owneraddress?: string;
-  poolId?: number;
+  poolId: number;
   poolType: AuctionType;
   price: string;
   standard?: number;
