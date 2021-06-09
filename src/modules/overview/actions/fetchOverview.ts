@@ -48,6 +48,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         poolType: item.auctionType,
                       },
                       { requestKey: item.poolId },
+                      { silent: true },
                     ),
                   );
                 }),
@@ -75,7 +76,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 poolWight: number;
               }
 
-              return data
+              const WashData = data
                 ?.map(item => {
                   const pool = poolDetailsList.find(pool => {
                     return (
@@ -91,7 +92,6 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         ? pool.lastestBidAmount
                         : pool.amountMin1
                       : pool?.price || item.price;
-
                   return {
                     ...item,
                     price,
@@ -106,9 +106,9 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                   } as dataType;
                 })
                 .sort((a, b) => {
-                  // debugger
                   return b.poolWight - a.poolWight;
                 });
+              return WashData;
             })(),
           };
         },

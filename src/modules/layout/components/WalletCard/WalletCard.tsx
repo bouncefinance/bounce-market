@@ -1,6 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import { useWalletCardStyles } from './WalletCardStyles';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import {
   Avatar,
   Box,
@@ -10,14 +7,17 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { convertWallet } from 'modules/common/utils/convertWallet';
-import { t } from 'modules/i18n/utils/intl';
-import { DoneIcon } from 'modules/common/components/Icons/DoneIcon';
-import { CopyIcon } from 'modules/common/components/Icons/CopyIcon';
-import { Link as RouterLink } from 'react-router-dom';
-import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
-import classNames from 'classnames';
 import BigNumber from 'bignumber.js';
+import classNames from 'classnames';
+import { CopyIcon } from 'modules/common/components/Icons/CopyIcon';
+import { DoneIcon } from 'modules/common/components/Icons/DoneIcon';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import { t } from 'modules/i18n/utils/intl';
+import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
+import React, { useEffect, useState } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { Link as RouterLink } from 'react-router-dom';
+import { useWalletCardStyles } from './WalletCardStyles';
 
 export interface IWalletCardProps {
   address: string;
@@ -63,7 +63,7 @@ export const WalletCard = ({
       {address ? (
         <Box className={classes.row}>
           <Typography variant="body1" className={classes.addressText}>
-            {convertWallet(address)}
+            {truncateWalletAddr(address)}
 
             <CopyToClipboard text={address} onCopy={() => setCopy(true)}>
               <Tooltip

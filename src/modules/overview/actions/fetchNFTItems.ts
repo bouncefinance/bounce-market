@@ -16,14 +16,14 @@ export interface INFTItem {
   description?: string;
   externallink?: string;
   fileurl?: string;
-  id?: number;
+  id: number;
   itemname?: string;
   itemsymbol?: string;
   likecount?: number;
   litimgurl?: string;
   metadata?: string;
   owneraddress?: string;
-  poolId?: number;
+  poolId: number;
   poolType: AuctionType;
   price: string;
   standard?: number;
@@ -77,8 +77,8 @@ export const fetchNFTItems = createSmartAction<
             ?.filter(item => item.state !== 1)
             ?.map(item => {
               return {
-                category: 'image',
-                channel: 'FineArts',
+                category: item.category,
+                channel: item.channel,
                 contractaddress: item.token0,
                 createTime: new Date(item.created_at).getTime(),
                 created_at: item.created_at,
@@ -91,11 +91,12 @@ export const fetchNFTItems = createSmartAction<
                 likecount: item.likecount,
                 litimgurl: item.creatorurl,
                 metadata: 'metadata',
-                owneraddress: '0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE',
+                owneraddress: item.creator,
                 poolId: item.poolid,
-                poolType: item.pooltype
-                  ? AuctionType.FixedSwap
-                  : AuctionType.EnglishAuction,
+                poolType:
+                  item.pooltype === 1
+                    ? AuctionType.FixedSwap
+                    : AuctionType.EnglishAuction,
                 price: item.price,
                 standard: 0,
                 supply: 100,

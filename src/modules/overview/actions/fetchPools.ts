@@ -1,5 +1,5 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { ITradePool_V2, IGetPoolsApi_V2 } from 'modules/common/api/getPools';
+import { IGetPoolsApi_V2, ITradePool_V2 } from 'modules/common/api/getPools';
 import { API_BASE, ZERO_ADDRESS } from 'modules/common/conts';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
@@ -7,15 +7,12 @@ export const fetchPools = createSmartAction<
   RequestAction<IGetPoolsApi_V2, ITradePool_V2[]>,
   [
     {
-      // user?: string;
-      // offset?: number;
-      // count?: number;
-      category: string;
-      channel: string;
-      currency: string;
-      limit: number;
-      offset: number;
-      orderfield: number;
+      category?: string;
+      channel?: string;
+      currency?: string;
+      limit?: number;
+      offset?: number;
+      orderfield?: number;
     }?,
     RequestActionMeta<IGetPoolsApi_V2, ITradePool_V2[]>?,
   ]
@@ -26,7 +23,7 @@ export const fetchPools = createSmartAction<
     baseURL: API_BASE,
     data: {
       category: params?.category || '',
-      channel: params?.channel || 'FineArts',
+      channel: params?.channel,
       currency: params?.currency || ZERO_ADDRESS,
       limit: params?.limit || 10,
       offset: params?.offset || 0,
@@ -34,7 +31,7 @@ export const fetchPools = createSmartAction<
     },
   },
   meta: {
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     getData: response => {
       if (response.code !== 1) {
         throw new Error(response.msg);

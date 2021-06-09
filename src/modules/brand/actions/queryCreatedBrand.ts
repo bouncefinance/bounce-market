@@ -15,7 +15,7 @@ export const queryBrandAddress = createSmartAction<
       method: 'get',
     },
     meta: {
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       asMutation: true,
       getData: data => {
         if (data.code !== 200) {

@@ -28,8 +28,8 @@ export const fetchItem = createSmartAction<
       return request;
     },
     auth: true,
-    driver: 'axios',
-    asMutation: false, 
+    driver: 'axiosSmartchain',
+    asMutation: false,
     ...meta,
   },
 }));

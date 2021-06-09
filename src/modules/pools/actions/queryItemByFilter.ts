@@ -37,7 +37,7 @@ export const queryItemByFilter = createSmartAction<
     data: data,
   },
   meta: {
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     asMutation: true,
     getData: data => {
       if (data.code !== 1) {

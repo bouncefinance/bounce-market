@@ -29,7 +29,7 @@ export const featuresConfig = {
   /**
    * No data provided for this
    */
-  nftCardOwnerInfo: false,
+  nftCardOwnerInfo: true,
   /**
    * No has profile pages yet
    */
@@ -44,26 +44,22 @@ export const featuresConfig = {
    * and it cannot be shared
    */
   ownBrandSharing: false,
-  /**
-   * Feature is not fully implemented
-   */
   nftLikes: false,
-  /**
-   * Feature is not implemented
-   */
   nftItemsSortSelect: false,
-  nftDetailsCreator: false,
+  nftDetailsLikesCount: false,
+  nftDetailsCreator: true,
   nftDetailsCount: true,
+  subscribers: false,
+  profileSortTabs: false,
+  profileFollowers: false,
+  /**
+   * poolDetail config
+   */
+  infoTabs: true,
   nftDetailsHistory: false,
   nftDetailsBids: false,
   nftDetailsOwners: false,
-  nftDetailsTokenInfo: false,
-  subscribers: false,
-  profileSortTabs: false,
-  profileActivity: false,
-  profileLiked: false,
-  profileFollowers: false,
-  infoTabs: false,
+  nftDetailsTokenInfo: true,
 };
 
 export enum BlockchainNetworkId {

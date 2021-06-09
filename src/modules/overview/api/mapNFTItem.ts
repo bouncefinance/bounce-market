@@ -5,6 +5,9 @@ import { NFTCategoryType } from '../actions/fetchItemsByFilter';
 import { INFTItem } from '../actions/fetchNFTItems';
 
 export const mapNFTItem = (item: INFTItem) => ({
+  id: item.id,
+  poolId: item.poolId,
+  poolType: item.poolType,
   href:
     item.poolId && item.poolType
       ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
@@ -19,7 +22,7 @@ export const mapNFTItem = (item: INFTItem) => ({
   endDate: undefined,
   ProfileInfoProps: {
     subTitle: 'Owner',
-    title: '1livinginzen',
+    title: `${item.owneraddress ?? ''}`,
     users: [
       {
         name: 'name',

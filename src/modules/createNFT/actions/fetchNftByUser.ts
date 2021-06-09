@@ -86,7 +86,7 @@ export const fetchNftByUser = createSmartAction<
       params: { user_address: params.userId },
     },
     meta: {
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       getData: response => mapData(response),
       ...meta,
     },

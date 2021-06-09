@@ -49,7 +49,7 @@ export const fetchPoolsWeight = createSmartAction<
     },
     meta: {
       auth: true,
-      driver: 'axios',
+      driver: 'axiosSmartchain',
       asMutation: false,
       getData: data => {
         return {
