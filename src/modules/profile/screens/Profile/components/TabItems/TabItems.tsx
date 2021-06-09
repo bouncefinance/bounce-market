@@ -9,26 +9,27 @@ import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { hasBrand, IItem } from 'modules/overview/api/getItems';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
-import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
-import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { ResponseData } from '../../../../../common/types/ResponseData';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();
   const { address } = useAccount();
 
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
-  });
-
   const allNftByUserQuery = useQuery<IItem[] | null>({
     type: fetchAllNftByUser.toString(),
   });
+
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
+  })
 
   useEffect(() => {
     if (address) {
@@ -43,7 +44,7 @@ export const TabItems = () => {
   const hasItems =
     !!allNftByUserQuery.data && allNftByUserQuery.data.length > 0;
 
-  return hasItems || allNftByUserQuery.loading ? (
+  return hasItems || allNftByUserQuery.loading ? (  
     <TabItemsComponent>
       <Queries<ResponseData<typeof fetchAllNftByUser>>
         requestActions={[fetchAllNftByUser]}
@@ -83,11 +84,12 @@ export const TabItems = () => {
                   }}
                   ProfileInfoProps={{
                     subTitle: 'Owner',
-                    title: `${profileInfo?.accountAddress ?? ''}`,
+                    title: `${profileInfo?.username ?? truncateWalletAddr(String(address))}`,
+                    isOwner: true,
                     users: [
                       {
                         name: 'name',
-                        avatar: profileInfo?.imgUrl,
+                        avatar: `${profileInfo?.imgUrl}`,
                       },
                     ],
                   }}

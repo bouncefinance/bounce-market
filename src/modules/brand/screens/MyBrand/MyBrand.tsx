@@ -1,6 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { listBrandItems } from 'modules/brand/actions/listBrandItems';
@@ -10,6 +9,7 @@ import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { featuresConfig } from 'modules/common/conts';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
@@ -22,7 +22,6 @@ import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { uid } from 'react-uid';
-import Web3 from 'web3';
 
 export const MyBrand = () => {
   const classes = useProfileStyles();
@@ -34,7 +33,7 @@ export const MyBrand = () => {
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
-  });
+  })
 
   useEffect(() => {
     if (address && id) {
@@ -125,11 +124,7 @@ export const MyBrand = () => {
                       )
                     : ''
                 }
-                price={
-                  item.poolId && item.price
-                    ? new BigNumber(Web3.utils.fromWei(item.price))
-                    : undefined
-                }
+                price={item.poolId && item.price ? item.price : undefined}
                 copies={item.supply}
                 MediaProps={{
                   category: item.category,
@@ -139,14 +134,12 @@ export const MyBrand = () => {
                 }}
                 ProfileInfoProps={{
                   subTitle: 'Owner',
-                  title: `${profileInfo?.username}`,
+                  title: `${profileInfo?.username ?? truncateWalletAddr(String(address))}`,
+                  isOwner: true,
                   users: [
                     {
                       name: 'name',
-                      avatar: `${
-                        profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
-                      }`,
-                      verified: true,
+                      avatar: `${profileInfo?.imgUrl}`,
                     },
                   ],
                 }}
