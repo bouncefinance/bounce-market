@@ -28,7 +28,7 @@ export const fetchItem = createSmartAction<
       return request;
     },
     auth: true,
-    driver: 'axios',
+    driver: 'axiosSmartchain',
     asMutation: false, 
     ...meta,
   },
