@@ -3,6 +3,7 @@ import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import Truncate from 'react-truncate';
+import { LikeBtn } from '../LikeBtn';
 import { useInfoDescrStyles } from './useInfoDescrStyles';
 import { useInfoDescrToggle } from './useInfoDescrToggle';
 
@@ -41,7 +42,7 @@ export const InfoDescr = ({
         </Typography>
       </Box>
 
-      <Grid container spacing={3} alignItems="center">
+      <Grid container spacing={2} alignItems="center">
         {creator && featuresConfig.nftDetailsCreator && (
           <Grid item xs>
             {creator}
@@ -61,6 +62,12 @@ export const InfoDescr = ({
               {copiesCurrent ? `${copiesCurrent} / ` : ''}
               {copiesTotal}
             </div>
+          </Grid>
+        )}
+
+        {featuresConfig.nftLikes && (
+          <Grid item xs="auto">
+            <LikeBtn />
           </Grid>
         )}
       </Grid>

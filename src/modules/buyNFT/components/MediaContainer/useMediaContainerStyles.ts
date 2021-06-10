@@ -1,20 +1,21 @@
-import { makeStyles, Theme } from '@material-ui/core';
-import { featuresConfig } from 'modules/common/conts';
+import { fade, makeStyles, Theme } from '@material-ui/core';
 
 export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
   root: {
-    paddingTop: theme.spacing(5),
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingTop: theme.spacing(4),
 
     [theme.breakpoints.up('md')]: {
-      paddingTop: '8vh',
-      paddingBottom: '8vh',
+      paddingTop: theme.spacing(3.5),
+      paddingBottom: theme.spacing(3.5),
+    },
+
+    [theme.breakpoints.up('lg')]: {
+      display: 'flex',
+      flexDirection: 'column',
     },
 
     [theme.breakpoints.up('xl')]: {
-      padding: '8vh 8vw',
+      padding: theme.spacing(3.5, 4),
     },
   },
 
@@ -23,6 +24,7 @@ export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
     maxHeight: '100%',
     minWidth: 240,
     textAlign: 'center',
+    margin: 'auto',
   },
 
   img: {
@@ -37,16 +39,8 @@ export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
     },
   },
 
-  actions: {
-    marginTop: theme.spacing(2.5),
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, auto)',
-    justifyContent: featuresConfig.nftLikes ? 'space-between' : 'center',
-  },
-
   btn: {
-    color: theme.palette.text.secondary,
-    borderColor: 'inherit',
+    borderColor: fade(theme.palette.text.primary, 0.1),
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
     minWidth: 115,
