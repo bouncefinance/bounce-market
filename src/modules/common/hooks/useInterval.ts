@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+const DELAY = 3000
 /**
  * The hook explanation is here:
  * https://overreacted.io/making-setinterval-declarative-with-react-hooks/
@@ -33,4 +34,13 @@ export function useInterval(
     }
     return undefined;
   }, [delay, immediately]);
+}
+
+
+export const useTimer = (delay = DELAY) => {
+  const [count, setCount] = useState(0)
+  useInterval(() => {
+    setCount((currentCount) => currentCount + 1)
+  }, delay)
+  return count
 }

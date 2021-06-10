@@ -24,9 +24,12 @@ export interface ISetAccountData {
 
 export const setAccount = createSmartAction(
   'AccountActions/setAccount',
-  () => ({
+  (updateData?: ISetAccountData) => ({
     request: {
       promise: (async function () {
+        if (updateData) {
+          return updateData
+        }
         const [web3, provider] = await connectWallet();
         const address = (await web3.eth.getAccounts())[0];
         const signature = await web3.eth.personal.sign(SIGN_STR, address, '');
