@@ -36,6 +36,7 @@ import { TabBids } from './components/TabBids';
 import { TabItems } from './components/TabItems';
 import { TabLiked } from './components/TabLiked';
 import { useProfileStyles } from './useProfileStyles';
+import { TabSells } from './components/TabSells';
 
 const followings: IFollowingItemProps[] = [
   {
@@ -214,7 +215,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>
-          <TabBids />
+          <TabSells />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.bids}>

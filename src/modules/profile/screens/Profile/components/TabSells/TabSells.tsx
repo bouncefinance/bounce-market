@@ -23,7 +23,7 @@ import React, {
   useState,
 } from 'react';
 import { uid } from 'react-uid';
-import { useTabBidsStyles } from './useTabBidsStyles';
+import { useTabBidsStyles } from '../TabBids/useTabBidsStyles';
 
 const categories = [
   {
@@ -44,8 +44,8 @@ const categories = [
   },
 ];
 
-export const TabBids = () => {
-  const { address } = useAccount()
+export const TabSells = () => {
+  const { address }  = useAccount()
   const classes = useTabBidsStyles();
   const dispatch = useDispatchRequest();
   const [catergory, setCategory] = useState<ItemsChannel>(ItemsChannel.all);
@@ -80,8 +80,9 @@ export const TabBids = () => {
     }
 
     const allItems = [...bidsQuery.data.claimList, ...bidsQuery.data.soldList].filter(e => {
-      return e.owneraddress.toLocaleLowerCase() !== address.toLocaleLowerCase()
+      return e.owneraddress.toLocaleLowerCase() === address.toLocaleLowerCase()
     })
+    console.log(allItems)
     const filteredItems =
       catergory === ItemsChannel.all
         ? allItems
