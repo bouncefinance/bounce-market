@@ -106,7 +106,7 @@
     "channelOption": {
       "FineArts": "艺术",
       "Sports": "体育",
-      "Comics": "漫画"
+      "Comicbooks": "漫画"
     },
     "standardOption": {
       "0": "ERC-721",
@@ -200,7 +200,7 @@
     "channelOption": {
       "FineArts": "艺术",
       "Sports": "体育",
-      "Comics": "漫画"
+      "Comicbooks": "漫画"
     },
     "standardOption": {
       "0": "ERC-721",
@@ -304,7 +304,7 @@
       "all": "所有",
       "art": "艺术",
       "sport": "体育",
-      "comics": "漫画"
+      "Comicbooks": "漫画"
     }
   },
   "buy-dialog": {

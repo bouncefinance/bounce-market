@@ -128,8 +128,8 @@ export const CreateBrandItem = () => {
         value: Channel.Sports,
       },
       {
-        label: t(`create-brand-nft.channelOption.${Channel.Conicbooks}`),
-        value: Channel.Conicbooks,
+        label: t(`create-brand-nft.channelOption.${Channel.Comicbooks}`),
+        value: Channel.Comicbooks,
       },
     ],
     [],

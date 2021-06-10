@@ -10,11 +10,10 @@ import { updateAccount } from '../store/actions/updateAccount';
 import { makeStyles } from '@material-ui/styles';
 import BigNumber from 'bignumber.js';
 import { getWeb3NoAccount } from 'modules/web3/utils';
+import { tokenLocalStorageKey } from 'constants/index';
+import Web3 from 'web3';
+import { useTimer } from 'modules/common/hooks/useInterval';
 
-interface IData {
-  address: string;
-  chainId: number;
-}
 export const useAccount = () => {
   const dispatch = useAppDispatch();
 
@@ -26,24 +25,25 @@ export const useAccount = () => {
 
   const { account, chainId, error, library } = useWeb3React();
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<IData>();
   const walletSupportNetworkChange = !!library;
   const [balance, steBalance] = useState(new BigNumber(0.0));
+  const [web3, setWeb3] = useState<Web3>(getWeb3NoAccount())
   const initWeb3 = async (address: string) => {
-    const web3 = getWeb3NoAccount();
-    const balance = await web3.eth.getBalance(address);
-    steBalance(new BigNumber(web3.utils.fromWei(balance)));
+    try {
+      if (!address) {
+        return
+      }
+      const web3 = getWeb3NoAccount();
+      setWeb3(web3)
+      const balance = await web3.eth.getBalance(address);
+      steBalance(new BigNumber(web3.utils.fromWei(balance)));
+    } catch (error) {
+      console.log(error)
+    }
   };
-
-  // console.log(account, loading, data, error, data_1)
 
   useEffect(() => {
     if (typeof account === 'string' && typeof chainId === 'number') {
-      localStorage.setItem('account', account);
-      setData({
-        address: account,
-        chainId,
-      });
       initWeb3(account);
       setLoading(false);
     }
@@ -51,24 +51,21 @@ export const useAccount = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 700);
   }, []);
 
   useEffect(() => {
     if (data_1?.balance) {
       steBalance(data_1?.balance);
     }
-    if (data_1?.address) {
-      localStorage.setItem('account', data_1?.address);
-    }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [loading_1]);
 
-  const address = data?.address ?? data_1?.address ?? '';
+  const address = account ?? data_1?.address ?? '';
   const isConnected = !!address;
 
   const isChainSupported =
-    parseInt((data?.chainId ?? data_1?.chainId ?? 0).toString()) ===
+    parseInt((chainId ?? data_1?.chainId ?? 0).toString()) ===
     BlockchainNetworkId.smartchain;
 
   const handleConnect = useCallback(() => {
@@ -101,6 +98,20 @@ export const useAccount = () => {
     },
     [dispatch],
   );
+
+  const token = localStorage.getItem(tokenLocalStorageKey) ?? ''
+  useEffect(() => {
+    // no first
+    if (!(data_1?.address) && address) {
+      dispatch(setAccount({ address, token, chainId: chainId as BlockchainNetworkId, web3: web3, balance, }))
+    }
+    // eslint-disable-next-line
+  }, [address, token,])
+
+  const timer = useTimer(1000 * 10)
+  useEffect(() => {
+    initWeb3(address)
+  }, [timer, address])
 
   return {
     loading,
