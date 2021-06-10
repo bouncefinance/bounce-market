@@ -13,7 +13,10 @@ import classNames from 'classnames';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
-import { IProfileInfoProps } from 'modules/common/components/ProfileInfo';
+import {
+  IProfileInfoProps,
+  ProfileInfo,
+} from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { Button } from 'modules/uiKit/Button';
@@ -215,7 +218,11 @@ export const ProductCardComponent = ({
           {title}
         </Typography>
 
-        <AccountInfo account={ProfileInfoProps.title} />
+        {ProfileInfoProps?.isOwner ? (
+          <ProfileInfo {...ProfileInfoProps} />
+        ) : (
+          <AccountInfo account={ProfileInfoProps.title} />
+        )}
 
         <hr className={classes.devider} />
 

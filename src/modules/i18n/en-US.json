@@ -106,7 +106,7 @@
     "channelOption": {
       "FineArts": "Fine arts",
       "Sports": "Sports",
-      "Comics": "Comicbooks"
+      "Comicbooks": "Comic"
     },
     "standardOption": {
       "0": "ERC-721",
@@ -200,7 +200,7 @@
     "channelOption": {
       "FineArts": "Fine arts",
       "Sports": "Sports",
-      "Comics": "Comicbooks"
+      "Comicbooks": "Comic"
     },
     "standardOption": {
       "0": "ERC-721",
@@ -311,7 +311,7 @@
       "all": "All",
       "art": "Art",
       "sport": "Sport",
-      "comics": "Comics"
+      "Comicbooks": "Comic"
     }
   },
   "buy-dialog": {
