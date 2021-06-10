@@ -33,7 +33,7 @@ export const MyBrand = () => {
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
-  })
+  });
 
   useEffect(() => {
     if (address && id) {
@@ -134,7 +134,9 @@ export const MyBrand = () => {
                 }}
                 ProfileInfoProps={{
                   subTitle: 'Owner',
-                  title: `${profileInfo?.username ?? truncateWalletAddr(String(address))}`,
+                  title: `${
+                    profileInfo?.username ?? truncateWalletAddr(String(address))
+                  }`,
                   isOwner: true,
                   users: [
                     {
