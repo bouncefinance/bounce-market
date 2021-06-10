@@ -1,21 +1,15 @@
 import {
   Avatar,
   Box,
-  IconButton,
   MenuItem,
   MenuList,
-  Tooltip,
   Typography,
 } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
-import classNames from 'classnames';
-import { CopyIcon } from 'modules/common/components/Icons/CopyIcon';
-import { DoneIcon } from 'modules/common/components/Icons/DoneIcon';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import { CopyToClicp } from 'modules/common/components/CopyToClip/CopyToClip';
 import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
-import React, { useEffect, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWalletCardStyles } from './WalletCardStyles';
 
@@ -39,16 +33,6 @@ export const WalletCard = ({
   handleClose,
 }: IWalletCardProps) => {
   const classes = useWalletCardStyles();
-  const [isCopy, setCopy] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isCopy) {
-      setTimeout(() => {
-        setCopy(false);
-        (document.activeElement as any)?.blur();
-      }, 1000);
-    }
-  }, [isCopy]);
 
   return (
     <Box className={classes.root}>
@@ -60,35 +44,9 @@ export const WalletCard = ({
         </Box>
       ) : null}
 
-      {address ? (
-        <Box className={classes.row}>
-          <Typography variant="body1" className={classes.addressText}>
-            {truncateWalletAddr(address)}
-
-            <CopyToClipboard text={address} onCopy={() => setCopy(true)}>
-              <Tooltip
-                title={
-                  isCopy ? t('common.copied') : t('common.copy-to-clipboard')
-                }
-                arrow
-              >
-                <IconButton size="small" className={classes.clipboardBtn}>
-                  {isCopy ? (
-                    <DoneIcon
-                      className={classNames(
-                        classes.clipboardBtnIcon,
-                        classes.clipboardBtnIconDone,
-                      )}
-                    />
-                  ) : (
-                    <CopyIcon className={classes.clipboardBtnIcon} />
-                  )}
-                </IconButton>
-              </Tooltip>
-            </CopyToClipboard>
-          </Typography>
-        </Box>
-      ) : null}
+      {address && <Box className={classes.row}>
+        <CopyToClicp address={address} />
+      </Box>}
 
       {balance ? (
         <Box className={classes.row}>
