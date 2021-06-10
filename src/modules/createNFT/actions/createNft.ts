@@ -22,7 +22,7 @@ export enum NftType {
 export enum Channel {
   FineArts = 'FineArts',
   Sports = 'Sports',
-  Conicbooks = 'Comics',
+  Comicbooks = 'Comicbooks',
 }
 
 export interface ICreateNFTPayload {

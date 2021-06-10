@@ -14,7 +14,7 @@ import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
 import {
-  IProfileInfoProps,
+  IProfileInfoProps, ProfileInfo,
 } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
@@ -221,7 +221,10 @@ export const ProductCardComponent = ({
           {title}
         </Typography>
 
-        <AccountInfo account={ProfileInfoProps.title} />
+        {ProfileInfoProps?.isOwner
+          ? <ProfileInfo {...ProfileInfoProps} />
+          : <AccountInfo account={ProfileInfoProps.title} />
+        }
 
         <hr className={classes.devider} />
 
