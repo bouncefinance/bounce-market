@@ -89,7 +89,7 @@ export const TabSells = () => {
         : allItems.filter(item => item.channel === catergory);
 
     return filteredItems;
-  }, [bidsQuery.data, catergory]);
+  }, [bidsQuery.data, catergory, address]);
 
   const hasItems = !!items.length;
 
