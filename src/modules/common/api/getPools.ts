@@ -34,6 +34,8 @@ export interface ITradePool {
   tokenId: number;
 }
 
+export type PoolCategoryType = 'video' | 'image';
+
 export interface ITradePool_V2 {
   balance: string;
   created_at: string;
@@ -50,7 +52,7 @@ export interface ITradePool_V2 {
   token1: string;
   tokenid: number;
   username: string;
-  category: string;
+  category: PoolCategoryType;
   channel: string;
   creator: string;
 }

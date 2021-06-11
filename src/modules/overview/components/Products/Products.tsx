@@ -4,35 +4,32 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
-import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
   fetchNFTItems,
-  INFTItem,
+  IFetchNFTItems,
 } from 'modules/overview/actions/fetchNFTItems';
-import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
+import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { Button } from 'modules/uiKit/Button';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { ProductsPanel } from '../ProductsPanel';
 import { useProductsStyles } from './useProductsStyles';
 
-const NFT_ITEMS_COUNT = 30;
+const NFT_ITEMS_COUNT = 10;
 
 interface IProductsProps extends ISectionProps {
   cards?: JSX.Element;
   panel?: JSX.Element;
-  loading?: boolean;
 }
 
 export const ProductsComponent = ({
   cards,
   panel,
-  loading = false,
   ...sectionProps
 }: IProductsProps) => {
   const classes = useProductsStyles();
@@ -42,32 +39,20 @@ export const ProductsComponent = ({
       <Container>
         {panel && <Box mb={6}>{panel}</Box>}
 
-        {loading ? (
-          <Box
-            py={5}
-            position="relative"
-            width="100%"
-            display="flex"
-            justifyContent="center"
-          >
-            <QueryLoading />
-          </Box>
-        ) : (
-          cards
-        )}
+        {cards}
 
-        {featuresConfig.loadMoreNFTs && (
-          <Box display="flex" justifyContent="center" mt={5}>
-            <Button
-              variant="outlined"
-              className={classes.moreBtn}
-              fullWidth
-              rounded
-            >
-              {t('common.load-more')}
-            </Button>
-          </Box>
-        )}
+        <Box display="flex" justifyContent="center" mt={5}>
+          <Button
+            component={Link}
+            variant="outlined"
+            to={MarketRoutesConfig.Market.generatePath()}
+            className={classes.moreBtn}
+            fullWidth
+            rounded
+          >
+            {t('common.view-all')}
+          </Button>
+        </Box>
       </Container>
     </Section>
   );
@@ -77,7 +62,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
 
-  const { data, loading } = useQuery<INFTItem[] | null>({
+  const { data, loading } = useQuery<IFetchNFTItems | null>({
     type: fetchNFTItems.toString(),
   });
 
@@ -97,7 +82,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
       dispatch(
         fetchNFTItems({
           channel: value as ItemsChannel,
-          count: NFT_ITEMS_COUNT,
+          limit: NFT_ITEMS_COUNT,
         }),
       );
     },
@@ -111,12 +96,14 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
 
     dispatch(
       fetchNFTItems({
-        count: NFT_ITEMS_COUNT,
+        channel: ItemsChannel.fineArts,
+        limit: NFT_ITEMS_COUNT,
       }),
     );
   }, [dispatch, isConnected]);
 
-  const nftItems = data?.map(mapNFTItem);
+  const nftItems = data?.items.map(mapProductCardData);
+  const hasItems = Boolean(nftItems && nftItems.length);
 
   const renderedItems = (nftItems || []).map(item => {
     return (
@@ -144,8 +131,10 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   });
 
   const renderedCards =
-    nftItems && nftItems.length ? (
-      <ProductCards>{renderedItems}</ProductCards>
+    loading || hasItems ? (
+      <ProductCards isLoading={loading} skeletonsCount={NFT_ITEMS_COUNT}>
+        {renderedItems}
+      </ProductCards>
     ) : (
       <Box display="flex" justifyContent="center">
         <NoItems href={MarketRoutesConfig.Market.generatePath()} />
@@ -156,7 +145,6 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     <ProductsComponent
       {...sectionProps}
       cards={renderedCards}
-      loading={loading}
       panel={
         <ProductsPanel
           onSortChange={onSortChange}

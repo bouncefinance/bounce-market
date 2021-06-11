@@ -15,6 +15,7 @@ import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
 import {
   IProfileInfoProps,
+  ProfileInfo,
 } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
@@ -31,8 +32,8 @@ import { useProductCardStyles } from './useProductCardStyles';
 export type ProductCardCategoryType = 'image' | 'video';
 
 export enum ProductCardStatuses {
-  minting,
-  onSalePending,
+  Minting,
+  OnSalePending,
 }
 
 export interface IProductCardComponentProps {
@@ -83,8 +84,8 @@ export const ProductCardComponent = ({
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isPopoverOpened = Boolean(anchorEl);
-  const isMinting = status === ProductCardStatuses.minting;
-  const isOnSalePending = status === ProductCardStatuses.onSalePending;
+  const isMinting = status === ProductCardStatuses.Minting;
+  const isOnSalePending = status === ProductCardStatuses.OnSalePending;
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -159,7 +160,7 @@ export const ProductCardComponent = ({
     </div>
   );
 
-  const renderContent = useCallback(
+  const renderMediaContent = useCallback(
     () => (
       <>
         {MediaProps.category === 'image' ? (
@@ -206,22 +207,22 @@ export const ProductCardComponent = ({
     <Card className={classNames(classes.root, className)} variant="outlined">
       {href ? (
         <Link to={href} className={classes.imgBox}>
-          {renderContent()}
+          {renderMediaContent()}
         </Link>
       ) : (
-        renderContent()
+        renderMediaContent()
       )}
 
       <CardContent className={classes.content}>
-        <Typography
-          variant="h5"
-          className={classes.title}
-          title={title}
-        >
+        <Typography variant="h5" className={classes.title} title={title}>
           {title}
         </Typography>
 
-        <AccountInfo account={ProfileInfoProps.title} />
+        {ProfileInfoProps?.isOwner ? (
+          <ProfileInfo {...ProfileInfoProps} />
+        ) : (
+          <AccountInfo account={ProfileInfoProps.title} />
+        )}
 
         <hr className={classes.devider} />
 

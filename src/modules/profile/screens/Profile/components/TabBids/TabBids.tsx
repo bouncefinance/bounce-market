@@ -7,7 +7,6 @@ import {
   ProductCardCategoryType,
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
@@ -38,8 +37,8 @@ const categories = [
     label: t('profile.bids-categories.sport'),
   },
   {
-    value: ItemsChannel.comics,
-    label: t('profile.bids-categories.comics'),
+    value: ItemsChannel.comicbooks,
+    label: t('profile.bids-categories.Comicbooks'),
   },
 ];
 
@@ -160,9 +159,9 @@ export const TabBids = () => {
         </Hidden>
       </Box>
 
-      {isLoading && <QueryLoadingCentered />}
-      {!isLoading && hasItems && <ProductCards>{renderedCards}</ProductCards>}
-      {!isLoading && !hasItems && (
+      {isLoading || hasItems ? (
+        <ProductCards isLoading={isLoading}>{renderedCards}</ProductCards>
+      ) : (
         <NoItems
           href={MarketRoutesConfig.Market.generatePath()}
           descr={t('profile.no-items.descr')}

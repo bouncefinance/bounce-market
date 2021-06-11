@@ -9,11 +9,12 @@ import {
 import classNames from 'classnames';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
-import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
+import { ProductCardSkeleton } from 'modules/common/components/ProductCard';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { t } from 'modules/i18n/utils/intl';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React, { ReactNode, useEffect, useState } from 'react';
+import { uid } from 'react-uid';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useMoversStyles } from './MoversStyles';
@@ -75,6 +76,10 @@ export const MoversComponent = ({
     <SwiperSlide className={classes.slide}>{child}</SwiperSlide>
   );
 
+  const renderedSkeletons = Array(5)
+    .fill(0)
+    .map((_, i) => <ProductCardSkeleton key={uid(i)} />);
+
   return (
     <Section {...sectionProps} className={classNames(classes.root, className)}>
       <Container>
@@ -98,11 +103,12 @@ export const MoversComponent = ({
           </Grid>
         </Box>
 
-        {isLoading && <QueryLoadingCentered />}
-
-        {!isLoading && itemCount && (
+        {(isLoading || itemCount) && (
           <Swiper {...sliderProps} className={classes.slider}>
-            {React.Children.map(children, modifyChildren)}
+            {React.Children.map(
+              isLoading ? renderedSkeletons : children,
+              modifyChildren,
+            )}
           </Swiper>
         )}
       </Container>

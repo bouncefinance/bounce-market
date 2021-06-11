@@ -2,9 +2,8 @@ import { Box } from '@material-ui/core';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { mapNFTItem } from 'modules/overview/api/mapNFTItem';
+import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
@@ -26,7 +25,7 @@ export const Products = () => {
 
   const renderedCards = useMemo(
     () =>
-      brandNfts?.map(mapNFTItem).map(item => (
+      brandNfts?.map(mapProductCardData).map(item => (
         <ProductCard
           isOnSale
           id={item.id}
@@ -66,14 +65,12 @@ export const Products = () => {
 
       {!isConnected && <NotConnected />}
 
-      {isConnected && loading && <QueryLoadingCentered mt={4} />}
-
       {isConnected && !loading && !hasItems && (
         <NoItems href={MarketRoutesConfig.Market.generatePath()} />
       )}
 
-      {isConnected && !loading && hasItems && (
-        <ProductCards>{renderedCards}</ProductCards>
+      {isConnected && (loading || hasItems) && (
+        <ProductCards isLoading={loading}>{renderedCards}</ProductCards>
       )}
     </>
   );
