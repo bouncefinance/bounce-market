@@ -284,9 +284,11 @@
     },
     "tabs": {
       "my-items": "My items",
+      "items": "Items",
       "my-bids": "My bids",
       "my-sells": "My sells",
       "my-brands": "My brands",
+      "brands": "Brands",
       "activity": "Activity",
       "liked": "Liked",
       "following": "Following",

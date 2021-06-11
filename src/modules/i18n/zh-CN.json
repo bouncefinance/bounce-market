@@ -284,8 +284,10 @@
     },
     "tabs": {
       "my-items": "我的商品",
+      "items": "商品",
       "my-bids": "我的出价",
       "my-brands": "我的品牌",
+      "brands": "品牌",
       "activity": "动态",
       "liked": "收藏",
       "following": "关注",

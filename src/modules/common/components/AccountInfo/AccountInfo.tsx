@@ -27,7 +27,7 @@ export const AccountInfo = ({ address }: { address: string }) => {
       title={accountInfo?.username ?? truncateWalletAddr(address)}
       users={[
         {
-          name: accountInfo?.username ?? truncateWalletAddr(account),
+          href: ProfileRoutesConfig.OtherProfile.generatePath(address),
           name: accountInfo?.username ?? truncateWalletAddr(address),
           avatar: accountInfo?.imgUrl,
         },

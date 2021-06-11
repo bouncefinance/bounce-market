@@ -22,4 +22,6 @@ export const mapProductCardData = (item: INFTItem) => ({
   ownerAddress: item.owneraddress,
   category: item.category || 'image',
   src: item.fileurl,
+  ownerAvatar: item.ownerAvatar,
+  ownerName: item.ownerName,
 });

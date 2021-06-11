@@ -1,12 +1,14 @@
 import loadable, { LoadableComponent } from '@loadable/component';
 import { useQueryParams } from 'modules/common/hooks/useQueryParams';
-import { generatePath } from 'react-router-dom';
+import { RouteConfiguration } from 'modules/common/types/RouteConfiguration';
+import { generatePath, Route, useParams } from 'react-router-dom';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { PrivateRoute } from '../router/components/PrivateRoute';
 
 export const PATH_PROFILE_BASE = '/profile';
 export const PATH_USER_PROFILE = `${PATH_PROFILE_BASE}?tab=:tab?`;
-export const PATH_PROFILE = `${PATH_PROFILE_BASE}/view/:id`;
+export const PATH_OTHER_PROFILE = `${PATH_PROFILE_BASE}/address/:address`;
+export const PATH_OTHER_PROFILE_TABS = `${PATH_OTHER_PROFILE}??tab=:tab?`;
 export const PATH_EDIT_PROFILE = `${PATH_PROFILE_BASE}/edit`;
 
 export enum ProfileTab {
@@ -22,11 +24,27 @@ export enum ProfileTab {
 
 const defaultProfileTab = ProfileTab.items;
 
-export const ProfileRoutesConfig = {
-  Profile: {
-    path: PATH_PROFILE,
-    generatePath: (id: string) => generatePath(PATH_PROFILE, { id }),
+export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
+  OtherProfile: {
+    path: PATH_OTHER_PROFILE,
+    generatePath: (address: string, tab?: ProfileTab) =>
+      generatePath(PATH_OTHER_PROFILE_TABS, {
+        address,
+        tab: tab ?? defaultProfileTab,
+      }),
+    useParams: () => {
+      const query = useQueryParams();
+      const { address } = useParams<{
+        address: string;
+      }>();
+
+      return {
+        address,
+        tab: query.get('tab') ?? defaultProfileTab,
+      };
+    },
   },
+
   UserProfile: {
     path: PATH_PROFILE_BASE,
     generatePath: (tab?: ProfileTab) =>
@@ -39,6 +57,7 @@ export const ProfileRoutesConfig = {
       };
     },
   },
+
   EditProfile: {
     path: PATH_EDIT_PROFILE,
     generatePath: () => PATH_EDIT_PROFILE,
@@ -60,13 +79,21 @@ const LoadableEditProfileContainer: LoadableComponent<any> = loadable(
   },
 );
 
+const LoadableOtherProfileContainer: LoadableComponent<any> = loadable(
+  async () =>
+    import('./screens/OtherProfile').then(module => module.OtherProfile),
+  {
+    fallback: <QueryLoadingAbsolute />,
+  },
+);
+
 export function ProfileRoutes() {
   return (
     <>
-      <PrivateRoute
-        path={ProfileRoutesConfig.Profile.path}
+      <Route
+        path={ProfileRoutesConfig.OtherProfile.path}
         exact={true}
-        component={LoadableProfileContainer}
+        component={LoadableOtherProfileContainer}
       />
 
       <PrivateRoute

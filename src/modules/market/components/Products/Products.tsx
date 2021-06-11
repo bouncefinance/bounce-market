@@ -5,11 +5,12 @@ import {
   useQuery,
 } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { ScrollLoader } from 'modules/common/components/ScrollLoader';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { updateNFTItems } from 'modules/market/actions/updateNFTItems';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
@@ -19,6 +20,7 @@ import {
 } from 'modules/overview/actions/fetchNFTItems';
 import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
@@ -117,7 +119,19 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
             loading: 'lazy',
           }}
           profileInfo={
-            item.ownerAddress && <AccountInfo address={item.ownerAddress} />
+            <ProfileInfo
+              subTitle="Owner"
+              title={item.ownerName ?? truncateWalletAddr(item.ownerAddress)}
+              users={[
+                {
+                  href: ProfileRoutesConfig.OtherProfile.generatePath(
+                    item.ownerAddress,
+                  ),
+                  name: item.ownerName ?? truncateWalletAddr(item.ownerAddress),
+                  avatar: item.ownerAvatar,
+                },
+              ]}
+            />
           }
         />
       )),
