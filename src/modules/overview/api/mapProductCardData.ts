@@ -19,16 +19,7 @@ export const mapProductCardData = (item: INFTItem) => ({
   copies: undefined,
   // TODO: get NFT item end date data
   endDate: undefined,
-  ProfileInfoProps: {
-    subTitle: 'Owner',
-    title: `${item.owneraddress ?? ''}`,
-    users: [
-      {
-        name: 'name',
-        avatar: 'https://via.placeholder.com/32',
-      },
-    ],
-  },
+  ownerAddress: item.owneraddress,
   category: item.category || 'image',
   src: item.fileurl,
 });

@@ -1,6 +1,7 @@
 import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
@@ -125,7 +126,9 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           objectFit: 'scale-down',
           loading: 'lazy',
         }}
-        ProfileInfoProps={item.ProfileInfoProps}
+        profileInfo={
+          item.ownerAddress && <AccountInfo address={item.ownerAddress} />
+        }
       />
     );
   });

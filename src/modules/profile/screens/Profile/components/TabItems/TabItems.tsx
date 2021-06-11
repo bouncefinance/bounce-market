@@ -4,18 +4,19 @@ import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { hasBrand, IItem } from 'modules/overview/api/getItems';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
-import { IProfileInfo } from 'modules/profile/api/profileInfo';
-import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();
@@ -41,6 +42,8 @@ export const TabItems = () => {
 
   const hasItems =
     !!allNftByUserQuery.data && allNftByUserQuery.data.length > 0;
+
+  const username = profileInfo?.username ?? truncateWalletAddr(String(address));
 
   return hasItems || allNftByUserQuery.loading ? (
     <TabItemsComponent>
@@ -75,20 +78,19 @@ export const TabItems = () => {
               objectFit: 'contain',
               loading: 'lazy',
             }}
-            ProfileInfoProps={{
-              subTitle: 'Owner',
-              title: `${
-                profileInfo?.username ?? truncateWalletAddr(String(address))
-              }`,
-              isOwner: true,
-              users: [
-                {
-                  name: 'name',
-                  avatar: `${profileInfo?.imgUrl}`,
-                  verified: true,
-                },
-              ],
-            }}
+            profileInfo={
+              <ProfileInfo
+                subTitle="Owner"
+                title={username}
+                users={[
+                  {
+                    name: username,
+                    avatar: profileInfo?.imgUrl,
+                    verified: true,
+                  },
+                ]}
+              />
+            }
             toSale={
               hasBrand(item)
                 ? RoutesConfiguration.PublishNft.generatePath(

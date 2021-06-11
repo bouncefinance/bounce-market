@@ -8,6 +8,7 @@ import { BrandAddItem } from 'modules/brand/components/BrandEmptyCard/BrandAddIt
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
@@ -107,51 +108,55 @@ export const MyBrand = () => {
           <Grid item xs={12} sm={6} lg={4} xl={3}>
             {brandInfo?.id && <BrandAddItem id={brandInfo.id} />}
           </Grid>
-          {items?.map((item: any) => (
-            <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
-              <ProductCard
-                id={item.id}
-                poolId={item.poolId}
-                auctionType={item.poolType}
-                key={item.id}
-                isOnSale={!!item.poolId}
-                title={item.itemname}
-                href={
-                  item.poolId && item.poolType
-                    ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                        item.poolId,
-                        item.poolType,
-                      )
-                    : ''
-                }
-                price={item.poolId && item.price ? item.price : undefined}
-                copies={item.supply}
-                MediaProps={{
-                  category: item.category,
-                  src: item.fileurl,
-                  objectFit: 'scale-down',
-                  loading: 'lazy',
-                }}
-                ProfileInfoProps={{
-                  subTitle: 'Owner',
-                  title: `${
-                    profileInfo?.username ?? truncateWalletAddr(String(address))
-                  }`,
-                  isOwner: true,
-                  users: [
-                    {
-                      name: 'name',
-                      avatar: `${profileInfo?.imgUrl}`,
-                    },
-                  ],
-                }}
-                toSale={RoutesConfiguration.PublishNft.generatePath(
-                  item.contractaddress,
-                  item.id,
-                )}
-              />
-            </Grid>
-          ))}
+          {items?.map((item: any) => {
+            const shortAddr = address ? truncateWalletAddr(address) : 'Unknown';
+            const username = profileInfo?.username ?? shortAddr;
+
+            return (
+              <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
+                <ProductCard
+                  id={item.id}
+                  poolId={item.poolId}
+                  auctionType={item.poolType}
+                  key={item.id}
+                  isOnSale={!!item.poolId}
+                  title={item.itemname}
+                  href={
+                    item.poolId && item.poolType
+                      ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                          item.poolId,
+                          item.poolType,
+                        )
+                      : ''
+                  }
+                  price={item.poolId && item.price ? item.price : undefined}
+                  copies={item.supply}
+                  MediaProps={{
+                    category: item.category,
+                    src: item.fileurl,
+                    objectFit: 'scale-down',
+                    loading: 'lazy',
+                  }}
+                  profileInfo={
+                    <ProfileInfo
+                      subTitle="Owner"
+                      title={username}
+                      users={[
+                        {
+                          name: username,
+                          avatar: `${profileInfo?.imgUrl}`,
+                        },
+                      ]}
+                    />
+                  }
+                  toSale={RoutesConfiguration.PublishNft.generatePath(
+                    item.contractaddress,
+                    item.id,
+                  )}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </Container>
     </Section>
