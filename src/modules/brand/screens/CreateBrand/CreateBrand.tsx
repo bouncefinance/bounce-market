@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from '@material-ui/core';
+import { Box, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { NftType } from 'modules/createNFT/actions/createNft';
 import { InputField } from 'modules/form/components/InputField';
@@ -7,16 +7,17 @@ import { UploadAvatarField } from 'modules/form/components/UploadAvatarField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
+import { Button } from 'modules/uiKit/Button';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory } from 'react-router';
 import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
-import { createBrand } from '../../actions/createBrand';
 import {
   ProfileRoutesConfig,
   ProfileTab,
 } from '../../../profile/ProfileRoutes';
+import { createBrand } from '../../actions/createBrand';
 
 export interface ICreateBrand {
   brandName: string;
@@ -155,7 +156,7 @@ export const CreateBrand = () => {
         <Box>
           <Mutation type={createBrand.toString()}>
             {({ loading }) => (
-              <Button size="large" type="submit" fullWidth disabled={loading}>
+              <Button size="large" type="submit" fullWidth loading={loading}>
                 {loading
                   ? t('common.submitting')
                   : t('brand.create.create-brand')}
