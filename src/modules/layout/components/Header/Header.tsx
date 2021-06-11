@@ -132,6 +132,7 @@ export const Header = () => {
                       to={RoutesConfiguration.CreateNft.generatePath()}
                       fullWidth
                       rounded
+                      onClick={onNavClose}
                     >
                       {t('header.create')}
                     </Button>
