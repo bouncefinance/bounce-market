@@ -1,6 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { AuctionType, AuctionType_number } from '../api/auctionType';
+import { AuctionType } from '../api/auctionType';
+import { poolTypeMap } from 'modules/common/api/poolType';
 
 export interface IApiFetchRoleInfo {
   code: 200;
@@ -36,11 +37,8 @@ export const fetchRoleInfo = createSmartAction<
       url: '/api/v2/main/getpoolinfo',
       method: 'post',
       data: {
-        poolid: params.poolId,
-        pooltype:
-          params.poolType === AuctionType.FixedSwap
-            ? AuctionType_number.FixedSwap
-            : AuctionType_number.EnglishAuction,
+        poolId: params.poolId,
+        poolType: parseInt(poolTypeMap[params.poolType]),
       },
     },
     meta: {
@@ -48,7 +46,6 @@ export const fetchRoleInfo = createSmartAction<
       driver: 'axiosSmartchain',
       asMutation: false,
       getData: ({ data }) => {
-        console.log(data);
         return data as IFetchRoleInfoData;
       },
       ...meta,

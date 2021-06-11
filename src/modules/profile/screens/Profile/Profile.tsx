@@ -109,10 +109,6 @@ export const Profile = () => {
         value: ProfileTab.items,
         label: t('profile.tabs.my-items'),
       },
-      // {
-      //   value: ProfileTab.sells,
-      //   label: t('profile.tabs.my-sells'),
-      // },
       {
         value: ProfileTab.bids,
         label: t('profile.tabs.my-bids'),

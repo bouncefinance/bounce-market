@@ -135,6 +135,13 @@
     "dialog": {
       "input-info": "You must bid at least {value} {currency}",
       "footnote": "Bids placed in auction cannot be withdrawn"
+    },
+    "token-info": {
+      "standard":"Standard",
+      "total-supply": "Total Supply",
+      "name-tags": "Name Tags",
+      "contract":"Contract",
+      "token-id": "Token ID"
     }
   },
   "form": {

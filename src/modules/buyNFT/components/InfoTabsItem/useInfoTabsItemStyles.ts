@@ -66,3 +66,42 @@ export const useInfoTabsItemStyles = makeStyles<Theme>(theme => ({
     fontSize: 14,
   },
 }));
+
+export const useInfoTabsIsTokenInfoStyled = makeStyles<Theme>(theme => ({
+  title: {
+    fontSize: 16,
+    fontWeight: 500,
+  },
+
+  desc: {
+    p: {
+      fontSize: 14,
+      fontWeight: 400,
+
+      span: {
+        fontWeight: 500,
+      },
+    },
+  },
+
+  button: {
+    width: 416,
+    height: 48,
+    border: '1px solid #000',
+    borderRadius: 12,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    cursor: 'pointer',
+    userSelect: 'none',
+    marginTop: 10,
+  },
+
+  btnSpan: {
+    marginLeft: 10.5,
+    fontFamily: 'Helvetica Neue',
+    fontSize: 14,
+    fontWeight: 500,
+  },
+}));

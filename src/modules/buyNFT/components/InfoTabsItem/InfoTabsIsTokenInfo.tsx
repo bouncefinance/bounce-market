@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-// import { t } from 'modules/i18n/utils/intl';
+// import styled from 'styled-components';
 import { BscScanIcon } from './assets/BscScanIcon';
+import { useInfoTabsIsTokenInfoStyled } from './useInfoTabsItemStyles';
 
 interface InfoTabsIsTokenInfoprops {
   title?: string;
@@ -16,62 +16,25 @@ export const InfoTabsIsTokenInfo = ({
   isScan,
   contract,
 }: InfoTabsIsTokenInfoprops) => {
+  const classes = useInfoTabsIsTokenInfoStyled();
+
   return (
-    <InfoTabsIsTokenInfoStyled>
-      {title && <h5 className="title">{title}</h5>}
-      {desc && <div className="desc">{desc}</div>}
+    <div>
+      {title && <h5 className={classes.title}>{title}</h5>}
+      {desc && <div className={classes.desc}>{desc}</div>}
 
       {isScan && (
         <div
-          className="button"
+          className={classes.button}
           onClick={() => {
             const href = `https://bscscan.com/address/${contract}`;
             window.open(href);
           }}
         >
           <BscScanIcon />
-          <span>View on BscScan</span>
+          <span className={classes.btnSpan}>View on BscScan</span>
         </div>
       )}
-    </InfoTabsIsTokenInfoStyled>
+    </div>
   );
 };
-
-const InfoTabsIsTokenInfoStyled = styled.div`
-  .title {
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .desc {
-    p {
-      font-size: 14px;
-      font-weight: 400;
-
-      span {
-        font-weight: 500;
-      }
-    }
-  }
-
-  div.button {
-    width: 416px;
-    height: 48px;
-    border: 1px solid #000;
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    cursor: pointer;
-    user-select: none;
-    margin-top: 10px;
-
-    span {
-      margin-left: 10.5px;
-      font-family: 'Helvetica Neue';
-      font-size: 14px;
-      font-weight: 500;
-    }
-  }
-`;

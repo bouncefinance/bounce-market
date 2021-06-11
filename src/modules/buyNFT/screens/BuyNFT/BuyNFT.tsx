@@ -44,7 +44,6 @@ import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
-// import { AccountInfo } from '../../../common/components/AccountInfo';
 import { INFTDetails } from 'modules/buyNFT/api/NFTDetails';
 
 export const BuyNFT = () => {
@@ -313,26 +312,33 @@ export const BuyNFT = () => {
                 <div>
                   {contractAddress && (
                     <p>
-                      <span>Contract: </span>
+                      <span>{t('details-nft.token-info.contract')}: </span>
                       {`${contractAddress}`}
                     </p>
                   )}
-                  {id && <p>{`Token ID: ${id}`}</p>}
+                  {id && (
+                    <p>
+                      <span>{t('details-nft.token-info.token-id')}: </span>
+                      {`${id}`}
+                    </p>
+                  )}
                   {itemName && (
                     <p>
-                      <span>Name Tags:</span>
+                      <span>{t('details-nft.token-info.name-tags')}:</span>
                       {` ${itemName} ${itemsymbol && `(${itemsymbol})`}`}
                     </p>
                   )}
-                  {(standard || standard === 0) && (
+                  {
                     <p>
-                      <span>Standard:</span>
-                      {` ${standard === 1 ? 'ERC-1155' : 'ERC-721'}`}
+                      <span>{t('details-nft.token-info.standard')}:</span>
+                      {` ${
+                        standard === NftType.ERC1155 ? 'ERC-1155' : 'ERC-721'
+                      }`}
                     </p>
-                  )}
+                  }
                   {(supply || supply === 0) && (
                     <p>
-                      <span>Total Supply:</span>
+                      <span>{t('details-nft.token-info.total-supply')}:</span>
                       {` ${supply}`}
                     </p>
                   )}
@@ -347,10 +353,7 @@ export const BuyNFT = () => {
                   isScan={true}
                 />
 
-                <InfoTabsIsTokenInfo
-                  // title="NFT Token Info"
-                  desc={renderTokenInfo(item)}
-                />
+                <InfoTabsIsTokenInfo desc={renderTokenInfo(item)} />
               </InfoTabsList>
             );
 
