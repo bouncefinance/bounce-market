@@ -13,7 +13,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { Themes } from 'modules/themes/types';
 import { useIsXLUp } from 'modules/themes/useTheme';
 import { Button } from 'modules/uiKit/Button';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { RoutesConfiguration } from '../../../createNFT/Routes';
 import { HeaderLinks, HeaderLinksSecondary } from '../HeaderLinks';
 import { Logo } from '../Logo';
@@ -67,12 +67,6 @@ export const Header = () => {
       {isConnected && renderedWallet}
     </>
   );
-
-  const history = useHistory();
-  const onMobileCreate = () => {
-    history.push(RoutesConfiguration.CreateNft.generatePath())
-    onNavClose(false);
-  }
 
   const renderedMobile = (
     <>
@@ -132,11 +126,13 @@ export const Header = () => {
 
                   <Box mt="auto" mb={3}>
                     <Button
+                      component={RouterLink}
                       className={classes.btnCreate}
                       variant="outlined"
+                      to={RoutesConfiguration.CreateNft.generatePath()}
                       fullWidth
                       rounded
-                      onClick={onMobileCreate}
+                      onClick={onNavClose}
                     >
                       {t('header.create')}
                     </Button>
