@@ -74,11 +74,11 @@ export const useInfoTabsIsTokenInfoStyled = makeStyles<Theme>(theme => ({
   },
 
   desc: {
-    p: {
+    '& p': {
       fontSize: 14,
       fontWeight: 400,
 
-      span: {
+      '& span': {
         fontWeight: 500,
       },
     },
