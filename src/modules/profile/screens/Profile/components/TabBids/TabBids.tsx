@@ -8,7 +8,6 @@ import {
   ProductCardCategoryType,
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
@@ -45,7 +44,7 @@ const categories = [
 ];
 
 export const TabBids = () => {
-  const { address } = useAccount()
+  const { address } = useAccount();
   const classes = useTabBidsStyles();
   const dispatch = useDispatchRequest();
   const [catergory, setCategory] = useState<ItemsChannel>(ItemsChannel.all);
@@ -79,9 +78,12 @@ export const TabBids = () => {
       return [];
     }
 
-    const allItems = [...bidsQuery.data.claimList, ...bidsQuery.data.soldList].filter(e => {
-      return e.owneraddress.toLocaleLowerCase() !== address.toLocaleLowerCase()
-    })
+    const allItems = [
+      ...bidsQuery.data.claimList,
+      ...bidsQuery.data.soldList,
+    ].filter(e => {
+      return e.owneraddress.toLocaleLowerCase() !== address.toLocaleLowerCase();
+    });
     const filteredItems =
       catergory === ItemsChannel.all
         ? allItems
@@ -164,9 +166,9 @@ export const TabBids = () => {
         </Hidden>
       </Box>
 
-      {isLoading && <QueryLoadingCentered />}
-      {!isLoading && hasItems && <ProductCards>{renderedCards}</ProductCards>}
-      {!isLoading && !hasItems && (
+      {isLoading || hasItems ? (
+        <ProductCards isLoading={isLoading}>{renderedCards}</ProductCards>
+      ) : (
         <NoItems
           href={MarketRoutesConfig.Market.generatePath()}
           descr={t('profile.no-items.descr')}

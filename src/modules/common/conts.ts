@@ -19,10 +19,6 @@ export const featuresConfig = {
    */
   artists: false,
   /**
-   * Feature is not implemented
-   */
-  loadMoreNFTs: false,
-  /**
    * Page is not created yet
    */
   howItWorkPage: false,
