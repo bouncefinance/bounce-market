@@ -53,13 +53,13 @@ export const SetAvatarModal = ({
 
   const onSubmit = useCallback(
     (payload: ISetAvatarValues) => {
-      dispatch(uploadFile({ file: payload.avatar, fileType: UploadFileType.Avatar })).then(
-        ({ error }) => {
-          if (!error && typeof onClose === 'function') {
-            onClose();
-          }
-        },
-      );
+      dispatch(
+        uploadFile({ file: payload.avatar, fileType: UploadFileType.Avatar }),
+      ).then(({ error }) => {
+        if (!error && typeof onClose === 'function') {
+          onClose();
+        }
+      });
     },
     [dispatch, onClose],
   );
@@ -90,7 +90,8 @@ export const SetAvatarModal = ({
                 size="large"
                 type="submit"
                 fullWidth
-                disabled={loading || !dirty}
+                loading={loading}
+                disabled={!dirty}
               >
                 {loading
                   ? t('common.submitting')

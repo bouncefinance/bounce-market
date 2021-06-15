@@ -1,8 +1,8 @@
 import { Box, Dialog, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import {
-  uploadFile,
   IUploadFileArgs,
+  uploadFile,
   UploadFileType,
 } from 'modules/common/actions/uploadFile';
 import { Bytes, convertBytesToMegabytes } from 'modules/common/types/unit';
@@ -103,7 +103,8 @@ export const SetBgImgModal = ({
                 size="large"
                 type="submit"
                 fullWidth
-                disabled={loading || !dirty}
+                loading={loading}
+                disabled={!dirty}
               >
                 {loading
                   ? t('common.submitting')

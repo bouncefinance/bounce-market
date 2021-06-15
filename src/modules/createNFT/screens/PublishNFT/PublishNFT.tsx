@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Container,
   FormControl,
   Grid,
@@ -15,33 +14,34 @@ import {
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { add } from 'date-fns';
+import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory, useParams } from 'react-router';
+import { useAccount } from '../../../account/hooks/useAccount';
+import { fetchItem } from '../../../buyNFT/actions/fetchItem';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 import { Queries } from '../../../common/components/Queries/Queries';
+import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Address, Days } from '../../../common/types/unit';
-import { fetchItem } from '../../../buyNFT/actions/fetchItem';
 import { ButtonGroupField } from '../../../form/components/ButtonGroupField/ButtonGroupField';
 import { InputField } from '../../../form/components/InputField';
 import { SelectField } from '../../../form/components/SelectField';
 import { FormErrors } from '../../../form/utils/FormErrors';
+import { OnChange } from '../../../form/utils/OnChange';
 import { t, tHTML } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
+import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { AuctionType } from '../../../overview/api/auctionType';
+import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { NftType } from '../../actions/createNft';
+import { fetchNftByUser } from '../../actions/fetchNftByUser';
 import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
-import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
-import { VideoPlayer } from '../../../common/components/VideoPlayer';
-import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
-import { OnChange } from '../../../form/utils/OnChange';
-import { useAccount } from '../../../account/hooks/useAccount';
-import { fetchNftByUser } from '../../actions/fetchNftByUser';
 
 const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
 
@@ -580,7 +580,7 @@ export const PublishNFTComponent = ({
           <Box>
             <Mutation type={publishNft.toString()}>
               {({ loading }) => (
-                <Button size="large" type="submit" fullWidth disabled={loading}>
+                <Button size="large" type="submit" fullWidth loading={loading}>
                   {loading
                     ? t('publish-nft.submitting')
                     : t('publish-nft.submit')}
