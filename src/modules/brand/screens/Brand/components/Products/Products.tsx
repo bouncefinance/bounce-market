@@ -1,4 +1,5 @@
 import { Box } from '@material-ui/core';
+import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
@@ -45,7 +46,9 @@ export const Products = () => {
             objectFit: 'contain',
             loading: 'lazy',
           }}
-          ProfileInfoProps={item.ProfileInfoProps}
+          profileInfo={
+            item.ownerAddress && <AccountInfo address={item.ownerAddress} />
+          }
         />
       )),
     [brandNfts],

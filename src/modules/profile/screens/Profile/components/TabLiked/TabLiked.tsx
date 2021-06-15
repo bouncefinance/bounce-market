@@ -1,6 +1,7 @@
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { auctionTypeMap } from 'modules/common/api/poolType';
+import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import {
   ProductCard,
@@ -62,15 +63,7 @@ export const TabLiked = ({ className }: ITabLikedProps) => {
                   objectFit: 'contain',
                   loading: 'lazy',
                 }}
-                ProfileInfoProps={{
-                  subTitle: 'Owner',
-                  title: 'Owner name',
-                  users: [
-                    {
-                      name: 'Owner name',
-                    },
-                  ],
-                }}
+                profileInfo={<AccountInfo address={item.accountAddress} />}
               />
             ))}
           </ProductCards>

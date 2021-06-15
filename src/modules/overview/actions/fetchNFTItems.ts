@@ -3,6 +3,7 @@ import {
   RequestAction,
   RequestActionMeta,
 } from '@redux-requests/core';
+import { queryAccountInfo } from 'modules/common/actions/queryAccountInfo';
 import { ITradePool_V2, PoolCategoryType } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { Store } from 'redux';
@@ -28,12 +29,14 @@ export interface INFTItem {
   likecount?: number;
   litimgurl?: string;
   metadata?: string;
-  owneraddress?: string;
+  owneraddress: string;
   poolId: number;
   poolType: AuctionType;
   price: string;
   standard?: number;
   supply?: number;
+  ownerAvatar?: string;
+  ownerName?: string;
   token1: string;
   tokenSymbol: TokenSymbol;
 }
@@ -132,7 +135,24 @@ export const fetchNFTItems = createSmartAction<
             .filter(item => item.state !== 1)
             .map(mapNFTItem);
 
-          queryResponse.items = tradePools;
+          const tradePoolsWithOwnerImg: INFTItem[] = await Promise.all(
+            tradePools.map(async item => {
+              const response = await store.dispatchRequest(
+                queryAccountInfo(
+                  { accountAddress: item.owneraddress },
+                  { requestKey: `${item.poolId}`, silent: true },
+                ),
+              );
+
+              return {
+                ...item,
+                ownerAvatar: response.data?.imgUrl,
+                ownerName: response.data?.username,
+              };
+            }),
+          );
+
+          queryResponse.items = tradePoolsWithOwnerImg;
           queryResponse.status =
             poolsData.length < params.limit
               ? FetchNFTItemsStatus.done

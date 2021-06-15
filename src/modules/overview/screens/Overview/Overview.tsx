@@ -10,13 +10,13 @@ import { Movers } from 'modules/overview/components/Movers';
 import { Products } from 'modules/overview/components/Products';
 import { IPromoItem, Promo } from 'modules/overview/components/Promo';
 import { PROMO_ITEMS_COUNT } from 'modules/overview/const';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
-import { RoutesConfiguration } from '../../Routes';
 import { useOverviewStyles } from './useOverviewStyles';
 
 function mapPromoItem(item: IItem): IPromoItem {
@@ -34,7 +34,9 @@ function mapPromoItem(item: IItem): IPromoItem {
       item.poolId && item.poolType
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
-    authorHref: RoutesConfiguration.Overview.generatePath(),
+    authorHref: ProfileRoutesConfig.OtherProfile.generatePath(
+      item.ownerAddress,
+    ),
     MediaProps: {
       category: item.category,
       src: item.fileUrl || '',

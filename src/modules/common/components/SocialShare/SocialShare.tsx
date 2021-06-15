@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { t } from 'modules/i18n/utils/intl';
 import { Menu, MenuItem, MenuList } from '@material-ui/core';
+import { FacebookIcon } from 'modules/common/components/Icons/FacebookIcon';
+import { TelegramIcon } from 'modules/common/components/Icons/TelegramIcon';
+import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
+import { t } from 'modules/i18n/utils/intl';
+import React, { useState } from 'react';
 import {
   FacebookShareButton,
   TelegramShareButton,
   TwitterShareButton,
 } from 'react-share';
-import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
-import { FacebookIcon } from 'modules/common/components/Icons/FacebookIcon';
-import { TelegramIcon } from 'modules/common/components/Icons/TelegramIcon';
 import { useSocialShareStyles } from './useSocialShareStyles';
 
 interface ISocialShareProps {
@@ -101,6 +101,9 @@ export const SocialShare = ({
       keepMounted
       open={Boolean(anchorEl)}
       onClose={handleClose}
+      PaperProps={{
+        variant: 'outlined',
+      }}
     >
       {renderContent}
     </Menu>

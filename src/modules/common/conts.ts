@@ -28,7 +28,7 @@ export const featuresConfig = {
    * Hidden, as for now the own profile is displayed without a unique URL
    * and it cannot be shared
    */
-  ownProfileSharing: false,
+  ownProfileSharing: true,
   /**
    * Hidden, as for now the own brand is displayed without a unique URL
    * and it cannot be shared

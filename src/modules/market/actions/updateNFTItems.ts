@@ -1,4 +1,5 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import { queryAccountInfo } from 'modules/common/actions/queryAccountInfo';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
@@ -6,6 +7,7 @@ import {
   FetchNFTItemsMetaType,
   FetchNFTItemsStatus,
   IFetchNFTItems,
+  INFTItem,
   mapNFTItem,
 } from 'modules/overview/actions/fetchNFTItems';
 import { fetchPools } from 'modules/overview/actions/fetchPools';
@@ -80,7 +82,24 @@ export const updateNFTItems = createAction<
           .filter(item => item.state !== 1)
           .map(mapNFTItem);
 
-        queryResponse.items = tradePools;
+        const tradePoolsWithOwnerImg: INFTItem[] = await Promise.all(
+          tradePools.map(async item => {
+            const response = await store.dispatchRequest(
+              queryAccountInfo(
+                { accountAddress: item.owneraddress },
+                { requestKey: `${item.poolId}`, silent: true },
+              ),
+            );
+
+            return {
+              ...item,
+              ownerAvatar: response.data?.imgUrl,
+              ownerName: response.data?.username,
+            };
+          }),
+        );
+
+        queryResponse.items = tradePoolsWithOwnerImg;
         queryResponse.status =
           poolsData.length < params.limit
             ? FetchNFTItemsStatus.done

@@ -1,5 +1,4 @@
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
@@ -17,10 +16,14 @@ import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
+import { PROFILE_INFO_REQUEST_KEY } from '../../OtherProfile';
+
+const getIsOnSale = (item: IItem) => {
+  return item.state === AuctionState.Live || item.state === FixedSwapState.Live;
+};
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();
-  const { address } = useAccount();
 
   const allNftByUserQuery = useQuery<IItem[] | null>({
     type: fetchAllNftByUser.toString(),
@@ -28,27 +31,30 @@ export const TabItems = () => {
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
+    requestKey: PROFILE_INFO_REQUEST_KEY,
   });
 
   useEffect(() => {
-    if (address) {
+    if (profileInfo?.accountAddress) {
       dispatch(
         fetchAllNftByUser({
-          user: address,
+          user: profileInfo.accountAddress,
         }),
       );
     }
-  }, [address, dispatch]);
+  }, [dispatch, profileInfo]);
 
   const hasItems =
     !!allNftByUserQuery.data && allNftByUserQuery.data.length > 0;
 
-  const username = profileInfo?.username ?? truncateWalletAddr(String(address));
+  const username = profileInfo
+    ? profileInfo.username ?? truncateWalletAddr(profileInfo.accountAddress)
+    : 'Unnamed';
 
   return hasItems || allNftByUserQuery.loading ? (
     <TabItemsComponent>
       <ProductCards isLoading={allNftByUserQuery.loading}>
-        {allNftByUserQuery.data?.map((item: IItem) => (
+        {allNftByUserQuery.data?.filter(getIsOnSale).map((item: IItem) => (
           <ProductCard
             id={item.id}
             poolId={item.poolId || 0}
@@ -66,11 +72,8 @@ export const TabItems = () => {
             // status={item.status}
             // UPDATE price
             price={item.poolId ? item.price : undefined}
-            priceType={item.tokenSymbol}
-            isOnSale={
-              item.state === AuctionState.Live ||
-              item.state === FixedSwapState.Live
-            }
+            priceType="BNB"
+            isOnSale
             copies={item.supply}
             MediaProps={{
               category: item.category,
