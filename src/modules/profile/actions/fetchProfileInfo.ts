@@ -12,11 +12,12 @@ export const fetchProfileInfo = createSmartAction<RequestAction>(
   'fetchProfileInfo',
   () => ({
     request: {
-      url: '/api/v2/main/getaccount',
+      url: '/api/v2/main/auth/getaccount',
       method: 'post',
     },
     meta: {
       asMutation: false,
+      auth: true,
       driver: 'axiosSmartchain',
       onRequest: (
         request,
