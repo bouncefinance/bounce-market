@@ -1,0 +1,26 @@
+# 文档地址
+https://github.com/bouncefinance/Fangible_V2_API/blob/main/Fangible_V2_API-EN_US.md
+
+
+### 搜索
+POST https://market-test.bounce.finance/api/v2/main/datafilter
+Content-Type: application/json
+
+{
+	"likestr": "h"
+}
+
+
+### test
+POST https://market-test.bounce.finance/api/v2/main/auth/getoneitembyid
+
+Content-Type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50QWRkcmVzcyI6IjB4NzFGNjZkZjEwOEEwYTVkNTg0OTUzMWViYjdDZTlDMUY1RDIwOWMwQSIsImV4cCI6MTYyMzc0NTkxMywiaXNzIjoibmZ0c3RvcmUiLCJuYmYiOjE2MjM3Mzc3MTN9.ANmZylmRWjHvTcYj6-srK5c3CbUALaxMl8M93feyN94
+
+{
+	"accountaddress": "0x71F66df108A0a5d5849531ebb7Ce9C1F5D209c0A",
+	"ct": "0x479FCe86f116665b8a4d07165a0eB7799A4AEb30",
+	"id": 18298
+}
+
+# {"code":1,"data":[{"id":100,"creator":"0x2d3fff58da3346dce601f6db8eec57906cdb17be","ownername":"Homie@Xu-1","owneraddress":"0x2d3fff58da3346dce601f6db8eec57906cdb17be","contractaddress":"0xe96a107cbbe3554661f5b7e6ad879079b3e686c6","brandname":"Homie@Xu","brandsymbol":"","description":"Hey!","imgurl":"https://market-test.bounce.finance/jpgfileget/6881927bfd1621ccf2d2357742c0510f-1617208930.jpg","standard":0,"status":0,"popularweight":129,"bandimgurl":"","ownerimg":"https://market-test.bounce.finance/pngfileget/d2e5e2bf79dc39c60a2ba7f0a9a4f218-1617209581.png"},{"id":113,"creator":"0x91dd189a5246ef89d5fa8e046a5470e2552b6605","ownername":"","owneraddress":"0x91dd189a5246ef89d5fa8e046a5470e2552b6605","contractaddress":"0xe8c40477c82d0ad2f41d056a64e0a49327ded194","brandname":"test23-721","brandsymbol":"","description":"test23-721","imgurl":"https://market-test.bounce.finance/jpgfileget/65ed4155af4af8fa47dcc54e22d36959-1617787043.jpg","standard":0,"status":0,"popularweight":1,"bandimgurl":"","ownerimg":""},{"id":114,"creator":"0x269d1005c0d8dd494ff92a2f9f942ee1f30e2b71","ownername":"","owneraddress":"0x269d1005c0d8dd494ff92a2f9f942ee1f30e2b71","contractaddress":"0xa13269152d7642329f47306349e0e04f79e9812e","brandname":"test25-1155","brandsymbol":"","description":"test25-1155","imgurl":"https://market-test.bounce.finance/jpgfileget/3e2b7148682bd655add15979e30c21fa-1617787780.jpg","standard":1,"status":0,"popularweight":1,"bandimgurl":"","ownerimg":""},{"id":115,"creator":"0xd70179250e895103841f44b7928f0bb5f617bafc","ownername":"tom","owneraddress":"0xd70179250e895103841f44b7928f0bb5f617bafc","contractaddress":"0x52b40fa553800e269dee8ab17ac49de4a4c41bb0","brandname":"test33-721","brandsymbol":"","description":"test33-721","imgurl":"https://market-test.bounce.finance/pngfileget/d41a52a4d879b8339c6b63ed15bea8dc-1617800316.png","standard":0,"status":0,"popularweight":31,"bandimgurl":"https://market-test.bounce.finance/pngfileget/ac7b64765e43875fa1aca294ac1eb3fe-1617870181.png","ownerimg":"https://market-test.bounce.finance/giffileget/5356781519d65f0b5355ce86afae3c75-1617870440.gif"},{"id":116,"creator":"0x8fc625474765e10d16e0fc4295388b5af5d1ec5a","ownername":"","owneraddress":"0x8fc625474765e10d16e0fc4295388b5af5d1ec5a","contractaddress":"0x75a4c2eb0bfc3c5e52deeaa2c09b6fd3cc6e35f9","brandname":"test1-721-Brand","brandsymbol":"","description":"test1-721-Brand","imgurl":"https://market-test.bounce.finance/jpgfileget/a00f10f5843172738e74451b267fe907-1617850166.jpg","standard":0,"status":0,"popularweight":1,"bandimgurl":"","ownerimg":""},{"id":117,"creator":"0x70c16c5403667ac07f39121bb17e3110eace23a6","ownername":"","owneraddress":"0x70c16c5403667ac07f39121bb17e3110eace23a6","contractaddress":"0x15912f36d2c6408b390d4d78d47eb7f584e9d3fd","brandname":"test1-721-Brand","brandsymbol":"","description":"test1-721-Brand","imgurl":"https://market-test.bounce.finance/pngfileget/2c8799d0b823977333aa053312422bf0-1617851390.png","standard":0,"status":0,"popularweight":1,"bandimgurl":"","ownerimg":""}],"total":127}

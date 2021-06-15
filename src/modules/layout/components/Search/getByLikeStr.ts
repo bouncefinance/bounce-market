@@ -1,4 +1,5 @@
 import { RequestAction } from '@redux-requests/core';
+import { AuctionTypeKeys } from 'modules/overview/api/auctionType';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { featuresConfig } from '../../../common/conts';
 
@@ -37,6 +38,8 @@ interface IApiSearchResult {
       updated_at: string;
     }[];
     items: {
+      poolid: number;
+      pooltype: AuctionTypeKeys;
       brandid: number;
       category: 'image' | 'video';
       channel: string;
@@ -67,6 +70,8 @@ interface IApiSearchResult {
 }
 
 export interface ISearchItem {
+  poolid: number;
+  pooltype: AuctionTypeKeys;
   id: number;
   name: string;
   previewUrl: string;
@@ -101,6 +106,8 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
     items: items
       .sort((a, b) => b.popularweight - a.popularweight)
       .map(item => ({
+        poolid: item.poolid,
+        pooltype: item.pooltype,
         id: item.id,
         name: item.itemname,
         category: item.category,
@@ -133,11 +140,10 @@ export const getByLikeStr = createSmartAction<
   RequestAction<IApiSearchResult, ISearchResult>
 >('getByLikeStr', (likestr: string) => ({
   request: {
-    url: '/api/v2/main/getbylikestr',
+    url: '/api/v2/main/datafilter',
     method: 'post',
     data: {
-      accountaddresss: '',
-      likestr: likestr,
+      likestr,
     },
   },
   meta: {
