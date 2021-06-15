@@ -30,7 +30,7 @@ export const fetchPools = createSmartAction<
     },
   },
   meta: {
-    driver: 'nftview',
+    driver: 'axios',
     getData: response => {
       if (response.code !== 1) {
         throw new Error(response.msg);
