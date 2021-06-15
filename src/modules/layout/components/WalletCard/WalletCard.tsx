@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
-import { CopyToClicp } from 'modules/common/components/CopyToClip/CopyToClip';
+import { CopyToClip } from 'modules/common/components/CopyToClip/CopyToClip';
 import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import React from 'react';
@@ -45,7 +45,7 @@ export const WalletCard = ({
       ) : null}
 
       {address && <Box className={classes.row}>
-        <CopyToClicp address={address} />
+        <CopyToClip address={address} />
       </Box>}
 
       {balance ? (

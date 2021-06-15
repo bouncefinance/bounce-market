@@ -6,7 +6,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { CopyToClicp } from 'modules/common/components/CopyToClip/CopyToClip';
+import { CopyToClip } from 'modules/common/components/CopyToClip/CopyToClip';
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { SocialShare } from 'modules/common/components/SocialShare';
@@ -57,7 +57,7 @@ export const InfoPanel = ({
         {!isBrand && (
           <Grid item>
             <div className={classes.address}>
-              {address && <CopyToClicp address={address} />}
+              {address && <CopyToClip address={address} />}
             </div>
           </Grid>
         )}

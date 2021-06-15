@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const CopyToClicp = ({
+export const CopyToClip = ({
   address,
 }: {
   address: string;
