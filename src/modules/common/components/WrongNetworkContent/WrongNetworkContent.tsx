@@ -1,9 +1,9 @@
-import React from 'react';
 import { Box, Typography } from '@material-ui/core';
+import React from 'react';
+import { useAccount } from '../../../account/hooks/useAccount';
 import { t } from '../../../i18n/utils/intl';
 import { Button } from '../../../uiKit/Button';
 import { useWrongNetworkContentStyles } from './useWrongNetworkContentStyles';
-import { useAccount } from '../../../account/hooks/useAccount';
 
 interface IWrongNetworkContentProps {
   handleConnect?: () => void;
@@ -33,7 +33,7 @@ export const WrongNetworkContent = ({
       {walletSupportNetworkChange && (
         <Button
           onClick={handleConnect}
-          disabled={loading}
+          loading={loading}
           className={classes.connectBtn}
         >
           {t('change-wallet.submit')}

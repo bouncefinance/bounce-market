@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from '@material-ui/core';
+import { Box, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { createBrandNFT } from 'modules/brand/actions/createBrandNft';
@@ -10,6 +10,7 @@ import {
   NftType,
 } from 'modules/createNFT/actions/createNft';
 import { useCreateNFTStyles } from 'modules/createNFT/screens/CreateNFT/useCreateNFTStyles';
+import { Button } from 'modules/uiKit/Button';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
@@ -128,8 +129,8 @@ export const CreateBrandItem = () => {
         value: Channel.Sports,
       },
       {
-        label: t(`create-brand-nft.channelOption.${Channel.Conicbooks}`),
-        value: Channel.Conicbooks,
+        label: t(`create-brand-nft.channelOption.${Channel.Comicbooks}`),
+        value: Channel.Comicbooks,
       },
     ],
     [],
@@ -205,8 +206,9 @@ export const CreateBrandItem = () => {
                 <Button
                   size="large"
                   type="submit"
+                  loading={loading}
                   fullWidth
-                  disabled={loading || !brandInfo}
+                  disabled={!brandInfo}
                 >
                   {loading
                     ? t('common.submitting')

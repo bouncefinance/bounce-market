@@ -4,12 +4,12 @@ import { Address } from '../../common/types/unit';
 import { NftType } from '../../createNFT/actions/createNft';
 import { AuctionType } from './auctionType';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
+import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { TokenSymbol } from '../../common/types/TokenSymbol';
 
 export interface IApiItem {
-  likecount: number;
   brandid: number;
-  category: 'image';
+  category: ProductCardCategoryType;
   channel: string;
   contractaddress: Address;
   created_at: string;
@@ -36,9 +36,8 @@ export interface IApiItem {
 }
 
 export interface IItem {
-  likeCount: number;
   brandId: number;
-  category: 'image';
+  category: ProductCardCategoryType;
   channel: string;
   contractAddress: Address;
   description: string;
@@ -75,7 +74,6 @@ export function hasBrand(item: IItem) {
 
 export function mapItem(item: IApiItem): IItem {
   return {
-    likeCount: item.likecount,
     brandId: item.brandid,
     category: item.category,
     channel: item.channel,

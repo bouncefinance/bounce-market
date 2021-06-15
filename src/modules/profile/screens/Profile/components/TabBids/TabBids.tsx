@@ -2,9 +2,11 @@ import { Box, Hidden } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { NoItems } from 'modules/common/components/NoItems';
-import { ProductCard } from 'modules/common/components/ProductCard';
+import {
+  ProductCard,
+  ProductCardCategoryType,
+} from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
@@ -35,8 +37,8 @@ const categories = [
     label: t('profile.bids-categories.sport'),
   },
   {
-    value: ItemsChannel.comics,
-    label: t('profile.bids-categories.comics'),
+    value: ItemsChannel.comicbooks,
+    label: t('profile.bids-categories.Comicbooks'),
   },
 ];
 
@@ -88,6 +90,9 @@ export const TabBids = () => {
   const renderedCards = useMemo(() => {
     return items.map(item => (
       <ProductCard
+        id={item.id}
+        poolId={item.poolId}
+        auctionType={item.poolType}
         key={uid(item)}
         isOnSale
         href={
@@ -105,14 +110,14 @@ export const TabBids = () => {
         copies={item.supply}
         likes={undefined}
         MediaProps={{
-          category: item.category,
+          category: item.category as ProductCardCategoryType,
           src: item.fileurl,
           objectFit: 'contain',
           loading: 'lazy',
         }}
         ProfileInfoProps={{
           subTitle: 'Owner',
-          title: 'Owner title',
+          title: `${item.owneraddress ?? ''}`,
           users: [
             {
               name: 'Owner name',
@@ -154,10 +159,13 @@ export const TabBids = () => {
         </Hidden>
       </Box>
 
-      {isLoading && <QueryLoadingCentered />}
-      {!isLoading && hasItems && <ProductCards>{renderedCards}</ProductCards>}
-      {!isLoading && !hasItems && (
-        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+      {isLoading || hasItems ? (
+        <ProductCards isLoading={isLoading}>{renderedCards}</ProductCards>
+      ) : (
+        <NoItems
+          href={MarketRoutesConfig.Market.generatePath()}
+          descr={t('profile.no-items.descr')}
+        />
       )}
     </>
   );

@@ -9,6 +9,7 @@ import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { featuresConfig } from 'modules/common/conts';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
@@ -76,7 +77,7 @@ export const MyBrand = () => {
     },
     [],
   );
-  
+
   return (
     <Section className={classes.root}>
       <Header
@@ -109,6 +110,9 @@ export const MyBrand = () => {
           {items?.map((item: any) => (
             <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(item)}>
               <ProductCard
+                id={item.id}
+                poolId={item.poolId}
+                auctionType={item.poolType}
                 key={item.id}
                 isOnSale={!!item.poolId}
                 title={item.itemname}
@@ -130,14 +134,14 @@ export const MyBrand = () => {
                 }}
                 ProfileInfoProps={{
                   subTitle: 'Owner',
-                  title: `${profileInfo?.username}`,
+                  title: `${
+                    profileInfo?.username ?? truncateWalletAddr(String(address))
+                  }`,
+                  isOwner: true,
                   users: [
                     {
                       name: 'name',
-                      avatar: `${
-                        profileInfo?.imgUrl ?? 'https://via.placeholder.com/32'
-                      }`,
-                      verified: true,
+                      avatar: `${profileInfo?.imgUrl}`,
                     },
                   ],
                 }}

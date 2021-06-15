@@ -44,9 +44,9 @@ export const listBrandItems = createSmartAction(
             const nfts = [...(items721 ?? []), ...(items1155 ?? [])];
 
             const { data: pools } = await store.dispatchRequest(
-              getPoolsByFilter({ 
+              getPoolsByFilter({
                 user: userAddress,
-                contract_address: contractAddress
+                contract_address: contractAddress,
               }),
             );
 
@@ -127,8 +127,9 @@ export const listBrandItems = createSmartAction(
                   };
                 }
 
-                const supply = nfts.find(nftItem => nftItem.token_id === String(item.id))
-                  ?.balance;
+                const supply = nfts.find(
+                  nftItem => nftItem.token_id === String(item.id),
+                )?.balance;
 
                 return { ...item, supply: supply };
               })

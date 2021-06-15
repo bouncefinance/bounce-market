@@ -2,7 +2,9 @@ import { Box, Hidden, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
 import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
+import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
+import { VideoPlayer } from 'modules/common/components/VideoPlayer';
 import { t } from 'modules/i18n/utils/intl';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React from 'react';
@@ -22,6 +24,9 @@ export interface IPromoCardProps {
   srcset?: IImgProps['srcset'];
   href: string;
   authorHref: string;
+  MediaProps: IImgProps & {
+    category: ProductCardCategoryType;
+  };
 }
 
 export const PromoCard = ({
@@ -36,6 +41,7 @@ export const PromoCard = ({
   srcset,
   href,
   authorHref,
+  MediaProps,
 }: IPromoCardProps) => {
   const classes = usePromoCardStyles();
 
@@ -98,15 +104,28 @@ export const PromoCard = ({
 
       <Box position="relative">
         <Link to={href}>
-          <Img
-            className={classes.imgWrap}
-            ratio="1x1"
-            objectFit="contain"
-            src={img}
-            srcset={srcset}
-            imgClassName="swiper-lazy"
-            isNativeLazyLoading={false}
-          />
+          {MediaProps.category === 'image' ? (
+            <Img
+              className={classes.imgWrap}
+              ratio="1x1"
+              objectFit="contain"
+              src={img}
+              srcset={srcset}
+              imgClassName="swiper-lazy"
+              isNativeLazyLoading={false}
+            />
+          ) : (
+            <div className={classes.videoWrapper}>
+              <div className={classes.video}>
+                {MediaProps.src && (
+                  <VideoPlayer
+                    src={MediaProps.src}
+                    objectFit={MediaProps.objectFit}
+                  />
+                )}
+              </div>
+            </div>
+          )}
         </Link>
 
         <SwiperPreloader />

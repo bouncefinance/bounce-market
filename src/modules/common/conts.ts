@@ -13,17 +13,13 @@ export const featuresConfig = {
    */
   artists: false,
   /**
-   * Feature is not implemented
-   */
-  loadMoreNFTs: false,
-  /**
    * Page is not created yet
    */
   howItWorkPage: false,
   /**
    * No data provided for this
    */
-  nftCardOwnerInfo: false,
+  nftCardOwnerInfo: true,
   /**
    * No has profile pages yet
    */
@@ -38,26 +34,22 @@ export const featuresConfig = {
    * and it cannot be shared
    */
   ownBrandSharing: false,
-  /**
-   * Feature is not fully implemented
-   */
   nftLikes: false,
-  /**
-   * Feature is not implemented
-   */
   nftItemsSortSelect: false,
+  nftDetailsLikesCount: false,
   nftDetailsCreator: false,
   nftDetailsCount: true,
+  subscribers: false,
+  profileSortTabs: false,
+  profileFollowers: false,
+  /**
+   * poolDetail config
+   */
+  infoTabs: false,
   nftDetailsHistory: false,
   nftDetailsBids: false,
   nftDetailsOwners: false,
   nftDetailsTokenInfo: false,
-  subscribers: false,
-  profileSortTabs: false,
-  profileActivity: false,
-  profileLiked: false,
-  profileFollowers: false,
-  infoTabs: false,
 };
 
 export enum BlockchainNetworkId {

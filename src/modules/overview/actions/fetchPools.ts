@@ -1,31 +1,38 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { IGetPools, IGetPoolsApi } from 'modules/common/api/getPools';
+import { IGetPoolsApi_V2, ITradePool_V2 } from 'modules/common/api/getPools';
+import { ZERO_ADDRESS } from 'modules/common/conts';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 export const fetchPools = createSmartAction<
-  RequestAction<IGetPoolsApi, IGetPools>,
+  RequestAction<IGetPoolsApi_V2, ITradePool_V2[]>,
   [
     {
-      user?: string;
+      category?: string;
+      channel?: string;
+      currency?: string;
+      limit?: number;
       offset?: number;
-      count?: number;
+      orderfield?: number;
     }?,
-    RequestActionMeta<IGetPoolsApi, IGetPools>?,
+    RequestActionMeta<IGetPoolsApi_V2, ITradePool_V2[]>?,
   ]
 >('NFTMarket/fetchPools', (params, meta) => ({
   request: {
-    url: '/pools',
-    method: 'get',
-    params: {
-      user_address: params?.user,
+    url: '/api/v2/main/getauctionpoolsbypage',
+    method: 'post',
+    data: {
+      category: params?.category || '',
+      channel: params?.channel,
+      currency: params?.currency || ZERO_ADDRESS,
+      limit: params?.limit || 10,
       offset: params?.offset || 0,
-      count: params?.count || 100,
+      orderfield: params?.orderfield || 1,
     },
   },
   meta: {
     driver: 'nftview',
     getData: response => {
-      if (response.code !== 200) {
+      if (response.code !== 1) {
         throw new Error(response.msg);
       }
 

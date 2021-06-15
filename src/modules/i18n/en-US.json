@@ -106,7 +106,7 @@
     "channelOption": {
       "FineArts": "Fine arts",
       "Sports": "Sports",
-      "Comics": "Comicbooks"
+      "Comicbooks": "Comic"
     },
     "standardOption": {
       "0": "ERC-721",
@@ -200,7 +200,7 @@
     "channelOption": {
       "FineArts": "Fine arts",
       "Sports": "Sports",
-      "Comics": "Comicbooks"
+      "Comicbooks": "Comic"
     },
     "standardOption": {
       "0": "ERC-721",
@@ -285,6 +285,7 @@
     "tabs": {
       "my-items": "My items",
       "my-bids": "My bids",
+      "my-sells": "My sells",
       "my-brands": "My brands",
       "activity": "Activity",
       "liked": "Liked",
@@ -298,13 +299,19 @@
       "quantity": "Quantity",
       "from": "From",
       "to": "To",
-      "date": "Date"
+      "date": "Date",
+      "transfer": "Transfer",
+      "created": "Created",
+      "canceled": "Canceled",
+      "claimed": "Claimed",
+      "empty-title": "No activities found",
+      "empty-description": "You have not any activities yet"
     },
     "bids-categories": {
       "all": "All",
       "art": "Art",
       "sport": "Sport",
-      "comics": "Comics"
+      "Comicbooks": "Comic"
     }
   },
   "buy-dialog": {

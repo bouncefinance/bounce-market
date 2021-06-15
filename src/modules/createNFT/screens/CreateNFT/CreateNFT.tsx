@@ -1,5 +1,6 @@
-import { Box, Button, Container, Typography } from '@material-ui/core';
+import { Box, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { Button } from 'modules/uiKit/Button';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
@@ -11,14 +12,14 @@ import { UploadFileField } from '../../../form/components/UploadFileField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
-import { useCreateNFTStyles } from './useCreateNFTStyles';
+import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import {
   Channel,
   createNft,
   ICreateNFTPayload,
   NftType,
 } from '../../actions/createNft';
-import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
+import { useCreateNFTStyles } from './useCreateNFTStyles';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -96,8 +97,8 @@ export const CreateNFT = () => {
         value: Channel.Sports,
       },
       {
-        label: t(`create-nft.channelOption.${Channel.Conicbooks}`),
-        value: Channel.Conicbooks,
+        label: t(`create-nft.channelOption.${Channel.Comicbooks}`),
+        value: Channel.Comicbooks,
       },
     ],
     [],
@@ -196,7 +197,7 @@ export const CreateNFT = () => {
           <Box>
             <Mutation type={createNft.toString()}>
               {({ loading }) => (
-                <Button size="large" type="submit" fullWidth disabled={loading}>
+                <Button size="large" type="submit" fullWidth loading={loading}>
                   {loading ? t('common.submitting') : t('create-nft.submit')}
                 </Button>
               )}

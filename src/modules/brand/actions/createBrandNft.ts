@@ -14,7 +14,7 @@ import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
 export enum Channel {
   FineArts = 'FineArts',
   Sports = 'Sports',
-  Conicbooks = 'Comics',
+  Comicbooks = 'Comicbooks',
 }
 
 export interface ICreateNFTPayload {

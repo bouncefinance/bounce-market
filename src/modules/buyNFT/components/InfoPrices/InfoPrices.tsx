@@ -1,12 +1,13 @@
-import { Box, Button, Grid, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import { t } from 'modules/i18n/utils/intl';
+import { Button } from 'modules/uiKit/Button';
 import React, { useCallback, useState } from 'react';
+import { AuctionState } from '../../../common/const/AuctionState';
+import { FixedSwapState } from '../../../common/const/FixedSwapState';
+import { UserRole } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
-import { AuctionState } from '../../../common/const/AuctionState';
-import { UserRole } from '../../../overview/actions/fetchWeb3PoolDetails';
-import { FixedSwapState } from '../../../common/const/FixedSwapState';
 
 interface IInfoPricesProps {
   price: BigNumber;
@@ -51,7 +52,7 @@ export const InfoPrices = ({
           variant="outlined"
           fullWidth
           onClick={onCancel}
-          disabled={loading}
+          loading={loading}
         >
           {t('info-prices.cancel')}
         </Button>
@@ -80,7 +81,7 @@ export const InfoPrices = ({
               variant="outlined"
               fullWidth
               onClick={onCreatorClaim}
-              disabled={loading}
+              loading={loading}
             >
               {t('info-prices.claim')}
             </Button>
@@ -96,7 +97,7 @@ export const InfoPrices = ({
               variant="outlined"
               fullWidth
               onClick={onBidderClaim}
-              disabled={loading}
+              loading={loading}
             >
               {t('info-prices.claim')}
             </Button>
@@ -122,7 +123,7 @@ export const InfoPrices = ({
               variant="outlined"
               fullWidth
               onClick={onCreatorClaim}
-              disabled={loading}
+              loading={loading}
             >
               {t('info-prices.claim')}
             </Button>
@@ -138,7 +139,7 @@ export const InfoPrices = ({
               variant="outlined"
               fullWidth
               onClick={onBidderClaim}
-              disabled={loading}
+              loading={loading}
             >
               {t('info-prices.claim')}
             </Button>

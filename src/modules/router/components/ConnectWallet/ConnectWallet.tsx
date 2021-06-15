@@ -1,10 +1,10 @@
-import React from 'react';
 import { Container, Typography } from '@material-ui/core';
-import { t } from 'modules/i18n/utils/intl';
-import { useConnectWalletStyles } from './useConnectWalletStyles';
-import { Button } from 'modules/uiKit/Button';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { t } from 'modules/i18n/utils/intl';
+import { Button } from 'modules/uiKit/Button';
 import { Section } from 'modules/uiKit/Section';
+import React from 'react';
+import { useConnectWalletStyles } from './useConnectWalletStyles';
 
 export const ConnectWallet = () => {
   const classes = useConnectWalletStyles();
@@ -22,8 +22,8 @@ export const ConnectWallet = () => {
         </Typography>
         <Button
           onClick={handleConnect}
-          disabled={loading}
           className={classes.connectBtn}
+          loading={loading}
         >
           {t('connect-wallet.placeholder.title')}
         </Button>

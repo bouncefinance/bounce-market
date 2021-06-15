@@ -1,5 +1,6 @@
 import { Container, Grid } from '@material-ui/core';
 import classNames from 'classnames';
+import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { QueryError } from 'modules/common/components/QueryError/QueryError';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
@@ -22,6 +23,7 @@ const paginationId = 'pagination-alksjd';
 
 export interface IPromoItem extends IPromoCardProps {
   thumbImg: string;
+  category: ProductCardCategoryType;
 }
 
 interface IPromoProps extends ISectionProps {
@@ -77,15 +79,35 @@ export const Promo = ({
   const renderedItems = items.map(cardProps => {
     return (
       <SwiperSlide key={uid(cardProps.title)} className={classes.slide}>
-        <PromoCard {...cardProps} />
+        <PromoCard
+          {...cardProps}
+          MediaProps={{
+            category: cardProps.category,
+            src: cardProps.img,
+            imgClassName: 'swiper-lazy',
+            isNativeLazyLoading: false,
+            objectFit: 'scale-down',
+          }}
+        />
       </SwiperSlide>
     );
   });
 
-  const renderedThumbs = items.map(({ thumbImg, title }) => {
+  const renderedThumbs = items.map(({ thumbImg, title, category }) => {
     return (
       <SwiperSlide key={uid(title)} className={classes.thumbsSlide}>
-        <PromoThumb img={thumbImg} title={title} className={classes.thumb} />
+        <PromoThumb
+          img={thumbImg}
+          title={title}
+          className={classes.thumb}
+          MediaProps={{
+            category: category,
+            src: thumbImg,
+            imgClassName: 'swiper-lazy',
+            isNativeLazyLoading: false,
+            objectFit: 'scale-down',
+          }}
+        />
       </SwiperSlide>
     );
   });
