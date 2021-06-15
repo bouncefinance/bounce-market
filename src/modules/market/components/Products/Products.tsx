@@ -11,6 +11,7 @@ import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { ScrollLoader } from 'modules/common/components/ScrollLoader';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import { t } from 'modules/i18n/utils/intl';
 import { updateNFTItems } from 'modules/market/actions/updateNFTItems';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
@@ -120,7 +121,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           }}
           profileInfo={
             <ProfileInfo
-              subTitle="Owner"
+              subTitle={t('product-card.owner')}
               title={item.ownerName ?? truncateWalletAddr(item.ownerAddress)}
               users={[
                 {

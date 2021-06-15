@@ -12,6 +12,7 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
+import { t } from 'modules/i18n/utils/intl';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
@@ -109,7 +110,9 @@ export const MyBrand = () => {
             {brandInfo?.id && <BrandAddItem id={brandInfo.id} />}
           </Grid>
           {items?.map((item: any) => {
-            const shortAddr = address ? truncateWalletAddr(address) : 'Unknown';
+            const shortAddr = address
+              ? truncateWalletAddr(address)
+              : t('common.unknown');
             const username = profileInfo?.username ?? shortAddr;
 
             return (
@@ -139,7 +142,7 @@ export const MyBrand = () => {
                   }}
                   profileInfo={
                     <ProfileInfo
-                      subTitle="Owner"
+                      subTitle={t('product-card.owner')}
                       title={username}
                       users={[
                         {

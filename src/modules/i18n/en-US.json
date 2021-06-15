@@ -11,6 +11,7 @@
     "close": "Close",
     "reset": "Reset",
     "restore": "Restore",
+    "unknown": "Unknown",
     "coming-soon": "Coming soon..."
   },
   "time": {
@@ -360,6 +361,7 @@
     }
   },
   "product-card": {
+    "owner": "Owner",
     "put-on-sale": "Put on sale",
     "transfer": "Transfer token",
     "burn": "Burn token"
