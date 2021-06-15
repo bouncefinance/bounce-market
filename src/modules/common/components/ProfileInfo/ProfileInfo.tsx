@@ -18,7 +18,6 @@ export interface IProfileInfoProps {
   subTitle: string;
   title: string;
   users: IUserInfo[];
-  isOwner?: boolean;
   /**
    * Display title at first
    */
