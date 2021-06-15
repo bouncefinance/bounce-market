@@ -1,6 +1,7 @@
 import { useDispatchRequest } from '@redux-requests/react';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import React, { useEffect, useState } from 'react';
+import { t } from 'modules/i18n/utils/intl';
 import {
   IAccountInfo,
   queryAccountInfo,
@@ -20,7 +21,7 @@ export const AccountInfo = ({ account }: { account: string }) => {
 
   return (
     <ProfileInfo
-      subTitle="Owner"
+      subTitle={t('product-card.owner')}
       title={accountInfo?.username ?? truncateWalletAddr(account)}
       users={[
         {

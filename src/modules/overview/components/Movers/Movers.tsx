@@ -9,6 +9,7 @@ import { ISectionProps } from 'modules/uiKit/Section';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { MoversComponent } from './MoversComponent';
+import { t } from 'modules/i18n/utils/intl';
 
 export const Movers = (sectionProps: ISectionProps) => {
   const overviewQuery = useQuery<IItem[] | null>({
@@ -54,7 +55,7 @@ export const Movers = (sectionProps: ISectionProps) => {
         objectFit: 'contain',
       }}
       ProfileInfoProps={{
-        subTitle: 'Owner',
+        subTitle: t('product-card.owner'),
         title: `${item.ownerAddress ?? ''}`,
         users: [
           {

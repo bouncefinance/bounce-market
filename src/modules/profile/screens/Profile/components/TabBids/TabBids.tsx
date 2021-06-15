@@ -2,12 +2,12 @@ import { Box, Hidden } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { NoItems } from 'modules/common/components/NoItems';
+import { t } from 'modules/i18n/utils/intl';
 import {
   ProductCard,
   ProductCardCategoryType,
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import { IQueryMyBids, queryMyBids } from 'modules/profile/actions/queryMyBids';
@@ -116,7 +116,7 @@ export const TabBids = () => {
           loading: 'lazy',
         }}
         ProfileInfoProps={{
-          subTitle: 'Owner',
+          subTitle: t('product-card.owner'),
           title: `${item.owneraddress ?? ''}`,
           users: [
             {

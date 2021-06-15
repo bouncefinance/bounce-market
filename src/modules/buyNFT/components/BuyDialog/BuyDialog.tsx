@@ -173,7 +173,7 @@ export const BuyDialog = ({
           <Grid item xs={12} sm={4} md={3}>
             <ProfileInfo
               avatarSize="medium"
-              subTitle="Owner"
+              subTitle={t('product-card.owner')}
               title={owner}
               users={[
                 {

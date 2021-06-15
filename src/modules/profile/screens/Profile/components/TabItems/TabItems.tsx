@@ -10,6 +10,7 @@ import { hasBrand, IItem } from 'modules/overview/api/getItems';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
+import { t } from 'modules/i18n/utils/intl';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
@@ -76,7 +77,7 @@ export const TabItems = () => {
               loading: 'lazy',
             }}
             ProfileInfoProps={{
-              subTitle: 'Owner',
+              subTitle: t('product-card.owner'),
               title: `${
                 profileInfo?.username ?? truncateWalletAddr(String(address))
               }`,

@@ -1,4 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
+import { t } from 'modules/i18n/utils/intl';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
@@ -74,10 +75,8 @@ export const MyBrand = () => {
   const toggleBgImgModal = useCallback(
     (isOpen: boolean) => () => {
       setBgImgModalOpened(isOpen);
-    },
-    [],
-  );
-
+    }, []);
+    
   return (
     <Section className={classes.root}>
       <Header
@@ -116,12 +115,13 @@ export const MyBrand = () => {
                 key={item.id}
                 isOnSale={!!item.poolId}
                 title={item.itemname}
+                state={item.state}
                 href={
                   item.poolId && item.poolType
                     ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                        item.poolId,
-                        item.poolType,
-                      )
+                      item.poolId,
+                      item.poolType,
+                    )
                     : ''
                 }
                 price={item.poolId && item.price ? item.price : undefined}
@@ -133,10 +133,9 @@ export const MyBrand = () => {
                   loading: 'lazy',
                 }}
                 ProfileInfoProps={{
-                  subTitle: 'Owner',
-                  title: `${
-                    profileInfo?.username ?? truncateWalletAddr(String(address))
-                  }`,
+                  subTitle: t('product-card.owner'),
+                  title: `${profileInfo?.username ?? truncateWalletAddr(String(address))
+                    }`,
                   isOwner: true,
                   users: [
                     {

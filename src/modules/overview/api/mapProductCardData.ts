@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import Web3 from 'web3';
 import { INFTItem } from '../actions/fetchNFTItems';
+import { t } from 'modules/i18n/utils/intl';
 
 export const mapProductCardData = (item: INFTItem) => ({
   id: item.id,
@@ -20,7 +21,7 @@ export const mapProductCardData = (item: INFTItem) => ({
   // TODO: get NFT item end date data
   endDate: undefined,
   ProfileInfoProps: {
-    subTitle: 'Owner',
+    subTitle: t('product-card.owner'),
     title: `${item.owneraddress ?? ''}`,
     users: [
       {

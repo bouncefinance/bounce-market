@@ -358,6 +358,11 @@
     }
   },
   "product-card": {
+    "not-on-sale": "Not on sale",
+    "price": "Price",
+    "top-bid": "Top Bid",
+    "sold-for": "Sold for",
+    "owner": "Owner",
     "put-on-sale": "Put on sale",
     "transfer": "Transfer token",
     "burn": "Burn token"

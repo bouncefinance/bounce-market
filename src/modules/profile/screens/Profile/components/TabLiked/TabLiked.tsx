@@ -15,6 +15,7 @@ import {
 } from 'modules/profile/actions/queryLikedItems';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
+import { t } from 'modules/i18n/utils/intl';
 import { uid } from 'react-uid';
 
 interface ITabLikedProps {
@@ -63,7 +64,7 @@ export const TabLiked = ({ className }: ITabLikedProps) => {
                   loading: 'lazy',
                 }}
                 ProfileInfoProps={{
-                  subTitle: 'Owner',
+                  subTitle: t('product-card.owner'),
                   title: 'Owner name',
                   users: [
                     {
