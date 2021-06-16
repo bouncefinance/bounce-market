@@ -57,7 +57,7 @@ export const fetchProfileInfo = createSmartAction<
     },
     getData: data => {
       if (data.code !== 1) {
-        console.error(data?.msg ?? 'Unexpected error');
+        console.error('fetchProfileInfo:', data?.msg ?? 'Unexpected error');
         return;
       }
       return mapProfileInfo(data);

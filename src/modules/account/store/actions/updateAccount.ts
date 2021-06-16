@@ -1,13 +1,15 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
+import { RequestAction } from '@redux-requests/core';
+import { createAction } from 'redux-smart-actions';
 import { ISetAccountData, setAccount } from './setAccount';
 
-export const updateAccount = createSmartAction(
+export const updateAccount = createAction<RequestAction<any, ISetAccountData>>(
   'AccountActions/updateAccount',
-  ({ ...updatedData }) => ({
+  (updatedData: ISetAccountData) => ({
     request: {
       promise: (async function () {})(),
     },
     meta: {
+      asMutation: true,
       mutations: {
         [setAccount.toString()]: (
           data: ISetAccountData,
@@ -18,6 +20,8 @@ export const updateAccount = createSmartAction(
               ...updatedData,
             };
           }
+          console.log('updateAccount');
+
           return data;
         },
       },

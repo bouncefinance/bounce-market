@@ -10,7 +10,6 @@ import { connect } from '../store/actions/connect';
 import { disconnect } from '../store/actions/disconnect';
 import { ISetAccountData, setAccount } from '../store/actions/setAccount';
 import { updateAccount } from '../store/actions/updateAccount';
-
 // TODO: Check disconnection, switch chain, switch account
 
 enum WalletEventType {
@@ -74,6 +73,7 @@ function createEventChannel(provider: any) {
         emitter({ message, type: WalletEventType.Message });
       })
       .on('chainChanged', (chainId: string) => {
+        console.log('chainChanged');
         emitter({
           data: { chainId },
           type: WalletEventType.ChainChanged,
@@ -91,6 +91,7 @@ function createEventChannel(provider: any) {
 function* onConnectWallet() {
   const { action, error } = yield putResolve(setAccount());
   if (error || action.type === setAccount.toString() + '_ERROR') {
+    console.log('some error');
     return;
   }
   const provider = action.meta.provider;
@@ -105,10 +106,12 @@ function* onConnectWallet() {
     const event: ProviderEvent = yield take(channel);
 
     if (event.type === WalletEventType.ChainChanged) {
+      console.log('do action on ChainChanged');
       if (event.data.chainId) {
         yield put(updateAccount({ chainId: event.data.chainId }));
       }
     } else if (event.type === WalletEventType.AccountChanged) {
+      console.log('do action on AccountChanged');
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
 
@@ -132,16 +135,16 @@ function* onConnectWallet() {
 }
 
 function* onDisconnectWallet() {
-  const requestToReset: string[] = [
+  const requestsToReset: string[] = [
     setAccount.toString(),
     fetchProfileInfo.toString(),
   ];
 
   if (featuresConfig.nftLikes) {
-    requestToReset.push(queryLikedItems.toString());
+    requestsToReset.push(queryLikedItems.toString());
   }
 
-  yield put(resetRequests(requestToReset));
+  yield put(resetRequests(requestsToReset));
 }
 
 export function* connectSaga() {

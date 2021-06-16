@@ -1,6 +1,8 @@
 import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import { useMutation } from '@redux-requests/react';
 import { ConnectedRouter } from 'connected-react-router';
+import { updateAccount } from 'modules/account/store/actions/updateAccount';
 import React, { ReactNode, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { ReactReduxContext } from 'react-redux';
@@ -20,6 +22,10 @@ export const AppBase = ({ children }: IAppBaseProps) => {
   const [initDone, setInitDone] = useState(false);
   const { locale } = useLocale();
 
+  const { loading } = useMutation({
+    type: updateAccount.toString(),
+  });
+
   useEffect(() => {
     setInitDone(false);
     intl
@@ -37,7 +43,7 @@ export const AppBase = ({ children }: IAppBaseProps) => {
     <MuiThemeProvider theme={mainTheme}>
       <CssBaseline />
 
-      {!initDone ? (
+      {!initDone || loading ? (
         <QueryLoadingAbsolute />
       ) : (
         <ConnectedRouter history={historyInstance} context={ReactReduxContext}>
