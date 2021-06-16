@@ -14,17 +14,12 @@ import classNames from 'classnames';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
-import {
-  IProfileInfoProps,
-  ProfileInfo,
-} from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode, useCallback, useState } from 'react';
 import { Link, Link as RouterLink } from 'react-router-dom';
-import { AccountInfo } from '../AccountInfo';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
@@ -54,7 +49,7 @@ export interface IProductCardComponentProps {
   MediaProps: IImgProps & {
     category: ProductCardCategoryType;
   };
-  ProfileInfoProps: IProfileInfoProps;
+  profileInfo?: ReactNode;
   href?: string;
   isLiked?: boolean;
   isLikeDisabled?: boolean;
@@ -82,7 +77,7 @@ export const ProductCardComponent = ({
   isLiked = false,
   onLikeClick,
   MediaProps,
-  ProfileInfoProps,
+  profileInfo,
   imgPreloader,
   status,
   toSale,
@@ -226,11 +221,7 @@ export const ProductCardComponent = ({
           {title}
         </Typography>
 
-        {ProfileInfoProps?.isOwner ? (
-          <ProfileInfo {...ProfileInfoProps} />
-        ) : (
-          <AccountInfo account={ProfileInfoProps.title} />
-        )}
+        {profileInfo}
 
         <hr className={classes.devider} />
 

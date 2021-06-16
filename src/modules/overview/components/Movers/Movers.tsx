@@ -1,5 +1,6 @@
 import { useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { fetchOverview } from 'modules/overview/actions/fetchOverview';
@@ -54,16 +55,7 @@ export const Movers = (sectionProps: ISectionProps) => {
         isNativeLazyLoading: false,
         objectFit: 'contain',
       }}
-      ProfileInfoProps={{
-        subTitle: t('product-card.owner'),
-        title: `${item.ownerAddress ?? ''}`,
-        users: [
-          {
-            name: 'name',
-            avatar: 'https://via.placeholder.com/32',
-          },
-        ],
-      }}
+      profileInfo={<AccountInfo address={item.ownerAddress} />}
     />
   ));
 

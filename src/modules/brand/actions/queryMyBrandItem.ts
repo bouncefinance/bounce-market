@@ -1,12 +1,12 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
-import { createAction as createSmartAction } from 'redux-smart-actions';
 import { Store } from 'redux';
-import { getAccountBrand } from './getAccountBrand';
+import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { queryBrandItems } from './queryBrandItems';
 import { IBrandInfo } from '../api/queryBrand';
+import { getAccountBrand } from './getAccountBrand';
+import { queryBrandItems } from './queryBrandItems';
 
-interface IMyBrand {
+export interface IMyBrand {
   id: number;
   title: string;
   imgSrc: string;
