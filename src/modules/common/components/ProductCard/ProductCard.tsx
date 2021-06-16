@@ -46,6 +46,7 @@ export const ProductCard = ({
 
   return (
     <ProductCardComponent
+      id={id}
       isLiked={isLiked}
       isLikeDisabled={isLikeDisabled}
       onLikeClick={handleLikeClick}

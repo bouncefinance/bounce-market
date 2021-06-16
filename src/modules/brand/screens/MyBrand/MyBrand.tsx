@@ -79,7 +79,7 @@ export const MyBrand = () => {
     },
     [],
   );
-
+  
   return (
     <Section className={classes.root}>
       <Header
@@ -120,6 +120,8 @@ export const MyBrand = () => {
                 <ProductCard
                   id={item.id}
                   poolId={item.poolId}
+                  contractAddress={item.contractAddress}
+                  standard={item.standard}
                   auctionType={item.poolType}
                   key={item.id}
                   isOnSale={!!item.poolId}

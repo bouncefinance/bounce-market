@@ -8,6 +8,7 @@ import {
   Popover,
   Typography,
 } from '@material-ui/core';
+import { t } from 'modules/i18n/utils/intl';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
@@ -23,6 +24,10 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
 import { useProductCardStyles } from './useProductCardStyles';
+import { transferToken } from 'modules/common/actions/transferToken';
+import { burnToken } from 'modules/common/actions/burnToken';
+import { useDispatchRequest } from '@redux-requests/react';
+import { NftType } from 'modules/createNFT/actions/createNft';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -45,14 +50,15 @@ export interface IProductCardComponentProps {
   };
   profileInfo?: ReactNode;
   href?: string;
+  id?: number;
   isLiked?: boolean;
   isLikeDisabled?: boolean;
   imgPreloader?: ReactNode;
   onLikeClick?: () => void;
   status?: ProductCardStatuses;
   toSale?: string;
-  onTransferClick?: () => void;
-  onBurnClick?: () => void;
+  contractAddress?: string;
+  standard?: NftType;
 }
 
 export const ProductCardComponent = ({
@@ -65,6 +71,7 @@ export const ProductCardComponent = ({
   endDate,
   copies,
   likes,
+  id,
   isLikeDisabled = false,
   isLiked = false,
   onLikeClick,
@@ -73,14 +80,16 @@ export const ProductCardComponent = ({
   imgPreloader,
   status,
   toSale,
-  onTransferClick,
-  onBurnClick,
+  contractAddress,
+  standard = -1,
 }: IProductCardComponentProps) => {
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isPopoverOpened = Boolean(anchorEl);
   const isMinting = status === ProductCardStatuses.Minting;
   const isOnSalePending = status === ProductCardStatuses.OnSalePending;
+
+  const dispatch = useDispatchRequest();
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -92,6 +101,22 @@ export const ProductCardComponent = ({
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
+
+  const onTransferClick = useCallback(() => {
+    if (contractAddress && standard) {
+      dispatch(
+        transferToken(contractAddress, standard)
+      )
+    }
+  }, [standard, contractAddress, dispatch]);
+
+  const onBurnClick = useCallback(() => {
+    if (contractAddress && standard > -1 && id) {
+      dispatch(
+        burnToken(contractAddress, standard, id)
+      )
+    }
+  }, [id, standard, contractAddress, dispatch]);
 
   const renderTimer = useCallback(() => {
     const daysLeft = endDate ? getDaysLeft(endDate) : 0;
@@ -253,7 +278,7 @@ export const ProductCardComponent = ({
                     rounded
                     to={toSale}
                   >
-                    Put on sale
+                    {t('product-card.put-on-sale')}
                   </Button>
                   <ButtonBase className={classes.menuBtn} onClick={handleClick}>
                     <VerticalDotsIcon className={classes.menuIcon} />
@@ -280,14 +305,14 @@ export const ProductCardComponent = ({
                         className={classes.menuItem}
                         onClick={onTransferClick}
                       >
-                        Transfer token
+                        {t('product-card.transfer')}
                       </MenuItem>
 
                       <MenuItem
                         className={classes.menuItem}
                         onClick={onBurnClick}
                       >
-                        Burn token
+                        {t('product-card.burn')}
                       </MenuItem>
                     </MenuList>
                   </Popover>
