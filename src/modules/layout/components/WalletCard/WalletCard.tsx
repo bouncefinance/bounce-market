@@ -19,6 +19,9 @@ import React, { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWalletCardStyles } from './WalletCardStyles';
+import { useDispatch } from 'react-redux';
+import { setOutLogion } from 'store/login';
+import { useCallback } from 'react';
 
 export interface IWalletCardProps {
   address: string;
@@ -42,6 +45,7 @@ export const WalletCard = ({
   const classes = useWalletCardStyles();
   const { deactivate } = useWeb3React();
   const [isCopy, setCopy] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isCopy) {
@@ -51,6 +55,16 @@ export const WalletCard = ({
       }, 1000);
     }
   }, [isCopy]);
+
+  const outLogin = useCallback(() => {
+    localStorage.clear();
+    deactivate();
+    handleDisconnect && handleDisconnect();
+  }, [deactivate, handleDisconnect]);
+
+  useEffect(() => {
+    dispatch(setOutLogion(outLogin));
+  }, [dispatch, outLogin]);
 
   return (
     <Box className={classes.root}>
@@ -129,14 +143,7 @@ export const WalletCard = ({
         >
           {t('header.profile-settings')}
         </MenuItem>
-        <MenuItem
-          className={classes.menuItem}
-          onClick={() => {
-            localStorage.clear();
-            deactivate();
-            handleDisconnect && handleDisconnect();
-          }}
-        >
+        <MenuItem className={classes.menuItem} onClick={outLogin}>
           {t('header.disconnect')}
         </MenuItem>
       </MenuList>

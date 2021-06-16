@@ -1,5 +1,5 @@
 import { createDriver as createAxiosDriver } from '@redux-requests/axios';
-import { handleRequests } from '@redux-requests/core';
+import { abortRequests, handleRequests } from '@redux-requests/core';
 import { createDriver } from '@redux-requests/promise';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -14,22 +14,30 @@ import { extractMessage } from '../modules/common/utils/extractError';
 import { historyInstance } from '../modules/common/utils/historyInstance';
 import { NotificationActions } from '../modules/notification/store/NotificationActions';
 import { notificationSlice } from '../modules/notification/store/notificationSlice';
+import loginReducer from './login';
 import { rootSaga } from './rootSaga';
 import { i18nPersistConfig } from './webStorageConfigs';
+
+const axiosInit = axios.create({
+  baseURL: API_BASE,
+});
+axiosInit.interceptors.response.use(response => {
+  // token invalid
+  if ([-1, -2].includes(response.data?.errorCode)) {
+    store.dispatch(abortRequests());
+    store.getState().login.outLogin();
+  }
+  return response;
+});
 
 const { requestsReducer, requestsMiddleware } = handleRequests({
   driver: {
     default: createDriver({
       processResponse: response => ({ data: response }),
     }),
-    axiosSmartchain: createAxiosDriver(
-      axios.create({
-        baseURL: API_BASE,
-      }),
-    ),
+    axiosSmartchain: createAxiosDriver(axiosInit),
   },
   onRequest: (request, action, store) => {
-
     const data = {
       token: localStorage.getItem(tokenLocalStorageKey),
     };
@@ -69,6 +77,7 @@ const rootReducer = combineReducers({
   router: connectRouter(historyInstance),
   notifications: notificationSlice.reducer,
   [LAYOUT_STATE_NAME]: layoutReducer,
+  login: loginReducer,
 });
 
 export const store = configureStore({
