@@ -1,19 +1,21 @@
 import { Box, Card, CardContent, Tooltip, Typography } from '@material-ui/core';
 import classNames from 'classnames';
+import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
+import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
-import React, { useMemo } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useBrandCardStyles } from './useBrandCardStyles';
-import { t } from 'modules/i18n/utils/intl';
-import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
-import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 
 export interface IBrandCardProps {
   title: string;
   itemsCount: number;
   imgSrc: string;
   id: number;
+  withAddBtn?: boolean;
+  addItemHref?: string;
+  href: string;
 }
 
 export const BrandCard = ({
@@ -21,29 +23,24 @@ export const BrandCard = ({
   title,
   itemsCount,
   imgSrc,
+  withAddBtn,
+  addItemHref,
+  href,
 }: IBrandCardProps) => {
   const classes = useBrandCardStyles();
-  const history = useHistory();
-
-  const handleAddItem = () => {
-    history.push(BrandRoutesConfig.CreateBrandItem.generatePath(id));
-  }
-
-  const myBrandPath = useMemo(() => {
-    return BrandRoutesConfig.MyBrand.generatePath(id)
-  }, [id])
 
   return (
     <Card className={classes.root} variant="outlined">
-      {itemsCount ? (
+      {!!itemsCount && withAddBtn && (
         <div className={classes.createNewMiniBtnWrap}>
           <Tooltip title={t('brand.card.createNewItem')} arrow>
             <Button
+              component={Link}
+              to={addItemHref}
               className={classes.createNewMiniBtn}
               variant="outlined"
               fullWidth={false}
               rounded
-              onClick={handleAddItem}
             >
               <PlusIcon
                 className={classNames(
@@ -54,9 +51,9 @@ export const BrandCard = ({
             </Button>
           </Tooltip>
         </div>
-      ) : null}
+      )}
 
-      <Link to={myBrandPath} className={classes.wrapLink}>
+      <Link to={href} className={classes.wrapLink}>
         <Box className={classes.imgBox}>
           <Img src={imgSrc} className={classes.imgWrap} ratio="1x1" />
         </Box>
@@ -77,22 +74,24 @@ export const BrandCard = ({
           </Typography>
         </CardContent>
       </Link>
-      {!itemsCount ? (
+
+      {!itemsCount && withAddBtn && (
         <Button
           className={classNames(classes.addNewBtn, classes.addNewBtnInCard)}
           variant="outlined"
           fullWidth={false}
+          component={Link}
+          to={addItemHref}
           rounded
           startIcon={
             <PlusIcon
               className={classNames(classes.icon, classes.iconInheritFontSize)}
             />
           }
-          onClick={handleAddItem}
         >
           {t('brand.card.addNewItem')}
         </Button>
-      ) : null}
+      )}
     </Card>
   );
 };

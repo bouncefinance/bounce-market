@@ -4,6 +4,8 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
@@ -12,6 +14,7 @@ import {
   IFetchNFTItems,
 } from 'modules/overview/actions/fetchNFTItems';
 import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Button } from 'modules/uiKit/Button';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useState } from 'react';
@@ -106,6 +109,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const hasItems = Boolean(nftItems && nftItems.length);
 
   const renderedItems = (nftItems || []).map(item => {
+    const ownerName = item.ownerName ?? truncateWalletAddr(item.ownerAddress);
     return (
       <ProductCard
         isOnSale
@@ -125,7 +129,21 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           objectFit: 'scale-down',
           loading: 'lazy',
         }}
-        ProfileInfoProps={item.ProfileInfoProps}
+        profileInfo={
+          <ProfileInfo
+            subTitle="Owner"
+            title={ownerName}
+            users={[
+              {
+                href: ProfileRoutesConfig.OtherProfile.generatePath(
+                  item.ownerAddress,
+                ),
+                name: ownerName,
+                avatar: item.ownerAvatar,
+              },
+            ]}
+          />
+        }
       />
     );
   });

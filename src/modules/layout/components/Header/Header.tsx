@@ -60,7 +60,7 @@ export const Header = () => {
       </Button>
 
       {!isConnected && (
-        <Button onClick={handleConnect} disabled={loading} rounded>
+        <Button onClick={handleConnect} loading={loading} rounded>
           {t('header.connect')}
         </Button>
       )}
@@ -141,7 +141,7 @@ export const Header = () => {
                   {!isConnected && (
                     <Button
                       onClick={handleConnect}
-                      disabled={loading}
+                      loading={loading}
                       fullWidth
                       rounded
                     >

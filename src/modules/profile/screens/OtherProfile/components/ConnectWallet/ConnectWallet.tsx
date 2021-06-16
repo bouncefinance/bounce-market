@@ -6,7 +6,11 @@ import { Section } from 'modules/uiKit/Section';
 import React from 'react';
 import { useConnectWalletStyles } from './useConnectWalletStyles';
 
-export const ConnectWallet = () => {
+interface IConnectWalletProps {
+  className?: string;
+}
+
+export const ConnectWallet = ({ className }: IConnectWalletProps) => {
   const classes = useConnectWalletStyles();
 
   const { handleConnect, loading } = useAccount();
@@ -14,17 +18,11 @@ export const ConnectWallet = () => {
   return (
     <Section className={classes.root}>
       <Container maxWidth="sm">
-        <Typography variant="h1" className={classes.caption}>
-          {t('connect-wallet.placeholder.title')}
-        </Typography>
-        <Typography variant="body1" className={classes.text}>
+        <Typography variant="body1" className={classes.descr}>
           {t('connect-wallet.placeholder.description')}
         </Typography>
-        <Button
-          onClick={handleConnect}
-          className={classes.connectBtn}
-          loading={loading}
-        >
+
+        <Button onClick={handleConnect} disabled={loading}>
           {t('connect-wallet.placeholder.title')}
         </Button>
       </Container>
