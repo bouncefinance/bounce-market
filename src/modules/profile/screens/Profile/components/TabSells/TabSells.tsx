@@ -45,7 +45,7 @@ const categories = [
 ];
 
 export const TabSells = () => {
-  const { address }  = useAccount()
+  const { address } = useAccount();
   const classes = useTabBidsStyles();
   const dispatch = useDispatchRequest();
   const [catergory, setCategory] = useState<ItemsChannel>(ItemsChannel.all);
@@ -79,10 +79,13 @@ export const TabSells = () => {
       return [];
     }
 
-    const allItems = [...bidsQuery.data.claimList, ...bidsQuery.data.soldList].filter(e => {
-      return e.owneraddress.toLocaleLowerCase() === address.toLocaleLowerCase()
-    })
-    console.log(allItems)
+    const allItems = [
+      ...bidsQuery.data.claimList,
+      ...bidsQuery.data.soldList,
+    ].filter(e => {
+      return e.owneraddress.toLocaleLowerCase() === address.toLocaleLowerCase();
+    });
+    console.log(allItems);
     const filteredItems =
       catergory === ItemsChannel.all
         ? allItems
@@ -121,15 +124,15 @@ export const TabSells = () => {
           objectFit: 'contain',
           loading: 'lazy',
         }}
-        ProfileInfoProps={{
-          subTitle: 'Owner',
-          title: `${item.owneraddress ?? ''}`,
-          users: [
-            {
-              name: 'Owner name',
-            },
-          ],
-        }}
+        // ProfileInfoProps={{
+        //   subTitle: 'Owner',
+        //   title: `${item.owneraddress ?? ''}`,
+        //   users: [
+        //     {
+        //       name: 'Owner name',
+        //     },
+        //   ],
+        // }}
       />
     ));
   }, [items]);
