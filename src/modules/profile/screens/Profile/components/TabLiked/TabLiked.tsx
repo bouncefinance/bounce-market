@@ -16,7 +16,6 @@ import {
 } from 'modules/profile/actions/queryLikedItems';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
-import { t } from 'modules/i18n/utils/intl';
 import { uid } from 'react-uid';
 
 interface ITabLikedProps {

@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import Web3 from 'web3';
 import { INFTItem } from '../actions/fetchNFTItems';
-import { t } from 'modules/i18n/utils/intl';
 
 export const mapProductCardData = (item: INFTItem) => ({
   id: item.id,

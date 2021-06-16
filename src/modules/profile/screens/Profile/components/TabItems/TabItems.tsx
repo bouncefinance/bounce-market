@@ -14,7 +14,6 @@ import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
-import { t } from 'modules/i18n/utils/intl';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
