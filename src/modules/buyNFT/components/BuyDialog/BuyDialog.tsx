@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  Grid,
-  IconButton,
-  Typography,
-} from '@material-ui/core';
+import { Box, Dialog, Grid, IconButton, Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
 import { AngleUpIcon } from 'modules/common/components/Icons/AngleUpIcon';
@@ -14,6 +7,7 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { InputField } from 'modules/form/components/InputField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
+import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
@@ -37,7 +31,7 @@ interface IBuyDialogProps {
   ownerAvatar?: string;
   readonly: boolean;
   category: 'image' | 'video';
-  disabled?: boolean;
+  loading?: boolean;
   maxQuantity?: number;
 }
 
@@ -52,7 +46,7 @@ export const BuyDialog = ({
   ownerAvatar,
   readonly,
   category,
-  disabled,
+  loading,
   maxQuantity,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
@@ -129,14 +123,14 @@ export const BuyDialog = ({
             fullWidth
             size="large"
             onClick={handleSubmit}
-            disabled={disabled}
+            loading={loading}
           >
             {t('buy-dialog.submit')}
           </Button>
         </>
       );
     },
-    [classes, disabled, readonly],
+    [classes, loading, readonly],
   );
 
   return (
