@@ -11,6 +11,7 @@
     "close": "关闭",
     "reset": "重置",
     "restore": "恢复",
+    "unknown": "Unknown",
     "coming-soon": "敬请期待..."
   },
   "time": {
@@ -284,9 +285,11 @@
     },
     "tabs": {
       "my-items": "我的商品",
+      "items": "商品",
       "my-bids": "我的出价",
       "my-sells": "我的售卖",
       "my-brands": "我的品牌",
+      "brands": "品牌",
       "activity": "动态",
       "liked": "收藏",
       "following": "关注",
@@ -352,6 +355,7 @@
     }
   },
   "product-card": {
+    "owner": "拥有者",
     "put-on-sale": "出售",
     "transfer": "发送token",
     "burn": "销毁token"

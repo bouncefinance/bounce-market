@@ -25,14 +25,8 @@ interface IInfoPanelProps extends BoxProps {
   social?: ReactNode;
   isBrand?: boolean;
   withSharing?: boolean;
+  isEditable?: boolean;
 }
-
-// TODO: need receive profile user ID to url prop (now 1)
-const urlForSharing =
-  window.location.protocol +
-  '//' +
-  window.location.hostname +
-  ProfileRoutesConfig.Profile.generatePath('1');
 
 export const InfoPanel = ({
   name = 'Unnamed',
@@ -42,9 +36,15 @@ export const InfoPanel = ({
   social,
   isBrand,
   withSharing,
+  isEditable,
   ...boxProps
 }: IInfoPanelProps) => {
   const classes = useInfoPanelStyles();
+  const urlForSharing =
+    window.location.protocol +
+    '//' +
+    window.location.hostname +
+    ProfileRoutesConfig.OtherProfile.generatePath(address);
 
   return (
     <Box mb={8} {...boxProps}>
@@ -81,7 +81,7 @@ export const InfoPanel = ({
           </Grid>
         )}
 
-        {!isBrand && (
+        {isEditable && (
           <Grid item>
             <Link to={ProfileRoutesConfig.EditProfile.generatePath()}>
               <Tooltip

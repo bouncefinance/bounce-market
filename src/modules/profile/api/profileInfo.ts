@@ -1,5 +1,6 @@
 export interface IApiProfileInfo {
   code: number;
+  msg?: string;
   data?: {
     accountaddress: string;
     bandimgurl: string;

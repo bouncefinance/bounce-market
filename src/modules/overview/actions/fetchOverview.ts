@@ -8,6 +8,10 @@ import { fetchItemsByIds } from './fetchItemsByIds';
 import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
 import { fetchPoolsWeight } from './fetchPoolsWeight';
 
+interface IOverviewItem extends IItem {
+  poolWeight: number;
+}
+
 export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
   'fetchOverview',
   () => {
@@ -16,6 +20,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
         promise: (async function () {})(),
       },
       meta: {
+        asQuery: true,
         onRequest: (
           request: { promise: Promise<any> },
           action: RequestAction,
@@ -72,11 +77,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 ),
               );
 
-              interface dataType extends IItem {
-                poolWight: number;
-              }
-
-              const WashData = data
+              const overviewItems = data
                 ?.map(item => {
                   const pool = poolDetailsList.find(pool => {
                     return (
@@ -102,17 +103,17 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         : AuctionType.FixedSwap,
                     closeAt:
                       pool && isEnglishAuction(pool) ? pool.closeAt : undefined,
-                    poolWight: poolWidthMap.get(pool?.poolId as number) || 0,
-                  } as dataType;
+                    poolWeight: poolWidthMap.get(pool?.poolId as number) || 0,
+                  } as IOverviewItem;
                 })
                 .sort((a, b) => {
-                  return b.poolWight - a.poolWight;
+                  return b.poolWeight - a.poolWeight;
                 });
-              return WashData;
+
+              return overviewItems;
             })(),
           };
         },
-        asQuery: true,
       },
     };
   },

@@ -11,6 +11,7 @@
     "close": "Close",
     "reset": "Reset",
     "restore": "Restore",
+    "unknown": "Unknown",
     "coming-soon": "Coming soon..."
   },
   "time": {
@@ -284,9 +285,11 @@
     },
     "tabs": {
       "my-items": "My items",
+      "items": "Items",
       "my-bids": "My bids",
       "my-sells": "My sales",
       "my-brands": "My brands",
+      "brands": "Brands",
       "activity": "Activity",
       "liked": "Liked",
       "following": "Following",
@@ -358,6 +361,7 @@
     }
   },
   "product-card": {
+    "owner": "Owner",
     "put-on-sale": "Put on sale",
     "transfer": "Transfer token",
     "burn": "Burn token"

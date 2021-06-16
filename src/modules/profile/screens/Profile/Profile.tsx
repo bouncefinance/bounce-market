@@ -10,7 +10,6 @@ import {
   queryLikedItems,
 } from 'modules/profile/actions/queryLikedItems';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
-import { TabActivity } from '../../components/TabActivity';
 import { Avatar } from 'modules/profile/components/Avatar';
 import { Bio } from 'modules/profile/components/Bio';
 import { Header } from 'modules/profile/components/Header';
@@ -32,6 +31,7 @@ import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { uid } from 'react-uid';
+import { TabActivity } from '../../components/TabActivity';
 import { TabBids } from './components/TabBids';
 import { TabItems } from './components/TabItems';
 import { TabLiked } from './components/TabLiked';
@@ -180,6 +180,7 @@ export const Profile = () => {
         />
 
         <InfoPanel
+          isEditable
           withSharing={featuresConfig.ownProfileSharing}
           name={profileInfo?.username}
           email={profileInfo?.email}

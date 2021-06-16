@@ -19,15 +19,20 @@ import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { useCallback, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
+import { AccountInfo } from '../../../common/components/AccountInfo';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { AuctionState } from '../../../common/const/AuctionState';
+import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Address } from '../../../common/types/unit';
 import { throwIfDataIsEmptyOrError } from '../../../common/utils/throwIfDataIsEmptyOrError';
 import { NftType } from '../../../createNFT/actions/createNft';
+import { bidderClaim } from '../../../overview/actions/bidderClaim';
+import { creatorClaim } from '../../../overview/actions/creatorClaim';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
 import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
+import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { AuctionType } from '../../../overview/api/auctionType';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
@@ -36,11 +41,6 @@ import { fetchItem } from '../../actions/fetchItem';
 import { BuyDialog } from '../../components/BuyDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
-import { FixedSwapState } from '../../../common/const/FixedSwapState';
-import { bidderClaim } from '../../../overview/actions/bidderClaim';
-import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
-import { creatorClaim } from '../../../overview/actions/creatorClaim';
-import { AccountInfo } from '../../../common/components/AccountInfo';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -304,7 +304,7 @@ export const BuyNFT = () => {
                         : poolDetails.totalQuantity
                     }
                     creator={renderedCreator}
-                    owner={<AccountInfo account={item.owneraddress} />}
+                    owner={<AccountInfo address={item.owneraddress} />}
                   />
 
                   {isEnglishAuction(poolDetails) ? (
@@ -405,7 +405,7 @@ export const BuyNFT = () => {
                         ownerAvatar={undefined}
                         isOwnerVerified={false}
                         category={item.category}
-                        disabled={loading}
+                        loading={loading}
                         maxQuantity={poolDetails.tokenAmount0}
                         minIncrease={poolDetails.amountMinIncr1}
                         lastestBidAmount={poolDetails.lastestBidAmount}
@@ -437,7 +437,7 @@ export const BuyNFT = () => {
                         isOwnerVerified={false}
                         readonly={true}
                         category={item.category}
-                        disabled={loading}
+                        loading={loading}
                         maxQuantity={poolDetails.tokenAmount0}
                       />
                     )}
@@ -469,7 +469,7 @@ export const BuyNFT = () => {
                         isOwnerVerified={false}
                         readonly={item.standard === NftType.ERC721}
                         category={item.category}
-                        disabled={loading}
+                        loading={loading}
                         maxQuantity={poolDetails.quantity}
                       />
                     )}

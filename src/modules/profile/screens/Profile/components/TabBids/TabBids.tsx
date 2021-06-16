@@ -2,6 +2,7 @@ import { Box, Hidden } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import {
   ProductCard,
@@ -122,15 +123,9 @@ export const TabBids = () => {
           objectFit: 'contain',
           loading: 'lazy',
         }}
-        ProfileInfoProps={{
-          subTitle: 'Owner',
-          title: `${item.owneraddress ?? ''}`,
-          users: [
-            {
-              name: 'Owner name',
-            },
-          ],
-        }}
+        profileInfo={
+          item.owneraddress && <AccountInfo address={item.owneraddress} />
+        }
       />
     ));
   }, [items]);
