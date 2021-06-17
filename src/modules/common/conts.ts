@@ -53,6 +53,7 @@ export const featuresConfig = {
    */
   infoTabs: true,
   nftDetailsHistory: true,
+  // TODO PoolDetail
   nftDetailsBids: false,
   nftDetailsOwners: false,
   nftDetailsTokenInfo: true,
