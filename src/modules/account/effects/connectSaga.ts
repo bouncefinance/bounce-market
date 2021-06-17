@@ -67,6 +67,7 @@ function createEventChannel(provider: any) {
           error,
           type: WalletEventType.Disconnect,
         } as IDisconnectEvent);
+        console.log('provider disconnect');
         emitter(END);
       })
       .on('message', (message: any) => {
@@ -89,6 +90,7 @@ function createEventChannel(provider: any) {
 }
 
 function* onConnectWallet() {
+  console.log('onConnectWallet');
   const { action, error } = yield putResolve(setAccount());
   if (error || action.type === setAccount.toString() + '_ERROR') {
     console.log('some error');
@@ -104,6 +106,8 @@ function* onConnectWallet() {
   const channel = createEventChannel(provider);
   while (true) {
     const event: ProviderEvent = yield take(channel);
+
+    console.log('channel emitted', event);
 
     if (event.type === WalletEventType.ChainChanged) {
       console.log('do action on ChainChanged');
