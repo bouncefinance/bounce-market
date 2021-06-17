@@ -9,7 +9,7 @@ export interface IApiFetchRoleInfo {
   msg: 'ok';
 }
 
-interface IRoleInfo {
+export interface IRoleInfo {
   address: string;
   avatar: string;
   username: string;

@@ -52,7 +52,7 @@ export const featuresConfig = {
    * poolDetail config
    */
   infoTabs: true,
-  nftDetailsHistory: false,
+  nftDetailsHistory: true,
   nftDetailsBids: false,
   nftDetailsOwners: false,
   nftDetailsTokenInfo: true,

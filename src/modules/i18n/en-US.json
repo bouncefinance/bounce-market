@@ -138,11 +138,17 @@
       "footnote": "Bids placed in auction cannot be withdrawn"
     },
     "token-info": {
-      "standard":"Standard",
+      "standard": "Standard",
       "total-supply": "Total Supply",
       "name-tags": "Name Tags",
-      "contract":"Contract",
+      "contract": "Contract",
       "token-id": "Token ID"
+    },
+    "history": {
+      "create-str": "Put on sale {quantity} editions for {price} {symbol}",
+      "offer-str": "Offered {price} {symbol} for {quantity} edition",
+      "cancel-str": "Canceled",
+      "claim-str": "Claimed"
     }
   },
   "form": {
@@ -263,7 +269,6 @@
     "unfollow": "Unfollow",
     "subscribers": "Subscribers",
     "bio": "Bio",
-
     "user-profile": "User profile",
     "edit-profile": "Edit profile",
     "edit-avatar": "Edit avatar",

@@ -45,6 +45,7 @@ import { BuyDialog } from '../../components/BuyDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
 import { INFTDetails } from 'modules/buyNFT/api/NFTDetails';
+import { fetchPoolHistory } from 'modules/overview/actions/fetchPoolHistory';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -78,6 +79,7 @@ export const BuyNFT = () => {
       dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
       // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
       dispatch(fetchCurrency({ unitContract: data.unitContract }));
+      dispatch(fetchPoolHistory({ poolId, poolType }));
     });
   }, [dispatch, poolType, poolId]);
 
@@ -196,11 +198,14 @@ export const BuyNFT = () => {
       requestActions={[fetchItem, fetchWeb3PoolDetails, fetchRoleInfo]}
     >
       {({ data: item }, { data: poolDetails }, { data: RoleInfos }) => (
-        <Queries<ResponseData<typeof fetchCurrency>>
-          requestActions={[fetchCurrency]}
+        <Queries<
+          ResponseData<typeof fetchCurrency>,
+          ResponseData<typeof fetchPoolHistory>
+        >
+          requestActions={[fetchCurrency, fetchPoolHistory]}
           requestKeys={[poolDetails.unitContract]}
         >
-          {({ data: currency }) => {
+          {({ data: currency }, { data: poolHistory }) => {
             const wrapperTitle = (name: string, address: string) => {
               return name || truncateWalletAddr(address);
             };
@@ -249,23 +254,50 @@ export const BuyNFT = () => {
 
             const renderedHistoryList = (
               <InfoTabsList>
-                <InfoTabsItem
-                  title="Offered 3 BNB for 1 edition"
-                  author="yeah66"
-                  date={new Date()}
-                />
+                {poolHistory.map(item => {
+                  let titleStr = '';
+                  switch (item.event) {
+                    case 'FixedSwapCreated':
+                    case 'EnglishCreated':
+                      titleStr = t('details-nft.history.create-str', {
+                        quantity: item.quantity,
+                        price: item.price,
+                        symbol: item.symbol,
+                      });
+                      break;
 
-                <InfoTabsItem
-                  title="Minted"
-                  author="HumanFactory"
-                  date={new Date()}
-                />
+                    case 'FixedSwapSwapped':
+                      titleStr = t('details-nft.history.offer-str', {
+                        quantity: item.quantity,
+                        price: item.price,
+                        symbol: item.symbol,
+                      });
+                      break;
 
-                <InfoTabsItem
-                  title="Put on sale 9 editions for 0.5 ETH "
-                  author="0xc2...f6e5"
-                  date={new Date()}
-                />
+                    case 'FixedSwapCanceled':
+                      titleStr = t('details-nft.history.cancel-str');
+                      break;
+
+                    case 'EnglishClaimed':
+                      titleStr = t('details-nft.history.claim-str');
+                      break;
+
+                    default:
+                      break;
+                  }
+
+                  return (
+                    <InfoTabsItem
+                      key={item.time}
+                      title={titleStr}
+                      author={
+                        item.sender.username ||
+                        truncateWalletAddr(item.sender.address)
+                      }
+                      date={new Date(item.time)}
+                    />
+                  );
+                })}
               </InfoTabsList>
             );
 
