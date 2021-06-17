@@ -109,6 +109,7 @@ function* onConnectWallet() {
       console.log('do action on ChainChanged');
       if (event.data.chainId) {
         yield put(updateAccount({ chainId: parseInt(event.data.chainId, 16) }));
+        yield put(fetchProfileInfo());
       }
     } else if (event.type === WalletEventType.AccountChanged) {
       console.log('do action on AccountChanged');
