@@ -103,12 +103,12 @@ export const ProductCardComponent = ({
   }, []);
 
   const onTransferClick = useCallback(() => {
-    if (contractAddress && standard) {
+    if (contractAddress && standard > -1 && id) {
       dispatch(
-        transferToken(contractAddress, standard)
+        transferToken(contractAddress, standard, id)
       )
     }
-  }, [standard, contractAddress, dispatch]);
+  }, [id, standard, contractAddress, dispatch]);
 
   const onBurnClick = useCallback(() => {
     if (contractAddress && standard > -1 && id) {

@@ -6,14 +6,13 @@ import { setAccount } from 'modules/account/store/actions/setAccount';
 import {
   BounceErc721,
   BounceErc1155,
-  OwnableUpgradeSafe,
 } from '../../web3/contracts';
 import { NftType } from 'modules/createNFT/actions/createNft';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 
 export const burnToken = createSmartAction(
   'burnToken',
-  (contractAddress: string, standard: NftType, id: number) => ({
+  (contractAddress: string, standard: NftType, tokenId: number) => ({
     request: {
       promise: (async function () { })(),
     },
@@ -44,17 +43,10 @@ export const burnToken = createSmartAction(
             )
 
             if (standard === NftType.ERC721) {
-              const contract = new web3.eth.Contract(
-                OwnableUpgradeSafe,
-                contractAddress
-              )
-              const owner = await contract.methods.owner().call()
-
               return await new Promise((resolve, reject) => {
                 contract721.methods
-                  .burn(id)
-                  .estimateGas()
-                  .send({ from: owner })
+                  .burn(tokenId)
+                  .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     // Pending status
                   })
@@ -70,7 +62,7 @@ export const burnToken = createSmartAction(
             } else if (standard === NftType.ERC1155) {
               return await new Promise((resolve, reject) => {
                 contract1155.methods
-                  .burn(address, id, 1)
+                  .burn(address, tokenId, 1)
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     // Pending status

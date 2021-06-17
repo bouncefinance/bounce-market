@@ -8,12 +8,13 @@ import {
   BounceErc1155,
 } from '../../web3/contracts';
 import { NftType } from 'modules/createNFT/actions/createNft';
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
 
 export const transferToken = createSmartAction(
   'transferToken',
-  (contractAddress: string, standard: NftType) => ({
+  (contractAddress: string, standard: NftType, tokenId: number) => ({
     request: {
-      promise: (async function () {})(),
+      promise: (async function () { })(),
     },
     meta: {
       asMutation: true,
@@ -23,9 +24,9 @@ export const transferToken = createSmartAction(
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
         return {
-          promise: (async function() {
+          promise: (async function () {
             const {
-              data: { web3 },
+              data: { address, web3 },
             } = getQuery(store.getState(), {
               type: setAccount.toString(),
               action: setAccount
@@ -40,13 +41,53 @@ export const transferToken = createSmartAction(
               BounceErc1155,
               contractAddress,
             )
-
-            if (standard === NftType.ERC721) {
-              console.log(contract721)
-            } else if (standard === NftType.ERC1155) {
-              console.log(contract1155)
-            }
             
+            if (standard === NftType.ERC721) {
+              return await new Promise((resolve, reject) => {
+                contract721.methods
+                  .transferFrom(
+                    address,
+                    '0x0515b16fEFDEd5b108f4ab36C63111F64D58bCc2',
+                    tokenId,
+                  )
+                  .send({ from: address })
+                  .on('transactionHash', (hash: string) => {
+                    // Pending status
+                  })
+                  .on('receipt', async (receipt: TransactionReceipt) => {
+                    setTimeout(() => {
+                      resolve(receipt);
+                    }, 15000);
+                  })
+                  .on('error', (error: Error) => {
+                    reject(error);
+                  });
+              })
+            } else if (standard === NftType.ERC1155) {
+              return await new Promise((resolve, reject) => {
+                contract1155.methods
+                  .safeTransferFrom(
+                    address,
+                    "0x0515b16fEFDEd5b108f4ab36C63111F64D58bCc2",
+                    tokenId,
+                    1,
+                    "0x00",
+                  )
+                  .send({ from: address })
+                  .on('transactionHash', (hash: string) => {
+                    // Pending status
+                  })
+                  .on('receipt', async (receipt: TransactionReceipt) => {
+                    setTimeout(() => {
+                      resolve(receipt);
+                    }, 15000);
+                  })
+                  .on('error', (error: Error) => {
+                    reject(error);
+                  });
+              })
+            }
+
           })(),
         };
       },
