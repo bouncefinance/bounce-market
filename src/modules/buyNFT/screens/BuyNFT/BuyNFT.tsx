@@ -519,7 +519,7 @@ export const BuyNFT = () => {
                         ownerAvatar={undefined}
                         isOwnerVerified={false}
                         category={item.category}
-                        disabled={loading}
+                        loading={loading}
                         maxQuantity={poolDetails.tokenAmount0}
                         minIncrease={poolDetails.amountMinIncr1}
                         lastestBidAmount={poolDetails.lastestBidAmount}
@@ -551,7 +551,7 @@ export const BuyNFT = () => {
                         isOwnerVerified={false}
                         readonly={true}
                         category={item.category}
-                        disabled={loading}
+                        loading={loading}
                         maxQuantity={poolDetails.tokenAmount0}
                       />
                     )}
@@ -583,7 +583,7 @@ export const BuyNFT = () => {
                         isOwnerVerified={false}
                         readonly={item.standard === NftType.ERC721}
                         category={item.category}
-                        disabled={loading}
+                        loading={loading}
                         maxQuantity={poolDetails.quantity}
                       />
                     )}
