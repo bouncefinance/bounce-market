@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/styles';
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { useDispatchRequest } from '@redux-requests/react';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { featuresConfig } from 'modules/common/conts';
@@ -48,25 +48,10 @@ export const Overview = () => {
   const dispatch = useDispatchRequest();
   const classes = useOverviewStyles();
 
-  const overviewQuery = useQuery({
-    type: fetchOverview.toString(),
-  });
-
-  const popularBrandsQuery = useQuery({
-    type: fetchPopularBrands.toString(),
-  });
-
   useEffect(() => {
-    if (!overviewQuery.data) {
-      dispatch(fetchOverview());
-    }
-  }, [dispatch, overviewQuery.data]);
-
-  useEffect(() => {
-    if (!popularBrandsQuery.data) {
-      dispatch(fetchPopularBrands());
-    }
-  }, [dispatch, popularBrandsQuery.data]);
+    dispatch(fetchOverview());
+    dispatch(fetchPopularBrands());
+  }, [dispatch]);
 
   return (
     <div className={classes.root}>
