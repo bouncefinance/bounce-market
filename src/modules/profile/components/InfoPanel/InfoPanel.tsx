@@ -6,7 +6,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { CopyToClip } from 'modules/common/components/CopyToClip/CopyToClip';
+import { CopyToClip } from 'modules/common/components/CopyToClip';
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { SocialShare } from 'modules/common/components/SocialShare';

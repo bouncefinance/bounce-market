@@ -1,12 +1,6 @@
-import {
-  Avatar,
-  Box,
-  MenuItem,
-  MenuList,
-  Typography,
-} from '@material-ui/core';
+import { Avatar, Box, MenuItem, MenuList, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
-import { CopyToClip } from 'modules/common/components/CopyToClip/CopyToClip';
+import { CopyToClip } from 'modules/common/components/CopyToClip';
 import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import React from 'react';
@@ -44,9 +38,11 @@ export const WalletCard = ({
         </Box>
       ) : null}
 
-      {address && <Box className={classes.row}>
-        <CopyToClip address={address} />
-      </Box>}
+      {address && (
+        <Box className={classes.row}>
+          <CopyToClip address={address} />
+        </Box>
+      )}
 
       {balance ? (
         <Box className={classes.row}>

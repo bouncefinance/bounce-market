@@ -1,37 +1,19 @@
-import { IconButton, makeStyles, Theme, Tooltip, Typography } from '@material-ui/core';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
-import React, { useEffect, useState } from 'react';
+import { IconButton, Tooltip, Typography } from '@material-ui/core';
 import classNames from 'classnames';
-import { t } from 'modules/i18n/utils/intl';
 import { CopyIcon } from 'modules/common/components/Icons/CopyIcon';
 import { DoneIcon } from 'modules/common/components/Icons/DoneIcon';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import { t } from 'modules/i18n/utils/intl';
+import React, { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { useCopyToClipStyles } from './useCopyToClipStyles';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  addressText: {
-    color: theme.palette.text.secondary,
-    fontSize: 14,
-  },
-  clipboardBtn: {
-    fontSize: 20,
-    border: 'none !important',
-    marginLeft: theme.spacing(1),
-    color: theme.palette.text.secondary,
-  },
-  clipboardBtnIcon: {
-    fontSize: 'inherit',
-  },
-  clipboardBtnIconDone: {
-    color: theme.palette.success.light,
-  },
-}))
-
-export const CopyToClip = ({
-  address,
-}: {
+interface ICopyToClipProps {
   address: string;
-}) => {
-  const classes = useStyles();
+}
+
+export const CopyToClip = ({ address }: ICopyToClipProps) => {
+  const classes = useCopyToClipStyles();
   const [isCopy, setCopy] = useState<boolean>(false);
 
   useEffect(() => {
@@ -43,31 +25,31 @@ export const CopyToClip = ({
     }
   }, [isCopy]);
 
-  return <div>
-    <Typography variant="body1" className={classes.addressText}>
-      {truncateWalletAddr(address)}
+  return (
+    <div>
+      <Typography variant="body1" className={classes.addressText}>
+        {truncateWalletAddr(address)}
 
-      <CopyToClipboard text={address} onCopy={() => setCopy(true)}>
-        <Tooltip
-          title={
-            isCopy ? t('common.copied') : t('common.copy-to-clipboard')
-          }
-          arrow
-        >
-          <IconButton size="small" className={classes.clipboardBtn}>
-            {isCopy ? (
-              <DoneIcon
-                className={classNames(
-                  classes.clipboardBtnIcon,
-                  classes.clipboardBtnIconDone,
-                )}
-              />
-            ) : (
-              <CopyIcon className={classes.clipboardBtnIcon} />
-            )}
-          </IconButton>
-        </Tooltip>
-      </CopyToClipboard>
-    </Typography>
-  </div>
-}
+        <CopyToClipboard text={address} onCopy={() => setCopy(true)}>
+          <Tooltip
+            title={isCopy ? t('common.copied') : t('common.copy-to-clipboard')}
+            arrow
+          >
+            <IconButton size="small" className={classes.clipboardBtn}>
+              {isCopy ? (
+                <DoneIcon
+                  className={classNames(
+                    classes.clipboardBtnIcon,
+                    classes.clipboardBtnIconDone,
+                  )}
+                />
+              ) : (
+                <CopyIcon className={classes.clipboardBtnIcon} />
+              )}
+            </IconButton>
+          </Tooltip>
+        </CopyToClipboard>
+      </Typography>
+    </div>
+  );
+};
