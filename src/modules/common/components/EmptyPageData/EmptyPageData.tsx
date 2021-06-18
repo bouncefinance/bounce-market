@@ -34,11 +34,11 @@ export const EmptyPageData = ({
     <Section className={classNames(classes.root, className)}>
       <Container>
         <Typography variant="h1" className={classes.title}>
-          Whoops. Looks like there's no data.
+          {t('empty-data.title')}
         </Typography>
 
         <Typography variant="body1" className={classes.text}>
-          Try to change the network to view the content of the page.
+          {t('empty-data.text')}
         </Typography>
 
         {walletSupportNetworkChange && (

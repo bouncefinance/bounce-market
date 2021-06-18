@@ -358,5 +358,9 @@
     "put-on-sale": "出售",
     "transfer": "发送token",
     "burn": "销毁token"
+  },
+  "empty-data": {
+    "title": "Whoops. Looks like there's no data.",
+    "text": "Try to change the network to view the content of the page."
   }
 }

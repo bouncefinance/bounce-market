@@ -365,5 +365,9 @@
     "put-on-sale": "Put on sale",
     "transfer": "Transfer token",
     "burn": "Burn token"
+  },
+  "empty-data": {
+    "title": "Whoops. Looks like there's no data.",
+    "text": "Try to change the network to view the content of the page."
   }
 }

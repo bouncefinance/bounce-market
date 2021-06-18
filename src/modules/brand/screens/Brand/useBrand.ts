@@ -13,6 +13,7 @@ export const useBrand = () => {
   const {
     data: brandInfo,
     loading: brandInfoLoading,
+    pristine,
   } = useQuery<IBrandInfo | null>({
     type: queryBrandById.toString(),
   });
@@ -22,6 +23,7 @@ export const useBrand = () => {
   }, [brandId, dispatch]);
 
   return {
+    pristine,
     brandInfo,
     brandInfoLoading,
   };
