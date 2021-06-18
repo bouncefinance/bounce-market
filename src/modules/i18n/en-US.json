@@ -256,7 +256,6 @@
     "unfollow": "Unfollow",
     "subscribers": "Subscribers",
     "bio": "Bio",
-
     "user-profile": "User profile",
     "edit-profile": "Edit profile",
     "edit-avatar": "Edit avatar",
@@ -365,5 +364,13 @@
     "put-on-sale": "Put on sale",
     "transfer": "Transfer token",
     "burn": "Burn token"
+  },
+  "transfer-token": {
+    "title": "Transfer Token",
+    "submit": "Transfer"
+  },
+  "burn-token": {
+    "title": "Burn Token",
+    "submit": "Burn"
   }
 }

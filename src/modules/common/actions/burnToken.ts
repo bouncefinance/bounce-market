@@ -12,7 +12,7 @@ import { TransactionReceipt } from '@ethersproject/abstract-provider';
 
 export const burnToken = createSmartAction(
   'burnToken',
-  (contractAddress: string, standard: NftType, tokenId: number) => ({
+  (contractAddress: string, standard: NftType, tokenId: number, quantity?: number) => ({
     request: {
       promise: (async function () { })(),
     },
@@ -62,7 +62,7 @@ export const burnToken = createSmartAction(
             } else if (standard === NftType.ERC1155) {
               return await new Promise((resolve, reject) => {
                 contract1155.methods
-                  .burn(address, tokenId, 1)
+                  .burn(address, tokenId, quantity)
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     // Pending status

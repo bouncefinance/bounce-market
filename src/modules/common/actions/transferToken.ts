@@ -12,7 +12,7 @@ import { TransactionReceipt } from '@ethersproject/abstract-provider';
 
 export const transferToken = createSmartAction(
   'transferToken',
-  (contractAddress: string, standard: NftType, tokenId: number) => ({
+  (contractAddress: string, standard: NftType, tokenId: number, toAddress: string,  quantity?: number) => ({
     request: {
       promise: (async function () { })(),
     },
@@ -47,7 +47,7 @@ export const transferToken = createSmartAction(
                 contract721.methods
                   .transferFrom(
                     address,
-                    '0x0515b16fEFDEd5b108f4ab36C63111F64D58bCc2',
+                    toAddress,
                     tokenId,
                   )
                   .send({ from: address })
@@ -68,9 +68,9 @@ export const transferToken = createSmartAction(
                 contract1155.methods
                   .safeTransferFrom(
                     address,
-                    "0x0515b16fEFDEd5b108f4ab36C63111F64D58bCc2",
+                    toAddress,
                     tokenId,
-                    1,
+                    quantity,
                     "0x00",
                   )
                   .send({ from: address })

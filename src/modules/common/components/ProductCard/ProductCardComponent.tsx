@@ -3,6 +3,7 @@ import {
   ButtonBase,
   Card,
   CardContent,
+  ClickAwayListener,
   MenuItem,
   MenuList,
   Popover,
@@ -24,10 +25,6 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
 import { useProductCardStyles } from './useProductCardStyles';
-import { transferToken } from 'modules/common/actions/transferToken';
-import { burnToken } from 'modules/common/actions/burnToken';
-import { useDispatchRequest } from '@redux-requests/react';
-import { NftType } from 'modules/createNFT/actions/createNft';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -57,8 +54,9 @@ export interface IProductCardComponentProps {
   onLikeClick?: () => void;
   status?: ProductCardStatuses;
   toSale?: string;
-  contractAddress?: string;
-  standard?: NftType;
+  hasAction?: boolean;
+  onTransferClick?: () => void;
+  onBurnClick?: () => void;
 }
 
 export const ProductCardComponent = ({
@@ -80,16 +78,15 @@ export const ProductCardComponent = ({
   imgPreloader,
   status,
   toSale,
-  contractAddress,
-  standard = -1,
+  hasAction,
+  onTransferClick,
+  onBurnClick,
 }: IProductCardComponentProps) => {
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isPopoverOpened = Boolean(anchorEl);
   const isMinting = status === ProductCardStatuses.Minting;
   const isOnSalePending = status === ProductCardStatuses.OnSalePending;
-
-  const dispatch = useDispatchRequest();
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -101,22 +98,6 @@ export const ProductCardComponent = ({
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
-
-  const onTransferClick = useCallback(() => {
-    if (contractAddress && standard > -1 && id) {
-      dispatch(
-        transferToken(contractAddress, standard, id)
-      )
-    }
-  }, [id, standard, contractAddress, dispatch]);
-
-  const onBurnClick = useCallback(() => {
-    if (contractAddress && standard > -1 && id) {
-      dispatch(
-        burnToken(contractAddress, standard, id)
-      )
-    }
-  }, [id, standard, contractAddress, dispatch]);
 
   const renderTimer = useCallback(() => {
     const daysLeft = endDate ? getDaysLeft(endDate) : 0;
@@ -280,42 +261,46 @@ export const ProductCardComponent = ({
                   >
                     {t('product-card.put-on-sale')}
                   </Button>
-                  <ButtonBase className={classes.menuBtn} onClick={handleClick}>
-                    <VerticalDotsIcon className={classes.menuIcon} />
-                  </ButtonBase>
-                  <Popover
-                    className={classes.menuPopover}
-                    open={isPopoverOpened}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    PaperProps={{
-                      variant: 'outlined',
-                    }}
-                  >
-                    <MenuList>
-                      <MenuItem
-                        className={classes.menuItem}
-                        onClick={onTransferClick}
-                      >
-                        {t('product-card.transfer')}
-                      </MenuItem>
+                  {hasAction && <>
+                    <ButtonBase className={classes.menuBtn} onClick={handleClick}>
+                      <VerticalDotsIcon className={classes.menuIcon} />
+                    </ButtonBase>
+                    <Popover
+                      className={classes.menuPopover}
+                      open={isPopoverOpened}
+                      anchorEl={anchorEl}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      PaperProps={{
+                        variant: 'outlined',
+                      }}
+                    >
+                      <ClickAwayListener onClickAway={handleClose}>
+                        <MenuList>
+                          <MenuItem
+                            className={classes.menuItem}
+                            onClick={onTransferClick}
+                          >
+                            {t('product-card.transfer')}
+                          </MenuItem>
 
-                      <MenuItem
-                        className={classes.menuItem}
-                        onClick={onBurnClick}
-                      >
-                        {t('product-card.burn')}
-                      </MenuItem>
-                    </MenuList>
-                  </Popover>
+                          <MenuItem
+                            className={classes.menuItem}
+                            onClick={onBurnClick}
+                          >
+                            {t('product-card.burn')}
+                          </MenuItem>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Popover>
+                  </>}
                 </Box>
               )}
             </>

@@ -358,5 +358,13 @@
     "put-on-sale": "出售",
     "transfer": "发送token",
     "burn": "销毁token"
+  },
+  "transfer-token": {
+    "title": "发送Token",
+    "submit": "发送"
+  },
+  "burn-token": {
+    "title": "销毁Token",
+    "submit": "销毁"
   }
 }
