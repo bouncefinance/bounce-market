@@ -6,63 +6,47 @@ import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
 import { IRoleInfo } from './fetchRoleInfo';
 
-export interface IApiFetchPoolHistory {
+export interface IApiFetchPoolBids {
   code: 200;
-  data: IFetchPoolHistoryData[];
+  data: IFetchPoolBidsData[];
   msg: 'ok';
 }
 
-enum AUCTION_EVENT {
-  FixedSwapCreated = 'FixedSwapCreated',
-  FixedSwapSwapped = 'FixedSwapSwapped',
-  FixedSwapCanceled = 'FixedSwapCanceled',
-  EnglishCreated = 'EnglishCreated',
-  EnglishClaimed = 'EnglishClaimed',
-}
-
-interface IFetchPoolHistoryData {
-  auction_event: AUCTION_EVENT;
-  auction_type: number;
+interface IFetchPoolBidsData {
+  amount1: string;
   avatar: string;
-  contract: string;
   created_at: string;
   ctime: number;
-  from: string;
   height: number;
   pool_id: number;
-  price: string;
-  quantity: number;
-  to: string;
-  token_id: number;
+  sender: string;
   txid: string;
-  user_address: string;
   username: string;
 }
 
-interface IFetchPoolHistoryParams {
+interface IFetchPoolBidsParams {
   poolId: number;
   poolType: AuctionType;
 }
 
-interface wrapperPoolHistory {
-  event: AUCTION_EVENT;
+interface wrapperPoolBids {
   sender: IRoleInfo;
-  quantity: number;
+  txId: string;
+  time: number;
   price: string;
   symbol: string;
-  time: number;
 }
 
-export const fetchPoolHistory = createSmartAction<
-  RequestAction<IApiFetchPoolHistory, wrapperPoolHistory[]>
+export const fetchPoolBids = createSmartAction<
+  RequestAction<IApiFetchPoolBids, wrapperPoolBids[]>
 >(
-  'fetchPoolHistory',
+  'fetchPoolBids',
   (
-    params: IFetchPoolHistoryParams,
-    meta?: RequestActionMeta<IApiFetchPoolHistory, wrapperPoolHistory[]>,
+    params: IFetchPoolBidsParams,
+    meta?: RequestActionMeta<IApiFetchPoolBids, wrapperPoolBids[]>,
   ) => ({
     request: {
-      url: '/api/v2/main/getpoolactivities',
+      url: '/api/v2/main/getpoolbids',
       method: 'post',
       data: {
         poolId: params.poolId,
@@ -77,16 +61,15 @@ export const fetchPoolHistory = createSmartAction<
         return data
           .map(item => {
             return {
-              event: item.auction_event,
               sender: {
-                username: item.username,
-                address: item.user_address,
+                address: item.sender,
                 avatar: item.avatar,
+                username: item.username,
               },
-              quantity: item.quantity,
-              price: new BigNumber(Web3.utils.fromWei(item.price)).toString(),
-              symbol: 'BNB',
+              txId: item.txid,
               time: item.ctime * 1000,
+              price: new BigNumber(Web3.utils.fromWei(item.amount1)).toString(),
+              symbol: 'BNB',
             };
           })
           .sort((a, b) => {

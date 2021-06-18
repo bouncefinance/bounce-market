@@ -46,6 +46,8 @@ import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
 import { INFTDetails } from 'modules/buyNFT/api/NFTDetails';
 import { fetchPoolHistory } from 'modules/overview/actions/fetchPoolHistory';
+import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
+import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 
 export const BuyNFT = () => {
   const classes = useBuyNFTStyles();
@@ -73,14 +75,19 @@ export const BuyNFT = () => {
   const { push } = useHistory();
 
   const init = useCallback(() => {
-    dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(response => {
-      const { data } = throwIfDataIsEmptyOrError(response);
-      dispatch(fetchRoleInfo({ poolId, poolType }));
-      dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
-      // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
-      dispatch(fetchCurrency({ unitContract: data.unitContract }));
-      dispatch(fetchPoolHistory({ poolId, poolType }));
-    });
+    dispatch(fetchWeb3PoolDetails({ poolId, poolType }))
+      .then(response => {
+        const { data } = throwIfDataIsEmptyOrError(response);
+        dispatch(fetchRoleInfo({ poolId, poolType }));
+        dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
+        // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
+        dispatch(fetchCurrency({ unitContract: data.unitContract }));
+      })
+      .then(() => {
+        dispatch(fetchPoolHistory({ poolId, poolType }));
+        dispatch(fetchPoolBids({ poolId, poolType }));
+        dispatch(fetchPoolNftOwner({ poolId, poolType }));
+      });
   }, [dispatch, poolType, poolId]);
 
   useEffect(() => {
@@ -200,12 +207,24 @@ export const BuyNFT = () => {
       {({ data: item }, { data: poolDetails }, { data: RoleInfos }) => (
         <Queries<
           ResponseData<typeof fetchCurrency>,
-          ResponseData<typeof fetchPoolHistory>
+          ResponseData<typeof fetchPoolHistory>,
+          ResponseData<typeof fetchPoolBids>,
+          ResponseData<typeof fetchPoolNftOwner>
         >
-          requestActions={[fetchCurrency, fetchPoolHistory]}
+          requestActions={[
+            fetchCurrency,
+            fetchPoolHistory,
+            fetchPoolBids,
+            fetchPoolNftOwner,
+          ]}
           requestKeys={[poolDetails.unitContract]}
         >
-          {({ data: currency }, { data: poolHistory }) => {
+          {(
+            { data: currency },
+            { data: poolHistory },
+            { data: poolBids },
+            { data: poolNftOwner },
+          ) => {
             const wrapperTitle = (name: string, address: string) => {
               return name || truncateWalletAddr(address);
             };
@@ -303,32 +322,51 @@ export const BuyNFT = () => {
 
             const renderedBidsList = (
               <InfoTabsList>
-                <InfoTabsItem
-                  title="Bid placed"
-                  author="Scarlett_vfx"
-                  date={new Date()}
-                  price={new BigNumber('10')}
-                  cryptoCurrency="ETH"
-                  cryptoPrice={new BigNumber(10.55413)}
-                  href="//google.com"
-                />
+                {poolBids.map(item => {
+                  return (
+                    <InfoTabsItem
+                      key={item.time}
+                      title="Bid placed"
+                      author={
+                        item.sender.username ||
+                        truncateWalletAddr(item.sender.address)
+                      }
+                      date={new Date(item.time)}
+                      price={new BigNumber(item.price).multipliedBy('368')}
+                      cryptoCurrency={item.symbol}
+                      cryptoPrice={new BigNumber(item.price)}
+                      href={`https://bscscan.com/tx/${item.txId}`}
+                    />
+                  );
+                })}
               </InfoTabsList>
             );
 
             const renderedOnwersList = (
               <InfoTabsList>
-                <ProfileInfo
-                  isTitleFirst
-                  avatarSize="big"
-                  title="Bombist"
-                  subTitle="4 copies"
-                  users={[
-                    {
-                      name: 'Bombist',
-                      avatar: 'https://picsum.photos/44?random=1',
-                    },
-                  ]}
-                />
+                {poolNftOwner.map(item => {
+                  const showUser =
+                    item.owner.username ||
+                    truncateWalletAddr(item.owner.address);
+
+                  return (
+                    <ProfileInfo
+                      key={item.owner.address}
+                      isTitleFirst
+                      avatarSize="big"
+                      title={showUser}
+                      subTitle={`${item.balance} copies`}
+                      users={[
+                        {
+                          name: showUser,
+                          avatar:
+                            item.owner.avatar ||
+                            'https://picsum.photos/44?random=1',
+                        },
+                      ]}
+                    />
+                  );
+                })}
               </InfoTabsList>
             );
 
