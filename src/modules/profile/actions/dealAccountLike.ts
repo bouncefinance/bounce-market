@@ -38,7 +38,7 @@ export const dealAccountLike = createAction<
     requestsCapacity: 2,
     asMutation: true,
     auth: true,
-    driver: 'axiosSmartchain',
+    driver: 'axios',
     onRequest: (
       request,
       _action: RequestAction,

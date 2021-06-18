@@ -1,6 +1,7 @@
 import { RequestAction } from '@redux-requests/core';
 import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 import { createAction as createSmartAction } from 'redux-smart-actions';
+import { addTokenSymbolToArrayByDriver } from '../../common/utils/addTokenSymbolToArrayByDriver';
 
 // TODO: Merge with src/modules/createNFT/actions/fetchItemsByFilter.ts
 
@@ -37,7 +38,7 @@ export const queryItemByFilter = createSmartAction<
     data: data,
   },
   meta: {
-    driver: 'axiosSmartchain',
+    driver: 'axios',
     asMutation: true,
     getData: data => {
       if (data.code !== 1) {
@@ -45,5 +46,6 @@ export const queryItemByFilter = createSmartAction<
       }
       return data.data;
     },
+    onSuccess: addTokenSymbolToArrayByDriver,
   },
 }));

@@ -6,7 +6,6 @@ import { Address } from '../../common/types/unit';
 import Web3 from 'web3';
 import { AuctionType } from '../api/auctionType';
 import { AuctionState } from '../../common/const/AuctionState';
-import { POOL_DETAILS_URL } from '../../common/conts';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 interface IApiFixedAuctionDetails {
@@ -120,7 +119,7 @@ export const fetchPoolDetails = createSmartAction<
     meta?: RequestActionMeta<IApiFetchPoolDetails, IFetchPoolDetailsData>,
   ) => ({
     request: {
-      url: POOL_DETAILS_URL,
+      url: '/pool',
       method: 'get',
       params: {
         pool_id: params.poolId,
@@ -130,7 +129,7 @@ export const fetchPoolDetails = createSmartAction<
     },
     meta: {
       auth: true,
-      driver: 'axiosSmartchain',
+      driver: 'nftview',
       asMutation: false,
       getData: ({ data }) => {
         if (isApiEnglishAuction(data)) {

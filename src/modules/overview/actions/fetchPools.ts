@@ -1,6 +1,6 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { IGetPoolsApi_V2, ITradePool_V2 } from 'modules/common/api/getPools';
-import { API_BASE, ZERO_ADDRESS } from 'modules/common/conts';
+import { ZERO_ADDRESS } from 'modules/common/conts';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 export const fetchPools = createSmartAction<
@@ -20,7 +20,6 @@ export const fetchPools = createSmartAction<
   request: {
     url: '/api/v2/main/getauctionpoolsbypage',
     method: 'post',
-    baseURL: API_BASE,
     data: {
       category: params?.category || '',
       channel: params?.channel,
@@ -31,7 +30,7 @@ export const fetchPools = createSmartAction<
     },
   },
   meta: {
-    driver: 'axiosSmartchain',
+    driver: 'axios',
     getData: response => {
       if (response.code !== 1) {
         throw new Error(response.msg);

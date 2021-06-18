@@ -7,6 +7,8 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWalletCardStyles } from './WalletCardStyles';
 
+const ENABLE_CURRENCY_ICON = false;
+
 export interface IWalletCardProps {
   address: string;
   balance?: BigNumber;
@@ -47,7 +49,9 @@ export const WalletCard = ({
       {balance ? (
         <Box className={classes.row}>
           <Box className={classes.walletBalance}>
-            {logo ? <Avatar src={logo} className={classes.walletLogo} /> : null}
+            {logo && ENABLE_CURRENCY_ICON ? (
+              <Avatar src={logo} className={classes.walletLogo} />
+            ) : null}
             {t('unit.custom-unit', {
               value: balance.toFixed(),
               unit: currency,

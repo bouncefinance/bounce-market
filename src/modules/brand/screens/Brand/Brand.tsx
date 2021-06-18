@@ -1,4 +1,5 @@
 import { Box, Container, Typography } from '@material-ui/core';
+import { EmptyPageData } from 'modules/common/components/EmptyPageData';
 import { featuresConfig } from 'modules/common/conts';
 import { Avatar } from 'modules/profile/components/Avatar';
 import { Header } from 'modules/profile/components/Header';
@@ -12,7 +13,11 @@ import { useBrandStyles } from './useBrandStyles';
 
 export const Brand = () => {
   const classes = useBrandStyles();
-  const { brandInfoLoading, brandInfo } = useBrand();
+  const { brandInfoLoading, brandInfo, pristine } = useBrand();
+
+  if (!pristine && !brandInfo && !brandInfoLoading) {
+    return <EmptyPageData />;
+  }
 
   return (
     <Section className={classes.root}>

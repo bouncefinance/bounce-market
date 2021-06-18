@@ -4,7 +4,7 @@ import { IApiBrandInfoItem, IBrandInfo } from '../api/queryBrand';
 import { QueryBrandByIdAction } from './const';
 
 export const queryBrandById = createSmartAction<
-  RequestAction<IApiBrandInfoItem, IBrandInfo>,
+  RequestAction<IApiBrandInfoItem, IBrandInfo | null>,
   [
     { id: number; accountaddress?: string }?,
     RequestActionMeta<IApiBrandInfoItem, IBrandInfo>?,
@@ -18,15 +18,16 @@ export const queryBrandById = createSmartAction<
     },
     meta: {
       ...meta,
-      driver: 'axiosSmartchain',
+      driver: 'axios',
       getData: data => {
+        // todo: need to rework error handling
         if (data.code !== 1) {
-          throw new Error('Unexpected response');
+          console.error('queryBrandById:', 'Unexpected response');
+          return null;
         }
 
         return {
           ...data.data,
-          standard: data.data.standard,
         };
       },
     },

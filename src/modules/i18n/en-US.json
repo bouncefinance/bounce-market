@@ -332,8 +332,8 @@
   },
   "change-wallet": {
     "title": "Wrong network",
-    "description": "Change network to Binance Smart Chain",
-    "submit": "Change to Smart Chain",
+    "description": "Change network to Etherium Mainnet, Binance Smart Chain or Heco",
+    "submit": "Change network",
     "network-change-error": "Can't setup the BSC network on metamask because provider is undefined."
   },
   "info-prices": {
@@ -369,5 +369,9 @@
     "put-on-sale": "Put on sale",
     "transfer": "Transfer token",
     "burn": "Burn token"
+  },
+  "empty-data": {
+    "title": "Whoops. Looks like there's no data.",
+    "text": "Try to change the network to view the content of the page."
   }
 }

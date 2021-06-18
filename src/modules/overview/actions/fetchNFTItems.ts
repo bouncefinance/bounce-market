@@ -9,6 +9,7 @@ import { ZERO_ADDRESS } from 'modules/common/conts';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
+import { TokenSymbol } from '../../common/types/TokenSymbol';
 import { AuctionType } from '../api/auctionType';
 import { ItemsChannel } from './fetchItemsByFilter';
 import { fetchPools } from './fetchPools';
@@ -37,6 +38,7 @@ export interface INFTItem {
   ownerAvatar?: string;
   ownerName?: string;
   token1: string;
+  tokenSymbol: TokenSymbol;
 }
 
 export const mapNFTItem = (item: ITradePool_V2): INFTItem => {
@@ -63,6 +65,8 @@ export const mapNFTItem = (item: ITradePool_V2): INFTItem => {
     standard: 0,
     supply: 100,
     token1: item.token1,
+    // TODO: hardcoded. Get token symbol from API
+    tokenSymbol: TokenSymbol.BNB,
   };
 };
 

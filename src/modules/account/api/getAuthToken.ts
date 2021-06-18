@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API_BASE } from '../../common/conts';
+import { createAction as createSmartAction } from 'redux-smart-actions';
+import { RequestAction } from '@redux-requests/core';
 
 export interface IParams {
   accountaddress: string;
@@ -7,9 +7,16 @@ export interface IParams {
   signature: string;
 }
 
-export function getAuthToken(params: IParams) {
-  return axios.post<{ data: { token: string } }>(
-    API_BASE + '/api/v2/main/jwtauth',
-    params,
-  );
-}
+export const getAuthToken = createSmartAction<RequestAction>(
+  'getAuthToken',
+  (params: IParams) => ({
+    request: {
+      url: '/api/v2/main/jwtauth',
+      method: 'post',
+      data: params,
+    },
+    meta: {
+      driver: 'axios',
+    },
+  }),
+);

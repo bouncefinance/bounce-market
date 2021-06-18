@@ -88,8 +88,10 @@ export const CreateBrandItem = () => {
             asMutation: true,
           },
         ),
-      ).then(res => {
-        setBrandInfo(res.data);
+      ).then(({ data }) => {
+        if (data) {
+          setBrandInfo(data);
+        }
       });
     }
   }, [id, address, dispatch]);
