@@ -20,7 +20,6 @@ export const updateAccount = createAction<RequestAction<any, ISetAccountData>>(
               ...updatedData,
             };
           }
-          console.log('updateAccount');
 
           return data;
         },

@@ -73,7 +73,6 @@ function createEventChannel(provider: any) {
         emitter({ message, type: WalletEventType.Message });
       })
       .on('chainChanged', (chainId: string) => {
-        console.log('chainChanged');
         emitter({
           data: { chainId },
           type: WalletEventType.ChainChanged,
@@ -91,7 +90,6 @@ function createEventChannel(provider: any) {
 function* onConnectWallet() {
   const { action, error } = yield putResolve(setAccount());
   if (error || action.type === setAccount.toString() + '_ERROR') {
-    console.log('some error');
     return;
   }
   const provider = action.meta.provider;
@@ -106,13 +104,11 @@ function* onConnectWallet() {
     const event: ProviderEvent = yield take(channel);
 
     if (event.type === WalletEventType.ChainChanged) {
-      console.log('do action on ChainChanged');
       if (event.data.chainId) {
         yield put(updateAccount({ chainId: parseInt(event.data.chainId, 16) }));
         yield put(fetchProfileInfo());
       }
     } else if (event.type === WalletEventType.AccountChanged) {
-      console.log('do action on AccountChanged');
       const address =
         event.data.accounts.length > 0 ? event.data.accounts[0] : undefined;
 
