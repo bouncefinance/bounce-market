@@ -16,7 +16,6 @@ import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
-import { PageNotFound } from 'modules/router/components/PageNotFound';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router';
@@ -38,7 +37,6 @@ export const OtherProfile = () => {
   const {
     data: profileInfo,
     loading: profileInfoLoading,
-    pristine: profileInfoPristine,
   } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
     requestKey: PROFILE_INFO_REQUEST_KEY,
@@ -79,10 +77,6 @@ export const OtherProfile = () => {
     },
     [address, push],
   );
-
-  if (!profileInfo && !profileInfoLoading && !profileInfoPristine) {
-    return <PageNotFound />;
-  }
 
   if (profileInfoLoading) {
     return <QueryLoadingAbsolute />;
