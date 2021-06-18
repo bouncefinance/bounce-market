@@ -2,6 +2,7 @@ import { useDispatchRequest } from '@redux-requests/react';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import React, { useEffect, useState } from 'react';
+import { t } from 'modules/i18n/utils/intl';
 import {
   IAccountInfo,
   queryAccountInfo,
@@ -23,7 +24,7 @@ export const AccountInfo = ({ address }: { address: string }) => {
 
   return (
     <ProfileInfo
-      subTitle="Owner"
+      subTitle={t('product-card.owner')}
       title={accountInfo?.username ?? truncateWalletAddr(address)}
       users={[
         {
