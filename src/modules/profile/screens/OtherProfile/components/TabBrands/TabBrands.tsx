@@ -9,25 +9,21 @@ import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { BrandCard } from 'modules/brand/components/BrandCard';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { t } from 'modules/i18n/utils/intl';
-import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
-import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { uid } from 'react-uid';
-import { PROFILE_INFO_REQUEST_KEY } from '../../OtherProfile';
 import { useTabBrandStyles } from './useTabBrandsStyles';
 
 const requestKey = '/otherProfile';
 
-export const TabBrands = () => {
+interface ITabBrandsProps {
+  address: string;
+}
+
+export const TabBrands = ({ address }: ITabBrandsProps) => {
   const classes = useTabBrandStyles();
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
-
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
-    requestKey: PROFILE_INFO_REQUEST_KEY,
-  });
 
   const { data: brands, loading } = useQuery<IMyBrand[] | null>({
     type: queryMyBrandItem.toString(),
@@ -35,31 +31,24 @@ export const TabBrands = () => {
   });
 
   useEffect(() => {
-    if (!profileInfo) {
-      return;
-    }
     dispatchRequest(
-      queryMyBrandItem(profileInfo.accountAddress, {
+      queryMyBrandItem(address, {
         requestKey,
         asMutation: false,
       }),
     );
-  }, [profileInfo, dispatchRequest]);
 
-  useEffect(
-    () =>
-      function reset() {
-        dispatch(
-          resetRequests([
-            {
-              requestType: queryMyBrandItem.toString(),
-              requestKey,
-            },
-          ]),
-        );
-      },
-    [dispatch],
-  );
+    return function reset() {
+      dispatch(
+        resetRequests([
+          {
+            requestType: queryMyBrandItem.toString(),
+            requestKey,
+          },
+        ]),
+      );
+    };
+  }, [address, dispatch, dispatchRequest]);
 
   if (loading) {
     return <QueryLoadingCentered pt={4} />;
