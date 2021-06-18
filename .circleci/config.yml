@@ -48,12 +48,20 @@ jobs:
     <<: *build-template
   build-prod:
     <<: *build-template
+  build-bs-1-stage:
+    <<: *build-template
+  build-bs-2-stage:
+    <<: *build-template
   # upload
   upload-stage:
     <<: *upload-template
   upload-fangible:
     <<: *upload-template
   upload-prod:
+    <<: *upload-template
+  upload-bs-1-stage:
+    <<: *upload-template
+  upload-bs-2-stage:
     <<: *upload-template
 
 workflows:
@@ -107,3 +115,31 @@ workflows:
             - bounce_build_prod
           requires:
             - build-prod
+      # bs-1-stage.fangible.com
+      - approve-bs-1-stage:
+          type: approval
+      - build-bs-1-stage:
+          context:
+            - fangible_build_stage
+          requires:
+            - approve-bs-1-stage
+      - upload-bs-1-stage:
+          context:
+            - cicd
+            - fangible_deploy_bs_1_stage
+          requires:
+            - build-bs-1-stage
+      # bs-2-stage.fangible.com
+      - approve-bs-2-stage:
+          type: approval
+      - build-bs-2-stage:
+          context:
+            - fangible_build_stage
+          requires:
+            - approve-bs-2-stage
+      - upload-bs-2-stage:
+          context:
+            - cicd
+            - fangible_deploy_bs_2_stage
+          requires:
+            - build-bs-2-stage
