@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  Grid,
-  IconButton,
-  Typography,
-} from '@material-ui/core';
+import { Box, Dialog, Grid, IconButton, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
 import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
@@ -14,6 +7,7 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { InputField } from 'modules/form/components/InputField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
+import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import React, { useCallback } from 'react';
@@ -39,7 +33,7 @@ interface IBidDialogProps {
   owner: string;
   ownerAvatar?: string;
   category: 'image' | 'video';
-  disabled: boolean;
+  loading: boolean;
   maxQuantity: number;
   minIncrease: BigNumber;
   lastestBidAmount: BigNumber;
@@ -56,7 +50,7 @@ export const BidDialog = ({
   owner,
   ownerAvatar,
   category,
-  disabled,
+  loading,
   maxQuantity,
   minIncrease,
   lastestBidAmount,
@@ -175,7 +169,7 @@ export const BidDialog = ({
             fullWidth
             size="large"
             onClick={handleSubmit}
-            disabled={disabled}
+            loading={loading}
           >
             {t('details-nft.place-a-bid')}
           </Button>
@@ -188,7 +182,7 @@ export const BidDialog = ({
         </>
       );
     },
-    [classes, currency, disabled, minIncrease],
+    [classes, currency, loading, minIncrease],
   );
 
   return (
