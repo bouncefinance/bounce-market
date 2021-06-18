@@ -1,4 +1,8 @@
-import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import {
+  DispatchRequest,
+  RequestAction,
+  RequestActionMeta,
+} from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
@@ -14,14 +18,16 @@ export interface IMyBrand {
 }
 
 export const queryMyBrandItem = createSmartAction<
-  RequestAction<IMyBrand[], IMyBrand[]>
->('queryMyBrandItem', (address: string) => ({
+  RequestAction<IMyBrand[], IMyBrand[]>,
+  [string, RequestActionMeta<any, IMyBrand[]>?]
+>('queryMyBrandItem', (address, meta) => ({
   request: {
     promise: (async function () {})(),
   },
   meta: {
-    getData: data => data,
     asMutation: true,
+    ...meta,
+    getData: data => data,
     onRequest: (
       request: { promise: Promise<any> },
       action: RequestAction,
