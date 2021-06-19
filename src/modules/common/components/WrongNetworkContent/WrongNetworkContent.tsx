@@ -20,8 +20,6 @@ export const WrongNetworkContent = ({
     loading,
   } = useAccount();
 
-  handleConnect = handleConnect ?? handleChangeNetworkToSupported;
-
   return (
     <Box mb={3} textAlign="center" className={classes.root}>
       <Typography variant="h1" className={classes.caption}>
@@ -32,7 +30,7 @@ export const WrongNetworkContent = ({
       </Typography>
       {walletSupportNetworkChange && (
         <Button
-          onClick={handleConnect}
+          onClick={handleConnect ?? handleChangeNetworkToSupported}
           loading={loading}
           className={classes.connectBtn}
         >

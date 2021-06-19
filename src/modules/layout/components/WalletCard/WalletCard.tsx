@@ -1,23 +1,13 @@
-import {
-  Avatar,
-  Box,
-  IconButton,
-  MenuItem,
-  MenuList,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
+import { Avatar, Box, MenuItem, MenuList, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
-import classNames from 'classnames';
-import { CopyIcon } from 'modules/common/components/Icons/CopyIcon';
-import { DoneIcon } from 'modules/common/components/Icons/DoneIcon';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import { CopyToClip } from 'modules/common/components/CopyToClip';
 import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
-import React, { useEffect, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWalletCardStyles } from './WalletCardStyles';
+
+const ENABLE_CURRENCY_ICON = false;
 
 export interface IWalletCardProps {
   address: string;
@@ -39,16 +29,6 @@ export const WalletCard = ({
   handleClose,
 }: IWalletCardProps) => {
   const classes = useWalletCardStyles();
-  const [isCopy, setCopy] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isCopy) {
-      setTimeout(() => {
-        setCopy(false);
-        (document.activeElement as any)?.blur();
-      }, 1000);
-    }
-  }, [isCopy]);
 
   return (
     <Box className={classes.root}>
@@ -60,40 +40,18 @@ export const WalletCard = ({
         </Box>
       ) : null}
 
-      {address ? (
+      {address && (
         <Box className={classes.row}>
-          <Typography variant="body1" className={classes.addressText}>
-            {truncateWalletAddr(address)}
-
-            <CopyToClipboard text={address} onCopy={() => setCopy(true)}>
-              <Tooltip
-                title={
-                  isCopy ? t('common.copied') : t('common.copy-to-clipboard')
-                }
-                arrow
-              >
-                <IconButton size="small" className={classes.clipboardBtn}>
-                  {isCopy ? (
-                    <DoneIcon
-                      className={classNames(
-                        classes.clipboardBtnIcon,
-                        classes.clipboardBtnIconDone,
-                      )}
-                    />
-                  ) : (
-                    <CopyIcon className={classes.clipboardBtnIcon} />
-                  )}
-                </IconButton>
-              </Tooltip>
-            </CopyToClipboard>
-          </Typography>
+          <CopyToClip address={address} />
         </Box>
-      ) : null}
+      )}
 
       {balance ? (
         <Box className={classes.row}>
           <Box className={classes.walletBalance}>
-            {logo ? <Avatar src={logo} className={classes.walletLogo} /> : null}
+            {logo && ENABLE_CURRENCY_ICON ? (
+              <Avatar src={logo} className={classes.walletLogo} />
+            ) : null}
             {t('unit.custom-unit', {
               value: balance.toFixed(),
               unit: currency,

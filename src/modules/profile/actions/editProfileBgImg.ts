@@ -35,7 +35,7 @@ export const editProfileBgImg = createSmartAction<RequestAction>(
     meta: {
       asMutation: true,
       auth: true,
-      driver: 'axiosSmartchain',
+      driver: 'axios',
       onRequest: (
         request,
         _action: RequestAction,

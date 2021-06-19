@@ -45,7 +45,7 @@ export const uploadFile: (
       meta: {
         asMutation: true,
         auth: true,
-        driver: 'axiosSmartchain',
+        driver: 'axios',
         getData: data => {
           if (data.code !== 200) {
             throw new Error(data.msg);

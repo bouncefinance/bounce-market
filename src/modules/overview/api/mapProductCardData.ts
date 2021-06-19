@@ -13,7 +13,7 @@ export const mapProductCardData = (item: INFTItem) => ({
       : '',
   price: new BigNumber(Web3.utils.fromWei(item.price)),
   title: item.itemname || '',
-  priceType: 'BNB',
+  priceType: item.tokenSymbol,
   likes: item.likecount,
   // TODO: get NFT item copies data
   copies: undefined,

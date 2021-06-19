@@ -16,18 +16,18 @@ import {
 } from 'modules/buyNFT/components/InfoTabsItem';
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
+import { EmptyPageData } from 'modules/common/components/EmptyPageData';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { AuctionState } from '../../../common/const/AuctionState';
 import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Address } from '../../../common/types/unit';
-import { throwIfDataIsEmptyOrError } from '../../../common/utils/throwIfDataIsEmptyOrError';
 import { NftType } from '../../../createNFT/actions/createNft';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
@@ -56,6 +56,7 @@ import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
 import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 
 export const BuyNFT = () => {
+  const [isEmptyData, setIsEmptyData] = useState(false);
   const classes = useBuyNFTStyles();
   const { poolId: poolIdParam, poolType } = useParams<{
     poolId: string;
@@ -83,13 +84,19 @@ export const BuyNFT = () => {
   const init = useCallback(() => {
     dispatch(fetchWeb3PoolDetails({ poolId, poolType }))
       .then(response => {
-        const { data } = throwIfDataIsEmptyOrError(response);
-        dispatch(fetchRoleInfo({ poolId, poolType }));
+        const { data } = response;
+
+        if (!data) {
+          setIsEmptyData(true);
+          return;
+        }
+
         dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
         // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
         dispatch(fetchCurrency({ unitContract: data.unitContract }));
       })
       .then(() => {
+        dispatch(fetchRoleInfo({ poolId, poolType }));
         dispatch(fetchPoolHistory({ poolId, poolType }));
         dispatch(fetchPoolBids({ poolId, poolType }));
         dispatch(fetchPoolNftOwner({ poolId, poolType }));
@@ -201,6 +208,10 @@ export const BuyNFT = () => {
       init,
     ],
   );
+
+  if (isEmptyData) {
+    return <EmptyPageData />;
+  }
 
   return (
     <Queries<
@@ -481,7 +492,7 @@ export const BuyNFT = () => {
                           ? poolDetails.amountMin1
                           : poolDetails.lastestBidAmount
                       }
-                      cryptoCurrency="BNB"
+                      cryptoCurrency={item.tokenSymbol}
                       onBidClick={openBidDialog}
                       onBuyClick={openEnglishBuyDialog}
                       disabled={poolDetails.state !== AuctionState.Live}
@@ -499,7 +510,7 @@ export const BuyNFT = () => {
                     <InfoPrices
                       price={poolDetails.price.multipliedBy(currency.priceUsd)}
                       cryptoPrice={poolDetails.price}
-                      cryptoCurrency="BNB"
+                      cryptoCurrency={item.tokenSymbol}
                       onBuyClick={openFixedBuyDialog}
                       disabled={poolDetails.state !== FixedSwapState.Live}
                       loading={
@@ -559,7 +570,7 @@ export const BuyNFT = () => {
                         }}
                         isOpen={openedBid}
                         onClose={closeBidDialog}
-                        currency="BNB"
+                        currency={item.tokenSymbol}
                         owner={ownerTitle}
                         ownerAvatar={undefined}
                         isOwnerVerified={false}

@@ -80,7 +80,7 @@ export const fetchPoolBids = createSmartAction<
     },
     meta: {
       auth: true,
-      driver: 'axiosSmartchain',
+      driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
         if (data.length !== 0) {

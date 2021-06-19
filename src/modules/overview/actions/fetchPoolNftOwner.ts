@@ -49,7 +49,7 @@ export const fetchPoolNftOwner = createSmartAction<
     },
     meta: {
       auth: true,
-      driver: 'axiosSmartchain',
+      driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
         return data?.owners

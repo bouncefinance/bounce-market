@@ -60,7 +60,7 @@ export const getAccountLikes = createAction<
   meta: {
     asMutation: true,
     auth: true,
-    driver: 'axiosSmartchain',
+    driver: 'axios',
     onRequest: (
       request,
       _action: RequestAction,

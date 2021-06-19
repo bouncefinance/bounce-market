@@ -3,11 +3,10 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { RootState } from 'store';
 import {
-  QueryBrandItems721Action,
   QueryBrandItems1155Action,
+  QueryBrandItems721Action,
   QueryBrandItemsAction,
 } from './const';
-import { NFTVIEW_URL_V2 } from 'modules/common/conts';
 
 export interface IBrandItem {
   user_address: string;
@@ -19,11 +18,11 @@ export const queryBrandItem721 = createSmartAction(
   (data: IBrandItem) => {
     return {
       request: {
-        url: `${NFTVIEW_URL_V2}/erc721?user_address=${data.user_address}&contract_address=${data.contract_address}`,
+        url: `/erc721?user_address=${data.user_address}&contract_address=${data.contract_address}`,
         method: 'get',
       },
       meta: {
-        driver: 'axiosSmartchain',
+        driver: 'nftview2',
         asMutation: true,
         getData: (data: any) => {
           if (data.code !== 200) {
@@ -41,11 +40,11 @@ export const queryBrandItem1155 = createSmartAction(
   (data: IBrandItem) => {
     return {
       request: {
-        url: `${NFTVIEW_URL_V2}/erc1155?user_address=${data.user_address}&contract_address=${data.contract_address}`,
+        url: `/erc1155?user_address=${data.user_address}&contract_address=${data.contract_address}`,
         method: 'get',
       },
       meta: {
-        driver: 'axiosSmartchain',
+        driver: 'nftview2',
         asMutation: true,
         getData: (data: any) => {
           if (data.code !== 200) {
@@ -80,7 +79,7 @@ export const queryBrandItems = createSmartAction(
               queryBrandItem1155(data),
             );
             const length = items721.length + items1155.length;
-            return new Promise((resolve, reject) => resolve(length));
+            return new Promise(resolve => resolve(length));
           })(),
         };
       },

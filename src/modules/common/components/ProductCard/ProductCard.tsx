@@ -12,6 +12,7 @@ export interface IProductCardProps
   id: number;
   poolId: number;
   auctionType?: AuctionType;
+  state?: number;
 }
 
 export const ProductCard = ({
@@ -21,6 +22,7 @@ export const ProductCard = ({
   MediaProps,
   onLikeClick,
   likes,
+  state,
   ...restProps
 }: IProductCardProps) => {
   const {
@@ -51,6 +53,8 @@ export const ProductCard = ({
       onLikeClick={handleLikeClick}
       MediaProps={MediaProps}
       likes={likeCount}
+      auctionType={auctionType}
+      state={state}
       {...restProps}
     />
   );

@@ -4,6 +4,7 @@ import { IApiNFTDetails, INFTDetails, mapNFTDetails } from '../api/NFTDetails';
 import { Store } from 'redux';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
+import { addTokenSymbolByDriver } from '../../common/utils/addTokenSymbolByDriver';
 
 export const fetchItem = createSmartAction<
   RequestAction<IApiNFTDetails, INFTDetails>
@@ -14,7 +15,9 @@ export const fetchItem = createSmartAction<
     data: { ct: params.contract, id: params.id },
   },
   meta: {
-    getData: data => mapNFTDetails(data),
+    getData(data) {
+      return mapNFTDetails(data);
+    },
     onRequest: (
       request: any,
       action: RequestAction,
@@ -27,8 +30,9 @@ export const fetchItem = createSmartAction<
       request.data.accountaddress = data?.address;
       return request;
     },
+    onSuccess: addTokenSymbolByDriver,
     auth: true,
-    driver: 'axiosSmartchain',
+    driver: 'axios',
     asMutation: false,
     ...meta,
   },

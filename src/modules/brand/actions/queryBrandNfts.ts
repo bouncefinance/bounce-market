@@ -10,6 +10,7 @@ import { AuctionType } from 'modules/overview/api/auctionType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
+import { TokenSymbol } from '../../common/types/TokenSymbol';
 
 interface IQueryBrandNftsArgs {
   userAddress: string;
@@ -134,6 +135,7 @@ export const queryBrandNfts = createAction<
                 price: pool.price,
                 createTime: new Date(pool.created_at).getTime(),
                 token1: pool.token1,
+                tokenSymbol: poolInfo ? poolInfo.tokenSymbol : TokenSymbol.BNB,
               };
             })
             .filter(item => item && item.itemname) as INFTItem[];

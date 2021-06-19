@@ -14,6 +14,7 @@ interface IVideoPlayerProps {
   autoPlay?: boolean;
   muted?: boolean;
   preload?: 'none' | 'metadata' | 'auto';
+  playsInline?: boolean;
   objectFit?: ObjectFitType;
   fallbackText?: string;
 }
@@ -36,6 +37,7 @@ export const VideoPlayer = ({
   autoPlay = false,
   muted = true,
   preload = 'metadata',
+  playsInline = true,
   objectFit = 'fill',
   fallbackText = t('video-player.unsupported'),
   ...restProps
@@ -72,6 +74,7 @@ export const VideoPlayer = ({
         autoPlay={autoPlay}
         muted={muted}
         preload={preload}
+        playsInline={playsInline}
         className={classNames(classes.player, classes[objectFit])}
       >
         <source src={video} />
