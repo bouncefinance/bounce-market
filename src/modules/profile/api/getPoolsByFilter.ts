@@ -8,7 +8,6 @@ import {
   IFetchPoolDetailsData,
   isApiEnglishAuction,
 } from '../../overview/actions/fetchPoolDetails';
-import { POOLS_URL } from '../../common/conts';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 
@@ -84,7 +83,7 @@ export const getPoolsByFilter = createAction<
   ]
 >('getPoolsByFilter', (params, meta) => ({
   request: {
-    url: POOLS_URL,
+    url: '/pools',
     method: 'get',
     params: {
       user_address: params?.user,
@@ -94,7 +93,7 @@ export const getPoolsByFilter = createAction<
     },
   },
   meta: {
-    driver: 'axiosSmartchain',
+    driver: 'nftview',
     getData: response => {
       // TODO parse the response
       if (response.code !== 200) {

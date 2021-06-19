@@ -10,7 +10,6 @@ import { connect } from '../store/actions/connect';
 import { disconnect } from '../store/actions/disconnect';
 import { ISetAccountData, setAccount } from '../store/actions/setAccount';
 import { updateAccount } from '../store/actions/updateAccount';
-
 // TODO: Check disconnection, switch chain, switch account
 
 enum WalletEventType {
@@ -106,7 +105,10 @@ function* onConnectWallet() {
 
     if (event.type === WalletEventType.ChainChanged) {
       if (event.data.chainId) {
-        yield put(updateAccount({ chainId: event.data.chainId }));
+        yield putResolve(
+          updateAccount({ chainId: parseInt(event.data.chainId, 16) }),
+        );
+        yield put(fetchProfileInfo());
       }
     } else if (event.type === WalletEventType.AccountChanged) {
       const address =
@@ -132,16 +134,16 @@ function* onConnectWallet() {
 }
 
 function* onDisconnectWallet() {
-  const requestToReset: string[] = [
+  const requestsToReset: string[] = [
     setAccount.toString(),
     fetchProfileInfo.toString(),
   ];
 
   if (featuresConfig.nftLikes) {
-    requestToReset.push(queryLikedItems.toString());
+    requestsToReset.push(queryLikedItems.toString());
   }
 
-  yield put(resetRequests(requestToReset));
+  yield put(resetRequests(requestsToReset));
 }
 
 export function* connectSaga() {

@@ -1,4 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
+import { t } from 'modules/i18n/utils/intl';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
@@ -12,7 +13,6 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
-import { t } from 'modules/i18n/utils/intl';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
@@ -82,9 +82,8 @@ export const MyBrand = () => {
   const toggleBgImgModal = useCallback(
     (isOpen: boolean) => () => {
       setBgImgModalOpened(isOpen);
-    }, [],
-  );
-
+    }, []);
+  
   return (
     <Section className={classes.root}>
       <Header

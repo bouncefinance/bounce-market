@@ -354,6 +354,9 @@
     }
   },
   "product-card": {
+    "not-on-sale": "未出售",
+    "price": "价格",
+    "top-bid": "最高出价",
     "owner": "拥有者",
     "put-on-sale": "出售",
     "transfer": "发送token",
@@ -366,5 +369,9 @@
   "burn-token": {
     "title": "销毁Token",
     "submit": "销毁"
+  },
+  "empty-data": {
+    "title": "Whoops. Looks like there's no data.",
+    "text": "Try to change the network to view the content of the page."
   }
 }

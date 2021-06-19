@@ -25,45 +25,10 @@ import { useProductsStyles } from './useProductsStyles';
 
 const NFT_ITEMS_COUNT = 10;
 
-interface IProductsProps extends ISectionProps {
-  cards?: JSX.Element;
-  panel?: JSX.Element;
-}
-
-export const ProductsComponent = ({
-  cards,
-  panel,
-  ...sectionProps
-}: IProductsProps) => {
-  const classes = useProductsStyles();
-
-  return (
-    <Section {...sectionProps}>
-      <Container>
-        {panel && <Box mb={6}>{panel}</Box>}
-
-        {cards}
-
-        <Box display="flex" justifyContent="center" mt={5}>
-          <Button
-            component={Link}
-            variant="outlined"
-            to={MarketRoutesConfig.Market.generatePath()}
-            className={classes.moreBtn}
-            fullWidth
-            rounded
-          >
-            {t('common.view-all')}
-          </Button>
-        </Box>
-      </Container>
-    </Section>
-  );
-};
-
 export const Products = ({ ...sectionProps }: ISectionProps) => {
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
+  const classes = useProductsStyles();
 
   const { data, loading } = useQuery<IFetchNFTItems | null>({
     type: fetchNFTItems.toString(),
@@ -154,24 +119,39 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
         {renderedItems}
       </ProductCards>
     ) : (
-      <Box display="flex" justifyContent="center">
-        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
-      </Box>
+      <NoItems href={MarketRoutesConfig.Market.generatePath()} />
     );
 
   return isConnected ? (
-    <ProductsComponent
-      {...sectionProps}
-      cards={renderedCards}
-      panel={
-        <ProductsPanel
-          onSortChange={onSortChange}
-          onCategoryChange={onCategoryChange}
-          catergory={catergory}
-          sortBy={sortBy}
-          disabled={loading}
-        />
-      }
-    />
+    <Section {...sectionProps}>
+      <Container>
+        <Box mb={6}>
+          <ProductsPanel
+            onSortChange={onSortChange}
+            onCategoryChange={onCategoryChange}
+            catergory={catergory}
+            sortBy={sortBy}
+            disabled={loading}
+          />
+        </Box>
+
+        {renderedCards}
+
+        {hasItems && (
+          <Box display="flex" justifyContent="center" mt={5}>
+            <Button
+              component={Link}
+              variant="outlined"
+              to={MarketRoutesConfig.Market.generatePath()}
+              className={classes.moreBtn}
+              fullWidth
+              rounded
+            >
+              {t('common.view-all')}
+            </Button>
+          </Box>
+        )}
+      </Container>
+    </Section>
   ) : null;
 };

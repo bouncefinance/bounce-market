@@ -1,4 +1,5 @@
 import { Channel, NftType } from '../../createNFT/actions/createNft';
+import { TokenSymbol } from '../../common/types/TokenSymbol';
 
 export interface IApiNFTDetails {
   code: number;
@@ -60,6 +61,7 @@ export interface INFTDetails {
   supply: number;
   unlockablecontent: number;
   updatedAt: Date;
+  tokenSymbol: TokenSymbol;
 }
 
 export function mapNFTDetails({
@@ -74,6 +76,7 @@ export function mapNFTDetails({
     fileurl,
     brandId: rest.brandid,
     itemName: rest.itemname,
+    tokenSymbol: TokenSymbol.BNB,
     ...rest,
   };
 }

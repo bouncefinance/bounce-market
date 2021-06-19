@@ -1,17 +1,10 @@
 import { useQuery } from '@redux-requests/react';
-import { ZERO_ADDRESS } from 'modules/common/conts';
+import { getNativeTokenSymbol, ZERO_ADDRESS } from 'modules/common/conts';
 import { useMemo } from 'react';
 import { setAccount } from '../../account/store/actions/setAccount';
+import { TokenSymbol } from '../../common/types/TokenSymbol';
 
 const ENABLE_FIXED_TOKENS = false;
-
-export enum Currency {
-  BNB = 'BNB',
-  ETH = 'ETH',
-  BUSD = 'BUSD',
-  USDT = 'USDT',
-  USDC = 'USDC',
-}
 
 function getUSDTAddress(chainId: number) {
   switch (chainId) {
@@ -73,7 +66,7 @@ export function useCurrencies() {
         ? {
             options: [
               {
-                label: chainId === 56 ? Currency.BNB : Currency.ETH,
+                label: getNativeTokenSymbol(chainId),
                 value: ZERO_ADDRESS,
                 contract: ZERO_ADDRESS,
                 decimals: 18,
@@ -81,7 +74,7 @@ export function useCurrencies() {
               ...(chainId === 56 && ENABLE_FIXED_TOKENS
                 ? [
                     {
-                      label: Currency.BUSD,
+                      label: TokenSymbol.BUSD,
                       value: getBUSDAddress(chainId),
                       decimals: 18,
                     },
@@ -90,12 +83,12 @@ export function useCurrencies() {
               ...(ENABLE_FIXED_TOKENS
                 ? [
                     {
-                      label: Currency.USDT,
+                      label: TokenSymbol.USDT,
                       value: getUSDTAddress(chainId),
                       decimals: chainId === 56 ? 18 : 6,
                     },
                     {
-                      label: Currency.USDC,
+                      label: TokenSymbol.USDC,
                       value: getUSDCAddress(chainId),
                       decimals: 18,
                     },

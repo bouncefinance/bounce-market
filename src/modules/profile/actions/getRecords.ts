@@ -8,7 +8,6 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
-import { FANGIBLE_URL } from 'modules/common/conts';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
@@ -26,7 +25,6 @@ export const getRecords = createAction<
   request: {
     url: '/records',
     method: 'get',
-    baseURL: FANGIBLE_URL,
     params: {
       offset: params?.offset || 0,
       count: params?.count || 100,
@@ -35,7 +33,7 @@ export const getRecords = createAction<
   },
   meta: {
     ...meta,
-    driver: 'axiosSmartchain',
+    driver: 'nftview',
     onRequest: (
       request,
       _action: RequestAction,

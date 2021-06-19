@@ -15,7 +15,28 @@ import {
   BounceNFTFactoryV2,
 } from '../../web3/contracts';
 import { throwIfError } from '../../common/utils/throwIfError';
-import { REACT_APP_BRAND_BASEURI } from 'modules/common/conts';
+import { BlockchainNetworkId } from 'modules/common/conts';
+
+const chaiToBrandUri: {
+  [key in BlockchainNetworkId]: string | undefined;
+} = {
+  [BlockchainNetworkId.mainnet]:
+    process.env.REACT_APP_BRAND_BASEURI_ETH_MAINNET,
+  [BlockchainNetworkId.ropsten]: undefined,
+  [BlockchainNetworkId.rinkeby]: undefined,
+  [BlockchainNetworkId.goerli]: undefined,
+  [BlockchainNetworkId.dev]: undefined,
+  [BlockchainNetworkId.classic]: undefined,
+  [BlockchainNetworkId.mordor]: undefined,
+  [BlockchainNetworkId.kotti]: undefined,
+  [BlockchainNetworkId.smartchain]: process.env.REACT_APP_BRAND_BASEURI,
+  [BlockchainNetworkId.smartchainTestnet]: undefined,
+  [BlockchainNetworkId.heco]: process.env.REACT_APP_BRAND_BASEURI_HECO,
+};
+
+function getBrandUri(chainId: BlockchainNetworkId): string {
+  return chaiToBrandUri[chainId] ?? '';
+}
 
 export const createBrand = createSmartAction(
   'createBrand',
@@ -64,7 +85,7 @@ export const createBrand = createSmartAction(
             );
             const _name = brandName;
             const _symbol = brandSymbol;
-            const _uri = REACT_APP_BRAND_BASEURI;
+            const _uri = getBrandUri(chainId);
             const _mode = 0; //0 only owner can mint; 1 whitelist address can mint; 2: everyone
             const bytecode_721 = BoucneErc721Bytecode;
             const bytecode_1155 = BoucneErc1155Bytecode;

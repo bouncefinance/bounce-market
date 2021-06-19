@@ -1,16 +1,15 @@
 import {
   Box,
   BoxProps,
-  ButtonBase,
   Grid,
   IconButton,
   Tooltip,
   Typography,
 } from '@material-ui/core';
+import { CopyToClip } from 'modules/common/components/CopyToClip';
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { SocialShare } from 'modules/common/components/SocialShare';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
@@ -57,9 +56,9 @@ export const InfoPanel = ({
 
         {!isBrand && (
           <Grid item>
-            <ButtonBase className={classes.address} title={address}>
-              <Typography>{truncateWalletAddr(address || '')}</Typography>
-            </ButtonBase>
+            <div className={classes.address}>
+              {address && <CopyToClip address={address} />}
+            </div>
           </Grid>
         )}
 

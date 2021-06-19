@@ -1,3 +1,4 @@
+import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { NoItems } from 'modules/common/components/NoItems';
@@ -13,6 +14,7 @@ import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../common/const/AuctionState';
 import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
@@ -22,8 +24,13 @@ const getIsOnSale = (item: IItem) => {
   return item.state === AuctionState.Live || item.state === FixedSwapState.Live;
 };
 
-export const TabItems = () => {
-  const dispatch = useDispatchRequest();
+interface ITabItemsProps {
+  address: string;
+}
+
+export const TabItems = ({ address }: ITabItemsProps) => {
+  const dispatchRequest = useDispatchRequest();
+  const dispatch = useDispatch();
 
   const allNftByUserQuery = useQuery<IItem[] | null>({
     type: fetchAllNftByUser.toString(),
@@ -35,26 +42,27 @@ export const TabItems = () => {
   });
 
   useEffect(() => {
-    if (profileInfo?.accountAddress) {
-      dispatch(
-        fetchAllNftByUser({
-          user: profileInfo.accountAddress,
-        }),
-      );
-    }
-  }, [dispatch, profileInfo]);
+    dispatchRequest(
+      fetchAllNftByUser({
+        user: address,
+      }),
+    );
 
-  const hasItems =
-    !!allNftByUserQuery.data && allNftByUserQuery.data.length > 0;
+    return function reset() {
+      dispatch(resetRequests([fetchAllNftByUser.toString()]));
+    };
+  }, [address, dispatch, dispatchRequest]);
 
-  const username = profileInfo
-    ? profileInfo.username ?? truncateWalletAddr(profileInfo.accountAddress)
-    : 'Unnamed';
+  const itemsOnSale = allNftByUserQuery.data?.filter(getIsOnSale);
+
+  const hasItems = !!itemsOnSale?.length;
+
+  const username = profileInfo?.username ?? truncateWalletAddr(address);
 
   return hasItems || allNftByUserQuery.loading ? (
     <TabItemsComponent>
       <ProductCards isLoading={allNftByUserQuery.loading}>
-        {allNftByUserQuery.data?.filter(getIsOnSale).map((item: IItem) => (
+        {itemsOnSale?.map((item: IItem) => (
           <ProductCard
             id={item.id}
             poolId={item.poolId || 0}

@@ -15,22 +15,6 @@ export const useWalletCardStyles = makeStyles<Theme>(theme => ({
   name: {
     fontSize: 22,
   },
-  addressText: {
-    color: theme.palette.text.secondary,
-    fontSize: 14,
-  },
-  clipboardBtn: {
-    fontSize: 20,
-    border: 'none !important',
-    marginLeft: theme.spacing(1),
-    color: theme.palette.text.secondary,
-  },
-  clipboardBtnIcon: {
-    fontSize: 'inherit',
-  },
-  clipboardBtnIconDone: {
-    color: theme.palette.success.light,
-  },
   walletBalance: {
     display: 'flex',
     alignItems: 'center',

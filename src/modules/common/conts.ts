@@ -1,11 +1,5 @@
 import { TokenSymbol } from './types/TokenSymbol';
 
-export const API_BASE = process.env.REACT_APP_API_BASE;
-export const POOLS_URL = process.env.REACT_APP_POOLS_URL;
-export const POOL_DETAILS_URL = process.env.REACT_APP_POOL_DETAILS_URL;
-export const FANGIBLE_URL = process.env.REACT_APP_FANGIBLE_URL;
-export const NFTVIEW_URL_V2 = process.env.REACT_APP_NFTVIEW_URL_V2;
-export const REACT_APP_BRAND_BASEURI = process.env.REACT_APP_BRAND_BASEURI;
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 // TODO: at the end all features should be activated
@@ -75,17 +69,17 @@ export enum BlockchainNetworkId {
 const NativeTokens: {
   [key in BlockchainNetworkId]: TokenSymbol;
 } = {
-  [BlockchainNetworkId.mainnet]: 'ETH',
-  [BlockchainNetworkId.ropsten]: 'ETH',
-  [BlockchainNetworkId.rinkeby]: 'ETH',
-  [BlockchainNetworkId.goerli]: 'ETH',
-  [BlockchainNetworkId.dev]: 'ETH',
-  [BlockchainNetworkId.classic]: 'ETH',
-  [BlockchainNetworkId.mordor]: 'ETH',
-  [BlockchainNetworkId.kotti]: 'ETH',
-  [BlockchainNetworkId.smartchain]: 'BNB',
-  [BlockchainNetworkId.smartchainTestnet]: 'BNB',
-  [BlockchainNetworkId.heco]: 'HT',
+  [BlockchainNetworkId.mainnet]: TokenSymbol.ETH,
+  [BlockchainNetworkId.ropsten]: TokenSymbol.ETH,
+  [BlockchainNetworkId.rinkeby]: TokenSymbol.ETH,
+  [BlockchainNetworkId.goerli]: TokenSymbol.ETH,
+  [BlockchainNetworkId.dev]: TokenSymbol.ETH,
+  [BlockchainNetworkId.classic]: TokenSymbol.ETH,
+  [BlockchainNetworkId.mordor]: TokenSymbol.ETH,
+  [BlockchainNetworkId.kotti]: TokenSymbol.ETH,
+  [BlockchainNetworkId.smartchain]: TokenSymbol.BNB,
+  [BlockchainNetworkId.smartchainTestnet]: TokenSymbol.BNB,
+  [BlockchainNetworkId.heco]: TokenSymbol.HT,
 };
 
 export function getNativeTokenSymbol(chainId: BlockchainNetworkId) {

@@ -18,9 +18,9 @@ export const useAccount = () => {
   const address = data?.address;
   const isConnected = !!address;
 
-  const isChainSupported =
-    parseInt((data?.chainId ?? 0).toString()) ===
-    BlockchainNetworkId.smartchain;
+  const chainId = parseInt((data?.chainId ?? 0).toString());
+
+  const isChainSupported = chainId === BlockchainNetworkId.smartchain;
 
   const walletSupportNetworkChange = !!data?.web3?.givenProvider;
 
@@ -65,5 +65,6 @@ export const useAccount = () => {
     handleConnect,
     handleChangeNetworkToSupported,
     handleUpdate,
+    chainId,
   };
 };

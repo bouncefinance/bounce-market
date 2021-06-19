@@ -36,7 +36,7 @@ export const queryAccountInfo = createSmartAction<
   meta: {
     asMutation: false,
     ...meta,
-    driver: 'axiosSmartchain',
+    driver: 'axios',
     getData: (data: IApiAccountInfo) => {
       if (data.code !== 1) {
         return {

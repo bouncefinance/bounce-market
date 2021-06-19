@@ -24,6 +24,7 @@ export interface IProductCardProps
   standard?: NftType;
   maxQuantity?: number;
   queryAction?: () => void;
+  state?: number;
 }
 
 export const ProductCard = ({
@@ -37,6 +38,7 @@ export const ProductCard = ({
   standard = -1,
   queryAction,
   maxQuantity,
+  state,
   ...restProps
 }: IProductCardProps) => {
   const {
@@ -120,6 +122,8 @@ export const ProductCard = ({
       onBurnClick={onBurnClick}
       MediaProps={MediaProps}
       likes={likeCount}
+      auctionType={auctionType}
+      state={state}
       {...restProps}
     />
     <Mutation

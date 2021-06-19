@@ -25,6 +25,9 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
 import { useProductCardStyles } from './useProductCardStyles';
+import { AuctionType } from 'modules/overview/api/auctionType';
+import { FixedSwapState } from 'modules/common/const/FixedSwapState';
+import { AuctionState } from 'modules/common/const/AuctionState';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -42,6 +45,8 @@ export interface IProductCardComponentProps {
   endDate?: Date;
   likes?: number;
   copies?: number;
+  auctionType?: AuctionType;
+  state?: number;
   MediaProps: IImgProps & {
     category: ProductCardCategoryType;
   };
@@ -68,6 +73,8 @@ export const ProductCardComponent = ({
   priceType,
   endDate,
   copies,
+  auctionType,
+  state,
   likes,
   id,
   isLikeDisabled = false,
@@ -225,7 +232,15 @@ export const ProductCardComponent = ({
 
         {isOnSale && price && (
           <div className={classes.price}>
-            {price.toFormat()} {priceType}
+            {auctionType === AuctionType.FixedSwap && (
+              state === FixedSwapState.Completed
+                ? t('product-card.sold-for')
+                : t('product-card.price'))}
+            {auctionType === AuctionType.EnglishAuction && (
+              state === AuctionState.Claimed
+                ? t('product-card.top-bid')
+                : t('product-card.sold-for'))}
+            {} {price.toFormat()} {priceType}
           </div>
         )}
 
@@ -245,7 +260,7 @@ export const ProductCardComponent = ({
           {!isOnSale && (
             <>
               <div>
-                <Typography className={classes.status}>Not on sale</Typography>
+                <Typography className={classes.status}>{t("product-card.not-on-sale")}</Typography>
 
                 {copies && renderedCopies}
               </div>
