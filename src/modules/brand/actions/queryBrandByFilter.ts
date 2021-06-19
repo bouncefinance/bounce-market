@@ -13,7 +13,7 @@ export const queryBrandByFilter = createSmartAction<
       data: data,
     },
     meta: {
-      driver: 'axiosSmartchain',
+      driver: 'axios',
       asMutation: true,
       getData: data => {
         if (data.code !== 1) {

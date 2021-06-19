@@ -18,7 +18,7 @@ export const fetchActivities = createSmartAction<
   },
   meta: {
     auth: true,
-    driver: 'axiosSmartchain',
+    driver: 'axios',
     asMutation: false,
     getData: data => {
       if (data.code !== 1 && data.code !== 200) {

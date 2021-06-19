@@ -148,7 +148,7 @@ export const getByLikeStr = createSmartAction<
   },
   meta: {
     auth: true,
-    driver: 'axiosSmartchain',
+    driver: 'axios',
     asMutation: false,
     getData: data => {
       return mapSearchResult(data);

@@ -36,7 +36,7 @@ export const editBrandImg = createSmartAction<RequestAction>(
     meta: {
       asMutation: true,
       auth: true,
-      driver: 'axiosSmartchain',
+      driver: 'axios',
       onRequest: (
         request,
         _action: RequestAction,
@@ -55,7 +55,7 @@ export const editBrandImg = createSmartAction<RequestAction>(
       mutations: {
         [getAccountBrand.toString()]: (
           data: IBrandInfo | undefined,
-          { code, msg }: { code: number; msg: any },
+          { code }: { code: number; msg: any },
         ): IBrandInfo | undefined => {
           if (code === 1) {
             const updatedData = {

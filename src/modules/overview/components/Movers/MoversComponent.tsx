@@ -103,13 +103,15 @@ export const MoversComponent = ({
           </Grid>
         </Box>
 
-        {(isLoading || itemCount) && (
+        {isLoading || !!itemCount ? (
           <Swiper {...sliderProps} className={classes.slider}>
             {React.Children.map(
               isLoading ? renderedSkeletons : children,
               modifyChildren,
             )}
           </Swiper>
+        ) : (
+          t('profile.no-items.title')
         )}
       </Container>
     </Section>

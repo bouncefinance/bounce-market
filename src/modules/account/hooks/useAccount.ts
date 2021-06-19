@@ -13,7 +13,19 @@ import { getWeb3NoAccount } from 'modules/web3/utils';
 import { tokenLocalStorageKey } from 'constants/index';
 import Web3 from 'web3';
 import { useTimer } from 'modules/common/hooks/useInterval';
-
+const useStyles = makeStyles({
+  '@global': {
+    '#walletconnect-qrcode-modal': {
+      overflow: 'auto',
+    },
+    '#walletconnect-qrcode-modal .walletconnect-modal__base': {
+      top: 'auto',
+      transform: 'none',
+      margin: '50px auto',
+      maxWidth: '400px',
+    },
+  },
+});
 export const useAccount = () => {
   const dispatch = useAppDispatch();
 
@@ -27,18 +39,18 @@ export const useAccount = () => {
   const [loading, setLoading] = useState(true);
   const walletSupportNetworkChange = !!library;
   const [balance, steBalance] = useState(new BigNumber(0.0));
-  const [web3, setWeb3] = useState<Web3>(getWeb3NoAccount())
+  const [web3, setWeb3] = useState<Web3>(getWeb3NoAccount());
   const initWeb3 = async (address: string) => {
     try {
       if (!address) {
-        return
+        return;
       }
       const web3 = getWeb3NoAccount();
-      setWeb3(web3)
+      setWeb3(web3);
       const balance = await web3.eth.getBalance(address);
       steBalance(new BigNumber(web3.utils.fromWei(balance)));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -61,7 +73,7 @@ export const useAccount = () => {
     // eslint-disable-next-line
   }, [loading_1]);
 
-  const address = account ?? data_1?.address ?? '';
+  const address = account || data_1?.address || '';
   const isConnected = !!address;
 
   const isChainSupported =
@@ -77,19 +89,7 @@ export const useAccount = () => {
   }, [dispatch]);
 
   // Fix styles for wallet connection QR-code modal
-  const useStyles = makeStyles({
-    '@global': {
-      '#walletconnect-qrcode-modal': {
-        overflow: 'auto',
-      },
-      '#walletconnect-qrcode-modal .walletconnect-modal__base': {
-        top: 'auto',
-        transform: 'none',
-        margin: '50px auto',
-        maxWidth: '400px',
-      },
-    },
-  });
+
   useStyles();
 
   const handleUpdate = useCallback(
@@ -99,19 +99,27 @@ export const useAccount = () => {
     [dispatch],
   );
 
-  const token = localStorage.getItem(tokenLocalStorageKey) ?? ''
+  const token = localStorage.getItem(tokenLocalStorageKey) ?? '';
   useEffect(() => {
     // no first
-    if (!(data_1?.address) && address) {
-      dispatch(setAccount({ address, token, chainId: chainId as BlockchainNetworkId, web3: web3, balance, }))
+    if (!data_1?.address && address) {
+      dispatch(
+        setAccount({
+          address,
+          token,
+          chainId: chainId as BlockchainNetworkId,
+          web3: web3,
+          balance,
+        }),
+      );
     }
     // eslint-disable-next-line
-  }, [address, token,])
+  }, [address, token]);
 
-  const timer = useTimer(1000 * 10)
+  const timer = useTimer(1000 * 10);
   useEffect(() => {
-    initWeb3(address)
-  }, [timer, address])
+    initWeb3(address);
+  }, [timer, address]);
 
   return {
     loading,
@@ -124,5 +132,6 @@ export const useAccount = () => {
     handleChangeNetworkToSupported,
     handleUpdate,
     balance,
+    chainId,
   };
 };

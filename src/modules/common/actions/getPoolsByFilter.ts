@@ -4,7 +4,6 @@ import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { NftType } from '../../createNFT/actions/createNft';
 import { AuctionState } from '../const/AuctionState';
-import { FANGIBLE_URL } from '../conts';
 import { Address, Seconds } from '../types/unit';
 
 interface IApiPool {
@@ -84,7 +83,6 @@ export const getPoolsByFilter = createAction<
   request: {
     url: '/pools',
     method: 'get',
-    baseURL: FANGIBLE_URL,
     params: {
       user_address: params?.user,
       offset: params?.offset || 0,
@@ -92,7 +90,7 @@ export const getPoolsByFilter = createAction<
     },
   },
   meta: {
-    driver: 'axiosSmartchain',
+    driver: 'nftview',
     getData: response => {
       // TODO: parse the response
       if (response.code !== 200) {

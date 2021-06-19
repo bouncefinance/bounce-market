@@ -64,9 +64,9 @@ export const fetchPriceBySymbol = createSmartAction<
     >,
   ) => {
     if (
-      tokenSymbol === 'USDT' ||
-      tokenSymbol === 'BUSD' ||
-      tokenSymbol === 'USDC'
+      tokenSymbol === TokenSymbol.USDT ||
+      tokenSymbol === TokenSymbol.BUSD ||
+      tokenSymbol === TokenSymbol.USDC
     ) {
       return {
         request: {
@@ -87,6 +87,8 @@ export const fetchPriceBySymbol = createSmartAction<
         return 'auction';
       } else if (tokenSymbol === 'BTC') {
         return 'bitcoin';
+      } else if (tokenSymbol === 'ETH') {
+        return 'ethereum';
       }
 
       return tokenSymbol;
@@ -103,7 +105,7 @@ export const fetchPriceBySymbol = createSmartAction<
         },
       },
       meta: {
-        driver: 'axiosSmartchain',
+        driver: 'axios',
         asMutation: false,
         getData: ({ data }) => {
           return {

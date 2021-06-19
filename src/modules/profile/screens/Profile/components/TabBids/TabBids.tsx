@@ -4,12 +4,12 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
+import { t } from 'modules/i18n/utils/intl';
 import {
   ProductCard,
   ProductCardCategoryType,
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import { IQueryMyBids, queryMyBids } from 'modules/profile/actions/queryMyBids';

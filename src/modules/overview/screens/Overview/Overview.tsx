@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/styles';
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { useDispatchRequest } from '@redux-requests/react';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { featuresConfig } from 'modules/common/conts';
@@ -46,21 +46,13 @@ function mapPromoItem(item: IItem): IPromoItem {
 
 export const Overview = () => {
   const dispatch = useDispatchRequest();
-  const overviewQuery = useQuery({ type: fetchOverview.toString() });
-  const popularBrandsQuery = useQuery({ type: fetchPopularBrands.toString() });
   const classes = useOverviewStyles();
 
   useEffect(() => {
-    if (!overviewQuery.data) {
-      dispatch(fetchOverview());
-    }
-  }, [dispatch, overviewQuery.data]);
+    dispatch(fetchOverview());
+    dispatch(fetchPopularBrands());
+  }, [dispatch]);
 
-  useEffect(() => {
-    if (!popularBrandsQuery.data) {
-      dispatch(fetchPopularBrands());
-    }
-  }, [dispatch, popularBrandsQuery.data]);
   return (
     <div className={classes.root}>
       <div className={classes.promoMoversWrap}>
