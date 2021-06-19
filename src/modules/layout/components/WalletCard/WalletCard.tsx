@@ -5,7 +5,6 @@ import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import { useWeb3React } from '@web3-react/core';
 import React, { useEffect, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWalletCardStyles } from './WalletCardStyles';
 import { useDispatch } from 'react-redux';

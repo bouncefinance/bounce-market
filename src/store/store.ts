@@ -4,7 +4,6 @@ import { createDriver } from '@redux-requests/promise';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { tokenLocalStorageKey } from 'constants/index';
 import { i18nSlice } from 'modules/i18n/i18nSlice';
 import { LAYOUT_STATE_NAME, layoutReducer } from 'modules/layout/store/layout';
 import { persistReducer, persistStore } from 'redux-persist';
