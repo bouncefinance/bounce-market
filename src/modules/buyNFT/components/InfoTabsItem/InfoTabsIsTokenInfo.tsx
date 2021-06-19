@@ -1,4 +1,5 @@
 // import styled from 'styled-components';
+import { t } from 'modules/i18n/utils/intl';
 import { BscScanIcon } from './assets/BscScanIcon';
 import { useInfoTabsIsTokenInfoStyled } from './useInfoTabsItemStyles';
 
@@ -24,15 +25,14 @@ export const InfoTabsIsTokenInfo = ({
       {desc && <div className={classes.desc}>{desc}</div>}
 
       {isScan && (
-        <div
-          className={classes.button}
-          onClick={() => {
-            const href = `https://bscscan.com/address/${contract}`;
-            window.open(href);
-          }}
-        >
-          <BscScanIcon />
-          <span className={classes.btnSpan}>View on BscScan</span>
+        <div className={classes.button}>
+          <BscScanIcon
+            target="_blank"
+            href={`https://bscscan.com/address/${contract}`}
+          />
+          <span className={classes.btnSpan}>
+            {t('details-nft.info.view-scan')}
+          </span>
         </div>
       )}
     </div>

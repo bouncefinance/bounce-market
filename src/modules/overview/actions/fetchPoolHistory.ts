@@ -44,22 +44,21 @@ interface IFetchPoolHistoryParams {
   poolType: AuctionType;
 }
 
-interface wrapperPoolHistory {
+export interface IWrapperPoolHistory {
   event: AUCTION_EVENT;
   sender: IRoleInfo;
   quantity: number;
-  price: string;
-  symbol: string;
-  time: number;
+  price: BigNumber;
+  time: Date;
 }
 
 export const fetchPoolHistory = createSmartAction<
-  RequestAction<IApiFetchPoolHistory, wrapperPoolHistory[]>
+  RequestAction<IApiFetchPoolHistory, IWrapperPoolHistory[]>
 >(
   'fetchPoolHistory',
   (
     params: IFetchPoolHistoryParams,
-    meta?: RequestActionMeta<IApiFetchPoolHistory, wrapperPoolHistory[]>,
+    meta?: RequestActionMeta<IApiFetchPoolHistory, IWrapperPoolHistory[]>,
   ) => ({
     request: {
       url: '/api/v2/main/getpoolactivities',
@@ -84,13 +83,12 @@ export const fetchPoolHistory = createSmartAction<
                 avatar: item.avatar,
               },
               quantity: item.quantity,
-              price: new BigNumber(Web3.utils.fromWei(item.price)).toString(),
-              symbol: 'BNB',
-              time: item.ctime * 1000,
+              price: new BigNumber(Web3.utils.fromWei(item.price)),
+              time: new Date(item.ctime * 1000),
             };
           })
           .sort((a, b) => {
-            return b.time - a.time;
+            return b.time.getTime() - a.time.getTime();
           });
       },
       ...meta,

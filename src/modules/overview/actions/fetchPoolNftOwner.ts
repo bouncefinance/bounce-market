@@ -3,6 +3,7 @@ import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { AuctionType } from '../api/auctionType';
 import { poolTypeMap } from 'modules/common/api/poolType';
 import { IRoleInfo } from './fetchRoleInfo';
+import BigNumber from 'bignumber.js';
 
 export interface IApiFetchPoolNftOwner {
   code: 200;
@@ -27,7 +28,7 @@ interface IFetchPoolNftOwnerParams {
 
 interface wrapperPoolNftOwner {
   owner: IRoleInfo;
-  balance: number;
+  balance: BigNumber;
 }
 
 export const fetchPoolNftOwner = createSmartAction<
@@ -51,7 +52,6 @@ export const fetchPoolNftOwner = createSmartAction<
       driver: 'axiosSmartchain',
       asMutation: false,
       getData: ({ data }) => {
-        console.log(data);
         return data?.owners
           .map(item => {
             return {
@@ -60,11 +60,11 @@ export const fetchPoolNftOwner = createSmartAction<
                 avatar: item.avatar,
                 username: item.username,
               },
-              balance: +item.balance,
+              balance: new BigNumber(item.balance),
             };
           })
           .sort((a, b) => {
-            return b.balance - a.balance;
+            return b.balance.toNumber() - a.balance.toNumber();
           });
       },
       ...meta,

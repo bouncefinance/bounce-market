@@ -100,7 +100,6 @@ export const useInfoTabsIsTokenInfoStyled = makeStyles<Theme>(theme => ({
 
   btnSpan: {
     marginLeft: 10.5,
-    fontFamily: 'Helvetica Neue',
     fontSize: 14,
     fontWeight: 500,
   },

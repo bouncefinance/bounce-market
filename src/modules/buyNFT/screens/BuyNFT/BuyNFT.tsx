@@ -34,7 +34,10 @@ import { creatorClaim } from '../../../overview/actions/creatorClaim';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
 import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
-import { fetchRoleInfo } from '../../../overview/actions/fetchRoleInfo';
+import {
+  fetchRoleInfo,
+  IRoleInfo,
+} from '../../../overview/actions/fetchRoleInfo';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { AuctionType } from '../../../overview/api/auctionType';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
@@ -45,7 +48,10 @@ import { BuyDialog } from '../../components/BuyDialog';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
 import { INFTDetails } from 'modules/buyNFT/api/NFTDetails';
-import { fetchPoolHistory } from 'modules/overview/actions/fetchPoolHistory';
+import {
+  fetchPoolHistory,
+  IWrapperPoolHistory,
+} from 'modules/overview/actions/fetchPoolHistory';
 import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
 import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 
@@ -271,48 +277,54 @@ export const BuyNFT = () => {
               />
             );
 
+            const mapHistoryTitleStr = (item: IWrapperPoolHistory) => {
+              let titleStr = '';
+              switch (item.event) {
+                case 'FixedSwapCreated':
+                case 'EnglishCreated':
+                  titleStr = t('details-nft.history.create-str', {
+                    quantity: item.quantity,
+                    price: item.price,
+                    symbol: 'BNB',
+                  });
+                  break;
+
+                case 'FixedSwapSwapped':
+                  titleStr = t('details-nft.history.offer-str', {
+                    quantity: item.quantity,
+                    price: item.price,
+                    symbol: 'BNB',
+                  });
+                  break;
+
+                case 'FixedSwapCanceled':
+                  titleStr = t('details-nft.history.cancel-str');
+                  break;
+
+                case 'EnglishClaimed':
+                  titleStr = t('details-nft.history.claim-str');
+                  break;
+
+                default:
+                  break;
+              }
+              return titleStr;
+            };
+
+            const wrapperSender = (sender: IRoleInfo) => {
+              return sender.username || truncateWalletAddr(sender.address);
+            };
+
             const renderedHistoryList = (
               <InfoTabsList>
                 {poolHistory.map(item => {
-                  let titleStr = '';
-                  switch (item.event) {
-                    case 'FixedSwapCreated':
-                    case 'EnglishCreated':
-                      titleStr = t('details-nft.history.create-str', {
-                        quantity: item.quantity,
-                        price: item.price,
-                        symbol: item.symbol,
-                      });
-                      break;
-
-                    case 'FixedSwapSwapped':
-                      titleStr = t('details-nft.history.offer-str', {
-                        quantity: item.quantity,
-                        price: item.price,
-                        symbol: item.symbol,
-                      });
-                      break;
-
-                    case 'FixedSwapCanceled':
-                      titleStr = t('details-nft.history.cancel-str');
-                      break;
-
-                    case 'EnglishClaimed':
-                      titleStr = t('details-nft.history.claim-str');
-                      break;
-
-                    default:
-                      break;
-                  }
+                  const titleStr = mapHistoryTitleStr(item);
 
                   return (
                     <InfoTabsItem
-                      key={item.time}
+                      key={item.time.getTime()}
                       title={titleStr}
-                      author={
-                        item.sender.username ||
-                        truncateWalletAddr(item.sender.address)
-                      }
+                      author={wrapperSender(item.sender)}
                       date={new Date(item.time)}
                     />
                   );
@@ -325,15 +337,12 @@ export const BuyNFT = () => {
                 {poolBids.map(item => {
                   return (
                     <InfoTabsItem
-                      key={item.time}
-                      title="Bid placed"
-                      author={
-                        item.sender.username ||
-                        truncateWalletAddr(item.sender.address)
-                      }
+                      key={item.time.getTime()}
+                      title={t('details-nft.bid.bid-placed')}
+                      author={wrapperSender(item.sender)}
                       date={new Date(item.time)}
-                      price={new BigNumber(item.price).multipliedBy('368')}
-                      cryptoCurrency={item.symbol}
+                      price={item.price.multipliedBy(currency.priceUsd)}
+                      cryptoCurrency={'BNB'}
                       cryptoPrice={new BigNumber(item.price)}
                       href={`https://bscscan.com/tx/${item.txId}`}
                     />
@@ -345,20 +354,18 @@ export const BuyNFT = () => {
             const renderedOnwersList = (
               <InfoTabsList>
                 {poolNftOwner.map(item => {
-                  const showUser =
-                    item.owner.username ||
-                    truncateWalletAddr(item.owner.address);
-
                   return (
                     <ProfileInfo
                       key={item.owner.address}
                       isTitleFirst
                       avatarSize="big"
-                      title={showUser}
-                      subTitle={`${item.balance} copies`}
+                      title={wrapperSender(item.owner)}
+                      subTitle={t('details-nft.owner.balance', {
+                        balance: item.balance,
+                      })}
                       users={[
                         {
-                          name: showUser,
+                          name: wrapperSender(item.owner),
                           avatar:
                             item.owner.avatar ||
                             'https://picsum.photos/44?random=1',
@@ -382,25 +389,25 @@ export const BuyNFT = () => {
                 <div>
                   {contractAddress && (
                     <p>
-                      <span>{t('details-nft.token-info.contract')}: </span>
+                      <span>{t('details-nft.token-info.contract')}</span>
                       {`${contractAddress}`}
                     </p>
                   )}
                   {id && (
                     <p>
-                      <span>{t('details-nft.token-info.token-id')}: </span>
+                      <span>{t('details-nft.token-info.token-id')}</span>
                       {`${id}`}
                     </p>
                   )}
                   {itemName && (
                     <p>
-                      <span>{t('details-nft.token-info.name-tags')}:</span>
+                      <span>{t('details-nft.token-info.name-tags')}</span>
                       {` ${itemName} ${itemsymbol && `(${itemsymbol})`}`}
                     </p>
                   )}
                   {
                     <p>
-                      <span>{t('details-nft.token-info.standard')}:</span>
+                      <span>{t('details-nft.token-info.standard')}</span>
                       {` ${
                         standard === NftType.ERC1155 ? 'ERC-1155' : 'ERC-721'
                       }`}
@@ -408,7 +415,7 @@ export const BuyNFT = () => {
                   }
                   {(supply || supply === 0) && (
                     <p>
-                      <span>{t('details-nft.token-info.total-supply')}:</span>
+                      <span>{t('details-nft.token-info.total-supply')}</span>
                       {` ${supply}`}
                     </p>
                   )}
