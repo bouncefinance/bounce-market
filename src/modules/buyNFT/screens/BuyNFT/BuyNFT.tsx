@@ -105,6 +105,48 @@ export const BuyNFT = () => {
     init();
   }, [init]);
 
+  const getHistoryTitle = useCallback((item: IWrapperPoolHistory) => {
+    let titleStr = '';
+    switch (item.event) {
+      case 'FixedSwapCreated':
+      case 'EnglishCreated':
+        titleStr = t('details-nft.history.create-str', {
+          quantity: item.quantity,
+          price: item.price,
+          symbol: 'BNB',
+        });
+        break;
+
+      case 'FixedSwapSwapped':
+        titleStr = t('details-nft.history.offer-str', {
+          quantity: item.quantity,
+          price: item.price,
+          symbol: 'BNB',
+        });
+        break;
+
+      case 'FixedSwapCanceled':
+        titleStr = t('details-nft.history.cancel-str');
+        break;
+
+      case 'EnglishClaimed':
+        titleStr = t('details-nft.history.claim-str');
+        break;
+
+      default:
+        break;
+    }
+    return titleStr;
+  }, []);
+
+  const getSenderName = (sender: IRoleInfo) => {
+    return sender.username || truncateWalletAddr(sender.address);
+  };
+
+  const wrapperTitle = (name: string, address: string) => {
+    return name || truncateWalletAddr(address);
+  };
+
   const handleBidderClaim = useCallback(() => {
     dispatch(bidderClaim({ poolId })).then(({ error }) => {
       if (!error) {
@@ -219,7 +261,7 @@ export const BuyNFT = () => {
     >
       requestActions={[fetchItem, fetchWeb3PoolDetails, fetchRoleInfo]}
     >
-      {({ data: item }, { data: poolDetails }, { data: RoleInfos }) => (
+      {({ data: item }, { data: poolDetails }, { data: roleInfos }) => (
         <Queries<
           ResponseData<typeof fetchCurrency>,
           ResponseData<typeof fetchPoolHistory>,
@@ -240,10 +282,6 @@ export const BuyNFT = () => {
             { data: poolBids },
             { data: poolNftOwner },
           ) => {
-            const wrapperTitle = (name: string, address: string) => {
-              return name || truncateWalletAddr(address);
-            };
-
             const ownerTitle =
               item.ownername || truncateWalletAddr(item.owneraddress);
 
@@ -251,16 +289,19 @@ export const BuyNFT = () => {
               <ProfileInfo
                 subTitle="Minter"
                 title={wrapperTitle(
-                  RoleInfos.minter.username,
-                  RoleInfos.minter.address,
+                  roleInfos.minter.username,
+                  roleInfos.minter.address,
                 )}
                 users={[
                   {
                     name: wrapperTitle(
-                      RoleInfos.minter.username,
-                      RoleInfos.minter.address,
+                      roleInfos.minter.username,
+                      roleInfos.minter.address,
                     ),
-                    avatar: RoleInfos.minter.avatar,
+                    href: ProfileRoutesConfig.OtherProfile.generatePath(
+                      roleInfos.minter.address,
+                    ),
+                    avatar: roleInfos.minter.avatar,
                     verified: false,
                   },
                 ]}
@@ -271,70 +312,33 @@ export const BuyNFT = () => {
               <ProfileInfo
                 subTitle="Seller"
                 title={wrapperTitle(
-                  RoleInfos.creator.username,
-                  RoleInfos.creator.address,
+                  roleInfos.creator.username,
+                  roleInfos.creator.address,
                 )}
                 users={[
                   {
                     name: wrapperTitle(
-                      RoleInfos.creator.username,
-                      RoleInfos.creator.address,
+                      roleInfos.creator.username,
+                      roleInfos.creator.address,
                     ),
-                    avatar: RoleInfos.creator.avatar,
+                    href: ProfileRoutesConfig.OtherProfile.generatePath(
+                      roleInfos.creator.address,
+                    ),
+                    avatar: roleInfos.creator.avatar,
                   },
                 ]}
               />
             );
 
-            const mapHistoryTitleStr = (item: IWrapperPoolHistory) => {
-              let titleStr = '';
-              switch (item.event) {
-                case 'FixedSwapCreated':
-                case 'EnglishCreated':
-                  titleStr = t('details-nft.history.create-str', {
-                    quantity: item.quantity,
-                    price: item.price,
-                    symbol: 'BNB',
-                  });
-                  break;
-
-                case 'FixedSwapSwapped':
-                  titleStr = t('details-nft.history.offer-str', {
-                    quantity: item.quantity,
-                    price: item.price,
-                    symbol: 'BNB',
-                  });
-                  break;
-
-                case 'FixedSwapCanceled':
-                  titleStr = t('details-nft.history.cancel-str');
-                  break;
-
-                case 'EnglishClaimed':
-                  titleStr = t('details-nft.history.claim-str');
-                  break;
-
-                default:
-                  break;
-              }
-              return titleStr;
-            };
-
-            const wrapperSender = (sender: IRoleInfo) => {
-              return sender.username || truncateWalletAddr(sender.address);
-            };
-
             const renderedHistoryList = (
               <InfoTabsList>
                 {poolHistory.map(item => {
-                  const titleStr = mapHistoryTitleStr(item);
-
                   return (
                     <InfoTabsItem
                       key={item.time.getTime()}
-                      title={titleStr}
-                      author={wrapperSender(item.sender)}
-                      date={new Date(item.time)}
+                      title={getHistoryTitle(item)}
+                      author={getSenderName(item.sender)}
+                      date={item.time}
                     />
                   );
                 })}
@@ -348,11 +352,11 @@ export const BuyNFT = () => {
                     <InfoTabsItem
                       key={item.time.getTime()}
                       title={t('details-nft.bid.bid-placed')}
-                      author={wrapperSender(item.sender)}
-                      date={new Date(item.time)}
+                      author={getSenderName(item.sender)}
+                      date={item.time}
                       price={item.price.multipliedBy(currency.priceUsd)}
                       cryptoCurrency={'BNB'}
-                      cryptoPrice={new BigNumber(item.price)}
+                      cryptoPrice={item.price}
                       href={`https://bscscan.com/tx/${item.txId}`}
                     />
                   );
@@ -368,13 +372,16 @@ export const BuyNFT = () => {
                       key={item.owner.address}
                       isTitleFirst
                       avatarSize="big"
-                      title={wrapperSender(item.owner)}
+                      title={getSenderName(item.owner)}
                       subTitle={t('details-nft.owner.balance', {
                         balance: item.balance,
                       })}
                       users={[
                         {
-                          name: wrapperSender(item.owner),
+                          name: getSenderName(item.owner),
+                          href: ProfileRoutesConfig.OtherProfile.generatePath(
+                            item.owner.address,
+                          ),
                           avatar: item.owner.avatar,
                         },
                       ]}
@@ -436,13 +443,9 @@ export const BuyNFT = () => {
                   {isEnglishAuction(poolDetails) ? (
                     <InfoPrices
                       endDate={poolDetails.closeAt}
-                      price={
-                        new BigNumber(
-                          poolDetails.lastestBidAmount.multipliedBy(
-                            currency.priceUsd,
-                          ),
-                        )
-                      }
+                      price={poolDetails.lastestBidAmount.multipliedBy(
+                        currency.priceUsd,
+                      )}
                       cryptoPrice={
                         poolDetails.lastestBidAmount.isEqualTo(0)
                           ? poolDetails.amountMin1
