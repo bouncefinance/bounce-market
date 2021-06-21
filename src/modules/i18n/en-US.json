@@ -139,11 +139,11 @@
       "footnote": "Bids placed in auction cannot be withdrawn"
     },
     "token-info": {
-      "standard": "Standard: ",
-      "total-supply": "Total Supply: ",
-      "name-tags": "Name Tags: ",
-      "contract": "Contract: ",
-      "token-id": "Token ID: "
+      "standard": "Standard:",
+      "total-supply": "Total Supply:",
+      "name-tags": "Name Tags:",
+      "contract": "Contract:",
+      "token-id": "Token ID:"
     },
     "history": {
       "create-str": "Put on sale {quantity} editions for {price} {symbol}",
@@ -152,9 +152,9 @@
       "claim-str": "Claimed"
     },
     "bid": {
-      "bid-placed":"Bid placed"
+      "bid-placed": "Bid placed"
     },
-    "owner":{
+    "owner": {
       "balance": "{balance} copies"
     }
   },

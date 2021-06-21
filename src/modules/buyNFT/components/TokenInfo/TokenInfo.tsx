@@ -52,7 +52,9 @@ export const TokenInfo = ({
 
       <Typography className={classes.paragraph}>
         <b>{t('details-nft.token-info.standard')}</b>
-        {standard === NftType.ERC1155 ? 'ERC-1155' : 'ERC-721'}
+        {standard === NftType.ERC1155
+          ? t('create-nft.standardOption.1')
+          : t('create-nft.standardOption.0')}
       </Typography>
 
       {(supply || supply === 0) && (
