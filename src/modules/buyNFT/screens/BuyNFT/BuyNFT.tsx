@@ -375,9 +375,7 @@ export const BuyNFT = () => {
                       users={[
                         {
                           name: wrapperSender(item.owner),
-                          avatar:
-                            item.owner.avatar ||
-                            'https://picsum.photos/44?random=1',
+                          avatar: item.owner.avatar,
                         },
                       ]}
                     />
