@@ -7,6 +7,7 @@ import { BlockchainNetworkId } from '../../common/conts';
 import { changeNetworkToSupported } from '../store/actions/changeNetworkToSupported';
 import { updateAccount } from '../store/actions/updateAccount';
 import { makeStyles } from '@material-ui/styles';
+import arrow from 'modules/account/assets/arrow.svg';
 
 export const useAccount = () => {
   const dispatch = useAppDispatch();
@@ -44,6 +45,38 @@ export const useAccount = () => {
         margin: '50px auto',
         maxWidth: '400px',
       },
+      '.web3modal-modal-card': {
+        marginTop: 44,
+        maxWidth: '700px !important',
+        height: '520px',
+        display: 'block !important',
+        paddingTop: '120px !important',
+      },
+      '.web3modal-provider-wrapper': {
+        padding: '12px 8px !important',
+      },
+      '.web3modal-provider-container': {
+        maxWidth: '380px !important',
+        border: '1px solid rgba(0, 0, 0, 0.1)',
+        borderRadius: '50px !important',
+        flexDirection: 'row !important',
+        padding: '16px 28px !important',
+        backgroundImage: `url('${arrow}')`,
+        backgroundPosition: 'right 30px center',
+        backgroundRepeat: 'no-repeat',
+        '& img': {
+          width: '36px !important',
+          height: '36px !important',
+        }
+      },
+      '.web3modal-provider-description': {
+        display: 'none',
+      },
+      '.web3modal-provider-name': {
+        fontSize: '18px !important',
+        textAlign: 'left',
+        paddingLeft: 16,
+      }
     },
   });
   useStyles();
