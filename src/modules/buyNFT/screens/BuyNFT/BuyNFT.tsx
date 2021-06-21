@@ -10,10 +10,7 @@ import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
 import { InfoPrices } from 'modules/buyNFT/components/InfoPrices';
 import { InfoTabs } from 'modules/buyNFT/components/InfoTabs';
-import {
-  InfoTabsItem,
-  InfoTabsIsTokenInfo,
-} from 'modules/buyNFT/components/InfoTabsItem';
+import { InfoTabsItem } from 'modules/buyNFT/components/InfoTabsItem';
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { EmptyPageData } from 'modules/common/components/EmptyPageData';
@@ -21,6 +18,12 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
+import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
+import {
+  fetchPoolHistory,
+  IWrapperPoolHistory,
+} from 'modules/overview/actions/fetchPoolHistory';
+import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Queries } from '../../../common/components/Queries/Queries';
@@ -33,27 +36,22 @@ import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
-import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
 import {
   fetchRoleInfo,
   IRoleInfo,
 } from '../../../overview/actions/fetchRoleInfo';
+import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { AuctionType } from '../../../overview/api/auctionType';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
 import { buyFixed } from '../../actions/buyFixed';
 import { fetchItem } from '../../actions/fetchItem';
+import { BSCScanBtn } from '../../components/BSCScanBtn';
 import { BuyDialog } from '../../components/BuyDialog';
+import { TokenInfo } from '../../components/TokenInfo';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
-import { INFTDetails } from 'modules/buyNFT/api/NFTDetails';
-import {
-  fetchPoolHistory,
-  IWrapperPoolHistory,
-} from 'modules/overview/actions/fetchPoolHistory';
-import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
-import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 
 export const BuyNFT = () => {
   const [isEmptyData, setIsEmptyData] = useState(false);
@@ -388,60 +386,20 @@ export const BuyNFT = () => {
               </InfoTabsList>
             );
 
-            const renderTokenInfo = ({
-              itemName,
-              itemsymbol,
-              standard,
-              contractAddress,
-              supply,
-              id,
-            }: INFTDetails) => {
-              return (
-                <div>
-                  {contractAddress && (
-                    <p>
-                      <span>{t('details-nft.token-info.contract')}</span>
-                      {`${contractAddress}`}
-                    </p>
-                  )}
-                  {id && (
-                    <p>
-                      <span>{t('details-nft.token-info.token-id')}</span>
-                      {`${id}`}
-                    </p>
-                  )}
-                  {itemName && (
-                    <p>
-                      <span>{t('details-nft.token-info.name-tags')}</span>
-                      {` ${itemName} ${itemsymbol && `(${itemsymbol})`}`}
-                    </p>
-                  )}
-                  {
-                    <p>
-                      <span>{t('details-nft.token-info.standard')}</span>
-                      {` ${
-                        standard === NftType.ERC1155 ? 'ERC-1155' : 'ERC-721'
-                      }`}
-                    </p>
-                  }
-                  {(supply || supply === 0) && (
-                    <p>
-                      <span>{t('details-nft.token-info.total-supply')}</span>
-                      {` ${supply}`}
-                    </p>
-                  )}
-                </div>
-              );
-            };
-
             const renderedTokenInfoList = (
               <InfoTabsList>
-                <InfoTabsIsTokenInfo
-                  contract={item.contractAddress}
-                  isScan={true}
+                <BSCScanBtn
+                  href={`https://bscscan.com/address/${item.contractAddress}`}
                 />
 
-                <InfoTabsIsTokenInfo desc={renderTokenInfo(item)} />
+                <TokenInfo
+                  name={item.itemName}
+                  itemSymbol={item.itemsymbol}
+                  standard={item.standard}
+                  contractAddress={item.contractAddress}
+                  supply={item.supply}
+                  tokenId={item.id}
+                />
               </InfoTabsList>
             );
 
