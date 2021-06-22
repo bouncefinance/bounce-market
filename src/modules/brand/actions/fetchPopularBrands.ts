@@ -25,8 +25,11 @@ interface IApiFetchPopularBrandsData {
 }
 
 export interface IBrandItem {
+  brandName: string;
   imgUrl: string;
   id: number;
+  ownerAddress: string;
+  contractAddress: string;
 }
 
 export const fetchPopularBrands = createSmartAction<
@@ -45,8 +48,11 @@ export const fetchPopularBrands = createSmartAction<
     asMutation: false,
     getData: data => {
       return data.data.map(item => ({
+        brandName: item.brandname,
         imgUrl: item.imgurl,
         id: item.id,
+        ownerAddress: item.owneraddress,
+        contractAddress: item.contractaddress,
       }));
     },
   },

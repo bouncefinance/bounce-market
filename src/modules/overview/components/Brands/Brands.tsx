@@ -1,10 +1,8 @@
 import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
-import classNames from 'classnames';
 import { IBrandItem } from 'modules/brand/actions/fetchPopularBrands';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
-import { Img } from 'modules/uiKit/Img';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -12,6 +10,7 @@ import { Link } from 'react-router-dom';
 import SwiperCore, { Lazy } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useBrandsStyles } from './BrandsStyles';
+import { BrandItems } from './components';
 
 SwiperCore.use([Lazy]);
 
@@ -45,32 +44,23 @@ export const Brands = ({
     slidesPerView: 'auto',
     spaceBetween: 30,
     lazy: true,
+    onSwiper: setSwiper,
     breakpoints: {
       [theme.breakpoints.values.xl]: {
         slidesPerView: 6,
       },
     },
-    onSwiper: setSwiper,
   };
 
   const renderedSlides = useMemo(
     () =>
-      items.map(({ imgUrl, id }, i) => (
+      items.map(({ imgUrl, id, brandName, ownerAddress, contractAddress }, i) => (
         <SwiperSlide className={classes.slide} key={id}>
           <Link
             to={BrandRoutesConfig.Brand.generatePath(id)}
-            className={classNames(classes.brand, {
-              [classes.brandLight]: i % 2 === 0,
-              [classes.brandDark]: i % 2 === 1,
-            })}
+            className={classes.brand}
           >
-            <Img
-              src={imgUrl}
-              className={classes.brandImgWrap}
-              isNativeLazyLoading={false}
-              objectFit="scale-down"
-              imgClassName="swiper-lazy"
-            />
+            <BrandItems imgUrl={imgUrl} brandName={brandName} ownerAddress={ownerAddress} contractAddress={contractAddress} />
           </Link>
         </SwiperSlide>
       )),
@@ -88,7 +78,7 @@ export const Brands = ({
         <Box mb={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs>
-              <Typography variant="h2">{t('brands.title')}</Typography>
+              <Typography variant="h2">{t('overview.brands.title')}</Typography>
             </Grid>
 
             <Grid item xs="auto">

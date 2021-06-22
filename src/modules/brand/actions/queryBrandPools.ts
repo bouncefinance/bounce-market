@@ -17,7 +17,7 @@ export const queryBrandPools = createSmartAction<RequestAction>(
   QueryBrandPoolsAction,
   (params: IQueryBrandPoolsArgs) => ({
     request: {
-      promise: (async function () {})(),
+      promise: (async function () { })(),
     },
     meta: {
       asMutation: true,
@@ -48,16 +48,20 @@ export const queryBrandPools = createSmartAction<RequestAction>(
             const tokenList = fsToken.concat(eaToken);
 
             if (tokenList.length > 0) {
-              const {
-                data: { address },
-              } = getQuery(store.getState(), {
-                type: setAccount.toString(),
-                action: setAccount,
-              });
+              let addr = '';
+              try {
+                const {
+                  data: { address },
+                } = getQuery(store.getState(), {
+                  type: setAccount.toString(),
+                  action: setAccount,
+                });
+                addr = address
+              } catch (err) {}
 
               const { data: itemData } = await store.dispatchRequest(
                 queryItemByFilter({
-                  accountaddress: address,
+                  accountaddress: addr,
                   category: '',
                   channel: '',
                   cts: new Array(tokenList.length).fill(params.contractaddress),
