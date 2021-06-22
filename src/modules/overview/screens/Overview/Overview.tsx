@@ -18,6 +18,7 @@ import { ResponseData } from '../../../common/types/ResponseData';
 import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
 import { useOverviewStyles } from './useOverviewStyles';
+import { PromoSkeleton } from '../../components/PromoSkeleton';
 
 function mapPromoItem(item: IItem): IPromoItem {
   return {
@@ -58,6 +59,7 @@ export const Overview = () => {
       <div className={classes.promoMoversWrap}>
         <Queries<ResponseData<typeof fetchOverview>>
           requestActions={[fetchOverview]}
+          noDataMessage={<PromoSkeleton />}
         >
           {({ loading, error, data }) => (
             <ThemeProvider theme={darkTheme}>
