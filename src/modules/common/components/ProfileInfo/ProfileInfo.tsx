@@ -95,7 +95,12 @@ export const ProfileInfo = ({
           >
             {subTitle}
           </Typography>
+        </ConditionalWrapper>
 
+        <ConditionalWrapper
+          condition={!!mainHref}
+          wrapper={<Link to={mainHref || '#'} />}
+        >
           <Typography className={classes.title} variant="body2">
             {title}
           </Typography>
