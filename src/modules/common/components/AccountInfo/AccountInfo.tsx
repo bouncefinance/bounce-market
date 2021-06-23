@@ -1,7 +1,7 @@
 import { useDispatchRequest } from '@redux-requests/react';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { t } from 'modules/i18n/utils/intl';
 import {
   IAccountInfo,
@@ -22,13 +22,16 @@ export const AccountInfo = ({ address }: { address: string }) => {
     });
   }, [address, dispatch]);
 
+  const href = useMemo(() => ProfileRoutesConfig.OtherProfile.generatePath(address), [address]);
+
   return (
     <ProfileInfo
       subTitle={t('product-card.owner')}
       title={accountInfo?.username ?? truncateWalletAddr(address)}
+      mainHref={href}
       users={[
         {
-          href: ProfileRoutesConfig.OtherProfile.generatePath(address),
+          href: href,
           name: accountInfo?.username ?? truncateWalletAddr(address),
           avatar: accountInfo?.imgUrl,
         },
