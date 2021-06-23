@@ -10,6 +10,7 @@ import { ISectionProps } from 'modules/uiKit/Section';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { MoversComponent } from './MoversComponent';
+import {ProfileRoutesConfig} from "../../../profile/ProfileRoutes";
 
 export const Movers = (sectionProps: ISectionProps) => {
   const overviewQuery = useQuery<IItem[] | null>({
@@ -54,6 +55,7 @@ export const Movers = (sectionProps: ISectionProps) => {
         isNativeLazyLoading: false,
         objectFit: 'contain',
       }}
+      ownerHref={ProfileRoutesConfig.OtherProfile.generatePath(item.ownerAddress)}
       profileInfo={<AccountInfo address={item.ownerAddress} />}
     />
   ));
