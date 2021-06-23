@@ -14,13 +14,8 @@ import { usePromoStyles } from './PromoStyles';
 import {PromoCardSkeleton} from "../PromoCard";
 import {PromoThumbSkeleton} from "../PromoThumb";
 
-SwiperCore.use([Pagination, EffectFade, Thumbs, Lazy, Autoplay]);
-const paginationId = 'pagination-alksjd';
-
-
 export const PromoSkeleton = () => {
   const classes = usePromoStyles();
-  const [swiperThumbs, setSwiperThumbs] = useState<SwiperCore>();
 
   const thumbsParams: Swiper = {
     loop: true,
@@ -29,7 +24,6 @@ export const PromoSkeleton = () => {
     loopAdditionalSlides: 0,
     slidesPerView: 3,
     direction: 'vertical',
-    onSwiper: setSwiperThumbs,
   };
 
   const renderedThumbs = Array.from(Array(thumbsParams.slidesPerView).keys()).map((item) => {
@@ -49,7 +43,6 @@ export const PromoSkeleton = () => {
         <Grid container alignItems="center">
           <Grid item xs={12} lg={9}>
             <PromoCardSkeleton />
-            <div className={classes.pagination} id={paginationId} />
           </Grid>
 
           <Grid item lg={3} className={classes.thumbsCol}>

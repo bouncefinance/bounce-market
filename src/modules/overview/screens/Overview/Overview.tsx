@@ -53,11 +53,11 @@ export const Overview = () => {
     dispatch(fetchPopularBrands());
   }, [dispatch]);
 
-  const createPromoSkeleton = () => {
-    return <ThemeProvider theme={darkTheme}>
+  const createPromoSkeleton = () => (
+    <ThemeProvider theme={darkTheme}>
       <PromoSkeleton />
     </ThemeProvider>
-  };
+  );
 
   return (
     <div className={classes.root}>
