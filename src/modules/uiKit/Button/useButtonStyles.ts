@@ -9,6 +9,9 @@ export const useButtonStyles = makeStyles<Theme>(theme => ({
 
   rounded: {
     borderRadius: 44,
+    '&:before': {
+      borderRadius: 44,
+    },
   },
 
   loading: {
