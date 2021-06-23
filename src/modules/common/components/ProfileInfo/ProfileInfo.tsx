@@ -75,10 +75,6 @@ export const ProfileInfo = ({
   }, [avatarSize, classes, users]);
 
   return (
-    <ConditionalWrapper
-      condition={!!mainHref}
-      wrapper={<Link to={mainHref || '#'} />}
-    >
       <div
         className={classNames(
           className,
@@ -88,18 +84,22 @@ export const ProfileInfo = ({
       >
         <div className={classes.avatars}>{renderedAvatars}</div>
 
-        <Typography
-          color="textSecondary"
-          variant="body2"
-          className={classes.subTitle}
+        <ConditionalWrapper
+          condition={!!mainHref}
+          wrapper={<Link to={mainHref || '#'} />}
         >
-          {subTitle}
-        </Typography>
+          <Typography
+            color="textSecondary"
+            variant="body2"
+            className={classes.subTitle}
+          >
+            {subTitle}
+          </Typography>
 
-        <Typography className={classes.title} variant="body2">
-          {title}
-        </Typography>
+          <Typography className={classes.title} variant="body2">
+            {title}
+          </Typography>
+        </ConditionalWrapper>
       </div>
-    </ConditionalWrapper>
   );
 };
