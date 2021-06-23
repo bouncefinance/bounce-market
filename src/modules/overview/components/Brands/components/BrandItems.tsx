@@ -1,6 +1,5 @@
 import {
   Box,
-  Paper,
   Typography,
   useTheme,
 } from '@material-ui/core';
@@ -11,6 +10,7 @@ import { IItem } from "modules/pools/actions/queryItemByFilter";
 import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { getRandomId } from 'modules/common/utils/getRandomId';
 import { useMemo, useState, useEffect } from "react";
 import { queryBrandPools } from "modules/brand/actions/queryBrandPools";
 import { uid } from 'react-uid';
@@ -41,6 +41,9 @@ export const BrandItems = ({
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const prevId = useMemo(() => getRandomId('prev'), []);
+  const nextId = useMemo(() => getRandomId('next'), []);
+
   const hasItems = !!items.length;
 
   useEffect(() => {
@@ -68,15 +71,19 @@ export const BrandItems = ({
   const sliderProps: Swiper = {
     slidesPerView: 'auto',
     watchSlidesVisibility: true,
-    spaceBetween: 30,
+    spaceBetween: 8,
     lazy: true,
     onSwiper: setSwiper,
+    navigation: {
+      prevEl: `#${prevId}`,
+      nextEl: `#${nextId}`,
+    },
     breakpoints: {
       [theme.breakpoints.values.md]: {
         slidesPerView: 2,
       },
       [theme.breakpoints.values.xl]: {
-        slidesPerView: 3,
+        slidesPerView: 3.5,
       },
     },
   };
@@ -86,7 +93,6 @@ export const BrandItems = ({
       items.map(({ itemname, fileurl }, i) => (
         <SwiperSlide className={classes.slide} key={uid(itemname, i)}>
           <div className={classes.item}>
-            <Paper className={classes.itemImgFrame} variant="outlined">
               <Img
                 className={classes.itemImgBox}
                 src={fileurl}
@@ -97,7 +103,6 @@ export const BrandItems = ({
               />
 
               <SwiperPreloader />
-            </Paper>
           </div>
         </SwiperSlide>
       )),

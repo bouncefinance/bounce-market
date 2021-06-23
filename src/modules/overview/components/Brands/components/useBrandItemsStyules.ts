@@ -4,12 +4,11 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-const BTN_SIZE = 50;
-
 export const useBrandItemsStyles = makeStyles((theme: Theme) => ({
   container: {
     marginTop: 35,
     width: '100%',
+    overflow: 'hidden',
   },
 
   row: {
@@ -34,54 +33,19 @@ export const useBrandItemsStyles = makeStyles((theme: Theme) => ({
     },
   },
 
-  buttons: {
-    position: 'absolute',
-    zIndex: 1,
-    top: 65,
-    left: theme.spacing(1),
-    right: theme.spacing(1),
-
-    display: 'flex',
-    justifyContent: 'space-between',
-    height: 0,
-
-    [theme.breakpoints.up('md')]: {
-      left: `-${BTN_SIZE / 2}px`,
-      right: `-${BTN_SIZE / 2}px`,
-      top: '50%',
-      marginTop: -20,
-      alignItems: 'center',
-    },
-  },
-
   item: {
-
-  },
-
-  navBtn: {
-    background: theme.palette.background.paper,
-    width: BTN_SIZE,
-    height: BTN_SIZE,
-
-    '&.swiper-button-disabled': {
-      opacity: 0,
-      visibility: 'hidden',
-    },
-  },
-
-  slide: {
-    [theme.breakpoints.down('sm')]: {
-      width: '180px !important',
-    },
-  },
-
-  itemImgFrame: {
     position: 'relative',
     overflow: 'hidden',
   },
 
+  slide: {
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto !important',
+    },
+  },
+
   itemImgBox: {
-    borderRadius: 'inherit',
+    borderRadius: 8,
     width: 72,
     height: 72,
   },
@@ -111,4 +75,5 @@ export const useBrandItemsStyles = makeStyles((theme: Theme) => ({
     borderRadius: '50%',
     marginRight: 16,
   },
+
 }))
