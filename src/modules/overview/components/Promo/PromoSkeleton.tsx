@@ -1,18 +1,11 @@
-import {Container, Grid} from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import { Section } from 'modules/uiKit/Section';
-import React, { useState } from 'react';
+import React from 'react';
 import { uid } from 'react-uid';
-import SwiperCore, {
-  Autoplay,
-  EffectFade,
-  Lazy,
-  Pagination,
-  Thumbs,
-} from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { PromoCardSkeleton } from '../PromoCard';
+import { PromoThumbSkeleton } from '../PromoThumb';
 import { usePromoStyles } from './PromoStyles';
-import {PromoCardSkeleton} from "../PromoCard";
-import {PromoThumbSkeleton} from "../PromoThumb";
 
 export const PromoSkeleton = () => {
   const classes = usePromoStyles();
@@ -26,19 +19,18 @@ export const PromoSkeleton = () => {
     direction: 'vertical',
   };
 
-  const renderedThumbs = Array.from(Array(thumbsParams.slidesPerView).keys()).map((item) => {
+  const renderedThumbs = Array.from(
+    Array(thumbsParams.slidesPerView).keys(),
+  ).map(item => {
     return (
       <SwiperSlide key={uid(item)} className={classes.thumbsSlide}>
-        <PromoThumbSkeleton className={classes.thumbsSlide}/>
+        <PromoThumbSkeleton className={classes.thumbsSlide} />
       </SwiperSlide>
     );
   });
 
   return (
-    <Section
-      pt={{ md: 11 }}
-      className={classes.root}
-    >
+    <Section pt={{ md: 11 }} className={classes.root}>
       <Container className={classes.container}>
         <Grid container alignItems="center">
           <Grid item xs={12} lg={9}>
