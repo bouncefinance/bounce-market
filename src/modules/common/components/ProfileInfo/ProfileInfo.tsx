@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { DefaultRandomAvatar } from '../DefaultRandomAvatar';
 import { useProfileInfoStyles } from './ProfileInfoStyles';
+import {ConditionalWrapper} from "../ConditionalWrapper";
 
 interface IUserInfo {
   name: string;
@@ -26,6 +27,7 @@ export interface IProfileInfoProps {
    * default size is - small
    */
   avatarSize?: 'small' | 'medium' | 'big';
+  mainHref?: string;
 }
 
 export const ProfileInfo = ({
@@ -35,6 +37,7 @@ export const ProfileInfo = ({
   title,
   isTitleFirst = false,
   avatarSize = 'small',
+  mainHref
 }: IProfileInfoProps) => {
   const classes = useProfileInfoStyles();
 
@@ -71,7 +74,10 @@ export const ProfileInfo = ({
     });
   }, [avatarSize, classes, users]);
 
-  return (
+  return <ConditionalWrapper
+    condition={!!mainHref}
+    wrapper={<Link to={mainHref || "#"}/>}
+  >
     <div
       className={classNames(
         className,
@@ -93,5 +99,5 @@ export const ProfileInfo = ({
         {title}
       </Typography>
     </div>
-  );
+  </ConditionalWrapper>;
 };

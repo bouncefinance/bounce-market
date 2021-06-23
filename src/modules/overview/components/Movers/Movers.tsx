@@ -55,7 +55,6 @@ export const Movers = (sectionProps: ISectionProps) => {
         isNativeLazyLoading: false,
         objectFit: 'contain',
       }}
-      ownerHref={ProfileRoutesConfig.OtherProfile.generatePath(item.ownerAddress)}
       profileInfo={<AccountInfo address={item.ownerAddress} />}
     />
   ));

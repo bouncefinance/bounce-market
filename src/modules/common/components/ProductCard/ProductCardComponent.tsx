@@ -60,7 +60,6 @@ export interface IProductCardComponentProps {
   toSale?: string;
   onTransferClick?: () => void;
   onBurnClick?: () => void;
-  ownerHref?: string;
 }
 
 export const ProductCardComponent = ({
@@ -85,7 +84,6 @@ export const ProductCardComponent = ({
   toSale,
   onTransferClick,
   onBurnClick,
-  ownerHref
 }: IProductCardComponentProps) => {
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -229,12 +227,7 @@ export const ProductCardComponent = ({
           </Typography>
         </ConditionalWrapper>
 
-        <ConditionalWrapper
-          condition={!!href}
-          wrapper={<Link to={ownerHref || "#"} />}
-        >
-          {profileInfo}
-        </ConditionalWrapper>
+        {profileInfo}
 
         <hr className={classes.devider} />
 
