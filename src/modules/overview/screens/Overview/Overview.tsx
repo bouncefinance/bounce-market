@@ -8,7 +8,7 @@ import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers } from 'modules/overview/components/Movers';
 import { Products } from 'modules/overview/components/Products';
-import { IPromoItem, Promo } from 'modules/overview/components/Promo';
+import { IPromoItem, Promo, PromoSkeleton } from 'modules/overview/components/Promo';
 import { PROMO_ITEMS_COUNT } from 'modules/overview/const';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { darkTheme } from 'modules/themes/darkTheme';
@@ -18,7 +18,6 @@ import { ResponseData } from '../../../common/types/ResponseData';
 import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
 import { useOverviewStyles } from './useOverviewStyles';
-import { PromoSkeleton } from '../../components/PromoSkeleton';
 
 function mapPromoItem(item: IItem): IPromoItem {
   return {
@@ -54,12 +53,18 @@ export const Overview = () => {
     dispatch(fetchPopularBrands());
   }, [dispatch]);
 
+  const createPromoSkeleton = () => {
+    return <ThemeProvider theme={darkTheme}>
+      <PromoSkeleton />
+    </ThemeProvider>
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.promoMoversWrap}>
         <Queries<ResponseData<typeof fetchOverview>>
           requestActions={[fetchOverview]}
-          noDataMessage={<PromoSkeleton />}
+          noDataMessage={createPromoSkeleton()}
         >
           {({ loading, error, data }) => (
             <ThemeProvider theme={darkTheme}>
