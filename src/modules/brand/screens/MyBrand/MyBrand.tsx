@@ -76,8 +76,10 @@ export const MyBrand = () => {
   const toggleBgImgModal = useCallback(
     (isOpen: boolean) => () => {
       setBgImgModalOpened(isOpen);
-    }, []);
-    
+    },
+    [],
+  );
+
   return (
     <Section className={classes.root}>
       <Header

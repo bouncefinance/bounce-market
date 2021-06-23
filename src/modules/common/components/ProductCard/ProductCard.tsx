@@ -45,7 +45,7 @@ export const ProductCard = ({
 
     likeClickHandler();
   }, [likeClickHandler, onLikeClick]);
-  
+
   return (
     <ProductCardComponent
       isLiked={isLiked}

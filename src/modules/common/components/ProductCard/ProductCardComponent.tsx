@@ -227,12 +227,12 @@ export const ProductCardComponent = ({
 
         {isOnSale && price && (
           <div className={classes.price}>
-            {auctionType === AuctionType.FixedSwap && (
-              state === FixedSwapState.Completed
+            {auctionType === AuctionType.FixedSwap &&
+              (state === FixedSwapState.Completed
                 ? t('product-card.sold-for')
                 : t('product-card.price'))}
-            {auctionType === AuctionType.EnglishAuction && (
-              state === AuctionState.Claimed
+            {auctionType === AuctionType.EnglishAuction &&
+              (state === AuctionState.Claimed
                 ? t('product-card.top-bid')
                 : t('product-card.sold-for'))}
             {} {price.toFormat()} {priceType}
@@ -255,7 +255,9 @@ export const ProductCardComponent = ({
           {!isOnSale && (
             <>
               <div>
-                <Typography className={classes.status}>{t("product-card.not-on-sale")}</Typography>
+                <Typography className={classes.status}>
+                  {t('product-card.not-on-sale')}
+                </Typography>
 
                 {copies && renderedCopies}
               </div>
