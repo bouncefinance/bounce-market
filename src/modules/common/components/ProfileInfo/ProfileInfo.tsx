@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { DefaultRandomAvatar } from '../DefaultRandomAvatar';
 import { useProfileInfoStyles } from './ProfileInfoStyles';
+import { ConditionalWrapper } from '../ConditionalWrapper';
 
 interface IUserInfo {
   name: string;
@@ -26,6 +27,7 @@ export interface IProfileInfoProps {
    * default size is - small
    */
   avatarSize?: 'small' | 'medium' | 'big';
+  mainHref?: string;
 }
 
 export const ProfileInfo = ({
@@ -35,6 +37,7 @@ export const ProfileInfo = ({
   title,
   isTitleFirst = false,
   avatarSize = 'small',
+  mainHref,
 }: IProfileInfoProps) => {
   const classes = useProfileInfoStyles();
 
@@ -72,26 +75,31 @@ export const ProfileInfo = ({
   }, [avatarSize, classes, users]);
 
   return (
-    <div
-      className={classNames(
-        className,
-        classes.root,
-        isTitleFirst && classes.titleFirst,
-      )}
+    <ConditionalWrapper
+      condition={!!mainHref}
+      wrapper={<Link to={mainHref || '#'} />}
     >
-      <div className={classes.avatars}>{renderedAvatars}</div>
-
-      <Typography
-        color="textSecondary"
-        variant="body2"
-        className={classes.subTitle}
+      <div
+        className={classNames(
+          className,
+          classes.root,
+          isTitleFirst && classes.titleFirst,
+        )}
       >
-        {subTitle}
-      </Typography>
+        <div className={classes.avatars}>{renderedAvatars}</div>
 
-      <Typography className={classes.title} variant="body2">
-        {title}
-      </Typography>
-    </div>
+        <Typography
+          color="textSecondary"
+          variant="body2"
+          className={classes.subTitle}
+        >
+          {subTitle}
+        </Typography>
+
+        <Typography className={classes.title} variant="body2">
+          {title}
+        </Typography>
+      </div>
+    </ConditionalWrapper>
   );
 };
