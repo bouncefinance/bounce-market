@@ -46,13 +46,22 @@ interface ICreateNFTFormData extends Omit<ICreateNFTPayload, 'supply'> {
 
 const validateCreateNFT = (payload: ICreateNFTFormData) => {
   const errors: FormErrors<ICreateNFTFormData> = {};
-
+  
   if (!payload.name) {
     errors.name = t('validation.required');
   }
 
   if (!payload.description) {
     errors.description = t('validation.required');
+  }
+
+  if (payload.standard === NftType.ERC1155) {
+    const supply = payload.supply
+    if (!supply) {
+      errors.supply = t('validation.required');
+    } else if (!/^\d+$/.test(supply)) {
+      errors.supply = t('validation.require-integer')
+    }
   }
 
   if (!payload.file) {
@@ -240,6 +249,7 @@ export const CreateBrandItem = () => {
             validate={validateCreateNFT}
             initialValues={{
               channel: Channel.FineArts,
+              standard: brandInfo?.standard,
             }}
           />
         </Box>
