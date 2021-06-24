@@ -6,7 +6,6 @@ import {
   InputAdornment,
   InputLabel,
   Paper,
-  Switch,
   Tooltip,
   Typography,
   useTheme,
@@ -17,7 +16,7 @@ import { add } from 'date-fns';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { Section } from 'modules/uiKit/Section';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory, useParams } from 'react-router';
 import { useAccount } from '../../../account/hooks/useAccount';
@@ -42,8 +41,6 @@ import { fetchNftByUser } from '../../actions/fetchNftByUser';
 import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
-
-const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
@@ -96,16 +93,6 @@ export const PublishNFTComponent = ({
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
   const theme = useTheme();
-  const [purchasePriceChecked, setPurchasePriceChecked] = useState(true);
-  const [reservePriceChecked, setReservePriceChecked] = useState(true);
-
-  const togglePurchasePriceChecked = useCallback(() => {
-    setPurchasePriceChecked(prev => !prev);
-  }, []);
-
-  const toggleReservePriceChecked = useCallback(() => {
-    setReservePriceChecked(prev => !prev);
-  }, []);
 
   const options = useMemo(
     () => [
@@ -151,7 +138,7 @@ export const PublishNFTComponent = ({
         if (!price) {
           errors.price = t('validation.required');
         } else if (price <= 0) {
-          errors.price = t('validation.min', { value: 0 });
+          errors.price = t('validation.minMore', { value: 0 });
         }
       } else {
         const minBid = +payload.minBid;
@@ -160,26 +147,26 @@ export const PublishNFTComponent = ({
         if (!minBid) {
           errors.minBid = t('validation.required');
         } else if (minBid <= 0) {
-          errors.minBid = t('validation.min', { value: 0 });
+          errors.minBid = t('validation.minMore', { value: 0 });
         }
 
-        if (purchasePriceChecked || ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED) {
-          if (!purchasePrice) {
-            errors.purchasePrice = t('validation.required');
-          } else if (purchasePrice <= 0) {
-            errors.purchasePrice = t('validation.min', { value: 0 });
-          }
+        if (!purchasePrice) {
+          errors.purchasePrice = t('validation.required');
+        } else if (purchasePrice <= 0) {
+          errors.purchasePrice = t('validation.minMore', { value: 0 });
         }
 
-        if (reservePriceChecked || ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED) {
-          if (!reservePrice) {
+        if (!reservePrice) {
+          if (minBid) {
+            errors.reservePrice = t('validation.min', { value: minBid });
+          } else {
             errors.reservePrice = t('validation.required');
-          } else if (reservePrice <= 0) {
-            errors.reservePrice = t('validation.min', { value: 0 });
           }
+        } else if (reservePrice <= 0) {
+          errors.reservePrice = t('validation.minMore', { value: 0 });
         }
 
-        if (!(minBid <= reservePrice && reservePrice <= purchasePrice)) {
+        if (!(minBid <= reservePrice && reservePrice < purchasePrice)) {
           errors.minBid = t(
             'publish-nft.error.wrong-direct-reserve-bid-amount',
           );
@@ -188,7 +175,7 @@ export const PublishNFTComponent = ({
 
       return errors;
     },
-    [maxQuantity, purchasePriceChecked, reservePriceChecked],
+    [maxQuantity],
   );
 
   const durationOptions = useMemo(
@@ -483,39 +470,30 @@ export const PublishNFTComponent = ({
                         </Box>
                       </InputLabel>
                     </Grid>
-
-                    <Grid item>
-                      <Switch
-                        checked={purchasePriceChecked}
-                        onChange={togglePurchasePriceChecked}
-                      />
-                    </Grid>
                   </Grid>
                 </Box>
 
-                {purchasePriceChecked && (
-                  <Field
-                    component={InputField}
-                    name="purchasePrice"
-                    type="number"
-                    color="primary"
-                    fullWidth={true}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Field
-                            component={SelectField}
-                            name="unitContract"
-                            color="primary"
-                            fullWidth
-                            options={currencyOptions}
-                            className={classes.currencySelect}
-                          />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                )}
+                <Field
+                  component={InputField}
+                  name="purchasePrice"
+                  type="number"
+                  color="primary"
+                  fullWidth={true}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Field
+                          component={SelectField}
+                          name="unitContract"
+                          color="primary"
+                          fullWidth
+                          options={currencyOptions}
+                          className={classes.currencySelect}
+                        />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               </Box>
 
               <Box className={classes.formControl}>
@@ -536,39 +514,30 @@ export const PublishNFTComponent = ({
                         </Box>
                       </InputLabel>
                     </Grid>
-
-                    <Grid item>
-                      <Switch
-                        checked={reservePriceChecked}
-                        onChange={toggleReservePriceChecked}
-                      />
-                    </Grid>
                   </Grid>
                 </Box>
 
-                {reservePriceChecked && (
-                  <Field
-                    component={InputField}
-                    name="reservePrice"
-                    type="number"
-                    color="primary"
-                    fullWidth={true}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Field
-                            component={SelectField}
-                            name="unitContract"
-                            color="primary"
-                            fullWidth={true}
-                            options={currencyOptions}
-                            className={classes.currencySelect}
-                          />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                )}
+                <Field
+                  component={InputField}
+                  name="reservePrice"
+                  type="number"
+                  color="primary"
+                  fullWidth={true}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Field
+                          component={SelectField}
+                          name="unitContract"
+                          color="primary"
+                          fullWidth={true}
+                          options={currencyOptions}
+                          className={classes.currencySelect}
+                        />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               </Box>
             </>
           )}
