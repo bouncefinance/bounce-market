@@ -44,7 +44,7 @@ jobs:
   # build
   build-stage:
     <<: *build-template
-  build-fangible:
+  build-bounce-stage:
     <<: *build-template
   build-prod:
     <<: *build-template
