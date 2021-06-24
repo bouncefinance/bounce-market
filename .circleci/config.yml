@@ -55,7 +55,7 @@ jobs:
   # upload
   upload-stage:
     <<: *upload-template
-  upload-fangible:
+  upload-bounce-stage:
     <<: *upload-template
   upload-prod:
     <<: *upload-template
