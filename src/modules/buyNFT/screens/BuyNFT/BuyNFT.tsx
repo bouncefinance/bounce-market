@@ -283,7 +283,8 @@ export const BuyNFT = () => {
             { data: poolNftOwner },
           ) => {
             const ownerTitle =
-              item.ownername || truncateWalletAddr(item.owneraddress);
+              roleInfos.creator.username ||
+              truncateWalletAddr(item.ownerAddress);
 
             const renderedCreator = (
               <ProfileInfo
@@ -399,7 +400,7 @@ export const BuyNFT = () => {
 
                 <TokenInfo
                   name={item.itemName}
-                  itemSymbol={item.itemsymbol}
+                  itemSymbol={item.itemSymbol}
                   standard={item.standard}
                   contractAddress={item.contractAddress}
                   supply={item.supply}
@@ -416,15 +417,15 @@ export const BuyNFT = () => {
               <div className={classes.root}>
                 <MediaContainer
                   className={classes.imgContainer}
-                  src={item.fileurl}
-                  title={item.itemname}
+                  src={item.fileUrl}
+                  title={item.itemName}
                   description={item.description}
                   category={item.category}
                 />
 
                 <Info className={classes.info}>
                   <InfoDescr
-                    title={item.itemname}
+                    title={item.itemName}
                     description={item.description}
                     copiesCurrent={
                       isEnglishAuction(poolDetails)
@@ -518,8 +519,8 @@ export const BuyNFT = () => {
                   >
                     {({ loading }) => (
                       <BidDialog
-                        name={item.itemname}
-                        filepath={item.fileurl}
+                        name={item.itemName}
+                        filepath={item.fileUrl}
                         onSubmit={({ bid }) => {
                           handleBuyEnglish({
                             bidPrice: new BigNumber(bid),
@@ -550,8 +551,8 @@ export const BuyNFT = () => {
                   >
                     {({ loading }) => (
                       <BuyDialog
-                        name={item.itemname}
-                        filepath={item.fileurl}
+                        name={item.itemName}
+                        filepath={item.fileUrl}
                         onSubmit={() => {
                           handleBuyEnglish({
                             amountMax1: poolDetails.amountMax1,
@@ -577,8 +578,8 @@ export const BuyNFT = () => {
                   <Mutation type={buyFixed.toString()} action={buyFixed}>
                     {({ loading }) => (
                       <BuyDialog
-                        name={item.itemname}
-                        filepath={item.fileurl}
+                        name={item.itemName}
+                        filepath={item.fileUrl}
                         onSubmit={data => {
                           handleBuyFixed({
                             nftType: poolDetails.nftType,
