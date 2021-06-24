@@ -68,43 +68,46 @@ workflows:
   version: 2.1
   bounce_market:
     jobs:
-      # stage
+      # market-stage.bounce.finance
+      - approve-bounce-stage:
+          type: approval
+          filters:
+            branches:
+              only: [stage]
+      - build-bounce-stage:
+          context:
+            - bounce_build_stage
+          requires:
+            - approve-bounce-stage
+      - upload-bounce-stage:
+          context:
+            - cicd
+            - bounce_build_stage
+          requires:
+            - build-bounce-stage
+      # stage.fangible.com
       - approve-stage:
           type: approval
           filters:
             branches:
-              only: [ stage ]
+              only: [stage]
       - build-stage:
           context:
-            - bounce_build_stage
+            - fangible_build_stage
           requires:
             - approve-stage
       - upload-stage:
           context:
             - cicd
-            - bounce_build_stage
+            - fangible_build_stage
           requires:
             - build-stage
-      # stage.fangible.com
-      - approve-fangible:
-          type: approval
-      - build-fangible:
-          context:
-            - fangible_build_stage
-          requires:
-            - approve-fangible
-      - upload-fangible:
-          context:
-            - cicd
-            - fangible_build_stage
-          requires:
-            - build-fangible
       # prod
       - approve-prod:
           type: approval
           filters:
             branches:
-              only: [ master, stage ]
+              only: [master, stage]
       - build-prod:
           context: bounce_build_prod
           requires:
