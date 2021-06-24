@@ -61,7 +61,7 @@ export const ProductCard = ({
 
     likeClickHandler();
   }, [likeClickHandler, onLikeClick]);
-
+  
   const dispatch = useDispatchRequest();
 
   const hasAction = useMemo(() => {
