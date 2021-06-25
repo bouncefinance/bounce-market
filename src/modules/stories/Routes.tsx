@@ -4,26 +4,26 @@ import { RouteConfiguration } from 'modules/common/types/RouteConfiguration';
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-const PATH_DROPS = '/drops';
+const PATH_STORIES = '/stories';
 
-export const DropsRoutesConfig: { [key: string]: RouteConfiguration } = {
-  Drops: {
-    path: PATH_DROPS,
-    generatePath: () => PATH_DROPS,
+export const StoriesRoutesConfig: { [key: string]: RouteConfiguration } = {
+  Stories: {
+    path: PATH_STORIES,
+    generatePath: () => PATH_STORIES,
   },
 };
 
 const LoadableContainer: LoadableComponent<any> = loadable(
-  async () => import('./screens/Drops').then(module => module.Drops),
+  async () => import('./screens/Stories').then(module => module.Stories),
   {
     fallback: <QueryLoadingAbsolute />,
   },
 );
 
-export function DropsRoutes() {
+export function StoriesRoutes() {
   return (
     <Route
-      path={DropsRoutesConfig.Drops.path}
+      path={StoriesRoutesConfig.Stories.path}
       exact={true}
       component={LoadableContainer}
     />

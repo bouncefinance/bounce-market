@@ -1,7 +1,7 @@
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
-import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
+import { StoriesRoutesConfig } from 'modules/stories/Routes';
 import { Button } from 'modules/uiKit/Button';
 import React, { useCallback, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -60,8 +60,8 @@ export const HeaderLinks = () => {
   const items = useMemo(
     () => [
       {
-        label: 'Dr🔥ps',
-        href: DropsRoutesConfig.Drops.generatePath(),
+        label: 'St🔥ries',
+        href: StoriesRoutesConfig.Stories.generatePath(),
       },
       {
         label: 'Market',

@@ -3,20 +3,20 @@ import classNames from 'classnames';
 import { Section } from 'modules/uiKit/Section';
 import React, { ReactNode } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useDropsSliderStyles } from './useDropsSliderStyles';
+import { useStoriesSliderStyles } from './useStoriesSliderStyles';
 
-interface IDropsSliderProps {
+interface IStoriesSliderProps {
   className?: string;
   children: ReactNode;
   itemCount: number;
 }
 
-export const DropsSlider = ({
+export const StoriesSlider = ({
   className,
   children,
   itemCount,
-}: IDropsSliderProps) => {
-  const classes = useDropsSliderStyles();
+}: IStoriesSliderProps) => {
+  const classes = useStoriesSliderStyles();
   const theme = useTheme();
 
   const isFewSlides = itemCount > 1;
@@ -40,7 +40,10 @@ export const DropsSlider = ({
   );
 
   return (
-    <Section pt={{ md: 14 }} className={classNames(classes.root, className)}>
+    <Section
+      pt={{ xs: 7.5, md: 14 }}
+      className={classNames(classes.root, className)}
+    >
       <Container>
         {isFewSlides && (
           <Swiper {...sliderProps} className={classes.slider}>

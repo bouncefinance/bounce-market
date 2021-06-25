@@ -1,21 +1,21 @@
 import { Chip, ChipProps } from '@material-ui/core';
 import React from 'react';
 import { LightningIcon } from './assets/LightningIcon';
-import { useDropsChipStyles } from './useDropsChipStyles';
+import { useStoriesChipStyles } from './useStoriesChipStyles';
 
-interface IDropsLabelsProps extends ChipProps {
+interface IStoriesLabelsProps extends ChipProps {
   isLive?: boolean;
 }
 
 /**
  * The main api is here - [Chip API](https://material-ui.com/api/chip/)
  */
-export const DropsChip = ({
+export const StoriesChip = ({
   isLive,
   icon,
   ...restProps
-}: IDropsLabelsProps) => {
-  const classes = useDropsChipStyles();
+}: IStoriesLabelsProps) => {
+  const classes = useStoriesChipStyles();
 
   return (
     <Chip

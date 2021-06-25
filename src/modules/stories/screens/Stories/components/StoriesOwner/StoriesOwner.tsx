@@ -4,9 +4,9 @@ import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvat
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { VerifiedIcon } from './assets/VerifiedIcon';
-import { useDropsOwnerStyles } from './useDropsOwnerStyles';
+import { useStoriesOwnerStyles } from './useStoriesOwnerStyles';
 
-interface IDropsOwnerProps {
+interface IStoriesOwnerProps {
   title: string;
   className?: string;
   isVerified?: boolean;
@@ -14,14 +14,14 @@ interface IDropsOwnerProps {
   href?: string;
 }
 
-export const DropsOwner = ({
+export const StoriesOwner = ({
   href,
   className,
   isVerified,
   avatar,
   title,
-}: IDropsOwnerProps) => {
-  const classes = useDropsOwnerStyles();
+}: IStoriesOwnerProps) => {
+  const classes = useStoriesOwnerStyles();
 
   const renderedContent = (
     <>

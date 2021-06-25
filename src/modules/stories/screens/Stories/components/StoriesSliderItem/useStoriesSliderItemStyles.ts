@@ -1,7 +1,7 @@
 import { fade, makeStyles, Theme } from '@material-ui/core';
 import { getPercentage } from 'modules/common/utils/styleUtils';
 
-export const useDropsSliderItemStyles = makeStyles<
+export const useStoriesSliderItemStyles = makeStyles<
   Theme,
   { gradientColor?: string }
 >(theme => ({

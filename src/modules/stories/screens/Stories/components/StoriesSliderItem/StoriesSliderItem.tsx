@@ -4,9 +4,9 @@ import { Img } from 'modules/uiKit/Img';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import Truncate from 'react-truncate';
-import { useDropsSliderItemStyles } from './useDropsSliderItemStyles';
+import { useStoriesSliderItemStyles } from './useStoriesSliderItemStyles';
 
-interface IDropsSliderItemProps {
+interface IStoriesSliderItemProps {
   className?: string;
   title: string;
   text: string;
@@ -17,7 +17,7 @@ interface IDropsSliderItemProps {
   href: string;
 }
 
-export const DropsSliderItem = ({
+export const StoriesSliderItem = ({
   className,
   title,
   text,
@@ -26,8 +26,8 @@ export const DropsSliderItem = ({
   img,
   href,
   gradientColor,
-}: IDropsSliderItemProps) => {
-  const classes = useDropsSliderItemStyles({ gradientColor });
+}: IStoriesSliderItemProps) => {
+  const classes = useStoriesSliderItemStyles({ gradientColor });
 
   return (
     <div className={classNames(classes.root, className)}>

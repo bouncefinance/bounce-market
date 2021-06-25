@@ -1,7 +1,7 @@
 import { makeStyles, Theme } from '@material-ui/core';
 import { getEm } from 'modules/common/utils/styleUtils';
 
-export const useDropsOwnerStyles = makeStyles<Theme>(theme => ({
+export const useStoriesOwnerStyles = makeStyles<Theme>(theme => ({
   root: {
     display: 'grid',
     gridTemplateColumns: 'auto 1fr',

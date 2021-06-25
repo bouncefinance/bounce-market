@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
-export const useDropsSliderStyles = makeStyles<Theme>(theme => ({
+export const useStoriesSliderStyles = makeStyles<Theme>(theme => ({
   root: {
     overflow: 'hidden',
   },
@@ -23,7 +23,7 @@ export const useDropsSliderStyles = makeStyles<Theme>(theme => ({
     },
 
     '&.swiper-slide-next': {
-      [theme.breakpoints.up('xl')]: {
+      [theme.breakpoints.up('md')]: {
         opacity: 1,
       },
     },

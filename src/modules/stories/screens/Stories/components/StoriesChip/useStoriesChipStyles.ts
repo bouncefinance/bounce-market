@@ -1,6 +1,6 @@
 import { fade, makeStyles, Theme } from '@material-ui/core';
 
-export const useDropsChipStyles = makeStyles<Theme>(theme => ({
+export const useStoriesChipStyles = makeStyles<Theme>(theme => ({
   root: {
     minWidth: 70,
     height: 28,

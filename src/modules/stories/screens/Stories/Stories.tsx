@@ -1,12 +1,12 @@
 import { ThemeProvider } from '@material-ui/core';
-import { DropsRoutesConfig } from 'modules/drops/Routes';
+import { StoriesRoutesConfig } from 'modules/stories/Routes';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React from 'react';
 import { uid } from 'react-uid';
-import { DropsChip } from './components/DropsChip';
-import { DropsOwner } from './components/DropsOwner';
-import { DropsSlider } from './components/DropsSlider';
-import { DropsSliderItem } from './components/DropsSliderItem';
+import { StoriesChip } from './components/StoriesChip';
+import { StoriesOwner } from './components/StoriesOwner';
+import { StoriesSlider } from './components/StoriesSlider';
+import { StoriesSliderItem } from './components/StoriesSliderItem';
 
 const items = [
   {
@@ -42,16 +42,16 @@ const items = [
   },
 ];
 
-export const Drops = () => {
+export const Stories = () => {
   const renderedItems = items.map(item => {
     const chips = item.chips.map((label, i) => (
-      <DropsChip key={label} label={label} isLive={!i} />
+      <StoriesChip key={label} label={label} isLive={!i} />
     ));
-    const profileInfo = <DropsOwner title={item.owner} isVerified />;
+    const profileInfo = <StoriesOwner title={item.owner} isVerified />;
 
     return (
-      <DropsSliderItem
-        href={DropsRoutesConfig.Drops.generatePath()}
+      <StoriesSliderItem
+        href={StoriesRoutesConfig.Stories.generatePath()}
         key={uid(item)}
         title={item.title}
         text={item.text}
@@ -64,7 +64,7 @@ export const Drops = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <DropsSlider itemCount={items.length}>{renderedItems}</DropsSlider>
+      <StoriesSlider itemCount={items.length}>{renderedItems}</StoriesSlider>
     </ThemeProvider>
   );
 };

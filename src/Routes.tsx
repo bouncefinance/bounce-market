@@ -1,9 +1,9 @@
-import { DropsRoutes, DropsRoutesConfig } from 'modules/drops/Routes';
 import { MarketRoutes, MarketRoutesConfig } from 'modules/market/Routes';
 import {
   ProfileRoutes,
   ProfileRoutesConfig,
 } from 'modules/profile/ProfileRoutes';
+import { StoriesRoutes, StoriesRoutesConfig } from 'modules/stories/Routes';
 import { Route, Switch } from 'react-router-dom';
 import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 import {
@@ -100,10 +100,10 @@ export function Routes() {
 
       <Route
         exact
-        path={[DropsRoutesConfig.Drops.path]}
+        path={[StoriesRoutesConfig.Stories.path]}
         render={() => (
           <DefaultLayout headerTheme={Themes.dark}>
-            <DropsRoutes />
+            <StoriesRoutes />
           </DefaultLayout>
         )}
       />
