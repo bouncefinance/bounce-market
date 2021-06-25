@@ -1,9 +1,11 @@
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
+import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
+import { Button } from 'modules/uiKit/Button';
 import React, { useCallback, useMemo } from 'react';
+import { NavLink } from 'react-router-dom';
 import { uid } from 'react-uid';
-import { HeaderLinkItem } from './HeaderLinkItem';
 import { useHeaderLinksStyles } from './HeaderLinksStyles';
 
 const useHeaderLinks = () => {
@@ -35,13 +37,18 @@ export const HeaderLinksComponent = ({
     <nav className={classes.root}>
       {items.map(({ label, href }) => {
         return (
-          <HeaderLinkItem
-            label={label}
-            href={href}
-            classes={classes}
+          <Button
             key={uid(label)}
+            component={NavLink}
+            to={href}
+            href={href}
+            variant="text"
+            activeClassName={classes.activeLink}
+            className={classes.link}
             onClick={onItemClick}
-          />
+          >
+            {label}
+          </Button>
         );
       })}
     </nav>
@@ -52,6 +59,10 @@ export const HeaderLinks = () => {
   const { onItemClick } = useHeaderLinks();
   const items = useMemo(
     () => [
+      {
+        label: 'Dr🔥ps',
+        href: DropsRoutesConfig.Drops.generatePath(),
+      },
       {
         label: 'Market',
         href: MarketRoutesConfig.Market.generatePath(),

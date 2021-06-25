@@ -1,3 +1,4 @@
+import { DropsRoutes, DropsRoutesConfig } from 'modules/drops/Routes';
 import { MarketRoutes, MarketRoutesConfig } from 'modules/market/Routes';
 import {
   ProfileRoutes,
@@ -93,6 +94,16 @@ export function Routes() {
         render={() => (
           <DefaultLayout>
             <BrandRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={[DropsRoutesConfig.Drops.path]}
+        render={() => (
+          <DefaultLayout headerTheme={Themes.dark}>
+            <DropsRoutes />
           </DefaultLayout>
         )}
       />
