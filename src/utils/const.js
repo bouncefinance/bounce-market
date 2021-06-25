@@ -14,9 +14,9 @@ const getNetwork = (chainID) => {
     case 56:
       return [isProDev?'https://api1-bsc.fangible.com/v1/bsc':'https://api1-bsc.fangible.com/v1/bsc_test', 'https://nftview.bounce.finance/v2/bsc']
     case 128:
-      return ['https://api1-heco.fangible.com/v1/heco', 'https://nt-test.bounce.finance/v3/heco']
+      return ['https://api1-heco.fangible.com/v1/heco', 'https://nftview.bounce.finance/v2/heco']
     default:
-      return ['https://api1-heco.fangible.com/v1/heco', 'https://nt-test.bounce.finance/v3/heco']
+      return ['https://api1-heco.fangible.com/v1/heco', 'https://nftview.bounce.finance/v2/heco']
   }
 }
 
