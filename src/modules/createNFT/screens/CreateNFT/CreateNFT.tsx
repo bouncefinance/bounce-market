@@ -191,6 +191,11 @@ export const CreateNFT = () => {
                 color="primary"
                 fullWidth={true}
                 options={standardOptions}
+                inputProps={{
+                  step: 'any',
+                  min: '0',
+                  inputMode: 'decimal',
+                }}
               />
             </Box>
           )}

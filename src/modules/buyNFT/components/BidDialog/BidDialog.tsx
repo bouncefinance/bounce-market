@@ -99,9 +99,14 @@ export const BidDialog = ({
                   component={InputField}
                   name="bid"
                   type="number"
-                  label="Your bid"
+                  label={t('details-nft.your-bid')}
                   size="medium"
-                  placeholder="Enter a Bid"
+                  placeholder={t('details-nft.enter-a-bid')}
+                  inputProps={{
+                    step: 'any',
+                    min: '0',
+                    inputMode: 'decimal',
+                  }}
                   InputProps={{
                     endAdornment: (
                       <b className={classes.currency}>{currency}</b>
@@ -120,9 +125,14 @@ export const BidDialog = ({
                   component={InputField}
                   name="quantity"
                   type="number"
-                  label="Quantity"
+                  label={t('common.quantity')}
                   parse={value => (value ? Math.round(+value) : 1)}
                   format={value => (value ? Math.round(+value) : 1)}
+                  inputProps={{
+                    step: 1,
+                    min: '0',
+                    inputMode: 'decimal',
+                  }}
                   InputProps={{
                     endAdornment: (
                       <div className={classes.spinBtns}>
