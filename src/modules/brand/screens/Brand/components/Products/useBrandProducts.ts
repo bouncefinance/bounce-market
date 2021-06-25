@@ -24,19 +24,13 @@ export const useBrandProducts = () => {
     ItemsChannel.fineArts,
   );
 
-  const onSortChange = useCallback(
-    (value: string) => {
-      if (!isConnected) {
-        return;
-      }
-      setSortBy(value);
-    },
-    [isConnected],
-  );
+  const onSortChange = useCallback((value: string) => {
+    setSortBy(value);
+  }, []);
 
   const onCategoryChange = useCallback(
     (value: string) => {
-      if (!isConnected || !brandInfo) {
+      if (!brandInfo) {
         return;
       }
       setCategory(value as ItemsChannel);
@@ -49,11 +43,11 @@ export const useBrandProducts = () => {
         }),
       );
     },
-    [brandInfo, dispatch, isConnected],
+    [brandInfo, dispatch],
   );
 
   useEffect(() => {
-    if (!isConnected || !brandInfo) {
+    if (!brandInfo) {
       return;
     }
 
@@ -64,7 +58,7 @@ export const useBrandProducts = () => {
         count: 1000,
       }),
     );
-  }, [brandInfo, dispatch, isConnected]);
+  }, [brandInfo, dispatch]);
 
   return {
     catergory,

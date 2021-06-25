@@ -1,5 +1,4 @@
-import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
-import { setAccount } from 'modules/account/store/actions/setAccount';
+import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { queryItemByFilter } from 'modules/pools/actions/queryItemByFilter';
 import { queryPools } from 'modules/pools/actions/queryPools';
 import { Store } from 'redux';
@@ -48,16 +47,9 @@ export const queryBrandPools = createSmartAction<RequestAction>(
             const tokenList = fsToken.concat(eaToken);
 
             if (tokenList.length > 0) {
-              const {
-                data: { address },
-              } = getQuery(store.getState(), {
-                type: setAccount.toString(),
-                action: setAccount,
-              });
-
               const { data: itemData } = await store.dispatchRequest(
                 queryItemByFilter({
-                  accountaddress: address,
+                  accountaddress: '',
                   category: '',
                   channel: '',
                   cts: new Array(tokenList.length).fill(params.contractaddress),
