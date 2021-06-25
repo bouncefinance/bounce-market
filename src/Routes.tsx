@@ -102,7 +102,7 @@ export function Routes() {
         exact
         path={[StoriesRoutesConfig.Stories.path]}
         render={() => (
-          <DefaultLayout headerTheme={Themes.dark}>
+          <DefaultLayout headerTheme={Themes.dark} footerTheme={Themes.dark}>
             <StoriesRoutes />
           </DefaultLayout>
         )}
