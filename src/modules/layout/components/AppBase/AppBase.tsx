@@ -2,6 +2,7 @@ import { CssBaseline } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { useMutation } from '@redux-requests/react';
 import { ConnectedRouter } from 'connected-react-router';
+import { Web3ModalStyles } from 'modules/account/components/Web3ModalStyles';
 import { updateAccount } from 'modules/account/store/actions/updateAccount';
 import React, { ReactNode, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
@@ -42,6 +43,7 @@ export const AppBase = ({ children }: IAppBaseProps) => {
   return (
     <MuiThemeProvider theme={mainTheme}>
       <CssBaseline />
+      <Web3ModalStyles />
 
       {!initDone || loading ? (
         <QueryLoadingAbsolute />

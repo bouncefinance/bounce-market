@@ -651,11 +651,11 @@ export const PublishNFT = () => {
 
         return (
           <PublishNFTComponent
-            name={data.itemname}
-            tokenContract={data.contractaddress}
+            name={data.itemName}
+            tokenContract={data.contractAddress}
             nftType={data.standard}
             tokenId={data.id}
-            file={data.fileurl}
+            file={data.fileUrl}
             category={data.category}
             maxQuantity={maxQuantity}
             onPublish={handlePublish}

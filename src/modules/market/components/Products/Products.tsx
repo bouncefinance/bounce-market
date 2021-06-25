@@ -4,7 +4,6 @@ import {
   useMutation,
   useQuery,
 } from '@redux-requests/react';
-import { useAccount } from 'modules/account/hooks/useAccount';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
@@ -29,7 +28,6 @@ import { uid } from 'react-uid';
 const ITEMS_PORTION_COUNT = 20;
 
 export const Products = ({ ...sectionProps }: ISectionProps) => {
-  const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
 
   const [sortBy, setSortBy] = useState<string>('1');
@@ -78,17 +76,13 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   }, [category, dispatch, nftItemsData]);
 
   useEffect(() => {
-    if (!isConnected) {
-      return;
-    }
-
     dispatch(
       fetchNFTItems({
         limit: ITEMS_PORTION_COUNT,
         channel: ItemsChannel.fineArts,
       }),
     );
-  }, [dispatch, isConnected]);
+  }, [dispatch]);
 
   const nftItems = useMemo(
     () => (nftItemsData ? nftItemsData.items.map(mapProductCardData) : []),
@@ -138,10 +132,6 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
       )),
     [nftItems],
   );
-
-  if (!isConnected) {
-    return null;
-  }
 
   return (
     <Section {...sectionProps}>

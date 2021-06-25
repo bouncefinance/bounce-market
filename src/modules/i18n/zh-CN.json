@@ -131,11 +131,31 @@
     },
     "info": {
       "date": "{value, date, medium}",
-      "time": "at {value, time, short}"
+      "time": "at {value, time, short}",
+      "view-scan": "View on BscScan"
     },
     "dialog": {
       "input-info": "您的出价必须至少为 {value} {currency}",
       "footnote": "在拍卖中的出价无法撤销。"
+    },
+    "token-info": {
+      "standard": "Standard:",
+      "total-supply": "Total Supply:",
+      "name-tags": "Name Tags:",
+      "contract": "Contract:",
+      "token-id": "Token ID:"
+    },
+    "history": {
+      "create-str": "Put on sale {quantity} editions for {price} {symbol}",
+      "offer-str": "Offered {price} {symbol} for {quantity} edition",
+      "cancel-str": "Canceled",
+      "claim-str": "Claimed"
+    },
+    "bid": {
+      "bid-placed": "Bid placed"
+    },
+    "owner": {
+      "balance": "{balance} copies"
     }
   },
   "form": {

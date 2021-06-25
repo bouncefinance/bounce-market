@@ -8,7 +8,6 @@ import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import React, { useMemo } from 'react';
 import { uid } from 'react-uid';
-import { NotConnected } from '../NotConnected';
 import { useBrandProducts } from './useBrandProducts';
 
 export const Products = () => {
@@ -19,7 +18,6 @@ export const Products = () => {
     onSortChange,
     sortBy,
     brandNfts,
-    isConnected,
   } = useBrandProducts();
 
   const hasItems = Boolean(brandNfts && brandNfts.length);
@@ -66,13 +64,13 @@ export const Products = () => {
         />
       </Box>
 
-      {!isConnected && <NotConnected />}
+      {/* {!isConnected && <NotConnected />} */}
 
-      {isConnected && !loading && !hasItems && (
+      {!loading && !hasItems && (
         <NoItems href={MarketRoutesConfig.Market.generatePath()} />
       )}
 
-      {isConnected && (loading || hasItems) && (
+      {(loading || hasItems) && (
         <ProductCards isLoading={loading}>{renderedCards}</ProductCards>
       )}
     </>

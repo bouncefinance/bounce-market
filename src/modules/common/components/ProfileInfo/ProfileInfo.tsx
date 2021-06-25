@@ -26,6 +26,7 @@ export interface IProfileInfoProps {
    * default size is - small
    */
   avatarSize?: 'small' | 'medium' | 'big';
+  mainHref?: string;
 }
 
 export const ProfileInfo = ({
@@ -35,6 +36,7 @@ export const ProfileInfo = ({
   title,
   isTitleFirst = false,
   avatarSize = 'small',
+  mainHref,
 }: IProfileInfoProps) => {
   const classes = useProfileInfoStyles();
 
@@ -82,6 +84,8 @@ export const ProfileInfo = ({
       <div className={classes.avatars}>{renderedAvatars}</div>
 
       <Typography
+        component={!!mainHref ? Link : 'div'}
+        to={mainHref || '#'}
         color="textSecondary"
         variant="body2"
         className={classes.subTitle}
@@ -89,7 +93,12 @@ export const ProfileInfo = ({
         {subTitle}
       </Typography>
 
-      <Typography className={classes.title} variant="body2">
+      <Typography
+        component={!!mainHref ? Link : 'div'}
+        to={mainHref || '#'}
+        className={classes.title}
+        variant="body2"
+      >
         {title}
       </Typography>
     </div>

@@ -27,6 +27,7 @@ import { useProductCardStyles } from './useProductCardStyles';
 import { AuctionType } from 'modules/overview/api/auctionType';
 import { FixedSwapState } from 'modules/common/const/FixedSwapState';
 import { AuctionState } from 'modules/common/const/AuctionState';
+import { ConditionalWrapper } from 'modules/common/components/ConditionalWrapper';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -208,18 +209,22 @@ export const ProductCardComponent = ({
 
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
-      {href ? (
-        <Link to={href} className={classes.imgBox}>
-          {renderMediaContent()}
-        </Link>
-      ) : (
-        renderMediaContent()
-      )}
+      <ConditionalWrapper
+        condition={!!href}
+        wrapper={<Link to={href || '#'} className={classes.imgBox} />}
+      >
+        {renderMediaContent()}
+      </ConditionalWrapper>
 
       <CardContent className={classes.content}>
-        <Typography variant="h5" className={classes.title} title={title}>
-          {title}
-        </Typography>
+        <ConditionalWrapper
+          condition={!!href}
+          wrapper={<Link to={href || '#'} />}
+        >
+          <Typography variant="h5" className={classes.title} title={title}>
+            {title}
+          </Typography>
+        </ConditionalWrapper>
 
         {profileInfo}
 
@@ -227,12 +232,12 @@ export const ProductCardComponent = ({
 
         {isOnSale && price && (
           <div className={classes.price}>
-            {auctionType === AuctionType.FixedSwap && (
-              state === FixedSwapState.Completed
+            {auctionType === AuctionType.FixedSwap &&
+              (state === FixedSwapState.Completed
                 ? t('product-card.sold-for')
                 : t('product-card.price'))}
-            {auctionType === AuctionType.EnglishAuction && (
-              state === AuctionState.Claimed
+            {auctionType === AuctionType.EnglishAuction &&
+              (state === AuctionState.Claimed
                 ? t('product-card.top-bid')
                 : t('product-card.sold-for'))}
             {} {price.toFormat()} {priceType}
@@ -255,7 +260,9 @@ export const ProductCardComponent = ({
           {!isOnSale && (
             <>
               <div>
-                <Typography className={classes.status}>{t("product-card.not-on-sale")}</Typography>
+                <Typography className={classes.status}>
+                  {t('product-card.not-on-sale')}
+                </Typography>
 
                 {copies && renderedCopies}
               </div>
