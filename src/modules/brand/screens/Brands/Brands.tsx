@@ -1,6 +1,5 @@
 import { Box, Container, Typography } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import { useAccount } from 'modules/account/hooks/useAccount';
 import { listBrands } from 'modules/brand/actions/listBrands';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
@@ -17,15 +16,14 @@ import { BrandsList } from './components/BrandsList';
 
 export const Brands = () => {
   const dispatch = useDispatchRequest();
-  const { isConnected } = useAccount();
 
   const { data } = useQuery({ type: listBrands.toString() });
 
   useEffect(() => {
-    if (isConnected && !data) {
+    if (!data) {
       dispatch(listBrands());
     }
-  }, [isConnected, dispatch, data]);
+  }, [dispatch, data]);
 
   return (
     <Section>

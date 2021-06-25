@@ -58,7 +58,7 @@ export const BrandNFTItems = ({
       }),
     ).then(res => {
       setLoading(false);
-      setItems(res.data);
+      setItems(res.data || []);
     });
   }, [contractAddress, dispatch, ownerAddress]);
 

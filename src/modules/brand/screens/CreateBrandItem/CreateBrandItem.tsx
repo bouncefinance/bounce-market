@@ -199,6 +199,11 @@ export const CreateBrandItem = () => {
                 label={t('create-nft.label.supply')}
                 color="primary"
                 fullWidth={true}
+                inputProps={{
+                  step: 'any',
+                  min: '0',
+                  inputMode: 'decimal',
+                }}
               />
             </Box>
           )}

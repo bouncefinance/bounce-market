@@ -18,7 +18,7 @@ export const useHeaderLinksStyles = makeStyles<Theme>(theme => ({
     justifyContent: 'flex-start',
     padding: theme.spacing(1, 0),
     minWidth: 0,
-    color: theme.palette.text.secondary,
+    color: fade(theme.palette.text.primary, 0.4),
 
     '&:hover': {
       [theme.breakpoints.up('xl')]: {
@@ -26,7 +26,9 @@ export const useHeaderLinksStyles = makeStyles<Theme>(theme => ({
       },
     },
   },
+
   activeLink: {
-    color: fade(theme.palette.text.primary, 0.8),
+    color: theme.palette.text.primary,
+    cursor: 'default',
   },
 }));

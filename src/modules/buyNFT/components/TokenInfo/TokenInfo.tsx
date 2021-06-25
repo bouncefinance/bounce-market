@@ -39,6 +39,7 @@ export const TokenInfo = ({
       {tokenId && (
         <Typography className={classes.paragraph}>
           <b>{t('details-nft.token-info.token-id')}</b>
+          {` `}
           {tokenId}
         </Typography>
       )}
@@ -46,12 +47,14 @@ export const TokenInfo = ({
       {name && (
         <Typography className={classes.paragraph}>
           <b>{t('details-nft.token-info.name-tags')}</b>
+          {` `}
           {`${name} ${itemSymbol && `(${itemSymbol})`}`}
         </Typography>
       )}
 
       <Typography className={classes.paragraph}>
         <b>{t('details-nft.token-info.standard')}</b>
+        {` `}
         {standard === NftType.ERC1155
           ? t('create-nft.standardOption.1')
           : t('create-nft.standardOption.0')}
@@ -60,6 +63,7 @@ export const TokenInfo = ({
       {(supply || supply === 0) && (
         <Typography className={classes.paragraph}>
           <b>{t('details-nft.token-info.total-supply')}</b>
+          {` `}
           {supply}
         </Typography>
       )}

@@ -12,7 +12,8 @@
     "reset": "Reset",
     "restore": "Restore",
     "unknown": "Unknown",
-    "coming-soon": "Coming soon..."
+    "coming-soon": "Coming soon...",
+    "quantity": "Quantity"
   },
   "time": {
     "time-over": "Time is over",
@@ -123,6 +124,8 @@
     "buy-now": "Buy now",
     "sold-out": "Sold out",
     "place-a-bid": "Place a bid",
+    "your-bid": "Your bid",
+    "enter-a-bid": "Enter a Bid",
     "tabs": {
       "history": "History",
       "bids": "Bids",
@@ -318,7 +321,7 @@
       "event": "Event",
       "item": "Item",
       "price": "Price",
-      "quantity": "Quantity",
+
       "from": "From",
       "to": "To",
       "date": "Date",
