@@ -30,6 +30,7 @@ export const useWalletStyles = makeStyles<Theme>(theme => ({
   },
 
   dropdown: {
+    width: 240,
     position: 'absolute',
     zIndex: theme.zIndex.tooltip,
     top: `calc(100% - ${theme.spacing(1)}px)`,
