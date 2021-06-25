@@ -1,7 +1,6 @@
-import { Box, Container } from '@material-ui/core';
+import {Box, Container} from '@material-ui/core';
 import {
   useDispatchRequest,
-  useMutation,
   useQuery,
 } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
@@ -9,14 +8,12 @@ import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { ScrollLoader } from 'modules/common/components/ScrollLoader';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { updateNFTItems } from 'modules/market/actions/updateNFTItems';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
   fetchNFTItems,
-  FetchNFTItemsStatus,
   IFetchNFTItems,
 } from 'modules/overview/actions/fetchNFTItems';
 import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
@@ -25,10 +22,17 @@ import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
+import { Pagination } from "@material-ui/lab";
+import { useProductsStyles } from "./useProductsStyles";
 
 const ITEMS_PORTION_COUNT = 20;
 
 export const Products = ({ ...sectionProps }: ISectionProps) => {
+  const styleProps = {
+    firstTitle: t('market.pagination.first-title'),
+    lastTitle: t('market.pagination.last-title')
+  };
+  const classes = useProductsStyles(styleProps);
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
 
@@ -40,10 +44,6 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     loading: nftItemsLoading,
   } = useQuery<IFetchNFTItems | null>({
     type: fetchNFTItems.toString(),
-  });
-
-  const { loading: updateLoading } = useMutation({
-    type: updateNFTItems.toString(),
   });
 
   const onSortChange = useCallback((value: string) => {
@@ -63,14 +63,14 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     [dispatch],
   );
 
-  const onLoadMore = useCallback(() => {
+  const onLoadMore = useCallback((event, value) => {
     if (!nftItemsData) {
       return;
     }
 
     dispatch(
       updateNFTItems({
-        offset: nftItemsData.offset + ITEMS_PORTION_COUNT,
+        offset: (value - 1) * ITEMS_PORTION_COUNT,
         limit: ITEMS_PORTION_COUNT,
         channel: category,
       }),
@@ -94,6 +94,15 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     () => (nftItemsData ? nftItemsData.items.map(mapProductCardData) : []),
     [nftItemsData],
   );
+
+  const paginationCount = useMemo(() => {
+    if(!nftItemsData) {
+      return 1;
+    }
+    const total = nftItemsData.total;
+    const residue = total % ITEMS_PORTION_COUNT;
+    return (total - residue) / ITEMS_PORTION_COUNT + (residue > 0 ? 1 : 0);
+  }, [nftItemsData]);
 
   const hasItems = !!nftItems.length;
 
@@ -165,22 +174,15 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
               {rendrerdCards}
             </ProductCards>
 
-            <ScrollLoader
-              disabled={
-                nftItemsLoading ||
-                nftItemsData?.status === FetchNFTItemsStatus.done
-              }
-              isLoading={updateLoading}
-              onLoadMore={onLoadMore}
-              loadingComponent={
-                <Box mt={4}>
-                  <ProductCards
-                    isLoading
-                    skeletonsCount={ITEMS_PORTION_COUNT}
-                  />
-                </Box>
-              }
-            />
+              <Pagination
+                className={classes.root}
+                count={paginationCount}
+                showFirstButton
+                showLastButton
+                onChange={onLoadMore}
+                variant="outlined"
+                shape="rounded"
+              />
           </>
         ) : (
           <NoItems />

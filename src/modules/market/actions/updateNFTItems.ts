@@ -30,7 +30,7 @@ const updateItemsMetaConfig: FetchNFTItemsMetaType = {
     ): IFetchNFTItems => {
       return {
         ...mutationData,
-        items: [...data.items, ...mutationData.items],
+        items: mutationData.items,
       };
     },
   },
@@ -56,6 +56,7 @@ export const updateNFTItems = createAction<
           items: [],
           status: FetchNFTItemsStatus.done,
           offset: params.offset ?? 0,
+          total: 0
         };
 
         const { data: poolsData } = await store.dispatchRequest(
@@ -78,7 +79,7 @@ export const updateNFTItems = createAction<
           return queryResponse;
         }
 
-        const tradePools = poolsData
+        const tradePools = poolsData.data
           .filter(item => item.state !== 1)
           .map(mapNFTItem);
 
@@ -101,9 +102,10 @@ export const updateNFTItems = createAction<
 
         queryResponse.items = tradePoolsWithOwnerImg;
         queryResponse.status =
-          poolsData.length < params.limit
+          poolsData.data.length < params.limit
             ? FetchNFTItemsStatus.done
             : FetchNFTItemsStatus.inProgress;
+        queryResponse.total = poolsData.total;
 
         return queryResponse;
       })(),

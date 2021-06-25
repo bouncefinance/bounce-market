@@ -336,6 +336,12 @@
       "Comicbooks": "Comic"
     }
   },
+  "market": {
+    "pagination": {
+      "first-title": "First",
+      "last-title": "Last"
+    }
+  },
   "buy-dialog": {
     "title": "Buy now",
     "submit": "Buy"
