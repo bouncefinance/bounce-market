@@ -39,4 +39,6 @@ export const useStoriesOwnerStyles = makeStyles<Theme>(theme => ({
       fontSize: 18,
     },
   },
+
+  titleThumb: {},
 }));
