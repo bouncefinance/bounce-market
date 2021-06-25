@@ -1,7 +1,6 @@
 import { useQuery } from '@redux-requests/react';
 import classNames from 'classnames';
-import { fetchItem } from 'modules/buyNFT/actions/fetchItem';
-import { INFTDetails } from 'modules/buyNFT/api/NFTDetails';
+import { fetchItem, IFetchItem } from 'modules/buyNFT/actions/fetchItem';
 import { poolTypeMap } from 'modules/common/api/poolType';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { featuresConfig } from 'modules/common/conts';
@@ -23,13 +22,13 @@ export const LikeBtn = ({ className, count = 0 }: ILikeBtnProps) => {
     auctionType: AuctionType;
   }>();
   const classes = useLikeBtnStyles();
-  const { data } = useQuery<INFTDetails | null>({
+  const { data } = useQuery<IFetchItem | null>({
     type: fetchItem.toString(),
   });
   const id = data ? data.id : -1;
   const { isLiked, isLikeDisabled, onLikeClick, likeCount } = useLike({
     id,
-    count,
+    count: data?.likeCount,
     poolType: +poolTypeMap[auctionType],
     poolId: +poolId,
     category: data?.category || 'image',
