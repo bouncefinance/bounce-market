@@ -19,6 +19,7 @@ import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import React from 'react';
 import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 import { BrandRoutesConfig } from '../../../brand/BrandRoutes';
+import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 
 const SearchItems = ({
   data,
@@ -131,15 +132,26 @@ const SearchAccount = ({ data }: { data: ISearchAccount[] }) => {
     <div className={classes.group}>
       <div className={classes.title}>{t('header.search.users')}</div>
       {data.map((item: ISearchAccount) => (
-        <div className={classes.content} key={item.id}>
+        <RouterLink
+          to={ProfileRoutesConfig.OtherProfile.generatePath(
+            item.accountAddress,
+          )}
+          className={classes.content}
+          key={item.id}
+        >
           <DefaultRandomAvatar
             className={classes.avatar}
             src={item.previewUrl}
           />
-          <div className={classes.item}>
+          <div
+            className={classes.item}
+            title={ProfileRoutesConfig.OtherProfile.generatePath(
+              item.accountAddress,
+            )}
+          >
             <div className={classes.name}>{item.name}</div>
           </div>
-        </div>
+        </RouterLink>
       ))}
     </div>
   );
