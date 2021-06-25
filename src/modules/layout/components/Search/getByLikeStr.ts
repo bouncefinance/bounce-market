@@ -1,6 +1,5 @@
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { featuresConfig } from '../../../common/conts';
 
 interface IApiSearchResult {
   code: 1;
