@@ -153,7 +153,7 @@ export const MyBrand = () => {
                     />
                   }
                   toSale={RoutesConfiguration.PublishNft.generatePath(
-                    item.contractaddress,
+                    item.contractAddress,
                     item.id,
                   )}
                 />
