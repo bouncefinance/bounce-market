@@ -143,12 +143,7 @@ const SearchAccount = ({ data }: { data: ISearchAccount[] }) => {
             className={classes.avatar}
             src={item.previewUrl}
           />
-          <div
-            className={classes.item}
-            title={ProfileRoutesConfig.OtherProfile.generatePath(
-              item.accountAddress,
-            )}
-          >
+          <div className={classes.item}>
             <div className={classes.name}>{item.name}</div>
           </div>
         </RouterLink>
