@@ -10,7 +10,10 @@ import {
   INFTItem,
   mapNFTItem,
 } from 'modules/overview/actions/fetchNFTItems';
-import { fetchPools } from 'modules/overview/actions/fetchPools';
+import {
+  fetchPools,
+  FetchStateType,
+} from 'modules/overview/actions/fetchPools';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
@@ -67,6 +70,7 @@ export const updateNFTItems = createAction<
               category: '',
               currency: ZERO_ADDRESS,
               orderfield: 1,
+              state: FetchStateType.Live,
             },
             {
               silent: true,
