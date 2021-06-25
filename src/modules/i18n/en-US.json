@@ -166,6 +166,7 @@
   },
   "validation": {
     "required": "This field is required",
+    "require-integer": "This value should be integer number",
     "min": "Smallest value is {value}",
     "max": "Highest value is {value}",
     "invalid-email": "Enter a valid Email",
