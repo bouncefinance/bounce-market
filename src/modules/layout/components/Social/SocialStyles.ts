@@ -17,6 +17,7 @@ export const useSocialStyles = makeStyles<Theme>(theme => ({
   },
 
   link: {
+    '--medium-icon-color': theme.palette.background.default,
     color: theme.palette.text.primary,
     transition: 'color 0.2s',
     padding: theme.spacing(1),

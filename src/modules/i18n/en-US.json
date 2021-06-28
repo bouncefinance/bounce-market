@@ -12,7 +12,8 @@
     "reset": "Reset",
     "restore": "Restore",
     "unknown": "Unknown",
-    "coming-soon": "Coming soon..."
+    "coming-soon": "Coming soon...",
+    "quantity": "Quantity"
   },
   "time": {
     "time-over": "Time is over",
@@ -27,9 +28,13 @@
     "create": "Create",
     "connect": "Connect Wallet",
     "inventory": "My Inventory",
-    "brands": "My Brands",
+    "my-brands": "My Brands",
     "profile-settings": "Profile settings",
     "disconnect": "Disconnect",
+    "stories": "St\uD83D\uDD25ries",
+    "market": "Market",
+    "brands": "Brands",
+    "how-it-works": "How it works",
     "search": {
       "placeholder": "Search by name, creator, brand...",
       "empty": "No results found",
@@ -123,6 +128,8 @@
     "buy-now": "Buy now",
     "sold-out": "Sold out",
     "place-a-bid": "Place a bid",
+    "your-bid": "Your bid",
+    "enter-a-bid": "Enter a Bid",
     "tabs": {
       "history": "History",
       "bids": "Bids",
@@ -163,6 +170,7 @@
   },
   "validation": {
     "required": "This field is required",
+    "require-integer": "This value should be integer number",
     "min": "Smallest value is {value}",
     "max": "Highest value is {value}",
     "invalid-email": "Enter a valid Email",
@@ -318,7 +326,7 @@
       "event": "Event",
       "item": "Item",
       "price": "Price",
-      "quantity": "Quantity",
+
       "from": "From",
       "to": "To",
       "date": "Date",

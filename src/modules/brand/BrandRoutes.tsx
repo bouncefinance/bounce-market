@@ -73,7 +73,7 @@ const LoadableBrandContainer: LoadableComponent<any> = loadable(
 export function BrandRoutes() {
   return (
     <>
-      <PrivateRoute
+      <Route
         path={BrandRoutesConfig.ListBrand.path}
         exact={true}
         component={LoadableListBrandContainer}

@@ -14,6 +14,9 @@ export const useWalletCardStyles = makeStyles<Theme>(theme => ({
   },
   name: {
     fontSize: 22,
+    wordBreak: 'break-word',
+    overflowWrap: 'break-word',
+    whiteSpace: 'normal',
   },
   walletBalance: {
     display: 'flex',

@@ -1,22 +1,33 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
-import { IApiNFTDetails, INFTDetails, mapNFTDetails } from '../api/NFTDetails';
+import {
+  getOneItemByIdUrl,
+  IApiGetOneItemById,
+  IApiGetOneItemByIdData,
+  IGetOneItemById,
+  mapGetOneItemById,
+} from 'modules/api/getOneItemById';
+import { TokenSymbol } from 'modules/common/types/TokenSymbol';
 import { Store } from 'redux';
+import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { addTokenSymbolByDriver } from '../../common/utils/addTokenSymbolByDriver';
 
+export interface IFetchItem extends IGetOneItemById {
+  tokenSymbol: TokenSymbol;
+}
+
 export const fetchItem = createSmartAction<
-  RequestAction<IApiNFTDetails, INFTDetails>
+  RequestAction<IApiGetOneItemById, IFetchItem>
 >('fetchItem', (params: { contract: string; id: number }, meta) => ({
   request: {
-    url: '/api/v2/main/auth/getoneitembyid',
+    url: getOneItemByIdUrl,
     method: 'post',
     data: { ct: params.contract, id: params.id },
   },
   meta: {
-    getData(data) {
-      return mapNFTDetails(data);
+    getData({ data }) {
+      return mapGetOneItemById(data as IApiGetOneItemByIdData);
     },
     onRequest: (
       request: any,

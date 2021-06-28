@@ -313,10 +313,14 @@ export const PublishNFTComponent = ({
                   component={InputField}
                   name="price"
                   type="number"
-                  min={0}
                   label={t('publish-nft.label.price')}
                   color="primary"
                   fullWidth
+                  inputProps={{
+                    step: 'any',
+                    min: '0',
+                    inputMode: 'decimal',
+                  }}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -378,6 +382,11 @@ export const PublishNFTComponent = ({
                   parse={formatAmount}
                   format={formatAmount}
                   disabled={nftType === NftType.ERC721}
+                  inputProps={{
+                    step: 1,
+                    min: '0',
+                    inputMode: 'decimal',
+                  }}
                 />
               </Box>
             </>
@@ -391,6 +400,11 @@ export const PublishNFTComponent = ({
                   label={t('publish-nft.label.minBid')}
                   color="primary"
                   fullWidth={true}
+                  inputProps={{
+                    step: 'any',
+                    min: '0',
+                    inputMode: 'decimal',
+                  }}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -417,6 +431,11 @@ export const PublishNFTComponent = ({
                   color="primary"
                   fullWidth={true}
                   disabled={nftType === NftType.ERC721}
+                  inputProps={{
+                    step: 1,
+                    min: '0',
+                    inputMode: 'decimal',
+                  }}
                 />
                 <div className={classes.fieldText}>
                   {t('publish-nft.auction-amount')}
@@ -472,13 +491,17 @@ export const PublishNFTComponent = ({
                     </Grid>
                   </Grid>
                 </Box>
-
                 <Field
                   component={InputField}
                   name="purchasePrice"
                   type="number"
                   color="primary"
                   fullWidth={true}
+                  inputProps={{
+                    step: 'any',
+                    min: '0',
+                    inputMode: 'decimal',
+                  }}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -516,13 +539,17 @@ export const PublishNFTComponent = ({
                     </Grid>
                   </Grid>
                 </Box>
-
                 <Field
                   component={InputField}
                   name="reservePrice"
                   type="number"
                   color="primary"
                   fullWidth={true}
+                  inputProps={{
+                    step: 'any',
+                    min: '0',
+                    inputMode: 'decimal',
+                  }}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -620,11 +647,11 @@ export const PublishNFT = () => {
 
         return (
           <PublishNFTComponent
-            name={data.itemname}
-            tokenContract={data.contractaddress}
+            name={data.itemName}
+            tokenContract={data.contractAddress}
             nftType={data.standard}
             tokenId={data.id}
-            file={data.fileurl}
+            file={data.fileUrl}
             category={data.category}
             maxQuantity={maxQuantity}
             onPublish={handlePublish}

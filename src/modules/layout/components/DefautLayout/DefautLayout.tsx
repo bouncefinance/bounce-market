@@ -9,11 +9,13 @@ import { useDefaultLayoutStyles } from './DefaultLayoutStyles';
 export interface ILayoutProps {
   children?: React.ReactNode;
   headerTheme?: Themes;
+  footerTheme?: Themes;
 }
 
 export const DefaultLayout = ({
   children,
   headerTheme = Themes.light,
+  footerTheme = Themes.light,
 }: ILayoutProps) => {
   const classes = useDefaultLayoutStyles();
 
@@ -23,7 +25,9 @@ export const DefaultLayout = ({
         <Header />
       </ThemeProvider>
       <main className={classes.main}>{children}</main>
-      <Footer />
+      <ThemeProvider theme={getTheme(footerTheme)}>
+        <Footer />
+      </ThemeProvider>
     </div>
   );
 };

@@ -9,7 +9,7 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
     padding: theme.spacing(2, 0),
     background: theme.palette.background.default,
     color: theme.palette.text.primary,
-    borderTop: `1px solid ${fade(theme.palette.common.black, 0.1)}`,
+    borderTop: `1px solid ${fade(theme.palette.text.primary, 0.1)}`,
 
     [theme.breakpoints.up('md')]: {
       minHeight: FOOTER_MIN_HEIGHT,

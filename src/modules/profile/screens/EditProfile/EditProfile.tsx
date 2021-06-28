@@ -47,6 +47,7 @@ const validateEditProfile = (payload: IEditProfileValues) => {
   return errors;
 };
 
+const USERNAME_MAX_LENGTH = 100;
 const BIO_CHARACTER_LIMIT = 200;
 
 export const EditProfile = () => {
@@ -84,6 +85,9 @@ export const EditProfile = () => {
             label={`${t('profile.edit.label.username')}*`}
             color="primary"
             fullWidth
+            inputProps={{
+              maxLength: USERNAME_MAX_LENGTH,
+            }}
           />
         </Box>
 
