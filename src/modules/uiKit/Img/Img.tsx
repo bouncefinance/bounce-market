@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { useImgStyles } from './ImgStyles';
 import { ObjectFitType } from '../../common/types/ObjectFit';
+import { useState } from 'react';
+import { ImgErrorIcon, useImgErrorStyles } from 'modules/common/components/Icons/ImgError';
 
 export interface IImgProps {
   src?: string;
@@ -63,9 +65,13 @@ export const Img = ({
 
   const Component = isPicture ? 'picture' : 'div';
 
+  const [loadError, setLoadError] = useState(false);
+  const onError = () => setLoadError(true);
+  const imgErrorClasses = useImgErrorStyles({ error: loadError });
+
   const render = (
     <Component
-      className={classNames(classes.root, className)}
+      className={classNames(classes.root, className, imgErrorClasses.root)}
       style={style}
       onClick={onClick}
     >
@@ -89,14 +95,17 @@ export const Img = ({
           data-srcset={isNativeLazyLoading ? undefined : mobileSrcSet}
         />
       )}
-      <img
-        src={isNativeLazyLoading ? imgSrc : undefined}
-        data-src={isNativeLazyLoading ? undefined : imgSrc}
-        alt={alt}
-        title={title}
-        loading={isNativeLazyLoading ? loading : undefined}
-        className={classNames(classes.img, imgClassName)}
-      />
+      {loadError ?
+        <ImgErrorIcon className={classNames(imgErrorClasses.img)} />
+        : <img
+          src={isNativeLazyLoading ? imgSrc : undefined}
+          data-src={isNativeLazyLoading ? undefined : imgSrc}
+          alt={alt}
+          title={title}
+          loading={isNativeLazyLoading ? loading : undefined}
+          className={classNames(classes.img, imgClassName)}
+          onError={onError}
+        />}
     </Component>
   );
 
