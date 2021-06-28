@@ -76,7 +76,7 @@ export const WalletCard = ({
           className={classes.menuItem}
           onClick={handleClose}
         >
-          {t('header.brands')}
+          {t('header.my-brands')}
         </MenuItem>
         <MenuItem
           component={RouterLink}
