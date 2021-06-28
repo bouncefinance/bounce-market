@@ -57,7 +57,7 @@ export const fetchItemsByFilter = createAction<
   ]
 >('NFTMarket/fetchItemsByFilter', (params, meta) => ({
   request: {
-    url: '/api/v2/main/getitemsbyfilter',
+    url: '/getitemsbyfilter',
     method: 'post',
     data: {
       ...params,

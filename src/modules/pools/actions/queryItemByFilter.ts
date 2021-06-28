@@ -33,7 +33,7 @@ export const queryItemByFilter = createSmartAction<
   RequestAction<IApiItem, IItem[]>
 >('queryItemByFilterAction', data => ({
   request: {
-    url: `/api/v2/main/getitemsbyfilter`,
+    url: `/getitemsbyfilter`,
     method: 'post',
     data: data,
   },

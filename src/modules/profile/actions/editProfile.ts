@@ -37,7 +37,7 @@ export const editProfile: (
     imgUrl = '',
   }: IEditProfileArgs) => ({
     request: {
-      url: '/api/v2/main/auth/updateaccount',
+      url: '/auth/updateaccount',
       method: 'post',
       data: {
         bio,

@@ -130,7 +130,7 @@ export const getByLikeStr = createSmartAction<
   RequestAction<IApiSearchResult, ISearchResult>
 >('getByLikeStr', (likestr: string) => ({
   request: {
-    url: '/api/v2/main/getbylikestr',
+    url: '/getbylikestr',
     method: 'post',
     data: {
       accountaddresss: '',

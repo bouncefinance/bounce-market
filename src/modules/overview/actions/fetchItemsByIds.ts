@@ -20,7 +20,7 @@ export const fetchItemsByIds = createSmartAction<
     >,
   ) => ({
     request: {
-      url: '/api/v2/main/getitemsbyids',
+      url: '/getitemsbyids',
       method: 'post',
       data: params,
     },
