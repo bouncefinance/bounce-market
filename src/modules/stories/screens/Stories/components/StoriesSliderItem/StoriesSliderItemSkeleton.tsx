@@ -5,18 +5,16 @@ import React, { ReactNode } from 'react';
 import { useStoriesSliderItemStyles } from './useStoriesSliderItemStyles';
 
 interface IStoriesSliderItemSkeletonProps {
-  className?: string;
   profileInfo: ReactNode;
 }
 
 export const StoriesSliderItemSkeleton = ({
-  className,
   profileInfo,
 }: IStoriesSliderItemSkeletonProps) => {
   const classes = useStoriesSliderItemStyles({});
 
   return (
-    <div className={classNames(classes.root, className)}>
+    <div className={classes.root}>
       <Skeleton
         className={classNames(classes.imgWrap, classes.imgWrapThumb)}
         variant="rect"

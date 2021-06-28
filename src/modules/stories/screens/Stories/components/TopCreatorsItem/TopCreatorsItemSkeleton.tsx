@@ -4,13 +4,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useTopCreatorsItemStyles } from './useTopCreatorsItemStyles';
 
-interface ITopCreatorsItemSkeletonProps {
-  className?: string;
-}
-
-export const TopCreatorsItemSkeleton = ({
-  className,
-}: ITopCreatorsItemSkeletonProps) => {
+export const TopCreatorsItemSkeleton = () => {
   const classes = useTopCreatorsItemStyles();
 
   return (

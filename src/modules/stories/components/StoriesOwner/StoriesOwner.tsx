@@ -1,5 +1,4 @@
 import { Typography } from '@material-ui/core';
-import classNames from 'classnames';
 import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -8,7 +7,6 @@ import { useStoriesOwnerStyles } from './useStoriesOwnerStyles';
 
 interface IStoriesOwnerProps {
   title: string;
-  className?: string;
   isVerified?: boolean;
   avatar?: string;
   href?: string;
@@ -16,7 +14,6 @@ interface IStoriesOwnerProps {
 
 export const StoriesOwner = ({
   href,
-  className,
   isVerified,
   avatar,
   title,
@@ -36,7 +33,7 @@ export const StoriesOwner = ({
   );
 
   const commonProps = {
-    className: classNames(classes.root, className),
+    className: classes.root,
   };
 
   return href ? (

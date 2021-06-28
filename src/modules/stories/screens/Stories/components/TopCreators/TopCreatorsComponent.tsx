@@ -1,5 +1,4 @@
 import { IconButton, Typography, useTheme } from '@material-ui/core';
-import classNames from 'classnames';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
 import { getRandomId } from 'modules/common/utils/getRandomId';
@@ -16,14 +15,12 @@ const prevId = getRandomId('prev');
 const nextId = getRandomId('next');
 
 interface ITopCreatorsProps {
-  className?: string;
   itemsCount: number;
   children: ReactNode;
   loading?: boolean;
 }
 
 export const TopCreatorsComponent = ({
-  className,
   itemsCount,
   children,
   loading,
@@ -60,15 +57,12 @@ export const TopCreatorsComponent = ({
     onSwiper: setSwiper,
   };
 
-  const modifyChildren = (child: any) => (
+  const modifyChildren = (child: ReactNode) => (
     <SwiperSlide className={classes.slide}>{child}</SwiperSlide>
   );
 
   return (
-    <Section
-      pt={{ xs: 2, md: 3 }}
-      className={classNames(classes.root, className)}
-    >
+    <Section pt={{ xs: 2, md: 3 }} className={classes.root}>
       <StoriesContainer>
         <div className={classes.header}>
           <IconButton id={prevId} className={classes.navBtn}>

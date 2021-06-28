@@ -26,7 +26,7 @@ export const TopCreators = ({ className }: ITopCreatorsProps) => {
     .map((_, i) => <TopCreatorsItemSkeleton key={i} />);
 
   const renderedItems = demoItems.map(({ img, title }, i) => (
-    <TopCreatorsItem href="#" key={uid(title, i)} img={img} title={title} />
+    <TopCreatorsItem to="#" key={uid(title, i)} img={img} title={title} />
   ));
 
   return (

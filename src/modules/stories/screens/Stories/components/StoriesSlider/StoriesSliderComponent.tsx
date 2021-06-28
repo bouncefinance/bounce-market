@@ -1,5 +1,4 @@
 import { useTheme } from '@material-ui/core';
-import classNames from 'classnames';
 import { StoriesContainer } from 'modules/stories/components/StoriesContainer';
 import { Section } from 'modules/uiKit/Section';
 import React, { ReactNode } from 'react';
@@ -7,13 +6,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useStoriesSliderStyles } from './useStoriesSliderStyles';
 
 interface IStoriesSliderProps {
-  className?: string;
   children: ReactNode;
   itemCount: number;
 }
 
 export const StoriesSliderComponent = ({
-  className,
   children,
   itemCount,
 }: IStoriesSliderProps) => {
@@ -36,15 +33,12 @@ export const StoriesSliderComponent = ({
     },
   };
 
-  const modifyChildren = (child: any) => (
+  const modifyChildren = (child: ReactNode) => (
     <SwiperSlide className={classes.slide}>{child}</SwiperSlide>
   );
 
   return (
-    <Section
-      pt={{ xs: 7.5, md: 14 }}
-      className={classNames(classes.root, className)}
-    >
+    <Section pt={{ xs: 7.5, md: 14 }} className={classes.root}>
       <StoriesContainer>
         {isFewSlides && (
           <Swiper {...sliderProps} className={classes.slider}>

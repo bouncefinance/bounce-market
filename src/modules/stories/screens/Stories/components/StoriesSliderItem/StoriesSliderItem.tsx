@@ -1,5 +1,4 @@
 import { Typography } from '@material-ui/core';
-import classNames from 'classnames';
 import { Img } from 'modules/uiKit/Img';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,7 +6,6 @@ import Truncate from 'react-truncate';
 import { useStoriesSliderItemStyles } from './useStoriesSliderItemStyles';
 
 interface IStoriesSliderItemProps {
-  className?: string;
   title: string;
   text: string;
   profileInfo: ReactNode;
@@ -18,7 +16,6 @@ interface IStoriesSliderItemProps {
 }
 
 export const StoriesSliderItem = ({
-  className,
   title,
   text,
   profileInfo,
@@ -30,7 +27,7 @@ export const StoriesSliderItem = ({
   const classes = useStoriesSliderItemStyles({ gradientColor });
 
   return (
-    <div className={classNames(classes.root, className)}>
+    <div className={classes.root}>
       <Link className={classes.imgLink} to={href}>
         <Img className={classes.imgWrap} src={img} loading="lazy" />
       </Link>
