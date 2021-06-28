@@ -24,7 +24,7 @@ import { uid } from 'react-uid';
 import { Pagination } from "@material-ui/lab";
 import { useProductsStyles } from "./useProductsStyles";
 
-const ITEMS_PORTION_COUNT = 20;
+const ITEMS_PORTION_COUNT = 15;
 
 export const Products = ({ ...sectionProps }: ISectionProps) => {
   const styleProps = {

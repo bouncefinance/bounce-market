@@ -163,6 +163,7 @@
   },
   "validation": {
     "required": "此为必填项",
+    "require-integer": "请输入整数",
     "min": "最小值为Smallest value is {value}",
     "max": "最大值为Highest value is {value}",
     "invalid-email": "请输入有效的邮箱地址",

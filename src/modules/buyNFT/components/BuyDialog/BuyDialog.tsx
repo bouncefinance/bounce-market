@@ -82,10 +82,15 @@ export const BuyDialog = ({
                   component={InputField}
                   name="quantity"
                   type="number"
-                  label="Quantity"
+                  label={t('common.quantity')}
                   parse={value => (value ? Math.round(+value) : 1)}
                   format={value => (value ? Math.round(+value) : 1)}
                   disabled={readonly}
+                  inputProps={{
+                    step: 1,
+                    min: '0',
+                    inputMode: 'decimal',
+                  }}
                   InputProps={{
                     classes: { adornedEnd: classes.adornedEnd },
                     endAdornment: (

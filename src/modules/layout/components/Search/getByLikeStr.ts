@@ -1,6 +1,5 @@
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { featuresConfig } from '../../../common/conts';
 
 interface IApiSearchResult {
   code: 1;
@@ -85,6 +84,7 @@ export interface ISearchAccount {
   id: number;
   name: string;
   previewUrl: string;
+  accountAddress: string;
 }
 
 export interface ISearchResult {
@@ -107,25 +107,22 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
         previewUrl: item.fileurl,
         price: item.price,
         priceType: 'BNB',
-      }))
-      .slice(0, 3),
+      })),
+
     brands: brands
       .sort((a, b) => b.popularweight - a.popularweight)
       .map(item => ({
         id: item.id,
         name: item.brandname,
         previewUrl: item.imgurl,
-      }))
-      .slice(0, 3),
-    accounts: featuresConfig.usersInSearch
-      ? accounts
-          .map(item => ({
-            id: item.id,
-            name: item.fullnam,
-            previewUrl: item.imgurl,
-          }))
-          .slice(0, 3)
-      : [],
+      })),
+
+    accounts: accounts.map(item => ({
+      id: item.id,
+      name: item.fullnam,
+      previewUrl: item.imgurl,
+      accountAddress: item.accountaddress,
+    })),
   };
 };
 

@@ -107,5 +107,25 @@ export const darkTheme = createMuiTheme({
         color: defaultTheme.palette.text.primary,
       },
     },
+
+    MuiInputBase: {
+      ...mainTheme.overrides?.MuiInputBase,
+      root: {
+        ...mainTheme.overrides?.MuiInputBase?.root,
+        border: `1px solid ${fade(PALETTE.text.primary, 0.1)}`,
+
+        '&:hover, &.Mui-focused': {
+          borderColor: fade(PALETTE.text.primary, 0.3),
+        },
+      },
+    },
+
+    MuiSelect: {
+      ...mainTheme.overrides?.MuiSelect,
+      iconOutlined: {
+        ...mainTheme.overrides?.MuiSelect?.iconOutlined,
+        color: PALETTE.text.primary,
+      },
+    },
   },
 } as ThemeOptions);

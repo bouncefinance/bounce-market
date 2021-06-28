@@ -3,6 +3,7 @@ import {
   ProfileRoutes,
   ProfileRoutesConfig,
 } from 'modules/profile/ProfileRoutes';
+import { StoriesRoutes, StoriesRoutesConfig } from 'modules/stories/Routes';
 import { Route, Switch } from 'react-router-dom';
 import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 import {
@@ -93,6 +94,16 @@ export function Routes() {
         render={() => (
           <DefaultLayout>
             <BrandRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={[StoriesRoutesConfig.Stories.path]}
+        render={() => (
+          <DefaultLayout headerTheme={Themes.dark} footerTheme={Themes.dark}>
+            <StoriesRoutes />
           </DefaultLayout>
         )}
       />

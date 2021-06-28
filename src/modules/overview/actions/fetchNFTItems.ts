@@ -12,7 +12,7 @@ import { RootState } from 'store/store';
 import { TokenSymbol } from '../../common/types/TokenSymbol';
 import { AuctionType } from '../api/auctionType';
 import { ItemsChannel } from './fetchItemsByFilter';
-import { fetchPools } from './fetchPools';
+import { fetchPools, FetchStateType } from './fetchPools';
 
 export interface INFTItem {
   category?: PoolCategoryType;
@@ -122,6 +122,7 @@ export const fetchNFTItems = createSmartAction<
                 limit: params.limit,
                 offset: params.offset,
                 orderfield: 1,
+                state: FetchStateType.Live,
               },
               {
                 silent: true,

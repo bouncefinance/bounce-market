@@ -26,7 +26,7 @@ export const ActivitiesTable = ({ data, classes }: IActivitiesTableProps) => {
             <TableCell>{t('profile.activity.event')}</TableCell>
             <TableCell>{t('profile.activity.item')}</TableCell>
             <TableCell>{t('profile.activity.price')}</TableCell>
-            <TableCell>{t('profile.activity.quantity')}</TableCell>
+            <TableCell>{t('common.quantity')}</TableCell>
             <TableCell>{t('profile.activity.from')}</TableCell>
             <TableCell>{t('profile.activity.to')}</TableCell>
             <TableCell>{t('profile.activity.date')}</TableCell>
