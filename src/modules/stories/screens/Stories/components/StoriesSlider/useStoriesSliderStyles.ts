@@ -16,7 +16,7 @@ export const useStoriesSliderStyles = makeStyles<Theme>(theme => ({
 
   slide: {
     opacity: 0.2,
-    transition: '0.2s',
+    transition: 'opacity 0.2s',
 
     '&.swiper-slide-active': {
       opacity: 1,

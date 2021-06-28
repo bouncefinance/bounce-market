@@ -22,7 +22,7 @@ export const useStoriesSliderItemStyles = makeStyles<
       height: '100%',
       background: fade('#000', 0.2),
       opacity: 0,
-      transition: '0.2s',
+      transition: 'opacity 0.2s',
     },
 
     '&:hover:after': {
@@ -65,6 +65,16 @@ export const useStoriesSliderItemStyles = makeStyles<
     },
   },
 
+  imgWrapThumb: {
+    display: 'block',
+    height: 'auto',
+
+    '&:before': {
+      content: `''`,
+      display: 'block',
+    },
+  },
+
   content: {
     [theme.breakpoints.up('md')]: {
       position: 'absolute',
@@ -92,6 +102,11 @@ export const useStoriesSliderItemStyles = makeStyles<
     },
   },
 
+  titleThumb: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+
   text: {
     marginBottom: theme.spacing(2.5),
     opacity: 0.7,
@@ -103,6 +118,11 @@ export const useStoriesSliderItemStyles = makeStyles<
       marginBottom: theme.spacing(3),
       height: `${2 * 1.5}em`,
     },
+  },
+
+  textThumb: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
 
   profileInfo: {
