@@ -90,10 +90,10 @@ export const getPoolsByFilter = createAction<
     },
   },
   meta: {
-    driver: 'nftview',
+    driver: 'axios',
     getData: response => {
       // TODO: parse the response
-      if (response.code !== 200) {
+      if (response.code !== 1) {
         throw new Error(response.msg);
       }
 

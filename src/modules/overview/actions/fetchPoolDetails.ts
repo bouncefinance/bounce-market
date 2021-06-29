@@ -77,7 +77,7 @@ export interface IApiEnglishAuctionDetails {
 }
 
 export interface IApiFetchPoolDetails {
-  code: 200;
+  code: 1;
   data: {
     poolinfo: IApiPoolDetails;
   };

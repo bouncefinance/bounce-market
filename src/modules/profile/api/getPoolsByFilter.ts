@@ -13,7 +13,7 @@ import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 interface IApiPoolsData {
-  code: 200;
+  code: 1;
   data: {
     englishTotal: 0;
     fixedSwapTotal: 0;
@@ -94,10 +94,10 @@ export const getPoolsByFilter = createAction<
     },
   },
   meta: {
-    driver: 'nftview',
+    driver: 'axios',
     getData: response => {
       // TODO parse the response
-      if (response.code !== 200) {
+      if (response.code !== 1) {
         throw new Error(response.msg);
       }
 
