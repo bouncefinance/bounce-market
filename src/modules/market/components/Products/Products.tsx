@@ -9,7 +9,6 @@ import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
-import { updateNFTItems } from 'modules/market/actions/updateNFTItems';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
   fetchNFTItems,
@@ -19,23 +18,24 @@ import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, ChangeEvent } from 'react';
 import { uid } from 'react-uid';
-import { Pagination } from "@material-ui/lab";
-import { useProductsStyles } from "./useProductsStyles";
+import {Pagination} from "../../../uiKit/Pagination";
+import {useQueryParams} from "../../../common/hooks/useQueryParams";
+import {useHistory} from "react-router";
 
-const ITEMS_PORTION_COUNT = 15;
+const ITEMS_PORTION_COUNT = 20;
+const DEFAULT_PAGE = 1;
 
 export const Products = ({ ...sectionProps }: ISectionProps) => {
-  const styleProps = {
-    firstTitle: t('market.pagination.first-title'),
-    lastTitle: t('market.pagination.last-title')
-  };
-  const classes = useProductsStyles(styleProps);
   const dispatch = useDispatchRequest();
 
+  const pageParam = useQueryParams().get("page");
+  const page = pageParam ? parseInt(pageParam) : DEFAULT_PAGE;
+  const category = useQueryParams().get("category") || ItemsChannel.fineArts;
+  const history = useHistory();
+
   const [sortBy, setSortBy] = useState<string>('1');
-  const [category, setCategory] = useState<ItemsChannel>(ItemsChannel.fineArts);
 
   const {
     data: nftItemsData,
@@ -44,45 +44,35 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     type: fetchNFTItems.toString(),
   });
 
+  const createURL = (page: number, category: string): string => {
+    return `/market?page=${page}&category=${category}`;
+  };
+
+  useEffect(() => {
+    history.push(createURL(page, category));
+  },[]);
+
+  const onCategoryChange = (value: string) => {
+    history.push(createURL(DEFAULT_PAGE, value));
+  };
+
+  const onLoadMore = (event: ChangeEvent<unknown>, value: number) => {
+    history.push(createURL(value, category));
+  };
+
   const onSortChange = useCallback((value: string) => {
     setSortBy(value);
   }, []);
 
-  const onCategoryChange = useCallback(
-    (value: string) => {
-      setCategory(value as ItemsChannel);
-      dispatch(
-        fetchNFTItems({
-          limit: ITEMS_PORTION_COUNT,
-          channel: value as ItemsChannel,
-        }),
-      );
-    },
-    [dispatch],
-  );
-
-  const onLoadMore = useCallback((event, value) => {
-    if (!nftItemsData) {
-      return;
-    }
-
-    dispatch(
-      updateNFTItems({
-        offset: (value - 1) * ITEMS_PORTION_COUNT,
-        limit: ITEMS_PORTION_COUNT,
-        channel: category,
-      }),
-    );
-  }, [category, dispatch, nftItemsData]);
-
   useEffect(() => {
     dispatch(
       fetchNFTItems({
+        offset: (page - 1) * ITEMS_PORTION_COUNT,
         limit: ITEMS_PORTION_COUNT,
-        channel: ItemsChannel.fineArts,
-      }),
+        channel: category as ItemsChannel,
+      })
     );
-  }, [dispatch]);
+  }, [category, page, dispatch]);
 
   const nftItems = useMemo(
     () => (nftItemsData ? nftItemsData.items.map(mapProductCardData) : []),
@@ -164,15 +154,11 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
               {rendrerdCards}
             </ProductCards>
 
-              <Pagination
-                className={classes.root}
-                count={paginationCount}
-                showFirstButton
-                showLastButton
-                onChange={onLoadMore}
-                variant="outlined"
-                shape="rounded"
-              />
+            <Pagination
+              page={page}
+              count={paginationCount}
+              onChange={onLoadMore}
+            />
           </>
         ) : (
           <NoItems />
