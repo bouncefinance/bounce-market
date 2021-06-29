@@ -7,6 +7,7 @@ import React, { useCallback, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { useHeaderLinksStyles } from './HeaderLinksStyles';
+import { t } from '../../../i18n/utils/intl';
 
 const useHeaderLinks = () => {
   const { toggleNav, mobileNavShowed } = useLayout();
@@ -60,15 +61,15 @@ export const HeaderLinks = () => {
   const items = useMemo(
     () => [
       {
-        label: 'St🔥ries',
+        label: t('header.stories'),
         href: StoriesRoutesConfig.Stories.generatePath(),
       },
       {
-        label: 'Market',
+        label: t('header.market'),
         href: MarketRoutesConfig.Market.generatePath(),
       },
       {
-        label: 'Brands',
+        label: t('header.brands'),
         href: BrandRoutesConfig.ListBrand.generatePath(),
       },
     ],
@@ -83,7 +84,7 @@ export const HeaderLinksSecondary = () => {
   const items = useMemo(
     () => [
       {
-        label: 'How it works',
+        label: t('header.how-it-works'),
         href: '/',
       },
     ],
