@@ -10,6 +10,10 @@ export interface IApiProfileInfo {
     fullname: string;
     imgurl: string;
     username: string;
+    website: string;
+    instagram: string;
+    twitter: string;
+    facebook: string;
   };
 }
 
@@ -22,6 +26,10 @@ export interface IProfileInfo {
   fullName: string;
   imgUrl: string;
   username: string;
+  website?: string;
+  instagram?: string;
+  twitter?: string;
+  facebook?: string;
 }
 
 export function mapProfileInfo({
@@ -40,5 +48,9 @@ export function mapProfileInfo({
     fullName: data.fullname,
     imgUrl: data.imgurl,
     username: data.username,
+    website: data.website,
+    instagram: data.instagram,
+    twitter: data.twitter,
+    facebook: data.facebook,
   };
 }

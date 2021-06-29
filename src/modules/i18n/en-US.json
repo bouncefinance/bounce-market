@@ -300,9 +300,13 @@
         "email": "Email",
         "custom-url": "Custom URL",
         "bio": "Bio",
-        "website": "Website"
+        "website": "Website",
+        "instagram": "Instagram",
+        "twitter": "twitter",
+        "facebook": "Facebook"
       },
       "placeholder": {
+        "website": "Website URL",
         "instagram": "Instagram Username",
         "twitter": "Twitter Username",
         "facebook": "Facebook Username"
@@ -326,7 +330,6 @@
       "event": "Event",
       "item": "Item",
       "price": "Price",
-
       "from": "From",
       "to": "To",
       "date": "Date",
