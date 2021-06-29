@@ -4,12 +4,12 @@ import { RouteConfiguration } from 'modules/common/types/RouteConfiguration';
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-const PATH_STORIES = '/stories';
+const PATH_DROPS = '/drops';
 
 export const StoriesRoutesConfig: { [key: string]: RouteConfiguration } = {
   Stories: {
-    path: PATH_STORIES,
-    generatePath: () => PATH_STORIES,
+    path: PATH_DROPS,
+    generatePath: () => PATH_DROPS,
   },
 };
 

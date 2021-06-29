@@ -7,6 +7,8 @@ import { useDropTimerStyles } from './useDropTimerStyles';
 const ONE_SECOND = 1000;
 
 export const convertToDuration = (start: Date, finish: Date) => {
+  // todo: make the relevant drop timer calculation
+  // https://fangible.atlassian.net/browse/FAN-347
   return new Date(differenceInMilliseconds(finish, start))
     .toISOString()
     .substr(11, 8);

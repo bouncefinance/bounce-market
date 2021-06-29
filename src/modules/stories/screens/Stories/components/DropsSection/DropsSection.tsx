@@ -132,7 +132,7 @@ export const DropsSection = () => {
             {loading ? (
               <DropList>{renderedSkeletons}</DropList>
             ) : (
-              <Typography variant="h1" align="center" color="textSecondary">
+              <Typography variant="h3" align="center" color="textSecondary">
                 Nothing found
               </Typography>
             )}
