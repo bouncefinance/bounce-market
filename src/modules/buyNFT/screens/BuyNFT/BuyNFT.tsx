@@ -52,6 +52,7 @@ import { BuyDialog } from '../../components/BuyDialog';
 import { TokenInfo } from '../../components/TokenInfo';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
+import {BuyNFTSkeleton} from "./BuyNFTSkeleton";
 
 export const BuyNFT = () => {
   const [isEmptyData, setIsEmptyData] = useState(false);
@@ -260,6 +261,7 @@ export const BuyNFT = () => {
       ResponseData<typeof fetchRoleInfo>
     >
       requestActions={[fetchItem, fetchWeb3PoolDetails, fetchRoleInfo]}
+      noDataMessage={<BuyNFTSkeleton/>}
     >
       {({ data: item }, { data: poolDetails }, { data: roleInfos }) => (
         <Queries<
@@ -275,6 +277,7 @@ export const BuyNFT = () => {
             fetchPoolNftOwner,
           ]}
           requestKeys={[poolDetails.unitContract]}
+          noDataMessage={<BuyNFTSkeleton/>}
         >
           {(
             { data: currency },
