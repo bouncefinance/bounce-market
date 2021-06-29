@@ -8,7 +8,40 @@ import { AuctionType } from '../api/auctionType';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 
-interface IApiFixedAuctionDetails {
+export interface IApiPoolDetails {
+  Standard: number;
+  Supply: number;
+  amount_max1: string;
+  amount_min1: string;
+  amount_min_incr1: string;
+  amount_total1: string;
+  bidder_claimed: number;
+  category: string;
+  channel: string;
+  close_at: number;
+  created_at: string;
+  creator: Address;
+  creator_claimed: number;
+  creatorurl: string;
+  duration: number;
+  fileurl: string;
+  itemname: string;
+  last_bidder: string;
+  likecount: number;
+  owner: string;
+  poolid: number;
+  pooltype: number;
+  poolweight: number;
+  price: string;
+  state: 0 | 1;
+  swapped_amount0: number;
+  token0: string;
+  token1: string;
+  token_amount0: number;
+  tokenid: number;
+  username: string;
+}
+export interface IApiFixedAuctionDetails {
   amount_total0: number;
   amount_total1: string;
   createTime: number;
@@ -22,8 +55,7 @@ interface IApiFixedAuctionDetails {
   token1: string;
   tokenId: number;
 }
-
-interface IApiEnglishAuctionDetails {
+export interface IApiEnglishAuctionDetails {
   amountMax1: string;
   amountMin1: string;
   amountMinIncr1: string;
@@ -46,7 +78,9 @@ interface IApiEnglishAuctionDetails {
 
 export interface IApiFetchPoolDetails {
   code: 200;
-  data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails;
+  data: {
+    poolinfo: IApiPoolDetails;
+  };
   msg: 'ok';
 }
 
@@ -97,6 +131,12 @@ export function isApiEnglishAuction(
   return !!(data as IApiEnglishAuctionDetails)?.amountMax1;
 }
 
+export function isApiEnglishAuctionPool(
+  data: IApiPoolDetails,
+): data is IApiPoolDetails {
+  return (data as IApiPoolDetails)?.pooltype === 2;
+}
+
 export function isEnglishAuction(
   data: IFetchPoolDetailsData,
 ): data is IEnglishAuctionDetails {
@@ -119,62 +159,62 @@ export const fetchPoolDetails = createSmartAction<
     meta?: RequestActionMeta<IApiFetchPoolDetails, IFetchPoolDetailsData>,
   ) => ({
     request: {
-      url: '/pool',
-      method: 'get',
-      params: {
-        pool_id: params.poolId,
-        pool_type:
-          params.poolType === AuctionType.FixedSwap ? 'fixedswap' : 'english',
+      url: '/getonepoolinfo',
+      method: 'post',
+      data: {
+        poolId: params.poolId,
+        poolType: params.poolType === AuctionType.FixedSwap ? 1 : 2
       },
     },
     meta: {
       auth: true,
-      driver: 'nftview',
+      driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
-        if (isApiEnglishAuction(data)) {
+        const poolInfo: IApiPoolDetails = data.poolinfo;
+        if (isApiEnglishAuctionPool(data.poolinfo)) {
           return {
-            amountMax1: new BigNumber(Web3.utils.fromWei(data.amountMax1)),
-            amountMin1: new BigNumber(Web3.utils.fromWei(data.amountMin1)),
+            amountMax1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_max1)),
+            amountMin1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_min1)),
             amountMinIncr1: new BigNumber(
-              Web3.utils.fromWei(data.amountMinIncr1),
+              Web3.utils.fromWei(poolInfo.amount_min_incr1),
             ),
-            bidderClaimed: data.bidderClaimed,
-            closeAt: new Date(data.closeAt * 1000),
-            createTime: new Date(data.createTime * 1000),
-            creator: data.creator,
-            creatorClaimed: data.creatorClaimed,
-            duration: data.duration,
+            bidderClaimed: !!poolInfo.bidder_claimed,
+            closeAt: new Date(poolInfo.close_at * 1000),
+            createTime: new Date(poolInfo.created_at),
+            creator: poolInfo.creator,
+            creatorClaimed: !!poolInfo.creator_claimed,
+            duration: poolInfo.duration,
             lastestBidAmount: new BigNumber(
-              Web3.utils.fromWei(data.lastestBidAmount),
+              Web3.utils.fromWei(poolInfo.last_bidder),
             ),
-            name: data.name,
+            name: poolInfo.username,
             /**
              * For fields returned by the https://api1-bsc.fangible.com interface and data read directly from the contract, nftType=0 represents ERC721 and 1 represents ERC1155.
              * If the interface from https://bounce-market.bounce.finance/api/ requested data standard = 1 represents ERC721, 2 representative ERC1155
              */
             nftType: NftType.ERC1155,
-            poolId: data.poolId,
-            state: data.state,
-            tokenContract: data.token0,
-            unitContract: data.token0,
-            tokenAmount0: data.tokenAmount0,
-            tokenId: data.tokenId,
+            poolId: poolInfo.poolid,
+            state: poolInfo.state,
+            tokenContract: poolInfo.token0,
+            unitContract: poolInfo.token0,
+            tokenAmount0: poolInfo.token_amount0,
+            tokenId: poolInfo.tokenid,
           };
         } else {
           return {
-            quantity: data.amount_total0,
-            totalPrice: new BigNumber(Web3.utils.fromWei(data.amount_total1)),
-            createTime: new Date(data.createTime * 1000),
-            creator: data.creator,
-            name: data.name,
+            quantity: poolInfo.token_amount0,
+            totalPrice: new BigNumber(Web3.utils.fromWei(poolInfo.amount_total1)),
+            createTime: new Date(poolInfo.created_at),
+            creator: poolInfo.creator,
+            name: poolInfo.itemname,
             nftType: NftType.ERC721,
-            poolId: data.poolId,
-            price: new BigNumber(Web3.utils.fromWei(data.price)),
-            state: data.state,
-            tokenContract: data.token0,
-            unitContract: data.token1,
-            tokenId: data.tokenId,
+            poolId: poolInfo.poolid,
+            price: new BigNumber(Web3.utils.fromWei(poolInfo.price)),
+            state: poolInfo.state,
+            tokenContract: poolInfo.token0,
+            unitContract: poolInfo.token1,
+            tokenId: poolInfo.tokenid,
           };
         }
       },

@@ -4,9 +4,10 @@ import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { NftType } from '../../createNFT/actions/createNft';
 import {
-  IApiFetchPoolDetails,
   IFetchPoolDetailsData,
   isApiEnglishAuction,
+  IApiFixedAuctionDetails,
+  IApiEnglishAuctionDetails,
 } from '../../overview/actions/fetchPoolDetails';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
@@ -16,13 +17,13 @@ interface IApiPoolsData {
   data: {
     englishTotal: 0;
     fixedSwapTotal: 0;
-    tradeAuctions?: IApiFetchPoolDetails['data'][];
-    tradePools?: IApiFetchPoolDetails['data'][];
+    tradeAuctions?: IApiFixedAuctionDetails[];
+    tradePools?: IApiEnglishAuctionDetails[];
   };
   msg: 'ok';
 }
 
-function mapPool(data: IApiFetchPoolDetails['data']): IFetchPoolDetailsData {
+function mapPool(data: IApiFixedAuctionDetails | IApiEnglishAuctionDetails): IFetchPoolDetailsData {
   if (isApiEnglishAuction(data)) {
     return {
       amountMax1: new BigNumber(Web3.utils.fromWei(data.amountMax1)),

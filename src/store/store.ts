@@ -204,8 +204,7 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
       type: setAccount.toString(),
       action: setAccount,
     });
-console.log(action.meta?.driver)
-console.log(data?.chainId)
+    
     if (action.meta?.driver === 'axios') {
       action.meta = {
         ...action.meta,
