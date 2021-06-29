@@ -18,8 +18,10 @@ const demoItems: {
   img: string;
   chips: string[];
   owner: string;
+  href: string;
 }[] = [
   {
+    href: StoriesRoutesConfig.DropDetails.generatePath('23421'),
     title: 'Masters of relevance',
     text:
       'The Wave 3/20 "SMART" is dedicated to some projects building on blockchain and developed with great smartness.',
@@ -28,6 +30,7 @@ const demoItems: {
     owner: 'grossehalbuer',
   },
   {
+    href: StoriesRoutesConfig.DropDetails.generatePath('23421'),
     title: 'Masters of relevance',
     text: 'The Wave 3/20 "SMART" is dedicated',
     img: 'https://picsum.photos/584/500?image=7',
@@ -35,6 +38,7 @@ const demoItems: {
     owner: 'grossehalbuer',
   },
   {
+    href: StoriesRoutesConfig.DropDetails.generatePath('23421'),
     title: 'There are many variations of passages',
     text:
       'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years',
@@ -43,6 +47,7 @@ const demoItems: {
     owner: 'Lorem Ipsum',
   },
   {
+    href: StoriesRoutesConfig.DropDetails.generatePath('23421'),
     title: 'There are many variations of passages',
     text:
       'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years',
@@ -62,7 +67,7 @@ export const StoriesSlider = () => {
 
     return (
       <StoriesSliderItem
-        href={StoriesRoutesConfig.Stories.generatePath()}
+        href={item.href}
         key={uid(item)}
         title={item.title}
         text={item.text}

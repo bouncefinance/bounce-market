@@ -100,7 +100,10 @@ export function Routes() {
 
       <Route
         exact
-        path={[StoriesRoutesConfig.Stories.path]}
+        path={[
+          StoriesRoutesConfig.Stories.path,
+          StoriesRoutesConfig.DropDetails.path,
+        ]}
         render={() => (
           <DefaultLayout headerTheme={Themes.dark} footerTheme={Themes.dark}>
             <StoriesRoutes />

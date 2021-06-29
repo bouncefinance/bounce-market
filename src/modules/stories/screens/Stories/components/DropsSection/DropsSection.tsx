@@ -1,6 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import { StoriesContainer } from 'modules/stories/components/StoriesContainer';
 import { StoriesOwner } from 'modules/stories/components/StoriesOwner';
+import { StoriesRoutesConfig } from 'modules/stories/Routes';
 import { Section } from 'modules/uiKit/Section';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { uid } from 'react-uid';
@@ -95,7 +96,7 @@ export const DropsSection = () => {
       return (
         <Drop
           key={uid(i)}
-          href="#"
+          href={StoriesRoutesConfig.DropDetails.generatePath('12342')}
           bgImg={bgImg}
           bgColor={bgColor}
           title={title}
