@@ -25,7 +25,7 @@ import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { uid } from 'react-uid';
 
-const ITEMS_PORTION_COUNT = 20;
+const ITEMS_PORTION_COUNT = 15;
 
 export const Products = ({ ...sectionProps }: ISectionProps) => {
   const dispatch = useDispatchRequest();

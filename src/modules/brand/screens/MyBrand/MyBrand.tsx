@@ -143,7 +143,7 @@ export const MyBrand = () => {
                   copies={item.supply}
                   MediaProps={{
                     category: item.category,
-                    src: item.fileurl,
+                    src: item.fileUrl,
                     objectFit: 'scale-down',
                     loading: 'lazy',
                   }}
@@ -160,7 +160,7 @@ export const MyBrand = () => {
                     />
                   }
                   toSale={RoutesConfiguration.PublishNft.generatePath(
-                    item.contractaddress,
+                    item.contractAddress,
                     item.id,
                   )}
                   queryAction={loadData}
