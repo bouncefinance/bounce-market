@@ -6,8 +6,8 @@ import { Button } from 'modules/uiKit/Button';
 import React, { useCallback, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { uid } from 'react-uid';
-import { useHeaderLinksStyles } from './HeaderLinksStyles';
 import { t } from '../../../i18n/utils/intl';
+import { useHeaderLinksStyles } from './HeaderLinksStyles';
 
 const useHeaderLinks = () => {
   const { toggleNav, mobileNavShowed } = useLayout();
@@ -61,7 +61,7 @@ export const HeaderLinks = () => {
   const items = useMemo(
     () => [
       {
-        label: t('header.stories'),
+        label: t('header.drops'),
         href: StoriesRoutesConfig.Stories.generatePath(),
       },
       {
