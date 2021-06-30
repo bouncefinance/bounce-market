@@ -175,6 +175,9 @@
     "max": "Highest value is {value}",
     "invalid-email": "Enter a valid Email",
     "invalid-website": "Enter a valid Website URL",
+    "invalid-instagram": "Enter a valid instagram Website URL",
+    "invalid-twitter": "Enter a valid twitter Website URL",
+    "invalid-facebook": "Enter a valid facebook Website URL",
     "invalid-type": "Invalid file type",
     "max-size": "Max size is {value, number}MB"
   },
@@ -300,12 +303,16 @@
         "email": "Email",
         "custom-url": "Custom URL",
         "bio": "Bio",
-        "website": "Website"
+        "website": "Website",
+        "instagram": "Instagram",
+        "twitter": "twitter",
+        "facebook": "Facebook"
       },
       "placeholder": {
-        "instagram": "Instagram Username",
-        "twitter": "Twitter Username",
-        "facebook": "Facebook Username"
+        "website": "Website Link",
+        "instagram": "Instagram Link",
+        "twitter": "Twitter Link",
+        "facebook": "Facebook Link"
       },
       "save-changes": "Save Changes",
       "success-message": "Changes have been applied successfully."
@@ -326,7 +333,6 @@
       "event": "Event",
       "item": "Item",
       "price": "Price",
-
       "from": "From",
       "to": "To",
       "date": "Date",

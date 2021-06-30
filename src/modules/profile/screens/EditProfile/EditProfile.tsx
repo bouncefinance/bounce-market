@@ -44,6 +44,18 @@ const validateEditProfile = (payload: IEditProfileValues) => {
     errors.website = t('validation.invalid-website');
   }
 
+  if (!!payload.instagram && !isValidWebsiteUrl(payload.instagram)) {
+    errors.instagram = t('validation.invalid-instagram');
+  }
+
+  if (!!payload.twitter && !isValidWebsiteUrl(payload.twitter)) {
+    errors.twitter = t('validation.invalid-twitter');
+  }
+
+  if (!!payload.facebook && !isValidWebsiteUrl(payload.facebook)) {
+    errors.facebook = t('validation.invalid-facebook');
+  }
+
   return errors;
 };
 
@@ -65,6 +77,10 @@ export const EditProfile = () => {
           email: payload.email,
           fullName: payload.fullName,
           username: payload.username,
+          website: payload?.website,
+          instagram: payload?.instagram,
+          twitter: payload?.twitter,
+          facebook: payload?.facebook,
         }),
       );
     },
@@ -131,6 +147,58 @@ export const EditProfile = () => {
           />
         </Box>
 
+        <Box mb={5}>
+          <Field
+            component={InputField}
+            name="website"
+            type="text"
+            inputMode="website"
+            label={t('profile.edit.label.website')}
+            placeholder={t('profile.edit.placeholder.website')}
+            color="primary"
+            fullWidth
+          />
+        </Box>
+
+        <Box mb={5}>
+          <Field
+            component={InputField}
+            name="instagram"
+            type="text"
+            inputMode="instagram"
+            label={t('profile.edit.label.instagram')}
+            placeholder={t('profile.edit.placeholder.instagram')}
+            color="primary"
+            fullWidth
+          />
+        </Box>
+
+        <Box mb={5}>
+          <Field
+            component={InputField}
+            name="twitter"
+            type="text"
+            inputMode="twitter"
+            label={t('profile.edit.label.twitter')}
+            placeholder={t('profile.edit.placeholder.twitter')}
+            color="primary"
+            fullWidth
+          />
+        </Box>
+
+        <Box mb={5}>
+          <Field
+            component={InputField}
+            name="facebook"
+            type="text"
+            inputMode="facebook"
+            label={t('profile.edit.label.facebook')}
+            placeholder={t('profile.edit.placeholder.facebook')}
+            color="primary"
+            fullWidth
+          />
+        </Box>
+
         <Box>
           <Mutation type={editProfile.toString()}>
             {({ loading }) => (
@@ -171,6 +239,10 @@ export const EditProfile = () => {
             email: profileInfo?.email,
             bio: profileInfo?.bio,
             fullName: profileInfo?.fullName,
+            website: profileInfo?.website,
+            instagram: profileInfo?.instagram,
+            twitter: profileInfo?.twitter,
+            facebook: profileInfo?.facebook,
           }}
         />
       </Container>

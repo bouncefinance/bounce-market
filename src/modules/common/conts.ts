@@ -7,7 +7,7 @@ export const featuresConfig = {
   /**
    * There is no data on the backend side
    */
-  profileSocialLinks: false,
+  profileSocialLinks: true,
   /**
    * Feature is not implemented
    */

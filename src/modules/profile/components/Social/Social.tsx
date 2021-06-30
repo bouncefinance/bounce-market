@@ -6,38 +6,40 @@ import React from 'react';
 import { uid } from 'react-uid';
 import { useSocialStyles } from './useSocialStyles';
 import { t } from 'modules/i18n/utils/intl';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
 
 interface ISocialProps {
   className?: string;
+  profileInfo?: IProfileInfo | null;
 }
 
-const items = [
-  {
-    title: t('social.twitter'),
-    href: 'https://twitter.com/',
-    icon: TwitterIcon,
-  },
-  {
-    title: t('social.instagram'),
-    href: 'https://www.instagram.com/',
-    icon: InstagramIcon,
-  },
-  {
-    title: t('social.facebook'),
-    href: 'https://www.fb.com/',
-    icon: FacebookIcon,
-  },
-];
-
-export const Social = ({ className }: ISocialProps) => {
+export const Social = ({ className, profileInfo }: ISocialProps) => {
   const classes = useSocialStyles();
+
+  const items = [
+    {
+      title: t('social.twitter'),
+      href: profileInfo?.twitter,
+      icon: TwitterIcon,
+    },
+    {
+      title: t('social.instagram'),
+      href: profileInfo?.instagram,
+      icon: InstagramIcon,
+    },
+    {
+      title: t('social.facebook'),
+      href: profileInfo?.facebook,
+      icon: FacebookIcon,
+    },
+  ].filter(item => item.href);
 
   return (
     <div className={className}>
       <ul className={classes.list}>
         {items.map(({ title, href, icon: Icon }, i) => (
           <li className={classes.item} key={uid(i)}>
-            <IconButton href={href} target="_blank" title={title}>
+            <IconButton href={href as string} target="_blank" title={title}>
               <Icon />
             </IconButton>
           </li>
