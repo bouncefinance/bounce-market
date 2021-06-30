@@ -1,7 +1,7 @@
 import {
-  StoriesOwner,
-  StoriesOwnerSkeleton,
-} from 'modules/drops/components/StoriesOwner';
+  DropsOwner,
+  DropsOwnerSkeleton,
+} from 'modules/drops/components/DropsOwner';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
 import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
@@ -63,7 +63,7 @@ export const StoriesSlider = () => {
     const chips = item.chips.map((label, i) => (
       <StoriesChip key={label} label={label} isLive={!i} />
     ));
-    const profileInfo = <StoriesOwner title={item.owner} isVerified />;
+    const profileInfo = <DropsOwner title={item.owner} isVerified />;
 
     return (
       <StoriesSliderItem
@@ -87,10 +87,7 @@ export const StoriesSlider = () => {
   const renderedSkeletons = new Array(3)
     .fill(0)
     .map((_, i) => (
-      <StoriesSliderItemSkeleton
-        key={i}
-        profileInfo={<StoriesOwnerSkeleton />}
-      />
+      <StoriesSliderItemSkeleton key={i} profileInfo={<DropsOwnerSkeleton />} />
     ));
 
   return (

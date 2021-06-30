@@ -7,8 +7,8 @@ import {
 } from '@material-ui/core';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { SocialShare } from 'modules/common/components/SocialShare';
-import { StoriesContainer } from 'modules/drops/components/StoriesContainer';
-import { StoriesOwner } from 'modules/drops/components/StoriesOwner';
+import { DropsContainer } from 'modules/drops/components/DropsContainer';
+import { DropsOwner } from 'modules/drops/components/DropsOwner';
 import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
 import { darkTheme } from 'modules/themes/darkTheme';
@@ -26,7 +26,7 @@ export const DropDetails = () => {
           </Box>
         </Container>
 
-        <StoriesContainer>
+        <DropsContainer>
           <Grid container spacing={5}>
             <Grid item md xl={6}>
               <Box mb={3.5}>
@@ -35,7 +35,7 @@ export const DropDetails = () => {
 
               <Grid container spacing={5}>
                 <Grid item>
-                  <StoriesOwner title="grossehalbuer" />
+                  <DropsOwner title="grossehalbuer" />
                 </Grid>
 
                 <Grid item>
@@ -69,7 +69,7 @@ export const DropDetails = () => {
               </Typography>
             </Grid>
           </Grid>
-        </StoriesContainer>
+        </DropsContainer>
       </Section>
     </ThemeProvider>
   );

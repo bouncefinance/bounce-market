@@ -1,7 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import classNames from 'classnames';
-import { StoriesOwnerSkeleton } from 'modules/drops/components/StoriesOwner';
+import { DropsOwnerSkeleton } from 'modules/drops/components/DropsOwner';
 import React from 'react';
 import { uid } from 'react-uid';
 import { useDropStyles } from './useDropStyles';
@@ -63,7 +63,7 @@ export const DropSkeleton = () => {
       </Typography>
 
       <div className={classes.creator}>
-        <StoriesOwnerSkeleton />
+        <DropsOwnerSkeleton />
       </div>
     </div>
   );

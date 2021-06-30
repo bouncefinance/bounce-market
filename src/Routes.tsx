@@ -1,4 +1,4 @@
-import { DropsRoutesConfig, StoriesRoutes } from 'modules/drops/Routes';
+import { DropsRoutes, DropsRoutesConfig } from 'modules/drops/Routes';
 import { MarketRoutes, MarketRoutesConfig } from 'modules/market/Routes';
 import {
   ProfileRoutes,
@@ -106,7 +106,7 @@ export function Routes() {
         ]}
         render={() => (
           <DefaultLayout headerTheme={Themes.dark} footerTheme={Themes.dark}>
-            <StoriesRoutes />
+            <DropsRoutes />
           </DefaultLayout>
         )}
       />

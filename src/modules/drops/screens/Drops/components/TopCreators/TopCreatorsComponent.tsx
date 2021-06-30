@@ -2,7 +2,7 @@ import { IconButton, Typography, useTheme } from '@material-ui/core';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
 import { getRandomId } from 'modules/common/utils/getRandomId';
-import { StoriesContainer } from 'modules/drops/components/StoriesContainer';
+import { DropsContainer } from 'modules/drops/components/DropsContainer';
 import { Section } from 'modules/uiKit/Section';
 import React, { ReactNode, useEffect, useState } from 'react';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
@@ -63,7 +63,7 @@ export const TopCreatorsComponent = ({
 
   return (
     <Section pt={{ xs: 2, md: 3 }} className={classes.root}>
-      <StoriesContainer>
+      <DropsContainer>
         <div className={classes.header}>
           <IconButton id={prevId} className={classes.navBtn}>
             <AngleLeftIcon className={classes.navBtnIcon} />
@@ -81,7 +81,7 @@ export const TopCreatorsComponent = ({
         <Swiper {...sliderProps} className={classes.slider}>
           {React.Children.map(children, modifyChildren)}
         </Swiper>
-      </StoriesContainer>
+      </DropsContainer>
     </Section>
   );
 };

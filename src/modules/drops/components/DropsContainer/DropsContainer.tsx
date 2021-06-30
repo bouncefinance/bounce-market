@@ -1,15 +1,15 @@
 import { Container, ContainerProps } from '@material-ui/core';
 import classNames from 'classnames';
 import React from 'react';
-import { useStoriesContainerStyles } from './useStoriesContainerStyles';
+import { useDropsContainerStyles } from './useDropsContainerStyles';
 
-interface IStoriesContainerProps extends ContainerProps {}
+interface IDropsContainerProps extends ContainerProps {}
 
-export const StoriesContainer = ({
+export const DropsContainer = ({
   className,
   ...restProps
-}: IStoriesContainerProps) => {
-  const classes = useStoriesContainerStyles();
+}: IDropsContainerProps) => {
+  const classes = useDropsContainerStyles();
 
   return (
     <Container {...restProps} className={classNames(classes.root, className)} />

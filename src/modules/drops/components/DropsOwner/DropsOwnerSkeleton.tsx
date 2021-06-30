@@ -1,10 +1,10 @@
 import { Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import React from 'react';
-import { useStoriesOwnerStyles } from './useStoriesOwnerStyles';
+import { useDropsOwnerStyles } from './useDropsOwnerStyles';
 
-export const StoriesOwnerSkeleton = () => {
-  const classes = useStoriesOwnerStyles();
+export const DropsOwnerSkeleton = () => {
+  const classes = useDropsOwnerStyles();
 
   return (
     <div className={classes.root}>

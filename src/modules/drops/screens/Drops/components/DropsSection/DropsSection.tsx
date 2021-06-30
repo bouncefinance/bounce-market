@@ -1,6 +1,6 @@
 import { Box, Typography } from '@material-ui/core';
-import { StoriesContainer } from 'modules/drops/components/StoriesContainer';
-import { StoriesOwner } from 'modules/drops/components/StoriesOwner';
+import { DropsContainer } from 'modules/drops/components/DropsContainer';
+import { DropsOwner } from 'modules/drops/components/DropsOwner';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { Section } from 'modules/uiKit/Section';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
@@ -91,7 +91,7 @@ export const DropsSection = () => {
   const renderedUpcomingDrops = demoDrops.map(
     ({ title, text, creatorName, endDate, items, bgImg, bgColor }, i) => {
       const timer = <DropTimer endDate={endDate} />;
-      const creator = <StoriesOwner title={creatorName} />;
+      const creator = <DropsOwner title={creatorName} />;
 
       return (
         <Drop
@@ -113,7 +113,7 @@ export const DropsSection = () => {
 
   return (
     <Section>
-      <StoriesContainer>
+      <DropsContainer>
         <Box mb={{ xs: 4, md: 7 }}>
           <DropsTabs value={sortBy} onChange={onSortChange as any}>
             {tabs.map(({ label, id }) => (
@@ -139,7 +139,7 @@ export const DropsSection = () => {
             )}
           </>
         )}
-      </StoriesContainer>
+      </DropsContainer>
     </Section>
   );
 };

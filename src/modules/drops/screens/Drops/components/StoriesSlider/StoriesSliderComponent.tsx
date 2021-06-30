@@ -1,5 +1,5 @@
 import { useTheme } from '@material-ui/core';
-import { StoriesContainer } from 'modules/drops/components/StoriesContainer';
+import { DropsContainer } from 'modules/drops/components/DropsContainer';
 import { Section } from 'modules/uiKit/Section';
 import React, { ReactNode } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -39,7 +39,7 @@ export const StoriesSliderComponent = ({
 
   return (
     <Section pt={{ xs: 7.5, md: 14 }} className={classes.root}>
-      <StoriesContainer>
+      <DropsContainer>
         {isFewSlides && (
           <Swiper {...sliderProps} className={classes.slider}>
             {React.Children.map(children, modifyChildren)}
@@ -47,7 +47,7 @@ export const StoriesSliderComponent = ({
         )}
 
         {!isFewSlides && children}
-      </StoriesContainer>
+      </DropsContainer>
     </Section>
   );
 };

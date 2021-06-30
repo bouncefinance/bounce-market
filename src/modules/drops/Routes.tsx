@@ -43,7 +43,7 @@ const LoadableDropDetailsContainer: LoadableComponent<any> = loadable(
   },
 );
 
-export function StoriesRoutes() {
+export function DropsRoutes() {
   return (
     <>
       <Route
