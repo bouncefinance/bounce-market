@@ -1,50 +1,17 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from '@material-ui/core';
 
-interface StyleProps {
-  firstTitle: string;
-  lastTitle: string;
-}
+export const useProductsStyles = makeStyles<Theme>(theme => ({
+  paginationTop: {
+    margin: theme.spacing(0, 0, 4),
+  },
 
-export const useProductsStyles = makeStyles((theme) => ({
-  root: (props: StyleProps) => ({
-    marginTop: '44px',
-    display: 'flex',
-    justifyContent: 'flex-end',
+  paginationBottom: {
+    marginTop: theme.spacing(4),
 
-    '& .MuiPaginationItem-root': {
-      width: "50px",
-      height: "50px",
-      borderRadius: "12px",
-      border: "1px solid rgba(0, 0, 0, 0.1)"
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      marginTop: theme.spacing(7),
     },
-
-    '& .MuiPaginationItem-ellipsis': {
-      lineHeight: "4"
-    },
-
-    '& .Mui-selected': {
-      background: "#000000",
-      color: "#ffffff"
-    },
-
-    '& li:last-child > button': {
-      '&  > svg': {
-        display: 'none'
-      },
-
-      '&::after': {
-        content: `"${props.lastTitle}"`
-      }
-    },
-
-    '& li:first-child > button': {
-      '&  > svg': {
-        display: 'none'
-      },
-
-      '&::after': {
-        content: `"${props.firstTitle}"`
-      }
-    }
-  })
+  },
 }));

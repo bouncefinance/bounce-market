@@ -1,14 +1,12 @@
-import {Box, Container} from '@material-ui/core';
-import {
-  useDispatchRequest,
-  useQuery,
-} from '@redux-requests/react';
+import { Box, Container } from '@material-ui/core';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
+import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
   fetchNFTItems,
@@ -17,25 +15,24 @@ import {
 import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import { useIsSMDown } from 'modules/themes/useTheme';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import { useCallback, useEffect, useMemo, useState, ChangeEvent } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
-import {Pagination} from "../../../uiKit/Pagination";
-import {useQueryParams} from "../../../common/hooks/useQueryParams";
-import {useHistory} from "react-router";
+import { Pagination } from '../../../uiKit/Pagination';
+import { useProductsStyles } from './useProductsStyles';
 
 const ITEMS_PORTION_COUNT = 20;
 const DEFAULT_PAGE = 1;
 
 export const Products = ({ ...sectionProps }: ISectionProps) => {
   const dispatch = useDispatchRequest();
-
-  const pageParam = useQueryParams().get("page");
-  const page = pageParam ? parseInt(pageParam) : DEFAULT_PAGE;
-  const category = useQueryParams().get("category") || ItemsChannel.fineArts;
+  const { page, category } = MarketRoutesConfig.Market.useParams();
   const history = useHistory();
-
   const [sortBy, setSortBy] = useState<string>('1');
+  const isMobile = useIsSMDown();
+  const classes = useProductsStyles();
 
   const {
     data: nftItemsData,
@@ -44,20 +41,12 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     type: fetchNFTItems.toString(),
   });
 
-  const createURL = (page: number, category: string): string => {
-    return `/market?page=${page}&category=${category}`;
-  };
-
-  useEffect(() => {
-    history.push(createURL(page, category));
-  },[]);
-
   const onCategoryChange = (value: string) => {
-    history.push(createURL(DEFAULT_PAGE, value));
+    history.push(MarketRoutesConfig.Market.generatePath(DEFAULT_PAGE, value));
   };
 
   const onLoadMore = (event: ChangeEvent<unknown>, value: number) => {
-    history.push(createURL(value, category));
+    history.push(MarketRoutesConfig.Market.generatePath(value, category));
   };
 
   const onSortChange = useCallback((value: string) => {
@@ -70,7 +59,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
         offset: (page - 1) * ITEMS_PORTION_COUNT,
         limit: ITEMS_PORTION_COUNT,
         channel: category as ItemsChannel,
-      })
+      }),
     );
   }, [category, page, dispatch]);
 
@@ -80,7 +69,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   );
 
   const paginationCount = useMemo(() => {
-    if(!nftItemsData) {
+    if (!nftItemsData) {
       return 1;
     }
     const total = nftItemsData.total;
@@ -132,10 +121,23 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     [nftItems],
   );
 
+  const renderedPagination = (
+    <Pagination
+      disabled={nftItemsLoading}
+      page={page}
+      count={paginationCount}
+      onChange={onLoadMore}
+    />
+  );
+
+  const renderedBottomPagination = (
+    <div className={classes.paginationBottom}>{renderedPagination}</div>
+  );
+
   return (
     <Section {...sectionProps}>
       <Container>
-        <Box mb={6}>
+        <Box mb={{ xs: 4, md: 6 }}>
           <ProductsPanel
             onSortChange={onSortChange}
             onCategoryChange={onCategoryChange}
@@ -147,6 +149,10 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
 
         {nftItemsLoading || hasItems ? (
           <>
+            {isMobile && (
+              <div className={classes.paginationTop}>{renderedPagination}</div>
+            )}
+
             <ProductCards
               isLoading={nftItemsLoading}
               skeletonsCount={ITEMS_PORTION_COUNT}
@@ -154,14 +160,13 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
               {rendrerdCards}
             </ProductCards>
 
-            <Pagination
-              page={page}
-              count={paginationCount}
-              onChange={onLoadMore}
-            />
+            {renderedBottomPagination}
           </>
         ) : (
-          <NoItems />
+          <>
+            <NoItems />
+            {page !== DEFAULT_PAGE && renderedBottomPagination}
+          </>
         )}
       </Container>
     </Section>
