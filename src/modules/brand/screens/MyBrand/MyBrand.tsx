@@ -79,7 +79,7 @@ export const MyBrand = () => {
     },
     [],
   );
-
+  
   return (
     <Section className={classes.root}>
       <Header
@@ -136,7 +136,7 @@ export const MyBrand = () => {
                   copies={item.supply}
                   MediaProps={{
                     category: item.category,
-                    src: item.fileurl,
+                    src: item.fileUrl,
                     objectFit: 'scale-down',
                     loading: 'lazy',
                   }}

@@ -72,7 +72,7 @@ export const MoversComponent = ({
     onSwiper: setSwiper,
   };
 
-  const modifyChildren = (child: any) => (
+  const modifyChildren = (child: ReactNode) => (
     <SwiperSlide className={classes.slide}>{child}</SwiperSlide>
   );
 

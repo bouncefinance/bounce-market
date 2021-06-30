@@ -38,7 +38,7 @@ export const Search = ({ className, focus }: ISearchProps) => {
 
   const handleSearch = useRef(
     debounce((value: string) => {
-      if (value.length) {
+      if (value.length && value.length >= 2) {
         dispatch(getByLikeStr(value));
         dispatch(
           getPoolsByFilter(undefined, { requestKey: SEARCH_REQUEST_KEY }),

@@ -23,6 +23,10 @@ interface IEditProfileArgs {
   bio?: string;
   email?: string;
   imgUrl?: string;
+  website?: string;
+  instagram?: string;
+  twitter?: string;
+  facebook?: string;
 }
 
 export const editProfile: (
@@ -35,6 +39,10 @@ export const editProfile: (
     bio = '',
     email = '',
     imgUrl = '',
+    website = '',
+    instagram = '',
+    twitter = '',
+    facebook = '',
   }: IEditProfileArgs) => ({
     request: {
       url: '/auth/updateaccount',
@@ -45,6 +53,10 @@ export const editProfile: (
         username: username ? username : undefined,
         fullname: fullName,
         imgurl: imgUrl,
+        website: website,
+        instagram: instagram,
+        twitter: twitter,
+        facebook: facebook,
       },
     },
     meta: {
@@ -91,6 +103,10 @@ export const editProfile: (
               email,
               fullName,
               username,
+              website: website,
+              instagram: instagram,
+              twitter: twitter,
+              facebook: facebook,
             };
 
             if (data) {

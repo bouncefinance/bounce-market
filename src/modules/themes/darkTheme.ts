@@ -108,6 +108,19 @@ export const darkTheme = createMuiTheme({
       },
     },
 
+    MuiIconButton: {
+      root: {
+        ...mainTheme.overrides?.MuiIconButton?.root,
+        border: `1px solid ${fade(PALETTE.text.primary, 0.1)}`,
+        color: PALETTE.text.primary,
+
+        '&:hover': {
+          borderColor: fade(PALETTE.text.primary, 0.3),
+          backgroundColor: 'none',
+        },
+      },
+    },
+
     MuiInputBase: {
       ...mainTheme.overrides?.MuiInputBase,
       root: {
