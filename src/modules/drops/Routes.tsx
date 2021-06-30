@@ -29,7 +29,7 @@ export const DropsRoutesConfig: { [key: string]: RouteConfiguration } = {
 };
 
 const LoadableContainer: LoadableComponent<any> = loadable(
-  async () => import('./screens/Stories').then(module => module.Stories),
+  async () => import('./screens/Drops').then(module => module.Stories),
   {
     fallback: <QueryLoadingAbsolute />,
   },
