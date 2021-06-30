@@ -1,9 +1,8 @@
 import classNames from 'classnames';
-import React from 'react';
-import { useImgStyles } from './ImgStyles';
+import React, { useState } from 'react';
 import { ObjectFitType } from '../../common/types/ObjectFit';
-import { useState } from 'react';
-import { ImgErrorIcon, useImgErrorStyles } from 'modules/common/components/Icons/ImgError';
+import { ImgErrorIcon } from './assets/ImgErrorIcon';
+import { useImgStyles } from './ImgStyles';
 
 export interface IImgProps {
   src?: string;
@@ -46,6 +45,8 @@ export const Img = ({
   onClick,
 }: IImgProps) => {
   const classes = useImgStyles({ objectFit, ratio });
+  const [loadError, setLoadError] = useState(false);
+  const onError = () => setLoadError(true);
 
   let desktop, desktop2x, tablet, tablet2x, mobile, mobile2x;
   if (typeof srcset === 'object') {
@@ -65,13 +66,13 @@ export const Img = ({
 
   const Component = isPicture ? 'picture' : 'div';
 
-  const [loadError, setLoadError] = useState(false);
-  const onError = () => setLoadError(true);
-  const imgErrorClasses = useImgErrorStyles({ error: loadError });
-
   const render = (
     <Component
-      className={classNames(classes.root, className, imgErrorClasses.root)}
+      className={classNames(
+        classes.root,
+        className,
+        loadError && classes.rootError,
+      )}
       style={style}
       onClick={onClick}
     >
@@ -95,9 +96,10 @@ export const Img = ({
           data-srcset={isNativeLazyLoading ? undefined : mobileSrcSet}
         />
       )}
-      {loadError ?
-        <ImgErrorIcon className={classNames(imgErrorClasses.img)} />
-        : <img
+      {loadError ? (
+        <ImgErrorIcon className={classes.errorIcon} />
+      ) : (
+        <img
           src={isNativeLazyLoading ? imgSrc : undefined}
           data-src={isNativeLazyLoading ? undefined : imgSrc}
           alt={alt}
@@ -105,7 +107,8 @@ export const Img = ({
           loading={isNativeLazyLoading ? loading : undefined}
           className={classNames(classes.img, imgClassName)}
           onError={onError}
-        />}
+        />
+      )}
     </Component>
   );
 

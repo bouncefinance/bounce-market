@@ -45,6 +45,20 @@ export const useImgStyles = makeStyles<
     },
   },
 
+  rootError: {
+    backgroundColor: '#E0E0E0',
+  },
+
+  errorIcon: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    maxHeight: '50%',
+    maxWidth: '50%',
+    fontSize: '50px',
+    transform: 'translate3d(-50%, -50%, 0px)',
+  },
+
   img: {
     position: 'absolute',
     top: 0,

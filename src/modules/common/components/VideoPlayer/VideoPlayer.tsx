@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { t } from 'modules/i18n/utils/intl';
-import { useVideoPlayerStyles } from './useVideoPlayerStyles';
 import classNames from 'classnames';
+import { t } from 'modules/i18n/utils/intl';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ObjectFitType } from '../../types/ObjectFit';
-import { useImgErrorStyles, VideoErrorIcon } from '../Icons/ImgError';
+import { VideoErrorIcon } from './assets/VideoErrorIcon';
+import { useVideoPlayerStyles } from './useVideoPlayerStyles';
 
 interface IVideoPlayerProps {
   className?: string;
@@ -22,11 +22,11 @@ interface IVideoPlayerProps {
 
 type VideoPlayerType =
   | (IVideoPlayerProps & {
-    file: File;
-  })
+      file: File;
+    })
   | (IVideoPlayerProps & {
-    src: string;
-  });
+      src: string;
+    });
 
 export const VideoPlayer = ({
   className,
@@ -48,7 +48,7 @@ export const VideoPlayer = ({
   const creatObjectUrlDestructor = useRef<any>();
 
   const video = useMemo(() => {
-    function hasFile (data: any): data is { file: File } {
+    function hasFile(data: any): data is { file: File } {
       return data.file;
     }
     return hasFile(restProps)
@@ -66,13 +66,19 @@ export const VideoPlayer = ({
 
   const [loadError, setLoadError] = useState(false);
   const onError = () => setLoadError(true);
-  const imgErrorClasses = useImgErrorStyles({ error: loadError });
 
   return (
-    <div className={classNames(classes.root, className, imgErrorClasses.root)}>
-      {loadError ?
-        <VideoErrorIcon className={classNames(imgErrorClasses.img)} />
-        : <video
+    <div
+      className={classNames(
+        classes.root,
+        className,
+        loadError && classes.rootError,
+      )}
+    >
+      {loadError ? (
+        <VideoErrorIcon className={classes.errorIcon} />
+      ) : (
+        <video
           width={width}
           height={height}
           poster={poster}
@@ -88,7 +94,7 @@ export const VideoPlayer = ({
           <source src={video} />
           {fallbackText}
         </video>
-      }
+      )}
     </div>
   );
 };
