@@ -331,12 +331,6 @@
       "Comicbooks": "漫画"
     }
   },
-  "market": {
-    "pagination": {
-      "first-title": "First",
-      "last-title": "Last"
-    }
-  },
   "buy-dialog": {
     "title": "立即购买",
     "submit": "购买"

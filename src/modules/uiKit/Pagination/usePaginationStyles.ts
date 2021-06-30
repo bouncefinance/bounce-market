@@ -1,62 +1,59 @@
-import { makeStyles } from "@material-ui/core";
+import { fade, makeStyles, Theme } from '@material-ui/core';
 
-interface StyleProps {
-  firstTitle: string;
-  lastTitle: string;
-}
-
-export const usePaginationStyles = makeStyles((theme) => ({
-  root: (props: StyleProps) => ({
-    marginTop: '44px',
-    display: 'flex',
-    justifyContent: 'flex-end',
-
-    '& .Mui-selected': {
-      backgroundColor: "#000000",
-      color: "#ffffff",
-
-      "&:hover": {
-        backgroundColor: "#000000",
-      }
+export const usePaginationStyles = makeStyles<Theme>(theme => ({
+  root: {
+    '& li:last-child button': {
+      marginRight: 0,
     },
 
-    '& li:last-child > button': {
-      '&  > svg': {
-        display: 'none',
-      },
-
-      '&::after': {
-        content: `"${props.lastTitle}"`,
-      },
+    '& li:first-child button': {
+      marginLeft: 0,
     },
-
-    '& li:first-child > button': {
-      padding: "auto 16px",
-
-      '&  > svg': {
-        display: 'none'
-      },
-
-      '&::after': {
-        content: `"${props.firstTitle}"`
-      }
-    }
-  }),
+  },
 
   itemRoot: {
-    width: "50px",
-    height: "50px",
-    borderRadius: "12px",
-    border: "1px solid rgba(0, 0, 0, 0.1)",
-    margin: "0 8px"
+    width: 34,
+    height: 34,
+    margin: theme.spacing(0, 0.5),
+    padding: 0,
+    borderRadius: 8,
+    border: `1px solid ${fade(theme.palette.text.primary, 0.1)}`,
+    fontWeight: 500,
+
+    [theme.breakpoints.up('md')]: {
+      width: 50,
+      height: 50,
+      margin: theme.spacing(0, 1),
+      borderRadius: 12,
+      fontSize: 16,
+    },
+
+    '&.Mui-selected': {
+      backgroundColor: '#000000',
+      color: '#ffffff',
+
+      '&:hover': {
+        backgroundColor: '#000000',
+      },
+    },
+  },
+
+  itemIcon: {
+    [theme.breakpoints.up('md')]: {
+      fontSize: 32,
+    },
   },
 
   ellipsis: {
-    lineHeight: "4",
-    border: "none",
-    minWidth: "14px",
-    width: "14px",
-    padding: 0,
-    margin: "0 12px"
+    display: 'flex',
+    alignItems: 'center',
+    border: 'none',
+    minWidth: 14,
+    width: 14,
+    margin: 0,
+
+    [theme.breakpoints.up('md')]: {
+      margin: theme.spacing(0, 1.5),
+    },
   },
 }));
