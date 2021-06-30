@@ -27,7 +27,7 @@ const getHelperString = (
 };
 
 export const InputField = ({
-  input: { name, onChange, value, type },
+  input: { name, onChange, value, type, placeholder },
   meta,
   showLimitCounter = false,
   ...rest
@@ -42,6 +42,7 @@ export const InputField = ({
       name={name}
       error={hasError(meta)}
       value={value}
+      placeholder={placeholder}
       helperText={getHelperString(value, meta, maxLength, showLimitCounter)}
       onChange={onChange}
       className={classes.root}

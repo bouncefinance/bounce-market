@@ -294,12 +294,16 @@
         "email": "邮件",
         "custom-url": "自定义网站地址",
         "bio": "个人介绍",
-        "website": "网站"
+        "website": "网站",
+        "instagram": "instagram",
+        "twitter": "推特",
+        "facebook": "脸书"
       },
       "placeholder": {
-        "instagram": "Instagram用户名",
-        "twitter": "Twitter用户名",
-        "facebook": "Facebook用户名"
+        "website": "网站链接",
+        "instagram": "instagram 主页链接",
+        "twitter": "推特主页链接",
+        "facebook": "脸书主页链接"
       },
       "save-changes": "保存修改",
       "success-message": "修改成功"
