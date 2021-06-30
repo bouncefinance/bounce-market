@@ -1,7 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import classNames from 'classnames';
-import { StoriesOwnerSkeleton } from 'modules/stories/components/StoriesOwner';
+import { StoriesOwnerSkeleton } from 'modules/drops/components/StoriesOwner';
 import React from 'react';
 import { uid } from 'react-uid';
 import { useDropStyles } from './useDropStyles';

@@ -1,7 +1,7 @@
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
+import { StoriesRoutesConfig } from 'modules/drops/Routes';
 import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { StoriesRoutesConfig } from 'modules/stories/Routes';
 import { Button } from 'modules/uiKit/Button';
 import React, { useCallback, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';

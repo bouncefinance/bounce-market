@@ -1,5 +1,5 @@
 import { useTheme } from '@material-ui/core';
-import { StoriesContainer } from 'modules/stories/components/StoriesContainer';
+import { StoriesContainer } from 'modules/drops/components/StoriesContainer';
 import { Section } from 'modules/uiKit/Section';
 import React, { ReactNode } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';

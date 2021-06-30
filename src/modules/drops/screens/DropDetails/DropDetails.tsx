@@ -7,10 +7,10 @@ import {
 } from '@material-ui/core';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { SocialShare } from 'modules/common/components/SocialShare';
+import { StoriesContainer } from 'modules/drops/components/StoriesContainer';
+import { StoriesOwner } from 'modules/drops/components/StoriesOwner';
 import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
-import { StoriesContainer } from 'modules/stories/components/StoriesContainer';
-import { StoriesOwner } from 'modules/stories/components/StoriesOwner';
 import { darkTheme } from 'modules/themes/darkTheme';
 import { Button } from 'modules/uiKit/Button';
 import { Section } from 'modules/uiKit/Section';

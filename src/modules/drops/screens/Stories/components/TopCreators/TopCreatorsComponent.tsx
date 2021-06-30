@@ -2,7 +2,7 @@ import { IconButton, Typography, useTheme } from '@material-ui/core';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
 import { getRandomId } from 'modules/common/utils/getRandomId';
-import { StoriesContainer } from 'modules/stories/components/StoriesContainer';
+import { StoriesContainer } from 'modules/drops/components/StoriesContainer';
 import { Section } from 'modules/uiKit/Section';
 import React, { ReactNode, useEffect, useState } from 'react';
 import SwiperCore, { Lazy, Navigation } from 'swiper';

@@ -1,8 +1,8 @@
 import {
   StoriesOwner,
   StoriesOwnerSkeleton,
-} from 'modules/stories/components/StoriesOwner';
-import { StoriesRoutesConfig } from 'modules/stories/Routes';
+} from 'modules/drops/components/StoriesOwner';
+import { StoriesRoutesConfig } from 'modules/drops/Routes';
 import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
 import { StoriesChip } from '../StoriesChip';
