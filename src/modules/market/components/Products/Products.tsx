@@ -6,6 +6,7 @@ import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
+import { HEADER_HEIGHT_XL } from 'modules/layout/components/Header/HeaderStyles';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
@@ -45,8 +46,9 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     history.push(MarketRoutesConfig.Market.generatePath(DEFAULT_PAGE, value));
   };
 
-  const onLoadMore = (event: ChangeEvent<unknown>, value: number) => {
+  const onPaginationChange = (event: ChangeEvent<unknown>, value: number) => {
     history.push(MarketRoutesConfig.Market.generatePath(value, category));
+    window.scrollTo(0, HEADER_HEIGHT_XL);
   };
 
   const onSortChange = useCallback((value: string) => {
@@ -126,7 +128,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
       disabled={nftItemsLoading}
       page={page}
       count={paginationCount}
-      onChange={onLoadMore}
+      onChange={onPaginationChange}
     />
   );
 
