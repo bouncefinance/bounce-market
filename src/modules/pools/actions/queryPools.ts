@@ -66,6 +66,49 @@ export interface IQueryPools {
   }[];
 }
 
+export const mapPool = (pools: IQueryPool[]): IQueryPools => {
+  const tradePools = pools.filter((item: IQueryPool) => item.auctiontype === 1)
+    .map((item: IQueryPool) => ({
+      amount_total0: item.token_amount0,
+      amount_total1: item.amount_total1,
+      createTime: item.created_at,
+      creator: item.creator,
+      name: item.name,
+      nftType: item.nft_type,
+      poolId: item.pool_id,
+      price: item.price,
+      state: item.state,
+      token0: item.token0,
+      token1: item.token1,
+      tokenId: item.id
+    }));
+  const tradeAuctions = pools.filter((item: IQueryPool) => item.auctiontype === 2)
+    .map((item: IQueryPool) => ({
+      amountMax1: item.amount_max1,
+      amountMin1: item.amount_min1,
+      amountMinIncr1: item.amount_min_incr1,
+      bidderClaimed: item.bidder_claimed,
+      closeAt: item.close_at,
+      createTime: item.created_at,
+      creator: item.creator,
+      creatorClaimed: item.creator_claimed,
+      duration: item.duration,
+      lastestBidAmount: item.price,
+      name: item.name,
+      nftType: item.nft_type,
+      poolId: item.pool_id,
+      state: item.state,
+      token0: item.token0,
+      token1: item.token1,
+      tokenAmount0: item.token_amount0,
+      tokenId: item.id,
+    }));
+  return {
+    tradeAuctions: tradeAuctions,
+    tradePools: tradePools,
+  }
+}
+
 export interface IApiQueryPool {
   code: 1 | number;
   data: {
@@ -87,48 +130,9 @@ export const queryPools = createSmartAction<
       if (data.code !== 1) {
         throw new Error('Unexpected response');
       }
-      
+
       const pools: IQueryPool[] = data.data.pools;
-      const tradePools =  pools.filter((item: IQueryPool) => item.auctiontype === 1)
-        .map((item: IQueryPool) => ({
-          amount_total0: item.token_amount0,
-          amount_total1: item.amount_total1,
-          createTime: item.created_at,
-          creator: item.creator,
-          name: item.name,
-          nftType: item.nft_type,
-          poolId: item.pool_id,
-          price: item.price,
-          state: item.state,
-          token0: item.token0,
-          token1: item.token1,
-          tokenId: item.id
-        }));
-      const tradeAuctions =  pools.filter((item: IQueryPool) => item.auctiontype === 2)
-        .map((item: IQueryPool) => ({
-          amountMax1: item.amount_max1,
-          amountMin1: item.amount_min1,
-          amountMinIncr1: item.amount_min_incr1,
-          bidderClaimed: item.bidder_claimed,
-          closeAt: item.close_at,
-          createTime: item.created_at,
-          creator: item.creator,
-          creatorClaimed: item.creator_claimed,
-          duration: item.duration,
-          lastestBidAmount: '',
-          name: item.name,
-          nftType: item.nft_type,
-          poolId: item.pool_id,
-          state: item.state,
-          token0: item.token0,
-          token1: item.token1,
-          tokenAmount0: item.token_amount0,
-          tokenId: item.id,
-        }));
-      return {
-        tradeAuctions: tradeAuctions,
-        tradePools: tradePools,
-      }
+      return mapPool(pools);
     },
   },
 }));
