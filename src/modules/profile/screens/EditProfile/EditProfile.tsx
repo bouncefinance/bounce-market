@@ -44,6 +44,18 @@ const validateEditProfile = (payload: IEditProfileValues) => {
     errors.website = t('validation.invalid-website');
   }
 
+  if (!!payload.instagram && !isValidWebsiteUrl(payload.instagram)) {
+    errors.instagram = t('validation.invalid-instagram');
+  }
+
+  if (!!payload.twitter && !isValidWebsiteUrl(payload.twitter)) {
+    errors.twitter = t('validation.invalid-twitter');
+  }
+
+  if (!!payload.facebook && !isValidWebsiteUrl(payload.facebook)) {
+    errors.facebook = t('validation.invalid-facebook');
+  }
+
   return errors;
 };
 

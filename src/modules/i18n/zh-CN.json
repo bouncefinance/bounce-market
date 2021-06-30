@@ -301,9 +301,9 @@
       },
       "placeholder": {
         "website": "网站链接",
-        "instagram": "instagram 用户名",
-        "twitter": "推特用户名",
-        "facebook": "脸书用户名"
+        "instagram": "instagram 主页链接",
+        "twitter": "推特主页链接",
+        "facebook": "脸书主页链接"
       },
       "save-changes": "保存修改",
       "success-message": "修改成功"
