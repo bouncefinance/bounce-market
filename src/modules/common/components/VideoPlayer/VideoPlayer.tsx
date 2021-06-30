@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { t } from 'modules/i18n/utils/intl';
-import { useVideoPlayerStyles } from './useVideoPlayerStyles';
 import classNames from 'classnames';
+import { t } from 'modules/i18n/utils/intl';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ObjectFitType } from '../../types/ObjectFit';
+import { VideoErrorIcon } from './assets/VideoErrorIcon';
+import { useVideoPlayerStyles } from './useVideoPlayerStyles';
 
 interface IVideoPlayerProps {
   className?: string;
@@ -63,23 +64,37 @@ export const VideoPlayer = ({
     };
   });
 
+  const [loadError, setLoadError] = useState(false);
+  const onError = () => setLoadError(true);
+
   return (
-    <div className={classNames(classes.root, className)}>
-      <video
-        width={width}
-        height={height}
-        poster={poster}
-        controls={controls}
-        loop={loop}
-        autoPlay={autoPlay}
-        muted={muted}
-        preload={preload}
-        playsInline={playsInline}
-        className={classNames(classes.player, classes[objectFit])}
-      >
-        <source src={video} />
-        {fallbackText}
-      </video>
+    <div
+      className={classNames(
+        classes.root,
+        className,
+        loadError && classes.rootError,
+      )}
+    >
+      {loadError ? (
+        <VideoErrorIcon className={classes.errorIcon} />
+      ) : (
+        <video
+          width={width}
+          height={height}
+          poster={poster}
+          controls={controls}
+          loop={loop}
+          autoPlay={autoPlay}
+          muted={muted}
+          preload={preload}
+          playsInline={playsInline}
+          className={classNames(classes.player, classes[objectFit])}
+          onError={onError}
+        >
+          <source src={video} />
+          {fallbackText}
+        </video>
+      )}
     </div>
   );
 };
