@@ -8,8 +8,8 @@ import { generatePath, Route } from 'react-router-dom';
 const PATH_DROPS = '/drops';
 const PATH_DROP_DETAILS = '/drop/view/:dropId';
 
-export const StoriesRoutesConfig: { [key: string]: RouteConfiguration } = {
-  Stories: {
+export const DropsRoutesConfig: { [key: string]: RouteConfiguration } = {
+  Drops: {
     path: PATH_DROPS,
     generatePath: () => PATH_DROPS,
   },
@@ -47,13 +47,13 @@ export function StoriesRoutes() {
   return (
     <>
       <Route
-        path={StoriesRoutesConfig.Stories.path}
+        path={DropsRoutesConfig.Drops.path}
         exact={true}
         component={LoadableContainer}
       />
 
       <Route
-        path={StoriesRoutesConfig.DropDetails.path}
+        path={DropsRoutesConfig.DropDetails.path}
         exact={true}
         component={LoadableDropDetailsContainer}
       />

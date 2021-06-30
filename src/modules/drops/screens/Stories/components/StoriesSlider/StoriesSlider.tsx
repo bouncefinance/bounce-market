@@ -2,7 +2,7 @@ import {
   StoriesOwner,
   StoriesOwnerSkeleton,
 } from 'modules/drops/components/StoriesOwner';
-import { StoriesRoutesConfig } from 'modules/drops/Routes';
+import { DropsRoutesConfig } from 'modules/drops/Routes';
 import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
 import { StoriesChip } from '../StoriesChip';
@@ -21,7 +21,7 @@ const demoItems: {
   href: string;
 }[] = [
   {
-    href: StoriesRoutesConfig.DropDetails.generatePath('23421'),
+    href: DropsRoutesConfig.DropDetails.generatePath('23421'),
     title: 'Masters of relevance',
     text:
       'The Wave 3/20 "SMART" is dedicated to some projects building on blockchain and developed with great smartness.',
@@ -30,7 +30,7 @@ const demoItems: {
     owner: 'grossehalbuer',
   },
   {
-    href: StoriesRoutesConfig.DropDetails.generatePath('23421'),
+    href: DropsRoutesConfig.DropDetails.generatePath('23421'),
     title: 'Masters of relevance',
     text: 'The Wave 3/20 "SMART" is dedicated',
     img: 'https://picsum.photos/584/500?image=7',
@@ -38,7 +38,7 @@ const demoItems: {
     owner: 'grossehalbuer',
   },
   {
-    href: StoriesRoutesConfig.DropDetails.generatePath('23421'),
+    href: DropsRoutesConfig.DropDetails.generatePath('23421'),
     title: 'There are many variations of passages',
     text:
       'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years',
@@ -47,7 +47,7 @@ const demoItems: {
     owner: 'Lorem Ipsum',
   },
   {
-    href: StoriesRoutesConfig.DropDetails.generatePath('23421'),
+    href: DropsRoutesConfig.DropDetails.generatePath('23421'),
     title: 'There are many variations of passages',
     text:
       'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years',

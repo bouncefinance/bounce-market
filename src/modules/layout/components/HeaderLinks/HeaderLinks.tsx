@@ -1,5 +1,5 @@
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
-import { StoriesRoutesConfig } from 'modules/drops/Routes';
+import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { Button } from 'modules/uiKit/Button';
@@ -62,7 +62,7 @@ export const HeaderLinks = () => {
     () => [
       {
         label: t('header.drops'),
-        href: StoriesRoutesConfig.Stories.generatePath(),
+        href: DropsRoutesConfig.Drops.generatePath(),
       },
       {
         label: t('header.market'),
