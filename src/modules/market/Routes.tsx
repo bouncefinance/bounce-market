@@ -5,7 +5,7 @@ import { QueryLoadingAbsolute } from 'modules/common/components/QueryLoading/Que
 import loadable, { LoadableComponent } from '@loadable/component';
 
 const PATH_MARKET = '/market';
-
+//
 const LoadableContainer: LoadableComponent<any> = loadable(
   async () => import('./screens/Market').then(module => module.Market),
   {
