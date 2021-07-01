@@ -6,7 +6,7 @@ const useInfoTabsSkeletonStyles = makeStyles<Theme>(theme => ({
   tabs: {
     display: "flex",
     flexFlow: "row nowrap",
-    marginBottom: "15px",
+    marginBottom: theme.spacig(2),
 
     "& > *": {
       width: "50px",
