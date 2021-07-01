@@ -69,7 +69,7 @@ export const MyBrand = () => {
         setItems(res.data);
       });
     }
-  }, [address, brandInfo, dispatch])
+  }, [address, brandInfo, dispatch]);
 
   useEffect(() => {
     if (address && brandInfo) {
@@ -82,8 +82,10 @@ export const MyBrand = () => {
   const toggleBgImgModal = useCallback(
     (isOpen: boolean) => () => {
       setBgImgModalOpened(isOpen);
-    }, []);
-  
+    },
+    [],
+  );
+
   return (
     <Section className={classes.root}>
       <Header
@@ -134,9 +136,9 @@ export const MyBrand = () => {
                   href={
                     item.poolId && item.poolType
                       ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                        item.poolId,
-                        item.poolType,
-                      )
+                          item.poolId,
+                          item.poolType,
+                        )
                       : ''
                   }
                   price={item.poolId && item.price ? item.price : undefined}

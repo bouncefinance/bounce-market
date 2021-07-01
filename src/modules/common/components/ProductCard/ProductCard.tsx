@@ -12,8 +12,14 @@ import {
 import { transferToken } from 'modules/common/actions/transferToken';
 import { burnToken } from 'modules/common/actions/burnToken';
 import { useDialog } from 'modules/buyNFT/screens/BuyNFT/useDialog';
-import { ITransferFormValues, TransferTokenDialog } from 'modules/brand/components/TransferTokenDialog';
-import { BurnTokenDialog, IBurnFormValues } from 'modules/brand/components/BurnTokenDialog';
+import {
+  ITransferFormValues,
+  TransferTokenDialog,
+} from 'modules/brand/components/TransferTokenDialog';
+import {
+  BurnTokenDialog,
+  IBurnFormValues,
+} from 'modules/brand/components/BurnTokenDialog';
 
 export interface IProductCardProps
   extends Omit<IProductCardComponentProps, 'isLiked'> {
@@ -61,14 +67,18 @@ export const ProductCard = ({
 
     likeClickHandler();
   }, [likeClickHandler, onLikeClick]);
-  
+
   const dispatch = useDispatchRequest();
 
   const hasAction = useMemo(() => {
-    return !!contractAddress && standard > -1 && !!id
-  }, [contractAddress, standard, id])
+    return !!contractAddress && standard > -1 && !!id;
+  }, [contractAddress, standard, id]);
 
-  const { opened: transferOpen, open: openTransfer, close: closeTransfer } = useDialog();
+  const {
+    opened: transferOpen,
+    open: openTransfer,
+    close: closeTransfer,
+  } = useDialog();
   const { opened: burnOpen, open: openBurn, close: closeBurn } = useDialog();
 
   const onTransferClick = useCallback(() => {
@@ -86,72 +96,75 @@ export const ProductCard = ({
   const handleTransfer = (data: ITransferFormValues) => {
     if (contractAddress) {
       dispatch(
-        transferToken(contractAddress, standard, id, data.toAddress, data.quantity)
-      )
-        .then(({ error }) => {
-          closeBurn();
-          if (!error && queryAction) {
-            queryAction();
-          }
-        })
+        transferToken(
+          contractAddress,
+          standard,
+          id,
+          data.toAddress,
+          data.quantity,
+        ),
+      ).then(({ error }) => {
+        closeBurn();
+        if (!error && queryAction) {
+          queryAction();
+        }
+      });
     }
-  }
+  };
 
   const handleBurn = (data: IBurnFormValues) => {
     if (contractAddress) {
-      dispatch(
-        burnToken(contractAddress, standard, id, data.quantity)
-      )
-        .then(({ error }) => {
+      dispatch(burnToken(contractAddress, standard, id, data.quantity)).then(
+        ({ error }) => {
           closeBurn();
           if (!error && queryAction) {
             queryAction();
           }
-        })
+        },
+      );
     }
-  }
+  };
 
-  return (<>
-    <ProductCardComponent
-      id={id}
-      isLiked={isLiked}
-      isLikeDisabled={isLikeDisabled}
-      onLikeClick={handleLikeClick}
-      hasAction={hasAction}
-      onTransferClick={onTransferClick}
-      onBurnClick={onBurnClick}
-      MediaProps={MediaProps}
-      likes={likeCount}
-      auctionType={auctionType}
-      state={state}
-      {...restProps}
-    />
-    <Mutation
-      type={transferToken.toString()}
-    >
-      {({ loading }) =>
-        <TransferTokenDialog
-          loading={loading}
-          maxQuantity={maxQuantity}
-          isOpen={transferOpen}
-          onClose={closeTransfer}
-          standard={standard}
-          onSubmit={handleTransfer}
-        />}
-    </Mutation>
-    <Mutation
-      type={burnToken.toString()}
-    >
-      {({ loading }) =>
-        <BurnTokenDialog
-          loading={loading}
-          maxQuantity={maxQuantity}
-          isOpen={burnOpen}
-          onClose={closeBurn}
-          standard={standard}
-          onSubmit={handleBurn}
-        />}
-    </Mutation>
-  </>
+  return (
+    <>
+      <ProductCardComponent
+        id={id}
+        isLiked={isLiked}
+        isLikeDisabled={isLikeDisabled}
+        onLikeClick={handleLikeClick}
+        hasAction={hasAction}
+        onTransferClick={onTransferClick}
+        onBurnClick={onBurnClick}
+        MediaProps={MediaProps}
+        likes={likeCount}
+        auctionType={auctionType}
+        state={state}
+        {...restProps}
+      />
+      <Mutation type={transferToken.toString()}>
+        {({ loading }) => (
+          <TransferTokenDialog
+            loading={loading}
+            maxQuantity={maxQuantity}
+            isOpen={transferOpen}
+            onClose={closeTransfer}
+            standard={standard}
+            onSubmit={handleTransfer}
+          />
+        )}
+      </Mutation>
+      <Mutation type={burnToken.toString()}>
+        {({ loading }) => (
+          <BurnTokenDialog
+            loading={loading}
+            maxQuantity={maxQuantity}
+            isOpen={burnOpen}
+            onClose={closeBurn}
+            standard={standard}
+            onSubmit={handleBurn}
+          />
+        )}
+      </Mutation>
+    </>
   );
 };

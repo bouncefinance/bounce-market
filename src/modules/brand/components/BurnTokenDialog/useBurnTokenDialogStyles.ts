@@ -1,4 +1,4 @@
-import { fade, makeStyles, Theme } from "@material-ui/core";
+import { fade, makeStyles, Theme } from '@material-ui/core';
 
 export const useBurnTokenDialogStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -77,4 +77,4 @@ export const useBurnTokenDialogStyles = makeStyles((theme: Theme) => ({
   spinBtnIcon: {
     fontSize: 12,
   },
-}))
+}));

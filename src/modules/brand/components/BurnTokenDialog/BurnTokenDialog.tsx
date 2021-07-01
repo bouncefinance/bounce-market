@@ -38,7 +38,7 @@ export const BurnTokenDialog = ({
 }: IBurnTokenDialogProps) => {
   const classes = useBurnTokenDialogStyles();
 
-  const readonly = useMemo(() => standard === NftType.ERC721, [standard])
+  const readonly = useMemo(() => standard === NftType.ERC721, [standard]);
 
   const validateForm = useCallback(
     ({ quantity }: IBurnFormValues) => {
@@ -53,88 +53,94 @@ export const BurnTokenDialog = ({
       }
 
       return errors;
-    }, [maxQuantity]);
+    },
+    [maxQuantity],
+  );
 
-  const renderForm = useCallback((
-    { handleSubmit, values, form }: FormRenderProps<IBurnFormValues>) => {
-    const isQuantityMinusDisabled = +values.quantity <= MIN_QUANTITY;
+  const renderForm = useCallback(
+    ({ handleSubmit, values, form }: FormRenderProps<IBurnFormValues>) => {
+      const isQuantityMinusDisabled = +values.quantity <= MIN_QUANTITY;
 
-    return <>
-      <Box mb={5}>
-        <Grid container spacing={3}>
-          <Field
+      return (
+        <>
+          <Box mb={5}>
+            <Grid container spacing={3}>
+              <Field
+                fullWidth
+                component={InputField}
+                name="quantity"
+                type="number"
+                label="Quantity"
+                parse={value => (value ? Math.round(+value) : 1)}
+                format={value => (value ? Math.round(+value) : 1)}
+                disabled={readonly}
+                InputProps={{
+                  classes: { adornedEnd: classes.adornedEnd },
+                  endAdornment: (
+                    <div className={classes.spinBtns}>
+                      <IconButton
+                        className={classNames(
+                          classes.spinBtn,
+                          classes.spinBtnUp,
+                        )}
+                        onClick={form.mutators.increaseQuantity}
+                        disabled={readonly}
+                      >
+                        <AngleUpIcon className={classes.spinBtnIcon} />
+                      </IconButton>
+
+                      <IconButton
+                        className={classNames(
+                          classes.spinBtn,
+                          classes.spinBtnDown,
+                        )}
+                        disabled={readonly || isQuantityMinusDisabled}
+                        onClick={form.mutators.decreaseQuantity}
+                      >
+                        <AngleDownIcon className={classes.spinBtnIcon} />
+                      </IconButton>
+                    </div>
+                  ),
+                }}
+              />
+            </Grid>
+          </Box>
+          <Button
             fullWidth
-            component={InputField}
-            name="quantity"
-            type="number"
-            label="Quantity"
-            parse={value => (value ? Math.round(+value) : 1)}
-            format={value => (value ? Math.round(+value) : 1)}
-            disabled={readonly}
-            InputProps={{
-              classes: { adornedEnd: classes.adornedEnd },
-              endAdornment: (
-                <div className={classes.spinBtns}>
-                  <IconButton
-                    className={classNames(
-                      classes.spinBtn,
-                      classes.spinBtnUp,
-                    )}
-                    onClick={form.mutators.increaseQuantity}
-                    disabled={readonly}
-                  >
-                    <AngleUpIcon className={classes.spinBtnIcon} />
-                  </IconButton>
+            size="large"
+            loading={loading}
+            onClick={handleSubmit}
+          >
+            {t('burn-token.submit')}
+          </Button>
+        </>
+      );
+    },
+    [classes, readonly, loading],
+  );
 
-                  <IconButton
-                    className={classNames(
-                      classes.spinBtn,
-                      classes.spinBtnDown,
-                    )}
-                    disabled={readonly || isQuantityMinusDisabled}
-                    onClick={form.mutators.decreaseQuantity}
-                  >
-                    <AngleDownIcon className={classes.spinBtnIcon} />
-                  </IconButton>
-                </div>
-              ),
-            }}
-          />
-        </Grid>
-      </Box>
-      <Button
-        fullWidth
-        size='large'
-        loading={loading}
-        onClick={handleSubmit}
-      >
-        {t('burn-token.submit')}
-      </Button>
-    </>
-  }, [classes, readonly, loading]);
-
-  return <Dialog
-    open={isOpen}
-  >
-    <Typography variant='h2' className={classes.title}>
-      {t('burn-token.title')}
-    </Typography>
-    <Form
-      validate={validateForm}
-      onSubmit={onSubmit}
-      render={renderForm}
-      initialValues={{ quantity: 1 }}
-      mutators={{
-        increaseQuantity: (_args, state, utils) => {
-          utils.changeValue(state, 'quantity', oldValue => +oldValue + 1);
-        },
-        decreaseQuantity: (_args, state, utils) => {
-          utils.changeValue(state, 'quantity', oldValue => +oldValue - 1);
-        },
-      }}
-    />
-    <IconButton onClick={onClose} className={classes.close}>
-      <CloseIcon fontSize="large" />
-    </IconButton>
-  </Dialog>
-}
+  return (
+    <Dialog open={isOpen}>
+      <Typography variant="h2" className={classes.title}>
+        {t('burn-token.title')}
+      </Typography>
+      <Form
+        validate={validateForm}
+        onSubmit={onSubmit}
+        render={renderForm}
+        initialValues={{ quantity: 1 }}
+        mutators={{
+          increaseQuantity: (_args, state, utils) => {
+            utils.changeValue(state, 'quantity', oldValue => +oldValue + 1);
+          },
+          decreaseQuantity: (_args, state, utils) => {
+            utils.changeValue(state, 'quantity', oldValue => +oldValue - 1);
+          },
+        }}
+      />
+      <IconButton onClick={onClose} className={classes.close}>
+        <CloseIcon fontSize="large" />
+      </IconButton>
+    </Dialog>
+  );
+};

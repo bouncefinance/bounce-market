@@ -3,18 +3,20 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { Store } from 'redux';
 import { setAccount } from 'modules/account/store/actions/setAccount';
-import {
-  BounceErc721,
-  BounceErc1155,
-} from '../../web3/contracts';
+import { BounceErc721, BounceErc1155 } from '../../web3/contracts';
 import { NftType } from 'modules/createNFT/actions/createNft';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 
 export const burnToken = createSmartAction<RequestAction<void, void>>(
   'burnToken',
-  (contractAddress: string, standard: NftType, tokenId: number, quantity?: number) => ({
+  (
+    contractAddress: string,
+    standard: NftType,
+    tokenId: number,
+    quantity?: number,
+  ) => ({
     request: {
-      promise: (async function () { })(),
+      promise: (async function () {})(),
     },
     meta: {
       asMutation: true,
@@ -29,18 +31,18 @@ export const burnToken = createSmartAction<RequestAction<void, void>>(
               data: { address, web3 },
             } = getQuery(store.getState(), {
               type: setAccount.toString(),
-              action: setAccount
+              action: setAccount,
             });
 
             const contract721 = new web3.eth.Contract(
               BounceErc721,
-              contractAddress
-            )
+              contractAddress,
+            );
 
             const contract1155 = new web3.eth.Contract(
               BounceErc1155,
               contractAddress,
-            )
+            );
 
             if (standard === NftType.ERC721) {
               return await new Promise((resolve, reject) => {
@@ -58,7 +60,7 @@ export const burnToken = createSmartAction<RequestAction<void, void>>(
                   .on('error', (error: Error) => {
                     reject(error);
                   });
-              })
+              });
             } else if (standard === NftType.ERC1155) {
               return await new Promise((resolve, reject) => {
                 contract1155.methods
@@ -75,9 +77,8 @@ export const burnToken = createSmartAction<RequestAction<void, void>>(
                   .on('error', (error: Error) => {
                     reject(error);
                   });
-              })
+              });
             }
-
           })(),
         };
       },

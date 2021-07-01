@@ -283,46 +283,51 @@ export const ProductCardComponent = ({
                   >
                     {t('product-card.put-on-sale')}
                   </Button>
-                  {hasAction && <>
-                    <ButtonBase className={classes.menuBtn} onClick={handleClick}>
-                      <VerticalDotsIcon className={classes.menuIcon} />
-                    </ButtonBase>
-                    <Popover
-                      className={classes.menuPopover}
-                      open={isPopoverOpened}
-                      anchorEl={anchorEl}
-                      onClose={handleClose}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                      }}
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      PaperProps={{
-                        variant: 'outlined',
-                      }}
-                    >
-                      <ClickAwayListener onClickAway={handleClose}>
-                        <MenuList>
-                          <MenuItem
-                            className={classes.menuItem}
-                            onClick={onTransferClick}
-                          >
-                            {t('product-card.transfer')}
-                          </MenuItem>
+                  {hasAction && (
+                    <>
+                      <ButtonBase
+                        className={classes.menuBtn}
+                        onClick={handleClick}
+                      >
+                        <VerticalDotsIcon className={classes.menuIcon} />
+                      </ButtonBase>
+                      <Popover
+                        className={classes.menuPopover}
+                        open={isPopoverOpened}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        PaperProps={{
+                          variant: 'outlined',
+                        }}
+                      >
+                        <ClickAwayListener onClickAway={handleClose}>
+                          <MenuList>
+                            <MenuItem
+                              className={classes.menuItem}
+                              onClick={onTransferClick}
+                            >
+                              {t('product-card.transfer')}
+                            </MenuItem>
 
-                          <MenuItem
-                            className={classes.menuItem}
-                            onClick={onBurnClick}
-                          >
-                            {t('product-card.burn')}
-                          </MenuItem>
-                        </MenuList>
-                      </ClickAwayListener>
-                    </Popover>
-                  </>}
+                            <MenuItem
+                              className={classes.menuItem}
+                              onClick={onBurnClick}
+                            >
+                              {t('product-card.burn')}
+                            </MenuItem>
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Popover>
+                    </>
+                  )}
                 </Box>
               )}
             </>
