@@ -10,7 +10,7 @@ import {
 import { NftType } from 'modules/createNFT/actions/createNft';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 
-export const transferToken = createSmartAction(
+export const transferToken = createSmartAction<RequestAction<void, void>>(
   'transferToken',
   (contractAddress: string, standard: NftType, tokenId: number, toAddress: string,  quantity?: number) => ({
     request: {
