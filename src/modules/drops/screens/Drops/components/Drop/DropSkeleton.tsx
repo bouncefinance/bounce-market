@@ -56,7 +56,7 @@ export const DropSkeleton = () => {
         </Box>
       </Typography>
 
-      <Typography className={classes.text}>
+      <Typography component="div" className={classes.text}>
         <Box display="flex" justifyContent="center">
           <Skeleton width="80%" />
         </Box>

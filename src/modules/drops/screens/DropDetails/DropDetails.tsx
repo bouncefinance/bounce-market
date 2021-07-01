@@ -5,6 +5,9 @@ import { darkTheme } from 'modules/themes/darkTheme';
 import { Section } from 'modules/uiKit/Section';
 import React from 'react';
 import { Description } from './components/Description';
+import { LiveCards } from './components/LiveCards';
+import { SoldCards } from './components/SoldCards';
+import { Video } from './components/Video';
 
 export const DropDetails = () => {
   return (
@@ -18,6 +21,9 @@ export const DropDetails = () => {
 
         <DropsContainer>
           <Description />
+          <Video />
+          <LiveCards />
+          <SoldCards />
         </DropsContainer>
       </Section>
     </ThemeProvider>

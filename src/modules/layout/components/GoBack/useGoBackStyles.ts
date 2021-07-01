@@ -2,7 +2,7 @@ import { makeStyles, Theme } from '@material-ui/core';
 
 export const useGoBackStyles = makeStyles<Theme>(theme => ({
   root: {
-    display: 'flex',
+    display: 'inline-flex',
     alignItems: 'center',
     cursor: 'pointer',
     color: theme.palette.text.secondary,
