@@ -18,6 +18,14 @@ export interface ITransferFormValues {
   toAddress: string;
   quantity: number;
 }
+interface ITransferTokenDialogProps {
+  loading: boolean;
+  isOpen: boolean;
+  standard: NftType;
+  maxQuantity?: number;
+  onClose: () => void;
+  onSubmit: (value: ITransferFormValues, form: any, callback: any) => void;
+}
 
 export const TransferTokenDialog = ({
   loading,
@@ -26,14 +34,7 @@ export const TransferTokenDialog = ({
   maxQuantity,
   onClose,
   onSubmit,
-}: {
-  loading: boolean;
-  isOpen: boolean;
-  standard: NftType;
-  maxQuantity?: number;
-  onClose: () => void;
-  onSubmit: (value: ITransferFormValues, form: any, callback: any) => void;
-}) => {
+}: ITransferTokenDialogProps) => {
   const classes = useTransferTokenDialogStyles();
 
   const readonly = useMemo(() => standard === NftType.ERC721, [standard])

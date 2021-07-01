@@ -19,6 +19,15 @@ export interface IBurnFormValues {
   quantity: number;
 }
 
+interface IBurnTokenDialogProps {
+  loading: boolean;
+  isOpen: boolean;
+  standard: NftType;
+  maxQuantity?: number;
+  onClose: () => void;
+  onSubmit: (value: IBurnFormValues, form: any, callback: any) => void;
+}
+
 export const BurnTokenDialog = ({
   loading,
   isOpen,
@@ -26,14 +35,7 @@ export const BurnTokenDialog = ({
   maxQuantity,
   onClose,
   onSubmit,
-}: {
-  loading: boolean;
-  isOpen: boolean;
-  standard: NftType;
-  maxQuantity?: number;
-  onClose: () => void;
-  onSubmit: (value: IBurnFormValues, form: any, callback: any) => void;
-}) => {
+}: IBurnTokenDialogProps) => {
   const classes = useBurnTokenDialogStyles();
 
   const readonly = useMemo(() => standard === NftType.ERC721, [standard])
