@@ -1,4 +1,11 @@
-import { Box, Container, Grid, IconButton, Typography, useTheme } from '@material-ui/core';
+import {
+  Box,
+  Container,
+  Grid,
+  IconButton,
+  Typography,
+  useTheme,
+} from '@material-ui/core';
 import classNames from 'classnames';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
