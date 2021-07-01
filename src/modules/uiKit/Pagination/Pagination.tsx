@@ -9,7 +9,7 @@ import { usePaginationStyles } from './usePaginationStyles';
 export const Pagination = (props: PaginationProps) => {
   const classes = usePaginationStyles();
 
-  const itemCreator = (itemProps: PaginationItemProps) => (
+  const renderItem = (itemProps: PaginationItemProps) => (
     <PaginationItem
       classes={{
         root: classes.itemRoot,
@@ -26,7 +26,7 @@ export const Pagination = (props: PaginationProps) => {
       className={classes.root}
       variant="outlined"
       shape="rounded"
-      renderItem={itemCreator}
+      renderItem={renderItem}
     />
   );
 };

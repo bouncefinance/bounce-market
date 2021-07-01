@@ -70,7 +70,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     [nftItemsData],
   );
 
-  const paginationCount = useMemo(() => {
+  const pagesCount = useMemo(() => {
     if (!nftItemsData) {
       return 1;
     }
@@ -127,7 +127,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     <Pagination
       disabled={nftItemsLoading}
       page={page}
-      count={paginationCount}
+      count={pagesCount}
       onChange={onPaginationChange}
     />
   );
