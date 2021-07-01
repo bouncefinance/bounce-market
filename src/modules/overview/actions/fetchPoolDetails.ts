@@ -176,18 +176,14 @@ export const fetchPoolDetails = createSmartAction<
           return {
             amountMax1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_max1)),
             amountMin1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_min1)),
-            amountMinIncr1: new BigNumber(
-              Web3.utils.fromWei(poolInfo.amount_min_incr1),
-            ),
+            amountMinIncr1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_min_incr1)),
             bidderClaimed: !!poolInfo.bidder_claimed,
             closeAt: new Date(poolInfo.close_at * 1000),
             createTime: new Date(poolInfo.created_at),
             creator: poolInfo.creator,
             creatorClaimed: !!poolInfo.creator_claimed,
             duration: poolInfo.duration,
-            lastestBidAmount: new BigNumber(
-              Web3.utils.fromWei(poolInfo.last_bidder),
-            ),
+            lastestBidAmount: new BigNumber(Web3.utils.fromWei(poolInfo.price)),
             name: poolInfo.username,
             /**
              * For fields returned by the https://api1-bsc.fangible.com interface and data read directly from the contract, nftType=0 represents ERC721 and 1 represents ERC1155.
