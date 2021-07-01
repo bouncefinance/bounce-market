@@ -387,6 +387,14 @@
     "transfer": "发送token",
     "burn": "销毁token"
   },
+  "transfer-token": {
+    "title": "发送Token",
+    "submit": "发送"
+  },
+  "burn-token": {
+    "title": "销毁Token",
+    "submit": "销毁"
+  },
   "empty-data": {
     "title": "Whoops. Looks like there's no data.",
     "text": "Try to change the network to view the content of the page."

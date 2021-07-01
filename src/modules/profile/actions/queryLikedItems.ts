@@ -50,7 +50,7 @@ export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
 
             const likedItems = accountLikes
               .map(accountLike => {
-                const poolInfo = pools.find(
+                const poolInfo = pools.data.find(
                   pool =>
                     pool.tokenid === accountLike.itemId &&
                     pool.poolid === accountLike.poolId,
