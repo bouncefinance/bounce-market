@@ -76,15 +76,10 @@ interface IFetchNFTItemsArgs {
   offset?: number;
 }
 
-export enum FetchNFTItemsStatus {
-  done = 'done',
-  inProgress = 'in progress',
-}
-
 export interface IFetchNFTItems {
   items: INFTItem[];
-  status: FetchNFTItemsStatus;
   offset: number;
+  total: number;
 }
 
 export type FetchNFTItemsMetaType = RequestActionMeta<any, IFetchNFTItems>;
@@ -107,8 +102,8 @@ export const fetchNFTItems = createSmartAction<
         promise: (async () => {
           const queryResponse: IFetchNFTItems = {
             items: [],
-            status: FetchNFTItemsStatus.done,
             offset: params.offset ?? 0,
+            total: 0,
           };
 
           const { data: poolsData } = await store.dispatchRequest(
@@ -132,7 +127,7 @@ export const fetchNFTItems = createSmartAction<
             return queryResponse;
           }
 
-          const tradePools = poolsData
+          const tradePools = poolsData.data
             .filter(item => item.state !== 1)
             .map(mapNFTItem);
 
@@ -154,10 +149,7 @@ export const fetchNFTItems = createSmartAction<
           );
 
           queryResponse.items = tradePoolsWithOwnerImg;
-          queryResponse.status =
-            poolsData.length < params.limit
-              ? FetchNFTItemsStatus.done
-              : FetchNFTItemsStatus.inProgress;
+          queryResponse.total = poolsData.total;
 
           return queryResponse;
         })(),

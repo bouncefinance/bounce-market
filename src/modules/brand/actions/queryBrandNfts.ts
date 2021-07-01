@@ -83,7 +83,7 @@ export const queryBrandNfts = createAction<
           //       String(params.contractAddress).toLowerCase(),
           //   );
 
-          const tradePools = (poolsData || [])
+          const tradePools = (poolsData.data || [])
             .map(item => ({
               ...item,
               poolType:

@@ -92,7 +92,7 @@ export const ProductsPanel = ({
   return (
     <div className={classNames(className, classes.root)}>
       <Grid container alignItems="center" spacing={3}>
-        <Grid item xs={6} md>
+        <Grid item xs={6} lg>
           <Hidden mdDown>
             <FilledTabs
               value={catergory}

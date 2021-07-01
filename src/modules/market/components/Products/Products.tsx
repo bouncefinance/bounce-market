@@ -1,37 +1,39 @@
 import { Box, Container } from '@material-ui/core';
-import {
-  useDispatchRequest,
-  useMutation,
-  useQuery,
-} from '@redux-requests/react';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { ScrollLoader } from 'modules/common/components/ScrollLoader';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
-import { updateNFTItems } from 'modules/market/actions/updateNFTItems';
+import { HEADER_HEIGHT_XL } from 'modules/layout/components/Header/HeaderStyles';
+import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
   fetchNFTItems,
-  FetchNFTItemsStatus,
   IFetchNFTItems,
 } from 'modules/overview/actions/fetchNFTItems';
 import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import { useIsSMDown } from 'modules/themes/useTheme';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
+import { Pagination } from '../../../uiKit/Pagination';
+import { useProductsStyles } from './useProductsStyles';
 
-const ITEMS_PORTION_COUNT = 15;
+const ITEMS_PORTION_COUNT = 20;
+const DEFAULT_PAGE = 1;
 
 export const Products = ({ ...sectionProps }: ISectionProps) => {
   const dispatch = useDispatchRequest();
-
+  const { page, category } = MarketRoutesConfig.Market.useParams();
+  const history = useHistory();
   const [sortBy, setSortBy] = useState<string>('1');
-  const [category, setCategory] = useState<ItemsChannel>(ItemsChannel.fineArts);
+  const isMobile = useIsSMDown();
+  const classes = useProductsStyles();
 
   const {
     data: nftItemsData,
@@ -40,54 +42,42 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     type: fetchNFTItems.toString(),
   });
 
-  const { loading: updateLoading } = useMutation({
-    type: updateNFTItems.toString(),
-  });
+  const onCategoryChange = (value: string) => {
+    history.push(MarketRoutesConfig.Market.generatePath(DEFAULT_PAGE, value));
+  };
+
+  const onPaginationChange = (event: ChangeEvent<unknown>, value: number) => {
+    history.push(MarketRoutesConfig.Market.generatePath(value, category));
+    window.scrollTo(0, HEADER_HEIGHT_XL);
+  };
 
   const onSortChange = useCallback((value: string) => {
     setSortBy(value);
   }, []);
 
-  const onCategoryChange = useCallback(
-    (value: string) => {
-      setCategory(value as ItemsChannel);
-      dispatch(
-        fetchNFTItems({
-          limit: ITEMS_PORTION_COUNT,
-          channel: value as ItemsChannel,
-        }),
-      );
-    },
-    [dispatch],
-  );
-
-  const onLoadMore = useCallback(() => {
-    if (!nftItemsData) {
-      return;
-    }
-
-    dispatch(
-      updateNFTItems({
-        offset: nftItemsData.offset + ITEMS_PORTION_COUNT,
-        limit: ITEMS_PORTION_COUNT,
-        channel: category,
-      }),
-    );
-  }, [category, dispatch, nftItemsData]);
-
   useEffect(() => {
     dispatch(
       fetchNFTItems({
+        offset: (page - 1) * ITEMS_PORTION_COUNT,
         limit: ITEMS_PORTION_COUNT,
-        channel: ItemsChannel.fineArts,
+        channel: category as ItemsChannel,
       }),
     );
-  }, [dispatch]);
+  }, [category, page, dispatch]);
 
   const nftItems = useMemo(
     () => (nftItemsData ? nftItemsData.items.map(mapProductCardData) : []),
     [nftItemsData],
   );
+
+  const pagesCount = useMemo(() => {
+    if (!nftItemsData) {
+      return 1;
+    }
+    const total = nftItemsData.total;
+    const residue = total % ITEMS_PORTION_COUNT;
+    return (total - residue) / ITEMS_PORTION_COUNT + (residue > 0 ? 1 : 0);
+  }, [nftItemsData]);
 
   const hasItems = !!nftItems.length;
 
@@ -133,10 +123,23 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     [nftItems],
   );
 
+  const renderedPagination = (
+    <Pagination
+      disabled={nftItemsLoading}
+      page={page}
+      count={pagesCount}
+      onChange={onPaginationChange}
+    />
+  );
+
+  const renderedBottomPagination = (
+    <div className={classes.paginationBottom}>{renderedPagination}</div>
+  );
+
   return (
     <Section {...sectionProps}>
       <Container>
-        <Box mb={6}>
+        <Box mb={{ xs: 4, md: 6 }}>
           <ProductsPanel
             onSortChange={onSortChange}
             onCategoryChange={onCategoryChange}
@@ -148,6 +151,10 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
 
         {nftItemsLoading || hasItems ? (
           <>
+            {isMobile && (
+              <div className={classes.paginationTop}>{renderedPagination}</div>
+            )}
+
             <ProductCards
               isLoading={nftItemsLoading}
               skeletonsCount={ITEMS_PORTION_COUNT}
@@ -155,25 +162,13 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
               {rendrerdCards}
             </ProductCards>
 
-            <ScrollLoader
-              disabled={
-                nftItemsLoading ||
-                nftItemsData?.status === FetchNFTItemsStatus.done
-              }
-              isLoading={updateLoading}
-              onLoadMore={onLoadMore}
-              loadingComponent={
-                <Box mt={4}>
-                  <ProductCards
-                    isLoading
-                    skeletonsCount={ITEMS_PORTION_COUNT}
-                  />
-                </Box>
-              }
-            />
+            {renderedBottomPagination}
           </>
         ) : (
-          <NoItems />
+          <>
+            <NoItems />
+            {page !== DEFAULT_PAGE && renderedBottomPagination}
+          </>
         )}
       </Container>
     </Section>
