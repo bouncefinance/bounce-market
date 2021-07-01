@@ -58,7 +58,7 @@ export const MyBrand = () => {
     }
   }, [id, address, dispatch]);
 
-  useEffect(() => {
+  const loadData = useCallback(() => {
     if (address && brandInfo) {
       dispatch(
         listBrandItems({
@@ -71,6 +71,12 @@ export const MyBrand = () => {
     }
   }, [address, brandInfo, dispatch]);
 
+  useEffect(() => {
+    if (address && brandInfo) {
+      loadData();
+    }
+  }, [address, brandInfo, loadData]);
+
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
 
   const toggleBgImgModal = useCallback(
@@ -79,7 +85,7 @@ export const MyBrand = () => {
     },
     [],
   );
-  
+
   return (
     <Section className={classes.root}>
       <Header
@@ -120,7 +126,10 @@ export const MyBrand = () => {
                 <ProductCard
                   id={item.id}
                   poolId={item.poolId}
+                  contractAddress={item.contractAddress}
+                  standard={item.standard}
                   auctionType={item.poolType}
+                  maxQuantity={item.supply}
                   key={item.id}
                   isOnSale={!!item.poolId}
                   title={item.itemname}
@@ -156,6 +165,7 @@ export const MyBrand = () => {
                     item.contractAddress,
                     item.id,
                   )}
+                  queryAction={loadData}
                 />
               </Grid>
             );
