@@ -41,29 +41,30 @@ export const Brands = ({
 
   const sliderProps: Swiper = {
     watchSlidesVisibility: true,
-    slidesPerView: 'auto',
-    spaceBetween: 30,
+    spaceBetween: theme.spacing(5),
     lazy: true,
     onSwiper: setSwiper,
-    breakpoints: {
-      [theme.breakpoints.values.xl]: {
-        slidesPerView: 6,
-      },
-    },
   };
 
   const renderedSlides = useMemo(
     () =>
-      items.map(({ imgUrl, id, brandName, ownerAddress, contractAddress }, i) => (
-        <SwiperSlide className={classes.slide} key={id}>
-          <Link
-            to={BrandRoutesConfig.Brand.generatePath(id)}
-            className={classes.brand}
-          >
-            <BrandItems imgUrl={imgUrl} brandName={brandName} ownerAddress={ownerAddress} contractAddress={contractAddress} />
-          </Link>
-        </SwiperSlide>
-      )),
+      items.map(
+        ({ imgUrl, id, brandName, ownerAddress, contractAddress }, i) => (
+          <SwiperSlide className={classes.slide} key={id}>
+            <Link
+              to={BrandRoutesConfig.Brand.generatePath(id)}
+              className={classes.brand}
+            >
+              <BrandItems
+                imgUrl={imgUrl}
+                brandName={brandName}
+                ownerAddress={ownerAddress}
+                contractAddress={contractAddress}
+              />
+            </Link>
+          </SwiperSlide>
+        ),
+      ),
     [classes, items],
   );
 
