@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@material-ui/styles';
+import classNames from 'classnames';
 import React from 'react';
 import { getTheme } from '../../../common/utils/getTheme';
 import { Themes } from '../../../themes/types';
@@ -19,12 +20,16 @@ export const DefaultLayout = ({
 }: ILayoutProps) => {
   const classes = useDefaultLayoutStyles();
 
+  const isDarkBg = headerTheme === Themes.dark && footerTheme === Themes.dark;
+
   return (
-    <div className={classes.root}>
+    <div className={classNames(classes.root, isDarkBg && classes.darkBg)}>
       <ThemeProvider theme={getTheme(headerTheme)}>
         <Header />
       </ThemeProvider>
-      <main className={classes.main}>{children}</main>
+
+      <main className={classNames(classes.main)}>{children}</main>
+
       <ThemeProvider theme={getTheme(footerTheme)}>
         <Footer />
       </ThemeProvider>

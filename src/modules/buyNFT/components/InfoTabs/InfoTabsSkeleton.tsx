@@ -1,25 +1,25 @@
 import { makeStyles, Theme } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
 import React from 'react';
-import {Skeleton} from "@material-ui/lab";
 
 const useInfoTabsSkeletonStyles = makeStyles<Theme>(theme => ({
   tabs: {
-    display: "flex",
-    flexFlow: "row nowrap",
-    marginBottom: theme.spacig(2),
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    marginBottom: theme.spacing(2),
 
-    "& > *": {
-      width: "50px",
-      height: "40px",
-      marginRight: "20px"
+    '& > *': {
+      width: 50,
+      height: 40,
+      marginRight: 20,
     },
   },
 
   text: {
-    "& > *": {
-      marginBottom: "1rem"
+    '& > *': {
+      marginBottom: '1rem',
     },
-  }
+  },
 }));
 
 export const InfoTabsSkeleton = () => {

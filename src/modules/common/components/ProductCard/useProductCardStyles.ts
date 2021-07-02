@@ -90,6 +90,8 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
+    background: theme.palette.common.white,
+    color: theme.palette.common.black,
   },
 
   title: {
@@ -103,7 +105,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
 
   devider: {
     margin: theme.spacing(2, 0),
-    border: `solid ${fade(theme.palette.text.primary, 0.1)}`,
+    border: `solid ${fade(theme.palette.common.black, 0.1)}`,
     borderWidth: '1px 0 0',
   },
 
@@ -125,7 +127,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     display: 'flex',
     alignItems: 'center',
     fontSize: 13,
-    color: theme.palette.text.secondary,
+    color: fade(theme.palette.common.black, 0.5),
   },
 
   status: {

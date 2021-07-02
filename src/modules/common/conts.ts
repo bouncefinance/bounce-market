@@ -10,6 +10,7 @@ export const featuresConfig = {
   profileSocialLinks: true,
   /**
    * Feature is not implemented
+   * https://fangible.atlassian.net/browse/FAN-209
    */
   artists: false,
   /**
