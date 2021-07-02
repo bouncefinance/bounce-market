@@ -1,4 +1,5 @@
-import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import { setAccount } from 'modules/account/store/actions/setAccount';
 import { queryItemByFilter } from 'modules/pools/actions/queryItemByFilter';
 import { queryPools } from 'modules/pools/actions/queryPools';
 import { Store } from 'redux';
@@ -16,7 +17,7 @@ export const queryBrandPools = createSmartAction<RequestAction>(
   QueryBrandPoolsAction,
   (params: IQueryBrandPoolsArgs) => ({
     request: {
-      promise: (async function () { })(),
+      promise: (async function () {})(),
     },
     meta: {
       asMutation: true,
@@ -55,7 +56,7 @@ export const queryBrandPools = createSmartAction<RequestAction>(
                   type: setAccount.toString(),
                   action: setAccount,
                 });
-                addr = address
+                addr = address;
               } catch (err) {}
 
               const { data: itemData } = await store.dispatchRequest(
