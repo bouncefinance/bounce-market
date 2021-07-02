@@ -30,7 +30,7 @@ export const queryBrandPools = createSmartAction<RequestAction>(
             const { data: poolData } = await store.dispatchRequest(
               queryPools(params.owneraddress),
             );
-
+            
             const fsPools = (poolData?.tradePools ?? []).filter(
               item =>
                 item.state !== 1 &&
@@ -42,10 +42,10 @@ export const queryBrandPools = createSmartAction<RequestAction>(
                 compare(item.token0, params.contractaddress),
             );
 
-            const fsToken = fsPools.map(item => item.tokenId);
-            const eaToken = eaPools.map(item => item.tokenId);
+            const fsToken = fsPools.map(item => Number(item.tokenId));
+            const eaToken = eaPools.map(item => Number(item.tokenId));
             const tokenList = fsToken.concat(eaToken);
-
+            
             if (tokenList.length > 0) {
               const { data: itemData } = await store.dispatchRequest(
                 queryItemByFilter({

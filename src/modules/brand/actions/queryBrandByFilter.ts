@@ -8,7 +8,7 @@ export const queryBrandByFilter = createSmartAction<
 >(QueryBrandByFilterAction, data => {
   return {
     request: {
-      url: `/api/v2/main/getbrandsbyfilter`,
+      url: `/getbrandsbyfilter`,
       method: 'post',
       data: data,
     },

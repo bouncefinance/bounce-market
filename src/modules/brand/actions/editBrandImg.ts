@@ -25,7 +25,7 @@ export const editBrandImg = createSmartAction<RequestAction>(
   EditBrandImgAction,
   ({ imgUrl, accountaddress, contractaddress }: IEditBrandImgArgs) => ({
     request: {
-      url: '/api/v2/main/auth/updatebandimgbycontract',
+      url: '/auth/updatebandimgbycontract',
       method: 'post',
       data: {
         accountaddress: accountaddress,

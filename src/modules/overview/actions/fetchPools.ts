@@ -25,7 +25,7 @@ export const fetchPools = createSmartAction<
   ]
 >('NFTMarket/fetchPools', (params, meta) => ({
   request: {
-    url: '/api/v2/main/getauctionpoolsbypage',
+    url: '/getauctionpoolsbypage',
     method: 'post',
     data: {
       category: params?.category || '',

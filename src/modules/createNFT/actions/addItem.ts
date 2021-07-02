@@ -24,7 +24,7 @@ export const addItem = createSmartAction<
 >('CreateNftActions/addItem', data => {
   return {
     request: {
-      url: '/api/v2/main/auth/additem',
+      url: '/auth/additem',
       method: 'post',
       data,
     },

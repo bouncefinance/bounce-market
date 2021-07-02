@@ -21,6 +21,7 @@ import { TokenSymbol } from '../modules/common/types/TokenSymbol';
 
 type MainApiDriverName =
   | 'mainApiEthMainnet'
+  | 'mainApiEthRinkeby'
   | 'mainApiSmartchain'
   | 'mainApiHeco';
 
@@ -29,7 +30,7 @@ const chainToMainApiDriver: {
 } = {
   [BlockchainNetworkId.mainnet]: 'mainApiEthMainnet',
   [BlockchainNetworkId.ropsten]: undefined,
-  [BlockchainNetworkId.rinkeby]: undefined,
+  [BlockchainNetworkId.rinkeby]: 'mainApiEthRinkeby',
   [BlockchainNetworkId.goerli]: undefined,
   [BlockchainNetworkId.dev]: undefined,
   [BlockchainNetworkId.classic]: undefined,
@@ -46,6 +47,7 @@ function getMainApiDriverName(chainId: BlockchainNetworkId): MainApiDriverName {
 
 type NftViewApiDriverName =
   | 'nftViewApiEthMainnet'
+  | 'nftViewApiEthRinkeby'
   | 'nftViewApiSmartchain'
   | 'nftViewApiHeco';
 
@@ -54,7 +56,7 @@ const chainNftViewApiDriver: {
 } = {
   [BlockchainNetworkId.mainnet]: 'nftViewApiEthMainnet',
   [BlockchainNetworkId.ropsten]: undefined,
-  [BlockchainNetworkId.rinkeby]: undefined,
+  [BlockchainNetworkId.rinkeby]: 'nftViewApiEthRinkeby',
   [BlockchainNetworkId.goerli]: undefined,
   [BlockchainNetworkId.dev]: undefined,
   [BlockchainNetworkId.classic]: undefined,
@@ -73,6 +75,7 @@ function getNftViewApiDriverName(
 
 type NftView2ApiDriverName =
   | 'nftView2ApiEthMainnet'
+  | 'nftView2ApiEthRinkeby'
   | 'nftView2ApiSmartchain'
   | 'nftView2ApiHeco';
 
@@ -81,7 +84,7 @@ const chainNftView2ApiDriver: {
 } = {
   [BlockchainNetworkId.mainnet]: 'nftView2ApiEthMainnet',
   [BlockchainNetworkId.ropsten]: undefined,
-  [BlockchainNetworkId.rinkeby]: undefined,
+  [BlockchainNetworkId.rinkeby]: 'nftView2ApiEthRinkeby',
   [BlockchainNetworkId.goerli]: undefined,
   [BlockchainNetworkId.dev]: undefined,
   [BlockchainNetworkId.classic]: undefined,
@@ -107,7 +110,7 @@ export function getTokenByDriver(
   driverName: DriverName,
   unitAddress?: Address,
 ) {
-  if (driverName === 'mainApiEthMainnet') {
+  if (driverName === 'mainApiEthMainnet' || driverName === 'mainApiEthRinkeby') {
     if (unitAddress === ZERO_ADDRESS) {
       return TokenSymbol.ETH;
     }
@@ -138,6 +141,11 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
         baseURL: process.env.REACT_APP_API_BASE_ETH_MAINNET,
       }),
     ),
+    mainApiEthRinkeby: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_API_BASE_RINKEBY,
+      }),
+    ),
     mainApiSmartchain: createAxiosDriver(
       axios.create({
         baseURL: process.env.REACT_APP_API_BASE,
@@ -153,6 +161,11 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
         baseURL: process.env.REACT_APP_FANGIBLE_URL_ETH_MAINNET,
       }),
     ),
+    nftViewApiEthRinkeby: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_FANGIBLE_URL_RINKEBY,
+      }),
+    ),
     nftViewApiSmartchain: createAxiosDriver(
       axios.create({
         baseURL: process.env.REACT_APP_FANGIBLE_URL,
@@ -166,6 +179,11 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     nftView2ApiEthMainnet: createAxiosDriver(
       axios.create({
         baseURL: process.env.REACT_APP_NFTVIEW_URL_V2_ETH_MAINNET,
+      }),
+    ),
+    nftView2ApiEthRinkeby: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_NFTVIEW_URL_V2_RINKEBY,
       }),
     ),
     nftView2ApiSmartchain: createAxiosDriver(
@@ -186,7 +204,7 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
       type: setAccount.toString(),
       action: setAccount,
     });
-
+    
     if (action.meta?.driver === 'axios') {
       action.meta = {
         ...action.meta,

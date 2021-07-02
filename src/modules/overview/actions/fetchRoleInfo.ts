@@ -34,7 +34,7 @@ export const fetchRoleInfo = createSmartAction<
     meta?: RequestActionMeta<IApiFetchRoleInfo, IFetchRoleInfoData>,
   ) => ({
     request: {
-      url: '/api/v2/main/getpoolinfo',
+      url: '/getpoolinfo',
       method: 'post',
       data: {
         poolId: params.poolId,

@@ -1,5 +1,6 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
+import { IApiQueryPool, IQueryPool } from 'modules/pools/actions/queryPools';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { NftType } from '../../createNFT/actions/createNft';
@@ -22,17 +23,6 @@ interface IApiPool {
   tokenId: number;
 }
 
-interface IApiPoolsData {
-  code: number;
-  data: {
-    englishTotal: number;
-    fixedSwapTotal: number;
-    tradeAuctions: null;
-    tradePools?: IApiPool[];
-  };
-  msg: 'ok';
-}
-
 interface IPool {
   quantity: number;
   totalPrice: BigNumber;
@@ -48,20 +38,20 @@ interface IPool {
   tokenId: number;
 }
 
-function mapPool(data: IApiPool): IPool {
+function mapPool(data: IQueryPool): IPool {
   return {
-    quantity: data.amount_total0,
+    quantity: data.token_amount0,
     totalPrice: new BigNumber(Web3.utils.fromWei(data.amount_total1)),
-    createTime: new Date(data.createTime * 1000),
+    createTime: new Date(data.created_at),
     creator: data.creator,
     name: data.name,
-    nftType: data.nftType,
-    poolId: data.poolId,
+    nftType: data.nft_type,
+    poolId: data.pool_id,
     price: new BigNumber(Web3.utils.fromWei(data.price)),
     state: data.state,
     tokenContract: data.token0,
     unitContract: data.token1,
-    tokenId: data.tokenId,
+    tokenId: data.token_id,
   };
 }
 
@@ -70,14 +60,14 @@ export interface IPoolsData {
 }
 
 export const getPoolsByFilter = createAction<
-  RequestAction<IApiPoolsData, IPoolsData>,
+  RequestAction<IApiQueryPool, IPoolsData>,
   [
     {
       user?: string;
       offset?: number;
       count?: number;
     }?,
-    RequestActionMeta<IApiPoolsData, IPoolsData>?,
+    RequestActionMeta<IApiQueryPool, IPoolsData>?,
   ]
 >('getPoolsByFilter', (params, meta) => ({
   request: {
@@ -90,14 +80,14 @@ export const getPoolsByFilter = createAction<
     },
   },
   meta: {
-    driver: 'nftview',
+    driver: 'axios',
     getData: response => {
       // TODO: parse the response
-      if (response.code !== 200) {
-        throw new Error(response.msg);
+      if (response.code !== 1) {
+        throw new Error('Unexpected response');
       }
-
-      return { list: response.data.tradePools?.map(mapPool) ?? [] };
+      const tradePools = response.data.pools.filter(item => item.auctiontype === 1);
+      return { list: tradePools.map(mapPool) ?? [] };
     },
     ...meta,
   },
