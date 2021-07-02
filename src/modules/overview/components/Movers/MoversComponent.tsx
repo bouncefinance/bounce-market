@@ -52,6 +52,7 @@ export const MoversComponent = ({
     watchSlidesVisibility: true,
     spaceBetween: 30,
     lazy: true,
+    loop: true,
     navigation: {
       prevEl: `#${prevId}`,
       nextEl: `#${nextId}`,
@@ -72,7 +73,7 @@ export const MoversComponent = ({
     onSwiper: setSwiper,
   };
 
-  const modifyChildren = (child: any) => (
+  const modifyChildren = (child: ReactNode) => (
     <SwiperSlide className={classes.slide}>{child}</SwiperSlide>
   );
 

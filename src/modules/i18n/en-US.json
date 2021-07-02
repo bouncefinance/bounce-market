@@ -12,7 +12,8 @@
     "reset": "Reset",
     "restore": "Restore",
     "unknown": "Unknown",
-    "coming-soon": "Coming soon..."
+    "coming-soon": "Coming soon...",
+    "quantity": "Quantity"
   },
   "time": {
     "time-over": "Time is over",
@@ -27,9 +28,13 @@
     "create": "Create",
     "connect": "Connect Wallet",
     "inventory": "My Inventory",
-    "brands": "My Brands",
+    "my-brands": "My Brands",
     "profile-settings": "Profile settings",
     "disconnect": "Disconnect",
+    "drops": "Dr\uD83D\uDD25ps",
+    "market": "Market",
+    "brands": "Brands",
+    "how-it-works": "How it works",
     "search": {
       "placeholder": "Search by name, creator, brand...",
       "empty": "No results found",
@@ -123,6 +128,8 @@
     "buy-now": "Buy now",
     "sold-out": "Sold out",
     "place-a-bid": "Place a bid",
+    "your-bid": "Your bid",
+    "enter-a-bid": "Enter a Bid",
     "tabs": {
       "history": "History",
       "bids": "Bids",
@@ -131,11 +138,31 @@
     },
     "info": {
       "date": "{value, date, medium}",
-      "time": "at {value, time, short}"
+      "time": "at {value, time, short}",
+      "view-scan": "View on BscScan"
     },
     "dialog": {
       "input-info": "You must bid at least {value} {currency}",
       "footnote": "Bids placed in auction cannot be withdrawn"
+    },
+    "token-info": {
+      "standard": "Standard:",
+      "total-supply": "Total Supply:",
+      "name-tags": "Name Tags:",
+      "contract": "Contract:",
+      "token-id": "Token ID:"
+    },
+    "history": {
+      "create-str": "Put on sale {quantity} editions for {price} {symbol}",
+      "offer-str": "Offered {price} {symbol} for {quantity} edition",
+      "cancel-str": "Canceled",
+      "claim-str": "Claimed"
+    },
+    "bid": {
+      "bid-placed": "Bid placed"
+    },
+    "owner": {
+      "balance": "{balance} copies"
     }
   },
   "form": {
@@ -143,10 +170,14 @@
   },
   "validation": {
     "required": "This field is required",
+    "require-integer": "This value should be integer number",
     "min": "Smallest value is {value}",
     "max": "Highest value is {value}",
     "invalid-email": "Enter a valid Email",
     "invalid-website": "Enter a valid Website URL",
+    "invalid-instagram": "Enter a valid instagram Website URL",
+    "invalid-twitter": "Enter a valid twitter Website URL",
+    "invalid-facebook": "Enter a valid facebook Website URL",
     "invalid-type": "Invalid file type",
     "max-size": "Max size is {value, number}MB"
   },
@@ -256,7 +287,6 @@
     "unfollow": "Unfollow",
     "subscribers": "Subscribers",
     "bio": "Bio",
-
     "user-profile": "User profile",
     "edit-profile": "Edit profile",
     "edit-avatar": "Edit avatar",
@@ -273,12 +303,16 @@
         "email": "Email",
         "custom-url": "Custom URL",
         "bio": "Bio",
-        "website": "Website"
+        "website": "Website",
+        "instagram": "Instagram",
+        "twitter": "twitter",
+        "facebook": "Facebook"
       },
       "placeholder": {
-        "instagram": "Instagram Username",
-        "twitter": "Twitter Username",
-        "facebook": "Facebook Username"
+        "website": "Website Link",
+        "instagram": "Instagram Link",
+        "twitter": "Twitter Link",
+        "facebook": "Facebook Link"
       },
       "save-changes": "Save Changes",
       "success-message": "Changes have been applied successfully."
@@ -287,7 +321,7 @@
       "my-items": "My items",
       "items": "Items",
       "my-bids": "My bids",
-      "my-sells": "My sells",
+      "my-sells": "My sales",
       "my-brands": "My brands",
       "brands": "Brands",
       "activity": "Activity",
@@ -299,7 +333,6 @@
       "event": "Event",
       "item": "Item",
       "price": "Price",
-      "quantity": "Quantity",
       "from": "From",
       "to": "To",
       "date": "Date",
@@ -369,6 +402,14 @@
     "put-on-sale": "Put on sale",
     "transfer": "Transfer token",
     "burn": "Burn token"
+  },
+  "transfer-token": {
+    "title": "Transfer Token",
+    "submit": "Transfer"
+  },
+  "burn-token": {
+    "title": "Burn Token",
+    "submit": "Burn"
   },
   "empty-data": {
     "title": "Whoops. Looks like there's no data.",

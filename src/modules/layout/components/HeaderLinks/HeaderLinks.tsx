@@ -1,9 +1,12 @@
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
+import { StoriesRoutesConfig } from 'modules/stories/Routes';
+import { Button } from 'modules/uiKit/Button';
 import React, { useCallback, useMemo } from 'react';
+import { NavLink } from 'react-router-dom';
 import { uid } from 'react-uid';
-import { HeaderLinkItem } from './HeaderLinkItem';
+import { t } from '../../../i18n/utils/intl';
 import { useHeaderLinksStyles } from './HeaderLinksStyles';
 
 const useHeaderLinks = () => {
@@ -35,13 +38,18 @@ export const HeaderLinksComponent = ({
     <nav className={classes.root}>
       {items.map(({ label, href }) => {
         return (
-          <HeaderLinkItem
-            label={label}
-            href={href}
-            classes={classes}
+          <Button
             key={uid(label)}
+            component={NavLink}
+            to={href}
+            href={href}
+            variant="text"
+            activeClassName={classes.activeLink}
+            className={classes.link}
             onClick={onItemClick}
-          />
+          >
+            {label}
+          </Button>
         );
       })}
     </nav>
@@ -53,11 +61,15 @@ export const HeaderLinks = () => {
   const items = useMemo(
     () => [
       {
-        label: 'Market',
+        label: t('header.drops'),
+        href: StoriesRoutesConfig.Stories.generatePath(),
+      },
+      {
+        label: t('header.market'),
         href: MarketRoutesConfig.Market.generatePath(),
       },
       {
-        label: 'Brands',
+        label: t('header.brands'),
         href: BrandRoutesConfig.ListBrand.generatePath(),
       },
     ],
@@ -72,7 +84,7 @@ export const HeaderLinksSecondary = () => {
   const items = useMemo(
     () => [
       {
-        label: 'How it works',
+        label: t('header.how-it-works'),
         href: '/',
       },
     ],

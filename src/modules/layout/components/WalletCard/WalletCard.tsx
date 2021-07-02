@@ -6,6 +6,7 @@ import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWalletCardStyles } from './WalletCardStyles';
+import Truncate from 'react-truncate';
 
 const ENABLE_CURRENCY_ICON = false;
 
@@ -35,7 +36,7 @@ export const WalletCard = ({
       {name ? (
         <Box className={classes.row}>
           <Typography variant="h3" className={classes.name}>
-            {name}
+            <Truncate lines={3}>{name}</Truncate>
           </Typography>
         </Box>
       ) : null}
@@ -75,7 +76,7 @@ export const WalletCard = ({
           className={classes.menuItem}
           onClick={handleClose}
         >
-          {t('header.brands')}
+          {t('header.my-brands')}
         </MenuItem>
         <MenuItem
           component={RouterLink}

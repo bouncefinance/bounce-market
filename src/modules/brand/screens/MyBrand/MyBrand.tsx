@@ -58,7 +58,7 @@ export const MyBrand = () => {
     }
   }, [id, address, dispatch]);
 
-  useEffect(() => {
+  const loadData = useCallback(() => {
     if (address && brandInfo) {
       dispatch(
         listBrandItems({
@@ -71,13 +71,21 @@ export const MyBrand = () => {
     }
   }, [address, brandInfo, dispatch]);
 
+  useEffect(() => {
+    if (address && brandInfo) {
+      loadData();
+    }
+  }, [address, brandInfo, loadData]);
+
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
 
   const toggleBgImgModal = useCallback(
     (isOpen: boolean) => () => {
       setBgImgModalOpened(isOpen);
-    }, []);
-    
+    },
+    [],
+  );
+
   return (
     <Section className={classes.root}>
       <Header
@@ -118,7 +126,10 @@ export const MyBrand = () => {
                 <ProductCard
                   id={item.id}
                   poolId={item.poolId}
+                  contractAddress={item.contractAddress}
+                  standard={item.standard}
                   auctionType={item.poolType}
+                  maxQuantity={item.supply}
                   key={item.id}
                   isOnSale={!!item.poolId}
                   title={item.itemname}
@@ -134,7 +145,7 @@ export const MyBrand = () => {
                   copies={item.supply}
                   MediaProps={{
                     category: item.category,
-                    src: item.fileurl,
+                    src: item.fileUrl,
                     objectFit: 'scale-down',
                     loading: 'lazy',
                   }}
@@ -151,9 +162,10 @@ export const MyBrand = () => {
                     />
                   }
                   toSale={RoutesConfiguration.PublishNft.generatePath(
-                    item.contractaddress,
+                    item.contractAddress,
                     item.id,
                   )}
+                  queryAction={loadData}
                 />
               </Grid>
             );

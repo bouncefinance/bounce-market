@@ -50,8 +50,11 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
   }
 
   if (payload.standard === NftType.ERC1155) {
-    if (!payload.supply) {
+    const supply = payload.supply
+    if (!supply) {
       errors.supply = t('validation.required');
+    } else if (!/^\d+$/.test(supply)) {
+      errors.supply = t('validation.require-integer')
     }
   }
 
@@ -191,6 +194,11 @@ export const CreateNFT = () => {
                 color="primary"
                 fullWidth={true}
                 options={standardOptions}
+                inputProps={{
+                  step: 'any',
+                  min: '0',
+                  inputMode: 'decimal',
+                }}
               />
             </Box>
           )}

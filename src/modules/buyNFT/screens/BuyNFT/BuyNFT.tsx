@@ -18,9 +18,14 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { featuresConfig } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
+import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
+import {
+  fetchPoolHistory,
+  IWrapperPoolHistory,
+} from 'modules/overview/actions/fetchPoolHistory';
+import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
-import { AccountInfo } from '../../../common/components/AccountInfo';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { AuctionState } from '../../../common/const/AuctionState';
 import { FixedSwapState } from '../../../common/const/FixedSwapState';
@@ -31,6 +36,10 @@ import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
+import {
+  fetchRoleInfo,
+  IRoleInfo,
+} from '../../../overview/actions/fetchRoleInfo';
 import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { AuctionType } from '../../../overview/api/auctionType';
@@ -38,9 +47,12 @@ import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
 import { buyFixed } from '../../actions/buyFixed';
 import { fetchItem } from '../../actions/fetchItem';
+import { BSCScanBtn } from '../../components/BSCScanBtn';
 import { BuyDialog } from '../../components/BuyDialog';
+import { TokenInfo } from '../../components/TokenInfo';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
+import {BuyNFTSkeleton} from "./BuyNFTSkeleton";
 
 export const BuyNFT = () => {
   const [isEmptyData, setIsEmptyData] = useState(false);
@@ -69,23 +81,72 @@ export const BuyNFT = () => {
   const { push } = useHistory();
 
   const init = useCallback(() => {
-    dispatch(fetchWeb3PoolDetails({ poolId, poolType })).then(response => {
-      const { data } = response;
+    dispatch(fetchWeb3PoolDetails({ poolId, poolType }))
+      .then(response => {
+        const { data } = response;
 
-      if (!data) {
-        setIsEmptyData(true);
-        return;
-      }
+        if (!data) {
+          setIsEmptyData(true);
+          return;
+        }
 
-      dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
-      // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
-      dispatch(fetchCurrency({ unitContract: data.unitContract }));
-    });
+        dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
+        // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
+        dispatch(fetchCurrency({ unitContract: data.unitContract }));
+      })
+      .then(() => {
+        dispatch(fetchRoleInfo({ poolId, poolType }));
+        dispatch(fetchPoolHistory({ poolId, poolType }));
+        dispatch(fetchPoolBids({ poolId, poolType }));
+        dispatch(fetchPoolNftOwner({ poolId, poolType }));
+      });
   }, [dispatch, poolType, poolId]);
 
   useEffect(() => {
     init();
   }, [init]);
+
+  const getHistoryTitle = useCallback((item: IWrapperPoolHistory) => {
+    let titleStr = '';
+    switch (item.event) {
+      case 'FixedSwapCreated':
+      case 'EnglishCreated':
+        titleStr = t('details-nft.history.create-str', {
+          quantity: item.quantity,
+          price: item.price,
+          symbol: 'BNB',
+        });
+        break;
+
+      case 'FixedSwapSwapped':
+        titleStr = t('details-nft.history.offer-str', {
+          quantity: item.quantity,
+          price: item.price,
+          symbol: 'BNB',
+        });
+        break;
+
+      case 'FixedSwapCanceled':
+        titleStr = t('details-nft.history.cancel-str');
+        break;
+
+      case 'EnglishClaimed':
+        titleStr = t('details-nft.history.claim-str');
+        break;
+
+      default:
+        break;
+    }
+    return titleStr;
+  }, []);
+
+  const getSenderName = (sender: IRoleInfo) => {
+    return sender.username || truncateWalletAddr(sender.address);
+  };
+
+  const wrapperTitle = (name: string, address: string) => {
+    return name || truncateWalletAddr(address);
+  };
 
   const handleBidderClaim = useCallback(() => {
     dispatch(bidderClaim({ poolId })).then(({ error }) => {
@@ -196,92 +257,157 @@ export const BuyNFT = () => {
   return (
     <Queries<
       ResponseData<typeof fetchItem>,
-      ResponseData<typeof fetchWeb3PoolDetails>
+      ResponseData<typeof fetchWeb3PoolDetails>,
+      ResponseData<typeof fetchRoleInfo>
     >
-      requestActions={[fetchItem, fetchWeb3PoolDetails]}
+      requestActions={[fetchItem, fetchWeb3PoolDetails, fetchRoleInfo]}
+      noDataMessage={<BuyNFTSkeleton/>}
     >
-      {({ data: item }, { data: poolDetails }) => (
-        <Queries<ResponseData<typeof fetchCurrency>>
-          requestActions={[fetchCurrency]}
-          requestKeys={[poolDetails.unitContract]}
+      {({ data: item }, { data: poolDetails }, { data: roleInfos }) => (
+        <Queries<
+          ResponseData<typeof fetchCurrency>,
+          ResponseData<typeof fetchPoolHistory>,
+          ResponseData<typeof fetchPoolBids>,
+          ResponseData<typeof fetchPoolNftOwner>
         >
-          {({ data: currency }) => {
+          requestActions={[
+            fetchCurrency,
+            fetchPoolHistory,
+            fetchPoolBids,
+            fetchPoolNftOwner,
+          ]}
+          requestKeys={[poolDetails.unitContract]}
+          noDataMessage={<BuyNFTSkeleton/>}
+        >
+          {(
+            { data: currency },
+            { data: poolHistory },
+            { data: poolBids },
+            { data: poolNftOwner },
+          ) => {
+            const ownerTitle =
+              roleInfos.creator.username ||
+              truncateWalletAddr(item.ownerAddress);
+
             const renderedCreator = (
               <ProfileInfo
-                subTitle="Creator"
-                title="VanHuiFirst"
+                subTitle="Minter"
+                title={wrapperTitle(
+                  roleInfos.minter.username,
+                  roleInfos.minter.address,
+                )}
                 users={[
                   {
-                    name: 'VanHuiFirst',
-                    avatar: 'https://picsum.photos/32?random=1',
-                    verified: true,
+                    name: wrapperTitle(
+                      roleInfos.minter.username,
+                      roleInfos.minter.address,
+                    ),
+                    href: ProfileRoutesConfig.OtherProfile.generatePath(
+                      roleInfos.minter.address,
+                    ),
+                    avatar: roleInfos.minter.avatar,
+                    verified: false,
                   },
                 ]}
               />
             );
 
-            const ownerTitle =
-              item.ownername || truncateWalletAddr(item.owneraddress);
+            const renderedOwner = (
+              <ProfileInfo
+                subTitle="Seller"
+                title={wrapperTitle(
+                  roleInfos.creator.username,
+                  roleInfos.creator.address,
+                )}
+                users={[
+                  {
+                    name: wrapperTitle(
+                      roleInfos.creator.username,
+                      roleInfos.creator.address,
+                    ),
+                    href: ProfileRoutesConfig.OtherProfile.generatePath(
+                      roleInfos.creator.address,
+                    ),
+                    avatar: roleInfos.creator.avatar,
+                  },
+                ]}
+              />
+            );
 
             const renderedHistoryList = (
               <InfoTabsList>
-                <InfoTabsItem
-                  title="Offered 3 BNB for 1 edition"
-                  author="yeah66"
-                  date={new Date()}
-                />
+                {poolHistory.map(item => {
+                  return (
+                    <InfoTabsItem
+                      key={item.time.getTime()}
+                      title={getHistoryTitle(item)}
+                      author={getSenderName(item.sender)}
+                      date={item.time}
+                    />
+                  );
+                })}
               </InfoTabsList>
             );
 
             const renderedBidsList = (
               <InfoTabsList>
-                <InfoTabsItem
-                  title="Bid placed"
-                  author="Scarlett_vfx"
-                  date={new Date()}
-                  price={new BigNumber('10')}
-                  cryptoCurrency="ETH"
-                  cryptoPrice={new BigNumber(10.55413)}
-                  href="//google.com"
-                />
+                {poolBids.map(item => {
+                  return (
+                    <InfoTabsItem
+                      key={item.time.getTime()}
+                      title={t('details-nft.bid.bid-placed')}
+                      author={getSenderName(item.sender)}
+                      date={item.time}
+                      price={item.price.multipliedBy(currency.priceUsd)}
+                      cryptoCurrency={'BNB'}
+                      cryptoPrice={item.price}
+                      href={`https://bscscan.com/tx/${item.txId}`}
+                    />
+                  );
+                })}
               </InfoTabsList>
             );
 
             const renderedOnwersList = (
               <InfoTabsList>
-                <ProfileInfo
-                  isTitleFirst
-                  avatarSize="big"
-                  title="Bombist"
-                  subTitle="4 copies"
-                  users={[
-                    {
-                      name: 'Bombist',
-                      avatar: 'https://picsum.photos/44?random=1',
-                    },
-                  ]}
-                />
+                {poolNftOwner.map(item => {
+                  return (
+                    <ProfileInfo
+                      key={item.owner.address}
+                      isTitleFirst
+                      avatarSize="big"
+                      title={getSenderName(item.owner)}
+                      subTitle={t('details-nft.owner.balance', {
+                        balance: item.balance,
+                      })}
+                      users={[
+                        {
+                          name: getSenderName(item.owner),
+                          href: ProfileRoutesConfig.OtherProfile.generatePath(
+                            item.owner.address,
+                          ),
+                          avatar: item.owner.avatar,
+                        },
+                      ]}
+                    />
+                  );
+                })}
               </InfoTabsList>
             );
 
             const renderedTokenInfoList = (
               <InfoTabsList>
-                <InfoTabsItem
-                  title="Offered 3 BNB for 1 edition"
-                  author="yeah66"
-                  date={new Date()}
+                <BSCScanBtn
+                  href={`https://bscscan.com/address/${item.contractAddress}`}
                 />
 
-                <InfoTabsItem
-                  title="Minted"
-                  author="HumanFactory"
-                  date={new Date()}
-                />
-
-                <InfoTabsItem
-                  title="Put on sale 9 editions for 0.5 ETH "
-                  author="0xc2...f6e5"
-                  date={new Date()}
+                <TokenInfo
+                  name={item.itemName}
+                  itemSymbol={item.itemSymbol}
+                  standard={item.standard}
+                  contractAddress={item.contractAddress}
+                  supply={item.supply}
+                  tokenId={item.id}
                 />
               </InfoTabsList>
             );
@@ -294,15 +420,15 @@ export const BuyNFT = () => {
               <div className={classes.root}>
                 <MediaContainer
                   className={classes.imgContainer}
-                  src={item.fileurl}
-                  title={item.itemname}
+                  src={item.fileUrl}
+                  title={item.itemName}
                   description={item.description}
                   category={item.category}
                 />
 
                 <Info className={classes.info}>
                   <InfoDescr
-                    title={item.itemname}
+                    title={item.itemName}
                     description={item.description}
                     copiesCurrent={
                       isEnglishAuction(poolDetails)
@@ -315,19 +441,15 @@ export const BuyNFT = () => {
                         : poolDetails.totalQuantity
                     }
                     creator={renderedCreator}
-                    owner={<AccountInfo address={item.owneraddress} />}
+                    owner={renderedOwner}
                   />
 
                   {isEnglishAuction(poolDetails) ? (
                     <InfoPrices
                       endDate={poolDetails.closeAt}
-                      price={
-                        new BigNumber(
-                          poolDetails.lastestBidAmount.multipliedBy(
-                            currency.priceUsd,
-                          ),
-                        )
-                      }
+                      price={poolDetails.lastestBidAmount.multipliedBy(
+                        currency.priceUsd,
+                      )}
                       cryptoPrice={
                         poolDetails.lastestBidAmount.isEqualTo(0)
                           ? poolDetails.amountMin1
@@ -400,8 +522,8 @@ export const BuyNFT = () => {
                   >
                     {({ loading }) => (
                       <BidDialog
-                        name={item.itemname}
-                        filepath={item.fileurl}
+                        name={item.itemName}
+                        filepath={item.fileUrl}
                         onSubmit={({ bid }) => {
                           handleBuyEnglish({
                             bidPrice: new BigNumber(bid),
@@ -432,8 +554,8 @@ export const BuyNFT = () => {
                   >
                     {({ loading }) => (
                       <BuyDialog
-                        name={item.itemname}
-                        filepath={item.fileurl}
+                        name={item.itemName}
+                        filepath={item.fileUrl}
                         onSubmit={() => {
                           handleBuyEnglish({
                             amountMax1: poolDetails.amountMax1,
@@ -459,8 +581,8 @@ export const BuyNFT = () => {
                   <Mutation type={buyFixed.toString()} action={buyFixed}>
                     {({ loading }) => (
                       <BuyDialog
-                        name={item.itemname}
-                        filepath={item.fileurl}
+                        name={item.itemName}
+                        filepath={item.fileUrl}
                         onSubmit={data => {
                           handleBuyFixed({
                             nftType: poolDetails.nftType,

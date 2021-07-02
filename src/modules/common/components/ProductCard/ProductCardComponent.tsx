@@ -3,6 +3,7 @@ import {
   ButtonBase,
   Card,
   CardContent,
+  ClickAwayListener,
   MenuItem,
   MenuList,
   Popover,
@@ -27,6 +28,7 @@ import { useProductCardStyles } from './useProductCardStyles';
 import { AuctionType } from 'modules/overview/api/auctionType';
 import { FixedSwapState } from 'modules/common/const/FixedSwapState';
 import { AuctionState } from 'modules/common/const/AuctionState';
+import { ConditionalWrapper } from 'modules/common/components/ConditionalWrapper';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -51,12 +53,14 @@ export interface IProductCardComponentProps {
   };
   profileInfo?: ReactNode;
   href?: string;
+  id?: number;
   isLiked?: boolean;
   isLikeDisabled?: boolean;
   imgPreloader?: ReactNode;
   onLikeClick?: () => void;
   status?: ProductCardStatuses;
   toSale?: string;
+  hasAction?: boolean;
   onTransferClick?: () => void;
   onBurnClick?: () => void;
 }
@@ -73,6 +77,7 @@ export const ProductCardComponent = ({
   auctionType,
   state,
   likes,
+  id,
   isLikeDisabled = false,
   isLiked = false,
   onLikeClick,
@@ -81,6 +86,7 @@ export const ProductCardComponent = ({
   imgPreloader,
   status,
   toSale,
+  hasAction,
   onTransferClick,
   onBurnClick,
 }: IProductCardComponentProps) => {
@@ -208,18 +214,22 @@ export const ProductCardComponent = ({
 
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
-      {href ? (
-        <Link to={href} className={classes.imgBox}>
-          {renderMediaContent()}
-        </Link>
-      ) : (
-        renderMediaContent()
-      )}
+      <ConditionalWrapper
+        condition={!!href}
+        wrapper={<Link to={href || '#'} className={classes.imgBox} />}
+      >
+        {renderMediaContent()}
+      </ConditionalWrapper>
 
       <CardContent className={classes.content}>
-        <Typography variant="h5" className={classes.title} title={title}>
-          {title}
-        </Typography>
+        <ConditionalWrapper
+          condition={!!href}
+          wrapper={<Link to={href || '#'} />}
+        >
+          <Typography variant="h5" className={classes.title} title={title}>
+            {title}
+          </Typography>
+        </ConditionalWrapper>
 
         {profileInfo}
 
@@ -227,12 +237,12 @@ export const ProductCardComponent = ({
 
         {isOnSale && price && (
           <div className={classes.price}>
-            {auctionType === AuctionType.FixedSwap && (
-              state === FixedSwapState.Completed
+            {auctionType === AuctionType.FixedSwap &&
+              (state === FixedSwapState.Completed
                 ? t('product-card.sold-for')
                 : t('product-card.price'))}
-            {auctionType === AuctionType.EnglishAuction && (
-              state === AuctionState.Claimed
+            {auctionType === AuctionType.EnglishAuction &&
+              (state === AuctionState.Claimed
                 ? t('product-card.top-bid')
                 : t('product-card.sold-for'))}
             {} {price.toFormat()} {priceType}
@@ -255,7 +265,9 @@ export const ProductCardComponent = ({
           {!isOnSale && (
             <>
               <div>
-                <Typography className={classes.status}>{t("product-card.not-on-sale")}</Typography>
+                <Typography className={classes.status}>
+                  {t('product-card.not-on-sale')}
+                </Typography>
 
                 {copies && renderedCopies}
               </div>
@@ -269,44 +281,53 @@ export const ProductCardComponent = ({
                     rounded
                     to={toSale}
                   >
-                    Put on sale
+                    {t('product-card.put-on-sale')}
                   </Button>
-                  <ButtonBase className={classes.menuBtn} onClick={handleClick}>
-                    <VerticalDotsIcon className={classes.menuIcon} />
-                  </ButtonBase>
-                  <Popover
-                    className={classes.menuPopover}
-                    open={isPopoverOpened}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    PaperProps={{
-                      variant: 'outlined',
-                    }}
-                  >
-                    <MenuList>
-                      <MenuItem
-                        className={classes.menuItem}
-                        onClick={onTransferClick}
+                  {hasAction && (
+                    <>
+                      <ButtonBase
+                        className={classes.menuBtn}
+                        onClick={handleClick}
                       >
-                        Transfer token
-                      </MenuItem>
+                        <VerticalDotsIcon className={classes.menuIcon} />
+                      </ButtonBase>
+                      <Popover
+                        className={classes.menuPopover}
+                        open={isPopoverOpened}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        PaperProps={{
+                          variant: 'outlined',
+                        }}
+                      >
+                        <ClickAwayListener onClickAway={handleClose}>
+                          <MenuList>
+                            <MenuItem
+                              className={classes.menuItem}
+                              onClick={onTransferClick}
+                            >
+                              {t('product-card.transfer')}
+                            </MenuItem>
 
-                      <MenuItem
-                        className={classes.menuItem}
-                        onClick={onBurnClick}
-                      >
-                        Burn token
-                      </MenuItem>
-                    </MenuList>
-                  </Popover>
+                            <MenuItem
+                              className={classes.menuItem}
+                              onClick={onBurnClick}
+                            >
+                              {t('product-card.burn')}
+                            </MenuItem>
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Popover>
+                    </>
+                  )}
                 </Box>
               )}
             </>

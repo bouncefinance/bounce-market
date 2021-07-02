@@ -1,5 +1,4 @@
-import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
-import { setAccount } from 'modules/account/store/actions/setAccount';
+import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { queryItemByFilter } from 'modules/pools/actions/queryItemByFilter';
 import { queryPools } from 'modules/pools/actions/queryPools';
 import { Store } from 'redux';

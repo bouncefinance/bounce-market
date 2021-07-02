@@ -12,7 +12,7 @@ import { RootState } from 'store/store';
 import { TokenSymbol } from '../../common/types/TokenSymbol';
 import { AuctionType } from '../api/auctionType';
 import { ItemsChannel } from './fetchItemsByFilter';
-import { fetchPools } from './fetchPools';
+import { fetchPools, FetchStateType } from './fetchPools';
 
 export interface INFTItem {
   category?: PoolCategoryType;
@@ -76,15 +76,10 @@ interface IFetchNFTItemsArgs {
   offset?: number;
 }
 
-export enum FetchNFTItemsStatus {
-  done = 'done',
-  inProgress = 'in progress',
-}
-
 export interface IFetchNFTItems {
   items: INFTItem[];
-  status: FetchNFTItemsStatus;
   offset: number;
+  total: number;
 }
 
 export type FetchNFTItemsMetaType = RequestActionMeta<any, IFetchNFTItems>;
@@ -107,8 +102,8 @@ export const fetchNFTItems = createSmartAction<
         promise: (async () => {
           const queryResponse: IFetchNFTItems = {
             items: [],
-            status: FetchNFTItemsStatus.done,
             offset: params.offset ?? 0,
+            total: 0,
           };
 
           const { data: poolsData } = await store.dispatchRequest(
@@ -120,6 +115,7 @@ export const fetchNFTItems = createSmartAction<
                 limit: params.limit,
                 offset: params.offset,
                 orderfield: 1,
+                state: FetchStateType.Live,
               },
               {
                 silent: true,
@@ -131,7 +127,7 @@ export const fetchNFTItems = createSmartAction<
             return queryResponse;
           }
 
-          const tradePools = poolsData
+          const tradePools = poolsData.data
             .filter(item => item.state !== 1)
             .map(mapNFTItem);
 
@@ -153,10 +149,7 @@ export const fetchNFTItems = createSmartAction<
           );
 
           queryResponse.items = tradePoolsWithOwnerImg;
-          queryResponse.status =
-            poolsData.length < params.limit
-              ? FetchNFTItemsStatus.done
-              : FetchNFTItemsStatus.inProgress;
+          queryResponse.total = poolsData.total;
 
           return queryResponse;
         })(),

@@ -7,7 +7,7 @@ export const featuresConfig = {
   /**
    * There is no data on the backend side
    */
-  profileSocialLinks: false,
+  profileSocialLinks: true,
   /**
    * Feature is not implemented
    */
@@ -21,10 +21,6 @@ export const featuresConfig = {
    */
   nftCardOwnerInfo: true,
   /**
-   * No has profile pages yet
-   */
-  usersInSearch: false,
-  /**
    * Hidden, as for now the own profile is displayed without a unique URL
    * and it cannot be shared
    */
@@ -34,10 +30,10 @@ export const featuresConfig = {
    * and it cannot be shared
    */
   ownBrandSharing: false,
-  nftLikes: false,
+  nftLikes: true,
   nftItemsSortSelect: false,
-  nftDetailsLikesCount: false,
-  nftDetailsCreator: false,
+  nftDetailsLikesCount: true,
+  nftDetailsCreator: true,
   nftDetailsCount: true,
   subscribers: false,
   profileSortTabs: false,
@@ -45,11 +41,11 @@ export const featuresConfig = {
   /**
    * poolDetail config
    */
-  infoTabs: false,
-  nftDetailsHistory: false,
-  nftDetailsBids: false,
-  nftDetailsOwners: false,
-  nftDetailsTokenInfo: false,
+  infoTabs: true,
+  nftDetailsHistory: true,
+  nftDetailsBids: true,
+  nftDetailsOwners: true,
+  nftDetailsTokenInfo: true,
 };
 
 export enum BlockchainNetworkId {

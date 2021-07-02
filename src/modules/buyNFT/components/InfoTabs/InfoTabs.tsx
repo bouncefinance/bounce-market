@@ -57,7 +57,7 @@ export const InfoTabs = ({
   owners,
   tokenInfo,
 }: iInfoTabsProps) => {
-  const [tab, setTab] = useState<TabList>(TabList.history);
+  const [tab, setTab] = useState<TabList>(TabList.tokenInfo);
 
   const onTabsChange = useCallback((_, value) => {
     setTab(value);

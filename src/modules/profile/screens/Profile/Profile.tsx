@@ -110,10 +110,6 @@ export const Profile = () => {
         label: t('profile.tabs.my-items'),
       },
       {
-        value: ProfileTab.sells,
-        label: t('profile.tabs.my-sells'),
-      },
-      {
         value: ProfileTab.bids,
         label: t('profile.tabs.my-bids'),
       },
@@ -190,7 +186,11 @@ export const Profile = () => {
           }
           // https://ankrnetwork.atlassian.net/browse/FE-3449
           // TODO: [FE-3449] add social links after it will be implemented on backend side
-          social={featuresConfig.profileSocialLinks && <Social />}
+          social={
+            featuresConfig.profileSocialLinks && (
+              <Social profileInfo={profileInfo} />
+            )
+          }
           address={address}
         />
 

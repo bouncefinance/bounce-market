@@ -14,6 +14,7 @@ export interface ILikedItem extends IAccountLike {
   price: BigNumber;
   createTime: string;
   token1: string;
+  likes: number;
 }
 
 export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
@@ -49,7 +50,7 @@ export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
 
             const likedItems = accountLikes
               .map(accountLike => {
-                const poolInfo = pools.find(
+                const poolInfo = pools.data.find(
                   pool =>
                     pool.tokenid === accountLike.itemId &&
                     pool.poolid === accountLike.poolId,
@@ -59,11 +60,13 @@ export const queryLikedItems = createAction<RequestAction<any, ILikedItem[]>>(
                 } else {
                   return {
                     ...accountLike,
+                    accountAddress: poolInfo.creator,
                     poolType: accountLike.auctionType,
                     price: new BigNumber(Web3.utils.fromWei(poolInfo.price)),
                     createTime: poolInfo.created_at,
                     token1: poolInfo.token1,
-                  };
+                    likes: poolInfo.likecount,
+                  } as ILikedItem;
                 }
               })
               // filter out the null elements

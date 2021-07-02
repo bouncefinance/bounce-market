@@ -1,8 +1,26 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
 export const useSearchResultStyles = makeStyles<Theme>(theme => ({
-  root: {},
+  root: {
+    marginRight: 1,
+    maxHeight: '100%',
+    overflowX: 'hidden',
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': {
+      width: 10,
+    },
+    '&::-webkit-scrollbar-track': {
+      background: theme.palette.grey[200],
+      borderRadius: 10,
+      margin: theme.spacing(0.5, 0),
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: theme.palette.common.black,
+      borderRadius: 10,
+    },
+  },
   empty: {
+    padding: theme.spacing(3),
     textAlign: 'center',
   },
   group: {
@@ -17,7 +35,11 @@ export const useSearchResultStyles = makeStyles<Theme>(theme => ({
   title: {
     fontSize: 15,
     fontWeight: 700,
-    padding: theme.spacing(0, 3),
+    padding: theme.spacing(2, 3, 1),
+    backgroundColor: theme.palette.common.white,
+    position: 'sticky',
+    top: 0,
+    zIndex: 20,
   },
   content: {
     display: 'flex',
@@ -32,6 +54,7 @@ export const useSearchResultStyles = makeStyles<Theme>(theme => ({
   },
   preview: {
     width: 50,
+    minWidth: 50,
     height: 50,
     marginRight: 16,
     borderRadius: 4,
@@ -40,14 +63,24 @@ export const useSearchResultStyles = makeStyles<Theme>(theme => ({
   },
   avatar: {
     width: 50,
+    minWidth: 50,
     height: 50,
     marginRight: 16,
   },
   item: {
     fontSize: 15,
     fontWeight: 500,
+    maxWidth: '100%',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
   },
-  name: {},
+  name: {
+    maxWidth: '100%',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  },
   price: {
     fontSize: 15,
     fontWeight: 700,

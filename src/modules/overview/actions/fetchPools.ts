@@ -1,10 +1,16 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { IGetPoolsApi_V2, ITradePool_V2 } from 'modules/common/api/getPools';
+import { IGetPoolsApi_V2} from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
+export enum FetchStateType {
+  All = 2,
+  Live = 0,
+  Close = 1,
+}
+
 export const fetchPools = createSmartAction<
-  RequestAction<IGetPoolsApi_V2, ITradePool_V2[]>,
+  RequestAction<IGetPoolsApi_V2, IGetPoolsApi_V2>,
   [
     {
       category?: string;
@@ -13,8 +19,9 @@ export const fetchPools = createSmartAction<
       limit?: number;
       offset?: number;
       orderfield?: number;
+      state?: FetchStateType;
     }?,
-    RequestActionMeta<IGetPoolsApi_V2, ITradePool_V2[]>?,
+    RequestActionMeta<IGetPoolsApi_V2, IGetPoolsApi_V2>?
   ]
 >('NFTMarket/fetchPools', (params, meta) => ({
   request: {
@@ -27,6 +34,7 @@ export const fetchPools = createSmartAction<
       limit: params?.limit || 10,
       offset: params?.offset || 0,
       orderfield: params?.orderfield || 1,
+      state: params?.state === undefined ? FetchStateType.All : params?.state,
     },
   },
   meta: {
@@ -36,7 +44,7 @@ export const fetchPools = createSmartAction<
         throw new Error(response.msg);
       }
 
-      return response.data;
+      return response;
     },
     ...meta,
   },
