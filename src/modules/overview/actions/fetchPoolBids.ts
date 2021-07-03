@@ -71,7 +71,7 @@ export const fetchPoolBids = createSmartAction<
     meta?: RequestActionMeta<IApiFetchPoolBids, IWrapperPoolBids[]>,
   ) => ({
     request: {
-      url: '/api/v2/main/getpoolbids',
+      url: '/getpoolbids',
       method: 'post',
       data: {
         poolId: params.poolId,

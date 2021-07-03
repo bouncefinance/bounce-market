@@ -11,7 +11,7 @@ export const getAuthToken = createSmartAction<RequestAction>(
   'getAuthToken',
   (params: IParams) => ({
     request: {
-      url: '/api/v2/main/jwtauth',
+      url: '/jwtauth',
       method: 'post',
       data: params,
     },

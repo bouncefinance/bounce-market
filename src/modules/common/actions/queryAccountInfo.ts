@@ -27,7 +27,7 @@ export const queryAccountInfo = createSmartAction<
   [IQueryAccountInfoArgs, RequestActionMeta<IApiAccountInfo, IAccountInfo>?]
 >('queryAccountInfo', (params, meta) => ({
   request: {
-    url: '/api/v2/main/queryaccountinfo',
+    url: '/queryaccountinfo',
     method: 'post',
     data: {
       accountaddress: params.accountAddress,

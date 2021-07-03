@@ -26,7 +26,7 @@ export const editProfileBgImg = createSmartAction<RequestAction>(
   'editProfileBgImg',
   ({ imgUrl }: IEditProfileBgImgArgs) => ({
     request: {
-      url: '/api/v2/main/auth/updateaccountbandimg',
+      url: '/auth/updateaccountbandimg',
       method: 'post',
       data: {
         bandimgurl: imgUrl,

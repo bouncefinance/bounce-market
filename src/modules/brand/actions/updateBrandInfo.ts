@@ -21,7 +21,7 @@ export const updateBrandInfo = createSmartAction<
 >(UpdateBrandInfoAction, data => {
   return {
     request: {
-      url: '/api/v2/main/auth/addbrand',
+      url: '/auth/addbrand',
       method: 'post',
       data,
     },
