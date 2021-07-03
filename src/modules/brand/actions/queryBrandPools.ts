@@ -80,53 +80,46 @@ export const queryBrandPools = createSmartAction<RequestAction>(
                 }),
               );
 
-              if (itemData?.length) {
-                return itemData.map(item => {
-                  const findTar = tarTokenList.find(
-                    tarItem => tarItem.tokenId === item.id,
-                  );
-                  return findTar
-                    ? {
-                        ...findTar,
-                        ...item,
-                        href:
-                          findTar.poolId && findTar.auctionType
-                            ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                                findTar.poolId,
-                                findTar.auctionType,
-                              )
-                            : '',
-                      }
-                    : {};
-                });
-              } else {
-                return [];
-              }
+              const mapTarTokenList = new Map();
+              tarTokenList.forEach(item =>
+                mapTarTokenList.set(item.tokenId, item),
+              );
+
+              return (itemData ?? []).map(item => {
+                const findTar = mapTarTokenList.get(item.id);
+                return findTar
+                  ? {
+                      ...findTar,
+                      ...item,
+                      href:
+                        findTar.poolId && findTar.auctionType
+                          ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                              findTar.poolId,
+                              findTar.auctionType,
+                            )
+                          : '',
+                    }
+                  : {};
+              });
             };
 
             if (allToken.length === 0) {
               return new Promise((resolve, reject) => resolve([]));
-            } else {
-              const PromiseList = [];
-
-              if (fsToken.length > 0) {
-                const queryFsList = querytarTokenList(fsToken);
-                PromiseList.push(queryFsList);
-              }
-
-              if (eaToken.length > 0) {
-                const queryEaList = querytarTokenList(eaToken);
-                PromiseList.push(queryEaList);
-              }
-
-              return Promise.all(PromiseList).then(res => {
-                const resArr: any[] | PromiseLike<any[]> = [];
-                for (let i = 0; i < res.length; i++) {
-                  resArr.push(...res[i]);
-                }
-                return resArr;
-              });
             }
+
+            const PromiseList = [];
+
+            if (fsToken.length > 0) {
+              const queryFsList = querytarTokenList(fsToken);
+              PromiseList.push(queryFsList);
+            }
+
+            if (eaToken.length > 0) {
+              const queryEaList = querytarTokenList(eaToken);
+              PromiseList.push(queryEaList);
+            }
+
+            return Promise.all(PromiseList).then(res => res.flat());
           })(),
         };
       },
