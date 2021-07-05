@@ -10,15 +10,21 @@ interface IDropTimerProps {
 
 export const DropTimer = ({ endDate }: IDropTimerProps) => {
   const classes = useDropTimerStyles();
-  const { duration, timeRemaining } = useTimer(endDate);
+  const { duration, timeRemaining, isTimeOver } = useTimer(endDate);
 
-  const formattedEndDate = t('time.finished-on', { end: endDate });
+  const getTimerValue = () => {
+    if (isTimeOver) {
+      return t('time.time-over');
+    } else if (timeRemaining.days > 1) {
+      return t('time.finished-on', { end: endDate });
+    } else {
+      return duration;
+    }
+  };
 
   return (
     <div className={classes.root}>
-      <Typography component="span">
-        {timeRemaining.days > 1 ? formattedEndDate : duration}
-      </Typography>
+      <Typography component="span">{getTimerValue()}</Typography>
     </div>
   );
 };
