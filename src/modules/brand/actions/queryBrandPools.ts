@@ -1,7 +1,10 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AuctionType } from 'modules/overview/api/auctionType';
-import { queryItemByFilter } from 'modules/pools/actions/queryItemByFilter';
+import {
+  IItem,
+  queryItemByFilter,
+} from 'modules/pools/actions/queryItemByFilter';
 import { queryPools } from 'modules/pools/actions/queryPools';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
@@ -19,6 +22,31 @@ interface ITempToken {
   auctionType: AuctionType;
   poolId: number;
 }
+
+const wrapperTarTokenList = async (
+  tarTokenList: any[],
+  itemData: IItem[] | undefined,
+) => {
+  const mapTarTokenList = new Map();
+  tarTokenList.forEach(item => mapTarTokenList.set(item.tokenId, item));
+
+  return (itemData ?? []).map(item => {
+    const findTar = mapTarTokenList.get(item.id);
+    return findTar
+      ? {
+          ...findTar,
+          ...item,
+          href:
+            findTar.poolId && findTar.auctionType
+              ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                  findTar.poolId,
+                  findTar.auctionType,
+                )
+              : '',
+        }
+      : {};
+  });
+};
 
 export const queryBrandPools = createSmartAction<RequestAction>(
   QueryBrandPoolsAction,
@@ -79,28 +107,7 @@ export const queryBrandPools = createSmartAction<RequestAction>(
                   ids: tarTokenList.map(item => item.tokenId),
                 }),
               );
-
-              const mapTarTokenList = new Map();
-              tarTokenList.forEach(item =>
-                mapTarTokenList.set(item.tokenId, item),
-              );
-
-              return (itemData ?? []).map(item => {
-                const findTar = mapTarTokenList.get(item.id);
-                return findTar
-                  ? {
-                      ...findTar,
-                      ...item,
-                      href:
-                        findTar.poolId && findTar.auctionType
-                          ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                              findTar.poolId,
-                              findTar.auctionType,
-                            )
-                          : '',
-                    }
-                  : {};
-              });
+              return await wrapperTarTokenList(tarTokenList, itemData);
             };
 
             if (allToken.length === 0) {

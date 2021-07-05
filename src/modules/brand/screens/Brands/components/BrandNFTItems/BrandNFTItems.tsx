@@ -35,7 +35,7 @@ interface IBrandNFTItemsProps {
 }
 
 interface ISwiperItem extends IItem {
-  auctionType?: AuctionType.FixedSwap;
+  auctionType?: AuctionType;
   poolId?: number;
   href: string;
 }
