@@ -42,8 +42,8 @@ export const queryBrandPools = createSmartAction<RequestAction>(
                 compare(item.token0, params.contractaddress),
             );
 
-            const fsToken = fsPools.map(item => item.tokenId);
-            const eaToken = eaPools.map(item => item.tokenId);
+            const fsToken = fsPools.map(item => Number(item.tokenId));
+            const eaToken = eaPools.map(item => Number(item.tokenId));
             const tokenList = fsToken.concat(eaToken);
 
             if (tokenList.length > 0) {

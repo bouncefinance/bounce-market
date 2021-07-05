@@ -53,11 +53,11 @@ export const fetchItemsByFilter = createAction<
   RequestAction<IApiFetchItemsByFilter, IItemByFilter[]>,
   [
     IFetchItemsByFilterArgs,
-    RequestActionMeta<IApiFetchItemsByFilter, IItemByFilter[]>?
+    RequestActionMeta<IApiFetchItemsByFilter, IItemByFilter[]>?,
   ]
 >('NFTMarket/fetchItemsByFilter', (params, meta) => ({
   request: {
-    url: '/api/v2/main/getitemsbyfilter',
+    url: '/getitemsbyfilter',
     method: 'post',
     data: {
       ...params,

@@ -1,5 +1,5 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { IGetPoolsApi_V2} from 'modules/common/api/getPools';
+import { IGetPoolsApi_V2 } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
@@ -21,11 +21,11 @@ export const fetchPools = createSmartAction<
       orderfield?: number;
       state?: FetchStateType;
     }?,
-    RequestActionMeta<IGetPoolsApi_V2, IGetPoolsApi_V2>?
+    RequestActionMeta<IGetPoolsApi_V2, IGetPoolsApi_V2>?,
   ]
 >('NFTMarket/fetchPools', (params, meta) => ({
   request: {
-    url: '/api/v2/main/getauctionpoolsbypage',
+    url: '/getauctionpoolsbypage',
     method: 'post',
     data: {
       category: params?.category || '',

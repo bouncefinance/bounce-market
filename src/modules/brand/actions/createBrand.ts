@@ -6,7 +6,6 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { ICreateBrand } from '../screens/CreateBrand';
 import { getBrandContract } from './const';
-import { queryBrandAddress } from './queryCreatedBrand';
 import { IUpdateBrandInfoPayload, updateBrandInfo } from './updateBrandInfo';
 import { NftType } from 'modules/createNFT/actions/createNft';
 import {
@@ -60,17 +59,13 @@ export const createBrand = createSmartAction(
               action: setAccount,
             });
 
-            const brandAddress = await store.dispatchRequest(
-              queryBrandAddress({ address }),
-            );
-
             const uploadFileResult = await store.dispatchRequest(
               uploadFile({ file }),
             );
 
             const brandInfo: IUpdateBrandInfoPayload = {
               brandname: brandName,
-              contractaddress: brandAddress.data ?? '',
+              contractaddress: '',
               standard: standard,
               description: description,
               imgurl: uploadFileResult.data?.result.path ?? '',

@@ -30,7 +30,7 @@ export const fetchProfileInfo = createSmartAction<
   [IFetchProfileInfoArgs?, Test?]
 >('fetchProfileInfo', (params, meta) => ({
   request: {
-    url: '/api/v2/main/getaccount',
+    url: '/getaccount',
     method: 'post',
   },
   meta: {

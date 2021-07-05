@@ -18,7 +18,7 @@ export const getBrandContract = (chainID: number) => {
     case 1:
       return process.env.REACT_APP_BRAND_CONTRACT_ADDRESS_V2_ETH_MAINNET;
     case 4:
-      return '0xb9BaC7b8C8ca157035E78e764bC3AD7D7BcCAb3A';
+      return process.env.REACT_APP_BRAND_CONTRACT_ADDRESS_V2_RINKEBY;
     case 56:
       return process.env.REACT_APP_BRAND_CONTRACT_ADDRESS_V2;
     case 128:
