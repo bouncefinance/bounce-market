@@ -110,7 +110,10 @@ export function getTokenByDriver(
   driverName: DriverName,
   unitAddress?: Address,
 ) {
-  if (driverName === 'mainApiEthMainnet' || driverName === 'mainApiEthRinkeby') {
+  if (
+    driverName === 'mainApiEthMainnet' ||
+    driverName === 'mainApiEthRinkeby'
+  ) {
     if (unitAddress === ZERO_ADDRESS) {
       return TokenSymbol.ETH;
     }
@@ -204,7 +207,7 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
       type: setAccount.toString(),
       action: setAccount,
     });
-    
+
     if (action.meta?.driver === 'axios') {
       action.meta = {
         ...action.meta,

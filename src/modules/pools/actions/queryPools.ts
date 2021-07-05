@@ -13,7 +13,7 @@ export interface IQueryPool {
   close_at: number;
   created_at: string;
   creator: string;
-  creator_claimed: false
+  creator_claimed: false;
   ctime: number;
   duration: number;
   height: number;
@@ -67,7 +67,8 @@ export interface IQueryPools {
 }
 
 export const mapPool = (pools: IQueryPool[]): IQueryPools => {
-  const tradePools = pools.filter((item: IQueryPool) => item.auctiontype === 1)
+  const tradePools = pools
+    .filter((item: IQueryPool) => item.auctiontype === 1)
     .map((item: IQueryPool) => ({
       amount_total0: item.token_amount0,
       amount_total1: item.amount_total1,
@@ -80,9 +81,10 @@ export const mapPool = (pools: IQueryPool[]): IQueryPools => {
       state: item.state,
       token0: item.token0,
       token1: item.token1,
-      tokenId: item.id
+      tokenId: item.token_id,
     }));
-  const tradeAuctions = pools.filter((item: IQueryPool) => item.auctiontype === 2)
+  const tradeAuctions = pools
+    .filter((item: IQueryPool) => item.auctiontype === 2)
     .map((item: IQueryPool) => ({
       amountMax1: item.amount_max1,
       amountMin1: item.amount_min1,
@@ -101,18 +103,18 @@ export const mapPool = (pools: IQueryPool[]): IQueryPools => {
       token0: item.token0,
       token1: item.token1,
       tokenAmount0: item.token_amount0,
-      tokenId: item.id,
+      tokenId: item.token_id,
     }));
   return {
     tradeAuctions: tradeAuctions,
     tradePools: tradePools,
-  }
-}
+  };
+};
 
 export interface IApiQueryPool {
   code: 1 | number;
   data: {
-    pools: IQueryPool[]
+    pools: IQueryPool[];
   };
 }
 

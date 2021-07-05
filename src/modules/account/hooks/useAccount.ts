@@ -19,7 +19,11 @@ export const useAccount = () => {
 
   const chainId = parseInt((data?.chainId ?? 0).toString());
 
-  const isChainSupported = (chainId === BlockchainNetworkId.smartchain || chainId === BlockchainNetworkId.mainnet || chainId === BlockchainNetworkId.rinkeby || chainId === BlockchainNetworkId.heco);
+  const isChainSupported =
+    chainId === BlockchainNetworkId.smartchain ||
+    chainId === BlockchainNetworkId.mainnet ||
+    chainId === BlockchainNetworkId.rinkeby ||
+    chainId === BlockchainNetworkId.heco;
 
   const walletSupportNetworkChange = !!data?.web3?.givenProvider;
 

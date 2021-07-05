@@ -3,9 +3,7 @@ import BigNumber from 'bignumber.js';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { NftType } from '../../createNFT/actions/createNft';
-import {
-  IFetchPoolDetailsData,
-} from '../../overview/actions/fetchPoolDetails';
+import { IFetchPoolDetailsData } from '../../overview/actions/fetchPoolDetails';
 import { AuctionState } from '../../common/const/AuctionState';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 import { IApiQueryPool, IQueryPool } from 'modules/pools/actions/queryPools';
@@ -87,7 +85,7 @@ export const getPoolsByFilter = createAction<
       }
 
       return {
-        list: [...(data.data.pools.map(mapPool)),],
+        list: [...data.data.pools.map(mapPool)],
       };
     },
     ...meta,

@@ -15,9 +15,11 @@ import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { t } from 'modules/i18n/utils/intl';
 import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
+import { AuctionType } from 'modules/overview/api/auctionType';
 import { IItem } from 'modules/pools/actions/queryItemByFilter';
 import { Img } from 'modules/uiKit/Img';
 import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -32,6 +34,12 @@ interface IBrandNFTItemsProps {
   contractAddress: string;
 }
 
+interface ISwiperItem extends IItem {
+  auctionType?: AuctionType;
+  poolId?: number;
+  href: string;
+}
+
 export const BrandNFTItems = ({
   className,
   ownerAddress,
@@ -40,7 +48,7 @@ export const BrandNFTItems = ({
   const classes = useBrandNFTItemsStyles();
   const dispatch = useDispatchRequest();
   const theme = useTheme();
-  const [items, setItems] = useState<IItem[]>([]);
+  const [items, setItems] = useState<ISwiperItem[]>([]);
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -91,26 +99,28 @@ export const BrandNFTItems = ({
 
   const renderedSlides = useMemo(
     () =>
-      items.map(({ itemname, fileurl, category }, i) => (
+      items.map(({ itemname, fileurl, category, href }, i) => (
         <SwiperSlide className={classes.slide} key={uid(itemname, i)}>
           <div className={classes.item}>
             <Paper className={classes.itemImgFrame} variant="outlined">
-              {category === NFTCategoryType.image ? (
-                <Img
-                  className={classes.itemImgBox}
-                  src={fileurl}
-                  objectFit="scale-down"
-                  ratio="1x1"
-                  isNativeLazyLoading={false}
-                  imgClassName="swiper-lazy"
-                />
-              ) : (
-                <div className={classes.videoWrapper}>
-                  <div className={classNames(classes.video, 'swiper-lazy')}>
-                    <VideoPlayer src={fileurl} objectFit="scale-down" />
+              <Link to={href}>
+                {category === NFTCategoryType.image ? (
+                  <Img
+                    className={classes.itemImgBox}
+                    src={fileurl}
+                    objectFit="scale-down"
+                    ratio="1x1"
+                    isNativeLazyLoading={false}
+                    imgClassName="swiper-lazy"
+                  />
+                ) : (
+                  <div className={classes.videoWrapper}>
+                    <div className={classNames(classes.video, 'swiper-lazy')}>
+                      <VideoPlayer src={fileurl} objectFit="scale-down" />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </Link>
 
               <SwiperPreloader />
             </Paper>

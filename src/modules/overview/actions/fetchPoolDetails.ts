@@ -163,7 +163,7 @@ export const fetchPoolDetails = createSmartAction<
       method: 'post',
       data: {
         poolId: params.poolId,
-        poolType: params.poolType === AuctionType.FixedSwap ? 1 : 2
+        poolType: params.poolType === AuctionType.FixedSwap ? 1 : 2,
       },
     },
     meta: {
@@ -176,7 +176,9 @@ export const fetchPoolDetails = createSmartAction<
           return {
             amountMax1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_max1)),
             amountMin1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_min1)),
-            amountMinIncr1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_min_incr1)),
+            amountMinIncr1: new BigNumber(
+              Web3.utils.fromWei(poolInfo.amount_min_incr1),
+            ),
             bidderClaimed: !!poolInfo.bidder_claimed,
             closeAt: new Date(poolInfo.close_at * 1000),
             createTime: new Date(poolInfo.created_at),
@@ -200,7 +202,9 @@ export const fetchPoolDetails = createSmartAction<
         } else {
           return {
             quantity: poolInfo.token_amount0,
-            totalPrice: new BigNumber(Web3.utils.fromWei(poolInfo.amount_total1)),
+            totalPrice: new BigNumber(
+              Web3.utils.fromWei(poolInfo.amount_total1),
+            ),
             createTime: new Date(poolInfo.created_at),
             creator: poolInfo.creator,
             name: poolInfo.itemname,

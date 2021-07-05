@@ -86,7 +86,9 @@ export const getPoolsByFilter = createAction<
       if (response.code !== 1) {
         throw new Error('Unexpected response');
       }
-      const tradePools = response.data.pools.filter(item => item.auctiontype === 1);
+      const tradePools = response.data.pools.filter(
+        item => item.auctiontype === 1,
+      );
       return { list: tradePools.map(mapPool) ?? [] };
     },
     ...meta,
