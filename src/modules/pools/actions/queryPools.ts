@@ -81,7 +81,7 @@ export const mapPool = (pools: IQueryPool[]): IQueryPools => {
       state: item.state,
       token0: item.token0,
       token1: item.token1,
-      tokenId: item.id,
+      tokenId: item.token_id,
     }));
   const tradeAuctions = pools
     .filter((item: IQueryPool) => item.auctiontype === 2)
@@ -103,7 +103,7 @@ export const mapPool = (pools: IQueryPool[]): IQueryPools => {
       token0: item.token0,
       token1: item.token1,
       tokenAmount0: item.token_amount0,
-      tokenId: item.id,
+      tokenId: item.token_id,
     }));
   return {
     tradeAuctions: tradeAuctions,

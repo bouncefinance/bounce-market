@@ -1,5 +1,10 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
-import { queryItemByFilter } from 'modules/pools/actions/queryItemByFilter';
+import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { AuctionType } from 'modules/overview/api/auctionType';
+import {
+  IItem,
+  queryItemByFilter,
+} from 'modules/pools/actions/queryItemByFilter';
 import { queryPools } from 'modules/pools/actions/queryPools';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
@@ -11,6 +16,37 @@ export interface IQueryBrandPoolsArgs {
   owneraddress: string;
   contractaddress: string;
 }
+
+interface ITempToken {
+  tokenId: number;
+  auctionType: AuctionType;
+  poolId: number;
+}
+
+const wrapperTarTokenList = async (
+  tarTokenList: any[],
+  itemData: IItem[] | undefined,
+) => {
+  const mapTarTokenList = new Map();
+  tarTokenList.forEach(item => mapTarTokenList.set(item.tokenId, item));
+
+  return (itemData ?? []).map(item => {
+    const findTar = mapTarTokenList.get(item.id);
+    return findTar
+      ? {
+          ...findTar,
+          ...item,
+          href:
+            findTar.poolId && findTar.auctionType
+              ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                  findTar.poolId,
+                  findTar.auctionType,
+                )
+              : '',
+        }
+      : {};
+  });
+};
 
 export const queryBrandPools = createSmartAction<RequestAction>(
   QueryBrandPoolsAction,
@@ -42,24 +78,55 @@ export const queryBrandPools = createSmartAction<RequestAction>(
                 compare(item.token0, params.contractaddress),
             );
 
-            const fsToken = fsPools.map(item => Number(item.tokenId));
-            const eaToken = eaPools.map(item => Number(item.tokenId));
-            const tokenList = fsToken.concat(eaToken);
+            const fsToken: ITempToken[] = fsPools.map(item => {
+              return {
+                tokenId: item.tokenId,
+                auctionType: AuctionType.FixedSwap,
+                poolId: item.poolId,
+              };
+            });
+            const eaToken: ITempToken[] = eaPools.map(item => {
+              return {
+                tokenId: item.tokenId,
+                auctionType: AuctionType.EnglishAuction,
+                poolId: item.poolId,
+              };
+            });
 
-            if (tokenList.length > 0) {
+            const allToken: ITempToken[] = fsToken.concat(eaToken);
+
+            const querytarTokenList = async (tarTokenList: ITempToken[]) => {
               const { data: itemData } = await store.dispatchRequest(
                 queryItemByFilter({
                   accountaddress: '',
                   category: '',
                   channel: '',
-                  cts: new Array(tokenList.length).fill(params.contractaddress),
-                  ids: tokenList,
+                  cts: new Array(tarTokenList.length).fill(
+                    params.contractaddress,
+                  ),
+                  ids: tarTokenList.map(item => item.tokenId),
                 }),
               );
-              return new Promise((resolve, reject) => resolve(itemData));
-            } else {
+              return await wrapperTarTokenList(tarTokenList, itemData);
+            };
+
+            if (allToken.length === 0) {
               return new Promise((resolve, reject) => resolve([]));
             }
+
+            const PromiseList = [];
+
+            if (fsToken.length > 0) {
+              const queryFsList = querytarTokenList(fsToken);
+              PromiseList.push(queryFsList);
+            }
+
+            if (eaToken.length > 0) {
+              const queryEaList = querytarTokenList(eaToken);
+              PromiseList.push(queryEaList);
+            }
+
+            return Promise.all(PromiseList).then(res => res.flat());
           })(),
         };
       },
