@@ -25,7 +25,7 @@ const demoDrops = [
     text:
       'Since then, Space Yacht has used the Twerk Skeleton design on both apparel and live visuals at their events. Once Space Yacht started producing NFTs, the legend of the Twerk Skeleton took on a whole new life of its own.',
     creatorName: 'grossehalbuer',
-    endDate: new Date(2021, 7, 2),
+    endDate: new Date('2021-07-02T15:07:30'),
     items: getDemoItems(0, 0),
   },
   {

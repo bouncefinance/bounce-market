@@ -22,7 +22,8 @@
     "days-short": "{days}d",
     "hours-short": "{hours}h",
     "minutes-short": "{minutes}m",
-    "seconds-short": "{seconds}s"
+    "seconds-short": "{seconds}s",
+    "finished-on": "Finished on {end, date, medium}"
   },
   "header": {
     "create": "Create",
