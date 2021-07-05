@@ -38,7 +38,7 @@ export const uploadFile: (
 
     return {
       request: {
-        url: '/api/v2/main/auth/fileupload',
+        url: '/auth/fileupload',
         method: 'post',
         data: formData,
       },

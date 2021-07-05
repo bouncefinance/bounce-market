@@ -61,7 +61,7 @@ export const fetchPoolHistory = createSmartAction<
     meta?: RequestActionMeta<IApiFetchPoolHistory, IWrapperPoolHistory[]>,
   ) => ({
     request: {
-      url: '/api/v2/main/getpoolactivities',
+      url: '/getpoolactivities',
       method: 'post',
       data: {
         poolId: params.poolId,

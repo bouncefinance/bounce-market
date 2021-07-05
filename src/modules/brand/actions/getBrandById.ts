@@ -12,7 +12,7 @@ export const queryBrandById = createSmartAction<
 >(QueryBrandByIdAction, (params, meta) => {
   return {
     request: {
-      url: `/api/v2/main/getbrandbyid`,
+      url: `/getbrandbyid`,
       method: 'post',
       data: params,
     },

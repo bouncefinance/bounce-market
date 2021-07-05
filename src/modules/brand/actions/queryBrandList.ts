@@ -8,7 +8,7 @@ export const queryBrandList = createSmartAction<
 >(FetchBrandListAction, () => {
   return {
     request: {
-      url: `/api/v2/main/getbrandsbypage`,
+      url: `/getbrandsbypage`,
       method: 'post',
       data: {
         limit: 10000,

@@ -43,7 +43,7 @@ export const fetchPoolsWeight = createSmartAction<
     meta?: RequestActionMeta<IApiFetchPoolsWeightData, IFetchPoolsWeightData>,
   ) => ({
     request: {
-      url: '/api/v2/main/getpoolsinfobypage',
+      url: '/getpoolsinfobypage',
       method: 'post',
       data: params,
     },

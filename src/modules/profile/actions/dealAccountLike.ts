@@ -23,7 +23,7 @@ export const dealAccountLike = createAction<
   [IDealAccountLikeArgs]
 >('dealAccountLike', params => ({
   request: {
-    url: '/api/v2/main/auth/dealaccountlike',
+    url: '/auth/dealaccountlike',
     method: 'post',
     data: {
       auctiontype: params.poolType ?? 0,

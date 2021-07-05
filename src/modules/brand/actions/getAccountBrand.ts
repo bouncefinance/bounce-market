@@ -7,7 +7,7 @@ export const getAccountBrand = createSmartAction<
   RequestAction<IApiBrandInfo, IBrandInfo[]>
 >(GetAccountBrandAction, (address: string) => ({
   request: {
-    url: `/api/v2/main/getbrandsbypage`,
+    url: `/getbrandsbypage`,
     method: 'post',
     data: {
       accountaddress: address,

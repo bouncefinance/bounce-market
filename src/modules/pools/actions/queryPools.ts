@@ -4,15 +4,39 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 // TODO: Merge with src/modules/profile/api/getPoolsByFilter.ts
 
 export interface IQueryPool {
-  englishTotal: number;
-  fixedSwapTotal: number;
+  amount_max1: string;
+  amount_min1: string;
+  amount_min_incr1: string;
+  amount_total1: string;
+  auctiontype: 1 | 2;
+  bidder_claimed: boolean;
+  close_at: number;
+  created_at: string;
+  creator: string;
+  creator_claimed: false;
+  ctime: number;
+  duration: number;
+  height: number;
+  id: number;
+  name: string;
+  nft_type: number;
+  pool_id: number;
+  price: string;
+  state: number;
+  swapped_amount0: number;
+  token0: string;
+  token1: string;
+  token_amount0: number;
+  token_id: number;
+}
+export interface IQueryPools {
   tradeAuctions: {
     amountMax1: string;
     amountMin1: string;
     amountMinIncr1: string;
     bidderClaimed: boolean;
     closeAt: number;
-    createTime: number;
+    createTime: string;
     creator: string;
     creatorClaimed: boolean;
     duration: number;
@@ -29,7 +53,7 @@ export interface IQueryPool {
   tradePools: {
     amount_total0: number;
     amount_total1: string;
-    createTime: number;
+    createTime: string;
     creator: string;
     name: string;
     nftType: number;
@@ -42,26 +66,75 @@ export interface IQueryPool {
   }[];
 }
 
+export const mapPool = (pools: IQueryPool[]): IQueryPools => {
+  const tradePools = pools
+    .filter((item: IQueryPool) => item.auctiontype === 1)
+    .map((item: IQueryPool) => ({
+      amount_total0: item.token_amount0,
+      amount_total1: item.amount_total1,
+      createTime: item.created_at,
+      creator: item.creator,
+      name: item.name,
+      nftType: item.nft_type,
+      poolId: item.pool_id,
+      price: item.price,
+      state: item.state,
+      token0: item.token0,
+      token1: item.token1,
+      tokenId: item.token_id,
+    }));
+  const tradeAuctions = pools
+    .filter((item: IQueryPool) => item.auctiontype === 2)
+    .map((item: IQueryPool) => ({
+      amountMax1: item.amount_max1,
+      amountMin1: item.amount_min1,
+      amountMinIncr1: item.amount_min_incr1,
+      bidderClaimed: item.bidder_claimed,
+      closeAt: item.close_at,
+      createTime: item.created_at,
+      creator: item.creator,
+      creatorClaimed: item.creator_claimed,
+      duration: item.duration,
+      lastestBidAmount: item.price,
+      name: item.name,
+      nftType: item.nft_type,
+      poolId: item.pool_id,
+      state: item.state,
+      token0: item.token0,
+      token1: item.token1,
+      tokenAmount0: item.token_amount0,
+      tokenId: item.token_id,
+    }));
+  return {
+    tradeAuctions: tradeAuctions,
+    tradePools: tradePools,
+  };
+};
+
 export interface IApiQueryPool {
-  code: 200 | number;
-  data: IQueryPool;
+  code: 1 | number;
+  data: {
+    pools: IQueryPool[];
+  };
 }
 
 export const queryPools = createSmartAction<
-  RequestAction<IApiQueryPool, IQueryPool>
+  RequestAction<IApiQueryPool, IQueryPools>
 >('queryPoolsAction', (address: string) => ({
   request: {
     url: `/pools?offset=0&count=10000&user_address=${address}`,
     method: 'get',
   },
   meta: {
-    driver: 'nftview',
+    driver: 'axios',
     asMutation: true,
     getData: data => {
-      if (data.code !== 200) {
+      if (data.code !== 1) {
         throw new Error('Unexpected response');
       }
-      return data.data;
+
+      const pools: IQueryPool[] = data.data.pools;
+      return mapPool(pools);
     },
   },
 }));
