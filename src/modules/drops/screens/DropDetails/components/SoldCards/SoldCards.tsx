@@ -4,6 +4,7 @@ import {
   ProductCard,
   ProductCardSkeleton,
 } from 'modules/common/components/ProductCard';
+import { t } from 'modules/i18n/utils/intl';
 import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
 import { CardsList } from '../CardsList';
@@ -44,7 +45,7 @@ export const SoldCards = () => {
   return (
     <Box mb={5}>
       <Box mb={5}>
-        <Typography variant="h2">Sold</Typography>
+        <Typography variant="h2">{t('drop-details.sold')}</Typography>
       </Box>
 
       <CardsList>{loading ? renderedSkeletons : renderedCards}</CardsList>

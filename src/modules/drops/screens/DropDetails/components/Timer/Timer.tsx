@@ -28,7 +28,7 @@ export const Timer = ({ endDate, className }: ITimerProps) => {
           color="textSecondary"
           className={classes.text}
         >
-          until the Drop ends
+          {t('drop-details.timer-descr')}
         </Typography>
       )}
     </div>

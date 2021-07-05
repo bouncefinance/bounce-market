@@ -2,6 +2,7 @@ import { Box, Typography } from '@material-ui/core';
 import { DropsContainer } from 'modules/drops/components/DropsContainer';
 import { DropsOwner } from 'modules/drops/components/DropsOwner';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
+import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { uid } from 'react-uid';
@@ -62,11 +63,11 @@ enum DropsSortBy {
 const tabs = [
   {
     id: DropsSortBy.Upcoming,
-    label: 'Upcoming  dr🔥ps',
+    label: t('drops.upcoming'),
   },
   {
     id: DropsSortBy.Previous,
-    label: 'Previous drops',
+    label: t('drops.previous'),
   },
 ];
 

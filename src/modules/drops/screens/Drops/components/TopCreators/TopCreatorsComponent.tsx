@@ -3,6 +3,7 @@ import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { DropsContainer } from 'modules/drops/components/DropsContainer';
+import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { ReactNode, useEffect, useState } from 'react';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
@@ -70,7 +71,7 @@ export const TopCreatorsComponent = ({
           </IconButton>
 
           <Typography className={classes.title} variant="h2">
-            Top Creators
+            {t('drops.top-creators')}
           </Typography>
 
           <IconButton id={nextId} className={classes.navBtn}>
