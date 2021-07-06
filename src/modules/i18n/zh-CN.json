@@ -156,6 +156,9 @@
     },
     "owner": {
       "balance": "{balance} copies"
+    },
+    "tooltip": {
+      "bid-warning": "请注意，你在出价后将无法取消。你的出价将是有效的，直到它被出价、被创作者接受或过期"
     }
   },
   "form": {
