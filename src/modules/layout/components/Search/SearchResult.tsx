@@ -8,7 +8,6 @@ import {
 } from './getByLikeStr';
 import { Link as RouterLink } from 'react-router-dom';
 import { BuyNFTRoutesConfig } from '../../../buyNFT/BuyNFTRoutes';
-import { AuctionTypeMap } from '../../../overview/api/auctionType';
 import { useSearchResultStyles } from './useSearchResultStyles';
 import { t } from '../../../i18n/utils/intl';
 import { Img } from '../../../uiKit/Img';
@@ -16,6 +15,7 @@ import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 import { BrandRoutesConfig } from '../../../brand/BrandRoutes';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
+import { auctionTypeMap } from 'modules/common/api/poolType';
 
 const SearchItems = ({ data }: { data: ISearchItem[] }) => {
   const classes = useSearchResultStyles();
@@ -32,7 +32,7 @@ const SearchItems = ({ data }: { data: ISearchItem[] }) => {
           <RouterLink
             to={BuyNFTRoutesConfig.DetailsNFT.generatePath(
               item.poolid,
-              AuctionTypeMap[item.pooltype],
+              auctionTypeMap[item.pooltype],
             )}
             className={classes.content}
             key={item.id}
