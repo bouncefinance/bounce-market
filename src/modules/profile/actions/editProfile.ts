@@ -84,7 +84,7 @@ export const editProfile: (
         const isUserNotExisted = !profileInfo?.accountAddress;
 
         if (isUserNotExisted) {
-          request.url = '/api/v2/main/auth/addaccount';
+          request.url = '/auth/addaccount';
         }
 
         request.data.accountaddress = address;
