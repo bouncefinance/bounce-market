@@ -248,6 +248,7 @@
   },
   "brands": {
     "title": "Brands",
+    "items": "{num} items",
     "no-items": "There is no items created yet."
   },
   "publish-nft": {

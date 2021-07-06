@@ -20,6 +20,13 @@ export const useBrandsStyles = makeStyles<Theme>(theme => ({
   },
 
   slide: {
+    width: '308px !important',
+    height: 214,
+    backgroundColor: '#222',
+    borderRadius: 22,
+    paddingTop: 22,
+    paddingLeft: 20,
+    boxSizing: 'border-box',
     [theme.breakpoints.down('lg')]: {
       width: '240px !important',
     },
@@ -27,23 +34,13 @@ export const useBrandsStyles = makeStyles<Theme>(theme => ({
 
   brand: {
     position: 'relative',
-    borderRadius: 16,
+  },
+
+  item: {
+    height: 60,
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
+    alignContent: 'flex-start',
     justifyContent: 'center',
-    height: 116,
-  },
-
-  brandLight: {
-    background: theme.palette.common.white,
-  },
-
-  brandDark: {
-    background: '#303030',
-  },
-
-  brandImgWrap: {
-    height: '80%',
-    width: '80%',
   },
 }));
