@@ -1,5 +1,9 @@
 import { Box, Button, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest, useQuery } from '@redux-requests/react';
+import {
+  ISetAccountData,
+  setAccount,
+} from 'modules/account/store/actions/setAccount';
 import { isValidEmail } from 'modules/common/utils/isValidEmail';
 import { isValidWebsiteUrl } from 'modules/common/utils/isValidWebsiteUrl';
 import { InputField } from 'modules/form/components/InputField';
@@ -69,6 +73,12 @@ export const EditProfile = () => {
     type: fetchProfileInfo.toString(),
   });
 
+  const {
+    data: { address },
+  } = useQuery<ISetAccountData>({
+    type: setAccount.toString(),
+  });
+
   const handleSubmit = useCallback(
     (payload: IEditProfileValues) => {
       dispatch(
@@ -81,10 +91,11 @@ export const EditProfile = () => {
           instagram: payload?.instagram,
           twitter: payload?.twitter,
           facebook: payload?.facebook,
+          accountAddress: address,
         }),
       );
     },
-    [dispatch],
+    [address, dispatch],
   );
 
   const renderForm = ({
