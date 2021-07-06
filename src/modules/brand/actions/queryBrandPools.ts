@@ -1,4 +1,3 @@
-
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AuctionType } from 'modules/overview/api/auctionType';
@@ -95,11 +94,11 @@ export const queryBrandPools = createSmartAction<RequestAction>(
             });
 
             const allToken: ITempToken[] = fsToken.concat(eaToken);
-    
+
             const querytarTokenList = async (tarTokenList: ITempToken[]) => {
               const { data: itemData } = await store.dispatchRequest(
                 queryItemByFilter({
-                  accountaddress: addr,
+                  accountaddress: '',
                   category: '',
                   channel: '',
                   cts: new Array(tarTokenList.length).fill(

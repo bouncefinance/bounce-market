@@ -1,26 +1,20 @@
-import {
-  Box,
-  Typography,
-  useTheme,
-} from '@material-ui/core';
+import { Box, Typography, useTheme } from '@material-ui/core';
 import { Img } from 'modules/uiKit/Img';
 import classNames from 'classnames';
-import { useDispatchRequest } from "@redux-requests/react"
-import { IItem } from "modules/pools/actions/queryItemByFilter";
+import { useDispatchRequest } from '@redux-requests/react';
+import { IItem } from 'modules/pools/actions/queryItemByFilter';
 import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getRandomId } from 'modules/common/utils/getRandomId';
-import { useMemo, useState, useEffect } from "react";
-import { queryBrandPools } from "modules/brand/actions/queryBrandPools";
+import { useMemo, useState, useEffect } from 'react';
+import { queryBrandPools } from 'modules/brand/actions/queryBrandPools';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { useBrandItemsStyles } from './useBrandItemsStyules';
 
 SwiperCore.use([Lazy, Navigation]);
-
-
 
 export const BrandItems = ({
   imgUrl,
@@ -52,13 +46,13 @@ export const BrandItems = ({
       queryBrandPools({
         owneraddress: ownerAddress,
         contractaddress: contractAddress,
-      })
+      }),
     ).then(res => {
       setLoading(false);
       if (res.data) {
         setItems(res.data);
       }
-    })
+    });
   }, [contractAddress, dispatch, ownerAddress]);
 
   useEffect(() => {
@@ -93,27 +87,29 @@ export const BrandItems = ({
       items.map(({ itemname, fileurl }, i) => (
         <SwiperSlide className={classes.slide} key={uid(itemname, i)}>
           <div className={classes.item}>
-              <Img
-                className={classes.itemImgBox}
-                src={fileurl}
-                objectFit="scale-down"
-                ratio="1x1"
-                isNativeLazyLoading={false}
-                imgClassName="swiper-lazy"
-              />
+            <Img
+              className={classes.itemImgBox}
+              src={fileurl}
+              objectFit="scale-down"
+              ratio="1x1"
+              isNativeLazyLoading={false}
+              imgClassName="swiper-lazy"
+            />
 
-              <SwiperPreloader />
+            <SwiperPreloader />
           </div>
         </SwiperSlide>
       )),
     [classes, items],
   );
 
-  const rendered = <div className={classNames(classes.root)}>
-    <Swiper {...sliderProps} className={classes.slider}>
-      {renderedSlides}
-    </Swiper>
-  </div>
+  const rendered = (
+    <div className={classNames(classes.root)}>
+      <Swiper {...sliderProps} className={classes.slider}>
+        {renderedSlides}
+      </Swiper>
+    </div>
+  );
 
   const renderedLoading = (
     <Box display="flex" justifyContent="center">
@@ -121,31 +117,38 @@ export const BrandItems = ({
     </Box>
   );
 
-  const renderedNoItems = <Typography variant="body2" color="textSecondary">
-    {t('brands.no-items')}
-  </Typography>
-
-  return (<>
-    <div className={classes.row}>
-      <Img
-        src={imgUrl}
-        className={classes.brandImgWrap}
-        isNativeLazyLoading={false}
-        objectFit="scale-down"
-        imgClassName="swiper-lazy"
-      />
-      <div className={classes.item}>
-        <div className={classes.name}>{brandName}</div>
-        <div className={classes.count}>{`${items.length} items`}</div>
-      </div>
-    </div>
-    <div className={classes.container}>
-      {loading && renderedLoading}
-
-      {hasItems && !loading && rendered}
-
-      {!hasItems && !loading && renderedNoItems}
-    </div>
-  </>
+  const renderedNoItems = (
+    <Typography variant="body2" color="textSecondary">
+      {t('brands.no-items')}
+    </Typography>
   );
-}
+
+  return (
+    <>
+      <div className={classes.row}>
+        <Img
+          src={imgUrl}
+          className={classes.brandImgWrap}
+          isNativeLazyLoading={false}
+          objectFit="scale-down"
+          imgClassName="swiper-lazy"
+        />
+        <div className={classes.item}>
+          <div className={classes.name}>{brandName}</div>
+          {items.length > 0 && (
+            <div className={classes.count}>
+              {t('brands.items', { num: items.length })}
+            </div>
+          )}
+        </div>
+      </div>
+      <div className={classes.container}>
+        {loading && renderedLoading}
+
+        {hasItems && !loading && rendered}
+
+        {!hasItems && !loading && renderedNoItems}
+      </div>
+    </>
+  );
+};
