@@ -157,6 +157,9 @@
     },
     "owner": {
       "balance": "{balance} copies"
+    },
+    "tooltip": {
+      "bid-warning": "请注意，你在出价后将无法取消。你的出价将是有效的，直到它被出价、被创作者接受或过期"
     }
   },
   "form": {
@@ -239,6 +242,7 @@
   },
   "brands": {
     "title": "品牌",
+    "items": "{num}个商品",
     "no-items": "暂无商品"
   },
   "publish-nft": {

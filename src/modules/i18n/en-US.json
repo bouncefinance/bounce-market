@@ -164,6 +164,9 @@
     },
     "owner": {
       "balance": "{balance} copies"
+    },
+    "tooltip": {
+      "bid-warning": "Please note that you will be unable to cancel after placing your bid. Your bid will be valid until it has been outbid, accepted by the creator or expires."
     }
   },
   "form": {
@@ -249,6 +252,7 @@
   },
   "brands": {
     "title": "Brands",
+    "items": "{num} items",
     "no-items": "There is no items created yet."
   },
   "publish-nft": {

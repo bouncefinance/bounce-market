@@ -60,7 +60,7 @@ export const OtherProfile = () => {
         ]),
       );
     };
-  }, [address, dispatch, dispatchRequest]);
+  }, [address, dispatch, dispatchRequest, isConnected]);
 
   const tabs = useMemo(
     () => [
