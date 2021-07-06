@@ -1,8 +1,4 @@
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
-import {
-  ISetAccountData,
-  setAccount,
-} from 'modules/account/store/actions/setAccount';
 import { NotificationActions } from 'modules/notification/store/NotificationActions';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
@@ -27,6 +23,7 @@ interface IEditProfileArgs {
   instagram?: string;
   twitter?: string;
   facebook?: string;
+  accountAddress: string;
 }
 
 export const editProfile: (
@@ -43,11 +40,13 @@ export const editProfile: (
     instagram = '',
     twitter = '',
     facebook = '',
+    accountAddress,
   }: IEditProfileArgs) => ({
     request: {
       url: '/auth/updateaccount',
       method: 'post',
       data: {
+        accountaddress: accountAddress,
         bio,
         email,
         username: username ? username : undefined,
@@ -68,12 +67,6 @@ export const editProfile: (
         _action: RequestAction,
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
-        const {
-          data: { address },
-        } = getQuery<ISetAccountData>(store.getState(), {
-          type: setAccount.toString(),
-        });
-
         const { data: profileInfo } = getQuery<IProfileInfo | null>(
           store.getState(),
           {
@@ -81,13 +74,12 @@ export const editProfile: (
           },
         );
 
-        const isUserNotExisted = !profileInfo?.accountAddress;
+        const isUserNotExisted =
+          !profileInfo?.accountAddress && !profileInfo?.username;
 
         if (isUserNotExisted) {
           request.url = '/auth/addaccount';
         }
-
-        request.data.accountaddress = address;
 
         return request;
       },
@@ -99,6 +91,7 @@ export const editProfile: (
           if (code === 1) {
             const updatedData = {
               ...(imgUrl ? { imgUrl } : {}),
+              accountAddress,
               bio,
               email,
               fullName,
@@ -118,7 +111,6 @@ export const editProfile: (
 
             return {
               imgUrl,
-              accountAddress: '',
               bgImgUrl: '',
               followCount: 0,
               ...updatedData,
