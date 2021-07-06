@@ -2,6 +2,7 @@ import { Box, Typography } from '@material-ui/core';
 import { DropsContainer } from 'modules/drops/components/DropsContainer';
 import { DropsOwner } from 'modules/drops/components/DropsOwner';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
+import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { uid } from 'react-uid';
@@ -25,7 +26,7 @@ const demoDrops = [
     text:
       'Since then, Space Yacht has used the Twerk Skeleton design on both apparel and live visuals at their events. Once Space Yacht started producing NFTs, the legend of the Twerk Skeleton took on a whole new life of its own.',
     creatorName: 'grossehalbuer',
-    endDate: new Date(2021, 7, 2),
+    endDate: new Date('2021-07-05T15:07:30'),
     items: getDemoItems(0, 0),
   },
   {
@@ -33,7 +34,7 @@ const demoDrops = [
     text:
       'Since then, Space Yacht has used the Twerk Skeleton design on both apparel and live visuals at their events. Once Space Yacht started producing NFTs, the legend of the Twerk Skeleton took on a whole new life of its own.',
     creatorName: 'grossehalbuer',
-    endDate: new Date(2021, 7, 2),
+    endDate: new Date(2021, 6, 11),
     items: getDemoItems(1, 6),
   },
   {
@@ -49,7 +50,7 @@ const demoDrops = [
     text:
       'Since then, Space Yacht has used the Twerk Skeleton design on both apparel and live visuals at their events. Once Space Yacht started producing NFTs, the legend of the Twerk Skeleton took on a whole new life of its own.',
     creatorName: 'grossehalbuer',
-    endDate: new Date(2021, 7, 2),
+    endDate: new Date(2022, 6, 2),
     items: getDemoItems(1, 4),
   },
 ];
@@ -62,11 +63,11 @@ enum DropsSortBy {
 const tabs = [
   {
     id: DropsSortBy.Upcoming,
-    label: 'Upcoming  dr🔥ps',
+    label: t('drops.upcoming'),
   },
   {
     id: DropsSortBy.Previous,
-    label: 'Previous drops',
+    label: t('drops.previous'),
   },
 ];
 

@@ -5,7 +5,7 @@ import { DropsSection } from './components/DropsSection';
 import { StoriesSlider } from './components/StoriesSlider';
 import { TopCreators } from './components/TopCreators';
 
-export const Stories = () => {
+export const Drops = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <StoriesSlider />

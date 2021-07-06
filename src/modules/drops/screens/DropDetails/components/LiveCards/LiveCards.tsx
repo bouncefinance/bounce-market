@@ -4,6 +4,7 @@ import {
   ProductCard,
   ProductCardSkeleton,
 } from 'modules/common/components/ProductCard';
+import { t } from 'modules/i18n/utils/intl';
 import React, { useEffect, useState } from 'react';
 import { uid } from 'react-uid';
 import { CardsList } from '../CardsList';
@@ -44,7 +45,7 @@ export const LiveCards = () => {
   return (
     <Box mb={{ xs: 6, md: 10 }}>
       <Box mb={5}>
-        <Typography variant="h2">⚡ Live</Typography>
+        <Typography variant="h2">⚡ {t('drop-details.live')}</Typography>
       </Box>
 
       <CardsList>{loading ? renderedSkeletons : renderedCards}</CardsList>

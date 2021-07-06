@@ -1,1 +1,1 @@
-export * from './Stories';
+export * from './Drops';

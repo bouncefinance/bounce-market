@@ -21,7 +21,8 @@
     "days-short": "{days}天",
     "hours-short": "{hours}时",
     "minutes-short": "{minutes}分",
-    "seconds-short": "{seconds}秒"
+    "seconds-short": "{seconds}秒",
+    "finished-on": "Finished on {end, date, medium}"
   },
   "header": {
     "create": "创建",
@@ -402,5 +403,15 @@
   "empty-data": {
     "title": "Whoops. Looks like there's no data.",
     "text": "Try to change the network to view the content of the page."
+  },
+  "drops": {
+    "top-creators": "Top Creators",
+    "upcoming": "Upcoming  dr🔥ps",
+    "previous": "Previous drops"
+  },
+  "drop-details": {
+    "live": "Live",
+    "sold": "Sold",
+    "timer-descr": "until the Drop ends"
   }
 }

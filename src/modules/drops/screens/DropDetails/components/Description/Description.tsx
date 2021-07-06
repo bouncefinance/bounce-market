@@ -29,7 +29,7 @@ export const Description = () => {
         <DescriptionSkeleton />
       ) : (
         <DescriptionComponent
-          timer={<Timer endDate={new Date('2021-07-02')} />}
+          timer={<Timer endDate={new Date('2021-08-05T16:29:30')} />}
           title="Drop Details heading"
           text="Primal Cypher is a conceptual digital artist, amongst many other things (designer, oil painter, NFT writer and consultant). He’s well-known for his bold artwork which usually often contain strong social commentaries, as well themes relating to psychology, philosophy and spirituality. Primal Cypher’s artwork has a strong affinity for blockchain, particularly Ethereum, Anonymous, The Occupy and Cypherpunk movement, which is often reflected in his work."
           creator={<DropsOwner title="grossehalbuer" />}
