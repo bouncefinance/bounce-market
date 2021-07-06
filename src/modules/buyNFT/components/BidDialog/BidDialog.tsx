@@ -103,7 +103,7 @@ export const BidDialog = ({
               <Grid item xs={12} sm>
                 <Field
                   fullWidth
-                  className={classes.inputWithoutSpin}
+                  className={classNames(classes.inputWithoutSpin)}
                   component={InputField}
                   name="bid"
                   type="number"
@@ -143,7 +143,11 @@ export const BidDialog = ({
                   component={InputField}
                   name="quantity"
                   type="number"
-                  label={t('common.quantity')}
+                  label={
+                    <div className={classes.highlyBraced}>
+                      {t('common.quantity')}
+                    </div>
+                  }
                   parse={value => (value ? Math.round(+value) : 1)}
                   format={value => (value ? Math.round(+value) : 1)}
                   inputProps={{
