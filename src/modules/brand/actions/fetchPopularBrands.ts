@@ -36,7 +36,7 @@ export const fetchPopularBrands = createSmartAction<
   RequestAction<IApiFetchPopularBrandsData, IBrandItem[]>
 >(FetchPopularBrandsAction, () => ({
   request: {
-    url: '/api/v2/main/getpopularbrands',
+    url: '/getpopularbrands',
     method: 'post',
     data: {
       accountaddress: '',

@@ -40,7 +40,7 @@ export const fetchPoolNftOwner = createSmartAction<
     meta?: RequestActionMeta<IApiFetchPoolNftOwner, wrapperPoolNftOwner[]>,
   ) => ({
     request: {
-      url: '/api/v2/main/getowners',
+      url: '/getowners',
       method: 'post',
       data: {
         poolId: params.poolId,

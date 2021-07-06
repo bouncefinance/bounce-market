@@ -54,7 +54,7 @@ export const getAccountLikes = createAction<
   RequestAction<IApiAccountLikes, IAccountLike[]>
 >('getAccountLikes', () => ({
   request: {
-    url: '/api/v2/main/auth/getaccountlike',
+    url: '/auth/getaccountlike',
     method: 'post',
   },
   meta: {
