@@ -45,7 +45,7 @@ export const MoversComponent = ({
       swiper.update();
       swiper.lazy.load();
     }
-  }, [itemCount, swiper]);
+  }, [itemCount, swiper, children]);
 
   const sliderProps: Swiper = {
     slidesPerView: 'auto',
