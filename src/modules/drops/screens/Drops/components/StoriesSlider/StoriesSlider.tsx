@@ -1,10 +1,20 @@
+import { resetRequests } from '@redux-requests/core';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import {
+  ISearchDropsItem,
+  SearchDropsParamState,
+} from 'modules/api/searchDrops';
+import { getDrops } from 'modules/drops/actions/getDrops';
 import {
   DropsOwner,
   DropsOwnerSkeleton,
 } from 'modules/drops/components/DropsOwner';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
-import React, { useEffect, useState } from 'react';
-import { uid } from 'react-uid';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { DROPS_LIVE_KEY } from '../../const';
 import { StoriesChip } from '../StoriesChip';
 import {
   StoriesSliderItem,
@@ -12,77 +22,64 @@ import {
 } from '../StoriesSliderItem';
 import { StoriesSliderComponent } from './StoriesSliderComponent';
 
-const demoItems: {
-  title: string;
-  text: string;
-  img: string;
-  chips: string[];
-  owner: string;
-  href: string;
-}[] = [
-  {
-    href: DropsRoutesConfig.DropDetails.generatePath('23421'),
-    title: 'Masters of relevance',
-    text:
-      'The Wave 3/20 "SMART" is dedicated to some projects building on blockchain and developed with great smartness.',
-    img: 'https://picsum.photos/584/500?image=6',
-    chips: ['live', 'Auction'],
-    owner: 'grossehalbuer',
-  },
-  {
-    href: DropsRoutesConfig.DropDetails.generatePath('23421'),
-    title: 'Masters of relevance',
-    text: 'The Wave 3/20 "SMART" is dedicated',
-    img: 'https://picsum.photos/584/500?image=7',
-    chips: ['live', 'Auction'],
-    owner: 'grossehalbuer',
-  },
-  {
-    href: DropsRoutesConfig.DropDetails.generatePath('23421'),
-    title: 'There are many variations of passages',
-    text:
-      'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years',
-    img: 'https://picsum.photos/584/500?image=8',
-    chips: ['live'],
-    owner: 'Lorem Ipsum',
-  },
-  {
-    href: DropsRoutesConfig.DropDetails.generatePath('23421'),
-    title: 'There are many variations of passages',
-    text:
-      'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years',
-    img: 'https://picsum.photos/584/500?image=9',
-    chips: ['live'],
-    owner: 'Lorem Ipsum',
-  },
-];
-
 export const StoriesSlider = () => {
-  const [loading, setLoading] = useState(true);
-  const renderedItems = demoItems.map(item => {
-    const chips = item.chips.map((label, i) => (
-      <StoriesChip key={label} label={label} isLive={!i} />
-    ));
-    const profileInfo = <DropsOwner title={item.owner} isVerified />;
+  const { isConnected } = useAccount();
+  const dispatchRequest = useDispatchRequest();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatchRequest(
+      getDrops(
+        { state: SearchDropsParamState.Live },
+        { requestKey: DROPS_LIVE_KEY },
+      ),
+    );
+
+    return function reset() {
+      dispatch(
+        resetRequests([
+          {
+            requestType: getDrops.toString(),
+            requestKey: DROPS_LIVE_KEY,
+          },
+        ]),
+      );
+    };
+  }, [dispatchRequest, isConnected, dispatch]);
+
+  const { data, loading } = useQuery<ISearchDropsItem[] | null>({
+    type: getDrops.toString(),
+    requestKey: DROPS_LIVE_KEY,
+  });
+
+  const liveDrops = data || [];
+
+  const renderedItems = liveDrops.map(item => {
+    const chips = <StoriesChip label="live" isLive />;
+
+    const profileInfo = (
+      <DropsOwner
+        title={item.username}
+        href={ProfileRoutesConfig.OtherProfile.generatePath(
+          item.accountAddress,
+        )}
+        isVerified={false}
+      />
+    );
 
     return (
       <StoriesSliderItem
-        href={item.href}
-        key={uid(item)}
+        href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
+        key={item.id}
         title={item.title}
-        text={item.text}
-        img={item.img}
+        text={item.description}
+        img={item.coverImgUrl}
         chips={chips}
+        gradientColor={item.bgColor}
         profileInfo={profileInfo}
       />
     );
   });
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, []);
 
   const renderedSkeletons = new Array(3)
     .fill(0)
@@ -91,7 +88,7 @@ export const StoriesSlider = () => {
     ));
 
   return (
-    <StoriesSliderComponent itemCount={demoItems.length}>
+    <StoriesSliderComponent isSlider={loading || liveDrops.length > 1}>
       {loading ? renderedSkeletons : renderedItems}
     </StoriesSliderComponent>
   );
