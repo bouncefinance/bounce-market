@@ -13,7 +13,8 @@
     "restore": "Restore",
     "unknown": "Unknown",
     "coming-soon": "Coming soon...",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "nothing-found": "Nothing found"
   },
   "time": {
     "time-over": "Time is over",

@@ -175,7 +175,7 @@ export const DropsSection = () => {
 
   const renderedNothingFound = (
     <Typography variant="h3" align="center" color="textSecondary">
-      Nothing found
+      {t('common.nothing-found')}
     </Typography>
   );
 
