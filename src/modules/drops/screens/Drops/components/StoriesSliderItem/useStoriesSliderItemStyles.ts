@@ -71,17 +71,20 @@ export const useStoriesSliderItemStyles = makeStyles<
   imgWrapThumb: {
     display: 'block',
     height: 'auto',
-    background: ({ gradientColor }) =>
-      `linear-gradient(
-        0deg,
-        ${fade(gradientColor || theme.palette.background.default, 0.8)} 50%,
-        ${fade('#000', 0)} 100%
-      )`,
 
     '&:before': {
       content: `''`,
       display: 'block',
     },
+  },
+
+  imgWrapBg: {
+    background: ({ gradientColor }) =>
+      `linear-gradient(
+      0deg,
+      ${fade(gradientColor || theme.palette.background.default, 0.8)} 50%,
+      ${fade('#000', 0)} 100%
+    )`,
   },
 
   content: {

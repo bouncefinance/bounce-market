@@ -1,11 +1,8 @@
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import {
-  ISearchDropsItem,
-  SearchDropsParamState,
-} from 'modules/api/searchDrops';
-import { getDrops } from 'modules/drops/actions/getDrops';
+import { SearchDropsParamState } from 'modules/api/searchDrops';
+import { getDrops, IGetDrops } from 'modules/drops/actions/getDrops';
 import {
   DropsOwner,
   DropsOwnerSkeleton,
@@ -47,12 +44,12 @@ export const StoriesSlider = () => {
     };
   }, [dispatchRequest, isConnected, dispatch]);
 
-  const { data, loading } = useQuery<ISearchDropsItem[] | null>({
+  const { data, loading } = useQuery<IGetDrops | null>({
     type: getDrops.toString(),
     requestKey: DROPS_LIVE_KEY,
   });
 
-  const liveDrops = data || [];
+  const liveDrops = data?.items || [];
 
   const renderedItems = liveDrops.map(item => {
     const chips = <StoriesChip label="live" isLive />;

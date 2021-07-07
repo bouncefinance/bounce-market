@@ -1,68 +1,47 @@
 import { Box, Typography } from '@material-ui/core';
+import { resetRequests } from '@redux-requests/core';
+import {
+  useDispatchRequest,
+  useMutation,
+  useQuery,
+} from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import {
+  ISearchDropsItem,
+  SearchDropsParamState,
+} from 'modules/api/searchDrops';
+import { Queries } from 'modules/common/components/Queries/Queries';
+import { ResponseData } from 'modules/common/types/ResponseData';
+import { getDrops, IGetDrops } from 'modules/drops/actions/getDrops';
+import { updateDrops } from 'modules/drops/actions/updateDrops';
 import { DropsContainer } from 'modules/drops/components/DropsContainer';
 import { DropsOwner } from 'modules/drops/components/DropsOwner';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { t } from 'modules/i18n/utils/intl';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import { Button } from 'modules/uiKit/Button';
 import { Section } from 'modules/uiKit/Section';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { uid } from 'react-uid';
+import { DROPS_COMING_KEY, DROPS_PREV_KEY } from '../../const';
 import { Drop } from '../Drop';
 import { DropSkeleton } from '../Drop/DropSkeleton';
 import { DropList } from '../DropList';
 import { DropsTab, DropsTabs } from '../DropsTabs';
 import { DropTimer } from '../DropTimer';
 
-const getDemoItems = (index: number, count: number) => {
-  return new Array(count)
-    .fill(0)
-    .map((_, i) => `https://picsum.photos/180/130?random=${index + 1}${i}`);
-};
-
-const demoDrops = [
-  {
-    bgImg: 'https://picsum.photos/1200/500?random=2',
-    bgColor: '#907047',
-    title: 'Cycle of the Shroom — Heavy lies the crown relevant',
-    text:
-      'Since then, Space Yacht has used the Twerk Skeleton design on both apparel and live visuals at their events. Once Space Yacht started producing NFTs, the legend of the Twerk Skeleton took on a whole new life of its own.',
-    creatorName: 'grossehalbuer',
-    endDate: new Date('2021-07-05T15:07:30'),
-    items: getDemoItems(0, 0),
-  },
-  {
-    title: 'Cycle of the Shroom — Heavy lies the crown relevant',
-    text:
-      'Since then, Space Yacht has used the Twerk Skeleton design on both apparel and live visuals at their events. Once Space Yacht started producing NFTs, the legend of the Twerk Skeleton took on a whole new life of its own.',
-    creatorName: 'grossehalbuer',
-    endDate: new Date(2021, 6, 11),
-    items: getDemoItems(1, 6),
-  },
-  {
-    title: 'Cycle of the Shroom — Heavy lies the crown relevant',
-    text:
-      'Since then, Space Yacht has used the Twerk Skeleton design on both apparel and live visuals at their events. Once Space Yacht started producing NFTs, the legend of the Twerk Skeleton took on a whole new life of its own.',
-    creatorName: 'grossehalbuer',
-    endDate: new Date(2021, 7, 2),
-    items: getDemoItems(1, 3),
-  },
-  {
-    title: 'Cycle of the Shroom — Heavy lies the crown relevant',
-    text:
-      'Since then, Space Yacht has used the Twerk Skeleton design on both apparel and live visuals at their events. Once Space Yacht started producing NFTs, the legend of the Twerk Skeleton took on a whole new life of its own.',
-    creatorName: 'grossehalbuer',
-    endDate: new Date(2022, 6, 2),
-    items: getDemoItems(1, 4),
-  },
-];
+const DROPS_INITIAL_PORTION_COUNT = 4;
+const DROPS_MORE_PORTION_COUNT = 8;
 
 enum DropsSortBy {
-  Upcoming,
-  Previous,
+  Coming = SearchDropsParamState.Coming,
+  Previous = SearchDropsParamState.Previous,
 }
 
 const tabs = [
   {
-    id: DropsSortBy.Upcoming,
+    id: DropsSortBy.Coming,
     label: t('drops.upcoming'),
   },
   {
@@ -72,45 +51,141 @@ const tabs = [
 ];
 
 export const DropsSection = () => {
-  const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState<DropsSortBy>(DropsSortBy.Upcoming);
+  const { isConnected } = useAccount();
+  const dispatchRequest = useDispatchRequest();
+  const dispatch = useDispatch();
+  const [sortBy, setSortBy] = useState<DropsSortBy>(DropsSortBy.Coming);
 
-  const onSortChange = useCallback((_e: ChangeEvent<{}>, newValue: any) => {
-    setSortBy(newValue as DropsSortBy);
+  const {
+    data: dataComing,
+    loading: loadingComing,
+  } = useQuery<IGetDrops | null>({
+    type: getDrops.toString(),
+    requestKey: DROPS_COMING_KEY,
+  });
 
-    // for demo purpose
-    setLoading(true);
-  }, []);
+  const { data: dataPrev, loading: loadingPrev } = useQuery<IGetDrops | null>({
+    type: getDrops.toString(),
+    requestKey: DROPS_PREV_KEY,
+  });
+
+  const { loading: loadingUpdatePrev } = useMutation({
+    type: updateDrops.toString(),
+    requestKey: DROPS_PREV_KEY,
+  });
+
+  const loading = loadingComing || loadingPrev;
+
+  const dispatchComingDrops = useCallback(
+    () =>
+      dispatchRequest(
+        getDrops(
+          { state: SearchDropsParamState.Coming },
+          { requestKey: DROPS_COMING_KEY },
+        ),
+      ),
+    [dispatchRequest],
+  );
 
   useEffect(() => {
-    // for demo purpose
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, [sortBy]);
+    dispatchComingDrops();
 
-  const renderedUpcomingDrops = demoDrops.map(
-    ({ title, text, creatorName, endDate, items, bgImg, bgColor }, i) => {
-      const timer = <DropTimer endDate={endDate} />;
-      const creator = <DropsOwner title={creatorName} />;
+    return function reset() {
+      dispatch(
+        resetRequests([
+          {
+            requestType: getDrops.toString(),
+            requestKey: DROPS_COMING_KEY,
+          },
+          {
+            requestType: getDrops.toString(),
+            requestKey: DROPS_PREV_KEY,
+          },
+        ]),
+      );
+    };
+  }, [dispatchRequest, isConnected, dispatch, dispatchComingDrops]);
+
+  const onSortChange = useCallback(
+    (_e: ChangeEvent<{}>, newValue: DropsSortBy) => {
+      setSortBy(newValue);
+
+      if (newValue === DropsSortBy.Coming && !dataComing) {
+        dispatchComingDrops();
+      } else if (newValue === DropsSortBy.Previous && !dataPrev) {
+        dispatchRequest(
+          getDrops(
+            {
+              state: SearchDropsParamState.Previous,
+              limit: DROPS_INITIAL_PORTION_COUNT,
+              offset: 0,
+            },
+            { requestKey: DROPS_PREV_KEY },
+          ),
+        );
+      }
+    },
+    [dataComing, dataPrev, dispatchComingDrops, dispatchRequest],
+  );
+
+  const onLoadMoreClick = () => {
+    if (!dataPrev) {
+      return false;
+    }
+
+    dispatchRequest(
+      updateDrops(
+        {
+          state: SearchDropsParamState.Previous,
+          limit: DROPS_MORE_PORTION_COUNT,
+          offset: dataPrev.offset + DROPS_MORE_PORTION_COUNT,
+        },
+        { requestKey: DROPS_PREV_KEY },
+      ),
+    );
+  };
+
+  const renderDrops = (items: ISearchDropsItem[]) => {
+    return items.map((item, i) => {
+      const timer = <DropTimer endDate={item.dropDate} />;
+      const creator = (
+        <DropsOwner
+          title={item.username}
+          href={ProfileRoutesConfig.OtherProfile.generatePath(
+            item.accountAddress,
+          )}
+        />
+      );
 
       return (
         <Drop
           key={uid(i)}
           href={DropsRoutesConfig.DropDetails.generatePath('12342')}
-          bgImg={bgImg}
-          bgColor={bgColor}
-          title={title}
-          text={text}
+          bgImg={item.coverImgUrl}
+          bgColor={item.bgColor}
+          title={item.title}
+          text={item.description}
           timer={timer}
           creator={creator}
-          items={items}
+          items={undefined}
         />
       );
-    },
+    });
+  };
+
+  const renderedNothingFound = (
+    <Typography variant="h3" align="center" color="textSecondary">
+      Nothing found
+    </Typography>
   );
 
-  const renderedSkeletons = [1, 2].map((_, i) => <DropSkeleton key={uid(i)} />);
+  const renderedSkeletons = (
+    <DropList>
+      {[1, 2].map((_, i) => (
+        <DropSkeleton key={uid(i)} />
+      ))}
+    </DropList>
+  );
 
   return (
     <Section>
@@ -118,27 +193,48 @@ export const DropsSection = () => {
         <Box mb={{ xs: 4, md: 7 }}>
           <DropsTabs value={sortBy} onChange={onSortChange as any}>
             {tabs.map(({ label, id }) => (
-              <DropsTab disabled={loading} key={id} label={label} />
+              <DropsTab disabled={loading} key={id} label={label} value={id} />
             ))}
           </DropsTabs>
         </Box>
 
-        {sortBy === DropsSortBy.Upcoming && (
-          <DropList>
-            {loading ? renderedSkeletons : renderedUpcomingDrops}
-          </DropList>
+        {sortBy === DropsSortBy.Coming && (
+          <Queries<ResponseData<typeof getDrops>>
+            requestActions={[getDrops]}
+            requestKeys={[DROPS_COMING_KEY]}
+            noDataMessage={renderedSkeletons}
+            empty={renderedNothingFound}
+          >
+            {({ data }) => <DropList>{renderDrops(data.items)}</DropList>}
+          </Queries>
         )}
 
         {sortBy === DropsSortBy.Previous && (
-          <>
-            {loading ? (
-              <DropList>{renderedSkeletons}</DropList>
-            ) : (
-              <Typography variant="h3" align="center" color="textSecondary">
-                Nothing found
-              </Typography>
+          <Queries<ResponseData<typeof getDrops>>
+            requestActions={[getDrops]}
+            requestKeys={[DROPS_PREV_KEY]}
+            noDataMessage={renderedSkeletons}
+            empty={renderedNothingFound}
+          >
+            {({ data }) => (
+              <>
+                <DropList>{renderDrops(data.items)}</DropList>
+
+                {!data.allLoaded && (
+                  <Box textAlign="center" mt={{ xs: 5, md: 8 }}>
+                    <Button
+                      rounded
+                      variant="outlined"
+                      loading={loadingUpdatePrev}
+                      onClick={onLoadMoreClick}
+                    >
+                      {t('common.load-more')}
+                    </Button>
+                  </Box>
+                )}
+              </>
             )}
-          </>
+          </Queries>
         )}
       </DropsContainer>
     </Section>

@@ -1,7 +1,6 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import {
   IApiSearchDrops,
-  IApiSearchDropsItem,
   ISearchDropsItem,
   ISearchDropsParams,
   mapSearchDropsItem,
@@ -11,7 +10,7 @@ import {
 } from 'modules/api/searchDrops';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
-interface IGetDropsArgs {
+export interface IGetDropsArgs {
   address?: string;
   limit?: number;
   offset?: number;
@@ -19,9 +18,16 @@ interface IGetDropsArgs {
   state?: SearchDropsParamState;
 }
 
+export interface IGetDrops {
+  items: ISearchDropsItem[];
+  total: number;
+  offset: number;
+  allLoaded?: boolean;
+}
+
 export const getDrops = createSmartAction<
-  RequestAction<IApiSearchDrops, ISearchDropsItem[]>,
-  [IGetDropsArgs?, RequestActionMeta<IApiSearchDrops, ISearchDropsItem[]>?]
+  RequestAction<IApiSearchDrops, IGetDrops>,
+  [IGetDropsArgs?, RequestActionMeta<IApiSearchDrops, IGetDrops>?]
 >('getDrops', (params, meta) => ({
   request: {
     url: searchDropsUrl,
@@ -41,9 +47,14 @@ export const getDrops = createSmartAction<
     driver: 'axios',
     getData: data => {
       if (data.code !== 1) {
-        throw new Error('Unexpected response');
+        console.error('Unexpected response');
       }
-      return (data.data as IApiSearchDropsItem[]).map(mapSearchDropsItem);
+
+      return {
+        items: (data.data || []).map(mapSearchDropsItem),
+        total: data.total || 0,
+        offset: params?.offset || 0,
+      };
     },
   },
 }));
