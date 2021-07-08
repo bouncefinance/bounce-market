@@ -31,7 +31,6 @@ import { AuctionState } from '../../../common/const/AuctionState';
 import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Address } from '../../../common/types/unit';
-import { NftType } from '../../../createNFT/actions/createNft';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
@@ -52,7 +51,8 @@ import { BuyDialog } from '../../components/BuyDialog';
 import { TokenInfo } from '../../components/TokenInfo';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
-import {BuyNFTSkeleton} from "./BuyNFTSkeleton";
+import { BuyNFTSkeleton } from './BuyNFTSkeleton';
+import { NftType } from '../../../common/const/NftType';
 
 export const BuyNFT = () => {
   const [isEmptyData, setIsEmptyData] = useState(false);
@@ -261,7 +261,7 @@ export const BuyNFT = () => {
       ResponseData<typeof fetchRoleInfo>
     >
       requestActions={[fetchItem, fetchWeb3PoolDetails, fetchRoleInfo]}
-      noDataMessage={<BuyNFTSkeleton/>}
+      noDataMessage={<BuyNFTSkeleton />}
     >
       {({ data: item }, { data: poolDetails }, { data: roleInfos }) => (
         <Queries<
@@ -277,7 +277,7 @@ export const BuyNFT = () => {
             fetchPoolNftOwner,
           ]}
           requestKeys={[poolDetails.unitContract]}
-          noDataMessage={<BuyNFTSkeleton/>}
+          noDataMessage={<BuyNFTSkeleton />}
         >
           {(
             { data: currency },

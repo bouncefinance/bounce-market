@@ -140,6 +140,7 @@ export const queryBrandNfts = createAction<
             })
             .filter(item => item && item.itemname) as INFTItem[];
 
+          // @ts-ignore
           mappedItems.sort((a, b) => b.createTime - a.createTime);
 
           return mappedItems;

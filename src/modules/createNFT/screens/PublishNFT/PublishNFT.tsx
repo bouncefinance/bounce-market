@@ -37,11 +37,11 @@ import { GoBack } from '../../../layout/components/GoBack';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { AuctionType } from '../../../overview/api/auctionType';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
-import { NftType } from '../../actions/createNft';
 import { fetchNftByUser } from '../../actions/fetchNftByUser';
 import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
+import { NftType } from '../../../common/const/NftType';
 
 const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
 
@@ -121,10 +121,8 @@ export const PublishNFTComponent = ({
     [],
   );
 
-  const {
-    options: currencyOptions,
-    default: defaultCurrency,
-  } = useCurrencies();
+  const { options: currencyOptions, default: defaultCurrency } =
+    useCurrencies();
 
   const handleUnitChange = useCallback(
     (value: Address) => {

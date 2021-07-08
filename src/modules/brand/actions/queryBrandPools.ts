@@ -126,6 +126,7 @@ export const queryBrandPools = createSmartAction<RequestAction>(
               PromiseList.push(queryEaList);
             }
 
+            // @ts-ignore
             return Promise.all(PromiseList).then(res => res.flat());
           })(),
         };
