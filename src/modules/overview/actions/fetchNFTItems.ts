@@ -129,7 +129,11 @@ export const fetchNFTItems = createSmartAction<
 
           const tradePools = poolsData.data
             .filter(item => item.state !== 1)
-            .map(mapNFTItem);
+            .map(mapNFTItem)
+            .map((item: INFTItem) => ({
+              ...item,
+              tokenSymbol: poolsData?.tokenSymbol ?? TokenSymbol.BNB,
+            }));
 
           const tradePoolsWithOwnerImg: INFTItem[] = await Promise.all(
             tradePools.map(async item => {
