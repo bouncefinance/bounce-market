@@ -160,8 +160,8 @@ export const DropsSection = () => {
 
       return (
         <Drop
-          key={uid(i)}
-          href={DropsRoutesConfig.DropDetails.generatePath('12342')}
+          key={uid(item)}
+          href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
           bgImg={item.coverImgUrl}
           bgColor={item.bgColor}
           title={item.title}
