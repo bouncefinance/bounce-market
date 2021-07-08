@@ -56,13 +56,10 @@ export const updateDrops = createSmartAction<
         data: IGetDrops,
         mutationData: IGetDrops,
       ) => {
-        const mutatedData = {
+        return {
           ...mutationData,
           items: [...data.items, ...mutationData.items],
         };
-        console.log({ mutatedData });
-
-        return mutatedData;
       },
     },
     ...meta,
