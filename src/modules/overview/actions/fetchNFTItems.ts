@@ -3,7 +3,7 @@ import {
   RequestAction,
   RequestActionMeta,
 } from '@redux-requests/core';
-import { queryAccountInfo } from 'modules/common/actions/queryAccountInfo';
+import { queryAccountInfo, UserRoleType } from 'modules/common/actions/queryAccountInfo';
 import { ITradePool_V2, PoolCategoryType } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { Store } from 'redux';
@@ -36,6 +36,7 @@ export interface INFTItem {
   standard?: number;
   supply?: number;
   ownerAvatar?: string;
+  identity?: UserRoleType;
   ownerName?: string;
   token1: string;
   tokenSymbol: TokenSymbol;
@@ -89,7 +90,7 @@ export const fetchNFTItems = createSmartAction<
   [IFetchNFTItemsArgs, FetchNFTItemsMetaType?]
 >('NFTMarket/fetchNFTItems', (params, meta) => ({
   request: {
-    promise: (async function () {})(),
+    promise: (async function () { })(),
   },
   meta: {
     ...meta,
@@ -144,6 +145,7 @@ export const fetchNFTItems = createSmartAction<
                 ...item,
                 ownerAvatar: response.data?.imgUrl,
                 ownerName: response.data?.username,
+                identity: response.data?.identity,
               };
             }),
           );
