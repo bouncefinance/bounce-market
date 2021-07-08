@@ -1,5 +1,7 @@
 import { Box, Container, Typography } from '@material-ui/core';
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { resetRequests } from '@redux-requests/core';
+import { useDispatchRequest } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { listBrands } from 'modules/brand/actions/listBrands';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
@@ -8,6 +10,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { Subscribers } from 'modules/profile/components/Subscribers';
 import { Section } from 'modules/uiKit/Section';
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { BrandNFTItems } from './components/BrandNFTItems';
@@ -15,15 +18,17 @@ import { BrandsItem } from './components/BrandsItem';
 import { BrandsList } from './components/BrandsList';
 
 export const Brands = () => {
-  const dispatch = useDispatchRequest();
-
-  const { data } = useQuery({ type: listBrands.toString() });
+  const dispatchRequest = useDispatchRequest();
+  const dispatch = useDispatch();
+  const { isConnected } = useAccount();
 
   useEffect(() => {
-    if (!data) {
-      dispatch(listBrands());
-    }
-  }, [dispatch, data]);
+    dispatchRequest(listBrands());
+
+    return function reset() {
+      dispatch(resetRequests([listBrands.toString()]));
+    };
+  }, [dispatch, dispatchRequest, isConnected]);
 
   return (
     <Section>

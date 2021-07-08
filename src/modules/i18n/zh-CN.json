@@ -21,7 +21,8 @@
     "days-short": "{days}天",
     "hours-short": "{hours}时",
     "minutes-short": "{minutes}分",
-    "seconds-short": "{seconds}秒"
+    "seconds-short": "{seconds}秒",
+    "finished-on": "Finished on {end, date, medium}"
   },
   "header": {
     "create": "创建",
@@ -156,6 +157,9 @@
     },
     "owner": {
       "balance": "{balance} copies"
+    },
+    "tooltip": {
+      "bid-warning": "请注意，你在出价后将无法取消。你的出价将是有效的，直到它被出价、被创作者接受或过期"
     }
   },
   "form": {
@@ -238,6 +242,7 @@
   },
   "brands": {
     "title": "品牌",
+    "items": "{num}个商品",
     "no-items": "暂无商品"
   },
   "publish-nft": {
@@ -398,5 +403,15 @@
   "empty-data": {
     "title": "Whoops. Looks like there's no data.",
     "text": "Try to change the network to view the content of the page."
+  },
+  "drops": {
+    "top-creators": "Top Creators",
+    "upcoming": "Upcoming  dr🔥ps",
+    "previous": "Previous drops"
+  },
+  "drop-details": {
+    "live": "Live",
+    "sold": "Sold",
+    "timer-descr": "until the Drop ends"
   }
 }

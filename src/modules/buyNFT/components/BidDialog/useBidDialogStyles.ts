@@ -128,4 +128,8 @@ export const useBidDialogStyles = makeStyles<Theme>(theme => ({
   spinBtnIcon: {
     fontSize: 12,
   },
+
+  highlyBraced: {
+    lineHeight: '20px',
+  },
 }));

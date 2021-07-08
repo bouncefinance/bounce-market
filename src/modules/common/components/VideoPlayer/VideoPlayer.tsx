@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import { t } from 'modules/i18n/utils/intl';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { ObjectFitType } from '../../types/ObjectFit';
 import { VideoErrorIcon } from './assets/VideoErrorIcon';
 import { useVideoPlayerStyles } from './useVideoPlayerStyles';
 
-interface IVideoPlayerProps {
+export interface IVideoPlayerProps {
   className?: string;
   width?: number;
   height?: number;
@@ -18,6 +18,7 @@ interface IVideoPlayerProps {
   playsInline?: boolean;
   objectFit?: ObjectFitType;
   fallbackText?: string;
+  controlsList?: string;
 }
 
 type VideoPlayerType =
@@ -28,73 +29,83 @@ type VideoPlayerType =
       src: string;
     });
 
-export const VideoPlayer = ({
-  className,
-  width = 300,
-  height = 300,
-  poster,
-  controls = true,
-  loop = true,
-  autoPlay = false,
-  muted = true,
-  preload = 'metadata',
-  playsInline = true,
-  objectFit = 'fill',
-  fallbackText = t('video-player.unsupported'),
-  ...restProps
-}: VideoPlayerType) => {
-  const classes = useVideoPlayerStyles();
+export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerType>(
+  (
+    {
+      className,
+      width = 300,
+      height = 300,
+      poster,
+      controls = true,
+      loop = true,
+      autoPlay = false,
+      muted = true,
+      preload = 'metadata',
+      playsInline = true,
+      objectFit = 'fill',
+      fallbackText = t('video-player.unsupported'),
+      controlsList = 'nodownload',
+      ...restProps
+    },
+    ref,
+  ) => {
+    const classes = useVideoPlayerStyles();
 
-  const creatObjectUrlDestructor = useRef<any>();
+    const creatObjectUrlDestructor = useRef<any>();
 
-  const video = useMemo(() => {
-    function hasFile(data: any): data is { file: File } {
-      return data.file;
-    }
-    return hasFile(restProps)
-      ? (creatObjectUrlDestructor.current = URL.createObjectURL(restProps.file))
-      : restProps.src;
-  }, [restProps]);
-
-  useEffect(() => {
-    return () => {
-      if (creatObjectUrlDestructor.current) {
-        URL.revokeObjectURL(video);
+    const video = useMemo(() => {
+      function hasFile(data: any): data is { file: File } {
+        return data.file;
       }
-    };
-  });
+      return hasFile(restProps)
+        ? (creatObjectUrlDestructor.current = URL.createObjectURL(
+            restProps.file,
+          ))
+        : restProps.src;
+    }, [restProps]);
 
-  const [loadError, setLoadError] = useState(false);
-  const onError = () => setLoadError(true);
+    useEffect(() => {
+      return () => {
+        if (creatObjectUrlDestructor.current) {
+          URL.revokeObjectURL(video);
+        }
+      };
+    });
 
-  return (
-    <div
-      className={classNames(
-        classes.root,
-        className,
-        loadError && classes.rootError,
-      )}
-    >
-      {loadError ? (
-        <VideoErrorIcon className={classes.errorIcon} />
-      ) : (
-        <video
-          width={width}
-          height={height}
-          poster={poster}
-          controls={controls}
-          loop={loop}
-          autoPlay={autoPlay}
-          muted={muted}
-          preload={preload}
-          playsInline={playsInline}
-          className={classNames(classes.player, classes[objectFit])}
-          onError={onError}
-        >
-          <source src={video} />
-          {fallbackText}
-        </video>
-      )}
-    </div>
-  );
-};
+    const [loadError, setLoadError] = useState(false);
+    const onError = () => setLoadError(true);
+
+    return (
+      <div
+        className={classNames(
+          classes.root,
+          className,
+          loadError && classes.rootError,
+        )}
+      >
+        {loadError ? (
+          <VideoErrorIcon className={classes.errorIcon} />
+        ) : (
+          <video
+            width={width}
+            height={height}
+            poster={poster}
+            controls={controls}
+            loop={loop}
+            autoPlay={autoPlay}
+            muted={muted}
+            preload={preload}
+            playsInline={playsInline}
+            className={classNames(classes.player, classes[objectFit])}
+            onError={onError}
+            ref={ref}
+            controlsList={controlsList}
+          >
+            <source src={video} />
+            {fallbackText}
+          </video>
+        )}
+      </div>
+    );
+  },
+);

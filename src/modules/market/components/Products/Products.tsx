@@ -1,6 +1,8 @@
 import { Box, Container } from '@material-ui/core';
+import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
@@ -20,6 +22,7 @@ import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useIsSMDown } from 'modules/themes/useTheme';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
 import { Pagination } from '../../../uiKit/Pagination';
@@ -29,12 +32,14 @@ const ITEMS_PORTION_COUNT = 20;
 const DEFAULT_PAGE = 1;
 
 export const Products = ({ ...sectionProps }: ISectionProps) => {
-  const dispatch = useDispatchRequest();
+  const dispatchRequest = useDispatchRequest();
+  const dispatch = useDispatch();
   const { page, category } = MarketRoutesConfig.Market.useParams();
   const history = useHistory();
   const [sortBy, setSortBy] = useState<string>('1');
   const isMobile = useIsSMDown();
   const classes = useProductsStyles();
+  const { isConnected } = useAccount();
 
   const {
     data: nftItemsData,
@@ -57,14 +62,18 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   }, []);
 
   useEffect(() => {
-    dispatch(
+    dispatchRequest(
       fetchNFTItems({
         offset: (page - 1) * ITEMS_PORTION_COUNT,
         limit: ITEMS_PORTION_COUNT,
         channel: category as ItemsChannel,
       }),
     );
-  }, [category, page, dispatch]);
+
+    return function reset () {
+      dispatch(resetRequests([fetchNFTItems.toString()]));
+    };
+  }, [category, page, dispatch, isConnected, dispatchRequest]);
 
   const nftItems = useMemo(
     () => (nftItemsData ? nftItemsData.items.map(mapProductCardData) : []),

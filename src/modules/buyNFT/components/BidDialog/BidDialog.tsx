@@ -1,4 +1,11 @@
-import { Box, Dialog, Grid, IconButton, Typography } from '@material-ui/core';
+import {
+  Box,
+  Dialog,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
 import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
@@ -14,6 +21,7 @@ import React, { useCallback } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useBidDialogStyles } from './useBidDialogStyles';
+import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 
 const MIN_QUANTITY = 1;
 
@@ -95,11 +103,21 @@ export const BidDialog = ({
               <Grid item xs={12} sm>
                 <Field
                   fullWidth
-                  className={classes.inputWithoutSpin}
+                  className={classNames(classes.inputWithoutSpin)}
                   component={InputField}
                   name="bid"
                   type="number"
-                  label={t('details-nft.your-bid')}
+                  label={
+                    <Box display="flex" alignItems="center">
+                      {t('details-nft.your-bid')}
+
+                      <Tooltip title={t('details-nft.tooltip.bid-warning')}>
+                        <Box component="i" ml={1}>
+                          <QuestionIcon />
+                        </Box>
+                      </Tooltip>
+                    </Box>
+                  }
                   size="medium"
                   placeholder={t('details-nft.enter-a-bid')}
                   inputProps={{
@@ -125,7 +143,11 @@ export const BidDialog = ({
                   component={InputField}
                   name="quantity"
                   type="number"
-                  label={t('common.quantity')}
+                  label={
+                    <div className={classes.highlyBraced}>
+                      {t('common.quantity')}
+                    </div>
+                  }
                   parse={value => (value ? Math.round(+value) : 1)}
                   format={value => (value ? Math.round(+value) : 1)}
                   inputProps={{
