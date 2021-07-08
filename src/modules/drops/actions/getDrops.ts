@@ -47,7 +47,7 @@ export const getDrops = createSmartAction<
     driver: 'axios',
     getData: data => {
       if (data.code !== 1) {
-        console.error('Unexpected response');
+        console.error('getDrops: Unexpected response');
       }
 
       return {

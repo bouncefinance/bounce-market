@@ -7,8 +7,10 @@ import {
   DropsOwner,
   DropsOwnerSkeleton,
 } from 'modules/drops/components/DropsOwner';
+import { NothingFound } from 'modules/drops/components/NothingFound';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import { Section } from 'modules/uiKit/Section';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { DROPS_LIVE_KEY } from '../../const';
@@ -44,7 +46,7 @@ export const StoriesSlider = () => {
     };
   }, [dispatchRequest, isConnected, dispatch]);
 
-  const { data, loading } = useQuery<IGetDrops | null>({
+  const { data, loading, pristine } = useQuery<IGetDrops | null>({
     type: getDrops.toString(),
     requestKey: DROPS_LIVE_KEY,
   });
@@ -83,6 +85,14 @@ export const StoriesSlider = () => {
     .map((_, i) => (
       <StoriesSliderItemSkeleton key={i} profileInfo={<DropsOwnerSkeleton />} />
     ));
+
+  if (!pristine && !liveDrops.length && !loading) {
+    return (
+      <Section>
+        <NothingFound />
+      </Section>
+    );
+  }
 
   return (
     <StoriesSliderComponent isSlider={loading || liveDrops.length > 1}>

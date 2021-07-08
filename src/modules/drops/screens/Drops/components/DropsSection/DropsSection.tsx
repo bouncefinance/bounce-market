@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import {
   useDispatchRequest,
@@ -16,6 +16,7 @@ import { getDrops, IGetDrops } from 'modules/drops/actions/getDrops';
 import { updateDrops } from 'modules/drops/actions/updateDrops';
 import { DropsContainer } from 'modules/drops/components/DropsContainer';
 import { DropsOwner } from 'modules/drops/components/DropsOwner';
+import { NothingFound } from 'modules/drops/components/NothingFound';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
@@ -173,12 +174,6 @@ export const DropsSection = () => {
     });
   };
 
-  const renderedNothingFound = (
-    <Typography variant="h3" align="center" color="textSecondary">
-      {t('common.nothing-found')}
-    </Typography>
-  );
-
   const renderedSkeletons = (
     <DropList>
       {[1, 2].map((_, i) => (
@@ -203,9 +198,15 @@ export const DropsSection = () => {
             requestActions={[getDrops]}
             requestKeys={[DROPS_COMING_KEY]}
             noDataMessage={renderedSkeletons}
-            empty={renderedNothingFound}
+            empty={<NothingFound />}
           >
-            {({ data }) => <DropList>{renderDrops(data.items)}</DropList>}
+            {({ data: { items } }) => {
+              if (!items.length) {
+                return <NothingFound />;
+              }
+
+              return <DropList>{renderDrops(items)}</DropList>;
+            }}
           </Queries>
         )}
 
@@ -214,26 +215,32 @@ export const DropsSection = () => {
             requestActions={[getDrops]}
             requestKeys={[DROPS_PREV_KEY]}
             noDataMessage={renderedSkeletons}
-            empty={renderedNothingFound}
+            empty={<NothingFound />}
           >
-            {({ data }) => (
-              <>
-                <DropList>{renderDrops(data.items)}</DropList>
+            {({ data: { items, allLoaded } }) => {
+              if (!items.length) {
+                return <NothingFound />;
+              }
 
-                {!data.allLoaded && (
-                  <Box textAlign="center" mt={{ xs: 5, md: 8 }}>
-                    <Button
-                      rounded
-                      variant="outlined"
-                      loading={loadingUpdatePrev}
-                      onClick={onLoadMoreClick}
-                    >
-                      {t('common.load-more')}
-                    </Button>
-                  </Box>
-                )}
-              </>
-            )}
+              return (
+                <>
+                  <DropList>{renderDrops(items)}</DropList>
+
+                  {!allLoaded && (
+                    <Box textAlign="center" mt={{ xs: 5, md: 8 }}>
+                      <Button
+                        rounded
+                        variant="outlined"
+                        loading={loadingUpdatePrev}
+                        onClick={onLoadMoreClick}
+                      >
+                        {t('common.load-more')}
+                      </Button>
+                    </Box>
+                  )}
+                </>
+              );
+            }}
           </Queries>
         )}
       </DropsContainer>
