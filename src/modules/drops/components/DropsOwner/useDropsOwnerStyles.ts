@@ -34,6 +34,9 @@ export const useDropsOwnerStyles = makeStyles<Theme>(theme => ({
   title: {
     textAlign: 'left',
     fontWeight: 500,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
 
     [theme.breakpoints.up('md')]: {
       fontSize: 18,

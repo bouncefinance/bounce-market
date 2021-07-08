@@ -1,4 +1,6 @@
 import { Typography } from '@material-ui/core';
+import classNames from 'classnames';
+import { getRandomHexColor } from 'modules/common/utils/getRandomHexColor';
 import { Img } from 'modules/uiKit/Img';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,7 +12,7 @@ interface IStoriesSliderItemProps {
   text: string;
   profileInfo: ReactNode;
   chips?: ReactNode;
-  img: string;
+  img?: string;
   gradientColor?: string;
   href: string;
 }
@@ -24,12 +26,24 @@ export const StoriesSliderItem = ({
   href,
   gradientColor,
 }: IStoriesSliderItemProps) => {
-  const classes = useStoriesSliderItemStyles({ gradientColor });
+  const classes = useStoriesSliderItemStyles({
+    gradientColor: gradientColor || (img ? undefined : getRandomHexColor()),
+  });
 
   return (
     <div className={classes.root}>
       <Link className={classes.imgLink} to={href}>
-        <Img className={classes.imgWrap} src={img} loading="lazy" />
+        {img ? (
+          <Img className={classes.imgWrap} src={img} loading="lazy" />
+        ) : (
+          <div
+            className={classNames(
+              classes.imgWrap,
+              classes.imgWrapThumb,
+              classes.imgWrapBg,
+            )}
+          />
+        )}
       </Link>
 
       <div className={classes.content}>
