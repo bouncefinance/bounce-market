@@ -1,3 +1,4 @@
+import React from 'react';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import {
   ISearchAccount,
@@ -7,27 +8,16 @@ import {
 } from './getByLikeStr';
 import { Link as RouterLink } from 'react-router-dom';
 import { BuyNFTRoutesConfig } from '../../../buyNFT/BuyNFTRoutes';
-import { AuctionType } from '../../../overview/api/auctionType';
-import {
-  IFetchPoolDetailsData,
-  isEnglishAuction,
-} from '../../../overview/actions/fetchPoolDetails';
 import { useSearchResultStyles } from './useSearchResultStyles';
 import { t } from '../../../i18n/utils/intl';
 import { Img } from '../../../uiKit/Img';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
-import React from 'react';
 import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 import { BrandRoutesConfig } from '../../../brand/BrandRoutes';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
+import { auctionTypeMap } from 'modules/common/api/poolType';
 
-const SearchItems = ({
-  data,
-  pools,
-}: {
-  data: ISearchItem[];
-  pools: IFetchPoolDetailsData[];
-}) => {
+const SearchItems = ({ data }: { data: ISearchItem[] }) => {
   const classes = useSearchResultStyles();
 
   if (!data.length) {
@@ -38,19 +28,11 @@ const SearchItems = ({
     <div className={classes.group}>
       <div className={classes.title}>{t('header.search.items')}</div>
       {data.map((item: ISearchItem) => {
-        const pool = pools.find(poolItem => poolItem.tokenId === item.id);
-
-        if (!pool) {
-          return null;
-        }
-
         return (
           <RouterLink
             to={BuyNFTRoutesConfig.DetailsNFT.generatePath(
-              pool.poolId,
-              isEnglishAuction(pool)
-                ? AuctionType.EnglishAuction
-                : AuctionType.FixedSwap,
+              item.poolid,
+              auctionTypeMap[item.pooltype],
             )}
             className={classes.content}
             key={item.id}
@@ -155,23 +137,17 @@ const SearchAccount = ({ data }: { data: ISearchAccount[] }) => {
 const SearchResult = ({
   loading,
   data,
-  pools,
   handleClose,
 }: {
   loading?: boolean;
   data: ISearchResult;
-  pools: IFetchPoolDetailsData[];
   handleClose: () => void;
 }) => {
   const classes = useSearchResultStyles();
 
   return (
     <div className={classes.root} onClick={handleClose}>
-      {loading ? (
-        <QueryLoadingCentered />
-      ) : (
-        <SearchItems data={data.items} pools={pools} />
-      )}
+      {loading ? <QueryLoadingCentered /> : <SearchItems data={data.items} />}
       {loading ? <QueryLoadingCentered /> : <SearchBrand data={data.brands} />}
       {loading ? (
         <QueryLoadingCentered />
