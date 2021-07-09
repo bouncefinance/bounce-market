@@ -140,7 +140,7 @@
     "info": {
       "date": "{value, date, medium}",
       "time": "at {value, time, short}",
-      "view-scan": "View on BscScan"
+      "view-scan": "View on {name}"
     },
     "dialog": {
       "input-info": "Your bid must be {value} {currency} higher than the current top bid.",
