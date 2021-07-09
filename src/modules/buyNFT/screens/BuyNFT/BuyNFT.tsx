@@ -15,7 +15,10 @@ import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { EmptyPageData } from 'modules/common/components/EmptyPageData';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { featuresConfig } from 'modules/common/conts';
+import {
+  featuresConfig,
+  getBlockChainExplorerAddress,
+} from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
@@ -47,14 +50,17 @@ import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
 import { buyFixed } from '../../actions/buyFixed';
 import { fetchItem } from '../../actions/fetchItem';
-import { BSCScanBtn } from '../../components/BSCScanBtn';
+import { ScanBtn } from '../../components/ScanBtn';
 import { BuyDialog } from '../../components/BuyDialog';
 import { TokenInfo } from '../../components/TokenInfo';
 import { BuyNFTSkeleton } from './BuyNFTSkeleton';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
+import { useAccount } from 'modules/account/hooks/useAccount';
 
 export const BuyNFT = () => {
+  const { chainId } = useAccount();
+  const blockChainScan = getBlockChainExplorerAddress(chainId);
   const [isEmptyData, setIsEmptyData] = useState(false);
   const classes = useBuyNFTStyles();
   const { poolId: poolIdParam, poolType } = useParams<{
@@ -361,7 +367,7 @@ export const BuyNFT = () => {
                       price={item.price.multipliedBy(currency.priceUsd)}
                       cryptoCurrency={'BNB'}
                       cryptoPrice={item.price}
-                      href={`https://bscscan.com/tx/${item.txId}`}
+                      href={`${blockChainScan}tx/${item.txId}`}
                     />
                   );
                 })}
@@ -397,9 +403,7 @@ export const BuyNFT = () => {
 
             const renderedTokenInfoList = (
               <InfoTabsList>
-                <BSCScanBtn
-                  href={`https://bscscan.com/address/${item.contractAddress}`}
-                />
+                <ScanBtn contractAddress={item.contractAddress} />
 
                 <TokenInfo
                   name={item.itemName}

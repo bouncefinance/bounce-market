@@ -1,4 +1,3 @@
-import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
@@ -67,10 +66,6 @@ export const HeaderLinks = () => {
       {
         label: t('header.market'),
         href: MarketRoutesConfig.Market.generatePath(),
-      },
-      {
-        label: t('header.brands'),
-        href: BrandRoutesConfig.ListBrand.generatePath(),
       },
     ],
     [],

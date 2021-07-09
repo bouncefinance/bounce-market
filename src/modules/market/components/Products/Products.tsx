@@ -1,6 +1,7 @@
 import { Box, Container } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
@@ -123,6 +124,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
                   ),
                   name: item.ownerName ?? truncateWalletAddr(item.ownerAddress),
                   avatar: item.ownerAvatar,
+                  verified: item.identity === UserRoleEnum.Verified,
                 },
               ]}
             />

@@ -1,3 +1,5 @@
+import { TokenSymbol } from '../types/TokenSymbol';
+
 export interface ITradeAuction {
   amountMax1: string;
   amountMin1: string;
@@ -80,6 +82,7 @@ export interface IGetPoolsApi_V2 {
   msg?: any;
   data: ITradePool_V2[];
   total: number;
+  tokenSymbol?: TokenSymbol;
 }
 
 export interface IGetPools_V2 {

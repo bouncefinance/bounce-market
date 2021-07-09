@@ -3,7 +3,10 @@ import {
   RequestAction,
   RequestActionMeta,
 } from '@redux-requests/core';
-import { queryAccountInfo } from 'modules/common/actions/queryAccountInfo';
+import {
+  queryAccountInfo,
+  UserRoleType,
+} from 'modules/common/actions/queryAccountInfo';
 import { ITradePool_V2, PoolCategoryType } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { Store } from 'redux';
@@ -36,12 +39,16 @@ export interface INFTItem {
   standard?: number;
   supply?: number;
   ownerAvatar?: string;
+  identity?: UserRoleType;
   ownerName?: string;
   token1: string;
   tokenSymbol: TokenSymbol;
 }
 
-export const mapNFTItem = (item: ITradePool_V2): INFTItem => {
+export const mapNFTItem = (
+  item: ITradePool_V2,
+  tokenSymbol: TokenSymbol,
+): INFTItem => {
   return {
     category: item.category,
     channel: item.channel,
@@ -65,8 +72,7 @@ export const mapNFTItem = (item: ITradePool_V2): INFTItem => {
     standard: 0,
     supply: 100,
     token1: item.token1,
-    // TODO: hardcoded. Get token symbol from API
-    tokenSymbol: TokenSymbol.BNB,
+    tokenSymbol: tokenSymbol,
   };
 };
 
@@ -129,7 +135,9 @@ export const fetchNFTItems = createSmartAction<
 
           const tradePools = poolsData.data
             .filter(item => item.state !== 1)
-            .map(mapNFTItem);
+            .map(item =>
+              mapNFTItem(item, poolsData?.tokenSymbol ?? TokenSymbol.BNB),
+            );
 
           const tradePoolsWithOwnerImg: INFTItem[] = await Promise.all(
             tradePools.map(async item => {
@@ -144,6 +152,7 @@ export const fetchNFTItems = createSmartAction<
                 ...item,
                 ownerAvatar: response.data?.imgUrl,
                 ownerName: response.data?.username,
+                identity: response.data?.identity,
               };
             }),
           );

@@ -6,6 +6,7 @@ import { t } from 'modules/i18n/utils/intl';
 import {
   IAccountInfo,
   queryAccountInfo,
+  UserRoleEnum,
 } from '../../../common/actions/queryAccountInfo';
 import { ProfileInfo } from '../ProfileInfo';
 
@@ -37,6 +38,7 @@ export const AccountInfo = ({ address }: { address: string }) => {
           href: href,
           name: accountInfo?.username ?? truncateWalletAddr(address),
           avatar: accountInfo?.imgUrl,
+          verified: accountInfo?.identity === UserRoleEnum.Verified,
         },
       ]}
     />

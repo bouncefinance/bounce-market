@@ -1,6 +1,7 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { IGetPoolsApi_V2 } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
+import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 export enum FetchStateType {
@@ -46,6 +47,7 @@ export const fetchPools = createSmartAction<
 
       return response;
     },
+    onSuccess: addTokenSymbolByDriver,
     ...meta,
   },
 }));
