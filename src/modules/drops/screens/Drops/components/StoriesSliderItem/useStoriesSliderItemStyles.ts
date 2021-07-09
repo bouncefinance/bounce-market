@@ -56,11 +56,14 @@ export const useStoriesSliderItemStyles = makeStyles<
         left: 0,
         width: '100%',
         height: '100%',
+        borderRadius: 'inherit',
 
         background: ({ gradientColor }) =>
-          `linear-gradient(0deg, ${
-            gradientColor ?? '#000'
-          } 21.04%, rgba(66, 90, 47, 0) 50%)`,
+          `linear-gradient(
+          0deg,
+          ${fade(gradientColor || theme.palette.background.default, 0.8)} 21%,
+          ${fade(gradientColor || theme.palette.background.default, 0)} 50%
+          )`,
       },
     },
   },
@@ -73,6 +76,15 @@ export const useStoriesSliderItemStyles = makeStyles<
       content: `''`,
       display: 'block',
     },
+  },
+
+  imgWrapBg: {
+    background: ({ gradientColor }) =>
+      `linear-gradient(
+      0deg,
+      ${fade(gradientColor || theme.palette.background.default, 0.8)} 50%,
+      ${fade('#000', 0)} 100%
+    )`,
   },
 
   content: {
