@@ -200,12 +200,12 @@ export const DropsSection = () => {
             noDataMessage={renderedSkeletons}
             empty={<NothingFound />}
           >
-            {({ data: { items } }) => {
-              if (!items.length) {
+            {({ data }) => {
+              if (!data || !data.items.length) {
                 return <NothingFound />;
               }
 
-              return <DropList>{renderDrops(items)}</DropList>;
+              return <DropList>{renderDrops(data.items)}</DropList>;
             }}
           </Queries>
         )}
@@ -217,16 +217,16 @@ export const DropsSection = () => {
             noDataMessage={renderedSkeletons}
             empty={<NothingFound />}
           >
-            {({ data: { items, allLoaded } }) => {
-              if (!items.length) {
+            {({ data }) => {
+              if (!data || !data.items.length) {
                 return <NothingFound />;
               }
 
               return (
                 <>
-                  <DropList>{renderDrops(items)}</DropList>
+                  <DropList>{renderDrops(data.items)}</DropList>
 
-                  {!allLoaded && (
+                  {!data.allLoaded && (
                     <Box textAlign="center" mt={{ xs: 5, md: 8 }}>
                       <Button
                         rounded

@@ -39,7 +39,11 @@ export const getDropDetails = createSmartAction<
     driver: 'axios',
     getData: data => {
       if (data.code !== 1) {
-        console.error('getDropDetails: Unexpected response');
+        console.error(`
+        getDropDetails: Unexpected response.
+        To avoid this type of error notification you might need
+        to look at the https://github.com/klis87/redux-requests/discussions/470
+        `);
       }
 
       if (!data.data) {
