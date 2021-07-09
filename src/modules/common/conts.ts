@@ -86,17 +86,17 @@ export function getNativeTokenSymbol(chainId: BlockchainNetworkId) {
 const BlockChainExplorerAddress: {
   [key in BlockchainNetworkId]: String;
 } = {
-  [BlockchainNetworkId.mainnet]: 'https://etherscan.io/address/',
-  [BlockchainNetworkId.ropsten]: 'https://ropsten.etherscan.io/address/',
-  [BlockchainNetworkId.rinkeby]: 'https://rinkeby.etherscan.io/address/',
-  [BlockchainNetworkId.goerli]: 'https://goerli.etherscan.io/address/',
+  [BlockchainNetworkId.mainnet]: 'https://etherscan.io/',
+  [BlockchainNetworkId.ropsten]: 'https://ropsten.etherscan.io/',
+  [BlockchainNetworkId.rinkeby]: 'https://rinkeby.etherscan.io/',
+  [BlockchainNetworkId.goerli]: 'https://goerli.etherscan.io/',
   [BlockchainNetworkId.dev]: '',
   [BlockchainNetworkId.classic]: '',
   [BlockchainNetworkId.mordor]: '',
   [BlockchainNetworkId.kotti]: '',
-  [BlockchainNetworkId.smartchain]: 'https://bscscan.com/address/',
-  [BlockchainNetworkId.smartchainTestnet]: 'https://bscscan.com/address/',
-  [BlockchainNetworkId.heco]: 'https://hecoinfo.com/address/',
+  [BlockchainNetworkId.smartchain]: 'https://bscscan.com/',
+  [BlockchainNetworkId.smartchainTestnet]: 'https://bscscan.com/',
+  [BlockchainNetworkId.heco]: 'https://hecoinfo.com/',
 };
 
 export const getBlockChainExplorerAddress = (chainId: BlockchainNetworkId) =>

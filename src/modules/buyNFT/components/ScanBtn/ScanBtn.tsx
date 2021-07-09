@@ -30,7 +30,7 @@ export const ScanBtn = ({ className, contractAddress }: IBSCScanBtnProps) => {
       className={classNames(classes.root, className)}
       component="a"
       target="_blank"
-      href={`${blockChainScan}${contractAddress}`}
+      href={`${blockChainScan}address/${contractAddress}`}
       variant="outlined"
       fullWidth
     >
