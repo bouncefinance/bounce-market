@@ -5,28 +5,39 @@ export interface IGetOneDropsDetailParams {
   poolstate: number;
 }
 
-export interface IApiOneDropsDetailItem {
+export enum DropsDetailPoolState {
+  Live,
+  Closed,
+}
+
+export interface IApiDropsDetailPoolInfo {
+  fileurl: string;
+  name: string;
+  poolid: number;
+  pooltype: number;
+  price: string;
+  state: DropsDetailPoolState;
+  swapped_amount0: number;
+  token_amount0: number;
+}
+
+export interface IApiOneDropsDetailData {
   accountaddress: string;
+  avatar: string;
   bgcolor: string;
   coverimgurl: string;
-  created_at: string;
-  creatorurl: string;
+  creator: string;
   description: string;
   dropdate: number;
-  fileurl: string;
   instagram: string;
-  itemname: string;
-  nfts: number;
-  price: string;
+  poolsinfo: IApiDropsDetailPoolInfo[];
   title: string;
   twitter: string;
-  username: string;
   website: string;
 }
 
 export interface IApiOneDropsDetail {
   code: number;
-  data?: IApiOneDropsDetailItem[];
+  data?: IApiOneDropsDetailData;
   msg?: string;
-  total?: number;
 }

@@ -1,6 +1,6 @@
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { auctionTypeMap } from 'modules/api/common/poolType';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { auctionTypeMap } from 'modules/common/api/poolType';
 import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import {

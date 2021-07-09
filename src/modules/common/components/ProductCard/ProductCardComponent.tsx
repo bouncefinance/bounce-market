@@ -9,14 +9,18 @@ import {
   Popover,
   Typography,
 } from '@material-ui/core';
-import { t } from 'modules/i18n/utils/intl';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
+import { AuctionState } from 'modules/api/common/AuctionState';
+import { AuctionType } from 'modules/api/common/auctionType';
+import { FixedSwapState } from 'modules/api/common/FixedSwapState';
+import { ConditionalWrapper } from 'modules/common/components/ConditionalWrapper';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
 import { featuresConfig } from 'modules/common/conts';
 import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
+import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode, useCallback, useState } from 'react';
@@ -25,10 +29,6 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
 import { useProductCardStyles } from './useProductCardStyles';
-import { AuctionType } from 'modules/overview/api/auctionType';
-import { FixedSwapState } from 'modules/common/const/FixedSwapState';
-import { AuctionState } from 'modules/common/const/AuctionState';
-import { ConditionalWrapper } from 'modules/common/components/ConditionalWrapper';
 
 export type ProductCardCategoryType = 'image' | 'video';
 

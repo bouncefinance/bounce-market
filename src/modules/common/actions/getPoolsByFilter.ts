@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js';
 import { IApiQueryPool, IQueryPool } from 'modules/pools/actions/queryPools';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
+import { AuctionState } from '../../api/common/AuctionState';
 import { NftType } from '../../createNFT/actions/createNft';
-import { AuctionState } from '../const/AuctionState';
 import { Address, Seconds } from '../types/unit';
 
 interface IApiPool {

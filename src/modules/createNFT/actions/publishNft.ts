@@ -1,22 +1,22 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
-import { AuctionType } from '../../overview/api/auctionType';
+import BigNumber from 'bignumber.js';
 import { Store } from 'redux';
+import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
-import { NftType } from './createNft';
-import BigNumber from 'bignumber.js';
-import { TransactionReceipt } from '@ethersproject/abstract-provider';
+import { AuctionType } from '../../api/common/auctionType';
 import { Seconds } from '../../common/types/unit';
-import {
-  BounceEnglishAuctionNFT,
-  BounceFixedSwapNFT,
-  BounceErc721,
-  BounceErc1155,
-} from '../../web3/contracts';
-import { fetchCurrency } from '../../overview/actions/fetchCurrency';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { toWei } from '../../common/utils/toWei';
+import { fetchCurrency } from '../../overview/actions/fetchCurrency';
+import {
+  BounceEnglishAuctionNFT,
+  BounceErc1155,
+  BounceErc721,
+  BounceFixedSwapNFT,
+} from '../../web3/contracts';
+import { NftType } from './createNft';
 
 export const getFixedSwapContract = (chainID: number) => {
   switch (chainID) {

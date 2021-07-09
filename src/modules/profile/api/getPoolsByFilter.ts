@@ -1,12 +1,12 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
+import { IApiQueryPool, IQueryPool } from 'modules/pools/actions/queryPools';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
+import { AuctionState } from '../../api/common/AuctionState';
+import { FixedSwapState } from '../../api/common/FixedSwapState';
 import { NftType } from '../../createNFT/actions/createNft';
 import { IFetchPoolDetailsData } from '../../overview/actions/fetchPoolDetails';
-import { AuctionState } from '../../common/const/AuctionState';
-import { FixedSwapState } from '../../common/const/FixedSwapState';
-import { IApiQueryPool, IQueryPool } from 'modules/pools/actions/queryPools';
 
 function mapPool(data: IQueryPool): IFetchPoolDetailsData {
   if (data.auctiontype === 2) {

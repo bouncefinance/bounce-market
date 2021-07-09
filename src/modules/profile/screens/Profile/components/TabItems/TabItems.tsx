@@ -15,8 +15,8 @@ import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
-import { AuctionState } from '../../../../../common/const/AuctionState';
-import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
+import { AuctionState } from '../../../../../api/common/AuctionState';
+import { FixedSwapState } from '../../../../../api/common/FixedSwapState';
 
 export const TabItems = () => {
   const dispatch = useDispatchRequest();

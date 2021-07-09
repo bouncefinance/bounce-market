@@ -16,8 +16,8 @@ import { TabItems as TabItemsComponent } from 'modules/profile/components/TabIte
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { uid } from 'react-uid';
-import { AuctionState } from '../../../../../common/const/AuctionState';
-import { FixedSwapState } from '../../../../../common/const/FixedSwapState';
+import { AuctionState } from '../../../../../api/common/AuctionState';
+import { FixedSwapState } from '../../../../../api/common/FixedSwapState';
 import { PROFILE_INFO_REQUEST_KEY } from '../../OtherProfile';
 
 const getIsOnSale = (item: IItem) => {

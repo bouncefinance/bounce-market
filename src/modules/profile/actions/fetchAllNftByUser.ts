@@ -2,13 +2,13 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
+import { AuctionState } from '../../api/common/AuctionState';
+import { AuctionType } from '../../api/common/auctionType';
+import { FixedSwapState } from '../../api/common/FixedSwapState';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
-import { AuctionState } from '../../common/const/AuctionState';
-import { FixedSwapState } from '../../common/const/FixedSwapState';
 import { throwIfError } from '../../common/utils/throwIfError';
 import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
-import { AuctionType } from '../../overview/api/auctionType';
 import { IItem } from '../../overview/api/getItems';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
 

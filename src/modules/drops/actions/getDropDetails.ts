@@ -6,6 +6,8 @@ import {
   IGetOneDropsDetailParams,
   mapDropDetails,
 } from 'modules/api/getOneDropsDetail';
+import { TokenSymbol } from 'modules/common/types/TokenSymbol';
+import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 interface IGetDropDetailsArgs {
@@ -13,8 +15,12 @@ interface IGetDropDetailsArgs {
   poolsState?: number;
 }
 
+export interface IGetDropDetails extends IDropDetails {
+  tokenSymbol?: TokenSymbol;
+}
+
 export const getDropDetails = createSmartAction<
-  RequestAction<IApiOneDropsDetail, IDropDetails>,
+  RequestAction<IApiOneDropsDetail, IGetDropDetails | null>,
   [IGetDropDetailsArgs]
 >('getDropDetails', params => ({
   request: {
@@ -36,7 +42,12 @@ export const getDropDetails = createSmartAction<
         console.error('getDropDetails: Unexpected response');
       }
 
-      return mapDropDetails(data.data![0]);
+      if (!data.data) {
+        return null;
+      }
+
+      return mapDropDetails(data.data);
     },
+    onSuccess: addTokenSymbolByDriver,
   },
 }));
