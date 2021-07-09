@@ -15,6 +15,8 @@ import { isVideo } from '../../common/utils/isVideo';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { addNFTByEvent } from '../../profile/actions/addNftByEvent';
 import { NftType } from '../../common/const/NftType';
+import { ProfileRoutesConfig } from '../../profile/ProfileRoutes';
+import { push } from 'connected-react-router';
 
 export enum Channel {
   FineArts = 'FineArts',
@@ -104,12 +106,12 @@ export const createNft = createSmartAction(
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     store.dispatchRequest(addNFTByEvent({ hash }));
+                    store.dispatch(
+                      push(ProfileRoutesConfig.UserProfile.generatePath()),
+                    );
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
                     resolve(receipt);
-                    // setTimeout(() => {
-                    //   resolve(receipt);
-                    // }, 15000);
                   })
                   .on('error', (error: Error) => {
                     reject(error);
@@ -132,12 +134,12 @@ export const createNft = createSmartAction(
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     store.dispatchRequest(addNFTByEvent({ hash }));
+                    store.dispatch(
+                      push(ProfileRoutesConfig.UserProfile.generatePath()),
+                    );
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
                     resolve(receipt);
-                    // setTimeout(() => {
-                    //   resolve(receipt);
-                    // }, 15000);
                   })
                   .on('error', (error: Error) => {
                     reject(error);

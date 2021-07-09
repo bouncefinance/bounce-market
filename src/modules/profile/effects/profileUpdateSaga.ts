@@ -101,6 +101,7 @@ function* onConnectWallet() {
       return data;
     },
   );
+  let latestBlock = 0;
 
   const channel = createEventChannel(accountData);
 
@@ -111,15 +112,12 @@ function* onConnectWallet() {
       case ActionType.Error:
         break;
       case ActionType.Fetched:
-        const { address, transactionHash, returnValues } = event.data;
-        const { to, tokenId } = returnValues;
-        const params = {
-          address: to,
-          id: +tokenId,
-          hash: transactionHash,
-          contractAddress: address,
-        };
-        yield put(updateNFTByEvent(params));
+        if (event.data.blockNumber > latestBlock) {
+          const params = mapEventToAction(event.data);
+          yield put(updateNFTByEvent(params));
+
+          latestBlock = event.data.blockNumber;
+        }
         break;
     }
   }
@@ -128,3 +126,14 @@ function* onConnectWallet() {
 export function* profileUpdateSaga() {
   yield takeEvery(connectIsFinished.toString(), onConnectWallet);
 }
+
+const mapEventToAction = (event: any) => {
+  const { address, transactionHash, returnValues } = event;
+  const { to } = returnValues;
+  return {
+    address: to,
+    id: +returnValues.tokenId || +returnValues.id,
+    hash: transactionHash,
+    contractAddress: address,
+  };
+};
