@@ -28,18 +28,18 @@
     "create": "Create",
     "connect": "Connect Wallet",
     "inventory": "My Inventory",
-    "my-brands": "My Brands",
+    "my-brands": "My Collections",
     "profile-settings": "Profile settings",
     "disconnect": "Disconnect",
     "drops": "Dr\uD83D\uDD25ps",
-    "market": "Market",
-    "brands": "Brands",
+    "market": "Marketplace",
+    "brands": "Collections",
     "how-it-works": "How it works",
     "search": {
-      "placeholder": "Search by name, creator, brand...",
+      "placeholder": "Search by name, creator, collection...",
       "empty": "No results found",
       "items": "Items",
-      "brands": "Brands",
+      "brands": "Collections",
       "users": "Users"
     }
   },
@@ -58,7 +58,7 @@
   "connect-wallet": {
     "placeholder": {
       "title": "Connect your wallet",
-      "brand-title": "To see the brand's items, you need to connect first.",
+      "brand-title": "To see the collection's items, you need to connect first.",
       "description": "The content of this page is only available with the connected wallet"
     },
     "custom-binancewallet": {
@@ -129,7 +129,7 @@
     "sold-out": "Sold out",
     "place-a-bid": "Place a bid",
     "your-bid": "Your bid",
-    "enter-a-bid": "Enter a Bid",
+    "enter-a-bid": "Enter a bid",
     "tabs": {
       "history": "History",
       "bids": "Bids",
@@ -142,8 +142,8 @@
       "view-scan": "View on BscScan"
     },
     "dialog": {
-      "input-info": "You must bid at least {value} {currency}",
-      "footnote": "Bids placed in auction cannot be withdrawn"
+      "input-info": "Your bid must be {value} {currency} higher than the current top bid.",
+      "footnote": "Bids placed in auction cannot be withdrawn."
     },
     "token-info": {
       "standard": "Standard:",
@@ -205,13 +205,13 @@
   },
   "brand": {
     "create": {
-      "create-brand": "Create brand",
+      "create-brand": "Create collection",
       "label": {
-        "brand-name": "Brand name",
-        "brand-url": "Brand URL",
+        "brand-name": "Collection name",
+        "brand-url": "Collection URL",
         "description": "Description",
-        "brand-symbol": "Brand symbol",
-        "brand-avatar": "Brand avatar"
+        "brand-symbol": "Collection symbol",
+        "brand-avatar": "Collection avatar"
       },
       "avatar-accepts": "Supports JPG, PNG, JPEG2000",
       "avatar-recommended-size": "300x300 Recommended"
@@ -220,11 +220,11 @@
       "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}",
       "addNewItem": "Add new item",
       "createNewItem": "Create new item",
-      "createNewBrand": "Create new brand"
+      "createNewBrand": "Create new collection"
     }
   },
   "create-brand-nft": {
-    "title": "Create Brand NFT",
+    "title": "Create Collection NFT",
     "label": {
       "name": "Name",
       "description": "Description",
@@ -246,11 +246,11 @@
   },
   "overview": {
     "brands": {
-      "title": "Hot Brands"
+      "title": "Collections"
     }
   },
   "brands": {
-    "title": "Brands",
+    "title": "Collections",
     "items": "{num} items",
     "no-items": "There is no items created yet."
   },
@@ -326,8 +326,8 @@
       "items": "Items",
       "my-bids": "My bids",
       "my-sells": "My sales",
-      "my-brands": "My brands",
-      "brands": "Brands",
+      "my-brands": "My collections",
+      "brands": "Collections",
       "activity": "Activity",
       "liked": "Liked",
       "following": "Following",
