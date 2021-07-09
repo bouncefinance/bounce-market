@@ -31,6 +31,7 @@ export const useSocialShareStyles = makeStyles<Theme>(theme => ({
   },
 
   menuIcon: {
+    '--fb-inner-color': theme.palette.background.paper,
     marginRight: theme.spacing(1.5),
     verticalAlign: 'middle',
   },

@@ -9,7 +9,6 @@ import { getByLikeStr } from './getByLikeStr';
 import { SearchResult } from './SearchResult';
 import { useSearchStyles } from './SearchStyles';
 import debounce from 'lodash/debounce';
-import { getPoolsByFilter } from '../../../profile/api/getPoolsByFilter';
 import { t } from '../../../i18n/utils/intl';
 
 const SEARCH_REQUEST_KEY = 'Search';
@@ -40,9 +39,6 @@ export const Search = ({ className, focus }: ISearchProps) => {
     debounce((value: string) => {
       if (value.length && value.length >= 2) {
         dispatch(getByLikeStr(value));
-        dispatch(
-          getPoolsByFilter(undefined, { requestKey: SEARCH_REQUEST_KEY }),
-        );
         setShowResult(true);
       } else {
         setShowResult(false);
@@ -85,18 +81,14 @@ export const Search = ({ className, focus }: ISearchProps) => {
       {showResult && (
         <ClickAwayListener onClickAway={handleClose}>
           <div className={classes.searchResult}>
-            <Queries<
-              ResponseData<typeof getByLikeStr>,
-              ResponseData<typeof getPoolsByFilter>
-            >
-              requestActions={[getByLikeStr, getPoolsByFilter]}
+            <Queries<ResponseData<typeof getByLikeStr>>
+              requestActions={[getByLikeStr]}
               requestKeys={['', SEARCH_REQUEST_KEY]}
             >
-              {({ loading, data }, { data: pools }) => (
+              {({ loading, data }) => (
                 <SearchResult
                   loading={loading}
                   data={data}
-                  pools={pools.list}
                   handleClose={handleClose}
                 />
               )}

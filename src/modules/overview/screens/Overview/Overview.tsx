@@ -1,5 +1,7 @@
 import { ThemeProvider } from '@material-ui/styles';
+import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { featuresConfig } from 'modules/common/conts';
@@ -8,11 +10,16 @@ import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers } from 'modules/overview/components/Movers';
 import { Products } from 'modules/overview/components/Products';
-import { IPromoItem, Promo, PromoSkeleton } from 'modules/overview/components/Promo';
+import {
+  IPromoItem,
+  Promo,
+  PromoSkeleton,
+} from 'modules/overview/components/Promo';
 import { PROMO_ITEMS_COUNT } from 'modules/overview/const';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { darkTheme } from 'modules/themes/darkTheme';
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { fetchOverview } from '../../actions/fetchOverview';
@@ -45,15 +52,26 @@ function mapPromoItem(item: IItem): IPromoItem {
 }
 
 export const Overview = () => {
-  const dispatch = useDispatchRequest();
+  const dispatchRequest = useDispatchRequest();
+  const dispatch = useDispatch();
   const classes = useOverviewStyles();
+  const { isConnected } = useAccount();
 
   useEffect(() => {
-    dispatch(fetchOverview());
-    dispatch(fetchPopularBrands());
-  }, [dispatch]);
+    dispatchRequest(fetchOverview());
+    dispatchRequest(fetchPopularBrands());
 
-  const createPromoSkeleton = () => (
+    return function reset() {
+      dispatch(
+        resetRequests([
+          fetchOverview.toString(),
+          fetchPopularBrands.toString(),
+        ]),
+      );
+    };
+  }, [dispatch, dispatchRequest, isConnected]);
+
+  const renderedPromoSkeleton = (
     <ThemeProvider theme={darkTheme}>
       <PromoSkeleton />
     </ThemeProvider>
@@ -64,7 +82,7 @@ export const Overview = () => {
       <div className={classes.promoMoversWrap}>
         <Queries<ResponseData<typeof fetchOverview>>
           requestActions={[fetchOverview]}
-          noDataMessage={createPromoSkeleton()}
+          noDataMessage={renderedPromoSkeleton}
         >
           {({ loading, error, data }) => (
             <ThemeProvider theme={darkTheme}>

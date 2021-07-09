@@ -1,8 +1,4 @@
-import {
-  fade,
-  Theme,
-  makeStyles,
-} from '@material-ui/core';
+import { fade, Theme, makeStyles } from '@material-ui/core';
 
 export const useBrandItemsStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -75,5 +71,4 @@ export const useBrandItemsStyles = makeStyles((theme: Theme) => ({
     borderRadius: '50%',
     marginRight: 16,
   },
-
-}))
+}));

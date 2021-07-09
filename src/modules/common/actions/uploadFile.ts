@@ -1,7 +1,9 @@
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import { setAccount } from 'modules/account/store/actions/setAccount';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
+import { editBrandImg } from '../../brand/actions/editBrandImg';
 import { editProfile } from '../../profile/actions/editProfile';
 import { editProfileBgImg } from '../../profile/actions/editProfileBgImg';
 import { fetchProfileInfo } from '../../profile/actions/fetchProfileInfo';
@@ -10,8 +12,6 @@ import {
   IApiUploadFileResponse,
   IApiUploadFileSuccess,
 } from '../api/uploadFile';
-import { editBrandImg } from '../../brand/actions/editBrandImg';
-import { setAccount } from 'modules/account/store/actions/setAccount';
 
 export enum UploadFileType {
   Avatar = 'avatar',
@@ -78,6 +78,7 @@ export const uploadFile: (
               editProfile({
                 ...(profileInfo || {}),
                 imgUrl: response.data.result.path,
+                accountAddress: address,
               }) as any,
             );
           } else if (fileType === UploadFileType.BgImg && isSuccessfulUpload) {

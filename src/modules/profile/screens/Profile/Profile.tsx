@@ -2,6 +2,7 @@ import { Container } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
+import { Social } from 'modules/common/components/Social';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
@@ -16,7 +17,6 @@ import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import { SetAvatarModal } from 'modules/profile/components/SetAvatarModal';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
-import { Social } from 'modules/profile/components/Social';
 import { Subscribers } from 'modules/profile/components/Subscribers';
 import { TabBrands } from 'modules/profile/components/TabBrands';
 import {
@@ -186,7 +186,11 @@ export const Profile = () => {
           }
           social={
             featuresConfig.profileSocialLinks && (
-              <Social profileInfo={profileInfo} />
+              <Social
+                twitter={profileInfo?.twitter}
+                instagram={profileInfo?.instagram}
+                facebook={profileInfo?.facebook}
+              />
             )
           }
           address={address}

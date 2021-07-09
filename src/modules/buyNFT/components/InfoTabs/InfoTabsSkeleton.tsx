@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
-import React from 'react';
 import { Skeleton } from '@material-ui/lab';
+import React from 'react';
 
 const useInfoTabsSkeletonStyles = makeStyles<Theme>(theme => ({
   tabs: {
@@ -9,9 +9,9 @@ const useInfoTabsSkeletonStyles = makeStyles<Theme>(theme => ({
     marginBottom: theme.spacing(2),
 
     '& > *': {
-      width: '50px',
-      height: '40px',
-      marginRight: '20px',
+      width: 50,
+      height: 40,
+      marginRight: 20,
     },
   },
 

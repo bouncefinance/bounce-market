@@ -1,6 +1,6 @@
+import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { StoriesRoutesConfig } from 'modules/stories/Routes';
 import { Button } from 'modules/uiKit/Button';
 import React, { useCallback, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -61,7 +61,7 @@ export const HeaderLinks = () => {
     () => [
       {
         label: t('header.drops'),
-        href: StoriesRoutesConfig.Stories.generatePath(),
+        href: DropsRoutesConfig.Drops.generatePath(),
       },
       {
         label: t('header.market'),
