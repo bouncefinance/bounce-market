@@ -82,3 +82,41 @@ const NativeTokens: {
 export function getNativeTokenSymbol(chainId: BlockchainNetworkId) {
   return NativeTokens[chainId];
 }
+
+const BlockChainExplorerAddress: {
+  [key in BlockchainNetworkId]: String;
+} = {
+  [BlockchainNetworkId.mainnet]: 'https://etherscan.io/address/',
+  [BlockchainNetworkId.ropsten]: 'https://ropsten.etherscan.io/address/',
+  [BlockchainNetworkId.rinkeby]: 'https://rinkeby.etherscan.io/address/',
+  [BlockchainNetworkId.goerli]: 'https://goerli.etherscan.io/address/',
+  [BlockchainNetworkId.dev]: '',
+  [BlockchainNetworkId.classic]: '',
+  [BlockchainNetworkId.mordor]: '',
+  [BlockchainNetworkId.kotti]: '',
+  [BlockchainNetworkId.smartchain]: 'https://bscscan.com/address/',
+  [BlockchainNetworkId.smartchainTestnet]: 'https://bscscan.com/address/',
+  [BlockchainNetworkId.heco]: 'https://hecoinfo.com/address/',
+};
+
+export const getBlockChainExplorerAddress = (chainId: BlockchainNetworkId) =>
+  BlockChainExplorerAddress[chainId];
+
+const BlockChainExplorerName: {
+  [key in BlockchainNetworkId]: String;
+} = {
+  [BlockchainNetworkId.mainnet]: 'ETHScan',
+  [BlockchainNetworkId.ropsten]: 'RopstenScan',
+  [BlockchainNetworkId.rinkeby]: 'RinkebyScan',
+  [BlockchainNetworkId.goerli]: 'GoerliScan',
+  [BlockchainNetworkId.dev]: '',
+  [BlockchainNetworkId.classic]: '',
+  [BlockchainNetworkId.mordor]: '',
+  [BlockchainNetworkId.kotti]: '',
+  [BlockchainNetworkId.smartchain]: 'BSCScan',
+  [BlockchainNetworkId.smartchainTestnet]: 'BSCScan',
+  [BlockchainNetworkId.heco]: 'HecoScan',
+};
+
+export const getBlockChainExplorerName = (chainId: BlockchainNetworkId) =>
+  BlockChainExplorerName[chainId];
