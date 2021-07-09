@@ -70,7 +70,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
       }),
     );
 
-    return function reset () {
+    return function reset() {
       dispatch(resetRequests([fetchNFTItems.toString()]));
     };
   }, [category, page, dispatch, isConnected, dispatchRequest]);

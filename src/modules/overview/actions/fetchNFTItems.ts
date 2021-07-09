@@ -3,7 +3,10 @@ import {
   RequestAction,
   RequestActionMeta,
 } from '@redux-requests/core';
-import { queryAccountInfo, UserRoleType } from 'modules/common/actions/queryAccountInfo';
+import {
+  queryAccountInfo,
+  UserRoleType,
+} from 'modules/common/actions/queryAccountInfo';
 import { ITradePool_V2, PoolCategoryType } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { Store } from 'redux';
@@ -90,7 +93,7 @@ export const fetchNFTItems = createSmartAction<
   [IFetchNFTItemsArgs, FetchNFTItemsMetaType?]
 >('NFTMarket/fetchNFTItems', (params, meta) => ({
   request: {
-    promise: (async function () { })(),
+    promise: (async function () {})(),
   },
   meta: {
     ...meta,
