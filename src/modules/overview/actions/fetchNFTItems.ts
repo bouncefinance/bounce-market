@@ -41,7 +41,10 @@ export interface INFTItem {
   tokenSymbol: TokenSymbol;
 }
 
-export const mapNFTItem = (item: ITradePool_V2): INFTItem => {
+export const mapNFTItem = (
+  item: ITradePool_V2,
+  tokenSymbol: TokenSymbol,
+): INFTItem => {
   return {
     category: item.category,
     channel: item.channel,
@@ -65,8 +68,7 @@ export const mapNFTItem = (item: ITradePool_V2): INFTItem => {
     standard: 0,
     supply: 100,
     token1: item.token1,
-    // TODO: hardcoded. Get token symbol from API
-    tokenSymbol: TokenSymbol.BNB,
+    tokenSymbol: tokenSymbol,
   };
 };
 
@@ -129,11 +131,9 @@ export const fetchNFTItems = createSmartAction<
 
           const tradePools = poolsData.data
             .filter(item => item.state !== 1)
-            .map(mapNFTItem)
-            .map((item: INFTItem) => ({
-              ...item,
-              tokenSymbol: poolsData?.tokenSymbol ?? TokenSymbol.BNB,
-            }));
+            .map(item =>
+              mapNFTItem(item, poolsData?.tokenSymbol ?? TokenSymbol.BNB),
+            );
 
           const tradePoolsWithOwnerImg: INFTItem[] = await Promise.all(
             tradePools.map(async item => {
