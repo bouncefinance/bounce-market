@@ -1,12 +1,12 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
+import { NftType } from 'modules/api/common/NftType';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { AuctionState } from '../../api/common/AuctionState';
 import { AuctionType } from '../../api/common/auctionType';
 import { FixedSwapState } from '../../api/common/FixedSwapState';
 import { Address } from '../../common/types/unit';
-import { NftType } from '../../createNFT/actions/createNft';
 
 export interface IApiPoolDetails {
   Standard: number;

@@ -6,7 +6,6 @@ import Web3 from 'web3';
 import { AuctionState } from '../../api/common/AuctionState';
 import { NftType } from '../../api/common/NftType';
 import { Address, Seconds } from '../types/unit';
-import { NftType } from '../const/NftType';
 
 interface IApiPool {
   amount_total0: number;
