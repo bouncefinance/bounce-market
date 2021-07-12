@@ -34,7 +34,6 @@ import { AuctionState } from '../../../common/const/AuctionState';
 import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Address } from '../../../common/types/unit';
-import { NftType } from '../../../createNFT/actions/createNft';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
@@ -56,6 +55,7 @@ import { TokenInfo } from '../../components/TokenInfo';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
 import { BuyNFTSkeleton } from './BuyNFTSkeleton';
+import { NftType } from '../../../common/const/NftType';
 import { useAccount } from 'modules/account/hooks/useAccount';
 
 export const BuyNFT = () => {

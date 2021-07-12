@@ -1,8 +1,8 @@
 import { RequestAction } from '@redux-requests/core';
-import { NftType } from 'modules/createNFT/actions/createNft';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { IApiUpdateBrandInfo } from '../api/updateBrandInfo';
 import { UpdateBrandInfoAction } from './const';
+import { NftType } from '../../common/const/NftType';
 
 export interface IUpdateBrandInfoPayload {
   brandname: string;

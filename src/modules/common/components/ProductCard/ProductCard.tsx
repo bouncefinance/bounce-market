@@ -1,6 +1,5 @@
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { poolTypeMap } from 'modules/common/api/poolType';
-import { NftType } from 'modules/createNFT/actions/createNft';
 import { AuctionType } from 'modules/overview/api/auctionType';
 import { useLike } from 'modules/profile/hooks/useLike';
 import React, { useCallback } from 'react';
@@ -20,6 +19,7 @@ import {
   BurnTokenDialog,
   IBurnFormValues,
 } from 'modules/brand/components/BurnTokenDialog';
+import { NftType } from '../../const/NftType';
 
 export interface IProductCardProps
   extends Omit<IProductCardComponentProps, 'isLiked'> {

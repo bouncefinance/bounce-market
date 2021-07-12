@@ -7,7 +7,6 @@ import { IBrandInfo } from 'modules/brand/api/queryBrand';
 import {
   Channel,
   ICreateNFTPayload,
-  NftType,
 } from 'modules/createNFT/actions/createNft';
 import { useCreateNFTStyles } from 'modules/createNFT/screens/CreateNFT/useCreateNFTStyles';
 import { Button } from 'modules/uiKit/Button';
@@ -26,6 +25,7 @@ import {
   ProfileRoutesConfig,
   ProfileTab,
 } from '../../../profile/ProfileRoutes';
+import { NftType } from '../../../common/const/NftType';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -46,7 +46,7 @@ interface ICreateNFTFormData extends Omit<ICreateNFTPayload, 'supply'> {
 
 const validateCreateNFT = (payload: ICreateNFTFormData) => {
   const errors: FormErrors<ICreateNFTFormData> = {};
-  
+
   if (!payload.name) {
     errors.name = t('validation.required');
   }
@@ -56,11 +56,11 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
   }
 
   if (payload.standard === NftType.ERC1155) {
-    const supply = payload.supply
+    const supply = payload.supply;
     if (!supply) {
       errors.supply = t('validation.required');
     } else if (!/^\d+$/.test(supply)) {
-      errors.supply = t('validation.require-integer')
+      errors.supply = t('validation.require-integer');
     }
   }
 

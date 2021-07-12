@@ -3,9 +3,9 @@ import BigNumber from 'bignumber.js';
 import { IApiQueryPool, IQueryPool } from 'modules/pools/actions/queryPools';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
-import { NftType } from '../../createNFT/actions/createNft';
 import { AuctionState } from '../const/AuctionState';
 import { Address, Seconds } from '../types/unit';
+import { NftType } from '../const/NftType';
 
 interface IApiPool {
   amount_total0: number;
@@ -23,7 +23,7 @@ interface IApiPool {
   tokenId: number;
 }
 
-interface IPool {
+export interface IPool {
   quantity: number;
   totalPrice: BigNumber;
   createTime: Date;

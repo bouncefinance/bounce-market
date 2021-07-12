@@ -1,4 +1,5 @@
-import { Channel, NftType } from 'modules/createNFT/actions/createNft';
+import { Channel } from 'modules/createNFT/actions/createNft';
+import { NftType } from '../../common/const/NftType';
 
 export interface IApiGetOneItemByIdData {
   balance: string;
