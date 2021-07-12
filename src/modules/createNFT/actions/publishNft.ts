@@ -110,8 +110,6 @@ export const publishNft = createSmartAction<
               action: setAccount,
             });
             const isOpenSaleTime = payload?.saleTime?.open ?? false;
-            console.log(isOpenSaleTime);
-            console.log(payload?.saleTime);
 
             const ContractBounceERC721 = new web3.eth.Contract(
               BounceErc721,

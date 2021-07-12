@@ -17,16 +17,29 @@ const valueToSelectOptions = (label: number | string, value?: number) => ({
 });
 const YearShowNum = 5;
 const MonthShowNum = 5;
-export const DatePicker: React.FC<{ onChange: (time: Date) => void }> = memo(
-  ({ onChange }) => {
+
+export const DatePicker: React.FC<{
+  onChange: (time: Date) => void;
+  defaultYear?: number;
+  defaultMonth?: number;
+  defaultDay?: number;
+  defaultHours?: number;
+  defaultMinutes?: number;
+}> = memo(
+  ({
+    onChange,
+    defaultYear = new Date().getFullYear(),
+    defaultDay = 1,
+    defaultMonth = new Date().getMonth() + 1,
+    defaultHours = 0,
+    defaultMinutes = 0,
+  }) => {
     const classes = useDatePickerStyles();
-    const defaultYear = new Date().getFullYear();
-    const defaultMonth = new Date().getMonth() + 1;
     const [year, setYear] = useState(defaultYear);
     const [month, setMonth] = useState(defaultMonth);
-    const [day, setDay] = useState(1);
-    const [hours, setHours] = useState(0);
-    const [minutes, setMinutes] = useState(0);
+    const [day, setDay] = useState(defaultDay);
+    const [hours, setHours] = useState(defaultHours);
+    const [minutes, setMinutes] = useState(defaultMinutes);
     const timePickerValue = new Date(year, month - 1, day, hours, minutes);
 
     useEffect(() => {
