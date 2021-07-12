@@ -14,6 +14,7 @@ import {
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { add } from 'date-fns';
+import { SelectTimeField } from '../../../form/components/SelectTimeField';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { Section } from 'modules/uiKit/Section';
@@ -40,6 +41,7 @@ import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { NftType } from '../../actions/createNft';
 import { fetchNftByUser } from '../../actions/fetchNftByUser';
 import { publishNft } from '../../actions/publishNft';
+import type { ISaleTime } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
 
@@ -56,6 +58,7 @@ interface IPublishFixedSwap {
   quantity: string;
   unitContract: string;
   img?: string;
+  saleTime: ISaleTime;
 }
 
 interface IPublishEnglishAuction {
@@ -66,6 +69,7 @@ interface IPublishEnglishAuction {
   quantity: string;
   duration: Days;
   unitContract: string;
+  saleTime: ISaleTime;
 }
 
 type IPublishNFTFormData = IPublishFixedSwap | IPublishEnglishAuction;
@@ -230,6 +234,7 @@ export const PublishNFTComponent = ({
             tokenId,
             price: new BigNumber(payload.price),
             quantity: +payload.quantity,
+            saleTime: payload.saleTime,
           }),
         ).then(({ error }) => {
           if (!error) {
@@ -254,6 +259,7 @@ export const PublishNFTComponent = ({
             standard: nftType,
             tokenId,
             quantity: +payload.quantity,
+            saleTime: payload.saleTime,
           }),
         ).then(({ error }) => {
           if (!error) {
@@ -386,6 +392,16 @@ export const PublishNFTComponent = ({
               </Box>
               <Box className={classes.formControl}>
                 <Field
+                  component={SelectTimeField}
+                  name="saleTime"
+                  type="text"
+                  label={t('create-nft.label.specific-time-sale')}
+                  color="primary"
+                  fullWidth={true}
+                />
+              </Box>
+              <Box className={classes.formControl}>
+                <Field
                   component={InputField}
                   name="quantity"
                   type="number"
@@ -482,6 +498,17 @@ export const PublishNFTComponent = ({
                     }),
                   })}
                 </div>
+              </Box>
+
+              <Box className={classes.formControl}>
+                <Field
+                  component={SelectTimeField}
+                  name="saleTime"
+                  type="text"
+                  label={t('create-nft.label.specific-time-sale')}
+                  color="primary"
+                  fullWidth={true}
+                />
               </Box>
 
               <Box className={classes.formControl}>

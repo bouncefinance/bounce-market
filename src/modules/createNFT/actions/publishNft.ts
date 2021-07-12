@@ -48,6 +48,11 @@ export const getEnglishAuctionContract = (chainID: number) => {
   }
 };
 
+export interface ISaleTime {
+  open: boolean;
+  time: number;
+}
+
 type IPublishNftPayload =
   | {
       type: AuctionType.FixedSwap;
@@ -58,6 +63,7 @@ type IPublishNftPayload =
       tokenId: number;
       price: BigNumber;
       quantity: number;
+      saleTime: ISaleTime;
     }
   | {
       type: AuctionType.EnglishAuction;
@@ -72,6 +78,7 @@ type IPublishNftPayload =
       standard: NftType;
       tokenId: number;
       quantity: number;
+      saleTime: ISaleTime;
     };
 
 export const publishNft = createSmartAction<
@@ -96,6 +103,13 @@ export const publishNft = createSmartAction<
               type: setAccount.toString(),
               action: setAccount,
             });
+            const isOpenSaleTime = payload?.saleTime?.open ?? false;
+            let isTest = true;
+            if (isTest) {
+              console.log(isOpenSaleTime);
+              console.log(payload?.saleTime);
+              return;
+            }
 
             const ContractBounceFixedSwapNFT = new web3.eth.Contract(
               BounceFixedSwapNFT,
