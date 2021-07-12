@@ -57,13 +57,11 @@ export const DropsSection = () => {
   const dispatch = useDispatch();
   const [sortBy, setSortBy] = useState<DropsSortBy>(DropsSortBy.Coming);
 
-  const {
-    data: dataComing,
-    loading: loadingComing,
-  } = useQuery<IGetDrops | null>({
-    type: getDrops.toString(),
-    requestKey: DROPS_COMING_KEY,
-  });
+  const { data: dataComing, loading: loadingComing } =
+    useQuery<IGetDrops | null>({
+      type: getDrops.toString(),
+      requestKey: DROPS_COMING_KEY,
+    });
 
   const { data: dataPrev, loading: loadingPrev } = useQuery<IGetDrops | null>({
     type: getDrops.toString(),

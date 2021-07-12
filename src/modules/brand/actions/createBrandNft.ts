@@ -8,8 +8,8 @@ import { setAccount } from '../../account/store/actions/setAccount';
 import { isVideo } from '../../common/utils/isVideo';
 import { IBrandInfo } from '../api/queryBrand';
 import { addItem, IAddItemPayload } from 'modules/createNFT/actions/addItem';
-import { NftType } from '../../createNFT/actions/createNft';
 import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
+import { NftType } from '../../common/const/NftType';
 
 export enum Channel {
   FineArts = 'FineArts',

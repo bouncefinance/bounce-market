@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js';
 import { AuctionState } from '../../common/const/AuctionState';
 import { Address } from '../../common/types/unit';
-import { NftType } from '../../createNFT/actions/createNft';
 import { AuctionType } from './auctionType';
 import { FixedSwapState } from '../../common/const/FixedSwapState';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { TokenSymbol } from '../../common/types/TokenSymbol';
+import { NftType } from '../../common/const/NftType';
 
 export interface IApiItem {
   brandid: number;
@@ -66,6 +66,7 @@ export interface IItem {
   poolType?: AuctionType;
   state?: AuctionState | FixedSwapState;
   tokenSymbol: TokenSymbol;
+  isLoading?: boolean;
 }
 
 export function hasBrand(item: IItem) {

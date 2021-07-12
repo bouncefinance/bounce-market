@@ -1,7 +1,7 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { Address } from '../../common/types/unit';
-import { NftType } from './createNft';
+import { NftType } from '../../common/const/NftType';
 
 interface IApiItem {
   balance: string;
@@ -9,6 +9,7 @@ interface IApiItem {
   contract_name: 'bounceNFT';
   description?: string;
   id: number;
+  hash?: string;
   image: null;
   metadata: null;
   name: null;
@@ -26,12 +27,13 @@ interface IApiResponse {
   };
 }
 
-interface IItem {
+export interface IItem {
   balance: number;
   contractAddress: string;
   contractName: string;
   description?: string;
   id: number;
+  hash?: string;
   image: null;
   metadata: null;
   name: null;
@@ -55,6 +57,7 @@ function mapItem(item: IApiItem): IItem {
     description: item.description,
     id: item.id,
     image: item.image,
+    hash: item.hash,
     metadata: item.metadata,
     name: item.name,
     ownerAddress: item.owner_addr,

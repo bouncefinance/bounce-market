@@ -1,6 +1,5 @@
 import { Box, Dialog, Grid, IconButton, Typography } from '@material-ui/core';
 import classNames from 'classnames';
-import { NftType } from 'modules/createNFT/actions/createNft';
 import { t } from 'modules/i18n/utils/intl';
 import { useMemo, useCallback } from 'react';
 import { Button } from 'modules/uiKit/Button';
@@ -11,6 +10,7 @@ import { useTransferTokenDialogStyles } from './useTransferTokenDialogStyles';
 import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
 import { AngleUpIcon } from 'modules/common/components/Icons/AngleUpIcon';
 import { CloseIcon } from 'modules/common/components/Icons/CloseIcon';
+import { NftType } from '../../../common/const/NftType';
 
 const MIN_QUANTITY = 1;
 

@@ -13,11 +13,10 @@ import {
 } from '../../web3/contracts';
 import { isVideo } from '../../common/utils/isVideo';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
-
-export enum NftType {
-  ERC721,
-  ERC1155,
-}
+import { addNFTByEvent } from '../../profile/actions/addNftByEvent';
+import { NftType } from '../../common/const/NftType';
+import { ProfileRoutesConfig } from '../../profile/ProfileRoutes';
+import { push } from 'connected-react-router';
 
 export enum Channel {
   FineArts = 'FineArts',
@@ -106,12 +105,13 @@ export const createNft = createSmartAction(
                   )
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
-                    // Pending status
+                    store.dispatchRequest(addNFTByEvent({ hash }));
+                    store.dispatch(
+                      push(ProfileRoutesConfig.UserProfile.generatePath()),
+                    );
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
-                    setTimeout(() => {
-                      resolve(receipt);
-                    }, 15000);
+                    resolve(receipt);
                   })
                   .on('error', (error: Error) => {
                     reject(error);
@@ -133,12 +133,13 @@ export const createNft = createSmartAction(
                   )
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
-                    // Pending status
+                    store.dispatchRequest(addNFTByEvent({ hash }));
+                    store.dispatch(
+                      push(ProfileRoutesConfig.UserProfile.generatePath()),
+                    );
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
-                    setTimeout(() => {
-                      resolve(receipt);
-                    }, 15000);
+                    resolve(receipt);
                   })
                   .on('error', (error: Error) => {
                     reject(error);
