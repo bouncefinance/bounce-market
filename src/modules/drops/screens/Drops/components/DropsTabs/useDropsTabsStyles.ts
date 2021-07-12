@@ -30,6 +30,10 @@ export const useDropsTabsStyles = makeStyles<Theme>(theme => ({
       },
     },
 
+    '&:hover': {
+      opacity: 0.7,
+    },
+
     '&$tabSelected': {
       color: theme.palette.text.primary,
       opacity: 1,

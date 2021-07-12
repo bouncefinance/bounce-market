@@ -3,6 +3,7 @@ import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { DropsContainer } from 'modules/drops/components/DropsContainer';
+import { NothingFound } from 'modules/drops/components/NothingFound';
 import { t } from 'modules/i18n/utils/intl';
 import { Section } from 'modules/uiKit/Section';
 import React, { ReactNode, useEffect, useState } from 'react';
@@ -35,7 +36,7 @@ export const TopCreatorsComponent = ({
       swiper.update();
       swiper.lazy.load();
     }
-  }, [itemsCount, swiper, loading]);
+  }, [itemsCount, swiper, loading, children]);
 
   const sliderProps: Swiper = {
     watchSlidesVisibility: true,
@@ -82,6 +83,8 @@ export const TopCreatorsComponent = ({
         <Swiper {...sliderProps} className={classes.slider}>
           {React.Children.map(children, modifyChildren)}
         </Swiper>
+
+        {!itemsCount && <NothingFound />}
       </DropsContainer>
     </Section>
   );

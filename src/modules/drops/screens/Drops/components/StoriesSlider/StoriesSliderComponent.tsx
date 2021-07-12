@@ -7,17 +7,15 @@ import { useStoriesSliderStyles } from './useStoriesSliderStyles';
 
 interface IStoriesSliderProps {
   children: ReactNode;
-  itemCount: number;
+  isSlider?: boolean;
 }
 
 export const StoriesSliderComponent = ({
   children,
-  itemCount,
+  isSlider,
 }: IStoriesSliderProps) => {
   const classes = useStoriesSliderStyles();
   const theme = useTheme();
-
-  const isFewSlides = itemCount > 1;
 
   const sliderProps: Swiper = {
     slidesPerView: 1,
@@ -27,7 +25,7 @@ export const StoriesSliderComponent = ({
         spaceBetween: theme.spacing(3.5),
       },
       [theme.breakpoints.values.xl]: {
-        slidesPerView: isFewSlides ? 2 : 1,
+        slidesPerView: isSlider ? 2 : 1,
         spaceBetween: theme.spacing(3.5),
       },
     },
@@ -40,13 +38,13 @@ export const StoriesSliderComponent = ({
   return (
     <Section pt={{ xs: 7.5, md: 14 }} className={classes.root}>
       <DropsContainer>
-        {isFewSlides && (
+        {isSlider && (
           <Swiper {...sliderProps} className={classes.slider}>
             {React.Children.map(children, modifyChildren)}
           </Swiper>
         )}
 
-        {!isFewSlides && children}
+        {!isSlider && children}
       </DropsContainer>
     </Section>
   );

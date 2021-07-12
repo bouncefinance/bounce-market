@@ -184,8 +184,6 @@ export const Profile = () => {
               <Subscribers count={profileInfo?.followCount} />
             )
           }
-          // https://ankrnetwork.atlassian.net/browse/FE-3449
-          // TODO: [FE-3449] add social links after it will be implemented on backend side
           social={
             featuresConfig.profileSocialLinks && (
               <Social

@@ -1,4 +1,5 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, useTheme } from '@material-ui/core';
+import { getRandomHexColor } from 'modules/common/utils/getRandomHexColor';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { Img } from 'modules/uiKit/Img';
 import React from 'react';
@@ -26,11 +27,15 @@ export const Drop = ({
   title,
   text,
   timer,
-  bgColor = '#232323',
+  bgColor,
   bgImg,
   items,
 }: IDropProps) => {
-  const classes = useDropStyles({ bgColor });
+  const theme = useTheme();
+  const classes = useDropStyles({
+    bgColor:
+      bgColor || (bgImg ? theme.palette.background.paper : getRandomHexColor()),
+  });
   const isMDUp = useIsMDUp();
 
   const itemsCount = items ? items.length : 0;
