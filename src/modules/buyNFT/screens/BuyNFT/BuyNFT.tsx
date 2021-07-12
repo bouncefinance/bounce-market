@@ -5,6 +5,7 @@ import {
   useMutation,
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -32,10 +33,10 @@ import { useHistory, useParams } from 'react-router';
 import { AuctionState } from '../../../api/common/AuctionState';
 import { AuctionType } from '../../../api/common/auctionType';
 import { FixedSwapState } from '../../../api/common/FixedSwapState';
+import { NftType } from '../../../api/common/NftType';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Address } from '../../../common/types/unit';
-import { NftType } from '../../../createNFT/actions/createNft';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
@@ -50,13 +51,12 @@ import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
 import { buyFixed } from '../../actions/buyFixed';
 import { fetchItem } from '../../actions/fetchItem';
-import { ScanBtn } from '../../components/ScanBtn';
 import { BuyDialog } from '../../components/BuyDialog';
+import { ScanBtn } from '../../components/ScanBtn';
 import { TokenInfo } from '../../components/TokenInfo';
 import { BuyNFTSkeleton } from './BuyNFTSkeleton';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
-import { useAccount } from 'modules/account/hooks/useAccount';
 
 export const BuyNFT = () => {
   const { chainId } = useAccount();

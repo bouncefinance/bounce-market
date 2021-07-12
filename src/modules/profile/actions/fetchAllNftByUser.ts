@@ -1,31 +1,28 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
-import { createAction } from 'redux-smart-actions';
+import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { AuctionState } from '../../api/common/AuctionState';
 import { AuctionType } from '../../api/common/auctionType';
 import { FixedSwapState } from '../../api/common/FixedSwapState';
-import { fetchItem } from '../../buyNFT/actions/fetchItem';
+import { fetchItem, IFetchItem } from '../../buyNFT/actions/fetchItem';
+import { IPoolsData } from '../../common/actions/getPoolsByFilter';
 import { throwIfError } from '../../common/utils/throwIfError';
 import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
-import { IItem } from '../../overview/api/getItems';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
 }
 
-export const fetchAllNftByUser: (
-  payload: IApiFetchNftByUserVariables,
-) => RequestAction<IItem[], IItem[]> = createAction(
+export const fetchAllNftByUser = createSmartAction(
   'fetchAllNftByUser',
-  (payload: IApiFetchNftByUserVariables) => ({
+  (address: string) => ({
     request: {
       promise: (async function () {})(),
     },
     meta: {
-      getData: data => data,
       onRequest: (
         request: { promise: Promise<any> },
         action: RequestAction,
@@ -36,7 +33,7 @@ export const fetchAllNftByUser: (
             const { data: fetchNftByUserData } = throwIfError(
               await store.dispatchRequest(
                 fetchNftByUser(
-                  { userId: payload.user },
+                  { userId: address },
                   {
                     silent: true,
                     suppressErrorNotification: true,
@@ -52,52 +49,17 @@ export const fetchAllNftByUser: (
             ];
 
             const { data: pools } = await store.dispatchRequest(
-              getPoolsByFilter(payload),
+              getPoolsByFilter({ user: address }),
             );
 
             // Filter out the pools that have been closed
-            const poolsByStateFilterResult = {
-              list: pools?.list.filter(item => item.state !== 1),
-            };
+            const poolsByStateFilterResult = filterOutClosedPools(pools);
 
-            const ids = [
-              ...(poolsByStateFilterResult?.list!.map(item => item.tokenId) ??
-                []),
-              ...(nfts.map(item => item.tokenId) ?? []),
-            ];
-            const cts = [
-              ...(poolsByStateFilterResult?.list!.map(
-                item => item.tokenContract,
-              ) ?? []),
-              ...(nfts.map(item => item.contractAddress) ?? []),
-            ];
-
-            const items = ids
-              .map((id, index) => ({
-                id,
-                contractAddress: cts[index],
-              }))
-              .filter(item => item.id < 999999999);
+            const items = prepareItemsToRequest(nfts, poolsByStateFilterResult);
 
             const data = (
-              await Promise.all(
-                items.map(item => {
-                  return store.dispatchRequest(
-                    fetchItem(
-                      { id: item.id, contract: item.contractAddress },
-                      {
-                        silent: true,
-                        suppressErrorNotification: true,
-                        requestKey:
-                          item.id + item.contractAddress + Math.random(),
-                      },
-                    ),
-                  );
-                }),
-              )
-            ).map(response => {
-              return response.data!;
-            });
+              await Promise.all(items.map(item => getItem(item, store)))
+            ).map((response: any) => response.data);
 
             const poolsCopy = poolsByStateFilterResult
               ? [...poolsByStateFilterResult?.list!]
@@ -105,51 +67,7 @@ export const fetchAllNftByUser: (
 
             return (
               data
-                ?.map(item => {
-                  const poolIndex = poolsCopy.findIndex(
-                    pool => pool.tokenId === item.id,
-                  );
-                  const pool = poolsCopy[poolIndex];
-
-                  if (pool) {
-                    // TODO: Ignore completed claimed auction?
-                    poolsCopy.splice(poolIndex, 1);
-                    return {
-                      ...item,
-                      supply: (() => {
-                        if (isEnglishAuction(pool)) {
-                          if (pool.state < AuctionState.Claimed) {
-                            return pool.tokenAmount0;
-                          }
-
-                          return 0;
-                        } else {
-                          if (pool.state < FixedSwapState.Claimed) {
-                            return pool.quantity;
-                          } else {
-                            return 0;
-                          }
-                        }
-                      })(),
-                      poolId: pool.poolId,
-                      poolType: isEnglishAuction(pool)
-                        ? AuctionType.EnglishAuction
-                        : AuctionType.FixedSwap,
-                      price: isEnglishAuction(pool)
-                        ? pool.lastestBidAmount.isEqualTo(0)
-                          ? pool.amountMin1
-                          : pool.lastestBidAmount
-                        : pool.price,
-                      state: pool.state,
-                    };
-                  }
-
-                  const supply = nfts.find(
-                    nftItem => nftItem.tokenId === item.id,
-                  )?.balance;
-
-                  return { ...item, supply: supply ?? 0 };
-                })
+                ?.map(enrichNftItem(data, poolsCopy, nfts))
                 // Meaningless NFT will be temporarily shielded to reduce interference
                 .filter(
                   item =>
@@ -166,3 +84,105 @@ export const fetchAllNftByUser: (
     },
   }),
 );
+
+export const prepareItemsToRequest = (
+  nfts: any,
+  poolsByStateFilterResult: IPoolsData,
+) => {
+  const ids = [
+    ...(poolsByStateFilterResult?.list!.map(item => item.tokenId) ?? []),
+    ...(nfts.map((item: any) => item.tokenId) ?? []),
+  ];
+  const cts = [
+    ...(poolsByStateFilterResult?.list!.map(item => item.tokenContract) ?? []),
+    ...(nfts.map((item: any) => item.contractAddress) ?? []),
+  ];
+
+  const items = ids
+    .map((id, index) => ({
+      id,
+      contractAddress: cts[index],
+    }))
+    .filter(item => item.id < 999999999);
+
+  return items;
+};
+
+export const filterOutClosedPools = (pools: any) => ({
+  list: pools?.list.filter((item: any) => item.state !== 1),
+});
+
+export const getItem = (item: any, store: any): Promise<IFetchItem> =>
+  store.dispatchRequest(
+    fetchItem(
+      { id: item.id, contract: item.contractAddress },
+      {
+        silent: true,
+        suppressErrorNotification: true,
+        requestKey: item.id + item.contractAddress + Math.random(),
+      },
+    ),
+  );
+
+export const getSupplyStatus = (pool: any) => {
+  if (isEnglishAuction(pool)) {
+    if (pool.state < AuctionState.Claimed) {
+      return pool.tokenAmount0;
+    }
+
+    return 0;
+  } else {
+    if (pool.state < FixedSwapState.Claimed) {
+      return pool.quantity;
+    } else {
+      return 0;
+    }
+  }
+};
+
+export const enrichNftItem = (data: any, poolsCopy: any, nfts: any) => (
+  item: any,
+) => {
+  const poolIndex = poolsCopy.findIndex(
+    (pool: any) => pool.tokenId === item.id,
+  );
+  const pool = poolsCopy[poolIndex];
+
+  if (pool) {
+    // TODO: Ignore completed claimed auction?
+    poolsCopy.splice(poolIndex, 1);
+    return {
+      ...item,
+      supply: (() => {
+        if (isEnglishAuction(pool)) {
+          if (pool.state < AuctionState.Claimed) {
+            return pool.tokenAmount0;
+          }
+
+          return 0;
+        } else {
+          if (pool.state < FixedSwapState.Claimed) {
+            return pool.quantity;
+          } else {
+            return 0;
+          }
+        }
+      })(),
+      poolId: pool.poolId,
+      poolType: isEnglishAuction(pool)
+        ? AuctionType.EnglishAuction
+        : AuctionType.FixedSwap,
+      price: isEnglishAuction(pool)
+        ? pool.lastestBidAmount.isEqualTo(0)
+          ? pool.amountMin1
+          : pool.lastestBidAmount
+        : pool.price,
+      state: pool.state,
+    };
+  }
+
+  const supply = nfts.find((nftItem: any) => nftItem.tokenId === item.id)
+    ?.balance;
+
+  return { ...item, supply: supply ?? 0 };
+};

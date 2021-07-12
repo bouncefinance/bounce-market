@@ -7,7 +7,6 @@ import { RootState } from 'store';
 import { ICreateBrand } from '../screens/CreateBrand';
 import { getBrandContract } from './const';
 import { IUpdateBrandInfoPayload, updateBrandInfo } from './updateBrandInfo';
-import { NftType } from 'modules/createNFT/actions/createNft';
 import {
   BoucneErc1155Bytecode,
   BoucneErc721Bytecode,
@@ -15,6 +14,7 @@ import {
 } from '../../web3/contracts';
 import { throwIfError } from '../../common/utils/throwIfError';
 import { BlockchainNetworkId } from 'modules/common/conts';
+import { NftType } from '../../common/const/NftType';
 
 const chaiToBrandUri: {
   [key in BlockchainNetworkId]: string | undefined;

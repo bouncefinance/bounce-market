@@ -42,11 +42,7 @@ export const TabItems = ({ address }: ITabItemsProps) => {
   });
 
   useEffect(() => {
-    dispatchRequest(
-      fetchAllNftByUser({
-        user: address,
-      }),
-    );
+    dispatchRequest(fetchAllNftByUser(address));
 
     return function reset() {
       dispatch(resetRequests([fetchAllNftByUser.toString()]));

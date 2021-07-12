@@ -14,6 +14,7 @@ import {
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { add } from 'date-fns';
+import { NftType } from 'modules/api/common/NftType';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { Section } from 'modules/uiKit/Section';
@@ -37,7 +38,6 @@ import { t, tHTML } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
-import { NftType } from '../../actions/createNft';
 import { fetchNftByUser } from '../../actions/fetchNftByUser';
 import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';

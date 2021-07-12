@@ -147,7 +147,6 @@ export const ProductCardComponent = ({
       <LayersIcon
         className={classNames(classes.icon, classes.iconRightOffset)}
       />
-
       {copies}
     </div>
   );
@@ -269,7 +268,7 @@ export const ProductCardComponent = ({
                   {t('product-card.not-on-sale')}
                 </Typography>
 
-                {copies && renderedCopies}
+                {copies ? renderedCopies : <></>}
               </div>
 
               {!isMinting && !isOnSalePending && (

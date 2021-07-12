@@ -13,13 +13,9 @@ import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
-import {
-  Channel,
-  createNft,
-  ICreateNFTPayload,
-  NftType,
-} from '../../actions/createNft';
+import { Channel, createNft, ICreateNFTPayload } from '../../actions/createNft';
 import { useCreateNFTStyles } from './useCreateNFTStyles';
+import { NftType } from '../../../common/const/NftType';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -50,11 +46,11 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
   }
 
   if (payload.standard === NftType.ERC1155) {
-    const supply = payload.supply
+    const supply = payload.supply;
     if (!supply) {
       errors.supply = t('validation.required');
     } else if (!/^\d+$/.test(supply)) {
-      errors.supply = t('validation.require-integer')
+      errors.supply = t('validation.require-integer');
     }
   }
 

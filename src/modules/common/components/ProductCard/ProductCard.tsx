@@ -1,24 +1,25 @@
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
-import { AuctionType } from 'modules/api/common/auctionType';
-import { poolTypeMap } from 'modules/api/common/poolType';
-import {
-  BurnTokenDialog,
-  IBurnFormValues,
-} from 'modules/brand/components/BurnTokenDialog';
-import {
-  ITransferFormValues,
-  TransferTokenDialog,
-} from 'modules/brand/components/TransferTokenDialog';
-import { useDialog } from 'modules/buyNFT/screens/BuyNFT/useDialog';
-import { burnToken } from 'modules/common/actions/burnToken';
-import { transferToken } from 'modules/common/actions/transferToken';
-import { NftType } from 'modules/createNFT/actions/createNft';
+import { poolTypeMap } from 'modules/common/api/poolType';
+import { AuctionType } from 'modules/overview/api/auctionType';
 import { useLike } from 'modules/profile/hooks/useLike';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
+import { useMemo } from 'react';
 import {
   IProductCardComponentProps,
   ProductCardComponent,
 } from './ProductCardComponent';
+import { transferToken } from 'modules/common/actions/transferToken';
+import { burnToken } from 'modules/common/actions/burnToken';
+import { useDialog } from 'modules/buyNFT/screens/BuyNFT/useDialog';
+import {
+  ITransferFormValues,
+  TransferTokenDialog,
+} from 'modules/brand/components/TransferTokenDialog';
+import {
+  BurnTokenDialog,
+  IBurnFormValues,
+} from 'modules/brand/components/BurnTokenDialog';
+import { NftType } from 'modules/common/api/NftType';
 
 export interface IProductCardProps
   extends Omit<IProductCardComponentProps, 'isLiked'> {

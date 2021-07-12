@@ -4,8 +4,8 @@ import { RootState } from 'store';
 import { Store } from 'redux';
 import { setAccount } from 'modules/account/store/actions/setAccount';
 import { BounceErc721, BounceErc1155 } from '../../web3/contracts';
-import { NftType } from 'modules/createNFT/actions/createNft';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
+import { NftType } from '../const/NftType';
 
 export const burnToken = createSmartAction<RequestAction<void, void>>(
   'burnToken',

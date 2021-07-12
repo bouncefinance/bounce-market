@@ -4,13 +4,13 @@ import { Store } from 'redux';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { ZERO_ADDRESS } from '../../common/conts';
-import { NftType } from '../../createNFT/actions/createNft';
 import { getFixedSwapContract } from '../../createNFT/actions/publishNft';
 import { Address } from '../../common/types/unit';
 import BigNumber from 'bignumber.js';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import Web3 from 'web3';
 import { BounceERC20, BounceFixedSwapNFT } from '../../web3/contracts';
+import { NftType } from '../../common/const/NftType';
 
 interface IBuyFixedPayload {
   nftType: NftType;
