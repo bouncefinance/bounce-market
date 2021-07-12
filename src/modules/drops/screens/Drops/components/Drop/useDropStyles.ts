@@ -15,6 +15,7 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
     textAlign: 'center',
     background: ({ bgColor }) => bgColor,
     borderRadius: 24,
+    transition: 'background 0.2s',
 
     [theme.breakpoints.up('md')]: {
       minHeight: 500,
@@ -23,6 +24,10 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
 
     [theme.breakpoints.up('lg')]: {
       padding: theme.spacing(4.5, 9),
+    },
+
+    '&:hover': {
+      background: ({ bgColor }) => (bgColor ? fade(bgColor, 0.8) : undefined),
     },
   },
 
@@ -42,6 +47,15 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
     width: '100%',
     height: '100%',
     borderRadius: 'inherit',
+    transition: 'opacity 0.2s',
+
+    '$root:hover &': {
+      opacity: 0.8,
+    },
+
+    '&:before': {
+      display: 'none',
+    },
 
     '&:after': {
       content: `''`,
@@ -52,12 +66,12 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
       height: '100%',
       borderRadius: 'inherit',
       background: ({ bgColor }) =>
-        bgColor
-          ? `linear-gradient(0deg, ${fade(bgColor, 0.93)} 18.41%, ${fade(
-              bgColor,
-              0.56,
-            )} 38.42%, ${fade(bgColor, 0)} 56.27%)`
-          : 'none',
+        `linear-gradient(
+          0deg,
+          ${fade(bgColor || '#000', 0.93)} 18.41%,
+          ${fade(bgColor || '#000', 0.56)} 38.42%,
+          ${fade(bgColor || '#000', 0)} 56.27%
+          )`,
     },
   },
 

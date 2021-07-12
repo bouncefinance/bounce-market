@@ -1,6 +1,7 @@
 import { Box, Container } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
@@ -40,12 +41,10 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const classes = useProductsStyles();
   const { isConnected } = useAccount();
 
-  const {
-    data: nftItemsData,
-    loading: nftItemsLoading,
-  } = useQuery<IFetchNFTItems | null>({
-    type: fetchNFTItems.toString(),
-  });
+  const { data: nftItemsData, loading: nftItemsLoading } =
+    useQuery<IFetchNFTItems | null>({
+      type: fetchNFTItems.toString(),
+    });
 
   const onCategoryChange = (value: string) => {
     history.push(MarketRoutesConfig.Market.generatePath(DEFAULT_PAGE, value));
@@ -123,6 +122,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
                   ),
                   name: item.ownerName ?? truncateWalletAddr(item.ownerAddress),
                   avatar: item.ownerAvatar,
+                  verified: item.identity === UserRoleEnum.Verified,
                 },
               ]}
             />

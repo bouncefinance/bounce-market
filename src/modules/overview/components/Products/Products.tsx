@@ -1,6 +1,7 @@
 import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
@@ -105,6 +106,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
                 ),
                 name: ownerName,
                 avatar: item.ownerAvatar,
+                verified: item.identity === UserRoleEnum.Verified,
               },
             ]}
           />

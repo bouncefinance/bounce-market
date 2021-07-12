@@ -12,7 +12,8 @@
     "reset": "重置",
     "restore": "恢复",
     "unknown": "Unknown",
-    "coming-soon": "敬请期待..."
+    "coming-soon": "敬请期待...",
+    "nothing-found": "Nothing found"
   },
   "time": {
     "time-over": "该拍卖已过期",
@@ -133,7 +134,7 @@
     "info": {
       "date": "{value, date, medium}",
       "time": "at {value, time, short}",
-      "view-scan": "View on BscScan"
+      "view-scan": "View on {name}"
     },
     "dialog": {
       "input-info": "您的出价必须至少为 {value} {currency}",

@@ -6,7 +6,11 @@ import React from 'react';
 import { uid } from 'react-uid';
 import { useDropStyles } from './useDropStyles';
 
-export const DropSkeleton = () => {
+interface IDropSkeletonProps {
+  showItems?: boolean;
+}
+
+export const DropSkeleton = ({ showItems }: IDropSkeletonProps) => {
   const classes = useDropStyles({});
 
   return (
@@ -28,27 +32,29 @@ export const DropSkeleton = () => {
       </Box>
 
       {/* items */}
-      <Box mb={4}>
-        <div className={classes.nftList}>
-          {[0, 0, 0].map((_, i) => (
-            <div key={uid(i)} className={classes.nftItem}>
-              <div
-                className={classNames(
-                  classes.itemImgBox,
-                  classes.itemImgBoxThumb,
-                )}
-              >
-                <Skeleton
-                  className={classes.itemImgThumb}
-                  width="100%"
-                  height="100%"
-                  variant="rect"
-                />
+      {showItems && (
+        <Box mb={4}>
+          <div className={classes.nftList}>
+            {[0, 0, 0].map((_, i) => (
+              <div key={uid(i)} className={classes.nftItem}>
+                <div
+                  className={classNames(
+                    classes.itemImgBox,
+                    classes.itemImgBoxThumb,
+                  )}
+                >
+                  <Skeleton
+                    className={classes.itemImgThumb}
+                    width="100%"
+                    height="100%"
+                    variant="rect"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </Box>
+            ))}
+          </div>
+        </Box>
+      )}
 
       <Typography variant="h1" className={classes.title}>
         <Box display="flex" justifyContent="center">

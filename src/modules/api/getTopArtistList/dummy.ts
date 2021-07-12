@@ -1,0 +1,53 @@
+import { IApiTopArtistItem, IApiTopArtistList } from './types';
+
+export const data: IApiTopArtistItem[] = [
+  {
+    id: 10,
+    bounceid: 14560009,
+    state: 1,
+    display: 1,
+    identity: 2,
+    email: '',
+    bandimgurl: '',
+    accountaddress: '0x26604a35b97d395a9711d839e89b44efcc549b21',
+    username: 'hustler',
+    fullnam: 'hustler',
+    bio: '',
+    imgurl: 'https://picsum.photos/200?random=1',
+    website: '',
+    instagram: '',
+    twitter: '',
+    facebook: '',
+    created_at: '2021-04-15T03:37:12Z',
+    updated_at: '2021-07-07T12:24:48Z',
+    top_weight: 1,
+    hot_weight: 0,
+  },
+  {
+    id: 53,
+    bounceid: 14560042,
+    state: 1,
+    display: 1,
+    identity: 1,
+    email: '345323358@qq.com',
+    bandimgurl: '',
+    accountaddress: '0xecc93dd70d9f02119b0bd792187ad865d397bcaf',
+    username: 'Javon-C',
+    fullnam: 'Javon-C',
+    bio: 'Javon-C',
+    imgurl: '',
+    website: '',
+    instagram: '',
+    twitter: '',
+    facebook: '',
+    created_at: '2021-06-18T03:35:39Z',
+    updated_at: '2021-07-07T12:24:48Z',
+    top_weight: 0,
+    hot_weight: 0,
+  },
+];
+
+export const getTopArtistListDummy: IApiTopArtistList = {
+  code: 1,
+  data,
+};
