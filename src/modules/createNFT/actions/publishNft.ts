@@ -12,18 +12,22 @@ import {
   BounceFixedSwapNFT,
   BounceErc721,
   BounceErc1155,
+  BounceFixedSwapNFTTime,
+  BounceEnglishAuctionNFTTime,
 } from '../../web3/contracts';
 import { fetchCurrency } from '../../overview/actions/fetchCurrency';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { toWei } from '../../common/utils/toWei';
 import { NftType } from '../../common/const/NftType';
 
-export const getFixedSwapContract = (chainID: number) => {
+export const getFixedSwapContract = (chainID: number, isTime = false) => {
   switch (chainID) {
     case 1:
       return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_ETH_MAINNET;
     case 4:
-      return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_RINKEBY;
+      return isTime
+        ? process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_RINKEBY_TIME
+        : process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_RINKEBY;
     case 56:
       return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS;
     case 128:
@@ -33,12 +37,14 @@ export const getFixedSwapContract = (chainID: number) => {
   }
 };
 
-export const getEnglishAuctionContract = (chainID: number) => {
+export const getEnglishAuctionContract = (chainID: number, isTime = false) => {
   switch (chainID) {
     case 1:
       return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_ETH_MAINNET;
     case 4:
-      return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_RINKEBY;
+      return isTime
+        ? process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_RINKEBY_TIME
+        : process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_RINKEBY;
     case 56:
       return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS;
     case 128:
@@ -104,17 +110,8 @@ export const publishNft = createSmartAction<
               action: setAccount,
             });
             const isOpenSaleTime = payload?.saleTime?.open ?? false;
-            let isTest = true;
-            if (isTest) {
-              console.log(isOpenSaleTime);
-              console.log(payload?.saleTime);
-              return;
-            }
-
-            const ContractBounceFixedSwapNFT = new web3.eth.Contract(
-              BounceFixedSwapNFT,
-              getFixedSwapContract(chainId),
-            );
+            console.log(isOpenSaleTime);
+            console.log(payload?.saleTime);
 
             const ContractBounceERC721 = new web3.eth.Contract(
               BounceErc721,
@@ -147,21 +144,40 @@ export const publishNft = createSmartAction<
                 quantity,
               } = payload;
 
+              const ContractBounceFixedSwapNFT = new web3.eth.Contract(
+                isOpenSaleTime ? BounceFixedSwapNFTTime : BounceFixedSwapNFT,
+                getFixedSwapContract(chainId, isOpenSaleTime),
+              );
               if (standard === NftType.ERC721) {
                 // TODO Has approve
                 await ContractBounceERC721.methods
-                  .approve(getFixedSwapContract(chainId), tokenId)
+                  .approve(
+                    getFixedSwapContract(chainId, isOpenSaleTime),
+                    tokenId,
+                  )
                   .send({ from: address });
 
                 await new Promise((resolve, reject) => {
                   ContractBounceFixedSwapNFT.methods
                     .createErc721(
-                      name,
-                      tokenContract,
-                      unitContract,
-                      tokenId,
-                      toWei(price.toFixed(), decimals),
-                      onlyBOT,
+                      ...(isOpenSaleTime
+                        ? [
+                            name,
+                            tokenContract,
+                            unitContract,
+                            tokenId,
+                            toWei(price.toFixed(), decimals),
+                            payload.saleTime.time / 1000,
+                            onlyBOT,
+                          ]
+                        : [
+                            name,
+                            tokenContract,
+                            unitContract,
+                            tokenId,
+                            toWei(price.toFixed(), decimals),
+                            onlyBOT,
+                          ]),
                     )
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
@@ -178,19 +194,41 @@ export const publishNft = createSmartAction<
                 });
               } else {
                 await ContractBounceERC1155.methods
-                  .setApprovalForAll(getFixedSwapContract(chainId), true)
+                  .setApprovalForAll(
+                    getFixedSwapContract(chainId, isOpenSaleTime),
+                    true,
+                  )
                   .send({ from: address });
 
                 await new Promise((resolve, reject) => {
                   ContractBounceFixedSwapNFT.methods
                     .createErc1155(
-                      name,
-                      tokenContract,
-                      unitContract,
-                      tokenId,
-                      quantity,
-                      toWei(price.multipliedBy(quantity).toFixed(), decimals),
-                      onlyBOT,
+                      ...(isOpenSaleTime
+                        ? [
+                            name,
+                            tokenContract,
+                            unitContract,
+                            tokenId,
+                            quantity,
+                            toWei(
+                              price.multipliedBy(quantity).toFixed(),
+                              decimals,
+                            ),
+                            payload.saleTime.time / 1000,
+                            onlyBOT,
+                          ]
+                        : [
+                            name,
+                            tokenContract,
+                            unitContract,
+                            tokenId,
+                            quantity,
+                            toWei(
+                              price.multipliedBy(quantity).toFixed(),
+                              decimals,
+                            ),
+                            onlyBOT,
+                          ]),
                     )
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
@@ -206,6 +244,7 @@ export const publishNft = createSmartAction<
                     });
                 });
               }
+              // ---- English Auction ------
             } else {
               const {
                 name,
@@ -222,8 +261,10 @@ export const publishNft = createSmartAction<
               } = payload;
 
               const ContractBounceEnglishAuctionNFT = new web3.eth.Contract(
-                BounceEnglishAuctionNFT,
-                getEnglishAuctionContract(chainId),
+                isOpenSaleTime
+                  ? BounceEnglishAuctionNFTTime
+                  : BounceEnglishAuctionNFT,
+                getEnglishAuctionContract(chainId, isOpenSaleTime),
               );
 
               if (standard === NftType.ERC721) {
@@ -234,16 +275,32 @@ export const publishNft = createSmartAction<
                 await new Promise((resolve, reject) => {
                   ContractBounceEnglishAuctionNFT.methods
                     .createErc721(
-                      name,
-                      tokenContract,
-                      unitContract,
-                      tokenId,
-                      toWei(purchasePrice, decimals),
-                      toWei(minBid, decimals),
-                      toWei(minIncremental.toFixed(), decimals),
-                      toWei(reservePrice, decimals),
-                      duration,
-                      onlyBOT,
+                      ...(isOpenSaleTime
+                        ? [
+                            name,
+                            tokenContract,
+                            unitContract,
+                            tokenId,
+                            toWei(purchasePrice, decimals),
+                            toWei(minBid, decimals),
+                            toWei(minIncremental.toFixed(), decimals),
+                            toWei(reservePrice, decimals),
+                            payload.saleTime.time / 1000,
+                            duration,
+                            onlyBOT,
+                          ]
+                        : [
+                            name,
+                            tokenContract,
+                            unitContract,
+                            tokenId,
+                            toWei(purchasePrice, decimals),
+                            toWei(minBid, decimals),
+                            toWei(minIncremental.toFixed(), decimals),
+                            toWei(reservePrice, decimals),
+                            duration,
+                            onlyBOT,
+                          ]),
                     )
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
@@ -266,17 +323,34 @@ export const publishNft = createSmartAction<
                 await new Promise((resolve, reject) => {
                   ContractBounceEnglishAuctionNFT.methods
                     .createErc1155(
-                      name,
-                      tokenContract,
-                      unitContract,
-                      tokenId,
-                      quantity,
-                      toWei(purchasePrice, decimals),
-                      toWei(minBid, decimals),
-                      toWei(minIncremental.toFixed(), decimals),
-                      toWei(reservePrice, decimals),
-                      duration,
-                      onlyBOT,
+                      ...(isOpenSaleTime
+                        ? [
+                            name,
+                            tokenContract,
+                            unitContract,
+                            tokenId,
+                            quantity,
+                            toWei(purchasePrice, decimals),
+                            toWei(minBid, decimals),
+                            toWei(minIncremental.toFixed(), decimals),
+                            toWei(reservePrice, decimals),
+                            payload.saleTime.time / 1000,
+                            duration,
+                            onlyBOT,
+                          ]
+                        : [
+                            name,
+                            tokenContract,
+                            unitContract,
+                            tokenId,
+                            quantity,
+                            toWei(purchasePrice, decimals),
+                            toWei(minBid, decimals),
+                            toWei(minIncremental.toFixed(), decimals),
+                            toWei(reservePrice, decimals),
+                            duration,
+                            onlyBOT,
+                          ]),
                     )
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
