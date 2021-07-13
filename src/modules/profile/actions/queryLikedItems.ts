@@ -1,6 +1,6 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
-import { PoolType } from 'modules/common/api/poolType';
+import { PoolType } from 'modules/api/common/poolType';
 import { throwIfDataIsEmptyOrError } from 'modules/common/utils/throwIfDataIsEmptyOrError';
 import { fetchPools } from 'modules/overview/actions/fetchPools';
 import { Store } from 'redux';

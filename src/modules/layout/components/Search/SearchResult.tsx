@@ -1,21 +1,21 @@
-import React from 'react';
+import { auctionTypeMap } from 'modules/api/common/poolType';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { BrandRoutesConfig } from '../../../brand/BrandRoutes';
+import { BuyNFTRoutesConfig } from '../../../buyNFT/BuyNFTRoutes';
+import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
+import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { t } from '../../../i18n/utils/intl';
+import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
+import { Img } from '../../../uiKit/Img';
 import {
   ISearchAccount,
   ISearchBrand,
   ISearchItem,
   ISearchResult,
 } from './getByLikeStr';
-import { Link as RouterLink } from 'react-router-dom';
-import { BuyNFTRoutesConfig } from '../../../buyNFT/BuyNFTRoutes';
 import { useSearchResultStyles } from './useSearchResultStyles';
-import { t } from '../../../i18n/utils/intl';
-import { Img } from '../../../uiKit/Img';
-import { VideoPlayer } from '../../../common/components/VideoPlayer';
-import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
-import { BrandRoutesConfig } from '../../../brand/BrandRoutes';
-import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
-import { auctionTypeMap } from 'modules/common/api/poolType';
 
 const SearchItems = ({ data }: { data: ISearchItem[] }) => {
   const classes = useSearchResultStyles();

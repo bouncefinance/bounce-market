@@ -2,7 +2,7 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { AuctionType } from '../api/auctionType';
+import { AuctionType } from '../../api/common/auctionType';
 import { IItem } from '../api/getItems';
 import { fetchItemsByIds } from './fetchItemsByIds';
 import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';

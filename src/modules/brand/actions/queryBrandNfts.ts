@@ -1,4 +1,5 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import { AuctionType } from 'modules/api/common/auctionType';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import {
   fetchItemsByFilter,
@@ -6,7 +7,6 @@ import {
 } from 'modules/overview/actions/fetchItemsByFilter';
 import { INFTItem } from 'modules/overview/actions/fetchNFTItems';
 import { fetchPools } from 'modules/overview/actions/fetchPools';
-import { AuctionType } from 'modules/overview/api/auctionType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';

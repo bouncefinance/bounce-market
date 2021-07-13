@@ -1,4 +1,4 @@
-import { AuctionType } from 'modules/overview/api/auctionType';
+import { AuctionType } from 'modules/api/common/auctionType';
 
 export enum PoolType {
   Unknown,

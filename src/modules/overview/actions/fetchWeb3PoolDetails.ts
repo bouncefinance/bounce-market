@@ -1,27 +1,27 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import BigNumber from 'bignumber.js';
 import { Store } from 'redux';
+import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { AuctionType } from '../api/auctionType';
 import { setAccount } from '../../account/store/actions/setAccount';
-import {
-  BounceEnglishAuctionNFT,
-  BounceFixedSwapNFT,
-} from '../../web3/contracts';
+import { AuctionState } from '../../api/common/AuctionState';
+import { AuctionType } from '../../api/common/auctionType';
+import { FixedSwapState } from '../../api/common/FixedSwapState';
+import { fromWei } from '../../common/utils/fromWei';
+import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import {
   getEnglishAuctionContract,
   getFixedSwapContract,
 } from '../../createNFT/actions/publishNft';
 import {
+  BounceEnglishAuctionNFT,
+  BounceFixedSwapNFT,
+} from '../../web3/contracts';
+import { fetchCurrency } from './fetchCurrency';
+import {
   IEnglishAuctionDetails,
   IFixedAuctionDetails,
 } from './fetchPoolDetails';
-import BigNumber from 'bignumber.js';
-import { fetchCurrency } from './fetchCurrency';
-import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
-import { fromWei } from '../../common/utils/fromWei';
-import { AuctionState } from '../../common/const/AuctionState';
-import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 export type UserRole = 'creator' | 'buyer' | 'others';
 
