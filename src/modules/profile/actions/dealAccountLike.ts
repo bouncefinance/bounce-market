@@ -3,7 +3,7 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
-import { PoolType } from 'modules/common/api/poolType';
+import { PoolType } from 'modules/api/common/poolType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';

@@ -1,5 +1,5 @@
 import { RequestAction } from '@redux-requests/core';
-import { AuctionTypeKeys } from 'modules/overview/api/auctionType';
+import { AuctionTypeKeys } from 'modules/api/common/auctionType';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 interface IApiSearchResult {

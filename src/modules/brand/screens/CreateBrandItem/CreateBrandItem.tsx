@@ -1,6 +1,7 @@
 import { Box, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { NftType } from 'modules/api/common/NftType';
 import { createBrandNFT } from 'modules/brand/actions/createBrandNft';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
@@ -25,7 +26,6 @@ import {
   ProfileRoutesConfig,
   ProfileTab,
 } from '../../../profile/ProfileRoutes';
-import { NftType } from '../../../common/const/NftType';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [

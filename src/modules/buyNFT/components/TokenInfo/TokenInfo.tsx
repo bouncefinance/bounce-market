@@ -1,10 +1,10 @@
 // import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
+import { NftType } from 'modules/api/common/NftType';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { useIsSMUp } from 'modules/themes/useTheme';
 import { useTokenInfoStyles } from './useTokenInfoStyles';
-import { NftType } from '../../../common/const/NftType';
 
 interface ITokenInfoProps {
   name: string;

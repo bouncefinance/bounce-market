@@ -62,6 +62,8 @@ export const StoriesSlider = () => {
         href={ProfileRoutesConfig.OtherProfile.generatePath(
           item.accountAddress,
         )}
+        // TODO: update avatar of drop owner
+        avatar={undefined}
         isVerified={false}
       />
     );

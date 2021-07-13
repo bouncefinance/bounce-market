@@ -1,7 +1,7 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { AuctionType } from '../api/auctionType';
-import { poolTypeMap } from 'modules/common/api/poolType';
+import { poolTypeMap } from 'modules/api/common/poolType';
+import { createAction as createSmartAction } from 'redux-smart-actions';
+import { AuctionType } from '../../api/common/auctionType';
 
 export interface IApiFetchRoleInfo {
   code: 200;
