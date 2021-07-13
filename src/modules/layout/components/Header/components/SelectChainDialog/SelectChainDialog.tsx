@@ -7,8 +7,12 @@ import { ReactComponent as HecoIcon } from './assets/heco.svg';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { t } from 'modules/i18n/utils/intl';
+import {
+  BlockchainNetworkId,
+  getBlockChainExplorerAddress,
+} from 'modules/common/conts';
 
-export interface IAddEthereumChainParameter {
+export interface IAddEthereumChain {
   chainId: string; // A 0x-prefixed hexadecimal string
   chainName: string;
   nativeCurrency: {
@@ -17,7 +21,7 @@ export interface IAddEthereumChainParameter {
     decimals: number;
   };
   rpcUrls: string[];
-  blockExplorerUrls?: string[];
+  blockExplorerUrls?: String[];
   iconUrls?: string[]; // Currently ignored.
 }
 
@@ -46,7 +50,9 @@ export const SelectChainDialog = ({
         rpcUrls: [
           'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
         ],
-        blockExplorerUrls: ['https://etherscan.io/'],
+        blockExplorerUrls: [
+          getBlockChainExplorerAddress(BlockchainNetworkId.mainnet),
+        ],
       },
     },
     {
@@ -62,7 +68,9 @@ export const SelectChainDialog = ({
           decimals: 18,
         },
         rpcUrls: ['https://bsc-dataseed4.binance.org'],
-        blockExplorerUrls: ['https://bscscan.com/'],
+        blockExplorerUrls: [
+          getBlockChainExplorerAddress(BlockchainNetworkId.smartchain),
+        ],
       },
     },
     {
@@ -78,7 +86,9 @@ export const SelectChainDialog = ({
           decimals: 18,
         },
         rpcUrls: ['https://http-mainnet.hecochain.com'],
-        blockExplorerUrls: ['https://scan.hecochain.com'],
+        blockExplorerUrls: [
+          getBlockChainExplorerAddress(BlockchainNetworkId.heco),
+        ],
       },
     },
   ];
@@ -92,7 +102,7 @@ export const SelectChainDialog = ({
     icon: ReactNode;
     title: string;
     subTitle?: string;
-    chainConfig: IAddEthereumChainParameter;
+    chainConfig: IAddEthereumChain;
   }) => {
     const handleClickSwitchChain = () => {
       handleChangeNetworkToSupported(chainConfig);

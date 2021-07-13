@@ -1,6 +1,9 @@
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RPC } from '../../api/connectWallet';
-import { BlockchainNetworkId } from '../../../common/conts';
+import {
+  BlockchainNetworkId,
+  getBlockChainExplorerAddress,
+} from '../../../common/conts';
 import Web3 from 'web3';
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
@@ -52,7 +55,9 @@ export const changeNetworkToSupported = createSmartAction(
                                   decimals: 18,
                                 },
                                 rpcUrls: Object.values(RPC),
-                                blockExplorerUrls: ['https://bscscan.com/'],
+                                blockExplorerUrls: [
+                                  getBlockChainExplorerAddress(56),
+                                ],
                               },
                         ],
                       });
