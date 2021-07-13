@@ -8,7 +8,7 @@ import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { t } from 'modules/i18n/utils/intl';
 
-export interface AddEthereumChainParameter {
+export interface IAddEthereumChainParameter {
   chainId: string; // A 0x-prefixed hexadecimal string
   chainName: string;
   nativeCurrency: {
@@ -92,15 +92,14 @@ export const SelectChainDialog = ({
     icon: ReactNode;
     title: string;
     subTitle?: string;
-    chainConfig: AddEthereumChainParameter;
+    chainConfig: IAddEthereumChainParameter;
   }) => {
+    const handleClickSwitchChain = () => {
+      handleChangeNetworkToSupported(chainConfig);
+    };
+
     return (
-      <div
-        className={classes.cardItem}
-        onClick={() => {
-          handleChangeNetworkToSupported(chainConfig);
-        }}
-      >
+      <div className={classes.cardItem} onClick={handleClickSwitchChain}>
         {icon}
         <div className={classes.textBox}>
           <h3>

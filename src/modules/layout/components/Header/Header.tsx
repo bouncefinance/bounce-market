@@ -24,7 +24,10 @@ import { Toggle } from '../Toggle';
 import { Wallet } from '../Wallet';
 import { useHeaderStyles } from './HeaderStyles';
 import { useHeader } from './useHeader';
-import { SelectChainDialog, useDialog } from './components/SelectChainDialog';
+import {
+  SelectChainDialog,
+  useDialogState,
+} from './components/SelectChainDialog';
 import { useCallback } from 'react';
 
 export const Header = () => {
@@ -47,7 +50,7 @@ export const Header = () => {
     opened: openedSelectChainDialog,
     open: openSelectChainDialog,
     close: closeSelectChainDialog,
-  } = useDialog();
+  } = useDialogState();
 
   const mapChainIdName = useCallback(() => {
     switch (chainId) {
@@ -59,6 +62,8 @@ export const Header = () => {
         return 'Binance Smart Chain';
       case 128:
         return 'Heco Chain';
+      case 137:
+        return 'Matic Chain';
       default:
         return 'Unknown network';
     }

@@ -1,2 +1,2 @@
 export * from './SelectChainDialog';
-export * from './useDialog';
+export * from './useDialogState';
