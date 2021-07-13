@@ -125,8 +125,10 @@ export const PublishNFTComponent = ({
     [],
   );
 
-  const { options: currencyOptions, default: defaultCurrency } =
-    useCurrencies();
+  const {
+    options: currencyOptions,
+    default: defaultCurrency,
+  } = useCurrencies();
 
   const handleUnitChange = useCallback(
     (value: Address) => {
@@ -368,6 +370,7 @@ export const PublishNFTComponent = ({
                         <Queries<ResponseData<typeof fetchCurrency>>
                           requestActions={[fetchCurrency]}
                           requestKeys={[values.unitContract]}
+                          noDataMessage={<></>}
                         >
                           {({ data }) => (
                             <Box
