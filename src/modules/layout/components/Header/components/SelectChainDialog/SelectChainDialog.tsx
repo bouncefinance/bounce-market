@@ -131,9 +131,7 @@ export const SelectChainDialog = ({
     >
       <h1 className={classes.h1}>{t('header.select-chain.title')}</h1>
       <div className={classes.cardWrapper}>
-        {chainList.map(item => {
-          return renderCard(item);
-        })}
+        {chainList.map(item => renderCard(item))}
       </div>
 
       <ModalCloseBtn onClick={onClose} />

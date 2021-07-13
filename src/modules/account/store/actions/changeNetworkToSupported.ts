@@ -56,7 +56,9 @@ export const changeNetworkToSupported = createSmartAction(
                                 },
                                 rpcUrls: Object.values(RPC),
                                 blockExplorerUrls: [
-                                  getBlockChainExplorerAddress(56),
+                                  getBlockChainExplorerAddress(
+                                    BlockchainNetworkId.smartchain,
+                                  ),
                                 ],
                               },
                         ],
