@@ -47,8 +47,8 @@ export const changeNetworkToSupported = createSmartAction(
                                 )}`,
                                 chainName: 'Binance Smart Chain Mainnet',
                                 nativeCurrency: {
-                                  name: 'BNB',
-                                  symbol: 'bnb',
+                                  name: 'Binance',
+                                  symbol: 'BNB',
                                   decimals: 18,
                                 },
                                 rpcUrls: Object.values(RPC),

@@ -53,6 +53,8 @@ export const Header = () => {
     switch (chainId) {
       case 1:
         return 'Ethereum';
+      case 4:
+        return 'Rinkeby Test Chain';
       case 56:
         return 'Binance Smart Chain';
       case 128:

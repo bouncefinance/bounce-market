@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Dialog } from '@material-ui/core';
 import { useSelectChainStyled } from './useSelectChainStyled';
 import { ReactComponent as EthereumIcon } from './assets/ethereum.svg';
@@ -89,7 +89,7 @@ export const SelectChainDialog = ({
     subTitle,
     chainConfig,
   }: {
-    icon: JSX.Element;
+    icon: ReactNode;
     title: string;
     subTitle?: string;
     chainConfig: AddEthereumChainParameter;
