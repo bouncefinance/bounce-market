@@ -43,6 +43,13 @@
       "items": "Items",
       "brands": "Collections",
       "users": "Users"
+    },
+    "select-chain": {
+      "title": "Select network",
+      "eth": "Ethereum Mainnet",
+      "bnb": "Binance Smart Chain",
+      "heco": "HECO Chain",
+      "heco-2": "Huobi Wallet"
     }
   },
   "language": {

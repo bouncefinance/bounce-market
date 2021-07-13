@@ -10,7 +10,7 @@ import { t } from '../../../i18n/utils/intl';
 
 export const changeNetworkToSupported = createSmartAction(
   'AccountActions/changeNetworkToSupported',
-  () => ({
+  chainConfig => ({
     request: {
       promise: (async function () {})(),
     },
@@ -27,24 +27,41 @@ export const changeNetworkToSupported = createSmartAction(
 
             if (provider) {
               try {
-                await provider.request({
-                  method: 'wallet_addEthereumChain',
-                  params: [
-                    {
-                      chainId: `0x${BlockchainNetworkId.smartchain.toString(
-                        16,
-                      )}`,
-                      chainName: 'Binance Smart Chain Mainnet',
-                      nativeCurrency: {
-                        name: 'BNB',
-                        symbol: 'bnb',
-                        decimals: 18,
-                      },
-                      rpcUrls: Object.values(RPC),
-                      blockExplorerUrls: ['https://bscscan.com/'],
-                    },
-                  ],
-                });
+                try {
+                  await provider.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: chainConfig.chainId }],
+                  });
+                } catch (switchError) {
+                  // This error code indicates that the chain has not been added to MetaMask.
+                  if (switchError.code === 4902) {
+                    try {
+                      await provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [
+                          chainConfig
+                            ? chainConfig
+                            : {
+                                chainId: `0x${BlockchainNetworkId.smartchain.toString(
+                                  16,
+                                )}`,
+                                chainName: 'Binance Smart Chain Mainnet',
+                                nativeCurrency: {
+                                  name: 'BNB',
+                                  symbol: 'bnb',
+                                  decimals: 18,
+                                },
+                                rpcUrls: Object.values(RPC),
+                                blockExplorerUrls: ['https://bscscan.com/'],
+                              },
+                        ],
+                      });
+                    } catch (addError) {
+                      // handle "add" error
+                    }
+                  }
+                  // handle other "switch" errors
+                }
                 store.dispatch(
                   updateAccount({ chainId: BlockchainNetworkId.smartchain }),
                 );
