@@ -11,6 +11,7 @@ import React from 'react';
 import { BscScanIcon } from './assets/BscScanIcon';
 import { ETHScanIcon } from './assets/ETHScanIcon';
 import { HTScanIcon } from './assets/HTScanIcon';
+import { MaticScanIcon } from './assets/MaticScanIcon';
 import { useBSCScanBtnStyles } from './useBSCScanBtnStyles';
 
 interface IBSCScanBtnProps {
@@ -43,6 +44,9 @@ export const ScanBtn = ({ className, contractAddress }: IBSCScanBtnProps) => {
       )}
       {chainId === BlockchainNetworkId.heco && (
         <HTScanIcon className={classes.icon} />
+      )}
+      {chainId === BlockchainNetworkId.matic && (
+        <MaticScanIcon className={classes.icon} />
       )}
       {t('details-nft.info.view-scan', { name: blockChaninName })}
     </Button>

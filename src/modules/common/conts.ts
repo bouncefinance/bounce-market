@@ -61,6 +61,7 @@ export enum BlockchainNetworkId {
   smartchain = 56,
   smartchainTestnet = 97,
   heco = 128,
+  matic = 137,
 }
 
 const NativeTokens: {
@@ -77,6 +78,7 @@ const NativeTokens: {
   [BlockchainNetworkId.smartchain]: TokenSymbol.BNB,
   [BlockchainNetworkId.smartchainTestnet]: TokenSymbol.BNB,
   [BlockchainNetworkId.heco]: TokenSymbol.HT,
+  [BlockchainNetworkId.matic]: TokenSymbol.MATIC,
 };
 
 export function getNativeTokenSymbol(chainId: BlockchainNetworkId) {
@@ -97,6 +99,7 @@ const BlockChainExplorerAddress: {
   [BlockchainNetworkId.smartchain]: 'https://bscscan.com/',
   [BlockchainNetworkId.smartchainTestnet]: 'https://bscscan.com/',
   [BlockchainNetworkId.heco]: 'https://hecoinfo.com/',
+  [BlockchainNetworkId.matic]: 'https://polygonscan.com/',
 };
 
 export const getBlockChainExplorerAddress = (chainId: BlockchainNetworkId) =>
@@ -116,6 +119,7 @@ const BlockChainExplorerName: {
   [BlockchainNetworkId.smartchain]: 'BSCScan',
   [BlockchainNetworkId.smartchainTestnet]: 'BSCScan',
   [BlockchainNetworkId.heco]: 'HecoScan',
+  [BlockchainNetworkId.matic]: 'PolygonScan',
 };
 
 export const getBlockChainExplorerName = (chainId: BlockchainNetworkId) =>
