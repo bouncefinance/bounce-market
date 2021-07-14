@@ -369,7 +369,7 @@ export const BuyNFT = () => {
                       author={getSenderName(item.sender)}
                       date={item.time}
                       price={item.price.multipliedBy(currency.priceUsd)}
-                      cryptoCurrency={'BNB'}
+                      cryptoCurrency={getTokenSymbol(chainId) as string}
                       cryptoPrice={item.price}
                       href={`${blockChainScan}tx/${item.txId}`}
                     />

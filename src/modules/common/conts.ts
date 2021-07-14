@@ -143,6 +143,7 @@ const BlockChainTokenSymbol: {
   [BlockchainNetworkId.smartchain]: TokenSymbol.BNB,
   [BlockchainNetworkId.smartchainTestnet]: TokenSymbol.BNB,
   [BlockchainNetworkId.heco]: TokenSymbol.HT,
+  [BlockchainNetworkId.matic]: TokenSymbol.MATIC,
 };
 
 export const getTokenSymbol = (chainId: BlockchainNetworkId) =>

@@ -19,7 +19,7 @@ export const MaticScanIcon = (props: SvgIconProps) => {
         <g
           id="Mask_Group_3"
           data-name="Mask Group 3"
-          clip-path="url(#clip-path)"
+          clipPath="url(#clip-path)"
         >
           <path
             id="Path_151"

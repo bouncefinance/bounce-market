@@ -12,13 +12,12 @@ export const fetchActivities = createSmartAction<
   RequestAction<IActivityData, IActivityItem[]>
 >('fetchActivities', (payload: IFetchActivitiesVariables) => ({
   request: {
-    url: process.env.REACT_APP_ACTIVITIES_URL,
+    url: '/activities',
     method: 'get',
     params: { user_address: payload.user },
   },
   meta: {
-    auth: true,
-    driver: 'axios',
+    driver: 'activities',
     asMutation: false,
     getData: data => {
       if (data.code !== 1 && data.code !== 200) {

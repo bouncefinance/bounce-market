@@ -107,6 +107,36 @@ function getNftView2ApiDriverName(
   return chainNftView2ApiDriver[chainId] || 'nftView2ApiSmartchain';
 }
 
+type ActivitiesApiDriverName =
+  | 'activitiesApiEthMainnet'
+  | 'activitiesApiEthRinkeby'
+  | 'activitiesApiSmartchain'
+  | 'activitiesApiHeco'
+  | 'activitiesApiMatic';
+
+const chainActivitiesApiDriver: {
+  [key in BlockchainNetworkId]: ActivitiesApiDriverName | undefined;
+} = {
+  [BlockchainNetworkId.mainnet]: 'activitiesApiEthMainnet',
+  [BlockchainNetworkId.ropsten]: undefined,
+  [BlockchainNetworkId.rinkeby]: 'activitiesApiEthRinkeby',
+  [BlockchainNetworkId.goerli]: undefined,
+  [BlockchainNetworkId.dev]: undefined,
+  [BlockchainNetworkId.classic]: undefined,
+  [BlockchainNetworkId.mordor]: undefined,
+  [BlockchainNetworkId.kotti]: undefined,
+  [BlockchainNetworkId.smartchain]: 'activitiesApiSmartchain',
+  [BlockchainNetworkId.smartchainTestnet]: undefined,
+  [BlockchainNetworkId.heco]: 'activitiesApiHeco',
+  [BlockchainNetworkId.matic]: 'activitiesApiMatic',
+};
+
+function getActivitiesApiDriverName(
+  chainId: BlockchainNetworkId,
+): ActivitiesApiDriverName {
+  return chainActivitiesApiDriver[chainId] || 'activitiesApiSmartchain';
+}
+
 export type DriverName =
   | MainApiDriverName
   | NftViewApiDriverName
@@ -226,6 +256,31 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
         baseURL: process.env.REACT_APP_NFTVIEW_URL_V2_MATIC,
       }),
     ),
+    activitiesApiEthMainnet: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL_ETH,
+      }),
+    ),
+    activitiesApiEthRinkeby: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL_RINKEBY,
+      }),
+    ),
+    activitiesApiSmartchain: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL,
+      }),
+    ),
+    activitiesApiHeco: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL_HECO,
+      }),
+    ),
+    activitiesApiMatic: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL_MATIC,
+      }),
+    ),
   },
   onRequest: (request, action, store) => {
     const rootState: RootState = store.getState();
@@ -258,6 +313,14 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
           data && data.chainId
             ? getNftView2ApiDriverName(data.chainId)
             : 'nftView2ApiSmartchain',
+      };
+    } else if (action.meta?.driver === 'activities') {
+      action.meta = {
+        ...action.meta,
+        driver:
+          data && data.chainId
+            ? getActivitiesApiDriverName(data.chainId)
+            : 'activitiesApiSmartchain',
       };
     }
 
