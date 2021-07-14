@@ -24,7 +24,8 @@ export const useAccount = () => {
     chainId === BlockchainNetworkId.smartchain ||
     chainId === BlockchainNetworkId.mainnet ||
     chainId === BlockchainNetworkId.rinkeby ||
-    chainId === BlockchainNetworkId.heco;
+    chainId === BlockchainNetworkId.heco ||
+    chainId === BlockchainNetworkId.matic;
 
   const walletSupportNetworkChange = !!data?.web3?.givenProvider;
 
