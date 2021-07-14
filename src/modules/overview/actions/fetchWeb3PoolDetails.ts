@@ -158,7 +158,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const lastBidderAddress = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderP(poolId)
                   .call();
-
                 const curTime = new Date().getTime() / 1000;
                 const diffTime = parseInt(pool.closeAt) - curTime;
 
@@ -176,9 +175,11 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const amountMin1 = new BigNumber(
                   fromWei(pool.amountMin1, decimals),
                 );
-
+                const amountMax1 = new BigNumber(
+                  fromWei(pool.amountMax1, decimals),
+                );
                 return {
-                  amountMax1: new BigNumber(fromWei(pool.amountMax1, decimals)),
+                  amountMax1: amountMax1,
                   amountMin1,
                   amountMinIncr1: new BigNumber(
                     fromWei(pool.amountMinIncr1, decimals),
@@ -204,7 +205,8 @@ export const fetchWeb3PoolDetails = createSmartAction<
                     if (
                       new BigNumber(currentBidderAmount).isGreaterThanOrEqualTo(
                         pool.amountMax1,
-                      )
+                      ) &&
+                      amountMax1.isGreaterThan(0)
                     ) {
                       return AuctionState.CompletedByDirectPurchase;
                     }

@@ -105,6 +105,7 @@ export const Header = () => {
           <SelectChainDialog
             isOpen={openedSelectChainDialog}
             onClose={closeSelectChainDialog}
+            currentChain={chainId}
           />
           {renderedWallet}
         </div>
@@ -210,6 +211,7 @@ export const Header = () => {
                   <Social mt={5} />
 
                   <SelectChainDialog
+                    currentChain={chainId}
                     isOpen={openedSelectChainDialog}
                     onClose={closeSelectChainDialog}
                   />

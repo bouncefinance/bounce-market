@@ -11,6 +11,7 @@ import { useInfoPricesStyles } from './useInfoPricesStyles';
 
 interface IInfoPricesProps {
   price: BigNumber;
+  hasSetDirectPrice: boolean;
   cryptoPrice: BigNumber;
   cryptoCurrency: string;
   disabled: boolean;
@@ -28,6 +29,7 @@ interface IInfoPricesProps {
 export const InfoPrices = ({
   endDate,
   price,
+  hasSetDirectPrice,
   cryptoPrice,
   cryptoCurrency,
   disabled,
@@ -169,21 +171,23 @@ export const InfoPrices = ({
     return (
       <>
         {!disabled && onBidClick && (
-          <Box mb={2}>
-            <Button fullWidth onClick={onBidClick}>
-              {t('details-nft.place-a-bid')}
+          <Button fullWidth onClick={onBidClick}>
+            {t('details-nft.place-a-bid')}
+          </Button>
+        )}
+
+        {hasSetDirectPrice && (
+          <Box mt={2}>
+            <Button
+              disabled={disabled}
+              variant="outlined"
+              fullWidth
+              onClick={onBuyClick}
+            >
+              {disabled ? t('details-nft.sold-out') : t('details-nft.buy-now')}
             </Button>
           </Box>
         )}
-
-        <Button
-          disabled={disabled}
-          variant="outlined"
-          fullWidth
-          onClick={onBuyClick}
-        >
-          {disabled ? t('details-nft.sold-out') : t('details-nft.buy-now')}
-        </Button>
       </>
     );
   }, [
@@ -197,6 +201,7 @@ export const InfoPrices = ({
     loading,
     onBidderClaim,
     onCreatorClaim,
+    hasSetDirectPrice,
   ]);
 
   return (

@@ -43,8 +43,6 @@ import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
 
-const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
-
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
 
@@ -163,23 +161,36 @@ export const PublishNFTComponent = ({
           errors.minBid = t('validation.min', { value: 0 });
         }
 
-        if (purchasePriceChecked || ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED) {
+        if (purchasePriceChecked) {
           if (!purchasePrice) {
             errors.purchasePrice = t('validation.required');
           } else if (purchasePrice <= 0) {
             errors.purchasePrice = t('validation.min', { value: 0 });
+          } else if (!reservePriceChecked && minBid >= purchasePrice) {
+            errors.purchasePrice = t(
+              'publish-nft.error.wrong-direct-bid-amount',
+            );
           }
         }
 
-        if (reservePriceChecked || ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED) {
+        if (reservePriceChecked) {
           if (!reservePrice) {
             errors.reservePrice = t('validation.required');
           } else if (reservePrice <= 0) {
             errors.reservePrice = t('validation.min', { value: 0 });
+          } else if (!purchasePriceChecked && minBid > reservePrice) {
+            errors.purchasePrice = t(
+              'publish-nft.error.wrong-reserve-bid-amount',
+            );
           }
         }
 
-        if (!(minBid <= reservePrice && reservePrice <= purchasePrice)) {
+        if (
+          minBid &&
+          purchasePriceChecked &&
+          reservePriceChecked &&
+          !(minBid <= reservePrice && reservePrice < purchasePrice)
+        ) {
           errors.minBid = t(
             'publish-nft.error.wrong-direct-reserve-bid-amount',
           );
@@ -240,12 +251,12 @@ export const PublishNFTComponent = ({
         dispatch(
           publishNft({
             type: payload.type,
-            purchasePrice: payload.purchasePrice,
+            purchasePrice: purchasePriceChecked ? payload.purchasePrice : '0',
             minBid: payload.minBid,
             minIncremental: new BigNumber(payload.minBid).multipliedBy(
               MIN_INCREMENTAL_PART,
             ),
-            reservePrice: payload.reservePrice,
+            reservePrice: reservePriceChecked ? payload.reservePrice : '0',
             duration: payload.duration * 60 * 60 * 24,
             // duration: 60 * 60 * 1,
             name,
@@ -262,7 +273,16 @@ export const PublishNFTComponent = ({
         });
       }
     },
-    [dispatch, name, nftType, onPublish, tokenContract, tokenId],
+    [
+      dispatch,
+      name,
+      nftType,
+      onPublish,
+      tokenContract,
+      tokenId,
+      purchasePriceChecked,
+      reservePriceChecked,
+    ],
   );
 
   const renderForm = ({
