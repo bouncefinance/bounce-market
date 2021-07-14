@@ -28,10 +28,13 @@ export interface IAddEthereumChain {
 export const SelectChainDialog = ({
   isOpen = false,
   onClose,
+  currentChain,
 }: {
   isOpen?: boolean;
   onClose: () => void;
+  currentChain: number;
 }) => {
+  console.log(currentChain);
   const classes = useSelectChainStyled();
   const { handleChangeNetworkToSupported } = useAccount();
   const chainList = [
@@ -105,11 +108,18 @@ export const SelectChainDialog = ({
     chainConfig: IAddEthereumChain;
   }) => {
     const handleClickSwitchChain = () => {
+      if (Number(chainConfig.chainId) === currentChain) {
+        return;
+      }
       handleChangeNetworkToSupported(chainConfig);
     };
 
     return (
-      <div className={classes.cardItem} onClick={handleClickSwitchChain}>
+      <div
+        key={title}
+        className={classes.cardItem}
+        onClick={handleClickSwitchChain}
+      >
         {icon}
         <div className={classes.textBox}>
           <h3>

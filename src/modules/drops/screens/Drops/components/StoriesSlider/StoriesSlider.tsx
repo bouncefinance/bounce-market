@@ -64,7 +64,7 @@ export const StoriesSlider = () => {
         )}
         // TODO: update avatar of drop owner
         avatar={undefined}
-        isVerified={false}
+        isVerified={true}
       />
     );
 
