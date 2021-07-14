@@ -179,7 +179,7 @@ export const PublishNFTComponent = ({
           }
         }
 
-        if (!(minBid <= reservePrice && reservePrice <= purchasePrice)) {
+        if (!(minBid <= reservePrice && reservePrice < purchasePrice)) {
           errors.minBid = t(
             'publish-nft.error.wrong-direct-reserve-bid-amount',
           );
