@@ -71,12 +71,15 @@ function createEventChannel(accountData: ISetAccountData) {
   );
 
   return eventChannel(emitter => {
-    const transferEventEmitterERC721 =
-      ContractBounceERC721WithSign.events.Transfer(options);
-    const transferSinglEventEmitterERC1155 =
-      ContractBounceERC1155WithSign.events.TransferSingle(options);
-    const transferBatchEventEmitterERC1155 =
-      ContractBounceERC1155WithSign.events.TransferBatch(options);
+    const transferEventEmitterERC721 = ContractBounceERC721WithSign.events.Transfer(
+      options,
+    );
+    const transferSinglEventEmitterERC1155 = ContractBounceERC1155WithSign.events.TransferSingle(
+      options,
+    );
+    const transferBatchEventEmitterERC1155 = ContractBounceERC1155WithSign.events.TransferBatch(
+      options,
+    );
 
     subscribe(transferEventEmitterERC721, emitter);
     subscribe(transferSinglEventEmitterERC1155, emitter);

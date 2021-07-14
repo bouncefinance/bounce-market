@@ -14,6 +14,7 @@ import {
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { add } from 'date-fns';
+import { NftType } from 'modules/api/common/NftType';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { Section } from 'modules/uiKit/Section';
@@ -21,6 +22,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory, useParams } from 'react-router';
 import { useAccount } from '../../../account/hooks/useAccount';
+import { AuctionType } from '../../../api/common/auctionType';
 import { fetchItem } from '../../../buyNFT/actions/fetchItem';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 import { Queries } from '../../../common/components/Queries/Queries';
@@ -35,13 +37,11 @@ import { OnChange } from '../../../form/utils/OnChange';
 import { t, tHTML } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
-import { AuctionType } from '../../../overview/api/auctionType';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { fetchNftByUser } from '../../actions/fetchNftByUser';
 import { publishNft } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
-import { NftType } from '../../../common/const/NftType';
 
 const ENABLE_DIRECT_AND_RESERVE_AS_REQUIRED = true;
 
@@ -121,8 +121,10 @@ export const PublishNFTComponent = ({
     [],
   );
 
-  const { options: currencyOptions, default: defaultCurrency } =
-    useCurrencies();
+  const {
+    options: currencyOptions,
+    default: defaultCurrency,
+  } = useCurrencies();
 
   const handleUnitChange = useCallback(
     (value: Address) => {

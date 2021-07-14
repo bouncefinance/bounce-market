@@ -1,46 +1,60 @@
 import { Box, Typography } from '@material-ui/core';
-import BigNumber from 'bignumber.js';
+import { useQuery } from '@redux-requests/react';
+import { DropsDetailPoolState } from 'modules/api/getOneDropsDetail';
+import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import {
   ProductCard,
   ProductCardSkeleton,
 } from 'modules/common/components/ProductCard';
+import { TokenSymbol } from 'modules/common/types/TokenSymbol';
+import {
+  getDropDetails,
+  IGetDropDetails,
+} from 'modules/drops/actions/getDropDetails';
 import { t } from 'modules/i18n/utils/intl';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { uid } from 'react-uid';
 import { CardsList } from '../CardsList';
 
-const demoData = new Array(3).fill(0);
+const SKELETONS_COUNT = 3;
 
 export const LiveCards = () => {
-  // for demo purpose
-  const [loading, setLoading] = useState(true);
+  const { data, loading } = useQuery<IGetDropDetails | null>({
+    type: getDropDetails.toString(),
+  });
 
-  // for demo purpose
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
+  const liveNfts = (data?.poolsInfo || []).filter(
+    poolInfo => poolInfo.state === DropsDetailPoolState.Live,
+  );
 
-  const renderedCards = demoData.map((_, i) => (
+  const renderedCards = liveNfts.map(item => (
     <ProductCard
       isOnSale
-      key={uid(i)}
-      title="some Title"
-      priceType="BNB"
-      price={new BigNumber('0.03')}
+      key={uid(item)}
+      title={item.name}
+      priceType={data?.tokenSymbol || TokenSymbol.BNB}
+      price={item.price}
       MediaProps={{
         category: 'image',
-        src: `https://picsum.photos/400/300?random=${i + 1}`,
+        src: item.fileUrl,
       }}
-      id={i}
-      poolId={23}
+      href={BuyNFTRoutesConfig.DetailsNFT.generatePath(
+        item.poolId,
+        item.poolType,
+      )}
+      // todo: id is needed to do likes
+      id={0}
+      poolId={item.poolId}
     />
   ));
 
-  const renderedSkeletons = Array(3)
+  const renderedSkeletons = Array(SKELETONS_COUNT)
     .fill(0)
     .map((_, i) => <ProductCardSkeleton key={uid(i)} />);
+
+  if (!loading && !liveNfts.length) {
+    return null;
+  }
 
   return (
     <Box mb={{ xs: 6, md: 10 }}>

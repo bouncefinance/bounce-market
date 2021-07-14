@@ -1,16 +1,16 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import BigNumber from 'bignumber.js';
+import { NftType } from 'modules/api/common/NftType';
 import { Store } from 'redux';
+import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
+import Web3 from 'web3';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { ZERO_ADDRESS } from '../../common/conts';
-import { getFixedSwapContract } from '../../createNFT/actions/publishNft';
 import { Address } from '../../common/types/unit';
-import BigNumber from 'bignumber.js';
-import { TransactionReceipt } from '@ethersproject/abstract-provider';
-import Web3 from 'web3';
+import { getFixedSwapContract } from '../../createNFT/actions/publishNft';
 import { BounceERC20, BounceFixedSwapNFT } from '../../web3/contracts';
-import { NftType } from '../../common/const/NftType';
 
 interface IBuyFixedPayload {
   nftType: NftType;

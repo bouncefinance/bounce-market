@@ -1,6 +1,6 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { AuctionType } from '../api/auctionType';
+import { createAction as createSmartAction } from 'redux-smart-actions';
+import { AuctionType } from '../../api/common/auctionType';
 
 interface IApiFetchPoolsWeightData {
   code: 1;

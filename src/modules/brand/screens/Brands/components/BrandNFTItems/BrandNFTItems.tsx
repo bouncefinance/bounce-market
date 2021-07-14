@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import { useDispatchRequest } from '@redux-requests/react';
 import classNames from 'classnames';
+import { AuctionType } from 'modules/api/common/auctionType';
 import { queryBrandPools } from 'modules/brand/actions/queryBrandPools';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
@@ -15,7 +16,6 @@ import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { t } from 'modules/i18n/utils/intl';
 import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
-import { AuctionType } from 'modules/overview/api/auctionType';
 import { IItem } from 'modules/pools/actions/queryItemByFilter';
 import { Img } from 'modules/uiKit/Img';
 import React, { useEffect, useMemo, useState } from 'react';

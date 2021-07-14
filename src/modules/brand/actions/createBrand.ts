@@ -1,20 +1,20 @@
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import { setAccount } from 'modules/account/store/actions/setAccount';
+import { NftType } from 'modules/api/common/NftType';
 import { uploadFile } from 'modules/common/actions/uploadFile';
+import { BlockchainNetworkId } from 'modules/common/conts';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { ICreateBrand } from '../screens/CreateBrand';
-import { getBrandContract } from './const';
-import { IUpdateBrandInfoPayload, updateBrandInfo } from './updateBrandInfo';
+import { throwIfError } from '../../common/utils/throwIfError';
 import {
   BoucneErc1155Bytecode,
   BoucneErc721Bytecode,
   BounceNFTFactoryV2,
 } from '../../web3/contracts';
-import { throwIfError } from '../../common/utils/throwIfError';
-import { BlockchainNetworkId } from 'modules/common/conts';
-import { NftType } from '../../common/const/NftType';
+import { ICreateBrand } from '../screens/CreateBrand';
+import { getBrandContract } from './const';
+import { IUpdateBrandInfoPayload, updateBrandInfo } from './updateBrandInfo';
 
 const chaiToBrandUri: {
   [key in BlockchainNetworkId]: string | undefined;

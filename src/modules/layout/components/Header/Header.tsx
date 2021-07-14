@@ -24,6 +24,11 @@ import { Toggle } from '../Toggle';
 import { Wallet } from '../Wallet';
 import { useHeaderStyles } from './HeaderStyles';
 import { useHeader } from './useHeader';
+import {
+  SelectChainDialog,
+  useDialogState,
+} from './components/SelectChainDialog';
+import { useCallback } from 'react';
 
 export const Header = () => {
   const {
@@ -37,9 +42,32 @@ export const Header = () => {
     searchShowed,
   } = useHeader();
 
-  const { isConnected, handleConnect, loading } = useAccount();
+  const { isConnected, handleConnect, loading, chainId } = useAccount();
   const classes = useHeaderStyles();
   const isXLUp = useIsXLUp();
+
+  const {
+    opened: openedSelectChainDialog,
+    open: openSelectChainDialog,
+    close: closeSelectChainDialog,
+  } = useDialogState();
+
+  const mapChainIdName = useCallback(() => {
+    switch (chainId) {
+      case 1:
+        return 'Ethereum';
+      case 4:
+        return 'Rinkeby Test Chain';
+      case 56:
+        return 'Binance Smart Chain';
+      case 128:
+        return 'Heco Chain';
+      case 137:
+        return 'Matic Chain';
+      default:
+        return 'Unknown network';
+    }
+  }, [chainId]);
 
   const renderedWallet = <Wallet />;
 
@@ -64,7 +92,23 @@ export const Header = () => {
           {t('header.connect')}
         </Button>
       )}
-      {isConnected && renderedWallet}
+      {isConnected && (
+        <div>
+          <Button
+            onClick={openSelectChainDialog}
+            loading={loading}
+            rounded
+            className={classes.btnChangeNet}
+          >
+            {mapChainIdName()}
+          </Button>
+          <SelectChainDialog
+            isOpen={openedSelectChainDialog}
+            onClose={closeSelectChainDialog}
+          />
+          {renderedWallet}
+        </div>
+      )}
     </>
   );
 
@@ -138,6 +182,18 @@ export const Header = () => {
                     </Button>
                   </Box>
 
+                  <Box mt="auto" mb={3}>
+                    <Button
+                      onClick={openSelectChainDialog}
+                      loading={loading}
+                      rounded
+                      className={classes.btnChangeNet}
+                      fullWidth
+                    >
+                      {mapChainIdName()}
+                    </Button>
+                  </Box>
+
                   {!isConnected && (
                     <Button
                       onClick={handleConnect}
@@ -152,6 +208,11 @@ export const Header = () => {
                   {isConnected && renderedWallet}
 
                   <Social mt={5} />
+
+                  <SelectChainDialog
+                    isOpen={openedSelectChainDialog}
+                    onClose={closeSelectChainDialog}
+                  />
                 </Container>
               </Drawer>
             </ThemeProvider>

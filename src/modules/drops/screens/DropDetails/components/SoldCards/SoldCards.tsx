@@ -1,46 +1,59 @@
 import { Box, Typography } from '@material-ui/core';
-import BigNumber from 'bignumber.js';
+import { useQuery } from '@redux-requests/react';
+import {
+  DropsDetailPoolState,
+  IDropDetails,
+} from 'modules/api/getOneDropsDetail';
+import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import {
   ProductCard,
   ProductCardSkeleton,
 } from 'modules/common/components/ProductCard';
+import { getDropDetails } from 'modules/drops/actions/getDropDetails';
 import { t } from 'modules/i18n/utils/intl';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { uid } from 'react-uid';
 import { CardsList } from '../CardsList';
 
-const demoData = new Array(2).fill(0);
+const SKELETONS_COUNT = 2;
 
 export const SoldCards = () => {
-  // for demo purpose
-  const [loading, setLoading] = useState(true);
+  const { data, loading } = useQuery<IDropDetails | null>({
+    type: getDropDetails.toString(),
+  });
 
-  // for demo purpose
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, []);
+  const soldNfts = (data?.poolsInfo || []).filter(
+    poolInfo => poolInfo.state === DropsDetailPoolState.Closed,
+  );
 
-  const renderedCards = demoData.map((_, i) => (
+  const renderedCards = soldNfts.map(item => (
     <ProductCard
       isOnSale
-      key={uid(i)}
-      title="some Title"
+      key={uid(item)}
+      title={item.name}
       priceType="BNB"
-      price={new BigNumber('0.03')}
+      price={item.price}
       MediaProps={{
         category: 'image',
-        src: `https://picsum.photos/400/300?random=${i + 10}`,
+        src: item.fileUrl,
       }}
-      id={i}
-      poolId={23}
+      href={BuyNFTRoutesConfig.DetailsNFT.generatePath(
+        item.poolId,
+        item.poolType,
+      )}
+      // todo: id is needed to do likes
+      id={0}
+      poolId={item.poolId}
     />
   ));
 
-  const renderedSkeletons = Array(2)
+  const renderedSkeletons = Array(SKELETONS_COUNT)
     .fill(0)
     .map((_, i) => <ProductCardSkeleton key={uid(i)} />);
+
+  if (!loading && !soldNfts.length) {
+    return null;
+  }
 
   return (
     <Box mb={5}>

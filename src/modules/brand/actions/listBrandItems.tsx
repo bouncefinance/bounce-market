@@ -2,13 +2,13 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { queryBrandItem1155, queryBrandItem721 } from './queryBrandItems';
-import { getPoolsByFilter } from '../../profile/api/getPoolsByFilter';
+import { AuctionState } from '../../api/common/AuctionState';
+import { AuctionType } from '../../api/common/auctionType';
+import { FixedSwapState } from '../../api/common/FixedSwapState';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
-import { AuctionType } from '../../overview/api/auctionType';
-import { AuctionState } from '../../common/const/AuctionState';
-import { FixedSwapState } from '../../common/const/FixedSwapState';
+import { getPoolsByFilter } from '../../profile/api/getPoolsByFilter';
+import { queryBrandItem1155, queryBrandItem721 } from './queryBrandItems';
 
 // TODO: Merge with src/modules/profile/actions/fetchAllNftByUser.ts
 

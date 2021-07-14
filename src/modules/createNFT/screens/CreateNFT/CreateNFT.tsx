@@ -1,5 +1,6 @@
 import { Box, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { NftType } from 'modules/api/common/NftType';
 import { Button } from 'modules/uiKit/Button';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo } from 'react';
@@ -15,7 +16,6 @@ import { GoBack } from '../../../layout/components/GoBack';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { Channel, createNft, ICreateNFTPayload } from '../../actions/createNft';
 import { useCreateNFTStyles } from './useCreateNFTStyles';
-import { NftType } from '../../../common/const/NftType';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [

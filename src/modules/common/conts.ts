@@ -47,6 +47,10 @@ export const featuresConfig = {
   nftDetailsBids: true,
   nftDetailsOwners: true,
   nftDetailsTokenInfo: true,
+  /**
+   * Now this feature is not implemented in the backend
+   */
+  dropDetailsVideo: false,
 };
 
 export enum BlockchainNetworkId {

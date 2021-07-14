@@ -1,4 +1,5 @@
 import { useQuery } from '@redux-requests/react';
+import { IAddEthereumChain } from 'modules/layout/components/Header/components/SelectChainDialog';
 import { useCallback } from 'react';
 import { useAppDispatch } from 'store/useAppDispatch';
 import { BlockchainNetworkId } from '../../common/conts';
@@ -32,9 +33,12 @@ export const useAccount = () => {
     dispatch(connect());
   }, [dispatch]);
 
-  const handleChangeNetworkToSupported = useCallback(() => {
-    dispatch(changeNetworkToSupported());
-  }, [dispatch]);
+  const handleChangeNetworkToSupported = useCallback(
+    (chainConfig?: IAddEthereumChain) => {
+      dispatch(changeNetworkToSupported(chainConfig));
+    },
+    [dispatch],
+  );
 
   const handleUpdate = useCallback(
     updatedData => {

@@ -4,12 +4,12 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
+import { AuctionType } from 'modules/api/common/auctionType';
 import {
   fetchItemsByFilter,
   IItemByFilter,
   ItemsChannel,
 } from 'modules/overview/actions/fetchItemsByFilter';
-import { AuctionType } from 'modules/overview/api/auctionType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';

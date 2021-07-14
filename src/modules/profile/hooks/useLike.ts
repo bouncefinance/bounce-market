@@ -4,7 +4,7 @@ import {
   useQuery,
 } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { PoolType } from 'modules/common/api/poolType';
+import { PoolType } from 'modules/api/common/poolType';
 import { useCallback, useState } from 'react';
 import { dealAccountLike } from '../actions/dealAccountLike';
 import { ILikedItem, queryLikedItems } from '../actions/queryLikedItems';

@@ -7,7 +7,7 @@ export function addTokenSymbolByDriver(
   action: RequestAction,
   store: RequestsStore,
 ) {
-  if (action.meta) {
+  if (action.meta && response.data) {
     response.data.tokenSymbol = getTokenByDriver(
       action.meta.driver as DriverName,
       ZERO_ADDRESS,

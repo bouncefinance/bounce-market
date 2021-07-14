@@ -1,9 +1,9 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { AuctionType } from '../api/auctionType';
-import { poolTypeMap } from 'modules/common/api/poolType';
-import { IRoleInfo } from './fetchRoleInfo';
 import BigNumber from 'bignumber.js';
+import { poolTypeMap } from 'modules/api/common/poolType';
+import { createAction as createSmartAction } from 'redux-smart-actions';
+import { AuctionType } from '../../api/common/auctionType';
+import { IRoleInfo } from './fetchRoleInfo';
 
 export interface IApiFetchPoolNftOwner {
   code: 200;

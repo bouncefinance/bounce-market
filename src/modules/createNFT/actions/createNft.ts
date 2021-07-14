@@ -1,22 +1,22 @@
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import { push } from 'connected-react-router';
+import { NftType } from 'modules/api/common/NftType';
 import { uploadFile } from 'modules/common/actions/uploadFile';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
-import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
-import { addItem, IAddItemPayload } from './addItem';
+import { isVideo } from '../../common/utils/isVideo';
+import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
+import { addNFTByEvent } from '../../profile/actions/addNftByEvent';
+import { ProfileRoutesConfig } from '../../profile/ProfileRoutes';
 import {
   BounceERC1155WithSign,
   BounceERC721WithSign,
 } from '../../web3/contracts';
-import { isVideo } from '../../common/utils/isVideo';
-import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
-import { addNFTByEvent } from '../../profile/actions/addNftByEvent';
-import { NftType } from '../../common/const/NftType';
-import { ProfileRoutesConfig } from '../../profile/ProfileRoutes';
-import { push } from 'connected-react-router';
+import { getBounceERC1155WithSign, getBounceERC721WithSign } from '../api/sign';
+import { addItem, IAddItemPayload } from './addItem';
 
 export enum Channel {
   FineArts = 'FineArts',

@@ -1,9 +1,9 @@
 import loadable, { LoadableComponent } from '@loadable/component';
+import { useParams } from 'react-router';
 import { generatePath } from 'react-router-dom';
+import { AuctionType } from '../api/common/auctionType';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { PrivateRoute } from '../router/components/PrivateRoute';
-import { AuctionType } from '../overview/api/auctionType';
-import { useParams } from 'react-router';
 
 export const PATH_BUY_NFT = '/nft/buy/poolId/:poolId/poolType/:poolType';
 
