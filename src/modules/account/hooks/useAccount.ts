@@ -14,7 +14,6 @@ export const useAccount = () => {
   const { loading, data, error } = useQuery<ISetAccountData | null>({
     type: setAccount.toString(),
   });
-  console.log(data);
 
   const address = data?.address;
   const isConnected = !!address;
