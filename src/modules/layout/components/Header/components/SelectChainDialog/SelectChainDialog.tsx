@@ -34,7 +34,6 @@ export const SelectChainDialog = ({
   onClose: () => void;
   currentChain: number;
 }) => {
-  console.log(currentChain);
   const classes = useSelectChainStyled();
   const { handleChangeNetworkToSupported } = useAccount();
   const chainList = [
@@ -108,9 +107,7 @@ export const SelectChainDialog = ({
     chainConfig: IAddEthereumChain;
   }) => {
     const handleClickSwitchChain = () => {
-      if (Number(chainConfig.chainId) === currentChain) {
-        return;
-      }
+      if (Number(chainConfig.chainId) === currentChain) return;
       handleChangeNetworkToSupported(chainConfig);
     };
 
