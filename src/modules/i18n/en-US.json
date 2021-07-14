@@ -330,7 +330,8 @@
         "facebook": "Facebook Link"
       },
       "save-changes": "Save Changes",
-      "success-message": "Changes have been applied successfully."
+      "success-message": "Changes have been applied successfully.",
+      "no-profile": "Please complete your profile setting first."
     },
     "tabs": {
       "my-items": "My items",
