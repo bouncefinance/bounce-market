@@ -319,7 +319,8 @@
         "facebook": "脸书主页链接"
       },
       "save-changes": "保存修改",
-      "success-message": "修改成功"
+      "success-message": "修改成功",
+      "no-profile": "请先完善个人信息"
     },
     "tabs": {
       "my-items": "我的商品",
