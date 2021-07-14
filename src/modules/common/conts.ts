@@ -124,3 +124,22 @@ const BlockChainExplorerName: {
 
 export const getBlockChainExplorerName = (chainId: BlockchainNetworkId) =>
   BlockChainExplorerName[chainId];
+
+const BlockChainTokenSymbol: {
+  [key in BlockchainNetworkId]: String;
+} = {
+  [BlockchainNetworkId.mainnet]: TokenSymbol.ETH,
+  [BlockchainNetworkId.ropsten]: TokenSymbol.ETH,
+  [BlockchainNetworkId.rinkeby]: TokenSymbol.ETH,
+  [BlockchainNetworkId.goerli]: TokenSymbol.ETH,
+  [BlockchainNetworkId.dev]: '',
+  [BlockchainNetworkId.classic]: '',
+  [BlockchainNetworkId.mordor]: '',
+  [BlockchainNetworkId.kotti]: '',
+  [BlockchainNetworkId.smartchain]: TokenSymbol.BNB,
+  [BlockchainNetworkId.smartchainTestnet]: TokenSymbol.BNB,
+  [BlockchainNetworkId.heco]: TokenSymbol.HT,
+};
+
+export const getTokenSymbol = (chainId: BlockchainNetworkId) =>
+  BlockChainTokenSymbol[chainId];

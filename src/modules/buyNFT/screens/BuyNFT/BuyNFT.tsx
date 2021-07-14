@@ -19,6 +19,7 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import {
   featuresConfig,
   getBlockChainExplorerAddress,
+  getTokenSymbol,
 } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
@@ -112,39 +113,42 @@ export const BuyNFT = () => {
     init();
   }, [init]);
 
-  const getHistoryTitle = useCallback((item: IWrapperPoolHistory) => {
-    let titleStr = '';
-    switch (item.event) {
-      case 'FixedSwapCreated':
-      case 'EnglishCreated':
-        titleStr = t('details-nft.history.create-str', {
-          quantity: item.quantity,
-          price: item.price,
-          symbol: 'BNB',
-        });
-        break;
+  const getHistoryTitle = useCallback(
+    (item: IWrapperPoolHistory) => {
+      let titleStr = '';
+      switch (item.event) {
+        case 'FixedSwapCreated':
+        case 'EnglishCreated':
+          titleStr = t('details-nft.history.create-str', {
+            quantity: item.quantity,
+            price: item.price,
+            symbol: getTokenSymbol(chainId),
+          });
+          break;
 
-      case 'FixedSwapSwapped':
-        titleStr = t('details-nft.history.offer-str', {
-          quantity: item.quantity,
-          price: item.price,
-          symbol: 'BNB',
-        });
-        break;
+        case 'FixedSwapSwapped':
+          titleStr = t('details-nft.history.offer-str', {
+            quantity: item.quantity,
+            price: item.price,
+            symbol: getTokenSymbol(chainId),
+          });
+          break;
 
-      case 'FixedSwapCanceled':
-        titleStr = t('details-nft.history.cancel-str');
-        break;
+        case 'FixedSwapCanceled':
+          titleStr = t('details-nft.history.cancel-str');
+          break;
 
-      case 'EnglishClaimed':
-        titleStr = t('details-nft.history.claim-str');
-        break;
+        case 'EnglishClaimed':
+          titleStr = t('details-nft.history.claim-str');
+          break;
 
-      default:
-        break;
-    }
-    return titleStr;
-  }, []);
+        default:
+          break;
+      }
+      return titleStr;
+    },
+    [chainId],
+  );
 
   const getSenderName = (sender: IRoleInfo) => {
     return sender.username || truncateWalletAddr(sender.address);
@@ -451,6 +455,9 @@ export const BuyNFT = () => {
                   {isEnglishAuction(poolDetails) ? (
                     <InfoPrices
                       endDate={poolDetails.closeAt}
+                      hasSetDirectPrice={poolDetails.amountMax1.isGreaterThan(
+                        0,
+                      )}
                       price={poolDetails.lastestBidAmount.multipliedBy(
                         currency.priceUsd,
                       )}
@@ -476,6 +483,7 @@ export const BuyNFT = () => {
                   ) : (
                     <InfoPrices
                       price={poolDetails.price.multipliedBy(currency.priceUsd)}
+                      hasSetDirectPrice={false}
                       cryptoPrice={poolDetails.price}
                       cryptoCurrency={item.tokenSymbol}
                       onBuyClick={openFixedBuyDialog}

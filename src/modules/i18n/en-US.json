@@ -291,7 +291,9 @@
       "duration": "Auction will be completed in this time"
     },
     "error": {
-      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price < Direct purchase price"
+      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price < Direct purchase price",
+      "wrong-direct-bid-amount": "Make sure Minimum bid < Direct purchase price",
+      "wrong-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price"
     }
   },
   "profile": {

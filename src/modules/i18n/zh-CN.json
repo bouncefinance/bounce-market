@@ -281,7 +281,9 @@
       "duration": "拍卖将于该时间结束"
     },
     "error": {
-      "wrong-direct-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价 < 直接购买价"
+      "wrong-direct-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价 < 直接购买价",
+      "wrong-direct-bid-amount": "请确保：最低出价 < 直接购买价",
+      "wrong-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价"
     }
   },
   "profile": {
