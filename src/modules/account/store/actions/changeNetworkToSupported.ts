@@ -30,16 +30,26 @@ export const changeNetworkToSupported = createSmartAction(
 
             if (provider) {
               try {
-                try {
-                  await provider.request({
+                await provider
+                  .request({
                     method: 'wallet_switchEthereumChain',
                     params: [{ chainId: chainConfig.chainId }],
+                  })
+                  .then(() => {
+                    store.dispatch(
+                      updateAccount({
+                        chainId:
+                          chainConfig?.chainId ??
+                          BlockchainNetworkId.smartchain,
+                      }),
+                    );
                   });
-                } catch (switchError) {
-                  // This error code indicates that the chain has not been added to MetaMask.
-                  if (switchError.code === 4902) {
-                    try {
-                      await provider.request({
+              } catch (switchError) {
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                  try {
+                    await provider
+                      .request({
                         method: 'wallet_addEthereumChain',
                         params: [
                           chainConfig
@@ -62,21 +72,24 @@ export const changeNetworkToSupported = createSmartAction(
                                 ],
                               },
                         ],
+                      })
+                      .then(() => {
+                        store.dispatch(
+                          updateAccount({
+                            chainId:
+                              chainConfig?.chainId ??
+                              BlockchainNetworkId.smartchain,
+                          }),
+                        );
                       });
-                    } catch (addError) {
-                      // handle "add" error
-                    }
+                  } catch (addError) {
+                    // handle "add" error
                   }
-                  // handle other "switch" errors
                 }
-                store.dispatch(
-                  updateAccount({ chainId: BlockchainNetworkId.smartchain }),
-                );
-                return true;
-              } catch (error) {
-                console.error(error);
-                return false;
+                // handle other "switch" errors
               }
+
+              return true;
             } else {
               console.error(t('change-wallet.network-change-error'));
               return false;
