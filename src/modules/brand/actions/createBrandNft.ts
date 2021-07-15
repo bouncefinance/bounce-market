@@ -1,15 +1,15 @@
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import { NftType } from 'modules/api/common/NftType';
 import { uploadFile } from 'modules/common/actions/uploadFile';
+import { addItem, IAddItemPayload } from 'modules/createNFT/actions/addItem';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { isVideo } from '../../common/utils/isVideo';
-import { IBrandInfo } from '../api/queryBrand';
-import { addItem, IAddItemPayload } from 'modules/createNFT/actions/addItem';
 import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
-import { NftType } from '../../common/const/NftType';
+import { IBrandInfo } from '../api/queryBrand';
 
 export enum Channel {
   FineArts = 'FineArts',

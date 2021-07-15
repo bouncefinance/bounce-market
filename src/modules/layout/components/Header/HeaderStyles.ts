@@ -108,4 +108,8 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
   },
+
+  btnChangeNet: {
+    marginRight: 18,
+  },
 }));

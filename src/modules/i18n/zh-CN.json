@@ -38,6 +38,13 @@
       "items": "商品",
       "brands": "品牌",
       "users": "用户"
+    },
+    "select-chain": {
+      "title": "选择网络",
+      "eth": "以太坊主网",
+      "bnb": "币安智能链",
+      "heco": "火币生态链",
+      "heco-2": "火币钱包"
     }
   },
   "language": {
@@ -279,7 +286,9 @@
       "duration": "拍卖将于该时间结束"
     },
     "error": {
-      "wrong-direct-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价 < 直接购买价"
+      "wrong-direct-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价 < 直接购买价",
+      "wrong-direct-bid-amount": "请确保：最低出价 < 直接购买价",
+      "wrong-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价"
     }
   },
   "profile": {
@@ -316,7 +325,8 @@
         "facebook": "脸书主页链接"
       },
       "save-changes": "保存修改",
-      "success-message": "修改成功"
+      "success-message": "修改成功",
+      "no-profile": "请先完善个人信息"
     },
     "tabs": {
       "my-items": "我的商品",

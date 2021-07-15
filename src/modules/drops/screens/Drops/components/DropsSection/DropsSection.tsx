@@ -57,11 +57,13 @@ export const DropsSection = () => {
   const dispatch = useDispatch();
   const [sortBy, setSortBy] = useState<DropsSortBy>(DropsSortBy.Coming);
 
-  const { data: dataComing, loading: loadingComing } =
-    useQuery<IGetDrops | null>({
-      type: getDrops.toString(),
-      requestKey: DROPS_COMING_KEY,
-    });
+  const {
+    data: dataComing,
+    loading: loadingComing,
+  } = useQuery<IGetDrops | null>({
+    type: getDrops.toString(),
+    requestKey: DROPS_COMING_KEY,
+  });
 
   const { data: dataPrev, loading: loadingPrev } = useQuery<IGetDrops | null>({
     type: getDrops.toString(),
@@ -150,6 +152,7 @@ export const DropsSection = () => {
       const creator = (
         <DropsOwner
           title={item.username}
+          isVerified={true}
           href={ProfileRoutesConfig.OtherProfile.generatePath(
             item.accountAddress,
           )}
@@ -158,8 +161,8 @@ export const DropsSection = () => {
 
       return (
         <Drop
-          key={uid(i)}
-          href={DropsRoutesConfig.DropDetails.generatePath('12342')}
+          key={uid(item)}
+          href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
           bgImg={item.coverImgUrl}
           bgColor={item.bgColor}
           title={item.title}
@@ -198,12 +201,12 @@ export const DropsSection = () => {
             noDataMessage={renderedSkeletons}
             empty={<NothingFound />}
           >
-            {({ data: { items } }) => {
-              if (!items.length) {
+            {({ data }) => {
+              if (!data || !data.items.length) {
                 return <NothingFound />;
               }
 
-              return <DropList>{renderDrops(items)}</DropList>;
+              return <DropList>{renderDrops(data.items)}</DropList>;
             }}
           </Queries>
         )}
@@ -215,16 +218,16 @@ export const DropsSection = () => {
             noDataMessage={renderedSkeletons}
             empty={<NothingFound />}
           >
-            {({ data: { items, allLoaded } }) => {
-              if (!items.length) {
+            {({ data }) => {
+              if (!data || !data.items.length) {
                 return <NothingFound />;
               }
 
               return (
                 <>
-                  <DropList>{renderDrops(items)}</DropList>
+                  <DropList>{renderDrops(data.items)}</DropList>
 
-                  {!allLoaded && (
+                  {!data.allLoaded && (
                     <Box textAlign="center" mt={{ xs: 5, md: 8 }}>
                       <Button
                         rounded

@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js';
-import { AuctionState } from '../../common/const/AuctionState';
-import { Address } from '../../common/types/unit';
-import { AuctionType } from './auctionType';
-import { FixedSwapState } from '../../common/const/FixedSwapState';
+import { AuctionState } from 'modules/api/common/AuctionState';
+import { AuctionType } from 'modules/api/common/auctionType';
+import { FixedSwapState } from 'modules/api/common/FixedSwapState';
+import { NftType } from 'modules/api/common/NftType';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { TokenSymbol } from '../../common/types/TokenSymbol';
-import { NftType } from '../../common/const/NftType';
+import { Address } from '../../common/types/unit';
 
 export interface IApiItem {
   brandid: number;

@@ -1,6 +1,6 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import { AuctionType } from 'modules/api/common/auctionType';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { AuctionType } from 'modules/overview/api/auctionType';
 import {
   IItem,
   queryItemByFilter,

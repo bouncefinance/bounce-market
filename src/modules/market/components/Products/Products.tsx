@@ -41,10 +41,12 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const classes = useProductsStyles();
   const { isConnected } = useAccount();
 
-  const { data: nftItemsData, loading: nftItemsLoading } =
-    useQuery<IFetchNFTItems | null>({
-      type: fetchNFTItems.toString(),
-    });
+  const {
+    data: nftItemsData,
+    loading: nftItemsLoading,
+  } = useQuery<IFetchNFTItems | null>({
+    type: fetchNFTItems.toString(),
+  });
 
   const onCategoryChange = (value: string) => {
     history.push(MarketRoutesConfig.Market.generatePath(DEFAULT_PAGE, value));

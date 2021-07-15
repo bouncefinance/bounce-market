@@ -1,27 +1,27 @@
-import { createAction as createSmartAction } from 'redux-smart-actions';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import BigNumber from 'bignumber.js';
 import { Store } from 'redux';
+import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { AuctionType } from '../api/auctionType';
 import { setAccount } from '../../account/store/actions/setAccount';
-import {
-  BounceEnglishAuctionNFT,
-  BounceFixedSwapNFT,
-} from '../../web3/contracts';
+import { AuctionState } from '../../api/common/AuctionState';
+import { AuctionType } from '../../api/common/auctionType';
+import { FixedSwapState } from '../../api/common/FixedSwapState';
+import { fromWei } from '../../common/utils/fromWei';
+import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import {
   getEnglishAuctionContract,
   getFixedSwapContract,
 } from '../../createNFT/actions/publishNft';
 import {
+  BounceEnglishAuctionNFT,
+  BounceFixedSwapNFT,
+} from '../../web3/contracts';
+import { fetchCurrency } from './fetchCurrency';
+import {
   IEnglishAuctionDetails,
   IFixedAuctionDetails,
 } from './fetchPoolDetails';
-import BigNumber from 'bignumber.js';
-import { fetchCurrency } from './fetchCurrency';
-import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
-import { fromWei } from '../../common/utils/fromWei';
-import { AuctionState } from '../../common/const/AuctionState';
-import { FixedSwapState } from '../../common/const/FixedSwapState';
 
 export type UserRole = 'creator' | 'buyer' | 'others';
 
@@ -158,7 +158,6 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const lastBidderAddress = await BounceEnglishAuctionNFT_CT.methods
                   .currentBidderP(poolId)
                   .call();
-
                 const curTime = new Date().getTime() / 1000;
                 const diffTime = parseInt(pool.closeAt) - curTime;
 
@@ -176,9 +175,11 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const amountMin1 = new BigNumber(
                   fromWei(pool.amountMin1, decimals),
                 );
-
+                const amountMax1 = new BigNumber(
+                  fromWei(pool.amountMax1, decimals),
+                );
                 return {
-                  amountMax1: new BigNumber(fromWei(pool.amountMax1, decimals)),
+                  amountMax1: amountMax1,
                   amountMin1,
                   amountMinIncr1: new BigNumber(
                     fromWei(pool.amountMinIncr1, decimals),
@@ -204,7 +205,8 @@ export const fetchWeb3PoolDetails = createSmartAction<
                     if (
                       new BigNumber(currentBidderAmount).isGreaterThanOrEqualTo(
                         pool.amountMax1,
-                      )
+                      ) &&
+                      amountMax1.isGreaterThan(0)
                     ) {
                       return AuctionState.CompletedByDirectPurchase;
                     }

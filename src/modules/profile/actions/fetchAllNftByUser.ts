@@ -2,15 +2,15 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
+import { AuctionState } from '../../api/common/AuctionState';
+import { AuctionType } from '../../api/common/auctionType';
+import { FixedSwapState } from '../../api/common/FixedSwapState';
 import { fetchItem, IFetchItem } from '../../buyNFT/actions/fetchItem';
-import { AuctionState } from '../../common/const/AuctionState';
-import { FixedSwapState } from '../../common/const/FixedSwapState';
+import { IPoolsData } from '../../common/actions/getPoolsByFilter';
 import { throwIfError } from '../../common/utils/throwIfError';
 import { fetchNftByUser } from '../../createNFT/actions/fetchNftByUser';
 import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
-import { AuctionType } from '../../overview/api/auctionType';
 import { getPoolsByFilter } from '../api/getPoolsByFilter';
-import { IPoolsData } from '../../common/actions/getPoolsByFilter';
 
 export interface IApiFetchNftByUserVariables {
   user: string;
@@ -140,49 +140,49 @@ export const getSupplyStatus = (pool: any) => {
   }
 };
 
-export const enrichNftItem =
-  (data: any, poolsCopy: any, nfts: any) => (item: any) => {
-    const poolIndex = poolsCopy.findIndex(
-      (pool: any) => pool.tokenId === item.id,
-    );
-    const pool = poolsCopy[poolIndex];
+export const enrichNftItem = (data: any, poolsCopy: any, nfts: any) => (
+  item: any,
+) => {
+  const poolIndex = poolsCopy.findIndex(
+    (pool: any) => pool.tokenId === item.id,
+  );
+  const pool = poolsCopy[poolIndex];
 
-    if (pool) {
-      // TODO: Ignore completed claimed auction?
-      poolsCopy.splice(poolIndex, 1);
-      return {
-        ...item,
-        supply: (() => {
-          if (isEnglishAuction(pool)) {
-            if (pool.state < AuctionState.Claimed) {
-              return pool.tokenAmount0;
-            }
-
-            return 0;
-          } else {
-            if (pool.state < FixedSwapState.Claimed) {
-              return pool.quantity;
-            } else {
-              return 0;
-            }
+  if (pool) {
+    // TODO: Ignore completed claimed auction?
+    poolsCopy.splice(poolIndex, 1);
+    return {
+      ...item,
+      supply: (() => {
+        if (isEnglishAuction(pool)) {
+          if (pool.state < AuctionState.Claimed) {
+            return pool.tokenAmount0;
           }
-        })(),
-        poolId: pool.poolId,
-        poolType: isEnglishAuction(pool)
-          ? AuctionType.EnglishAuction
-          : AuctionType.FixedSwap,
-        price: isEnglishAuction(pool)
-          ? pool.lastestBidAmount.isEqualTo(0)
-            ? pool.amountMin1
-            : pool.lastestBidAmount
-          : pool.price,
-        state: pool.state,
-      };
-    }
 
-    const supply = nfts.find(
-      (nftItem: any) => nftItem.tokenId === item.id,
-    )?.balance;
+          return 0;
+        } else {
+          if (pool.state < FixedSwapState.Claimed) {
+            return pool.quantity;
+          } else {
+            return 0;
+          }
+        }
+      })(),
+      poolId: pool.poolId,
+      poolType: isEnglishAuction(pool)
+        ? AuctionType.EnglishAuction
+        : AuctionType.FixedSwap,
+      price: isEnglishAuction(pool)
+        ? pool.lastestBidAmount.isEqualTo(0)
+          ? pool.amountMin1
+          : pool.lastestBidAmount
+        : pool.price,
+      state: pool.state,
+    };
+  }
 
-    return { ...item, supply: supply ?? 0 };
-  };
+  const supply = nfts.find((nftItem: any) => nftItem.tokenId === item.id)
+    ?.balance;
+
+  return { ...item, supply: supply ?? 0 };
+};

@@ -5,6 +5,7 @@ import {
   useMutation,
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -18,6 +19,7 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import {
   featuresConfig,
   getBlockChainExplorerAddress,
+  getTokenSymbol,
 } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
@@ -29,9 +31,11 @@ import {
 import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
+import { AuctionState } from '../../../api/common/AuctionState';
+import { AuctionType } from '../../../api/common/auctionType';
+import { FixedSwapState } from '../../../api/common/FixedSwapState';
+import { NftType } from '../../../api/common/NftType';
 import { Queries } from '../../../common/components/Queries/Queries';
-import { AuctionState } from '../../../common/const/AuctionState';
-import { FixedSwapState } from '../../../common/const/FixedSwapState';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Address } from '../../../common/types/unit';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
@@ -44,19 +48,16 @@ import {
 } from '../../../overview/actions/fetchRoleInfo';
 import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
-import { AuctionType } from '../../../overview/api/auctionType';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
 import { buyFixed } from '../../actions/buyFixed';
 import { fetchItem } from '../../actions/fetchItem';
-import { ScanBtn } from '../../components/ScanBtn';
 import { BuyDialog } from '../../components/BuyDialog';
+import { ScanBtn } from '../../components/ScanBtn';
 import { TokenInfo } from '../../components/TokenInfo';
+import { BuyNFTSkeleton } from './BuyNFTSkeleton';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
-import { BuyNFTSkeleton } from './BuyNFTSkeleton';
-import { NftType } from '../../../common/const/NftType';
-import { useAccount } from 'modules/account/hooks/useAccount';
 
 export const BuyNFT = () => {
   const { chainId } = useAccount();
@@ -112,39 +113,42 @@ export const BuyNFT = () => {
     init();
   }, [init]);
 
-  const getHistoryTitle = useCallback((item: IWrapperPoolHistory) => {
-    let titleStr = '';
-    switch (item.event) {
-      case 'FixedSwapCreated':
-      case 'EnglishCreated':
-        titleStr = t('details-nft.history.create-str', {
-          quantity: item.quantity,
-          price: item.price,
-          symbol: 'BNB',
-        });
-        break;
+  const getHistoryTitle = useCallback(
+    (item: IWrapperPoolHistory) => {
+      let titleStr = '';
+      switch (item.event) {
+        case 'FixedSwapCreated':
+        case 'EnglishCreated':
+          titleStr = t('details-nft.history.create-str', {
+            quantity: item.quantity,
+            price: item.price,
+            symbol: getTokenSymbol(chainId),
+          });
+          break;
 
-      case 'FixedSwapSwapped':
-        titleStr = t('details-nft.history.offer-str', {
-          quantity: item.quantity,
-          price: item.price,
-          symbol: 'BNB',
-        });
-        break;
+        case 'FixedSwapSwapped':
+          titleStr = t('details-nft.history.offer-str', {
+            quantity: item.quantity,
+            price: item.price,
+            symbol: getTokenSymbol(chainId),
+          });
+          break;
 
-      case 'FixedSwapCanceled':
-        titleStr = t('details-nft.history.cancel-str');
-        break;
+        case 'FixedSwapCanceled':
+          titleStr = t('details-nft.history.cancel-str');
+          break;
 
-      case 'EnglishClaimed':
-        titleStr = t('details-nft.history.claim-str');
-        break;
+        case 'EnglishClaimed':
+          titleStr = t('details-nft.history.claim-str');
+          break;
 
-      default:
-        break;
-    }
-    return titleStr;
-  }, []);
+        default:
+          break;
+      }
+      return titleStr;
+    },
+    [chainId],
+  );
 
   const getSenderName = (sender: IRoleInfo) => {
     return sender.username || truncateWalletAddr(sender.address);
@@ -365,7 +369,7 @@ export const BuyNFT = () => {
                       author={getSenderName(item.sender)}
                       date={item.time}
                       price={item.price.multipliedBy(currency.priceUsd)}
-                      cryptoCurrency={'BNB'}
+                      cryptoCurrency={getTokenSymbol(chainId) as string}
                       cryptoPrice={item.price}
                       href={`${blockChainScan}tx/${item.txId}`}
                     />
@@ -451,6 +455,9 @@ export const BuyNFT = () => {
                   {isEnglishAuction(poolDetails) ? (
                     <InfoPrices
                       endDate={poolDetails.closeAt}
+                      hasSetDirectPrice={poolDetails.amountMax1.isGreaterThan(
+                        0,
+                      )}
                       price={poolDetails.lastestBidAmount.multipliedBy(
                         currency.priceUsd,
                       )}
@@ -476,6 +483,7 @@ export const BuyNFT = () => {
                   ) : (
                     <InfoPrices
                       price={poolDetails.price.multipliedBy(currency.priceUsd)}
+                      hasSetDirectPrice={false}
                       cryptoPrice={poolDetails.price}
                       cryptoCurrency={item.tokenSymbol}
                       onBuyClick={openFixedBuyDialog}

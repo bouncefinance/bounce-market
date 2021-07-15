@@ -1,11 +1,11 @@
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
+import { setAccount } from 'modules/account/store/actions/setAccount';
+import { NftType } from 'modules/api/common/NftType';
+import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { Store } from 'redux';
-import { setAccount } from 'modules/account/store/actions/setAccount';
-import { BounceErc721, BounceErc1155 } from '../../web3/contracts';
-import { TransactionReceipt } from '@ethersproject/abstract-provider';
-import { NftType } from '../const/NftType';
+import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
 
 export const transferToken = createSmartAction<RequestAction<void, void>>(
   'transferToken',

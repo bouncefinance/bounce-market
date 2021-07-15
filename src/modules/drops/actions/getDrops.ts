@@ -26,7 +26,7 @@ export interface IGetDrops {
 }
 
 export const getDrops = createSmartAction<
-  RequestAction<IApiSearchDrops, IGetDrops>,
+  RequestAction<IApiSearchDrops, IGetDrops | null>,
   [IGetDropsArgs?, RequestActionMeta<IApiSearchDrops, IGetDrops>?]
 >('getDrops', (params, meta) => ({
   request: {
@@ -47,11 +47,19 @@ export const getDrops = createSmartAction<
     driver: 'axios',
     getData: data => {
       if (data.code !== 1) {
-        console.error('getDrops: Unexpected response');
+        console.error(`
+        getDrops: Unexpected response.
+        To avoid this type of error notification you might need
+        to look at the https://github.com/klis87/redux-requests/discussions/470
+        `);
+      }
+
+      if (!data.data) {
+        return null;
       }
 
       return {
-        items: (data.data || []).map(mapSearchDropsItem),
+        items: data.data.map(mapSearchDropsItem),
         total: data.total || 0,
         offset: params?.offset || 0,
       };

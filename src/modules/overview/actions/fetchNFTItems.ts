@@ -12,8 +12,8 @@ import { ZERO_ADDRESS } from 'modules/common/conts';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
+import { AuctionType } from '../../api/common/auctionType';
 import { TokenSymbol } from '../../common/types/TokenSymbol';
-import { AuctionType } from '../api/auctionType';
 import { ItemsChannel } from './fetchItemsByFilter';
 import { fetchPools, FetchStateType } from './fetchPools';
 

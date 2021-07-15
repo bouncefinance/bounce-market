@@ -1,10 +1,10 @@
 import { useQuery } from '@redux-requests/react';
 import classNames from 'classnames';
+import { AuctionType } from 'modules/api/common/auctionType';
+import { poolTypeMap } from 'modules/api/common/poolType';
 import { fetchItem, IFetchItem } from 'modules/buyNFT/actions/fetchItem';
-import { poolTypeMap } from 'modules/common/api/poolType';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { featuresConfig } from 'modules/common/conts';
-import { AuctionType } from 'modules/overview/api/auctionType';
 import { useLike } from 'modules/profile/hooks/useLike';
 import { Button } from 'modules/uiKit/Button';
 import React from 'react';

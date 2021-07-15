@@ -1,5 +1,6 @@
 import { Box, Container, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { NftType } from 'modules/api/common/NftType';
 import { InputField } from 'modules/form/components/InputField';
 import { SelectField } from 'modules/form/components/SelectField';
 import { UploadAvatarField } from 'modules/form/components/UploadAvatarField';
@@ -17,7 +18,6 @@ import {
   ProfileTab,
 } from '../../../profile/ProfileRoutes';
 import { createBrand } from '../../actions/createBrand';
-import { NftType } from '../../../common/const/NftType';
 
 export interface ICreateBrand {
   brandName: string;
