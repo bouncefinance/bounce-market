@@ -7,6 +7,7 @@ import { BlockchainNetworkId } from '../../../common/conts';
 import BigNumber from 'bignumber.js';
 import { Store } from 'redux';
 import { RootState } from '../../../../store';
+import { setJWTToken } from 'modules/common/utils/localStorage';
 
 const SIGN_STR = 'Welcome to Fangible!';
 
@@ -22,7 +23,7 @@ export interface ISetAccountData {
 
 export const setAccount = createSmartAction(
   'AccountActions/setAccount',
-  () => ({
+  (data?: ISetAccountData) => ({
     request: {
       promise: (async function () {})(),
     },
@@ -34,6 +35,9 @@ export const setAccount = createSmartAction(
       ) => {
         return {
           promise: (async () => {
+            if (data) {
+              return data;
+            }
             const [web3, provider] = await connectWallet();
             const address = (await web3.eth.getAccounts())[0];
             const signature = await web3.eth.personal.sign(
@@ -55,6 +59,7 @@ export const setAccount = createSmartAction(
             const token = authResponse.data.data.token;
             const chainId = await web3.eth.getChainId();
             const balance = await web3.eth.getBalance(address);
+            setJWTToken(token);
             return {
               token,
               address,

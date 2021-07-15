@@ -88,13 +88,23 @@ function createEventChannel(provider: any) {
   });
 }
 
-function* onConnectWallet() {
-  const { action, error } = yield putResolve(setAccount());
-  if (error || action.type === setAccount.toString() + '_ERROR') {
-    return;
+export function* onConnectWallet(data?: {
+  payload?: { provider: any; address: string };
+}) {
+  let provider;
+  let address;
+  if (!data?.payload) {
+    const { action, error } = yield putResolve(setAccount());
+    if (error || action.type === setAccount.toString() + '_ERROR') {
+      return;
+    }
+    provider = action.meta.provider;
+    address = action.response.data.address;
+  } else {
+    provider = data.payload.provider;
+    address = data.payload.address;
   }
 
-  const provider = action.meta.provider;
   yield put(fetchProfileInfo());
 
   if (featuresConfig.nftLikes) {
@@ -102,7 +112,7 @@ function* onConnectWallet() {
   }
 
   yield put(connectIsFinished());
-  yield put(fetchAllNftByUser(action.response.data.address));
+  yield put(fetchAllNftByUser(address));
 
   const channel = createEventChannel(provider);
   while (true) {
@@ -139,6 +149,7 @@ function* onConnectWallet() {
 }
 
 function* onDisconnectWallet() {
+  localStorage.clear();
   const requestsToReset: string[] = [
     setAccount.toString(),
     fetchProfileInfo.toString(),

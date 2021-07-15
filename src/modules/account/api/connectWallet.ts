@@ -13,7 +13,7 @@ export const RPC = {
   56: 'https://bsc-dataseed4.binance.org',
 };
 
-export async function connectWallet() {
+export async function connectWallet(cacheProvider?: boolean) {
   const providerOptions: IProviderOptions = {
     ...(window.BinanceChain
       ? {
@@ -46,7 +46,7 @@ export async function connectWallet() {
   };
 
   const modal = new Web3Modal({
-    cacheProvider: false,
+    cacheProvider: true,
     providerOptions,
     theme: {
       background: PALETTE.background.paper,
