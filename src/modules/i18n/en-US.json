@@ -1,6 +1,6 @@
 {
   "artists": {
-    "title": "Top Artists"
+    "title": "Featured Creators"
   },
   "brand": {
     "card": {
@@ -36,10 +36,34 @@
     "title": "Buy now"
   },
   "change-wallet": {
-    "description": "Change network to Etherium Mainnet, Binance Smart Chain or Heco",
-    "network-change-error": "Can't setup the BSC network on metamask because provider is undefined.",
+    "description": "Change network to Ethereum Mainnet, Binance Smart Chain, or Heco",
+    "network-change-error": "Unable to set up BSC network on Metamask due to the provider error",
     "submit": "Change network",
     "title": "Wrong network"
+  },
+  "collection": {
+    "card": {
+      "addNewItem": "Add new item",
+      "createNewItem": "Create new item",
+      "createNewcollection": "Create new collection",
+      "itemsCount": "{value, plural, =0 {No NFT} =1 {One NFT} other {# NFTs}}"
+    },
+    "create": {
+      "avatar-accepts": "Supports JPG, PNG, JPEG2000",
+      "avatar-recommended-size": "300x300 Recommended",
+      "create-collection": "Create collection",
+      "label": {
+        "collection-avatar": "collection avatar",
+        "collection-name": "collection name",
+        "collection-symbol": "collection symbol",
+        "collection-url": "collection URL",
+        "description": "Description"
+      }
+    }
+  },
+  "collections": {
+    "no-items": "There are no items created yet",
+    "title": "Collection"
   },
   "common": {
     "apply": "Apply",
@@ -81,7 +105,8 @@
     },
     "placeholder": {
       "brand-title": "To see the brand's items, you need to connect first.",
-      "description": "The content of this page is only available with the connected wallet",
+      "collection-title": "To view collection items, you need to connect your wallet first",
+      "description": "The contents of this page are only viewable with a connected wallet",
       "title": "Connect your wallet"
     }
   },
@@ -106,9 +131,31 @@
     "submitting": "Creating",
     "title": "Create Brand NFT"
   },
+  "create-collection-nft": {
+    "channelOption": {
+      "Comics": "Comics",
+      "FineArts": "Fine arts",
+      "Sports": "Sports"
+    },
+    "label": {
+      "channel": "Channel",
+      "description": "Description",
+      "name": "Name",
+      "standard": "Standard",
+      "supply": "Supply"
+    },
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
+    "submit": "Create",
+    "submitting": "Creating",
+    "title": "Create NFT collection"
+  },
   "create-nft": {
     "channelOption": {
       "Comicbooks": "Comic",
+      "Comics": "Comics",
       "FineArts": "Fine arts",
       "Sports": "Sports"
     },
@@ -146,7 +193,7 @@
     "descr-short": "Collapse",
     "dialog": {
       "footnote": "Bids placed in auction cannot be withdrawn",
-      "input-info": "You must bid at least {value} {currency}"
+      "input-info": "Minimum bid {value} {currency}"
     },
     "enter-a-bid": "Enter a Bid",
     "history": {
@@ -195,8 +242,8 @@
     "upcoming": "Upcoming  dr🔥ps"
   },
   "empty-data": {
-    "text": "Try to change the network to view the content of the page.",
-    "title": "Whoops. Looks like there's no data."
+    "text": "Switch to the correct network to view the contents of this page.",
+    "title": "Whoops! Looks like there's no data."
   },
   "error": {
     "data-is-not-available": "Data is not available",
@@ -212,20 +259,23 @@
   },
   "header": {
     "brands": "Brands",
+    "collections": "Collections",
     "connect": "Connect Wallet",
     "create": "Create",
     "disconnect": "Disconnect",
     "drops": "Dr🔥ps",
     "how-it-works": "How it works",
     "inventory": "My Inventory",
-    "market": "Market",
+    "market": "Marketplace",
     "my-brands": "My Brands",
+    "my-collections": "My collections",
     "profile-settings": "Profile settings",
     "search": {
       "brands": "Brands",
+      "collections": "Collections",
       "empty": "No results found",
       "items": "Items",
-      "placeholder": "Search by name, creator, brand...",
+      "placeholder": "Search by name, creator, collection...",
       "users": "Users"
     },
     "select-chain": {
@@ -246,7 +296,7 @@
         "default": "Item has been claimed"
       },
       "CompletedByDirectPurchase": {
-        "buyer": "Item has been sold, you can claim your nft",
+        "buyer": "Item has been sold, you can claim your NFT",
         "creator": "Item has been sold, you can claim your money",
         "others": "Item has been sold"
       },
@@ -271,6 +321,9 @@
   "overview": {
     "brands": {
       "title": "Hot Brands"
+    },
+    "collections": {
+      "title": "Hot collections"
     }
   },
   "product-card": {
@@ -292,7 +345,7 @@
       "claimed": "Claimed",
       "created": "Created",
       "date": "Date",
-      "empty-description": "You have not any activities yet",
+      "empty-description": "You have not had any activities yet",
       "empty-title": "No activities found",
       "event": "Event",
       "from": "From",
@@ -304,9 +357,11 @@
     },
     "bids-categories": {
       "Comicbooks": "Comic",
+      "Comics": "Comics",
       "all": "All",
       "art": "Art",
-      "sport": "Sport"
+      "sport": "Sport",
+      "sports": "Sports"
     },
     "bio": "Bio",
     "customize-btn": "Customize",
@@ -318,7 +373,7 @@
         "facebook": "Facebook",
         "full-name": "Full Name",
         "instagram": "Instagram",
-        "twitter": "twitter",
+        "twitter": "Twitter",
         "username": "Username",
         "website": "Website"
       },
@@ -330,27 +385,29 @@
         "website": "Website Link"
       },
       "save-changes": "Save Changes",
-      "success-message": "Changes have been applied successfully."
+      "success-message": "Changes have been successfully applied"
     },
     "edit-avatar": "Edit avatar",
     "edit-cover": "Edit profile cover",
     "edit-profile": "Edit profile",
     "follow": "Follow",
     "no-items": {
-      "btn": "Browse market",
-      "descr": "You have not created any NFTs yet",
+      "btn": "Browse marketplace",
+      "descr": "You have not minted any NFTs yet",
       "title": "No items found"
     },
     "subscribers": "Subscribers",
     "tabs": {
       "activity": "Activity",
       "brands": "Brands",
+      "collections": "Collections",
       "followers": "Followers",
       "following": "Following",
       "items": "Items",
       "liked": "Liked",
       "my-bids": "My bids",
       "my-brands": "My brands",
+      "my-collections": "My collections",
       "my-items": "My items",
       "my-sells": "My sales"
     },
@@ -361,7 +418,7 @@
     "created-by": "Created by"
   },
   "publish-nft": {
-    "auction-amount": "In the auction, the copies you put on sale will be sold all at once.",
+    "auction-amount": "In this auction, the copies put on sale will all be sold at once",
     "auction-type": {
       "english-auction": "English auction",
       "fixed-swap": "Fixed Price"
@@ -390,7 +447,7 @@
     "tooltip": {
       "directPurchase": "A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price.",
       "duration": "Auction will be completed in this time",
-      "reservePrice": "Setting a reserve price creates a hidden limit,If you receive no bids equal to or greater than your reserve,your auction will not be sold."
+      "reservePrice": "Setting a reserve price creates a hidden limit. If you receive no bids equal to or greater than your reserve, your auction will not be sold."
     }
   },
   "social": {
@@ -409,7 +466,7 @@
     "minutes-short": "{minutes}m",
     "seconds-short": "{seconds}s",
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
-    "time-over": "Time is over"
+    "time-over": "Time expired"
   },
   "transfer-token": {
     "submit": "Transfer",
@@ -441,10 +498,10 @@
     "max": "Highest value is {value}",
     "max-size": "Max size is {value, number}MB",
     "min": "Smallest value is {value}",
-    "require-integer": "This value should be integer number",
+    "require-integer": "This value should be a whole number",
     "required": "This field is required"
   },
   "video-player": {
-    "unsupported": "Sorry, your browser doesn't support embedded videos or uploaded video file type!"
+    "unsupported": "Sorry, your browser does not support embedded videos or uploaded video file types!"
   }
 }

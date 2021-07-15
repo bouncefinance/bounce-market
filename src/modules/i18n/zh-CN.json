@@ -41,6 +41,30 @@
     "submit": "变更为智能链",
     "title": "网络错误"
   },
+  "collection": {
+    "card": {
+      "addNewItem": "添加新NFT",
+      "createNewItem": "创建新NFT",
+      "createNewcollection": "创建新作品集",
+      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}"
+    },
+    "create": {
+      "avatar-accepts": "支持 JPG, PNG, JPEG2000",
+      "avatar-recommended-size": "推荐300x300",
+      "create-collection": "创建作品集",
+      "label": {
+        "collection-avatar": "作品集头像",
+        "collection-name": "作品集名称",
+        "collection-symbol": "作品集标识",
+        "collection-url": "作品集网址",
+        "description": "描述"
+      }
+    }
+  },
+  "collections": {
+    "no-items": "暂无NFT",
+    "title": "作品集"
+  },
   "common": {
     "apply": "申请",
     "close": "关闭",
@@ -81,6 +105,7 @@
     },
     "placeholder": {
       "brand-title": "请连接钱包，以查看该品牌下的商品。",
+      "collection-title": "请连接钱包，以查看该作品集下的NFT",
       "description": "请连接钱包，以浏览页面内容。",
       "title": "连接钱包"
     }
@@ -106,9 +131,31 @@
     "submitting": "正在创建中",
     "title": "创建品牌NFT"
   },
+  "create-collection-nft": {
+    "channelOption": {
+      "Comics": "漫画",
+      "FineArts": "艺术",
+      "Sports": "体育"
+    },
+    "label": {
+      "channel": "类型",
+      "description": "描述",
+      "name": "名称",
+      "standard": "标准",
+      "supply": "总量"
+    },
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
+    "submit": "创建",
+    "submitting": "正在创建中",
+    "title": "创建作品集NFT"
+  },
   "create-nft": {
     "channelOption": {
       "Comicbooks": "漫画",
+      "Comics": "漫画",
       "FineArts": "艺术",
       "Sports": "体育"
     },
@@ -143,7 +190,7 @@
     },
     "buy-now": "购买",
     "descr-full": "详细描述",
-    "descr-short": "展开",
+    "descr-short": "收起",
     "dialog": {
       "footnote": "在拍卖中的出价无法撤销。",
       "input-info": "您的出价必须至少为 {value} {currency}"
@@ -212,6 +259,7 @@
   },
   "header": {
     "brands": "我的品牌",
+    "collections": "我的作品集",
     "connect": "连接钱包",
     "create": "创建",
     "disconnect": "断开连接",
@@ -219,12 +267,14 @@
     "inventory": "我的主页",
     "market": "市场",
     "my-brands": "我的品牌",
+    "my-collections": "我的作品集",
     "profile-settings": "主页设置",
     "search": {
       "brands": "品牌",
+      "collections": "作品集",
       "empty": "无搜索结果",
-      "items": "商品",
-      "placeholder": "按名字/创建者/品牌搜索...",
+      "items": "NFT",
+      "placeholder": "按名字/创建者/作品集搜索...",
       "users": "用户"
     },
     "select-chain": {
@@ -241,21 +291,21 @@
     "claim": "领取",
     "status": {
       "Claimed": {
-        "creator": "商品已售出",
-        "default": "商品已领取"
+        "creator": "NFT已售出",
+        "default": "NFT已领取"
       },
       "CompletedByDirectPurchase": {
-        "buyer": "商品已售出，请领取您的NFT",
-        "creator": "商品已售出，请领取您的收入",
-        "others": "商品已售出"
+        "buyer": "NFT已售出，请领取您的NFT",
+        "creator": "NFT已售出，请领取您的收入",
+        "others": "NFT已售出"
       },
       "Live": {
         "creator": "拍卖正在进行中"
       },
       "NotSoldByReservePrice": {
-        "buyer": "商品未出售，请取回您的出价",
-        "creator": "商品未出售，请取回您的NFT",
-        "others": "商品未出售"
+        "buyer": "NFT未出售，请取回您的出价",
+        "creator": "NFT未出售，请取回您的NFT",
+        "others": "NFT未出售"
       }
     }
   },
@@ -270,6 +320,9 @@
   "overview": {
     "brands": {
       "title": "热门品牌"
+    },
+    "collections": {
+      "title": "热门作品集"
     }
   },
   "product-card": {
@@ -295,7 +348,7 @@
       "empty-title": "未查询到任何交易记录",
       "event": "活动",
       "from": "由",
-      "item": "商品",
+      "item": "NFT",
       "price": "价格",
       "quantity": "数量",
       "to": "转到",
@@ -303,9 +356,11 @@
     },
     "bids-categories": {
       "Comicbooks": "漫画",
+      "Comics": "漫画",
       "all": "所有",
       "art": "艺术",
-      "sport": "体育"
+      "sport": "体育",
+      "sports": "体育"
     },
     "bio": "个人介绍",
     "customize-btn": "自定义",
@@ -338,19 +393,21 @@
     "no-items": {
       "btn": "浏览市场",
       "descr": "您还未创建任何NFT",
-      "title": "未找到任何商品"
+      "title": "未找到任何NFT"
     },
     "subscribers": "Subscribers",
     "tabs": {
       "activity": "动态",
       "brands": "品牌",
+      "collections": "作品集",
       "followers": "粉丝",
       "following": "关注",
-      "items": "商品",
+      "items": "NFT",
       "liked": "收藏",
       "my-bids": "我的出价",
       "my-brands": "我的品牌",
-      "my-items": "我的商品",
+      "my-collections": "我的作品集",
+      "my-items": "我的NFT",
       "my-sells": "我的出售"
     },
     "unfollow": "取消关注",
@@ -360,7 +417,7 @@
     "created-by": "创建者："
   },
   "publish-nft": {
-    "auction-amount": "在拍卖方式中，您输出商品数量会被打包销售",
+    "auction-amount": "在拍卖方式中，您输出NFT数量会被打包销售",
     "auction-type": {
       "english-auction": "英式拍卖",
       "fixed-swap": "固价出售"
@@ -382,14 +439,14 @@
       "reservePrice": "最低购买价",
       "type": "出售方式"
     },
-    "receive": "商品成功出售后，您将收到 <b>{value} {unit}</b>",
+    "receive": "NFT成功出售后，您将收到 <b>{value} {unit}</b>",
     "submit": "出售",
     "submitting": "提交",
     "title": "出售",
     "tooltip": {
       "directPurchase": "设置直接购买价后，买家可跳过竞拍流程，直接以该价格进行购买。直接购买价需大于最低出价和最低购买价。",
       "duration": "拍卖将于该时间结束",
-      "reservePrice": "设置最低购买价后，若买家出价未达到或超过该价格，您的拍卖商品将不会被出售。"
+      "reservePrice": "设置最低购买价后，若买家出价未达到或超过该价格，您的拍卖NFT将不会被出售。"
     }
   },
   "social": {

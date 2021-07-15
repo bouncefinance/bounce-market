@@ -1,1 +1,418 @@
-{}
+{
+  "artists": {
+    "title": "Популярные художники"
+  },
+  "burn-token": {
+    "submit": "Сжечь",
+    "title": "Сжечь токены"
+  },
+  "buy-dialog": {
+    "submit": "Купить",
+    "title": "Купить сейчас"
+  },
+  "change-wallet": {
+    "description": "Перейти на Ethereum Mainnet, Binance Smart Chain или Heco",
+    "network-change-error": "В связи с ошибкой провайдера невозможно настроить сеть BSC в Metamask",
+    "submit": "Изменить сеть",
+    "title": "Неправильная сеть"
+  },
+  "collection": {
+    "card": {
+      "addNewItem": "Добавить новый товар",
+      "createNewItem": "Создать новый товар",
+      "createNewcollection": "Создать новую коллекцию",
+      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}"
+    },
+    "create": {
+      "avatar-accepts": "Поддерживает JPG, PNG, JPEG2000",
+      "avatar-recommended-size": "рекомендованное разрешение 300x300",
+      "create-collection": "Создать коллекцию",
+      "label": {
+        "collection-avatar": "аватарка коллекции",
+        "collection-name": "название коллекции",
+        "collection-symbol": "символ коллекции",
+        "collection-url": "ссылка на коллекцию",
+        "description": "Описание"
+      }
+    }
+  },
+  "collections": {
+    "no-items": "Временно недоступно",
+    "title": "Коллекция"
+  },
+  "common": {
+    "apply": "Применить",
+    "close": "Закрыть",
+    "coming-soon": "Скоро...",
+    "copied": "Скопировано!",
+    "copy-to-clipboard": "Скопировано в буфер обмена",
+    "load-more": "Показать больше",
+    "quantity": "Количество",
+    "read-more": "Больше информации",
+    "reset": "Сброс настроек",
+    "restore": "Восстановить",
+    "save": "Сохранить",
+    "submitting": "Отправить",
+    "unknown": "Неизвестно",
+    "view-all": "Посмотреть всё"
+  },
+  "connect-wallet": {
+    "custom-binancewallet": {
+      "description": "Кошелёк Binance Chain и Smart Chain",
+      "name": "Binance Chain"
+    },
+    "custom-huobi": {
+      "description": "Мультивалютная поддержка, практично и удобно",
+      "name": "Кошелёк Huobi"
+    },
+    "custom-imtoken": {
+      "description": "Простой и безопасный криптокошелёк, которому доверяют миллионы пользователей",
+      "name": "imToken"
+    },
+    "custom-math": {
+      "description": "Выход в мир блокчейна",
+      "name": "Math Wallet"
+    },
+    "custom-trust": {
+      "description": "Самый надёжный и безопасный криптокошелёк",
+      "name": "Trust Wallet"
+    },
+    "placeholder": {
+      "collection-title": "Чтобы увидеть товары данной коллекции, вам необходимо подключить кошелёк сначала",
+      "description": "Подключить кошелёк, чтобы увидеть содержимое этой страницы",
+      "title": "Подключить кошелёк"
+    }
+  },
+  "create-collection-nft": {
+    "channelOption": {
+      "Comics": "Комикс",
+      "FineArts": "Изобразительное искусство",
+      "Sports": "Спорт"
+    },
+    "label": {
+      "channel": "Канал",
+      "description": "Описание",
+      "name": "Название",
+      "standard": "Стандарт",
+      "supply": "Выпущено"
+    },
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
+    "submit": "Создать",
+    "submitting": "В процессе создания",
+    "title": "Создать коллекцию NFT"
+  },
+  "create-nft": {
+    "channelOption": {
+      "Comics": "Комикс",
+      "FineArts": "Изобразительное искусство",
+      "Sports": "Спорт"
+    },
+    "label": {
+      "channel": "Канал",
+      "description": "Описание",
+      "name": "Название",
+      "standard": "Стандарт",
+      "supply": "Выпущено"
+    },
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
+    "submit": "Создать",
+    "submitting": "В процессе создания",
+    "title": "Создать NFT"
+  },
+  "cropper": {
+    "flip-h": "Отразить по горизонтали",
+    "flip-v": "Отразить по вертикали",
+    "rotate-left": "Повернуть налево",
+    "rotate-right": "Повернуть вправо"
+  },
+  "details-nft": {
+    "bid": {
+      "bid-placed": "Ставка размещена"
+    },
+    "buy-now": "Купить сейчас",
+    "descr-full": "Полное описание",
+    "descr-short": "развернуть",
+    "dialog": {
+      "footnote": "Размещенные ставки на аукционе не могут быть отозваны",
+      "input-info": "Ваша ставка должна быть не менее  {value} {currency}"
+    },
+    "enter-a-bid": "Ввести ставку",
+    "history": {
+      "cancel-str": "Отменено",
+      "claim-str": "Выведено",
+      "create-str": "Выставить на продажу {quantity} изданий по {price} {symbol}",
+      "offer-str": "Предлагается {price} {symbol} за {quantity} издание"
+    },
+    "info": {
+      "date": "{value, date, medium}",
+      "time": "в {value, time, short}",
+      "view-scan": "Посмотреть на BscScan"
+    },
+    "owner": {
+      "balance": "{balance} копий"
+    },
+    "place-a-bid": "Сделать ставку",
+    "sold-out": "Распродано",
+    "tabs": {
+      "bids": "Ставки",
+      "history": "История",
+      "owners": "Владельцы",
+      "token-info": "Информация о токенах"
+    },
+    "token-info": {
+      "contract": "Контракт",
+      "name-tags": "имена тегов",
+      "standard": "Стандарт",
+      "token-id": "Токен ID",
+      "total-supply": "Всего выпущено"
+    },
+    "top-bid": "Наивысшая ставка",
+    "your-bid": "Ваша ставка"
+  },
+  "empty-data": {
+    "text": "Переключиться на правильную сеть, чтобы просмотреть содержимое этой страницы.",
+    "title": "Упс! Похоже, данных нет."
+  },
+  "error": {
+    "data-is-not-available": "Данные не доступны",
+    "greater-than": "Число должно быть больше {value}",
+    "less-than": "Число должно быть меньше {value}",
+    "unexpected": "Непредвиденная ошибка"
+  },
+  "form": {
+    "limit-counter": "{value}/{maxLimit}"
+  },
+  "go-back": {
+    "action": "Вернуться назад"
+  },
+  "header": {
+    "collections": "Мои коллекции",
+    "connect": "Подключить кошелёк",
+    "create": "Создать",
+    "disconnect": "Отключиться",
+    "how-it-works": "Как это работает",
+    "inventory": "Мой инвентарь",
+    "market": "Рынок",
+    "my-collections": "Мои коллекции",
+    "profile-settings": "Настройки профиля",
+    "search": {
+      "collections": "Коллекции",
+      "empty": "Результаты не найдены",
+      "items": "Товары",
+      "placeholder": "Поиск по имени, автору, коллекции ...",
+      "users": "Пользователи"
+    }
+  },
+  "info-prices": {
+    "cancel": "Убрать",
+    "canceled": "Убрано",
+    "claim": "Забрть",
+    "status": {
+      "Claimed": {
+        "creator": "Товар продан",
+        "default": "Товар получен"
+      },
+      "CompletedByDirectPurchase": {
+        "buyer": "Товар продан, вы можете забрать ваш NFT",
+        "creator": "Товар продан, вы можете забрать ваши деньги",
+        "others": "Товар продан"
+      },
+      "Live": {
+        "creator": "Аукцион активен"
+      },
+      "NotSoldByReservePrice": {
+        "buyer": "Товар не продался. Вы можете отозвать ваши токены.",
+        "creator": "Товар не продался. Вы можете отозвать ваш NFT.",
+        "others": "Товар не продался."
+      }
+    }
+  },
+  "language": {
+    "en-US": "English",
+    "zh-CN": "中文"
+  },
+  "movers": {
+    "title": "Набирающие полулярность"
+  },
+  "overview": {
+    "collections": {
+      "title": "Популярные коллекции"
+    }
+  },
+  "product-card": {
+    "burn": "Сжечь токены",
+    "not-on-sale": "Нет в продаже",
+    "owner": "Владелец",
+    "price": "Цена",
+    "put-on-sale": "Выставить на продажу",
+    "sold-for": "Продано за",
+    "top-bid": "Наивысшая ставка",
+    "transfer": "Перевести токен"
+  },
+  "products": {
+    "sort-label": "Сортировать по: {value}"
+  },
+  "profile": {
+    "activity": {
+      "canceled": "Отменено",
+      "claimed": "Вывыдено",
+      "created": "Создано",
+      "date": "Дата",
+      "empty-description": "Вы пока не совершили никаких действий",
+      "empty-title": "Не найдено никаких действий",
+      "event": "Мероприятие",
+      "from": "От",
+      "item": "Товар",
+      "price": "Цена",
+      "quantity": "Количество",
+      "to": "Кому",
+      "transfer": "Перевести"
+    },
+    "bids-categories": {
+      "Comics": "Комикс",
+      "all": "Всё",
+      "art": "Исскуство",
+      "sports": "Спорт"
+    },
+    "bio": "О себе",
+    "customize-btn": "Настроить",
+    "edit": {
+      "label": {
+        "bio": "О себе",
+        "custom-url": "Пользовательский URL",
+        "email": "Электронная почта",
+        "facebook": "Facebook",
+        "full-name": "Полное имя",
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "username": "Имя пользователя",
+        "website": "Веб-сайт"
+      },
+      "placeholder": {
+        "facebook": "Ссылка на главную страницу Facebook",
+        "instagram": "Ссылка на главную страницу Instagram",
+        "twitter": "Ссылка на главную страницу Twitter",
+        "website": "Ссылка на веб-сайт"
+      },
+      "save-changes": "Сохранить изменения",
+      "success-message": "Изменения успешно внесены"
+    },
+    "edit-avatar": "Редактировать аватарку",
+    "edit-cover": "Изменить обложку профиля",
+    "edit-profile": "Редактировать профиль",
+    "follow": "Подписаться",
+    "no-items": {
+      "btn": "Обзор рынка",
+      "descr": "У вас нет созданных NFT",
+      "title": "Товары не найдены"
+    },
+    "subscribers": "Подписчики",
+    "tabs": {
+      "activity": "Действие",
+      "collections": "Коллекция",
+      "followers": "Подписчики",
+      "following": "Подписаны",
+      "items": "Товары",
+      "liked": "Нравится",
+      "my-bids": "Мои ставки",
+      "my-collections": "Мои коллекции",
+      "my-items": "Мои товары",
+      "my-sells": "Мои продажи"
+    },
+    "unfollow": "Отписаться",
+    "user-profile": "Профиль пользователя"
+  },
+  "promo": {
+    "created-by": "Создатель:"
+  },
+  "publish-nft": {
+    "auction-amount": "В данном аукционе все выставленные на продажу копии будут проданы сразу.",
+    "auction-type": {
+      "english-auction": "Английский аукцион",
+      "fixed-swap": "Фиксированная цена"
+    },
+    "error": {
+      "wrong-direct-reserve-bid-amount": "Убедитесь, что: Минимальная ставка ≤ Резервная цена < Цена прямой покупки."
+    },
+    "expire": "Время истечёт через {value, date, medium} {value, time, short}",
+    "fee": "Комиссия Fangible {value}%",
+    "label": {
+      "amount": "Количество",
+      "count": "Подсчитать",
+      "directPurchase": "Цена прямой покупки",
+      "duration": "Дата окончания срока",
+      "minBid": "Минимальная ставка",
+      "price": "Цена продажи",
+      "reservePrice": "Минимальная цена покупки",
+      "type": "Тип продажи"
+    },
+    "receive": "Вы получите <b> {value} {unit} </b>",
+    "submit": "Выставить на продажу",
+    "submitting": "Отправить",
+    "title": "Выставить на продажу",
+    "tooltip": {
+      "directPurchase": "После установки цены прямой покупки покупатели могут пропустить процесс торгов и напрямую купить по этой цене. Цена прямой покупки должна быть больше, чем минимальная ставка и минимальная цена покупки.",
+      "duration": "Аукцион завершится в это время",
+      "reservePrice": "Резервная цена будет скрыта. Если вы не получите ставок, равных или превышающих ваш резерв, ваш аукцион не будет продан."
+    }
+  },
+  "social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "share": "Поделиться",
+    "telegram": "Telegram",
+    "title-for-socials": "{title} — {description}",
+    "twitter": "Twitter"
+  },
+  "time": {
+    "days-left": "Осталось {days} дней",
+    "days-short": "{days} дней",
+    "hours-short": "{hours} часов",
+    "minutes-short": "{minutes} минут",
+    "seconds-short": "{seconds} секуд",
+    "time-left-short": "Осталось {days} {hours} {minutes} {seconds}",
+    "time-over": "Время истекло"
+  },
+  "transfer-token": {
+    "submit": "Перевести",
+    "title": "Перевести токен"
+  },
+  "unit": {
+    "$-value": "${value}",
+    "BNB-value": "{value, number} BNB",
+    "custom-unit": "{value, number} {unit}",
+    "day": "{value, plural, =0 {0 days} =1 {1 day} other {# days}}"
+  },
+  "upload-file-field": {
+    "choose-file": "Выбрать файл",
+    "file-data": "{fileName} {fileSize}МБ",
+    "file-uploaded": "Файл загружен",
+    "formats-many": "Поддерживает {firstTypes} или {lastType}",
+    "formats-one": "Поддерживает только {firstTypes}",
+    "max-size": "Максимальный размер: {value} МБ",
+    "subtitle": "или <strong>просмотреть</strong> выбрать файл",
+    "title": "Перетяните ваш товар сюда"
+  },
+  "validation": {
+    "invalid-email": "Введите действующий адрес электронной почты",
+    "invalid-facebook": "Введите действующий URL веб-сайта facebook",
+    "invalid-instagram": "Введите действующий URL веб-сайта Instagram",
+    "invalid-twitter": "Введите действующий URL веб-сайта Twitter",
+    "invalid-type": "Неверный формат файла",
+    "invalid-website": "Введите действующий URL веб-сайта",
+    "max": "Наивысшее значение: {value}",
+    "max-size": "Максимальный размер: {value, number} МБ",
+    "min": "Наименьшее значение: {value}",
+    "require-integer": "Значение должно быть целым числом.",
+    "required": "Это поле обязательно для заполнения"
+  },
+  "video-player": {
+    "unsupported": "К сожалению, ваш браузер не поддерживает встроенные видео или форматы загруженных видеофайлов!"
+  }
+}
