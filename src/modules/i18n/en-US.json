@@ -116,7 +116,9 @@
       "description": "Description",
       "channel": "Channel",
       "standard": "Standard",
-      "supply": "Supply"
+      "supply": "Supply",
+      "specific-time-sale": "Put on sale at a specific time",
+      "Set-up-date": "Set up date and time"
     },
     "channelOption": {
       "FineArts": "Fine arts",
@@ -128,8 +130,10 @@
       "1": "ERC-1155"
     },
     "submit": "Create",
+    "next": "Next",
     "submitting": "Creating"
   },
+  "monthFormat": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December}}",
   "details-nft": {
     "descr-full": "Full description",
     "descr-short": "Collapse",
