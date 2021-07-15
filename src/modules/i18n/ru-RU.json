@@ -387,7 +387,7 @@
     "$-value": "${value}",
     "BNB-value": "{value, number} BNB",
     "custom-unit": "{value, number} {unit}",
-    "day": "{value, plural, =0 {0 дней} =1 {1 день} few {# дня} other {# дней}}"
+    "day": "{value, plural, =0 {0 дней} one {# день} few {# дня} other {# дней}}"
   },
   "upload-file-field": {
     "choose-file": "Выбрать файл",
