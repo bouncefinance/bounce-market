@@ -89,6 +89,8 @@ export const fetchPriceBySymbol = createSmartAction<
         return 'bitcoin';
       } else if (tokenSymbol === 'ETH') {
         return 'ethereum';
+      } else if (tokenSymbol === 'MATIC') {
+        return 'matictoken';
       }
 
       return tokenSymbol;

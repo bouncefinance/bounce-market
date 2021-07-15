@@ -23,7 +23,8 @@ export const getBrandContract = (chainID: number) => {
       return process.env.REACT_APP_BRAND_CONTRACT_ADDRESS_V2;
     case 128:
       return process.env.REACT_APP_BRAND_CONTRACT_ADDRESS_V2_HECO;
-
+    case 137:
+      return process.env.REACT_APP_BRAND_CONTRACT_ADDRESS_V2_MATIC;
     default:
       return '0xb9BaC7b8C8ca157035E78e764bC3AD7D7BcCAb3A';
   }

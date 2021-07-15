@@ -23,7 +23,8 @@ type MainApiDriverName =
   | 'mainApiEthMainnet'
   | 'mainApiEthRinkeby'
   | 'mainApiSmartchain'
-  | 'mainApiHeco';
+  | 'mainApiHeco'
+  | 'mainApiMatic';
 
 const chainToMainApiDriver: {
   [key in BlockchainNetworkId]: MainApiDriverName | undefined;
@@ -39,6 +40,7 @@ const chainToMainApiDriver: {
   [BlockchainNetworkId.smartchain]: 'mainApiSmartchain',
   [BlockchainNetworkId.smartchainTestnet]: undefined,
   [BlockchainNetworkId.heco]: 'mainApiHeco',
+  [BlockchainNetworkId.matic]: 'mainApiMatic',
 };
 
 function getMainApiDriverName(chainId: BlockchainNetworkId): MainApiDriverName {
@@ -49,7 +51,8 @@ type NftViewApiDriverName =
   | 'nftViewApiEthMainnet'
   | 'nftViewApiEthRinkeby'
   | 'nftViewApiSmartchain'
-  | 'nftViewApiHeco';
+  | 'nftViewApiHeco'
+  | 'nftViewApiMatic';
 
 const chainNftViewApiDriver: {
   [key in BlockchainNetworkId]: NftViewApiDriverName | undefined;
@@ -65,6 +68,7 @@ const chainNftViewApiDriver: {
   [BlockchainNetworkId.smartchain]: 'nftViewApiSmartchain',
   [BlockchainNetworkId.smartchainTestnet]: undefined,
   [BlockchainNetworkId.heco]: 'nftViewApiHeco',
+  [BlockchainNetworkId.matic]: 'nftViewApiMatic',
 };
 
 function getNftViewApiDriverName(
@@ -77,7 +81,8 @@ type NftView2ApiDriverName =
   | 'nftView2ApiEthMainnet'
   | 'nftView2ApiEthRinkeby'
   | 'nftView2ApiSmartchain'
-  | 'nftView2ApiHeco';
+  | 'nftView2ApiHeco'
+  | 'nftView2ApiMatic';
 
 const chainNftView2ApiDriver: {
   [key in BlockchainNetworkId]: NftView2ApiDriverName | undefined;
@@ -93,12 +98,43 @@ const chainNftView2ApiDriver: {
   [BlockchainNetworkId.smartchain]: 'nftView2ApiSmartchain',
   [BlockchainNetworkId.smartchainTestnet]: undefined,
   [BlockchainNetworkId.heco]: 'nftView2ApiHeco',
+  [BlockchainNetworkId.matic]: 'nftView2ApiMatic',
 };
 
 function getNftView2ApiDriverName(
   chainId: BlockchainNetworkId,
 ): NftView2ApiDriverName {
   return chainNftView2ApiDriver[chainId] || 'nftView2ApiSmartchain';
+}
+
+type ActivitiesApiDriverName =
+  | 'activitiesApiEthMainnet'
+  | 'activitiesApiEthRinkeby'
+  | 'activitiesApiSmartchain'
+  | 'activitiesApiHeco'
+  | 'activitiesApiMatic';
+
+const chainActivitiesApiDriver: {
+  [key in BlockchainNetworkId]: ActivitiesApiDriverName | undefined;
+} = {
+  [BlockchainNetworkId.mainnet]: 'activitiesApiEthMainnet',
+  [BlockchainNetworkId.ropsten]: undefined,
+  [BlockchainNetworkId.rinkeby]: 'activitiesApiEthRinkeby',
+  [BlockchainNetworkId.goerli]: undefined,
+  [BlockchainNetworkId.dev]: undefined,
+  [BlockchainNetworkId.classic]: undefined,
+  [BlockchainNetworkId.mordor]: undefined,
+  [BlockchainNetworkId.kotti]: undefined,
+  [BlockchainNetworkId.smartchain]: 'activitiesApiSmartchain',
+  [BlockchainNetworkId.smartchainTestnet]: undefined,
+  [BlockchainNetworkId.heco]: 'activitiesApiHeco',
+  [BlockchainNetworkId.matic]: 'activitiesApiMatic',
+};
+
+function getActivitiesApiDriverName(
+  chainId: BlockchainNetworkId,
+): ActivitiesApiDriverName {
+  return chainActivitiesApiDriver[chainId] || 'activitiesApiSmartchain';
 }
 
 export type DriverName =
@@ -131,6 +167,12 @@ export function getTokenByDriver(
     }
   }
 
+  if (driverName === 'mainApiMatic') {
+    if (unitAddress === ZERO_ADDRESS) {
+      return TokenSymbol.MATIC;
+    }
+  }
+
   return TokenSymbol.BNB;
 }
 
@@ -159,6 +201,11 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
         baseURL: process.env.REACT_APP_API_BASE_HECO,
       }),
     ),
+    mainApiMatic: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_API_BASE_MATIC,
+      }),
+    ),
     nftViewApiEthMainnet: createAxiosDriver(
       axios.create({
         baseURL: process.env.REACT_APP_FANGIBLE_URL_ETH_MAINNET,
@@ -179,6 +226,11 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
         baseURL: process.env.REACT_APP_FANGIBLE_URL_HECO,
       }),
     ),
+    nftViewApiMatic: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_FANGIBLE_URL_MATIC,
+      }),
+    ),
     nftView2ApiEthMainnet: createAxiosDriver(
       axios.create({
         baseURL: process.env.REACT_APP_NFTVIEW_URL_V2_ETH_MAINNET,
@@ -197,6 +249,36 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     nftView2ApiHeco: createAxiosDriver(
       axios.create({
         baseURL: process.env.REACT_APP_NFTVIEW_URL_V2_HECO,
+      }),
+    ),
+    nftView2ApiMatic: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_NFTVIEW_URL_V2_MATIC,
+      }),
+    ),
+    activitiesApiEthMainnet: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL_ETH,
+      }),
+    ),
+    activitiesApiEthRinkeby: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL_RINKEBY,
+      }),
+    ),
+    activitiesApiSmartchain: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL,
+      }),
+    ),
+    activitiesApiHeco: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL_HECO,
+      }),
+    ),
+    activitiesApiMatic: createAxiosDriver(
+      axios.create({
+        baseURL: process.env.REACT_APP_ACTIVITIES_URL_MATIC,
       }),
     ),
   },
@@ -231,6 +313,14 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
           data && data.chainId
             ? getNftView2ApiDriverName(data.chainId)
             : 'nftView2ApiSmartchain',
+      };
+    } else if (action.meta?.driver === 'activities') {
+      action.meta = {
+        ...action.meta,
+        driver:
+          data && data.chainId
+            ? getActivitiesApiDriverName(data.chainId)
+            : 'activitiesApiSmartchain',
       };
     }
 
