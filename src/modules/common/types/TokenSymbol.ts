@@ -7,4 +7,5 @@ export enum TokenSymbol {
   AUCTION = 'AUCTION',
   BTC = 'BTC',
   HT = 'HT',
+  MATIC = 'MATIC',
 }

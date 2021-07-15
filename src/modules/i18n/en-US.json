@@ -291,7 +291,9 @@
       "duration": "Auction will be completed in this time"
     },
     "error": {
-      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price < Direct purchase price"
+      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price < Direct purchase price",
+      "wrong-direct-bid-amount": "Make sure Minimum bid < Direct purchase price",
+      "wrong-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price"
     }
   },
   "profile": {
@@ -328,7 +330,8 @@
         "facebook": "Facebook Link"
       },
       "save-changes": "Save Changes",
-      "success-message": "Changes have been applied successfully."
+      "success-message": "Changes have been applied successfully.",
+      "no-profile": "Please complete your profile setting first."
     },
     "tabs": {
       "my-items": "My items",
@@ -378,7 +381,7 @@
   },
   "change-wallet": {
     "title": "Wrong network",
-    "description": "Change network to Etherium Mainnet, Binance Smart Chain or Heco",
+    "description": "Change network to Etherium Mainnet, Binance Smart Chain or Heco or Matic",
     "submit": "Change network",
     "network-change-error": "Can't setup the BSC network on metamask because provider is undefined."
   },

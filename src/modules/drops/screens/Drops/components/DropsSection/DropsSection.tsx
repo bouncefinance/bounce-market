@@ -152,6 +152,7 @@ export const DropsSection = () => {
       const creator = (
         <DropsOwner
           title={item.username}
+          isVerified={true}
           href={ProfileRoutesConfig.OtherProfile.generatePath(
             item.accountAddress,
           )}
