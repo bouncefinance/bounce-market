@@ -2,9 +2,10 @@ import { Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import { getRandomHexColor } from 'modules/common/utils/getRandomHexColor';
 import { Img } from 'modules/uiKit/Img';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Truncate from 'react-truncate';
+import useBgColor from '../Drop/useBgColor';
 import { useStoriesSliderItemStyles } from './useStoriesSliderItemStyles';
 
 interface IStoriesSliderItemProps {
@@ -26,8 +27,15 @@ export const StoriesSliderItem = ({
   href,
   gradientColor,
 }: IStoriesSliderItemProps) => {
+  const { getBackgroudColor } = useBgColor();
+
+  const [bgImgColor, setBgImgColor] = useState<string | undefined>();
+  useEffect(() => {
+    getBackgroudColor(img, gradientColor, setBgImgColor);
+  }, [getBackgroudColor, img, gradientColor]);
+
   const classes = useStoriesSliderItemStyles({
-    gradientColor: gradientColor || (img ? undefined : getRandomHexColor()),
+    gradientColor: gradientColor || (img ? bgImgColor : getRandomHexColor()),
   });
 
   return (

@@ -2,11 +2,13 @@ import { Box, Typography, useTheme } from '@material-ui/core';
 import { getRandomHexColor } from 'modules/common/utils/getRandomHexColor';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { Img } from 'modules/uiKit/Img';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Truncate from 'react-truncate';
 import { uid } from 'react-uid';
 import { useDropStyles } from './useDropStyles';
+import { useState } from 'react';
+import useBgColor from './useBgColor';
 
 const MAX_ITEMS_COUNT = 5;
 
@@ -32,11 +34,17 @@ export const Drop = ({
   items,
 }: IDropProps) => {
   const theme = useTheme();
-  const classes = useDropStyles({
-    bgColor:
-      bgColor || (bgImg ? theme.palette.background.paper : getRandomHexColor()),
-  });
   const isMDUp = useIsMDUp();
+  const [bgImgColor, setBgImgColor] = useState<string | undefined>();
+  const { getBackgroudColor } = useBgColor();
+
+  useEffect(() => {
+    getBackgroudColor(bgImg, theme.palette.background.paper, setBgImgColor);
+  }, [getBackgroudColor, bgImg, theme]);
+
+  const classes = useDropStyles({
+    bgColor: bgColor || (bgImg ? bgImgColor : getRandomHexColor()),
+  });
 
   const itemsCount = items ? items.length : 0;
 
