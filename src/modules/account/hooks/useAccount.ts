@@ -1,4 +1,5 @@
 import { useQuery } from '@redux-requests/react';
+import { getJWTToken } from 'modules/common/utils/localStorage';
 import { IAddEthereumChain } from 'modules/layout/components/Header/components/SelectChainDialog';
 import { useCallback } from 'react';
 import { useAppDispatch } from 'store/useAppDispatch';
@@ -7,7 +8,10 @@ import { changeNetworkToSupported } from '../store/actions/changeNetworkToSuppor
 import { connect } from '../store/actions/connect';
 import { ISetAccountData, setAccount } from '../store/actions/setAccount';
 import { updateAccount } from '../store/actions/updateAccount';
+import { useWeb3React } from './useWeb3React';
 
+let run = false;
+let initRemoteDataRun = false;
 export const useAccount = () => {
   const dispatch = useAppDispatch();
 
@@ -15,8 +19,28 @@ export const useAccount = () => {
     type: setAccount.toString(),
   });
 
+  const web3Data = useWeb3React();
+  const token = getJWTToken() ?? '';
+  if (!web3Data.loading && !data && token && !run) {
+    run = true;
+    dispatch(
+      setAccount({
+        token,
+        ...web3Data,
+      }),
+    );
+  }
+
   const address = data?.address;
   const isConnected = !!address;
+
+  if (!initRemoteDataRun && web3Data?.address && isConnected) {
+    initRemoteDataRun = true;
+    dispatch({
+      type: connect().type,
+      payload: web3Data,
+    });
+  }
 
   const chainId = parseInt((data?.chainId ?? 0).toString());
 
