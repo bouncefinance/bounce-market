@@ -1,432 +1,450 @@
 {
+  "artists": {
+    "title": "热门艺术家"
+  },
+  "brand": {
+    "card": {
+      "addNewItem": "添加新商品",
+      "createNewBrand": "创建新品牌",
+      "createNewItem": "创建新商品",
+      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}"
+    },
+    "create": {
+      "avatar-accepts": "支持 JPG, PNG, JPEG2000",
+      "avatar-recommended-size": "推荐300x300",
+      "create-brand": "创建品牌",
+      "label": {
+        "brand-avatar": "品牌头像",
+        "brand-name": "品牌名称",
+        "brand-symbol": "品牌标识",
+        "brand-url": "品牌网址",
+        "description": "描述"
+      }
+    }
+  },
+  "brands": {
+    "items": "{num}个商品",
+    "no-items": "暂无商品",
+    "title": "品牌"
+  },
+  "burn-token": {
+    "submit": "销毁",
+    "title": "销毁Token"
+  },
+  "buy-dialog": {
+    "submit": "购买",
+    "title": "立即购买"
+  },
+  "change-wallet": {
+    "description": "变更为币安链",
+    "network-change-error": "由于RPC节点错误，无法在Metamask上设置币安链网络",
+    "submit": "变更为智能链",
+    "title": "网络错误"
+  },
   "common": {
-    "load-more": "加载更多",
-    "read-more": "了解更多",
-    "view-all": "查看所有",
-    "submitting": "提交",
-    "copy-to-clipboard": "复制到剪贴板",
-    "copied": "复制成功！",
-    "save": "保存",
     "apply": "申请",
     "close": "关闭",
+    "coming-soon": "敬请期待...",
+    "copied": "复制成功！",
+    "copy-to-clipboard": "复制到剪贴板",
+    "load-more": "加载更多",
+    "nothing-found": "Nothing found",
+    "quantity": "数量",
+    "read-more": "了解更多",
     "reset": "重置",
     "restore": "恢复",
-    "unknown": "Unknown",
-    "coming-soon": "敬请期待...",
-    "nothing-found": "Nothing found"
+    "save": "保存",
+    "submitting": "提交",
+    "unknown": "未知",
+    "view-all": "查看所有"
   },
-  "time": {
-    "time-over": "该拍卖已过期",
-    "days-left": " 剩余{days}天",
-    "time-left-short": "剩余{days} {hours} {minutes} {seconds} ",
-    "days-short": "{days}天",
-    "hours-short": "{hours}时",
-    "minutes-short": "{minutes}分",
-    "seconds-short": "{seconds}秒",
-    "finished-on": "Finished on {end, date, medium}"
+  "connect-wallet": {
+    "custom-binancewallet": {
+      "description": "币安链& 智能链钱包",
+      "name": "币安链"
+    },
+    "custom-huobi": {
+      "description": "实用、方便，支持多种货币",
+      "name": "Huobi Wallet"
+    },
+    "custom-imtoken": {
+      "description": "便捷安全的电子钱包--百万用户的选择",
+      "name": "imToken"
+    },
+    "custom-math": {
+      "description": "通往区块链世界的门户",
+      "name": "Math Wallet"
+    },
+    "custom-trust": {
+      "description": "最受信任、最安全的电子货币钱包",
+      "name": "Trust Wallet"
+    },
+    "placeholder": {
+      "brand-title": "请连接钱包，以查看该品牌下的商品。",
+      "description": "请连接钱包，以浏览页面内容。",
+      "title": "连接钱包"
+    }
+  },
+  "create-brand-nft": {
+    "channelOption": {
+      "Comicbooks": "漫画",
+      "FineArts": "艺术",
+      "Sports": "体育"
+    },
+    "label": {
+      "channel": "类型",
+      "description": "描述",
+      "name": "名称",
+      "standard": "标准",
+      "supply": "总量"
+    },
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
+    "submit": "创建",
+    "submitting": "正在创建中",
+    "title": "创建品牌NFT"
+  },
+  "create-nft": {
+    "channelOption": {
+      "Comicbooks": "漫画",
+      "FineArts": "艺术",
+      "Sports": "体育"
+    },
+    "label": {
+      "Set-up-date": "设置上架日期",
+      "channel": "类型",
+      "description": "描述",
+      "name": "名称",
+      "specific-time-sale": "在特定时间出售",
+      "standard": "标准",
+      "supply": "总量"
+    },
+    "next": "下一步",
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
+    "submit": "创建",
+    "submitting": "正在创建中",
+    "time": "{gender, select, male {He}female {She}other {They}}",
+    "title": "创建NFT"
+  },
+  "cropper": {
+    "flip-h": "水平翻转",
+    "flip-v": "垂直翻转",
+    "rotate-left": "向左旋转",
+    "rotate-right": "向右旋转"
+  },
+  "details-nft": {
+    "bid": {
+      "bid-placed": "Bid placed"
+    },
+    "buy-now": "购买",
+    "descr-full": "详细描述",
+    "descr-short": "展开",
+    "dialog": {
+      "footnote": "在拍卖中的出价无法撤销。",
+      "input-info": "您的出价必须至少为 {value} {currency}"
+    },
+    "enter-a-bid": "请输入您的出价",
+    "history": {
+      "cancel-str": "已下架",
+      "claim-str": "已领回",
+      "create-str": "出售{quantity}个，价格为{price} {symbol}",
+      "offer-str": "出价 {price} {symbol} 购买 {quantity} 个"
+    },
+    "info": {
+      "date": "{value, date, medium}",
+      "time": "at {value, time, short}",
+      "view-scan": "在BscScan浏览器上查看"
+    },
+    "owner": {
+      "balance": "{balance} copies"
+    },
+    "place-a-bid": "出价",
+    "sold-out": "售罄",
+    "tabs": {
+      "bids": "出价",
+      "history": "历史",
+      "owners": "拥有者",
+      "token-info": "Token信息"
+    },
+    "token-info": {
+      "contract": "合约：",
+      "name-tags": "标签：",
+      "standard": "标准：",
+      "token-id": "Token ID：",
+      "total-supply": "总供应量："
+    },
+    "tooltip": {
+      "bid-warning": "请注意，你在出价后将无法取消。你的出价将是有效的，直到它被出价、被创作者接受或过期"
+    },
+    "top-bid": "最高出价",
+    "your-bid": "您的出价"
+  },
+  "drop-details": {
+    "live": "Live",
+    "sold": "Sold",
+    "timer-descr": "until the Drop ends"
+  },
+  "drops": {
+    "previous": "Previous drops",
+    "top-creators": "Top Creators",
+    "upcoming": "Upcoming  dr🔥ps"
+  },
+  "empty-data": {
+    "text": "请切换网络，以浏览页面内容",
+    "title": "抱歉，暂无数据"
+  },
+  "error": {
+    "data-is-not-available": "无法获取数据",
+    "greater-than": "数值需大于 {value}",
+    "less-than": "数值需小于 {value}",
+    "unexpected": "出现意外错误"
+  },
+  "form": {
+    "limit-counter": "{value}/{maxLimit}"
+  },
+  "go-back": {
+    "action": "返回"
   },
   "header": {
-    "create": "创建",
-    "connect": "连接钱包",
-    "inventory": "我的主页",
     "brands": "我的品牌",
-    "profile-settings": "主页设置",
+    "connect": "连接钱包",
+    "create": "创建",
     "disconnect": "断开连接",
+    "drops": "",
+    "how-it-works": "帮助指南",
+    "inventory": "我的主页",
+    "market": "市场",
+    "my-brands": "我的品牌",
+    "profile-settings": "主页设置",
     "search": {
-      "placeholder": "按名字/创建者/品牌搜索...",
+      "brands": "品牌",
       "empty": "无搜索结果",
       "items": "商品",
-      "brands": "品牌",
+      "placeholder": "按名字/创建者/品牌搜索...",
       "users": "用户"
     },
     "select-chain": {
-      "title": "选择网络",
-      "eth": "以太坊主网",
       "bnb": "币安智能链",
+      "eth": "以太坊主网",
       "heco": "火币生态链",
-      "heco-2": "火币钱包"
+      "heco-2": "火币钱包",
+      "title": "选择网络"
+    }
+  },
+  "info-prices": {
+    "cancel": "下架",
+    "canceled": "已下架",
+    "claim": "领取",
+    "status": {
+      "Claimed": {
+        "creator": "商品已售出",
+        "default": "商品已领取"
+      },
+      "CompletedByDirectPurchase": {
+        "buyer": "商品已售出，请领取您的NFT",
+        "creator": "商品已售出，请领取您的收入",
+        "others": "商品已售出"
+      },
+      "Live": {
+        "creator": "拍卖正在进行中"
+      },
+      "NotSoldByReservePrice": {
+        "buyer": "商品未出售，请取回您的出价",
+        "creator": "商品未出售，请取回您的NFT",
+        "others": "商品未出售"
+      }
     }
   },
   "language": {
     "en-US": "English",
     "zh-CN": "中文"
   },
-  "social": {
-    "share": "分享",
-    "title-for-socials": "{title} — {description}",
-    "instagram": "Instagram",
-    "twitter": "Twitter",
-    "facebook": "Facebook",
-    "telegram": "Telegram"
-  },
-  "connect-wallet": {
-    "placeholder": {
-      "title": "连接钱包",
-      "brand-title": "请连接钱包，以查看该品牌下的商品。",
-      "description": "请连接钱包，以浏览页面内容。"
-    },
-    "custom-binancewallet": {
-      "name": "币安链",
-      "description": "币安链& 智能链钱包"
-    },
-    "custom-imtoken": {
-      "name": "imToken",
-      "description": "便捷安全的电子钱包--百万用户的选择"
-    },
-    "custom-math": {
-      "name": "Math Wallet",
-      "description": "通往区块链世界的门户"
-    },
-    "custom-trust": {
-      "name": "Trust Wallet",
-      "description": "最受信任、最安全的电子货币钱包"
-    },
-    "custom-huobi": {
-      "name": "Huobi Wallet",
-      "description": "实用、方便，支持多种货币"
-    }
-  },
-  "promo": {
-    "created-by": "创建者："
-  },
-  "unit": {
-    "day": "{value, plural, =0 {0 days} =1 {1 day} other {# days}}",
-    "BNB-value": "{value, number} BNB",
-    "$-value": "${value}",
-    "custom-unit": "{value, number} {unit}"
-  },
-  "error": {
-    "unexpected": "出现意外错误",
-    "data-is-not-available": "无法获取数据",
-    "greater-than": "数值需大于 {value}",
-    "less-than": "数值需小于 {value}"
-  },
-  "go-back": {
-    "action": "返回"
-  },
-  "create-nft": {
-    "title": "创建NFT",
-    "label": {
-      "name": "名称",
-      "description": "描述",
-      "channel": "类型",
-      "standard": "标准",
-      "supply": "总量",
-      "specific-time-sale": "在特定时间出售",
-      "Set-up-date": "设置上架日期"
-    },
-    "channelOption": {
-      "FineArts": "艺术",
-      "Sports": "体育",
-      "Comicbooks": "漫画"
-    },
-    "standardOption": {
-      "0": "ERC-721",
-      "1": "ERC-1155"
-    },
-    "submit": "创建",
-    "next": "下一步",
-    "submitting": "正在创建中",
-    "time": "{gender, select, male {He}female {She}other {They}}"
-  },
   "monthFormat": "{month, select, 1{一} 2{二} 3{三} 4{四} 5{五} 6{六} 7{七} 8{八} 9{九} 10{十} 11{十一} 12{十二}}月",
-  "details-nft": {
-    "descr-full": "详细描述",
-    "descr-short": "展开",
-    "top-bid": "最高出价",
-    "buy-now": "购买",
-    "sold-out": "售罄",
-    "place-a-bid": "出价",
-    "tabs": {
-      "history": "历史",
-      "bids": "出价",
-      "owners": "拥有者",
-      "token-info": "Token信息"
-    },
-    "info": {
-      "date": "{value, date, medium}",
-      "time": "at {value, time, short}",
-      "view-scan": "View on {name}"
-    },
-    "dialog": {
-      "input-info": "您的出价必须至少为 {value} {currency}",
-      "footnote": "在拍卖中的出价无法撤销。"
-    },
-    "token-info": {
-      "standard": "Standard:",
-      "total-supply": "Total Supply:",
-      "name-tags": "Name Tags:",
-      "contract": "Contract:",
-      "token-id": "Token ID:"
-    },
-    "history": {
-      "create-str": "Put on sale {quantity} editions for {price} {symbol}",
-      "offer-str": "Offered {price} {symbol} for {quantity} edition",
-      "cancel-str": "Canceled",
-      "claim-str": "Claimed"
-    },
-    "bid": {
-      "bid-placed": "Bid placed"
-    },
-    "owner": {
-      "balance": "{balance} copies"
-    },
-    "tooltip": {
-      "bid-warning": "请注意，你在出价后将无法取消。你的出价将是有效的，直到它被出价、被创作者接受或过期"
-    }
-  },
-  "form": {
-    "limit-counter": "{value}/{maxLimit}"
-  },
-  "validation": {
-    "required": "此为必填项",
-    "require-integer": "请输入整数",
-    "min": "最小值为Smallest value is {value}",
-    "max": "最大值为Highest value is {value}",
-    "invalid-email": "请输入有效的邮箱地址",
-    "invalid-website": "请输入有效的网址",
-    "invalid-type": "无效的文件类型",
-    "max-size": "最大文件尺寸：{value, number}MB"
-  },
-  "upload-file-field": {
-    "choose-file": "选择文件",
-    "title": "支持拖拽上传",
-    "subtitle": "或 <strong>浏览</strong> 上传文件",
-    "formats-many": "支持 {firstTypes} 或 {lastType}",
-    "formats-one": "仅支持 {fileType} ",
-    "max-size": "最大尺寸：{value}MB",
-    "file-uploaded": "文件已上传",
-    "file-data": "{fileName} {fileSize}MB"
-  },
-  "products": {
-    "sort-label": "按 {value}筛选"
-  },
   "movers": {
     "title": "趋势榜"
-  },
-  "artists": {
-    "title": "热门艺术家"
-  },
-  "brand": {
-    "create": {
-      "create-brand": "创建品牌",
-      "label": {
-        "brand-name": "品牌名称",
-        "brand-url": "品牌网址",
-        "description": "描述",
-        "brand-symbol": "品牌标识",
-        "brand-avatar": "品牌头像"
-      },
-      "avatar-accepts": "支持 JPG, PNG, JPEG2000",
-      "avatar-recommended-size": "推荐300x300"
-    },
-    "card": {
-      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}",
-      "addNewItem": "添加新商品",
-      "createNewItem": "创建新商品",
-      "createNewBrand": "创建新品牌"
-    }
-  },
-  "create-brand-nft": {
-    "title": "创建品牌NFT",
-    "label": {
-      "name": "名称",
-      "description": "描述",
-      "channel": "类型",
-      "standard": "标准",
-      "supply": "总量"
-    },
-    "channelOption": {
-      "FineArts": "艺术",
-      "Sports": "体育",
-      "Comicbooks": "漫画"
-    },
-    "standardOption": {
-      "0": "ERC-721",
-      "1": "ERC-1155"
-    },
-    "submit": "创建",
-    "submitting": "正在创建中"
   },
   "overview": {
     "brands": {
       "title": "热门品牌"
     }
   },
-  "brands": {
-    "title": "品牌",
-    "items": "{num}个商品",
-    "no-items": "暂无商品"
+  "product-card": {
+    "burn": "销毁token",
+    "not-on-sale": "未出售",
+    "owner": "拥有者",
+    "price": "价格",
+    "put-on-sale": "出售",
+    "sold-for": "已按XX售出",
+    "top-bid": "最高出价",
+    "transfer": "发送token"
   },
-  "publish-nft": {
-    "title": "出售",
-    "submit": "出售",
-    "submitting": "提交",
-    "fee": "Fangible平台费{value}%",
-    "receive": "商品成功出售后，您将收到 <b>{value} {unit}</b>",
-    "expire": "将于 {value, date, medium} {value, time, short}结束",
-    "auction-amount": "在拍卖方式中，您输出商品数量会被打包销售",
-    "auction-type": {
-      "fixed-swap": "固价出售",
-      "english-auction": "英式拍卖"
-    },
-    "label": {
-      "type": "出售方式",
-      "price": "价格",
-      "amount": "数量",
-      "minBid": "最低出价",
-      "directPurchase": "直接购买价",
-      "reservePrice": "最低购买价",
-      "count": "数量",
-      "duration": "截止日期"
-    },
-    "tooltip": {
-      "directPurchase": "设置直接购买价后，买家可跳过竞拍流程，直接以该价格进行购买。直接购买价需大于最低出价和最低购买价。",
-      "reservePrice": "设置最低购买价后，若买家出价未达到或超过该价格，您的拍卖商品将不会被出售。",
-      "duration": "拍卖将于该时间结束"
-    },
-    "error": {
-      "wrong-direct-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价 < 直接购买价",
-      "wrong-direct-bid-amount": "请确保：最低出价 < 直接购买价",
-      "wrong-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价"
-    }
+  "products": {
+    "sort-label": "按 {value}筛选"
   },
   "profile": {
-    "customize-btn": "自定义",
-    "follow": "关注",
-    "unfollow": "取消关注",
-    "subscribers": "Subscribers",
-    "bio": "个人介绍",
-    "user-profile": "个人主页",
-    "edit-profile": "编辑个人信息",
-    "edit-avatar": "编辑头像",
-    "edit-cover": "编辑主页封面",
-    "no-items": {
-      "title": "未找到任何商品",
-      "descr": "您还未创建任何NFT",
-      "btn": "浏览市场"
-    },
-    "edit": {
-      "label": {
-        "username": "用户名",
-        "full-name": "全名",
-        "email": "邮件",
-        "custom-url": "自定义网站地址",
-        "bio": "个人介绍",
-        "website": "网站",
-        "instagram": "instagram",
-        "twitter": "推特",
-        "facebook": "脸书"
-      },
-      "placeholder": {
-        "website": "网站链接",
-        "instagram": "instagram 主页链接",
-        "twitter": "推特主页链接",
-        "facebook": "脸书主页链接"
-      },
-      "save-changes": "保存修改",
-      "success-message": "修改成功",
-      "no-profile": "请先完善个人信息"
-    },
-    "tabs": {
-      "my-items": "我的商品",
-      "items": "商品",
-      "my-bids": "我的出价",
-      "my-brands": "我的品牌",
-      "brands": "品牌",
-      "activity": "动态",
-      "liked": "收藏",
-      "following": "关注",
-      "followers": "粉丝"
-    },
     "activity": {
+      "canceled": "已取消",
+      "claimed": "已领回",
+      "created": "已创建",
+      "date": "日期",
+      "empty-description": "暂无任何交易记录",
+      "empty-title": "未查询到任何交易记录",
       "event": "活动",
+      "from": "由",
       "item": "商品",
       "price": "价格",
       "quantity": "数量",
-      "from": "由",
       "to": "转到",
-      "date": "日期"
+      "transfer": "发送"
     },
     "bids-categories": {
+      "Comicbooks": "漫画",
       "all": "所有",
       "art": "艺术",
-      "sport": "体育",
-      "Comicbooks": "漫画"
+      "sport": "体育"
+    },
+    "bio": "个人介绍",
+    "customize-btn": "自定义",
+    "edit": {
+      "label": {
+        "bio": "个人介绍",
+        "custom-url": "自定义网站地址",
+        "email": "邮件",
+        "facebook": "Facebook",
+        "full-name": "全名",
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "username": "用户名",
+        "website": "网站"
+      },
+      "no-profile": "请先完善个人信息",
+      "placeholder": {
+        "facebook": "Facebook主页链接",
+        "instagram": "Instagram 主页链接",
+        "twitter": "Twitter主页链接",
+        "website": "网站链接"
+      },
+      "save-changes": "保存修改",
+      "success-message": "修改成功"
+    },
+    "edit-avatar": "编辑头像",
+    "edit-cover": "编辑主页封面",
+    "edit-profile": "编辑个人信息",
+    "follow": "关注",
+    "no-items": {
+      "btn": "浏览市场",
+      "descr": "您还未创建任何NFT",
+      "title": "未找到任何商品"
+    },
+    "subscribers": "Subscribers",
+    "tabs": {
+      "activity": "动态",
+      "brands": "品牌",
+      "followers": "粉丝",
+      "following": "关注",
+      "items": "商品",
+      "liked": "收藏",
+      "my-bids": "我的出价",
+      "my-brands": "我的品牌",
+      "my-items": "我的商品",
+      "my-sells": "我的出售"
+    },
+    "unfollow": "取消关注",
+    "user-profile": "个人主页"
+  },
+  "promo": {
+    "created-by": "创建者："
+  },
+  "publish-nft": {
+    "auction-amount": "在拍卖方式中，您输出商品数量会被打包销售",
+    "auction-type": {
+      "english-auction": "英式拍卖",
+      "fixed-swap": "固价出售"
+    },
+    "error": {
+      "wrong-direct-bid-amount": "请确保：最低出价 < 直接购买价",
+      "wrong-direct-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价 < 直接购买价",
+      "wrong-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价"
+    },
+    "expire": "将于 {value, date, medium} {value, time, short}结束",
+    "fee": "Fangible平台费{value}%",
+    "label": {
+      "amount": "数量",
+      "count": "数量",
+      "directPurchase": "直接购买价",
+      "duration": "截止日期",
+      "minBid": "最低出价",
+      "price": "价格",
+      "reservePrice": "最低购买价",
+      "type": "出售方式"
+    },
+    "receive": "商品成功出售后，您将收到 <b>{value} {unit}</b>",
+    "submit": "出售",
+    "submitting": "提交",
+    "title": "出售",
+    "tooltip": {
+      "directPurchase": "设置直接购买价后，买家可跳过竞拍流程，直接以该价格进行购买。直接购买价需大于最低出价和最低购买价。",
+      "duration": "拍卖将于该时间结束",
+      "reservePrice": "设置最低购买价后，若买家出价未达到或超过该价格，您的拍卖商品将不会被出售。"
     }
   },
-  "buy-dialog": {
-    "title": "立即购买",
-    "submit": "购买"
+  "social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "share": "分享",
+    "telegram": "Telegram",
+    "title-for-socials": "{title} — {description}",
+    "twitter": "Twitter"
   },
-  "cropper": {
-    "rotate-left": "向左旋转",
-    "rotate-right": "向右旋转",
-    "flip-v": "垂直翻转",
-    "flip-h": "水平翻转"
+  "time": {
+    "days-left": "剩余{days}天",
+    "days-short": "{days}天",
+    "finished-on": "Finished on {end, date, medium}",
+    "hours-short": "{hours}时",
+    "minutes-short": "{minutes}分",
+    "seconds-short": "{seconds}秒",
+    "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
+    "time-over": "该拍卖已过期"
+  },
+  "transfer-token": {
+    "submit": "发送",
+    "title": "发送Token"
+  },
+  "unit": {
+    "$-value": "${value}",
+    "BNB-value": "{value, number} BNB",
+    "custom-unit": "{value, number} {unit}",
+    "day": "{value, plural, =0 {0 days} =1 {1 day} other {# days}}"
+  },
+  "upload-file-field": {
+    "choose-file": "选择文件",
+    "file-data": "{fileName} {fileSize}MB",
+    "file-uploaded": "文件已上传",
+    "formats-many": "支持 {firstTypes} 或 {lastType}",
+    "formats-one": "仅支持 {fileType}",
+    "max-size": "最大尺寸：{value}MB",
+    "subtitle": "或 <strong>浏览</strong> 上传文件",
+    "title": "支持拖拽上传"
+  },
+  "validation": {
+    "invalid-email": "请输入有效的邮箱地址",
+    "invalid-facebook": "请输入有效的Facebook主页链接",
+    "invalid-instagram": "请输入有效的Instagram主页链接",
+    "invalid-twitter": "请输入有效的Twitter主页链接",
+    "invalid-type": "无效的文件类型",
+    "invalid-website": "请输入有效的网址",
+    "max": "最大值为Highest value is {value}",
+    "max-size": "最大文件尺寸：{value, number}MB",
+    "min": "最小值为Smallest value is {value}",
+    "require-integer": "请输入整数",
+    "required": "此为必填项"
   },
   "video-player": {
     "unsupported": "对不起，您的浏览器不支持嵌入式视频或上传的视频文件类型！"
-  },
-  "change-wallet": {
-    "title": "网络错误",
-    "description": "变更为币安链",
-    "submit": "变更为智能链",
-    "network-change-error": "由于RPC节点错误，无法在Metamask上设置币安链网络"
-  },
-  "info-prices": {
-    "claim": "领取",
-    "cancel": "下架",
-    "canceled": "已下架",
-    "status": {
-      "CompletedByDirectPurchase": {
-        "creator": "商品已售出，请领取您的收入",
-        "buyer": "商品已售出，请领取您的NFT",
-        "others": "商品已售出"
-      },
-      "NotSoldByReservePrice": {
-        "creator": "商品未出售，请取回您的NFT",
-        "buyer": "商品未出售，请取回您的出价",
-        "others": "商品未出售"
-      },
-      "Claimed": {
-        "default": "商品已领取",
-        "creator": "商品已售出"
-      },
-      "Live": {
-        "creator": "拍卖正在进行中"
-      }
-    }
-  },
-  "product-card": {
-    "not-on-sale": "未出售",
-    "price": "价格",
-    "top-bid": "最高出价",
-    "owner": "拥有者",
-    "put-on-sale": "出售",
-    "transfer": "发送token",
-    "burn": "销毁token"
-  },
-  "transfer-token": {
-    "title": "发送Token",
-    "submit": "发送"
-  },
-  "burn-token": {
-    "title": "销毁Token",
-    "submit": "销毁"
-  },
-  "empty-data": {
-    "title": "Whoops. Looks like there's no data.",
-    "text": "Try to change the network to view the content of the page."
-  },
-  "drops": {
-    "top-creators": "Top Creators",
-    "upcoming": "Upcoming  dr🔥ps",
-    "previous": "Previous drops"
-  },
-  "drop-details": {
-    "live": "Live",
-    "sold": "Sold",
-    "timer-descr": "until the Drop ends"
   }
 }
