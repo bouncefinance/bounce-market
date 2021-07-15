@@ -111,7 +111,9 @@
       "description": "描述",
       "channel": "类型",
       "standard": "标准",
-      "supply": "总量"
+      "supply": "总量",
+      "specific-time-sale": "在特定时间出售",
+      "Set-up-date": "设置上架日期"
     },
     "channelOption": {
       "FineArts": "艺术",
@@ -123,8 +125,11 @@
       "1": "ERC-1155"
     },
     "submit": "创建",
-    "submitting": "正在创建中"
+    "next": "下一步",
+    "submitting": "正在创建中",
+    "time": "{gender, select, male {He}female {She}other {They}}"
   },
+  "monthFormat": "{month, select, 1{一} 2{二} 3{三} 4{四} 5{五} 6{六} 7{七} 8{八} 9{九} 10{十} 11{十一} 12{十二}}月",
   "details-nft": {
     "descr-full": "详细描述",
     "descr-short": "展开",
@@ -292,7 +297,6 @@
     "unfollow": "取消关注",
     "subscribers": "Subscribers",
     "bio": "个人介绍",
-
     "user-profile": "个人主页",
     "edit-profile": "编辑个人信息",
     "edit-avatar": "编辑头像",
