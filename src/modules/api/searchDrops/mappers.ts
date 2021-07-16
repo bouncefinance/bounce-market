@@ -17,6 +17,7 @@ export interface ISearchDropsItem {
   updatedAt: Date;
   username: string;
   website: string;
+  avatar: string;
 }
 
 export const mapSearchDropsItem = (
@@ -39,5 +40,6 @@ export const mapSearchDropsItem = (
     updatedAt: new Date(item.updated_at),
     username: item.username,
     website: item.website,
+    avatar: item.avatar,
   };
 };

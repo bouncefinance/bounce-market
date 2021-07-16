@@ -5,18 +5,20 @@ import {
 } from '@material-ui/core';
 import classNames from 'classnames';
 import { PencilIcon } from 'modules/common/components/Icons/PencilIcon';
-import React from 'react';
+import { VerifiedIcon } from './assets/VerifiedIcon';
 import { useAvatarStyles } from './useAvatarStyles';
 
 interface IAvatarProps extends AvatarProps {
   onEditClick?: () => void;
   isEditable?: boolean;
+  isVerified?: boolean;
 }
 
 export const Avatar = ({
   className,
   onEditClick,
   isEditable = false,
+  isVerified = false,
   ...restProps
 }: IAvatarProps) => {
   const classes = useAvatarStyles();
@@ -29,7 +31,10 @@ export const Avatar = ({
         isEditable && classes.editable,
       )}
     >
-      <AvatarComponent {...restProps} className={classes.avatar} />
+      <div className={classes.avatarBox}>
+        <AvatarComponent {...restProps} className={classes.avatar} />
+        {isVerified && <VerifiedIcon className={classes.verifiedIcon} />}
+      </div>
 
       {isEditable && (
         <IconButton className={classes.editButton} onClick={onEditClick}>

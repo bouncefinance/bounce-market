@@ -301,7 +301,7 @@ export const BuyNFT = () => {
 
             const renderedCreator = (
               <ProfileInfo
-                subTitle="Minter"
+                subTitle={t('details-nft.role.minter')}
                 title={wrapperTitle(
                   roleInfos.minter.username,
                   roleInfos.minter.address,
@@ -324,7 +324,7 @@ export const BuyNFT = () => {
 
             const renderedOwner = (
               <ProfileInfo
-                subTitle="Seller"
+                subTitle={t('details-nft.role.seller')}
                 title={wrapperTitle(
                   roleInfos.creator.username,
                   roleInfos.creator.address,
@@ -451,7 +451,6 @@ export const BuyNFT = () => {
                     creator={renderedCreator}
                     owner={renderedOwner}
                   />
-
                   {isEnglishAuction(poolDetails) ? (
                     <InfoPrices
                       endDate={poolDetails.closeAt}

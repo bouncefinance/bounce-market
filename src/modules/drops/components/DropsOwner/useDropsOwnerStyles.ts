@@ -26,9 +26,9 @@ export const useDropsOwnerStyles = makeStyles<Theme>(theme => ({
 
   verifiedIcon: {
     position: 'absolute',
-    bottom: 0,
-    right: -2,
-    fontSize: getEm(20, 48),
+    bottom: -7,
+    right: -7,
+    fontSize: getEm(30, 48),
   },
 
   title: {

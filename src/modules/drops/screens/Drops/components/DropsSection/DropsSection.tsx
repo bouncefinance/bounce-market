@@ -153,6 +153,7 @@ export const DropsSection = () => {
         <DropsOwner
           title={item.username}
           isVerified={true}
+          avatar={item.avatar}
           href={ProfileRoutesConfig.OtherProfile.generatePath(
             item.accountAddress,
           )}
