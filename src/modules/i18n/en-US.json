@@ -284,6 +284,14 @@
       "heco": "HECO Chain",
       "heco-2": "Huobi Wallet",
       "title": "Select network"
+    },
+    "network": {
+      "etherreum": "Ethereum",
+      "binance": "Binance Smart Chain",
+      "rinkby":"Rinkeby Test Chain",
+      "heco": "Heco Chain",
+      "polygon": "Matic Chain",
+      "unknow": "Unknown network"
     }
   },
   "info-prices": {
@@ -312,7 +320,8 @@
   },
   "language": {
     "en-US": "English",
-    "zh-CN": "中文"
+    "zh-CN": "中文",
+    "ru-RU": "Русский"
   },
   "monthFormat": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December}}",
   "movers": {
