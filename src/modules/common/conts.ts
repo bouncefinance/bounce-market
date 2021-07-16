@@ -50,7 +50,7 @@ export const featuresConfig = {
   /**
    * Now this feature is not implemented in the backend
    */
-  dropDetailsVideo: false,
+  dropDetailsVideo: true,
 };
 
 export enum BlockchainNetworkId {

@@ -1,5 +1,4 @@
 import { Box, Typography } from '@material-ui/core';
-import { useQuery } from '@redux-requests/react';
 import { DropsDetailPoolState } from 'modules/api/getOneDropsDetail';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import {
@@ -7,10 +6,7 @@ import {
   ProductCardSkeleton,
 } from 'modules/common/components/ProductCard';
 import { TokenSymbol } from 'modules/common/types/TokenSymbol';
-import {
-  getDropDetails,
-  IGetDropDetails,
-} from 'modules/drops/actions/getDropDetails';
+import { IGetDropDetails } from 'modules/drops/actions/getDropDetails';
 import { t } from 'modules/i18n/utils/intl';
 import React from 'react';
 import { uid } from 'react-uid';
@@ -18,11 +14,13 @@ import { CardsList } from '../CardsList';
 
 const SKELETONS_COUNT = 3;
 
-export const LiveCards = () => {
-  const { data, loading } = useQuery<IGetDropDetails | null>({
-    type: getDropDetails.toString(),
-  });
-
+export const LiveCards = ({
+  loading,
+  data,
+}: {
+  loading: boolean;
+  data: IGetDropDetails | null;
+}) => {
   const liveNfts = (data?.poolsInfo || []).filter(
     poolInfo => poolInfo.state === DropsDetailPoolState.Live,
   );

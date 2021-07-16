@@ -33,6 +33,7 @@ export interface IDropDetails {
   title: string;
   twitter: string;
   website: string;
+  videourl: string;
 }
 
 export const mapDropDetailsPoolInfo = (
@@ -64,5 +65,6 @@ export const mapDropDetails = (data: IApiOneDropsDetailData): IDropDetails => {
     title: data.title,
     twitter: data.twitter,
     website: data.website,
+    videourl: data.videourl,
   };
 };

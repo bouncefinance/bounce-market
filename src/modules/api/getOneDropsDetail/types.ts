@@ -34,6 +34,7 @@ export interface IApiOneDropsDetailData {
   title: string;
   twitter: string;
   website: string;
+  videourl: string;
 }
 
 export interface IApiOneDropsDetail {
