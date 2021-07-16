@@ -483,7 +483,7 @@ export const BuyNFT = () => {
                   ) : (
                     <InfoPrices
                       price={poolDetails.price.multipliedBy(currency.priceUsd)}
-                      hasSetDirectPrice={false}
+                      hasSetDirectPrice={true}
                       cryptoPrice={poolDetails.price}
                       cryptoCurrency={item.tokenSymbol}
                       onBuyClick={openFixedBuyDialog}
