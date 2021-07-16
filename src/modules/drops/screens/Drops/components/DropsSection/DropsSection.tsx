@@ -130,7 +130,6 @@ export const DropsSection = () => {
   );
 
   const onLoadMoreClick = () => {
-    console.log(dataPrev);
     if (!dataPrev) {
       return false;
     }

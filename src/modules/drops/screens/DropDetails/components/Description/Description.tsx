@@ -22,10 +22,6 @@ interface IDescriptionProps {
 export const Description = ({ data, loading, pristine }: IDescriptionProps) => {
   const classes = useDescriptionStyles();
 
-  // const { data, loading, pristine } = useQuery<IDropDetails | null>({
-  //   type: getDropDetails.toString(),
-  // });
-
   return (
     <Box mb={{ xs: 8, md: 12 }}>
       {loading && <DescriptionSkeleton />}
