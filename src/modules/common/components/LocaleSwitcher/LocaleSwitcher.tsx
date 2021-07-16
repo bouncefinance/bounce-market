@@ -23,6 +23,10 @@ export const LocaleSwitcher = () => {
         value: Locale.zh,
         label: t('language.zh-CN'),
       },
+      {
+        value: Locale.ru,
+        label: t('language.ru-RU'),
+      },
     ],
     [],
   );

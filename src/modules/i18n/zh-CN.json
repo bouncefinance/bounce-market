@@ -287,6 +287,14 @@
       "heco": "火币生态链",
       "heco-2": "火币钱包",
       "title": "选择网络"
+    },
+    "network": {
+      "etherreum": "以太坊主网",
+      "binance": "币安智能链",
+      "rinkby":"Rinkeby 测试链",
+      "heco": "火币生态链",
+      "polygon": "Polygon 聚合链",
+      "unknow": "未连接网络"
     }
   },
   "info-prices": {
@@ -315,7 +323,8 @@
   },
   "language": {
     "en-US": "English",
-    "zh-CN": "中文"
+    "zh-CN": "中文",
+    "ru-RU": "Русский"
   },
   "monthFormat": "{month, select, 1{一} 2{二} 3{三} 4{四} 5{五} 6{六} 7{七} 8{八} 9{九} 10{十} 11{十一} 12{十二}}月",
   "movers": {

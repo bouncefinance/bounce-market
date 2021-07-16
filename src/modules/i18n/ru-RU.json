@@ -207,6 +207,21 @@
       "items": "Товары",
       "placeholder": "Поиск по имени, автору, коллекции ...",
       "users": "Пользователи"
+    },
+    "select-chain": {
+      "bnb": "Binance Smart Chain",
+      "eth": "Ethereum Mainnet",
+      "heco": "HECO Chain",
+      "heco-2": "Huobi Wallet",
+      "title": "Select network"
+    },
+    "network": {
+      "etherreum": "Ethereum",
+      "binance": "Binance Smart Chain",
+      "rinkby":"Rinkeby Test Chain",
+      "heco": "Heco Chain",
+      "polygon": "Matic Chain",
+      "unknow": "Unknown network"
     }
   },
   "info-prices": {
@@ -235,7 +250,8 @@
   },
   "language": {
     "en-US": "English",
-    "zh-CN": "中文"
+    "zh-CN": "中文",
+    "ru-RU": "Русский"
   },
   "movers": {
     "title": "Набирающие полулярность"
