@@ -59,6 +59,6 @@ export function mapProfileInfo({
     instagram: data.instagram,
     twitter: data.twitter,
     facebook: data.facebook,
-    isVerified: data.identity === VerifiedsState.Verified ? true : false,
+    isVerified: data.identity === VerifiedsState.Verified,
   };
 }
