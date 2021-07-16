@@ -1,181 +1,229 @@
 {
+  "artists": {
+    "title": "Featured Creators"
+  },
+  "brand": {
+    "card": {
+      "addNewItem": "Add new item",
+      "createNewBrand": "Create new brand",
+      "createNewItem": "Create new item",
+      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}"
+    },
+    "create": {
+      "avatar-accepts": "Supports JPG, PNG, JPEG2000",
+      "avatar-recommended-size": "300x300 Recommended",
+      "create-brand": "Create brand",
+      "label": {
+        "brand-avatar": "Brand avatar",
+        "brand-name": "Brand name",
+        "brand-symbol": "Brand symbol",
+        "brand-url": "Brand URL",
+        "description": "Description"
+      }
+    }
+  },
+  "brands": {
+    "items": "{num} items",
+    "no-items": "There is no items created yet.",
+    "title": "Brands"
+  },
+  "burn-token": {
+    "submit": "Burn",
+    "title": "Burn Token"
+  },
+  "buy-dialog": {
+    "submit": "Buy",
+    "title": "Buy now"
+  },
+  "change-wallet": {
+    "description": "Change network to Ethereum Mainnet, Binance Smart Chain, or Heco",
+    "network-change-error": "Unable to set up BSC network on Metamask due to the provider error",
+    "submit": "Change network",
+    "title": "Wrong network"
+  },
+  "collection": {
+    "card": {
+      "addNewItem": "Add new item",
+      "createNewItem": "Create new item",
+      "createNewcollection": "Create new collection",
+      "itemsCount": "{value, plural, =0 {No NFT} =1 {One NFT} other {# NFTs}}"
+    },
+    "create": {
+      "avatar-accepts": "Supports JPG, PNG, JPEG2000",
+      "avatar-recommended-size": "300x300 Recommended",
+      "create-collection": "Create collection",
+      "label": {
+        "collection-avatar": "collection avatar",
+        "collection-name": "collection name",
+        "collection-symbol": "collection symbol",
+        "collection-url": "collection URL",
+        "description": "Description"
+      }
+    }
+  },
+  "collections": {
+    "no-items": "There are no items created yet",
+    "title": "Collection"
+  },
   "common": {
-    "load-more": "Load more",
-    "read-more": "read more",
-    "view-all": "View all",
-    "submitting": "Submitting",
-    "copy-to-clipboard": "Copy to clipboard",
-    "copied": "Copied!",
-    "save": "Save",
     "apply": "Apply",
     "close": "Close",
+    "coming-soon": "Coming soon...",
+    "copied": "Copied!",
+    "copy-to-clipboard": "Copy to clipboard",
+    "load-more": "Load more",
+    "nothing-found": "Nothing found",
+    "quantity": "Quantity",
+    "read-more": "read more",
     "reset": "Reset",
     "restore": "Restore",
+    "save": "Save",
+    "submitting": "Submitting",
     "unknown": "Unknown",
-    "coming-soon": "Coming soon...",
-    "quantity": "Quantity",
-    "nothing-found": "Nothing found"
-  },
-  "time": {
-    "time-over": "Time is over",
-    "days-left": "{days} days left",
-    "time-left-short": "{days} {hours} {minutes} {seconds} left",
-    "days-short": "{days}d",
-    "hours-short": "{hours}h",
-    "minutes-short": "{minutes}m",
-    "seconds-short": "{seconds}s",
-    "finished-on": "Finished on {end, date, medium}"
-  },
-  "header": {
-    "create": "Create",
-    "connect": "Connect Wallet",
-    "inventory": "My Inventory",
-    "my-brands": "My Collections",
-    "profile-settings": "Profile settings",
-    "disconnect": "Disconnect",
-    "drops": "Dr\uD83D\uDD25ps",
-    "market": "Marketplace",
-    "brands": "Collections",
-    "how-it-works": "How it works",
-    "search": {
-      "placeholder": "Search by name, creator, collection...",
-      "empty": "No results found",
-      "items": "Items",
-      "brands": "Collections",
-      "users": "Users"
-    },
-    "select-chain": {
-      "title": "Select network",
-      "eth": "Ethereum Mainnet",
-      "bnb": "Binance Smart Chain",
-      "heco": "HECO Chain",
-      "heco-2": "Huobi Wallet"
-    }
-  },
-  "language": {
-    "en-US": "English",
-    "zh-CN": "中文"
-  },
-  "social": {
-    "share": "Share",
-    "title-for-socials": "{title} — {description}",
-    "instagram": "Instagram",
-    "twitter": "Twitter",
-    "facebook": "Facebook",
-    "telegram": "Telegram"
+    "view-all": "View all"
   },
   "connect-wallet": {
-    "placeholder": {
-      "title": "Connect your wallet",
-      "brand-title": "To see the collection's items, you need to connect first.",
-      "description": "The content of this page is only available with the connected wallet"
-    },
     "custom-binancewallet": {
-      "name": "Binance Chain",
-      "description": "Binance Chain & Smart Chain Wallet"
-    },
-    "custom-imtoken": {
-      "name": "imToken",
-      "description": "Easy and secure digital wallet trusted by millions"
-    },
-    "custom-math": {
-      "name": "Math Wallet",
-      "description": "Gateway to the World of Blockchain"
-    },
-    "custom-trust": {
-      "name": "Trust Wallet",
-      "description": "The most trusted & secure crypto wallet"
+      "description": "Binance Chain & Smart Chain Wallet",
+      "name": "Binance Chain"
     },
     "custom-huobi": {
-      "name": "Huobi Wallet",
-      "description": "Multi-currency support, practical and convenient"
+      "description": "Multi-currency support, practical and convenient",
+      "name": "Huobi Wallet"
+    },
+    "custom-imtoken": {
+      "description": "Easy and secure digital wallet trusted by millions",
+      "name": "imToken"
+    },
+    "custom-math": {
+      "description": "Gateway to the World of Blockchain",
+      "name": "Math Wallet"
+    },
+    "custom-trust": {
+      "description": "The most trusted & secure crypto wallet",
+      "name": "Trust Wallet"
+    },
+    "placeholder": {
+      "brand-title": "To see the brand's items, you need to connect first.",
+      "collection-title": "To view collection items, you need to connect your wallet first",
+      "description": "The contents of this page are only viewable with a connected wallet",
+      "title": "Connect your wallet"
     }
   },
-  "promo": {
-    "created-by": "Created by"
+  "create-brand-nft": {
+    "channelOption": {
+      "Comicbooks": "Comic",
+      "FineArts": "Fine arts",
+      "Sports": "Sports"
+    },
+    "label": {
+      "channel": "Channel",
+      "description": "Description",
+      "name": "Name",
+      "standard": "Standard",
+      "supply": "Supply"
+    },
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
+    "submit": "Create",
+    "submitting": "Creating",
+    "title": "Create Brand NFT"
   },
-  "unit": {
-    "day": "{value, plural, =0 {0 days} =1 {1 day} other {# days}}",
-    "BNB-value": "{value, number} BNB",
-    "$-value": "${value}",
-    "custom-unit": "{value, number} {unit}"
-  },
-  "error": {
-    "unexpected": "Unexpected error",
-    "data-is-not-available": "Data is not available",
-    "greater-than": "It must be greater than {value}",
-    "less-than": "It must be less than {value}"
-  },
-  "go-back": {
-    "action": "Go back"
+  "create-collection-nft": {
+    "channelOption": {
+      "Comics": "Comics",
+      "FineArts": "Fine arts",
+      "Sports": "Sports"
+    },
+    "label": {
+      "channel": "Channel",
+      "description": "Description",
+      "name": "Name",
+      "standard": "Standard",
+      "supply": "Supply"
+    },
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
+    "submit": "Create",
+    "submitting": "Creating",
+    "title": "Create NFT collection"
   },
   "create-nft": {
-    "title": "Create NFT",
-    "label": {
-      "name": "Name",
-      "description": "Description",
-      "channel": "Channel",
-      "standard": "Standard",
-      "supply": "Supply",
-      "specific-time-sale": "Put on sale at a specific time",
-      "Set-up-date": "Set up date and time"
-    },
     "channelOption": {
+      "Comicbooks": "Comic",
+      "Comics": "Comics",
       "FineArts": "Fine arts",
-      "Sports": "Sports",
-      "Comicbooks": "Comic"
+      "Sports": "Sports"
     },
-    "standardOption": {
-      "0": "ERC-721",
-      "1": "ERC-1155"
+    "label": {
+      "Set-up-date": "Set up date and time",
+      "channel": "Channel",
+      "description": "Description",
+      "name": "Name",
+      "specific-time-sale": "Put on sale at a specific time",
+      "standard": "Standard",
+      "supply": "Supply"
     },
-    "submit": "Create",
     "next": "Next",
-    "submitting": "Creating"
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
+    "submit": "Create",
+    "submitting": "Creating",
+    "time": "",
+    "title": "Create NFT"
   },
-  "monthFormat": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December}}",
+  "cropper": {
+    "flip-h": "Flip horizontal",
+    "flip-v": "Flip vertical",
+    "rotate-left": "Rotate left",
+    "rotate-right": "Rotate right"
+  },
   "details-nft": {
+    "bid": {
+      "bid-placed": "Bid placed"
+    },
+    "buy-now": "Buy now",
     "descr-full": "Full description",
     "descr-short": "Collapse",
-    "top-bid": "Top Bid",
-    "buy-now": "Buy now",
-    "sold-out": "Sold out",
-    "place-a-bid": "Place a bid",
-    "your-bid": "Your bid",
-    "enter-a-bid": "Enter a bid",
-    "tabs": {
-      "history": "History",
-      "bids": "Bids",
-      "owners": "Owners",
-      "token-info": "Token info"
+    "dialog": {
+      "footnote": "Bids placed in auction cannot be withdrawn",
+      "input-info": "Minimum bid {value} {currency}"
+    },
+    "enter-a-bid": "Enter a Bid",
+    "history": {
+      "cancel-str": "Canceled",
+      "claim-str": "Claimed",
+      "create-str": "Put on sale {quantity} editions for {price} {symbol}",
+      "offer-str": "Offered {price} {symbol} for {quantity} edition"
     },
     "info": {
       "date": "{value, date, medium}",
       "time": "at {value, time, short}",
-      "view-scan": "View on {name}"
-    },
-    "dialog": {
-      "input-info": "Your bid must be {value} {currency} higher than the current top bid.",
-      "footnote": "Bids placed in auction cannot be withdrawn."
-    },
-    "token-info": {
-      "standard": "Standard:",
-      "total-supply": "Total Supply:",
-      "name-tags": "Name Tags:",
-      "contract": "Contract:",
-      "token-id": "Token ID:"
-    },
-    "history": {
-      "create-str": "Put on sale {quantity} editions for {price} {symbol}",
-      "offer-str": "Offered {price} {symbol} for {quantity} edition",
-      "cancel-str": "Canceled",
-      "claim-str": "Claimed"
-    },
-    "bid": {
-      "bid-placed": "Bid placed"
+      "view-scan": "View on BscScan"
     },
     "owner": {
       "balance": "{balance} copies"
+    },
+    "place-a-bid": "Place a bid",
+    "sold-out": "Sold out",
+    "tabs": {
+      "bids": "Bids",
+      "history": "History",
+      "owners": "Owners",
+      "token-info": "Token info"
+    },
+    "token-info": {
+      "contract": "Contract:",
+      "name-tags": "Name Tags:",
+      "standard": "Standard:",
+      "token-id": "Token ID:",
+      "total-supply": "Total Supply:"
     },
     "tooltip": {
       "bid-warning": "Please note that you will be unable to cancel after placing your bid. Your bid will be valid until it has been outbid, accepted by the creator or expires."
@@ -183,270 +231,281 @@
     "role":{
       "seller": "Seller",
       "minter": "Minter"
-    }
-  },
-  "form": {
-    "limit-counter": "{value}/{maxLimit}"
-  },
-  "validation": {
-    "required": "This field is required",
-    "require-integer": "This value should be integer number",
-    "min": "Smallest value is {value}",
-    "max": "Highest value is {value}",
-    "invalid-email": "Enter a valid Email",
-    "invalid-website": "Enter a valid Website URL",
-    "invalid-instagram": "Enter a valid instagram Website URL",
-    "invalid-twitter": "Enter a valid twitter Website URL",
-    "invalid-facebook": "Enter a valid facebook Website URL",
-    "invalid-type": "Invalid file type",
-    "max-size": "Max size is {value, number}MB"
-  },
-  "upload-file-field": {
-    "choose-file": "Choose file",
-    "title": "Drop your item here",
-    "subtitle": "or <strong>browse</strong> to choose a file",
-    "formats-many": "Supports {firstTypes} or {lastType}",
-    "formats-one": "Supports {fileType} only",
-    "max-size": "Max {value}MB",
-    "file-uploaded": "File uploaded",
-    "file-data": "{fileName} {fileSize}MB"
-  },
-  "products": {
-    "sort-label": "Sort by: {value}"
-  },
-  "movers": {
-    "title": "Fast movers"
-  },
-  "artists": {
-    "title": "Top Artists"
-  },
-  "brand": {
-    "create": {
-      "create-brand": "Create collection",
-      "label": {
-        "brand-name": "Collection name",
-        "brand-url": "Collection URL",
-        "description": "Description",
-        "brand-symbol": "Collection symbol",
-        "brand-avatar": "Collection avatar"
-      },
-      "avatar-accepts": "Supports JPG, PNG, JPEG2000",
-      "avatar-recommended-size": "300x300 Recommended"
     },
-    "card": {
-      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}",
-      "addNewItem": "Add new item",
-      "createNewItem": "Create new item",
-      "createNewBrand": "Create new collection"
-    }
-  },
-  "create-brand-nft": {
-    "title": "Create Collection NFT",
-    "label": {
-      "name": "Name",
-      "description": "Description",
-      "channel": "Channel",
-      "standard": "Standard",
-      "supply": "Supply"
-    },
-    "channelOption": {
-      "FineArts": "Fine arts",
-      "Sports": "Sports",
-      "Comicbooks": "Comic"
-    },
-    "standardOption": {
-      "0": "ERC-721",
-      "1": "ERC-1155"
-    },
-    "submit": "Create",
-    "submitting": "Creating"
-  },
-  "overview": {
-    "brands": {
-      "title": "Collections"
-    }
-  },
-  "brands": {
-    "title": "Collections",
-    "items": "{num} items",
-    "no-items": "There is no items created yet."
-  },
-  "publish-nft": {
-    "title": "Put on sale",
-    "submit": "Put on Sale",
-    "submitting": "Submitting",
-    "fee": "Fangible fee {value}%",
-    "receive": "You will receive <b>{value} {unit}</b>",
-    "expire": "Will expire on {value, date, medium} {value, time, short}",
-    "auction-amount": "In the auction, the copies you put on sale will be sold all at once.",
-    "auction-type": {
-      "fixed-swap": "Fixed Price",
-      "english-auction": "English auction"
-    },
-    "label": {
-      "type": "Type of Sale",
-      "price": "Sale price",
-      "amount": "Amount",
-      "minBid": "Minimum bid",
-      "directPurchase": "Direct purchase price",
-      "reservePrice": "Reserve price",
-      "count": "Count",
-      "duration": "Expiration Date"
-    },
-    "tooltip": {
-      "directPurchase": "A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price.",
-      "reservePrice": "Setting a reserve price creates a hidden limit,If you receive no bids equal to or greater than your reserve,your auction will not be sold.",
-      "duration": "Auction will be completed in this time"
-    },
-    "error": {
-      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price < Direct purchase price",
-      "wrong-direct-bid-amount": "Make sure Minimum bid < Direct purchase price",
-      "wrong-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price"
-    }
-  },
-  "profile": {
-    "customize-btn": "Customize",
-    "follow": "Follow",
-    "unfollow": "Unfollow",
-    "subscribers": "Subscribers",
-    "bio": "Bio",
-    "user-profile": "User profile",
-    "edit-profile": "Edit profile",
-    "edit-avatar": "Edit avatar",
-    "edit-cover": "Edit profile cover",
-    "no-items": {
-      "title": "No items found",
-      "descr": "You have not created any NFTs yet",
-      "btn": "Browse market"
-    },
-    "edit": {
-      "label": {
-        "username": "Username",
-        "full-name": "Full Name",
-        "email": "Email",
-        "custom-url": "Custom URL",
-        "bio": "Bio",
-        "website": "Website",
-        "instagram": "Instagram",
-        "twitter": "twitter",
-        "facebook": "Facebook"
-      },
-      "placeholder": {
-        "website": "Website Link",
-        "instagram": "Instagram Link",
-        "twitter": "Twitter Link",
-        "facebook": "Facebook Link"
-      },
-      "save-changes": "Save Changes",
-      "success-message": "Changes have been applied successfully.",
-      "no-profile": "Please complete your profile setting first."
-    },
-    "tabs": {
-      "my-items": "My items",
-      "items": "Items",
-      "my-bids": "My bids",
-      "my-sells": "My sales",
-      "my-brands": "My collections",
-      "brands": "Collections",
-      "activity": "Activity",
-      "liked": "Liked",
-      "following": "Following",
-      "followers": "Followers"
-    },
-    "activity": {
-      "event": "Event",
-      "item": "Item",
-      "price": "Price",
-      "from": "From",
-      "to": "To",
-      "date": "Date",
-      "transfer": "Transfer",
-      "created": "Created",
-      "canceled": "Canceled",
-      "claimed": "Claimed",
-      "empty-title": "No activities found",
-      "empty-description": "You have not any activities yet"
-    },
-    "bids-categories": {
-      "all": "All",
-      "art": "Art",
-      "sport": "Sport",
-      "Comicbooks": "Comic"
-    }
-  },
-  "buy-dialog": {
-    "title": "Buy now",
-    "submit": "Buy"
-  },
-  "cropper": {
-    "rotate-left": "Rotate left",
-    "rotate-right": "Rotate right",
-    "flip-v": "Flip vertical",
-    "flip-h": "Flip horizontal"
-  },
-  "video-player": {
-    "unsupported": "Sorry, your browser doesn't support embedded videos or uploaded video file type!"
-  },
-  "change-wallet": {
-    "title": "Wrong network",
-    "description": "Change network to Etherium Mainnet, Binance Smart Chain or Heco or Matic",
-    "submit": "Change network",
-    "network-change-error": "Can't setup the BSC network on metamask because provider is undefined."
-  },
-  "info-prices": {
-    "claim": "Claim",
-    "cancel": "Cancel",
-    "canceled": "Canceled",
-    "status": {
-      "CompletedByDirectPurchase": {
-        "creator": "Item has been sold, you can claim your money",
-        "buyer": "Item has been sold, you can claim your nft",
-        "others": "Item has been sold"
-      },
-      "NotSoldByReservePrice": {
-        "creator": "Item hasn't been sold. Claim your NFT back",
-        "buyer": "Item hasn't been sold. Claim your tokens back",
-        "others": "Item hasn't been sold"
-      },
-      "Claimed": {
-        "default": "Item has been claimed",
-        "creator": "Item has been sold"
-      },
-      "Live": {
-        "creator": "Auction is in progress"
-      }
-    }
-  },
-  "product-card": {
-    "not-on-sale": "Not on sale",
-    "price": "Price",
     "top-bid": "Top Bid",
-    "sold-for": "Sold for",
-    "owner": "Owner",
-    "put-on-sale": "Put on sale",
-    "transfer": "Transfer token",
-    "burn": "Burn token"
-  },
-  "transfer-token": {
-    "title": "Transfer Token",
-    "submit": "Transfer"
-  },
-  "burn-token": {
-    "title": "Burn Token",
-    "submit": "Burn"
-  },
-  "empty-data": {
-    "title": "Whoops. Looks like there's no data.",
-    "text": "Try to change the network to view the content of the page."
-  },
-  "drops": {
-    "top-creators": "Top Creators",
-    "upcoming": "Upcoming  dr🔥ps",
-    "previous": "Previous drops"
+    "your-bid": "Your bid"
   },
   "drop-details": {
     "live": "Live",
     "sold": "Sold",
     "timer-descr": "until the Drop ends"
+  },
+  "drops": {
+    "previous": "Previous drops",
+    "top-creators": "Top Creators",
+    "upcoming": "Upcoming  dr🔥ps"
+  },
+  "empty-data": {
+    "text": "Switch to the correct network to view the contents of this page.",
+    "title": "Whoops! Looks like there's no data."
+  },
+  "error": {
+    "data-is-not-available": "Data is not available",
+    "greater-than": "It must be greater than {value}",
+    "less-than": "It must be less than {value}",
+    "unexpected": "Unexpected error"
+  },
+  "form": {
+    "limit-counter": "{value}/{maxLimit}"
+  },
+  "go-back": {
+    "action": "Go back"
+  },
+  "header": {
+    "brands": "Brands",
+    "collections": "Collections",
+    "connect": "Connect Wallet",
+    "create": "Create",
+    "disconnect": "Disconnect",
+    "drops": "Dr🔥ps",
+    "how-it-works": "How it works",
+    "inventory": "My Inventory",
+    "market": "Marketplace",
+    "my-brands": "My Brands",
+    "my-collections": "My collections",
+    "profile-settings": "Profile settings",
+    "search": {
+      "brands": "Brands",
+      "collections": "Collections",
+      "empty": "No results found",
+      "items": "Items",
+      "placeholder": "Search by name, creator, collection...",
+      "users": "Users"
+    },
+    "select-chain": {
+      "bnb": "Binance Smart Chain",
+      "eth": "Ethereum Mainnet",
+      "heco": "HECO Chain",
+      "heco-2": "Huobi Wallet",
+      "title": "Select network"
+    }
+  },
+  "info-prices": {
+    "cancel": "Cancel",
+    "canceled": "Canceled",
+    "claim": "Claim",
+    "status": {
+      "Claimed": {
+        "creator": "Item has been sold",
+        "default": "Item has been claimed"
+      },
+      "CompletedByDirectPurchase": {
+        "buyer": "Item has been sold, you can claim your NFT",
+        "creator": "Item has been sold, you can claim your money",
+        "others": "Item has been sold"
+      },
+      "Live": {
+        "creator": "Auction is in progress"
+      },
+      "NotSoldByReservePrice": {
+        "buyer": "Item hasn't been sold. Claim your tokens back",
+        "creator": "Item hasn't been sold. Claim your NFT back",
+        "others": "Item hasn't been sold"
+      }
+    }
+  },
+  "language": {
+    "en-US": "English",
+    "zh-CN": "中文"
+  },
+  "monthFormat": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December}}",
+  "movers": {
+    "title": "Fast movers"
+  },
+  "overview": {
+    "brands": {
+      "title": "Hot Brands"
+    },
+    "collections": {
+      "title": "Hot collections"
+    }
+  },
+  "product-card": {
+    "burn": "Burn token",
+    "not-on-sale": "Not on sale",
+    "owner": "Owner",
+    "price": "Price",
+    "put-on-sale": "Put on sale",
+    "sold-for": "Sold for",
+    "top-bid": "Top Bid",
+    "transfer": "Transfer token"
+  },
+  "products": {
+    "sort-label": "Sort by: {value}"
+  },
+  "profile": {
+    "activity": {
+      "canceled": "Canceled",
+      "claimed": "Claimed",
+      "created": "Created",
+      "date": "Date",
+      "empty-description": "You have not had any activities yet",
+      "empty-title": "No activities found",
+      "event": "Event",
+      "from": "From",
+      "item": "Item",
+      "price": "Price",
+      "quantity": "Quantity",
+      "to": "To",
+      "transfer": "Transfer"
+    },
+    "bids-categories": {
+      "Comicbooks": "Comic",
+      "Comics": "Comics",
+      "all": "All",
+      "art": "Art",
+      "sport": "Sport",
+      "sports": "Sports"
+    },
+    "bio": "Bio",
+    "customize-btn": "Customize",
+    "edit": {
+      "label": {
+        "bio": "Bio",
+        "custom-url": "Custom URL",
+        "email": "Email",
+        "facebook": "Facebook",
+        "full-name": "Full Name",
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "username": "Username",
+        "website": "Website"
+      },
+      "no-profile": "Please complete your profile setting first.",
+      "placeholder": {
+        "facebook": "Facebook Link",
+        "instagram": "Instagram Link",
+        "twitter": "Twitter Link",
+        "website": "Website Link"
+      },
+      "save-changes": "Save Changes",
+      "success-message": "Changes have been successfully applied"
+    },
+    "edit-avatar": "Edit avatar",
+    "edit-cover": "Edit profile cover",
+    "edit-profile": "Edit profile",
+    "follow": "Follow",
+    "no-items": {
+      "btn": "Browse marketplace",
+      "descr": "You have not minted any NFTs yet",
+      "title": "No items found"
+    },
+    "subscribers": "Subscribers",
+    "tabs": {
+      "activity": "Activity",
+      "brands": "Brands",
+      "collections": "Collections",
+      "followers": "Followers",
+      "following": "Following",
+      "items": "Items",
+      "liked": "Liked",
+      "my-bids": "My bids",
+      "my-brands": "My brands",
+      "my-collections": "My collections",
+      "my-items": "My items",
+      "my-sells": "My sales"
+    },
+    "unfollow": "Unfollow",
+    "user-profile": "User profile"
+  },
+  "promo": {
+    "created-by": "Created by"
+  },
+  "publish-nft": {
+    "auction-amount": "In this auction, the copies put on sale will all be sold at once",
+    "auction-type": {
+      "english-auction": "English auction",
+      "fixed-swap": "Fixed Price"
+    },
+    "error": {
+      "wrong-direct-bid-amount": "Make sure Minimum bid < Direct purchase price",
+      "wrong-direct-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price < Direct purchase price",
+      "wrong-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price"
+    },
+    "expire": "Will expire on {value, date, medium} {value, time, short}",
+    "fee": "Fangible fee {value}%",
+    "label": {
+      "amount": "Amount",
+      "count": "Count",
+      "directPurchase": "Direct purchase price",
+      "duration": "Expiration Date",
+      "minBid": "Minimum bid",
+      "price": "Sale price",
+      "reservePrice": "Reserve price",
+      "type": "Type of Sale"
+    },
+    "receive": "You will receive <b>{value} {unit}</b>",
+    "submit": "Put on Sale",
+    "submitting": "Submitting",
+    "title": "Put on sale",
+    "tooltip": {
+      "directPurchase": "A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price.",
+      "duration": "Auction will be completed in this time",
+      "reservePrice": "Setting a reserve price creates a hidden limit. If you receive no bids equal to or greater than your reserve, your auction will not be sold."
+    }
+  },
+  "social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "share": "Share",
+    "telegram": "Telegram",
+    "title-for-socials": "{title} — {description}",
+    "twitter": "Twitter"
+  },
+  "time": {
+    "days-left": "{days} days left",
+    "days-short": "{days}d",
+    "finished-on": "Finished on {end, date, medium}",
+    "hours-short": "{hours}h",
+    "minutes-short": "{minutes}m",
+    "seconds-short": "{seconds}s",
+    "time-left-short": "{days} {hours} {minutes} {seconds} left",
+    "time-over": "Time expired"
+  },
+  "transfer-token": {
+    "submit": "Transfer",
+    "title": "Transfer Token"
+  },
+  "unit": {
+    "$-value": "${value}",
+    "BNB-value": "{value, number} BNB",
+    "custom-unit": "{value, number} {unit}",
+    "day": "{value, plural, =0 {0 days} =1 {1 day} other {# days}}"
+  },
+  "upload-file-field": {
+    "choose-file": "Choose file",
+    "file-data": "{fileName} {fileSize}MB",
+    "file-uploaded": "File uploaded",
+    "formats-many": "Supports {firstTypes} or {lastType}",
+    "formats-one": "Supports {fileType} only",
+    "max-size": "Max {value}MB",
+    "subtitle": "or <strong>browse</strong> to choose a file",
+    "title": "Drop your item here"
+  },
+  "validation": {
+    "invalid-email": "Enter a valid Email",
+    "invalid-facebook": "Enter a valid facebook Website URL",
+    "invalid-instagram": "Enter a valid instagram Website URL",
+    "invalid-twitter": "Enter a valid twitter Website URL",
+    "invalid-type": "Invalid file type",
+    "invalid-website": "Enter a valid Website URL",
+    "max": "Highest value is {value}",
+    "max-size": "Max size is {value, number}MB",
+    "min": "Smallest value is {value}",
+    "require-integer": "This value should be a whole number",
+    "required": "This field is required"
+  },
+  "video-player": {
+    "unsupported": "Sorry, your browser does not support embedded videos or uploaded video file types!"
   }
 }
