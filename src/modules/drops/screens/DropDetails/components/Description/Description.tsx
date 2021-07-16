@@ -21,6 +21,7 @@ interface IDescriptionProps {
 
 export const Description = ({ data, loading, pristine }: IDescriptionProps) => {
   const classes = useDescriptionStyles();
+  console.log(data);
 
   return (
     <Box mb={{ xs: 8, md: 12 }}>

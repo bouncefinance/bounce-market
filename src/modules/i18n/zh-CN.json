@@ -238,7 +238,10 @@
   "drop-details": {
     "live": "Live",
     "sold": "Sold",
-    "timer-descr": "until the Drop ends"
+    "timer-descr": "until the Drop ends",
+    "sold-for":"Sold for",
+    "top-bid":"Top Bid",
+    "fixed-price":"Fixed Price"
   },
   "drops": {
     "previous": "Previous drops",
