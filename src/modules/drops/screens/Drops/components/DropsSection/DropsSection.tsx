@@ -33,7 +33,7 @@ import { DropsTab, DropsTabs } from '../DropsTabs';
 import { DropTimer } from '../DropTimer';
 
 const DROPS_INITIAL_PORTION_COUNT = 4;
-const DROPS_MORE_PORTION_COUNT = 8;
+const DROPS_MORE_PORTION_COUNT = 4;
 
 enum DropsSortBy {
   Coming = SearchDropsParamState.Coming,
@@ -130,6 +130,7 @@ export const DropsSection = () => {
   );
 
   const onLoadMoreClick = () => {
+    console.log(dataPrev);
     if (!dataPrev) {
       return false;
     }
@@ -139,7 +140,7 @@ export const DropsSection = () => {
         {
           state: SearchDropsParamState.Previous,
           limit: DROPS_MORE_PORTION_COUNT,
-          offset: dataPrev.offset + DROPS_MORE_PORTION_COUNT,
+          offset: (dataPrev.offset + 1) * DROPS_MORE_PORTION_COUNT,
         },
         { requestKey: DROPS_PREV_KEY },
       ),

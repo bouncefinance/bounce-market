@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { VideoComponent } from './VideoComponent';
 import { VideoSkeleton } from './VideoSkeleton';
 
-export const Video = () => {
+export const Video = ({ movieSrc }: { movieSrc: string }) => {
   // for demo purpose
   const [loading, setLoading] = useState(true);
 
@@ -19,10 +19,7 @@ export const Video = () => {
       {loading ? (
         <VideoSkeleton />
       ) : (
-        <VideoComponent
-          src="https://www.w3schools.com/html/mov_bbb.mp4"
-          muted={false}
-        />
+        <VideoComponent src={movieSrc} muted={false} />
       )}
     </Box>
   );

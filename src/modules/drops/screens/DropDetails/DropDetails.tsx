@@ -1,5 +1,7 @@
 import { Box, Container, ThemeProvider } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
+import { useQuery } from '@redux-requests/react';
+import { IDropDetails } from 'modules/api/getOneDropsDetail';
 import { featuresConfig } from 'modules/common/conts';
 import { getDropDetails } from 'modules/drops/actions/getDropDetails';
 import { DropsContainer } from 'modules/drops/components/DropsContainer';
@@ -26,6 +28,10 @@ export const DropDetails = () => {
     };
   }, [dispatch, dropId]);
 
+  const { data, loading, pristine } = useQuery<IDropDetails | null>({
+    type: getDropDetails.toString(),
+  });
+
   return (
     <ThemeProvider theme={darkTheme}>
       <Section>
@@ -34,12 +40,13 @@ export const DropDetails = () => {
             <GoBack />
           </Box>
         </Container>
-
         <DropsContainer>
-          <Description />
-          {featuresConfig.dropDetailsVideo && <Video />}
-          <LiveCards />
-          <SoldCards />
+          <Description loading={loading} pristine={pristine} data={data} />
+          {featuresConfig.dropDetailsVideo && !!data?.videourl && (
+            <Video movieSrc={data.videourl} />
+          )}
+          <LiveCards loading={loading} data={data} />
+          <SoldCards loading={loading} data={data} />
         </DropsContainer>
       </Section>
     </ThemeProvider>
