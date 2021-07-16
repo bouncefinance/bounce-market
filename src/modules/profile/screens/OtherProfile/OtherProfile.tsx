@@ -101,7 +101,11 @@ export const OtherProfile = () => {
       <Header img={profileInfo?.bgImgUrl} />
 
       <Container>
-        <Avatar className={classes.avatar} src={profileInfo?.imgUrl} />
+        <Avatar
+          className={classes.avatar}
+          src={profileInfo?.imgUrl}
+          isVerified={profileInfo?.isVerified}
+        />
         <InfoPanel
           withSharing
           name={profileInfo?.username}

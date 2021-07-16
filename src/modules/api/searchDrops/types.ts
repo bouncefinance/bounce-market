@@ -39,6 +39,7 @@ export interface IApiSearchDropsItem {
   updated_at: string;
   username: string;
   website: string;
+  avatar: string;
 }
 
 export interface IApiSearchDrops {

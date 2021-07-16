@@ -228,6 +228,10 @@
     "tooltip": {
       "bid-warning": "Please note that you will be unable to cancel after placing your bid. Your bid will be valid until it has been outbid, accepted by the creator or expires."
     },
+    "role":{
+      "seller": "Seller",
+      "minter": "Minter"
+    },
     "top-bid": "Top Bid",
     "your-bid": "Your bid"
   },
