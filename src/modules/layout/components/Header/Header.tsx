@@ -55,17 +55,17 @@ export const Header = () => {
   const mapChainIdName = useCallback(() => {
     switch (chainId) {
       case 1:
-        return 'Ethereum';
+        return t('header.network.etherreum');
       case 4:
-        return 'Rinkeby Test Chain';
+        return t('header.network.rinkby');
       case 56:
-        return 'Binance Smart Chain';
+        return t('header.network.binance');
       case 128:
-        return 'Heco Chain';
+        return t('header.network.heco');
       case 137:
-        return 'Matic Chain';
+        return t('header.network.polygon');
       default:
-        return 'Unknown network';
+        return t('header.network.unknow');
     }
   }, [chainId]);
 
