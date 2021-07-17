@@ -22,6 +22,7 @@ export const useDropsOwnerStyles = makeStyles<Theme>(theme => ({
     width: '1em',
     height: '1em',
     fontSize: 'inherit',
+    backgroundColor: '#fff',
   },
 
   verifiedIcon: {

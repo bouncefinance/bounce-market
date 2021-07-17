@@ -12,7 +12,8 @@ export const getDaysLeft = (endDate: Date) => {
 
 export function getTimeRemaining(endtime: Date) {
   const total =
-    Date.parse(endtime.toString()) - Date.parse(new Date().toString());
+    Date.parse(new Date(endtime).toString()) -
+    Date.parse(new Date().toString());
   const seconds = Math.floor((total / 1000) % 60);
   const minutes = Math.floor((total / 1000 / 60) % 60);
   const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
