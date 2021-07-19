@@ -208,4 +208,8 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     position: 'absolute',
     zIndex: 1,
   },
+  stateTip: {
+    fontWeight: 500,
+    opacity: 0.5,
+  },
 }));

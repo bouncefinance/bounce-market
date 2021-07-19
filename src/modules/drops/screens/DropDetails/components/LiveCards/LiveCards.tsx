@@ -1,4 +1,5 @@
 import { Box, Typography } from '@material-ui/core';
+import { AuctionType } from 'modules/api/common/auctionType';
 import { DropsDetailPoolState } from 'modules/api/getOneDropsDetail';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import {
@@ -32,6 +33,11 @@ export const LiveCards = ({
       title={item.name}
       priceType={data?.tokenSymbol || TokenSymbol.BNB}
       price={item.price}
+      stateTip={
+        item.poolType === AuctionType.FixedSwap
+          ? t('drop-details.fixed-price')
+          : t('drop-details.top-bid')
+      }
       MediaProps={{
         category: 'image',
         src: item.fileUrl,
@@ -40,6 +46,8 @@ export const LiveCards = ({
         item.poolId,
         item.poolType,
       )}
+      likes={undefined}
+      hiddenLikeBtn={true}
       // todo: id is needed to do likes
       id={0}
       poolId={item.poolId}

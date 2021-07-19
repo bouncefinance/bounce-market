@@ -56,11 +56,13 @@ export interface IProductCardComponentProps {
   id?: number;
   isLiked?: boolean;
   isLikeDisabled?: boolean;
+  hiddenLikeBtn?: boolean;
   imgPreloader?: ReactNode;
   onLikeClick?: () => void;
   status?: ProductCardStatuses;
   toSale?: string;
   hasAction?: boolean;
+  stateTip?: string;
   onTransferClick?: () => void;
   onBurnClick?: () => void;
 }
@@ -80,6 +82,7 @@ export const ProductCardComponent = ({
   id,
   isLikeDisabled = false,
   isLiked = false,
+  hiddenLikeBtn = false,
   onLikeClick,
   MediaProps,
   profileInfo,
@@ -87,6 +90,7 @@ export const ProductCardComponent = ({
   status,
   toSale,
   hasAction,
+  stateTip,
   onTransferClick,
   onBurnClick,
 }: IProductCardComponentProps) => {
@@ -234,6 +238,8 @@ export const ProductCardComponent = ({
 
         <hr className={classes.devider} />
 
+        {stateTip && <p className={classes.stateTip}>{stateTip}</p>}
+
         {isOnSale && price && (
           <div className={classes.price}>
             {auctionType === AuctionType.FixedSwap &&
@@ -257,7 +263,7 @@ export const ProductCardComponent = ({
 
               {!endDate && !copies && <i />}
 
-              {featuresConfig.nftLikes && renderedLikes}
+              {featuresConfig.nftLikes && !hiddenLikeBtn && renderedLikes}
             </>
           )}
 

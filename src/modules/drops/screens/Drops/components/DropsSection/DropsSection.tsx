@@ -139,7 +139,7 @@ export const DropsSection = () => {
         {
           state: SearchDropsParamState.Previous,
           limit: DROPS_MORE_PORTION_COUNT,
-          offset: (dataPrev.offset + 1) * DROPS_MORE_PORTION_COUNT,
+          offset: dataPrev.offset + DROPS_MORE_PORTION_COUNT,
         },
         { requestKey: DROPS_PREV_KEY },
       ),
@@ -170,7 +170,7 @@ export const DropsSection = () => {
           text={item.description}
           timer={timer}
           creator={creator}
-          items={undefined}
+          dropId={item.id}
         />
       );
     });
