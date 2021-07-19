@@ -3,6 +3,7 @@ import {
   RequestAction,
   RequestActionMeta,
 } from '@redux-requests/core';
+import { auctionTypeMap } from 'modules/api/common/poolType';
 import {
   queryAccountInfo,
   UserRoleType,
@@ -66,8 +67,7 @@ export const mapNFTItem = (
     metadata: 'metadata',
     owneraddress: item.creator,
     poolId: item.poolid,
-    poolType:
-      item.pooltype === 1 ? AuctionType.FixedSwap : AuctionType.EnglishAuction,
+    poolType: auctionTypeMap[item.pooltype],
     price: item.price,
     standard: 0,
     supply: 100,
