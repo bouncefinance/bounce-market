@@ -178,6 +178,7 @@ export const enrichNftItem = (data: any, poolsCopy: any, nfts: any) => (
           : pool.lastestBidAmount
         : pool.price,
       state: pool.state,
+      openAt: pool.openAt,
     };
   }
 

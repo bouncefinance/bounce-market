@@ -1,6 +1,7 @@
 import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import {
   ProductCard,
@@ -72,17 +73,20 @@ export const TabItems = () => {
                 loading: 'lazy',
               }}
               profileInfo={
-                <ProfileInfo
-                  subTitle="Owner"
-                  title={username}
-                  users={[
-                    {
-                      name: username,
-                      avatar: profileInfo?.imgUrl,
-                      verified: true,
-                    },
-                  ]}
-                />
+                <>
+                  <ProfileInfo
+                    subTitle="Owner"
+                    title={username}
+                    users={[
+                      {
+                        name: username,
+                        avatar: profileInfo?.imgUrl,
+                        verified:
+                          profileInfo?.identity === UserRoleEnum.Verified,
+                      },
+                    ]}
+                  />
+                </>
               }
               toSale={
                 hasBrand(item)
@@ -94,6 +98,9 @@ export const TabItems = () => {
                       item.contractAddress,
                       item.id,
                     )
+              }
+              isCancelTimePut={
+                item.openAt ? +item.openAt >= +new Date() : false
               }
             />
           ) : (

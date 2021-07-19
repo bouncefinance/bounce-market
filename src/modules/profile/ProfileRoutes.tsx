@@ -13,8 +13,9 @@ export const PATH_EDIT_PROFILE = `${PATH_PROFILE_BASE}/edit`;
 
 export enum ProfileTab {
   items = 'items',
-  sells = 'sells',
+  owned = 'owned',
   bids = 'bids',
+  sells = 'On sale',
   brands = 'brands',
   activity = 'activity',
   liked = 'liked',

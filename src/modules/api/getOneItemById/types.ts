@@ -19,6 +19,7 @@ export interface IApiGetOneItemByIdData {
   owneraddress: string;
   standard: NftType;
   supply: number;
+  open_at: number;
 }
 
 export interface IApiGetOneItemById {

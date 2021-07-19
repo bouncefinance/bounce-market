@@ -10,6 +10,7 @@ export interface IQueryPool {
   amount_total1: string;
   auctiontype: 1 | 2;
   bidder_claimed: boolean;
+  open_at: number;
   close_at: number;
   created_at: string;
   creator: string;

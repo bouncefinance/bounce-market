@@ -14,7 +14,8 @@
     "unknown": "Unknown",
     "coming-soon": "Coming soon...",
     "quantity": "Quantity",
-    "nothing-found": "Nothing found"
+    "no": "No",
+    "yes": "Yes"
   },
   "time": {
     "time-over": "Time is over",
@@ -420,6 +421,7 @@
     "sold-for": "Sold for",
     "owner": "Owner",
     "put-on-sale": "Put on sale",
+    "put-on-cancel": "Cancel",
     "transfer": "Transfer token",
     "burn": "Burn token"
   },

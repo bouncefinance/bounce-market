@@ -404,6 +404,7 @@
     "top-bid": "最高出价",
     "owner": "拥有者",
     "put-on-sale": "出售",
+    "put-on-cancel": "取消",
     "transfer": "发送token",
     "burn": "销毁token"
   },

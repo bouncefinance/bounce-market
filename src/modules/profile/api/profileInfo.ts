@@ -1,3 +1,5 @@
+import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
+
 export interface IApiProfileInfo {
   code: number;
   msg?: string;
@@ -14,6 +16,7 @@ export interface IApiProfileInfo {
     instagram: string;
     twitter: string;
     facebook: string;
+    identity?: UserRoleType;
   };
 }
 
@@ -30,6 +33,7 @@ export interface IProfileInfo {
   instagram?: string;
   twitter?: string;
   facebook?: string;
+  identity?: UserRoleType;
 }
 
 export function mapProfileInfo({
@@ -52,5 +56,6 @@ export function mapProfileInfo({
     instagram: data.instagram,
     twitter: data.twitter,
     facebook: data.facebook,
+    identity: data.identity,
   };
 }

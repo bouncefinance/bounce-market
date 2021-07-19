@@ -51,8 +51,8 @@ export const getEnglishAuctionContract = (chainID: number, isTime = false) => {
         : process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_RINKEBY;
     case 56:
       return isTime
-        ? process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS
-        : process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_TIME;
+        ? process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_TIME
+        : process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS;
     case 128:
       return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_HECO;
     case 137:
