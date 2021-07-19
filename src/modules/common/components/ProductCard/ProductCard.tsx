@@ -130,7 +130,6 @@ export const ProductCard = ({
         id={id}
         isLiked={isLiked}
         isLikeDisabled={isLikeDisabled}
-        hiddenLikeBtn={false}
         onLikeClick={handleLikeClick}
         hasAction={hasAction}
         onTransferClick={onTransferClick}
