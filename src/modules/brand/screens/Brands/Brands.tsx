@@ -34,7 +34,7 @@ export const Brands = () => {
     <Section>
       <Container maxWidth="xl">
         <Box mb={4}>
-          <Typography variant="h1">{t('brands.title')}</Typography>
+          <Typography variant="h1">{t('collections.title')}</Typography>
         </Box>
         <Queries<ResponseData<typeof listBrands>> requestActions={[listBrands]}>
           {({ data: brandList }) => (

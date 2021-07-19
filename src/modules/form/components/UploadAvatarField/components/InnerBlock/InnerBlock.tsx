@@ -43,10 +43,10 @@ export const InnerBlock = ({
       <div className={classes.content}>
         <div className={classes.text}>
           <Typography variant="body1" className={classes.innerBlockText}>
-            {t('brand.create.avatar-accepts')}
+            {t('collection.create.avatar-accepts')}
           </Typography>
           <Typography variant="body1" className={classes.innerBlockText}>
-            {t('brand.create.avatar-recommended-size')}
+            {t('collection.create.avatar-recommended-size')}
           </Typography>
         </div>
         <div className={classes.buttons}>

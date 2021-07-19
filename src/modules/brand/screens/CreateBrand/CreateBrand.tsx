@@ -100,7 +100,7 @@ export const CreateBrand = () => {
             component={InputField}
             name="brandName"
             type="text"
-            label={t('brand.create.label.brand-name')}
+            label={t('collection.create.label.collection-name')}
             color="primary"
             fullWidth={true}
             autoFocus
@@ -122,7 +122,7 @@ export const CreateBrand = () => {
             component={InputField}
             name="brandSymbol"
             type="text"
-            label={t('brand.create.label.brand-symbol')}
+            label={t('collection.create.label.collection-symbol')}
             color="primary"
             fullWidth={true}
           />
@@ -148,7 +148,7 @@ export const CreateBrand = () => {
           <Field
             component={UploadAvatarField}
             name="file"
-            label={t('brand.create.label.brand-avatar')}
+            label={t('collection.create.label.collection-avatar')}
             accepts={FILE_ACCEPTS}
           />
         </Box>
@@ -159,7 +159,7 @@ export const CreateBrand = () => {
               <Button size="large" type="submit" fullWidth loading={loading}>
                 {loading
                   ? t('common.submitting')
-                  : t('brand.create.create-brand')}
+                  : t('collection.create.create-collection')}
               </Button>
             )}
           </Mutation>
@@ -175,7 +175,9 @@ export const CreateBrand = () => {
           <GoBack />
         </Box>
         <Box mb={6}>
-          <Typography variant="h1">{t('brand.create.create-brand')}</Typography>
+          <Typography variant="h1">
+            {t('collection.create.create-collection')}
+          </Typography>
         </Box>
         <Box>
           <Form

@@ -115,7 +115,7 @@ export const Profile = () => {
       },
       {
         value: ProfileTab.brands,
-        label: t('profile.tabs.my-brands'),
+        label: t('profile.tabs.my-collections'),
       },
       {
         value: ProfileTab.activity,

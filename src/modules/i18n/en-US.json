@@ -2,30 +2,10 @@
   "artists": {
     "title": "Featured Creators"
   },
-  "brand": {
-    "card": {
-      "addNewItem": "Add new item",
-      "createNewBrand": "Create new brand",
-      "createNewItem": "Create new item",
-      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}"
-    },
-    "create": {
-      "avatar-accepts": "Supports JPG, PNG, JPEG2000",
-      "avatar-recommended-size": "300x300 Recommended",
-      "create-brand": "Create brand",
-      "label": {
-        "brand-avatar": "Brand avatar",
-        "brand-name": "Brand name",
-        "brand-symbol": "Brand symbol",
-        "brand-url": "Brand URL",
-        "description": "Description"
-      }
-    }
-  },
-  "brands": {
+  "collections": {
     "items": "{num} items",
-    "no-items": "There is no items created yet.",
-    "title": "Brands"
+    "no-items": "There are no items created yet",
+    "title": "Collection"
   },
   "burn-token": {
     "submit": "Burn",
@@ -44,8 +24,8 @@
   "collection": {
     "card": {
       "addNewItem": "Add new item",
-      "createNewItem": "Create new item",
       "createNewcollection": "Create new collection",
+      "createNewItem": "Create new item",
       "itemsCount": "{value, plural, =0 {No NFT} =1 {One NFT} other {# NFTs}}"
     },
     "create": {
@@ -60,10 +40,6 @@
         "description": "Description"
       }
     }
-  },
-  "collections": {
-    "no-items": "There are no items created yet",
-    "title": "Collection"
   },
   "common": {
     "apply": "Apply",
@@ -104,32 +80,10 @@
       "name": "Trust Wallet"
     },
     "placeholder": {
-      "brand-title": "To see the brand's items, you need to connect first.",
       "collection-title": "To view collection items, you need to connect your wallet first",
       "description": "The contents of this page are only viewable with a connected wallet",
       "title": "Connect your wallet"
     }
-  },
-  "create-brand-nft": {
-    "channelOption": {
-      "Comicbooks": "Comic",
-      "FineArts": "Fine arts",
-      "Sports": "Sports"
-    },
-    "label": {
-      "channel": "Channel",
-      "description": "Description",
-      "name": "Name",
-      "standard": "Standard",
-      "supply": "Supply"
-    },
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
-    "submit": "Create",
-    "submitting": "Creating",
-    "title": "Create Brand NFT"
   },
   "create-collection-nft": {
     "channelOption": {
@@ -228,7 +182,7 @@
     "tooltip": {
       "bid-warning": "Please note that you will be unable to cancel after placing your bid. Your bid will be valid until it has been outbid, accepted by the creator or expires."
     },
-    "role":{
+    "role": {
       "seller": "Seller",
       "minter": "Minter"
     },
@@ -239,9 +193,9 @@
     "live": "Live",
     "sold": "Sold",
     "timer-descr": "until the Drop ends",
-    "sold-for":"Sold for",
-    "top-bid":"Top Bid",
-    "fixed-price":"Fixed Price"
+    "sold-for": "Sold for",
+    "top-bid": "Top Bid",
+    "fixed-price": "Fixed Price"
   },
   "drops": {
     "previous": "Previous drops",
@@ -265,7 +219,6 @@
     "action": "Go back"
   },
   "header": {
-    "brands": "Brands",
     "collections": "Collections",
     "connect": "Connect Wallet",
     "create": "Create",
@@ -274,11 +227,9 @@
     "how-it-works": "How it works",
     "inventory": "My Inventory",
     "market": "Marketplace",
-    "my-brands": "My Brands",
     "my-collections": "My collections",
     "profile-settings": "Profile settings",
     "search": {
-      "brands": "Brands",
       "collections": "Collections",
       "empty": "No results found",
       "items": "Items",
@@ -295,7 +246,7 @@
     "network": {
       "etherreum": "Ethereum",
       "binance": "Binance Smart Chain",
-      "rinkby":"Rinkeby Test Chain",
+      "rinkby": "Rinkeby Test Chain",
       "heco": "Heco Chain",
       "polygon": "Matic Chain",
       "unknow": "Unknown network"
@@ -335,11 +286,8 @@
     "title": "Fast movers"
   },
   "overview": {
-    "brands": {
-      "title": "Hot Brands"
-    },
     "collections": {
-      "title": "Hot collections"
+      "title": "Collections"
     }
   },
   "product-card": {
@@ -415,14 +363,12 @@
     "subscribers": "Subscribers",
     "tabs": {
       "activity": "Activity",
-      "brands": "Brands",
       "collections": "Collections",
       "followers": "Followers",
       "following": "Following",
       "items": "Items",
       "liked": "Liked",
       "my-bids": "My bids",
-      "my-brands": "My brands",
       "my-collections": "My collections",
       "my-items": "My items",
       "my-sells": "My sales"

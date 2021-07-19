@@ -158,7 +158,7 @@ export const BrandNFTItems = ({
 
   const renderedNoItems = (
     <Typography variant="body2" color="textSecondary">
-      {t('brands.no-items')}
+      {t('collections.no-items')}
     </Typography>
   );
 

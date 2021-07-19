@@ -33,7 +33,7 @@ export const BrandCard = ({
     <Card className={classes.root} variant="outlined">
       {!!itemsCount && withAddBtn && (
         <div className={classes.createNewMiniBtnWrap}>
-          <Tooltip title={t('brand.card.createNewItem')} arrow>
+          <Tooltip title={t('collection.card.createNewItem')} arrow>
             <Button
               component={Link}
               to={addItemHref}
@@ -68,7 +68,7 @@ export const BrandCard = ({
             variant="body2"
             className={classes.subTitle}
           >
-            {t('brand.card.itemsCount', {
+            {t('collection.card.itemsCount', {
               value: itemsCount,
             })}
           </Typography>
@@ -89,7 +89,7 @@ export const BrandCard = ({
             />
           }
         >
-          {t('brand.card.addNewItem')}
+          {t('collection.card.addNewItem')}
         </Button>
       )}
     </Card>

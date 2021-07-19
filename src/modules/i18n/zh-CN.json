@@ -2,30 +2,10 @@
   "artists": {
     "title": "热门艺术家"
   },
-  "brand": {
-    "card": {
-      "addNewItem": "添加新商品",
-      "createNewBrand": "创建新品牌",
-      "createNewItem": "创建新商品",
-      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}"
-    },
-    "create": {
-      "avatar-accepts": "支持 JPG, PNG, JPEG2000",
-      "avatar-recommended-size": "推荐300x300",
-      "create-brand": "创建品牌",
-      "label": {
-        "brand-avatar": "品牌头像",
-        "brand-name": "品牌名称",
-        "brand-symbol": "品牌标识",
-        "brand-url": "品牌网址",
-        "description": "描述"
-      }
-    }
-  },
-  "brands": {
-    "items": "{num}个商品",
-    "no-items": "暂无商品",
-    "title": "品牌"
+  "collections": {
+    "items": "{num} NFT",
+    "no-items": "暂无NFT",
+    "title": "作品集"
   },
   "burn-token": {
     "submit": "销毁",
@@ -60,10 +40,6 @@
         "description": "描述"
       }
     }
-  },
-  "collections": {
-    "no-items": "暂无NFT",
-    "title": "作品集"
   },
   "common": {
     "apply": "申请",
@@ -104,32 +80,10 @@
       "name": "Trust Wallet"
     },
     "placeholder": {
-      "brand-title": "请连接钱包，以查看该品牌下的商品。",
       "collection-title": "请连接钱包，以查看该作品集下的NFT",
       "description": "请连接钱包，以浏览页面内容。",
       "title": "连接钱包"
     }
-  },
-  "create-brand-nft": {
-    "channelOption": {
-      "Comicbooks": "漫画",
-      "FineArts": "艺术",
-      "Sports": "体育"
-    },
-    "label": {
-      "channel": "类型",
-      "description": "描述",
-      "name": "名称",
-      "standard": "标准",
-      "supply": "总量"
-    },
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
-    "submit": "创建",
-    "submitting": "正在创建中",
-    "title": "创建品牌NFT"
   },
   "create-collection-nft": {
     "channelOption": {
@@ -228,7 +182,7 @@
     "tooltip": {
       "bid-warning": "请注意，你在出价后将无法取消。你的出价将是有效的，直到它被出价、被创作者接受或过期"
     },
-    "role":{
+    "role": {
       "seller": "卖家",
       "minter": "铸造者"
     },
@@ -239,9 +193,9 @@
     "live": "Live",
     "sold": "Sold",
     "timer-descr": "until the Drop ends",
-    "sold-for":"Sold for",
-    "top-bid":"Top Bid",
-    "fixed-price":"Fixed Price"
+    "sold-for": "Sold for",
+    "top-bid": "Top Bid",
+    "fixed-price": "Fixed Price"
   },
   "drops": {
     "previous": "Previous drops",
@@ -265,7 +219,6 @@
     "action": "返回"
   },
   "header": {
-    "brands": "我的品牌",
     "collections": "我的作品集",
     "connect": "连接钱包",
     "create": "创建",
@@ -273,11 +226,9 @@
     "how-it-works": "帮助指南",
     "inventory": "我的主页",
     "market": "市场",
-    "my-brands": "我的品牌",
     "my-collections": "我的作品集",
     "profile-settings": "主页设置",
     "search": {
-      "brands": "品牌",
       "collections": "作品集",
       "empty": "无搜索结果",
       "items": "NFT",
@@ -294,7 +245,7 @@
     "network": {
       "etherreum": "以太坊主网",
       "binance": "币安智能链",
-      "rinkby":"Rinkeby 测试链",
+      "rinkby": "Rinkeby 测试链",
       "heco": "火币生态链",
       "polygon": "Polygon 聚合链",
       "unknow": "未连接网络"
@@ -334,9 +285,6 @@
     "title": "趋势榜"
   },
   "overview": {
-    "brands": {
-      "title": "热门品牌"
-    },
     "collections": {
       "title": "热门作品集"
     }
@@ -414,14 +362,12 @@
     "subscribers": "Subscribers",
     "tabs": {
       "activity": "动态",
-      "brands": "品牌",
       "collections": "作品集",
       "followers": "粉丝",
       "following": "关注",
       "items": "NFT",
       "liked": "收藏",
       "my-bids": "我的出价",
-      "my-brands": "我的品牌",
       "my-collections": "我的作品集",
       "my-items": "我的NFT",
       "my-sells": "我的出售"

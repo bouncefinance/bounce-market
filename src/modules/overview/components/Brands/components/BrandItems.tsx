@@ -119,7 +119,7 @@ export const BrandItems = ({
 
   const renderedNoItems = (
     <Typography variant="body2" color="textSecondary">
-      {t('brands.no-items')}
+      {t('collections.no-items')}
     </Typography>
   );
 
@@ -137,7 +137,7 @@ export const BrandItems = ({
           <div className={classes.name}>{brandName}</div>
           {items.length > 0 && (
             <div className={classes.count}>
-              {t('brands.items', { num: items.length })}
+              {t('collections.items', { num: items.length })}
             </div>
           )}
         </div>
