@@ -46,6 +46,9 @@ export const CancelPutTime: React.FC<{
         BounceFixedSwapNFTTime,
         process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_RINKEBY_TIME,
       ).methods.cancel(id);
+    }
+    if (!contract) {
+      console.error('auctionType type, error:', auctionType);
       return;
     }
     // TODO await To optimize the
