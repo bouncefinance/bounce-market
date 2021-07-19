@@ -59,8 +59,12 @@ export const Description = ({ data, loading, pristine }: IDescriptionProps) => {
             />
           }
           social={
-            (data.twitter || data.instagram) && (
-              <Social twitter={data.twitter} instagram={data.instagram} />
+            (data.twitter || data.instagram || data.website) && (
+              <Social
+                twitter={data.twitter}
+                instagram={data.instagram}
+                website={data.website}
+              />
             )
           }
         />
