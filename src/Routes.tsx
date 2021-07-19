@@ -4,7 +4,7 @@ import {
   ProfileRoutes,
   ProfileRoutesConfig,
 } from 'modules/profile/ProfileRoutes';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 import {
   BuyNFTRoutes,
@@ -25,12 +25,27 @@ import { Themes } from './modules/themes/types';
 export function Routes() {
   return (
     <Switch>
+      <Route exact path={'/'} render={() => <Redirect to={'/drops'} />} />
+
       <Route
         exact
         path={OverviewRoutesConfig.Overview.path}
         render={() => (
           <DefaultLayout headerTheme={Themes.dark}>
             <OverviewRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={[
+          DropsRoutesConfig.Drops.path,
+          DropsRoutesConfig.DropDetails.path,
+        ]}
+        render={() => (
+          <DefaultLayout headerTheme={Themes.dark} footerTheme={Themes.dark}>
+            <DropsRoutes />
           </DefaultLayout>
         )}
       />
@@ -98,7 +113,7 @@ export function Routes() {
         )}
       />
 
-      <Route
+      {/* <Route
         exact
         path={[
           DropsRoutesConfig.Drops.path,
@@ -109,7 +124,7 @@ export function Routes() {
             <DropsRoutes />
           </DefaultLayout>
         )}
-      />
+      /> */}
 
       <Route
         render={() => (
