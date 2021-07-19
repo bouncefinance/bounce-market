@@ -41,7 +41,7 @@ export const Social = ({
       icon: FacebookIcon,
     },
     {
-      title: t('social.facebook'),
+      title: t('social.website'),
       href: website,
       icon: WebsiteIcon,
     },

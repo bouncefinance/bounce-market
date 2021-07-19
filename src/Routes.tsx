@@ -39,19 +39,6 @@ export function Routes() {
 
       <Route
         exact
-        path={[
-          DropsRoutesConfig.Drops.path,
-          DropsRoutesConfig.DropDetails.path,
-        ]}
-        render={() => (
-          <DefaultLayout headerTheme={Themes.dark} footerTheme={Themes.dark}>
-            <DropsRoutes />
-          </DefaultLayout>
-        )}
-      />
-
-      <Route
-        exact
         path={MarketRoutesConfig.Market.path}
         render={() => (
           <DefaultLayout>
@@ -113,7 +100,7 @@ export function Routes() {
         )}
       />
 
-      {/* <Route
+      <Route
         exact
         path={[
           DropsRoutesConfig.Drops.path,
@@ -124,7 +111,7 @@ export function Routes() {
             <DropsRoutes />
           </DefaultLayout>
         )}
-      /> */}
+      />
 
       <Route
         render={() => (
