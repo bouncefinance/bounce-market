@@ -13,6 +13,10 @@ import { AuctionType } from 'modules/api/common/auctionType';
 import { BounceFixedSwapNFTTime } from 'modules/web3/contracts';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { useDispatchRequest } from '@redux-requests/react';
+import {
+  getEnglishAuctionContract,
+  getFixedSwapContract,
+} from 'modules/createNFT/actions/publishNft';
 
 export const CancelPutTime: React.FC<{
   id?: number;
@@ -21,7 +25,7 @@ export const CancelPutTime: React.FC<{
   const dispatchRequest = useDispatchRequest();
   const [open, setOpen] = useState(false);
   const classes = useProductCardStyles();
-  const { web3, account } = useWeb3React();
+  const { web3, account, chainId } = useWeb3React();
   const [loading, setLoading] = useState(false);
   const handleClose = () => {
     setOpen(false);
@@ -37,14 +41,14 @@ export const CancelPutTime: React.FC<{
     if (AuctionType.FixedSwap === auctionType) {
       contract = new web3.eth.Contract(
         BounceFixedSwapNFTTime,
-        process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_RINKEBY_TIME,
+        getEnglishAuctionContract(chainId, true),
       ).methods.cancel(id);
     }
 
     if (AuctionType.EnglishAuction === auctionType) {
       contract = new web3.eth.Contract(
         BounceFixedSwapNFTTime,
-        process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_RINKEBY_TIME,
+        getFixedSwapContract(chainId, true),
       ).methods.cancel(id);
     }
     if (!contract) {
