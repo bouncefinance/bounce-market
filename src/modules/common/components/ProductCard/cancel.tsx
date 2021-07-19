@@ -55,11 +55,9 @@ export const CancelPutTime: React.FC<{
     contract
       .send({ from: account, gas: 200000 })
       .on('transactionHash', (hash: string) => {
-        console.log('pending', hash);
         setLoading(true);
       })
       .on('receipt', async (receipt: any) => {
-        console.log('success', receipt);
         handleClose();
         setLoading(false);
         refresh?.();
