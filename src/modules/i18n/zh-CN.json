@@ -344,7 +344,6 @@
     }
   },
   "product-card": {
-    "sold-for": "已按XX售出",
     "not-on-sale": "未出售",
     "price": "价格",
     "top-bid": "最高出价",

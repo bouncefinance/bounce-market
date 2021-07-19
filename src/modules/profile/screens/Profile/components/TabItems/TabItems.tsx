@@ -73,20 +73,17 @@ export const TabItems = () => {
                 loading: 'lazy',
               }}
               profileInfo={
-                <>
-                  <ProfileInfo
-                    subTitle="Owner"
-                    title={username}
-                    users={[
-                      {
-                        name: username,
-                        avatar: profileInfo?.imgUrl,
-                        verified:
-                          profileInfo?.identity === UserRoleEnum.Verified,
-                      },
-                    ]}
-                  />
-                </>
+                <ProfileInfo
+                  subTitle="Owner"
+                  title={username}
+                  users={[
+                    {
+                      name: username,
+                      avatar: profileInfo?.imgUrl,
+                      verified: profileInfo?.identity === UserRoleEnum.Verified,
+                    },
+                  ]}
+                />
               }
               toSale={
                 hasBrand(item)
@@ -99,9 +96,7 @@ export const TabItems = () => {
                       item.id,
                     )
               }
-              isCancelTimePut={
-                item.openAt ? +item.openAt >= +new Date() : false
-              }
+              isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
             />
           ) : (
             <ProductCardSkeleton key={uid(allNftByUserQuery.data?.length)} />
