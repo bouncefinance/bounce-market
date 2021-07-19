@@ -18,6 +18,7 @@ const data: IApiSearchDropsItem[] = [
     updated_at: '2021-07-06T12:58:29Z',
     username: 'Javon JavonJavonJavonJavonJavonJavonJavonJavonJavonJavon',
     website: '',
+    avatar: '',
   },
   {
     accountaddress: '0x26604a35b97d395a9711d839e89b44efcc549b21',
@@ -36,6 +37,7 @@ const data: IApiSearchDropsItem[] = [
     updated_at: '2021-07-06T12:58:29Z',
     username: 'hustler',
     website: 'Sobble 2',
+    avatar: '',
   },
 ];
 

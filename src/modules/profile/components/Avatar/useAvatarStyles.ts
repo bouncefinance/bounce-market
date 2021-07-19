@@ -64,4 +64,15 @@ export const useAvatarStyles = makeStyles<Theme>(theme => ({
       opacity: 1,
     },
   },
+  avatarBox: {
+    position: 'relative',
+    height: '100%',
+  },
+  verifiedIcon: {
+    width: 30,
+    height: 30,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+  },
 }));

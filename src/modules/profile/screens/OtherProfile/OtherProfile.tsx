@@ -2,6 +2,7 @@ import { Container } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { QueryLoadingAbsolute } from 'modules/common/components/QueryLoading/QueryLoading';
 import { Social } from 'modules/common/components/Social';
 import { featuresConfig } from 'modules/common/conts';
@@ -101,7 +102,11 @@ export const OtherProfile = () => {
       <Header img={profileInfo?.bgImgUrl} />
 
       <Container>
-        <Avatar className={classes.avatar} src={profileInfo?.imgUrl} />
+        <Avatar
+          className={classes.avatar}
+          src={profileInfo?.imgUrl}
+          isVerified={profileInfo?.identity === UserRoleEnum.Verified}
+        />
         <InfoPanel
           withSharing
           name={profileInfo?.username}

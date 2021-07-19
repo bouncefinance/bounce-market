@@ -22,7 +22,9 @@ export const getTopArtists = createSmartAction<
         console.error('getTopArtists: Unexpected response');
       }
 
-      return (data.data || []).map(mapTopArtistItem);
+      return (data.data || []).map(mapTopArtistItem).sort((a, b) => {
+        return b.topWeight - a.topWeight;
+      });
     },
   },
 }));

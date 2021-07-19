@@ -24,6 +24,7 @@ export const useTimer = (endDate: Date) => {
   }, [timeRemaining.minutes, timeRemaining.total]);
 
   useInterval(() => {
+    if (!endDate) return;
     setTimeRemaining(getTimeRemaining(endDate));
   }, delayInterval);
 

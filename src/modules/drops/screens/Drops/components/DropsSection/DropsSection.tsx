@@ -33,7 +33,7 @@ import { DropsTab, DropsTabs } from '../DropsTabs';
 import { DropTimer } from '../DropTimer';
 
 const DROPS_INITIAL_PORTION_COUNT = 4;
-const DROPS_MORE_PORTION_COUNT = 8;
+const DROPS_MORE_PORTION_COUNT = 4;
 
 enum DropsSortBy {
   Coming = SearchDropsParamState.Coming,
@@ -153,6 +153,7 @@ export const DropsSection = () => {
         <DropsOwner
           title={item.username}
           isVerified={true}
+          avatar={item.avatar}
           href={ProfileRoutesConfig.OtherProfile.generatePath(
             item.accountAddress,
           )}
@@ -169,7 +170,7 @@ export const DropsSection = () => {
           text={item.description}
           timer={timer}
           creator={creator}
-          items={undefined}
+          dropId={item.id}
         />
       );
     });

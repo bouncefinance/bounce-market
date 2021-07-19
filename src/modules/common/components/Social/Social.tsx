@@ -2,8 +2,8 @@ import { IconButton } from '@material-ui/core';
 import { FacebookIcon } from 'modules/common/components/Icons/FacebookIcon';
 import { InstagramIcon } from 'modules/common/components/Icons/InstagramIcon';
 import { TwitterIcon } from 'modules/common/components/Icons/TwitterIcon';
+import { WebsiteIcon } from 'modules/common/components/Icons/WebsiteIcon';
 import { t } from 'modules/i18n/utils/intl';
-import React from 'react';
 import { uid } from 'react-uid';
 import { useSocialStyles } from './useSocialStyles';
 
@@ -12,6 +12,7 @@ interface ISocialProps {
   twitter?: string;
   instagram?: string;
   facebook?: string;
+  website?: string;
 }
 
 export const Social = ({
@@ -19,6 +20,7 @@ export const Social = ({
   twitter,
   instagram,
   facebook,
+  website,
 }: ISocialProps) => {
   const classes = useSocialStyles();
 
@@ -37,6 +39,11 @@ export const Social = ({
       title: t('social.facebook'),
       href: facebook,
       icon: FacebookIcon,
+    },
+    {
+      title: t('social.website'),
+      href: website,
+      icon: WebsiteIcon,
     },
   ].filter(item => item.href);
 
