@@ -91,12 +91,10 @@ export const CancelPutTime: React.FC<{
         disableBackdropClick={loading}
       >
         <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          Cancel timer
+          {t('cancel-timer.title')}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Are you sure you want to cancel the timer?
-          </DialogContentText>
+          <DialogContentText>{t('cancel-timer.inner')}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
@@ -105,10 +103,10 @@ export const CancelPutTime: React.FC<{
             loading={loading}
             onClick={handleClose}
           >
-            No
+            {t('common.no')}
           </Button>
           <Button onClick={onSuccess} loading={loading} disable={loading}>
-            Yes
+            {t('common.yes')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -350,9 +350,14 @@
     "owner": "Owner",
     "price": "Price",
     "put-on-sale": "Put on sale",
+    "put-on-cancel": "Cancel",
     "sold-for": "Sold for",
     "top-bid": "Top Bid",
     "transfer": "Transfer token"
+  },
+  "cancel-timer": {
+    "title": "Cancel timer",
+    "inner": "Are you sure you want to cancel the timer?"
   },
   "products": {
     "sort-label": "Sort by: {value}"
