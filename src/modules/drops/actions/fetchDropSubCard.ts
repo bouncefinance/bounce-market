@@ -1,4 +1,4 @@
-import { RequestAction } from '@redux-requests/core';
+import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
 import {
   getOneDropsDetailUrl,
@@ -25,8 +25,11 @@ export interface IFetchDropSubCard {
 
 export const fetchDropSubCard = createSmartAction<
   RequestAction<IApiOneDropsDetail, IFetchDropSubCard[] | null>,
-  [IFetchDropSubCardArgs]
->('getDropDetails', params => ({
+  [
+    IFetchDropSubCardArgs,
+    RequestActionMeta<IApiOneDropsDetail, IFetchDropSubCard[]>?,
+  ]
+>('getDropDetails', (params, meta) => ({
   request: {
     url: getOneDropsDetailUrl + `?${params.id}`,
     method: 'post',
@@ -40,6 +43,7 @@ export const fetchDropSubCard = createSmartAction<
   meta: {
     asMutation: false,
     auth: false,
+    ...meta,
     driver: 'axios',
     getData: data => {
       if (data.code !== 1) {
