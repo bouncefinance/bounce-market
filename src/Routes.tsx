@@ -4,7 +4,7 @@ import {
   ProfileRoutes,
   ProfileRoutesConfig,
 } from 'modules/profile/ProfileRoutes';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 import {
   BuyNFTRoutes,
@@ -25,6 +25,8 @@ import { Themes } from './modules/themes/types';
 export function Routes() {
   return (
     <Switch>
+      <Route exact path="/" render={() => <Redirect to="/drops" />} />
+
       <Route
         exact
         path={OverviewRoutesConfig.Overview.path}
