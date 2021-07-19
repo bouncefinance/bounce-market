@@ -76,7 +76,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                   ),
                 ),
               );
-              console.log(data);
+
               const overviewItems = data
                 ?.map(item => {
                   const pool = poolDetailsList.find(pool => {
@@ -93,6 +93,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         ? pool.lastestBidAmount
                         : pool.amountMin1
                       : pool?.price || item.price;
+
                   return {
                     ...item,
                     price,
