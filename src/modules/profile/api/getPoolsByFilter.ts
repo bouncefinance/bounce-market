@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { AuctionState } from 'modules/api/common/AuctionState';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { NftType } from 'modules/api/common/NftType';
-import { auctionTypeMap, poolTypeMap } from 'modules/api/common/poolType';
+import { auctionTypeMap } from 'modules/api/common/poolType';
 import { IApiQueryPool, IQueryPool } from 'modules/pools/actions/queryPools';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';

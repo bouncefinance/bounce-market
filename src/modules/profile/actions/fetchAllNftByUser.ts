@@ -1,5 +1,4 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
-import { poolTypeMap } from 'modules/api/common/poolType';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
