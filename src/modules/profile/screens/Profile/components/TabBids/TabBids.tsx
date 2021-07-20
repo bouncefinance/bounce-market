@@ -23,6 +23,8 @@ import React, {
 } from 'react';
 import { uid } from 'react-uid';
 import { useTabBidsStyles } from './useTabBidsStyles';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import { getTokenSymbol } from 'modules/common/conts';
 
 const categories = [
   {
@@ -45,6 +47,7 @@ const categories = [
 
 export const TabBids = () => {
   const classes = useTabBidsStyles();
+  const { chainId } = useAccount();
   const dispatch = useDispatchRequest();
   const [catergory, setCategory] = useState<ItemsChannel>(ItemsChannel.all);
 
@@ -106,7 +109,7 @@ export const TabBids = () => {
         }
         price={item.price}
         title={item.itemname}
-        priceType="BNB"
+        priceType={getTokenSymbol(chainId) as string}
         endDate={undefined}
         copies={item.supply}
         likes={undefined}
@@ -121,7 +124,7 @@ export const TabBids = () => {
         }
       />
     ));
-  }, [items]);
+  }, [items, chainId]);
 
   return (
     <>

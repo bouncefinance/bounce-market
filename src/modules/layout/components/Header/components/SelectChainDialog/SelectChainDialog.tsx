@@ -11,6 +11,7 @@ import {
   BlockchainNetworkId,
   getBlockChainExplorerAddress,
 } from 'modules/common/conts';
+import { TokenSymbol } from 'modules/common/types/TokenSymbol';
 
 export interface IAddEthereumChain {
   chainId: string; // A 0x-prefixed hexadecimal string
@@ -46,7 +47,7 @@ export const SelectChainDialog = ({
         chainName: 'Ethereum Chain Mainnet',
         nativeCurrency: {
           name: 'Ethereum',
-          symbol: 'ETH',
+          symbol: TokenSymbol.ETH,
           decimals: 18,
         },
         rpcUrls: [
@@ -66,7 +67,7 @@ export const SelectChainDialog = ({
         chainName: 'Binance Smart Chain Mainnet',
         nativeCurrency: {
           name: 'Binance',
-          symbol: 'BNB',
+          symbol: TokenSymbol.BNB,
           decimals: 18,
         },
         rpcUrls: ['https://bsc-dataseed4.binance.org'],
@@ -84,7 +85,7 @@ export const SelectChainDialog = ({
         chainName: 'Huobi ECO Chain Mainnet',
         nativeCurrency: {
           name: 'Heco',
-          symbol: 'HT',
+          symbol: TokenSymbol.HT,
           decimals: 18,
         },
         rpcUrls: ['https://http-mainnet.hecochain.com'],

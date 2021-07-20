@@ -79,7 +79,7 @@ const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
 
   return (
     <div className={classes.group}>
-      <div className={classes.title}>{t('header.search.brands')}</div>
+      <div className={classes.title}>{t('header.search.collections')}</div>
       {data.map((item: ISearchBrand) => (
         <RouterLink
           to={BrandRoutesConfig.Brand.generatePath(item.id)}

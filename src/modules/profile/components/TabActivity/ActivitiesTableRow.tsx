@@ -1,6 +1,8 @@
 import { Box, TableCell, TableRow } from '@material-ui/core';
 import classNames from 'classnames';
 import { formatDistance } from 'date-fns';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import { getTokenSymbol } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import React, { useCallback } from 'react';
 import { CloseIcon } from '../../../common/components/Icons/CloseIcon';
@@ -21,6 +23,7 @@ export const ActivitiesTableRow = ({
   item,
   classes,
 }: IActivitiesTableProps) => {
+  const { chainId } = useAccount();
   const renderItemPreview = useCallback(
     (category: string, fileUrl: string) => {
       return category === 'video' ? (
@@ -57,13 +60,14 @@ export const ActivitiesTableRow = ({
     <TableRow>
       <TableCell>
         <Box display="flex" alignItems="center">
-          {item.event === 'Swapped' && (
+          {item.event === 'FixedSwapSwapped' && (
             <>
               <TransferIcon className={classes.eventIcon} />
               {t('profile.activity.transfer')}
             </>
           )}
-          {item.event === 'Created' && (
+          {(item.event === 'FixedSwapCreated' ||
+            item.event === 'EnglishCreated') && (
             <>
               <PlusIcon
                 className={classNames(classes.eventIcon, classes.eventIconPlus)}
@@ -71,13 +75,13 @@ export const ActivitiesTableRow = ({
               {t('profile.activity.created')}
             </>
           )}
-          {item.event === 'Canceled' && (
+          {item.event === 'FixedSwapCanceled' && (
             <>
               <CloseIcon className={classes.eventIcon} />
               {t('profile.activity.canceled')}
             </>
           )}
-          {item.event === 'Claimed' && (
+          {item.event === 'EnglishClaimed' && (
             <>
               <DoneIcon className={classes.eventIcon} />
               {t('profile.activity.claimed')}
@@ -96,7 +100,7 @@ export const ActivitiesTableRow = ({
       </TableCell>
 
       <TableCell>
-        {item.price.toFormat()} BNB
+        {item.price.toFormat()} {getTokenSymbol(chainId)}
         {/*{item.currency} TODO: need provide currency from contract, task FAN-85 */}
       </TableCell>
 

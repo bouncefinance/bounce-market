@@ -71,7 +71,7 @@ export const OtherProfile = () => {
       },
       {
         value: ProfileTab.brands,
-        label: t('profile.tabs.brands'),
+        label: t('profile.tabs.collections'),
       },
       ...(featuresConfig.profileFollowers
         ? [

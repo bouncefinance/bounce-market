@@ -15,7 +15,9 @@ import {
 } from '../../createNFT/actions/publishNft';
 import {
   BounceEnglishAuctionNFT,
+  BounceEnglishAuctionNFTTime,
   BounceFixedSwapNFT,
+  BounceFixedSwapNFTTime,
 } from '../../web3/contracts';
 import { fetchCurrency } from './fetchCurrency';
 import {
@@ -65,10 +67,18 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 action: setAccount,
               });
 
-              if (poolType === AuctionType.FixedSwap) {
+              if (
+                poolType === AuctionType.FixedSwap ||
+                poolType === AuctionType.FixedSwap_Timing
+              ) {
                 const BounceFixedSwapNFT_CT = new web3.eth.Contract(
-                  BounceFixedSwapNFT,
-                  getFixedSwapContract(chainId),
+                  poolType === AuctionType.FixedSwap_Timing
+                    ? BounceFixedSwapNFTTime
+                    : BounceFixedSwapNFT,
+                  getFixedSwapContract(
+                    chainId,
+                    poolType === AuctionType.FixedSwap_Timing,
+                  ),
                 );
 
                 const pool = await BounceFixedSwapNFT_CT.methods
@@ -135,10 +145,18 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   unitContract: pool.token1,
                   tokenId: parseInt(pool.tokenId),
                 } as IFetchWeb3PoolDetailsData;
-              } else {
+              } else if (
+                poolType === AuctionType.EnglishAuction ||
+                poolType === AuctionType.EnglishAuction_Timing
+              ) {
                 const BounceEnglishAuctionNFT_CT = new web3.eth.Contract(
-                  BounceEnglishAuctionNFT,
-                  getEnglishAuctionContract(chainId),
+                  poolType === AuctionType.EnglishAuction_Timing
+                    ? BounceEnglishAuctionNFTTime
+                    : BounceEnglishAuctionNFT,
+                  getEnglishAuctionContract(
+                    chainId,
+                    poolType === AuctionType.EnglishAuction_Timing,
+                  ),
                 );
                 const pool = await BounceEnglishAuctionNFT_CT.methods
                   .pools(poolId)
