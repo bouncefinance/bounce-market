@@ -13,7 +13,9 @@ export const NotConnected = ({ className }: INotConnectedProps) => {
 
   return (
     <Box textAlign="center" mt={3}>
-      <Typography>{t('connect-wallet.placeholder.brand-title')}</Typography>
+      <Typography>
+        {t('connect-wallet.placeholder.collection-title')}
+      </Typography>
 
       <Box mt={5}>
         <Button size="large" onClick={handleConnect} loading={loading}>

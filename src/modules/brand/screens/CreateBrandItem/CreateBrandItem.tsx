@@ -132,15 +132,15 @@ export const CreateBrandItem = () => {
   const channelOptions = useMemo(
     () => [
       {
-        label: t(`create-brand-nft.channelOption.${Channel.FineArts}`),
+        label: t(`create-collection-nft.channelOption.${Channel.FineArts}`),
         value: Channel.FineArts,
       },
       {
-        label: t(`create-brand-nft.channelOption.${Channel.Sports}`),
+        label: t(`create-collection-nft.channelOption.${Channel.Sports}`),
         value: Channel.Sports,
       },
       {
-        label: t(`create-brand-nft.channelOption.${Channel.Comicbooks}`),
+        label: t(`create-collection-nft.channelOption.${Channel.Comicbooks}`),
         value: Channel.Comicbooks,
       },
     ],
@@ -171,7 +171,7 @@ export const CreateBrandItem = () => {
               component={InputField}
               name="name"
               type="text"
-              label={t('create-brand-nft.label.name')}
+              label={t('create-collection-nft.label.name')}
               color="primary"
               fullWidth={true}
             />
@@ -181,7 +181,7 @@ export const CreateBrandItem = () => {
               component={InputField}
               name="description"
               type="text"
-              label={t('create-brand-nft.label.description')}
+              label={t('create-collection-nft.label.description')}
               color="primary"
               fullWidth={true}
               rowsMax={10}
@@ -193,7 +193,7 @@ export const CreateBrandItem = () => {
               component={SelectField}
               name="channel"
               type="text"
-              label={t('create-brand-nft.label.channel')}
+              label={t('create-collection-nft.label.channel')}
               color="primary"
               fullWidth={true}
               options={channelOptions}
@@ -228,7 +228,7 @@ export const CreateBrandItem = () => {
                 >
                   {loading
                     ? t('common.submitting')
-                    : t('create-brand-nft.submit')}
+                    : t('create-collection-nft.submit')}
                 </Button>
               )}
             </Mutation>
@@ -245,7 +245,9 @@ export const CreateBrandItem = () => {
           <GoBack />
         </Box>
         <Box mb={3}>
-          <Typography variant="h1">{t('create-brand-nft.title')}</Typography>
+          <Typography variant="h1">
+            {t('create-collection-nft.title')}
+          </Typography>
         </Box>
         <Box>
           <Form

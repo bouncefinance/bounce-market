@@ -90,7 +90,6 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   }, [nftItemsData]);
 
   const hasItems = !!nftItems.length;
-
   const rendrerdCards = useMemo(
     () =>
       nftItems.map(item => (

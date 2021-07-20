@@ -4,7 +4,7 @@ import { NftType } from 'modules/api/common/NftType';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { AuctionState } from '../../api/common/AuctionState';
-import { AuctionType } from '../../api/common/auctionType';
+import { AuctionType, AuctionTypeState } from '../../api/common/auctionType';
 import { FixedSwapState } from '../../api/common/FixedSwapState';
 import { Address } from '../../common/types/unit';
 
@@ -100,6 +100,7 @@ export interface IFixedAuctionDetails {
   unitContract: Address;
   tokenId: number;
   openAt: Date;
+  AuctionType?: AuctionType;
 }
 
 export interface IEnglishAuctionDetails {
@@ -122,6 +123,7 @@ export interface IEnglishAuctionDetails {
   tokenAmount0: number;
   tokenId: number;
   openAt: Date;
+  AuctionType?: AuctionType;
 }
 
 export type IFetchPoolDetailsData =
@@ -166,7 +168,7 @@ export const fetchPoolDetails = createSmartAction<
       method: 'post',
       data: {
         poolId: params.poolId,
-        poolType: params.poolType === AuctionType.FixedSwap ? 1 : 2,
+        poolType: AuctionTypeState[params.poolType],
       },
     },
     meta: {
@@ -174,8 +176,11 @@ export const fetchPoolDetails = createSmartAction<
       driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
-        const poolInfo: IApiPoolDetails = data.poolinfo;
-        if (isApiEnglishAuctionPool(data.poolinfo)) {
+        const poolInfo: IApiPoolDetails = data?.poolinfo;
+        if (
+          params.poolType === AuctionType.EnglishAuction ||
+          params.poolType === AuctionType.EnglishAuction_Timing
+        ) {
           return {
             amountMax1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_max1)),
             amountMin1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_min1)),
@@ -202,6 +207,7 @@ export const fetchPoolDetails = createSmartAction<
             unitContract: poolInfo.token0,
             tokenAmount0: poolInfo.token_amount0,
             tokenId: poolInfo.tokenid,
+            AuctionType: params.poolType,
           };
         } else {
           return {
@@ -220,6 +226,7 @@ export const fetchPoolDetails = createSmartAction<
             tokenContract: poolInfo.token0,
             unitContract: poolInfo.token1,
             tokenId: poolInfo.tokenid,
+            AuctionType: params.poolType,
           };
         }
       },

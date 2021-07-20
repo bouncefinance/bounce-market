@@ -1,20 +1,17 @@
 import { useQuery } from '@redux-requests/react';
-import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
-import { getTokenSymbol } from 'modules/common/conts';
 import { fetchOverview } from 'modules/overview/actions/fetchOverview';
 import { IItem } from 'modules/overview/api/getItems';
 import { PROMO_ITEMS_COUNT } from 'modules/overview/const';
 import { ISectionProps } from 'modules/uiKit/Section';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { MoversComponent } from './MoversComponent';
 
 export const Movers = (sectionProps: ISectionProps) => {
-  const { chainId } = useAccount();
   const overviewQuery = useQuery<IItem[] | null>({
     type: fetchOverview.toString(),
   });
@@ -27,39 +24,41 @@ export const Movers = (sectionProps: ISectionProps) => {
     [overviewQuery.data],
   );
 
-  const renderedItems = slicedItems.map(item => (
-    <ProductCard
-      key={uid(item)}
-      id={item.id}
-      poolId={item.poolId || 0}
-      auctionType={item.poolType}
-      isOnSale
-      title={item.itemName || ''}
-      price={item.price}
-      priceType={getTokenSymbol(chainId) as string}
-      endDate={item.closeAt}
-      copies={item.supply}
-      //TODO: https://fangible.atlassian.net/browse/FAN-124
-      likes={undefined}
-      href={
-        item.poolId && item.poolType
-          ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-              item.poolId,
-              item.poolType,
-            )
-          : ''
-      }
-      imgPreloader={<SwiperPreloader />}
-      MediaProps={{
-        category: 'image',
-        src: item.fileUrl || '',
-        imgClassName: 'swiper-lazy',
-        isNativeLazyLoading: false,
-        objectFit: 'contain',
-      }}
-      profileInfo={<AccountInfo address={item.ownerAddress} />}
-    />
-  ));
+  const renderedItems = slicedItems.map(item => {
+    return (
+      <ProductCard
+        key={uid(item)}
+        id={item.id}
+        poolId={item.poolId || 0}
+        auctionType={item.poolType}
+        isOnSale
+        title={item.itemName || ''}
+        price={item.price}
+        priceType="BNB"
+        endDate={item.closeAt}
+        copies={item.supply}
+        //TODO: https://fangible.atlassian.net/browse/FAN-124
+        likes={undefined}
+        href={
+          item.poolId && item.poolType
+            ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                item.poolId,
+                item.poolType,
+              )
+            : ''
+        }
+        imgPreloader={<SwiperPreloader />}
+        MediaProps={{
+          category: 'image',
+          src: item.fileUrl || '',
+          imgClassName: 'swiper-lazy',
+          isNativeLazyLoading: false,
+          objectFit: 'contain',
+        }}
+        profileInfo={<AccountInfo address={item.ownerAddress} />}
+      />
+    );
+  });
 
   return (
     <MoversComponent

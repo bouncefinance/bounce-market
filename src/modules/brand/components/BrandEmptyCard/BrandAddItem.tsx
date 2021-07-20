@@ -32,7 +32,7 @@ export const BrandAddItem = ({ className, id }: IBrandEmptyCardProps) => {
             />
           }
         >
-          {t('brand.card.createNewItem')}
+          {t('collection.card.createNewItem')}
         </Button>
       </CardContent>
     </Card>

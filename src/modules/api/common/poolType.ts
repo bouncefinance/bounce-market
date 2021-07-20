@@ -4,11 +4,15 @@ export enum PoolType {
   Unknown,
   FixedSwap,
   EnglishAuction,
+  FixedSwapTiming,
+  EnglishAuctionTiming,
 }
 
 export const auctionTypeMap = {
   [`${PoolType.FixedSwap}`]: AuctionType.FixedSwap,
   [`${PoolType.EnglishAuction}`]: AuctionType.EnglishAuction,
+  [`${PoolType.FixedSwapTiming}`]: AuctionType.FixedSwap_Timing,
+  [`${PoolType.EnglishAuctionTiming}`]: AuctionType.EnglishAuction_Timing,
 };
 
 const flipKeyValues = (originalObj: {

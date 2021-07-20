@@ -2,7 +2,6 @@ import loadable, { LoadableComponent } from '@loadable/component';
 import { QueryLoadingAbsolute } from 'modules/common/components/QueryLoading/QueryLoading';
 import { useQueryParams } from 'modules/common/hooks/useQueryParams';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
-import React from 'react';
 import { generatePath, Route } from 'react-router-dom';
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 
