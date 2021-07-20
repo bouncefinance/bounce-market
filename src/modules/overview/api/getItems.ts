@@ -69,6 +69,7 @@ export interface IItem {
   tokenSymbol: TokenSymbol;
   isLoading?: boolean;
   openAt?: number;
+  avatar?: string;
 }
 
 export function hasBrand(item: IItem) {
