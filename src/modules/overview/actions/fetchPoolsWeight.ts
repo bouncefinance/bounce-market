@@ -1,4 +1,5 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
+import { AuctionType, AuctionTypeKeys } from 'modules/api/common/auctionType';
 import { auctionTypeMap } from 'modules/api/common/poolType';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
@@ -10,7 +11,7 @@ interface IApiFetchPoolsWeightData {
     id: number;
     poolid: number;
     poolweight: number;
-    standard: number;
+    standard: AuctionTypeKeys;
     updated_at: string;
   }[];
   total: number;
@@ -23,7 +24,7 @@ interface IFetchPoolsWeightData {
     id: number;
     poolId: number;
     poolWeight: number;
-    auctionType: string;
+    auctionType: AuctionType;
     updatedAt: Date;
   }[];
 }

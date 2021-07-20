@@ -1,20 +1,17 @@
 import { useQuery } from '@redux-requests/react';
-import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
-import { getTokenSymbol } from 'modules/common/conts';
 import { fetchOverview } from 'modules/overview/actions/fetchOverview';
 import { IItem } from 'modules/overview/api/getItems';
 import { PROMO_ITEMS_COUNT } from 'modules/overview/const';
 import { ISectionProps } from 'modules/uiKit/Section';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { uid } from 'react-uid';
 import { MoversComponent } from './MoversComponent';
 
 export const Movers = (sectionProps: ISectionProps) => {
-  const { chainId } = useAccount();
   const overviewQuery = useQuery<IItem[] | null>({
     type: fetchOverview.toString(),
   });
