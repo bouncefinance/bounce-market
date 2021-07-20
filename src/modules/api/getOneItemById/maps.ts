@@ -1,3 +1,4 @@
+import { AuctionTypeKeys } from '../common/auctionType';
 import { IApiGetOneItemByIdData } from './types';
 
 export interface IGetOneItemById {
@@ -19,6 +20,7 @@ export interface IGetOneItemById {
   standard: IApiGetOneItemByIdData['standard'];
   supply: IApiGetOneItemByIdData['supply'];
   open_at: IApiGetOneItemByIdData['open_at'];
+  auctionType: AuctionTypeKeys;
 }
 
 export const mapGetOneItemById = (
@@ -43,5 +45,6 @@ export const mapGetOneItemById = (
     standard: data.standard,
     supply: data.supply,
     open_at: data.open_at,
+    auctionType: data.auctiontype,
   };
 };

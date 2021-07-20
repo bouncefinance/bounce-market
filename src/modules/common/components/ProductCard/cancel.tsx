@@ -20,12 +20,15 @@ import {
   getEnglishAuctionContract,
   getFixedSwapContract,
 } from 'modules/createNFT/actions/publishNft';
+import { NotificationActions } from 'modules/notification/store/NotificationActions';
+import { useDispatch } from 'react-redux';
 
 export const CancelPutTime: React.FC<{
   id?: number;
   auctionType?: AuctionType;
 }> = ({ id, auctionType }) => {
   const dispatchRequest = useDispatchRequest();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const classes = useProductCardStyles();
   const { web3, account, chainId } = useWeb3React();
@@ -41,14 +44,14 @@ export const CancelPutTime: React.FC<{
   };
   const onSuccess = () => {
     let contract;
-    if (AuctionType.FixedSwap === auctionType) {
+    if (AuctionType.FixedSwap_Timing === auctionType) {
       contract = new web3.eth.Contract(
         BounceFixedSwapNFTTime,
         getFixedSwapContract(chainId, true),
       ).methods.cancel(id);
     }
 
-    if (AuctionType.EnglishAuction === auctionType) {
+    if (AuctionType.EnglishAuction_Timing === auctionType) {
       contract = new web3.eth.Contract(
         BounceEnglishAuctionNFTTime,
         getEnglishAuctionContract(chainId, true),
@@ -76,6 +79,13 @@ export const CancelPutTime: React.FC<{
         } catch (err) {
           console.log('error', err);
         }
+        dispatch(
+          NotificationActions.showNotification({
+            // TODO link scan
+            message: 'error',
+            severity: 'error',
+          }),
+        );
       });
     setLoading(true);
   };

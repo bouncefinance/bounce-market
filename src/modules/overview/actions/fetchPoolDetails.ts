@@ -4,7 +4,11 @@ import { NftType } from 'modules/api/common/NftType';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { AuctionState } from '../../api/common/AuctionState';
-import { AuctionType, AuctionTypeState } from '../../api/common/auctionType';
+import {
+  AuctionType,
+  AuctionTypeKeys,
+  AuctionTypeState,
+} from '../../api/common/auctionType';
 import { FixedSwapState } from '../../api/common/FixedSwapState';
 import { Address } from '../../common/types/unit';
 
