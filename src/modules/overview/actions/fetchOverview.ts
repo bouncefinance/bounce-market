@@ -2,7 +2,6 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { AuctionType } from '../../api/common/auctionType';
 import { IItem } from '../api/getItems';
 import { fetchItemsByIds } from './fetchItemsByIds';
 import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
@@ -86,7 +85,6 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         String(item.contractAddress).toLowerCase()
                     );
                   })?.data;
-
                   const price =
                     pool && isEnglishAuction(pool)
                       ? pool.lastestBidAmount.toString() !== '0'
@@ -98,15 +96,13 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                     ...item,
                     price,
                     poolId: pool?.poolId,
-                    poolType:
-                      pool && isEnglishAuction(pool)
-                        ? AuctionType.EnglishAuction
-                        : AuctionType.FixedSwap,
+                    poolType: pool?.AuctionType,
                     closeAt:
                       pool && isEnglishAuction(pool) ? pool.closeAt : undefined,
                     poolWeight: poolWidthMap.get(pool?.poolId as number) || 0,
                   } as IOverviewItem;
                 })
+                .filter(item => item.poolId)
                 .sort((a, b) => {
                   return b.poolWeight - a.poolWeight;
                 });

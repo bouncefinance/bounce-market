@@ -24,39 +24,46 @@ export const Movers = (sectionProps: ISectionProps) => {
     [overviewQuery.data],
   );
 
-  const renderedItems = slicedItems.map(item => (
-    <ProductCard
-      key={uid(item)}
-      id={item.id}
-      poolId={item.poolId || 0}
-      auctionType={item.poolType}
-      isOnSale
-      title={item.itemName || ''}
-      price={item.price}
-      priceType="BNB"
-      endDate={item.closeAt}
-      copies={item.supply}
-      //TODO: https://fangible.atlassian.net/browse/FAN-124
-      likes={undefined}
-      href={
-        item.poolId && item.poolType
-          ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-              item.poolId,
-              item.poolType,
-            )
-          : ''
-      }
-      imgPreloader={<SwiperPreloader />}
-      MediaProps={{
-        category: 'image',
-        src: item.fileUrl || '',
-        imgClassName: 'swiper-lazy',
-        isNativeLazyLoading: false,
-        objectFit: 'contain',
-      }}
-      profileInfo={<AccountInfo address={item.ownerAddress} />}
-    />
-  ));
+  const renderedItems = slicedItems.map(item => {
+    // console.log(item)
+    // console.log(item.poolId && item.poolType ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+    //   item.poolId,
+    //   item.poolType,
+    // ) : '*-')
+    return (
+      <ProductCard
+        key={uid(item)}
+        id={item.id}
+        poolId={item.poolId || 0}
+        auctionType={item.poolType}
+        isOnSale
+        title={item.itemName || ''}
+        price={item.price}
+        priceType="BNB"
+        endDate={item.closeAt}
+        copies={item.supply}
+        //TODO: https://fangible.atlassian.net/browse/FAN-124
+        likes={undefined}
+        href={
+          item.poolId && item.poolType
+            ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                item.poolId,
+                item.poolType,
+              )
+            : ''
+        }
+        imgPreloader={<SwiperPreloader />}
+        MediaProps={{
+          category: 'image',
+          src: item.fileUrl || '',
+          imgClassName: 'swiper-lazy',
+          isNativeLazyLoading: false,
+          objectFit: 'contain',
+        }}
+        profileInfo={<AccountInfo address={item.ownerAddress} />}
+      />
+    );
+  });
 
   return (
     <MoversComponent
