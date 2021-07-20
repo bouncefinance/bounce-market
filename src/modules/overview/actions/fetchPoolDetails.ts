@@ -40,6 +40,7 @@ export interface IApiPoolDetails {
   token_amount0: number;
   tokenid: number;
   username: string;
+  open_at: number;
 }
 export interface IApiFixedAuctionDetails {
   amount_total0: number;
@@ -98,6 +99,7 @@ export interface IFixedAuctionDetails {
   tokenContract: Address;
   unitContract: Address;
   tokenId: number;
+  openAt: Date;
 }
 
 export interface IEnglishAuctionDetails {
@@ -119,6 +121,7 @@ export interface IEnglishAuctionDetails {
   unitContract: Address;
   tokenAmount0: number;
   tokenId: number;
+  openAt: Date;
 }
 
 export type IFetchPoolDetailsData =
@@ -180,6 +183,7 @@ export const fetchPoolDetails = createSmartAction<
               Web3.utils.fromWei(poolInfo.amount_min_incr1),
             ),
             bidderClaimed: !!poolInfo.bidder_claimed,
+            openAt: new Date(poolInfo.open_at * 1000),
             closeAt: new Date(poolInfo.close_at * 1000),
             createTime: new Date(poolInfo.created_at),
             creator: poolInfo.creator,
@@ -207,6 +211,7 @@ export const fetchPoolDetails = createSmartAction<
             ),
             createTime: new Date(poolInfo.created_at),
             creator: poolInfo.creator,
+            openAt: new Date(poolInfo.open_at * 1000),
             name: poolInfo.itemname,
             nftType: NftType.ERC721,
             poolId: poolInfo.poolid,

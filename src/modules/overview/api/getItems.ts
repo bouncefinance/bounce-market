@@ -33,6 +33,7 @@ export interface IApiItem {
   supply: number;
   unlockablecontent: number;
   updated_at: string;
+  open_at: number;
 }
 
 export interface IItem {
@@ -67,6 +68,7 @@ export interface IItem {
   state?: AuctionState | FixedSwapState;
   tokenSymbol: TokenSymbol;
   isLoading?: boolean;
+  openAt?: number;
 }
 
 export function hasBrand(item: IItem) {
@@ -101,5 +103,6 @@ export function mapItem(item: IApiItem): IItem {
     createdAt: new Date(item.created_at),
     updateAt: new Date(item.updated_at),
     tokenSymbol: TokenSymbol.BNB,
+    openAt: item.open_at,
   };
 }

@@ -1,6 +1,7 @@
 import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import {
   ProductCard,
@@ -79,7 +80,7 @@ export const TabItems = () => {
                     {
                       name: username,
                       avatar: profileInfo?.imgUrl,
-                      verified: true,
+                      verified: profileInfo?.identity === UserRoleEnum.Verified,
                     },
                   ]}
                 />
@@ -95,6 +96,7 @@ export const TabItems = () => {
                       item.id,
                     )
               }
+              isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
             />
           ) : (
             <ProductCardSkeleton key={uid(allNftByUserQuery.data?.length)} />

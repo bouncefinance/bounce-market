@@ -138,6 +138,7 @@ export const ProductCard = ({
         likes={likeCount}
         auctionType={auctionType}
         state={state}
+        poolId={poolId}
         {...restProps}
       />
       <Mutation type={transferToken.toString()}>

@@ -56,7 +56,9 @@
     "save": "Save",
     "submitting": "Submitting",
     "unknown": "Unknown",
-    "view-all": "View all"
+    "view-all": "View all",
+    "no": "No",
+    "yes": "Yes"
   },
   "connect-wallet": {
     "custom-binancewallet": {
@@ -296,9 +298,14 @@
     "owner": "Owner",
     "price": "Price",
     "put-on-sale": "Put on sale",
+    "put-on-cancel": "Cancel",
     "sold-for": "Sold for",
     "top-bid": "Top Bid",
     "transfer": "Transfer token"
+  },
+  "cancel-timer": {
+    "title": "Cancel timer",
+    "inner": "Are you sure you want to cancel the timer?"
   },
   "products": {
     "sort-label": "Sort by: {value}"
@@ -419,6 +426,8 @@
     "telegram": "Telegram",
     "website": "Website",
     "title-for-socials": "{title} — {description}",
+    "put-on-sale": "Put on sale",
+    "put-on-cancel": "Cancel",
     "twitter": "Twitter"
   },
   "time": {

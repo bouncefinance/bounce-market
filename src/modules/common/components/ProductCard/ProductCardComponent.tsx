@@ -28,6 +28,7 @@ import { Link, Link as RouterLink } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
+import { CancelPutTime } from './cancel';
 import { useProductCardStyles } from './useProductCardStyles';
 
 export type ProductCardCategoryType = 'image' | 'video';
@@ -65,6 +66,8 @@ export interface IProductCardComponentProps {
   stateTip?: string;
   onTransferClick?: () => void;
   onBurnClick?: () => void;
+  isCancelTimePut?: boolean;
+  poolId?: number;
 }
 
 export const ProductCardComponent = ({
@@ -93,6 +96,9 @@ export const ProductCardComponent = ({
   stateTip,
   onTransferClick,
   onBurnClick,
+  // profile page && put on of time && not up to shelf time && owner
+  isCancelTimePut = false,
+  poolId,
 }: IProductCardComponentProps) => {
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -262,8 +268,11 @@ export const ProductCardComponent = ({
               {endDate && renderTimer()}
 
               {!endDate && !copies && <i />}
-
-              {featuresConfig.nftLikes && !hiddenLikeBtn && renderedLikes}
+              {isCancelTimePut ? (
+                <CancelPutTime auctionType={auctionType} id={poolId} />
+              ) : (
+                featuresConfig.nftLikes && renderedLikes
+              )}
             </>
           )}
 

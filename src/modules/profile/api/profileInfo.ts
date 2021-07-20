@@ -1,3 +1,5 @@
+import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
+
 export interface IApiProfileInfo {
   code: number;
   msg?: string;
@@ -14,7 +16,7 @@ export interface IApiProfileInfo {
     instagram: string;
     twitter: string;
     facebook: string;
-    identity: number;
+    identity?: UserRoleType;
   };
 }
 
@@ -31,12 +33,7 @@ export interface IProfileInfo {
   instagram?: string;
   twitter?: string;
   facebook?: string;
-  isVerified?: boolean;
-}
-
-enum VerifiedsState {
-  Verified = 2,
-  notVerified = 1,
+  identity?: UserRoleType;
 }
 
 export function mapProfileInfo({
@@ -59,6 +56,6 @@ export function mapProfileInfo({
     instagram: data.instagram,
     twitter: data.twitter,
     facebook: data.facebook,
-    isVerified: data.identity === VerifiedsState.Verified,
+    identity: data.identity,
   };
 }

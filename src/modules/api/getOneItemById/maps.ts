@@ -18,6 +18,7 @@ export interface IGetOneItemById {
   ownerAddress: IApiGetOneItemByIdData['owneraddress'];
   standard: IApiGetOneItemByIdData['standard'];
   supply: IApiGetOneItemByIdData['supply'];
+  open_at: IApiGetOneItemByIdData['open_at'];
 }
 
 export const mapGetOneItemById = (
@@ -41,5 +42,6 @@ export const mapGetOneItemById = (
     ownerAddress: data.owneraddress,
     standard: data.standard,
     supply: data.supply,
+    open_at: data.open_at,
   };
 };
