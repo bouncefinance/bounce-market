@@ -194,7 +194,7 @@
   "drop-details": {
     "live": "Live",
     "sold": "Sold",
-    "timer-descr": "until the Drop ends",
+    "timer-descr": "before the drop starts",
     "sold-for": "Sold for",
     "top-bid": "Top Bid",
     "fixed-price": "Fixed Price"
@@ -435,6 +435,7 @@
     "minutes-short": "{minutes}分",
     "seconds-short": "{seconds}秒",
     "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
+    "time-end": "Ended on {days}/{months}/{years}",
     "time-over": "该拍卖已过期"
   },
   "transfer-token": {

@@ -381,7 +381,7 @@ export const PublishNFTComponent = ({
                     <Grid item xs>
                       {t('publish-nft.fee', { value: FEE_PERCENTAGE })}
                     </Grid>
-                    {values.price && +values.price > 0 && (
+                    {values.price && +values.price > 0 && false && (
                       <Grid item>
                         {tHTML('publish-nft.receive', {
                           value: reciveValue?.decimalPlaces(6).toFormat(),

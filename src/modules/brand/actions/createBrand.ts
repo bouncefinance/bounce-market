@@ -67,6 +67,7 @@ export const createBrand = createSmartAction(
 
             const brandInfo: IUpdateBrandInfoPayload = {
               brandname: brandName,
+              brandsymbol: brandSymbol,
               contractaddress: '',
               standard: standard,
               description: description,

@@ -12,9 +12,9 @@ interface ITimerProps {
 
 export const Timer = ({ endDate, className }: ITimerProps) => {
   const classes = useTimerStyles();
-  const { duration, isTimeOver } = useTimer(endDate);
+  const { duration, isTimeOver, endDetailedDate } = useTimer(endDate);
 
-  const timerText = isTimeOver ? t('time.time-over') : duration;
+  const timerText = isTimeOver ? endDetailedDate : duration;
 
   return (
     <div className={classNames(classes.root, className)}>
