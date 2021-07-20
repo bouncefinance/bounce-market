@@ -3,7 +3,6 @@ import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { AuctionState } from '../../api/common/AuctionState';
-import { AuctionType } from '../../api/common/auctionType';
 import { FixedSwapState } from '../../api/common/FixedSwapState';
 import { fetchItem, IFetchItem } from '../../buyNFT/actions/fetchItem';
 import { IPoolsData } from '../../common/actions/getPoolsByFilter';
@@ -169,9 +168,7 @@ export const enrichNftItem = (data: any, poolsCopy: any, nfts: any) => (
         }
       })(),
       poolId: pool.poolId,
-      poolType: isEnglishAuction(pool)
-        ? AuctionType.EnglishAuction
-        : AuctionType.FixedSwap,
+      poolType: pool.AuctionType,
       price: isEnglishAuction(pool)
         ? pool.lastestBidAmount.isEqualTo(0)
           ? pool.amountMin1

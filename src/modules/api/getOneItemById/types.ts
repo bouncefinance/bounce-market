@@ -1,5 +1,6 @@
 import { NftType } from 'modules/api/common/NftType';
 import { Channel } from 'modules/createNFT/actions/createNft';
+import type { AuctionTypeKeys } from '../common/auctionType';
 
 export interface IApiGetOneItemByIdData {
   balance: string;
@@ -20,6 +21,7 @@ export interface IApiGetOneItemByIdData {
   standard: NftType;
   supply: number;
   open_at: number;
+  auctiontype: AuctionTypeKeys;
 }
 
 export interface IApiGetOneItemById {
