@@ -178,7 +178,6 @@ const mainApiDrivers: { [key in mainApiDriversType]: Driver } = {
 Object.keys(mainAxios).forEach(key => {
   const initAxios = mainAxios[key as mainApiDriversType];
   initAxios.interceptors.response.use(response => {
-    console.log(response.data?.errorCode);
     // token invalid
     if ([-1, -2].includes(response.data?.errorCode)) {
       store.dispatch(abortRequests());
