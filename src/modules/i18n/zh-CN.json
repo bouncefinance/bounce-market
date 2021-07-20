@@ -80,7 +80,9 @@
     "save": "保存",
     "submitting": "提交",
     "unknown": "未知",
-    "view-all": "查看所有"
+    "view-all": "查看所有",
+    "no": "关闭",
+    "yes": "确认"
   },
   "connect-wallet": {
     "custom-binancewallet": {
@@ -228,7 +230,7 @@
     "tooltip": {
       "bid-warning": "请注意，你在出价后将无法取消。你的出价将是有效的，直到它被出价、被创作者接受或过期"
     },
-    "role":{
+    "role": {
       "seller": "卖家",
       "minter": "铸造者"
     },
@@ -239,9 +241,9 @@
     "live": "Live",
     "sold": "Sold",
     "timer-descr": "until the Drop ends",
-    "sold-for":"Sold for",
-    "top-bid":"Top Bid",
-    "fixed-price":"Fixed Price"
+    "sold-for": "Sold for",
+    "top-bid": "Top Bid",
+    "fixed-price": "Fixed Price"
   },
   "drops": {
     "previous": "Previous drops",
@@ -294,7 +296,7 @@
     "network": {
       "etherreum": "以太坊主网",
       "binance": "币安智能链",
-      "rinkby":"Rinkeby 测试链",
+      "rinkby": "Rinkeby 测试链",
       "heco": "火币生态链",
       "polygon": "Polygon 聚合链",
       "unknow": "未连接网络"
@@ -342,14 +344,19 @@
     }
   },
   "product-card": {
-    "burn": "销毁token",
     "not-on-sale": "未出售",
-    "owner": "拥有者",
     "price": "价格",
+    "top-bid": "最高出价",
+    "owner": "拥有者",
     "put-on-sale": "出售",
     "sold-for": "已按XX售出",
-    "top-bid": "最高出价",
-    "transfer": "发送token"
+    "put-on-cancel": "取消",
+    "transfer": "发送token",
+    "burn": "销毁token"
+  },
+  "cancel-timer": {
+    "title": "取消定时上架",
+    "inner": "您是否确定取消定时上架吗?"
   },
   "products": {
     "sort-label": "按 {value}筛选"

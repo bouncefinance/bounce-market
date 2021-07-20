@@ -51,8 +51,8 @@ export const getEnglishAuctionContract = (chainID: number, isTime = false) => {
         : process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_RINKEBY;
     case 56:
       return isTime
-        ? process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS
-        : process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_TIME;
+        ? process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_TIME
+        : process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS;
     case 128:
       return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_HECO;
     case 137:
@@ -275,7 +275,10 @@ export const publishNft = createSmartAction<
 
               if (standard === NftType.ERC721) {
                 await ContractBounceERC721.methods
-                  .approve(getEnglishAuctionContract(chainId), tokenId)
+                  .approve(
+                    getEnglishAuctionContract(chainId, isOpenSaleTime),
+                    tokenId,
+                  )
                   .send({ from: address });
 
                 await new Promise((resolve, reject) => {
@@ -323,7 +326,10 @@ export const publishNft = createSmartAction<
                 });
               } else {
                 await ContractBounceERC1155.methods
-                  .setApprovalForAll(getEnglishAuctionContract(chainId), true)
+                  .setApprovalForAll(
+                    getEnglishAuctionContract(chainId, isOpenSaleTime),
+                    true,
+                  )
                   .send({ from: address });
 
                 await new Promise((resolve, reject) => {

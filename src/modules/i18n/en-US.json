@@ -80,7 +80,9 @@
     "save": "Save",
     "submitting": "Submitting",
     "unknown": "Unknown",
-    "view-all": "View all"
+    "view-all": "View all",
+    "no": "No",
+    "yes": "Yes"
   },
   "connect-wallet": {
     "custom-binancewallet": {
@@ -228,7 +230,7 @@
     "tooltip": {
       "bid-warning": "Please note that you will be unable to cancel after placing your bid. Your bid will be valid until it has been outbid, accepted by the creator or expires."
     },
-    "role":{
+    "role": {
       "seller": "Seller",
       "minter": "Minter"
     },
@@ -239,9 +241,9 @@
     "live": "Live",
     "sold": "Sold",
     "timer-descr": "until the Drop ends",
-    "sold-for":"Sold for",
-    "top-bid":"Top Bid",
-    "fixed-price":"Fixed Price"
+    "sold-for": "Sold for",
+    "top-bid": "Top Bid",
+    "fixed-price": "Fixed Price"
   },
   "drops": {
     "previous": "Previous drops",
@@ -295,7 +297,7 @@
     "network": {
       "etherreum": "Ethereum",
       "binance": "Binance Smart Chain",
-      "rinkby":"Rinkeby Test Chain",
+      "rinkby": "Rinkeby Test Chain",
       "heco": "Heco Chain",
       "polygon": "Matic Chain",
       "unknow": "Unknown network"
@@ -348,9 +350,14 @@
     "owner": "Owner",
     "price": "Price",
     "put-on-sale": "Put on sale",
+    "put-on-cancel": "Cancel",
     "sold-for": "Sold for",
     "top-bid": "Top Bid",
     "transfer": "Transfer token"
+  },
+  "cancel-timer": {
+    "title": "Cancel timer",
+    "inner": "Are you sure you want to cancel the timer?"
   },
   "products": {
     "sort-label": "Sort by: {value}"
@@ -473,6 +480,8 @@
     "telegram": "Telegram",
     "website": "Website",
     "title-for-socials": "{title} — {description}",
+    "put-on-sale": "Put on sale",
+    "put-on-cancel": "Cancel",
     "twitter": "Twitter"
   },
   "time": {
