@@ -22,7 +22,7 @@ import {
 } from 'modules/createNFT/actions/publishNft';
 import { NotificationActions } from 'modules/notification/store/NotificationActions';
 import { useDispatch } from 'react-redux';
-import { MetaMaskError } from 'modules/api/common/metamask';
+import { MetaMaskError } from 'modules/common/types/metamask';
 
 export const CancelPutTime: React.FC<{
   id?: number;
