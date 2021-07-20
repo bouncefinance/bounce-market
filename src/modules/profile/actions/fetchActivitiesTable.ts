@@ -32,7 +32,6 @@ export const fetchActivitiesTable = createSmartAction<
               fetchActivities({ user: payload.user }),
             ),
           );
-
           const { data } = throwIfDataIsEmptyOrError(
             await store.dispatchRequest(
               fetchItemsByIds(
@@ -52,7 +51,6 @@ export const fetchActivitiesTable = createSmartAction<
               ),
             ),
           );
-
           return activitiesData
             .map(activityItem => {
               const activity = data?.find(item => {

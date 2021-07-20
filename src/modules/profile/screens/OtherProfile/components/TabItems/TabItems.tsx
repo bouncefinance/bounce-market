@@ -1,10 +1,12 @@
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { getTokenSymbol } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
@@ -29,6 +31,7 @@ interface ITabItemsProps {
 }
 
 export const TabItems = ({ address }: ITabItemsProps) => {
+  const { chainId } = useAccount();
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
 
@@ -76,7 +79,7 @@ export const TabItems = ({ address }: ITabItemsProps) => {
             // status={item.status}
             // UPDATE price
             price={item.poolId ? item.price : undefined}
-            priceType="BNB"
+            priceType={getTokenSymbol(chainId) as string}
             isOnSale
             copies={item.supply}
             MediaProps={{
