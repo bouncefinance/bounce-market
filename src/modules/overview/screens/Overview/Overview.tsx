@@ -4,7 +4,7 @@ import { useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { featuresConfig } from 'modules/common/conts';
+import { featuresConfig, getTokenSymbol } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
@@ -26,14 +26,14 @@ import { fetchOverview } from '../../actions/fetchOverview';
 import { IItem } from '../../api/getItems';
 import { useOverviewStyles } from './useOverviewStyles';
 
-function mapPromoItem(item: IItem): IPromoItem {
+function mapPromoItem(item: IItem, tokenSymbol: string): IPromoItem {
   return {
     title: item.itemName || '',
     text: item.description || '',
     createdBy: item.ownerName || truncateWalletAddr(item.ownerAddress),
     avatar: undefined,
     price: item.price,
-    priceType: 'BNB',
+    priceType: tokenSymbol,
     category: item?.category,
     img: item.fileUrl,
     thumbImg: item.fileUrl || '',
@@ -56,6 +56,7 @@ export const Overview = () => {
   const dispatch = useDispatch();
   const classes = useOverviewStyles();
   const { isConnected } = useAccount();
+  const { chainId } = useAccount();
 
   useEffect(() => {
     dispatchRequest(fetchOverview());
@@ -90,7 +91,11 @@ export const Overview = () => {
                 stackDown
                 error={error}
                 isLoading={loading}
-                items={data.slice(0, PROMO_ITEMS_COUNT).map(mapPromoItem)}
+                items={data
+                  .slice(0, PROMO_ITEMS_COUNT)
+                  .map((item: IItem) =>
+                    mapPromoItem(item, getTokenSymbol(chainId) as string),
+                  )}
               />
             </ThemeProvider>
           )}

@@ -12,12 +12,17 @@ export const fetchActivities = createSmartAction<
   RequestAction<IActivityData, IActivityItem[]>
 >('fetchActivities', (payload: IFetchActivitiesVariables) => ({
   request: {
-    url: '/activities',
-    method: 'get',
-    params: { user_address: payload.user },
+    url: '/auth/getactivities',
+    method: 'post',
+    data: {
+      offset: 0,
+      limit: 100,
+      useraddress: payload.user,
+    },
   },
   meta: {
-    driver: 'activities',
+    driver: 'axios',
+    auth: true,
     asMutation: false,
     getData: data => {
       if (data.code !== 1 && data.code !== 200) {
@@ -32,14 +37,14 @@ export const fetchActivities = createSmartAction<
         .map(item => {
           return {
             id: item.id,
-            event: item.event,
+            event: item.auction_event,
             contract: item.contract,
             from: item.from,
             to: item.to,
-            tokenId: item.tokenId,
+            tokenId: item.token_id,
             quantity: item.quantity,
             price: new BigNumber(Web3.utils.fromWei(item.price)), // TODO: need provide decimal
-            timestamp: (item.timestamp || item.Timestamp) * 1000,
+            timestamp: item.ctime * 1000,
           };
         })
         .filter(item => item.tokenId <= 99999999999);

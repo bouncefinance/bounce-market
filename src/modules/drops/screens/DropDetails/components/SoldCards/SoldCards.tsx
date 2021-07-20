@@ -1,10 +1,12 @@
 import { Box, Typography } from '@material-ui/core';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { DropsDetailPoolState } from 'modules/api/getOneDropsDetail';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import {
   ProductCard,
   ProductCardSkeleton,
 } from 'modules/common/components/ProductCard';
+import { getTokenSymbol } from 'modules/common/conts';
 import { IGetDropDetails } from 'modules/drops/actions/getDropDetails';
 import { t } from 'modules/i18n/utils/intl';
 import { uid } from 'react-uid';
@@ -19,6 +21,7 @@ export const SoldCards = ({
   loading: boolean;
   data: IGetDropDetails | null;
 }) => {
+  const { chainId } = useAccount();
   const soldNfts = (data?.poolsInfo || []).filter(
     poolInfo => poolInfo.state === DropsDetailPoolState.Closed,
   );
@@ -28,7 +31,7 @@ export const SoldCards = ({
       isOnSale
       key={uid(item)}
       title={item.name}
-      priceType="BNB"
+      priceType={getTokenSymbol(chainId) as string}
       price={item.price}
       stateTip={t('drop-details.sold-for')}
       MediaProps={{
