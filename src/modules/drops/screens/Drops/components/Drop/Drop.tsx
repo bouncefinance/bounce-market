@@ -1,20 +1,19 @@
 import { Box, Typography, useTheme } from '@material-ui/core';
+import { resetRequests } from '@redux-requests/core';
+import { useDispatchRequest } from '@redux-requests/react';
+import { Queries } from 'modules/common/components/Queries/Queries';
+import { ResponseData } from 'modules/common/types/ResponseData';
 import { getRandomHexColor } from 'modules/common/utils/getRandomHexColor';
+import { fetchDropSubCard } from 'modules/drops/actions/fetchDropSubCard';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { Img } from 'modules/uiKit/Img';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Truncate from 'react-truncate';
 import { uid } from 'react-uid';
-import { useDropStyles } from './useDropStyles';
-import { useState } from 'react';
 import useBgColor from './useBgColor';
-import { useDispatchRequest } from '@redux-requests/react';
-import { useDispatch } from 'react-redux';
-import { fetchDropSubCard } from 'modules/drops/actions/fetchDropSubCard';
-import { ResponseData } from 'modules/common/types/ResponseData';
-import { Queries } from 'modules/common/components/Queries/Queries';
-import { resetRequests } from '@redux-requests/core';
+import { useDropStyles } from './useDropStyles';
 const MAX_ITEMS_COUNT = 5;
 
 interface IDropProps {
@@ -44,6 +43,7 @@ export const Drop = ({
   const { getBackgroudColor } = useBgColor();
   const dispatch = useDispatch();
   const dispatchRequest = useDispatchRequest();
+  const DROP_KEY = `/drop-${dropId}`;
 
   useEffect(() => {
     getBackgroudColor(bgImg, theme.palette.background.paper, setBgImgColor);
@@ -56,12 +56,21 @@ export const Drop = ({
   useEffect(() => {
     if (dropId === undefined) return;
 
-    dispatchRequest(fetchDropSubCard({ id: +dropId }));
+    dispatchRequest(
+      fetchDropSubCard({ id: +dropId }, { requestKey: DROP_KEY }),
+    );
 
     return function reset() {
-      dispatch(resetRequests([fetchDropSubCard({ id: +dropId }).toString()]));
+      dispatch(
+        resetRequests([
+          {
+            requestType: fetchDropSubCard.toString(),
+            requestKey: DROP_KEY,
+          },
+        ]),
+      );
     };
-  }, [dispatch, dropId, dispatchRequest]);
+  }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
 
   return (
     <article className={classes.root}>
@@ -80,17 +89,17 @@ export const Drop = ({
 
       <Queries<ResponseData<typeof fetchDropSubCard>>
         requestActions={[fetchDropSubCard]}
+        requestKeys={[DROP_KEY]}
         // noDataMessage={renderedPromoSkeleton}
       >
         {({ loading, data }) => (
           <Box mb={4}>
             <div className={classes.nftList}>
-              {false &&
-                !loading &&
+              {!loading &&
                 data?.slice(0, MAX_ITEMS_COUNT).map((item, i) => (
                   <Link
                     to={href}
-                    key={uid(item.name)}
+                    key={uid(item.name, i)}
                     className={classes.nftItem}
                   >
                     <Img

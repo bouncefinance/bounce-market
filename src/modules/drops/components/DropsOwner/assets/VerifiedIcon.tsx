@@ -11,7 +11,7 @@ export const VerifiedIcon = (props: SvgIconProps) => {
         xmlns="http://www.w3.org/2000/svg"
       >
         <circle cx="8" cy="8" r="8" fill="url(#paint0_linear)" />
-        <path d="M4.5 8L7 10.5L12 5.5" stroke="white" stroke-width="1.5" />
+        <path d="M4.5 8L7 10.5L12 5.5" stroke="white" strokeWidth="1.5" />
         <defs>
           <linearGradient
             id="paint0_linear"
@@ -21,8 +21,8 @@ export const VerifiedIcon = (props: SvgIconProps) => {
             y2="13.3333"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#2663FF" />
-            <stop offset="1" stop-color="#FF3828" />
+            <stop stopColor="#2663FF" />
+            <stop offset="1" stopColor="#FF3828" />
           </linearGradient>
         </defs>
       </svg>
