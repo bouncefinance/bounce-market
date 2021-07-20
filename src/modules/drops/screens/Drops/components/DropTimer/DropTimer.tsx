@@ -10,11 +10,13 @@ interface IDropTimerProps {
 
 export const DropTimer = ({ endDate }: IDropTimerProps) => {
   const classes = useDropTimerStyles();
-  const { duration, timeRemaining, isTimeOver } = useTimer(endDate);
+  const { duration, timeRemaining, isTimeOver, endDetailedDate } = useTimer(
+    endDate,
+  );
 
   const getTimerValue = () => {
     if (isTimeOver) {
-      return t('time.time-over');
+      return endDetailedDate;
     } else if (timeRemaining.days > 1) {
       return t('time.finished-on', { end: endDate });
     } else {

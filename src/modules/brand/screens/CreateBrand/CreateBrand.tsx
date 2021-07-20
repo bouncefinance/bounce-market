@@ -132,7 +132,7 @@ export const CreateBrand = () => {
             component={InputField}
             name="description"
             type="text"
-            label={t('brand.create.label.description')}
+            label={t('collection.create.label.description')}
             color="primary"
             fullWidth={true}
             rowsMax={10}

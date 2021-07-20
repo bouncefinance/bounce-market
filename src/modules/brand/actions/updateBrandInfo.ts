@@ -6,6 +6,7 @@ import { UpdateBrandInfoAction } from './const';
 
 export interface IUpdateBrandInfoPayload {
   brandname: string;
+  brandsymbol?: string;
   contractaddress: string;
   standard: NftType;
   description: string;

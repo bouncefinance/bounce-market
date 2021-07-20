@@ -54,5 +54,15 @@ export const useTimer = (endDate: Date) => {
       }),
   });
 
-  return { timeRemaining, duration, isTimeOver };
+  const modificationDate = (value: number): string => {
+    return value < 10 ? `0${value}` : `${value}`;
+  };
+  // 'Ended on 01/07/2021'
+  const endDetailedDate = t('time.time-end', {
+    days: modificationDate(endDate.getDay()),
+    months: modificationDate(endDate.getMonth()),
+    years: endDate.getFullYear(),
+  });
+
+  return { timeRemaining, duration, isTimeOver, endDetailedDate };
 };
