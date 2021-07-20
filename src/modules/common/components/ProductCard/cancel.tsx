@@ -10,7 +10,10 @@ import { useProductCardStyles } from './useProductCardStyles';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWeb3React } from 'modules/account/hooks/useWeb3React';
 import { AuctionType } from 'modules/api/common/auctionType';
-import { BounceFixedSwapNFTTime } from 'modules/web3/contracts';
+import {
+  BounceEnglishAuctionNFTTime,
+  BounceFixedSwapNFTTime,
+} from 'modules/web3/contracts';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { useDispatchRequest } from '@redux-requests/react';
 import {
@@ -41,14 +44,14 @@ export const CancelPutTime: React.FC<{
     if (AuctionType.FixedSwap === auctionType) {
       contract = new web3.eth.Contract(
         BounceFixedSwapNFTTime,
-        getEnglishAuctionContract(chainId, true),
+        getFixedSwapContract(chainId, true),
       ).methods.cancel(id);
     }
 
     if (AuctionType.EnglishAuction === auctionType) {
       contract = new web3.eth.Contract(
-        BounceFixedSwapNFTTime,
-        getFixedSwapContract(chainId, true),
+        BounceEnglishAuctionNFTTime,
+        getEnglishAuctionContract(chainId, true),
       ).methods.cancel(id);
     }
     if (!contract) {
