@@ -242,6 +242,7 @@
       "eth": "以太坊主网",
       "heco": "火币生态链",
       "heco-2": "火币钱包",
+      "polygon":"Polygon 主网",
       "title": "选择网络"
     },
     "network": {
