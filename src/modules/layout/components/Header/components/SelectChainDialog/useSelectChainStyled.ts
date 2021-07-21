@@ -17,7 +17,6 @@ export const useSelectChainStyled = makeStyles<Theme>(theme => ({
     margin: '0 auto',
     display: 'flex',
     justifyContent: 'space-between',
-    width: 370,
     marginBottom: 76,
   },
   cardItem: {

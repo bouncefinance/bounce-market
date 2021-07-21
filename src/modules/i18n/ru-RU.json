@@ -213,6 +213,7 @@
       "eth": "Ethereum Mainnet",
       "heco": "HECO Chain",
       "heco-2": "Huobi Wallet",
+      "polygon":"Polygon Mainnet",
       "title": "Select network"
     },
     "network": {
