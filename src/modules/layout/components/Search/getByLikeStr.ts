@@ -1,5 +1,6 @@
 import { RequestAction } from '@redux-requests/core';
 import { AuctionTypeKeys } from 'modules/api/common/auctionType';
+import { fromWei } from 'modules/common/utils/fromWei';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 interface IApiSearchResult {
@@ -112,7 +113,9 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
         name: item.itemname,
         category: item.category,
         previewUrl: item.fileurl,
-        price: item.price,
+        // TODO chainId to wei number
+        price: fromWei(item.price, 18),
+        // abandoned
         priceType: 'BNB',
       })),
 
