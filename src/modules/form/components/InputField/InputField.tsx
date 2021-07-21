@@ -46,6 +46,7 @@ export const InputField = ({
       helperText={getHelperString(value, meta, maxLength, showLimitCounter)}
       onChange={onChange}
       className={classes.root}
+      onWheel={(event: any) => event.target.blur()}
       {...rest}
     />
   );

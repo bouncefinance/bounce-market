@@ -179,7 +179,7 @@ Object.keys(mainAxios).forEach(key => {
   const initAxios = mainAxios[key as mainApiDriversType];
   initAxios.interceptors.response.use(response => {
     // token invalid
-    if ([-1, -2].includes(response.data?.errorCode)) {
+    if ([-1, -2].includes(response.data?.errorCode ?? response.data?.code)) {
       store.dispatch(abortRequests());
       store.dispatch(disconnect());
     }
