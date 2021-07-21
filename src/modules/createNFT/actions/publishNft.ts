@@ -95,6 +95,13 @@ type IPublishNftPayload =
       saleTime: ISaleTime;
     };
 
+interface IApproveParams {
+  nftContract_CT: any;
+  nftId?: number;
+  tarContract?: string;
+  sender?: string;
+}
+
 export const publishNft = createSmartAction<
   RequestAction<null, null>,
   [IPublishNftPayload]
@@ -139,6 +146,42 @@ export const publishNft = createSmartAction<
 
             // TODO isOwner
 
+            const equalAddress = (add1: string, add2: string) => {
+              return String(add1).toLowerCase() === String(add2).toLowerCase();
+            };
+
+            const approveNFT_721 = async ({
+              nftContract_CT,
+              nftId,
+              tarContract,
+              sender,
+            }: IApproveParams) => {
+              const approveAddress = await nftContract_CT.methods
+                .getApproved(nftId)
+                .call();
+              if (!tarContract || equalAddress(approveAddress, tarContract))
+                return;
+
+              await nftContract_CT.methods
+                .approve(tarContract, nftId)
+                .send({ from: sender });
+            };
+
+            const approveNFT_1155 = async ({
+              nftContract_CT,
+              tarContract,
+              sender,
+            }: IApproveParams) => {
+              const approveRes: boolean = await nftContract_CT.methods
+                .isApprovedForAll(sender, tarContract)
+                .call();
+              if (approveRes) return;
+
+              await nftContract_CT.methods
+                .setApprovalForAll(tarContract, true)
+                .send({ from: sender });
+            };
+
             if (payload.type === AuctionType.FixedSwap) {
               const {
                 name,
@@ -155,13 +198,12 @@ export const publishNft = createSmartAction<
                 getFixedSwapContract(chainId, isOpenSaleTime),
               );
               if (standard === NftType.ERC721) {
-                // TODO Has approve
-                await ContractBounceERC721.methods
-                  .approve(
-                    getFixedSwapContract(chainId, isOpenSaleTime),
-                    tokenId,
-                  )
-                  .send({ from: address });
+                await approveNFT_721({
+                  nftContract_CT: ContractBounceERC721,
+                  nftId: tokenId,
+                  tarContract: getFixedSwapContract(chainId, isOpenSaleTime),
+                  sender: address,
+                });
 
                 await new Promise((resolve, reject) => {
                   ContractBounceFixedSwapNFT.methods
@@ -199,12 +241,12 @@ export const publishNft = createSmartAction<
                     });
                 });
               } else {
-                await ContractBounceERC1155.methods
-                  .setApprovalForAll(
-                    getFixedSwapContract(chainId, isOpenSaleTime),
-                    true,
-                  )
-                  .send({ from: address });
+                await approveNFT_1155({
+                  nftContract_CT: ContractBounceERC1155,
+                  nftId: tokenId,
+                  tarContract: getFixedSwapContract(chainId, isOpenSaleTime),
+                  sender: address,
+                });
 
                 await new Promise((resolve, reject) => {
                   ContractBounceFixedSwapNFT.methods
@@ -274,12 +316,15 @@ export const publishNft = createSmartAction<
               );
 
               if (standard === NftType.ERC721) {
-                await ContractBounceERC721.methods
-                  .approve(
-                    getEnglishAuctionContract(chainId, isOpenSaleTime),
-                    tokenId,
-                  )
-                  .send({ from: address });
+                await approveNFT_721({
+                  nftContract_CT: ContractBounceERC721,
+                  nftId: tokenId,
+                  tarContract: getEnglishAuctionContract(
+                    chainId,
+                    isOpenSaleTime,
+                  ),
+                  sender: address,
+                });
 
                 await new Promise((resolve, reject) => {
                   ContractBounceEnglishAuctionNFT.methods
@@ -325,12 +370,15 @@ export const publishNft = createSmartAction<
                     });
                 });
               } else {
-                await ContractBounceERC1155.methods
-                  .setApprovalForAll(
-                    getEnglishAuctionContract(chainId, isOpenSaleTime),
-                    true,
-                  )
-                  .send({ from: address });
+                await approveNFT_1155({
+                  nftContract_CT: ContractBounceERC1155,
+                  nftId: tokenId,
+                  tarContract: getEnglishAuctionContract(
+                    chainId,
+                    isOpenSaleTime,
+                  ),
+                  sender: address,
+                });
 
                 await new Promise((resolve, reject) => {
                   ContractBounceEnglishAuctionNFT.methods

@@ -1,7 +1,6 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
 import {
-  DropsDetailPoolState,
   getOneDropsDetailUrl,
   IApiOneDropsDetail,
   IGetOneDropsDetailParams,
@@ -59,9 +58,7 @@ export const fetchDropSubCard = createSmartAction<
         return null;
       }
 
-      const cardList = data?.data.poolsinfo.filter(item => {
-        return item.state === DropsDetailPoolState.Live;
-      });
+      const cardList = data?.data.poolsinfo;
       return (cardList as unknown) as IFetchDropSubCard[];
     },
   },

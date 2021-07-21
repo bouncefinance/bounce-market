@@ -31,7 +31,7 @@ function mapPromoItem(item: IItem, tokenSymbol: string): IPromoItem {
     title: item.itemName || '',
     text: item.description || '',
     createdBy: item.ownerName || truncateWalletAddr(item.ownerAddress),
-    avatar: undefined,
+    avatar: item.avatar,
     price: item.price,
     priceType: tokenSymbol,
     category: item?.category,

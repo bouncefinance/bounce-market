@@ -59,8 +59,8 @@ export const useTimer = (endDate: Date) => {
   };
   // 'Ended on 01/07/2021'
   const endDetailedDate = t('time.time-end', {
-    days: modificationDate(endDate.getDay()),
-    months: modificationDate(endDate.getMonth()),
+    days: modificationDate(endDate.getDate()),
+    months: modificationDate(endDate.getMonth() + 1),
     years: endDate.getFullYear(),
   });
 

@@ -100,7 +100,8 @@ export interface IFixedAuctionDetails {
   unitContract: Address;
   tokenId: number;
   openAt: Date;
-  AuctionType?: AuctionType;
+  avatar?: string;
+  auctionType?: AuctionType;
 }
 
 export interface IEnglishAuctionDetails {
@@ -123,7 +124,8 @@ export interface IEnglishAuctionDetails {
   tokenAmount0: number;
   tokenId: number;
   openAt: Date;
-  AuctionType?: AuctionType;
+  avatar?: string;
+  auctionType?: AuctionType;
 }
 
 export type IFetchPoolDetailsData =
@@ -207,7 +209,8 @@ export const fetchPoolDetails = createSmartAction<
             unitContract: poolInfo.token0,
             tokenAmount0: poolInfo.token_amount0,
             tokenId: poolInfo.tokenid,
-            AuctionType: params.poolType,
+            avatar: poolInfo.creatorurl,
+            auctionType: params.poolType,
           };
         } else {
           return {
@@ -226,7 +229,8 @@ export const fetchPoolDetails = createSmartAction<
             tokenContract: poolInfo.token0,
             unitContract: poolInfo.token1,
             tokenId: poolInfo.tokenid,
-            AuctionType: params.poolType,
+            avatar: poolInfo.creatorurl,
+            auctionType: params.poolType,
           };
         }
       },
