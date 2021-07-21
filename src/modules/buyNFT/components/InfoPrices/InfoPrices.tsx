@@ -1,5 +1,7 @@
 import { Box, Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
+import { AuctionType } from 'modules/api/common/auctionType';
+import { CancelPutTime } from 'modules/common/components/ProductCard/cancel';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import React, { useCallback, useState } from 'react';
@@ -24,6 +26,8 @@ interface IInfoPricesProps {
   state: AuctionState | FixedSwapState;
   role?: UserRole;
   onCancel?: () => void;
+  poolType?: AuctionType;
+  poolId?: number;
 }
 
 export const InfoPrices = ({
@@ -41,6 +45,8 @@ export const InfoPrices = ({
   state,
   role,
   onCancel,
+  poolType,
+  poolId,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
 
@@ -49,7 +55,9 @@ export const InfoPrices = ({
 
   const renderButtons = useCallback(() => {
     if (state === FixedSwapState.Live && role === 'creator') {
-      return (
+      return poolType === AuctionType.FixedSwap_Timing ? (
+        <CancelPutTime auctionType={poolType} id={poolId} />
+      ) : (
         <Button
           variant="outlined"
           fullWidth
@@ -202,6 +210,8 @@ export const InfoPrices = ({
     onBidderClaim,
     onCreatorClaim,
     hasSetDirectPrice,
+    poolType,
+    poolId,
   ]);
 
   return (

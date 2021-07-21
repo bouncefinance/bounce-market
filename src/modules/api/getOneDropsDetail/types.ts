@@ -10,6 +10,13 @@ export enum DropsDetailPoolState {
   Closed,
 }
 
+export enum DropType {
+  Unknown,
+  Comming,
+  Live,
+  Previous,
+}
+
 export interface IApiDropsDetailPoolInfo {
   fileurl: string;
   name: string;
@@ -35,6 +42,7 @@ export interface IApiOneDropsDetailData {
   twitter: string;
   website: string;
   videourl: string;
+  state: DropType;
 }
 
 export interface IApiOneDropsDetail {

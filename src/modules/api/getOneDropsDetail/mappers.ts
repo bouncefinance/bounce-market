@@ -5,6 +5,7 @@ import { Address } from 'modules/common/types/unit';
 import Web3 from 'web3';
 import {
   DropsDetailPoolState,
+  DropType,
   IApiDropsDetailPoolInfo,
   IApiOneDropsDetailData,
 } from './types';
@@ -34,6 +35,7 @@ export interface IDropDetails {
   twitter: string;
   website: string;
   videourl: string;
+  dropType: DropType;
 }
 
 export const mapDropDetailsPoolInfo = (
@@ -66,5 +68,6 @@ export const mapDropDetails = (data: IApiOneDropsDetailData): IDropDetails => {
     twitter: data.twitter,
     website: data.website,
     videourl: data.videourl,
+    dropType: data.state,
   };
 };
