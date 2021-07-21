@@ -271,7 +271,7 @@ export const ProductCardComponent = ({
               {isCancelTimePut ? (
                 <CancelPutTime auctionType={auctionType} id={poolId} />
               ) : (
-                featuresConfig.nftLikes && renderedLikes
+                featuresConfig.nftLikes && !hiddenLikeBtn && renderedLikes
               )}
             </>
           )}

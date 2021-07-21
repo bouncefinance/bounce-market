@@ -172,7 +172,6 @@ export const publishNft = createSmartAction<
               tarContract,
               sender,
             }: IApproveParams) => {
-              console.log(tarContract);
               const approveRes: boolean = await nftContract_CT.methods
                 .isApprovedForAll(sender, tarContract)
                 .call();
