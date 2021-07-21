@@ -69,9 +69,11 @@ export const CancelPutTime: React.FC<{
         setLoading(true);
       })
       .on('receipt', async (receipt: any) => {
-        handleClose();
-        setLoading(false);
-        refresh?.();
+        try {
+          handleClose();
+          setLoading(false);
+          refresh?.();
+        } catch (error) {}
       })
       .on('error', (error: MetaMaskError) => {
         setLoading(false);

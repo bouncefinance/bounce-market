@@ -30,7 +30,7 @@ export const Description = ({ data, loading, pristine }: IDescriptionProps) => {
 
       {!loading && data && (
         <DescriptionComponent
-          timer={<Timer endDate={data.dropDate} />}
+          timer={<Timer endDate={data.dropDate} dropType={data.dropType} />}
           title={data.title}
           text={data.description}
           creator={
