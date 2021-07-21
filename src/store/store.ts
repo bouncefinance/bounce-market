@@ -1,5 +1,10 @@
 import { createDriver as createAxiosDriver } from '@redux-requests/axios';
-import { getQuery, handleRequests } from '@redux-requests/core';
+import {
+  abortRequests,
+  Driver,
+  getQuery,
+  handleRequests,
+} from '@redux-requests/core';
 import { createDriver } from '@redux-requests/promise';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -18,6 +23,7 @@ import { i18nPersistConfig } from './webStorageConfigs';
 import { BlockchainNetworkId, ZERO_ADDRESS } from '../modules/common/conts';
 import { Address } from '../modules/common/types/unit';
 import { TokenSymbol } from '../modules/common/types/TokenSymbol';
+import { disconnect } from 'modules/account/store/actions/disconnect';
 
 type MainApiDriverName =
   | 'mainApiEthMainnet'
@@ -146,36 +152,48 @@ export function getTokenByDriver(
   return TokenSymbol.BNB;
 }
 
+const mainAxios = {
+  mainApiEthMainnet: axios.create({
+    baseURL: process.env.REACT_APP_API_BASE_ETH_MAINNET,
+  }),
+  mainApiEthRinkeby: axios.create({
+    baseURL: process.env.REACT_APP_API_BASE_RINKEBY,
+  }),
+  mainApiSmartchain: axios.create({
+    baseURL: process.env.REACT_APP_API_BASE,
+  }),
+  mainApiHeco: axios.create({
+    baseURL: process.env.REACT_APP_API_BASE_HECO,
+  }),
+  mainApiMatic: axios.create({
+    baseURL: process.env.REACT_APP_API_BASE_MATIC,
+  }),
+};
+
+type mainApiDriversType = keyof typeof mainAxios;
+
+const mainApiDrivers: { [key in mainApiDriversType]: Driver } = {
+  ...mainAxios,
+};
+Object.keys(mainAxios).forEach(key => {
+  const initAxios = mainAxios[key as mainApiDriversType];
+  initAxios.interceptors.response.use(response => {
+    // token invalid
+    if ([-1, -2].includes(response.data?.errorCode)) {
+      store.dispatch(abortRequests());
+      store.dispatch(disconnect());
+    }
+    return response;
+  });
+  mainApiDrivers[key as mainApiDriversType] = createAxiosDriver(initAxios);
+});
+
 const { requestsReducer, requestsMiddleware } = handleRequests({
   driver: {
     default: createDriver({
       processResponse: response => ({ data: response }),
     }),
-    mainApiEthMainnet: createAxiosDriver(
-      axios.create({
-        baseURL: process.env.REACT_APP_API_BASE_ETH_MAINNET,
-      }),
-    ),
-    mainApiEthRinkeby: createAxiosDriver(
-      axios.create({
-        baseURL: process.env.REACT_APP_API_BASE_RINKEBY,
-      }),
-    ),
-    mainApiSmartchain: createAxiosDriver(
-      axios.create({
-        baseURL: process.env.REACT_APP_API_BASE,
-      }),
-    ),
-    mainApiHeco: createAxiosDriver(
-      axios.create({
-        baseURL: process.env.REACT_APP_API_BASE_HECO,
-      }),
-    ),
-    mainApiMatic: createAxiosDriver(
-      axios.create({
-        baseURL: process.env.REACT_APP_API_BASE_MATIC,
-      }),
-    ),
+    ...mainApiDrivers,
     nftViewApiEthMainnet: createAxiosDriver(
       axios.create({
         baseURL: process.env.REACT_APP_FANGIBLE_URL_ETH_MAINNET,

@@ -1,4 +1,5 @@
 import { RequestAction } from '@redux-requests/core';
+import { AuctionTypeKeys } from 'modules/api/common/auctionType';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 // TODO: Merge with src/modules/profile/api/getPoolsByFilter.ts
@@ -8,7 +9,7 @@ export interface IQueryPool {
   amount_min1: string;
   amount_min_incr1: string;
   amount_total1: string;
-  auctiontype: 1 | 2;
+  auctiontype: AuctionTypeKeys;
   bidder_claimed: boolean;
   open_at: number;
   close_at: number;

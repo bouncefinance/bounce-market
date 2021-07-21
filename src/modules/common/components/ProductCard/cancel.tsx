@@ -10,19 +10,26 @@ import { useProductCardStyles } from './useProductCardStyles';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWeb3React } from 'modules/account/hooks/useWeb3React';
 import { AuctionType } from 'modules/api/common/auctionType';
-import { BounceFixedSwapNFTTime } from 'modules/web3/contracts';
+import {
+  BounceEnglishAuctionNFTTime,
+  BounceFixedSwapNFTTime,
+} from 'modules/web3/contracts';
 import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { useDispatchRequest } from '@redux-requests/react';
 import {
   getEnglishAuctionContract,
   getFixedSwapContract,
 } from 'modules/createNFT/actions/publishNft';
+import { NotificationActions } from 'modules/notification/store/NotificationActions';
+import { useDispatch } from 'react-redux';
+import { MetaMaskError } from 'modules/common/types/metamask';
 
 export const CancelPutTime: React.FC<{
   id?: number;
   auctionType?: AuctionType;
 }> = ({ id, auctionType }) => {
   const dispatchRequest = useDispatchRequest();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const classes = useProductCardStyles();
   const { web3, account, chainId } = useWeb3React();
@@ -38,17 +45,17 @@ export const CancelPutTime: React.FC<{
   };
   const onSuccess = () => {
     let contract;
-    if (AuctionType.FixedSwap === auctionType) {
-      contract = new web3.eth.Contract(
-        BounceFixedSwapNFTTime,
-        getEnglishAuctionContract(chainId, true),
-      ).methods.cancel(id);
-    }
-
-    if (AuctionType.EnglishAuction === auctionType) {
+    if (AuctionType.FixedSwap_Timing === auctionType) {
       contract = new web3.eth.Contract(
         BounceFixedSwapNFTTime,
         getFixedSwapContract(chainId, true),
+      ).methods.cancel(id);
+    }
+
+    if (AuctionType.EnglishAuction_Timing === auctionType) {
+      contract = new web3.eth.Contract(
+        BounceEnglishAuctionNFTTime,
+        getEnglishAuctionContract(chainId, true),
       ).methods.cancel(id);
     }
     if (!contract) {
@@ -66,13 +73,19 @@ export const CancelPutTime: React.FC<{
         setLoading(false);
         refresh?.();
       })
-      .on('error', (error: string) => {
+      .on('error', (error: MetaMaskError) => {
         setLoading(false);
-        try {
-          console.log('error', error);
-        } catch (err) {
-          console.log('error', err);
+        // User denied transaction signature.
+        if (error?.code === 4001) {
+          return;
         }
+        dispatch(
+          NotificationActions.showNotification({
+            // TODO link scan
+            message: error?.message ?? 'error',
+            severity: 'error',
+          }),
+        );
       });
     setLoading(true);
   };

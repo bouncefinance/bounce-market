@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import { AuctionState } from 'modules/api/common/AuctionState';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { NftType } from 'modules/api/common/NftType';
+import { auctionTypeMap } from 'modules/api/common/poolType';
 import { IApiQueryPool, IQueryPool } from 'modules/pools/actions/queryPools';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
@@ -29,6 +30,7 @@ function mapPool(data: IQueryPool): IFetchPoolDetailsData {
        */
       nftType: NftType.ERC1155,
       poolId: data.pool_id,
+      AuctionType: auctionTypeMap[data.auctiontype],
       state: data.state === 0 ? AuctionState.Live : AuctionState.Claimed,
       tokenContract: data.token0,
       unitContract: data.token0,
@@ -50,6 +52,7 @@ function mapPool(data: IQueryPool): IFetchPoolDetailsData {
       tokenContract: data.token0,
       unitContract: data.token1,
       tokenId: data.token_id,
+      AuctionType: auctionTypeMap[data.auctiontype],
     };
   }
 }
