@@ -131,11 +131,11 @@ export const queryPools = createSmartAction<
     driver: 'axios',
     asMutation: true,
     getData: data => {
-      if (data.code !== 1) {
+      if (data.code !== 0 && data.code !== 1) {
         throw new Error('Unexpected response');
       }
 
-      const pools: IQueryPool[] = data.data.pools;
+      const pools: IQueryPool[] = data.data?.pools || [];
       return mapPool(pools);
     },
   },
