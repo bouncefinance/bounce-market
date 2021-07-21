@@ -141,8 +141,10 @@ export function* onConnectWallet(data?: {
       );
 
       if (currentAddress?.toLowerCase() !== address?.toLowerCase()) {
-        yield put(disconnect());
-        yield put(connect());
+        // yield put(disconnect());
+        // yield put(connect());
+        window.localStorage.clear();
+        window.location.reload();
       }
     }
   }
