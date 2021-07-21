@@ -9,7 +9,6 @@ import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from 'redux';
 import { RootState } from '../../../../store';
 import { updateAccount } from './updateAccount';
-import { t } from '../../../i18n/utils/intl';
 
 export const changeNetworkToSupported = createSmartAction(
   'AccountActions/changeNetworkToSupported',
@@ -43,6 +42,7 @@ export const changeNetworkToSupported = createSmartAction(
                           BlockchainNetworkId.smartchain,
                       }),
                     );
+                    window.location.reload();
                   });
               } catch (switchError) {
                 // This error code indicates that the chain has not been added to MetaMask.
@@ -81,6 +81,7 @@ export const changeNetworkToSupported = createSmartAction(
                               BlockchainNetworkId.smartchain,
                           }),
                         );
+                        window.location.reload();
                       });
                   } catch (addError) {
                     // handle "add" error
@@ -91,7 +92,6 @@ export const changeNetworkToSupported = createSmartAction(
 
               return true;
             } else {
-              console.error(t('change-wallet.network-change-error'));
               return false;
             }
           })(),
