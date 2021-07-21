@@ -4,6 +4,7 @@ import { useSelectChainStyled } from './useSelectChainStyled';
 import { ReactComponent as EthereumIcon } from './assets/ethereum.svg';
 import { ReactComponent as BinanceIcon } from './assets/binance.svg';
 import { ReactComponent as HecoIcon } from './assets/heco.svg';
+import { ReactComponent as PolygonIcon } from './assets/polygon.svg';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { t } from 'modules/i18n/utils/intl';
@@ -91,6 +92,23 @@ export const SelectChainDialog = ({
         rpcUrls: ['https://http-mainnet.hecochain.com'],
         blockExplorerUrls: [
           getBlockChainExplorerAddress(BlockchainNetworkId.heco),
+        ],
+      },
+    },
+    {
+      icon: <PolygonIcon />,
+      title: t('header.select-chain.polygon'),
+      chainConfig: {
+        chainId: '0x89',
+        chainName: 'Polygon Mainnet',
+        nativeCurrency: {
+          name: 'polygon',
+          symbol: TokenSymbol.MATIC,
+          decimals: 18,
+        },
+        rpcUrls: ['https://polygonscan.com'],
+        blockExplorerUrls: [
+          getBlockChainExplorerAddress(BlockchainNetworkId.matic),
         ],
       },
     },
