@@ -22,6 +22,7 @@ import {
 } from 'modules/createNFT/actions/publishNft';
 import { NotificationActions } from 'modules/notification/store/NotificationActions';
 import { useDispatch } from 'react-redux';
+import { MetaMaskError } from 'modules/common/types/metamask';
 
 export const CancelPutTime: React.FC<{
   id?: number;
@@ -72,17 +73,16 @@ export const CancelPutTime: React.FC<{
         setLoading(false);
         refresh?.();
       })
-      .on('error', (error: string) => {
+      .on('error', (error: MetaMaskError) => {
         setLoading(false);
-        try {
-          console.log('error', error);
-        } catch (err) {
-          console.log('error', err);
+        // User denied transaction signature.
+        if (error?.code === 4001) {
+          return;
         }
         dispatch(
           NotificationActions.showNotification({
             // TODO link scan
-            message: 'error',
+            message: error?.message ?? 'error',
             severity: 'error',
           }),
         );
