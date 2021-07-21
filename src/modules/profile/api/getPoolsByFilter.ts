@@ -86,11 +86,12 @@ export const getPoolsByFilter = createAction<
     getData: data => {
       // TODO parse the response
       if (data.code !== 1) {
-        throw new Error('Unexpected response');
+        // throw new Error('Unexpected response');
+        return { list: [] };
       }
 
       return {
-        list: [...data.data.pools.map(mapPool)],
+        list: data.data?.pools.map(mapPool),
       };
     },
     ...meta,
