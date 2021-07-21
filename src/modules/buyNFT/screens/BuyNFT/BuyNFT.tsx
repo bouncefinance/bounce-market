@@ -497,6 +497,8 @@ export const BuyNFT = () => {
                       state={poolDetails.state}
                       role={poolDetails.role}
                       onCancel={handleFixedSwapCancel}
+                      poolType={poolType}
+                      poolId={poolId}
                     />
                   )}
 
