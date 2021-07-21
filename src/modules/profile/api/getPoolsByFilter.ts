@@ -30,7 +30,7 @@ function mapPool(data: IQueryPool): IFetchPoolDetailsData {
        */
       nftType: NftType.ERC1155,
       poolId: data.pool_id,
-      AuctionType: auctionTypeMap[data.auctiontype],
+      auctionType: auctionTypeMap[data.auctiontype],
       state: data.state === 0 ? AuctionState.Live : AuctionState.Claimed,
       tokenContract: data.token0,
       unitContract: data.token0,
@@ -52,7 +52,7 @@ function mapPool(data: IQueryPool): IFetchPoolDetailsData {
       tokenContract: data.token0,
       unitContract: data.token1,
       tokenId: data.token_id,
-      AuctionType: auctionTypeMap[data.auctiontype],
+      auctionType: auctionTypeMap[data.auctiontype],
     };
   }
 }
