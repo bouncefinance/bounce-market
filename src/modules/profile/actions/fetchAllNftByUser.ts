@@ -168,7 +168,7 @@ export const enrichNftItem = (data: any, poolsCopy: any, nfts: any) => (
         }
       })(),
       poolId: pool.poolId,
-      poolType: pool.AuctionType,
+      poolType: pool.auctionType,
       price: isEnglishAuction(pool)
         ? pool.lastestBidAmount.isEqualTo(0)
           ? pool.amountMin1
