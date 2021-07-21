@@ -1,20 +1,26 @@
 import { Typography } from '@material-ui/core';
 import classNames from 'classnames';
+import { DropType } from 'modules/api/getOneDropsDetail';
 import { useTimer } from 'modules/common/hooks/useTimer';
 import { t } from 'modules/i18n/utils/intl';
-import React from 'react';
 import { useTimerStyles } from './useTimerStyles';
 
 interface ITimerProps {
   endDate: Date;
   className?: string;
+  dropType: DropType;
 }
 
-export const Timer = ({ endDate, className }: ITimerProps) => {
+export const Timer = ({ endDate, className, dropType }: ITimerProps) => {
   const classes = useTimerStyles();
   const { duration, isTimeOver, endDetailedDate } = useTimer(endDate);
 
-  const timerText = isTimeOver ? endDetailedDate : duration;
+  const timerText =
+    dropType === DropType.Live
+      ? t('drop-details.live')
+      : isTimeOver
+      ? endDetailedDate
+      : duration;
 
   return (
     <div className={classNames(classes.root, className)}>
