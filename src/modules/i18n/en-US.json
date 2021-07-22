@@ -122,7 +122,8 @@
       "name": "Name",
       "specific-time-sale": "Put on sale at a specific time",
       "standard": "Standard",
-      "supply": "Supply"
+      "supply": "Supply",
+      "collection": "Collection"
     },
     "next": "Next",
     "standardOption": [

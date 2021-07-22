@@ -10,6 +10,7 @@ import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
 import { InputField } from '../../../form/components/InputField';
 import { SelectField } from '../../../form/components/SelectField';
 import { UploadFileField } from '../../../form/components/UploadFileField';
+import { CollectionField } from '../../../form/components/CollectionField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
@@ -167,6 +168,18 @@ export const CreateNFT = () => {
               color="primary"
               fullWidth={true}
               options={channelOptions}
+            />
+          </Box>
+          <Box mb={5}>
+            <Field
+              component={CollectionField}
+              name="collection"
+              type="text"
+              label={t('create-nft.label.collection')}
+              color="primary"
+              fullWidth={true}
+              rowsMax={10}
+              multiline
             />
           </Box>
           <Box mb={5}>
