@@ -96,6 +96,7 @@ export const Drop = ({
           <Box mb={4}>
             <div className={classes.nftList}>
               {!loading &&
+                data?.length !== 1 &&
                 data?.slice(0, MAX_ITEMS_COUNT).map((item, i) => (
                   <Link
                     to={href}

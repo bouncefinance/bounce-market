@@ -57,9 +57,12 @@ export const getDrops = createSmartAction<
       if (!data.data) {
         return null;
       }
-
       return {
-        items: data.data.map(mapSearchDropsItem),
+        items: data.data.map(mapSearchDropsItem).sort((a, b) => {
+          return (
+            new Date(a.dropDate).getTime() - new Date(b.dropDate).getTime()
+          );
+        }),
         total: data.total || 0,
         offset: params?.offset || 0,
       };
