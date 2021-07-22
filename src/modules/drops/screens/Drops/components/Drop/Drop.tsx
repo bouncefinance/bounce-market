@@ -90,13 +90,11 @@ export const Drop = ({
       <Queries<ResponseData<typeof fetchDropSubCard>>
         requestActions={[fetchDropSubCard]}
         requestKeys={[DROP_KEY]}
-        // noDataMessage={renderedPromoSkeleton}
       >
         {({ loading, data }) => (
           <Box mb={4}>
             <div className={classes.nftList}>
               {!loading &&
-                data?.length !== 1 &&
                 data?.slice(0, MAX_ITEMS_COUNT).map((item, i) => (
                   <Link
                     to={href}
