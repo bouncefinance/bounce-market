@@ -10,7 +10,11 @@ import { setAccount } from '../../account/store/actions/setAccount';
 import { ZERO_ADDRESS } from '../../common/conts';
 import { Address } from '../../common/types/unit';
 import { getFixedSwapContract } from '../../createNFT/actions/publishNft';
-import { BounceERC20, BounceFixedSwapNFT } from '../../web3/contracts';
+import {
+  BounceERC20,
+  BounceFixedSwapNFT,
+  BounceFixedSwapNFTTime,
+} from '../../web3/contracts';
 
 interface IBuyFixedPayload {
   nftType: NftType;
@@ -19,6 +23,7 @@ interface IBuyFixedPayload {
   amountTotal1: BigNumber;
   poolId: number;
   quantity: number;
+  isOpenSaleTime: boolean;
 }
 
 export const buyFixed = createSmartAction<
@@ -26,7 +31,15 @@ export const buyFixed = createSmartAction<
   [IBuyFixedPayload]
 >(
   'buyFixed',
-  ({ nftType, unitContract, amountTotal1, poolId, amountTotal0, quantity }) => {
+  ({
+    nftType,
+    unitContract,
+    amountTotal1,
+    poolId,
+    amountTotal0,
+    quantity,
+    isOpenSaleTime,
+  }) => {
     return {
       request: {
         promise: (async function () {})(),
@@ -50,13 +63,15 @@ export const buyFixed = createSmartAction<
                 BounceERC20,
                 unitContract,
               );
-
+              const fixedSwapContract = getFixedSwapContract(
+                chainId,
+                isOpenSaleTime,
+              );
+              const BounceFixedSwapNFT_CT = new web3.eth.Contract(
+                isOpenSaleTime ? BounceFixedSwapNFTTime : BounceFixedSwapNFT,
+                fixedSwapContract,
+              );
               if (nftType === NftType.ERC721) {
-                const BounceFixedSwapNFT_CT = new web3.eth.Contract(
-                  BounceFixedSwapNFT,
-                  getFixedSwapContract(chainId),
-                );
-
                 const buy = (value?: string) => {
                   return new Promise((resolve, reject) => {
                     BounceFixedSwapNFT_CT.methods
@@ -82,7 +97,7 @@ export const buyFixed = createSmartAction<
                   await buy(amountTotal1.toFixed());
                 } else {
                   const allowance = await BounceERC20_CT.methods
-                    .allowance(address, getFixedSwapContract(chainId))
+                    .allowance(address, fixedSwapContract)
                     .call();
 
                   if (
@@ -91,10 +106,7 @@ export const buyFixed = createSmartAction<
                       .isLessThan(1)
                   ) {
                     const approveRes = await BounceERC20_CT.methods
-                      .approve(
-                        getFixedSwapContract(chainId),
-                        '0xffffffffffffffff',
-                      )
+                      .approve(fixedSwapContract, '0xffffffffffffffff')
                       .send({ from: address });
 
                     if (!approveRes) {
@@ -105,10 +117,6 @@ export const buyFixed = createSmartAction<
                   await buy();
                 }
               } else {
-                const BounceFixedSwapNFT_CT = new web3.eth.Contract(
-                  BounceFixedSwapNFT,
-                  getFixedSwapContract(chainId),
-                );
                 const _amount0 = quantity;
                 const _amount1 = Web3.utils.toWei(
                   amountTotal1
@@ -137,7 +145,7 @@ export const buyFixed = createSmartAction<
                   await bid(_amount1);
                 } else {
                   const allowance = await BounceERC20_CT.methods
-                    .allowance(address, getFixedSwapContract(chainId))
+                    .allowance(address, fixedSwapContract)
                     .call();
 
                   if (
@@ -146,10 +154,7 @@ export const buyFixed = createSmartAction<
                       .isLessThan(1)
                   ) {
                     const approveRes = await BounceERC20_CT.methods
-                      .approve(
-                        getFixedSwapContract(chainId),
-                        '0xffffffffffffffff',
-                      )
+                      .approve(fixedSwapContract, '0xffffffffffffffff')
                       .send({ from: address });
 
                     if (!approveRes) {

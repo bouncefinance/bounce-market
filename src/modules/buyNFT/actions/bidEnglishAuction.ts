@@ -7,18 +7,23 @@ import { ZERO_ADDRESS } from '../../common/conts';
 import BigNumber from 'bignumber.js';
 import { getEnglishAuctionContract } from '../../createNFT/actions/publishNft';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
-import { BounceEnglishAuctionNFT, BounceERC20 } from '../../web3/contracts';
+import {
+  BounceEnglishAuctionNFT,
+  BounceEnglishAuctionNFTTime,
+  BounceERC20,
+} from '../../web3/contracts';
 
 interface IBidEnglishAuctionPayload {
   amount: BigNumber;
   unitContract: string;
   poolId: number;
+  isOpenSaleTime: boolean;
 }
 
 export const bidEnglishAuction = createSmartAction<
   RequestAction<any, any>,
   [IBidEnglishAuctionPayload]
->('bidEnglishAuction', ({ amount, unitContract, poolId }) => {
+>('bidEnglishAuction', ({ amount, unitContract, poolId, isOpenSaleTime }) => {
   return {
     request: {
       promise: (async function () {})(),
@@ -42,8 +47,10 @@ export const bidEnglishAuction = createSmartAction<
             const amountValue = web3.utils.toWei(amount.toFixed());
 
             const BounceEnglishAuctionNFTContract = new web3.eth.Contract(
-              BounceEnglishAuctionNFT,
-              getEnglishAuctionContract(chainId),
+              isOpenSaleTime
+                ? BounceEnglishAuctionNFTTime
+                : BounceEnglishAuctionNFT,
+              getEnglishAuctionContract(chainId, isOpenSaleTime),
             );
 
             const bid = (value?: string) =>
