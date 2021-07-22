@@ -90,7 +90,6 @@ export const Drop = ({
       <Queries<ResponseData<typeof fetchDropSubCard>>
         requestActions={[fetchDropSubCard]}
         requestKeys={[DROP_KEY]}
-        // noDataMessage={renderedPromoSkeleton}
       >
         {({ loading, data }) => (
           <Box mb={4}>
