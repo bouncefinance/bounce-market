@@ -29,6 +29,7 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
 import { CancelPutTime } from './cancel';
+import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
 
 export type ProductCardCategoryType = 'image' | 'video';
@@ -68,6 +69,7 @@ export interface IProductCardComponentProps {
   onBurnClick?: () => void;
   isCancelTimePut?: boolean;
   poolId?: number;
+  openAt?: Date;
 }
 
 export const ProductCardComponent = ({
@@ -99,6 +101,7 @@ export const ProductCardComponent = ({
   // profile page && put on of time && not up to shelf time && owner
   isCancelTimePut = false,
   poolId,
+  openAt,
 }: IProductCardComponentProps) => {
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -228,6 +231,7 @@ export const ProductCardComponent = ({
         wrapper={<Link to={href || '#'} className={classes.imgBox} />}
       >
         {renderMediaContent()}
+        {isCancelTimePut && openAt && <CardPutSaleTimer openAt={openAt} />}
       </ConditionalWrapper>
 
       <CardContent className={classes.content}>
