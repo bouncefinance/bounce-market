@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react';
 const INTERVAL_BREAKPOINT: Minutes = 2; // minutes
 const SHORT_STEP: Milliseconds = 1000; // when time left less than INTERVAL_BREAKPOINT
 const NORMAL_STEP: Milliseconds = 1000 * 30;
+const COUNT_DELAY = 3000;
 
 export const useTimer = (endDate: Date) => {
   const [timeRemaining, setTimeRemaining] = useState(getTimeRemaining(endDate));
@@ -65,4 +66,12 @@ export const useTimer = (endDate: Date) => {
   });
 
   return { timeRemaining, duration, isTimeOver, endDetailedDate };
+};
+
+export const useCount = (delay = COUNT_DELAY) => {
+  const [count, setCount] = useState(0);
+  useInterval(() => {
+    setCount(currentCount => currentCount + 1);
+  }, delay);
+  return count;
 };

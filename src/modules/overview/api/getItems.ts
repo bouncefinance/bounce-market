@@ -33,7 +33,7 @@ export interface IApiItem {
   supply: number;
   unlockablecontent: number;
   updated_at: string;
-  open_at: number;
+  open_at: Date;
 }
 
 export interface IItem {
@@ -68,7 +68,7 @@ export interface IItem {
   state?: AuctionState | FixedSwapState;
   tokenSymbol: TokenSymbol;
   isLoading?: boolean;
-  openAt?: number;
+  openAt?: Date;
   avatar?: string;
 }
 

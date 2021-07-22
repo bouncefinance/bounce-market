@@ -29,7 +29,7 @@ export const DatePicker: React.FC<{
   ({
     onChange,
     defaultYear = new Date().getFullYear(),
-    defaultDay = 1,
+    defaultDay = new Date().getDate(),
     defaultMonth = new Date().getMonth() + 1,
     defaultHours = 0,
     defaultMinutes = 0,

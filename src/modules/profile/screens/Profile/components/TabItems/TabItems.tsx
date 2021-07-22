@@ -97,6 +97,7 @@ export const TabItems = () => {
                     )
               }
               isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
+              openAt={item.openAt}
             />
           ) : (
             <ProductCardSkeleton key={uid(allNftByUserQuery.data?.length)} />
