@@ -52,6 +52,7 @@ export const queryMyBrandItem = createSmartAction<
                   title: item.brandname,
                   imgSrc: item.imgurl,
                   itemsCount: num,
+                  standard: item.standard,
                 } as IMyBrand;
               }),
             );
