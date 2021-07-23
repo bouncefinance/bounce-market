@@ -199,6 +199,7 @@ export const BuyNFT = () => {
           poolId: poolId,
           amountTotal0: values.amountTotal0,
           quantity: values.quantity,
+          isOpenSaleTime: poolType === AuctionType.FixedSwap_Timing,
         }),
       ).then(({ error }) => {
         if (!error) {
@@ -206,7 +207,7 @@ export const BuyNFT = () => {
         }
       });
     },
-    [dispatch, poolId, push],
+    [dispatch, poolId, push, poolType],
   );
 
   const { loading: fixedSwapCancelLoading } = useMutation({
@@ -241,6 +242,7 @@ export const BuyNFT = () => {
           amount: (value as any).amountMax1 || (value as any).bidPrice,
           unitContract,
           poolId,
+          isOpenSaleTime: poolType === AuctionType.EnglishAuction_Timing,
         }),
       ).then(({ error }) => {
         if (!error) {
@@ -257,6 +259,7 @@ export const BuyNFT = () => {
       closeFixedBuyDialog,
       dispatch,
       init,
+      poolType,
     ],
   );
 
@@ -534,58 +537,50 @@ export const BuyNFT = () => {
                     action={bidEnglishAuction}
                   >
                     {({ loading }) => (
-                      <BidDialog
-                        name={item.itemName}
-                        filepath={item.fileUrl}
-                        onSubmit={({ bid }) => {
-                          handleBuyEnglish({
-                            bidPrice: new BigNumber(bid),
-                            unitContract: poolDetails.unitContract,
-                            poolId: poolDetails.poolId,
-                          });
-                        }}
-                        isOpen={openedBid}
-                        onClose={closeBidDialog}
-                        currency={item.tokenSymbol}
-                        owner={ownerTitle}
-                        ownerAvatar={undefined}
-                        isOwnerVerified={false}
-                        category={item.category}
-                        loading={loading}
-                        maxQuantity={poolDetails.tokenAmount0}
-                        minIncrease={poolDetails.amountMinIncr1}
-                        lastestBidAmount={poolDetails.lastestBidAmount}
-                      />
-                    )}
-                  </Mutation>
-                )}
-
-                {isEnglishAuction(poolDetails) && (
-                  <Mutation
-                    type={bidEnglishAuction.toString()}
-                    action={bidEnglishAuction}
-                  >
-                    {({ loading }) => (
-                      <BuyDialog
-                        name={item.itemName}
-                        filepath={item.fileUrl}
-                        onSubmit={() => {
-                          handleBuyEnglish({
-                            amountMax1: poolDetails.amountMax1,
-                            unitContract: poolDetails.unitContract,
-                            poolId: poolDetails.poolId,
-                          });
-                        }}
-                        isOpen={openedEnglishBuy}
-                        onClose={closeEnglishBuyDialog}
-                        owner={ownerTitle}
-                        ownerAvatar={undefined}
-                        isOwnerVerified={false}
-                        readonly={true}
-                        category={item.category}
-                        loading={loading}
-                        maxQuantity={poolDetails.tokenAmount0}
-                      />
+                      <>
+                        <BidDialog
+                          name={item.itemName}
+                          filepath={item.fileUrl}
+                          onSubmit={({ bid }) => {
+                            handleBuyEnglish({
+                              bidPrice: new BigNumber(bid),
+                              unitContract: poolDetails.unitContract,
+                              poolId: poolDetails.poolId,
+                            });
+                          }}
+                          isOpen={openedBid}
+                          onClose={closeBidDialog}
+                          currency={item.tokenSymbol}
+                          owner={ownerTitle}
+                          ownerAvatar={undefined}
+                          isOwnerVerified={false}
+                          category={item.category}
+                          loading={loading}
+                          maxQuantity={poolDetails.tokenAmount0}
+                          minIncrease={poolDetails.amountMinIncr1}
+                          lastestBidAmount={poolDetails.lastestBidAmount}
+                        />
+                        <BuyDialog
+                          name={item.itemName}
+                          filepath={item.fileUrl}
+                          onSubmit={() => {
+                            handleBuyEnglish({
+                              amountMax1: poolDetails.amountMax1,
+                              unitContract: poolDetails.unitContract,
+                              poolId: poolDetails.poolId,
+                            });
+                          }}
+                          isOpen={openedEnglishBuy}
+                          onClose={closeEnglishBuyDialog}
+                          owner={ownerTitle}
+                          ownerAvatar={undefined}
+                          isOwnerVerified={false}
+                          readonly={true}
+                          category={item.category}
+                          loading={loading}
+                          maxQuantity={poolDetails.tokenAmount0}
+                        />
+                      </>
                     )}
                   </Mutation>
                 )}
