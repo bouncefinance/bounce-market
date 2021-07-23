@@ -41,6 +41,7 @@ export type PoolCategoryType = 'video' | 'image';
 export interface ITradePool_V2 {
   balance: string;
   created_at: string;
+  open_at: number;
   creatorurl: string;
   fileurl: string;
   itemname: string;

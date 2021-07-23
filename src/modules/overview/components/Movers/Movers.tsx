@@ -56,6 +56,8 @@ export const Movers = (sectionProps: ISectionProps) => {
           objectFit: 'contain',
         }}
         profileInfo={<AccountInfo address={item.ownerAddress} />}
+        isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
+        openAt={item.openAt}
       />
     );
   });

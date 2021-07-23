@@ -15,6 +15,7 @@ const useStyles = makeStyles<Theme>(theme => ({
     width: '100%',
     background: 'rgba(0,0,0,0.5)',
     color: '#fff',
+    zIndex: 2,
   },
   tips: {
     fontSize: 14,
@@ -26,7 +27,7 @@ const useStyles = makeStyles<Theme>(theme => ({
   },
 }));
 
-const toString = (n: number) => (n > 10 ? n.toFixed(0) : '0' + n.toFixed(0));
+const toString = (n: number) => (n >= 10 ? n.toFixed(0) : '0' + n.toFixed(0));
 const diffTime = (time: number | Date) => {
   try {
     const diffM = differenceInSeconds(time, new Date()) / 60;
@@ -41,7 +42,8 @@ const diffTime = (time: number | Date) => {
 
 const CardPutSaleTimer: React.FC<{
   openAt: Date;
-}> = memo(({ openAt }) => {
+  onchange?: () => void;
+}> = memo(({ openAt, onchange }) => {
   const classes = useStyles();
   const [timeValue, setTime] = useState('');
   const reload = useCount(1e3);
@@ -49,10 +51,11 @@ const CardPutSaleTimer: React.FC<{
   useEffect(() => {
     if (+openAt < Date.now()) {
       setIsTimeOver(true);
+      onchange?.();
       return () => {};
     }
     setTime(diffTime(openAt));
-  }, [openAt, reload]);
+  }, [openAt, reload, onchange]);
   return isTimeOver ? (
     <></>
   ) : (

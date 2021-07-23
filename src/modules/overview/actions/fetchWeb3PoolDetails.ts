@@ -144,6 +144,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   tokenContract: pool.token0,
                   unitContract: pool.token1,
                   tokenId: parseInt(pool.tokenId),
+                  openAt: new Date(pool.openAt * 1e3),
                 } as IFetchWeb3PoolDetailsData;
               } else if (
                 poolType === AuctionType.EnglishAuction ||
@@ -253,6 +254,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   unitContract: pool.token1,
                   tokenAmount0: pool.tokenAmount0,
                   tokenId: parseInt(pool.tokenId),
+                  openAt: new Date(pool.openAt * 1e3),
                   role: (() => {
                     if (lastBidderAddress === address) {
                       return 'buyer';

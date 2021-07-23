@@ -103,6 +103,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                     poolWeight: poolWidthMap.get(pool?.poolId as number) || 0,
                     avatar: pool?.avatar,
                     ownerName: pool?.name,
+                    openAt: pool?.openAt,
                   } as IOverviewItem;
                 })
                 .filter(item => item.poolId)

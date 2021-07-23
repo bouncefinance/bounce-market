@@ -63,6 +63,7 @@ export const BuyNFT = () => {
   const { chainId } = useAccount();
   const blockChainScan = getBlockChainExplorerAddress(chainId);
   const [isEmptyData, setIsEmptyData] = useState(false);
+  const [now, setNow] = useState(Date.now());
   const classes = useBuyNFTStyles();
   const { poolId: poolIdParam, poolType } = useParams<{
     poolId: string;
@@ -427,6 +428,13 @@ export const BuyNFT = () => {
               <Box mt={2}>{t('common.coming-soon')}</Box>
             );
 
+            const isOpenSaleTime =
+              poolType === AuctionType.EnglishAuction_Timing ||
+              poolType === AuctionType.FixedSwap_Timing;
+            const saleTime = isOpenSaleTime && +poolDetails.openAt >= now;
+            const onChangeTime = () => {
+              setNow(Date.now());
+            };
             return (
               <div className={classes.root}>
                 <MediaContainer
@@ -435,6 +443,9 @@ export const BuyNFT = () => {
                   title={item.itemName}
                   description={item.description}
                   category={item.category}
+                  isOpenSaleTime={isOpenSaleTime}
+                  openAt={poolDetails.openAt}
+                  onchange={onChangeTime}
                 />
 
                 <Info className={classes.info}>
@@ -472,6 +483,7 @@ export const BuyNFT = () => {
                       onBidClick={openBidDialog}
                       onBuyClick={openEnglishBuyDialog}
                       disabled={poolDetails.state !== AuctionState.Live}
+                      saleTime={saleTime}
                       loading={
                         fixedSwapCancelLoading ||
                         creatorClaimLoading ||
@@ -490,6 +502,7 @@ export const BuyNFT = () => {
                       cryptoCurrency={item.tokenSymbol}
                       onBuyClick={openFixedBuyDialog}
                       disabled={poolDetails.state !== FixedSwapState.Live}
+                      saleTime={saleTime}
                       loading={
                         fixedSwapCancelLoading ||
                         creatorClaimLoading ||
