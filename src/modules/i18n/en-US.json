@@ -38,6 +38,11 @@
         "collection-symbol": "collection symbol",
         "collection-url": "collection URL",
         "description": "Description"
+      },
+      "tip-warning": {
+        "collection-symbol":"Add an explanation to Collection Symbol",
+        "ERC721": "The ERC-721 token standard represents a single unique asset. It is immutable, transparent in ownership and security, and the most widely used. Each ERC-721 token holds its own unique contract values.",
+        "ERC1155": "The ERC-1155 is a dual purpose fungible and non fungible token. It’s faster and more efficient to use in batch token transfers and can be deployed in a single smart contract for an infinite number of token types. "
       }
     }
   },
