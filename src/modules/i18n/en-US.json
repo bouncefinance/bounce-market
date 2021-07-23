@@ -247,7 +247,7 @@
       "eth": "Ethereum Mainnet",
       "heco": "HECO Chain",
       "heco-2": "Huobi Wallet",
-      "polygon":"Polygon Mainnet",
+      "polygon": "Polygon Mainnet",
       "title": "Select network"
     },
     "network": {
@@ -306,6 +306,7 @@
     "put-on-cancel": "Cancel",
     "sold-for": "Sold for",
     "top-bid": "Top Bid",
+    "pool-start-tips": "The pool will start in:",
     "transfer": "Transfer token"
   },
   "cancel-timer": {

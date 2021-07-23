@@ -1,5 +1,7 @@
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { auctionTypeMap } from 'modules/api/common/poolType';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
+import { getNativeTokenSymbol } from 'modules/common/conts';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { BrandRoutesConfig } from '../../../brand/BrandRoutes';
@@ -19,6 +21,7 @@ import { useSearchResultStyles } from './useSearchResultStyles';
 
 const SearchItems = ({ data }: { data: ISearchItem[] }) => {
   const classes = useSearchResultStyles();
+  const { chainId, isChainSupported } = useAccount();
 
   if (!data.length) {
     return null;
@@ -59,7 +62,8 @@ const SearchItems = ({ data }: { data: ISearchItem[] }) => {
               <div className={classes.name}>{item.name}</div>
               {item.price && (
                 <div className={classes.price}>
-                  {item.price} {item.priceType}
+                  {item.price}{' '}
+                  {isChainSupported ? getNativeTokenSymbol(chainId) : 'BNB'}
                 </div>
               )}
             </div>
