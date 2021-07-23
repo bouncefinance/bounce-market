@@ -30,10 +30,10 @@ const useStyles = makeStyles<Theme>(theme => ({
 const toString = (n: number) => (n >= 10 ? n.toFixed(0) : '0' + n.toFixed(0));
 const diffTime = (time: number | Date) => {
   try {
-    const diffM = differenceInSeconds(time, new Date()) / 60;
-    const H = diffM / 60;
-    const m = (H - parseInt(H.toString())) * 60;
-    const s = (m - parseInt(m.toString())) * 60;
+    const timer = differenceInSeconds(time, new Date());
+    const H = Math.floor(timer / 3600);
+    const m = Math.floor((timer - H * 3600) / 60);
+    const s = Math.floor(timer - H * 3600 - m * 60);
     return `${toString(H)}h ${toString(m)}m ${toString(s)}s`;
   } catch (error) {
     return '0h 0m 0s';
