@@ -13,7 +13,7 @@ import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { DROPS_LIVE_KEY } from '../../const';
+import { DROPS_COMING_KEY, DROPS_LIVE_KEY, DROPS_PREV_KEY } from '../../const';
 import { StoriesChip } from '../StoriesChip';
 import {
   StoriesSliderItem,
@@ -51,9 +51,37 @@ export const StoriesSlider = () => {
     requestKey: DROPS_LIVE_KEY,
   });
 
-  const liveDrops = data?.items || [];
+  const {
+    data: dataComing,
+    loading: loadingComing,
+  } = useQuery<IGetDrops | null>({
+    type: getDrops.toString(),
+    requestKey: DROPS_COMING_KEY,
+  });
 
-  const renderedItems = liveDrops.map(item => {
+  const { data: dataPrev, loading: loadingPrev } = useQuery<IGetDrops | null>({
+    type: getDrops.toString(),
+    requestKey: DROPS_PREV_KEY,
+  });
+
+  // console.log('dataLive', data)
+  // console.log('dataComing', dataComing)
+  // console.log('dataPrev', dataPrev)
+
+  const liveDrops = data?.items || [];
+  const comingDrops = dataComing?.items || [];
+  const prevDrops = dataPrev?.items || [];
+
+  const showDrop =
+    liveDrops.length !== 0
+      ? liveDrops
+      : comingDrops.length !== 0
+      ? comingDrops
+      : prevDrops;
+  // debugger
+
+  const renderedItems = showDrop.map(item => {
+    console.log('showDrop', item);
     const chips = <StoriesChip label="live" isLive />;
 
     const profileInfo = (
@@ -97,8 +125,14 @@ export const StoriesSlider = () => {
   }
 
   return (
-    <StoriesSliderComponent isSlider={loading || liveDrops.length > 1}>
-      {loading ? renderedSkeletons : renderedItems}
+    <StoriesSliderComponent
+      isSlider={
+        (loading && loadingComing && loadingPrev) || showDrop.length > 1
+      }
+    >
+      {loading && loadingComing && loadingPrev
+        ? renderedSkeletons
+        : renderedItems}
     </StoriesSliderComponent>
   );
 };
