@@ -43,19 +43,19 @@ export interface IApiListBrandItem {
 }
 
 export interface IBrandInfo {
-  bandimgurl: string;
+  bandimgurl?: string;
   brandname: string;
   brandsymbol: string;
   contractaddress: string;
-  description: string;
+  description?: string;
   id: number;
-  imgurl: string;
+  imgurl?: string;
   owneraddress: string;
-  ownerimg: string;
+  ownerimg?: string;
   ownername: string;
-  popularweight: number;
+  popularweight?: number;
   standard: number;
-  status: number;
+  status?: number;
 }
 
 export interface IApiBrandInfo {
