@@ -1,53 +1,94 @@
-import { TextField, TextFieldProps } from '@material-ui/core';
-import React from 'react';
-import { FieldMetaState, FieldRenderProps } from 'react-final-form';
-import { getErrorText } from '../../utils/getErrorText';
-import { hasError } from '../../utils/hasError';
 import { useCollectionFieldStyles } from './CollectionFieldStyleds';
 import { t } from 'modules/i18n/utils/intl';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { memo } from 'react';
+import { ReactComponent as AddIcon } from './assets/add.svg';
+import { ReactComponent as ImgIcon } from './assets/img.svg';
+import { ReactComponent as SelectedIcon } from './assets/selected.svg';
+import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
+import { NftType } from 'modules/api/common/NftType';
+import { Img } from 'modules/uiKit/Img';
 
-interface IFieldProps extends FieldRenderProps<string> {
-  showLimitCounter: boolean;
+export interface ICollectionItem {
+  id: number;
+  collectionName: string;
+  imgSrc: string;
+  contractAddress: string;
+  nftType: NftType;
+  symbol: string;
+  ownername: string;
+  owneraddress: string;
 }
 
-const getHelperString = (
-  value: string,
-  meta: FieldMetaState<any>,
-  maxLength: number | null,
-  showLimitCounter: boolean,
-): string => {
-  let helperTextString: string = getErrorText(meta);
-  if (showLimitCounter && maxLength && !hasError(meta)) {
-    helperTextString = t('form.limit-counter', {
-      value: value.length ?? 0,
-      maxLimit: maxLength,
-    });
-  }
-  return helperTextString;
-};
+export const CollectionField = memo(
+  ({
+    title,
+    subTitle,
+    handleChangeCollection,
+    items,
+    currentAddr,
+  }: {
+    title: string;
+    subTitle?: string;
+    handleChangeCollection: (collection: ICollectionItem) => void;
+    items: ICollectionItem[];
+    currentAddr?: string;
+  }) => {
+    const classes = useCollectionFieldStyles();
+    const history = useHistory();
+    const sliderProps: Swiper = {
+      watchSlidesVisibility: true,
+      slidesPerView: 'auto',
+      spaceBetween: 25,
+      lazy: true,
+    };
 
-export const CollectionField = ({
-  input: { name, onChange, value, type, placeholder },
-  meta,
-  showLimitCounter = false,
-  ...rest
-}: IFieldProps & TextFieldProps) => {
-  const classes = useCollectionFieldStyles();
+    const modifyItem = (item: ICollectionItem) => {
+      return (
+        <SwiperSlide
+          className={classNames(
+            classes.collectionCard,
+            currentAddr === item.contractAddress && classes.sel,
+          )}
+          key={item.contractAddress}
+          onClick={() => {
+            handleChangeCollection(item);
+          }}
+        >
+          {item.imgSrc ? (
+            <Img src={item.imgSrc} className={classes.img} />
+          ) : (
+            <ImgIcon />
+          )}
 
-  const maxLength: number | null = rest.inputProps?.maxLength ?? null;
+          {currentAddr === item.contractAddress && (
+            <SelectedIcon className={classes.selIcon} />
+          )}
 
-  return (
-    <TextField
-      type={type}
-      name={name}
-      error={hasError(meta)}
-      value={value}
-      placeholder={placeholder}
-      helperText={getHelperString(value, meta, maxLength, showLimitCounter)}
-      onChange={onChange}
-      className={classes.root}
-      onWheel={(event: any) => event.target.blur()}
-      {...rest}
-    />
-  );
-};
+          <h3> {item.collectionName}</h3>
+        </SwiperSlide>
+      );
+    };
+
+    return (
+      <>
+        <h3>{title}</h3>
+        <p>{subTitle}</p>
+        <Swiper {...sliderProps} className={classes.collectionBox}>
+          <SwiperSlide
+            className={classes.collectionCard}
+            onClick={() => {
+              history.push('/brand/create');
+            }}
+          >
+            <AddIcon />
+            <h3>{t('create-collection-nft.submit')}</h3>
+          </SwiperSlide>
+
+          {items.map(modifyItem)}
+        </Swiper>
+      </>
+    );
+  },
+);

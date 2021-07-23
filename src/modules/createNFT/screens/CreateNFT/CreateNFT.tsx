@@ -3,7 +3,7 @@ import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { NftType } from 'modules/api/common/NftType';
 import { Button } from 'modules/uiKit/Button';
 import { Section } from 'modules/uiKit/Section';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory } from 'react-router';
 import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
@@ -14,9 +14,20 @@ import { CollectionField } from '../../../form/components/CollectionField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
-import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
+import {
+  ProfileRoutesConfig,
+  ProfileTab,
+} from '../../../profile/ProfileRoutes';
 import { Channel, createNft, ICreateNFTPayload } from '../../actions/createNft';
 import { useCreateNFTStyles } from './useCreateNFTStyles';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import {
+  IMyBrand,
+  queryMyBrandItem,
+} from 'modules/brand/actions/queryMyBrandItem';
+import { ICollectionItem } from 'modules/form/components/CollectionField/CollectionField';
+import { createBrandNFT } from 'modules/brand/actions/createBrandNft';
+import { IBrandInfo } from 'modules/brand/api/queryBrand';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -46,14 +57,14 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
     errors.description = t('validation.required');
   }
 
-  if (payload.standard === NftType.ERC1155) {
-    const supply = payload.supply;
-    if (!supply) {
-      errors.supply = t('validation.required');
-    } else if (!/^\d+$/.test(supply)) {
-      errors.supply = t('validation.require-integer');
-    }
-  }
+  // if (payload.standard === NftType.ERC1155) {
+  //   const supply = payload.supply;
+  //   if (!supply) {
+  //     errors.supply = t('validation.required');
+  //   } else if (!/^\d+$/.test(supply)) {
+  //     errors.supply = t('validation.require-integer');
+  //   }
+  // }
 
   if (!payload.file) {
     errors.file = t('validation.required');
@@ -68,23 +79,67 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
   return errors;
 };
 
+const mapperCollectionList = (item: IMyBrand): ICollectionItem => {
+  return {
+    id: item.id,
+    collectionName: item.title,
+    imgSrc: item.imgSrc,
+    contractAddress: item.contract,
+    nftType: item.nftType,
+    symbol: item.symbol,
+    ownername: item.ownername,
+    owneraddress: item.owneraddress,
+  };
+};
+
 export const CreateNFT = () => {
   const classes = useCreateNFTStyles();
   const dispatch = useDispatchRequest();
   const { push } = useHistory();
+  const [selectCollection, setSelectCollection] = useState<ICollectionItem>();
+  const [collectionList, setCollectionList] = useState<ICollectionItem[]>([]);
+  const { address } = useAccount();
 
   const handleSubmit = useCallback(
     (payload: ICreateNFTFormData) => {
+      if (!selectCollection || !address) return;
+      const brandInfo: IBrandInfo = {
+        brandname: selectCollection.collectionName,
+        brandsymbol: selectCollection.symbol,
+        contractaddress: selectCollection.contractAddress,
+        id: selectCollection.id,
+        owneraddress: selectCollection.owneraddress,
+        ownername: selectCollection.ownername,
+        standard: selectCollection.nftType,
+      };
       dispatch(
-        createNft({ ...payload, supply: parseInt(payload.supply, 10) }),
+        createBrandNFT(
+          {
+            ...payload,
+            standard: selectCollection.nftType,
+            supply: parseInt(payload.supply, 10),
+          },
+          brandInfo,
+        ),
       ).then(({ error }) => {
         if (!error) {
-          push(ProfileRoutesConfig.UserProfile.generatePath());
+          push(ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands));
         }
       });
     },
-    [dispatch, push],
+    [dispatch, push, selectCollection, address],
   );
+
+  useEffect(() => {
+    if (address) {
+      dispatch(queryMyBrandItem(address)).then(res => {
+        const { data: collections } = res;
+        if (collections) {
+          setCollectionList(collections.map(mapperCollectionList));
+        }
+      });
+    }
+  }, [address, dispatch]);
 
   const channelOptions = useMemo(
     () => [
@@ -117,6 +172,22 @@ export const CreateNFT = () => {
     ],
     [],
   );
+
+  const handleChangeCollection = (collection: ICollectionItem) => {
+    setSelectCollection(collection);
+  };
+
+  const renderCollection = () => {
+    return (
+      <CollectionField
+        items={collectionList}
+        title={t('create-collection-nft.collections')}
+        subTitle={t('create-collection-nft.subCollection')}
+        handleChangeCollection={handleChangeCollection}
+        currentAddr={selectCollection?.contractAddress}
+      />
+    );
+  };
 
   const renderForm = ({
     handleSubmit,
@@ -172,7 +243,7 @@ export const CreateNFT = () => {
           </Box>
           <Box mb={5}>
             <Field
-              component={CollectionField}
+              component={renderCollection}
               name="collection"
               type="text"
               label={t('create-nft.label.collection')}
@@ -182,7 +253,7 @@ export const CreateNFT = () => {
               multiline
             />
           </Box>
-          <Box mb={5}>
+          {/* <Box mb={5}>
             <Field
               component={SelectField}
               name="standard"
@@ -192,8 +263,8 @@ export const CreateNFT = () => {
               fullWidth={true}
               options={standardOptions}
             />
-          </Box>
-          {values.standard === NftType.ERC1155 && (
+          </Box> */}
+          {selectCollection?.nftType === NftType.ERC1155 && (
             <Box mb={5}>
               <Field
                 component={InputField}

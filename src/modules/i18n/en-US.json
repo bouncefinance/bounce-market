@@ -106,7 +106,10 @@
     ],
     "submit": "Create",
     "submitting": "Creating",
-    "title": "Create NFT collection"
+    "title": "Create NFT collection",
+    "collections": "Collections",
+    "subCollection": "When creating your first NFT, you need to create a collection. For next creation, you can put the NFT in an already created collection."
+
   },
   "create-nft": {
     "channelOption": {

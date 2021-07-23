@@ -3,6 +3,7 @@ import {
   RequestAction,
   RequestActionMeta,
 } from '@redux-requests/core';
+import { NftType } from 'modules/api/common/NftType';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
@@ -15,6 +16,11 @@ export interface IMyBrand {
   title: string;
   imgSrc: string;
   itemsCount: number;
+  contract: string;
+  nftType: NftType;
+  symbol: string;
+  ownername: string;
+  owneraddress: string;
 }
 
 export const queryMyBrandItem = createSmartAction<
@@ -52,6 +58,11 @@ export const queryMyBrandItem = createSmartAction<
                   title: item.brandname,
                   imgSrc: item.imgurl,
                   itemsCount: num,
+                  contract: item.contractaddress,
+                  nftType: item.standard,
+                  symbol: item.brandsymbol,
+                  ownername: item.ownername,
+                  owneraddress: item.owneraddress,
                 } as IMyBrand;
               }),
             );
