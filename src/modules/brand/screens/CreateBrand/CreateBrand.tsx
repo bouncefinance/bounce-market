@@ -97,7 +97,6 @@ export const CreateBrand = () => {
     return (
       <Box
         component="form"
-        onChange={args => console.log(args, '<<<<<<<<')}
         onSubmit={handleSubmit}
       >
         <Box mb={5}>
