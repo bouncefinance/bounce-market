@@ -441,7 +441,8 @@
     "seconds-short": "{seconds}s",
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
     "time-end": "Ended on {days}/{months}/{years}",
-    "time-over": "Time expired"
+    "time-expired": "Time expired",
+    "time-over": "Time is over"
   },
   "transfer-token": {
     "submit": "Transfer",

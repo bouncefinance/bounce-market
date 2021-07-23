@@ -16,7 +16,7 @@ export const Timer = ({ endDate, className, ...boxProps }: ITimerProps) => {
   return (
     <Box {...boxProps} className={classNames(classes.root, className)}>
       <TimeIcon className={classes.icon} />
-      {isTimeOver ? t('time.time-over') : duration}
+      {isTimeOver ? t('time.time-expired') : duration}
     </Box>
   );
 };

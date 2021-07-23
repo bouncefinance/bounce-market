@@ -438,7 +438,8 @@
     "seconds-short": "{seconds}秒",
     "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
     "time-end": "Ended on {days}/{months}/{years}",
-    "time-over": "该拍卖已过期"
+    "time-expired": "该拍卖已过期",
+    "time-over": "Time is over"
   },
   "transfer-token": {
     "submit": "发送",
