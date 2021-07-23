@@ -31,28 +31,6 @@ export const BrandCard = ({
 
   return (
     <Card className={classes.root} variant="outlined">
-      {!!itemsCount && withAddBtn && (
-        <div className={classes.createNewMiniBtnWrap}>
-          <Tooltip title={t('collection.card.createNewItem')} arrow>
-            <Button
-              component={Link}
-              to={addItemHref}
-              className={classes.createNewMiniBtn}
-              variant="outlined"
-              fullWidth={false}
-              rounded
-            >
-              <PlusIcon
-                className={classNames(
-                  classes.icon,
-                  classes.iconInheritFontSize,
-                )}
-              />
-            </Button>
-          </Tooltip>
-        </div>
-      )}
-
       <Link to={href} className={classes.wrapLink}>
         <Box className={classes.imgBox}>
           <Img src={imgSrc} className={classes.imgWrap} ratio="1x1" />
@@ -75,7 +53,7 @@ export const BrandCard = ({
         </CardContent>
       </Link>
 
-      {!itemsCount && withAddBtn && (
+      {withAddBtn && (
         <Button
           className={classNames(classes.addNewBtn, classes.addNewBtnInCard)}
           variant="outlined"
