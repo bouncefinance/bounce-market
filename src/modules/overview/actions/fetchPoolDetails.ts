@@ -102,6 +102,7 @@ export interface IFixedAuctionDetails {
   openAt: Date;
   avatar?: string;
   auctionType?: AuctionType;
+  createName?: string;
 }
 
 export interface IEnglishAuctionDetails {
@@ -126,6 +127,7 @@ export interface IEnglishAuctionDetails {
   openAt: Date;
   avatar?: string;
   auctionType?: AuctionType;
+  createName?: string;
 }
 
 export type IFetchPoolDetailsData =
@@ -178,6 +180,7 @@ export const fetchPoolDetails = createSmartAction<
       driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
+        console.log(data);
         const poolInfo: IApiPoolDetails = data?.poolinfo;
         if (
           params.poolType === AuctionType.EnglishAuction ||
@@ -197,7 +200,7 @@ export const fetchPoolDetails = createSmartAction<
             creatorClaimed: !!poolInfo.creator_claimed,
             duration: poolInfo.duration,
             lastestBidAmount: new BigNumber(Web3.utils.fromWei(poolInfo.price)),
-            name: poolInfo.username,
+            name: poolInfo.itemname,
             /**
              * For fields returned by the https://api1-bsc.fangible.com interface and data read directly from the contract, nftType=0 represents ERC721 and 1 represents ERC1155.
              * If the interface from https://bounce-market.bounce.finance/api/ requested data standard = 1 represents ERC721, 2 representative ERC1155
@@ -211,6 +214,7 @@ export const fetchPoolDetails = createSmartAction<
             tokenId: poolInfo.tokenid,
             avatar: poolInfo.creatorurl,
             auctionType: params.poolType,
+            createName: poolInfo.username,
           };
         } else {
           return {
@@ -231,6 +235,7 @@ export const fetchPoolDetails = createSmartAction<
             tokenId: poolInfo.tokenid,
             avatar: poolInfo.creatorurl,
             auctionType: params.poolType,
+            createName: poolInfo.username,
           };
         }
       },
