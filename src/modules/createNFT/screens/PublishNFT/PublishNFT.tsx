@@ -44,6 +44,10 @@ import { publishNft } from '../../actions/publishNft';
 import type { ISaleTime } from '../../actions/publishNft';
 import { useCurrencies } from '../../hooks/useCurrencies';
 import { usePublishNFTtyles } from './usePublishNFTtyles';
+import {
+  UserRoleEnum,
+  UserRoleType,
+} from 'modules/common/actions/queryAccountInfo';
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
@@ -83,6 +87,7 @@ interface IPublishNFTComponentProps {
   onPublish: () => void;
   category: 'image' | 'video';
   file?: string;
+  identity: UserRoleType;
 }
 
 export const PublishNFTComponent = ({
@@ -94,6 +99,7 @@ export const PublishNFTComponent = ({
   onPublish,
   category,
   file,
+  identity,
 }: IPublishNFTComponentProps) => {
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
@@ -291,6 +297,7 @@ export const PublishNFTComponent = ({
     ],
   );
 
+  const isVerify = identity === UserRoleEnum.Verified;
   const renderForm = ({
     handleSubmit,
     values,
@@ -411,16 +418,18 @@ export const PublishNFTComponent = ({
                   </Grid>
                 </Box>
               </Box>
-              <Box className={classes.formControl}>
-                <Field
-                  component={SelectTimeField}
-                  name="saleTime"
-                  type="text"
-                  label={t('create-nft.label.specific-time-sale')}
-                  color="primary"
-                  fullWidth={true}
-                />
-              </Box>
+              {isVerify && (
+                <Box className={classes.formControl}>
+                  <Field
+                    component={SelectTimeField}
+                    name="saleTime"
+                    type="text"
+                    label={t('create-nft.label.specific-time-sale')}
+                    color="primary"
+                    fullWidth={true}
+                  />
+                </Box>
+              )}
               <Box className={classes.formControl}>
                 <Field
                   component={InputField}
@@ -514,23 +523,30 @@ export const PublishNFTComponent = ({
 
                 <div className={classes.fieldText}>
                   {t('publish-nft.expire', {
-                    value: add(new Date(), {
-                      days: +values.duration,
-                    }),
+                    value: add(
+                      isVerify && values.saleTime?.open && values.saleTime?.time
+                        ? values.saleTime?.time
+                        : new Date(),
+                      {
+                        days: +values.duration,
+                      },
+                    ),
                   })}
                 </div>
               </Box>
 
-              <Box className={classes.formControl}>
-                <Field
-                  component={SelectTimeField}
-                  name="saleTime"
-                  type="text"
-                  label={t('create-nft.label.specific-time-sale')}
-                  color="primary"
-                  fullWidth={true}
-                />
-              </Box>
+              {isVerify && (
+                <Box className={classes.formControl}>
+                  <Field
+                    component={SelectTimeField}
+                    name="saleTime"
+                    type="text"
+                    label={t('create-nft.label.specific-time-sale')}
+                    color="primary"
+                    fullWidth={true}
+                  />
+                </Box>
+              )}
 
               <Box className={classes.formControl}>
                 <Box mb={2.5}>
@@ -736,6 +752,7 @@ export const PublishNFT = () => {
             category={data.category}
             maxQuantity={maxQuantity}
             onPublish={handlePublish}
+            identity={data.identity}
           />
         );
       }}

@@ -25,6 +25,9 @@ export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
     minWidth: 240,
     textAlign: 'center',
     margin: 'auto',
+    position: 'relative',
+    borderRadius: 12,
+    overflow: 'hidden',
   },
 
   img: {
@@ -32,7 +35,6 @@ export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
     margin: theme.spacing(0, 'auto'),
     maxWidth: '100%',
     objectFit: 'scale-down',
-    borderRadius: 12,
 
     [theme.breakpoints.up('xl')]: {
       maxHeight: '48vh',
