@@ -14,11 +14,15 @@ import { TransactionReceipt } from '@ethersproject/abstract-provider';
 
 interface IClaimParams {
   poolId: string;
+  isOpenSaleTime: boolean;
 }
 
 export const creatorClaim = createSmartAction<RequestAction<void, void>>(
   'creatorClaim',
-  ({ poolId }: IClaimParams, meta?: RequestActionMeta<void, void>) => ({
+  (
+    { poolId, isOpenSaleTime }: IClaimParams,
+    meta?: RequestActionMeta<void, void>,
+  ) => ({
     request: {
       promise: (async function () {})(),
     },
@@ -39,7 +43,7 @@ export const creatorClaim = createSmartAction<RequestAction<void, void>>(
 
             const ContractBounceEnglishAuctionNFT = new web3.eth.Contract(
               BounceEnglishAuctionNFT,
-              getEnglishAuctionContract(chainId),
+              getEnglishAuctionContract(chainId, isOpenSaleTime),
             );
 
             await new Promise((resolve, reject) => {

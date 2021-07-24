@@ -7,18 +7,25 @@ import {
 } from '@redux-requests/core';
 import { Store } from 'redux';
 import { RootState } from '../../../store';
-import { BounceEnglishAuctionNFT } from '../../web3/contracts';
+import {
+  BounceEnglishAuctionNFT,
+  BounceEnglishAuctionNFTTime,
+} from '../../web3/contracts';
 import { getEnglishAuctionContract } from '../../createNFT/actions/publishNft';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 
 interface IClaimParams {
   poolId: string;
+  isOpenSaleTime: boolean;
 }
 
 export const bidderClaim = createSmartAction<RequestAction<void, void>>(
   'bidderClaim',
-  ({ poolId }: IClaimParams, meta?: RequestActionMeta<void, void>) => ({
+  (
+    { poolId, isOpenSaleTime }: IClaimParams,
+    meta?: RequestActionMeta<void, void>,
+  ) => ({
     request: {
       promise: (async function () {})(),
     },
@@ -38,8 +45,10 @@ export const bidderClaim = createSmartAction<RequestAction<void, void>>(
             });
 
             const ContractBounceEnglishAuctionNFT = new web3.eth.Contract(
-              BounceEnglishAuctionNFT,
-              getEnglishAuctionContract(chainId),
+              isOpenSaleTime
+                ? BounceEnglishAuctionNFTTime
+                : BounceEnglishAuctionNFT,
+              getEnglishAuctionContract(chainId, isOpenSaleTime),
             );
 
             await new Promise((resolve, reject) => {

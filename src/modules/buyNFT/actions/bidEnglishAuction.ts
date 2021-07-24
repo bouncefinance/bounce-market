@@ -78,13 +78,16 @@ export const bidEnglishAuction = createSmartAction<
               );
 
               const allowance = await BounceERC20Contract.methods
-                .allowance(address, getEnglishAuctionContract(chainId))
+                .allowance(
+                  address,
+                  getEnglishAuctionContract(chainId, isOpenSaleTime),
+                )
                 .call();
 
               if (new BigNumber(allowance).dividedBy(amount).isLessThan(1)) {
                 const approveRes = await BounceERC20Contract.methods
                   .approve(
-                    getEnglishAuctionContract(chainId),
+                    getEnglishAuctionContract(chainId, isOpenSaleTime),
                     '0xffffffffffffffff',
                   )
                   .send({ from: address });

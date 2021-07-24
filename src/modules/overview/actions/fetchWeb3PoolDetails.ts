@@ -168,9 +168,9 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 const myClaimedPool = await BounceEnglishAuctionNFT_CT.methods
                   .myClaimedP(address, poolId)
                   .call();
-                const creatorClaimedPool = await BounceEnglishAuctionNFT_CT.methods
-                  .creatorClaimedP(poolId)
-                  .call();
+                // const creatorClaimedPool = await BounceEnglishAuctionNFT_CT.methods
+                //   .creatorClaimedP(poolId)
+                //   .call();
                 const reserveAmount = await BounceEnglishAuctionNFT_CT.methods
                   .reserveAmount1P(poolId)
                   .call();
@@ -217,7 +217,10 @@ export const fetchWeb3PoolDetails = createSmartAction<
                   nftType: parseInt(pool.nftType),
                   poolId,
                   state: (() => {
-                    if (myClaimedPool || creatorClaimedPool) {
+                    if (
+                      myClaimedPool
+                      // || creatorClaimedPool
+                    ) {
                       return AuctionState.Claimed;
                     }
 

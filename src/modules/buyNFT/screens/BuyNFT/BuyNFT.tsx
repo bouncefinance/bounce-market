@@ -159,21 +159,25 @@ export const BuyNFT = () => {
     return name || truncateWalletAddr(address);
   };
 
+  const isOpenSaleTime =
+    poolType === AuctionType.EnglishAuction_Timing ||
+    poolType === AuctionType.FixedSwap_Timing;
+
   const handleBidderClaim = useCallback(() => {
-    dispatch(bidderClaim({ poolId })).then(({ error }) => {
+    dispatch(bidderClaim({ poolId, isOpenSaleTime })).then(({ error }) => {
       if (!error) {
         push(ProfileRoutesConfig.UserProfile.generatePath());
       }
     });
-  }, [dispatch, poolId, push]);
+  }, [dispatch, poolId, push, isOpenSaleTime]);
 
   const handleCreatorClaim = useCallback(() => {
-    dispatch(creatorClaim({ poolId })).then(({ error }) => {
+    dispatch(creatorClaim({ poolId, isOpenSaleTime })).then(({ error }) => {
       if (!error) {
         push(ProfileRoutesConfig.UserProfile.generatePath());
       }
     });
-  }, [dispatch, poolId, push]);
+  }, [dispatch, poolId, push, isOpenSaleTime]);
 
   const handleFixedSwapCancel = useCallback(() => {
     dispatch(fixedSwapCancel({ poolId })).then(({ error }) => {
@@ -428,9 +432,6 @@ export const BuyNFT = () => {
               <Box mt={2}>{t('common.coming-soon')}</Box>
             );
 
-            const isOpenSaleTime =
-              poolType === AuctionType.EnglishAuction_Timing ||
-              poolType === AuctionType.FixedSwap_Timing;
             const saleTime = isOpenSaleTime && +poolDetails.openAt >= now;
             const onChangeTime = () => {
               setNow(Date.now());

@@ -268,8 +268,8 @@ export const PublishNFTComponent = ({
               MIN_INCREMENTAL_PART,
             ),
             reservePrice: reservePriceChecked ? payload.reservePrice : '0',
-            duration: payload.duration * 60 * 60 * 24,
-            // duration: 60 * 60 * 1,
+            // duration: payload.duration * 60 * 60 * 24,
+            duration: payload.duration * 60,
             name,
             tokenContract,
             unitContract: payload.unitContract,
@@ -523,9 +523,14 @@ export const PublishNFTComponent = ({
 
                 <div className={classes.fieldText}>
                   {t('publish-nft.expire', {
-                    value: add(new Date(), {
-                      days: +values.duration,
-                    }),
+                    value: add(
+                      isVerify && values.saleTime?.open && values.saleTime?.time
+                        ? values.saleTime?.time
+                        : new Date(),
+                      {
+                        days: +values.duration,
+                      },
+                    ),
                   })}
                 </div>
               </Box>
