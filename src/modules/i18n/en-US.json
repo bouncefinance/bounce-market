@@ -295,7 +295,7 @@
   },
   "monthFormat": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December}}",
   "movers": {
-    "title": "Fast movers"
+    "title": "Featured"
   },
   "overview": {
     "collections": {
@@ -386,7 +386,7 @@
       "following": "Following",
       "items": "Items",
       "liked": "Liked",
-      "my-bids": "My bids",
+      "my-bids": "My Transaction",
       "my-collections": "My collections",
       "my-items": "My items",
       "my-sells": "My sales"
@@ -450,7 +450,8 @@
     "seconds-short": "{seconds}s",
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
     "time-end": "Ended on {days}/{months}/{years}",
-    "time-over": "Time expired"
+    "time-expired": "Time expired",
+    "time-over": "Time is over"
   },
   "transfer-token": {
     "submit": "Transfer",

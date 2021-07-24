@@ -36,7 +36,7 @@ export const getDrops = createSmartAction<
       accountaddress: params?.address || '',
       limit: params?.limit || 1000,
       offset: params?.offset || 0,
-      ordertype: params?.ordertype || SearchDropsParamOrderType.Positive,
+      ordertype: params?.ordertype || SearchDropsParamOrderType.Inverted,
       state: params?.state || SearchDropsParamState.Live,
     } as ISearchDropsParams,
   },
@@ -58,11 +58,7 @@ export const getDrops = createSmartAction<
         return null;
       }
       return {
-        items: data.data.map(mapSearchDropsItem).sort((a, b) => {
-          return (
-            new Date(a.dropDate).getTime() - new Date(b.dropDate).getTime()
-          );
-        }),
+        items: data.data.map(mapSearchDropsItem),
         total: data.total || 0,
         offset: params?.offset || 0,
       };

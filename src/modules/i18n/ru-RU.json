@@ -409,7 +409,8 @@
     "seconds-short": "{seconds} секуд",
     "time-left-short": "Осталось {days} {hours} {minutes} {seconds}",
     "time-end": "Ended on {days}/{months}/{years}",
-    "time-over": "Время истекло"
+    "time-expired": "Время истекло",
+    "time-over": "Time is over"
   },
   "transfer-token": {
     "submit": "Перевести",

@@ -59,7 +59,7 @@ export const useTimer = (endDate: Date) => {
     return value < 10 ? `0${value}` : `${value}`;
   };
   // 'Ended on 01/07/2021'
-  const endDetailedDate = t('time.time-end', {
+  const endDetailedDate = t('time.time-over', {
     days: modificationDate(endDate.getDate()),
     months: modificationDate(endDate.getMonth() + 1),
     years: endDate.getFullYear(),
