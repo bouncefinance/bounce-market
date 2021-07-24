@@ -231,7 +231,7 @@ export const ProductCardComponent = ({
         wrapper={<Link to={href || '#'} className={classes.imgBox} />}
       >
         {renderMediaContent()}
-        {isCancelTimePut && openAt && <CardPutSaleTimer openAt={openAt} />}
+        {openAt && +openAt > Date.now() && <CardPutSaleTimer openAt={openAt} />}
       </ConditionalWrapper>
 
       <CardContent className={classes.content}>

@@ -111,7 +111,6 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
             ]}
           />
         }
-        isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
         openAt={item.openAt}
       />
     );

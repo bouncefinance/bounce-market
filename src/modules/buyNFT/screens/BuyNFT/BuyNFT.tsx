@@ -443,7 +443,7 @@ export const BuyNFT = () => {
                   title={item.itemName}
                   description={item.description}
                   category={item.category}
-                  isOpenSaleTime={isOpenSaleTime}
+                  isOpenSaleTime={saleTime}
                   openAt={poolDetails.openAt}
                   onchange={onChangeTime}
                 />
