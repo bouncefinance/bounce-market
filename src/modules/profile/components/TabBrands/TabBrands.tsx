@@ -44,7 +44,7 @@ export const TabBrands = () => {
             id={brandProps.id}
             itemsCount={brandProps.itemsCount}
             imgSrc={brandProps.imgSrc}
-            standard={brandProps.standard}
+            nftType={brandProps.nftType}
           />
         </Grid>
       ))}

@@ -38,6 +38,11 @@
         "collection-symbol": "collection symbol",
         "collection-url": "collection URL",
         "description": "Description"
+      },
+      "tip-warning": {
+        "collection-symbol":"Add an explanation to Collection Symbol",
+        "ERC721": "The ERC-721 token standard represents a single unique asset. It is immutable, transparent in ownership and security, and the most widely used. Each ERC-721 token holds its own unique contract values.",
+        "ERC1155": "The ERC-1155 is a dual purpose fungible and non fungible token. It’s faster and more efficient to use in batch token transfers and can be deployed in a single smart contract for an infinite number of token types. "
       }
     }
   },
@@ -106,7 +111,10 @@
     ],
     "submit": "Create",
     "submitting": "Creating",
-    "title": "Create NFT collection"
+    "title": "Create NFT collection",
+    "collections": "Collections",
+    "subCollection": "When creating your first NFT, you need to create a collection. For next creation, you can put the NFT in an already created collection."
+
   },
   "create-nft": {
     "channelOption": {
@@ -122,7 +130,8 @@
       "name": "Name",
       "specific-time-sale": "Put on sale at a specific time",
       "standard": "Standard",
-      "supply": "Supply"
+      "supply": "Supply",
+      "collection": "Collection"
     },
     "next": "Next",
     "standardOption": [
@@ -286,7 +295,7 @@
   },
   "monthFormat": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December}}",
   "movers": {
-    "title": "Fast movers"
+    "title": "Featured"
   },
   "overview": {
     "collections": {
@@ -377,7 +386,7 @@
       "following": "Following",
       "items": "Items",
       "liked": "Liked",
-      "my-bids": "My bids",
+      "my-bids": "My Transaction",
       "my-collections": "My collections",
       "my-items": "My items",
       "my-sells": "My sales"
@@ -441,7 +450,8 @@
     "seconds-short": "{seconds}s",
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
     "time-end": "Ended on {days}/{months}/{years}",
-    "time-over": "Time expired"
+    "time-expired": "Time expired",
+    "time-over": "Time is over"
   },
   "transfer-token": {
     "submit": "Transfer",

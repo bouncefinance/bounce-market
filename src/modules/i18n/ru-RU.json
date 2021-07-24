@@ -33,6 +33,11 @@
         "collection-symbol": "символ коллекции",
         "collection-url": "ссылка на коллекцию",
         "description": "Описание"
+      },
+      "tip-warning": {
+        "collection-symbol": "Add an explanation to Collection Symbol",
+        "ERC721": "The ERC-721 token standard represents a single unique asset. It is immutable, transparent in ownership and security, and the most widely used. Each ERC-721 token holds its own unique contract values.",
+        "ERC1155": "The ERC-1155 is a dual purpose fungible and non fungible token. It’s faster and more efficient to use in batch token transfers and can be deployed in a single smart contract for an infinite number of token types. "
       }
     }
   },
@@ -102,7 +107,9 @@
     ],
     "submit": "Создать",
     "submitting": "В процессе создания",
-    "title": "Создать коллекцию NFT"
+    "title": "Создать коллекцию NFT",
+    "collections": "Collections",
+    "subCollection": "When creating your first NFT, you need to create a collection. For next creation, you can put the NFT in an already created collection."
   },
   "create-nft": {
     "channelOption": {
@@ -213,13 +220,13 @@
       "eth": "Ethereum Mainnet",
       "heco": "HECO Chain",
       "heco-2": "Huobi Wallet",
-      "polygon":"Polygon Mainnet",
+      "polygon": "Polygon Mainnet",
       "title": "Select network"
     },
     "network": {
       "etherreum": "Ethereum",
       "binance": "Binance Smart Chain",
-      "rinkby":"Rinkeby Test Chain",
+      "rinkby": "Rinkeby Test Chain",
       "heco": "Heco Chain",
       "polygon": "Matic Chain",
       "unknow": "Unknown network"
@@ -402,7 +409,8 @@
     "seconds-short": "{seconds} секуд",
     "time-left-short": "Осталось {days} {hours} {minutes} {seconds}",
     "time-end": "Ended on {days}/{months}/{years}",
-    "time-over": "Время истекло"
+    "time-expired": "Время истекло",
+    "time-over": "Time is over"
   },
   "transfer-token": {
     "submit": "Перевести",

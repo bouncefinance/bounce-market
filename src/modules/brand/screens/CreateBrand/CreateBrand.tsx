@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@material-ui/core';
+import { Box, Container, Tooltip, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { NftType } from 'modules/api/common/NftType';
 import { InputField } from 'modules/form/components/InputField';
@@ -18,6 +18,7 @@ import {
   ProfileTab,
 } from '../../../profile/ProfileRoutes';
 import { createBrand } from '../../actions/createBrand';
+import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 
 export interface ICreateBrand {
   brandName: string;
@@ -111,7 +112,24 @@ export const CreateBrand = () => {
             component={SelectField}
             name="standard"
             type="text"
-            label={t('create-nft.label.standard')}
+            label={
+              <Box display="flex" alignItems="center">
+                {t('create-nft.label.standard')}
+
+                <Tooltip
+                  title={
+                    <>
+                      <p>{t('collection.create.tip-warning.ERC721')}</p>
+                      <p>{t('collection.create.tip-warning.ERC1155')}</p>
+                    </>
+                  }
+                >
+                  <Box component="i" ml={1}>
+                    <QuestionIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+            }
             color="primary"
             fullWidth={true}
             options={standardOptions}
@@ -122,9 +140,21 @@ export const CreateBrand = () => {
             component={InputField}
             name="brandSymbol"
             type="text"
-            label={t('collection.create.label.collection-symbol')}
             color="primary"
             fullWidth={true}
+            label={
+              <Box display="flex" alignItems="center">
+                {t('collection.create.label.collection-symbol')}
+
+                <Tooltip
+                  title={t('collection.create.tip-warning.collection-symbol')}
+                >
+                  <Box component="i" ml={1}>
+                    <QuestionIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+            }
           />
         </Box>
         <Box mb={5}>

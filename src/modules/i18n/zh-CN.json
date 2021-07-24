@@ -38,6 +38,11 @@
         "collection-symbol": "作品集标识",
         "collection-url": "作品集网址",
         "description": "描述"
+      },
+      "tip-warning": {
+        "collection-symbol":"Add an explanation to Collection Symbol",
+        "ERC721": "The ERC-721 token standard represents a single unique asset. It is immutable, transparent in ownership and security, and the most widely used. Each ERC-721 token holds its own unique contract values.",
+        "ERC1155": "The ERC-1155 is a dual purpose fungible and non fungible token. It’s faster and more efficient to use in batch token transfers and can be deployed in a single smart contract for an infinite number of token types. "
       }
     }
   },
@@ -106,7 +111,9 @@
     ],
     "submit": "创建",
     "submitting": "正在创建中",
-    "title": "创建作品集NFT"
+    "title": "创建作品集NFT",
+    "collections": "Collections",
+    "subCollection": "When creating your first NFT, you need to create a collection. For next creation, you can put the NFT in an already created collection."
   },
   "create-nft": {
     "channelOption": {
@@ -438,7 +445,8 @@
     "seconds-short": "{seconds}秒",
     "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
     "time-end": "Ended on {days}/{months}/{years}",
-    "time-over": "该拍卖已过期"
+    "time-expired": "该拍卖已过期",
+    "time-over": "Time is over"
   },
   "transfer-token": {
     "submit": "发送",
