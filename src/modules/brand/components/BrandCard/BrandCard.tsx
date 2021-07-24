@@ -1,5 +1,6 @@
-import { Box, Card, CardContent, Tooltip, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Typography } from '@material-ui/core';
 import classNames from 'classnames';
+import { NftType } from 'modules/api/common/NftType';
 import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
@@ -11,6 +12,7 @@ import { useBrandCardStyles } from './useBrandCardStyles';
 export interface IBrandCardProps {
   title: string;
   itemsCount: number;
+  nftType: NftType;
   imgSrc: string;
   id: number;
   withAddBtn?: boolean;
@@ -22,6 +24,7 @@ export const BrandCard = ({
   id,
   title,
   itemsCount,
+  nftType,
   imgSrc,
   withAddBtn,
   addItemHref,
@@ -46,9 +49,11 @@ export const BrandCard = ({
             variant="body2"
             className={classes.subTitle}
           >
-            {t('collection.card.itemsCount', {
-              value: itemsCount,
-            })}
+            {nftType === NftType.ERC1155
+              ? 'ERC-1155'
+              : nftType === NftType.ERC721
+              ? 'ERC-721'
+              : ''}
           </Typography>
         </CardContent>
       </Link>

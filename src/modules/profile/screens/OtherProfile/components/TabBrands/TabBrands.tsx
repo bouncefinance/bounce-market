@@ -65,6 +65,7 @@ export const TabBrands = ({ address }: ITabBrandsProps) => {
       {brandsWithItems?.map(brandProps => (
         <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(brandProps)}>
           <BrandCard
+            nftType={brandProps.nftType}
             href={BrandRoutesConfig.Brand.generatePath(brandProps.id)}
             title={brandProps.title}
             id={brandProps.id}
