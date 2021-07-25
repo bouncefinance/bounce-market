@@ -180,7 +180,6 @@ export const fetchPoolDetails = createSmartAction<
       driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
-        console.log(data);
         const poolInfo: IApiPoolDetails = data?.poolinfo;
         if (
           params.poolType === AuctionType.EnglishAuction ||

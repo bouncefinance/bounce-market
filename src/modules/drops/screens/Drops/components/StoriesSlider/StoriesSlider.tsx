@@ -81,7 +81,6 @@ export const StoriesSlider = () => {
   // debugger
 
   const renderedItems = showDrop.map(item => {
-    console.log('showDrop', item);
     const chips = <StoriesChip label="live" isLive />;
 
     const profileInfo = (
