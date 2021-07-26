@@ -21,7 +21,7 @@ import { addItem, IAddItemPayload } from './addItem';
 export enum Channel {
   FineArts = 'FineArts',
   Sports = 'Sports',
-  Comicbooks = 'Comicbooks',
+  Comics = 'Comics',
 }
 
 export interface ICreateNFTPayload {

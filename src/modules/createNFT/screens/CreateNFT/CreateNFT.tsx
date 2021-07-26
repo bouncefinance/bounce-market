@@ -151,8 +151,8 @@ export const CreateNFT = () => {
         value: Channel.Sports,
       },
       {
-        label: t(`create-nft.channelOption.${Channel.Comicbooks}`),
-        value: Channel.Comicbooks,
+        label: t(`create-nft.channelOption.${Channel.Comics}`),
+        value: Channel.Comics,
       },
     ],
     [],
