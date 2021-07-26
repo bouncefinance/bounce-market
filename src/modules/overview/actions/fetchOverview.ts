@@ -41,11 +41,11 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 throw poolsInfoError;
               }
 
-              if (poolsInfoData?.list.length === 0) return [];
+              if (!poolsInfoData?.list?.length) return [];
 
               const poolWidthMap = new Map<number, number>([]);
               const poolDetailsList = await Promise.all(
-                poolsInfoData.list?.map(item => {
+                poolsInfoData.list.map(item => {
                   poolWidthMap.set(item.poolId, item.poolWeight);
 
                   return store.dispatchRequest(
