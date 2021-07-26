@@ -305,6 +305,11 @@
       "title": "热门作品集"
     }
   },
+  "product-panel": {
+    "Comics": "漫画",
+    "art": "艺术",
+    "sports": "体育"
+  },
   "product-card": {
     "not-on-sale": "未出售",
     "price": "价格",
@@ -314,7 +319,7 @@
     "sold-for": "已售出  售价：",
     "put-on-cancel": "取消出售",
     "transfer": "发送token",
-    "pool-start-tips": "售卖开始时间：",
+    "pool-start-tips": "售卖开始倒计时：",
     "burn": "销毁token"
   },
   "cancel-timer": {
@@ -348,11 +353,11 @@
       "sport": "体育",
       "sports": "体育"
     },
-    "bio": "个人介绍",
+    "bio": "个人简介",
     "customize-btn": "自定义",
     "edit": {
       "label": {
-        "bio": "个人介绍",
+        "bio": "个人简介",
         "custom-url": "自定义网站地址",
         "email": "邮件",
         "facebook": "Facebook",
