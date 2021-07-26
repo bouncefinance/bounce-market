@@ -212,9 +212,14 @@
     "fixed-price": "固价出售"
   },
   "drops": {
-    "previous": "往期精选",
-    "top-creators": "最佳艺术家",
-    "upcoming": "即将到来"
+    "previous": "Previous drops",
+    "top-creators": "Top Creators",
+    "upcoming": "Upcoming  dr🔥ps",
+    "label": {
+      "live": "Live",
+      "coming": "Coming",
+      "previous":"Previous"
+    }
   },
   "empty-data": {
     "text": "请切换网络，以浏览页面内容",

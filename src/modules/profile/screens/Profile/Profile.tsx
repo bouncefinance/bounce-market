@@ -216,10 +216,6 @@ export const Profile = () => {
           <TabBrands />
         </TabPanel>
 
-        <TabPanel value={tab} index={ProfileTab.sells}>
-          <TabBids />
-        </TabPanel>
-
         <TabPanel value={tab} index={ProfileTab.bids}>
           <TabBids />
         </TabPanel>
