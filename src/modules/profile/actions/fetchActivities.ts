@@ -16,7 +16,7 @@ export const fetchActivities = createSmartAction<
     method: 'post',
     data: {
       offset: 0,
-      limit: 100,
+      limit: 500,
       useraddress: payload.user,
     },
   },
