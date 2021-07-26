@@ -38,6 +38,11 @@
         "collection-symbol": "作品集标识",
         "collection-url": "作品集网址",
         "description": "描述 （为大家讲述该NFT背后的故事）"
+      },
+      "tip-warning": {
+        "collection-symbol": "作品集标识相当于一个品牌名的缩写。如：Bitcoin缩写为BTC。",
+        "ERC721": "ERC-721标准代表唯一独特的资产，在所有权和安全性方面具有不可改变、透明的特性，且最为广泛使用。每一个ERC-721 标准的代币都具有独一无二的合约价值。",
+        "ERC1155": "ERC-1155标准具有可替代和不可替代的双重性。在批量token转移方面更快和更具效率。虽只部署在单个智能合约上，但能用以铸造无限个token类型。"
       }
     }
   },
@@ -124,7 +129,8 @@
       "name": "名称",
       "specific-time-sale": "在特定时间出售",
       "standard": "标准",
-      "supply": "总量"
+      "supply": "总量",
+      "collection": "作品集"
     },
     "next": "下一步",
     "standardOption": [
@@ -227,6 +233,7 @@
     "connect": "连接钱包",
     "create": "创建",
     "disconnect": "断开连接",
+    "drops": "Dr🔥ps",
     "how-it-works": "帮助指南",
     "inventory": "我的主页",
     "market": "市场",
@@ -429,6 +436,8 @@
     "telegram": "Telegram",
     "website": "个人网站",
     "title-for-socials": "{title} — {description}",
+    "put-on-sale": "出售",
+    "put-on-cancel": "取消",
     "twitter": "Twitter"
   },
   "time": {

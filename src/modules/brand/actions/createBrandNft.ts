@@ -14,7 +14,7 @@ import { IBrandInfo } from '../api/queryBrand';
 export enum Channel {
   FineArts = 'FineArts',
   Sports = 'Sports',
-  Comicbooks = 'Comicbooks',
+  Comics = 'Comics',
 }
 
 export interface ICreateNFTPayload {
