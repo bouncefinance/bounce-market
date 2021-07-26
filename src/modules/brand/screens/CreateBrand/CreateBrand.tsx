@@ -95,11 +95,7 @@ export const CreateBrand = () => {
 
   const renderForm = ({ handleSubmit }: FormRenderProps<ICreateBrand>) => {
     return (
-      <Box
-        component="form"
-        onChange={args => console.log(args, '<<<<<<<<')}
-        onSubmit={handleSubmit}
-      >
+      <Box component="form" onSubmit={handleSubmit}>
         <Box mb={5}>
           <Field
             component={InputField}

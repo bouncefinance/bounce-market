@@ -1,7 +1,6 @@
 import { Box, Typography, useTheme } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
-import { useAccount } from 'modules/account/hooks/useAccount';
 import { Queries } from 'modules/common/components/Queries/Queries';
 import { ResponseData } from 'modules/common/types/ResponseData';
 import { getRandomHexColor } from 'modules/common/utils/getRandomHexColor';
@@ -45,7 +44,6 @@ export const Drop = ({
   const dispatch = useDispatch();
   const dispatchRequest = useDispatchRequest();
   const DROP_KEY = `/drop-${dropId}`;
-  const { chainId } = useAccount();
 
   useEffect(() => {
     getBackgroudColor(bgImg, theme.palette.background.paper, setBgImgColor);
@@ -56,7 +54,7 @@ export const Drop = ({
   });
 
   useEffect(() => {
-    if (dropId === undefined || !chainId) return;
+    if (dropId === undefined) return;
 
     dispatchRequest(
       fetchDropSubCard({ id: +dropId }, { requestKey: DROP_KEY }),
@@ -72,7 +70,7 @@ export const Drop = ({
         ]),
       );
     };
-  }, [dispatch, dropId, dispatchRequest, DROP_KEY, chainId]);
+  }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
 
   return (
     <article className={classes.root}>
