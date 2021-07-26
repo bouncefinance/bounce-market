@@ -162,7 +162,16 @@ export const CreateBrand = () => {
             component={InputField}
             name="description"
             type="text"
-            label={t('collection.create.label.description')}
+            label={
+              <Box display="flex" alignItems="center">
+                {t('collection.create.label.description')}
+                <Tooltip title={t('collection.create.tip-warning.description')}>
+                  <Box component="i" ml={1}>
+                    <QuestionIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+            }
             color="primary"
             fullWidth={true}
             rowsMax={10}
