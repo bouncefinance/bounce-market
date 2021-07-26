@@ -122,6 +122,7 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
   itemImgBox: {
     borderRadius: 8,
     width: 104,
+    backgroundColor: '#fff',
 
     [theme.breakpoints.up('md')]: {
       borderRadius: 12,

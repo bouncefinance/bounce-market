@@ -64,10 +64,6 @@ export const StoriesSlider = () => {
     requestKey: DROPS_PREV_KEY,
   });
 
-  // console.log('dataLive', data)
-  // console.log('dataComing', dataComing)
-  // console.log('dataPrev', dataPrev)
-
   const liveDrops = data?.items || [];
   const comingDrops = dataComing?.items || [];
   const prevDrops = dataPrev?.items || [];
@@ -81,8 +77,15 @@ export const StoriesSlider = () => {
   // debugger
 
   const renderedItems = showDrop.map(item => {
-    const chips = <StoriesChip label="live" isLive />;
-
+    const chips = (state: number) => {
+      const label =
+        state === SearchDropsParamState.Live
+          ? 'Live'
+          : state === SearchDropsParamState.Coming
+          ? 'Coming'
+          : 'Previous';
+      return <StoriesChip label={label} isLive />;
+    };
     const profileInfo = (
       <DropsOwner
         title={item.username}
@@ -102,7 +105,7 @@ export const StoriesSlider = () => {
         title={item.title}
         text={item.description}
         img={item.coverImgUrl}
-        chips={chips}
+        chips={chips(item.state)}
         gradientColor={item.bgColor}
         profileInfo={profileInfo}
       />
@@ -115,7 +118,7 @@ export const StoriesSlider = () => {
       <StoriesSliderItemSkeleton key={i} profileInfo={<DropsOwnerSkeleton />} />
     ));
 
-  if (!pristine && !liveDrops.length && !loading) {
+  if (!pristine && !showDrop.length && !loading) {
     return (
       <Section>
         <NothingFound />
