@@ -33,7 +33,7 @@ export const getRecords = createAction<
   },
   meta: {
     ...meta,
-    driver: 'nftview',
+    driver: 'axios',
     onRequest: (
       request,
       _action: RequestAction,
@@ -50,7 +50,7 @@ export const getRecords = createAction<
       return request;
     },
     getData: ({ code, msg, data }) => {
-      if (code !== 200) {
+      if (code !== 1) {
         throw new Error(msg);
       }
       return data;
