@@ -30,7 +30,9 @@ function mapPromoItem(item: IItem, tokenSymbol: string): IPromoItem {
   return {
     title: item.itemName || '',
     text: item.description || '',
-    createdBy: item.ownerName || truncateWalletAddr(item.ownerAddress),
+    createdBy:
+      truncateWalletAddr(item.ownerName) ||
+      truncateWalletAddr(item.ownerAddress),
     avatar: item.avatar,
     price: item.price,
     priceType: tokenSymbol,
