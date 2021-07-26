@@ -1,4 +1,7 @@
 import { useQuery } from '@redux-requests/react';
+import { AuctionState } from 'modules/api/common/AuctionState';
+import { AuctionType } from 'modules/api/common/auctionType';
+import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AccountInfo } from 'modules/common/components/AccountInfo';
 import { ProductCard } from 'modules/common/components/ProductCard';
@@ -55,6 +58,12 @@ export const Movers = (sectionProps: ISectionProps) => {
           isNativeLazyLoading: false,
           objectFit: 'contain',
         }}
+        state={
+          item.poolType === AuctionType.FixedSwap ||
+          item.poolType === AuctionType.FixedSwap_Timing
+            ? FixedSwapState.Live
+            : AuctionState.Live
+        }
         profileInfo={<AccountInfo address={item.ownerAddress} />}
         openAt={item.openAt}
       />

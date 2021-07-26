@@ -5,3 +5,8 @@ export enum AuctionState {
   NotSoldByReservePrice,
   Claimed,
 }
+
+export enum PoolState {
+  Live,
+  Close,
+}
