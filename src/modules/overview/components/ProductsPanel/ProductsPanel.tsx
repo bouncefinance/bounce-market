@@ -13,15 +13,15 @@ import { useProductsPanelStyles } from './useProductsPanelStyles';
 const categories = [
   {
     value: ItemsChannel.fineArts,
-    label: 'Art',
+    label: t('product-panel.art'),
   },
   {
     value: ItemsChannel.sports,
-    label: 'Sport',
+    label: t('product-panel.sports'),
   },
   {
     value: ItemsChannel.comics,
-    label: 'Comic',
+    label: t('product-panel.Comics'),
   },
 ];
 
