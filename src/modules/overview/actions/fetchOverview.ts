@@ -36,9 +36,12 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                   { silent: true },
                 ),
               );
+
               if (poolsInfoError || !poolsInfoData) {
                 throw poolsInfoError;
               }
+
+              if (!poolsInfoData?.list?.length) return [];
 
               const poolWidthMap = new Map<number, number>([]);
               const poolDetailsList = await Promise.all(

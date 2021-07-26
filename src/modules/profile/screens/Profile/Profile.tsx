@@ -190,6 +190,7 @@ export const Profile = () => {
                 twitter={profileInfo?.twitter}
                 instagram={profileInfo?.instagram}
                 facebook={profileInfo?.facebook}
+                website={profileInfo?.website}
               />
             )
           }
