@@ -9,9 +9,11 @@ import {
 } from 'modules/drops/components/DropsOwner';
 import { NothingFound } from 'modules/drops/components/NothingFound';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
+import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useEffect } from 'react';
+import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { DROPS_COMING_KEY, DROPS_LIVE_KEY, DROPS_PREV_KEY } from '../../const';
 import { StoriesChip } from '../StoriesChip';
@@ -64,26 +66,20 @@ export const StoriesSlider = () => {
     requestKey: DROPS_PREV_KEY,
   });
 
-  const liveDrops = data?.items || [];
-  const comingDrops = dataComing?.items || [];
-  const prevDrops = dataPrev?.items || [];
-
-  const showDrop =
-    liveDrops.length !== 0
-      ? liveDrops
-      : comingDrops.length !== 0
-      ? comingDrops
-      : prevDrops;
-  // debugger
+  const showDrop = useMemo(() => {
+    return [data, dataComing, dataPrev]
+      .map(e => e?.items ?? [])
+      .reduce((prev, next) => (prev.length > 0 ? prev : next), []);
+  }, [data, dataComing, dataPrev]);
 
   const renderedItems = showDrop.map(item => {
     const chips = (state: number) => {
       const label =
         state === SearchDropsParamState.Live
-          ? 'Live'
+          ? t('drops.label.live')
           : state === SearchDropsParamState.Coming
-          ? 'Coming'
-          : 'Previous';
+          ? t('drops.label.coming')
+          : t('drops.label.previous');
       return <StoriesChip label={label} isLive />;
     };
     const profileInfo = (

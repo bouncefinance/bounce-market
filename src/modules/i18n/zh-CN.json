@@ -209,7 +209,12 @@
   "drops": {
     "previous": "Previous drops",
     "top-creators": "Top Creators",
-    "upcoming": "Upcoming  dr🔥ps"
+    "upcoming": "Upcoming  dr🔥ps",
+    "label": {
+      "live": "Live",
+      "coming": "Coming",
+      "previous":"Previous"
+    }
   },
   "empty-data": {
     "text": "请切换网络，以浏览页面内容",
