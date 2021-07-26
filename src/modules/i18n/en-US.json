@@ -37,12 +37,13 @@
         "collection-name": "Collection name",
         "collection-symbol": "Collection symbol",
         "collection-url": "Collection URL",
-        "description": "Description (What's the story behind this NFT?)"
+        "description": "Description"
       },
       "tip-warning": {
         "collection-symbol":"Collection Symbol is an abbreviated version of your brand name. Think of it as your collection logo in the form of an acronym (i.e. BTC for bitcoin). ",
         "ERC721": "The ERC-721 token standard represents a single unique asset. It is immutable, transparent in ownership and security, and the most widely used. Each ERC-721 token holds its own unique contract values.",
-        "ERC1155": "The ERC-1155 is a dual purpose fungible and non fungible token. It’s faster and more efficient to use in batch token transfers and can be deployed in a single smart contract for an infinite number of token types. "
+        "ERC1155": "The ERC-1155 is a dual purpose fungible and non fungible token. It’s faster and more efficient to use in batch token transfers and can be deployed in a single smart contract for an infinite number of token types. ",
+        "description": "What's the story here?"
       }
     }
   },
@@ -131,6 +132,9 @@
       "standard": "Standard",
       "supply": "Supply",
       "collection": "Collection"
+    },
+    "tip-warning": {
+      "description": "What's the story behind this NFT?"
     },
     "next": "Next",
     "standardOption": [
