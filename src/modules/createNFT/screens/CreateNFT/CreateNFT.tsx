@@ -18,7 +18,7 @@ import {
   ProfileRoutesConfig,
   ProfileTab,
 } from '../../../profile/ProfileRoutes';
-import { Channel, createNft, ICreateNFTPayload } from '../../actions/createNft';
+import { Channel, ICreateNFTPayload } from '../../actions/createNft';
 import { useCreateNFTStyles } from './useCreateNFTStyles';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import {
@@ -282,7 +282,7 @@ export const CreateNFT = () => {
             </Box>
           )}
           <Box>
-            <Mutation type={createNft.toString()}>
+            <Mutation type={createBrandNFT.toString()}>
               {({ loading }) => (
                 <Button size="large" type="submit" fullWidth loading={loading}>
                   {loading ? t('common.submitting') : t('create-nft.submit')}
