@@ -85,14 +85,12 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         String(item.contractAddress).toLowerCase()
                     );
                   })?.data;
-
                   const price =
                     pool && isEnglishAuction(pool)
                       ? pool.lastestBidAmount.toString() !== '0'
                         ? pool.lastestBidAmount
                         : pool.amountMin1
                       : pool?.price || item.price;
-
                   return {
                     ...item,
                     price,
@@ -102,7 +100,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                       pool && isEnglishAuction(pool) ? pool.closeAt : undefined,
                     poolWeight: poolWidthMap.get(pool?.poolId as number) || 0,
                     avatar: pool?.avatar,
-                    ownerName: pool?.name,
+                    ownerName: pool?.createName,
                     openAt: pool?.openAt,
                   } as IOverviewItem;
                 })
