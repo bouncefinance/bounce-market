@@ -128,6 +128,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
               ]}
             />
           }
+          openAt={item.openAt}
         />
       )),
     [nftItems],

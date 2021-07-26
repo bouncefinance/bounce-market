@@ -1,6 +1,7 @@
 import { Box, Container, Grid } from '@material-ui/core';
 import classNames from 'classnames';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
+import CardPutSaleTimer from 'modules/common/components/ProductCard/putsaleTimer';
 import { SocialShare } from 'modules/common/components/SocialShare';
 import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
@@ -17,6 +18,9 @@ interface INFTContentProps {
   isLiked?: boolean;
   category: 'image' | 'video';
   onLikeClick?: () => void;
+  isOpenSaleTime: boolean;
+  openAt: Date;
+  onchange: () => void;
 }
 
 export const MediaContainer = ({
@@ -27,6 +31,9 @@ export const MediaContainer = ({
   category,
   isLiked,
   onLikeClick,
+  isOpenSaleTime,
+  openAt,
+  onchange,
 }: INFTContentProps) => {
   const classes = useMediaContainerStyles();
 
@@ -57,6 +64,9 @@ export const MediaContainer = ({
           <img className={classes.img} src={src} loading="lazy" alt="" />
         ) : (
           <VideoPlayer src={src} autoPlay />
+        )}
+        {isOpenSaleTime && (
+          <CardPutSaleTimer onchange={onchange} openAt={openAt} />
         )}
       </div>
     </Container>

@@ -63,6 +63,7 @@ export const BuyNFT = () => {
   const { chainId } = useAccount();
   const blockChainScan = getBlockChainExplorerAddress(chainId);
   const [isEmptyData, setIsEmptyData] = useState(false);
+  const [now, setNow] = useState(Date.now());
   const classes = useBuyNFTStyles();
   const { poolId: poolIdParam, poolType } = useParams<{
     poolId: string;
@@ -158,21 +159,25 @@ export const BuyNFT = () => {
     return name || truncateWalletAddr(address);
   };
 
+  const isOpenSaleTime =
+    poolType === AuctionType.EnglishAuction_Timing ||
+    poolType === AuctionType.FixedSwap_Timing;
+
   const handleBidderClaim = useCallback(() => {
-    dispatch(bidderClaim({ poolId })).then(({ error }) => {
+    dispatch(bidderClaim({ poolId, isOpenSaleTime })).then(({ error }) => {
       if (!error) {
         push(ProfileRoutesConfig.UserProfile.generatePath());
       }
     });
-  }, [dispatch, poolId, push]);
+  }, [dispatch, poolId, push, isOpenSaleTime]);
 
   const handleCreatorClaim = useCallback(() => {
-    dispatch(creatorClaim({ poolId })).then(({ error }) => {
+    dispatch(creatorClaim({ poolId, isOpenSaleTime })).then(({ error }) => {
       if (!error) {
         push(ProfileRoutesConfig.UserProfile.generatePath());
       }
     });
-  }, [dispatch, poolId, push]);
+  }, [dispatch, poolId, push, isOpenSaleTime]);
 
   const handleFixedSwapCancel = useCallback(() => {
     dispatch(fixedSwapCancel({ poolId })).then(({ error }) => {
@@ -427,6 +432,10 @@ export const BuyNFT = () => {
               <Box mt={2}>{t('common.coming-soon')}</Box>
             );
 
+            const saleTime = isOpenSaleTime && +poolDetails.openAt >= now;
+            const onChangeTime = () => {
+              setNow(Date.now());
+            };
             return (
               <div className={classes.root}>
                 <MediaContainer
@@ -435,6 +444,9 @@ export const BuyNFT = () => {
                   title={item.itemName}
                   description={item.description}
                   category={item.category}
+                  isOpenSaleTime={saleTime}
+                  openAt={poolDetails.openAt}
+                  onchange={onChangeTime}
                 />
 
                 <Info className={classes.info}>
@@ -472,6 +484,7 @@ export const BuyNFT = () => {
                       onBidClick={openBidDialog}
                       onBuyClick={openEnglishBuyDialog}
                       disabled={poolDetails.state !== AuctionState.Live}
+                      saleTime={saleTime}
                       loading={
                         fixedSwapCancelLoading ||
                         creatorClaimLoading ||
@@ -490,6 +503,7 @@ export const BuyNFT = () => {
                       cryptoCurrency={item.tokenSymbol}
                       onBuyClick={openFixedBuyDialog}
                       disabled={poolDetails.state !== FixedSwapState.Live}
+                      saleTime={saleTime}
                       loading={
                         fixedSwapCancelLoading ||
                         creatorClaimLoading ||

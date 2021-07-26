@@ -1,4 +1,5 @@
 import { NftType } from 'modules/api/common/NftType';
+import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
 import { Channel } from 'modules/createNFT/actions/createNft';
 import type { AuctionTypeKeys } from '../common/auctionType';
 
@@ -22,6 +23,7 @@ export interface IApiGetOneItemByIdData {
   supply: number;
   open_at: number;
   auctiontype: AuctionTypeKeys;
+  identity: UserRoleType;
 }
 
 export interface IApiGetOneItemById {

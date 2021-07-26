@@ -56,6 +56,7 @@ export const Movers = (sectionProps: ISectionProps) => {
           objectFit: 'contain',
         }}
         profileInfo={<AccountInfo address={item.ownerAddress} />}
+        openAt={item.openAt}
       />
     );
   });

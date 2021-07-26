@@ -28,6 +28,7 @@ interface IInfoPricesProps {
   onCancel?: () => void;
   poolType?: AuctionType;
   poolId?: number;
+  saleTime: boolean;
 }
 
 export const InfoPrices = ({
@@ -47,6 +48,7 @@ export const InfoPrices = ({
   onCancel,
   poolType,
   poolId,
+  saleTime,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
 
@@ -179,7 +181,7 @@ export const InfoPrices = ({
     return (
       <>
         {!disabled && onBidClick && (
-          <Button fullWidth onClick={onBidClick}>
+          <Button disabled={saleTime} fullWidth onClick={onBidClick}>
             {t('details-nft.place-a-bid')}
           </Button>
         )}
@@ -187,7 +189,7 @@ export const InfoPrices = ({
         {hasSetDirectPrice && (
           <Box mt={2}>
             <Button
-              disabled={disabled}
+              disabled={saleTime || disabled}
               variant="outlined"
               fullWidth
               onClick={onBuyClick}
@@ -212,6 +214,7 @@ export const InfoPrices = ({
     hasSetDirectPrice,
     poolType,
     poolId,
+    saleTime,
   ]);
 
   return (
@@ -220,8 +223,12 @@ export const InfoPrices = ({
         {endDate && (
           <div className={classes.bid}>
             {t('details-nft.top-bid')}
-            <i className={classes.bidDevider} />
-            <Timer endDate={endDate} />
+            {saleTime || (
+              <>
+                <i className={classes.bidDevider} />
+                <Timer endDate={endDate} />
+              </>
+            )}
           </div>
         )}
 

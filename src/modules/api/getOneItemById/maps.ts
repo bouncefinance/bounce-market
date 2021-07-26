@@ -1,3 +1,4 @@
+import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
 import { AuctionTypeKeys } from '../common/auctionType';
 import { IApiGetOneItemByIdData } from './types';
 
@@ -21,6 +22,7 @@ export interface IGetOneItemById {
   supply: IApiGetOneItemByIdData['supply'];
   open_at: IApiGetOneItemByIdData['open_at'];
   auctionType: AuctionTypeKeys;
+  identity: UserRoleType;
 }
 
 export const mapGetOneItemById = (
@@ -46,5 +48,6 @@ export const mapGetOneItemById = (
     supply: data.supply,
     open_at: data.open_at,
     auctionType: data.auctiontype,
+    identity: data.identity,
   };
 };

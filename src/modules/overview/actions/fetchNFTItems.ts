@@ -44,6 +44,7 @@ export interface INFTItem {
   ownerName?: string;
   token1: string;
   tokenSymbol: TokenSymbol;
+  openAt: Date;
 }
 
 export const mapNFTItem = (
@@ -73,6 +74,7 @@ export const mapNFTItem = (
     supply: 100,
     token1: item.token1,
     tokenSymbol: tokenSymbol,
+    openAt: new Date(item.open_at * 1e3),
   };
 };
 
