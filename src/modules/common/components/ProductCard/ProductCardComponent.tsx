@@ -260,7 +260,7 @@ export const ProductCardComponent = ({
               (state === AuctionState.Claimed
                 ? t('product-card.top-bid')
                 : t('product-card.sold-for'))}
-            { } {price.toFormat()} {priceType}
+            {' '}{price.toFormat()} {priceType}
           </div>
         )}
 
