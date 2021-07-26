@@ -33,11 +33,11 @@
       "avatar-recommended-size": "300x300 Recommended",
       "create-collection": "Create collection",
       "label": {
-        "collection-avatar": "collection avatar",
-        "collection-name": "collection name",
-        "collection-symbol": "collection symbol",
-        "collection-url": "collection URL",
-        "description": "Description"
+        "collection-avatar": "Collection avatar",
+        "collection-name": "Collection name",
+        "collection-symbol": "Collection symbol",
+        "collection-url": "Collection URL",
+        "description": "Description (What's the story behind this NFT?)"
       },
       "tip-warning": {
         "collection-symbol":"Add an explanation to Collection Symbol",
@@ -175,13 +175,13 @@
     "owner": {
       "balance": "{balance} copies"
     },
-    "place-a-bid": "Place a bid",
+    "place-a-bid": "Place bid",
     "sold-out": "Sold out",
     "tabs": {
       "bids": "Bids",
       "history": "History",
       "owners": "Owners",
-      "token-info": "Token info"
+      "token-info": "NFT Details"
     },
     "token-info": {
       "contract": "Contract:",
@@ -194,8 +194,8 @@
       "bid-warning": "Please note that you will be unable to cancel after placing your bid. Your bid will be valid until it has been outbid, accepted by the creator or expires."
     },
     "role": {
-      "seller": "Seller",
-      "minter": "Minter"
+      "seller": "Owner",
+      "minter": "Creator"
     },
     "top-bid": "Top Bid",
     "your-bid": "Your bid"
@@ -236,7 +236,7 @@
     "disconnect": "Disconnect",
     "drops": "Dr🔥ps",
     "how-it-works": "How it works",
-    "inventory": "My Inventory",
+    "inventory": "My Profile",
     "market": "Marketplace",
     "my-collections": "My collections",
     "profile-settings": "Profile settings",
@@ -295,7 +295,7 @@
   },
   "monthFormat": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December}}",
   "movers": {
-    "title": "Featured"
+    "title": "Featured Collections"
   },
   "overview": {
     "collections": {
@@ -315,8 +315,8 @@
     "transfer": "Transfer token"
   },
   "cancel-timer": {
-    "title": "Cancel timer",
-    "inner": "Are you sure you want to cancel the timer?"
+    "title": "Cancel Sale",
+    "inner": "Are you sure you want to cancel this sale?"
   },
   "products": {
     "sort-label": "Sort by: {value}"
@@ -386,7 +386,7 @@
       "following": "Following",
       "items": "Items",
       "liked": "Liked",
-      "my-bids": "My Transaction",
+      "my-bids": "My transaction",
       "my-collections": "My collections",
       "my-items": "My items",
       "my-sells": "My sales"
