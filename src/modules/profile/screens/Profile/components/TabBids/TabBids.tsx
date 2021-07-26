@@ -40,8 +40,8 @@ const categories = [
     label: t('profile.bids-categories.sport'),
   },
   {
-    value: ItemsChannel.comicbooks,
-    label: t('profile.bids-categories.Comicbooks'),
+    value: ItemsChannel.comics,
+    label: t('profile.bids-categories.Comics'),
   },
 ];
 
