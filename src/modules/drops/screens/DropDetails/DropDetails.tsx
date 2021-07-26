@@ -1,6 +1,7 @@
 import { Box, Container, ThemeProvider } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useQuery } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { IDropDetails } from 'modules/api/getOneDropsDetail';
 import { featuresConfig } from 'modules/common/conts';
 import { getDropDetails } from 'modules/drops/actions/getDropDetails';
@@ -18,6 +19,7 @@ import { Video } from './components/Video';
 
 export const DropDetails = () => {
   const dispatch = useDispatch();
+  const { chainId } = useAccount();
   const { dropId } = DropsRoutesConfig.DropDetails.useParams();
 
   useEffect(() => {
@@ -26,7 +28,7 @@ export const DropDetails = () => {
     return function reset() {
       dispatch(resetRequests([getDropDetails.toString()]));
     };
-  }, [dispatch, dropId]);
+  }, [dispatch, dropId, chainId]);
 
   const { data, loading, pristine } = useQuery<IDropDetails | null>({
     type: getDropDetails.toString(),

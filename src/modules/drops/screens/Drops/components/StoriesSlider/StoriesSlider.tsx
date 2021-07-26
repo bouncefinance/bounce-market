@@ -72,15 +72,15 @@ export const StoriesSlider = () => {
       .reduce((prev, next) => (prev.length > 0 ? prev : next), []);
   }, [data, dataComing, dataPrev]);
 
+  const labelObject = {
+    [SearchDropsParamState.Live]: t('drops.label.live'),
+    [SearchDropsParamState.Coming]: t('drops.label.coming'),
+    [SearchDropsParamState.Previous]: t('drops.label.previous'),
+  };
+
   const renderedItems = showDrop.map(item => {
-    const chips = (state: number) => {
-      const label =
-        state === SearchDropsParamState.Live
-          ? t('drops.label.live')
-          : state === SearchDropsParamState.Coming
-          ? t('drops.label.coming')
-          : t('drops.label.previous');
-      return <StoriesChip label={label} isLive />;
+    const chips = (state: SearchDropsParamState) => {
+      return <StoriesChip label={labelObject[state]} isLive />;
     };
     const profileInfo = (
       <DropsOwner
