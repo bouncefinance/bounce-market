@@ -37,12 +37,13 @@
         "collection-name": "作品集名称",
         "collection-symbol": "作品集标识",
         "collection-url": "作品集网址",
-        "description": "描述 （为大家讲述该NFT背后的故事）"
+        "description": "描述"
       },
       "tip-warning": {
         "collection-symbol": "作品集标识相当于一个品牌名的缩写。如：Bitcoin缩写为BTC。",
         "ERC721": "ERC-721标准代表唯一独特的资产，在所有权和安全性方面具有不可改变、透明的特性，且最为广泛使用。每一个ERC-721 标准的代币都具有独一无二的合约价值。",
-        "ERC1155": "ERC-1155标准具有可替代和不可替代的双重性。在批量token转移方面更快和更具效率。虽只部署在单个智能合约上，但能用以铸造无限个token类型。"
+        "ERC1155": "ERC-1155标准具有可替代和不可替代的双重性。在批量token转移方面更快和更具效率。虽只部署在单个智能合约上，但能用以铸造无限个token类型。",
+        "description": "讲述该作品集的创作初衷"
       }
     }
   },
@@ -131,6 +132,9 @@
       "standard": "标准",
       "supply": "总量",
       "collection": "作品集"
+    },
+    "tip-warning": {
+      "description": "讲述创建该NFT背后的故事"
     },
     "next": "下一步",
     "standardOption": [
