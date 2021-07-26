@@ -16,9 +16,9 @@
     "title": "立即购买"
   },
   "change-wallet": {
-    "description": "变更为币安链",
+    "description": "变更为以太链，币安链或者火币链",
     "network-change-error": "由于RPC节点错误，无法在Metamask上设置币安链网络",
-    "submit": "变更为智能链",
+    "submit": "变更网络",
     "title": "网络错误"
   },
   "collection": {
@@ -37,12 +37,7 @@
         "collection-name": "作品集名称",
         "collection-symbol": "作品集标识",
         "collection-url": "作品集网址",
-        "description": "描述"
-      },
-      "tip-warning": {
-        "collection-symbol":"Add an explanation to Collection Symbol",
-        "ERC721": "The ERC-721 token standard represents a single unique asset. It is immutable, transparent in ownership and security, and the most widely used. Each ERC-721 token holds its own unique contract values.",
-        "ERC1155": "The ERC-1155 is a dual purpose fungible and non fungible token. It’s faster and more efficient to use in batch token transfers and can be deployed in a single smart contract for an infinite number of token types. "
+        "description": "描述 （为大家讲述该NFT背后的故事）"
       }
     }
   },
@@ -53,7 +48,7 @@
     "copied": "复制成功！",
     "copy-to-clipboard": "复制到剪贴板",
     "load-more": "加载更多",
-    "nothing-found": "Nothing found",
+    "nothing-found": "暂无数据",
     "quantity": "数量",
     "read-more": "了解更多",
     "reset": "重置",
@@ -62,8 +57,8 @@
     "submitting": "提交",
     "unknown": "未知",
     "view-all": "查看所有",
-    "no": "关闭",
-    "yes": "确认"
+    "no": "否",
+    "yes": "是"
   },
   "connect-wallet": {
     "custom-binancewallet": {
@@ -111,9 +106,9 @@
     ],
     "submit": "创建",
     "submitting": "正在创建中",
-    "title": "创建作品集NFT",
-    "collections": "Collections",
-    "subCollection": "When creating your first NFT, you need to create a collection. For next creation, you can put the NFT in an already created collection."
+    "title": "创建NFT作品集",
+    "collections": "作品集",
+    "subCollection": "创建NFT时，需要先创建一个作品集。之后可在该作品集中创建对应标准的NFT。"
   },
   "create-nft": {
     "channelOption": {
@@ -123,7 +118,7 @@
       "Sports": "体育"
     },
     "label": {
-      "Set-up-date": "设置上架日期",
+      "Set-up-date": "定时出售",
       "channel": "类型",
       "description": "描述",
       "name": "名称",
@@ -149,13 +144,13 @@
   },
   "details-nft": {
     "bid": {
-      "bid-placed": "Bid placed"
+      "bid-placed": "出价成功"
     },
     "buy-now": "购买",
     "descr-full": "详细描述",
     "descr-short": "收起",
     "dialog": {
-      "footnote": "在拍卖中的出价无法撤销。",
+      "footnote": "进行中的拍卖，出价无法撤销。",
       "input-info": "您的出价必须至少为 {value} {currency}"
     },
     "enter-a-bid": "请输入您的出价",
@@ -167,11 +162,11 @@
     },
     "info": {
       "date": "{value, date, medium}",
-      "time": "at {value, time, short}",
+      "time": "{value, time, short}",
       "view-scan": "在BscScan浏览器上查看"
     },
     "owner": {
-      "balance": "{balance} copies"
+      "balance": "{balance} 份副本"
     },
     "place-a-bid": "出价",
     "sold-out": "售罄",
@@ -179,7 +174,7 @@
       "bids": "出价",
       "history": "历史",
       "owners": "拥有者",
-      "token-info": "Token信息"
+      "token-info": "NFT详情"
     },
     "token-info": {
       "contract": "合约：",
@@ -192,19 +187,19 @@
       "bid-warning": "请注意，你在出价后将无法取消。你的出价将是有效的，直到它被出价、被创作者接受或过期"
     },
     "role": {
-      "seller": "卖家",
-      "minter": "铸造者"
+      "seller": "拥有者",
+      "minter": "创建者"
     },
     "top-bid": "最高出价",
     "your-bid": "您的出价"
   },
   "drop-details": {
-    "live": "Live",
-    "sold": "Sold",
-    "timer-descr": "before the drop starts",
-    "sold-for": "Sold for",
-    "top-bid": "Top Bid",
-    "fixed-price": "Fixed Price"
+    "live": "进行中",
+    "sold": "已售出",
+    "timer-descr": "后开启",
+    "sold-for": "已售出  售价：",
+    "top-bid": "英式拍卖",
+    "fixed-price": "固价出售"
   },
   "drops": {
     "previous": "Previous drops",
@@ -254,16 +249,16 @@
       "eth": "以太坊主网",
       "heco": "火币生态链",
       "heco-2": "火币钱包",
-      "polygon": "Polygon 主网",
+      "polygon": "Polygon主网",
       "title": "选择网络"
     },
     "network": {
       "etherreum": "以太坊主网",
       "binance": "币安智能链",
-      "rinkby": "Rinkeby 测试链",
+      "rinkby": "Rinkeby测试链",
       "heco": "火币生态链",
-      "polygon": "Polygon 聚合链",
-      "unknow": "未连接网络"
+      "polygon": "Polygon聚合链",
+      "unknow": "未知网络"
     }
   },
   "info-prices": {
@@ -284,7 +279,7 @@
         "creator": "拍卖正在进行中"
       },
       "NotSoldByReservePrice": {
-        "buyer": "NFT未出售，请取回您的出价",
+        "buyer": "NFT未售出，请取回您的出价",
         "creator": "NFT未出售，请取回您的NFT",
         "others": "NFT未出售"
       }
@@ -310,15 +305,15 @@
     "top-bid": "最高出价",
     "owner": "拥有者",
     "put-on-sale": "出售",
-    "sold-for": "已按XX售出",
-    "put-on-cancel": "取消",
+    "sold-for": "已售出  售价：",
+    "put-on-cancel": "取消出售",
     "transfer": "发送token",
-    "pool-start-tips": "秒杀倒计时：",
+    "pool-start-tips": "售卖开始时间：",
     "burn": "销毁token"
   },
   "cancel-timer": {
-    "title": "取消定时上架",
-    "inner": "您是否确定取消定时上架吗?"
+    "title": "取消出售",
+    "inner": "你确定取消该NFT的售卖吗?"
   },
   "products": {
     "sort-label": "按 {value}筛选"
@@ -326,7 +321,7 @@
   "profile": {
     "activity": {
       "canceled": "已取消",
-      "claimed": "已领回",
+      "claimed": "已领取",
       "created": "已创建",
       "date": "日期",
       "empty-description": "暂无任何交易记录",
@@ -364,7 +359,7 @@
       "no-profile": "请先完善个人信息",
       "placeholder": {
         "facebook": "Facebook主页链接",
-        "instagram": "Instagram 主页链接",
+        "instagram": "Instagram主页链接",
         "twitter": "Twitter主页链接",
         "website": "网站链接"
       },
@@ -388,7 +383,7 @@
       "following": "关注",
       "items": "NFT",
       "liked": "收藏",
-      "my-bids": "我的出价",
+      "my-bids": "我的交易",
       "my-collections": "我的作品集",
       "my-items": "我的NFT",
       "my-sells": "我的出售"
@@ -400,7 +395,7 @@
     "created-by": "创建者："
   },
   "publish-nft": {
-    "auction-amount": "在拍卖方式中，您输出NFT数量会被打包销售",
+    "auction-amount": "在拍卖方式中，您出售的NFT份数会被打包销售",
     "auction-type": {
       "english-auction": "英式拍卖",
       "fixed-swap": "固价出售"
@@ -437,21 +432,21 @@
     "instagram": "Instagram",
     "share": "分享",
     "telegram": "Telegram",
-    "website": "Website",
+    "website": "个人网站",
     "title-for-socials": "{title} — {description}",
     "twitter": "Twitter"
   },
   "time": {
     "days-left": "剩余{days}天",
     "days-short": "{days}天",
-    "finished-on": "Finished on {end, date, medium}",
+    "finished-on": "于{end, date, medium}结束",
     "hours-short": "{hours}时",
     "minutes-short": "{minutes}分",
     "seconds-short": "{seconds}秒",
     "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
-    "time-end": "Ended on {days}/{months}/{years}",
+    "time-end": "结束时间： {days}/{months}/{years}",
     "time-expired": "该拍卖已过期",
-    "time-over": "Time is over"
+    "time-over": "倒计时结束"
   },
   "transfer-token": {
     "submit": "发送",
