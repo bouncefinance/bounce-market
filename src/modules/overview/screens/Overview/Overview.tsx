@@ -85,20 +85,22 @@ export const Overview = () => {
           requestActions={[fetchOverview]}
           noDataMessage={renderedPromoSkeleton}
         >
-          {({ loading, error, data }) => (
-            <ThemeProvider theme={darkTheme}>
-              <Promo
-                stackDown
-                error={error}
-                isLoading={loading}
-                items={data
-                  .slice(0, PROMO_ITEMS_COUNT)
-                  .map((item: IItem) =>
-                    mapPromoItem(item, getTokenSymbol(chainId) as string),
-                  )}
-              />
-            </ThemeProvider>
-          )}
+          {({ loading, error, data }) => {
+            return (
+              <ThemeProvider theme={darkTheme}>
+                <Promo
+                  stackDown
+                  error={error}
+                  isLoading={loading}
+                  items={data
+                    .slice(0, PROMO_ITEMS_COUNT)
+                    .map((item: IItem) =>
+                      mapPromoItem(item, getTokenSymbol(chainId) as string),
+                    )}
+                />
+              </ThemeProvider>
+            );
+          }}
         </Queries>
       </div>
 
