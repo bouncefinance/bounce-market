@@ -307,9 +307,9 @@
     }
   },
   "product-panel": {
-    "Comics": "Комикс",
     "art": "Исскуство",
-    "sports": "Спорт"
+    "sports": "Спорт",
+    "Comics": "Комикс"
   },
   "product-card": {
     "burn": "Сжечь токены",

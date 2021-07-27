@@ -16,6 +16,9 @@ export const DropTimer = ({ endDate }: IDropTimerProps) => {
 
   const getTimerValue = () => {
     if (isTimeOver) {
+      if (timeRemaining.total > -50) {
+        return t('time.time-over');
+      }
       return endDetailedDate;
     } else if (timeRemaining.days > 1) {
       return t('time.finished-on', { end: endDate });
