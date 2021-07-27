@@ -305,6 +305,11 @@
       "title": "热门作品集"
     }
   },
+  "product-panel": {
+    "art": "艺术",
+    "sports": "体育",
+    "Comics": "漫画"
+  },
   "product-card": {
     "not-on-sale": "未出售",
     "price": "价格",

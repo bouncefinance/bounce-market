@@ -305,6 +305,11 @@
       "title": "Collections"
     }
   },
+  "product-panel": {
+    "art": "Art",
+    "sports": "Sports",
+    "Comics": "Comics"
+  },
   "product-card": {
     "burn": "Burn token",
     "not-on-sale": "Not on sale",

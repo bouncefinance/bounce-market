@@ -13,15 +13,15 @@ import { useProductsPanelStyles } from './useProductsPanelStyles';
 const categories = [
   {
     value: ItemsChannel.fineArts,
-    label: t('product-panel.art'),
+    label: 'product-panel.art',
   },
   {
     value: ItemsChannel.sports,
-    label: t('product-panel.sports'),
+    label: 'product-panel.sports',
   },
   {
     value: ItemsChannel.comics,
-    label: t('product-panel.Comics'),
+    label: 'product-panel.Comics',
   },
 ];
 
@@ -105,7 +105,7 @@ export const ProductsPanel = ({
                 <FilledTab
                   className={classes.tab}
                   key={uid(label)}
-                  label={label}
+                  label={t(label)}
                   value={value}
                   disabled={disabled}
                 />
