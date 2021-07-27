@@ -311,9 +311,9 @@
     }
   },
   "product-panel": {
-    "Comics": "Comics",
-    "art": "art",
-    "sports": "sports"
+    "art": "Art",
+    "sports": "Sports",
+    "Comics": "Comics"
   },
   "product-card": {
     "burn": "Burn token",
