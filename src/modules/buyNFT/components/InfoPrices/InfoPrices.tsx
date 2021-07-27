@@ -84,21 +84,38 @@ export const InfoPrices = ({
         (role === 'buyer' || role === 'creator'))
     ) {
       if (role === 'creator') {
-        return (
-          <>
-            <Box mb={2}>
-              {t('info-prices.status.CompletedByDirectPurchase.creator')}
-            </Box>
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={onCreatorClaim}
-              loading={loading}
-            >
-              {t('info-prices.claim')}
-            </Button>
-          </>
-        );
+        if (state === AuctionState.CompletedByDirectPurchase) {
+          return (
+            <>
+              <Box mb={2}>{t('info-prices.status.Claimed.creator')}</Box>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={onCreatorClaim}
+                loading={loading}
+                disabled={true}
+              >
+                {t('info-prices.claimed')}
+              </Button>
+            </>
+          );
+        } else {
+          return (
+            <>
+              <Box mb={2}>
+                {t('info-prices.status.CompletedByDirectPurchase.creator')}
+              </Box>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={onCreatorClaim}
+                loading={loading}
+              >
+                {t('info-prices.claim')}
+              </Button>
+            </>
+          );
+        }
       } else if (role === 'buyer') {
         return (
           <>
