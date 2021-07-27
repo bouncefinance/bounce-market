@@ -159,6 +159,7 @@ export const TabItems = () => {
                 objectFit: 'contain',
                 loading: 'lazy',
               }}
+              state={item.state}
               profileInfo={
                 <ProfileInfo
                   subTitle="Owner"

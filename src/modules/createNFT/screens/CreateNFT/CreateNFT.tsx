@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@material-ui/core';
+import { Box, Container, Tooltip, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { NftType } from 'modules/api/common/NftType';
 import { Button } from 'modules/uiKit/Button';
@@ -18,7 +18,7 @@ import {
   ProfileRoutesConfig,
   ProfileTab,
 } from '../../../profile/ProfileRoutes';
-import { Channel, createNft, ICreateNFTPayload } from '../../actions/createNft';
+import { Channel, ICreateNFTPayload } from '../../actions/createNft';
 import { useCreateNFTStyles } from './useCreateNFTStyles';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import {
@@ -28,6 +28,7 @@ import {
 import { ICollectionItem } from 'modules/form/components/CollectionField/CollectionField';
 import { createBrandNFT } from 'modules/brand/actions/createBrandNft';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
+import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -151,8 +152,8 @@ export const CreateNFT = () => {
         value: Channel.Sports,
       },
       {
-        label: t(`create-nft.channelOption.${Channel.Comicbooks}`),
-        value: Channel.Comicbooks,
+        label: t(`create-nft.channelOption.${Channel.Comics}`),
+        value: Channel.Comics,
       },
     ],
     [],
@@ -222,7 +223,16 @@ export const CreateNFT = () => {
               component={InputField}
               name="description"
               type="text"
-              label={t('create-nft.label.description')}
+              label={
+                <Box display="flex" alignItems="center">
+                  {t('create-nft.label.description')}
+                  <Tooltip title={t('create-nft.tip-warning.description')}>
+                    <Box component="i" ml={1}>
+                      <QuestionIcon />
+                    </Box>
+                  </Tooltip>
+                </Box>
+              }
               color="primary"
               fullWidth={true}
               rowsMax={10}
@@ -282,7 +292,7 @@ export const CreateNFT = () => {
             </Box>
           )}
           <Box>
-            <Mutation type={createNft.toString()}>
+            <Mutation type={createBrandNFT.toString()}>
               {({ loading }) => (
                 <Button size="large" type="submit" fullWidth loading={loading}>
                   {loading ? t('common.submitting') : t('create-nft.submit')}

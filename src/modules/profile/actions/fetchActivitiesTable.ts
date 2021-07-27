@@ -56,7 +56,8 @@ export const fetchActivitiesTable = createSmartAction<
               const activity = data?.find(item => {
                 return (
                   activityItem.tokenId === item.id &&
-                  activityItem.contract === item.contractAddress
+                  String(activityItem.contract).toLowerCase() ===
+                    String(item.contractAddress).toLowerCase()
                 );
               });
 

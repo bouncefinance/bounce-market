@@ -20,7 +20,7 @@ const categories = [
     label: 'Sport',
   },
   {
-    value: ItemsChannel.comicbooks,
+    value: ItemsChannel.comics,
     label: 'Comic',
   },
 ];

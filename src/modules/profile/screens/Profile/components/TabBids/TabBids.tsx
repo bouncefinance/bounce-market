@@ -40,8 +40,8 @@ const categories = [
     label: t('profile.bids-categories.sport'),
   },
   {
-    value: ItemsChannel.comicbooks,
-    label: t('profile.bids-categories.Comicbooks'),
+    value: ItemsChannel.comics,
+    label: t('profile.bids-categories.Comics'),
   },
 ];
 
@@ -80,7 +80,7 @@ export const TabBids = () => {
       return [];
     }
 
-    const allItems = [...bidsQuery.data.claimList, ...bidsQuery.data.soldList];
+    const allItems = bidsQuery.data.list;
     const filteredItems =
       catergory === ItemsChannel.all
         ? allItems
@@ -119,9 +119,12 @@ export const TabBids = () => {
           objectFit: 'contain',
           loading: 'lazy',
         }}
+        state={item.state}
         profileInfo={
           item.owneraddress && <AccountInfo address={item.owneraddress} />
         }
+        isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
+        openAt={item.openAt}
       />
     ));
   }, [items, chainId]);

@@ -4,7 +4,10 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
+import { AuctionState, PoolState } from 'modules/api/common/AuctionState';
 import { AuctionType } from 'modules/api/common/auctionType';
+import { FixedSwapState } from 'modules/api/common/FixedSwapState';
+import { auctionTypeMap } from 'modules/api/common/poolType';
 import {
   fetchItemsByFilter,
   IItemByFilter,
@@ -22,11 +25,12 @@ export interface IMyBid extends IItemByFilter {
   price: BigNumber;
   token1: string;
   createTime: number;
+  openAt: Date;
+  state: AuctionState | FixedSwapState;
 }
 
 export interface IQueryMyBids {
-  claimList: IMyBid[];
-  soldList: IMyBid[];
+  list: IMyBid[];
 }
 
 interface IQueryMyBidsArgs {
@@ -49,8 +53,7 @@ export const queryMyBids = createAction<
     ) => ({
       promise: (async () => {
         const response: IQueryMyBids = {
-          claimList: [],
-          soldList: [],
+          list: [],
         };
 
         const {
@@ -60,7 +63,7 @@ export const queryMyBids = createAction<
         });
 
         const { data: records } = await store.dispatchRequest(
-          getRecords({ count: 1000 }),
+          getRecords({ count: 1000, address }),
         );
 
         if (!records) {
@@ -73,7 +76,7 @@ export const queryMyBids = createAction<
             item.lastestBidAmount !== '0'
               ? item.lastestBidAmount
               : item.amountMin1,
-          poolType: AuctionType.EnglishAuction,
+          poolType: auctionTypeMap[item.auctiontype.toString()],
         }));
 
         const { data: itemsByFilter } = await store.dispatchRequest(
@@ -88,21 +91,16 @@ export const queryMyBids = createAction<
           return response;
         }
 
-        const claimTradeAuctions = tradeAuctions
-          .filter(item => {
-            if (address.toLowerCase() === item.creator.toLowerCase()) {
-              return !item.creatorClaimed;
-            } else {
-              return !item.bidderClaimed;
-            }
-          })
-          .filter(item => item.lastestBidAmount !== item.amountMax1);
-
-        const soldTradeAuctions = tradeAuctions.filter(
-          item => !claimTradeAuctions.includes(item),
-        );
-
-        const claimList = claimTradeAuctions
+        const isEnglishAuction = (type: AuctionType) =>
+          type === AuctionType.EnglishAuction ||
+          type === AuctionType.EnglishAuction_Timing;
+        const getEnglishState = (state: PoolState) =>
+          state === PoolState.Live ? AuctionState.Live : AuctionState.Claimed;
+        const getFixedState = (state: PoolState) =>
+          state === PoolState.Live
+            ? FixedSwapState.Live
+            : FixedSwapState.Claimed;
+        const list = tradeAuctions
           .map(pool => {
             const item = itemsByFilter.find(r => r.id === pool.tokenId);
 
@@ -113,28 +111,16 @@ export const queryMyBids = createAction<
               price: new BigNumber(Web3.utils.fromWei(pool.price)),
               token1: pool.token1,
               createTime: pool.createTime,
+              openAt: new Date((pool as any).openAt * 1000),
+              state: isEnglishAuction(pool.poolType)
+                ? getEnglishState(pool.state)
+                : getFixedState(pool.state),
             } as IMyBid;
           })
           .filter(item => item.fileurl)
           .sort((a, b) => b.createTime - a.createTime);
 
-        const soldList = soldTradeAuctions
-          .map(pool => {
-            const item = itemsByFilter.find(r => r.id === pool.tokenId);
-
-            return {
-              ...item,
-              poolType: pool.poolType,
-              poolId: pool.poolId,
-              price: new BigNumber(Web3.utils.fromWei(pool.price)),
-              token1: pool.token1,
-              createTime: pool.createTime,
-            } as IMyBid;
-          })
-          .sort((a, b) => b.createTime - a.createTime);
-
-        response.claimList = claimList;
-        response.soldList = soldList;
+        response.list = list;
 
         return response;
       })(),

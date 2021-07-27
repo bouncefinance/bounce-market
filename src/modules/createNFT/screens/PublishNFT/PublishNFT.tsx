@@ -11,7 +11,7 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import { Mutation, useDispatchRequest, useQuery } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { add } from 'date-fns';
 import { SelectTimeField } from '../../../form/components/SelectTimeField';
@@ -48,6 +48,8 @@ import {
   UserRoleEnum,
   UserRoleType,
 } from 'modules/common/actions/queryAccountInfo';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
@@ -106,6 +108,9 @@ export const PublishNFTComponent = ({
   const theme = useTheme();
   const [purchasePriceChecked, setPurchasePriceChecked] = useState(true);
   const [reservePriceChecked, setReservePriceChecked] = useState(true);
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
+  });
 
   const togglePurchasePriceChecked = useCallback(() => {
     setPurchasePriceChecked(prev => !prev);
@@ -268,8 +273,10 @@ export const PublishNFTComponent = ({
               MIN_INCREMENTAL_PART,
             ),
             reservePrice: reservePriceChecked ? payload.reservePrice : '0',
-            // duration: payload.duration * 60 * 60 * 24,
-            duration: payload.duration * 60,
+            duration:
+              process.env.REACT_IS_DEV === 'TEST'
+                ? payload.duration * 60
+                : payload.duration * 60 * 60 * 24,
             name,
             tokenContract,
             unitContract: payload.unitContract,
@@ -297,7 +304,8 @@ export const PublishNFTComponent = ({
     ],
   );
 
-  const isVerify = identity === UserRoleEnum.Verified;
+  const isVerify =
+    profileInfo && profileInfo?.identity === UserRoleEnum.Verified;
   const renderForm = ({
     handleSubmit,
     values,

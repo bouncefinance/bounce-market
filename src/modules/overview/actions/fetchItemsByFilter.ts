@@ -7,7 +7,7 @@ export enum ItemsChannel {
   all = 'All',
   fineArts = 'FineArts',
   sports = 'Sports',
-  comicbooks = 'Comicbooks',
+  comics = 'Comics',
 }
 
 export enum NFTCategoryType {
