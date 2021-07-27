@@ -1,3 +1,5 @@
+import { PoolState } from 'modules/api/common/AuctionState';
+import { AuctionTypeKeys } from 'modules/api/common/auctionType';
 import { TokenSymbol } from '../types/TokenSymbol';
 
 export interface ITradeAuction {
@@ -19,6 +21,7 @@ export interface ITradeAuction {
   token1: string;
   tokenAmount0: number;
   tokenId: number;
+  auctiontype: AuctionTypeKeys;
 }
 
 export interface ITradePool {
@@ -50,7 +53,7 @@ export interface ITradePool_V2 {
   pooltype: number;
   poolweight: number;
   price: string;
-  state: number;
+  state: PoolState;
   token0: string;
   token1: string;
   tokenid: number;

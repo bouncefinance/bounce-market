@@ -16,6 +16,7 @@ import { IApiRecords, IRecords } from '../api/records';
 interface IGetRecordsArgs {
   offset?: number;
   count?: number;
+  address?: string;
 }
 
 export const getRecords = createAction<
@@ -28,7 +29,7 @@ export const getRecords = createAction<
     params: {
       offset: params?.offset || 0,
       count: params?.count || 100,
-      user_address: '',
+      user_address: params?.address ?? '',
     },
   },
   meta: {

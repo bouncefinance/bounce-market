@@ -3,14 +3,17 @@ import BigNumber from 'bignumber.js';
 import { AuctionState } from 'modules/api/common/AuctionState';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { NftType } from 'modules/api/common/NftType';
-import { auctionTypeMap } from 'modules/api/common/poolType';
+import { auctionTypeMap, PoolType } from 'modules/api/common/poolType';
 import { IApiQueryPool, IQueryPool } from 'modules/pools/actions/queryPools';
 import { createAction } from 'redux-smart-actions';
 import Web3 from 'web3';
 import { IFetchPoolDetailsData } from '../../overview/actions/fetchPoolDetails';
 
 function mapPool(data: IQueryPool): IFetchPoolDetailsData {
-  if (data.auctiontype === 2) {
+  if (
+    data.auctiontype === PoolType.EnglishAuction ||
+    data.auctiontype === PoolType.EnglishAuctionTiming
+  ) {
     return {
       amountMax1: new BigNumber(Web3.utils.fromWei(data.amount_max1)),
       amountMin1: new BigNumber(Web3.utils.fromWei(data.amount_min1)),
