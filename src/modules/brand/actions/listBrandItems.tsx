@@ -6,7 +6,11 @@ import { AuctionState } from '../../api/common/AuctionState';
 import { AuctionType } from '../../api/common/auctionType';
 import { FixedSwapState } from '../../api/common/FixedSwapState';
 import { fetchItem } from '../../buyNFT/actions/fetchItem';
-import { isEnglishAuction } from '../../overview/actions/fetchPoolDetails';
+import {
+  IEnglishAuctionDetails,
+  IFixedAuctionDetails,
+  isEnglishAuction,
+} from '../../overview/actions/fetchPoolDetails';
 import { getPoolsByFilter } from '../../profile/api/getPoolsByFilter';
 import { queryBrandItem1155, queryBrandItem721 } from './queryBrandItems';
 
@@ -50,14 +54,21 @@ export const listBrandItems = createSmartAction(
               }),
             );
 
+            const filterPools = pools?.list.filter(pool => {
+              return (
+                pool.state === AuctionState.Live ||
+                pool.state === FixedSwapState.Live
+              );
+            });
+
             const ids = [
-              ...(pools?.list.map(item => item.tokenId) ?? []),
+              ...(filterPools?.map(item => item.tokenId) ?? []),
               ...nfts.map(
                 (item: any) => item.tokenId || parseInt(item.token_id),
               ),
             ];
             const cts = [
-              ...(pools?.list.map(item => item.tokenContract) ?? []),
+              ...(filterPools?.map(item => item.tokenContract) ?? []),
               ...nfts.map((item: any) => item.token0 || item.contract_addr),
             ];
 
@@ -86,57 +97,70 @@ export const listBrandItems = createSmartAction(
               return response.data!;
             });
 
-            const poolsCopy = pools ? [...pools.list] : [];
+            const poolsCopy = filterPools || [];
 
-            return data
-              ?.map(item => {
-                const poolIndex = poolsCopy.findIndex(
-                  pool => pool.tokenId === item.id,
-                );
-                const pool = poolsCopy[poolIndex];
+            const getEnglishAuctionPrice = (pool: IEnglishAuctionDetails) => {
+              return pool.lastestBidAmount.isEqualTo(0)
+                ? pool.amountMin1
+                : pool.lastestBidAmount;
+            };
 
-                if (pool) {
-                  poolsCopy.splice(poolIndex, 1);
-                  return {
-                    ...item,
-                    supply: (() => {
-                      if (isEnglishAuction(pool)) {
-                        if (pool.state < AuctionState.NotSoldByReservePrice) {
-                          return pool.tokenAmount0;
-                        }
+            const getFixedSwapPrice = (pool: IFixedAuctionDetails) => {
+              return pool.price;
+            };
 
-                        return 0;
-                      } else {
-                        if (pool.state < FixedSwapState.Canceled) {
-                          return pool.quantity;
-                        } else {
+            return (
+              data
+                ?.map(item => {
+                  const poolIndex = poolsCopy.findIndex(
+                    pool => pool.tokenId === item.id,
+                  );
+                  const pool = poolsCopy[poolIndex];
+
+                  if (pool) {
+                    poolsCopy.splice(poolIndex, 1);
+                    return {
+                      ...item,
+                      supply: (() => {
+                        if (isEnglishAuction(pool)) {
+                          if (pool.state < AuctionState.NotSoldByReservePrice) {
+                            return pool.tokenAmount0;
+                          }
+
                           return 0;
+                        } else {
+                          if (pool.state < FixedSwapState.Canceled) {
+                            return pool.quantity;
+                          } else {
+                            return 0;
+                          }
                         }
-                      }
-                    })(),
-                    poolId: pool.poolId,
-                    poolType: isEnglishAuction(pool)
-                      ? AuctionType.EnglishAuction
-                      : AuctionType.FixedSwap,
-                    price: isEnglishAuction(pool)
-                      ? pool.lastestBidAmount.isEqualTo(0)
-                        ? pool.amountMin1
-                        : pool.lastestBidAmount
-                      : pool.price,
-                    state: pool.state,
-                  };
-                }
+                      })(),
+                      poolId: pool.poolId,
+                      poolType: pool.auctionType,
+                      price:
+                        pool.auctionType === AuctionType.EnglishAuction ||
+                        pool.auctionType === AuctionType.EnglishAuction_Timing
+                          ? getEnglishAuctionPrice(
+                              pool as IEnglishAuctionDetails,
+                            )
+                          : getFixedSwapPrice(pool as IFixedAuctionDetails),
+                      state: pool.state,
+                      openAt: pool.openAt,
+                    };
+                  }
 
-                const supply = nfts.find(
-                  nftItem => nftItem.token_id === String(item.id),
-                )?.balance;
+                  const supply = nfts.find(
+                    nftItem => nftItem.token_id === String(item.id),
+                  )?.balance;
 
-                return { ...item, supply: supply };
-              })
-              .filter(item => item.supply > 0)
-              .sort((prev, next) => {
-                return next.createdAt.getTime() - prev.createdAt.getTime();
-              });
+                  return { ...item, supply: supply };
+                })
+                // .filter(item => item.supply > 0)
+                .sort((prev, next) => {
+                  return next.createdAt.getTime() - prev.createdAt.getTime();
+                })
+            );
           })(),
         };
       },
