@@ -274,7 +274,7 @@ export const PublishNFTComponent = ({
             ),
             reservePrice: reservePriceChecked ? payload.reservePrice : '0',
             duration:
-              window.location.host.indexOf('192.168') !== -1
+              process.env.REACT_IS_DEV === 'TEST'
                 ? payload.duration * 60
                 : payload.duration * 60 * 60 * 24,
             name,
