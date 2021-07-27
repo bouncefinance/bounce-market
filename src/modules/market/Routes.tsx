@@ -9,7 +9,7 @@ const PATH_MARKET_BASE = '/market';
 const PATH_MARKET = `${PATH_MARKET_BASE}?page=:page?&category=:category?`;
 
 const DEFAULT_PAGE = 1;
-const DEFAULT_CATEGORY = ItemsChannel.fineArts;
+const DEFAULT_CATEGORY = ItemsChannel.all;
 
 const LoadableContainer: LoadableComponent<any> = loadable(
   async () => import('./screens/Market').then(module => module.Market),

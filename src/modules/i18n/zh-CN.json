@@ -276,6 +276,7 @@
     "cancel": "下架",
     "canceled": "已下架",
     "claim": "领取",
+    "claimed": "已领取",
     "status": {
       "Claimed": {
         "creator": "NFT已售出",

@@ -276,6 +276,7 @@
     "cancel": "Cancel",
     "canceled": "Canceled",
     "claim": "Claim",
+    "claimed": "Claimed",
     "status": {
       "Claimed": {
         "creator": "Item has been sold",
@@ -311,6 +312,7 @@
     }
   },
   "product-panel": {
+    "all": "All",
     "art": "Art",
     "sports": "Sports",
     "Comics": "Comics"

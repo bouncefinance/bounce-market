@@ -271,6 +271,7 @@
     "cancel": "Убрать",
     "canceled": "Убрано",
     "claim": "Забрть",
+    "claimed": "Заявлено",
     "status": {
       "Claimed": {
         "creator": "Товар продан",
