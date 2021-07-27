@@ -31,7 +31,9 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
       justifyContent: 'flex-start',
     },
   },
-
+  menusCol:{
+    backgroundColor: 'red'
+  },
   localeCol: {
     '&&': {
       [theme.breakpoints.up('md')]: {

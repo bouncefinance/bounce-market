@@ -6,8 +6,8 @@ export const useLocaleSwitcher = makeStyles<Theme>(theme => ({
     fontSize: 14,
     fontWeight: 500,
     borderRadius: 50,
-    minWidth: 180,
-    maxWidth: 200,
+    minWidth: 160,
+    maxWidth: 180,
     height: 50,
   },
 }));
