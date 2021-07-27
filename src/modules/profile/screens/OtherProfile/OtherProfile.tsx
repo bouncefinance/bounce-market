@@ -118,7 +118,16 @@ export const OtherProfile = () => {
           }
           // https://ankrnetwork.atlassian.net/browse/FE-3449
           // TODO: [FE-3449] add social links after it will be implemented on backend side
-          social={featuresConfig.profileSocialLinks && <Social />}
+          social={
+            featuresConfig.profileSocialLinks && (
+              <Social
+                twitter={profileInfo?.twitter}
+                instagram={profileInfo?.instagram}
+                facebook={profileInfo?.facebook}
+                website={profileInfo?.website}
+              />
+            )
+          }
           address={address}
         />
 

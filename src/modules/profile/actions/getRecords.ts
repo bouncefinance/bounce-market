@@ -16,6 +16,7 @@ import { IApiRecords, IRecords } from '../api/records';
 interface IGetRecordsArgs {
   offset?: number;
   count?: number;
+  address?: string;
 }
 
 export const getRecords = createAction<
@@ -28,12 +29,12 @@ export const getRecords = createAction<
     params: {
       offset: params?.offset || 0,
       count: params?.count || 100,
-      user_address: '',
+      user_address: params?.address ?? '',
     },
   },
   meta: {
     ...meta,
-    driver: 'nftview',
+    driver: 'axios',
     onRequest: (
       request,
       _action: RequestAction,
@@ -50,7 +51,7 @@ export const getRecords = createAction<
       return request;
     },
     getData: ({ code, msg, data }) => {
-      if (code !== 200) {
+      if (code !== 1) {
         throw new Error(msg);
       }
       return data;

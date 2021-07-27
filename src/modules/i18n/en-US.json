@@ -214,7 +214,12 @@
   "drops": {
     "previous": "Previous drops",
     "top-creators": "Top Creators",
-    "upcoming": "Upcoming  dr🔥ps"
+    "upcoming": "Upcoming  dr🔥ps",
+    "label": {
+      "live": "Live",
+      "coming": "Coming",
+      "previous":"Previous"
+    }
   },
   "empty-data": {
     "text": "Switch to the correct network to view the contents of this page.",
@@ -298,11 +303,11 @@
   },
   "monthFormat": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December}}",
   "movers": {
-    "title": "Featured Collections"
+    "title": "Fast Movers"
   },
   "overview": {
     "collections": {
-      "title": "Collections"
+      "title": "Featured Collections"
     }
   },
   "product-panel": {
@@ -350,7 +355,7 @@
       "Comics": "Comics",
       "all": "All",
       "art": "Art",
-      "sport": "Sport",
+      "sport": "Sports",
       "sports": "Sports"
     },
     "bio": "Bio",

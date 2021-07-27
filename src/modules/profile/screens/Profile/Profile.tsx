@@ -190,6 +190,7 @@ export const Profile = () => {
                 twitter={profileInfo?.twitter}
                 instagram={profileInfo?.instagram}
                 facebook={profileInfo?.facebook}
+                website={profileInfo?.website}
               />
             )
           }
@@ -214,10 +215,6 @@ export const Profile = () => {
 
         <TabPanel value={tab} index={ProfileTab.brands}>
           <TabBrands />
-        </TabPanel>
-
-        <TabPanel value={tab} index={ProfileTab.sells}>
-          <TabBids />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.bids}>

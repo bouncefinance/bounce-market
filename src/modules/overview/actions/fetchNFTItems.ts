@@ -3,6 +3,7 @@ import {
   RequestAction,
   RequestActionMeta,
 } from '@redux-requests/core';
+import { PoolState } from 'modules/api/common/AuctionState';
 import { auctionTypeMap } from 'modules/api/common/poolType';
 import {
   queryAccountInfo,
@@ -45,6 +46,7 @@ export interface INFTItem {
   token1: string;
   tokenSymbol: TokenSymbol;
   openAt: Date;
+  state: PoolState;
 }
 
 export const mapNFTItem = (
@@ -75,6 +77,7 @@ export const mapNFTItem = (
     token1: item.token1,
     tokenSymbol: tokenSymbol,
     openAt: new Date(item.open_at * 1e3),
+    state: item.state,
   };
 };
 

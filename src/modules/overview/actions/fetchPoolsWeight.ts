@@ -54,7 +54,7 @@ export const fetchPoolsWeight = createSmartAction<
       asMutation: false,
       getData: data => {
         return {
-          list: data.data.map(item => {
+          list: data.data?.map(item => {
             return {
               artistPoolWeight: item.artistpoolweight,
               createdAt: new Date(item.created_at),

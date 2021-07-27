@@ -9,11 +9,13 @@ import {
 } from 'modules/drops/components/DropsOwner';
 import { NothingFound } from 'modules/drops/components/NothingFound';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
+import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useEffect } from 'react';
+import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { DROPS_LIVE_KEY } from '../../const';
+import { DROPS_COMING_KEY, DROPS_LIVE_KEY, DROPS_PREV_KEY } from '../../const';
 import { StoriesChip } from '../StoriesChip';
 import {
   StoriesSliderItem,
@@ -51,11 +53,35 @@ export const StoriesSlider = () => {
     requestKey: DROPS_LIVE_KEY,
   });
 
-  const liveDrops = data?.items || [];
+  const {
+    data: dataComing,
+    loading: loadingComing,
+  } = useQuery<IGetDrops | null>({
+    type: getDrops.toString(),
+    requestKey: DROPS_COMING_KEY,
+  });
 
-  const renderedItems = liveDrops.map(item => {
-    const chips = <StoriesChip label="live" isLive />;
+  const { data: dataPrev, loading: loadingPrev } = useQuery<IGetDrops | null>({
+    type: getDrops.toString(),
+    requestKey: DROPS_PREV_KEY,
+  });
 
+  const showDrop = useMemo(() => {
+    return [data, dataComing, dataPrev]
+      .map(e => e?.items ?? [])
+      .reduce((prev, next) => (prev.length > 0 ? prev : next), []);
+  }, [data, dataComing, dataPrev]);
+
+  const labelObject = {
+    [SearchDropsParamState.Live]: t('drops.label.live'),
+    [SearchDropsParamState.Coming]: t('drops.label.coming'),
+    [SearchDropsParamState.Previous]: t('drops.label.previous'),
+  };
+
+  const renderedItems = showDrop.map(item => {
+    const chips = (state: SearchDropsParamState) => {
+      return <StoriesChip label={labelObject[state]} isLive />;
+    };
     const profileInfo = (
       <DropsOwner
         title={item.username}
@@ -75,7 +101,7 @@ export const StoriesSlider = () => {
         title={item.title}
         text={item.description}
         img={item.coverImgUrl}
-        chips={chips}
+        chips={chips(item.state)}
         gradientColor={item.bgColor}
         profileInfo={profileInfo}
       />
@@ -88,7 +114,7 @@ export const StoriesSlider = () => {
       <StoriesSliderItemSkeleton key={i} profileInfo={<DropsOwnerSkeleton />} />
     ));
 
-  if (!pristine && !liveDrops.length && !loading) {
+  if (!pristine && !showDrop.length && !loading) {
     return (
       <Section>
         <NothingFound />
@@ -97,8 +123,14 @@ export const StoriesSlider = () => {
   }
 
   return (
-    <StoriesSliderComponent isSlider={loading || liveDrops.length > 1}>
-      {loading ? renderedSkeletons : renderedItems}
+    <StoriesSliderComponent
+      isSlider={
+        (loading && loadingComing && loadingPrev) || showDrop.length > 1
+      }
+    >
+      {loading && loadingComing && loadingPrev
+        ? renderedSkeletons
+        : renderedItems}
     </StoriesSliderComponent>
   );
 };
