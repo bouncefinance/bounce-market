@@ -12,6 +12,10 @@ import { useProductsPanelStyles } from './useProductsPanelStyles';
 
 const categories = [
   {
+    value: ItemsChannel.all,
+    label: 'product-panel.all',
+  },
+  {
     value: ItemsChannel.fineArts,
     label: 'product-panel.art',
   },

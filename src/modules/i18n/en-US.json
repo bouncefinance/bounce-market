@@ -312,6 +312,7 @@
     }
   },
   "product-panel": {
+    "all": "All",
     "art": "Art",
     "sports": "Sports",
     "Comics": "Comics"

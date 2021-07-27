@@ -121,7 +121,8 @@ export const fetchNFTItems = createSmartAction<
             fetchPools(
               {
                 category: '',
-                channel: params.channel,
+                channel:
+                  params.channel === ItemsChannel.all ? '' : params.channel,
                 currency: ZERO_ADDRESS,
                 limit: params.limit,
                 offset: params.offset,

@@ -135,7 +135,7 @@ export const InfoPrices = ({
       } else {
         return (
           <Box mb={2}>
-            {t('info-prices.status.CompletedByDirectPurchase.buyer')}
+            {t('info-prices.status.CompletedByDirectPurchase.others')}
           </Box>
         );
       }
