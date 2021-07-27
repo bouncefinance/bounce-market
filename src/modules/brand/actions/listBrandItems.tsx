@@ -109,58 +109,53 @@ export const listBrandItems = createSmartAction(
               return pool.price;
             };
 
-            return (
-              data
-                ?.map(item => {
-                  const poolIndex = poolsCopy.findIndex(
-                    pool => pool.tokenId === item.id,
-                  );
-                  const pool = poolsCopy[poolIndex];
+            return data
+              ?.map(item => {
+                const poolIndex = poolsCopy.findIndex(
+                  pool => pool.tokenId === item.id,
+                );
+                const pool = poolsCopy[poolIndex];
 
-                  if (pool) {
-                    poolsCopy.splice(poolIndex, 1);
-                    return {
-                      ...item,
-                      supply: (() => {
-                        if (isEnglishAuction(pool)) {
-                          if (pool.state < AuctionState.NotSoldByReservePrice) {
-                            return pool.tokenAmount0;
-                          }
+                if (pool) {
+                  poolsCopy.splice(poolIndex, 1);
+                  return {
+                    ...item,
+                    supply: (() => {
+                      if (
+                        isEnglishAuction(pool) &&
+                        pool.state < AuctionState.NotSoldByReservePrice
+                      ) {
+                        return pool.tokenAmount0;
+                      }
+                      if (
+                        !isEnglishAuction(pool) &&
+                        pool.state < FixedSwapState.Canceled
+                      ) {
+                        return pool.quantity;
+                      }
+                      return 0;
+                    })(),
+                    poolId: pool.poolId,
+                    poolType: pool.auctionType,
+                    price:
+                      pool.auctionType === AuctionType.EnglishAuction ||
+                      pool.auctionType === AuctionType.EnglishAuction_Timing
+                        ? getEnglishAuctionPrice(pool as IEnglishAuctionDetails)
+                        : getFixedSwapPrice(pool as IFixedAuctionDetails),
+                    state: pool.state,
+                    openAt: pool.openAt,
+                  };
+                }
 
-                          return 0;
-                        } else {
-                          if (pool.state < FixedSwapState.Canceled) {
-                            return pool.quantity;
-                          } else {
-                            return 0;
-                          }
-                        }
-                      })(),
-                      poolId: pool.poolId,
-                      poolType: pool.auctionType,
-                      price:
-                        pool.auctionType === AuctionType.EnglishAuction ||
-                        pool.auctionType === AuctionType.EnglishAuction_Timing
-                          ? getEnglishAuctionPrice(
-                              pool as IEnglishAuctionDetails,
-                            )
-                          : getFixedSwapPrice(pool as IFixedAuctionDetails),
-                      state: pool.state,
-                      openAt: pool.openAt,
-                    };
-                  }
+                const supply = nfts.find(
+                  nftItem => nftItem.token_id === String(item.id),
+                )?.balance;
 
-                  const supply = nfts.find(
-                    nftItem => nftItem.token_id === String(item.id),
-                  )?.balance;
-
-                  return { ...item, supply: supply };
-                })
-                // .filter(item => item.supply > 0)
-                .sort((prev, next) => {
-                  return next.createdAt.getTime() - prev.createdAt.getTime();
-                })
-            );
+                return { ...item, supply: supply };
+              })
+              .sort((prev, next) => {
+                return next.createdAt.getTime() - prev.createdAt.getTime();
+              });
           })(),
         };
       },
