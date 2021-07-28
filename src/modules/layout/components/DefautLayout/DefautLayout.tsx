@@ -5,7 +5,6 @@ import { getTheme } from '../../../common/utils/getTheme';
 import { Themes } from '../../../themes/types';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
-// import Footer from '../Footer/test';
 import { useDefaultLayoutStyles } from './DefaultLayoutStyles';
 
 export interface ILayoutProps {
