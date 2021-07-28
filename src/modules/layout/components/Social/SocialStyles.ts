@@ -1,11 +1,18 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
-const X_SPACING = 1;
+const X_SPACING = 1.25;
 
 export const useSocialStyles = makeStyles<Theme>(theme => ({
+  title: {
+    display: 'inline-block',
+    padding: theme.spacing(0, X_SPACING, 2 * X_SPACING, X_SPACING),
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
   list: {
     display: 'flex',
-    flexFlow: 'row nowrap',
+    flexFlow: 'column nowrap',
     justifyContent: 'center',
     margin: theme.spacing(0, -X_SPACING),
     padding: 0,
@@ -13,6 +20,8 @@ export const useSocialStyles = makeStyles<Theme>(theme => ({
   },
 
   listItem: {
+    display: 'flex',
+    alignItems: 'center',
     padding: theme.spacing(0, X_SPACING),
   },
 
@@ -33,10 +42,16 @@ export const useSocialStyles = makeStyles<Theme>(theme => ({
   },
 
   icon: {
-    fontSize: 18,
+    fontSize: 20,
 
     [theme.breakpoints.up('md')]: {
-      fontSize: 24,
+      fontSize: 20,
     },
+  },
+
+  a: {
+    padding: theme.spacing(X_SPACING),
+    fontWeight: 'normal',
+    fontSize: 16,
   },
 }));

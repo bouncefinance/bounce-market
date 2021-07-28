@@ -6,7 +6,7 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(2, 0),
+    padding: theme.spacing(8, 0, 3, 0),
     background: theme.palette.background.default,
     color: theme.palette.text.primary,
     borderTop: `1px solid ${fade(theme.palette.text.primary, 0.1)}`,
@@ -18,8 +18,8 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
 
   container: {
     [theme.breakpoints.up('WXGAPlus')]: {
-      paddingLeft: theme.spacing(5.5),
-      paddingRight: theme.spacing(5.5),
+      paddingLeft: theme.spacing(8),
+      paddingRight: theme.spacing(8),
     },
   },
 
@@ -31,8 +31,8 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
       justifyContent: 'flex-start',
     },
   },
-  menusCol:{
-    backgroundColor: 'red'
+  menusCol: {
+    backgroundColor: 'red',
   },
   localeCol: {
     '&&': {
@@ -48,5 +48,12 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
       flexGrow: 0,
       justifyContent: 'flex-end',
     },
+  },
+
+  description: {
+    fontWeight: 'normal',
+    fontSize: 12,
+    color: theme.palette.text.primary,
+    opacity: 0.5,
   },
 }));
