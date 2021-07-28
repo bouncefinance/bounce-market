@@ -276,6 +276,7 @@
     "cancel": "下架",
     "canceled": "已下架",
     "claim": "领取",
+    "claimed": "已领取",
     "status": {
       "Claimed": {
         "creator": "NFT已售出",
@@ -311,9 +312,9 @@
     }
   },
   "product-panel": {
-    "Comics": "漫画",
     "art": "艺术",
-    "sports": "体育"
+    "sports": "体育",
+    "Comics": "漫画"
   },
   "product-card": {
     "not-on-sale": "未出售",

@@ -27,6 +27,9 @@ import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
 import { Pagination } from '../../../uiKit/Pagination';
 import { useProductsStyles } from './useProductsStyles';
+import { AuctionType } from 'modules/api/common/auctionType';
+import { FixedSwapState } from 'modules/api/common/FixedSwapState';
+import { AuctionState } from 'modules/api/common/AuctionState';
 
 const ITEMS_PORTION_COUNT = 20;
 const DEFAULT_PAGE = 1;
@@ -112,6 +115,12 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
             objectFit: 'contain',
             loading: 'lazy',
           }}
+          state={
+            item.poolType === AuctionType.FixedSwap ||
+            item.poolType === AuctionType.FixedSwap_Timing
+              ? FixedSwapState.Live
+              : AuctionState.Live
+          }
           profileInfo={
             <ProfileInfo
               subTitle={t('product-card.owner')}

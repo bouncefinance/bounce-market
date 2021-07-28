@@ -43,11 +43,11 @@ enum DropsSortBy {
 const tabs = [
   {
     id: DropsSortBy.Coming,
-    label: t('drops.upcoming'),
+    label: 'drops.upcoming',
   },
   {
     id: DropsSortBy.Previous,
-    label: t('drops.previous'),
+    label: 'drops.previous',
   },
 ];
 
@@ -190,7 +190,12 @@ export const DropsSection = () => {
         <Box mb={{ xs: 4, md: 7 }}>
           <DropsTabs value={sortBy} onChange={onSortChange as any}>
             {tabs.map(({ label, id }) => (
-              <DropsTab disabled={loading} key={id} label={label} value={id} />
+              <DropsTab
+                disabled={loading}
+                key={id}
+                label={t(label)}
+                value={id}
+              />
             ))}
           </DropsTabs>
         </Box>

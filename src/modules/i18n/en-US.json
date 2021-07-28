@@ -276,6 +276,7 @@
     "cancel": "Cancel",
     "canceled": "Canceled",
     "claim": "Claim",
+    "claimed": "Claimed",
     "status": {
       "Claimed": {
         "creator": "Item has been sold",
@@ -311,9 +312,10 @@
     }
   },
   "product-panel": {
-    "Comics": "Comics",
-    "art": "art",
-    "sports": "sports"
+    "all": "All",
+    "art": "Art",
+    "sports": "Sports",
+    "Comics": "Comics"
   },
   "product-card": {
     "burn": "Burn token",

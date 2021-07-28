@@ -273,8 +273,10 @@ export const PublishNFTComponent = ({
               MIN_INCREMENTAL_PART,
             ),
             reservePrice: reservePriceChecked ? payload.reservePrice : '0',
-            duration: payload.duration * 60 * 60 * 24,
-            // duration: payload.duration * 60,
+            duration:
+              process.env.REACT_IS_DEV === 'TEST'
+                ? payload.duration * 60
+                : payload.duration * 60 * 60 * 24,
             name,
             tokenContract,
             unitContract: payload.unitContract,

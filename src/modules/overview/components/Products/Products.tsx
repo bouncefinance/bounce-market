@@ -1,6 +1,9 @@
 import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { AuctionState } from 'modules/api/common/AuctionState';
+import { AuctionType } from 'modules/api/common/auctionType';
+import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
@@ -36,9 +39,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   });
 
   const [sortBy, setSortBy] = useState<string>('1');
-  const [catergory, setCategory] = useState<ItemsChannel>(
-    ItemsChannel.fineArts,
-  );
+  const [catergory, setCategory] = useState<ItemsChannel>(ItemsChannel.all);
 
   const onSortChange = useCallback((value: string) => {
     setSortBy(value);
@@ -65,7 +66,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
 
     dispatch(
       fetchNFTItems({
-        channel: ItemsChannel.fineArts,
+        channel: ItemsChannel.all,
         limit: NFT_ITEMS_COUNT,
       }),
     );
@@ -95,6 +96,12 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           objectFit: 'scale-down',
           loading: 'lazy',
         }}
+        state={
+          item.poolType === AuctionType.FixedSwap ||
+          item.poolType === AuctionType.FixedSwap_Timing
+            ? FixedSwapState.Live
+            : AuctionState.Live
+        }
         profileInfo={
           <ProfileInfo
             subTitle="Owner"

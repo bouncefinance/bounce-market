@@ -132,7 +132,7 @@ export const MyBrand = () => {
                   maxQuantity={item.supply}
                   key={item.id}
                   isOnSale={!!item.poolId}
-                  title={item.itemname}
+                  title={item.itemName}
                   href={
                     item.poolId && item.poolType
                       ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
@@ -141,7 +141,9 @@ export const MyBrand = () => {
                         )
                       : ''
                   }
+                  state={item.state}
                   price={item.poolId && item.price ? item.price : undefined}
+                  priceType={item.tokenSymbol}
                   copies={item.supply}
                   MediaProps={{
                     category: item.category,
@@ -166,6 +168,7 @@ export const MyBrand = () => {
                     item.id,
                   )}
                   queryAction={loadData}
+                  openAt={item.openAt}
                 />
               </Grid>
             );
