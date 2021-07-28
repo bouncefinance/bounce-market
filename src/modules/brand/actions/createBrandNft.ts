@@ -84,7 +84,6 @@ export const createBrandNFT = createSmartAction(
                 );
 
                 ContractBounceERC72.methods
-
                   .mint(address, addItemData.id)
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
