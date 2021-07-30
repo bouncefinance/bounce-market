@@ -10,13 +10,13 @@ import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { fetchMyBids, IPoolNftItem } from 'modules/profile/actions/fetchSale';
+import { fetchMySale, IPoolNftItem } from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { uid } from 'react-uid';
 
-export const TabBids = function () {
+export const TabSale = function () {
   const { data, loading } = useQuery<IPoolNftItem[]>({
-    type: fetchMyBids.toString(),
+    type: fetchMySale.toString(),
   });
 
   return (
@@ -28,21 +28,21 @@ export const TabBids = function () {
           data?.map(item => (
             <ProductCard
               id={item.tokenid}
-              poolId={item.pool_id || 0}
+              poolId={item.poolid || 0}
               auctionType={item.poolType}
               key={uid(item)}
               title={item.itemname}
               href={
-                item.pool_id && item.poolType
+                item.poolid && item.poolType
                   ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                      item.pool_id,
+                      item.poolid,
                       item.poolType,
                     )
                   : ''
               }
               likes={item.likecount}
               isLike={item.isLike}
-              price={item.pool_id ? item.price : undefined}
+              price={item.poolid ? item.price : undefined}
               priceType={(data as any)?.tokenSymbol}
               copies={item.token_amount0}
               copiesBalance={item.swapped_amount0}

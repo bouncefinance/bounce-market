@@ -1,4 +1,5 @@
 import loadable, { LoadableComponent } from '@loadable/component';
+import { USER_CREATE_NFT_PROFILE_TYPE } from 'modules/profile/ProfileRoutes';
 import { useParams } from 'react-router';
 import { generatePath } from 'react-router-dom';
 import { AuctionType } from '../api/common/auctionType';
@@ -10,8 +11,10 @@ export const PATH_BUY_NFT = '/nft/buy/poolId/:poolId/poolType/:poolType';
 export const BuyNFTRoutesConfig = {
   DetailsNFT: {
     path: PATH_BUY_NFT,
-    generatePath: (poolId: number, poolType: AuctionType) =>
-      generatePath(PATH_BUY_NFT, { poolId, poolType }),
+    generatePath: (
+      poolId: number,
+      poolType: AuctionType | USER_CREATE_NFT_PROFILE_TYPE,
+    ) => generatePath(PATH_BUY_NFT, { poolId, poolType }),
     useParams: () => {
       const { poolId: poolIdParam, poolType } = useParams<{
         poolId: string;

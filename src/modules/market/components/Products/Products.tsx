@@ -108,6 +108,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           endDate={item.endDate}
           copies={item.copies}
           likes={item.likes}
+          isLike={item.isLike}
           href={item.href}
           MediaProps={{
             category: item.category,

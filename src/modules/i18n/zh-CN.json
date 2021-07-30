@@ -26,7 +26,7 @@
       "addNewItem": "添加新NFT",
       "createNewItem": "创建新NFT",
       "createNewcollection": "创建新作品集",
-      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}"
+      "itemsCount": "{value, plural, =0 {0 NFT} =1 {1 NFT} other {# NFT}}"
     },
     "create": {
       "avatar-accepts": "支持 JPG, PNG, JPEG2000",
@@ -218,7 +218,7 @@
     "label": {
       "live": "Live",
       "coming": "Coming",
-      "previous":"Previous"
+      "previous": "Previous"
     }
   },
   "empty-data": {

@@ -22,7 +22,7 @@
       "addNewItem": "Добавить новый товар",
       "createNewItem": "Создать новый товар",
       "createNewcollection": "Создать новую коллекцию",
-      "itemsCount": "{value, plural, =0 {Нет NFT} =1 {Один NFT} other {# NFT}}"
+      "itemsCount": "{value, plural, =0 {0 NFT} =1 {1 NFT} other {# NFT}}"
     },
     "create": {
       "avatar-accepts": "Поддерживает JPG, PNG, JPEG2000",

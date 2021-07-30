@@ -7,6 +7,7 @@ import {
   MenuItem,
   MenuList,
   Popover,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
@@ -48,6 +49,7 @@ export interface IProductCardComponentProps {
   endDate?: Date;
   likes?: number;
   copies?: number;
+  copiesBalance?: number;
   auctionType?: AuctionType;
   state?: number;
   MediaProps: IImgProps & {
@@ -81,6 +83,7 @@ export const ProductCardComponent = ({
   priceType,
   endDate,
   copies,
+  copiesBalance,
   auctionType,
   state,
   likes,
@@ -156,16 +159,26 @@ export const ProductCardComponent = ({
   );
 
   const renderedCopies = (
-    <div className={classes.info}>
-      <LayersIcon
-        className={classNames(classes.icon, classes.iconRightOffset)}
-      />
-      {copies}
-    </div>
+    <Tooltip
+      title={t('product-card.balance-tip', { balance: copiesBalance ?? 0 })}
+      arrow
+      placement="top"
+    >
+      <div className={classes.info}>
+        <LayersIcon
+          className={classNames(classes.icon, classes.iconRightOffset)}
+        />
+        {copiesBalance ? `${copiesBalance} of ` : ''}
+        {copies}
+      </div>
+    </Tooltip>
   );
 
   const renderedLikes = (
-    <div className={classes.info}>
+    <div
+      onClick={e => e.stopPropagation()}
+      className={classNames(classes.info, classes.likeSite)}
+    >
       <ButtonBase
         className={classNames(
           classes.likeBtn,
@@ -177,7 +190,7 @@ export const ProductCardComponent = ({
         <HeartIcon className={classes.icon} />
       </ButtonBase>
 
-      {likes}
+      {likes || '0'}
     </div>
   );
 
@@ -226,13 +239,18 @@ export const ProductCardComponent = ({
 
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
-      <ConditionalWrapper
-        condition={!!href}
-        wrapper={<Link to={href || '#'} className={classes.imgBox} />}
-      >
-        {renderMediaContent()}
-        {openAt && +openAt > Date.now() && <CardPutSaleTimer openAt={openAt} />}
-      </ConditionalWrapper>
+      <div className={classes.relative}>
+        <ConditionalWrapper
+          condition={!!href}
+          wrapper={<Link to={href || '#'} className={classes.imgBox} />}
+        >
+          {renderMediaContent()}
+          {openAt && +openAt > Date.now() && (
+            <CardPutSaleTimer openAt={openAt} />
+          )}
+        </ConditionalWrapper>
+        {featuresConfig.nftLikes && !hiddenLikeBtn && renderedLikes}
+      </div>
 
       <CardContent className={classes.content}>
         <ConditionalWrapper
@@ -277,20 +295,14 @@ export const ProductCardComponent = ({
               {isCancelTimePut ? (
                 <CancelPutTime auctionType={auctionType} id={poolId} />
               ) : (
-                featuresConfig.nftLikes && !hiddenLikeBtn && renderedLikes
+                <></>
               )}
             </>
           )}
 
           {!isOnSale && (
             <>
-              <div>
-                <Typography className={classes.status}>
-                  {t('product-card.not-on-sale')}
-                </Typography>
-
-                {copies ? renderedCopies : <></>}
-              </div>
+              <div>{copies ? renderedCopies : <></>}</div>
 
               {!isMinting && !isOnSalePending && (
                 <Box display="flex" alignItems="center">

@@ -5,3 +5,10 @@ export type ResponseData<
 > = ReturnType<
   Exclude<Exclude<ReturnType<Request>['meta'], undefined>['getData'], undefined>
 >;
+
+export interface IResponse<T> {
+  code: number;
+  msg?: string;
+  data: T;
+  tokenSymbol?: string;
+}

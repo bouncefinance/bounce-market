@@ -145,6 +145,19 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     marginRight: theme.spacing(1),
   },
 
+  relative: {
+    position: 'relative',
+  },
+  likeSite: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    background: 'rgba(0, 0, 0, 0.6)',
+    color: '#fff',
+    padding: '2px 12px 2px 8px',
+    borderRadius: 30,
+    zIndex: 10,
+  },
   likeBtn: {
     padding: 6,
 

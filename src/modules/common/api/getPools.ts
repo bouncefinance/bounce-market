@@ -49,6 +49,7 @@ export interface ITradePool_V2 {
   fileurl: string;
   itemname: string;
   likecount: number;
+  mylikecount: number;
   poolid: number;
   pooltype: number;
   poolweight: number;

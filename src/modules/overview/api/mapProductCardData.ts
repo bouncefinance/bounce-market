@@ -26,4 +26,5 @@ export const mapProductCardData = (item: INFTItem) => ({
   ownerName: item.ownerName,
   identity: item.identity,
   openAt: item.openAt,
+  isLike: item.isLike,
 });

@@ -10,14 +10,22 @@ import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { fetchMyBids, IPoolNftItem } from 'modules/profile/actions/fetchSale';
+import { fetchOwned, IMyOwnedData } from 'modules/profile/actions/fetchOwned';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { USER_CREATE_NFT_PROFILE } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 
-export const TabBids = function () {
-  const { data, loading } = useQuery<IPoolNftItem[]>({
-    type: fetchMyBids.toString(),
+export const TabOwned = function () {
+  const { data, loading } = useQuery<IMyOwnedData>({
+    type: fetchOwned.toString(),
   });
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
+  });
+  const isVerify =
+    profileInfo && profileInfo?.identity === UserRoleEnum.Verified;
 
   return (
     <TabItemsComponent>
@@ -28,51 +36,46 @@ export const TabBids = function () {
           data?.map(item => (
             <ProductCard
               id={item.tokenid}
-              poolId={item.pool_id || 0}
-              auctionType={item.poolType}
+              poolId={item.tokenid || 0}
+              isItemType
               key={uid(item)}
               title={item.itemname}
-              href={
-                item.pool_id && item.poolType
-                  ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                      item.pool_id,
-                      item.poolType,
-                    )
-                  : ''
-              }
+              href={BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                item.tokenid,
+                USER_CREATE_NFT_PROFILE,
+              )}
+              priceType={item.itemsymbol}
+              copies={item.supply}
               likes={item.likecount}
               isLike={item.isLike}
-              price={item.pool_id ? item.price : undefined}
-              priceType={(data as any)?.tokenSymbol}
-              copies={item.token_amount0}
-              copiesBalance={item.swapped_amount0}
+              copiesBalance={item.balance}
               MediaProps={{
                 category: 'image',
                 src: item.fileurl || 'xxx',
                 objectFit: 'contain',
                 loading: 'lazy',
               }}
-              state={item.state}
-              isOnSale
+              contractAddress={
+                item.balance > 0 ? item.contractaddress : undefined
+              }
+              standard={item.standard}
               profileInfo={
                 <ProfileInfo
-                  subTitle="Creator"
-                  title={item.username}
+                  subTitle="Owner"
+                  title={item.creatorname}
                   users={[
                     {
-                      name: item.username,
-                      avatar: item.creatorurl,
-                      verified: item?.identity === UserRoleEnum.Verified,
+                      name: item.creatorname,
+                      avatar: item.creatorimage,
+                      verified: isVerify || false,
                     },
                   ]}
                 />
               }
               toSale={RoutesConfiguration.PublishNft.generatePath(
-                item.token0,
+                item.contractaddress,
                 item.tokenid,
               )}
-              isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
-              openAt={item.openAt}
             />
           ))
         )}
