@@ -9,7 +9,6 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { IBrandInfo } from '../api/queryBrand';
 import { getAccountBrand } from './getAccountBrand';
-import { queryBrandItems } from './queryBrandItems';
 
 export interface IMyBrand {
   id: number;
