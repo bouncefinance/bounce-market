@@ -52,7 +52,12 @@ export const Social = ({
       <ul className={classes.list}>
         {items.map(({ title, href, icon: Icon }, i) => (
           <li className={classes.item} key={uid(i)}>
-            <IconButton href={href as string} target="_blank" title={title}>
+            <IconButton
+              href={href as string}
+              target="_blank"
+              title={title}
+              className={classes.icon}
+            >
               <Icon />
             </IconButton>
           </li>

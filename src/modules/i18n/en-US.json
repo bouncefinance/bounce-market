@@ -40,7 +40,7 @@
         "description": "Description"
       },
       "tip-warning": {
-        "collection-symbol":"Collection Symbol is an abbreviated version of your brand name. Think of it as your collection logo in the form of an acronym (i.e. BTC for bitcoin). ",
+        "collection-symbol": "Collection Symbol is an abbreviated version of your brand name. Think of it as your collection logo in the form of an acronym (i.e. BTC for bitcoin). ",
         "ERC721": "The ERC-721 token standard represents a single unique asset. It is immutable, transparent in ownership and security, and the most widely used. Each ERC-721 token holds its own unique contract values.",
         "ERC1155": "The ERC-1155 is a dual purpose fungible and non fungible token. It’s faster and more efficient to use in batch token transfers and can be deployed in a single smart contract for an infinite number of token types.",
         "description": "What's the story here?"
@@ -218,7 +218,7 @@
     "label": {
       "live": "Live",
       "coming": "Coming",
-      "previous":"Previous"
+      "previous": "Previous"
     }
   },
   "empty-data": {
@@ -387,7 +387,12 @@
     "edit-avatar": "Edit avatar",
     "edit-cover": "Edit profile cover",
     "edit-profile": "Edit profile",
-    "follow": "Follow",
+    "follow": {
+      "follow": "Follow",
+      "following": "Following",
+      "followers": "Followers",
+      "unfollow": "Unfollow"
+    },
     "no-items": {
       "btn": "Browse marketplace",
       "descr": "You have not minted any NFTs yet",

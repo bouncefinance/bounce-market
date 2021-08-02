@@ -19,10 +19,7 @@ import { SetAvatarModal } from 'modules/profile/components/SetAvatarModal';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
 import { Subscribers } from 'modules/profile/components/Subscribers';
 import { TabBrands } from 'modules/profile/components/TabBrands';
-import {
-  IFollowingItemProps,
-  TabFollowing,
-} from 'modules/profile/components/TabFollowing';
+import { FollowGroup } from 'modules/profile/components/TabFollowing';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
@@ -36,35 +33,6 @@ import { TabBids } from './components/TabBids';
 import { TabItems } from './components/TabItems';
 import { TabLiked } from './components/TabLiked';
 import { useProfileStyles } from './useProfileStyles';
-
-const followings: IFollowingItemProps[] = [
-  {
-    userName: 'Pasha Ho',
-    userId: 123,
-    href: '#',
-    userFollowers: 150,
-    imgSrc: 'https://picsum.photos/82?random=200',
-    follow: false,
-  },
-  {
-    userName: 'John Smith',
-    userId: 321,
-    href: '#',
-    userFollowers: 0,
-    imgSrc: 'https://picsum.photos/82?random=201',
-    follow: true,
-  },
-  {
-    userName: 'Smith John',
-    userId: 213,
-    href: '#',
-    userFollowers: 15,
-    imgSrc: 'https://picsum.photos/82?random=202',
-    follow: false,
-  },
-];
-
-const followers = followings;
 
 export const Profile = () => {
   const { tab } = ProfileRoutesConfig.UserProfile.useParams();
@@ -194,6 +162,7 @@ export const Profile = () => {
               />
             )
           }
+          follow={<FollowGroup />}
           address={address}
         />
 
@@ -231,13 +200,13 @@ export const Profile = () => {
           </TabPanel>
         )}
 
-        <TabPanel value={tab} index={ProfileTab.following}>
+        {/* <TabPanel value={tab} index={ProfileTab.following}>
           <TabFollowing items={followings} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.followers}>
           <TabFollowing items={followers} />
-        </TabPanel>
+        </TabPanel> */}
       </Container>
     </Section>
   );

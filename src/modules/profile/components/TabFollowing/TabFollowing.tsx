@@ -2,9 +2,11 @@ import { Avatar, Box, Typography } from '@material-ui/core';
 import { UserIcon } from 'modules/common/components/Icons/UserIcon';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
+import { AddFollowIcon } from './assets/AddFollowIcon';
+import { CheckmarkIcon } from './assets/CheckmarkIcon';
 import { useTabFollowingStyles } from './useTabFollowingStyles';
 
 export interface IFollowingItemProps {
@@ -22,6 +24,7 @@ interface ITabFollowingProps {
 
 export const TabFollowing = ({ items }: ITabFollowingProps) => {
   const classes = useTabFollowingStyles();
+  const [isCancelFollowIndex, setIsCancelFollowIndex] = useState(0);
 
   const renderListItems = useMemo(
     () =>
@@ -64,13 +67,21 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
           <div className={classes.itemFollowWrap}>
             {item.follow ? (
               <Button
-                onClick={() => {}}
                 className={classes.followButton}
-                variant="outlined"
-                fullWidth={false}
                 rounded
+                onMouseEnter={() => {
+                  setIsCancelFollowIndex(item.userId);
+                }}
+                onMouseLeave={() => {
+                  setIsCancelFollowIndex(0);
+                }}
               >
-                {t('profile.unfollow')}
+                {!(isCancelFollowIndex === item.userId) && (
+                  <CheckmarkIcon className={classes.addIcon} />
+                )}
+                {isCancelFollowIndex === item.userId
+                  ? t('profile.follow.unfollow')
+                  : t('profile.follow.following')}
               </Button>
             ) : (
               <Button
@@ -80,13 +91,14 @@ export const TabFollowing = ({ items }: ITabFollowingProps) => {
                 fullWidth={false}
                 rounded
               >
-                {t('profile.follow')}
+                <AddFollowIcon className={classes.addIcon} />
+                {t('profile.follow.follow')}
               </Button>
             )}
           </div>
         </div>
       )),
-    [items, classes],
+    [items, classes, isCancelFollowIndex],
   );
 
   return <div className={classes.root}>{renderListItems}</div>;
