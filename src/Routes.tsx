@@ -7,6 +7,7 @@ import {
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { BrandRoutes, BrandRoutesConfig } from './modules/brand/BrandRoutes';
 import {
+  BuyItemNFTRoutes,
   BuyNFTRoutes,
   BuyNFTRoutesConfig,
 } from './modules/buyNFT/BuyNFTRoutes';
@@ -66,6 +67,16 @@ export function Routes() {
         render={() => (
           <DefaultLayout>
             <BuyNFTRoutes />
+          </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={BuyNFTRoutesConfig.Details_ITEM_NFT.path}
+        render={() => (
+          <DefaultLayout>
+            <BuyItemNFTRoutes />
           </DefaultLayout>
         )}
       />

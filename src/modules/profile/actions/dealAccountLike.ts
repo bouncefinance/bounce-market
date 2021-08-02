@@ -7,7 +7,6 @@ import { PoolType } from 'modules/api/common/poolType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { ILikedItem, queryLikedItems } from './queryLikedItems';
 
 interface IDealAccountLikeArgs {
   isLiked: boolean;
@@ -15,7 +14,9 @@ interface IDealAccountLikeArgs {
   poolType?: PoolType;
   itemId: number;
   poolId: number;
+  contractAddress: string;
   requestKey?: string;
+  isItemType?: boolean;
 }
 
 export const dealAccountLike = createAction<
@@ -26,11 +27,17 @@ export const dealAccountLike = createAction<
     url: '/auth/dealaccountlike',
     method: 'post',
     data: {
-      auctiontype: params.poolType ?? 0,
       category: params.category,
       ifLike: params.isLiked ? 1 : 0,
-      itemid: params.itemId,
-      poolid: params.poolId,
+      ...(params.isItemType
+        ? {
+            itemid: params.itemId,
+            contractaddress: params.contractAddress,
+          }
+        : {
+            auctiontype: params.poolType ?? 0,
+            poolid: params.poolId,
+          }),
     },
   },
   meta: {
@@ -57,32 +64,6 @@ export const dealAccountLike = createAction<
       }
 
       return data;
-    },
-    mutations: {
-      [queryLikedItems.toString()]: (
-        data: ILikedItem[] | undefined,
-        response: { code: number; msg: any },
-      ): ILikedItem[] | undefined => {
-        if (response.code !== 1) {
-          return data;
-        }
-
-        if (params.isLiked) {
-          const newLikedItem = {
-            itemId: params.itemId,
-            poolId: params.poolId,
-          } as ILikedItem;
-
-          (data || []).push(newLikedItem);
-          return data;
-        } else {
-          return (data || []).filter(
-            likedItem =>
-              likedItem.itemId !== params.itemId ||
-              likedItem.poolId !== params.poolId,
-          );
-        }
-      },
     },
   },
 }));

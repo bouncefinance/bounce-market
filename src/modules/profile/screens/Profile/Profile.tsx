@@ -1,11 +1,14 @@
 import { Container } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { queryMyBrandItem } from 'modules/brand/actions/queryMyBrandItem';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { Social } from 'modules/common/components/Social';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
+import { fetchOwned } from 'modules/profile/actions/fetchOwned';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { fetchMyBids, fetchMySale } from 'modules/profile/actions/fetchSale';
 import {
   ILikedItem,
   queryLikedItems,
@@ -18,29 +21,37 @@ import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import { SetAvatarModal } from 'modules/profile/components/SetAvatarModal';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
 import { Subscribers } from 'modules/profile/components/Subscribers';
-import { TabBrands } from 'modules/profile/components/TabBrands';
 import { FollowGroup } from 'modules/profile/components/TabFollowing';
+import { CrateItemAll, TabBrands } from 'modules/profile/components/TabBrands';
+import {
+  IFollowingItemProps,
+  TabFollowing,
+} from 'modules/profile/components/TabFollowing';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
 import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { TabActivity } from '../../components/TabActivity';
 import { TabBids } from './components/TabBids';
-import { TabItems } from './components/TabItems';
 import { TabLiked } from './components/TabLiked';
+import { TabOwned } from './components/tabOwned';
+import { TabSale } from './components/TabSale';
 import { useProfileStyles } from './useProfileStyles';
 
 export const Profile = () => {
-  const { tab } = ProfileRoutesConfig.UserProfile.useParams();
+  const { tab, isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
   const [isAvatarModalOpened, setAvatarModalOpened] = useState(false);
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const classes = useProfileStyles();
   const { address } = useAccount();
   const { push } = useHistory();
+  const dispatch = useDispatch();
 
   const { data: likedItems } = useQuery<ILikedItem[] | null>({
     type: queryLikedItems.toString(),
@@ -64,26 +75,65 @@ export const Profile = () => {
     [],
   );
 
+  const updateData = useCallback(
+    (value: ProfileTab) => {
+      if (!address) {
+        return;
+      }
+      switch (value) {
+        case ProfileTab.brands: {
+          dispatch(queryMyBrandItem(address));
+          break;
+        }
+        case ProfileTab.owned: {
+          dispatch(fetchOwned({ address }));
+          break;
+        }
+        case ProfileTab.sells: {
+          dispatch(fetchMySale({ address }));
+          break;
+        }
+        case ProfileTab.bids: {
+          dispatch(fetchMyBids({ address }));
+          break;
+        }
+        default: {
+          console.error('not match tab', value);
+        }
+      }
+    },
+    [address, dispatch],
+  );
+
   const onTabsChange = useCallback(
     (_, value) => {
       push(ProfileRoutesConfig.UserProfile.generatePath(value));
+      updateData(value);
     },
-    [push],
+    [push, updateData],
   );
+
+  useEffect(() => {
+    updateData(tab);
+  }, [updateData, tab]);
 
   const tabs = useMemo(
     () => [
       {
-        value: ProfileTab.items,
-        label: t('profile.tabs.my-items'),
+        value: ProfileTab.brands,
+        label: t('profile.tabs.my-collections'),
+      },
+      {
+        value: ProfileTab.owned,
+        label: t('profile.tabs.my-owner'),
+      },
+      {
+        value: ProfileTab.sells,
+        label: t('profile.tabs.my-sells'),
       },
       {
         value: ProfileTab.bids,
         label: t('profile.tabs.my-bids'),
-      },
-      {
-        value: ProfileTab.brands,
-        label: t('profile.tabs.my-collections'),
       },
       {
         value: ProfileTab.activity,
@@ -178,12 +228,16 @@ export const Profile = () => {
           ))}
         </Tabs>
 
-        <TabPanel value={tab} index={ProfileTab.items}>
-          <TabItems />
+        <TabPanel value={tab} index={ProfileTab.owned}>
+          <TabOwned />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.brands}>
-          <TabBrands />
+          {isCreateNft ? <CrateItemAll /> : <TabBrands />}
+        </TabPanel>
+
+        <TabPanel value={tab} index={ProfileTab.sells}>
+          <TabSale />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.bids}>
@@ -199,14 +253,6 @@ export const Profile = () => {
             <TabLiked />
           </TabPanel>
         )}
-
-        {/* <TabPanel value={tab} index={ProfileTab.following}>
-          <TabFollowing items={followings} />
-        </TabPanel>
-
-        <TabPanel value={tab} index={ProfileTab.followers}>
-          <TabFollowing items={followers} />
-        </TabPanel> */}
       </Container>
     </Section>
   );

@@ -29,6 +29,9 @@ interface IUseLikeProps {
   poolType?: PoolType;
   poolId: number;
   count?: number;
+  isLike?: boolean;
+  isItemType?: boolean;
+  contractAddress?: string;
 }
 
 export const useLike = ({
@@ -40,11 +43,15 @@ export const useLike = ({
    * likes count required for urgent counter update
    */
   count,
+  isLike,
+  isItemType = false,
+  contractAddress = '',
 }: IUseLikeProps) => {
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
   const requestKey = `/${id}`;
-  const { isLiked } = useIsLiked(id, poolId);
+
+  const [isLiked, setIsLiked] = useState(isLike);
   const [likeCount, setLikeCount] = useState(count);
 
   const { loading } = useMutation({
@@ -54,7 +61,7 @@ export const useLike = ({
 
   const isLikeDisabled = loading || !isConnected;
 
-  const onLikeClick = useCallback(() => {
+  const onLikeClick = useCallback(async () => {
     if (isLikeDisabled) {
       return;
     }
@@ -66,7 +73,7 @@ export const useLike = ({
       return isLiked ? val - 1 : val + 1;
     });
 
-    dispatch(
+    const { data: likeData } = await dispatch(
       dealAccountLike({
         requestKey,
         poolType,
@@ -74,8 +81,13 @@ export const useLike = ({
         poolId,
         isLiked: !isLiked,
         itemId: id,
+        isItemType,
+        contractAddress,
       }),
     );
+    if (likeData?.code === 1) {
+      setIsLiked(!isLiked);
+    }
   }, [
     poolType,
     category,
@@ -85,6 +97,8 @@ export const useLike = ({
     isLiked,
     poolId,
     requestKey,
+    isItemType,
+    contractAddress,
   ]);
 
   return {

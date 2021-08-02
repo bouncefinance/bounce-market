@@ -10,23 +10,33 @@ enum TabList {
   tokenInfo,
 }
 
-const tabs = [
-  {
-    value: TabList.history,
-    label: t('details-nft.tabs.history'),
-  },
-  {
-    value: TabList.bids,
-    label: t('details-nft.tabs.bids'),
-  },
-  {
-    value: TabList.owners,
-    label: t('details-nft.tabs.owners'),
-  },
-  {
-    value: TabList.tokenInfo,
-    label: t('details-nft.tabs.token-info'),
-  },
+type tabsType = {
+  value: TabList;
+  label: string;
+}[];
+
+export const NftInfoHistoryOption = {
+  value: TabList.history,
+  label: t('details-nft.tabs.history'),
+};
+export const NftInfoBidsOption = {
+  value: TabList.bids,
+  label: t('details-nft.tabs.bids'),
+};
+export const NftInfoOwnersOption = {
+  value: TabList.owners,
+  label: t('details-nft.tabs.owners'),
+};
+export const NftInfoDetailOption = {
+  value: TabList.tokenInfo,
+  label: t('details-nft.tabs.token-info'),
+};
+
+const tabs: tabsType = [
+  NftInfoHistoryOption,
+  NftInfoBidsOption,
+  NftInfoOwnersOption,
+  NftInfoDetailOption,
 ];
 
 const TabPanel = (props: { children?: ReactNode; index: any; value: any }) => {
@@ -49,6 +59,7 @@ interface iInfoTabsProps {
   bids?: JSX.Element;
   owners?: JSX.Element;
   tokenInfo?: JSX.Element;
+  tabs?: tabsType;
 }
 
 export const InfoTabs = ({
@@ -56,6 +67,7 @@ export const InfoTabs = ({
   bids,
   owners,
   tokenInfo,
+  tabs: customTabs,
 }: iInfoTabsProps) => {
   const [tab, setTab] = useState<TabList>(TabList.tokenInfo);
 
@@ -66,7 +78,7 @@ export const InfoTabs = ({
   return (
     <>
       <Tabs value={tab} onChange={onTabsChange} variant="scrollable">
-        {tabs.map(({ label, value }) => (
+        {(customTabs ?? tabs).map(({ label, value }) => (
           <Tab key={uid(label)} label={label} value={value} />
         ))}
       </Tabs>

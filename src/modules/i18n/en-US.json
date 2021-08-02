@@ -26,7 +26,7 @@
       "addNewItem": "Add new item",
       "createNewcollection": "Create new collection",
       "createNewItem": "Create new item",
-      "itemsCount": "{value, plural, =0 {No NFT} =1 {One NFT} other {# NFTs}}"
+      "itemsCount": "{value, plural, =0 {0 NFT} =1 {1 NFT} other {# NFTs}}"
     },
     "create": {
       "avatar-accepts": "Supports JPG, PNG, JPEG2000",
@@ -327,7 +327,8 @@
     "sold-for": "Sold for",
     "top-bid": "Top Bid",
     "pool-start-tips": "The pool will start in:",
-    "transfer": "Transfer token"
+    "transfer": "Transfer token",
+    "balance-tip": "{balance} editions in account"
   },
   "cancel-timer": {
     "title": "Cancel Sale",
@@ -406,10 +407,11 @@
       "following": "Following",
       "items": "Items",
       "liked": "Liked",
-      "my-bids": "My transaction",
-      "my-collections": "My collections",
+      "my-bids": "My Bids",
+      "my-owner": "Showcase",
+      "my-collections": "Collections",
       "my-items": "My items",
-      "my-sells": "My sales"
+      "my-sells": "On Sale"
     },
     "unfollow": "Unfollow",
     "user-profile": "User profile"

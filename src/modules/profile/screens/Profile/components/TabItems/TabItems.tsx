@@ -17,7 +17,6 @@ import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
-import React from 'react';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../api/common/AuctionState';
 import { FixedSwapState } from '../../../../../api/common/FixedSwapState';

@@ -64,20 +64,20 @@ export const WalletCard = ({
       <MenuList className={classes.menuList}>
         <MenuItem
           component={RouterLink}
-          to={ProfileRoutesConfig.UserProfile.generatePath()}
+          to={ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands)}
           className={classes.menuItem}
           onClick={handleClose}
         >
           {t('header.inventory')}
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           component={RouterLink}
           to={ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands)}
           className={classes.menuItem}
           onClick={handleClose}
         >
           {t('header.my-collections')}
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           component={RouterLink}
           to={ProfileRoutesConfig.EditProfile.generatePath()}
