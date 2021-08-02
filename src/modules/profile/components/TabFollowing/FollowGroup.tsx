@@ -75,11 +75,15 @@ const MockFollowList: IFollowingItemProps[] = [
 ];
 
 export const FollowGroup = ({
-  isShowBtn = true,
-  isFollow = true,
+  isShowFollowBtn,
+  isFollowing,
+  followersCount = 0,
+  followingCount = 0,
 }: {
-  isShowBtn?: boolean;
-  isFollow?: boolean;
+  isShowFollowBtn?: boolean;
+  isFollowing?: boolean;
+  followersCount?: number;
+  followingCount?: number;
 }) => {
   const classes = useTabFollowingStyles();
   const [isCancelFollow, setIsCancelFollow] = useState(false);
@@ -94,16 +98,17 @@ export const FollowGroup = ({
 
   const renderFollowGroup = () => (
     <div className={classes.followGroup}>
-      {isShowBtn && (
+      {isShowFollowBtn && (
         <div className={classes.followBtnBox}>
           <Button
             className={classes.followBtn}
             startIcon={
               !isCancelFollow &&
-              (isFollow ? <CheckmarkIcon /> : <AddFollowIcon />)
+              (isFollowing ? <CheckmarkIcon /> : <AddFollowIcon />)
             }
             rounded
             onMouseEnter={() => {
+              if (!isFollowing) return;
               setIsCancelFollow(true);
             }}
             onMouseLeave={() => {
@@ -112,7 +117,7 @@ export const FollowGroup = ({
           >
             {isCancelFollow
               ? t('profile.follow.unfollow')
-              : isFollow
+              : isFollowing
               ? t('profile.follow.following')
               : t('profile.follow.follow')}
           </Button>
@@ -126,7 +131,7 @@ export const FollowGroup = ({
             setFollowType(FollowType.Followers);
           }}
         >
-          21 Followers
+          {`${followersCount} ${t('profile.follow.followers')}`}
         </p>
       </div>
 
@@ -139,7 +144,7 @@ export const FollowGroup = ({
             setFollowType(FollowType.Following);
           }}
         >
-          15 Following
+          {`${followingCount} ${t('profile.follow.following')}`}
         </p>
       </div>
     </div>

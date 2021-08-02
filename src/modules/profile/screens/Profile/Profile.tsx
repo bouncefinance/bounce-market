@@ -23,10 +23,6 @@ import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
 import { Subscribers } from 'modules/profile/components/Subscribers';
 import { FollowGroup } from 'modules/profile/components/TabFollowing';
 import { CrateItemAll, TabBrands } from 'modules/profile/components/TabBrands';
-import {
-  IFollowingItemProps,
-  TabFollowing,
-} from 'modules/profile/components/TabFollowing';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';

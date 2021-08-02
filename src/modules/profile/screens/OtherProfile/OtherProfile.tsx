@@ -7,6 +7,10 @@ import { QueryLoadingAbsolute } from 'modules/common/components/QueryLoading/Que
 import { Social } from 'modules/common/components/Social';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
+import {
+  fetchFollowInfo,
+  IFollowInfo,
+} from 'modules/profile/actions/fetchFollowInfo';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
@@ -14,6 +18,7 @@ import { Bio } from 'modules/profile/components/Bio';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import { Subscribers } from 'modules/profile/components/Subscribers';
+import { FollowGroup } from 'modules/profile/components/TabFollowing';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
@@ -36,7 +41,37 @@ export const OtherProfile = () => {
   const { tab, address } = ProfileRoutesConfig.OtherProfile.useParams();
   const classes = useOtherProfileStyles();
   const { push } = useHistory();
-  const { isConnected } = useAccount();
+  const { isConnected, address: accountAddress } = useAccount();
+
+  useEffect(() => {
+    dispatchRequest(
+      fetchProfileInfo({ address }, { requestKey: PROFILE_INFO_REQUEST_KEY }),
+    );
+
+    if (isConnected && accountAddress) {
+      dispatchRequest(
+        fetchFollowInfo({
+          accountAddress: accountAddress,
+          followAddress: address,
+        }),
+      );
+    }
+
+    return function reset() {
+      dispatch(
+        resetRequests([
+          {
+            requestType: fetchProfileInfo.toString(),
+            requestKey: PROFILE_INFO_REQUEST_KEY,
+          },
+          {
+            requestType: fetchFollowInfo.toString(),
+            requestKey: '/fetchFollowInfo',
+          },
+        ]),
+      );
+    };
+  }, [address, dispatch, dispatchRequest, isConnected, accountAddress]);
 
   const {
     data: profileInfo,
@@ -46,22 +81,22 @@ export const OtherProfile = () => {
     requestKey: PROFILE_INFO_REQUEST_KEY,
   });
 
-  useEffect(() => {
-    dispatchRequest(
-      fetchProfileInfo({ address }, { requestKey: PROFILE_INFO_REQUEST_KEY }),
-    );
+  const { data: followInfo } = useQuery<IFollowInfo>({
+    type: fetchFollowInfo.toString(),
+  });
 
-    return function reset() {
-      dispatch(
-        resetRequests([
-          {
-            requestType: fetchProfileInfo.toString(),
-            requestKey: PROFILE_INFO_REQUEST_KEY,
-          },
-        ]),
-      );
-    };
-  }, [address, dispatch, dispatchRequest, isConnected]);
+  const renderFollowGroup = useCallback(() => {
+    const isMySelf = accountAddress === address;
+
+    return (
+      <FollowGroup
+        isShowFollowBtn={!isMySelf && Boolean(accountAddress)}
+        isFollowing={followInfo?.isFollow}
+        followersCount={followInfo?.followersCount}
+        followingCount={followInfo?.followingCount}
+      />
+    );
+  }, [accountAddress, followInfo, address]);
 
   const tabs = useMemo(
     () => [
@@ -128,6 +163,7 @@ export const OtherProfile = () => {
               />
             )
           }
+          follow={renderFollowGroup()}
           address={address}
         />
 
