@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { AuctionState } from 'modules/api/common/AuctionState';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
@@ -106,6 +107,7 @@ export const ProductCardComponent = ({
   poolId,
   openAt,
 }: IProductCardComponentProps) => {
+  const { isConnected, handleConnect } = useAccount();
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isPopoverOpened = Boolean(anchorEl);
@@ -176,7 +178,11 @@ export const ProductCardComponent = ({
 
   const renderedLikes = (
     <div
-      onClick={e => e.stopPropagation()}
+      onClick={e => {
+        if (!isConnected) {
+          handleConnect();
+        }
+      }}
       className={classNames(classes.info, classes.likeSite)}
     >
       <ButtonBase

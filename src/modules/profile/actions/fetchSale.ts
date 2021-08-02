@@ -5,6 +5,7 @@ import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { auctionTypeMap, PoolType } from 'modules/api/common/poolType';
 import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
+import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { IResponse } from 'modules/common/types/ResponseData';
 import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
 import { createAction as createSmartAction } from 'redux-smart-actions';
@@ -46,6 +47,7 @@ interface _IPoolNftItem {
   tokenid: number;
   swapped_amount0: number;
   token_amount0: number;
+  category: ProductCardCategoryType;
 }
 
 export interface IPoolNftItem extends Omit<_IPoolNftItem, 'price'> {

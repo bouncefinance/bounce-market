@@ -47,7 +47,7 @@ export const TabBids = function () {
               copies={item.token_amount0}
               copiesBalance={item.swapped_amount0}
               MediaProps={{
-                category: 'image',
+                category: item.category,
                 src: item.fileurl || 'xxx',
                 objectFit: 'contain',
                 loading: 'lazy',

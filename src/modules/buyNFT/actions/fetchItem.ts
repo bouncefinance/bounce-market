@@ -2,7 +2,6 @@ import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import {
   getOneItemByIdUrl,
   IApiGetOneItemById,
-  IApiGetOneItemByIdData,
   IGetOneItemById,
   mapGetOneItemById,
 } from 'modules/api/getOneItemById';
@@ -16,6 +15,23 @@ import { addTokenSymbolByDriver } from '../../common/utils/addTokenSymbolByDrive
 export interface IFetchItem extends IGetOneItemById {
   tokenSymbol: TokenSymbol;
 }
+export interface IFetchItem2 {
+  likecount: number;
+  mylike: number;
+  tokenSymbol: TokenSymbol;
+  minter: {
+    address: string;
+    avatar: string;
+    username: string;
+  };
+  owners: {
+    avatar: string;
+    balance: number;
+    owneraddress: string;
+    username: string;
+  }[];
+  total: number;
+}
 
 export const fetchItem = createSmartAction<
   RequestAction<IApiGetOneItemById, IFetchItem>
@@ -27,7 +43,39 @@ export const fetchItem = createSmartAction<
   },
   meta: {
     getData({ data }) {
-      return mapGetOneItemById(data as IApiGetOneItemByIdData);
+      return data && mapGetOneItemById(data);
+    },
+    onRequest: (
+      request: any,
+      action: RequestAction,
+      store: Store<RootState> & { dispatchRequest: DispatchRequest },
+    ) => {
+      const { data } = getQuery(store.getState(), {
+        type: setAccount.toString(),
+        action: setAccount,
+      });
+      request.data.accountaddress = data?.address;
+      return request;
+    },
+    onSuccess: addTokenSymbolByDriver,
+    auth: true,
+    driver: 'axios',
+    asMutation: false,
+    ...meta,
+  },
+}));
+
+export const fetchItem2 = createSmartAction<
+  RequestAction<IApiGetOneItemById, IFetchItem2>
+>('fetchItem2', (params: { contract: string; id: number }, meta) => ({
+  request: {
+    url: '/auth/getitemuserinfo',
+    method: 'post',
+    data: { contractaddress: params.contract, tokenid: params.id },
+  },
+  meta: {
+    getData({ data }) {
+      return data;
     },
     onRequest: (
       request: any,

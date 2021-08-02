@@ -10,10 +10,7 @@ import {
   fetchCollection,
   ICollectionData,
 } from 'modules/profile/actions/fetchCollection';
-import {
-  ProfileRoutesConfig,
-  USER_CREATE_NFT_PROFILE,
-} from 'modules/profile/ProfileRoutes';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -71,9 +68,9 @@ export const CrateItemAll = () => {
               // auctionType={item.poolType}
               key={uid(item)}
               title={item.itemname}
-              href={BuyNFTRoutesConfig.DetailsNFT.generatePath(
+              href={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
                 item.tokenid,
-                USER_CREATE_NFT_PROFILE,
+                item.contractaddress,
               )}
               // status={item.status}
               // UPDATE price
@@ -82,7 +79,7 @@ export const CrateItemAll = () => {
               copies={item.supply}
               copiesBalance={item.balance}
               MediaProps={{
-                category: 'image',
+                category: item.category,
                 src: item.fileurl || 'xxx',
                 objectFit: 'contain',
                 loading: 'lazy',

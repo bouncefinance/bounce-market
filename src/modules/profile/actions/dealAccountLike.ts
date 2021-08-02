@@ -65,31 +65,5 @@ export const dealAccountLike = createAction<
 
       return data;
     },
-    // mutations: {
-    //   [queryLikedItems.toString()]: (
-    //     data: ILikedItem[] | undefined,
-    //     response: { code: number; msg: any },
-    //   ): ILikedItem[] | undefined => {
-    //     if (response.code !== 1) {
-    //       return data;
-    //     }
-
-    //     if (params.isLiked) {
-    //       const newLikedItem = {
-    //         itemId: params.itemId,
-    //         poolId: params.poolId,
-    //       } as ILikedItem;
-
-    //       (data || []).push(newLikedItem);
-    //       return data;
-    //     } else {
-    //       return (data || []).filter(
-    //         likedItem =>
-    //           likedItem.itemId !== params.itemId ||
-    //           likedItem.poolId !== params.poolId,
-    //       );
-    //     }
-    //   },
-    // },
   },
 }));

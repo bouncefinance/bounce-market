@@ -1,4 +1,5 @@
 import { RequestAction } from '@redux-requests/core';
+import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { ISelectOption } from 'modules/uiKit/Select';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
@@ -22,6 +23,7 @@ interface ICollectionItem {
   tokenid: number;
   mylikecount: number;
   isLike: boolean;
+  category: ProductCardCategoryType;
 }
 
 export type INftItem = ICollectionItem;

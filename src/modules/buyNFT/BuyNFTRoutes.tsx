@@ -7,6 +7,7 @@ import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoa
 import { PrivateRoute } from '../router/components/PrivateRoute';
 
 export const PATH_BUY_NFT = '/nft/buy/poolId/:poolId/poolType/:poolType';
+export const PATH_BUY_ITEM_NFT = `/item/buy/poolId/:poolId/contract/:contract`;
 
 export const BuyNFTRoutesConfig = {
   DetailsNFT: {
@@ -29,10 +30,35 @@ export const BuyNFTRoutesConfig = {
       };
     },
   },
+  Details_ITEM_NFT: {
+    path: PATH_BUY_ITEM_NFT,
+    generatePath: (poolId: number, contract: string) =>
+      generatePath(PATH_BUY_ITEM_NFT, { poolId, contract }),
+    useParams: () => {
+      const { poolId: poolIdParam, contract } = useParams<{
+        poolId: string;
+        contract: string;
+      }>();
+
+      const poolId = parseInt(poolIdParam, 10);
+
+      return {
+        poolId,
+        contract,
+      };
+    },
+  },
 };
 
 const LoadableDetailsNFTContainer: LoadableComponent<any> = loadable(
   async () => import('./screens/BuyNFT').then(module => module.BuyNFT),
+  {
+    fallback: <QueryLoadingAbsolute />,
+  },
+);
+
+const LoadableDetailsNFTItemContainer: LoadableComponent<any> = loadable(
+  async () => import('./screens/BuyNFT').then(module => module.BuyItemNFT),
   {
     fallback: <QueryLoadingAbsolute />,
   },
@@ -45,6 +71,18 @@ export function BuyNFTRoutes() {
         path={BuyNFTRoutesConfig.DetailsNFT.path}
         exact={true}
         component={LoadableDetailsNFTContainer}
+      />
+    </>
+  );
+}
+
+export function BuyItemNFTRoutes() {
+  return (
+    <>
+      <PrivateRoute
+        path={BuyNFTRoutesConfig.Details_ITEM_NFT.path}
+        exact={true}
+        component={LoadableDetailsNFTItemContainer}
       />
     </>
   );

@@ -156,7 +156,9 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     color: '#fff',
     padding: '2px 12px 2px 8px',
     borderRadius: 30,
-    zIndex: 10,
+    zIndex: 2,
+    userSelect: 'none',
+    cursor: 'pointer',
   },
   likeBtn: {
     padding: 6,

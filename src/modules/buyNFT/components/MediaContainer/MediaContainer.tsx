@@ -19,7 +19,7 @@ interface INFTContentProps {
   category: 'image' | 'video';
   onLikeClick?: () => void;
   isOpenSaleTime: boolean;
-  openAt: Date;
+  openAt?: Date;
   onchange: () => void;
 }
 
@@ -32,7 +32,7 @@ export const MediaContainer = ({
   isLiked,
   onLikeClick,
   isOpenSaleTime,
-  openAt,
+  openAt = new Date(0),
   onchange,
 }: INFTContentProps) => {
   const classes = useMediaContainerStyles();

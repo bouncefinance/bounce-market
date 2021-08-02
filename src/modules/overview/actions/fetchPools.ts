@@ -1,8 +1,16 @@
-import { RequestAction, RequestActionMeta } from '@redux-requests/core';
+import {
+  DispatchRequest,
+  getQuery,
+  RequestAction,
+  RequestActionMeta,
+} from '@redux-requests/core';
+import { Store } from '@reduxjs/toolkit';
+import { setAccount } from 'modules/account/store/actions/setAccount';
 import { IGetPoolsApi_V2 } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
 import { createAction as createSmartAction } from 'redux-smart-actions';
+import { RootState } from 'store/store';
 
 export enum FetchStateType {
   All = 2,
@@ -40,6 +48,18 @@ export const fetchPools = createSmartAction<
   },
   meta: {
     driver: 'axios',
+    onRequest: (
+      request: any,
+      action: RequestAction,
+      store: Store<RootState> & { dispatchRequest: DispatchRequest },
+    ) => {
+      const { data } = getQuery(store.getState(), {
+        type: setAccount.toString(),
+        action: setAccount,
+      });
+      request.data.accountaddress = data?.address;
+      return request;
+    },
     getData: response => {
       if (response.code !== 1) {
         throw new Error(response.msg);

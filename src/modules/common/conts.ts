@@ -31,7 +31,7 @@ export const featuresConfig = {
    * and it cannot be shared
    */
   ownBrandSharing: false,
-  nftLikes: false,
+  nftLikes: true,
   nftItemsSortSelect: false,
   nftDetailsLikesCount: true,
   nftDetailsCreator: true,

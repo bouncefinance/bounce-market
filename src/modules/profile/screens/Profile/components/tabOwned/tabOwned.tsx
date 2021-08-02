@@ -14,7 +14,6 @@ import { fetchOwned, IMyOwnedData } from 'modules/profile/actions/fetchOwned';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
-import { USER_CREATE_NFT_PROFILE } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 
 export const TabOwned = function () {
@@ -40,9 +39,9 @@ export const TabOwned = function () {
               isItemType
               key={uid(item)}
               title={item.itemname}
-              href={BuyNFTRoutesConfig.DetailsNFT.generatePath(
+              href={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
                 item.tokenid,
-                USER_CREATE_NFT_PROFILE,
+                item.contractaddress,
               )}
               priceType={item.itemsymbol}
               copies={item.supply}
@@ -50,7 +49,7 @@ export const TabOwned = function () {
               isLike={item.isLike}
               copiesBalance={item.balance}
               MediaProps={{
-                category: 'image',
+                category: item.category,
                 src: item.fileurl || 'xxx',
                 objectFit: 'contain',
                 loading: 'lazy',
