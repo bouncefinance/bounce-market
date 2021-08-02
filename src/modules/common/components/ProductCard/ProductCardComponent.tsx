@@ -308,19 +308,23 @@ export const ProductCardComponent = ({
 
           {!isOnSale && (
             <>
-              <div>{copies ? renderedCopies : <></>}</div>
+              <div>{copies !== undefined ? renderedCopies : <></>}</div>
 
               {!isMinting && !isOnSalePending && (
                 <Box display="flex" alignItems="center">
-                  <Button
-                    className={classes.saleBtn}
-                    component={RouterLink}
-                    variant="outlined"
-                    rounded
-                    to={toSale}
-                  >
-                    {t('product-card.put-on-sale')}
-                  </Button>
+                  {!(copiesBalance && copiesBalance >= 0) ? (
+                    <></>
+                  ) : (
+                    <Button
+                      className={classes.saleBtn}
+                      component={RouterLink}
+                      variant="outlined"
+                      rounded
+                      to={toSale}
+                    >
+                      {t('product-card.put-on-sale')}
+                    </Button>
+                  )}
                   {hasAction && (
                     <>
                       <ClickAwayListener onClickAway={handleClose}>

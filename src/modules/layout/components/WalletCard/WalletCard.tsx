@@ -2,7 +2,11 @@ import { Avatar, Box, MenuItem, MenuList, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import { CopyToClip } from 'modules/common/components/CopyToClip';
 import { t } from 'modules/i18n/utils/intl';
-import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
+import {
+  defaultProfileTab,
+  ProfileRoutesConfig,
+  ProfileTab,
+} from 'modules/profile/ProfileRoutes';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useWalletCardStyles } from './WalletCardStyles';
@@ -64,7 +68,7 @@ export const WalletCard = ({
       <MenuList className={classes.menuList}>
         <MenuItem
           component={RouterLink}
-          to={ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands)}
+          to={ProfileRoutesConfig.UserProfile.generatePath(defaultProfileTab)}
           className={classes.menuItem}
           onClick={handleClose}
         >

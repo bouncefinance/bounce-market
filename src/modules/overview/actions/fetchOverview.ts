@@ -1,14 +1,32 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import BigNumber from 'bignumber.js';
+import { AuctionType } from 'modules/api/common/auctionType';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { IItem } from '../api/getItems';
-import { fetchItemsByIds } from './fetchItemsByIds';
+import {
+  fetchItemsByFilter,
+  IItemByFilter,
+  ItemsChannel,
+} from './fetchItemsByFilter';
 import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
 import { fetchPoolsWeight } from './fetchPoolsWeight';
 
-interface IOverviewItem extends IItem {
+export interface IOverviewItem extends IItemByFilter {
+  poolId?: number;
+  poolType?: AuctionType;
+  closeAt?: Date;
+  openAt?: Date;
+  ownerName?: string;
+  avatar?: string;
   poolWeight: number;
+  price: BigNumber;
+  isLike: boolean;
+  likeCount: number;
+  itemName: string;
+  fileUrl: string;
+  ownerAddress: string;
 }
 
 export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
@@ -38,7 +56,8 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
               );
 
               if (poolsInfoError || !poolsInfoData) {
-                throw poolsInfoError;
+                console.error('poolsInfoError', poolsInfoError);
+                return [];
               }
 
               if (!poolsInfoData?.list?.length) return [];
@@ -61,31 +80,39 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 }),
               );
 
-              const { data } = await store.dispatchRequest(
-                fetchItemsByIds(
+              const {
+                data,
+                error: fetchItemError,
+              } = await store.dispatchRequest(
+                fetchItemsByFilter(
                   poolDetailsList.reduce(
                     (acc: { ids: number[]; cts: string[] }, current) => {
                       if (!current.data) {
-                        return acc;
+                        return { ...acc, channel: ItemsChannel.all };
                       }
 
                       return {
                         ids: [...acc.ids, current.data.tokenId],
                         cts: [...acc.cts, current.data.tokenContract],
+                        channel: ItemsChannel.all,
                       };
                     },
-                    { ids: [], cts: [] },
+                    { ids: [], cts: [], channel: ItemsChannel.all },
                   ),
                 ),
               );
+              if (fetchItemError) {
+                console.log('fetchItemError', fetchItemError);
+                return [];
+              }
 
-              const overviewItems = data
+              const overviewItems: IOverviewItem[] = (data ?? [])
                 ?.map(item => {
                   const pool = poolDetailsList.find(pool => {
                     return (
                       pool.data?.tokenId === item.id &&
                       String(pool.data?.tokenContract).toLowerCase() ===
-                        String(item.contractAddress).toLowerCase()
+                        String(item.contractaddress).toLowerCase()
                     );
                   })?.data;
                   const price =
@@ -93,7 +120,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                       ? pool.lastestBidAmount.toString() !== '0'
                         ? pool.lastestBidAmount
                         : pool.amountMin1
-                      : pool?.price || item.price;
+                      : pool?.price || new BigNumber(0);
                   return {
                     ...item,
                     price,
@@ -105,7 +132,12 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                     avatar: pool?.avatar,
                     ownerName: pool?.createName,
                     openAt: pool?.openAt,
-                  } as IOverviewItem;
+                    isLike: pool?.isLike ?? false,
+                    likeCount: pool?.likeCount ?? 0,
+                    itemName: item.itemname,
+                    fileUrl: item.fileurl,
+                    ownerAddress: item.owneraddress,
+                  };
                 })
                 .filter(item => item.poolId)
                 .sort((a, b) => {

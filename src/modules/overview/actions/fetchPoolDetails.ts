@@ -1,4 +1,12 @@
-import { RequestAction, RequestActionMeta } from '@redux-requests/core';
+import {
+  DispatchRequest,
+  getQuery,
+  RequestAction,
+  RequestActionMeta,
+} from '@redux-requests/core';
+import { Store } from '@reduxjs/toolkit';
+import { setAccount } from 'modules/account/store/actions/setAccount';
+import { RootState } from 'store';
 import BigNumber from 'bignumber.js';
 import { NftType } from 'modules/api/common/NftType';
 import { createAction as createSmartAction } from 'redux-smart-actions';
@@ -41,6 +49,7 @@ export interface IApiPoolDetails {
   tokenid: number;
   username: string;
   open_at: number;
+  mylikecount: number;
 }
 export interface IApiFixedAuctionDetails {
   amount_total0: number;
@@ -103,6 +112,8 @@ export interface IFixedAuctionDetails {
   avatar?: string;
   auctionType?: AuctionType;
   createName?: string;
+  likeCount?: number;
+  isLike?: boolean;
 }
 
 export interface IEnglishAuctionDetails {
@@ -128,6 +139,8 @@ export interface IEnglishAuctionDetails {
   avatar?: string;
   auctionType?: AuctionType;
   createName?: string;
+  likeCount?: number;
+  isLike?: boolean;
 }
 
 export type IFetchPoolDetailsData =
@@ -181,41 +194,75 @@ export const fetchPoolDetails = createSmartAction<
       asMutation: false,
       getData: ({ data }) => {
         const poolInfo: IApiPoolDetails = data?.poolinfo;
-        if (
-          params.poolType === AuctionType.EnglishAuction ||
-          params.poolType === AuctionType.EnglishAuction_Timing
-        ) {
-          return {
-            amountMax1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_max1)),
-            amountMin1: new BigNumber(Web3.utils.fromWei(poolInfo.amount_min1)),
-            amountMinIncr1: new BigNumber(
-              Web3.utils.fromWei(poolInfo.amount_min_incr1),
-            ),
-            bidderClaimed: !!poolInfo.bidder_claimed,
-            openAt: new Date(poolInfo.open_at * 1000),
-            closeAt: new Date(poolInfo.close_at * 1000),
-            createTime: new Date(poolInfo.created_at),
-            creator: poolInfo.creator,
-            creatorClaimed: !!poolInfo.creator_claimed,
-            duration: poolInfo.duration,
-            lastestBidAmount: new BigNumber(Web3.utils.fromWei(poolInfo.price)),
-            name: poolInfo.itemname,
-            /**
-             * For fields returned by the https://api1-bsc.fangible.com interface and data read directly from the contract, nftType=0 represents ERC721 and 1 represents ERC1155.
-             * If the interface from https://bounce-market.bounce.finance/api/ requested data standard = 1 represents ERC721, 2 representative ERC1155
-             */
-            nftType: NftType.ERC1155,
-            poolId: poolInfo.poolid,
-            state: poolInfo.state,
-            tokenContract: poolInfo.token0,
-            unitContract: poolInfo.token0,
-            tokenAmount0: poolInfo.token_amount0,
-            tokenId: poolInfo.tokenid,
-            avatar: poolInfo.creatorurl,
-            auctionType: params.poolType,
-            createName: poolInfo.username,
-          };
-        } else {
+        try {
+          if (
+            params.poolType === AuctionType.EnglishAuction ||
+            params.poolType === AuctionType.EnglishAuction_Timing
+          ) {
+            return {
+              amountMax1: new BigNumber(
+                Web3.utils.fromWei(poolInfo.amount_max1),
+              ),
+              amountMin1: new BigNumber(
+                Web3.utils.fromWei(poolInfo.amount_min1),
+              ),
+              amountMinIncr1: new BigNumber(
+                Web3.utils.fromWei(poolInfo.amount_min_incr1),
+              ),
+              bidderClaimed: !!poolInfo.bidder_claimed,
+              openAt: new Date(poolInfo.open_at * 1000),
+              closeAt: new Date(poolInfo.close_at * 1000),
+              createTime: new Date(poolInfo.created_at),
+              creator: poolInfo.creator,
+              creatorClaimed: !!poolInfo.creator_claimed,
+              duration: poolInfo.duration,
+              lastestBidAmount: new BigNumber(
+                Web3.utils.fromWei(poolInfo.price),
+              ),
+              name: poolInfo.itemname,
+              /**
+               * For fields returned by the https://api1-bsc.fangible.com interface and data read directly from the contract, nftType=0 represents ERC721 and 1 represents ERC1155.
+               * If the interface from https://bounce-market.bounce.finance/api/ requested data standard = 1 represents ERC721, 2 representative ERC1155
+               */
+              nftType: NftType.ERC1155,
+              poolId: poolInfo.poolid,
+              state: poolInfo.state,
+              tokenContract: poolInfo.token0,
+              unitContract: poolInfo.token0,
+              tokenAmount0: poolInfo.token_amount0,
+              tokenId: poolInfo.tokenid,
+              avatar: poolInfo.creatorurl,
+              auctionType: params.poolType,
+              createName: poolInfo.username,
+              likeCount: poolInfo?.likecount,
+              isLike: Boolean(poolInfo?.mylikecount) ?? 0,
+            };
+          } else {
+            return {
+              quantity: poolInfo.token_amount0,
+              totalPrice: new BigNumber(
+                Web3.utils.fromWei(poolInfo.amount_total1),
+              ),
+              createTime: new Date(poolInfo.created_at),
+              creator: poolInfo.creator,
+              openAt: new Date(poolInfo.open_at * 1000),
+              name: poolInfo.itemname,
+              nftType: NftType.ERC721,
+              poolId: poolInfo.poolid,
+              price: new BigNumber(Web3.utils.fromWei(poolInfo.price)),
+              state: poolInfo.state,
+              tokenContract: poolInfo.token0,
+              unitContract: poolInfo.token1,
+              tokenId: poolInfo.tokenid,
+              avatar: poolInfo.creatorurl,
+              auctionType: params.poolType,
+              createName: poolInfo.username,
+              likeCount: poolInfo?.likecount,
+              isLike: Boolean(poolInfo?.mylikecount) ?? 0,
+            };
+          }
+        } catch (error) {
+          console.log('-----getonepoolinfo---', error);
           return {
             quantity: poolInfo.token_amount0,
             totalPrice: new BigNumber(
@@ -235,8 +282,22 @@ export const fetchPoolDetails = createSmartAction<
             avatar: poolInfo.creatorurl,
             auctionType: params.poolType,
             createName: poolInfo.username,
+            likeCount: poolInfo?.likecount,
+            isLike: Boolean(poolInfo?.mylikecount) ?? 0,
           };
         }
+      },
+      onRequest: (
+        request: any,
+        action: RequestAction,
+        store: Store<RootState> & { dispatchRequest: DispatchRequest },
+      ) => {
+        const { data } = getQuery(store.getState(), {
+          type: setAccount.toString(),
+          action: setAccount,
+        });
+        request.data.accountaddress = data?.address;
+        return request;
       },
       ...meta,
     },

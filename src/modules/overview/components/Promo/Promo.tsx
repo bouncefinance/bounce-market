@@ -78,7 +78,7 @@ export const Promo = ({
 
   const renderedItems = items.map(cardProps => {
     return (
-      <SwiperSlide key={uid(cardProps.title)} className={classes.slide}>
+      <SwiperSlide key={uid(cardProps)} className={classes.slide}>
         <PromoCard
           {...cardProps}
           MediaProps={{
@@ -93,24 +93,26 @@ export const Promo = ({
     );
   });
 
-  const renderedThumbs = items.map(({ thumbImg, title, category }) => {
-    return (
-      <SwiperSlide key={uid(title)} className={classes.thumbsSlide}>
-        <PromoThumb
-          img={thumbImg}
-          title={title}
-          className={classes.thumb}
-          MediaProps={{
-            category: category,
-            src: thumbImg,
-            imgClassName: 'swiper-lazy',
-            isNativeLazyLoading: false,
-            objectFit: 'scale-down',
-          }}
-        />
-      </SwiperSlide>
-    );
-  });
+  const renderedThumbs = items.map(
+    ({ thumbImg, title, category, ...props }) => {
+      return (
+        <SwiperSlide key={uid(props)} className={classes.thumbsSlide}>
+          <PromoThumb
+            img={thumbImg}
+            title={title}
+            className={classes.thumb}
+            MediaProps={{
+              category: category,
+              src: thumbImg,
+              imgClassName: 'swiper-lazy',
+              isNativeLazyLoading: false,
+              objectFit: 'scale-down',
+            }}
+          />
+        </SwiperSlide>
+      );
+    },
+  );
 
   return (
     <Section

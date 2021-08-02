@@ -1,79 +1,92 @@
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import { auctionTypeMap } from 'modules/api/common/poolType';
+import { useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { AccountInfo } from 'modules/common/components/AccountInfo';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import {
   ProductCard,
-  ProductCardCategoryType,
+  ProductCardSkeleton,
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import {
   ILikedItem,
+  IPoolNftItem,
   queryLikedItems,
 } from 'modules/profile/actions/queryLikedItems';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
-import React, { useEffect } from 'react';
 import { uid } from 'react-uid';
 
-interface ITabLikedProps {
-  className?: string;
-}
-
-export const TabLiked = ({ className }: ITabLikedProps) => {
-  const dispatch = useDispatchRequest();
-
-  const { data: likedItems, loading } = useQuery<ILikedItem[] | null>({
+export const TabLiked = function () {
+  const { data, loading } = useQuery<ILikedItem[]>({
     type: queryLikedItems.toString(),
   });
 
-  useEffect(() => {
-    dispatch(queryLikedItems());
-  }, [dispatch]);
-
-  const hasItems = !!likedItems && likedItems.length > 0;
-
-  return hasItems || loading ? (
+  return (
     <TabItemsComponent>
       <ProductCards isLoading={loading}>
-        {likedItems?.map(item => {
-          const islikedItemWithFullData = !!item.itemName;
-          if (!islikedItemWithFullData) {
-            return null;
-          }
-
-          return (
+        {loading ? (
+          <ProductCardSkeleton />
+        ) : (
+          data?.map(item => (
             <ProductCard
-              isOnSale
-              id={item.itemId}
-              poolId={item.poolId}
-              auctionType={auctionTypeMap[`${item.poolType}`]}
+              id={item.tokenid}
+              poolId={item.poolid || 0}
+              auctionType={item.poolType}
+              isItemType={item.isItemType}
               key={uid(item)}
-              title={item.itemName}
+              title={item.name}
               href={
-                item.poolId && item.poolType
+                item.poolid && item.poolType
                   ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                      item.poolId,
-                      auctionTypeMap[item.poolType],
+                      item.poolid,
+                      item.poolType,
                     )
                   : ''
               }
-              likes={item.likes}
-              price={item.price}
+              likes={item.likecount}
+              isLike={item.isLike}
+              price={item.poolid ? item.price : undefined}
+              priceType={(data as any)?.tokenSymbol}
+              copies={item.isItemType ? item?.supply ?? 0 : item.token_amount0}
+              copiesBalance={
+                item.isItemType ? item?.balance ?? 0 : item.swapped_amount0
+              }
               MediaProps={{
-                category: item.category as ProductCardCategoryType,
-                src: item.imageUrl,
+                category: item.category,
+                src: item.fileurl || 'xxx',
                 objectFit: 'contain',
                 loading: 'lazy',
               }}
-              profileInfo={<AccountInfo address={item.accountAddress} />}
+              state={item.state}
+              isOnSale={!item.isItemType}
+              profileInfo={
+                <ProfileInfo
+                  subTitle="Creator"
+                  title={item.name}
+                  users={[
+                    {
+                      name: item.name,
+                      avatar: item.avatar,
+                      verified: item?.identity === UserRoleEnum.Verified,
+                    },
+                  ]}
+                />
+              }
+              toSale={RoutesConfiguration.PublishNft.generatePath(
+                item.contractaddress,
+                item.tokenid,
+              )}
+              isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
+              openAt={item.openAt}
             />
-          );
-        })}
+          ))
+        )}
       </ProductCards>
+      {!loading && data?.length === 0 && (
+        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+      )}
     </TabItemsComponent>
-  ) : (
-    <NoItems href={MarketRoutesConfig.Market.generatePath()} />
   );
 };

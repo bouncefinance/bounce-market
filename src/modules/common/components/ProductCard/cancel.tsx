@@ -95,11 +95,10 @@ export const CancelPutTime: React.FC<{
     <>
       <Button
         className={classes.saleBtn}
-        component={RouterLink}
         variant="outlined"
         rounded
         onClick={onClick}
-        disable={loading}
+        disabled={loading}
         loading={loading}
       >
         {t('product-card.put-on-cancel')}
