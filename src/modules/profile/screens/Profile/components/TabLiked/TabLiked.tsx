@@ -12,7 +12,6 @@ import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import {
   ILikedItem,
-  IPoolNftItem,
   queryLikedItems,
 } from 'modules/profile/actions/queryLikedItems';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';

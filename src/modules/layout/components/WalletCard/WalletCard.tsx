@@ -5,7 +5,6 @@ import { t } from 'modules/i18n/utils/intl';
 import {
   defaultProfileTab,
   ProfileRoutesConfig,
-  ProfileTab,
 } from 'modules/profile/ProfileRoutes';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
