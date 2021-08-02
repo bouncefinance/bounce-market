@@ -7,10 +7,7 @@ import { QueryLoadingAbsolute } from 'modules/common/components/QueryLoading/Que
 import { Social } from 'modules/common/components/Social';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-import {
-  fetchFollowInfo,
-  IFollowInfo,
-} from 'modules/profile/actions/fetchFollowInfo';
+import { fetchFollowInfo } from 'modules/profile/actions/fetchFollowInfo';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
@@ -81,22 +78,15 @@ export const OtherProfile = () => {
     requestKey: PROFILE_INFO_REQUEST_KEY,
   });
 
-  const { data: followInfo } = useQuery<IFollowInfo>({
-    type: fetchFollowInfo.toString(),
-  });
-
-  const renderFollowGroup = useCallback(() => {
-    const isMySelf = accountAddress === address;
-
+  const renderFollow = useCallback(() => {
     return (
       <FollowGroup
-        isShowFollowBtn={!isMySelf && Boolean(accountAddress)}
-        isFollowing={followInfo?.isFollow}
-        followersCount={followInfo?.followersCount}
-        followingCount={followInfo?.followingCount}
+        followAddress={address}
+        followingCount={profileInfo?.followingCount}
+        followersCount={profileInfo?.followersCount}
       />
     );
-  }, [accountAddress, followInfo, address]);
+  }, [address, profileInfo]);
 
   const tabs = useMemo(
     () => [
@@ -163,7 +153,7 @@ export const OtherProfile = () => {
               />
             )
           }
-          follow={renderFollowGroup()}
+          follow={renderFollow()}
           address={address}
         />
 

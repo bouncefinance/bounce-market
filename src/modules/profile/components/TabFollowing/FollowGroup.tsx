@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTabFollowingStyles } from './useTabFollowingStyles';
 import { AddFollowIcon } from './assets/AddFollowIcon';
 import { CheckmarkIcon } from './assets/CheckmarkIcon';
@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { Dialog } from '@material-ui/core';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import { IFollowingItemProps, TabFollowing } from '.';
+import { useFollow } from './useFollow';
 
 enum FollowType {
   Followers = 'Followers',
@@ -75,13 +76,11 @@ const MockFollowList: IFollowingItemProps[] = [
 ];
 
 export const FollowGroup = ({
-  isShowFollowBtn,
-  isFollowing,
-  followersCount = 0,
-  followingCount = 0,
+  followAddress,
+  followersCount: initFollowersCount = 0,
+  followingCount: initFollowingCount = 0,
 }: {
-  isShowFollowBtn?: boolean;
-  isFollowing?: boolean;
+  followAddress: string;
   followersCount?: number;
   followingCount?: number;
 }) => {
@@ -92,37 +91,58 @@ export const FollowGroup = ({
     FollowType.Followers,
   );
 
+  const [followersCount, setFollowersCount] = useState(initFollowersCount);
+  const [followingCount, setFollowingCount] = useState(initFollowingCount);
+
+  useEffect(() => {
+    setFollowersCount(initFollowersCount);
+    setFollowingCount(initFollowingCount);
+  }, [initFollowersCount, initFollowingCount]);
+
+  const { isFollowd, onFollowClick } = useFollow({ followAddress });
+
   const onClose = () => {
     setIsOpen(false);
   };
 
+  const onSubmitFollow = () => {
+    onFollowClick().then(async () => {
+      await setIsCancelFollow(!isFollowd);
+      if (!isFollowd) {
+        return setFollowersCount(followersCount + 1);
+      }
+      setFollowersCount(followersCount - 1);
+    });
+  };
+
   const renderFollowGroup = () => (
     <div className={classes.followGroup}>
-      {isShowFollowBtn && (
+      {
         <div className={classes.followBtnBox}>
           <Button
             className={classes.followBtn}
             startIcon={
               !isCancelFollow &&
-              (isFollowing ? <CheckmarkIcon /> : <AddFollowIcon />)
+              (isFollowd ? <CheckmarkIcon /> : <AddFollowIcon />)
             }
             rounded
             onMouseEnter={() => {
-              if (!isFollowing) return;
+              if (!isFollowd) return;
               setIsCancelFollow(true);
             }}
             onMouseLeave={() => {
               setIsCancelFollow(false);
             }}
+            onClick={onSubmitFollow}
           >
             {isCancelFollow
               ? t('profile.follow.unfollow')
-              : isFollowing
+              : isFollowd
               ? t('profile.follow.following')
               : t('profile.follow.follow')}
           </Button>
         </div>
-      )}
+      }
 
       <div className={classNames(classes.followers, classes.followFont)}>
         <p

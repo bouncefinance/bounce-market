@@ -6,6 +6,7 @@ export const useSocialStyles = makeStyles<Theme>(theme => ({
     margin: theme.spacing(0, -1),
     padding: 0,
     listStyle: 'none',
+    height: 86,
   },
 
   item: {

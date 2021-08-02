@@ -162,6 +162,17 @@ export const Profile = () => {
     [likedItems],
   );
 
+  const renderFollow = useCallback(() => {
+    console.log(profileInfo);
+    return (
+      <FollowGroup
+        followAddress={''}
+        followersCount={profileInfo?.followersCount}
+        followingCount={profileInfo?.followingCount}
+      />
+    );
+  }, [profileInfo]);
+
   return (
     <Section className={classes.root}>
       <Header
@@ -208,7 +219,7 @@ export const Profile = () => {
               />
             )
           }
-          follow={<FollowGroup />}
+          follow={renderFollow()}
           address={address}
         />
 
