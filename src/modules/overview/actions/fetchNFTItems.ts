@@ -47,6 +47,7 @@ export interface INFTItem {
   tokenSymbol: TokenSymbol;
   openAt: Date;
   state: PoolState;
+  isLike: boolean;
 }
 
 export const mapNFTItem = (
@@ -78,6 +79,7 @@ export const mapNFTItem = (
     tokenSymbol: tokenSymbol,
     openAt: new Date(item.open_at * 1e3),
     state: item.state,
+    isLike: Boolean(item.mylikecount),
   };
 };
 

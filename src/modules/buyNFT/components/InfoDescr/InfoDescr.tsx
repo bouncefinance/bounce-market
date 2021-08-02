@@ -3,7 +3,7 @@ import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import Truncate from 'react-truncate';
-import { LikeBtn } from '../LikeBtn';
+// import { LikeBtn, NftLikeBtn } from '../LikeBtn';
 import { useInfoDescrStyles } from './useInfoDescrStyles';
 import { useInfoDescrToggle } from './useInfoDescrToggle';
 
@@ -65,11 +65,11 @@ export const InfoDescr = ({
           </Grid>
         )}
 
-        {featuresConfig.nftLikes && (
+        {/* {featuresConfig.nftLikes && (
           <Grid item xs="auto">
-            <LikeBtn />
+            <NftLikeBtn />
           </Grid>
-        )}
+        )} */}
       </Grid>
 
       {description && (

@@ -49,6 +49,10 @@ export const BrandCard = ({
             variant="body2"
             className={classes.subTitle}
           >
+            {/* {t('collection.card.itemsCount', {
+              value: itemsCount,
+            })}{' '}
+            ·{' '} */}
             {nftType === NftType.ERC1155
               ? 'ERC-1155'
               : nftType === NftType.ERC721

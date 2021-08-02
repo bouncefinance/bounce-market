@@ -40,8 +40,9 @@ export const Movers = (sectionProps: ISectionProps) => {
         priceType="BNB"
         endDate={item.closeAt}
         copies={item.supply}
-        //TODO: https://fangible.atlassian.net/browse/FAN-124
-        likes={undefined}
+        // TODO
+        // likes={item.likes}
+        // isLike={item.isLike}
         href={
           item.poolId && item.poolType
             ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
@@ -52,7 +53,7 @@ export const Movers = (sectionProps: ISectionProps) => {
         }
         imgPreloader={<SwiperPreloader />}
         MediaProps={{
-          category: 'image',
+          category: item.category,
           src: item.fileUrl || '',
           imgClassName: 'swiper-lazy',
           isNativeLazyLoading: false,

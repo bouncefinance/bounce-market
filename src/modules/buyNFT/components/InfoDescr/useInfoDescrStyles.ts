@@ -28,6 +28,7 @@ export const useInfoDescrStyles = makeStyles<Theme>(theme => ({
 
   description: {
     fontSize: 15,
+    minHeight: 50,
   },
 
   textToggle: {
