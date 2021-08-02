@@ -39,9 +39,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   });
 
   const [sortBy, setSortBy] = useState<string>('1');
-  const [catergory, setCategory] = useState<ItemsChannel>(
-    ItemsChannel.fineArts,
-  );
+  const [catergory, setCategory] = useState<ItemsChannel>(ItemsChannel.all);
 
   const onSortChange = useCallback((value: string) => {
     setSortBy(value);
@@ -68,7 +66,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
 
     dispatch(
       fetchNFTItems({
-        channel: ItemsChannel.fineArts,
+        channel: ItemsChannel.all,
         limit: NFT_ITEMS_COUNT,
       }),
     );

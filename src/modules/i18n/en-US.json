@@ -112,7 +112,7 @@
     ],
     "submit": "Create",
     "submitting": "Creating",
-    "title": "Create NFT collection",
+    "title": "Create NFT",
     "collections": "Collections",
     "subCollection": "When creating your first NFT, you need to create a collection. For next creation, you can put the NFT in an already created collection."
   },
@@ -276,6 +276,7 @@
     "cancel": "Cancel",
     "canceled": "Canceled",
     "claim": "Claim",
+    "claimed": "Claimed",
     "status": {
       "Claimed": {
         "creator": "Item has been sold",
@@ -311,9 +312,10 @@
     }
   },
   "product-panel": {
-    "Comics": "Comics",
-    "art": "art",
-    "sports": "sports"
+    "all": "All",
+    "art": "Art",
+    "sports": "Sports",
+    "Comics": "Comics"
   },
   "product-card": {
     "burn": "Burn token",

@@ -92,7 +92,9 @@ export const PromoCard = ({
             </Typography>
 
             <Typography className={classes.authorName} variant="body2">
-              {createdBy}
+              {createdBy.length === 42 && createdBy.slice(0, 2) === '0x'
+                ? createdBy.replace(/^(.{6}).*(.{4})$/, '$1...$2')
+                : createdBy}
             </Typography>
           </Link>
 

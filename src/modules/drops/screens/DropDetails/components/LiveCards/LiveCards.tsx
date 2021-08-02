@@ -29,7 +29,7 @@ export const LiveCards = ({
   const renderedCards = liveNfts.map(item => (
     <ProductCard
       isOnSale
-      key={uid(item)}
+      key={uid(item.name)}
       title={item.name}
       priceType={data?.tokenSymbol || TokenSymbol.BNB}
       price={item.price}
