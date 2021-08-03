@@ -7,7 +7,6 @@ import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { useState } from 'react';
 import { useProductCardStyles } from './useProductCardStyles';
-import { Link as RouterLink } from 'react-router-dom';
 import { useWeb3React } from 'modules/account/hooks/useWeb3React';
 import { AuctionType } from 'modules/api/common/auctionType';
 import {
@@ -95,11 +94,10 @@ export const CancelPutTime: React.FC<{
     <>
       <Button
         className={classes.saleBtn}
-        component={RouterLink}
         variant="outlined"
         rounded
         onClick={onClick}
-        disable={loading}
+        disabled={loading}
         loading={loading}
       >
         {t('product-card.put-on-cancel')}

@@ -26,7 +26,7 @@ export enum ProfileTab {
   followers = 'followers',
 }
 
-const defaultProfileTab = ProfileTab.items;
+export const defaultProfileTab = ProfileTab.sells;
 
 export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
   OtherProfile: {
@@ -57,7 +57,7 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
       const query = useQueryParams();
 
       const replace = (value: string) =>
-        value === ProfileTab.items ? ProfileTab.brands : value;
+        value === ProfileTab.items ? defaultProfileTab : value;
       const tab = replace(query.get('tab') ?? '') || defaultProfileTab;
       const id = query.get('id');
       if (tab === USER_CREATE_NFT_PROFILE) {
