@@ -15,13 +15,9 @@ interface IApiFetchPoolsWeightData {
 
 interface IFetchPoolsWeightData {
   list: {
-    // artistPoolWeight: number;
-    // createdAt: Date;
-    // id: number;
     poolId: number;
     poolWeight: number;
     auctionType: AuctionType;
-    // updatedAt: Date;
   }[];
 }
 
@@ -42,7 +38,6 @@ export const fetchPoolsWeight = createSmartAction<
     request: {
       url: '/get_recomend_pools',
       method: 'get',
-      // params: params,
     },
     meta: {
       auth: true,

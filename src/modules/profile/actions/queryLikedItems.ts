@@ -87,7 +87,7 @@ const getIsEnglishAuction = (type: number) =>
 export const queryLikedItems = createSmartAction<
   RequestAction<IResponse<IMySaleData>, ILikedItem[]>,
   []
->('getmybiditems', () => ({
+>('queryLikedItems', () => ({
   request: {
     url: '/auth/getaccountlike',
     method: 'post',
