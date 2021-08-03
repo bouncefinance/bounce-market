@@ -34,6 +34,7 @@ export interface IItemByFilter {
   standard: number;
   supply: number;
   tokenSymbol: TokenSymbol;
+  mylikecount?: number;
 }
 
 interface IApiFetchItemsByFilter {

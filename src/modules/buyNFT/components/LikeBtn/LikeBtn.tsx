@@ -64,6 +64,7 @@ type nftLikeType = {
   count?: number;
   id?: number;
   poolType?: PoolType;
+  isLike?: boolean;
 };
 export const NftLikeBtn = ({
   className,
@@ -73,6 +74,7 @@ export const NftLikeBtn = ({
   isItemType = false,
   id = -1,
   poolType = PoolType.Unknown,
+  isLike = false,
 }: nftLikeType) => {
   const classes = useLikeBtnStyles();
   const { isLiked, isLikeDisabled, onLikeClick, likeCount } = useLike({
@@ -82,6 +84,7 @@ export const NftLikeBtn = ({
     poolId: poolId,
     category: category || 'image',
     isItemType,
+    isLike,
   });
 
   return (

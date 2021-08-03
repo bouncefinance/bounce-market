@@ -1,3 +1,4 @@
+import { Grid } from '@material-ui/core';
 import { useDispatchRequest } from '@redux-requests/react';
 import { fetchItem, fetchItem2 } from 'modules/buyNFT/actions/fetchItem';
 import { Info } from 'modules/buyNFT/components/Info';
@@ -8,6 +9,7 @@ import {
   NftInfoOwnersOption,
 } from 'modules/buyNFT/components/InfoTabs';
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
+import { NftLikeBtn } from 'modules/buyNFT/components/LikeBtn';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { TokenInfo } from 'modules/buyNFT/components/TokenInfo';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
@@ -60,7 +62,6 @@ export const BuyItemNFT = () => {
       requestActions={[fetchItem, fetchItem2]}
     >
       {({ data: item }, { data: poolDetails }) => {
-        // console.log(poolDetails);
         const renderedCreator = (
           <ProfileInfo
             subTitle={t('details-nft.role.minter')}
@@ -161,6 +162,16 @@ export const BuyItemNFT = () => {
                 copiesTotal={item.supply}
                 creator={renderedCreator}
                 owner={renderedOwner}
+                LikeBtn={
+                  <Grid item xs="auto">
+                    <NftLikeBtn
+                      isItemType
+                      id={item.id}
+                      count={item.likeCount}
+                      isLike={item.isLike}
+                    />
+                  </Grid>
+                }
               />
               <InfoTabs
                 tabs={[NftInfoOwnersOption, NftInfoDetailOption]}

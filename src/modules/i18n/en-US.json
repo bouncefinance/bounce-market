@@ -229,7 +229,7 @@
     "data-is-not-available": "Data is not available",
     "greater-than": "It must be greater than {value}",
     "less-than": "It must be less than {value}",
-    "unexpected": "Unexpected error"
+    "unexpected": "Server exception"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -388,7 +388,12 @@
     "edit-avatar": "Edit avatar",
     "edit-cover": "Edit profile cover",
     "edit-profile": "Edit profile",
-    "follow": "Follow",
+    "follow": {
+      "follow": "Follow",
+      "following": "Following",
+      "followers": "Followers",
+      "unfollow": "Unfollow"
+    },
     "no-items": {
       "btn": "Browse marketplace",
       "descr": "You have not minted any NFTs yet",

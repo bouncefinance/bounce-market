@@ -6,26 +6,18 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 interface IApiFetchPoolsWeightData {
   code: 1;
   data: {
-    artistpoolweight: number;
-    created_at: string;
-    id: number;
-    poolid: number;
-    poolweight: number;
-    standard: AuctionTypeKeys;
-    updated_at: string;
+    pool_id: number;
+    pool_weight: number;
+    auctiontype: AuctionTypeKeys;
   }[];
   total: number;
 }
 
 interface IFetchPoolsWeightData {
   list: {
-    artistPoolWeight: number;
-    createdAt: Date;
-    id: number;
     poolId: number;
     poolWeight: number;
     auctionType: AuctionType;
-    updatedAt: Date;
   }[];
 }
 
@@ -44,9 +36,8 @@ export const fetchPoolsWeight = createSmartAction<
     meta?: RequestActionMeta<IApiFetchPoolsWeightData, IFetchPoolsWeightData>,
   ) => ({
     request: {
-      url: '/getpoolsinfobypage',
-      method: 'post',
-      data: params,
+      url: '/get_recomend_pools',
+      method: 'get',
     },
     meta: {
       auth: true,
@@ -56,13 +47,9 @@ export const fetchPoolsWeight = createSmartAction<
         return {
           list: data.data?.map(item => {
             return {
-              artistPoolWeight: item.artistpoolweight,
-              createdAt: new Date(item.created_at),
-              id: item.id,
-              poolId: item.poolid,
-              poolWeight: item.poolweight,
-              auctionType: auctionTypeMap[item.standard],
-              updatedAt: new Date(item.updated_at),
+              poolId: item.pool_id,
+              poolWeight: item.pool_weight,
+              auctionType: auctionTypeMap[item.auctiontype],
             };
           }),
         };

@@ -22,11 +22,8 @@ import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import { SetAvatarModal } from 'modules/profile/components/SetAvatarModal';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
 import { Subscribers } from 'modules/profile/components/Subscribers';
+import { FollowGroup } from 'modules/profile/components/TabFollowing';
 import { CrateItemAll, TabBrands } from 'modules/profile/components/TabBrands';
-import {
-  IFollowingItemProps,
-  TabFollowing,
-} from 'modules/profile/components/TabFollowing';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
@@ -43,35 +40,6 @@ import { TabLiked } from './components/TabLiked';
 import { TabOwned } from './components/tabOwned';
 import { TabSale } from './components/TabSale';
 import { useProfileStyles } from './useProfileStyles';
-
-const followings: IFollowingItemProps[] = [
-  {
-    userName: 'Pasha Ho',
-    userId: 123,
-    href: '#',
-    userFollowers: 150,
-    imgSrc: 'https://picsum.photos/82?random=200',
-    follow: false,
-  },
-  {
-    userName: 'John Smith',
-    userId: 321,
-    href: '#',
-    userFollowers: 0,
-    imgSrc: 'https://picsum.photos/82?random=201',
-    follow: true,
-  },
-  {
-    userName: 'Smith John',
-    userId: 213,
-    href: '#',
-    userFollowers: 15,
-    imgSrc: 'https://picsum.photos/82?random=202',
-    follow: false,
-  },
-];
-
-const followers = followings;
 
 export const Profile = () => {
   const { tab, isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
@@ -129,6 +97,10 @@ export const Profile = () => {
         case ProfileTab.activity: {
           break;
         }
+        case ProfileTab.liked: {
+          dispatch(queryLikedItems());
+          break;
+        }
         default: {
           console.error('not match tab', value);
         }
@@ -152,16 +124,16 @@ export const Profile = () => {
   const tabs = useMemo(
     () => [
       {
+        value: ProfileTab.sells,
+        label: t('profile.tabs.my-sells'),
+      },
+      {
         value: ProfileTab.brands,
         label: t('profile.tabs.my-collections'),
       },
       {
         value: ProfileTab.owned,
         label: t('profile.tabs.my-owner'),
-      },
-      {
-        value: ProfileTab.sells,
-        label: t('profile.tabs.my-sells'),
       },
       {
         value: ProfileTab.bids,
@@ -197,6 +169,18 @@ export const Profile = () => {
     ],
     [likedItems],
   );
+
+  const renderFollow = useCallback(() => {
+    if (!address) return;
+    return (
+      <FollowGroup
+        followAddress={address}
+        followersCount={profileInfo?.followersCount}
+        followingCount={profileInfo?.followingCount}
+        black={true}
+      />
+    );
+  }, [profileInfo, address]);
 
   return (
     <Section className={classes.root}>
@@ -244,6 +228,7 @@ export const Profile = () => {
               />
             )
           }
+          follow={renderFollow()}
           address={address}
         />
 
@@ -284,14 +269,6 @@ export const Profile = () => {
             <TabLiked />
           </TabPanel>
         )}
-
-        <TabPanel value={tab} index={ProfileTab.following}>
-          <TabFollowing items={followings} />
-        </TabPanel>
-
-        <TabPanel value={tab} index={ProfileTab.followers}>
-          <TabFollowing items={followers} />
-        </TabPanel>
       </Container>
     </Section>
   );
