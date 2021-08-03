@@ -28,7 +28,10 @@ export const useFollow = ({
   const dispatchRequest = useDispatchRequest();
   const { isConnected, address: accountAddress } = useAccount();
   const isHiddenFollowBtn =
-    !isConnected || !followAddress || accountAddress === followAddress;
+    !isConnected ||
+    !followAddress ||
+    String(accountAddress).toLowerCase() ===
+      String(followAddress).toLowerCase();
 
   const { loading } = useMutation({
     type: toggleFollow.toString(),
