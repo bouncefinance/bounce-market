@@ -24,7 +24,6 @@ export const useFollow = ({
   followAddress,
   setFollowersCount,
 }: IUseFollowProps) => {
-  const dispatch = useDispatchRequest();
   const dispatchRequest = useDispatchRequest();
   const { isConnected, address: accountAddress } = useAccount();
   const isHiddenFollowBtn =
@@ -48,7 +47,7 @@ export const useFollow = ({
         }),
       );
     }
-  }, [followAddress, dispatch, dispatchRequest, accountAddress]);
+  }, [followAddress, dispatchRequest, accountAddress]);
 
   const { data } = useQuery<IFollowInfo>({
     type: fetchFollowInfo.toString(),
@@ -81,7 +80,7 @@ export const useFollow = ({
           ? ToggleFollowType.UnFollow
           : ToggleFollowType.Following;
 
-      const { data: FollowData } = await dispatch(
+      const { data: FollowData } = await dispatchRequest(
         toggleFollow({
           accountAddress: account,
           followAddress: tarAddress,
@@ -101,7 +100,7 @@ export const useFollow = ({
       accountAddress,
       followAddress,
       followState,
-      dispatch,
+      dispatchRequest,
       isFollowDisabled,
       setFollowersCount,
     ],
