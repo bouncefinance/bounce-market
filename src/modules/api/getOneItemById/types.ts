@@ -16,6 +16,7 @@ export interface IApiGetOneItemByIdData {
   itemname: string;
   itemsymbol: 'BOUNCE';
   likecount: number;
+  mylikecount: number;
   litimgurl: string;
   metadata: string;
   owneraddress: string;

@@ -5,7 +5,12 @@ import { AuctionType } from '../../api/common/auctionType';
 
 export interface IApiFetchRoleInfo {
   code: 200;
-  data: IFetchRoleInfoData;
+  data: {
+    creator: IRoleInfo;
+    minter: IRoleInfo;
+    likecount: number;
+    mylikecount: number;
+  };
   msg: 'ok';
 }
 
@@ -18,11 +23,14 @@ export interface IRoleInfo {
 interface IFetchRoleInfoData {
   creator: IRoleInfo;
   minter: IRoleInfo;
+  likeCount: number;
+  isLike: boolean;
 }
 
 interface IFetchRoleInfoParams {
   poolId: number;
   poolType: AuctionType;
+  address: string;
 }
 
 export const fetchRoleInfo = createSmartAction<
@@ -39,6 +47,7 @@ export const fetchRoleInfo = createSmartAction<
       data: {
         poolId: params.poolId,
         poolType: parseInt(poolTypeMap[params.poolType]),
+        accountaddress: params.address,
       },
     },
     meta: {
@@ -46,7 +55,25 @@ export const fetchRoleInfo = createSmartAction<
       driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
-        return data as IFetchRoleInfoData;
+        if (data) {
+          return {
+            creator: data?.creator,
+            minter: data?.minter,
+            likeCount: data?.likecount,
+            isLike: Boolean(data?.mylikecount),
+          };
+        }
+        const defaultUser = {
+          address: '--',
+          avatar: '--',
+          username: '--',
+        };
+        return {
+          creator: defaultUser,
+          minter: defaultUser,
+          likeCount: 0,
+          isLike: false,
+        };
       },
       ...meta,
     },

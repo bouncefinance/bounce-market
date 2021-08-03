@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 import {
   Mutation,
   useDispatchRequest,
@@ -6,6 +6,7 @@ import {
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { PoolType } from 'modules/api/common/poolType';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -13,6 +14,7 @@ import { InfoPrices } from 'modules/buyNFT/components/InfoPrices';
 import { InfoTabs } from 'modules/buyNFT/components/InfoTabs';
 import { InfoTabsItem } from 'modules/buyNFT/components/InfoTabsItem';
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
+import { NftLikeBtn } from 'modules/buyNFT/components/LikeBtn';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { EmptyPageData } from 'modules/common/components/EmptyPageData';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
@@ -86,6 +88,7 @@ export const BuyNFT = () => {
     open: openEnglishBuyDialog,
     close: closeEnglishBuyDialog,
   } = useDialog();
+  const { address } = useAccount();
   const { push } = useHistory();
 
   const init = useCallback(() => {
@@ -103,12 +106,12 @@ export const BuyNFT = () => {
         dispatch(fetchCurrency({ unitContract: data.unitContract }));
       })
       .then(() => {
-        dispatch(fetchRoleInfo({ poolId, poolType }));
+        dispatch(fetchRoleInfo({ poolId, poolType, address }));
         dispatch(fetchPoolHistory({ poolId, poolType }));
         dispatch(fetchPoolBids({ poolId, poolType }));
         dispatch(fetchPoolNftOwner({ poolId, poolType }));
       });
-  }, [dispatch, poolType, poolId]);
+  }, [dispatch, poolType, poolId, address]);
 
   useEffect(() => {
     init();
@@ -465,6 +468,17 @@ export const BuyNFT = () => {
                     }
                     creator={renderedCreator}
                     owner={renderedOwner}
+                    LikeBtn={
+                      <Grid item xs="auto">
+                        <NftLikeBtn
+                          isItemType={false}
+                          poolId={poolId}
+                          poolType={(poolType as unknown) as PoolType}
+                          count={roleInfos.likeCount}
+                          isLike={roleInfos.isLike}
+                        />
+                      </Grid>
+                    }
                   />
                   {isEnglishAuction(poolDetails) ? (
                     <InfoPrices
