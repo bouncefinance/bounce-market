@@ -3,7 +3,6 @@ import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import Truncate from 'react-truncate';
-// import { LikeBtn, NftLikeBtn } from '../LikeBtn';
 import { useInfoDescrStyles } from './useInfoDescrStyles';
 import { useInfoDescrToggle } from './useInfoDescrToggle';
 
@@ -16,6 +15,7 @@ interface IInfoDescrProps {
   owner?: JSX.Element;
   copiesCurrent?: string | number;
   copiesTotal?: string | number;
+  LikeBtn: JSX.Element;
 }
 
 export const InfoDescr = ({
@@ -25,6 +25,7 @@ export const InfoDescr = ({
   owner,
   copiesCurrent = 0,
   copiesTotal = 0,
+  LikeBtn,
 }: IInfoDescrProps) => {
   const classes = useInfoDescrStyles();
   const {
@@ -64,12 +65,7 @@ export const InfoDescr = ({
             </div>
           </Grid>
         )}
-
-        {/* {featuresConfig.nftLikes && (
-          <Grid item xs="auto">
-            <NftLikeBtn />
-          </Grid>
-        )} */}
+        {featuresConfig.nftLikes && LikeBtn}
       </Grid>
 
       {description && (

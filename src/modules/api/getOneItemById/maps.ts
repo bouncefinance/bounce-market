@@ -15,6 +15,7 @@ export interface IGetOneItemById {
   itemName: IApiGetOneItemByIdData['itemname'];
   itemSymbol: IApiGetOneItemByIdData['itemsymbol'];
   likeCount: IApiGetOneItemByIdData['likecount'];
+  isLike: boolean;
   compressedImgUrl: IApiGetOneItemByIdData['litimgurl'];
   metadata: IApiGetOneItemByIdData['metadata'];
   ownerAddress: IApiGetOneItemByIdData['owneraddress'];
@@ -47,6 +48,7 @@ export const mapGetOneItemById = (data: IApiGetOneItemByIdData) => {
     open_at: data.open_at,
     auctionType: data.auctiontype,
     identity: data.identity,
+    isLike: Boolean(data.mylikecount),
   };
 };
 

@@ -7,5 +7,15 @@ interface ILoadingProps extends ErrorProps {}
 export const QueryError = (props: ILoadingProps) => {
   const message = extractMessage(props);
 
-  return <div>{message}</div>;
+  return (
+    <div
+      style={{
+        fontSize: 30,
+        textAlign: 'center',
+        paddingTop: 40,
+      }}
+    >
+      {message}
+    </div>
+  );
 };

@@ -93,6 +93,10 @@ export const Profile = () => {
           dispatch(fetchMyBids({ address }));
           break;
         }
+        case ProfileTab.liked: {
+          dispatch(queryLikedItems());
+          break;
+        }
         default: {
           console.error('not match tab', value);
         }
@@ -116,16 +120,16 @@ export const Profile = () => {
   const tabs = useMemo(
     () => [
       {
+        value: ProfileTab.sells,
+        label: t('profile.tabs.my-sells'),
+      },
+      {
         value: ProfileTab.brands,
         label: t('profile.tabs.my-collections'),
       },
       {
         value: ProfileTab.owned,
         label: t('profile.tabs.my-owner'),
-      },
-      {
-        value: ProfileTab.sells,
-        label: t('profile.tabs.my-sells'),
       },
       {
         value: ProfileTab.bids,
