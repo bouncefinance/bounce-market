@@ -8,81 +8,25 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { Dialog } from '@material-ui/core';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
-import { IFollowingItemProps, TabFollowing } from '.';
+import { TabFollowing } from '.';
 import { useFollow } from './useFollow';
+import { useAccount } from 'modules/account/hooks/useAccount';
 
-enum FollowType {
+export enum FollowType {
   Followers = 'Followers',
   Following = 'Following',
 }
-
-const MockFollowList: IFollowingItemProps[] = [
-  {
-    userName: 'Pasha Ho',
-    userId: 123,
-    href: '#',
-    userFollowers: 150,
-    imgSrc: 'https://picsum.photos/82?random=200',
-    follow: false,
-  },
-  {
-    userName: 'John Smith',
-    userId: 321,
-    href: '#',
-    userFollowers: 0,
-    imgSrc: 'https://picsum.photos/82?random=201',
-    follow: true,
-  },
-  {
-    userName: 'Smith John',
-    userId: 213,
-    href: '#',
-    userFollowers: 15,
-    imgSrc: 'https://picsum.photos/82?random=202',
-    follow: false,
-  },
-  {
-    userName: 'Pasha Ho',
-    userId: 1233,
-    href: '#',
-    userFollowers: 150,
-    imgSrc: 'https://picsum.photos/82?random=200',
-    follow: false,
-  },
-  {
-    userName: 'John Smith',
-    userId: 3212,
-    href: '#',
-    userFollowers: 0,
-    imgSrc: 'https://picsum.photos/82?random=201',
-    follow: true,
-  },
-  {
-    userName: 'Smith John',
-    userId: 2143,
-    href: '#',
-    userFollowers: 15,
-    imgSrc: 'https://picsum.photos/82?random=202',
-    follow: false,
-  },
-  {
-    userName: 'Pasha Ho',
-    userId: 1253,
-    href: '#',
-    userFollowers: 150,
-    imgSrc: 'https://picsum.photos/82?random=200',
-    follow: false,
-  },
-];
 
 export const FollowGroup = ({
   followAddress,
   followersCount: initFollowersCount = 0,
   followingCount: initFollowingCount = 0,
+  black,
 }: {
   followAddress: string;
   followersCount?: number;
   followingCount?: number;
+  black?: boolean;
 }) => {
   const classes = useTabFollowingStyles();
   const [isCancelFollow, setIsCancelFollow] = useState(false);
@@ -90,7 +34,7 @@ export const FollowGroup = ({
   const [followType, setFollowType] = useState<FollowType>(
     FollowType.Followers,
   );
-
+  const { address } = useAccount();
   const [followersCount, setFollowersCount] = useState(initFollowersCount);
   const [followingCount, setFollowingCount] = useState(initFollowingCount);
 
@@ -99,25 +43,28 @@ export const FollowGroup = ({
     setFollowingCount(initFollowingCount);
   }, [initFollowersCount, initFollowingCount]);
 
-  const { isFollowd, onFollowClick } = useFollow({ followAddress });
+  const {
+    isFollowd,
+    onFollowClick,
+    isHiddenFollowBtn,
+    toggleLoading,
+  } = useFollow({ followAddress, setFollowersCount });
 
   const onClose = () => {
     setIsOpen(false);
   };
 
   const onSubmitFollow = () => {
-    onFollowClick().then(async () => {
-      await setIsCancelFollow(!isFollowd);
-      if (!isFollowd) {
-        return setFollowersCount(followersCount + 1);
-      }
-      setFollowersCount(followersCount - 1);
-    });
+    onFollowClick({})
+      .then(async () => {
+        setIsCancelFollow(!isFollowd);
+      })
+      .catch(() => {});
   };
 
   const renderFollowGroup = () => (
     <div className={classes.followGroup}>
-      {
+      {!isHiddenFollowBtn && (
         <div className={classes.followBtnBox}>
           <Button
             className={classes.followBtn}
@@ -125,6 +72,7 @@ export const FollowGroup = ({
               !isCancelFollow &&
               (isFollowd ? <CheckmarkIcon /> : <AddFollowIcon />)
             }
+            disabled={toggleLoading}
             rounded
             onMouseEnter={() => {
               if (!isFollowd) return;
@@ -142,7 +90,7 @@ export const FollowGroup = ({
               : t('profile.follow.follow')}
           </Button>
         </div>
-      }
+      )}
 
       <div className={classNames(classes.followers, classes.followFont)}>
         <p
@@ -150,6 +98,7 @@ export const FollowGroup = ({
             setIsOpen(true);
             setFollowType(FollowType.Followers);
           }}
+          className={black ? classes.black : ''}
         >
           {`${followersCount} ${t('profile.follow.followers')}`}
         </p>
@@ -163,6 +112,7 @@ export const FollowGroup = ({
             setIsOpen(true);
             setFollowType(FollowType.Following);
           }}
+          className={black ? classes.black : ''}
         >
           {`${followingCount} ${t('profile.follow.following')}`}
         </p>
@@ -187,7 +137,12 @@ export const FollowGroup = ({
             : t('profile.follow.following')}
         </h1>
         <div className={classes.cardWrapper}>
-          <TabFollowing items={MockFollowList} />
+          <TabFollowing
+            followAddress={followAddress}
+            accountaddress={address || ''}
+            renderType={followType}
+            setFollowingCount={setFollowingCount}
+          />
         </div>
 
         <ModalCloseBtn onClick={onClose} />

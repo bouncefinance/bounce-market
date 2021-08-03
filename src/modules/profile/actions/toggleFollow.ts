@@ -1,7 +1,7 @@
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
-export enum TollgeFollowType {
+export enum ToggleFollowType {
   UnFollow,
   Following,
 }
@@ -9,12 +9,16 @@ export enum TollgeFollowType {
 interface ITollgeFollow {
   code: number;
   msg: any;
+  followingCount: number;
+  followersCount: number;
+  myfollowersCount: number;
+  myfollowingCount: number;
 }
 
 interface IFetchTollgeFollowArgs {
   accountAddress: string;
   followAddress: string;
-  ifFollow: TollgeFollowType;
+  ifFollow: ToggleFollowType;
 }
 
 export const toggleFollow = createSmartAction<
@@ -36,7 +40,6 @@ export const toggleFollow = createSmartAction<
       auth: true,
       asMutation: true,
       driver: 'axios',
-      // requestKey: params.requestKey,
       requestsCapacity: 2,
       getData: data => {
         if (data.code !== 1) {

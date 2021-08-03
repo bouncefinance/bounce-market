@@ -163,15 +163,16 @@ export const Profile = () => {
   );
 
   const renderFollow = useCallback(() => {
-    console.log(profileInfo);
+    if (!address) return;
     return (
       <FollowGroup
-        followAddress={''}
+        followAddress={address}
         followersCount={profileInfo?.followersCount}
         followingCount={profileInfo?.followingCount}
+        black={true}
       />
     );
-  }, [profileInfo]);
+  }, [profileInfo, address]);
 
   return (
     <Section className={classes.root}>

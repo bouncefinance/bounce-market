@@ -45,13 +45,14 @@ export const useTabFollowingStyles = makeStyles<Theme>(theme => ({
   },
 
   userFollowers: {
-    marginTop: 5,
+    marginTop: 11,
     fontSize: 13,
   },
 
   userFollowersIcon: {
     fontSize: 'inherit',
-    verticalAlign: 'middle',
+    verticalAlign: 'baseline',
+    marginRight: 5.5,
   },
 
   itemFollowWrap: {
@@ -106,5 +107,13 @@ export const useTabFollowingStyles = makeStyles<Theme>(theme => ({
   },
   h1: {
     margin: '0 auto',
+  },
+
+  listNull: {
+    margin: '50px auto',
+    textAlign: 'center',
+  },
+  black: {
+    color: '#000',
   },
 }));

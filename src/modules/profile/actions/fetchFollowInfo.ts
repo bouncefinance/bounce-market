@@ -1,6 +1,6 @@
 import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { TollgeFollowType } from './toggleFollow';
+import { ToggleFollowType } from './toggleFollow';
 
 interface IFollowInfoData {
   code: number;
@@ -12,7 +12,7 @@ interface IFollowInfoData {
 
 export interface IFollowInfo {
   isFollow: boolean;
-  followState: TollgeFollowType;
+  followState: ToggleFollowType;
   followersCount: number;
   followingCount: number;
 }
@@ -26,8 +26,8 @@ const mapFollowData = (data: IFollowInfoData): IFollowInfo => {
   return {
     isFollow: data.iffollow || false,
     followState: data.iffollow
-      ? TollgeFollowType.Following
-      : TollgeFollowType.UnFollow,
+      ? ToggleFollowType.Following
+      : ToggleFollowType.UnFollow,
     followersCount: data.followersCount || 0,
     followingCount: data.followersCount || 0,
   };
