@@ -170,8 +170,7 @@ export const ProductCardComponent = ({
         <LayersIcon
           className={classNames(classes.icon, classes.iconRightOffset)}
         />
-        {copiesBalance ? `${copiesBalance} of ` : ''}
-        {copies}
+        {`${copiesBalance ?? 0} of ${copies ?? 0}`}
       </div>
     </Tooltip>
   );
