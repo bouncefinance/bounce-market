@@ -388,7 +388,12 @@
     "edit-avatar": "Edit avatar",
     "edit-cover": "Edit profile cover",
     "edit-profile": "Edit profile",
-    "follow": "Follow",
+    "follow": {
+      "follow": "Follow",
+      "following": "Following",
+      "followers": "Followers",
+      "unfollow": "Unfollow"
+    },
     "no-items": {
       "btn": "Browse marketplace",
       "descr": "You have not minted any NFTs yet",

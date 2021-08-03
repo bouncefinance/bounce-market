@@ -25,4 +25,11 @@ export const useInfoPanelStyles = makeStyles<Theme>(theme => ({
       marginLeft: 'auto',
     },
   },
+
+  socialContainer: {
+    marginTop: -86,
+  },
+  socialBox: {
+    marginLeft: 'auto',
+  },
 }));

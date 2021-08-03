@@ -80,7 +80,6 @@ export const getAccountLikes = createAction<
       if (data.code !== 1) {
         throw new Error(data.msg);
       }
-
       return data.data.map(mapAccountLike);
     },
   },

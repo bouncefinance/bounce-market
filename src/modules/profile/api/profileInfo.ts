@@ -16,6 +16,7 @@ export interface IApiProfileInfo {
     instagram: string;
     twitter: string;
     facebook: string;
+    followingcount?: number;
     identity?: UserRoleType;
   };
 }
@@ -34,6 +35,8 @@ export interface IProfileInfo {
   twitter?: string;
   facebook?: string;
   identity?: UserRoleType;
+  followersCount?: number;
+  followingCount?: number;
 }
 
 export function mapProfileInfo({
@@ -57,5 +60,7 @@ export function mapProfileInfo({
     twitter: data.twitter,
     facebook: data.facebook,
     identity: data.identity,
+    followersCount: data.followcount,
+    followingCount: data.followingcount,
   };
 }

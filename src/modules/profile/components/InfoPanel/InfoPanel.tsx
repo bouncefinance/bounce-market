@@ -25,6 +25,7 @@ interface IInfoPanelProps extends BoxProps {
   isBrand?: boolean;
   withSharing?: boolean;
   isEditable?: boolean;
+  follow?: ReactNode;
 }
 
 export const InfoPanel = ({
@@ -36,6 +37,7 @@ export const InfoPanel = ({
   isBrand,
   withSharing,
   isEditable,
+  follow,
   ...boxProps
 }: IInfoPanelProps) => {
   const classes = useInfoPanelStyles();
@@ -47,6 +49,19 @@ export const InfoPanel = ({
 
   return (
     <Box mb={8} {...boxProps}>
+      <Grid
+        container
+        spacing={3}
+        alignItems="center"
+        className={classes.socialContainer}
+      >
+        {social && (
+          <Grid className={classes.socialBox} item>
+            {social}
+          </Grid>
+        )}
+      </Grid>
+
       <Grid container spacing={3} alignItems="center">
         <Grid item xs={12} sm="auto">
           <Typography variant="h2">{name}</Typography>
@@ -99,8 +114,7 @@ export const InfoPanel = ({
         <Grid item xs={12} lg="auto" className={classes.linksCol}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>{subscribers}</Grid>
-
-            {social && <Grid item>{social}</Grid>}
+            {<Grid item>{follow}</Grid>}
           </Grid>
         </Grid>
       </Grid>
