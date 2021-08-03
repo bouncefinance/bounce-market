@@ -3,16 +3,13 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { Store } from 'redux';
 import { RootState } from '../../../store';
 import { fetchActivities } from './fetchActivities';
-import { fetchItemsByIds } from '../../overview/actions/fetchItemsByIds';
-import { IActivityTableItem } from '../api/getActivity';
+import type { IFetchActivitiesVariables } from './fetchActivities';
+import { IActivityItem } from '../api/getActivity';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
-
-interface IFetchActivitiesVariables {
-  user: string;
-}
+import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
 
 export const fetchActivitiesTable = createSmartAction<
-  RequestAction<IActivityTableItem[], IActivityTableItem[]>
+  RequestAction<IActivityItem[], IActivityItem[]>
 >('fetchActivitiesTable', (payload: IFetchActivitiesVariables) => ({
   request: {
     promise: (async function () {})(),
@@ -20,6 +17,7 @@ export const fetchActivitiesTable = createSmartAction<
   meta: {
     auth: true,
     asMutation: false,
+    onSuccess: addTokenSymbolByDriver,
     onRequest: (
       request: { promise: Promise<any> },
       action: RequestAction,
@@ -27,51 +25,10 @@ export const fetchActivitiesTable = createSmartAction<
     ) => {
       return {
         promise: (async function () {
-          const { data: activitiesData } = throwIfDataIsEmptyOrError(
-            await store.dispatchRequest(
-              fetchActivities({ user: payload.user }),
-            ),
-          );
           const { data } = throwIfDataIsEmptyOrError(
-            await store.dispatchRequest(
-              fetchItemsByIds(
-                activitiesData.reduce(
-                  (acc: { ids: number[]; cts: string[] }, current) => {
-                    if (!current) {
-                      return acc;
-                    }
-                    return {
-                      ids: [...acc.ids, current.tokenId],
-                      cts: [...acc.cts, current.contract],
-                    };
-                  },
-                  { ids: [], cts: [] },
-                ),
-                { silent: true },
-              ),
-            ),
+            await store?.dispatchRequest(fetchActivities({ ...payload })),
           );
-          return activitiesData
-            .map(activityItem => {
-              const activity = data?.find(item => {
-                return (
-                  activityItem.tokenId === item.id &&
-                  String(activityItem.contract).toLowerCase() ===
-                    String(item.contractAddress).toLowerCase()
-                );
-              });
-
-              if (!activity) return undefined;
-
-              return {
-                ...activityItem,
-                fileUrl: activity.fileUrl,
-                itemName: activity.itemName,
-                category: activity.category || 'image',
-              };
-            })
-            .filter(item => item && item.contract)
-            .sort((a, b) => b!.timestamp - a!.timestamp);
+          return data;
         })(),
       };
     },

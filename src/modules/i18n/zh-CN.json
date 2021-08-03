@@ -346,7 +346,7 @@
       "event": "活动",
       "from": "由",
       "item": "NFT",
-      "price": "价格",
+      "amount": "金额",
       "quantity": "数量",
       "to": "转到",
       "transfer": "发送"

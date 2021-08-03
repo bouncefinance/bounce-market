@@ -112,5 +112,6 @@ export const Img = ({
     </Component>
   );
 
-  return imgSrc ? render : null;
+  // return imgSrc ? render : null;
+  return render;
 };

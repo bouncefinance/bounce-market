@@ -42,7 +42,7 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
 
   search: {
     [theme.breakpoints.up('xl')]: {
-      width: 410,
+      width: 340,
     },
   },
 

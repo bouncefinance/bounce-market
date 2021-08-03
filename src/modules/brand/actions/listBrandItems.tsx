@@ -76,7 +76,7 @@ export const listBrandItems = createSmartAction(
               id,
               contractAddress: cts[index],
             }));
-
+       
             const data = (
               await Promise.all(
                 items.map(item => {
@@ -96,7 +96,7 @@ export const listBrandItems = createSmartAction(
             ).map(response => {
               return response.data!;
             });
-
+          
             const poolsCopy = filterPools || [];
 
             const getEnglishAuctionPrice = (pool: IEnglishAuctionDetails) => {

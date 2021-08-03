@@ -1,120 +1,89 @@
-import { Box, TableCell, TableRow } from '@material-ui/core';
-import classNames from 'classnames';
-import { formatDistance } from 'date-fns';
-import { useAccount } from 'modules/account/hooks/useAccount';
-import { getTokenSymbol } from 'modules/common/conts';
+import { TableCell, TableRow, Tooltip } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+// import { formatDistance } from 'date-fns';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
-import React, { useCallback } from 'react';
-import { CloseIcon } from '../../../common/components/Icons/CloseIcon';
-import { DoneIcon } from '../../../common/components/Icons/DoneIcon';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+// import { getTokenSymbol } from 'modules/common/conts';
+import { t } from '../../../i18n/utils/intl';
+import { ActivityKeys, IActivityItem } from '../../api/getActivity';
+import { Img } from 'modules/uiKit/Img';
+import { useTabActivityStyles } from './useTabActivityStyles';
+// import { CloseIcon } from '../../../common/components/Icons/CloseIcon';
+// import { DoneIcon } from '../../../common/components/Icons/DoneIcon';
 import { PlusIcon } from '../../../common/components/Icons/PlusIcon';
 import { TransferIcon } from '../../../common/components/Icons/TransferIcon';
-import { VideoPlayer } from '../../../common/components/VideoPlayer';
-import { t } from '../../../i18n/utils/intl';
-import { Img } from '../../../uiKit/Img';
-import { IActivityTableItem } from '../../api/getActivity';
+import { BidIcon } from '../../../common/components/Icons/BidIcon';
+import { ListedIcon } from '../../../common/components/Icons/ListedIcon';
 
 interface IActivitiesTableProps {
-  item: IActivityTableItem;
-  classes: any;
+  item: IActivityItem;
+  tabKey: ActivityKeys;
+  symbol: string;
 }
 
+const ItemIcon: React.FC<{ url: string; label: string }> = ({ url, label }) => {
+  const styles = useTabActivityStyles();
+  return (
+    <div className={styles.tableItemIcon}>
+      <Img src={url} ratio="1x1" className="icon" />
+      <span>{label}</span>
+    </div>
+  );
+};
+const EventIconMaps = {
+  [ActivityKeys.Create]: <PlusIcon />,
+  [ActivityKeys.Bids]: <BidIcon />,
+  [ActivityKeys.Listings]: <ListedIcon />,
+  [ActivityKeys.Sales]: <TransferIcon />,
+  [ActivityKeys.Purchases]: <TransferIcon />,
+  [ActivityKeys.Transfers]: <TransferIcon />,
+};
+const EventIcon: React.FC<{ tabKey: ActivityKeys; label: string }> = ({
+  tabKey,
+  label,
+}) => {
+  const styles = useTabActivityStyles();
+  return (
+    <div className={styles.eventIcon}>
+      <div>{EventIconMaps[tabKey] || ''}</div>
+      <span>{label}</span>
+    </div>
+  );
+};
 export const ActivitiesTableRow = ({
   item,
-  classes,
+  symbol,
+  tabKey,
 }: IActivitiesTableProps) => {
-  const { chainId } = useAccount();
-  const renderItemPreview = useCallback(
-    (category: string, fileUrl: string) => {
-      return category === 'video' ? (
-        <VideoPlayer
-          className={classes.itemPreview}
-          src={fileUrl}
-          width={100}
-          height={100}
-          controls={false}
-          autoPlay={false}
-          objectFit="cover"
-        />
-      ) : (
-        <Img className={classes.itemPreview} src={fileUrl} ratio="1x1" />
-      );
-    },
-    [classes],
-  );
-
-  // TODO: task FAN-84
-  // const renderProfileInfo = useCallback(
-  //   (img: string, name: string) => {
-  //     return (
-  //       <Box display="flex" alignItems="center">
-  //         <Avatar className={classes.avatar} src={img} />
-  //         <div className={classes.name}>{name}</div>
-  //       </Box>
-  //     );
-  //   },
-  //   [classes],
-  // );
 
   return (
     <TableRow>
       <TableCell>
-        <Box display="flex" alignItems="center">
-          {item.event === 'FixedSwapSwapped' && (
-            <>
-              <TransferIcon className={classes.eventIcon} />
-              {t('profile.activity.transfer')}
-            </>
-          )}
-          {(item.event === 'FixedSwapCreated' ||
-            item.event === 'EnglishCreated') && (
-            <>
-              <PlusIcon
-                className={classNames(classes.eventIcon, classes.eventIconPlus)}
-              />
-              {t('profile.activity.created')}
-            </>
-          )}
-          {item.event === 'FixedSwapCanceled' && (
-            <>
-              <CloseIcon className={classes.eventIcon} />
-              {t('profile.activity.canceled')}
-            </>
-          )}
-          {item.event === 'EnglishClaimed' && (
-            <>
-              <DoneIcon className={classes.eventIcon} />
-              {t('profile.activity.claimed')}
-            </>
-          )}
-        </Box>
+        <EventIcon tabKey={tabKey} label={item.event} />
       </TableCell>
-
       <TableCell>
-        <Box display="flex" alignItems="center">
-          {renderItemPreview(item.category, item.fileUrl)}
-          <div className={classes.itemTitle} title={item.itemName}>
-            {item.itemName}
-          </div>
-        </Box>
+        <ItemIcon url={item.fileUrl} label={item.itemName} />
       </TableCell>
-
       <TableCell>
-        {item.price.toFormat()} {getTokenSymbol(chainId)}
-        {/*{item.currency} TODO: need provide currency from contract, task FAN-85 */}
+        {item.amount.toString()}&nbsp;{symbol}
       </TableCell>
-
       <TableCell>{item.quantity}</TableCell>
-
-      <TableCell>{truncateWalletAddr(item.from)}</TableCell>
-
-      <TableCell>{truncateWalletAddr(item.to)}</TableCell>
-
       <TableCell>
-        {formatDistance(item.timestamp, new Date(), {
-          addSuffix: true,
-        })}
+        {tabKey === ActivityKeys.Sales ? (
+          item.to && (
+            <Link to={ProfileRoutesConfig.OtherProfile.generatePath(item.to)}>
+              <Tooltip title={item.from}>
+                <span>{truncateWalletAddr(item.to)}</span>
+              </Tooltip>
+            </Link>
+          )
+        ) : (
+          <Tooltip title={item.from}>
+            <span>{truncateWalletAddr(item.from)}</span>
+          </Tooltip>
+        )}
       </TableCell>
+      <TableCell>{item.ctime}</TableCell>
     </TableRow>
   );
 };

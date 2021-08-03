@@ -348,7 +348,7 @@
       "event": "Event",
       "from": "From",
       "item": "Item",
-      "price": "Price",
+      "amount": "Amount",
       "quantity": "Quantity",
       "to": "To",
       "transfer": "Transfer"
