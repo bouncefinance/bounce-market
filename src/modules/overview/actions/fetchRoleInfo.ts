@@ -18,6 +18,7 @@ export interface IRoleInfo {
   address: string;
   avatar: string;
   username: string;
+  isVerify?: boolean;
 }
 
 interface IFetchRoleInfoData {
@@ -67,6 +68,7 @@ export const fetchRoleInfo = createSmartAction<
           address: '--',
           avatar: '--',
           username: '--',
+          isVerify: false,
         };
         return {
           creator: defaultUser,
