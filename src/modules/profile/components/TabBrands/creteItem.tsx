@@ -23,11 +23,17 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
+import { Button } from 'modules/uiKit/Button/Button';
+import { useTabBrandStyles } from './useTabBrandsStyles';
+import { AddFollowIcon } from '../TabFollowing/assets/AddFollowIcon';
+import { t } from 'modules/i18n/utils/intl';
+import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 
 export const CrateItemAll = () => {
   const { id: className } = ProfileRoutesConfig.UserProfile.useParams();
   const dispatch = useDispatch();
   const { address } = useAccount();
+  const classes = useTabBrandStyles();
 
   const {
     data: collectionData,
@@ -55,7 +61,18 @@ export const CrateItemAll = () => {
 
   return (
     <TabItemsComponent>
-      <GoBack />
+      <div className={classes.headerGroup}>
+        <GoBack />
+        <Button
+          variant="outlined"
+          rounded
+          className={classes.addNftBtn}
+          href={BrandRoutesConfig.CreateBrandItem.generatePath(className)}
+        >
+          <AddFollowIcon className={classes.addNftBtnIcon} />
+          {t('collection.card.addNewItem')}
+        </Button>
+      </div>
       <div style={{ height: 20 }}></div>
       <ProductCards isLoading={collectionLoading}>
         {collectionLoading ? (
