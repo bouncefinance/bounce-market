@@ -3,7 +3,6 @@ export const IMAGE_FILES_MIMES: string[] = [
   'image/jpeg',
   'image/jp2', // .jpeg200
   'image/jpm', // .jpeg200
-  'image/webp',
   'image/gif',
 ];
 

@@ -4,6 +4,7 @@ export const HeartIcon = (props: SvgIconProps) => {
   return (
     <SvgIcon {...props} viewBox="0 0 16 16">
       <path
+        className="animate__animated animate__flipInY"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"
