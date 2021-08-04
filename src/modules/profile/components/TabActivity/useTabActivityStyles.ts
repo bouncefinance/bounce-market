@@ -46,6 +46,20 @@ export const useTabActivityStyles = makeStyles<Theme>(theme => ({
     },
   },
 
+  tableUserIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    maxWidth: 240,
+    '& .avator': {
+      width: 24,
+      height: 24,
+      marginRight: 8,
+    },
+    '& span': {
+      flex: 1,
+    },
+  },
+
   emptyTitle: {
     marginBottom: theme.spacing(1.5),
   },
@@ -64,6 +78,7 @@ export const useTabActivityStyles = makeStyles<Theme>(theme => ({
       marginRight: theme.spacing(1),
     },
   },
+
   eventIconPlus: {
     fontSize: '1rem',
     marginLeft: '4px',

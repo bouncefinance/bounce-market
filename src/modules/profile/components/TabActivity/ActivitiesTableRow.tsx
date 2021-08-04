@@ -1,4 +1,4 @@
-import { TableCell, TableRow, Tooltip } from '@material-ui/core';
+import { Avatar, TableCell, TableRow, Tooltip } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 // import { formatDistance } from 'date-fns';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
@@ -14,6 +14,15 @@ import { PlusIcon } from '../../../common/components/Icons/PlusIcon';
 import { TransferIcon } from '../../../common/components/Icons/TransferIcon';
 import { BidIcon } from '../../../common/components/Icons/BidIcon';
 import { ListedIcon } from '../../../common/components/Icons/ListedIcon';
+import { format, formatDistanceToNowStrict, subDays, getTime } from 'date-fns';
+import { zhCN, ru, enUS } from 'date-fns/locale';
+import { t } from 'modules/i18n/utils/intl';
+
+const dateLocale: { [key: string]: Locale } = {
+  zhCN: zhCN,
+  ru: ru,
+  enUS: enUS,
+};
 
 interface IActivitiesTableProps {
   item: IActivityItem;
@@ -30,6 +39,27 @@ const ItemIcon: React.FC<{ url: string; label: string }> = ({ url, label }) => {
     </div>
   );
 };
+
+const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
+  url,
+  name,
+  address,
+}) => {
+  const styles = useTabActivityStyles();
+  return (
+    <div className={styles.tableUserIcon}>
+      <Avatar src={url} className="avator" />
+      {name ? (
+        <span>{name}</span>
+      ) : (
+        <Tooltip title={address}>
+          <span>{truncateWalletAddr(address)}</span>
+        </Tooltip>
+      )}
+    </div>
+  );
+};
+
 const EventIconMaps = {
   [ActivityKeys.Create]: <PlusIcon />,
   [ActivityKeys.Bids]: <BidIcon />,
@@ -50,6 +80,15 @@ const EventIcon: React.FC<{ tabKey: ActivityKeys; label: string }> = ({
     </div>
   );
 };
+
+const formatDate = (ctime: number) => {
+  if (getTime(subDays(Date.now(), 1)) < ctime)
+    return `${formatDistanceToNowStrict(ctime, {
+      locale: dateLocale[t('profile.date.language')],
+    })}${t('profile.date.ago')}`;
+  return format(ctime, 'MM.dd.yyyy, HH:mm');
+};
+
 export const ActivitiesTableRow = ({
   item,
   symbol,
@@ -68,21 +107,33 @@ export const ActivitiesTableRow = ({
       </TableCell>
       <TableCell>{item.quantity}</TableCell>
       <TableCell>
-        {tabKey === ActivityKeys.Sales ? (
-          item.to && (
-            <Link to={ProfileRoutesConfig.OtherProfile.generatePath(item.to)}>
-              <Tooltip title={item.from}>
-                <span>{truncateWalletAddr(item.to)}</span>
-              </Tooltip>
-            </Link>
-          )
-        ) : (
-          <Tooltip title={item.from}>
-            <span>{truncateWalletAddr(item.from)}</span>
-          </Tooltip>
-        )}
+        {tabKey === ActivityKeys.Sales
+          ? item.to && (
+              <Link
+                target="_blank"
+                to={ProfileRoutesConfig.OtherProfile.generatePath(item.to)}
+              >
+                <UserIcon
+                  url={item.toUrl}
+                  name={item.toName}
+                  address={item.to}
+                />
+              </Link>
+            )
+          : item.from && (
+              <Link
+                target="_blank"
+                to={ProfileRoutesConfig.OtherProfile.generatePath(item.from)}
+              >
+                <UserIcon
+                  url={item.fromUrl}
+                  name={item.fromName}
+                  address={item.from}
+                />
+              </Link>
+            )}
       </TableCell>
-      <TableCell>{item.ctime}</TableCell>
+      <TableCell>{formatDate(item.ctime)}</TableCell>
     </TableRow>
   );
 };

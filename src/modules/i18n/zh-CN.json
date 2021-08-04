@@ -336,6 +336,10 @@
     "sort-label": "按 {value}筛选"
   },
   "profile": {
+    "date": {
+      "language": "zhCN",
+      "ago": "前"
+    },
     "activity": {
       "canceled": "已取消",
       "claimed": "已领取",
