@@ -328,7 +328,7 @@ export const BuyNFT = () => {
                         roleInfos.minter.address,
                       ),
                       avatar: roleInfos.minter.avatar,
-                      verified: false,
+                      verified: roleInfos.minter.isVerify,
                     },
                   ]}
                 />
@@ -351,6 +351,7 @@ export const BuyNFT = () => {
                         roleInfos.creator.address,
                       ),
                       avatar: roleInfos.creator.avatar,
+                      verified: roleInfos.creator.isVerify,
                     },
                   ]}
                 />

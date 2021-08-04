@@ -18,6 +18,7 @@ export interface IRoleInfo {
   address: string;
   avatar: string;
   username: string;
+  identity?: number;
   isVerify?: boolean;
 }
 
@@ -58,8 +59,14 @@ export const fetchRoleInfo = createSmartAction<
       getData: ({ data }) => {
         if (data) {
           return {
-            creator: data?.creator,
-            minter: data?.minter,
+            creator: {
+              ...data?.creator,
+              isVerify: data?.creator.identity === 2,
+            },
+            minter: {
+              ...data?.minter,
+              isVerify: data?.minter.identity === 2,
+            },
             likeCount: data?.likecount,
             isLike: Boolean(data?.mylikecount),
           };
@@ -69,6 +76,7 @@ export const fetchRoleInfo = createSmartAction<
           avatar: '--',
           username: '--',
           isVerify: false,
+          identity: 0,
         };
         return {
           creator: defaultUser,
