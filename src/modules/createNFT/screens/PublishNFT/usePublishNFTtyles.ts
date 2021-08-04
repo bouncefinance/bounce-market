@@ -16,6 +16,7 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
     [theme.breakpoints.up('lg')]: {
       order: 1,
       marginTop: 38,
+      width: IMG_SIDE,
     },
   },
 
@@ -56,5 +57,8 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
 
   labelNoMargin: {
     margin: 0,
+  },
+  textCenter: {
+    textAlign: 'center',
   },
 }));
