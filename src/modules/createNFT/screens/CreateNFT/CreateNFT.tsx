@@ -262,17 +262,6 @@ export const CreateNFT = () => {
               multiline
             />
           </Box>
-          {/* <Box mb={5}>
-            <Field
-              component={SelectField}
-              name="standard"
-              type="text"
-              label={t('create-nft.label.standard')}
-              color="primary"
-              fullWidth={true}
-              options={standardOptions}
-            />
-          </Box> */}
           {selectCollection?.nftType === NftType.ERC1155 && (
             <Box mb={5}>
               <Field
