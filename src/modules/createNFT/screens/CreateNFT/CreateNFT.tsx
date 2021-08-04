@@ -42,6 +42,9 @@ const FILE_ACCEPTS: string[] = [
   'video/mp4',
 ];
 
+const DESCRIPTION_CHARACTER_LIMIT = 200;
+const NAME_CHARACTER_LIMIT = 30;
+
 interface ICreateNFTFormData extends Omit<ICreateNFTPayload, 'supply'> {
   supply: string;
 }
@@ -216,6 +219,10 @@ export const CreateNFT = () => {
               label={t('create-nft.label.name')}
               color="primary"
               fullWidth={true}
+              showLimitCounter={true}
+              inputProps={{
+                maxLength: NAME_CHARACTER_LIMIT,
+              }}
             />
           </Box>
           <Box mb={5}>
@@ -237,6 +244,10 @@ export const CreateNFT = () => {
               fullWidth={true}
               rowsMax={10}
               multiline
+              showLimitCounter={true}
+              inputProps={{
+                maxLength: DESCRIPTION_CHARACTER_LIMIT,
+              }}
             />
           </Box>
           <Box mb={5}>
