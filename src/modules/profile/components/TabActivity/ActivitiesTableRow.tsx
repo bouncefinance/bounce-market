@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 // import { getTokenSymbol } from 'modules/common/conts';
-import { t } from '../../../i18n/utils/intl';
+// import { t } from '../../../i18n/utils/intl';
 import { ActivityKeys, IActivityItem } from '../../api/getActivity';
 import { Img } from 'modules/uiKit/Img';
 import { useTabActivityStyles } from './useTabActivityStyles';
@@ -55,7 +55,6 @@ export const ActivitiesTableRow = ({
   symbol,
   tabKey,
 }: IActivitiesTableProps) => {
-
   return (
     <TableRow>
       <TableCell>
