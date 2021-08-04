@@ -13,6 +13,7 @@ import { MarketRoutesConfig } from 'modules/market/Routes';
 import { fetchMySale, IPoolNftItem } from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { uid } from 'react-uid';
+import { t } from 'modules/i18n/utils/intl';
 
 export const TabSale = function () {
   const { data, loading } = useQuery<IPoolNftItem[]>({
@@ -78,7 +79,12 @@ export const TabSale = function () {
         )}
       </ProductCards>
       {!loading && data?.length === 0 && (
-        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+        <NoItems
+          href={MarketRoutesConfig.Market.generatePath()}
+          // import { t } from 'modules/i18n/utils/intl';
+          title={t('profile.no-items.onSale-title')}
+          descr={t('profile.no-items.onSale-description')}
+        />
       )}
     </TabItemsComponent>
   );

@@ -63,7 +63,8 @@ const validateEditProfile = (payload: IEditProfileValues) => {
   return errors;
 };
 
-const USERNAME_MAX_LENGTH = 100;
+const USERNAME_MAX_LENGTH = 25;
+const FULLNAME_MAX_LENGTH = 25;
 const BIO_CHARACTER_LIMIT = 200;
 
 export const EditProfile = () => {
@@ -112,6 +113,7 @@ export const EditProfile = () => {
             label={`${t('profile.edit.label.username')}*`}
             color="primary"
             fullWidth
+            showLimitCounter={true}
             inputProps={{
               maxLength: USERNAME_MAX_LENGTH,
             }}
@@ -126,6 +128,10 @@ export const EditProfile = () => {
             label={`${t('profile.edit.label.full-name')}*`}
             color="primary"
             fullWidth
+            showLimitCounter={true}
+            inputProps={{
+              maxLength: FULLNAME_MAX_LENGTH,
+            }}
           />
         </Box>
 
@@ -138,6 +144,9 @@ export const EditProfile = () => {
             label={t('profile.edit.label.email')}
             color="primary"
             fullWidth
+            inputProps={{
+              maxLength: BIO_CHARACTER_LIMIT,
+            }}
           />
         </Box>
 

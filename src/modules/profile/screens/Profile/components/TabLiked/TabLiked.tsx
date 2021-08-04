@@ -15,6 +15,7 @@ import {
   queryLikedItems,
 } from 'modules/profile/actions/queryLikedItems';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { t } from 'modules/i18n/utils/intl';
 import { uid } from 'react-uid';
 
 export const TabLiked = function () {
@@ -84,7 +85,11 @@ export const TabLiked = function () {
         )}
       </ProductCards>
       {!loading && data?.length === 0 && (
-        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+        <NoItems
+          href={MarketRoutesConfig.Market.generatePath()}
+          title={t('profile.no-items.Liked-title')}
+          descr={t('profile.no-items.Liked-description')}
+        />
       )}
     </TabItemsComponent>
   );
