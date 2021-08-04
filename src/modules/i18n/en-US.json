@@ -338,12 +338,16 @@
     "sort-label": "Sort by: {value}"
   },
   "profile": {
+    "date": {
+      "language": "enUS",
+      "ago": " ago"
+    },
     "activity": {
       "canceled": "Canceled",
       "claimed": "Claimed",
       "created": "Created",
       "date": "Date",
-      "empty-description": "You have not had any activities yet",
+      "empty-description": "Go explore fangible to find excitement!",
       "empty-title": "No activities found",
       "event": "Event",
       "from": "From",
