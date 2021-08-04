@@ -6,7 +6,7 @@ import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { Social } from 'modules/common/components/Social';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-import { fetchActivitiesTable } from '../../actions/fetchActivitiesTable';
+// import { fetchActivitiesTable } from '../../actions/fetchActivitiesTable';
 import { fetchOwned } from 'modules/profile/actions/fetchOwned';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { fetchMyBids, fetchMySale } from 'modules/profile/actions/fetchSale';
