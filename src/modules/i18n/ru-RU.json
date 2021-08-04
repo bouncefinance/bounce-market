@@ -331,6 +331,10 @@
     "sort-label": "Сортировать по: {value}"
   },
   "profile": {
+    "date": {
+      "language": "ru",
+      "ago": " назад"
+    },
     "activity": {
       "canceled": "Отменено",
       "claimed": "Вывыдено",

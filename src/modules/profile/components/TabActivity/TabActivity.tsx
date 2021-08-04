@@ -7,8 +7,10 @@ import { ActivitiesTable } from './ActivitiesTable';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ActivityKeys } from '../../api/getActivity';
-import { ActivitiesNoItems } from './ActivitiesNoItems';
 import { Tabs, Tab } from '@material-ui/core';
+import { NoItems } from 'modules/common/components/NoItems';
+import { MarketRoutesConfig } from 'modules/market/Routes';
+import { t } from 'modules/i18n/utils/intl';
 
 export const TabActivity = () => {
   const styles = useTabActivityStyles();
@@ -38,6 +40,7 @@ export const TabActivity = () => {
     //   value: ActivityKeys.Transfers,
     // },
   ];
+
   const dispatch = useDispatchRequest();
   const { address } = useAccount();
   const [tabKey, setTabKey] = useState<ActivityKeys>(ActivityKeys.Create);
@@ -82,14 +85,18 @@ export const TabActivity = () => {
       </Tabs>
       <Queries<ResponseData<typeof fetchActivitiesTable>>
         requestActions={[fetchActivitiesTable]}
+        empty={
+          <NoItems
+            href={MarketRoutesConfig.Market.generatePath()}
+            title={t('profile.activity.empty-title')}
+            descr={t('profile.activity.empty-description')}
+          />
+        }
       >
-        {({ data, loading }) => {
-          if (loading || !data?.length) {
-            return <ActivitiesNoItems />;
-          }
+        {({ data }) => {
           return (
             <ActivitiesTable
-              data={data}
+              data={data.sort((a, b) => b.ctime - a.ctime)}
               tabKey={tabKey} // TODO: 需要按链接提取
               symbol={'BNB'}
             />

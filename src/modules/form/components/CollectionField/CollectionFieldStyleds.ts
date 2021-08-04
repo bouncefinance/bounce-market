@@ -16,8 +16,8 @@ export const useCollectionFieldStyles = makeStyles((theme: Theme) =>
       marginTop: 24,
     },
     collectionCard: {
-      width: 150,
-      height: 160,
+      width: 126,
+      height: 135,
       boxSizing: 'border-box',
       border: '1px solid rgba(0,0,0,.1)',
       borderRadius: 16,

@@ -4,10 +4,10 @@ import { useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { listBrands } from 'modules/brand/actions/listBrands';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
-import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { Subscribers } from 'modules/profile/components/Subscribers';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -48,24 +48,31 @@ export const Brands = () => {
                   owneraddress,
                   contractaddress,
                 }: IBrandInfo) => (
-                  <BrandsItem
-                    href={BrandRoutesConfig.Brand.generatePath(id)}
-                    key={id}
-                    name={brandname}
-                    descr={description}
-                    img={imgurl}
-                    nftItems={
-                      <BrandNFTItems
-                        ownerAddress={owneraddress}
-                        contractAddress={contractaddress}
-                      />
-                    }
-                    followers={
-                      featuresConfig.subscribers ? (
-                        <Subscribers withFollow />
-                      ) : undefined
-                    }
-                  />
+                  <>
+                    <BrandsItem
+                      href={
+                        owneraddress &&
+                        ProfileRoutesConfig.OtherProfile.generatePath(
+                          owneraddress,
+                        )
+                      }
+                      key={id}
+                      name={brandname}
+                      descr={description}
+                      img={imgurl}
+                      nftItems={
+                        <BrandNFTItems
+                          ownerAddress={owneraddress}
+                          contractAddress={contractaddress}
+                        />
+                      }
+                      followers={
+                        featuresConfig.subscribers ? (
+                          <Subscribers withFollow />
+                        ) : undefined
+                      }
+                    />
+                  </>
                 ),
               )}
             </BrandsList>

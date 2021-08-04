@@ -22,12 +22,14 @@ import { t } from 'modules/i18n/utils/intl';
 import { AddFollowIcon } from './assets/AddFollowIcon';
 import { uid } from 'react-uid';
 import { ToggleFollowType } from 'modules/profile/actions/toggleFollow';
+import { useAccount } from 'modules/account/hooks/useAccount';
 
 interface ITabFollowingProps {
   followAddress: string;
   accountaddress: string;
   renderType: FollowType;
   setFollowingCount: (num: number) => void;
+  onClose: () => void;
 }
 
 export const TabFollowing = ({
@@ -35,13 +37,14 @@ export const TabFollowing = ({
   accountaddress,
   renderType,
   setFollowingCount,
+  onClose,
 }: ITabFollowingProps) => {
   const classes = useTabFollowingStyles();
   const [isCancelFollowIndex, setIsCancelFollowIndex] = useState('');
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
   const [renderList, setRenderList] = useState<IFollowListItem[]>([]);
-
+  const { handleConnect } = useAccount();
   const { onFollowClick } = useFollow({ followAddress });
 
   useEffect(() => {
@@ -73,6 +76,13 @@ export const TabFollowing = ({
 
   const onSubmitFollow = useCallback(
     (payload: any, index: number) => {
+      // if user not connect wallet
+      if (!accountaddress) {
+        onClose();
+        setTimeout(handleConnect, 200);
+        return;
+      }
+
       onFollowClick(payload)
         .then(async res => {
           const cloneRenderList = [...renderList];
@@ -91,7 +101,14 @@ export const TabFollowing = ({
         })
         .catch(() => {});
     },
-    [renderList, onFollowClick, setFollowingCount],
+    [
+      renderList,
+      onFollowClick,
+      accountaddress,
+      setFollowingCount,
+      onClose,
+      handleConnect,
+    ],
   );
   const renderListItems = useMemo(() => {
     return renderList?.map((item, index) => (

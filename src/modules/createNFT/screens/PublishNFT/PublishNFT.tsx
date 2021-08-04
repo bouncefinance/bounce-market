@@ -340,7 +340,9 @@ export const PublishNFTComponent = ({
           )}
 
           <Box mt={2}>
-            <Typography variant="h2">{name}</Typography>
+            <Typography variant="h2" className={classes.textCenter}>
+              {name}
+            </Typography>
           </Box>
         </div>
 
