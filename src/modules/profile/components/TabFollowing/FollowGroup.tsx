@@ -142,6 +142,7 @@ export const FollowGroup = ({
             accountaddress={address || ''}
             renderType={followType}
             setFollowingCount={setFollowingCount}
+            onClose={onClose}
           />
         </div>
 
