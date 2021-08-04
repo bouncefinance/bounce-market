@@ -386,7 +386,14 @@
     "edit-avatar": "编辑头像",
     "edit-cover": "编辑主页封面",
     "edit-profile": "编辑个人信息",
-    "follow": "关注",
+    "follow": {
+      "follow": "关注",
+      "following": "正在关注",
+      "followers": "关注者",
+      "unfollow": "取消关注",
+      "no-list": "列表为空",
+      "my-self": "自己"
+    },
     "no-items": {
       "btn": "浏览市场",
       "descr": "您还未创建任何NFT",

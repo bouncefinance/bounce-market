@@ -392,7 +392,9 @@
       "follow": "Follow",
       "following": "Following",
       "followers": "Followers",
-      "unfollow": "Unfollow"
+      "unfollow": "Unfollow",
+      "no-list": "List Is Null",
+      "my-self": "Myself"
     },
     "no-items": {
       "btn": "Browse marketplace",
