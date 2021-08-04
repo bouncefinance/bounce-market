@@ -17,8 +17,6 @@ import {
   IProfileInfo,
   mapProfileInfo,
 } from '../api/profileInfo';
-import { ProfileRoutesConfig } from '../ProfileRoutes';
-import { historyInstance } from 'modules/common/utils/historyInstance';
 
 interface IFetchProfileInfoArgs {
   address: string;
@@ -60,7 +58,7 @@ export const fetchProfileInfo = createSmartAction<
     },
     getData: data => {
       if (data.code === 0) {
-        historyInstance.replace(ProfileRoutesConfig.EditProfile.generatePath());
+        // historyInstance.replace(ProfileRoutesConfig.EditProfile.generatePath());
         console.error('fetchProfileInfo:', data?.msg ?? 'Unexpected error');
         return;
       }
