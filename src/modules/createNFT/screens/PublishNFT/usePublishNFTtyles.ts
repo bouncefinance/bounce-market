@@ -27,7 +27,7 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
 
     [theme.breakpoints.up('lg')]: {
       maxWidth: 'none',
-      position: 'sticky',
+      // position: 'sticky',
       top: theme.spacing(2),
     },
 
