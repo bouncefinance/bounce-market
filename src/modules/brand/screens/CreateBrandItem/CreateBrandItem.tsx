@@ -34,7 +34,6 @@ const FILE_ACCEPTS: string[] = [
   'image/jpeg',
   'image/jp2',
   'image/jpm',
-  'image/webp',
   'audio/mpeg',
   'video/mpeg',
   'video/mp4',
@@ -159,7 +158,7 @@ export const CreateBrandItem = () => {
             component={UploadFileField}
             name="file"
             maxSize={MAX_SIZE}
-            acceptsHint={['PNG', 'JPG', 'GIF', 'WEBP', 'MP4', 'MP3']}
+            acceptsHint={['PNG', 'JPG', 'GIF', 'MP4', 'MP3']}
             accepts={FILE_ACCEPTS}
             fitView={true} // TODO should switching by fit/fill switcher in form
           />
