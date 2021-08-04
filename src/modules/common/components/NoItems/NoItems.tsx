@@ -9,16 +9,17 @@ interface INoItemsProps {
   href?: string;
   onClick?: () => void;
   descr?: string;
+  title?: string;
 }
 
-export const NoItems = ({ href, onClick, descr }: INoItemsProps) => {
+export const NoItems = ({ href, onClick, descr, title }: INoItemsProps) => {
   const classes = useNoItemsStyles();
   const withBtn = !!href || !!onClick;
 
   return (
     <Box py={5} textAlign="center">
       <Typography variant="h2" className={classes.title}>
-        {t('profile.no-items.title')}
+        {title || t('profile.no-items.title')}
       </Typography>
 
       {descr && <Typography className={classes.descr}>{descr}</Typography>}
