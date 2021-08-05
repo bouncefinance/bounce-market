@@ -250,7 +250,11 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.brands}>
-          {isCreateNft ? <CrateItemAll /> : <TabBrands />}
+          {isCreateNft ? (
+            <CrateItemAll address={address ?? ''} />
+          ) : (
+            <TabBrands />
+          )}
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>

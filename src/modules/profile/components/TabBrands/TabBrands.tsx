@@ -14,7 +14,10 @@ import {
 import { uid } from 'react-uid';
 import { useTabBrandStyles } from './useTabBrandsStyles';
 
-export const TabBrands = () => {
+export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
+  isOther = false,
+  address = '',
+}) => {
   const classes = useTabBrandStyles();
   const { data: brands, loading } = useQuery<IMyBrand[]>({
     type: queryMyBrandItem.toString(),
@@ -22,9 +25,11 @@ export const TabBrands = () => {
 
   return (
     <Grid container spacing={4} className={classes.root}>
-      <Grid item xs={12} sm={6} lg={4} xl={3}>
-        <BrandEmptyCard />
-      </Grid>
+      {isOther || (
+        <Grid item xs={12} sm={6} lg={4} xl={3}>
+          <BrandEmptyCard />
+        </Grid>
+      )}
       {loading ? (
         <></>
       ) : (
@@ -32,13 +37,23 @@ export const TabBrands = () => {
           <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(brand)}>
             <BrandCard
               withAddBtn
-              href={ProfileRoutesConfig.UserProfile.generatePath(
-                USER_CREATE_NFT_PROFILE,
-                brand.contract || undefined,
-              )}
-              addItemHref={BrandRoutesConfig.CreateBrandItem.generatePath(
-                brand.id,
-              )}
+              href={
+                isOther
+                  ? ProfileRoutesConfig.OtherProfile.generatePath(
+                      address,
+                      USER_CREATE_NFT_PROFILE,
+                      brand.contract || undefined,
+                    )
+                  : ProfileRoutesConfig.UserProfile.generatePath(
+                      USER_CREATE_NFT_PROFILE,
+                      brand.contract || undefined,
+                    )
+              }
+              addItemHref={
+                isOther
+                  ? ''
+                  : BrandRoutesConfig.CreateBrandItem.generatePath(brand.id)
+              }
               title={brand.title}
               id={brand.id}
               itemsCount={brand.itemsCount}
