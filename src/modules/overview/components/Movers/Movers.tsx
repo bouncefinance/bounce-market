@@ -45,7 +45,10 @@ export const Movers = (sectionProps: ISectionProps) => {
         price={item.price}
         priceType={item.tokenSymbol}
         endDate={item.closeAt}
-        copies={item.supply}
+        soldData={{
+          sold: item.swappedAmount0,
+          quantity: item.quantity,
+        }}
         likes={item.likeCount}
         isLike={item.isLike}
         href={
