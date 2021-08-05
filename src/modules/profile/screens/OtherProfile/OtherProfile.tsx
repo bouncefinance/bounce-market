@@ -2,19 +2,27 @@ import { Container } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { queryMyBrandItem } from 'modules/brand/actions/queryMyBrandItem';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { QueryLoadingAbsolute } from 'modules/common/components/QueryLoading/QueryLoading';
 import { Social } from 'modules/common/components/Social';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchFollowInfo } from 'modules/profile/actions/fetchFollowInfo';
+import { fetchOwned } from 'modules/profile/actions/fetchOwned';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { fetchMySale } from 'modules/profile/actions/fetchSale';
+import {
+  ILikedItem,
+  queryLikedItems,
+} from 'modules/profile/actions/queryLikedItems';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
 import { Bio } from 'modules/profile/components/Bio';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import { Subscribers } from 'modules/profile/components/Subscribers';
+import { CrateItemAll, TabBrands } from 'modules/profile/components/TabBrands';
 import { FollowGroup } from 'modules/profile/components/TabFollowing';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
@@ -25,20 +33,25 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
+import { TabLiked } from '../Profile/components/TabLiked';
+import { TabOwned } from '../Profile/components/tabOwned';
+import { TabSale } from '../Profile/components/TabSale';
 import { ConnectWallet } from './components/ConnectWallet';
-import { TabBrands } from './components/TabBrands';
-import { TabItems } from './components/TabItems';
 import { useOtherProfileStyles } from './useOtherProfileStyles';
 
 export const PROFILE_INFO_REQUEST_KEY = '/other';
 
 export const OtherProfile = () => {
+  const { isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
   const { tab, address } = ProfileRoutesConfig.OtherProfile.useParams();
   const classes = useOtherProfileStyles();
   const { push } = useHistory();
   const { isConnected, address: accountAddress } = useAccount();
+  const { data: likedItems } = useQuery<ILikedItem[] | null>({
+    type: queryLikedItems.toString(),
+  });
 
   useEffect(() => {
     dispatchRequest(
@@ -91,13 +104,26 @@ export const OtherProfile = () => {
   const tabs = useMemo(
     () => [
       {
-        value: ProfileTab.items,
-        label: t('profile.tabs.items'),
+        value: ProfileTab.sells,
+        label: t('profile.tabs.my-sells'),
       },
       {
         value: ProfileTab.brands,
         label: t('profile.tabs.collections'),
       },
+      {
+        value: ProfileTab.owned,
+        label: t('profile.tabs.showcase'),
+      },
+      ...(featuresConfig.nftLikes
+        ? [
+            {
+              value: ProfileTab.liked,
+              label: t('profile.tabs.liked'),
+              count: likedItems ? likedItems.length : 0,
+            },
+          ]
+        : []),
       ...(featuresConfig.profileFollowers
         ? [
             {
@@ -111,11 +137,42 @@ export const OtherProfile = () => {
     [],
   );
 
+  const updateData = useCallback(
+    (value: ProfileTab) => {
+      if (!address) {
+        return;
+      }
+      switch (value) {
+        case ProfileTab.brands: {
+          dispatch(queryMyBrandItem(address));
+          break;
+        }
+        case ProfileTab.owned: {
+          dispatch(fetchOwned({ address }));
+          break;
+        }
+        case ProfileTab.sells: {
+          dispatch(fetchMySale({ address }));
+          break;
+        }
+        case ProfileTab.liked: {
+          dispatch(queryLikedItems());
+          break;
+        }
+        default: {
+          console.error('not match tab', value);
+        }
+      }
+    },
+    [address, dispatch],
+  );
+
   const onTabsChange = useCallback(
     (_, value) => {
       push(ProfileRoutesConfig.OtherProfile.generatePath(address, value));
+      updateData(value);
     },
-    [address, push],
+    [address, push, updateData],
   );
 
   if (profileInfoLoading) {
@@ -171,13 +228,23 @@ export const OtherProfile = () => {
 
         {isConnected ? (
           <>
-            <TabPanel value={tab} index={ProfileTab.items}>
-              <TabItems address={address} />
+            <TabPanel value={tab} index={ProfileTab.owned}>
+              <TabOwned />
             </TabPanel>
 
             <TabPanel value={tab} index={ProfileTab.brands}>
-              <TabBrands address={address} />
+              {isCreateNft ? <CrateItemAll /> : <TabBrands />}
             </TabPanel>
+
+            <TabPanel value={tab} index={ProfileTab.sells}>
+              <TabSale />
+            </TabPanel>
+
+            {featuresConfig.nftLikes && (
+              <TabPanel value={tab} index={ProfileTab.liked}>
+                <TabLiked />
+              </TabPanel>
+            )}
 
             {featuresConfig.profileFollowers && (
               <TabPanel value={tab} index={ProfileTab.following}>

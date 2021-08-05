@@ -22,16 +22,16 @@ export const TabSale = function () {
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMySale.toString(),
   });
-  // const bidsInfo = usePoolList({
-  //   list:
-  //     data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
-  //   contractFunctionName: 'currentBidderAmount1P',
-  // });
-  // const bidsReserveAmount = usePoolList({
-  //   list:
-  //     data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
-  //   contractFunctionName: 'reserveAmount1P',
-  // });
+  const bidsInfo = usePoolList({
+    list:
+      data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
+    contractFunctionName: 'currentBidderAmount1P',
+  });
+  const bidsReserveAmount = usePoolList({
+    list:
+      data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
+    contractFunctionName: 'reserveAmount1P',
+  });
 
   return (
     <TabItemsComponent>
@@ -97,8 +97,8 @@ export const TabSale = function () {
               openAt={item.openAt}
               closeAt={item.closeAt}
               isOnSeller
-              // bidTopPrice={bidsInfo[index]?.toNumber() || 0}
-              // bidsReserveAmount={bidsReserveAmount[index]?.toNumber() || 0}
+              bidTopPrice={bidsInfo[index]?.toNumber() || 0}
+              bidsReserveAmount={bidsReserveAmount[index]?.toNumber() || 0}
               isCreatorClaimed={Boolean(item.creator_claimed)}
               isBidderClaimed={Boolean(item.bidder_claimed)}
             />
