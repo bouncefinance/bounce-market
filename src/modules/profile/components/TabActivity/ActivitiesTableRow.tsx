@@ -124,8 +124,6 @@ export const ActivitiesTableRow = ({
   symbol,
   tabKey,
 }: IActivitiesTableProps) => {
-  const styles = useTabActivityStyles();
-
   const renderItemPreview = useCallback(
     (category: NFTType) => {
       return category === 'video' ? (
@@ -134,7 +132,7 @@ export const ActivitiesTableRow = ({
         <ItemIcon url={item.fileUrl} label={item.itemName} />
       );
     },
-    [styles],
+    [item.fileUrl, item.itemName],
   );
 
   return (
