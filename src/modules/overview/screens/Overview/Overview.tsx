@@ -58,8 +58,7 @@ export const Overview = () => {
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
   const classes = useOverviewStyles();
-  const { isConnected } = useAccount();
-  const { chainId } = useAccount();
+  const { isConnected, chainId } = useAccount();
 
   useEffect(() => {
     dispatchRequest(fetchOverview());
