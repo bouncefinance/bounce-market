@@ -19,9 +19,7 @@ import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { ConditionalWrapper } from 'modules/common/components/ConditionalWrapper';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
-import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
 import { featuresConfig } from 'modules/common/conts';
-import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
@@ -30,7 +28,9 @@ import { Link, Link as RouterLink } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
+import BidsState, { BidsType } from './BidsState';
 import { CancelPutTime } from './cancel';
+import { ClaimFunds } from './claimFunds';
 import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
 import { Timer } from './Timer';
@@ -80,6 +80,12 @@ export interface IProductCardComponentProps {
   isCancelTimePut?: boolean;
   poolId?: number;
   openAt?: Date;
+  closeAt?: Date;
+  bidTopPrice?: number;
+  bidsReserveAmount?: number;
+  myBidderAmount?: number;
+  isBidder?: boolean;
+  isOnSeller?: boolean;
   soldData?: ISoldData;
 }
 
@@ -114,6 +120,12 @@ export const ProductCardComponent = ({
   isCancelTimePut = false,
   poolId,
   openAt,
+  closeAt,
+  bidTopPrice,
+  bidsReserveAmount = 0,
+  myBidderAmount = 0,
+  isBidder = false,
+  isOnSeller = false,
   soldData,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect } = useAccount();
@@ -133,23 +145,6 @@ export const ProductCardComponent = ({
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
-
-  const renderTimer = useCallback(() => {
-    const daysLeft = endDate ? getDaysLeft(endDate) : 0;
-    const isLastDay = daysLeft <= 0;
-
-    return (
-      <div className={classes.info}>
-        <TimeIcon
-          className={classNames(classes.icon, classes.iconRightOffset)}
-        />
-
-        {isLastDay && 'the last day'}
-
-        {!isLastDay && `${daysLeft} days left`}
-      </div>
-    );
-  }, [classes, endDate]);
 
   const renderCardStatus = useCallback(
     (title: string, subTitle: string) => {
@@ -270,6 +265,38 @@ export const ProductCardComponent = ({
     ],
   );
 
+  const isAuction =
+    auctionType === AuctionType.EnglishAuction ||
+    auctionType === AuctionType.EnglishAuction_Timing;
+  const inAuction =
+    openAt && closeAt && +openAt < Date.now() && +closeAt > Date.now();
+  const auctionEnd = closeAt && +closeAt <= Date.now();
+  const myPriceNumber = myBidderAmount || 0;
+  // Figma 4
+  const isOutBid =
+    isAuction &&
+    inAuction &&
+    bidTopPrice &&
+    myPriceNumber > 0 &&
+    myPriceNumber < bidTopPrice;
+
+  // figama 1
+  const isLost =
+    isAuction &&
+    auctionEnd &&
+    bidTopPrice &&
+    myPriceNumber > 0 &&
+    myPriceNumber === bidTopPrice &&
+    myPriceNumber < bidsReserveAmount;
+  // Figema 2
+  const isWon =
+    isAuction &&
+    auctionEnd &&
+    myPriceNumber > 0 &&
+    myPriceNumber === bidTopPrice &&
+    bidsReserveAmount &&
+    myPriceNumber > bidsReserveAmount;
+
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
       <div className={classes.relative}>
@@ -281,6 +308,9 @@ export const ProductCardComponent = ({
           {openAt && +openAt > Date.now() && (
             <CardPutSaleTimer openAt={openAt} />
           )}
+          {isOutBid && <BidsState type={BidsType.OUTBID} />}
+          {isLost && <BidsState type={BidsType.LOST} />}
+          {isWon && <BidsState type={BidsType.WON} />}
         </ConditionalWrapper>
         {featuresConfig.nftLikes && !hiddenLikeBtn && renderedLikes}
       </div>
@@ -331,13 +361,28 @@ export const ProductCardComponent = ({
 
                   {soldData && renderSolds}
 
-                  {/* {endDate && renderTimer()} */}
-
                   {!endDate && !copies && <i />}
                   {isCancelTimePut ? (
                     <CancelPutTime auctionType={auctionType} id={poolId} />
                   ) : (
                     <></>
+                  )}
+
+                  {isLost && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={isBidder}
+                    />
+                  )}
+                  {isWon && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.WON}
+                      isBidder={isBidder}
+                    />
                   )}
                 </>
               )}

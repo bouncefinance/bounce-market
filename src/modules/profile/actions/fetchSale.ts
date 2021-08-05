@@ -53,6 +53,7 @@ interface _IPoolNftItem {
 export interface IPoolNftItem extends Omit<_IPoolNftItem, 'price'> {
   price: BigNumber;
   openAt: Date;
+  closeAt: Date;
   poolType: AuctionType;
   isLike: boolean;
 }
@@ -100,6 +101,7 @@ export const fetchMySale = createSmartAction<
           ...item,
           price: new BigNumber(Web3.utils.fromWei(item.price)),
           openAt: new Date(item.open_at * 1e3),
+          closeAt: new Date(item.close_at * 1e3),
           poolType: auctionTypeMap[item.pooltype],
           state: item.state === 0 ? getLiveSate() : getCloseSate(),
           isLike: Boolean(item.mylikecount),
@@ -142,6 +144,7 @@ export const fetchMyBids = createSmartAction<
           ...item,
           price: new BigNumber(Web3.utils.fromWei(item.price)),
           openAt: new Date(item.open_at * 1e3),
+          closeAt: new Date(item.close_at * 1e3),
           poolType: auctionTypeMap[pooltype],
           state: item.state === 0 ? getLiveSate() : getCloseSate(),
           isLike: Boolean(item.mylikecount),

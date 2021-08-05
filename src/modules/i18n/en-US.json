@@ -106,7 +106,10 @@
       "standard": "Standard",
       "supply": "Supply"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "title": "Create NFT",
@@ -134,7 +137,10 @@
       "description": "What's the story behind this NFT?"
     },
     "next": "Next",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "time": "",
@@ -287,7 +293,7 @@
         "creator": "Auction is in progress"
       },
       "NotSoldByReservePrice": {
-        "buyer": "Item hasn't been sold. Claim your tokens back",
+        "buyer": "Item hasn't been sold. Claim your funds back",
         "creator": "Item hasn't been sold. Claim your NFT back",
         "others": "Item hasn't been sold"
       }
@@ -324,6 +330,11 @@
     "top-bid": "Top Bid",
     "pool-start-tips": "The pool will start in:",
     "transfer": "Transfer token",
+    "lost": "Your bid was lost",
+    "won": "Your bid won",
+    "outbid": "You were outbid",
+    "claim-funds": "Claim funds",
+    "claim-token": "Claim token",
     "item-balance-tip": "{balance} editions in account",
     "pool-balance-tip": "{balance} available for purchase",
     "sold-for-quantity": "Sold {sold} of {quantity}"
@@ -341,7 +352,7 @@
       "ago": " ago"
     },
     "activity": {
-      "tab":{
+      "tab": {
         "create": "Create",
         "listings": "Listings",
         "bids": "Bids",

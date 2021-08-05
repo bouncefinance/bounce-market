@@ -32,6 +32,11 @@ export interface IProductCardProps
   state?: number;
   isLike?: boolean;
   isItemType?: boolean;
+  bidTopPrice?: number;
+  bidsReserveAmount?: number;
+  myBidderAmount?: number;
+  isBidder?: boolean;
+  isOnSeller?: boolean;
 }
 
 export const ProductCard = ({

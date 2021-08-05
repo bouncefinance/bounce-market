@@ -83,6 +83,7 @@ export const TabSale = function () {
               )}
               isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
               openAt={item.openAt}
+              closeAt={item.closeAt}
             />
           ))
         )}
