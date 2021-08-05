@@ -36,6 +36,10 @@ const FILE_ACCEPTS: string[] = [
   'image/jpm',
 ];
 
+const NAME_CHARACTER_LIMIT = 30;
+const SYMBOL_CHARACTER_LIMIT = 15;
+const DESCRIPTION_CHARACTER_LIMIT = 200;
+
 const validateCreateBrand = (payload: ICreateBrand) => {
   const errors: FormErrors<ICreateBrand> = {};
 
@@ -59,8 +63,6 @@ const validateCreateBrand = (payload: ICreateBrand) => {
 
   return errors;
 };
-
-const DESCRIPTION_CHARACTER_LIMIT = 200;
 
 export const CreateBrand = () => {
   const dispatch = useDispatchRequest();
@@ -105,6 +107,10 @@ export const CreateBrand = () => {
             color="primary"
             fullWidth={true}
             autoFocus
+            showLimitCounter={true}
+            inputProps={{
+              maxLength: NAME_CHARACTER_LIMIT,
+            }}
           />
         </Box>
         <Box mb={5}>
@@ -155,6 +161,10 @@ export const CreateBrand = () => {
                 </Tooltip>
               </Box>
             }
+            showLimitCounter={true}
+            inputProps={{
+              maxLength: SYMBOL_CHARACTER_LIMIT,
+            }}
           />
         </Box>
         <Box mb={5}>

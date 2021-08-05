@@ -148,9 +148,10 @@ export const TabFollowing = ({
         <div className={classes.itemFollowWrap}>
           {String(item.userId).toLowerCase() ===
           String(accountaddress).toLowerCase() ? (
-            <Button disabled rounded className={classes.followButton}>
-              My Self
-            </Button>
+            // <Button disabled rounded className={classes.followButton}>
+            //   {t('profile.follow.my-self')}
+            // </Button>
+            <></>
           ) : item.follow ? (
             <Button
               className={classes.followButton}
@@ -214,7 +215,7 @@ export const TabFollowing = ({
   const NullList = () => {
     return (
       <div className={classes.listNull}>
-        <h3>List Is Null</h3>
+        <h3>{t('profile.follow.no-list')}</h3>
       </div>
     );
   };

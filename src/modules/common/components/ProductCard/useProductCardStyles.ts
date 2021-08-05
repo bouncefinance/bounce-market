@@ -10,6 +10,9 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   imgBox: {
     position: 'relative',
     display: 'block',
+    '&:hover img': {
+      transform: 'scale(1.1)',
+    },
   },
 
   imgWrap: {
@@ -162,9 +165,11 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   },
   likeBtn: {
     padding: 6,
-
+    transform: 'rotateY(0)',
+    transition: 'transform 1s ease',
     '&:hover': {
       color: 'red',
+      transform: 'rotateY(180deg)',
     },
   },
 
