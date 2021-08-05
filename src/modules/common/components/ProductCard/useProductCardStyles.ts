@@ -99,8 +99,8 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
 
   title: {
     marginBottom: theme.spacing(2),
-
     fontSize: 16,
+    height: 21,
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden',

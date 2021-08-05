@@ -192,7 +192,8 @@
     },
     "role": {
       "seller": "Owner",
-      "minter": "Creator"
+      "minter": "Creator",
+      "collection": "Collection"
     },
     "top-bid": "Top Bid",
     "your-bid": "Your bid"

@@ -33,7 +33,7 @@ export const useCollectionFieldStyles = makeStyles((theme: Theme) =>
       '& > h3': {
         display: 'inline-block',
         width: 110,
-        height: 42,
+        height: 22,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
       },

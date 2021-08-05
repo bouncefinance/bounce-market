@@ -114,6 +114,9 @@ export const CrateItemAll = () => {
                     {
                       name: item.creatorname,
                       avatar: item.creatorimage,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.creatoraddress,
+                      ),
                       verified: isVerify || false,
                     },
                   ]}

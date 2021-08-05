@@ -192,7 +192,8 @@
     },
     "role": {
       "seller": "拥有者",
-      "minter": "创建者"
+      "minter": "创建者",  
+      "collection": "作品集"
     },
     "top-bid": "最高出价",
     "your-bid": "您的出价"

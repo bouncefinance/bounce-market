@@ -262,7 +262,6 @@ export const fetchPoolDetails = createSmartAction<
             };
           }
         } catch (error) {
-          console.log('-----getonepoolinfo---', error);
           return {
             quantity: poolInfo.token_amount0,
             totalPrice: new BigNumber(
