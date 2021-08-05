@@ -62,7 +62,7 @@ export const TabOwned = function () {
               standard={item.standard}
               profileInfo={
                 <ProfileInfo
-                  subTitle="Creater"
+                  subTitle={t('details-nft.role.minter')}
                   title={item.creatorname}
                   users={[
                     {

@@ -322,7 +322,9 @@
     "sold-for": "Продано за",
     "top-bid": "Наивысшая ставка",
     "pool-start-tips": "Бассейн будет запущен:",
-    "transfer": "Перевести токен"
+    "transfer": "Перевести токен",
+    "balance-tip": "{balance} издания на счете",
+    "sold-for-quantity": "Продано {sold} из {quantity}"
   },
   "cancel-timer": {
     "title": "Отмена продажи",

@@ -32,6 +32,8 @@ export interface IOverviewItem extends IItemByFilter {
   itemName: string;
   fileUrl: string;
   ownerAddress: string;
+  quantity: number;
+  swappedAmount0: number;
 }
 
 export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
@@ -114,8 +116,11 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 return [];
               }
 
-              const overviewItems: IOverviewItem[] = (poolDetailsList ?? [])
+              const overviewItems: (IOverviewItem | null)[] = (
+                poolDetailsList ?? []
+              )
                 ?.map(poolItem => {
+                  if (!poolItem) return null;
                   const nftItem = itemDataList.find(nftItem => {
                     return (
                       poolItem?.tokenId === nftItem.id &&
@@ -125,6 +130,7 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                   }) as IItemByFilter;
 
                   let price = new BigNumber(0);
+                  let quantity = 0;
 
                   if (
                     poolItem?.auctionType === AuctionType.EnglishAuction ||
@@ -136,12 +142,16 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                         ? (poolItem as IEnglishAuctionDetails).lastestBidAmount
                         : (poolItem as IEnglishAuctionDetails).amountMin1 ||
                           new BigNumber(0);
+
+                    quantity = (poolItem as IEnglishAuctionDetails)
+                      .tokenAmount0;
+                    // sold = (poolItem as IEnglishAuctionDetails)
                   } else {
                     price =
                       (poolItem as IFixedAuctionDetails).price ||
                       new BigNumber(0);
+                    quantity = (poolItem as IFixedAuctionDetails).quantity;
                   }
-
                   return {
                     ...nftItem,
                     price,
@@ -160,13 +170,16 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                     likeCount: poolItem?.likeCount ?? 0,
                     itemName: nftItem?.itemname,
                     fileUrl: nftItem?.fileurl,
-                    ownerAddress: nftItem?.owneraddress,
+                    ownerAddress: poolItem?.creator || '',
+                    quantity,
+                    swappedAmount0: poolItem?.swappedAmount0 || 0,
                   };
                 })
-                .filter(item => item.poolId)
+                .filter(item => item?.poolId)
                 .sort((a, b) => {
-                  return b.poolWeight - a.poolWeight;
+                  return (b?.poolWeight || 1) - (a?.poolWeight || 1);
                 });
+
               return overviewItems;
             })(),
           };
