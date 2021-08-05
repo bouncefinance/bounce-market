@@ -156,7 +156,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   infoContainer: {
     display: 'grid',
     alignItems: 'center',
-    gridTemplateColumns: '1fr auto',
+    gridTemplateColumns: 'max-content auto',
     gap: theme.spacing(0, 1.5),
     marginTop: 5,
   },
