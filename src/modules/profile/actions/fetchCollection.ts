@@ -58,7 +58,12 @@ export const fetchCollection = createSmartAction<
         console.error('fetchCollection:', data?.msg ?? 'Unexpected error');
         return [];
       }
-      return data.data;
+      return (
+        data?.data?.map(item => ({
+          ...item,
+          isLike: Boolean(item.mylikecount),
+        })) ?? []
+      );
     },
   },
 }));

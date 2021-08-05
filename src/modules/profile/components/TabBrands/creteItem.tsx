@@ -1,5 +1,4 @@
 import { useQuery } from '@redux-requests/react';
-import { useAccount } from 'modules/account/hooks/useAccount';
 import {
   ProductCard,
   ProductCardSkeleton,
@@ -29,10 +28,12 @@ import { AddFollowIcon } from '../TabFollowing/assets/AddFollowIcon';
 import { t } from 'modules/i18n/utils/intl';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 
-export const CrateItemAll = () => {
+export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
+  address,
+  isOther = false,
+}) => {
   const { id: className } = ProfileRoutesConfig.UserProfile.useParams();
   const dispatch = useDispatch();
-  const { address } = useAccount();
   const classes = useTabBrandStyles();
 
   const {
@@ -63,15 +64,17 @@ export const CrateItemAll = () => {
     <TabItemsComponent>
       <div className={classes.headerGroup}>
         <GoBack />
-        <Button
-          variant="outlined"
-          rounded
-          className={classes.addNftBtn}
-          href={BrandRoutesConfig.CreateBrandItem.generatePath(className)}
-        >
-          <AddFollowIcon className={classes.addNftBtnIcon} />
-          {t('collection.card.addNewItem')}
-        </Button>
+        {isOther || (
+          <Button
+            variant="outlined"
+            rounded
+            className={classes.addNftBtn}
+            href={BrandRoutesConfig.CreateBrandItem.generatePath(className)}
+          >
+            <AddFollowIcon className={classes.addNftBtnIcon} />
+            {t('collection.card.addNewItem')}
+          </Button>
+        )}
       </div>
       <div style={{ height: 20 }}></div>
       <ProductCards isLoading={collectionLoading}>
@@ -82,16 +85,15 @@ export const CrateItemAll = () => {
             <ProductCard
               id={item.tokenid}
               poolId={item.tokenid || 0}
-              // auctionType={item.poolType}
+              isItemType
+              likes={item.likecount}
+              isLike={item.isLike}
               key={uid(item)}
               title={item.itemname}
               href={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
                 item.tokenid,
                 item.contractaddress,
               )}
-              // status={item.status}
-              // UPDATE price
-              // price={item.poolId ? item.price : undefined}
               priceType={item.itemsymbol}
               copies={item.supply}
               copiesBalance={item.balance}
@@ -101,11 +103,8 @@ export const CrateItemAll = () => {
                 objectFit: 'contain',
                 loading: 'lazy',
               }}
-              contractAddress={
-                item.balance > 0 ? item.contractaddress : undefined
-              }
-              standard={item.standard}
-              // state={item.state}
+              contractAddress={isOther ? undefined : item.contractaddress}
+              standard={isOther ? undefined : item.standard}
               profileInfo={
                 <ProfileInfo
                   subTitle="Creator"
@@ -114,15 +113,22 @@ export const CrateItemAll = () => {
                     {
                       name: item.creatorname,
                       avatar: item.creatorimage,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.creatoraddress,
+                      ),
                       verified: isVerify || false,
                     },
                   ]}
                 />
               }
-              toSale={RoutesConfiguration.PublishNft.generatePath(
-                item.contractaddress,
-                item.tokenid,
-              )}
+              toSale={
+                isOther
+                  ? undefined
+                  : RoutesConfiguration.PublishNft.generatePath(
+                      item.contractaddress,
+                      item.tokenid,
+                    )
+              }
             />
           ))
         )}

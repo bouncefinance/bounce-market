@@ -106,7 +106,10 @@
       "standard": "Standard",
       "supply": "Supply"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "title": "Create NFT",
@@ -134,7 +137,10 @@
       "description": "What's the story behind this NFT?"
     },
     "next": "Next",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "time": "",
@@ -153,6 +159,8 @@
     "buy-now": "Buy now",
     "descr-full": "Full description",
     "descr-short": "Collapse",
+    "pool-amount-tip": "Available for purchase / Total supply",
+    "item-amount-tip": "Total supply",
     "dialog": {
       "footnote": "Bids placed in auction cannot be withdrawn",
       "input-info": "Minimum bid {value} {currency}"
@@ -192,7 +200,8 @@
     },
     "role": {
       "seller": "Owner",
-      "minter": "Creator"
+      "minter": "Creator",
+      "collection": "Collection"
     },
     "top-bid": "Top Bid",
     "your-bid": "Your bid"
@@ -223,7 +232,8 @@
     "data-is-not-available": "Data is not available",
     "greater-than": "It must be greater than {value}",
     "less-than": "It must be less than {value}",
-    "unexpected": "Server exception"
+    "unexpected": "Server exception",
+    "contract-rejected": "Contract operation is rejected"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -285,7 +295,7 @@
         "creator": "Auction is in progress"
       },
       "NotSoldByReservePrice": {
-        "buyer": "Item hasn't been sold. Claim your tokens back",
+        "buyer": "Item hasn't been sold. Claim your funds back",
         "creator": "Item hasn't been sold. Claim your NFT back",
         "others": "Item hasn't been sold"
       }
@@ -322,7 +332,16 @@
     "top-bid": "Top Bid",
     "pool-start-tips": "The pool will start in:",
     "transfer": "Transfer token",
-    "balance-tip": "{balance} editions in account"
+    "lost": "Your bid was lost",
+    "won": "Your bid won",
+    "outbid": "You were outbid",
+    "claim-funds": "Claim funds",
+    "claim-token": "Claim token",
+    "claim-back": "Claim back",
+    "claimed": "Claimed",
+    "item-balance-tip": "{balance} editions in account",
+    "pool-balance-tip": "{balance} available for purchase",
+    "sold-for-quantity": "Sold {sold} of {quantity}"
   },
   "cancel-timer": {
     "title": "Cancel Sale",
@@ -337,7 +356,7 @@
       "ago": " ago"
     },
     "activity": {
-      "tab":{
+      "tab": {
         "create": "Create",
         "listings": "Listings",
         "bids": "Bids",
@@ -487,7 +506,9 @@
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
     "time-end": "Ended on {days}/{months}/{years}",
     "time-expired": "Time expired",
-    "time-over": "Time is over"
+    "time-over": "Time is over",
+    "time-left-tip": "Time left",
+    "time-left": "{days} {hours} {minutes} {seconds}"
   },
   "transfer-token": {
     "submit": "Transfer",

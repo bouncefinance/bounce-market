@@ -2,6 +2,7 @@ import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { SearchDropsParamState } from 'modules/api/searchDrops';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { getDrops, IGetDrops } from 'modules/drops/actions/getDrops';
 import {
   DropsOwner,
@@ -84,7 +85,7 @@ export const StoriesSlider = () => {
     };
     const profileInfo = (
       <DropsOwner
-        title={item.username}
+        title={item.username || truncateWalletAddr(item.accountAddress)}
         href={ProfileRoutesConfig.OtherProfile.generatePath(
           item.accountAddress,
         )}

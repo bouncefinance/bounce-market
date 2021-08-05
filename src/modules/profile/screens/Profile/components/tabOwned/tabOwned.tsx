@@ -14,10 +14,13 @@ import { fetchOwned, IMyOwnedData } from 'modules/profile/actions/fetchOwned';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
 
-export const TabOwned = function () {
+export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
+  isOther = false,
+}) {
   const { data, loading } = useQuery<IMyOwnedData>({
     type: fetchOwned.toString(),
   });
@@ -58,24 +61,31 @@ export const TabOwned = function () {
               contractAddress={
                 item.balance > 0 ? item.contractaddress : undefined
               }
-              standard={item.standard}
+              standard={isOther ? undefined : item.standard}
               profileInfo={
                 <ProfileInfo
-                  subTitle="Owner"
+                  subTitle={t('details-nft.role.minter')}
                   title={item.creatorname}
                   users={[
                     {
                       name: item.creatorname,
                       avatar: item.creatorimage,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.creatoraddress,
+                      ),
                       verified: isVerify || false,
                     },
                   ]}
                 />
               }
-              toSale={RoutesConfiguration.PublishNft.generatePath(
-                item.contractaddress,
-                item.tokenid,
-              )}
+              toSale={
+                isOther
+                  ? undefined
+                  : RoutesConfiguration.PublishNft.generatePath(
+                      item.contractaddress,
+                      item.tokenid,
+                    )
+              }
             />
           ))
         )}

@@ -159,6 +159,7 @@
     "buy-now": "Купить сейчас",
     "descr-full": "Полное описание",
     "descr-short": "развернуть",
+    "pool-amount-tip": "Общее предложение",
     "dialog": {
       "footnote": "Размещенные ставки на аукционе не могут быть отозваны",
       "input-info": "Ваша ставка должна быть не менее  {value} {currency}"
@@ -198,7 +199,8 @@
     },
     "role": {
       "seller": "Владелец",
-      "minter": "Создатель"
+      "minter": "Создатель",
+      "collection": "коллекцию"
     },
     "top-bid": "Наивысшая ставка",
     "your-bid": "Ваша ставка"
@@ -224,7 +226,8 @@
     "data-is-not-available": "Данные не доступны",
     "greater-than": "Число должно быть больше {value}",
     "less-than": "Число должно быть меньше {value}",
-    "unexpected": "Непредвиденная ошибка"
+    "unexpected": "Непредвиденная ошибка",
+    "contract-rejected": "Операция по контракту отклонена"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -321,7 +324,11 @@
     "sold-for": "Продано за",
     "top-bid": "Наивысшая ставка",
     "pool-start-tips": "Бассейн будет запущен:",
-    "transfer": "Перевести токен"
+    "transfer": "Перевести токен",
+    "balance-tip": "{balance} издания на счете",
+    "item-balance-tip": "{balance} изданий на счету",
+    "pool-balance-tip": "{balance} доступны для покупки",
+    "sold-for-quantity": "Продано {sold} из {quantity}"
   },
   "cancel-timer": {
     "title": "Отмена продажи",
@@ -486,7 +493,9 @@
     "time-left-short": "Осталось {days} {hours} {minutes} {seconds}",
     "time-end": "Закончился на {days}/{months}/{years}",
     "time-expired": "Время истекло",
-    "time-over": "Время истекло"
+    "time-over": "Время истекло",
+    "time-left-tip": "Остаток времени",
+    "time-left": "{days} {hours} {minutes} {seconds}"
   },
   "transfer-token": {
     "submit": "Перевести",
