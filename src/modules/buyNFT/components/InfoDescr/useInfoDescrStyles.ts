@@ -42,4 +42,13 @@ export const useInfoDescrStyles = makeStyles<Theme>(theme => ({
       color: theme.palette.primary.dark,
     },
   },
+
+  spaceBetween: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
+  },
+  poolAmount: {
+    marginTop: 20,
+  },
 }));

@@ -19,6 +19,11 @@ export interface IFetchItem2 {
   likecount: number;
   mylike: number;
   tokenSymbol: TokenSymbol;
+  collection: {
+    address: string;
+    avatar: string;
+    name: string;
+  };
   minter: {
     address: string;
     avatar: string;

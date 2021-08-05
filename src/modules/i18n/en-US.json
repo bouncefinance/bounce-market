@@ -159,6 +159,8 @@
     "buy-now": "Buy now",
     "descr-full": "Full description",
     "descr-short": "Collapse",
+    "pool-amount-tip": "Available for purchase / Total supply",
+    "item-amount-tip": "Total supply",
     "dialog": {
       "footnote": "Bids placed in auction cannot be withdrawn",
       "input-info": "Minimum bid {value} {currency}"
