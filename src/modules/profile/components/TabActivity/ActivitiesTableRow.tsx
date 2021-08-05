@@ -5,7 +5,7 @@ import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 // import { getTokenSymbol } from 'modules/common/conts';
 // import { t } from '../../../i18n/utils/intl';
-import { ActivityKeys, IActivityItem } from '../../api/getActivity';
+import { ActivityKeys, IActivityItem, NFTType } from '../../api/getActivity';
 import { Img } from 'modules/uiKit/Img';
 import { useTabActivityStyles } from './useTabActivityStyles';
 // import { CloseIcon } from '../../../common/components/Icons/CloseIcon';
@@ -17,6 +17,8 @@ import { ListedIcon } from '../../../common/components/Icons/ListedIcon';
 import { format, formatDistanceToNowStrict, subDays, getTime } from 'date-fns';
 import { zhCN, ru, enUS } from 'date-fns/locale';
 import { t } from 'modules/i18n/utils/intl';
+import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { useCallback } from 'react';
 
 const dateLocale: { [key: string]: Locale } = {
   zhCN: zhCN,
@@ -40,6 +42,27 @@ const ItemIcon: React.FC<{ url: string; label: string }> = ({ url, label }) => {
   );
 };
 
+const ItemVideo: React.FC<{ url: string; label: string }> = ({
+  url,
+  label,
+}) => {
+  const styles = useTabActivityStyles();
+  return (
+    <div className={styles.tableItemVideo}>
+      <VideoPlayer
+        className={styles.itemPreview}
+        src={url}
+        width={100}
+        height={100}
+        controls={false}
+        autoPlay={false}
+        objectFit="cover"
+      />
+      <span>{label}</span>
+    </div>
+  );
+};
+
 const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
   url,
   name,
@@ -50,7 +73,14 @@ const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
     <div className={styles.tableUserIcon}>
       <Avatar src={url} className="avator" />
       {name ? (
-        <span>{name}</span>
+        (name.slice(0, 2) === '0x' || name.slice(0, 2) === '0X') &&
+        name.length === 42 ? (
+          <Tooltip title={name}>
+            <span>{truncateWalletAddr(name)}</span>
+          </Tooltip>
+        ) : (
+          <span>{name}</span>
+        )
       ) : (
         <Tooltip title={address}>
           <span>{truncateWalletAddr(address)}</span>
@@ -76,7 +106,7 @@ const EventIcon: React.FC<{ tabKey: ActivityKeys; label: string }> = ({
   return (
     <div className={styles.eventIcon}>
       <div>{EventIconMaps[tabKey] || ''}</div>
-      <span>{label}</span>
+      <span>{label === 'Listings' ? 'Listing' : label}</span>
     </div>
   );
 };
@@ -94,14 +124,26 @@ export const ActivitiesTableRow = ({
   symbol,
   tabKey,
 }: IActivitiesTableProps) => {
+  const renderItemPreview = useCallback(
+    (category: NFTType) => {
+      return category === 'video' ? (
+        <ItemVideo url={item.fileUrl} label={item.itemName} />
+      ) : (
+        <ItemIcon url={item.fileUrl} label={item.itemName} />
+      );
+    },
+    [item.fileUrl, item.itemName],
+  );
+
   return (
     <TableRow>
       <TableCell>
         <EventIcon tabKey={tabKey} label={item.event} />
       </TableCell>
-      <TableCell>
+      {/* <TableCell>
         <ItemIcon url={item.fileUrl} label={item.itemName} />
-      </TableCell>
+      </TableCell> */}
+      <TableCell>{renderItemPreview(item.category)}</TableCell>
       <TableCell>
         {item.amount.toString()}&nbsp;{symbol}
       </TableCell>

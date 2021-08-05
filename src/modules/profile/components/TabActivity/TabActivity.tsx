@@ -16,23 +16,23 @@ export const TabActivity = () => {
   const styles = useTabActivityStyles();
   const tabs = [
     {
-      label: 'Create',
+      label: t('profile.activity.tab.create'),
       value: ActivityKeys.Create,
     },
     {
-      label: 'Listings',
+      label: t('profile.activity.tab.listings'),
       value: ActivityKeys.Listings,
     },
     {
-      label: 'Bids',
+      label: t('profile.activity.tab.bids'),
       value: ActivityKeys.Bids,
     },
     {
-      label: 'Purchases',
+      label: t('profile.activity.tab.purchases'),
       value: ActivityKeys.Purchases,
     },
     {
-      label: 'Sales',
+      label: t('profile.activity.tab.sales'),
       value: ActivityKeys.Sales,
     },
     // {
@@ -88,8 +88,8 @@ export const TabActivity = () => {
         empty={
           <NoItems
             href={MarketRoutesConfig.Market.generatePath()}
-            title={t('profile.activity.empty-title')}
-            descr={t('profile.activity.empty-description')}
+            title={t('profile.no-items.Activity-title')}
+            descr={t('profile.no-items.Activity-description')}
           />
         }
       >
