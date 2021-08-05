@@ -18,7 +18,7 @@ export const mapProductCardData = (item: INFTItem) => ({
   // TODO: get NFT item copies data
   copies: undefined,
   // TODO: get NFT item end date data
-  endDate: undefined,
+  endDate: item.endDate,
   ownerAddress: item.owneraddress,
   category: item.category || 'image',
   src: item.fileurl,
@@ -27,4 +27,6 @@ export const mapProductCardData = (item: INFTItem) => ({
   identity: item.identity,
   openAt: item.openAt,
   isLike: item.isLike,
+  soldAmount: item.soldAmount,
+  supplyAmount: item.supplyAmount,
 });
