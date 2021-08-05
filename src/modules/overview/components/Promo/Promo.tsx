@@ -116,7 +116,6 @@ export const Promo = ({
       );
     });
   }, [items, classes.thumb, classes.thumbsSlide]);
-  console.log('renderedItems', renderedItems);
   return useMemo(() => {
     return (
       <Section
