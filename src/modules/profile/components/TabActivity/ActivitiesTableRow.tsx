@@ -83,7 +83,7 @@ const EventIcon: React.FC<{ tabKey: ActivityKeys; label: string }> = ({
   return (
     <div className={styles.eventIcon}>
       <div>{EventIconMaps[tabKey] || ''}</div>
-      <span>{label === 'Listings' ? 'Listing' : label}</span>
+      <span>{label}</span>
     </div>
   );
 };
