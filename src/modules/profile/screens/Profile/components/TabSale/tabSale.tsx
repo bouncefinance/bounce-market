@@ -8,6 +8,7 @@ import {
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { fetchMySale, IPoolNftItem } from 'modules/profile/actions/fetchSale';
@@ -57,7 +58,7 @@ export const TabSale = function () {
               profileInfo={
                 <ProfileInfo
                   subTitle="Creator"
-                  title={item.username}
+                  title={item.username || truncateWalletAddr(item.creator)}
                   users={[
                     {
                       name: item.username,
