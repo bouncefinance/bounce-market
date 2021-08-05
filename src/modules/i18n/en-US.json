@@ -337,6 +337,13 @@
       "ago": " ago"
     },
     "activity": {
+      "tab":{
+        "create": "Create",
+        "listings": "Listings",
+        "bids": "Bids",
+        "purchases": "Purchases",
+        "sales": "Sales"
+      },
       "canceled": "Canceled",
       "claimed": "Claimed",
       "created": "Created",
@@ -416,9 +423,8 @@
       "items": "Items",
       "liked": "Liked",
       "my-bids": "My Bids",
-      "my-owner": "Showcase",
       "my-collections": "Collections",
-      "my-items": "My items",
+      "showcase": "Showcase",
       "my-sells": "On Sale"
     },
     "unfollow": "Unfollow",

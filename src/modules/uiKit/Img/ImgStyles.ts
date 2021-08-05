@@ -66,6 +66,7 @@ export const useImgStyles = makeStyles<
     width: '100%',
     height: '100%',
     borderRadius: 'inherit',
+    transition: 'transform .3s ease',
     objectFit: props => (props.objectFit ? props.objectFit : ''),
   },
 }));

@@ -10,6 +10,9 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   imgBox: {
     position: 'relative',
     display: 'block',
+    '&:hover img': {
+      transform: 'scale(1.1)',
+    },
   },
 
   imgWrap: {

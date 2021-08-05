@@ -335,6 +335,13 @@
       "ago": "前"
     },
     "activity": {
+      "tab":{
+        "create": "创建",
+        "listings": "上架",
+        "bids": "出价",
+        "purchases": "购买",
+        "sales": "出售"
+      },
       "canceled": "已取消",
       "claimed": "已领取",
       "created": "已创建",
@@ -415,7 +422,7 @@
       "liked": "收藏",
       "my-bids": "我的交易",
       "my-collections": "我的作品集",
-      "my-items": "我的NFT",
+      "showcase": "我拥有的",
       "my-sells": "我的出售"
     },
     "unfollow": "取消关注",
