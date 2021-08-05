@@ -106,10 +106,7 @@
       "standard": "Standard",
       "supply": "Supply"
     },
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "Create",
     "submitting": "Creating",
     "title": "Create NFT",
@@ -137,10 +134,7 @@
       "description": "What's the story behind this NFT?"
     },
     "next": "Next",
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "Create",
     "submitting": "Creating",
     "time": "",
@@ -347,8 +341,6 @@
       "claimed": "Claimed",
       "created": "Created",
       "date": "Date",
-      "empty-description": "Go explore fangible to find excitement!",
-      "empty-title": "No activities found",
       "event": "Event",
       "from": "From",
       "item": "Item",
@@ -403,7 +395,17 @@
     "no-items": {
       "btn": "Browse marketplace",
       "descr": "You have not minted any NFTs yet",
-      "title": "No items found"
+      "title": "No items found",
+      "onSale-title": "No items found",
+      "onSale-description": "You haven’t listed any item for sale yet.",
+      "showCase-title": "No items found",
+      "showCase-description": "You haven’t owned any NFT yet.",
+      "MyBids-title": "No items found",
+      "MyBids-description": "You haven’t placed a bid for any item yet. Go browse our marketplace.",
+      "Activity-title": "No activities found",
+      "Activity-description": "Go explore fangible to find excitement!",
+      "Liked-title": "No items found",
+      "Liked-description": "You haven’t liked any NFT yet. Go browse our marketplace."
     },
     "subscribers": "Subscribers",
     "tabs": {

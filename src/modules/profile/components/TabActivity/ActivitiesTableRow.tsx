@@ -50,7 +50,14 @@ const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
     <div className={styles.tableUserIcon}>
       <Avatar src={url} className="avator" />
       {name ? (
-        <span>{name}</span>
+        (name.slice(0, 2) === '0x' || name.slice(0, 2) === '0X') &&
+        name.length === 42 ? (
+          <Tooltip title={name}>
+            <span>{truncateWalletAddr(name)}</span>
+          </Tooltip>
+        ) : (
+          <span>{name}</span>
+        )
       ) : (
         <Tooltip title={address}>
           <span>{truncateWalletAddr(address)}</span>
@@ -76,7 +83,7 @@ const EventIcon: React.FC<{ tabKey: ActivityKeys; label: string }> = ({
   return (
     <div className={styles.eventIcon}>
       <div>{EventIconMaps[tabKey] || ''}</div>
-      <span>{label}</span>
+      <span>{label === 'Listings' ? 'Listing' : label}</span>
     </div>
   );
 };

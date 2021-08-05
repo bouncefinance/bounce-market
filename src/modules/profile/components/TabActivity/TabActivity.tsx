@@ -88,8 +88,8 @@ export const TabActivity = () => {
         empty={
           <NoItems
             href={MarketRoutesConfig.Market.generatePath()}
-            title={t('profile.activity.empty-title')}
-            descr={t('profile.activity.empty-description')}
+            title={t('profile.no-items.Activity-title')}
+            descr={t('profile.no-items.Activity-description')}
           />
         }
       >

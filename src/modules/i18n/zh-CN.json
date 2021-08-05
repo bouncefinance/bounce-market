@@ -106,10 +106,7 @@
       "standard": "标准",
       "supply": "总量"
     },
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "创建",
     "submitting": "正在创建中",
     "title": "创建 NFT",
@@ -137,10 +134,7 @@
       "description": "讲述创建该NFT背后的故事"
     },
     "next": "下一步",
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "创建",
     "submitting": "正在创建中",
     "time": "{gender, select, male {He}female {She}other {They}}",
@@ -345,8 +339,6 @@
       "claimed": "已领取",
       "created": "已创建",
       "date": "日期",
-      "empty-description": "暂无任何交易记录",
-      "empty-title": "未查询到任何交易记录",
       "event": "活动",
       "from": "由",
       "item": "NFT",
@@ -400,8 +392,18 @@
     },
     "no-items": {
       "btn": "浏览市场",
-      "descr": "您还未创建任何NFT",
-      "title": "未找到任何NFT"
+      "descr": "您当前还未创造任何NFT",
+      "title": "暂无NFT",
+      "onSale-title": "暂无NFT",
+      "onSale-description": "您还未对任何NFT进行过上架。",
+      "showCase-title": "暂无NFT",
+      "showCase-description": "您当前还未拥有任何NFT。",
+      "MyBids-title": "暂无NFT",
+      "MyBids-description": "您还未对任何NFT进行过出价。浏览fangible市场吧！",
+      "Activity-title": "暂无动态数据",
+      "Activity-description": "探索fangible，发现新惊喜！",
+      "Liked-title": "暂无NFT",
+      "Liked-description": "您还未对任何NFT进行过点赞。浏览fangible市场吧！"
     },
     "subscribers": "Subscribers",
     "tabs": {

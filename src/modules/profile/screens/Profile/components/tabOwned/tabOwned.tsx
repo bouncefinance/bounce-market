@@ -15,6 +15,7 @@ import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { uid } from 'react-uid';
+import { t } from 'modules/i18n/utils/intl';
 
 export const TabOwned = function () {
   const { data, loading } = useQuery<IMyOwnedData>({
@@ -80,7 +81,11 @@ export const TabOwned = function () {
         )}
       </ProductCards>
       {!loading && data?.length === 0 && (
-        <NoItems href={MarketRoutesConfig.Market.generatePath()} />
+        <NoItems
+          href={MarketRoutesConfig.Market.generatePath()}
+          title={t('profile.no-items.showCase-title')}
+          descr={t('profile.no-items.showCase-description')}
+        />
       )}
     </TabItemsComponent>
   );

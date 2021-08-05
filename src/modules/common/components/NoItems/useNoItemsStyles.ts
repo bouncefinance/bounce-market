@@ -9,6 +9,6 @@ export const useNoItemsStyles = makeStyles<Theme>(theme => ({
 
   descr: {
     margin: theme.spacing(0, 'auto', 3.5),
-    maxWidth: 480,
+    maxWidth: 550,
   },
 }));
