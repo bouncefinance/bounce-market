@@ -380,58 +380,6 @@ export const ProductCardComponent = ({
                   {!endDate && copies && renderedCopies}
 
                   {soldData && renderSolds}
-
-                  {!endDate && !copies && <i />}
-                  {isCancelTimePut ? (
-                    <CancelPutTime auctionType={auctionType} id={poolId} />
-                  ) : (
-                    <></>
-                  )}
-
-                  {isLost && (
-                    <ClaimFunds
-                      auctionType={auctionType}
-                      id={poolId}
-                      type={BidsType.LOST}
-                      isBidder={isBidder}
-                    />
-                  )}
-                  {isWon && (
-                    <ClaimFunds
-                      auctionType={auctionType}
-                      id={poolId}
-                      type={BidsType.WON}
-                      isBidder={isBidder}
-                    />
-                  )}
-                  {isSellerClaimMoney && (
-                    <ClaimFunds
-                      auctionType={auctionType}
-                      id={poolId}
-                      type={BidsType.LOST}
-                      isBidder={false}
-                      text={t('product-card.claim-funds')}
-                    />
-                  )}
-                  {isSellerClaimNft && (
-                    <ClaimFunds
-                      auctionType={auctionType}
-                      id={poolId}
-                      type={BidsType.LOST}
-                      isBidder={false}
-                      text={t('product-card.claim-back')}
-                    />
-                  )}
-                  {isBidder && isBidderClaimed && (
-                    <Button variant="outlined" rounded disabled>
-                      {t('product-card.claimed')}
-                    </Button>
-                  )}
-                  {isOnSeller && isCreatorClaimed && (
-                    <Button variant="outlined" rounded disabled>
-                      {t('product-card.claimed')}
-                    </Button>
-                  )}
                 </>
               )}
 
@@ -511,7 +459,59 @@ export const ProductCardComponent = ({
           </div>
 
           <div className={classes.timeMeta}>
-            {isOnSale && endDate && <Timer endDate={endDate} />}
+            {isCancelTimePut ? (
+              <CancelPutTime auctionType={auctionType} id={poolId} />
+            ) : (
+              <></>
+            )}
+
+            {isLost && (
+              <ClaimFunds
+                auctionType={auctionType}
+                id={poolId}
+                type={BidsType.LOST}
+                isBidder={isBidder}
+              />
+            )}
+            {isWon && (
+              <ClaimFunds
+                auctionType={auctionType}
+                id={poolId}
+                type={BidsType.WON}
+                isBidder={isBidder}
+              />
+            )}
+            {isSellerClaimMoney && (
+              <ClaimFunds
+                auctionType={auctionType}
+                id={poolId}
+                type={BidsType.LOST}
+                isBidder={false}
+                text={t('product-card.claim-funds')}
+              />
+            )}
+            {isSellerClaimNft && (
+              <ClaimFunds
+                auctionType={auctionType}
+                id={poolId}
+                type={BidsType.LOST}
+                isBidder={false}
+                text={t('product-card.claim-back')}
+              />
+            )}
+            {isBidder && isBidderClaimed && (
+              <Button variant="outlined" rounded disabled>
+                {t('product-card.claimed')}
+              </Button>
+            )}
+            {isOnSeller && isCreatorClaimed && (
+              <Button variant="outlined" rounded disabled>
+                {t('product-card.claimed')}
+              </Button>
+            )}
+            {!isBidderClaimed && !isCreatorClaimed && isOnSale && endDate && (
+              <Timer endDate={endDate} />
+            )}
           </div>
         </div>
       </CardContent>

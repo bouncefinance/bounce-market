@@ -68,7 +68,7 @@ export const TabBids = function () {
               price={item.pool_id ? item.price : undefined}
               priceType={(data as any)?.tokenSymbol}
               soldData={{
-                sold: item.swapped_amount0,
+                sold: item.token_amount0,
                 quantity: item.token_amount0,
               }}
               endDate={
