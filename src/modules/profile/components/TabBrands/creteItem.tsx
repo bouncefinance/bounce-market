@@ -82,16 +82,15 @@ export const CrateItemAll = () => {
             <ProductCard
               id={item.tokenid}
               poolId={item.tokenid || 0}
-              // auctionType={item.poolType}
+              isItemType
+              likes={item.likecount}
+              isLike={item.isLike}
               key={uid(item)}
               title={item.itemname}
               href={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
                 item.tokenid,
                 item.contractaddress,
               )}
-              // status={item.status}
-              // UPDATE price
-              // price={item.poolId ? item.price : undefined}
               priceType={item.itemsymbol}
               copies={item.supply}
               copiesBalance={item.balance}
@@ -101,11 +100,8 @@ export const CrateItemAll = () => {
                 objectFit: 'contain',
                 loading: 'lazy',
               }}
-              contractAddress={
-                item.balance > 0 ? item.contractaddress : undefined
-              }
+              contractAddress={item.contractaddress}
               standard={item.standard}
-              // state={item.state}
               profileInfo={
                 <ProfileInfo
                   subTitle="Creator"

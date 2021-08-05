@@ -120,6 +120,10 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           />
         }
         openAt={item.openAt}
+        soldData={{
+          sold: item.soldAmount,
+          quantity: item.supplyAmount,
+        }}
       />
     );
   });

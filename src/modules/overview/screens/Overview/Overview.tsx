@@ -39,6 +39,7 @@ function mapPromoItem(item: IItem, tokenSymbol: string): IPromoItem {
     category: item?.category,
     img: item.fileUrl,
     thumbImg: item.fileUrl || '',
+    identity: item?.identity || 1,
     href:
       item.poolId && item.poolType
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
