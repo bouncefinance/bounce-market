@@ -14,6 +14,7 @@ import { fetchOwned, IMyOwnedData } from 'modules/profile/actions/fetchOwned';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 
 export const TabOwned = function () {
@@ -60,12 +61,15 @@ export const TabOwned = function () {
               standard={item.standard}
               profileInfo={
                 <ProfileInfo
-                  subTitle="Owner"
+                  subTitle="Creater"
                   title={item.creatorname}
                   users={[
                     {
                       name: item.creatorname,
                       avatar: item.creatorimage,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.creatoraddress,
+                      ),
                       verified: isVerify || false,
                     },
                   ]}

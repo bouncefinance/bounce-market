@@ -13,6 +13,7 @@ import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { fetchMySale, IPoolNftItem } from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 
 export const TabSale = function () {
@@ -63,6 +64,9 @@ export const TabSale = function () {
                     {
                       name: item.username,
                       avatar: item.creatorurl,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.creator,
+                      ),
                       verified: item?.identity === UserRoleEnum.Verified,
                     },
                   ]}

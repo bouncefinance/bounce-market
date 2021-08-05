@@ -27,6 +27,7 @@ export enum ProfileTab {
 }
 
 export const defaultProfileTab = ProfileTab.sells;
+export const defaultOtherProfileTab = ProfileTab.items;
 
 export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
   OtherProfile: {
@@ -34,7 +35,7 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
     generatePath: (address: string, tab?: ProfileTab) =>
       generatePath(PATH_OTHER_PROFILE_TABS, {
         address,
-        tab: tab ?? defaultProfileTab,
+        tab: tab ?? defaultOtherProfileTab,
       }),
     useParams: () => {
       const query = useQueryParams();
