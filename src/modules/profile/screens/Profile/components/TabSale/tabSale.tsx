@@ -21,7 +21,6 @@ export const TabSale = function () {
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMySale.toString(),
   });
-  console.log(data);
   return (
     <TabItemsComponent>
       <ProductCards isLoading={loading}>

@@ -335,7 +335,7 @@ export const BuyNFT = () => {
               );
 
               const renderedCollection = () => {
-                return 1 ? (
+                return roleInfos?.collection.name ? (
                   <ProfileInfo
                     subTitle={t('details-nft.role.collection')}
                     title={wrapperTitle(

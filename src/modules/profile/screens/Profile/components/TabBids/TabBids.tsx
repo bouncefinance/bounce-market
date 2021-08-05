@@ -21,7 +21,6 @@ export const TabBids = function () {
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMyBids.toString(),
   });
-  console.log(data);
 
   return (
     <TabItemsComponent>
