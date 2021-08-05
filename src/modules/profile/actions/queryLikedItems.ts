@@ -24,6 +24,7 @@ interface ILikePoolItem {
   likecount: number;
   mylikecount: number;
   name: string;
+  username: string;
   open_at: number;
   poolid: number;
   pooltype: number;
@@ -45,6 +46,7 @@ interface ILikePool {
   likecount: number;
   mylikecount: number;
   name: string;
+  username: string;
   open_at: number;
   poolid: number;
   pooltype: number;

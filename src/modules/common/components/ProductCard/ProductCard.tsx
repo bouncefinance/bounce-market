@@ -34,6 +34,7 @@ export interface IProductCardProps
   isItemType?: boolean;
   bidTopPrice?: number;
   bidsReserveAmount?: number;
+  myBidderAmount?: number;
   isBidder?: boolean;
   isOnSeller?: boolean;
 }

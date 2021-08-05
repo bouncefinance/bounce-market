@@ -17,9 +17,11 @@ interface bidList {
 export const usePoolList = ({
   list,
   contractFunctionName,
+  address = '',
 }: {
   list: bidList[];
   contractFunctionName: string;
+  address?: string;
 }) => {
   const {
     data: { chainId, web3 },
@@ -34,7 +36,10 @@ export const usePoolList = ({
         return {
           address: getPoolAddress({ poolType, chainId }) ?? '',
           name: contractFunctionName,
-          params: [poolId],
+          params:
+            contractFunctionName === 'myBidderAmount1P'
+              ? [address, poolId]
+              : [poolId],
           abi: (getPoolContract(poolType) as unknown) as any[],
         };
       });

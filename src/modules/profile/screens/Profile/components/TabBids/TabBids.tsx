@@ -8,15 +8,19 @@ import {
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { fetchMyBids, IPoolNftItem } from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
 import { usePoolList } from 'modules/common/hooks/usePoolList';
+import { useAccount } from 'modules/account/hooks/useAccount';
 
 export const TabBids = function () {
+  const { address } = useAccount();
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMyBids.toString(),
   });
@@ -30,6 +34,12 @@ export const TabBids = function () {
     list:
       data?.map(e => ({ poolId: e.pool_id ?? -1, poolType: e.poolType })) ?? [],
     contractFunctionName: 'reserveAmount1P',
+  });
+  const myBidderAmount = usePoolList({
+    list:
+      data?.map(e => ({ poolId: e.pool_id ?? -1, poolType: e.poolType })) ?? [],
+    contractFunctionName: 'myBidderAmount1P',
+    address,
   });
 
   return (
@@ -57,8 +67,13 @@ export const TabBids = function () {
               isLike={item.isLike}
               price={item.pool_id ? item.price : undefined}
               priceType={(data as any)?.tokenSymbol}
-              copies={item.token_amount0}
-              copiesBalance={item.swapped_amount0}
+              soldData={{
+                sold: item.swapped_amount0,
+                quantity: item.token_amount0,
+              }}
+              endDate={
+                item.close_at ? new Date(item.close_at * 1e3) : undefined
+              }
               MediaProps={{
                 category: item.category,
                 src: item.fileurl || 'xxx',
@@ -70,11 +85,14 @@ export const TabBids = function () {
               profileInfo={
                 <ProfileInfo
                   subTitle="Creator"
-                  title={item.username}
+                  title={item.username || truncateWalletAddr(item.creator)}
                   users={[
                     {
                       name: item.username,
                       avatar: item.creatorurl,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.creator,
+                      ),
                       verified: item?.identity === UserRoleEnum.Verified,
                     },
                   ]}
@@ -89,6 +107,7 @@ export const TabBids = function () {
               closeAt={item.closeAt}
               bidTopPrice={bidsInfo[index]?.toNumber() || 0}
               bidsReserveAmount={bidsReserveAmount[index]?.toNumber() || 0}
+              myBidderAmount={myBidderAmount[index]?.toNumber() || 0}
               isBidder
             />
           ))

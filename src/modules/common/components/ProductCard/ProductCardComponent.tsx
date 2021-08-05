@@ -19,9 +19,7 @@ import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { ConditionalWrapper } from 'modules/common/components/ConditionalWrapper';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
-import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
 import { featuresConfig } from 'modules/common/conts';
-import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
@@ -35,12 +33,19 @@ import { CancelPutTime } from './cancel';
 import { ClaimFunds } from './claimFunds';
 import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
+import { Timer } from './Timer';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
 export enum ProductCardStatuses {
   Minting,
   OnSalePending,
+}
+
+export interface ISoldData {
+  sold: number;
+  quantity: number;
+  supply?: number;
 }
 
 export interface IProductCardComponentProps {
@@ -78,8 +83,10 @@ export interface IProductCardComponentProps {
   closeAt?: Date;
   bidTopPrice?: number;
   bidsReserveAmount?: number;
+  myBidderAmount?: number;
   isBidder?: boolean;
   isOnSeller?: boolean;
+  soldData?: ISoldData;
 }
 
 export const ProductCardComponent = ({
@@ -116,8 +123,10 @@ export const ProductCardComponent = ({
   closeAt,
   bidTopPrice,
   bidsReserveAmount = 0,
+  myBidderAmount = 0,
   isBidder = false,
   isOnSeller = false,
+  soldData,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect } = useAccount();
   const classes = useProductCardStyles();
@@ -136,23 +145,6 @@ export const ProductCardComponent = ({
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
-
-  const renderTimer = useCallback(() => {
-    const daysLeft = endDate ? getDaysLeft(endDate) : 0;
-    const isLastDay = daysLeft <= 0;
-
-    return (
-      <div className={classes.info}>
-        <TimeIcon
-          className={classNames(classes.icon, classes.iconRightOffset)}
-        />
-
-        {isLastDay && 'the last day'}
-
-        {!isLastDay && `${daysLeft} days left`}
-      </div>
-    );
-  }, [classes, endDate]);
 
   const renderCardStatus = useCallback(
     (title: string, subTitle: string) => {
@@ -174,7 +166,9 @@ export const ProductCardComponent = ({
 
   const renderedCopies = (
     <Tooltip
-      title={t('product-card.balance-tip', { balance: copiesBalance ?? 0 })}
+      title={t('product-card.item-balance-tip', {
+        balance: copiesBalance ?? 0,
+      })}
       arrow
       placement="top"
     >
@@ -183,6 +177,23 @@ export const ProductCardComponent = ({
           className={classNames(classes.icon, classes.iconRightOffset)}
         />
         {`${copiesBalance ?? 0} of ${copies ?? 0}`}
+      </div>
+    </Tooltip>
+  );
+
+  const renderSolds = (
+    <Tooltip
+      title={t('product-card.pool-balance-tip', {
+        balance: (soldData?.quantity || 0) - (soldData?.sold || 0),
+      })}
+      arrow
+      placement="top"
+    >
+      <div className={classes.info}>
+        {t('product-card.sold-for-quantity', {
+          sold: soldData?.sold || 0,
+          quantity: soldData?.quantity || 1,
+        })}
       </div>
     </Tooltip>
   );
@@ -260,30 +271,31 @@ export const ProductCardComponent = ({
   const inAuction =
     openAt && closeAt && +openAt < Date.now() && +closeAt > Date.now();
   const auctionEnd = closeAt && +closeAt <= Date.now();
-  const priceNumber = price?.toNumber() || 0;
+  const myPriceNumber = myBidderAmount || 0;
   // Figma 4
   const isOutBid =
     isAuction &&
     inAuction &&
     bidTopPrice &&
-    priceNumber > 0 &&
-    priceNumber < bidTopPrice;
+    myPriceNumber > 0 &&
+    myPriceNumber < bidTopPrice;
+
   // figama 1
   const isLost =
     isAuction &&
     auctionEnd &&
     bidTopPrice &&
-    priceNumber > 0 &&
-    priceNumber === bidTopPrice &&
-    priceNumber < bidsReserveAmount;
+    myPriceNumber > 0 &&
+    myPriceNumber === bidTopPrice &&
+    myPriceNumber < bidsReserveAmount;
   // Figema 2
   const isWon =
     isAuction &&
     auctionEnd &&
-    priceNumber > 0 &&
-    priceNumber === bidTopPrice &&
+    myPriceNumber > 0 &&
+    myPriceNumber === bidTopPrice &&
     bidsReserveAmount &&
-    priceNumber > bidsReserveAmount;
+    myPriceNumber > bidsReserveAmount;
 
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
@@ -319,123 +331,136 @@ export const ProductCardComponent = ({
 
         {stateTip && <p className={classes.stateTip}>{stateTip}</p>}
 
-        {isOnSale && price && (
-          <div className={classes.price}>
-            {(auctionType === AuctionType.FixedSwap ||
-              auctionType === AuctionType.FixedSwap_Timing) &&
-              (state === FixedSwapState.Live
-                ? t('product-card.price')
-                : t('product-card.sold-for'))}
-            {(auctionType === AuctionType.EnglishAuction ||
-              auctionType === AuctionType.EnglishAuction_Timing) &&
-              (state === AuctionState.Live
-                ? t('product-card.top-bid')
-                : t('product-card.sold-for'))}{' '}
-            {price.toFormat()} {priceType}
-          </div>
-        )}
+        <div className={classes.meta}>
+          <div className={classes.saleMeta}>
+            {isOnSale && price && (
+              <div className={classes.saleContainer}>
+                <div className={classes.saleType}>
+                  {(auctionType === AuctionType.FixedSwap ||
+                    auctionType === AuctionType.FixedSwap_Timing) &&
+                    (state === FixedSwapState.Live
+                      ? t('product-card.price')
+                      : t('product-card.sold-for'))}
+                  {(auctionType === AuctionType.EnglishAuction ||
+                    auctionType === AuctionType.EnglishAuction_Timing) &&
+                    (state === AuctionState.Live
+                      ? t('product-card.top-bid')
+                      : t('product-card.sold-for'))}{' '}
+                </div>
 
-        <div className={classes.infoContainer}>
-          {isOnSale && (
-            <>
-              {!endDate && copies && renderedCopies}
+                <div className={classes.price}>
+                  {price.toFormat()} {priceType}
+                </div>
+              </div>
+            )}
 
-              {endDate && renderTimer()}
+            <div className={classes.infoContainer}>
+              {isOnSale && (
+                <>
+                  {!endDate && copies && renderedCopies}
 
-              {!endDate && !copies && <i />}
-              {isCancelTimePut ? (
-                <CancelPutTime auctionType={auctionType} id={poolId} />
-              ) : (
-                <></>
-              )}
+                  {soldData && renderSolds}
 
-              {isLost && (
-                <ClaimFunds
-                  auctionType={auctionType}
-                  id={poolId}
-                  type={BidsType.LOST}
-                  isBidder={isBidder}
-                />
-              )}
-              {isWon && (
-                <ClaimFunds
-                  auctionType={auctionType}
-                  id={poolId}
-                  type={BidsType.WON}
-                  isBidder={isBidder}
-                />
-              )}
-            </>
-          )}
-
-          {!isOnSale && (
-            <>
-              <div>{copies !== undefined ? renderedCopies : <></>}</div>
-
-              {!isMinting && !isOnSalePending && (
-                <Box display="flex" alignItems="center">
-                  {!(copiesBalance && copiesBalance >= 0) ? (
-                    <></>
+                  {!endDate && !copies && <i />}
+                  {isCancelTimePut ? (
+                    <CancelPutTime auctionType={auctionType} id={poolId} />
                   ) : (
-                    <Button
-                      className={classes.saleBtn}
-                      component={RouterLink}
-                      variant="outlined"
-                      rounded
-                      to={toSale}
-                    >
-                      {t('product-card.put-on-sale')}
-                    </Button>
+                    <></>
                   )}
-                  {hasAction && (
-                    <>
-                      <ClickAwayListener onClickAway={handleClose}>
-                        <ButtonBase
-                          className={classes.menuBtn}
-                          onClick={handleClick}
-                        >
-                          <VerticalDotsIcon className={classes.menuIcon} />
-                        </ButtonBase>
-                      </ClickAwayListener>
-                      <Popover
-                        className={classes.menuPopover}
-                        open={isPopoverOpened}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        PaperProps={{
-                          variant: 'outlined',
-                        }}
-                      >
-                        <MenuList>
-                          <MenuItem
-                            className={classes.menuItem}
-                            onClick={onTransferClick}
-                          >
-                            {t('product-card.transfer')}
-                          </MenuItem>
 
-                          <MenuItem
-                            className={classes.menuItem}
-                            onClick={onBurnClick}
-                          >
-                            {t('product-card.burn')}
-                          </MenuItem>
-                        </MenuList>
-                      </Popover>
-                    </>
+                  {isLost && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={isBidder}
+                    />
                   )}
-                </Box>
+                  {isWon && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.WON}
+                      isBidder={isBidder}
+                    />
+                  )}
+                </>
               )}
-            </>
-          )}
+
+              {!isOnSale && (
+                <>
+                  <div>{copies !== undefined ? renderedCopies : <></>}</div>
+
+                  {!isMinting && !isOnSalePending && (
+                    <Box display="flex" alignItems="center">
+                      {!(copiesBalance && copiesBalance >= 0) ? (
+                        <></>
+                      ) : (
+                        <Button
+                          className={classes.saleBtn}
+                          component={RouterLink}
+                          variant="outlined"
+                          rounded
+                          to={toSale}
+                        >
+                          {t('product-card.put-on-sale')}
+                        </Button>
+                      )}
+                      {hasAction && (
+                        <>
+                          <ClickAwayListener onClickAway={handleClose}>
+                            <ButtonBase
+                              className={classes.menuBtn}
+                              onClick={handleClick}
+                            >
+                              <VerticalDotsIcon className={classes.menuIcon} />
+                            </ButtonBase>
+                          </ClickAwayListener>
+                          <Popover
+                            className={classes.menuPopover}
+                            open={isPopoverOpened}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                              vertical: 'top',
+                              horizontal: 'right',
+                            }}
+                            PaperProps={{
+                              variant: 'outlined',
+                            }}
+                          >
+                            <MenuList>
+                              <MenuItem
+                                className={classes.menuItem}
+                                onClick={onTransferClick}
+                              >
+                                {t('product-card.transfer')}
+                              </MenuItem>
+
+                              <MenuItem
+                                className={classes.menuItem}
+                                onClick={onBurnClick}
+                              >
+                                {t('product-card.burn')}
+                              </MenuItem>
+                            </MenuList>
+                          </Popover>
+                        </>
+                      )}
+                    </Box>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className={classes.timeMeta}>
+            {isOnSale && endDate && <Timer endDate={endDate} />}
+          </div>
         </div>
       </CardContent>
     </Card>

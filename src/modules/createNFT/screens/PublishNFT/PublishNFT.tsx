@@ -62,7 +62,7 @@ interface IPublishFixedSwap {
   quantity: string;
   unitContract: string;
   img?: string;
-  saleTime: ISaleTime;
+  saleTimeFS: ISaleTime;
 }
 
 interface IPublishEnglishAuction {
@@ -73,7 +73,7 @@ interface IPublishEnglishAuction {
   quantity: string;
   duration: Days;
   unitContract: string;
-  saleTime: ISaleTime;
+  saleTimeEA: ISaleTime;
 }
 
 type IPublishNFTFormData = IPublishFixedSwap | IPublishEnglishAuction;
@@ -256,7 +256,7 @@ export const PublishNFTComponent = ({
             tokenId,
             price: new BigNumber(payload.price),
             quantity: +payload.quantity,
-            saleTime: payload.saleTime,
+            saleTime: payload.saleTimeFS,
           }),
         ).then(({ error }) => {
           if (!error) {
@@ -273,18 +273,17 @@ export const PublishNFTComponent = ({
               MIN_INCREMENTAL_PART,
             ),
             reservePrice: reservePriceChecked ? payload.reservePrice : '0',
-            // duration:
-            //   process.env.REACT_IS_DEV === 'TEST'
-            //     ? payload.duration * 60
-            //     : payload.duration * 60 * 60 * 24,
-            duration: payload.duration * 60,
+            duration:
+              process.env.REACT_APP_BASE_ENV === 'TEST'
+                ? payload.duration * 60
+                : payload.duration * 60 * 60 * 24,
             name,
             tokenContract,
             unitContract: payload.unitContract,
             standard: nftType,
             tokenId,
             quantity: +payload.quantity,
-            saleTime: payload.saleTime,
+            saleTime: payload.saleTimeEA,
           }),
         ).then(({ error }) => {
           if (!error) {
@@ -433,7 +432,7 @@ export const PublishNFTComponent = ({
                 <Box className={classes.formControl}>
                   <Field
                     component={SelectTimeField}
-                    name="saleTime"
+                    name="saleTimeFS"
                     type="text"
                     label={t('create-nft.label.specific-time-sale')}
                     color="primary"
@@ -535,8 +534,10 @@ export const PublishNFTComponent = ({
                 <div className={classes.fieldText}>
                   {t('publish-nft.expire', {
                     value: add(
-                      isVerify && values.saleTime?.open && values.saleTime?.time
-                        ? values.saleTime?.time
+                      isVerify &&
+                        values.saleTimeEA?.open &&
+                        values.saleTimeEA?.time
+                        ? values.saleTimeEA?.time
                         : new Date(),
                       {
                         days: +values.duration,
@@ -550,7 +551,7 @@ export const PublishNFTComponent = ({
                 <Box className={classes.formControl}>
                   <Field
                     component={SelectTimeField}
-                    name="saleTime"
+                    name="saleTimeEA"
                     type="text"
                     label={t('create-nft.label.specific-time-sale')}
                     color="primary"

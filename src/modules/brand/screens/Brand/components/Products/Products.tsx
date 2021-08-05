@@ -22,6 +22,8 @@ export const Products = () => {
 
   const hasItems = Boolean(brandNfts && brandNfts.length);
 
+  console.log('brandNfts: ', brandNfts);
+
   const renderedCards = useMemo(
     () =>
       brandNfts?.map(mapProductCardData).map(item => (
@@ -47,6 +49,10 @@ export const Products = () => {
           profileInfo={
             item.ownerAddress && <AccountInfo address={item.ownerAddress} />
           }
+          soldData={{
+            sold: item.soldAmount,
+            quantity: item.supplyAmount,
+          }}
         />
       )),
     [brandNfts],

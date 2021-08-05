@@ -198,7 +198,8 @@
     },
     "role": {
       "seller": "Owner",
-      "minter": "Creator"
+      "minter": "Creator",
+      "collection": "Collection"
     },
     "top-bid": "Top Bid",
     "your-bid": "Your bid"
@@ -229,7 +230,8 @@
     "data-is-not-available": "Data is not available",
     "greater-than": "It must be greater than {value}",
     "less-than": "It must be less than {value}",
-    "unexpected": "Server exception"
+    "unexpected": "Server exception",
+    "contract-rejected": "Contract operation is rejected"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -332,7 +334,10 @@
     "won": "Your bid won",
     "outbid": "You were outbid",
     "claim-funds": "Claim funds",
-    "claim-token": "Claim token"
+    "claim-token": "Claim token",
+    "item-balance-tip": "{balance} editions in account",
+    "pool-balance-tip": "{balance} available for purchase",
+    "sold-for-quantity": "Sold {sold} of {quantity}"
   },
   "cancel-timer": {
     "title": "Cancel Sale",
@@ -497,7 +502,9 @@
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
     "time-end": "Ended on {days}/{months}/{years}",
     "time-expired": "Time expired",
-    "time-over": "Time is over"
+    "time-over": "Time is over",
+    "time-left-tip": "Time left",
+    "time-left": "{days} {hours} {minutes} {seconds}"
   },
   "transfer-token": {
     "submit": "Transfer",

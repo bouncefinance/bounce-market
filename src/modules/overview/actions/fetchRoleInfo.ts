@@ -8,6 +8,7 @@ export interface IApiFetchRoleInfo {
   data: {
     creator: IRoleInfo;
     minter: IRoleInfo;
+    collection: IRoleInfo;
     likecount: number;
     mylikecount: number;
   };
@@ -20,11 +21,13 @@ export interface IRoleInfo {
   username: string;
   identity?: number;
   isVerify?: boolean;
+  name?: string;
 }
 
 interface IFetchRoleInfoData {
   creator: IRoleInfo;
   minter: IRoleInfo;
+  collection: IRoleInfo;
   likeCount: number;
   isLike: boolean;
 }
@@ -67,6 +70,9 @@ export const fetchRoleInfo = createSmartAction<
               ...data?.minter,
               isVerify: data?.minter.identity === 2,
             },
+            collection: {
+              ...data?.collection,
+            },
             likeCount: data?.likecount,
             isLike: Boolean(data?.mylikecount),
           };
@@ -75,12 +81,14 @@ export const fetchRoleInfo = createSmartAction<
           address: '--',
           avatar: '--',
           username: '--',
+          name: '',
           isVerify: false,
           identity: 0,
         };
         return {
           creator: defaultUser,
           minter: defaultUser,
+          collection: defaultUser,
           likeCount: 0,
           isLike: false,
         };
