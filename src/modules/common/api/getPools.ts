@@ -62,6 +62,9 @@ export interface ITradePool_V2 {
   category: PoolCategoryType;
   channel: string;
   creator: string;
+  close_at: number;
+  swapped_amount0: number;
+  token_amount0: number;
 }
 
 export interface IGetPoolsApi {

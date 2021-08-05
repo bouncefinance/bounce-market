@@ -225,7 +225,8 @@
     "data-is-not-available": "Данные не доступны",
     "greater-than": "Число должно быть больше {value}",
     "less-than": "Число должно быть меньше {value}",
-    "unexpected": "Непредвиденная ошибка"
+    "unexpected": "Непредвиденная ошибка",
+    "contract-rejected": "Операция по контракту отклонена"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -324,6 +325,8 @@
     "pool-start-tips": "Бассейн будет запущен:",
     "transfer": "Перевести токен",
     "balance-tip": "{balance} издания на счете",
+    "item-balance-tip": "{balance} изданий на счету",
+    "pool-balance-tip": "{balance} доступны для покупки",
     "sold-for-quantity": "Продано {sold} из {quantity}"
   },
   "cancel-timer": {
@@ -489,7 +492,9 @@
     "time-left-short": "Осталось {days} {hours} {minutes} {seconds}",
     "time-end": "Закончился на {days}/{months}/{years}",
     "time-expired": "Время истекло",
-    "time-over": "Время истекло"
+    "time-over": "Время истекло",
+    "time-left-tip": "Остаток времени",
+    "time-left": "{days} {hours} {minutes} {seconds}"
   },
   "transfer-token": {
     "submit": "Перевести",
