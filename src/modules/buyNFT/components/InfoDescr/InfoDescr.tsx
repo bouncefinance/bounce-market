@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Grid, Tooltip, Typography } from '@material-ui/core';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
@@ -44,28 +44,33 @@ export const InfoDescr = ({
       </Box>
 
       <Grid container spacing={2} alignItems="center">
-        {creator && featuresConfig.nftDetailsCreator && (
-          <Grid item xs>
-            {creator}
-          </Grid>
-        )}
+        <div className={classes.spaceBetween}>
+          {creator && featuresConfig.nftDetailsCreator && (
+            <Grid item xs>
+              {creator}
+            </Grid>
+          )}
 
-        {owner && (
-          <Grid item xs>
-            {owner}
-          </Grid>
-        )}
+          {owner && (
+            <Grid item xs>
+              {owner}
+            </Grid>
+          )}
 
-        {featuresConfig.nftDetailsCount && (
-          <Grid item xs="auto">
-            <div className={classes.copies}>
-              <LayersIcon className={classes.copiesIcon} />
-              {copiesCurrent ? `${copiesCurrent} / ` : ''}
-              {copiesTotal}
-            </div>
-          </Grid>
-        )}
-        {featuresConfig.nftLikes && LikeBtn}
+          {featuresConfig.nftLikes && LikeBtn}
+        </div>
+
+        <div className={classes.poolAmount}>
+          <Tooltip title={t('details-nft.pool-amount-tip')}>
+            <Grid item xs="auto">
+              <div className={classes.copies}>
+                <LayersIcon className={classes.copiesIcon} />
+                {copiesCurrent ? `${copiesCurrent} / ` : ''}
+                {copiesTotal}
+              </div>
+            </Grid>
+          </Tooltip>
+        </div>
       </Grid>
 
       {description && (

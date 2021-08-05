@@ -460,14 +460,10 @@ export const BuyNFT = () => {
                       description={item.description}
                       copiesCurrent={
                         isEnglishAuction(poolDetails)
-                          ? undefined
+                          ? poolDetails.tokenAmount0
                           : poolDetails.quantity
                       }
-                      copiesTotal={
-                        isEnglishAuction(poolDetails)
-                          ? poolDetails.tokenAmount0
-                          : poolDetails.totalQuantity
-                      }
+                      copiesTotal={item.supply}
                       creator={renderedCreator}
                       owner={renderedCollection()}
                       LikeBtn={
