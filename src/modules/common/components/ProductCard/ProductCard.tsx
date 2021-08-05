@@ -37,6 +37,8 @@ export interface IProductCardProps
   myBidderAmount?: number;
   isBidder?: boolean;
   isOnSeller?: boolean;
+  isBidderClaimed?: boolean;
+  isCreatorClaimed?: boolean;
 }
 
 export const ProductCard = ({

@@ -29,6 +29,7 @@ interface _IPoolNftItem {
   Standard: number;
   Supply: number;
   creator_claimed: number;
+  bidder_claimed: number;
   duration: number;
   itemname: string;
   // nft main img

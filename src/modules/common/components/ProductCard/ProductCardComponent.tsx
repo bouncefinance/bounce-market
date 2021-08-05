@@ -86,6 +86,8 @@ export interface IProductCardComponentProps {
   myBidderAmount?: number;
   isBidder?: boolean;
   isOnSeller?: boolean;
+  isBidderClaimed?: boolean;
+  isCreatorClaimed?: boolean;
   soldData?: ISoldData;
 }
 
@@ -127,6 +129,8 @@ export const ProductCardComponent = ({
   isBidder = false,
   isOnSeller = false,
   soldData,
+  isBidderClaimed = false,
+  isCreatorClaimed = false,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect } = useAccount();
   const classes = useProductCardStyles();
@@ -274,6 +278,7 @@ export const ProductCardComponent = ({
   const myPriceNumber = myBidderAmount || 0;
   // Figma 4
   const isOutBid =
+    !isBidderClaimed &&
     isAuction &&
     inAuction &&
     bidTopPrice &&
@@ -282,6 +287,7 @@ export const ProductCardComponent = ({
 
   // figama 1
   const isLost =
+    !isBidderClaimed &&
     isAuction &&
     auctionEnd &&
     bidTopPrice &&
@@ -290,12 +296,26 @@ export const ProductCardComponent = ({
     myPriceNumber < bidsReserveAmount;
   // Figema 2
   const isWon =
+    !isBidderClaimed &&
     isAuction &&
     auctionEnd &&
     myPriceNumber > 0 &&
     myPriceNumber === bidTopPrice &&
     bidsReserveAmount &&
-    myPriceNumber > bidsReserveAmount;
+    myPriceNumber >= bidsReserveAmount;
+  // on sell
+  const isSellerClaimMoney =
+    !isCreatorClaimed &&
+    isAuction &&
+    auctionEnd &&
+    bidTopPrice &&
+    bidTopPrice < bidsReserveAmount;
+  const isSellerClaimNft =
+    !isCreatorClaimed &&
+    isAuction &&
+    auctionEnd &&
+    bidTopPrice &&
+    bidTopPrice >= bidsReserveAmount;
 
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
@@ -384,6 +404,34 @@ export const ProductCardComponent = ({
                       isBidder={isBidder}
                     />
                   )}
+                  {isSellerClaimMoney && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={false}
+                      text={t('product-card.claim-funds')}
+                    />
+                  )}
+                  {isSellerClaimNft && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={false}
+                      text={t('product-card.claim-back')}
+                    />
+                  )}
+                  {isBidder && isBidderClaimed && (
+                    <Button variant="outlined" rounded disabled>
+                      {t('product-card.claimed')}
+                    </Button>
+                  )}
+                  {isOnSeller && isCreatorClaimed && (
+                    <Button variant="outlined" rounded disabled>
+                      {t('product-card.claimed')}
+                    </Button>
+                  )}
                 </>
               )}
 
@@ -396,15 +444,19 @@ export const ProductCardComponent = ({
                       {!(copiesBalance && copiesBalance >= 0) ? (
                         <></>
                       ) : (
-                        <Button
-                          className={classes.saleBtn}
-                          component={RouterLink}
-                          variant="outlined"
-                          rounded
-                          to={toSale}
-                        >
-                          {t('product-card.put-on-sale')}
-                        </Button>
+                        <>
+                          {toSale && (
+                            <Button
+                              className={classes.saleBtn}
+                              component={RouterLink}
+                              variant="outlined"
+                              rounded
+                              to={toSale}
+                            >
+                              {t('product-card.put-on-sale')}
+                            </Button>
+                          )}
+                        </>
                       )}
                       {hasAction && (
                         <>

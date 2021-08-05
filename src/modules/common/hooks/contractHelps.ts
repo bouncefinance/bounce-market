@@ -33,13 +33,11 @@ export const getPoolAddress = ({
 };
 
 export const getPoolContract = (poolType: AuctionType) => {
-  return poolType === AuctionType.FixedSwap_Timing
-    ? BounceFixedSwapNFTTime
-    : poolType === AuctionType.FixedSwap
-    ? BounceFixedSwapNFT
-    : poolType === AuctionType.EnglishAuction_Timing
-    ? BounceEnglishAuctionNFTTime
-    : poolType === AuctionType.EnglishAuction
-    ? BounceEnglishAuctionNFT
-    : BounceFixedSwapNFTTime;
+  const poolTypes = {
+    [AuctionType.FixedSwap_Timing]: BounceFixedSwapNFTTime,
+    [AuctionType.FixedSwap]: BounceFixedSwapNFT,
+    [AuctionType.EnglishAuction_Timing]: BounceEnglishAuctionNFTTime,
+    [AuctionType.EnglishAuction]: BounceEnglishAuctionNFT,
+  };
+  return poolTypes[poolType] || poolTypes[AuctionType.FixedSwap_Timing];
 };
