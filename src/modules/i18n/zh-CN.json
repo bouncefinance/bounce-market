@@ -329,8 +329,9 @@
     "put-on-cancel": "取消出售",
     "transfer": "发送token",
     "pool-start-tips": "售卖开始倒计时：",
-    "burn": "销毁token",
-    "balance-tip": "当前可售份数 {balance}",
+    "burn": "销毁token", 
+    "item-balance-tip": "当前拥有份数: {balance}",
+    "pool-balance-tip": "当前可售份数: {balance}",
     "sold-for-quantity": "已售出 {sold} / {quantity}"
   },
   "cancel-timer": {
@@ -496,7 +497,9 @@
     "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
     "time-end": "结束时间： {days}/{months}/{years}",
     "time-expired": "该拍卖已过期",
-    "time-over": "倒计时结束"
+    "time-over": "倒计时结束",
+    "time-left-tip": "剩余时间",
+    "time-left": "{days} {hours} {minutes} {seconds}"
   },
   "transfer-token": {
     "submit": "发送",
