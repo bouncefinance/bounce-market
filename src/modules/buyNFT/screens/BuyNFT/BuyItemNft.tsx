@@ -85,24 +85,26 @@ export const BuyItemNFT = () => {
           />
         );
 
-        const renderedOwner = (
+        const renderedOwner = poolDetails.collection?.name ? (
           <>
             {poolDetails?.owners?.slice(0, 1)?.map(item => (
               <ProfileInfo
-                subTitle={t('details-nft.role.seller')}
-                title={wrapperTitle(item.username, item.owneraddress)}
+                subTitle={t('details-nft.role.collection')}
+                title={wrapperTitle(
+                  poolDetails.collection.name,
+                  poolDetails.collection.address,
+                )}
                 users={[
                   {
-                    name: wrapperTitle(item.username, item.owneraddress),
-                    href: ProfileRoutesConfig.OtherProfile.generatePath(
-                      item.owneraddress,
-                    ),
-                    avatar: item.avatar,
+                    name: poolDetails.collection.name,
+                    avatar: poolDetails.collection.avatar,
                   },
                 ]}
               />
             ))}
           </>
+        ) : (
+          <></>
         );
         const renderedOnwersList = (
           <InfoTabsList>
@@ -158,7 +160,8 @@ export const BuyItemNFT = () => {
               <InfoDescr
                 title={item.itemName}
                 description={item.description}
-                copiesCurrent={item.balance}
+                // copiesCurrent={item.balance}
+                currentPage="itemDetail"
                 copiesTotal={item.supply}
                 creator={renderedCreator}
                 owner={renderedOwner}

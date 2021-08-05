@@ -33,7 +33,6 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
-import { TabLiked } from '../Profile/components/TabLiked';
 import { TabOwned } from '../Profile/components/tabOwned';
 import { TabSale } from '../Profile/components/TabSale';
 import { ConnectWallet } from './components/ConnectWallet';
@@ -42,10 +41,13 @@ import { useOtherProfileStyles } from './useOtherProfileStyles';
 export const PROFILE_INFO_REQUEST_KEY = '/other';
 
 export const OtherProfile = () => {
-  const { isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
-  const { tab, address } = ProfileRoutesConfig.OtherProfile.useParams();
+  const {
+    tab,
+    address,
+    isCreateNft,
+  } = ProfileRoutesConfig.OtherProfile.useParams();
   const classes = useOtherProfileStyles();
   const { push } = useHistory();
   const { isConnected, address: accountAddress } = useAccount();
@@ -115,15 +117,6 @@ export const OtherProfile = () => {
         value: ProfileTab.owned,
         label: t('profile.tabs.showcase'),
       },
-      ...(featuresConfig.nftLikes
-        ? [
-            {
-              value: ProfileTab.liked,
-              label: t('profile.tabs.liked'),
-              count: likedItems ? likedItems.length : 0,
-            },
-          ]
-        : []),
       ...(featuresConfig.profileFollowers
         ? [
             {
@@ -134,7 +127,8 @@ export const OtherProfile = () => {
           ]
         : []),
     ],
-    [],
+    // eslint-disable-next-line
+    [likedItems],
   );
 
   const updateData = useCallback(
@@ -174,6 +168,11 @@ export const OtherProfile = () => {
     },
     [address, push, updateData],
   );
+
+  // TODO Landing conflict
+  useEffect(() => {
+    updateData(tab);
+  }, [updateData, tab]);
 
   if (profileInfoLoading) {
     return <QueryLoadingAbsolute />;
@@ -229,22 +228,20 @@ export const OtherProfile = () => {
         {isConnected ? (
           <>
             <TabPanel value={tab} index={ProfileTab.owned}>
-              <TabOwned />
+              <TabOwned isOther />
             </TabPanel>
 
             <TabPanel value={tab} index={ProfileTab.brands}>
-              {isCreateNft ? <CrateItemAll /> : <TabBrands />}
+              {isCreateNft ? (
+                <CrateItemAll isOther address={address ?? ''} />
+              ) : (
+                <TabBrands address={address} isOther />
+              )}
             </TabPanel>
 
             <TabPanel value={tab} index={ProfileTab.sells}>
-              <TabSale />
+              <TabSale isOther />
             </TabPanel>
-
-            {featuresConfig.nftLikes && (
-              <TabPanel value={tab} index={ProfileTab.liked}>
-                <TabLiked />
-              </TabPanel>
-            )}
 
             {featuresConfig.profileFollowers && (
               <TabPanel value={tab} index={ProfileTab.following}>

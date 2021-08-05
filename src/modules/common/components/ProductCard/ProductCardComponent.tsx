@@ -444,15 +444,19 @@ export const ProductCardComponent = ({
                       {!(copiesBalance && copiesBalance >= 0) ? (
                         <></>
                       ) : (
-                        <Button
-                          className={classes.saleBtn}
-                          component={RouterLink}
-                          variant="outlined"
-                          rounded
-                          to={toSale}
-                        >
-                          {t('product-card.put-on-sale')}
-                        </Button>
+                        <>
+                          {toSale && (
+                            <Button
+                              className={classes.saleBtn}
+                              component={RouterLink}
+                              variant="outlined"
+                              rounded
+                              to={toSale}
+                            >
+                              {t('product-card.put-on-sale')}
+                            </Button>
+                          )}
+                        </>
                       )}
                       {hasAction && (
                         <>
