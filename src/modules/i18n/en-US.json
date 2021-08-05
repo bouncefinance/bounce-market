@@ -106,7 +106,10 @@
       "standard": "Standard",
       "supply": "Supply"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "title": "Create NFT",
@@ -134,7 +137,10 @@
       "description": "What's the story behind this NFT?"
     },
     "next": "Next",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "time": "",
@@ -154,6 +160,7 @@
     "descr-full": "Full description",
     "descr-short": "Collapse",
     "pool-amount-tip": "Available for purchase / Total supply",
+    "item-amount-tip": "Total supply",
     "dialog": {
       "footnote": "Bids placed in auction cannot be withdrawn",
       "input-info": "Minimum bid {value} {currency}"
@@ -342,7 +349,7 @@
       "ago": " ago"
     },
     "activity": {
-      "tab":{
+      "tab": {
         "create": "Create",
         "listings": "Listings",
         "bids": "Bids",

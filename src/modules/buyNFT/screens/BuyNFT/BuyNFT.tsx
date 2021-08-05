@@ -458,6 +458,7 @@ export const BuyNFT = () => {
                     <InfoDescr
                       title={item.itemName}
                       description={item.description}
+                      currentPage="poolDetail"
                       copiesCurrent={
                         isEnglishAuction(poolDetails)
                           ? poolDetails.tokenAmount0

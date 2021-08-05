@@ -19,9 +19,7 @@ import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { ConditionalWrapper } from 'modules/common/components/ConditionalWrapper';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
-import { TimeIcon } from 'modules/common/components/Icons/TimeIcon';
 import { featuresConfig } from 'modules/common/conts';
-import { getDaysLeft } from 'modules/common/utils/getTimeRemaining';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
@@ -133,23 +131,6 @@ export const ProductCardComponent = ({
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
-
-  const renderTimer = useCallback(() => {
-    const daysLeft = endDate ? getDaysLeft(endDate) : 0;
-    const isLastDay = daysLeft <= 0;
-
-    return (
-      <div className={classes.info}>
-        <TimeIcon
-          className={classNames(classes.icon, classes.iconRightOffset)}
-        />
-
-        {isLastDay && 'the last day'}
-
-        {!isLastDay && `${daysLeft} days left`}
-      </div>
-    );
-  }, [classes, endDate]);
 
   const renderCardStatus = useCallback(
     (title: string, subTitle: string) => {
@@ -330,8 +311,6 @@ export const ProductCardComponent = ({
                   {!endDate && copies && renderedCopies}
 
                   {soldData && renderSolds}
-
-                  {/* {endDate && renderTimer()} */}
 
                   {!endDate && !copies && <i />}
                   {isCancelTimePut ? (

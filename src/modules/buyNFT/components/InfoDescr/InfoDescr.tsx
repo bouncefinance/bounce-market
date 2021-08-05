@@ -16,6 +16,7 @@ interface IInfoDescrProps {
   copiesCurrent?: string | number;
   copiesTotal?: string | number;
   LikeBtn: JSX.Element;
+  currentPage: 'poolDetail' | 'itemDetail';
 }
 
 export const InfoDescr = ({
@@ -26,6 +27,7 @@ export const InfoDescr = ({
   copiesCurrent = 0,
   copiesTotal = 0,
   LikeBtn,
+  currentPage,
 }: IInfoDescrProps) => {
   const classes = useInfoDescrStyles();
   const {
@@ -61,7 +63,13 @@ export const InfoDescr = ({
         </div>
 
         <div className={classes.poolAmount}>
-          <Tooltip title={t('details-nft.pool-amount-tip')}>
+          <Tooltip
+            title={
+              currentPage === 'poolDetail'
+                ? t('details-nft.pool-amount-tip')
+                : t('details-nft.item-amount-tip')
+            }
+          >
             <Grid item xs="auto">
               <div className={classes.copies}>
                 <LayersIcon className={classes.copiesIcon} />
