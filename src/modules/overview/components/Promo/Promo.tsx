@@ -5,6 +5,7 @@ import { QueryError } from 'modules/common/components/QueryError/QueryError';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React, { useState } from 'react';
+import { useMemo } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, {
   Autoplay,
@@ -76,22 +77,24 @@ export const Promo = ({
     onSwiper: setSwiperThumbs,
   };
 
-  const renderedItems = items.map(cardProps => {
-    return (
-      <SwiperSlide key={uid(cardProps)} className={classes.slide}>
-        <PromoCard
-          {...cardProps}
-          MediaProps={{
-            category: cardProps.category,
-            src: cardProps.img,
-            imgClassName: 'swiper-lazy',
-            isNativeLazyLoading: false,
-            objectFit: 'scale-down',
-          }}
-        />
-      </SwiperSlide>
-    );
-  });
+  const renderedItems = useMemo(() => {
+    return items.map(cardProps => {
+      return (
+        <SwiperSlide key={uid(cardProps)} className={classes.slide}>
+          <PromoCard
+            {...cardProps}
+            MediaProps={{
+              category: cardProps.category,
+              src: cardProps.img,
+              imgClassName: 'swiper-lazy',
+              isNativeLazyLoading: false,
+              objectFit: 'scale-down',
+            }}
+          />
+        </SwiperSlide>
+      );
+    });
+  }, [items, classes.slide]);
 
   const renderedThumbs = items.map(
     ({ thumbImg, title, category, ...props }) => {

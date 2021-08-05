@@ -34,6 +34,7 @@ export interface IOverviewItem extends IItemByFilter {
   ownerAddress: string;
   quantity: number;
   swappedAmount0: number;
+  identity: number;
 }
 
 export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
@@ -173,13 +174,13 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                     ownerAddress: poolItem?.creator || '',
                     quantity,
                     swappedAmount0: poolItem?.swappedAmount0 || 0,
+                    identity: poolItem?.identity || 1,
                   };
                 })
                 .filter(item => item?.poolId)
                 .sort((a, b) => {
                   return (b?.poolWeight || 1) - (a?.poolWeight || 1);
                 });
-
               return overviewItems;
             })(),
           };

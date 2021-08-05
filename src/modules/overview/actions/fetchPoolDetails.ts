@@ -50,6 +50,7 @@ export interface IApiPoolDetails {
   username: string;
   open_at: number;
   mylikecount: number;
+  identity: number;
 }
 export interface IApiFixedAuctionDetails {
   amount_total0: number;
@@ -115,6 +116,7 @@ export interface IFixedAuctionDetails {
   likeCount?: number;
   isLike?: boolean;
   swappedAmount0: number;
+  identity: number;
 }
 
 export interface IEnglishAuctionDetails {
@@ -143,6 +145,7 @@ export interface IEnglishAuctionDetails {
   likeCount?: number;
   isLike?: boolean;
   swappedAmount0: number;
+  identity: number;
 }
 
 export type IFetchPoolDetailsData =
@@ -235,6 +238,7 @@ export const fetchPoolDetails = createSmartAction<
               likeCount: poolInfo?.likecount,
               isLike: Boolean(poolInfo?.mylikecount) ?? 0,
               swappedAmount0: poolInfo.swapped_amount0,
+              identity: poolInfo.identity,
             };
           } else {
             return {
@@ -259,6 +263,7 @@ export const fetchPoolDetails = createSmartAction<
               likeCount: poolInfo?.likecount,
               isLike: Boolean(poolInfo?.mylikecount) ?? 0,
               swappedAmount0: poolInfo.swapped_amount0,
+              identity: poolInfo.identity,
             };
           }
         } catch (error) {
@@ -284,6 +289,7 @@ export const fetchPoolDetails = createSmartAction<
             likeCount: poolInfo?.likecount,
             isLike: Boolean(poolInfo?.mylikecount) ?? 0,
             swappedAmount0: poolInfo.swapped_amount0,
+            identity: poolInfo.identity,
           };
         }
       },
