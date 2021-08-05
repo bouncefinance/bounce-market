@@ -1,6 +1,14 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
 export const useTabActivityStyles = makeStyles<Theme>(theme => ({
+  itemPreview: {
+    width: 52,
+    height: 52,
+    marginRight: theme.spacing(2),
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+
   tabs: {
     marginBottom: 25,
     position: 'relative',
@@ -41,6 +49,15 @@ export const useTabActivityStyles = makeStyles<Theme>(theme => ({
       marginRight: 16,
       borderRadius: 4,
     },
+    '& span': {
+      flex: 1,
+    },
+  },
+
+  tableItemVideo: {
+    display: 'flex',
+    alignItems: 'center',
+    maxWidth: 240,
     '& span': {
       flex: 1,
     },

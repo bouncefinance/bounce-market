@@ -1,6 +1,8 @@
 import { Timestamp } from '../../common/types/unit';
 import BigNumber from 'bignumber.js';
 
+export type NFTType = 'image' | 'video';
+
 export enum ActivityKeys {
   Create = 1,
   Listings = 2,
@@ -24,6 +26,7 @@ export interface IActivityItemApi {
   tourl: string;
   fileurl: string;
   ctime: Timestamp;
+  category: NFTType;
 }
 
 export interface IActivityData {
@@ -47,4 +50,5 @@ export interface IActivityItem {
   toUrl: string;
   fileUrl: string;
   ctime: Timestamp;
+  category: NFTType;
 }
