@@ -14,6 +14,8 @@ import { PlusIcon } from '../../../common/components/Icons/PlusIcon';
 import { TransferIcon } from '../../../common/components/Icons/TransferIcon';
 import { BidIcon } from '../../../common/components/Icons/BidIcon';
 import { ListedIcon } from '../../../common/components/Icons/ListedIcon';
+import { SaleIcon } from '../../../common/components/Icons/SaleIcon';
+import { PurchaseIcon } from '../../../common/components/Icons/PurchaseIcon';
 import { format, formatDistanceToNowStrict, subDays, getTime } from 'date-fns';
 import { zhCN, ru, enUS } from 'date-fns/locale';
 import { t } from 'modules/i18n/utils/intl';
@@ -92,10 +94,10 @@ const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
 
 const EventIconMaps = {
   [ActivityKeys.Create]: <PlusIcon />,
-  [ActivityKeys.Bids]: <BidIcon />,
   [ActivityKeys.Listings]: <ListedIcon />,
-  [ActivityKeys.Sales]: <TransferIcon />,
-  [ActivityKeys.Purchases]: <TransferIcon />,
+  [ActivityKeys.Bids]: <BidIcon />,
+  [ActivityKeys.Purchases]: <PurchaseIcon />,
+  [ActivityKeys.Sales]: <SaleIcon />,
   [ActivityKeys.Transfers]: <TransferIcon />,
 };
 const EventIcon: React.FC<{ tabKey: ActivityKeys; label: string }> = ({
