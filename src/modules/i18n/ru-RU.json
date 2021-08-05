@@ -336,6 +336,13 @@
       "ago": " назад"
     },
     "activity": {
+      "tab":{
+        "create": "Создавать",
+        "listings": "Списки",
+        "bids": "Ставки",
+        "purchases": "Покупки",
+        "sales": "Продажи"
+      },
       "canceled": "Отменено",
       "claimed": "Вывыдено",
       "created": "Создано",
@@ -416,7 +423,7 @@
       "liked": "Нравится",
       "my-bids": "Моя сделка",
       "my-collections": "Мои коллекции",
-      "my-items": "Мои товары",
+      "showcase": "Витрина",
       "my-sells": "Мои продажи"
     },
     "unfollow": "Отписаться",

@@ -133,7 +133,7 @@ export const Profile = () => {
       },
       {
         value: ProfileTab.owned,
-        label: t('profile.tabs.my-owner'),
+        label: t('profile.tabs.showcase'),
       },
       {
         value: ProfileTab.bids,
