@@ -62,7 +62,6 @@ export const BrandCard = ({
         </CardContent>
       </Link>
 
-      <div>{addItemHref}</div>
       {withAddBtn && addItemHref && (
         <Button
           className={classNames(classes.addNewBtn, classes.addNewBtnInCard)}
