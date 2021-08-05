@@ -1,3 +1,4 @@
+import { default as MulticallRaw } from './Multicall.json';
 import { default as BounceERC1155WithSignRaw } from './BounceERC1155WithSign.json';
 import { default as BounceERC20Raw } from './BounceERC20.json';
 import { default as BounceERC721WithSignRaw } from './BounceERC721WithSign.json';
@@ -11,6 +12,7 @@ import { default as BounceNFTFactoryV2Raw } from './BounceNFTFactoryV2.json';
 import { default as OwnableUpgradeSafeRaw } from './OwnableUpgradeSafe.json';
 import { AbiItem } from 'web3-utils';
 
+export const MultiCallAbi: AbiItem = (MulticallRaw as unknown) as AbiItem;
 export const BounceERC1155WithSign: AbiItem = (BounceERC1155WithSignRaw.abi as unknown) as AbiItem;
 export const BounceERC20: AbiItem = (BounceERC20Raw.abi as unknown) as AbiItem;
 export const BounceERC721WithSign: AbiItem = (BounceERC721WithSignRaw.abi as unknown) as AbiItem;

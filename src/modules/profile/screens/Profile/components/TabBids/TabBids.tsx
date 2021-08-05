@@ -14,10 +14,22 @@ import { fetchMyBids, IPoolNftItem } from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
+import { usePoolList } from 'modules/common/hooks/usePoolList';
 
 export const TabBids = function () {
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMyBids.toString(),
+  });
+
+  const bidsInfo = usePoolList({
+    list:
+      data?.map(e => ({ poolId: e.pool_id ?? -1, poolType: e.poolType })) ?? [],
+    contractFunctionName: 'currentBidderAmount1P',
+  });
+  const bidsReserveAmount = usePoolList({
+    list:
+      data?.map(e => ({ poolId: e.pool_id ?? -1, poolType: e.poolType })) ?? [],
+    contractFunctionName: 'reserveAmount1P',
   });
 
   return (
@@ -26,7 +38,7 @@ export const TabBids = function () {
         {loading ? (
           <ProductCardSkeleton />
         ) : (
-          data?.map(item => (
+          data?.map((item, index) => (
             <ProductCard
               id={item.tokenid}
               poolId={item.pool_id || 0}
@@ -74,6 +86,10 @@ export const TabBids = function () {
               )}
               isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
               openAt={item.openAt}
+              closeAt={item.closeAt}
+              bidTopPrice={bidsInfo[index]?.toNumber() || 0}
+              bidsReserveAmount={bidsReserveAmount[index]?.toNumber() || 0}
+              isBidder
             />
           ))
         )}

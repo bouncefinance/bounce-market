@@ -30,7 +30,9 @@ import { Link, Link as RouterLink } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
+import BidsState, { BidsType } from './BidsState';
 import { CancelPutTime } from './cancel';
+import { ClaimFunds } from './claimFunds';
 import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
 
@@ -73,6 +75,11 @@ export interface IProductCardComponentProps {
   isCancelTimePut?: boolean;
   poolId?: number;
   openAt?: Date;
+  closeAt?: Date;
+  bidTopPrice?: number;
+  bidsReserveAmount?: number;
+  isBidder?: boolean;
+  isOnSeller?: boolean;
 }
 
 export const ProductCardComponent = ({
@@ -106,6 +113,11 @@ export const ProductCardComponent = ({
   isCancelTimePut = false,
   poolId,
   openAt,
+  closeAt,
+  bidTopPrice,
+  bidsReserveAmount = 0,
+  isBidder = false,
+  isOnSeller = false,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect } = useAccount();
   const classes = useProductCardStyles();
@@ -242,6 +254,37 @@ export const ProductCardComponent = ({
     ],
   );
 
+  const isAuction =
+    auctionType === AuctionType.EnglishAuction ||
+    auctionType === AuctionType.EnglishAuction_Timing;
+  const inAuction =
+    openAt && closeAt && +openAt < Date.now() && +closeAt > Date.now();
+  const auctionEnd = closeAt && +closeAt <= Date.now();
+  const priceNumber = price?.toNumber() || 0;
+  // Figma 4
+  const isOutBid =
+    isAuction &&
+    inAuction &&
+    bidTopPrice &&
+    priceNumber > 0 &&
+    priceNumber < bidTopPrice;
+  // figama 1
+  const isLost =
+    isAuction &&
+    auctionEnd &&
+    bidTopPrice &&
+    priceNumber > 0 &&
+    priceNumber === bidTopPrice &&
+    priceNumber < bidsReserveAmount;
+  // Figema 2
+  const isWon =
+    isAuction &&
+    auctionEnd &&
+    priceNumber > 0 &&
+    priceNumber === bidTopPrice &&
+    bidsReserveAmount &&
+    priceNumber > bidsReserveAmount;
+
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
       <div className={classes.relative}>
@@ -253,6 +296,9 @@ export const ProductCardComponent = ({
           {openAt && +openAt > Date.now() && (
             <CardPutSaleTimer openAt={openAt} />
           )}
+          {isOutBid && <BidsState type={BidsType.OUTBID} />}
+          {isLost && <BidsState type={BidsType.LOST} />}
+          {isWon && <BidsState type={BidsType.WON} />}
         </ConditionalWrapper>
         {featuresConfig.nftLikes && !hiddenLikeBtn && renderedLikes}
       </div>
@@ -301,6 +347,23 @@ export const ProductCardComponent = ({
                 <CancelPutTime auctionType={auctionType} id={poolId} />
               ) : (
                 <></>
+              )}
+
+              {isLost && (
+                <ClaimFunds
+                  auctionType={auctionType}
+                  id={poolId}
+                  type={BidsType.LOST}
+                  isBidder={isBidder}
+                />
+              )}
+              {isWon && (
+                <ClaimFunds
+                  auctionType={auctionType}
+                  id={poolId}
+                  type={BidsType.WON}
+                  isBidder={isBidder}
+                />
               )}
             </>
           )}
