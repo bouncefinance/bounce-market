@@ -18,7 +18,9 @@ import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
 
-export const TabOwned = function () {
+export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
+  isOther = false,
+}) {
   const { data, loading } = useQuery<IMyOwnedData>({
     type: fetchOwned.toString(),
   });
@@ -59,7 +61,7 @@ export const TabOwned = function () {
               contractAddress={
                 item.balance > 0 ? item.contractaddress : undefined
               }
-              standard={item.standard}
+              standard={isOther ? undefined : item.standard}
               profileInfo={
                 <ProfileInfo
                   subTitle={t('details-nft.role.minter')}
@@ -76,10 +78,14 @@ export const TabOwned = function () {
                   ]}
                 />
               }
-              toSale={RoutesConfiguration.PublishNft.generatePath(
-                item.contractaddress,
-                item.tokenid,
-              )}
+              toSale={
+                isOther
+                  ? undefined
+                  : RoutesConfiguration.PublishNft.generatePath(
+                      item.contractaddress,
+                      item.tokenid,
+                    )
+              }
             />
           ))
         )}

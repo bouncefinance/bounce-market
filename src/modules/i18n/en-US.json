@@ -295,7 +295,7 @@
         "creator": "Auction is in progress"
       },
       "NotSoldByReservePrice": {
-        "buyer": "Item hasn't been sold. Claim your tokens back",
+        "buyer": "Item hasn't been sold. Claim your funds back",
         "creator": "Item hasn't been sold. Claim your NFT back",
         "others": "Item hasn't been sold"
       }
@@ -332,6 +332,13 @@
     "top-bid": "Top Bid",
     "pool-start-tips": "The pool will start in:",
     "transfer": "Transfer token",
+    "lost": "Your bid was lost",
+    "won": "Your bid won",
+    "outbid": "You were outbid",
+    "claim-funds": "Claim funds",
+    "claim-token": "Claim token",
+    "claim-back": "Claim back",
+    "claimed": "Claimed",
     "item-balance-tip": "{balance} editions in account",
     "pool-balance-tip": "{balance} available for purchase",
     "sold-for-quantity": "Sold {sold} of {quantity}"

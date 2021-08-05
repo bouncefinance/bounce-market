@@ -28,7 +28,9 @@ import { Link, Link as RouterLink } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
+import BidsState, { BidsType } from './BidsState';
 import { CancelPutTime } from './cancel';
+import { ClaimFunds } from './claimFunds';
 import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
 import { Timer } from './Timer';
@@ -78,6 +80,14 @@ export interface IProductCardComponentProps {
   isCancelTimePut?: boolean;
   poolId?: number;
   openAt?: Date;
+  closeAt?: Date;
+  bidTopPrice?: number;
+  bidsReserveAmount?: number;
+  myBidderAmount?: number;
+  isBidder?: boolean;
+  isOnSeller?: boolean;
+  isBidderClaimed?: boolean;
+  isCreatorClaimed?: boolean;
   soldData?: ISoldData;
 }
 
@@ -112,7 +122,15 @@ export const ProductCardComponent = ({
   isCancelTimePut = false,
   poolId,
   openAt,
+  closeAt,
+  bidTopPrice,
+  bidsReserveAmount = 0,
+  myBidderAmount = 0,
+  isBidder = false,
+  isOnSeller = false,
   soldData,
+  isBidderClaimed = false,
+  isCreatorClaimed = false,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect } = useAccount();
   const classes = useProductCardStyles();
@@ -251,6 +269,54 @@ export const ProductCardComponent = ({
     ],
   );
 
+  const isAuction =
+    auctionType === AuctionType.EnglishAuction ||
+    auctionType === AuctionType.EnglishAuction_Timing;
+  const inAuction =
+    openAt && closeAt && +openAt < Date.now() && +closeAt > Date.now();
+  const auctionEnd = closeAt && +closeAt <= Date.now();
+  const myPriceNumber = myBidderAmount || 0;
+  // Figma 4
+  const isOutBid =
+    !isBidderClaimed &&
+    isAuction &&
+    inAuction &&
+    bidTopPrice &&
+    myPriceNumber > 0 &&
+    myPriceNumber < bidTopPrice;
+
+  // figama 1
+  const isLost =
+    !isBidderClaimed &&
+    isAuction &&
+    auctionEnd &&
+    bidTopPrice &&
+    myPriceNumber > 0 &&
+    myPriceNumber === bidTopPrice &&
+    myPriceNumber < bidsReserveAmount;
+  // Figema 2
+  const isWon =
+    !isBidderClaimed &&
+    isAuction &&
+    auctionEnd &&
+    myPriceNumber > 0 &&
+    myPriceNumber === bidTopPrice &&
+    bidsReserveAmount &&
+    myPriceNumber >= bidsReserveAmount;
+  // on sell
+  const isSellerClaimMoney =
+    !isCreatorClaimed &&
+    isAuction &&
+    auctionEnd &&
+    bidTopPrice &&
+    bidTopPrice < bidsReserveAmount;
+  const isSellerClaimNft =
+    !isCreatorClaimed &&
+    isAuction &&
+    auctionEnd &&
+    bidTopPrice &&
+    bidTopPrice >= bidsReserveAmount;
+
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
       <div className={classes.relative}>
@@ -262,6 +328,9 @@ export const ProductCardComponent = ({
           {openAt && +openAt > Date.now() && (
             <CardPutSaleTimer openAt={openAt} />
           )}
+          {isOutBid && <BidsState type={BidsType.OUTBID} />}
+          {isLost && <BidsState type={BidsType.LOST} />}
+          {isWon && <BidsState type={BidsType.WON} />}
         </ConditionalWrapper>
         {featuresConfig.nftLikes && !hiddenLikeBtn && renderedLikes}
       </div>
@@ -318,6 +387,51 @@ export const ProductCardComponent = ({
                   ) : (
                     <></>
                   )}
+
+                  {isLost && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={isBidder}
+                    />
+                  )}
+                  {isWon && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.WON}
+                      isBidder={isBidder}
+                    />
+                  )}
+                  {isSellerClaimMoney && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={false}
+                      text={t('product-card.claim-funds')}
+                    />
+                  )}
+                  {isSellerClaimNft && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={false}
+                      text={t('product-card.claim-back')}
+                    />
+                  )}
+                  {isBidder && isBidderClaimed && (
+                    <Button variant="outlined" rounded disabled>
+                      {t('product-card.claimed')}
+                    </Button>
+                  )}
+                  {isOnSeller && isCreatorClaimed && (
+                    <Button variant="outlined" rounded disabled>
+                      {t('product-card.claimed')}
+                    </Button>
+                  )}
                 </>
               )}
 
@@ -330,15 +444,19 @@ export const ProductCardComponent = ({
                       {!(copiesBalance && copiesBalance >= 0) ? (
                         <></>
                       ) : (
-                        <Button
-                          className={classes.saleBtn}
-                          component={RouterLink}
-                          variant="outlined"
-                          rounded
-                          to={toSale}
-                        >
-                          {t('product-card.put-on-sale')}
-                        </Button>
+                        <>
+                          {toSale && (
+                            <Button
+                              className={classes.saleBtn}
+                              component={RouterLink}
+                              variant="outlined"
+                              rounded
+                              to={toSale}
+                            >
+                              {t('product-card.put-on-sale')}
+                            </Button>
+                          )}
+                        </>
                       )}
                       {hasAction && (
                         <>
