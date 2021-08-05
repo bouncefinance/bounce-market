@@ -5,6 +5,7 @@ import { QueryError } from 'modules/common/components/QueryError/QueryError';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React, { useState } from 'react';
+import { useMemo } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, {
   Autoplay,
@@ -76,25 +77,27 @@ export const Promo = ({
     onSwiper: setSwiperThumbs,
   };
 
-  const renderedItems = items.map(cardProps => {
-    return (
-      <SwiperSlide key={uid(cardProps)} className={classes.slide}>
-        <PromoCard
-          {...cardProps}
-          MediaProps={{
-            category: cardProps.category,
-            src: cardProps.img,
-            imgClassName: 'swiper-lazy',
-            isNativeLazyLoading: false,
-            objectFit: 'scale-down',
-          }}
-        />
-      </SwiperSlide>
-    );
-  });
+  const renderedItems = useMemo(() => {
+    return items.map((cardProps, index) => {
+      return (
+        <SwiperSlide key={index} className={classes.slide}>
+          <PromoCard
+            {...cardProps}
+            MediaProps={{
+              category: cardProps.category,
+              src: cardProps.img,
+              imgClassName: 'swiper-lazy',
+              isNativeLazyLoading: false,
+              objectFit: 'scale-down',
+            }}
+          />
+        </SwiperSlide>
+      );
+    });
+  }, [items, classes.slide]);
 
-  const renderedThumbs = items.map(
-    ({ thumbImg, title, category, ...props }) => {
+  const renderedThumbs = useMemo(() => {
+    return items.map(({ thumbImg, title, category, ...props }) => {
       return (
         <SwiperSlide key={uid(props)} className={classes.thumbsSlide}>
           <PromoThumb
@@ -111,38 +114,40 @@ export const Promo = ({
           />
         </SwiperSlide>
       );
-    },
-  );
+    });
+  }, [items, classes.thumb, classes.thumbsSlide]);
+  return useMemo(() => {
+    return (
+      <Section
+        {...sectionProps}
+        pt={{ md: 11 }}
+        className={classNames(classes.root, className)}
+      >
+        <Container className={classes.container}>
+          {isLoading && <QueryLoadingCentered />}
 
-  return (
-    <Section
-      {...sectionProps}
-      pt={{ md: 11 }}
-      className={classNames(classes.root, className)}
-    >
-      <Container className={classes.container}>
-        {isLoading && <QueryLoadingCentered />}
+          {!isLoading && error && <QueryError error={error} />}
 
-        {!isLoading && error && <QueryError error={error} />}
+          {!isLoading && items.length && (
+            <Grid container alignItems="center">
+              <Grid item xs={12} lg={9}>
+                <Swiper {...sliderParams} className={classes.slider}>
+                  {renderedItems}
+                </Swiper>
 
-        {!isLoading && items.length && (
-          <Grid container alignItems="center">
-            <Grid item xs={12} lg={9}>
-              <Swiper {...sliderParams} className={classes.slider}>
-                {renderedItems}
-              </Swiper>
+                <div className={classes.pagination} id={paginationId} />
+              </Grid>
 
-              <div className={classes.pagination} id={paginationId} />
+              <Grid item lg={3} className={classes.thumbsCol}>
+                <Swiper {...thumbsParams} className={classes.thumbs}>
+                  {renderedThumbs}
+                </Swiper>
+              </Grid>
             </Grid>
-
-            <Grid item lg={3} className={classes.thumbsCol}>
-              <Swiper {...thumbsParams} className={classes.thumbs}>
-                {renderedThumbs}
-              </Swiper>
-            </Grid>
-          </Grid>
-        )}
-      </Container>
-    </Section>
-  );
+          )}
+        </Container>
+      </Section>
+    );
+    // eslint-disable-next-line
+  }, [renderedThumbs]);
 };

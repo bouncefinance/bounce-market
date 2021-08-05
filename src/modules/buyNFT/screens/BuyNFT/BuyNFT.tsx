@@ -334,28 +334,28 @@ export const BuyNFT = () => {
                 />
               );
 
-              const renderedOwner = (
-                <ProfileInfo
-                  subTitle={t('details-nft.role.seller')}
-                  title={wrapperTitle(
-                    roleInfos.creator.username,
-                    roleInfos.creator.address,
-                  )}
-                  users={[
-                    {
-                      name: wrapperTitle(
-                        roleInfos.creator.username,
-                        roleInfos.creator.address,
-                      ),
-                      href: ProfileRoutesConfig.OtherProfile.generatePath(
-                        roleInfos.creator.address,
-                      ),
-                      avatar: roleInfos.creator.avatar,
-                      verified: roleInfos.creator.isVerify,
-                    },
-                  ]}
-                />
-              );
+              const renderedCollection = () => {
+                return roleInfos?.collection.name ? (
+                  <ProfileInfo
+                    subTitle={t('details-nft.role.collection')}
+                    title={wrapperTitle(
+                      roleInfos?.collection.name || '',
+                      roleInfos.collection.address,
+                    )}
+                    users={[
+                      {
+                        name: wrapperTitle(
+                          roleInfos?.collection.name || '',
+                          roleInfos.collection.address,
+                        ),
+                        avatar: roleInfos.collection.avatar,
+                      },
+                    ]}
+                  />
+                ) : (
+                  <></>
+                );
+              };
 
               const renderedHistoryList = (
                 <InfoTabsList>
@@ -458,18 +458,15 @@ export const BuyNFT = () => {
                     <InfoDescr
                       title={item.itemName}
                       description={item.description}
+                      currentPage="poolDetail"
                       copiesCurrent={
                         isEnglishAuction(poolDetails)
-                          ? undefined
+                          ? poolDetails.tokenAmount0
                           : poolDetails.quantity
                       }
-                      copiesTotal={
-                        isEnglishAuction(poolDetails)
-                          ? poolDetails.tokenAmount0
-                          : poolDetails.totalQuantity
-                      }
+                      copiesTotal={item.supply}
                       creator={renderedCreator}
-                      owner={renderedOwner}
+                      owner={renderedCollection()}
                       LikeBtn={
                         <Grid item xs="auto">
                           <NftLikeBtn

@@ -39,6 +39,8 @@ function mapPool(data: IQueryPool): IFetchPoolDetailsData {
       unitContract: data.token0,
       tokenAmount0: data.token_amount0,
       tokenId: data.token_id,
+      swappedAmount0: data.swapped_amount0,
+      identity: data.identity,
     };
   } else {
     return {
@@ -56,6 +58,8 @@ function mapPool(data: IQueryPool): IFetchPoolDetailsData {
       unitContract: data.token1,
       tokenId: data.token_id,
       auctionType: auctionTypeMap[data.auctiontype],
+      swappedAmount0: data.swapped_amount0,
+      identity: data.identity,
     };
   }
 }

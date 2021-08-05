@@ -5,7 +5,7 @@ import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 // import { getTokenSymbol } from 'modules/common/conts';
 // import { t } from '../../../i18n/utils/intl';
-import { ActivityKeys, IActivityItem } from '../../api/getActivity';
+import { ActivityKeys, IActivityItem, NFTType } from '../../api/getActivity';
 import { Img } from 'modules/uiKit/Img';
 import { useTabActivityStyles } from './useTabActivityStyles';
 // import { CloseIcon } from '../../../common/components/Icons/CloseIcon';
@@ -14,9 +14,13 @@ import { PlusIcon } from '../../../common/components/Icons/PlusIcon';
 import { TransferIcon } from '../../../common/components/Icons/TransferIcon';
 import { BidIcon } from '../../../common/components/Icons/BidIcon';
 import { ListedIcon } from '../../../common/components/Icons/ListedIcon';
+import { SaleIcon } from '../../../common/components/Icons/SaleIcon';
+import { PurchaseIcon } from '../../../common/components/Icons/PurchaseIcon';
 import { format, formatDistanceToNowStrict, subDays, getTime } from 'date-fns';
 import { zhCN, ru, enUS } from 'date-fns/locale';
 import { t } from 'modules/i18n/utils/intl';
+import { VideoPlayer } from '../../../common/components/VideoPlayer';
+import { useCallback } from 'react';
 
 const dateLocale: { [key: string]: Locale } = {
   zhCN: zhCN,
@@ -35,6 +39,27 @@ const ItemIcon: React.FC<{ url: string; label: string }> = ({ url, label }) => {
   return (
     <div className={styles.tableItemIcon}>
       <Img src={url} ratio="1x1" className="icon" />
+      <span>{label}</span>
+    </div>
+  );
+};
+
+const ItemVideo: React.FC<{ url: string; label: string }> = ({
+  url,
+  label,
+}) => {
+  const styles = useTabActivityStyles();
+  return (
+    <div className={styles.tableItemVideo}>
+      <VideoPlayer
+        className={styles.itemPreview}
+        src={url}
+        width={100}
+        height={100}
+        controls={false}
+        autoPlay={false}
+        objectFit="cover"
+      />
       <span>{label}</span>
     </div>
   );
@@ -69,10 +94,10 @@ const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
 
 const EventIconMaps = {
   [ActivityKeys.Create]: <PlusIcon />,
-  [ActivityKeys.Bids]: <BidIcon />,
   [ActivityKeys.Listings]: <ListedIcon />,
-  [ActivityKeys.Sales]: <TransferIcon />,
-  [ActivityKeys.Purchases]: <TransferIcon />,
+  [ActivityKeys.Bids]: <BidIcon />,
+  [ActivityKeys.Purchases]: <PurchaseIcon />,
+  [ActivityKeys.Sales]: <SaleIcon />,
   [ActivityKeys.Transfers]: <TransferIcon />,
 };
 const EventIcon: React.FC<{ tabKey: ActivityKeys; label: string }> = ({
@@ -101,14 +126,26 @@ export const ActivitiesTableRow = ({
   symbol,
   tabKey,
 }: IActivitiesTableProps) => {
+  const renderItemPreview = useCallback(
+    (category: NFTType) => {
+      return category === 'video' ? (
+        <ItemVideo url={item.fileUrl} label={item.itemName} />
+      ) : (
+        <ItemIcon url={item.fileUrl} label={item.itemName} />
+      );
+    },
+    [item.fileUrl, item.itemName],
+  );
+
   return (
     <TableRow>
       <TableCell>
         <EventIcon tabKey={tabKey} label={item.event} />
       </TableCell>
-      <TableCell>
+      {/* <TableCell>
         <ItemIcon url={item.fileUrl} label={item.itemName} />
-      </TableCell>
+      </TableCell> */}
+      <TableCell>{renderItemPreview(item.category)}</TableCell>
       <TableCell>
         {item.amount.toString()}&nbsp;{symbol}
       </TableCell>

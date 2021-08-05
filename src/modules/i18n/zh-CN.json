@@ -153,6 +153,7 @@
     "buy-now": "购买",
     "descr-full": "详细描述",
     "descr-short": "收起",
+    "pool-amount-tip": "铸造总副本数",
     "dialog": {
       "footnote": "进行中的拍卖，出价无法撤销。",
       "input-info": "您的出价必须至少为 {value} {currency}"
@@ -192,7 +193,8 @@
     },
     "role": {
       "seller": "拥有者",
-      "minter": "创建者"
+      "minter": "创建者",
+      "collection": "作品集"
     },
     "top-bid": "最高出价",
     "your-bid": "您的出价"
@@ -223,7 +225,8 @@
     "data-is-not-available": "无法获取数据",
     "greater-than": "数值需大于 {value}",
     "less-than": "数值需小于 {value}",
-    "unexpected": "出现意外错误"
+    "unexpected": "出现意外错误",
+    "contract-rejected": "合约操作被拒绝"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -320,7 +323,10 @@
     "put-on-cancel": "取消出售",
     "transfer": "发送token",
     "pool-start-tips": "售卖开始倒计时：",
-    "burn": "销毁token"
+    "burn": "销毁token", 
+    "item-balance-tip": "当前拥有份数: {balance}",
+    "pool-balance-tip": "当前可售份数: {balance}",
+    "sold-for-quantity": "已售出 {sold} / {quantity}"
   },
   "cancel-timer": {
     "title": "取消出售",
@@ -335,6 +341,13 @@
       "ago": "前"
     },
     "activity": {
+      "tab": {
+        "create": "创建",
+        "listings": "上架",
+        "bids": "出价",
+        "purchases": "购买",
+        "sales": "出售"
+      },
       "canceled": "已取消",
       "claimed": "已领取",
       "created": "已创建",
@@ -415,7 +428,7 @@
       "liked": "收藏",
       "my-bids": "我的交易",
       "my-collections": "我的作品集",
-      "my-items": "我的NFT",
+      "showcase": "我拥有的",
       "my-sells": "我的出售"
     },
     "unfollow": "取消关注",
@@ -478,7 +491,9 @@
     "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
     "time-end": "结束时间： {days}/{months}/{years}",
     "time-expired": "该拍卖已过期",
-    "time-over": "倒计时结束"
+    "time-over": "倒计时结束",
+    "time-left-tip": "剩余时间",
+    "time-left": "{days} {hours} {minutes} {seconds}"
   },
   "transfer-token": {
     "submit": "发送",

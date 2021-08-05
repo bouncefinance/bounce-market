@@ -48,6 +48,9 @@ export interface INFTItem {
   openAt: Date;
   state: PoolState;
   isLike: boolean;
+  endDate: Date | undefined;
+  soldAmount: number;
+  supplyAmount: number;
 }
 
 export const mapNFTItem = (
@@ -80,6 +83,9 @@ export const mapNFTItem = (
     openAt: new Date(item.open_at * 1e3),
     state: item.state,
     isLike: Boolean(item.mylikecount),
+    endDate: item.close_at ? new Date(item.close_at * 1e3) : undefined,
+    soldAmount: item.swapped_amount0,
+    supplyAmount: item.token_amount0,
   };
 };
 

@@ -39,6 +39,7 @@ function mapPromoItem(item: IItem, tokenSymbol: string): IPromoItem {
     category: item?.category,
     img: item.fileUrl,
     thumbImg: item.fileUrl || '',
+    identity: item?.identity || 1,
     href:
       item.poolId && item.poolType
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
@@ -57,8 +58,7 @@ export const Overview = () => {
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
   const classes = useOverviewStyles();
-  const { isConnected } = useAccount();
-  const { chainId } = useAccount();
+  const { isConnected, chainId } = useAccount();
 
   useEffect(() => {
     dispatchRequest(fetchOverview());

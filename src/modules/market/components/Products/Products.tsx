@@ -78,6 +78,8 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     };
   }, [category, page, dispatch, isConnected, dispatchRequest]);
 
+  console.log('nftItemsData: ', nftItemsData);
+
   const nftItems = useMemo(
     () => (nftItemsData ? nftItemsData.items.map(mapProductCardData) : []),
     [nftItemsData],
@@ -93,6 +95,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   }, [nftItemsData]);
 
   const hasItems = !!nftItems.length;
+  console.log('nftItems: ', nftItems);
   const rendrerdCards = useMemo(
     () =>
       nftItems.map(item => (
@@ -107,6 +110,10 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           priceType={item.priceType}
           endDate={item.endDate}
           copies={item.copies}
+          soldData={{
+            sold: item.soldAmount,
+            quantity: item.supplyAmount,
+          }}
           likes={item.likes}
           isLike={item.isLike}
           href={item.href}

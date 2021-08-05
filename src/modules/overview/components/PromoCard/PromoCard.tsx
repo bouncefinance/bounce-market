@@ -1,8 +1,8 @@
 import { Box, Hidden, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
-import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { VideoPlayer } from 'modules/common/components/VideoPlayer';
 import { t } from 'modules/i18n/utils/intl';
@@ -24,6 +24,7 @@ export interface IPromoCardProps {
   srcset?: IImgProps['srcset'];
   href: string;
   authorHref: string;
+  identity: number;
   MediaProps: IImgProps & {
     category: ProductCardCategoryType;
   };
@@ -42,6 +43,7 @@ export const PromoCard = ({
   href,
   authorHref,
   MediaProps,
+  identity,
 }: IPromoCardProps) => {
   const classes = usePromoCardStyles();
 
@@ -59,7 +61,6 @@ export const PromoCard = ({
       </Truncate>
     </Typography>
   );
-
   return (
     <div className={classNames(classes.root, className)}>
       <div className={classes.content}>
@@ -76,27 +77,20 @@ export const PromoCard = ({
         <Hidden smDown>{renderedText}</Hidden>
 
         <div className={classes.info}>
-          <Link to={authorHref} className={classes.author}>
-            <DefaultRandomAvatar
-              className={classes.avatar}
-              alt={createdBy}
-              src={avatar}
-            />
-
-            <Typography
-              color="textSecondary"
-              variant="body2"
-              className={classes.authorText}
-            >
-              {t('promo.created-by')}
-            </Typography>
-
-            <Typography className={classes.authorName} variant="body2">
-              {createdBy.length === 42 && createdBy.slice(0, 2) === '0x'
-                ? createdBy.replace(/^(.{6}).*(.{4})$/, '$1...$2')
-                : createdBy}
-            </Typography>
-          </Link>
+          <ProfileInfo
+            avatarSize="medium"
+            className={classes.ProfileInfo}
+            subTitle={t('promo.created-by')}
+            title={createdBy}
+            users={[
+              {
+                name: createdBy,
+                href: authorHref,
+                avatar: avatar,
+                verified: identity === 2,
+              },
+            ]}
+          />
 
           <Typography className={classes.price}>
             {price.toFormat()} {priceType}

@@ -133,7 +133,7 @@ export const Profile = () => {
       },
       {
         value: ProfileTab.owned,
-        label: t('profile.tabs.my-owner'),
+        label: t('profile.tabs.showcase'),
       },
       {
         value: ProfileTab.bids,
@@ -201,6 +201,7 @@ export const Profile = () => {
           src={profileInfo?.imgUrl}
           onEditClick={toggleAvatarModal(true)}
           isEditable
+          isVerified={profileInfo?.identity === 2}
         />
 
         <SetAvatarModal
@@ -249,7 +250,11 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.brands}>
-          {isCreateNft ? <CrateItemAll /> : <TabBrands />}
+          {isCreateNft ? (
+            <CrateItemAll address={address ?? ''} />
+          ) : (
+            <TabBrands />
+          )}
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>
