@@ -53,9 +53,7 @@ export const Brands = ({
         ({ imgUrl, id, brandName, ownerAddress, contractAddress }, i) => (
           <SwiperSlide className={classes.slide} key={id}>
             <Link
-              to={ProfileRoutesConfig.OtherProfile.generatePath(
-                contractAddress,
-              )}
+              to={ProfileRoutesConfig.OtherProfile.generatePath(ownerAddress)}
               className={classes.brand}
             >
               <BrandItems

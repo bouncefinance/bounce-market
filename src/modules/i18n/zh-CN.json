@@ -106,7 +106,10 @@
       "standard": "标准",
       "supply": "总量"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "创建",
     "submitting": "正在创建中",
     "title": "创建 NFT",
@@ -134,7 +137,10 @@
       "description": "讲述创建该NFT背后的故事"
     },
     "next": "下一步",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "创建",
     "submitting": "正在创建中",
     "time": "{gender, select, male {He}female {She}other {They}}",
@@ -192,7 +198,7 @@
     },
     "role": {
       "seller": "拥有者",
-      "minter": "创建者",  
+      "minter": "创建者",
       "collection": "作品集"
     },
     "top-bid": "最高出价",
@@ -224,7 +230,8 @@
     "data-is-not-available": "无法获取数据",
     "greater-than": "数值需大于 {value}",
     "less-than": "数值需小于 {value}",
-    "unexpected": "出现意外错误"
+    "unexpected": "出现意外错误",
+    "contract-rejected": "合约操作被拒绝"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -339,7 +346,7 @@
       "ago": "前"
     },
     "activity": {
-      "tab":{
+      "tab": {
         "create": "创建",
         "listings": "上架",
         "bids": "出价",

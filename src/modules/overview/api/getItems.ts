@@ -70,6 +70,7 @@ export interface IItem {
   isLoading?: boolean;
   openAt?: Date;
   avatar?: string;
+  identity?: number;
 }
 
 export function hasBrand(item: IItem) {
