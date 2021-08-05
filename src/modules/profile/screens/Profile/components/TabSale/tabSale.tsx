@@ -46,8 +46,13 @@ export const TabSale = function () {
               isLike={item.isLike}
               price={item.poolid ? item.price : undefined}
               priceType={(data as any)?.tokenSymbol}
-              copies={item.token_amount0}
-              copiesBalance={item.swapped_amount0}
+              soldData={{
+                sold: item.swapped_amount0,
+                quantity: item.token_amount0,
+              }}
+              endDate={
+                item.close_at ? new Date(item.close_at * 1e3) : undefined
+              }
               MediaProps={{
                 category: item.category,
                 src: item.fileurl || 'xxx',

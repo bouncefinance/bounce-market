@@ -112,10 +112,45 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     borderWidth: '1px 0 0',
   },
 
+  // price: {
+  //   fontSize: 15,
+  //   fontWeight: 700,
+  //   margin: theme.spacing(0, 0, 1.5),
+  // },
+
+  saleContainer: {
+    display: 'grid',
+    alignItems: 'center',
+    gridTemplateRows: '1fr 1fr',
+    rowGap: theme.spacing(0.6),
+    marginTop: 'auto',
+  },
+
+  saleType: {
+    fontSize: 14,
+    lineHeight: '17px',
+    opacity: 0.4,
+  },
+
   price: {
     fontSize: 15,
-    fontWeight: 700,
-    margin: theme.spacing(0, 0, 1.5),
+    lineHeight: '18px',
+    fontWeight: 'bold',
+  },
+
+  meta: {
+    display: 'grid',
+    gridTemplateColumns: '1fr auto',
+  },
+
+  saleMeta: {
+    display: 'grid',
+    gridTemplateRows: '1fr auto',
+  },
+
+  timeMeta: {
+    display: 'flex',
+    alignItems: 'center',
   },
 
   infoContainer: {
@@ -123,7 +158,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     alignItems: 'center',
     gridTemplateColumns: '1fr auto',
     gap: theme.spacing(0, 1.5),
-    marginTop: 'auto',
+    marginTop: 5,
   },
 
   info: {
