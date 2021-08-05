@@ -9,13 +9,15 @@ import { BidsType } from './BidsState';
 import { bidderClaim } from 'modules/overview/actions/bidderClaim';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useHistory } from 'react-router-dom';
+import { creatorClaim } from 'modules/overview/actions/creatorClaim';
 
 export const ClaimFunds: React.FC<{
   id?: number;
   auctionType?: AuctionType;
   type: BidsType;
   isBidder: boolean;
-}> = ({ id, auctionType, type, isBidder }) => {
+  text?: string;
+}> = ({ id, auctionType, type, isBidder, text }) => {
   const classes = useProductCardStyles();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatchRequest();
@@ -40,13 +42,32 @@ export const ClaimFunds: React.FC<{
     [dispatch, id, push, isOpenSaleTime],
   );
 
+  const handleCreatorClaim = useCallback(
+    (cb?: () => void) => {
+      dispatch(creatorClaim({ poolId: id, isOpenSaleTime })).then(
+        ({ error }) => {
+          if (!error) {
+            push(ProfileRoutesConfig.UserProfile.generatePath());
+            return;
+          }
+          cb?.();
+        },
+      );
+    },
+    [dispatch, id, push, isOpenSaleTime],
+  );
+
   const onClick = () => {
     setLoading(true);
     if (isBidder) {
       handleBidderClaim(() => {
         setLoading(false);
       });
+      return;
     }
+    handleCreatorClaim(() => {
+      setLoading(false);
+    });
   };
   const state: {
     [key in string]: { text: string };
@@ -67,7 +88,7 @@ export const ClaimFunds: React.FC<{
       disabled={loading}
       loading={loading}
     >
-      {state[type].text ?? '--'}
+      {text ? text : state[type].text ?? '--'}
     </Button>
   );
 };

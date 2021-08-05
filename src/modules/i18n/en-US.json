@@ -335,6 +335,8 @@
     "outbid": "You were outbid",
     "claim-funds": "Claim funds",
     "claim-token": "Claim token",
+    "claim-back": "Claim back",
+    "claimed": "Claimed",
     "item-balance-tip": "{balance} editions in account",
     "pool-balance-tip": "{balance} available for purchase",
     "sold-for-quantity": "Sold {sold} of {quantity}"

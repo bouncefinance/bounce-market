@@ -109,6 +109,8 @@ export const TabBids = function () {
               bidsReserveAmount={bidsReserveAmount[index]?.toNumber() || 0}
               myBidderAmount={myBidderAmount[index]?.toNumber() || 0}
               isBidder
+              isCreatorClaimed={Boolean(item.creator_claimed)}
+              isBidderClaimed={Boolean(item.bidder_claimed)}
             />
           ))
         )}
