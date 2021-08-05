@@ -12,6 +12,7 @@ import {
 } from 'modules/api/searchDrops';
 import { Queries } from 'modules/common/components/Queries/Queries';
 import { ResponseData } from 'modules/common/types/ResponseData';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { getDrops, IGetDrops } from 'modules/drops/actions/getDrops';
 import { updateDrops } from 'modules/drops/actions/updateDrops';
 import { DropsContainer } from 'modules/drops/components/DropsContainer';
@@ -151,7 +152,7 @@ export const DropsSection = () => {
       const timer = <DropTimer endDate={item.dropDate} />;
       const creator = (
         <DropsOwner
-          title={item.username}
+          title={item.username || truncateWalletAddr(item.accountAddress)}
           isVerified={true}
           avatar={item.avatar}
           href={ProfileRoutesConfig.OtherProfile.generatePath(

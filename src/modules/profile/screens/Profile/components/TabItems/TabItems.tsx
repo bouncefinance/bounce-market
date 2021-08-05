@@ -17,6 +17,7 @@ import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../api/common/AuctionState';
 import { FixedSwapState } from '../../../../../api/common/FixedSwapState';
@@ -80,6 +81,9 @@ export const TabItems = () => {
                     {
                       name: username,
                       avatar: profileInfo?.imgUrl,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.contractAddress,
+                      ),
                       verified: profileInfo?.identity === UserRoleEnum.Verified,
                     },
                   ]}

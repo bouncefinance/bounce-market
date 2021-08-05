@@ -8,6 +8,7 @@ import {
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import {
@@ -15,6 +16,7 @@ import {
   queryLikedItems,
 } from 'modules/profile/actions/queryLikedItems';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { t } from 'modules/i18n/utils/intl';
 import { uid } from 'react-uid';
 
@@ -64,11 +66,15 @@ export const TabLiked = function () {
               profileInfo={
                 <ProfileInfo
                   subTitle="Creator"
-                  title={item.name}
+                  title={item.username || item.minteraddress}
                   users={[
                     {
-                      name: item.name,
+                      name:
+                        item.username || truncateWalletAddr(item.minteraddress),
                       avatar: item.avatar,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.minteraddress,
+                      ),
                       verified: item?.identity === UserRoleEnum.Verified,
                     },
                   ]}

@@ -10,7 +10,12 @@ import {
   IItemByFilter,
   ItemsChannel,
 } from './fetchItemsByFilter';
-import { fetchPoolDetails, isEnglishAuction } from './fetchPoolDetails';
+import {
+  fetchPoolDetails,
+  IEnglishAuctionDetails,
+  IFixedAuctionDetails,
+  isEnglishAuction,
+} from './fetchPoolDetails';
 import { fetchPoolsWeight } from './fetchPoolsWeight';
 
 export interface IOverviewItem extends IItemByFilter {
@@ -63,37 +68,40 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
               if (!poolsInfoData?.list?.length) return [];
 
               const poolWidthMap = new Map<number, number>([]);
-              const poolDetailsList = await Promise.all(
-                poolsInfoData.list.map(item => {
-                  poolWidthMap.set(item.poolId, item.poolWeight);
+              const poolDetailsList = await (
+                await Promise.all(
+                  poolsInfoData.list.map(async item => {
+                    poolWidthMap.set(item.poolId, item.poolWeight);
 
-                  return store.dispatchRequest(
-                    fetchPoolDetails(
-                      {
-                        poolId: item.poolId,
-                        poolType: item.auctionType,
-                      },
-                      { requestKey: item.poolId },
-                      { silent: true },
-                    ),
-                  );
-                }),
-              );
+                    const poolDetail = await store.dispatchRequest(
+                      fetchPoolDetails(
+                        {
+                          poolId: item.poolId,
+                          poolType: item.auctionType,
+                        },
+                        { requestKey: item.poolId },
+                        { silent: true },
+                      ),
+                    );
+                    return poolDetail?.data || null;
+                  }),
+                )
+              ).filter(i => i);
 
               const {
-                data,
+                data: itemDataList = [],
                 error: fetchItemError,
               } = await store.dispatchRequest(
                 fetchItemsByFilter(
                   poolDetailsList.reduce(
                     (acc: { ids: number[]; cts: string[] }, current) => {
-                      if (!current.data) {
+                      if (!current) {
                         return { ...acc, channel: ItemsChannel.all };
                       }
 
                       return {
-                        ids: [...acc.ids, current.data.tokenId],
-                        cts: [...acc.cts, current.data.tokenContract],
+                        ids: [...acc.ids, current.tokenId],
+                        cts: [...acc.cts, current.tokenContract],
                         channel: ItemsChannel.all,
                       };
                     },
@@ -106,37 +114,53 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 return [];
               }
 
-              const overviewItems: IOverviewItem[] = (data ?? [])
-                ?.map(item => {
-                  const pool = poolDetailsList.find(pool => {
+              const overviewItems: IOverviewItem[] = (poolDetailsList ?? [])
+                ?.map(poolItem => {
+                  const nftItem = itemDataList.find(nftItem => {
                     return (
-                      pool.data?.tokenId === item.id &&
-                      String(pool.data?.tokenContract).toLowerCase() ===
-                        String(item.contractaddress).toLowerCase()
+                      poolItem?.tokenId === nftItem.id &&
+                      String(poolItem?.tokenContract).toLowerCase() ===
+                        String(nftItem.contractaddress).toLowerCase()
                     );
-                  })?.data;
-                  const price =
-                    pool && isEnglishAuction(pool)
-                      ? pool.lastestBidAmount.toString() !== '0'
-                        ? pool.lastestBidAmount
-                        : pool.amountMin1
-                      : pool?.price || new BigNumber(0);
+                  }) as IItemByFilter;
+
+                  let price = new BigNumber(0);
+
+                  if (
+                    poolItem?.auctionType === AuctionType.EnglishAuction ||
+                    poolItem?.auctionType === AuctionType.EnglishAuction_Timing
+                  ) {
+                    price =
+                      (poolItem as IEnglishAuctionDetails).lastestBidAmount.toString() !==
+                      '0'
+                        ? (poolItem as IEnglishAuctionDetails).lastestBidAmount
+                        : (poolItem as IEnglishAuctionDetails).amountMin1 ||
+                          new BigNumber(0);
+                  } else {
+                    price =
+                      (poolItem as IFixedAuctionDetails).price ||
+                      new BigNumber(0);
+                  }
+
                   return {
-                    ...item,
+                    ...nftItem,
                     price,
-                    poolId: pool?.poolId,
-                    poolType: pool?.auctionType,
+                    poolId: poolItem?.poolId,
+                    poolType: poolItem?.auctionType,
                     closeAt:
-                      pool && isEnglishAuction(pool) ? pool.closeAt : undefined,
-                    poolWeight: poolWidthMap.get(pool?.poolId as number) || 0,
-                    avatar: pool?.avatar,
-                    ownerName: pool?.createName,
-                    openAt: pool?.openAt,
-                    isLike: pool?.isLike ?? false,
-                    likeCount: pool?.likeCount ?? 0,
-                    itemName: item.itemname,
-                    fileUrl: item.fileurl,
-                    ownerAddress: item.owneraddress,
+                      poolItem && isEnglishAuction(poolItem)
+                        ? poolItem.closeAt
+                        : undefined,
+                    poolWeight:
+                      poolWidthMap.get(poolItem?.poolId as number) || 0,
+                    avatar: poolItem?.avatar,
+                    ownerName: poolItem?.createName,
+                    openAt: poolItem?.openAt,
+                    isLike: poolItem?.isLike ?? false,
+                    likeCount: poolItem?.likeCount ?? 0,
+                    itemName: nftItem?.itemname,
+                    fileUrl: nftItem?.fileurl,
+                    ownerAddress: nftItem?.owneraddress,
                   };
                 })
                 .filter(item => item.poolId)

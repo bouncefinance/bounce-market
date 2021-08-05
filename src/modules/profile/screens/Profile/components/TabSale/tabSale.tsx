@@ -8,10 +8,12 @@ import {
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { fetchMySale, IPoolNftItem } from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
 
@@ -19,7 +21,6 @@ export const TabSale = function () {
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMySale.toString(),
   });
-
   return (
     <TabItemsComponent>
       <ProductCards isLoading={loading}>
@@ -58,11 +59,14 @@ export const TabSale = function () {
               profileInfo={
                 <ProfileInfo
                   subTitle="Creator"
-                  title={item.username}
+                  title={item.username || truncateWalletAddr(item.creator)}
                   users={[
                     {
                       name: item.username,
                       avatar: item.creatorurl,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.creator,
+                      ),
                       verified: item?.identity === UserRoleEnum.Verified,
                     },
                   ]}
