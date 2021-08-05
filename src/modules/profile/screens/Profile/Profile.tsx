@@ -201,6 +201,7 @@ export const Profile = () => {
           src={profileInfo?.imgUrl}
           onEditClick={toggleAvatarModal(true)}
           isEditable
+          isVerified={profileInfo?.identity === 2}
         />
 
         <SetAvatarModal

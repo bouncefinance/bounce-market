@@ -225,7 +225,8 @@
     "data-is-not-available": "Данные не доступны",
     "greater-than": "Число должно быть больше {value}",
     "less-than": "Число должно быть меньше {value}",
-    "unexpected": "Непредвиденная ошибка"
+    "unexpected": "Непредвиденная ошибка",
+    "contract-rejected": "Операция по контракту отклонена"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"

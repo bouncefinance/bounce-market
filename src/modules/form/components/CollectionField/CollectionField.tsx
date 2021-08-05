@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { NftType } from 'modules/api/common/NftType';
 import { Img } from 'modules/uiKit/Img';
+import { Tooltip } from '@material-ui/core';
 
 export interface ICollectionItem {
   id: number;
@@ -65,8 +66,9 @@ export const CollectionField = memo(
           {currentAddr === item.contractAddress && (
             <SelectedIcon className={classes.selIcon} />
           )}
-
-          <h3> {item.collectionName}</h3>
+          <Tooltip title={item.collectionName} placement="top">
+            <h3> {item.collectionName}</h3>
+          </Tooltip>
         </SwiperSlide>
       );
     };
