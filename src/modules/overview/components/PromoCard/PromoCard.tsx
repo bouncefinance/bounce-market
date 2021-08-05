@@ -43,6 +43,7 @@ export const PromoCard = ({
   authorHref,
   MediaProps,
 }: IPromoCardProps) => {
+  // console.log(authorHref)
   const classes = usePromoCardStyles();
 
   const renderedText = (

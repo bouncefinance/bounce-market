@@ -114,6 +114,7 @@ export interface IFixedAuctionDetails {
   createName?: string;
   likeCount?: number;
   isLike?: boolean;
+  swappedAmount0: number;
 }
 
 export interface IEnglishAuctionDetails {
@@ -141,6 +142,7 @@ export interface IEnglishAuctionDetails {
   createName?: string;
   likeCount?: number;
   isLike?: boolean;
+  swappedAmount0: number;
 }
 
 export type IFetchPoolDetailsData =
@@ -220,10 +222,6 @@ export const fetchPoolDetails = createSmartAction<
                 Web3.utils.fromWei(poolInfo.price),
               ),
               name: poolInfo.itemname,
-              /**
-               * For fields returned by the https://api1-bsc.fangible.com interface and data read directly from the contract, nftType=0 represents ERC721 and 1 represents ERC1155.
-               * If the interface from https://bounce-market.bounce.finance/api/ requested data standard = 1 represents ERC721, 2 representative ERC1155
-               */
               nftType: NftType.ERC1155,
               poolId: poolInfo.poolid,
               state: poolInfo.state,
@@ -236,6 +234,7 @@ export const fetchPoolDetails = createSmartAction<
               createName: poolInfo.username,
               likeCount: poolInfo?.likecount,
               isLike: Boolean(poolInfo?.mylikecount) ?? 0,
+              swappedAmount0: poolInfo.swapped_amount0,
             };
           } else {
             return {
@@ -259,6 +258,7 @@ export const fetchPoolDetails = createSmartAction<
               createName: poolInfo.username,
               likeCount: poolInfo?.likecount,
               isLike: Boolean(poolInfo?.mylikecount) ?? 0,
+              swappedAmount0: poolInfo.swapped_amount0,
             };
           }
         } catch (error) {
@@ -283,6 +283,7 @@ export const fetchPoolDetails = createSmartAction<
             createName: poolInfo.username,
             likeCount: poolInfo?.likecount,
             isLike: Boolean(poolInfo?.mylikecount) ?? 0,
+            swappedAmount0: poolInfo.swapped_amount0,
           };
         }
       },

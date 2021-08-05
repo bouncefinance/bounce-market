@@ -41,6 +41,12 @@ export enum ProductCardStatuses {
   OnSalePending,
 }
 
+export interface ISoldData {
+  sold: number;
+  quantity: number;
+  supply?: number;
+}
+
 export interface IProductCardComponentProps {
   className?: string;
   price?: BigNumber;
@@ -73,6 +79,7 @@ export interface IProductCardComponentProps {
   isCancelTimePut?: boolean;
   poolId?: number;
   openAt?: Date;
+  soldData?: ISoldData;
 }
 
 export const ProductCardComponent = ({
@@ -106,6 +113,7 @@ export const ProductCardComponent = ({
   isCancelTimePut = false,
   poolId,
   openAt,
+  soldData,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect } = useAccount();
   const classes = useProductCardStyles();
@@ -171,6 +179,26 @@ export const ProductCardComponent = ({
           className={classNames(classes.icon, classes.iconRightOffset)}
         />
         {`${copiesBalance ?? 0} of ${copies ?? 0}`}
+      </div>
+    </Tooltip>
+  );
+
+  const renderSolds = (
+    <Tooltip
+      title={t('product-card.balance-tip', {
+        balance: (soldData?.quantity || 0) - (soldData?.sold || 0),
+      })}
+      arrow
+      placement="top"
+    >
+      <div className={classes.info}>
+        <LayersIcon
+          className={classNames(classes.icon, classes.iconRightOffset)}
+        />
+        {t('product-card.sold-for-quantity', {
+          sold: soldData?.sold || 0,
+          quantity: soldData?.quantity || 1,
+        })}
       </div>
     </Tooltip>
   );
@@ -293,6 +321,8 @@ export const ProductCardComponent = ({
           {isOnSale && (
             <>
               {!endDate && copies && renderedCopies}
+
+              {!endDate && soldData && renderSolds}
 
               {endDate && renderTimer()}
 
