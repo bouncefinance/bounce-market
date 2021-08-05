@@ -142,6 +142,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
 
   icon: {
     fontSize: 16,
+    fill: 'none',
   },
 
   iconRightOffset: {
@@ -166,17 +167,17 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   likeBtn: {
     padding: 6,
     transform: 'rotateY(0)',
-    transition: 'transform 1s ease',
-    '&:hover': {
-      color: 'red',
-      transform: 'rotateY(180deg)',
-    },
+    transition: 'transform .4s ease',
   },
 
   saleBtn: {},
 
   likeBtnActive: {
     color: 'red',
+    transform: 'rotateY(180deg)',
+    '& svg': {
+      fill: 'red',
+    },
   },
 
   menuPopover: {
