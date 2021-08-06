@@ -139,8 +139,9 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   },
 
   meta: {
+    width: '100%',
     display: 'grid',
-    gridTemplateColumns: '1fr auto',
+    gridTemplateColumns: 'auto max-content',
   },
 
   saleMeta: {
@@ -166,6 +167,12 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     alignItems: 'center',
     fontSize: 13,
     color: fade(theme.palette.common.black, 0.5),
+  },
+
+  ratio: {
+    display: 'grid',
+    gridTemplateColumns: 'auto auto auto',
+    columnGap: 5,
   },
 
   status: {
