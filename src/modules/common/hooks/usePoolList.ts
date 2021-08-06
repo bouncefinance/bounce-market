@@ -43,12 +43,16 @@ export const usePoolList = ({
           abi: (getPoolContract(poolType) as unknown) as any[],
         };
       });
-      const InfoList = await multiCall2(calls, web3, chainId);
-      setBidsInfo(
-        InfoList.map((e: any) => {
-          return new BigNumber(Web3.utils.fromWei(e[0]._hex));
-        }),
-      );
+      try {
+        const InfoList = await multiCall2(calls, web3, chainId);
+        setBidsInfo(
+          InfoList.map((e: any) => {
+            return new BigNumber(Web3.utils.fromWei(e[0]._hex));
+          }),
+        );
+      } catch (error) {
+        // TODO
+      }
     })();
     // eslint-disable-next-line
   }, [chainId, contractFunctionName, list.length]);

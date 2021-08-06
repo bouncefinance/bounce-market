@@ -370,7 +370,7 @@
       "event": "Event",
       "from": "From",
       "item": "Item",
-      "amount": "Amount",
+      "price": "Price",
       "quantity": "Quantity",
       "to": "To",
       "transfer": "Transfer"

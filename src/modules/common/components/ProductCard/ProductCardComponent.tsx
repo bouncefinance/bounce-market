@@ -180,7 +180,11 @@ export const ProductCardComponent = ({
         <LayersIcon
           className={classNames(classes.icon, classes.iconRightOffset)}
         />
-        {`${copiesBalance ?? 0} of ${copies ?? 0}`}
+        <div className={classes.ratio}>
+          <div>{`${copiesBalance ?? 0} `}</div>
+          <div>{`of `}</div>
+          <div>{`${copies ?? 0}`}</div>
+        </div>
       </div>
     </Tooltip>
   );
