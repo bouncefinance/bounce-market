@@ -1,8 +1,8 @@
 import { Avatar, TableCell, TableRow, Tooltip } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 // import { formatDistance } from 'date-fns';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+// import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 // import { getTokenSymbol } from 'modules/common/conts';
 // import { t } from '../../../i18n/utils/intl';
 import { ActivityKeys, IActivityItem, NFTType } from '../../api/getActivity';
