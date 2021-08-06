@@ -268,4 +268,10 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     fontWeight: 500,
     opacity: 0.5,
   },
+  rightWrapper: {
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr',
+    columnGap: 5,
+    alignItems: 'center',
+  },
 }));
