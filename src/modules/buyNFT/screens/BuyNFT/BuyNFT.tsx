@@ -359,7 +359,7 @@ export const BuyNFT = () => {
 
               const renderedHistoryList = (
                 <InfoTabsList>
-                  {poolHistory.map(item => {
+                  {poolHistory?.map(item => {
                     return (
                       <InfoTabsItem
                         key={item.time.getTime()}
@@ -374,7 +374,7 @@ export const BuyNFT = () => {
 
               const renderedBidsList = (
                 <InfoTabsList>
-                  {poolBids.map(item => {
+                  {poolBids?.map(item => {
                     return (
                       <InfoTabsItem
                         key={item.time.getTime()}
@@ -393,7 +393,7 @@ export const BuyNFT = () => {
 
               const renderedOnwersList = (
                 <InfoTabsList>
-                  {poolNftOwner.map(item => {
+                  {poolNftOwner?.map(item => {
                     return (
                       <ProfileInfo
                         key={item.owner.address}
