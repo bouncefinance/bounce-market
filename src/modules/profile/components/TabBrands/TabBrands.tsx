@@ -43,10 +43,12 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
                       address,
                       USER_CREATE_NFT_PROFILE,
                       brand.contract || undefined,
+                      brand.id,
                     )
                   : ProfileRoutesConfig.UserProfile.generatePath(
                       USER_CREATE_NFT_PROFILE,
                       brand.contract || undefined,
+                      brand.id,
                     )
               }
               addItemHref={
