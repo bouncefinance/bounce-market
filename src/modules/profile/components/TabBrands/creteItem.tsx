@@ -32,7 +32,7 @@ export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
   address,
   isOther = false,
 }) => {
-  const { id: className } = ProfileRoutesConfig.UserProfile.useParams();
+  const { id: className, brand } = ProfileRoutesConfig.UserProfile.useParams();
   const dispatch = useDispatch();
   const classes = useTabBrandStyles();
 
@@ -69,7 +69,7 @@ export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
             variant="outlined"
             rounded
             className={classes.addNftBtn}
-            href={BrandRoutesConfig.CreateBrandItem.generatePath(className)}
+            href={BrandRoutesConfig.CreateBrandItem.generatePath(brand)}
           >
             <AddFollowIcon className={classes.addNftBtnIcon} />
             {t('collection.card.addNewItem')}

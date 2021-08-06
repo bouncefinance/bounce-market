@@ -6,7 +6,7 @@ import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoa
 import { PrivateRoute } from '../router/components/PrivateRoute';
 
 export const PATH_PROFILE_BASE = '/profile';
-export const PATH_USER_PROFILE = `${PATH_PROFILE_BASE}?id=:id?&tab=:tab?`;
+export const PATH_USER_PROFILE = `${PATH_PROFILE_BASE}?id=:id?&brand=:brand?&tab=:tab?`;
 export const PATH_OTHER_PROFILE = `${PATH_PROFILE_BASE}/address/:address`;
 export const PATH_OTHER_PROFILE_TABS = `${PATH_OTHER_PROFILE}??id=:id?&tab=:tab?`;
 export const PATH_EDIT_PROFILE = `${PATH_PROFILE_BASE}/edit`;
@@ -64,8 +64,12 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
 
   UserProfile: {
     path: PATH_PROFILE_BASE,
-    generatePath: (tab?: ProfileTab, id?: string) =>
-      generatePath(PATH_USER_PROFILE, { tab: tab ?? defaultProfileTab, id }),
+    generatePath: (tab?: ProfileTab, id?: string, brand?: string) =>
+      generatePath(PATH_USER_PROFILE, {
+        tab: tab ?? defaultProfileTab,
+        id,
+        brand,
+      }),
     useParams: () => {
       const query = useQueryParams();
 
@@ -73,15 +77,18 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
         value === ProfileTab.items ? defaultProfileTab : value;
       const tab = replace(query.get('tab') ?? '') || defaultProfileTab;
       const id = query.get('id');
+      const brand = query.get('brand');
       if (tab === USER_CREATE_NFT_PROFILE) {
         return {
           tab: ProfileTab.brands,
           isCreateNft: true,
           id,
+          brand,
         };
       }
       return {
         tab,
+        brand,
       };
     },
   },
