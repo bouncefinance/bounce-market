@@ -159,6 +159,7 @@
     "buy-now": "购买",
     "descr-full": "详细描述",
     "descr-short": "收起",
+    "pool-amount-tip": "铸造总副本数",
     "dialog": {
       "footnote": "进行中的拍卖，出价无法撤销。",
       "input-info": "您的出价必须至少为 {value} {currency}"

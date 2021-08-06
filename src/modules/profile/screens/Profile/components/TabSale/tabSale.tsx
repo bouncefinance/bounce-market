@@ -16,18 +16,32 @@ import { TabItems as TabItemsComponent } from 'modules/profile/components/TabIte
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
+// import { usePoolList } from 'modules/common/hooks/usePoolList';
 
-export const TabSale = function () {
+export const TabSale: React.FC<{ isOther?: boolean }> = function ({
+  isOther = false,
+}) {
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMySale.toString(),
   });
+  // const bidsInfo = usePoolList({
+  //   list:
+  //     data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
+  //   contractFunctionName: 'currentBidderAmount1P',
+  // });
+  // const bidsReserveAmount = usePoolList({
+  //   list:
+  //     data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
+  //   contractFunctionName: 'reserveAmount1P',
+  // });
+
   return (
     <TabItemsComponent>
       <ProductCards isLoading={loading}>
         {loading ? (
           <ProductCardSkeleton />
         ) : (
-          data?.map(item => (
+          data?.map((item, index) => (
             <ProductCard
               id={item.tokenid}
               poolId={item.poolid || 0}
@@ -83,6 +97,12 @@ export const TabSale = function () {
               )}
               isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
               openAt={item.openAt}
+              closeAt={item.closeAt}
+              isOnSeller
+              // bidTopPrice={bidsInfo[index]?.toNumber() || 0}
+              // bidsReserveAmount={bidsReserveAmount[index]?.toNumber() || 0}
+              isCreatorClaimed={Boolean(item.creator_claimed)}
+              isBidderClaimed={Boolean(item.bidder_claimed)}
             />
           ))
         )}
@@ -90,7 +110,6 @@ export const TabSale = function () {
       {!loading && data?.length === 0 && (
         <NoItems
           href={MarketRoutesConfig.Market.generatePath()}
-          // import { t } from 'modules/i18n/utils/intl';
           title={t('profile.no-items.onSale-title')}
           descr={t('profile.no-items.onSale-description')}
         />

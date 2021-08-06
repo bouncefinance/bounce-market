@@ -18,6 +18,9 @@ export const Timer = ({
   const classes = useTimerStyles();
   const { duration, isTimeOver } = useTimer(endDate);
 
+  if (isTimeOver) {
+    return <></>;
+  }
   return (
     <Box {...boxProps} className={classNames(classes.root, className)}>
       <span className={classes.tip}>

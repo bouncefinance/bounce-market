@@ -62,7 +62,7 @@ export const BrandCard = ({
         </CardContent>
       </Link>
 
-      {withAddBtn && (
+      {withAddBtn && addItemHref && (
         <Button
           className={classNames(classes.addNewBtn, classes.addNewBtnInCard)}
           variant="outlined"

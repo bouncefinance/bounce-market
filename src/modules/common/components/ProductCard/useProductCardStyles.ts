@@ -156,7 +156,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   infoContainer: {
     display: 'grid',
     alignItems: 'center',
-    gridTemplateColumns: '1fr auto',
+    gridTemplateColumns: 'max-content auto',
     gap: theme.spacing(0, 1.5),
     marginTop: 5,
   },
@@ -267,5 +267,11 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   stateTip: {
     fontWeight: 500,
     opacity: 0.5,
+  },
+  rightWrapper: {
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr',
+    columnGap: 5,
+    alignItems: 'center',
   },
 }));
