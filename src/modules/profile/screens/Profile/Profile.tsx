@@ -55,10 +55,6 @@ export const Profile = () => {
     state => state.like,
   );
 
-  const { data: likedItems } = useQuery<ILikedItem[] | null>({
-    type: queryLikedItems.toString(),
-  });
-
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
   });
@@ -172,7 +168,7 @@ export const Profile = () => {
           ]
         : []),
     ],
-    [likedItems],
+    [likeCount],
   );
 
   const renderFollow = useCallback(() => {
