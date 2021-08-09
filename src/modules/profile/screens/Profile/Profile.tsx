@@ -10,10 +10,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { fetchOwned } from 'modules/profile/actions/fetchOwned';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { fetchMyBids, fetchMySale } from 'modules/profile/actions/fetchSale';
-import {
-  ILikedItem,
-  queryLikedItems,
-} from 'modules/profile/actions/queryLikedItems';
+import { queryLikedItems } from 'modules/profile/actions/queryLikedItems';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
 import { Bio } from 'modules/profile/components/Bio';
