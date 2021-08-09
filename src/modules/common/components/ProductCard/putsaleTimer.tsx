@@ -16,6 +16,7 @@ const useStyles = makeStyles<Theme>(theme => ({
     background: 'rgba(0,0,0,0.5)',
     color: '#fff',
     zIndex: 2,
+    pointerEvents: 'none',
   },
   tips: {
     fontSize: 14,

@@ -33,6 +33,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
+import { TabLiked } from '../Profile/components/TabLiked';
 import { TabOwned } from '../Profile/components/tabOwned';
 import { TabSale } from '../Profile/components/TabSale';
 import { ConnectWallet } from './components/ConnectWallet';
@@ -117,6 +118,11 @@ export const OtherProfile = () => {
         value: ProfileTab.owned,
         label: t('profile.tabs.showcase'),
       },
+      // {
+      //   value: ProfileTab.liked,
+      //   label: t('profile.tabs.liked'),
+      //   count: likedItems ? likedItems.length : 0,
+      // },
       ...(featuresConfig.profileFollowers
         ? [
             {
@@ -149,10 +155,10 @@ export const OtherProfile = () => {
           dispatch(fetchMySale({ address }));
           break;
         }
-        case ProfileTab.liked: {
-          dispatch(queryLikedItems());
-          break;
-        }
+        // case ProfileTab.liked: {
+        //   dispatch(queryLikedItems());
+        //   break;
+        // }
         default: {
           console.error('not match tab', value);
         }
@@ -241,6 +247,10 @@ export const OtherProfile = () => {
 
             <TabPanel value={tab} index={ProfileTab.sells}>
               <TabSale isOther />
+            </TabPanel>
+
+            <TabPanel value={tab} index={ProfileTab.liked}>
+              <TabLiked isOther />
             </TabPanel>
 
             {featuresConfig.profileFollowers && (

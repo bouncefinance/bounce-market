@@ -31,7 +31,7 @@ import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { TabActivity } from '../../components/TabActivity';
@@ -40,6 +40,7 @@ import { TabLiked } from './components/TabLiked';
 import { TabOwned } from './components/tabOwned';
 import { TabSale } from './components/TabSale';
 import { useProfileStyles } from './useProfileStyles';
+import { RootState } from 'store/store';
 
 export const Profile = () => {
   const { tab, isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
@@ -49,6 +50,10 @@ export const Profile = () => {
   const { address } = useAccount();
   const { push } = useHistory();
   const dispatch = useDispatch();
+
+  const { count: likeCount } = useSelector<RootState, RootState['like']>(
+    state => state.like,
+  );
 
   const { data: likedItems } = useQuery<ILikedItem[] | null>({
     type: queryLikedItems.toString(),
@@ -148,7 +153,7 @@ export const Profile = () => {
             {
               value: ProfileTab.liked,
               label: t('profile.tabs.liked'),
-              count: likedItems ? likedItems.length : 0,
+              count: likeCount,
             },
           ]
         : []),

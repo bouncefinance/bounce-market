@@ -66,6 +66,7 @@ export const ProductCard = ({
     id,
     poolId,
     poolType: auctionType ? +poolTypeMap[auctionType] : undefined,
+    auctionType: auctionType,
     category: MediaProps.category,
     count: likes,
     contractAddress,

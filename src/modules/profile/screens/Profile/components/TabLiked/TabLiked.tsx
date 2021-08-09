@@ -20,7 +20,9 @@ import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { t } from 'modules/i18n/utils/intl';
 import { uid } from 'react-uid';
 
-export const TabLiked = function () {
+export const TabLiked: React.FC<{ isOther?: boolean }> = function ({
+  isOther = false,
+}) {
   const { data, loading } = useQuery<ILikedItem[]>({
     type: queryLikedItems.toString(),
   });

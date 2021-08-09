@@ -16,14 +16,7 @@ import { TabItems as TabItemsComponent } from 'modules/profile/components/TabIte
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
-import {
-  ILikedItem,
-  queryLikedItems,
-} from 'modules/profile/actions/queryLikedItems';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { getPoolKey, isFixedSwap } from 'modules/common/utils/poolHelps';
-import { useLikesMap } from 'modules/common/hooks/usePoolList';
 import { usePoolList } from 'modules/common/hooks/usePoolList';
 import { useMemo } from 'react';
 
@@ -38,15 +31,6 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMySale.toString(),
   });
-
-  const dispatch = useDispatch();
-  const { data: likes } = useQuery<ILikedItem[]>({
-    type: queryLikedItems.toString(),
-  });
-  const { likesMap } = useLikesMap<ILikedItem>(likes ?? []);
-  useEffect(() => {
-    dispatch(queryLikedItems());
-  }, [dispatch, isOther]);
 
   const poolList = useMemo(() => {
     return data?.filter(e => !isFixedSwap(e.poolType));
@@ -96,16 +80,6 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
                   : ''
               }
               likes={item.likecount}
-              isLike={
-                isOther
-                  ? likesMap?.get(
-                      getPoolKey({
-                        poolId: item.poolid,
-                        poolType: item.poolType,
-                      }),
-                    )
-                  : item.isLike
-              }
               price={item.poolid ? item.price : undefined}
               priceType={(data as any)?.tokenSymbol}
               soldData={{
