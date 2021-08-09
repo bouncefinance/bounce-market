@@ -545,5 +545,12 @@
   },
   "video-player": {
     "unsupported": "Sorry, your browser does not support embedded videos or uploaded video file types!"
+  },
+  "royalty": {
+    "royalty": "Royalty",
+    "royalties": "Royalties",
+    "change": "Change",
+    "royalty-rate": "Royalty rate",
+    "royalty-rate-tip": "A royalty rate of 0.1% to 6.5% can be set and changed as you want, but the change will take effect in around 30 minutes."
   }
 }

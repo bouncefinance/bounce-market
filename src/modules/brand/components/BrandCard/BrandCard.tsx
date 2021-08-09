@@ -1,11 +1,21 @@
-import { Box, Card, CardContent, Typography } from '@material-ui/core';
+import {
+  Box,
+  ButtonBase,
+  Card,
+  CardContent,
+  ClickAwayListener,
+  MenuItem,
+  Popover,
+  Typography,
+} from '@material-ui/core';
 import classNames from 'classnames';
 import { NftType } from 'modules/api/common/NftType';
 import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
+import { VerticalDotsIcon } from 'modules/common/components/Icons/VerticalDotsIcon';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useBrandCardStyles } from './useBrandCardStyles';
 
@@ -18,6 +28,7 @@ export interface IBrandCardProps {
   withAddBtn?: boolean;
   addItemHref?: string;
   href: string;
+  handelOpenRoyalty?: () => void;
 }
 
 export const BrandCard = ({
@@ -29,11 +40,61 @@ export const BrandCard = ({
   withAddBtn,
   addItemHref,
   href,
+  handelOpenRoyalty,
 }: IBrandCardProps) => {
   const classes = useBrandCardStyles();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const isPopoverOpened = Boolean(anchorEl);
+
+  const handleClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    },
+    [],
+  );
+
+  const renderExtension = () => {
+    return (
+      <>
+        <ClickAwayListener onClickAway={handleClose}>
+          <ButtonBase className={classes.menuBtn} onClick={handleClick}>
+            <VerticalDotsIcon className={classes.menuIcon} />
+          </ButtonBase>
+        </ClickAwayListener>
+        <Popover
+          open={isPopoverOpened}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          PaperProps={{
+            variant: 'outlined',
+          }}
+        >
+          {/* <MenuList> */}
+          <MenuItem className={classes.menuItem} onClick={handelOpenRoyalty}>
+            {t('royalty.royalty')}
+          </MenuItem>
+          {/* </MenuList> */}
+        </Popover>
+      </>
+    );
+  };
 
   return (
     <Card className={classes.root} variant="outlined">
+      <div className={classes.extension}>{renderExtension()}</div>
+
       <Link to={href} className={classes.wrapLink}>
         <Box className={classes.imgBox}>
           <Img src={imgSrc} className={classes.imgWrap} ratio="1x1" />
@@ -49,10 +110,6 @@ export const BrandCard = ({
             variant="body2"
             className={classes.subTitle}
           >
-            {/* {t('collection.card.itemsCount', {
-              value: itemsCount,
-            })}{' '}
-            ·{' '} */}
             {nftType === NftType.ERC1155
               ? 'ERC-1155'
               : nftType === NftType.ERC721
