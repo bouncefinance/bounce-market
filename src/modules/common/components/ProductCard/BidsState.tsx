@@ -2,6 +2,8 @@ import { Box, makeStyles, Theme } from '@material-ui/core';
 import { t } from 'modules/i18n/utils/intl';
 import { memo } from 'react';
 import { ReactComponent as LostIcon } from '../../assets/bids-lost.svg';
+import { ReactComponent as WonIcon } from '../../assets/bids-won.svg';
+import { ReactComponent as OutIcon } from '../../assets/bids-outbid.svg';
 
 const useStyles = makeStyles<Theme>(theme => ({
   container: {
@@ -40,7 +42,7 @@ const BidsState: React.FC<{
     [key in string]: { text: string; Icon: JSX.Element };
   } = {
     [BidsType.WON]: {
-      Icon: <LostIcon />,
+      Icon: <WonIcon />,
       text: t('product-card.won'),
     },
     [BidsType.LOST]: {
@@ -48,7 +50,7 @@ const BidsState: React.FC<{
       text: t('product-card.lost'),
     },
     [BidsType.OUTBID]: {
-      Icon: <LostIcon />,
+      Icon: <OutIcon />,
       text: t('product-card.outbid'),
     },
   };
