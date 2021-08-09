@@ -17,10 +17,18 @@ import { TabItems as TabItemsComponent } from 'modules/profile/components/TabIte
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
+import { useDispatch } from 'react-redux';
+import {
+  ILikedItem,
+  queryLikedItems,
+} from 'modules/profile/actions/queryLikedItems';
+import { useEffect } from 'react';
+import { useLikesMap } from 'modules/common/hooks/usePoolList';
 
 export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
   isOther = false,
 }) {
+  const dispatch = useDispatch();
   const { data, loading } = useQuery<IMyOwnedData>({
     type: fetchOwned.toString(),
   });
@@ -29,6 +37,18 @@ export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
   });
   const isVerify =
     profileInfo && profileInfo?.identity === UserRoleEnum.Verified;
+
+  const { data: likes } = useQuery<ILikedItem[]>({
+    type: queryLikedItems.toString(),
+  });
+  const { likesMap } = useLikesMap(likes ?? [], e =>
+    e.poolId !== 0 ? '' : e.tokenid.toString(),
+  );
+  useEffect(() => {
+    if (isOther) {
+      dispatch(queryLikedItems());
+    }
+  }, [dispatch, isOther]);
 
   return (
     <TabItemsComponent>
@@ -50,7 +70,9 @@ export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
               priceType={item.itemsymbol}
               copies={item.supply}
               likes={item.likecount}
-              isLike={item.isLike}
+              isLike={
+                isOther ? likesMap?.get(item.tokenid.toString()) : item.isLike
+              }
               copiesBalance={item.balance}
               MediaProps={{
                 category: item.category,

@@ -5,7 +5,7 @@ import {
 } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { PoolType } from 'modules/api/common/poolType';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { dealAccountLike } from '../actions/dealAccountLike';
 import { ILikedItem, queryLikedItems } from '../actions/queryLikedItems';
 
@@ -53,6 +53,10 @@ export const useLike = ({
 
   const [isLiked, setIsLiked] = useState(isLike);
   const [likeCount, setLikeCount] = useState(count);
+
+  useEffect(() => {
+    setIsLiked(isLike);
+  }, [isLike]);
 
   const { loading } = useMutation({
     type: dealAccountLike.toString(),

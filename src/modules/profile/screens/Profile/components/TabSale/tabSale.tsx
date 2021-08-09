@@ -16,6 +16,14 @@ import { TabItems as TabItemsComponent } from 'modules/profile/components/TabIte
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
+import {
+  ILikedItem,
+  queryLikedItems,
+} from 'modules/profile/actions/queryLikedItems';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getPoolKey } from 'modules/common/utils/poolHelps';
+import { useLikesMap } from 'modules/common/hooks/usePoolList';
 // import { usePoolList } from 'modules/common/hooks/usePoolList';
 
 export const TabSale: React.FC<{ isOther?: boolean }> = function ({
@@ -24,6 +32,18 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMySale.toString(),
   });
+
+  const dispatch = useDispatch();
+  const { data: likes, loading: likesPadding } = useQuery<ILikedItem[]>({
+    type: queryLikedItems.toString(),
+  });
+  const { likesMap } = useLikesMap<ILikedItem>(likes ?? []);
+  useEffect(() => {
+    if (isOther) {
+      dispatch(queryLikedItems());
+    }
+  }, [dispatch, isOther]);
+
   // const bidsInfo = usePoolList({
   //   list:
   //     data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
@@ -38,7 +58,7 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
   return (
     <TabItemsComponent>
       <ProductCards isLoading={loading}>
-        {loading ? (
+        {loading || likesPadding ? (
           <ProductCardSkeleton />
         ) : (
           data?.map((item, index) => (
@@ -57,7 +77,16 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
                   : ''
               }
               likes={item.likecount}
-              isLike={item.isLike}
+              isLike={
+                isOther
+                  ? likesMap?.get(
+                      getPoolKey({
+                        poolId: item.poolid,
+                        poolType: item.poolType,
+                      }),
+                    )
+                  : item.isLike
+              }
               price={item.poolid ? item.price : undefined}
               priceType={(data as any)?.tokenSymbol}
               soldData={{
