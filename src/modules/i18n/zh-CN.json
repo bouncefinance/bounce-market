@@ -315,6 +315,7 @@
     }
   },
   "product-panel": {
+    "all": "所有",
     "art": "艺术",
     "sports": "体育",
     "Comics": "漫画"
