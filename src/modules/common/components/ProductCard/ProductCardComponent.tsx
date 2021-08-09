@@ -305,12 +305,14 @@ export const ProductCardComponent = ({
     myPriceNumber >= bidsReserveAmount;
   // on sell
   const isSellerClaimMoney =
+    isOnSeller &&
     !isCreatorClaimed &&
     isAuction &&
     auctionEnd &&
     bidTopPrice &&
     bidTopPrice < bidsReserveAmount;
   const isSellerClaimNft =
+    isOnSeller &&
     !isCreatorClaimed &&
     isAuction &&
     auctionEnd &&
