@@ -312,17 +312,19 @@ export const ProductCardComponent = ({
       isAuction &&
       auctionEnd &&
       bidTopPrice &&
-      bidTopPrice < bidsReserveAmount,
-  );
-  const isSellerClaimNft = Boolean(
-    isOnSeller &&
-      !isCreatorClaimed &&
-      isAuction &&
-      auctionEnd &&
-      bidTopPrice &&
       bidTopPrice >= bidsReserveAmount,
   );
+  const isSellerClaimNft =
+    Boolean(
+      isOnSeller &&
+        !isCreatorClaimed &&
+        isAuction &&
+        auctionEnd &&
+        bidTopPrice &&
+        bidTopPrice < bidsReserveAmount,
+    ) || Boolean(auctionEnd && bidTopPrice === 0);
 
+  const isPutSaleTimeCancel = openAt && +openAt > Date.now();
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
       <div className={classes.relative}>
@@ -331,7 +333,7 @@ export const ProductCardComponent = ({
           wrapper={<Link to={href || '#'} className={classes.imgBox} />}
         >
           {renderMediaContent()}
-          {openAt && +openAt > Date.now() && (
+          {isPutSaleTimeCancel && openAt && (
             <CardPutSaleTimer openAt={openAt} />
           )}
           {isOutBid && <BidsState type={BidsType.OUTBID} />}
@@ -370,7 +372,9 @@ export const ProductCardComponent = ({
                   {(auctionType === AuctionType.EnglishAuction ||
                     auctionType === AuctionType.EnglishAuction_Timing) &&
                     (state === AuctionState.Live
-                      ? t('product-card.top-bid')
+                      ? isSellerClaimMoney
+                        ? t('product-card.sold-for')
+                        : t('product-card.top-bid')
                       : t('product-card.sold-for'))}{' '}
                 </div>
 
@@ -449,9 +453,11 @@ export const ProductCardComponent = ({
                   {t('product-card.claimed')}
                 </Button>
               )}
-              {!isBidderClaimed && !isCreatorClaimed && isOnSale && endDate && (
-                <Timer endDate={endDate} />
-              )}
+              {!isPutSaleTimeCancel &&
+                !isBidderClaimed &&
+                !isCreatorClaimed &&
+                isOnSale &&
+                endDate && <Timer endDate={endDate} />}
 
               {!isMinting && !isOnSalePending && (
                 <Box display="flex" alignItems="center">
