@@ -1,8 +1,8 @@
 import { Avatar, TableCell, TableRow, Tooltip } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 // import { formatDistance } from 'date-fns';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+// import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 // import { getTokenSymbol } from 'modules/common/conts';
 // import { t } from '../../../i18n/utils/intl';
 import { ActivityKeys, IActivityItem, NFTType } from '../../api/getActivity';
@@ -153,28 +153,24 @@ export const ActivitiesTableRow = ({
       <TableCell>
         {tabKey === ActivityKeys.Sales
           ? item.to && (
-              <Link
-                target="_blank"
-                to={ProfileRoutesConfig.OtherProfile.generatePath(item.to)}
-              >
-                <UserIcon
-                  url={item.toUrl}
-                  name={item.toName}
-                  address={item.to}
-                />
-              </Link>
+              // <Link
+              //   target="_blank"
+              //   to={ProfileRoutesConfig.OtherProfile.generatePath(item.to)}
+              // >
+              <UserIcon url={item.toUrl} name={item.toName} address={item.to} />
+              // </Link>
             )
           : item.from && (
-              <Link
-                target="_blank"
-                to={ProfileRoutesConfig.OtherProfile.generatePath(item.from)}
-              >
-                <UserIcon
-                  url={item.fromUrl}
-                  name={item.fromName}
-                  address={item.from}
-                />
-              </Link>
+              // <Link
+              //   target="_blank"
+              //   to={ProfileRoutesConfig.OtherProfile.generatePath(item.from)}
+              // >
+              <UserIcon
+                url={item.fromUrl}
+                name={item.fromName}
+                address={item.from}
+              />
+              // </Link>
             )}
       </TableCell>
       <TableCell>{formatDate(item.ctime)}</TableCell>

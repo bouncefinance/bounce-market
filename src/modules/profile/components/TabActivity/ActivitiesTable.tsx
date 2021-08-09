@@ -29,7 +29,7 @@ export const ActivitiesTable = ({
           <TableRow>
             <TableCell>{t('profile.activity.event')}</TableCell>
             <TableCell>{t('profile.activity.item')}</TableCell>
-            <TableCell>{t('profile.activity.amount')}</TableCell>
+            <TableCell>{t('profile.activity.price')}</TableCell>
             <TableCell>{t('common.quantity')}</TableCell>
             <TableCell>
               {tabKey === ActivityKeys.Sales
