@@ -1,6 +1,5 @@
 import { useQuery } from '@redux-requests/react';
 import { AuctionState } from 'modules/api/common/AuctionState';
-import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AccountInfo } from 'modules/common/components/AccountInfo';
@@ -9,6 +8,7 @@ import {
   ProductCardCategoryType,
 } from 'modules/common/components/ProductCard';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
+import { isFixedSwap } from 'modules/common/utils/poolHelps';
 import {
   fetchOverview,
   IOverviewItem,
@@ -68,8 +68,7 @@ export const Movers = (sectionProps: ISectionProps) => {
           objectFit: 'contain',
         }}
         state={
-          item.poolType === AuctionType.FixedSwap ||
-          item.poolType === AuctionType.FixedSwap_Timing
+          item.poolType && isFixedSwap(item.poolType)
             ? FixedSwapState.Live
             : AuctionState.Live
         }

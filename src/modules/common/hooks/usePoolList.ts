@@ -33,6 +33,9 @@ export const usePoolList = ({
 
   useEffect(() => {
     (async () => {
+      if (list.length <= 0) {
+        return;
+      }
       const calls: CallType[] = list.map(({ poolType, poolId }) => {
         return {
           address: getPoolAddress({ poolType, chainId }) ?? '',
@@ -52,7 +55,8 @@ export const usePoolList = ({
           }),
         );
       } catch (error) {
-        // TODO
+        console.error('pool data error, error list, calls: ', list, calls);
+        console.error(error);
       }
     })();
     // eslint-disable-next-line

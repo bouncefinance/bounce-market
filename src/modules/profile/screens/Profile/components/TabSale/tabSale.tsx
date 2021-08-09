@@ -22,9 +22,15 @@ import {
 } from 'modules/profile/actions/queryLikedItems';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getPoolKey } from 'modules/common/utils/poolHelps';
+import { getPoolKey, isFixedSwap } from 'modules/common/utils/poolHelps';
 import { useLikesMap } from 'modules/common/hooks/usePoolList';
-// import { usePoolList } from 'modules/common/hooks/usePoolList';
+import { usePoolList } from 'modules/common/hooks/usePoolList';
+import { useMemo } from 'react';
+
+const getStandardPoolObj = (e: IPoolNftItem) => ({
+  poolId: e.poolid,
+  poolType: e.poolType,
+});
 
 export const TabSale: React.FC<{ isOther?: boolean }> = function ({
   isOther = false,
@@ -34,31 +40,44 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
   });
 
   const dispatch = useDispatch();
-  const { data: likes, loading: likesPadding } = useQuery<ILikedItem[]>({
+  const { data: likes } = useQuery<ILikedItem[]>({
     type: queryLikedItems.toString(),
   });
   const { likesMap } = useLikesMap<ILikedItem>(likes ?? []);
   useEffect(() => {
-    if (isOther) {
-      dispatch(queryLikedItems());
-    }
+    dispatch(queryLikedItems());
   }, [dispatch, isOther]);
 
-  // const bidsInfo = usePoolList({
-  //   list:
-  //     data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
-  //   contractFunctionName: 'currentBidderAmount1P',
-  // });
-  // const bidsReserveAmount = usePoolList({
-  //   list:
-  //     data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
-  //   contractFunctionName: 'reserveAmount1P',
-  // });
+  const poolList = useMemo(() => {
+    return data?.filter(e => !isFixedSwap(e.poolType));
+  }, [data]);
+  const bidsInfo = usePoolList({
+    list: poolList?.map(getStandardPoolObj) ?? [],
+    contractFunctionName: 'currentBidderAmount1P',
+  });
+  const bidsReserveAmount = usePoolList({
+    list: poolList?.map(getStandardPoolObj) ?? [],
+    contractFunctionName: 'reserveAmount1P',
+  });
+
+  const poolMap = useMemo(() => {
+    const map = new Map<
+      string,
+      { bidTopPrice: number; bidsReserveAmount: number }
+    >();
+    poolList?.forEach((e, i) => {
+      map.set(getPoolKey(getStandardPoolObj(e)), {
+        bidTopPrice: bidsInfo[i]?.toNumber() ?? 0,
+        bidsReserveAmount: bidsReserveAmount[i]?.toNumber() ?? 0,
+      });
+    });
+    return map;
+  }, [bidsInfo, bidsReserveAmount, poolList]);
 
   return (
     <TabItemsComponent>
       <ProductCards isLoading={loading}>
-        {loading || likesPadding ? (
+        {loading ? (
           <ProductCardSkeleton />
         ) : (
           data?.map((item, index) => (
@@ -128,8 +147,13 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
               openAt={item.openAt}
               closeAt={item.closeAt}
               isOnSeller
-              // bidTopPrice={bidsInfo[index]?.toNumber() || 0}
-              // bidsReserveAmount={bidsReserveAmount[index]?.toNumber() || 0}
+              bidTopPrice={
+                poolMap?.get(getPoolKey(getStandardPoolObj(item)))?.bidTopPrice
+              }
+              bidsReserveAmount={
+                poolMap?.get(getPoolKey(getStandardPoolObj(item)))
+                  ?.bidsReserveAmount
+              }
               isCreatorClaimed={Boolean(item.creator_claimed)}
               isBidderClaimed={Boolean(item.bidder_claimed)}
             />
