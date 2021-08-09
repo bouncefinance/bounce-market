@@ -277,45 +277,51 @@ export const ProductCardComponent = ({
   const auctionEnd = closeAt && +closeAt <= Date.now();
   const myPriceNumber = myBidderAmount || 0;
   // Figma 4
-  const isOutBid =
+  const isOutBid = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    inAuction &&
-    bidTopPrice &&
-    myPriceNumber > 0 &&
-    myPriceNumber < bidTopPrice;
-
+      isAuction &&
+      inAuction &&
+      bidTopPrice &&
+      myPriceNumber > 0 &&
+      myPriceNumber < bidTopPrice,
+  );
   // figama 1
-  const isLost =
+  const isLost = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    myPriceNumber > 0 &&
-    myPriceNumber === bidTopPrice &&
-    myPriceNumber < bidsReserveAmount;
+      isAuction &&
+      auctionEnd &&
+      bidTopPrice &&
+      myPriceNumber > 0 &&
+      myPriceNumber === bidTopPrice &&
+      myPriceNumber < bidsReserveAmount,
+  );
   // Figema 2
-  const isWon =
+  const isWon = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    auctionEnd &&
-    myPriceNumber > 0 &&
-    myPriceNumber === bidTopPrice &&
-    bidsReserveAmount &&
-    myPriceNumber >= bidsReserveAmount;
+      isAuction &&
+      auctionEnd &&
+      myPriceNumber > 0 &&
+      myPriceNumber === bidTopPrice &&
+      bidsReserveAmount &&
+      myPriceNumber >= bidsReserveAmount,
+  );
   // on sell
-  const isSellerClaimMoney =
-    !isCreatorClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    bidTopPrice < bidsReserveAmount;
-  const isSellerClaimNft =
-    !isCreatorClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    bidTopPrice >= bidsReserveAmount;
+  const isSellerClaimMoney = Boolean(
+    isOnSeller &&
+      !isCreatorClaimed &&
+      isAuction &&
+      auctionEnd &&
+      bidTopPrice &&
+      bidTopPrice < bidsReserveAmount,
+  );
+  const isSellerClaimNft = Boolean(
+    isOnSeller &&
+      !isCreatorClaimed &&
+      isAuction &&
+      auctionEnd &&
+      bidTopPrice &&
+      bidTopPrice >= bidsReserveAmount,
+  );
 
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
