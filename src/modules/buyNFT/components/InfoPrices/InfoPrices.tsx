@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Grid, Tooltip, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { CancelPutTime } from 'modules/common/components/ProductCard/cancel';
@@ -10,6 +10,7 @@ import { FixedSwapState } from '../../../api/common/FixedSwapState';
 import { UserRole } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
+import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 
 interface IInfoPricesProps {
   price: BigNumber;
@@ -51,8 +52,6 @@ export const InfoPrices = ({
   saleTime,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
-
-  // TODO: Update it on time over https://fangible.atlassian.net/browse/FAN-157
   const [isTimeOver] = useState(false);
 
   const renderButtons = useCallback(() => {
@@ -234,6 +233,20 @@ export const InfoPrices = ({
     saleTime,
   ]);
 
+  const renderRoyalty = () => {
+    return (
+      <Box display="flex" alignItems="center" className={classes.rateDesc}>
+        {t('info-prices.royalty.rate-desc', { rate: '3 %' })}
+
+        <Tooltip title={t('info-prices.royalty.rate-desc-tip')}>
+          <Box component="i" ml={1}>
+            <QuestionIcon />
+          </Box>
+        </Tooltip>
+      </Box>
+    );
+  };
+
   return (
     <Grid container spacing={3} alignItems="center">
       <Grid item xs={12} sm>
@@ -260,6 +273,10 @@ export const InfoPrices = ({
 
       <Grid item xs={12} sm={5}>
         {renderButtons()}
+      </Grid>
+
+      <Grid item xs={12} md={12} sm={12}>
+        {renderRoyalty()}
       </Grid>
     </Grid>
   );

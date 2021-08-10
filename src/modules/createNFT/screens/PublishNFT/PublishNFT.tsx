@@ -35,7 +35,7 @@ import { InputField } from '../../../form/components/InputField';
 import { SelectField } from '../../../form/components/SelectField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { OnChange } from '../../../form/utils/OnChange';
-import { t, tHTML } from '../../../i18n/utils/intl';
+import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
@@ -319,6 +319,77 @@ export const PublishNFTComponent = ({
         ? new BigNumber((+values.price * (100 - FEE_PERCENTAGE)) / 100)
         : undefined;
 
+    const renderRoyalty = () => {
+      return (
+        <Box>
+          <Grid container spacing={3} className={classes.royaltyWrapper}>
+            <Grid item className={classes.royaltyItem}>
+              <span>{t('publish-nft.royalty.platform-fee')}</span>
+              <span>1 %</span>
+            </Grid>
+            <div className={classes.divLine}>
+              <i></i>
+            </div>
+
+            <Grid item className={classes.royaltyItem}>
+              <span>
+                <Box display="flex" alignItems="center">
+                  {t('publish-nft.royalty.royalty-fee')}
+
+                  <Tooltip title={t('publish-nft.royalty.royalty-fee-tip')}>
+                    <Box component="i" ml={1}>
+                      <QuestionIcon />
+                    </Box>
+                  </Tooltip>
+                </Box>
+              </span>
+              <span>10 %</span>
+            </Grid>
+            <div className={classes.divLine}>
+              <i></i>
+            </div>
+
+            <Grid item className={classes.royaltyItem}>
+              <span>
+                {values.type === AuctionType.FixedSwap
+                  ? t('publish-nft.royalty.receive-fs')
+                  : t('publish-nft.royalty.receive-ea')}
+              </span>
+              {reciveValue && reciveValue.toNumber() ? (
+                <span>
+                  {reciveValue.toNumber()}
+                  &nbsp;
+                  {currentCryptoCurrencyLabel}
+                  &nbsp;&nbsp;
+                  <Queries<ResponseData<typeof fetchCurrency>>
+                    requestActions={[fetchCurrency]}
+                    requestKeys={[values.unitContract]}
+                    noDataMessage={<></>}
+                  >
+                    {({ data }) => (
+                      <Box
+                        component="span"
+                        color={theme.palette.text.secondary}
+                      >
+                        {t('unit.$-value', {
+                          value: reciveValue
+                            ?.multipliedBy(data.priceUsd)
+                            .decimalPlaces(2)
+                            .toFormat(),
+                        })}
+                      </Box>
+                    )}
+                  </Queries>
+                </span>
+              ) : (
+                '-'
+              )}
+            </Grid>
+          </Grid>
+        </Box>
+      );
+    };
+
     return (
       <Box className={classes.form} component="form" onSubmit={handleSubmit}>
         <OnChange name="unitContract">{handleUnitChange}</OnChange>
@@ -392,54 +463,8 @@ export const PublishNFTComponent = ({
                     ),
                   }}
                 />
-
-                <Box className={classes.fieldText}>
-                  <Grid container spacing={3}>
-                    <Grid item xs>
-                      {t('publish-nft.fee', { value: FEE_PERCENTAGE })}
-                    </Grid>
-                    {values.price && +values.price > 0 && false && (
-                      <Grid item>
-                        {tHTML('publish-nft.receive', {
-                          value: reciveValue?.decimalPlaces(6).toFormat(),
-                          unit: currentCryptoCurrencyLabel,
-                        })}{' '}
-                        <Queries<ResponseData<typeof fetchCurrency>>
-                          requestActions={[fetchCurrency]}
-                          requestKeys={[values.unitContract]}
-                          noDataMessage={<></>}
-                        >
-                          {({ data }) => (
-                            <Box
-                              component="span"
-                              color={theme.palette.text.secondary}
-                            >
-                              {t('unit.$-value', {
-                                value: reciveValue
-                                  ?.multipliedBy(data.priceUsd)
-                                  .decimalPlaces(2)
-                                  .toFormat(),
-                              })}
-                            </Box>
-                          )}
-                        </Queries>
-                      </Grid>
-                    )}
-                  </Grid>
-                </Box>
               </Box>
-              {isVerify && (
-                <Box className={classes.formControl}>
-                  <Field
-                    component={SelectTimeField}
-                    name="saleTimeFS"
-                    type="text"
-                    label={t('create-nft.label.specific-time-sale')}
-                    color="primary"
-                    fullWidth={true}
-                  />
-                </Box>
-              )}
+
               <Box className={classes.formControl}>
                 <Field
                   component={InputField}
@@ -458,6 +483,19 @@ export const PublishNFTComponent = ({
                   }}
                 />
               </Box>
+
+              {isVerify && (
+                <Box className={classes.formControl}>
+                  <Field
+                    component={SelectTimeField}
+                    name="saleTimeFS"
+                    type="text"
+                    label={t('create-nft.label.specific-time-sale')}
+                    color="primary"
+                    fullWidth={true}
+                  />
+                </Box>
+              )}
             </>
           ) : (
             <>
@@ -677,6 +715,8 @@ export const PublishNFTComponent = ({
               </Box>
             </>
           )}
+
+          {renderRoyalty()}
 
           <Box>
             <Mutation type={publishNft.toString()}>

@@ -299,6 +299,10 @@
         "creator": "Item hasn't been sold. Claim your NFT back",
         "others": "Item hasn't been sold"
       }
+    },
+    "royalty": {
+      "rate-desc": "{rate} of the sale will go to its creator.",
+      "rate-desc-tip": "This royalty fee is set by thecreator, which can range from 0.1% to 6.5%."
     }
   },
   "language": {
@@ -483,6 +487,13 @@
       "directPurchase": "A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price.",
       "duration": "Auction will be completed in this time",
       "reservePrice": "Setting a reserve price creates a hidden limit. If you receive no bids equal to or greater than your reserve, your auction will not be sold."
+    },
+    "royalty": {
+      "platform-fee": "Fangible fee",
+      "royalty-fee": "Royalty fee",
+      "royalty-fee-tip": "Fangible supports creators. This royalty fee is directly sent out to the creator of this NFT once it is sold.",
+      "receive-fs": "For each edition, you will receive",
+      "receive-ea": "Your earning will be based on the transaction price. "
     }
   },
   "social": {

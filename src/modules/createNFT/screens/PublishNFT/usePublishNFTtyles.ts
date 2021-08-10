@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
-const IMG_SIDE = 380;
+const IMG_SIDE = 350;
 
 export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
   form: {
@@ -8,7 +8,7 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
     gap: theme.spacing(5, 9),
 
     [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: `1fr minmax(${IMG_SIDE}px, 50%)`,
+      gridTemplateColumns: `1fr minmax(${IMG_SIDE}px, 40%)`,
     },
   },
 
@@ -60,5 +60,25 @@ export const usePublishNFTtyles = makeStyles<Theme>(theme => ({
   },
   textCenter: {
     textAlign: 'center',
+  },
+  royaltyWrapper: {
+    marginTop: -20,
+    marginBottom: 40,
+  },
+  royaltyItem: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  divLine: {
+    padding: '0 12px',
+    width: '100%',
+    height: 1,
+    '&>i': {
+      display: 'block',
+      width: '100%',
+      height: 1,
+      backgroundColor: 'rgba(0,0,0,.1)',
+    },
   },
 }));
