@@ -22,6 +22,7 @@ import {
 import { NotificationActions } from 'modules/notification/store/NotificationActions';
 import { useDispatch } from 'react-redux';
 import { MetaMaskError } from 'modules/common/types/metamask';
+import { fixedSwapCancel } from 'modules/overview/actions/fixedSwapCancel';
 
 export const CancelPutTime: React.FC<{
   id?: number;
@@ -128,6 +129,45 @@ export const CancelPutTime: React.FC<{
           </Button>
         </DialogActions>
       </Dialog>
+    </>
+  );
+};
+
+export const CancelPutOnSale: React.FC<{
+  id?: number;
+  auctionType?: AuctionType;
+}> = ({ id, auctionType }) => {
+  const dispatchRequest = useDispatchRequest();
+  const classes = useProductCardStyles();
+  const { account } = useWeb3React();
+  const [loading, setLoading] = useState(false);
+
+  const refresh = () => {
+    dispatchRequest(fetchAllNftByUser(account));
+  };
+  const onClick = () => {
+    setLoading(true);
+    dispatchRequest(
+      fixedSwapCancel({ poolId: id, poolType: auctionType }),
+    ).then(({ error }) => {
+      setLoading(false);
+      if (!error) {
+        refresh?.();
+      }
+    });
+  };
+  return (
+    <>
+      <Button
+        className={classes.saleBtn}
+        variant="outlined"
+        rounded
+        onClick={onClick}
+        disabled={loading}
+        loading={loading}
+      >
+        {t('product-card.put-on-cancel')}
+      </Button>
     </>
   );
 };

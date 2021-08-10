@@ -183,12 +183,12 @@ export const BuyNFT = () => {
   }, [dispatch, poolId, push, isOpenSaleTime]);
 
   const handleFixedSwapCancel = useCallback(() => {
-    dispatch(fixedSwapCancel({ poolId })).then(({ error }) => {
+    dispatch(fixedSwapCancel({ poolId, poolType })).then(({ error }) => {
       if (!error) {
         init();
       }
     });
-  }, [dispatch, init, poolId]);
+  }, [dispatch, init, poolId, poolType]);
 
   const handleBuyFixed = useCallback(
     (values: {
@@ -528,6 +528,7 @@ export const BuyNFT = () => {
                           creatorClaimLoading ||
                           bidderClaimLoading
                         }
+                        isOpenSaleTime={saleTime}
                         onBidderClaim={handleBidderClaim}
                         onCreatorClaim={handleCreatorClaim}
                         state={poolDetails.state}

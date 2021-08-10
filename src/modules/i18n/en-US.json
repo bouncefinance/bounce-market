@@ -431,7 +431,15 @@
       "Activity-title": "No activities found",
       "Activity-description": "Go explore fangible to find excitement!",
       "Liked-title": "No items found",
-      "Liked-description": "You haven’t liked any NFT yet. Go browse our marketplace."
+      "Liked-description": "You haven’t liked any NFT yet. Go browse our marketplace.",
+      "other-onSale-title": "No items found",
+      "other-onSale-description": "This creator hasn't listed any item for sale yet.",
+      "other-collection-title": "No collection found",
+      "other-collection-description": "No collection has been created by this user.",
+      "other-showCase-title": "No items found",
+      "other-showCase-description": "This user hasn't owned any NFT yet.",
+      "other-Liked-title": "No items found",
+      "other-Liked-description": "This user hasn't liked any NFT yet."
     },
     "subscribers": "Subscribers",
     "tabs": {
