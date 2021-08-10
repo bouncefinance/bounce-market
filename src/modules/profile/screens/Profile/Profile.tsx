@@ -10,10 +10,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { fetchOwned } from 'modules/profile/actions/fetchOwned';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { fetchMyBids, fetchMySale } from 'modules/profile/actions/fetchSale';
-import {
-  ILikedItem,
-  queryLikedItems,
-} from 'modules/profile/actions/queryLikedItems';
+import { queryLikedItems } from 'modules/profile/actions/queryLikedItems';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
 import { Bio } from 'modules/profile/components/Bio';
@@ -31,7 +28,7 @@ import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { TabActivity } from '../../components/TabActivity';
@@ -40,6 +37,7 @@ import { TabLiked } from './components/TabLiked';
 import { TabOwned } from './components/tabOwned';
 import { TabSale } from './components/TabSale';
 import { useProfileStyles } from './useProfileStyles';
+import { RootState } from 'store/store';
 
 export const Profile = () => {
   const { tab, isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
@@ -50,9 +48,9 @@ export const Profile = () => {
   const { push } = useHistory();
   const dispatch = useDispatch();
 
-  const { data: likedItems } = useQuery<ILikedItem[] | null>({
-    type: queryLikedItems.toString(),
-  });
+  const { count: likeCount } = useSelector<RootState, RootState['like']>(
+    state => state.like,
+  );
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
@@ -148,7 +146,7 @@ export const Profile = () => {
             {
               value: ProfileTab.liked,
               label: t('profile.tabs.liked'),
-              count: likedItems ? likedItems.length : 0,
+              count: likeCount,
             },
           ]
         : []),
@@ -167,7 +165,7 @@ export const Profile = () => {
           ]
         : []),
     ],
-    [likedItems],
+    [likeCount],
   );
 
   const renderFollow = useCallback(() => {

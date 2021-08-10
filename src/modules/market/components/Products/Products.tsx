@@ -27,9 +27,9 @@ import { useHistory } from 'react-router';
 import { uid } from 'react-uid';
 import { Pagination } from '../../../uiKit/Pagination';
 import { useProductsStyles } from './useProductsStyles';
-import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { AuctionState } from 'modules/api/common/AuctionState';
+import { isFixedSwap } from 'modules/common/utils/poolHelps';
 
 const ITEMS_PORTION_COUNT = 20;
 const DEFAULT_PAGE = 1;
@@ -78,8 +78,6 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     };
   }, [category, page, dispatch, isConnected, dispatchRequest]);
 
-  console.log('nftItemsData: ', nftItemsData);
-
   const nftItems = useMemo(
     () => (nftItemsData ? nftItemsData.items.map(mapProductCardData) : []),
     [nftItemsData],
@@ -95,7 +93,6 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   }, [nftItemsData]);
 
   const hasItems = !!nftItems.length;
-  console.log('nftItems: ', nftItems);
   const rendrerdCards = useMemo(
     () =>
       nftItems.map(item => (
@@ -124,10 +121,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
             loading: 'lazy',
           }}
           state={
-            item.poolType === AuctionType.FixedSwap ||
-            item.poolType === AuctionType.FixedSwap_Timing
-              ? FixedSwapState.Live
-              : AuctionState.Live
+            isFixedSwap(item.poolType) ? FixedSwapState.Live : AuctionState.Live
           }
           profileInfo={
             <ProfileInfo

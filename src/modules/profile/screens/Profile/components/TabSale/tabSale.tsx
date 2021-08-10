@@ -16,7 +16,14 @@ import { TabItems as TabItemsComponent } from 'modules/profile/components/TabIte
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
-// import { usePoolList } from 'modules/common/hooks/usePoolList';
+import { getPoolKey, isFixedSwap } from 'modules/common/utils/poolHelps';
+import { usePoolList } from 'modules/common/hooks/usePoolList';
+import { useMemo } from 'react';
+
+const getStandardPoolObj = (e: IPoolNftItem) => ({
+  poolId: e.poolid,
+  poolType: e.poolType,
+});
 
 export const TabSale: React.FC<{ isOther?: boolean }> = function ({
   isOther = false,
@@ -24,16 +31,32 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMySale.toString(),
   });
-  // const bidsInfo = usePoolList({
-  //   list:
-  //     data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
-  //   contractFunctionName: 'currentBidderAmount1P',
-  // });
-  // const bidsReserveAmount = usePoolList({
-  //   list:
-  //     data?.map(e => ({ poolId: e.poolid ?? -1, poolType: e.poolType })) ?? [],
-  //   contractFunctionName: 'reserveAmount1P',
-  // });
+
+  const poolList = useMemo(() => {
+    return data?.filter(e => !isFixedSwap(e.poolType));
+  }, [data]);
+  const bidsInfo = usePoolList({
+    list: poolList?.map(getStandardPoolObj) ?? [],
+    contractFunctionName: 'currentBidderAmount1P',
+  });
+  const bidsReserveAmount = usePoolList({
+    list: poolList?.map(getStandardPoolObj) ?? [],
+    contractFunctionName: 'reserveAmount1P',
+  });
+
+  const poolMap = useMemo(() => {
+    const map = new Map<
+      string,
+      { bidTopPrice: number; bidsReserveAmount: number }
+    >();
+    poolList?.forEach((e, i) => {
+      map.set(getPoolKey(getStandardPoolObj(e)), {
+        bidTopPrice: bidsInfo[i]?.toNumber() ?? 0,
+        bidsReserveAmount: bidsReserveAmount[i]?.toNumber() ?? 0,
+      });
+    });
+    return map;
+  }, [bidsInfo, bidsReserveAmount, poolList]);
 
   return (
     <TabItemsComponent>
@@ -57,7 +80,6 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
                   : ''
               }
               likes={item.likecount}
-              isLike={item.isLike}
               price={item.poolid ? item.price : undefined}
               priceType={(data as any)?.tokenSymbol}
               soldData={{
@@ -99,8 +121,13 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
               openAt={item.openAt}
               closeAt={item.closeAt}
               isOnSeller
-              // bidTopPrice={bidsInfo[index]?.toNumber() || 0}
-              // bidsReserveAmount={bidsReserveAmount[index]?.toNumber() || 0}
+              bidTopPrice={
+                poolMap?.get(getPoolKey(getStandardPoolObj(item)))?.bidTopPrice
+              }
+              bidsReserveAmount={
+                poolMap?.get(getPoolKey(getStandardPoolObj(item)))
+                  ?.bidsReserveAmount
+              }
               isCreatorClaimed={Boolean(item.creator_claimed)}
               isBidderClaimed={Boolean(item.bidder_claimed)}
             />

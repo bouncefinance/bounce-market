@@ -12,8 +12,9 @@ import { auctionTypeMap, PoolType } from 'modules/api/common/poolType';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { IResponse } from 'modules/common/types/ResponseData';
 import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
+import { setLikesMapDataAsync } from 'modules/common/store/like';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { RootState } from 'store';
+import { RootState, store } from 'store';
 import Web3 from 'web3';
 
 interface ILikePoolItem {
@@ -103,13 +104,11 @@ export const queryLikedItems = createSmartAction<
       _action: RequestAction,
       store: Store<RootState> & { dispatchRequest: DispatchRequest },
     ) => {
-      const {
-        data: { address },
-      } = getQuery<ISetAccountData>(store.getState(), {
+      const { data } = getQuery<ISetAccountData>(store.getState(), {
         type: setAccount.toString(),
       });
 
-      request.data = { accountaddress: address };
+      request.data = { accountaddress: data?.address };
 
       return request;
     },
@@ -119,7 +118,7 @@ export const queryLikedItems = createSmartAction<
         return [];
       }
 
-      return [
+      const likes = [
         ...data.data.likeitems.map(e => ({ ...e, isItemType: true })),
         ...data.data.likepools.map(e => ({ ...e, isItemType: false })),
       ].map(item => {
@@ -129,6 +128,7 @@ export const queryLikedItems = createSmartAction<
           isEnglishAuction ? AuctionState.Live : FixedSwapState.Live;
         const getCloseSate = () =>
           isEnglishAuction ? AuctionState.Claimed : FixedSwapState.Completed;
+
         return {
           ...item,
           price: new BigNumber(Web3.utils.fromWei(item.price.toString())),
@@ -140,6 +140,9 @@ export const queryLikedItems = createSmartAction<
           poolId: item.poolid,
         };
       });
+
+      setLikesMapDataAsync(likes)(store.dispatch);
+      return likes;
     },
     onSuccess: addTokenSymbolByDriver,
   },

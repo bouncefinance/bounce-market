@@ -1,5 +1,6 @@
 import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
+import { isFixedSwap } from 'modules/common/utils/poolHelps';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
@@ -67,10 +68,7 @@ export const fetchWeb3PoolDetails = createSmartAction<
                 action: setAccount,
               });
 
-              if (
-                poolType === AuctionType.FixedSwap ||
-                poolType === AuctionType.FixedSwap_Timing
-              ) {
+              if (isFixedSwap(poolType)) {
                 const BounceFixedSwapNFT_CT = new web3.eth.Contract(
                   poolType === AuctionType.FixedSwap_Timing
                     ? BounceFixedSwapNFTTime

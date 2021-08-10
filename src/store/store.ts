@@ -24,6 +24,7 @@ import { BlockchainNetworkId, ZERO_ADDRESS } from '../modules/common/conts';
 import { Address } from '../modules/common/types/unit';
 import { TokenSymbol } from '../modules/common/types/TokenSymbol';
 import { disconnect } from 'modules/account/store/actions/disconnect';
+import { likeSlice } from 'modules/common/store/like';
 
 type MainApiDriverName =
   | 'mainApiEthMainnet'
@@ -314,6 +315,7 @@ const rootReducer = combineReducers({
   router: connectRouter(historyInstance),
   notifications: notificationSlice.reducer,
   [LAYOUT_STATE_NAME]: layoutReducer,
+  like: likeSlice.reducer,
 });
 
 export const store = configureStore({

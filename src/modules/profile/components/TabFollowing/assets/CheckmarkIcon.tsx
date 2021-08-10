@@ -7,7 +7,7 @@ export const CheckmarkIcon = (props: SvgIconProps) => {
         fill="none"
         stroke="currentColor"
         d="M0.75 7L6.25 12.5L17.25 1.5"
-        stroke-width="2"
+        strokeWidth="2"
       />
     </SvgIcon>
   );

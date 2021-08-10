@@ -277,46 +277,54 @@ export const ProductCardComponent = ({
   const auctionEnd = closeAt && +closeAt <= Date.now();
   const myPriceNumber = myBidderAmount || 0;
   // Figma 4
-  const isOutBid =
+  const isOutBid = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    inAuction &&
-    bidTopPrice &&
-    myPriceNumber > 0 &&
-    myPriceNumber < bidTopPrice;
-
+      isAuction &&
+      inAuction &&
+      bidTopPrice &&
+      myPriceNumber > 0 &&
+      myPriceNumber < bidTopPrice,
+  );
   // figama 1
-  const isLost =
+  const isLost = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    myPriceNumber > 0 &&
-    myPriceNumber === bidTopPrice &&
-    myPriceNumber < bidsReserveAmount;
+      isAuction &&
+      auctionEnd &&
+      bidTopPrice &&
+      myPriceNumber > 0 &&
+      myPriceNumber === bidTopPrice &&
+      myPriceNumber < bidsReserveAmount,
+  );
   // Figema 2
-  const isWon =
+  const isWon = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    auctionEnd &&
-    myPriceNumber > 0 &&
-    myPriceNumber === bidTopPrice &&
-    bidsReserveAmount &&
-    myPriceNumber >= bidsReserveAmount;
+      isAuction &&
+      auctionEnd &&
+      myPriceNumber > 0 &&
+      myPriceNumber === bidTopPrice &&
+      bidsReserveAmount &&
+      myPriceNumber >= bidsReserveAmount,
+  );
   // on sell
-  const isSellerClaimMoney =
-    !isCreatorClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    bidTopPrice < bidsReserveAmount;
+  const isSellerClaimMoney = Boolean(
+    isOnSeller &&
+      !isCreatorClaimed &&
+      isAuction &&
+      auctionEnd &&
+      bidTopPrice &&
+      bidTopPrice >= bidsReserveAmount,
+  );
   const isSellerClaimNft =
-    !isCreatorClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    bidTopPrice >= bidsReserveAmount;
+    Boolean(
+      isOnSeller &&
+        !isCreatorClaimed &&
+        isAuction &&
+        auctionEnd &&
+        bidTopPrice &&
+        bidTopPrice < bidsReserveAmount,
+    ) || Boolean(auctionEnd && bidTopPrice === 0);
 
+  const isPutSaleTimeCancel = openAt && +openAt > Date.now();
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
       <div className={classes.relative}>
@@ -325,7 +333,7 @@ export const ProductCardComponent = ({
           wrapper={<Link to={href || '#'} className={classes.imgBox} />}
         >
           {renderMediaContent()}
-          {openAt && +openAt > Date.now() && (
+          {isPutSaleTimeCancel && openAt && (
             <CardPutSaleTimer openAt={openAt} />
           )}
           {isOutBid && <BidsState type={BidsType.OUTBID} />}
@@ -364,7 +372,9 @@ export const ProductCardComponent = ({
                   {(auctionType === AuctionType.EnglishAuction ||
                     auctionType === AuctionType.EnglishAuction_Timing) &&
                     (state === AuctionState.Live
-                      ? t('product-card.top-bid')
+                      ? isSellerClaimMoney
+                        ? t('product-card.sold-for')
+                        : t('product-card.top-bid')
                       : t('product-card.sold-for'))}{' '}
                 </div>
 
@@ -443,9 +453,11 @@ export const ProductCardComponent = ({
                   {t('product-card.claimed')}
                 </Button>
               )}
-              {!isBidderClaimed && !isCreatorClaimed && isOnSale && endDate && (
-                <Timer endDate={endDate} />
-              )}
+              {!isPutSaleTimeCancel &&
+                !isBidderClaimed &&
+                !isCreatorClaimed &&
+                isOnSale &&
+                endDate && <Timer endDate={endDate} />}
 
               {!isMinting && !isOnSalePending && (
                 <Box display="flex" alignItems="center">

@@ -50,7 +50,6 @@ export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
               priceType={item.itemsymbol}
               copies={item.supply}
               likes={item.likecount}
-              isLike={item.isLike}
               copiesBalance={item.balance}
               MediaProps={{
                 category: item.category,

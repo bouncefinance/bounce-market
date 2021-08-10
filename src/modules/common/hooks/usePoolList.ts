@@ -8,6 +8,7 @@ import { AuctionType } from 'modules/api/common/auctionType';
 import { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import { CallType, multiCall2 } from '../utils/multicall';
+import { getPoolKey } from '../utils/poolHelps';
 import { getPoolAddress, getPoolContract } from './contractHelps';
 
 interface bidList {
@@ -32,6 +33,9 @@ export const usePoolList = ({
 
   useEffect(() => {
     (async () => {
+      if (list.length <= 0) {
+        return;
+      }
       const calls: CallType[] = list.map(({ poolType, poolId }) => {
         return {
           address: getPoolAddress({ poolType, chainId }) ?? '',
@@ -51,10 +55,37 @@ export const usePoolList = ({
           }),
         );
       } catch (error) {
-        // TODO
+        console.error('pool data error, error list, calls: ', list, calls);
+        console.error(error);
       }
     })();
     // eslint-disable-next-line
   }, [chainId, contractFunctionName, list.length]);
   return bidsInfo;
+};
+
+export const useLikesMap = <T>(
+  likes: T[],
+  mapFunction?: (like: T) => string,
+) => {
+  const [likesMap, setLikesMap] = useState<Map<string, boolean>>();
+  useEffect(() => {
+    const map = new Map<string, boolean>();
+    (likes ?? []).forEach(like => {
+      map.set(
+        mapFunction
+          ? mapFunction(like)
+          : getPoolKey(
+              (like as unknown) as {
+                poolId: number;
+                poolType: string;
+              },
+            ),
+        true,
+      );
+    });
+    setLikesMap(map);
+    // eslint-disable-next-line
+  }, [likes]);
+  return { likesMap };
 };
