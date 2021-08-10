@@ -25,8 +25,10 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
     type: queryMyBrandItem.toString(),
   });
   const [royaltyOpen, setRoyaltyOpen] = useState(true);
+  const [collection, setCollection] = useState('');
 
-  const handelOpenRoyalty: () => void = () => {
+  const handelOpenRoyalty: (collection: string) => void = collection => {
+    setCollection(collection);
     setRoyaltyOpen(!royaltyOpen);
   };
 
@@ -69,6 +71,7 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
               imgSrc={brand.imgSrc}
               nftType={brand.nftType}
               handelOpenRoyalty={handelOpenRoyalty}
+              collection={brand.contract}
             />
           </Grid>
         ))
@@ -79,6 +82,7 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
         onClose={() => {
           setRoyaltyOpen(false);
         }}
+        collection={collection}
       />
     </Grid>
   );

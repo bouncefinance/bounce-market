@@ -17,37 +17,54 @@ import { useRoyaltyDialogStyles } from './useRoyaltyDialogStyles';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 import { RoyaltyTable } from './RoyaltyTable';
 import BigNumber from 'bignumber.js';
+import { setRoyaltyContract } from 'modules/common/actions/setRoyaltyContract';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import { useDispatchRequest } from '@redux-requests/react';
 
 const MIN_RATE = 0.1;
 const MAX_RATE = 10;
 
 export interface IBurnFormValues {
-  rotaltyRate: string;
+  royaltyRate: string;
 }
 
 interface IBurnTokenDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  collection: string;
 }
 
-export const RoyaltyDialog = ({ isOpen, onClose }: IBurnTokenDialogProps) => {
+export const RoyaltyDialog = ({
+  isOpen,
+  onClose,
+  collection,
+}: IBurnTokenDialogProps) => {
   const classes = useRoyaltyDialogStyles();
+  const { address } = useAccount();
+  const dispatch = useDispatchRequest();
 
   const readonly = false;
   const loading = false;
-  const onSubmit = () => {
-    // alert(45656)
+  const onSubmit = ({ royaltyRate }: { royaltyRate: string }) => {
+    if (!royaltyRate || !address) return;
+    console.log(royaltyRate);
+    const payload = {
+      collection: collection,
+      receiverAddress: address,
+      rate: new BigNumber(royaltyRate).div(100),
+    };
+    dispatch(setRoyaltyContract(payload));
   };
 
-  const validateForm = useCallback(({ rotaltyRate }: IBurnFormValues) => {
+  const validateForm = useCallback(({ royaltyRate }: IBurnFormValues) => {
     const errors: FormErrors<IBurnFormValues> = {};
 
-    if (!rotaltyRate) {
-      errors.rotaltyRate = t('validation.required');
-    } else if (+rotaltyRate < MIN_RATE) {
-      errors.rotaltyRate = t('error.greater-than', { value: MIN_RATE });
-    } else if (MAX_RATE && +rotaltyRate > MAX_RATE) {
-      errors.rotaltyRate = t('error.less-than', { value: +MAX_RATE });
+    if (!royaltyRate) {
+      errors.royaltyRate = t('validation.required');
+    } else if (+royaltyRate < MIN_RATE) {
+      errors.royaltyRate = t('error.greater-than', { value: MIN_RATE });
+    } else if (MAX_RATE && +royaltyRate > MAX_RATE) {
+      errors.royaltyRate = t('error.less-than', { value: +MAX_RATE });
     }
 
     return errors;
@@ -60,7 +77,7 @@ export const RoyaltyDialog = ({ isOpen, onClose }: IBurnTokenDialogProps) => {
           <div>
             <Field
               component={InputField}
-              name="rotaltyRate"
+              name="royaltyRate"
               type="number"
               label={
                 <Box display="flex" alignItems="center">
@@ -104,7 +121,7 @@ export const RoyaltyDialog = ({ isOpen, onClose }: IBurnTokenDialogProps) => {
         validate={validateForm}
         onSubmit={onSubmit}
         render={renderForm}
-        initialValues={{ rotaltyRate: '0' }}
+        initialValues={{ royaltyRate: '0' }}
       />
 
       <div className={classes.desc}>

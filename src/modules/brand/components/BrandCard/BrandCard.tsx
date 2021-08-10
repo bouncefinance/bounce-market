@@ -28,7 +28,8 @@ export interface IBrandCardProps {
   withAddBtn?: boolean;
   addItemHref?: string;
   href: string;
-  handelOpenRoyalty?: () => void;
+  handelOpenRoyalty?: (collection: string) => void;
+  collection: string;
 }
 
 export const BrandCard = ({
@@ -41,6 +42,7 @@ export const BrandCard = ({
   addItemHref,
   href,
   handelOpenRoyalty,
+  collection = '',
 }: IBrandCardProps) => {
   const classes = useBrandCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -82,7 +84,12 @@ export const BrandCard = ({
           }}
         >
           {/* <MenuList> */}
-          <MenuItem className={classes.menuItem} onClick={handelOpenRoyalty}>
+          <MenuItem
+            className={classes.menuItem}
+            onClick={() => {
+              handelOpenRoyalty && handelOpenRoyalty(collection);
+            }}
+          >
             {t('royalty.royalty')}
           </MenuItem>
           {/* </MenuList> */}
