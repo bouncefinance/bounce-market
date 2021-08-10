@@ -343,7 +343,7 @@
       "ago": " назад"
     },
     "activity": {
-      "tab":{
+      "tab": {
         "create": "Создавать",
         "listings": "Списки",
         "bids": "Ставки",
@@ -532,5 +532,21 @@
   },
   "video-player": {
     "unsupported": "К сожалению, ваш браузер не поддерживает встроенные видео или форматы загруженных видеофайлов!"
+  },
+  "royalty": {
+    "royalty": "Royalty",
+    "royalties": "Royalties",
+    "change": "Change",
+    "royalty-rate": "Royalty rate",
+    "royalty-rate-tip": "A royalty rate of 0.1% to 6.5% can be set and changed as you want, but the change will take effect in around 30 minutes.",
+    "royalty-desc": "Once you’ve set a royalty rate for your collection, payouts for your created and sold NFTs will show here. Your wallet address is used by default to receive the royalties, which are automatically sent out each time a transaction is completed.",
+    "table": {
+      "item": "Item",
+      "price": "Price",
+      "quantity": "Quantity",
+      "fee": "Fee Earned",
+      "payout": "Payout",
+      "empty": "You have not received any royalty yet."
+    }
   }
 }
