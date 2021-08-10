@@ -1,24 +1,24 @@
 import { Box, Typography } from '@material-ui/core';
+import {
+  SelectChainDialog,
+  useDialogState,
+} from 'modules/layout/components/Header/components/SelectChainDialog';
 import React from 'react';
 import { useAccount } from '../../../account/hooks/useAccount';
 import { t } from '../../../i18n/utils/intl';
 import { Button } from '../../../uiKit/Button';
 import { useWrongNetworkContentStyles } from './useWrongNetworkContentStyles';
 
-interface IWrongNetworkContentProps {
-  handleConnect?: () => void;
-}
-
-export const WrongNetworkContent = ({
-  handleConnect,
-}: IWrongNetworkContentProps) => {
+export const WrongNetworkContent = () => {
   const classes = useWrongNetworkContentStyles();
 
+  const { walletSupportNetworkChange, loading, chainId } = useAccount();
+
   const {
-    handleChangeNetworkToSupported,
-    walletSupportNetworkChange,
-    loading,
-  } = useAccount();
+    opened: openedSelectChainDialog,
+    open: openSelectChainDialog,
+    close: closeSelectChainDialog,
+  } = useDialogState();
 
   return (
     <Box mb={3} textAlign="center" className={classes.root}>
@@ -29,13 +29,20 @@ export const WrongNetworkContent = ({
         {t('change-wallet.description')}
       </Typography>
       {walletSupportNetworkChange && (
-        <Button
-          onClick={handleConnect ?? handleChangeNetworkToSupported}
-          loading={loading}
-          className={classes.connectBtn}
-        >
-          {t('change-wallet.submit')}
-        </Button>
+        <>
+          <Button
+            onClick={openSelectChainDialog}
+            loading={loading}
+            className={classes.connectBtn}
+          >
+            {t('change-wallet.submit')}
+          </Button>
+          <SelectChainDialog
+            isOpen={openedSelectChainDialog}
+            onClose={closeSelectChainDialog}
+            currentChain={chainId}
+          />
+        </>
       )}
     </Box>
   );
