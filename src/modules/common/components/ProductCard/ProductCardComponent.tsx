@@ -323,9 +323,11 @@ export const ProductCardComponent = ({
         bidTopPrice &&
         bidTopPrice < bidsReserveAmount,
     ) || Boolean(auctionEnd && bidTopPrice === 0);
-  const isSellerCancel = Boolean(isOnSeller && !isCreatorClaimed && !isAuction);
+  const isPutSaleTimeCancel = Boolean(openAt && +openAt > Date.now());
+  const isSellerCancel = Boolean(
+    !isPutSaleTimeCancel && isOnSeller && !isCreatorClaimed && !isAuction,
+  );
 
-  const isPutSaleTimeCancel = openAt && +openAt > Date.now();
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
       <div className={classes.relative}>
