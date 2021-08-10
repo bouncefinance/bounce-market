@@ -477,6 +477,7 @@ export const BuyNFT = () => {
                                 poolTypeMap[poolType],
                               ) as unknown) as PoolType
                             }
+                            auctionType={poolType}
                             count={roleInfos.likeCount}
                             isLike={roleInfos.isLike}
                           />
