@@ -45,6 +45,8 @@ export const Brands = ({
     spaceBetween: theme.spacing(5),
     lazy: true,
     onSwiper: setSwiper,
+    loop: true,
+    slidesPerView: 'auto',
   };
 
   const renderedSlides = useMemo(

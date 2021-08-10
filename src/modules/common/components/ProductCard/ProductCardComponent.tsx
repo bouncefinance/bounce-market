@@ -323,6 +323,7 @@ export const ProductCardComponent = ({
         bidTopPrice &&
         bidTopPrice < bidsReserveAmount,
     ) || Boolean(auctionEnd && bidTopPrice === 0);
+
   const isPutSaleTimeCancel = Boolean(openAt && +openAt > Date.now());
   const isSellerCancel = Boolean(
     !isPutSaleTimeCancel && isOnSeller && !isCreatorClaimed && !isAuction,
