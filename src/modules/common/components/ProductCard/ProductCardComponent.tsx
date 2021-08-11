@@ -412,80 +412,84 @@ export const ProductCardComponent = ({
               ) : (
                 <></>
               )}
-
-              {isLost && (
-                <ClaimFunds
-                  auctionType={auctionType}
-                  id={poolId}
-                  type={BidsType.LOST}
-                  isBidder={isBidder}
-                />
-              )}
-              {isWon && (
-                <ClaimFunds
-                  auctionType={auctionType}
-                  id={poolId}
-                  type={BidsType.WON}
-                  isBidder={isBidder}
-                />
-              )}
-              {isSellerClaimMoney && (
-                <ClaimFunds
-                  auctionType={auctionType}
-                  id={poolId}
-                  type={BidsType.LOST}
-                  isBidder={false}
-                  text={t('product-card.claim-funds')}
-                />
-              )}
-              {isSellerClaimNft && (
-                <ClaimFunds
-                  auctionType={auctionType}
-                  id={poolId}
-                  type={BidsType.LOST}
-                  isBidder={false}
-                  text={t('product-card.claim-back')}
-                />
-              )}
               {isSellerCancel && (
                 <CancelPutOnSale auctionType={auctionType} id={poolId} />
               )}
-              {isBidder && isBidderClaimed && (
-                <Button variant="outlined" rounded disabled>
-                  {t('product-card.claimed')}
-                </Button>
-              )}
-              {isOnSeller && isCreatorClaimed && (
-                <Button variant="outlined" rounded disabled>
-                  {t('product-card.claimed')}
-                </Button>
-              )}
-              {!isPutSaleTimeCancel &&
-                !isBidderClaimed &&
-                !isCreatorClaimed &&
-                isOnSale &&
-                endDate && <Timer endDate={endDate} />}
 
-              {!isMinting && !isOnSalePending && (
-                <Box display="flex" alignItems="center">
-                  {!(copiesBalance && copiesBalance >= 0) ? (
-                    <></>
-                  ) : (
-                    <>
-                      {toSale && (
-                        <Button
-                          className={classes.saleBtn}
-                          component={RouterLink}
-                          variant="outlined"
-                          rounded
-                          to={toSale}
-                        >
-                          {t('product-card.put-on-sale')}
-                        </Button>
-                      )}
-                    </>
+              {!isCancelTimePut && !isSellerCancel && (
+                <>
+                  {isLost && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={isBidder}
+                    />
                   )}
-                </Box>
+                  {isWon && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.WON}
+                      isBidder={isBidder}
+                    />
+                  )}
+                  {isSellerClaimMoney && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={false}
+                      text={t('product-card.claim-funds')}
+                    />
+                  )}
+                  {isSellerClaimNft && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={false}
+                      text={t('product-card.claim-back')}
+                    />
+                  )}
+                  {isBidder && isBidderClaimed && (
+                    <Button variant="outlined" rounded disabled>
+                      {t('product-card.claimed')}
+                    </Button>
+                  )}
+                  {isOnSeller && isCreatorClaimed && (
+                    <Button variant="outlined" rounded disabled>
+                      {t('product-card.claimed')}
+                    </Button>
+                  )}
+                  {!isPutSaleTimeCancel &&
+                    !isBidderClaimed &&
+                    !isCreatorClaimed &&
+                    isOnSale &&
+                    endDate && <Timer endDate={endDate} />}
+
+                  {!isMinting && !isOnSalePending && (
+                    <Box display="flex" alignItems="center">
+                      {!(copiesBalance && copiesBalance >= 0) ? (
+                        <></>
+                      ) : (
+                        <>
+                          {toSale && (
+                            <Button
+                              className={classes.saleBtn}
+                              component={RouterLink}
+                              variant="outlined"
+                              rounded
+                              to={toSale}
+                            >
+                              {t('product-card.put-on-sale')}
+                            </Button>
+                          )}
+                        </>
+                      )}
+                    </Box>
+                  )}
+                </>
               )}
             </div>
             {hasAction && (
