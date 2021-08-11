@@ -209,7 +209,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     userSelect: 'none',
     cursor: 'pointer',
     opacity: 0,
-    transition: 'all 0.1s',
+    transition: 'opacity 0.1s linear',
   },
   likeBtn: {
     padding: 6,
