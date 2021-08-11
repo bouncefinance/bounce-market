@@ -27,6 +27,8 @@ export interface IActivityItemApi {
   fileurl: string;
   ctime: Timestamp;
   category: NFTType;
+  tokenid: number;
+  contractaddress: string;
 }
 
 export interface IActivityData {
@@ -51,4 +53,6 @@ export interface IActivityItem {
   fileUrl: string;
   ctime: Timestamp;
   category: NFTType;
+  tokenid: number;
+  contractaddress: string;
 }

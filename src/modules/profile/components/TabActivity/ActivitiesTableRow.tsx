@@ -21,6 +21,8 @@ import { zhCN, ru, enUS } from 'date-fns/locale';
 import { t } from 'modules/i18n/utils/intl';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 
 const dateLocale: { [key: string]: Locale } = {
   zhCN: zhCN,
@@ -34,23 +36,51 @@ interface IActivitiesTableProps {
   symbol: string;
 }
 
-const ItemIcon: React.FC<{ url: string; label: string }> = ({ url, label }) => {
-  const styles = useTabActivityStyles();
-  return (
-    <div className={styles.tableItemIcon}>
-      <Img src={url} ratio="1x1" className="icon" />
-      <span>{label}</span>
-    </div>
-  );
-};
+interface IItemProps {
+  tokenid: number;
+  contractaddress: string;
+  url: string;
+  label: string;
+}
 
-const ItemVideo: React.FC<{ url: string; label: string }> = ({
+const ItemIcon: React.FC<IItemProps> = ({
+  tokenid,
+  contractaddress,
   url,
   label,
 }) => {
   const styles = useTabActivityStyles();
   return (
-    <div className={styles.tableItemVideo}>
+    <Link
+      className={styles.tableItemIcon}
+      target="_blank"
+      to={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
+        tokenid,
+        contractaddress,
+      )}
+    >
+      <Img src={url} ratio="1x1" className="icon" />
+      <span>{label}</span>
+    </Link>
+  );
+};
+
+const ItemVideo: React.FC<IItemProps> = ({
+  tokenid,
+  contractaddress,
+  url,
+  label,
+}) => {
+  const styles = useTabActivityStyles();
+  return (
+    <Link
+      className={styles.tableItemVideo}
+      target="_blank"
+      to={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
+        tokenid,
+        contractaddress,
+      )}
+    >
       <VideoPlayer
         className={styles.itemPreview}
         src={url}
@@ -61,7 +91,7 @@ const ItemVideo: React.FC<{ url: string; label: string }> = ({
         objectFit="cover"
       />
       <span>{label}</span>
-    </div>
+    </Link>
   );
 };
 
@@ -129,12 +159,22 @@ export const ActivitiesTableRow = ({
   const renderItemPreview = useCallback(
     (category: NFTType) => {
       return category === 'video' ? (
-        <ItemVideo url={item.fileUrl} label={item.itemName} />
+        <ItemVideo
+          tokenid={item.tokenid}
+          contractaddress={item.contractaddress}
+          url={item.fileUrl}
+          label={item.itemName}
+        />
       ) : (
-        <ItemIcon url={item.fileUrl} label={item.itemName} />
+        <ItemIcon
+          tokenid={item.tokenid}
+          contractaddress={item.contractaddress}
+          url={item.fileUrl}
+          label={item.itemName}
+        />
       );
     },
-    [item.fileUrl, item.itemName],
+    [item.contractaddress, item.fileUrl, item.itemName, item.tokenid],
   );
 
   return (
@@ -142,9 +182,6 @@ export const ActivitiesTableRow = ({
       <TableCell>
         <EventIcon tabKey={tabKey} label={item.event} />
       </TableCell>
-      {/* <TableCell>
-        <ItemIcon url={item.fileUrl} label={item.itemName} />
-      </TableCell> */}
       <TableCell>{renderItemPreview(item.category)}</TableCell>
       <TableCell>
         {item.amount.toString()}&nbsp;{symbol}
