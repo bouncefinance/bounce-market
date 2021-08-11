@@ -42,7 +42,7 @@ export const useTabActivityStyles = makeStyles<Theme>(theme => ({
   tableItemIcon: {
     display: 'flex',
     alignItems: 'center',
-    width: 'auto',
+    width: 'max-content',
     maxWidth: 300,
     '& .icon': {
       width: 52,
