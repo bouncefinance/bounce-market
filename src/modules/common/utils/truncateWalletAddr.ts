@@ -9,3 +9,12 @@ export const truncateWalletAddr = (address: string): string => {
     .join('');
   return `${firstPart}...${lastPart}`;
 };
+
+export const truncateLongName = (name: string): string => {
+  const LENGTH = 15;
+  if (name.length <= LENGTH) {
+    return name;
+  }
+  const firstPart = name.slice(0, LENGTH - 2);
+  return `${firstPart}...`;
+};
