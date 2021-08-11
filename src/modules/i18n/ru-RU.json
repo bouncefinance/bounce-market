@@ -344,7 +344,7 @@
       "ago": " назад"
     },
     "activity": {
-      "tab":{
+      "tab": {
         "create": "Создавать",
         "listings": "Списки",
         "bids": "Ставки",
@@ -419,7 +419,15 @@
       "Activity-title": "Действия не найдены",
       "Activity-description": "Исследуйте фантастическое, чтобы найти азарт!",
       "Liked-title": "Ничего не найдено",
-      "Liked-description": "Вам еще не понравились NFT. Зайдите на нашу торговую площадку!"
+      "Liked-description": "Вам еще не понравились NFT. Зайдите на нашу торговую площадку!",
+      "other-onSale-title": "Предметов не найдено",
+      "other-onSale-description": "Этот автор еще не выставил ни одного предмета на продажу.",
+      "other-collection-title": "Коллекция не найдена",
+      "other-collection-description": "Этим пользователем не было создано ни одной коллекции.",
+      "other-showCase-title": "Предметов не найдено",
+      "other-showCase-description": "Этот пользователь еще не владел ни одним NFT.",
+      "other-Liked-title": "Предметов не найдено",
+      "other-Liked-description": "Этому пользователю еще не понравился ни один NFT."
     },
     "subscribers": "Подписчики",
     "tabs": {

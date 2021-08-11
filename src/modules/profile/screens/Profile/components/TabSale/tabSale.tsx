@@ -149,8 +149,16 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
       {!loading && data?.length === 0 && (
         <NoItems
           href={MarketRoutesConfig.Market.generatePath()}
-          title={t('profile.no-items.onSale-title')}
-          descr={t('profile.no-items.onSale-description')}
+          title={
+            isOther
+              ? t('profile.no-items.other-onSale-title')
+              : t('profile.no-items.onSale-title')
+          }
+          descr={
+            isOther
+              ? t('profile.no-items.other-onSale-description')
+              : t('profile.no-items.onSale-description')
+          }
         />
       )}
     </TabItemsComponent>

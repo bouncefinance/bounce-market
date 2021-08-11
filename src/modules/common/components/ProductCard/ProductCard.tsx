@@ -118,7 +118,7 @@ export const ProductCard = ({
           data.quantity,
         ),
       ).then(({ error }) => {
-        closeBurn();
+        closeTransfer();
         if (!error && queryAction) {
           queryAction();
         }

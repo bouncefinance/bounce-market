@@ -7,18 +7,25 @@ import {
 } from '@redux-requests/core';
 import { Store } from 'redux';
 import { RootState } from '../../../store';
-import { BounceFixedSwapNFT } from '../../web3/contracts';
-import { getFixedSwapContract } from '../../createNFT/actions/publishNft';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
+import { AuctionType } from 'modules/api/common/auctionType';
+import {
+  getPoolAddress,
+  getPoolContract,
+} from 'modules/common/hooks/contractHelps';
 
 interface ICancelParams {
   poolId: string;
+  poolType: AuctionType;
 }
 
 export const fixedSwapCancel = createSmartAction<RequestAction<void, void>>(
   'fixedSwapCancel',
-  ({ poolId }: ICancelParams, meta?: RequestActionMeta<void, void>) => ({
+  (
+    { poolId, poolType }: ICancelParams,
+    meta?: RequestActionMeta<void, void>,
+  ) => ({
     request: {
       promise: (async function () {})(),
     },
@@ -37,13 +44,13 @@ export const fixedSwapCancel = createSmartAction<RequestAction<void, void>>(
               action: setAccount,
             });
 
-            const BounceFixedSwapNFT_CT = new web3.eth.Contract(
-              BounceFixedSwapNFT,
-              getFixedSwapContract(chainId),
+            const contract = new web3.eth.Contract(
+              getPoolContract(poolType),
+              getPoolAddress({ poolType, chainId }),
             );
 
             await new Promise((resolve, reject) => {
-              BounceFixedSwapNFT_CT.methods
+              contract.methods
                 .cancel(poolId)
                 .send({ from: address })
                 .on('transactionHash', (hash: string) => {

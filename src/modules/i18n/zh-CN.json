@@ -330,7 +330,7 @@
     "put-on-cancel": "取消出售",
     "transfer": "发送token",
     "pool-start-tips": "售卖开始倒计时：",
-    "burn": "销毁token", 
+    "burn": "销毁token",
     "item-balance-tip": "当前拥有份数: {balance}",
     "pool-balance-tip": "当前可售份数: {balance}",
     "sold-for-quantity": "已售出 {sold} / {quantity}"
@@ -423,7 +423,15 @@
       "Activity-title": "暂无动态数据",
       "Activity-description": "探索fangible，发现新惊喜！",
       "Liked-title": "暂无NFT",
-      "Liked-description": "您还未对任何NFT进行过点赞。浏览fangible市场吧！"
+      "Liked-description": "您还未对任何NFT进行过点赞。浏览fangible市场吧！",
+      "other-onSale-title": "暂无数据",
+      "other-onSale-description": "该创建者尚未上架任何NFT。",
+      "other-collection-title": "暂无数据",
+      "other-collection-description": "该用户尚未创建任何作品集。",
+      "other-showCase-title": "暂无数据",
+      "other-showCase-description": "该用户尚未拥有任何NFT。",
+      "other-Liked-title": "暂无数据",
+      "other-Liked-description": "该创建者尚未对任何NFT进行过点赞。"
     },
     "subscribers": "Subscribers",
     "tabs": {

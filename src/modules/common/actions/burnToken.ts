@@ -6,6 +6,7 @@ import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
+import { ZERO_ADDRESS2 } from '../conts';
 
 export const burnToken = createSmartAction<RequestAction<void, void>>(
   'burnToken',
@@ -47,7 +48,7 @@ export const burnToken = createSmartAction<RequestAction<void, void>>(
             if (standard === NftType.ERC721) {
               return await new Promise((resolve, reject) => {
                 contract721.methods
-                  .burn(tokenId)
+                  .transferFrom(address, ZERO_ADDRESS2, tokenId)
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     // Pending status
@@ -64,7 +65,13 @@ export const burnToken = createSmartAction<RequestAction<void, void>>(
             } else if (standard === NftType.ERC1155) {
               return await new Promise((resolve, reject) => {
                 contract1155.methods
-                  .burn(address, tokenId, quantity)
+                  .safeTransferFrom(
+                    address,
+                    ZERO_ADDRESS2,
+                    tokenId,
+                    quantity,
+                    '0x00',
+                  )
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     // Pending status

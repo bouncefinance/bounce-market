@@ -29,7 +29,7 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
 import BidsState, { BidsType } from './BidsState';
-import { CancelPutTime } from './cancel';
+import { CancelPutOnSale, CancelPutTime } from './cancel';
 import { ClaimFunds } from './claimFunds';
 import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
@@ -324,7 +324,11 @@ export const ProductCardComponent = ({
         bidTopPrice < bidsReserveAmount,
     ) || Boolean(auctionEnd && bidTopPrice === 0);
 
-  const isPutSaleTimeCancel = openAt && +openAt > Date.now();
+  const isPutSaleTimeCancel = Boolean(openAt && +openAt > Date.now());
+  const isSellerCancel = Boolean(
+    !isPutSaleTimeCancel && isOnSeller && !isCreatorClaimed && !isAuction,
+  );
+
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
       <div className={classes.relative}>
@@ -442,6 +446,9 @@ export const ProductCardComponent = ({
                   isBidder={false}
                   text={t('product-card.claim-back')}
                 />
+              )}
+              {isSellerCancel && (
+                <CancelPutOnSale auctionType={auctionType} id={poolId} />
               )}
               {isBidder && isBidderClaimed && (
                 <Button variant="outlined" rounded disabled>
