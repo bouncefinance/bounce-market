@@ -64,74 +64,86 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
         {loading ? (
           <ProductCardSkeleton />
         ) : (
-          data?.map((item, index) => (
-            <ProductCard
-              id={item.tokenid}
-              poolId={item.poolid || 0}
-              auctionType={item.poolType}
-              key={uid(item)}
-              title={item.itemname}
-              href={
-                item.poolid && item.poolType
-                  ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                      item.poolid,
-                      item.poolType,
-                    )
-                  : ''
-              }
-              likes={item.likecount}
-              price={item.poolid ? item.price : undefined}
-              priceType={(data as any)?.tokenSymbol}
-              soldData={{
-                sold: item.swapped_amount0,
-                quantity: item.token_amount0,
-              }}
-              endDate={
-                item.close_at ? new Date(item.close_at * 1e3) : undefined
-              }
-              MediaProps={{
-                category: item.category,
-                src: item.fileurl || 'xxx',
-                objectFit: 'contain',
-                loading: 'lazy',
-              }}
-              state={item.state}
-              isOnSale
-              profileInfo={
-                <ProfileInfo
-                  subTitle="Creator"
-                  title={item.username || truncateWalletAddr(item.creator)}
-                  users={[
-                    {
-                      name: item.username,
-                      avatar: item.creatorurl,
-                      href: ProfileRoutesConfig.OtherProfile.generatePath(
-                        item.creator,
-                      ),
-                      verified: item?.identity === UserRoleEnum.Verified,
-                    },
-                  ]}
-                />
-              }
-              toSale={RoutesConfiguration.PublishNft.generatePath(
-                item.token0,
-                item.tokenid,
-              )}
-              isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
-              openAt={item.openAt}
-              closeAt={item.closeAt}
-              isOnSeller
-              bidTopPrice={
-                poolMap?.get(getPoolKey(getStandardPoolObj(item)))?.bidTopPrice
-              }
-              bidsReserveAmount={
-                poolMap?.get(getPoolKey(getStandardPoolObj(item)))
-                  ?.bidsReserveAmount
-              }
-              isCreatorClaimed={Boolean(item.creator_claimed)}
-              isBidderClaimed={Boolean(item.bidder_claimed)}
-            />
-          ))
+          data?.map((item, index) => {
+            const bidTopPrice =
+              poolMap?.get(getPoolKey(getStandardPoolObj(item)))?.bidTopPrice ||
+              0;
+
+            const bidsReservePrice =
+              poolMap?.get(getPoolKey(getStandardPoolObj(item)))
+                ?.bidsReserveAmount || 0;
+
+            return (
+              <ProductCard
+                id={item.tokenid}
+                poolId={item.poolid || 0}
+                auctionType={item.poolType}
+                key={uid(item)}
+                title={item.itemname}
+                href={
+                  item.poolid && item.poolType
+                    ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                        item.poolid,
+                        item.poolType,
+                      )
+                    : ''
+                }
+                likes={item.likecount}
+                price={item.poolid ? item.price : undefined}
+                priceType={(data as any)?.tokenSymbol}
+                soldData={{
+                  sold: isFixedSwap(item.poolType)
+                    ? item.swapped_amount0
+                    : Date.now() >= item.close_at * 1e3 &&
+                      bidTopPrice >= bidsReservePrice
+                    ? item.token_amount0
+                    : 0,
+                  quantity: item.token_amount0,
+                }}
+                endDate={
+                  item.close_at ? new Date(item.close_at * 1e3) : undefined
+                }
+                MediaProps={{
+                  category: item.category,
+                  src: item.fileurl || 'xxx',
+                  objectFit: 'contain',
+                  loading: 'lazy',
+                }}
+                state={item.state}
+                isOnSale
+                profileInfo={
+                  <ProfileInfo
+                    subTitle="Creator"
+                    title={item.username || truncateWalletAddr(item.creator)}
+                    users={[
+                      {
+                        name: item.username,
+                        avatar: item.creatorurl,
+                        href: ProfileRoutesConfig.OtherProfile.generatePath(
+                          item.creator,
+                        ),
+                        verified: item?.identity === UserRoleEnum.Verified,
+                      },
+                    ]}
+                  />
+                }
+                toSale={RoutesConfiguration.PublishNft.generatePath(
+                  item.token0,
+                  item.tokenid,
+                )}
+                isCancelTimePut={
+                  item.openAt ? +item.openAt >= Date.now() : false
+                }
+                openAt={item.openAt}
+                closeAt={item.closeAt}
+                isOnSeller
+                bidTopPrice={bidTopPrice}
+                bidsReserveAmount={bidsReservePrice}
+                isCreatorClaimed={Boolean(item.creator_claimed)}
+                isBidderClaimed={Boolean(item.bidder_claimed)}
+              />
+            );
+          })
         )}
       </ProductCards>
       {!loading && data?.length === 0 && (
