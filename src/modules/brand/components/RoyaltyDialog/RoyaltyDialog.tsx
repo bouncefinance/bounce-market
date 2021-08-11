@@ -22,7 +22,7 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { useDispatchRequest } from '@redux-requests/react';
 
 const MIN_RATE = 0.1;
-const MAX_RATE = 10;
+const MAX_RATE = 6.5;
 
 export interface IBurnFormValues {
   royaltyRate: string;
