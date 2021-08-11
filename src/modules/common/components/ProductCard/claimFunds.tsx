@@ -31,11 +31,11 @@ export const ClaimFunds: React.FC<{
     (cb?: () => void) => {
       dispatch(bidderClaim({ poolId: id, isOpenSaleTime })).then(
         ({ error }) => {
+          cb?.();
           if (!error) {
             push(ProfileRoutesConfig.UserProfile.generatePath());
             return;
           }
-          cb?.();
         },
       );
     },
@@ -46,11 +46,11 @@ export const ClaimFunds: React.FC<{
     (cb?: () => void) => {
       dispatch(creatorClaim({ poolId: id, isOpenSaleTime })).then(
         ({ error }) => {
+          cb?.();
           if (!error) {
             push(ProfileRoutesConfig.UserProfile.generatePath());
             return;
           }
-          cb?.();
         },
       );
     },
