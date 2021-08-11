@@ -158,6 +158,22 @@ export const CreateNFT = () => {
         label: t(`create-nft.channelOption.${Channel.Comics}`),
         value: Channel.Comics,
       },
+      {
+        label: t(`create-nft.channelOption.${Channel.Collectible}`),
+        value: Channel.Collectible,
+      },
+      {
+        label: t(`create-nft.channelOption.${Channel.Music}`),
+        value: Channel.Music,
+      },
+      {
+        label: t(`create-nft.channelOption.${Channel.Performer}`),
+        value: Channel.Performer,
+      },
+      {
+        label: t(`create-nft.channelOption.${Channel.Metaverse}`),
+        value: Channel.Metaverse,
+      },
     ],
     [],
   );

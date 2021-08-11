@@ -121,7 +121,11 @@
       "Comicbooks": "Comic",
       "Comics": "Comics",
       "FineArts": "Fine arts",
-      "Sports": "Sports"
+      "Sports": "Sports",
+      "Collectible": "Collectible",
+      "Music": "Music",
+      "Performer": "Performer",
+      "Metaverse": "Metaverse"
     },
     "label": {
       "Set-up-date": "Set up date and time",
@@ -319,7 +323,11 @@
     "all": "All",
     "art": "Art",
     "sports": "Sports",
-    "Comics": "Comics"
+    "Comics": "Comics",
+    "collectible": "Collectible",
+    "music": "Music",
+    "performer": "Performer",
+    "metaverse": "Metaverse"
   },
   "product-card": {
     "burn": "Burn token",

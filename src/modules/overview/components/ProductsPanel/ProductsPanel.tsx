@@ -27,6 +27,22 @@ const categories = [
     value: ItemsChannel.comics,
     label: t('product-panel.Comics'),
   },
+  {
+    value: ItemsChannel.collectible,
+    label: t('product-panel.collectible'),
+  },
+  {
+    value: ItemsChannel.music,
+    label: t('product-panel.music'),
+  },
+  {
+    value: ItemsChannel.performer,
+    label: t('product-panel.performer'),
+  },
+  {
+    value: ItemsChannel.metaverse,
+    label: t('product-panel.metaverse'),
+  },
 ];
 
 const sortVariants = [
