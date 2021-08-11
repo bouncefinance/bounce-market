@@ -5,6 +5,9 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    '&:hover $likeSite': {
+      opacity: 1,
+    },
   },
 
   imgBox: {
@@ -205,6 +208,8 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     zIndex: 2,
     userSelect: 'none',
     cursor: 'pointer',
+    opacity: 0,
+    transition: 'all 0.1s',
   },
   likeBtn: {
     padding: 6,
