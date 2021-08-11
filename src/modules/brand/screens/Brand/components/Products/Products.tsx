@@ -47,6 +47,10 @@ export const Products = () => {
           profileInfo={
             item.ownerAddress && <AccountInfo address={item.ownerAddress} />
           }
+          soldData={{
+            sold: item.soldAmount,
+            quantity: item.supplyAmount,
+          }}
         />
       )),
     [brandNfts],

@@ -30,6 +30,15 @@ export interface IProductCardProps
   maxQuantity?: number;
   queryAction?: () => void;
   state?: number;
+  isLike?: boolean;
+  isItemType?: boolean;
+  bidTopPrice?: number;
+  bidsReserveAmount?: number;
+  myBidderAmount?: number;
+  isBidder?: boolean;
+  isOnSeller?: boolean;
+  isBidderClaimed?: boolean;
+  isCreatorClaimed?: boolean;
 }
 
 export const ProductCard = ({
@@ -38,6 +47,8 @@ export const ProductCard = ({
   auctionType,
   MediaProps,
   onLikeClick,
+  isLike = false,
+  isItemType = false,
   likes,
   contractAddress,
   standard = -1,
@@ -55,8 +66,12 @@ export const ProductCard = ({
     id,
     poolId,
     poolType: auctionType ? +poolTypeMap[auctionType] : undefined,
+    auctionType: auctionType,
     category: MediaProps.category,
     count: likes,
+    contractAddress,
+    isItemType,
+    isLike,
   });
 
   const handleLikeClick = useCallback(() => {
@@ -103,7 +118,7 @@ export const ProductCard = ({
           data.quantity,
         ),
       ).then(({ error }) => {
-        closeBurn();
+        closeTransfer();
         if (!error && queryAction) {
           queryAction();
         }

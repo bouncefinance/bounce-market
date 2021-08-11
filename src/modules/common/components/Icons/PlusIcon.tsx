@@ -2,12 +2,11 @@ import { SvgIcon, SvgIconProps } from '@material-ui/core';
 
 export const PlusIcon = (props: SvgIconProps) => {
   return (
-    <SvgIcon {...props} viewBox="0 0 14 14">
+    <SvgIcon {...props} viewBox="0 0 24 24">
       <path
+        className="animate__animated animate__rotateIn"
+        d="M10.5 13.5H3V10.5H10.5V3H13.5V10.5H21V13.5H13.5V21H10.5V13.5Z"
         fill="currentColor"
-        fillRule="evenodd"
-        d="M6.25 7.75V14h1.5V7.75H14v-1.5H7.75V0h-1.5v6.25H0v1.5h6.25z"
-        clipRule="evenodd"
       />
     </SvgIcon>
   );

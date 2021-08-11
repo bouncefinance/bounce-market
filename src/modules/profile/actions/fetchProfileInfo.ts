@@ -4,6 +4,7 @@ import {
   RequestAction,
   RequestActionMeta,
 } from '@redux-requests/core';
+
 import {
   ISetAccountData,
   setAccount,
@@ -56,7 +57,8 @@ export const fetchProfileInfo = createSmartAction<
       return request;
     },
     getData: data => {
-      if (data.code !== 1) {
+      if (data.code === 0) {
+        // historyInstance.replace(ProfileRoutesConfig.EditProfile.generatePath());
         console.error('fetchProfileInfo:', data?.msg ?? 'Unexpected error');
         return;
       }

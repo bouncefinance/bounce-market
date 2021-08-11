@@ -1,120 +1,179 @@
-import { Box, TableCell, TableRow } from '@material-ui/core';
-import classNames from 'classnames';
-import { formatDistance } from 'date-fns';
-import { useAccount } from 'modules/account/hooks/useAccount';
-import { getTokenSymbol } from 'modules/common/conts';
+import { Avatar, TableCell, TableRow, Tooltip } from '@material-ui/core';
+// import { Link } from 'react-router-dom';
+// import { formatDistance } from 'date-fns';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
-import React, { useCallback } from 'react';
-import { CloseIcon } from '../../../common/components/Icons/CloseIcon';
-import { DoneIcon } from '../../../common/components/Icons/DoneIcon';
+// import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+// import { getTokenSymbol } from 'modules/common/conts';
+// import { t } from '../../../i18n/utils/intl';
+import { ActivityKeys, IActivityItem, NFTType } from '../../api/getActivity';
+import { Img } from 'modules/uiKit/Img';
+import { useTabActivityStyles } from './useTabActivityStyles';
+// import { CloseIcon } from '../../../common/components/Icons/CloseIcon';
+// import { DoneIcon } from '../../../common/components/Icons/DoneIcon';
 import { PlusIcon } from '../../../common/components/Icons/PlusIcon';
 import { TransferIcon } from '../../../common/components/Icons/TransferIcon';
+import { BidIcon } from '../../../common/components/Icons/BidIcon';
+import { ListedIcon } from '../../../common/components/Icons/ListedIcon';
+import { SaleIcon } from '../../../common/components/Icons/SaleIcon';
+import { PurchaseIcon } from '../../../common/components/Icons/PurchaseIcon';
+import { format, formatDistanceToNowStrict, subDays, getTime } from 'date-fns';
+import { zhCN, ru, enUS } from 'date-fns/locale';
+import { t } from 'modules/i18n/utils/intl';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
-import { t } from '../../../i18n/utils/intl';
-import { Img } from '../../../uiKit/Img';
-import { IActivityTableItem } from '../../api/getActivity';
+import { useCallback } from 'react';
+
+const dateLocale: { [key: string]: Locale } = {
+  zhCN: zhCN,
+  ru: ru,
+  enUS: enUS,
+};
 
 interface IActivitiesTableProps {
-  item: IActivityTableItem;
-  classes: any;
+  item: IActivityItem;
+  tabKey: ActivityKeys;
+  symbol: string;
 }
+
+const ItemIcon: React.FC<{ url: string; label: string }> = ({ url, label }) => {
+  const styles = useTabActivityStyles();
+  return (
+    <div className={styles.tableItemIcon}>
+      <Img src={url} ratio="1x1" className="icon" />
+      <span>{label}</span>
+    </div>
+  );
+};
+
+const ItemVideo: React.FC<{ url: string; label: string }> = ({
+  url,
+  label,
+}) => {
+  const styles = useTabActivityStyles();
+  return (
+    <div className={styles.tableItemVideo}>
+      <VideoPlayer
+        className={styles.itemPreview}
+        src={url}
+        width={100}
+        height={100}
+        controls={false}
+        autoPlay={false}
+        objectFit="cover"
+      />
+      <span>{label}</span>
+    </div>
+  );
+};
+
+const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
+  url,
+  name,
+  address,
+}) => {
+  const styles = useTabActivityStyles();
+  return (
+    <div className={styles.tableUserIcon}>
+      <Avatar src={url} className="avator" />
+      {name ? (
+        (name.slice(0, 2) === '0x' || name.slice(0, 2) === '0X') &&
+        name.length === 42 ? (
+          <Tooltip title={name}>
+            <span>{truncateWalletAddr(name)}</span>
+          </Tooltip>
+        ) : (
+          <span>{name}</span>
+        )
+      ) : (
+        <Tooltip title={address}>
+          <span>{truncateWalletAddr(address)}</span>
+        </Tooltip>
+      )}
+    </div>
+  );
+};
+
+const EventIconMaps = {
+  [ActivityKeys.Create]: <PlusIcon />,
+  [ActivityKeys.Listings]: <ListedIcon />,
+  [ActivityKeys.Bids]: <BidIcon />,
+  [ActivityKeys.Purchases]: <PurchaseIcon />,
+  [ActivityKeys.Sales]: <SaleIcon />,
+  [ActivityKeys.Transfers]: <TransferIcon />,
+};
+const EventIcon: React.FC<{ tabKey: ActivityKeys; label: string }> = ({
+  tabKey,
+  label,
+}) => {
+  const styles = useTabActivityStyles();
+  return (
+    <div className={styles.eventIcon}>
+      <div>{EventIconMaps[tabKey] || ''}</div>
+      <span>{label === 'Listings' ? 'Listing' : label}</span>
+    </div>
+  );
+};
+
+const formatDate = (ctime: number) => {
+  if (getTime(subDays(Date.now(), 1)) < ctime)
+    return `${formatDistanceToNowStrict(ctime, {
+      locale: dateLocale[t('profile.date.language')],
+    })}${t('profile.date.ago')}`;
+  return format(ctime, 'MM.dd.yyyy, HH:mm');
+};
 
 export const ActivitiesTableRow = ({
   item,
-  classes,
+  symbol,
+  tabKey,
 }: IActivitiesTableProps) => {
-  const { chainId } = useAccount();
   const renderItemPreview = useCallback(
-    (category: string, fileUrl: string) => {
+    (category: NFTType) => {
       return category === 'video' ? (
-        <VideoPlayer
-          className={classes.itemPreview}
-          src={fileUrl}
-          width={100}
-          height={100}
-          controls={false}
-          autoPlay={false}
-          objectFit="cover"
-        />
+        <ItemVideo url={item.fileUrl} label={item.itemName} />
       ) : (
-        <Img className={classes.itemPreview} src={fileUrl} ratio="1x1" />
+        <ItemIcon url={item.fileUrl} label={item.itemName} />
       );
     },
-    [classes],
+    [item.fileUrl, item.itemName],
   );
-
-  // TODO: task FAN-84
-  // const renderProfileInfo = useCallback(
-  //   (img: string, name: string) => {
-  //     return (
-  //       <Box display="flex" alignItems="center">
-  //         <Avatar className={classes.avatar} src={img} />
-  //         <div className={classes.name}>{name}</div>
-  //       </Box>
-  //     );
-  //   },
-  //   [classes],
-  // );
 
   return (
     <TableRow>
       <TableCell>
-        <Box display="flex" alignItems="center">
-          {item.event === 'FixedSwapSwapped' && (
-            <>
-              <TransferIcon className={classes.eventIcon} />
-              {t('profile.activity.transfer')}
-            </>
-          )}
-          {(item.event === 'FixedSwapCreated' ||
-            item.event === 'EnglishCreated') && (
-            <>
-              <PlusIcon
-                className={classNames(classes.eventIcon, classes.eventIconPlus)}
-              />
-              {t('profile.activity.created')}
-            </>
-          )}
-          {item.event === 'FixedSwapCanceled' && (
-            <>
-              <CloseIcon className={classes.eventIcon} />
-              {t('profile.activity.canceled')}
-            </>
-          )}
-          {item.event === 'EnglishClaimed' && (
-            <>
-              <DoneIcon className={classes.eventIcon} />
-              {t('profile.activity.claimed')}
-            </>
-          )}
-        </Box>
+        <EventIcon tabKey={tabKey} label={item.event} />
       </TableCell>
-
+      {/* <TableCell>
+        <ItemIcon url={item.fileUrl} label={item.itemName} />
+      </TableCell> */}
+      <TableCell>{renderItemPreview(item.category)}</TableCell>
       <TableCell>
-        <Box display="flex" alignItems="center">
-          {renderItemPreview(item.category, item.fileUrl)}
-          <div className={classes.itemTitle} title={item.itemName}>
-            {item.itemName}
-          </div>
-        </Box>
+        {item.amount.toString()}&nbsp;{symbol}
       </TableCell>
-
-      <TableCell>
-        {item.price.toFormat()} {getTokenSymbol(chainId)}
-        {/*{item.currency} TODO: need provide currency from contract, task FAN-85 */}
-      </TableCell>
-
       <TableCell>{item.quantity}</TableCell>
-
-      <TableCell>{truncateWalletAddr(item.from)}</TableCell>
-
-      <TableCell>{truncateWalletAddr(item.to)}</TableCell>
-
       <TableCell>
-        {formatDistance(item.timestamp, new Date(), {
-          addSuffix: true,
-        })}
+        {tabKey === ActivityKeys.Sales
+          ? item.to && (
+              // <Link
+              //   target="_blank"
+              //   to={ProfileRoutesConfig.OtherProfile.generatePath(item.to)}
+              // >
+              <UserIcon url={item.toUrl} name={item.toName} address={item.to} />
+              // </Link>
+            )
+          : item.from && (
+              // <Link
+              //   target="_blank"
+              //   to={ProfileRoutesConfig.OtherProfile.generatePath(item.from)}
+              // >
+              <UserIcon
+                url={item.fromUrl}
+                name={item.fromName}
+                address={item.from}
+              />
+              // </Link>
+            )}
       </TableCell>
+      <TableCell>{formatDate(item.ctime)}</TableCell>
     </TableRow>
   );
 };

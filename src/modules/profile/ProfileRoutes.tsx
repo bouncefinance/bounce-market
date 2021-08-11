@@ -6,16 +6,19 @@ import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoa
 import { PrivateRoute } from '../router/components/PrivateRoute';
 
 export const PATH_PROFILE_BASE = '/profile';
-export const PATH_USER_PROFILE = `${PATH_PROFILE_BASE}?tab=:tab?`;
+export const PATH_USER_PROFILE = `${PATH_PROFILE_BASE}?id=:id?&brand=:brand?&tab=:tab?`;
 export const PATH_OTHER_PROFILE = `${PATH_PROFILE_BASE}/address/:address`;
-export const PATH_OTHER_PROFILE_TABS = `${PATH_OTHER_PROFILE}??tab=:tab?`;
+export const PATH_OTHER_PROFILE_TABS = `${PATH_OTHER_PROFILE}??id=:id?&tab=:tab?`;
 export const PATH_EDIT_PROFILE = `${PATH_PROFILE_BASE}/edit`;
+
+export const USER_CREATE_NFT_PROFILE = 'createNft';
+export type USER_CREATE_NFT_PROFILE_TYPE = 'createNft';
 
 export enum ProfileTab {
   items = 'items',
   owned = 'owned',
   bids = 'bids',
-  sells = 'On sale',
+  sells = 'sale',
   brands = 'brands',
   activity = 'activity',
   liked = 'liked',
@@ -23,22 +26,35 @@ export enum ProfileTab {
   followers = 'followers',
 }
 
-const defaultProfileTab = ProfileTab.items;
+export const defaultProfileTab = ProfileTab.sells;
+export const defaultOtherProfileTab = ProfileTab.sells;
 
 export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
   OtherProfile: {
     path: PATH_OTHER_PROFILE,
-    generatePath: (address: string, tab?: ProfileTab) =>
+    generatePath: (address: string, tab?: ProfileTab, id?: string) =>
       generatePath(PATH_OTHER_PROFILE_TABS, {
         address,
-        tab: tab ?? defaultProfileTab,
+        tab: tab ?? defaultOtherProfileTab,
+        id,
       }),
     useParams: () => {
       const query = useQueryParams();
       const { address } = useParams<{
         address: string;
       }>();
-
+      const replace = (value: string) =>
+        value === ProfileTab.items ? defaultOtherProfileTab : value;
+      const tab = replace(query.get('tab') ?? '') || defaultOtherProfileTab;
+      const id = query.get('id');
+      if (tab === USER_CREATE_NFT_PROFILE) {
+        return {
+          address,
+          isCreateNft: true,
+          tab: ProfileTab.brands,
+          id,
+        };
+      }
       return {
         address,
         tab: query.get('tab') ?? defaultProfileTab,
@@ -48,13 +64,31 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
 
   UserProfile: {
     path: PATH_PROFILE_BASE,
-    generatePath: (tab?: ProfileTab) =>
-      generatePath(PATH_USER_PROFILE, { tab: tab ?? defaultProfileTab }),
+    generatePath: (tab?: ProfileTab, id?: string, brand?: string) =>
+      generatePath(PATH_USER_PROFILE, {
+        tab: tab ?? defaultProfileTab,
+        id,
+        brand,
+      }),
     useParams: () => {
       const query = useQueryParams();
 
+      const replace = (value: string) =>
+        value === ProfileTab.items ? defaultProfileTab : value;
+      const tab = replace(query.get('tab') ?? '') || defaultProfileTab;
+      const id = query.get('id');
+      const brand = query.get('brand');
+      if (tab === USER_CREATE_NFT_PROFILE) {
+        return {
+          tab: ProfileTab.brands,
+          isCreateNft: true,
+          id,
+          brand,
+        };
+      }
       return {
-        tab: query.get('tab') ?? defaultProfileTab,
+        tab,
+        brand,
       };
     },
   },

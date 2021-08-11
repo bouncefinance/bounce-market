@@ -49,6 +49,10 @@ export const BrandCard = ({
             variant="body2"
             className={classes.subTitle}
           >
+            {/* {t('collection.card.itemsCount', {
+              value: itemsCount,
+            })}{' '}
+            ·{' '} */}
             {nftType === NftType.ERC1155
               ? 'ERC-1155'
               : nftType === NftType.ERC721
@@ -58,7 +62,7 @@ export const BrandCard = ({
         </CardContent>
       </Link>
 
-      {withAddBtn && (
+      {withAddBtn && addItemHref && (
         <Button
           className={classNames(classes.addNewBtn, classes.addNewBtnInCard)}
           variant="outlined"

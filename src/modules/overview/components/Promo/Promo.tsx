@@ -5,6 +5,7 @@ import { QueryError } from 'modules/common/components/QueryError/QueryError';
 import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/QueryLoading';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import React, { useState } from 'react';
+import { useMemo } from 'react';
 import { uid } from 'react-uid';
 import SwiperCore, {
   Autoplay,
@@ -76,71 +77,77 @@ export const Promo = ({
     onSwiper: setSwiperThumbs,
   };
 
-  const renderedItems = items.map(cardProps => {
+  const renderedItems = useMemo(() => {
+    return items.map((cardProps, index) => {
+      return (
+        <SwiperSlide key={index} className={classes.slide}>
+          <PromoCard
+            {...cardProps}
+            MediaProps={{
+              category: cardProps.category,
+              src: cardProps.img,
+              imgClassName: 'swiper-lazy',
+              isNativeLazyLoading: false,
+              objectFit: 'scale-down',
+            }}
+          />
+        </SwiperSlide>
+      );
+    });
+  }, [items, classes.slide]);
+
+  const renderedThumbs = useMemo(() => {
+    return items.map(({ thumbImg, title, category, ...props }) => {
+      return (
+        <SwiperSlide key={uid(props)} className={classes.thumbsSlide}>
+          <PromoThumb
+            img={thumbImg}
+            title={title}
+            className={classes.thumb}
+            MediaProps={{
+              category: category,
+              src: thumbImg,
+              imgClassName: 'swiper-lazy',
+              isNativeLazyLoading: false,
+              objectFit: 'scale-down',
+            }}
+          />
+        </SwiperSlide>
+      );
+    });
+  }, [items, classes.thumb, classes.thumbsSlide]);
+  return useMemo(() => {
     return (
-      <SwiperSlide key={uid(cardProps.title)} className={classes.slide}>
-        <PromoCard
-          {...cardProps}
-          MediaProps={{
-            category: cardProps.category,
-            src: cardProps.img,
-            imgClassName: 'swiper-lazy',
-            isNativeLazyLoading: false,
-            objectFit: 'scale-down',
-          }}
-        />
-      </SwiperSlide>
-    );
-  });
+      <Section
+        {...sectionProps}
+        pt={{ md: 11 }}
+        className={classNames(classes.root, className)}
+      >
+        <Container className={classes.container}>
+          {isLoading && <QueryLoadingCentered />}
 
-  const renderedThumbs = items.map(({ thumbImg, title, category }) => {
-    return (
-      <SwiperSlide key={uid(title)} className={classes.thumbsSlide}>
-        <PromoThumb
-          img={thumbImg}
-          title={title}
-          className={classes.thumb}
-          MediaProps={{
-            category: category,
-            src: thumbImg,
-            imgClassName: 'swiper-lazy',
-            isNativeLazyLoading: false,
-            objectFit: 'scale-down',
-          }}
-        />
-      </SwiperSlide>
-    );
-  });
+          {!isLoading && error && <QueryError error={error} />}
 
-  return (
-    <Section
-      {...sectionProps}
-      pt={{ md: 11 }}
-      className={classNames(classes.root, className)}
-    >
-      <Container className={classes.container}>
-        {isLoading && <QueryLoadingCentered />}
+          {!isLoading && items.length && (
+            <Grid container alignItems="center">
+              <Grid item xs={12} lg={9}>
+                <Swiper {...sliderParams} className={classes.slider}>
+                  {renderedItems}
+                </Swiper>
 
-        {!isLoading && error && <QueryError error={error} />}
+                <div className={classes.pagination} id={paginationId} />
+              </Grid>
 
-        {!isLoading && items.length && (
-          <Grid container alignItems="center">
-            <Grid item xs={12} lg={9}>
-              <Swiper {...sliderParams} className={classes.slider}>
-                {renderedItems}
-              </Swiper>
-
-              <div className={classes.pagination} id={paginationId} />
+              <Grid item lg={3} className={classes.thumbsCol}>
+                <Swiper {...thumbsParams} className={classes.thumbs}>
+                  {renderedThumbs}
+                </Swiper>
+              </Grid>
             </Grid>
-
-            <Grid item lg={3} className={classes.thumbsCol}>
-              <Swiper {...thumbsParams} className={classes.thumbs}>
-                {renderedThumbs}
-              </Swiper>
-            </Grid>
-          </Grid>
-        )}
-      </Container>
-    </Section>
-  );
+          )}
+        </Container>
+      </Section>
+    );
+    // eslint-disable-next-line
+  }, [renderedThumbs]);
 };

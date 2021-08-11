@@ -23,7 +23,9 @@ import {
 export const getFixedSwapContract = (chainID: number, isTime = false) => {
   switch (chainID) {
     case 1:
-      return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_ETH_MAINNET;
+      return isTime
+        ? process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_ETH_MAINNET_TIME
+        : process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_ETH_MAINNET;
     case 4:
       return isTime
         ? process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_RINKEBY_TIME
@@ -144,6 +146,13 @@ export const publishNft = createSmartAction<
               ),
             );
 
+            const cutName = (name: string) => {
+              if (name.length < 30) {
+                return name;
+              }
+              return name.slice(0, 27) + '...';
+            };
+
             // TODO isOwner
 
             const equalAddress = (add1: string, add2: string) => {
@@ -210,7 +219,7 @@ export const publishNft = createSmartAction<
                     .createErc721(
                       ...(isOpenSaleTime
                         ? [
-                            name,
+                            cutName(name),
                             tokenContract,
                             unitContract,
                             tokenId,
@@ -219,7 +228,7 @@ export const publishNft = createSmartAction<
                             onlyBOT,
                           ]
                         : [
-                            name,
+                            cutName(name),
                             tokenContract,
                             unitContract,
                             tokenId,
@@ -253,7 +262,7 @@ export const publishNft = createSmartAction<
                     .createErc1155(
                       ...(isOpenSaleTime
                         ? [
-                            name,
+                            cutName(name),
                             tokenContract,
                             unitContract,
                             tokenId,
@@ -266,7 +275,7 @@ export const publishNft = createSmartAction<
                             onlyBOT,
                           ]
                         : [
-                            name,
+                            cutName(name),
                             tokenContract,
                             unitContract,
                             tokenId,
@@ -331,7 +340,7 @@ export const publishNft = createSmartAction<
                     .createErc721(
                       ...(isOpenSaleTime
                         ? [
-                            name,
+                            cutName(name),
                             tokenContract,
                             unitContract,
                             tokenId,
@@ -344,7 +353,7 @@ export const publishNft = createSmartAction<
                             onlyBOT,
                           ]
                         : [
-                            name,
+                            cutName(name),
                             tokenContract,
                             unitContract,
                             tokenId,
@@ -385,7 +394,7 @@ export const publishNft = createSmartAction<
                     .createErc1155(
                       ...(isOpenSaleTime
                         ? [
-                            name,
+                            cutName(name),
                             tokenContract,
                             unitContract,
                             tokenId,
@@ -399,7 +408,7 @@ export const publishNft = createSmartAction<
                             onlyBOT,
                           ]
                         : [
-                            name,
+                            cutName(name),
                             tokenContract,
                             unitContract,
                             tokenId,

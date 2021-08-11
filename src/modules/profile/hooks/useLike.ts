@@ -4,8 +4,12 @@ import {
   useQuery,
 } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { AuctionType } from 'modules/api/common/auctionType';
 import { PoolType } from 'modules/api/common/poolType';
-import { useCallback, useState } from 'react';
+import { getPoolKey } from 'modules/common/utils/poolHelps';
+import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 import { dealAccountLike } from '../actions/dealAccountLike';
 import { ILikedItem, queryLikedItems } from '../actions/queryLikedItems';
 
@@ -27,25 +31,50 @@ interface IUseLikeProps {
   id: number;
   category: string;
   poolType?: PoolType;
+  auctionType?: AuctionType;
   poolId: number;
   count?: number;
+  isLike?: boolean;
+  isItemType?: boolean;
+  contractAddress?: string;
 }
 
 export const useLike = ({
   id,
   poolType,
+  auctionType,
   category,
   poolId,
   /**
    * likes count required for urgent counter update
    */
   count,
+  isLike,
+  isItemType = false,
+  contractAddress = '',
 }: IUseLikeProps) => {
   const { isConnected } = useAccount();
   const dispatch = useDispatchRequest();
   const requestKey = `/${id}`;
-  const { isLiked } = useIsLiked(id, poolId);
+
+  const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(count);
+  const { count: storeCount, listMap: likesMap } = useSelector<
+    RootState,
+    RootState['like']
+  >(state => state.like);
+
+  useEffect(() => {
+    const _isLike = likesMap?.get(
+      poolType
+        ? getPoolKey({
+            poolId,
+            poolType: (auctionType as unknown) as string,
+          })
+        : id.toString(),
+    );
+    setIsLiked(Boolean(_isLike));
+  }, [id, auctionType, poolId, storeCount, likesMap, poolType]);
 
   const { loading } = useMutation({
     type: dealAccountLike.toString(),
@@ -54,7 +83,7 @@ export const useLike = ({
 
   const isLikeDisabled = loading || !isConnected;
 
-  const onLikeClick = useCallback(() => {
+  const onLikeClick = useCallback(async () => {
     if (isLikeDisabled) {
       return;
     }
@@ -66,7 +95,7 @@ export const useLike = ({
       return isLiked ? val - 1 : val + 1;
     });
 
-    dispatch(
+    const { data: likeData } = await dispatch(
       dealAccountLike({
         requestKey,
         poolType,
@@ -74,8 +103,14 @@ export const useLike = ({
         poolId,
         isLiked: !isLiked,
         itemId: id,
+        isItemType,
+        contractAddress,
       }),
     );
+    dispatch(queryLikedItems());
+    if (likeData?.code === 1) {
+      setIsLiked(!isLiked);
+    }
   }, [
     poolType,
     category,
@@ -85,6 +120,8 @@ export const useLike = ({
     isLiked,
     poolId,
     requestKey,
+    isItemType,
+    contractAddress,
   ]);
 
   return {

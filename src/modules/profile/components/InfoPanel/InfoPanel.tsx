@@ -10,6 +10,7 @@ import { CopyToClip } from 'modules/common/components/CopyToClip';
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { SocialShare } from 'modules/common/components/SocialShare';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
@@ -25,6 +26,7 @@ interface IInfoPanelProps extends BoxProps {
   isBrand?: boolean;
   withSharing?: boolean;
   isEditable?: boolean;
+  follow?: ReactNode;
 }
 
 export const InfoPanel = ({
@@ -36,6 +38,7 @@ export const InfoPanel = ({
   isBrand,
   withSharing,
   isEditable,
+  follow,
   ...boxProps
 }: IInfoPanelProps) => {
   const classes = useInfoPanelStyles();
@@ -47,10 +50,24 @@ export const InfoPanel = ({
 
   return (
     <Box mb={8} {...boxProps}>
+      <Grid
+        container
+        spacing={3}
+        alignItems="center"
+        className={classes.socialContainer}
+      >
+        {social && (
+          <Grid className={classes.socialBox} item>
+            {social}
+          </Grid>
+        )}
+      </Grid>
+
       <Grid container spacing={3} alignItems="center">
         <Grid item xs={12} sm="auto">
-          <Typography variant="h2">{name}</Typography>
-
+          <Tooltip title={name} arrow placement="top">
+            <Typography variant="h2">{truncateWalletAddr(name)}</Typography>
+          </Tooltip>
           {email && <Typography className={classes.url}>{email}</Typography>}
         </Grid>
 
@@ -99,8 +116,7 @@ export const InfoPanel = ({
         <Grid item xs={12} lg="auto" className={classes.linksCol}>
           <Grid container spacing={2} alignItems="center">
             <Grid item>{subscribers}</Grid>
-
-            {social && <Grid item>{social}</Grid>}
+            {<Grid item>{follow}</Grid>}
           </Grid>
         </Grid>
       </Grid>

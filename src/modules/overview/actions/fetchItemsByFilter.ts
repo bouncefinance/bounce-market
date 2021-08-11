@@ -8,6 +8,10 @@ export enum ItemsChannel {
   fineArts = 'FineArts',
   sports = 'Sports',
   comics = 'Comics',
+  collectible = 'Collectible',
+  music = 'Music',
+  performer = 'Performer',
+  metaverse = 'Metaverse',
 }
 
 export enum NFTCategoryType {
@@ -34,6 +38,8 @@ export interface IItemByFilter {
   standard: number;
   supply: number;
   tokenSymbol: TokenSymbol;
+  mylikecount?: number;
+  identity: number;
 }
 
 interface IApiFetchItemsByFilter {

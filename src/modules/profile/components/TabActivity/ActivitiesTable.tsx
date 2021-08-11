@@ -9,32 +9,45 @@ import {
 } from '@material-ui/core';
 import { t } from '../../../i18n/utils/intl';
 import { ActivitiesTableRow } from './ActivitiesTableRow';
-import { uid } from 'react-uid';
-import { IActivityTableItem } from '../../api/getActivity';
+import { IActivityItem, ActivityKeys } from '../../api/getActivity';
 
 interface IActivitiesTableProps {
-  data: IActivityTableItem[];
-  classes: any;
+  data: IActivityItem[];
+  tabKey: ActivityKeys;
+  symbol: string;
 }
 
-export const ActivitiesTable = ({ data, classes }: IActivitiesTableProps) => {
+export const ActivitiesTable = ({
+  data,
+  symbol,
+  tabKey,
+}: IActivitiesTableProps) => {
   return (
     <TableContainer>
-      <Table className={classes.table}>
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell>{t('profile.activity.event')}</TableCell>
             <TableCell>{t('profile.activity.item')}</TableCell>
             <TableCell>{t('profile.activity.price')}</TableCell>
             <TableCell>{t('common.quantity')}</TableCell>
-            <TableCell>{t('profile.activity.from')}</TableCell>
-            <TableCell>{t('profile.activity.to')}</TableCell>
+            <TableCell>
+              {tabKey === ActivityKeys.Sales
+                ? t('profile.activity.to')
+                : t('profile.activity.from')}
+            </TableCell>
+
             <TableCell>{t('profile.activity.date')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(item => (
-            <ActivitiesTableRow item={item} classes={classes} key={uid(item)} />
+          {data?.map(item => (
+            <ActivitiesTableRow
+              symbol={symbol}
+              tabKey={tabKey}
+              item={item}
+              key={item.ctime.toString()}
+            />
           ))}
         </TableBody>
       </Table>

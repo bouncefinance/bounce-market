@@ -42,6 +42,9 @@ const FILE_ACCEPTS: string[] = [
   'video/mp4',
 ];
 
+const DESCRIPTION_CHARACTER_LIMIT = 200;
+const NAME_CHARACTER_LIMIT = 30;
+
 interface ICreateNFTFormData extends Omit<ICreateNFTPayload, 'supply'> {
   supply: string;
 }
@@ -155,6 +158,22 @@ export const CreateNFT = () => {
         label: t(`create-nft.channelOption.${Channel.Comics}`),
         value: Channel.Comics,
       },
+      {
+        label: t(`create-nft.channelOption.${Channel.Collectible}`),
+        value: Channel.Collectible,
+      },
+      {
+        label: t(`create-nft.channelOption.${Channel.Music}`),
+        value: Channel.Music,
+      },
+      {
+        label: t(`create-nft.channelOption.${Channel.Performer}`),
+        value: Channel.Performer,
+      },
+      {
+        label: t(`create-nft.channelOption.${Channel.Metaverse}`),
+        value: Channel.Metaverse,
+      },
     ],
     [],
   );
@@ -216,6 +235,10 @@ export const CreateNFT = () => {
               label={t('create-nft.label.name')}
               color="primary"
               fullWidth={true}
+              showLimitCounter={true}
+              inputProps={{
+                maxLength: NAME_CHARACTER_LIMIT,
+              }}
             />
           </Box>
           <Box mb={5}>
@@ -237,6 +260,10 @@ export const CreateNFT = () => {
               fullWidth={true}
               rowsMax={10}
               multiline
+              showLimitCounter={true}
+              inputProps={{
+                maxLength: DESCRIPTION_CHARACTER_LIMIT,
+              }}
             />
           </Box>
           <Box mb={5}>
@@ -262,17 +289,6 @@ export const CreateNFT = () => {
               multiline
             />
           </Box>
-          {/* <Box mb={5}>
-            <Field
-              component={SelectField}
-              name="standard"
-              type="text"
-              label={t('create-nft.label.standard')}
-              color="primary"
-              fullWidth={true}
-              options={standardOptions}
-            />
-          </Box> */}
           {selectCollection?.nftType === NftType.ERC1155 && (
             <Box mb={5}>
               <Field

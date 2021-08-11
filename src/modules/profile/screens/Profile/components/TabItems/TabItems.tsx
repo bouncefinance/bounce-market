@@ -17,7 +17,7 @@ import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
-import React from 'react';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { AuctionState } from '../../../../../api/common/AuctionState';
 import { FixedSwapState } from '../../../../../api/common/FixedSwapState';
@@ -81,6 +81,9 @@ export const TabItems = () => {
                     {
                       name: username,
                       avatar: profileInfo?.imgUrl,
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        item.contractAddress,
+                      ),
                       verified: profileInfo?.identity === UserRoleEnum.Verified,
                     },
                   ]}
@@ -99,6 +102,8 @@ export const TabItems = () => {
               }
               isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
               openAt={item.openAt}
+              contractAddress={item.contractAddress}
+              standard={item.standard}
             />
           ) : (
             <ProductCardSkeleton key={uid(allNftByUserQuery.data?.length)} />

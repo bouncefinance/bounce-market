@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 import {
   Mutation,
   useDispatchRequest,
@@ -6,6 +6,7 @@ import {
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { PoolType, poolTypeMap } from 'modules/api/common/poolType';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -13,6 +14,7 @@ import { InfoPrices } from 'modules/buyNFT/components/InfoPrices';
 import { InfoTabs } from 'modules/buyNFT/components/InfoTabs';
 import { InfoTabsItem } from 'modules/buyNFT/components/InfoTabsItem';
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
+import { NftLikeBtn } from 'modules/buyNFT/components/LikeBtn';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
 import { EmptyPageData } from 'modules/common/components/EmptyPageData';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
@@ -86,6 +88,7 @@ export const BuyNFT = () => {
     open: openEnglishBuyDialog,
     close: closeEnglishBuyDialog,
   } = useDialog();
+  const { address } = useAccount();
   const { push } = useHistory();
 
   const init = useCallback(() => {
@@ -103,12 +106,12 @@ export const BuyNFT = () => {
         dispatch(fetchCurrency({ unitContract: data.unitContract }));
       })
       .then(() => {
-        dispatch(fetchRoleInfo({ poolId, poolType }));
+        dispatch(fetchRoleInfo({ poolId, poolType, address }));
         dispatch(fetchPoolHistory({ poolId, poolType }));
         dispatch(fetchPoolBids({ poolId, poolType }));
         dispatch(fetchPoolNftOwner({ poolId, poolType }));
       });
-  }, [dispatch, poolType, poolId]);
+  }, [dispatch, poolType, poolId, address]);
 
   useEffect(() => {
     init();
@@ -180,12 +183,12 @@ export const BuyNFT = () => {
   }, [dispatch, poolId, push, isOpenSaleTime]);
 
   const handleFixedSwapCancel = useCallback(() => {
-    dispatch(fixedSwapCancel({ poolId })).then(({ error }) => {
+    dispatch(fixedSwapCancel({ poolId, poolType })).then(({ error }) => {
       if (!error) {
         init();
       }
     });
-  }, [dispatch, init, poolId]);
+  }, [dispatch, init, poolId, poolType]);
 
   const handleBuyFixed = useCallback(
     (values: {
@@ -281,360 +284,379 @@ export const BuyNFT = () => {
       requestActions={[fetchItem, fetchWeb3PoolDetails, fetchRoleInfo]}
       noDataMessage={<BuyNFTSkeleton />}
     >
-      {({ data: item }, { data: poolDetails }, { data: roleInfos }) => (
-        <Queries<
-          ResponseData<typeof fetchCurrency>,
-          ResponseData<typeof fetchPoolHistory>,
-          ResponseData<typeof fetchPoolBids>,
-          ResponseData<typeof fetchPoolNftOwner>
-        >
-          requestActions={[
-            fetchCurrency,
-            fetchPoolHistory,
-            fetchPoolBids,
-            fetchPoolNftOwner,
-          ]}
-          requestKeys={[poolDetails.unitContract]}
-          noDataMessage={<BuyNFTSkeleton />}
-        >
-          {(
-            { data: currency },
-            { data: poolHistory },
-            { data: poolBids },
-            { data: poolNftOwner },
-          ) => {
-            const ownerTitle =
-              roleInfos.creator.username ||
-              truncateWalletAddr(item.ownerAddress);
+      {({ data: item }, { data: poolDetails }, { data: roleInfos }) => {
+        return (
+          <Queries<
+            ResponseData<typeof fetchCurrency>,
+            ResponseData<typeof fetchPoolHistory>,
+            ResponseData<typeof fetchPoolBids>,
+            ResponseData<typeof fetchPoolNftOwner>
+          >
+            requestActions={[
+              fetchCurrency,
+              fetchPoolHistory,
+              fetchPoolBids,
+              fetchPoolNftOwner,
+            ]}
+            requestKeys={[poolDetails.unitContract]}
+            noDataMessage={<BuyNFTSkeleton />}
+          >
+            {(
+              { data: currency },
+              { data: poolHistory },
+              { data: poolBids },
+              { data: poolNftOwner },
+            ) => {
+              const ownerTitle =
+                roleInfos.creator.username ||
+                truncateWalletAddr(item.ownerAddress);
 
-            const renderedCreator = (
-              <ProfileInfo
-                subTitle={t('details-nft.role.minter')}
-                title={wrapperTitle(
-                  roleInfos.minter.username,
-                  roleInfos.minter.address,
-                )}
-                users={[
-                  {
-                    name: wrapperTitle(
-                      roleInfos.minter.username,
-                      roleInfos.minter.address,
-                    ),
-                    href: ProfileRoutesConfig.OtherProfile.generatePath(
-                      roleInfos.minter.address,
-                    ),
-                    avatar: roleInfos.minter.avatar,
-                    verified: false,
-                  },
-                ]}
-              />
-            );
-
-            const renderedOwner = (
-              <ProfileInfo
-                subTitle={t('details-nft.role.seller')}
-                title={wrapperTitle(
-                  roleInfos.creator.username,
-                  roleInfos.creator.address,
-                )}
-                users={[
-                  {
-                    name: wrapperTitle(
-                      roleInfos.creator.username,
-                      roleInfos.creator.address,
-                    ),
-                    href: ProfileRoutesConfig.OtherProfile.generatePath(
-                      roleInfos.creator.address,
-                    ),
-                    avatar: roleInfos.creator.avatar,
-                  },
-                ]}
-              />
-            );
-
-            const renderedHistoryList = (
-              <InfoTabsList>
-                {poolHistory.map(item => {
-                  return (
-                    <InfoTabsItem
-                      key={item.time.getTime()}
-                      title={getHistoryTitle(item)}
-                      author={getSenderName(item.sender)}
-                      date={item.time}
-                    />
-                  );
-                })}
-              </InfoTabsList>
-            );
-
-            const renderedBidsList = (
-              <InfoTabsList>
-                {poolBids.map(item => {
-                  return (
-                    <InfoTabsItem
-                      key={item.time.getTime()}
-                      title={t('details-nft.bid.bid-placed')}
-                      author={getSenderName(item.sender)}
-                      date={item.time}
-                      price={item.price.multipliedBy(currency.priceUsd)}
-                      cryptoCurrency={getTokenSymbol(chainId) as string}
-                      cryptoPrice={item.price}
-                      href={`${blockChainScan}tx/${item.txId}`}
-                    />
-                  );
-                })}
-              </InfoTabsList>
-            );
-
-            const renderedOnwersList = (
-              <InfoTabsList>
-                {poolNftOwner.map(item => {
-                  return (
-                    <ProfileInfo
-                      key={item.owner.address}
-                      isTitleFirst
-                      avatarSize="big"
-                      title={getSenderName(item.owner)}
-                      subTitle={t('details-nft.owner.balance', {
-                        balance: item.balance,
-                      })}
-                      users={[
-                        {
-                          name: getSenderName(item.owner),
-                          href: ProfileRoutesConfig.OtherProfile.generatePath(
-                            item.owner.address,
-                          ),
-                          avatar: item.owner.avatar,
-                        },
-                      ]}
-                    />
-                  );
-                })}
-              </InfoTabsList>
-            );
-
-            const renderedTokenInfoList = (
-              <InfoTabsList>
-                <ScanBtn contractAddress={item.contractAddress} />
-
-                <TokenInfo
-                  name={item.itemName}
-                  itemSymbol={item.itemSymbol}
-                  standard={item.standard}
-                  contractAddress={item.contractAddress}
-                  supply={item.supply}
-                  tokenId={item.id}
+              const renderedCreator = (
+                <ProfileInfo
+                  subTitle={t('details-nft.role.minter')}
+                  title={wrapperTitle(
+                    roleInfos.minter.username,
+                    roleInfos.minter.address,
+                  )}
+                  users={[
+                    {
+                      name: wrapperTitle(
+                        roleInfos.minter.username,
+                        roleInfos.minter.address,
+                      ),
+                      href: ProfileRoutesConfig.OtherProfile.generatePath(
+                        roleInfos.minter.address,
+                      ),
+                      avatar: roleInfos.minter.avatar,
+                      verified: roleInfos.minter.isVerify,
+                    },
+                  ]}
                 />
-              </InfoTabsList>
-            );
+              );
 
-            const renderedComingSoon = (
-              <Box mt={2}>{t('common.coming-soon')}</Box>
-            );
+              const renderedCollection = () => {
+                return roleInfos?.collection.name ? (
+                  <ProfileInfo
+                    subTitle={t('details-nft.role.collection')}
+                    title={wrapperTitle(
+                      roleInfos?.collection.name || '',
+                      roleInfos.collection.address,
+                    )}
+                    users={[
+                      {
+                        name: wrapperTitle(
+                          roleInfos?.collection.name || '',
+                          roleInfos.collection.address,
+                        ),
+                        avatar: roleInfos.collection.avatar,
+                      },
+                    ]}
+                  />
+                ) : (
+                  <></>
+                );
+              };
 
-            const saleTime = isOpenSaleTime && +poolDetails.openAt >= now;
-            const onChangeTime = () => {
-              setNow(Date.now());
-            };
-            return (
-              <div className={classes.root}>
-                <MediaContainer
-                  className={classes.imgContainer}
-                  src={item.fileUrl}
-                  title={item.itemName}
-                  description={item.description}
-                  category={item.category}
-                  isOpenSaleTime={saleTime}
-                  openAt={poolDetails.openAt}
-                  onchange={onChangeTime}
-                />
+              const renderedHistoryList = (
+                <InfoTabsList>
+                  {poolHistory?.map(item => {
+                    return (
+                      <InfoTabsItem
+                        key={item.time.getTime()}
+                        title={getHistoryTitle(item)}
+                        author={getSenderName(item.sender)}
+                        date={item.time}
+                      />
+                    );
+                  })}
+                </InfoTabsList>
+              );
 
-                <Info className={classes.info}>
-                  <InfoDescr
+              const renderedBidsList = (
+                <InfoTabsList>
+                  {poolBids?.map(item => {
+                    return (
+                      <InfoTabsItem
+                        key={item.time.getTime()}
+                        title={t('details-nft.bid.bid-placed')}
+                        author={getSenderName(item.sender)}
+                        date={item.time}
+                        price={item.price.multipliedBy(currency.priceUsd)}
+                        cryptoCurrency={getTokenSymbol(chainId) as string}
+                        cryptoPrice={item.price}
+                        href={`${blockChainScan}tx/${item.txId}`}
+                      />
+                    );
+                  })}
+                </InfoTabsList>
+              );
+
+              const renderedOnwersList = (
+                <InfoTabsList>
+                  {poolNftOwner?.map(item => {
+                    return (
+                      <ProfileInfo
+                        key={item.owner.address}
+                        isTitleFirst
+                        avatarSize="big"
+                        title={getSenderName(item.owner)}
+                        subTitle={t('details-nft.owner.balance', {
+                          balance: item.balance,
+                        })}
+                        users={[
+                          {
+                            name: getSenderName(item.owner),
+                            href: ProfileRoutesConfig.OtherProfile.generatePath(
+                              item.owner.address,
+                            ),
+                            avatar: item.owner.avatar,
+                          },
+                        ]}
+                      />
+                    );
+                  })}
+                </InfoTabsList>
+              );
+
+              const renderedTokenInfoList = (
+                <InfoTabsList>
+                  <ScanBtn contractAddress={item.contractAddress} />
+
+                  <TokenInfo
+                    name={item.itemName}
+                    itemSymbol={item.itemSymbol}
+                    standard={item.standard}
+                    contractAddress={item.contractAddress}
+                    supply={item.supply}
+                    tokenId={item.id}
+                  />
+                </InfoTabsList>
+              );
+
+              const renderedComingSoon = (
+                <Box mt={2}>{t('common.coming-soon')}</Box>
+              );
+
+              const saleTime = isOpenSaleTime && +poolDetails.openAt >= now;
+              const onChangeTime = () => {
+                setNow(Date.now());
+              };
+              return (
+                <div className={classes.root}>
+                  <MediaContainer
+                    className={classes.imgContainer}
+                    src={item.fileUrl}
                     title={item.itemName}
                     description={item.description}
-                    copiesCurrent={
-                      isEnglishAuction(poolDetails)
-                        ? undefined
-                        : poolDetails.quantity
-                    }
-                    copiesTotal={
-                      isEnglishAuction(poolDetails)
-                        ? poolDetails.tokenAmount0
-                        : poolDetails.totalQuantity
-                    }
-                    creator={renderedCreator}
-                    owner={renderedOwner}
+                    category={item.category}
+                    isOpenSaleTime={saleTime}
+                    openAt={poolDetails.openAt}
+                    onchange={onChangeTime}
                   />
-                  {isEnglishAuction(poolDetails) ? (
-                    <InfoPrices
-                      endDate={poolDetails.closeAt}
-                      hasSetDirectPrice={poolDetails.amountMax1.isGreaterThan(
-                        0,
-                      )}
-                      price={poolDetails.lastestBidAmount.multipliedBy(
-                        currency.priceUsd,
-                      )}
-                      cryptoPrice={
-                        poolDetails.lastestBidAmount.isEqualTo(0)
-                          ? poolDetails.amountMin1
-                          : poolDetails.lastestBidAmount
+
+                  <Info className={classes.info}>
+                    <InfoDescr
+                      title={item.itemName}
+                      description={item.description}
+                      currentPage="poolDetail"
+                      copiesCurrent={
+                        isEnglishAuction(poolDetails)
+                          ? poolDetails.tokenAmount0
+                          : poolDetails.quantity
                       }
-                      cryptoCurrency={item.tokenSymbol}
-                      onBidClick={openBidDialog}
-                      onBuyClick={openEnglishBuyDialog}
-                      disabled={poolDetails.state !== AuctionState.Live}
-                      saleTime={saleTime}
-                      loading={
-                        fixedSwapCancelLoading ||
-                        creatorClaimLoading ||
-                        bidderClaimLoading
+                      copiesTotal={item.supply}
+                      creator={renderedCreator}
+                      owner={renderedCollection()}
+                      LikeBtn={
+                        <Grid item xs="auto">
+                          <NftLikeBtn
+                            isItemType={false}
+                            poolId={poolId}
+                            poolType={
+                              (parseInt(
+                                poolTypeMap[poolType],
+                              ) as unknown) as PoolType
+                            }
+                            auctionType={poolType}
+                            count={roleInfos.likeCount}
+                            isLike={roleInfos.isLike}
+                          />
+                        </Grid>
                       }
-                      state={poolDetails.state}
-                      role={poolDetails.role}
-                      onBidderClaim={handleBidderClaim}
-                      onCreatorClaim={handleCreatorClaim}
                     />
-                  ) : (
-                    <InfoPrices
-                      price={poolDetails.price.multipliedBy(currency.priceUsd)}
-                      hasSetDirectPrice={true}
-                      cryptoPrice={poolDetails.price}
-                      cryptoCurrency={item.tokenSymbol}
-                      onBuyClick={openFixedBuyDialog}
-                      disabled={poolDetails.state !== FixedSwapState.Live}
-                      saleTime={saleTime}
-                      loading={
-                        fixedSwapCancelLoading ||
-                        creatorClaimLoading ||
-                        bidderClaimLoading
-                      }
-                      onBidderClaim={handleBidderClaim}
-                      onCreatorClaim={handleCreatorClaim}
-                      state={poolDetails.state}
-                      role={poolDetails.role}
-                      onCancel={handleFixedSwapCancel}
-                      poolType={poolType}
-                      poolId={poolId}
-                    />
+                    {isEnglishAuction(poolDetails) ? (
+                      <InfoPrices
+                        endDate={poolDetails.closeAt}
+                        hasSetDirectPrice={poolDetails.amountMax1.isGreaterThan(
+                          0,
+                        )}
+                        price={poolDetails.lastestBidAmount.multipliedBy(
+                          currency.priceUsd,
+                        )}
+                        cryptoPrice={
+                          poolDetails.lastestBidAmount.isEqualTo(0)
+                            ? poolDetails.amountMin1
+                            : poolDetails.lastestBidAmount
+                        }
+                        cryptoCurrency={item.tokenSymbol}
+                        onBidClick={openBidDialog}
+                        onBuyClick={openEnglishBuyDialog}
+                        disabled={poolDetails.state !== AuctionState.Live}
+                        saleTime={saleTime}
+                        loading={
+                          fixedSwapCancelLoading ||
+                          creatorClaimLoading ||
+                          bidderClaimLoading
+                        }
+                        state={poolDetails.state}
+                        role={poolDetails.role}
+                        onBidderClaim={handleBidderClaim}
+                        onCreatorClaim={handleCreatorClaim}
+                      />
+                    ) : (
+                      <InfoPrices
+                        price={poolDetails.price.multipliedBy(
+                          currency.priceUsd,
+                        )}
+                        hasSetDirectPrice={true}
+                        cryptoPrice={poolDetails.price}
+                        cryptoCurrency={item.tokenSymbol}
+                        onBuyClick={openFixedBuyDialog}
+                        disabled={poolDetails.state !== FixedSwapState.Live}
+                        saleTime={saleTime}
+                        loading={
+                          fixedSwapCancelLoading ||
+                          creatorClaimLoading ||
+                          bidderClaimLoading
+                        }
+                        isOpenSaleTime={saleTime}
+                        onBidderClaim={handleBidderClaim}
+                        onCreatorClaim={handleCreatorClaim}
+                        state={poolDetails.state}
+                        role={poolDetails.role}
+                        onCancel={handleFixedSwapCancel}
+                        poolType={poolType}
+                        poolId={poolId}
+                      />
+                    )}
+
+                    {featuresConfig.infoTabs && (
+                      <InfoTabs
+                        history={
+                          featuresConfig.nftDetailsHistory
+                            ? renderedHistoryList
+                            : renderedComingSoon
+                        }
+                        bids={
+                          featuresConfig.nftDetailsBids
+                            ? renderedBidsList
+                            : renderedComingSoon
+                        }
+                        owners={
+                          featuresConfig.nftDetailsOwners
+                            ? renderedOnwersList
+                            : renderedComingSoon
+                        }
+                        tokenInfo={
+                          featuresConfig.nftDetailsTokenInfo
+                            ? renderedTokenInfoList
+                            : renderedComingSoon
+                        }
+                      />
+                    )}
+                  </Info>
+
+                  {isEnglishAuction(poolDetails) && (
+                    <Mutation
+                      type={bidEnglishAuction.toString()}
+                      action={bidEnglishAuction}
+                    >
+                      {({ loading }) => (
+                        <>
+                          <BidDialog
+                            name={item.itemName}
+                            filepath={item.fileUrl}
+                            onSubmit={({ bid }) => {
+                              handleBuyEnglish({
+                                bidPrice: new BigNumber(bid),
+                                unitContract: poolDetails.unitContract,
+                                poolId: poolDetails.poolId,
+                              });
+                            }}
+                            isOpen={openedBid}
+                            onClose={closeBidDialog}
+                            currency={item.tokenSymbol}
+                            owner={ownerTitle}
+                            ownerAvatar={roleInfos.creator.avatar}
+                            isOwnerVerified={roleInfos.creator.isVerify}
+                            category={item.category}
+                            loading={loading}
+                            maxQuantity={poolDetails.tokenAmount0}
+                            minIncrease={poolDetails.amountMinIncr1}
+                            lastestBidAmount={poolDetails.lastestBidAmount}
+                          />
+                          <BuyDialog
+                            name={item.itemName}
+                            filepath={item.fileUrl}
+                            onSubmit={() => {
+                              handleBuyEnglish({
+                                amountMax1: poolDetails.amountMax1,
+                                unitContract: poolDetails.unitContract,
+                                poolId: poolDetails.poolId,
+                              });
+                            }}
+                            isOpen={openedEnglishBuy}
+                            onClose={closeEnglishBuyDialog}
+                            owner={ownerTitle}
+                            ownerAvatar={roleInfos.creator.avatar}
+                            isOwnerVerified={roleInfos.creator.isVerify}
+                            readonly={true}
+                            category={item.category}
+                            loading={loading}
+                            maxQuantity={poolDetails.tokenAmount0}
+                          />
+                        </>
+                      )}
+                    </Mutation>
                   )}
 
-                  {featuresConfig.infoTabs && (
-                    <InfoTabs
-                      history={
-                        featuresConfig.nftDetailsHistory
-                          ? renderedHistoryList
-                          : renderedComingSoon
-                      }
-                      bids={
-                        featuresConfig.nftDetailsBids
-                          ? renderedBidsList
-                          : renderedComingSoon
-                      }
-                      owners={
-                        featuresConfig.nftDetailsOwners
-                          ? renderedOnwersList
-                          : renderedComingSoon
-                      }
-                      tokenInfo={
-                        featuresConfig.nftDetailsTokenInfo
-                          ? renderedTokenInfoList
-                          : renderedComingSoon
-                      }
-                    />
-                  )}
-                </Info>
-
-                {isEnglishAuction(poolDetails) && (
-                  <Mutation
-                    type={bidEnglishAuction.toString()}
-                    action={bidEnglishAuction}
-                  >
-                    {({ loading }) => (
-                      <>
-                        <BidDialog
-                          name={item.itemName}
-                          filepath={item.fileUrl}
-                          onSubmit={({ bid }) => {
-                            handleBuyEnglish({
-                              bidPrice: new BigNumber(bid),
-                              unitContract: poolDetails.unitContract,
-                              poolId: poolDetails.poolId,
-                            });
-                          }}
-                          isOpen={openedBid}
-                          onClose={closeBidDialog}
-                          currency={item.tokenSymbol}
-                          owner={ownerTitle}
-                          ownerAvatar={undefined}
-                          isOwnerVerified={false}
-                          category={item.category}
-                          loading={loading}
-                          maxQuantity={poolDetails.tokenAmount0}
-                          minIncrease={poolDetails.amountMinIncr1}
-                          lastestBidAmount={poolDetails.lastestBidAmount}
-                        />
+                  {!isEnglishAuction(poolDetails) && (
+                    <Mutation type={buyFixed.toString()} action={buyFixed}>
+                      {({ loading }) => (
                         <BuyDialog
                           name={item.itemName}
                           filepath={item.fileUrl}
-                          onSubmit={() => {
-                            handleBuyEnglish({
-                              amountMax1: poolDetails.amountMax1,
+                          onSubmit={data => {
+                            handleBuyFixed({
+                              nftType: poolDetails.nftType,
                               unitContract: poolDetails.unitContract,
+                              amountTotal0: parseInt(
+                                poolDetails.totalQuantity?.toString() ?? '0',
+                              ),
+                              amountTotal1: poolDetails.totalPrice,
                               poolId: poolDetails.poolId,
+                              quantity: parseInt(data.quantity),
                             });
                           }}
-                          isOpen={openedEnglishBuy}
-                          onClose={closeEnglishBuyDialog}
+                          isOpen={openedFixedBuy}
+                          onClose={closeFixedBuyDialog}
                           owner={ownerTitle}
-                          ownerAvatar={undefined}
-                          isOwnerVerified={false}
-                          readonly={true}
+                          ownerAvatar={roleInfos.creator.avatar}
+                          isOwnerVerified={roleInfos.creator.isVerify}
+                          readonly={item.standard === NftType.ERC721}
                           category={item.category}
                           loading={loading}
-                          maxQuantity={poolDetails.tokenAmount0}
+                          maxQuantity={poolDetails.quantity}
                         />
-                      </>
-                    )}
-                  </Mutation>
-                )}
-
-                {!isEnglishAuction(poolDetails) && (
-                  <Mutation type={buyFixed.toString()} action={buyFixed}>
-                    {({ loading }) => (
-                      <BuyDialog
-                        name={item.itemName}
-                        filepath={item.fileUrl}
-                        onSubmit={data => {
-                          handleBuyFixed({
-                            nftType: poolDetails.nftType,
-                            unitContract: poolDetails.unitContract,
-                            amountTotal0: parseInt(
-                              poolDetails.totalQuantity?.toString() ?? '0',
-                            ),
-                            amountTotal1: poolDetails.totalPrice,
-                            poolId: poolDetails.poolId,
-                            quantity: parseInt(data.quantity),
-                          });
-                        }}
-                        isOpen={openedFixedBuy}
-                        onClose={closeFixedBuyDialog}
-                        owner={ownerTitle}
-                        ownerAvatar={undefined}
-                        isOwnerVerified={false}
-                        readonly={item.standard === NftType.ERC721}
-                        category={item.category}
-                        loading={loading}
-                        maxQuantity={poolDetails.quantity}
-                      />
-                    )}
-                  </Mutation>
-                )}
-              </div>
-            );
-          }}
-        </Queries>
-      )}
+                      )}
+                    </Mutation>
+                  )}
+                </div>
+              );
+            }}
+          </Queries>
+        );
+      }}
     </Queries>
   );
 };

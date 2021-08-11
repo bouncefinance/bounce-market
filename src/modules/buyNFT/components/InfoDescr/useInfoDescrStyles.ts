@@ -28,6 +28,7 @@ export const useInfoDescrStyles = makeStyles<Theme>(theme => ({
 
   description: {
     fontSize: 15,
+    minHeight: 50,
   },
 
   textToggle: {
@@ -40,5 +41,14 @@ export const useInfoDescrStyles = makeStyles<Theme>(theme => ({
     '&:hover': {
       color: theme.palette.primary.dark,
     },
+  },
+
+  spaceBetween: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
+  },
+  poolAmount: {
+    marginTop: 20,
   },
 }));

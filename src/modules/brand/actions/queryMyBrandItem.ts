@@ -9,7 +9,6 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { IBrandInfo } from '../api/queryBrand';
 import { getAccountBrand } from './getAccountBrand';
-import { queryBrandItems } from './queryBrandItems';
 
 export interface IMyBrand {
   id: number;
@@ -31,7 +30,7 @@ export const queryMyBrandItem = createSmartAction<
     promise: (async function () {})(),
   },
   meta: {
-    asMutation: true,
+    asMutation: false,
     ...meta,
     getData: data => data,
     onRequest: (
@@ -47,17 +46,17 @@ export const queryMyBrandItem = createSmartAction<
           if (brandList) {
             const result = await Promise.all(
               brandList.map(async (item: IBrandInfo) => {
-                const { data: num } = await store.dispatchRequest(
-                  queryBrandItems({
-                    user_address: address,
-                    contract_address: item.contractaddress,
-                  }),
-                );
+                // const { data: num } = await store.dispatchRequest(
+                //   queryBrandItems({
+                //     user_address: address,
+                //     contract_address: item.contractaddress,
+                //   }),
+                // );
                 return {
                   id: item.id,
                   title: item.brandname,
                   imgSrc: item.imgurl,
-                  itemsCount: num,
+                  itemsCount: 0,
                   contract: item.contractaddress,
                   nftType: item.standard,
                   symbol: item.brandsymbol,

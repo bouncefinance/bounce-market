@@ -1,173 +1,138 @@
-import { Box, Hidden } from '@material-ui/core';
-import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import { useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { AccountInfo } from 'modules/common/components/AccountInfo';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
-import { t } from 'modules/i18n/utils/intl';
 import {
   ProductCard,
-  ProductCardCategoryType,
+  ProductCardSkeleton,
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
-import { IQueryMyBids, queryMyBids } from 'modules/profile/actions/queryMyBids';
-import { FilledTab, FilledTabs } from 'modules/uiKit/FilledTabs';
-import { Select } from 'modules/uiKit/Select';
-import React, {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { fetchMyBids, IPoolNftItem } from 'modules/profile/actions/fetchSale';
+import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
-import { useTabBidsStyles } from './useTabBidsStyles';
+import { t } from 'modules/i18n/utils/intl';
+import { usePoolList } from 'modules/common/hooks/usePoolList';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { getTokenSymbol } from 'modules/common/conts';
 
-const categories = [
-  {
-    value: ItemsChannel.all,
-    label: t('profile.bids-categories.all'),
-  },
-  {
-    value: ItemsChannel.fineArts,
-    label: t('profile.bids-categories.art'),
-  },
-  {
-    value: ItemsChannel.sports,
-    label: t('profile.bids-categories.sport'),
-  },
-  {
-    value: ItemsChannel.comics,
-    label: t('profile.bids-categories.Comics'),
-  },
-];
-
-export const TabBids = () => {
-  const classes = useTabBidsStyles();
-  const { chainId } = useAccount();
-  const dispatch = useDispatchRequest();
-  const [catergory, setCategory] = useState<ItemsChannel>(ItemsChannel.all);
-
-  const onCategoryTabChange = useCallback(
-    (_e: ChangeEvent<{}>, newValue: ItemsChannel) => {
-      setCategory(newValue);
-    },
-    [],
-  );
-
-  const onCategorySelectChange = useCallback(
-    (event: ChangeEvent<{ value: unknown }>) => {
-      setCategory(event.target.value as ItemsChannel);
-    },
-    [],
-  );
-
-  const bidsQuery = useQuery<IQueryMyBids | null>({
-    type: queryMyBids.toString(),
+export const TabBids = function () {
+  const { address } = useAccount();
+  const { data, loading } = useQuery<IPoolNftItem[]>({
+    type: fetchMyBids.toString(),
   });
 
-  useEffect(() => {
-    dispatch(queryMyBids());
-  }, [dispatch]);
-
-  const isLoading = bidsQuery.loading;
-
-  const items = useMemo(() => {
-    if (!bidsQuery.data) {
-      return [];
-    }
-
-    const allItems = bidsQuery.data.list;
-    const filteredItems =
-      catergory === ItemsChannel.all
-        ? allItems
-        : allItems.filter(item => item.channel === catergory);
-
-    return filteredItems;
-  }, [bidsQuery.data, catergory]);
-
-  const hasItems = !!items.length;
-
-  const renderedCards = useMemo(() => {
-    return items.map(item => (
-      <ProductCard
-        id={item.id}
-        poolId={item.poolId}
-        auctionType={item.poolType}
-        key={uid(item)}
-        isOnSale
-        href={
-          item.poolId && item.poolType
-            ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                item.poolId,
-                item.poolType,
-              )
-            : ''
-        }
-        price={item.price}
-        title={item.itemname}
-        priceType={getTokenSymbol(chainId) as string}
-        endDate={undefined}
-        copies={item.supply}
-        likes={undefined}
-        MediaProps={{
-          category: item.category as ProductCardCategoryType,
-          src: item.fileurl,
-          objectFit: 'contain',
-          loading: 'lazy',
-        }}
-        state={item.state}
-        profileInfo={
-          item.owneraddress && <AccountInfo address={item.owneraddress} />
-        }
-        isCancelTimePut={item.openAt ? +item.openAt >= Date.now() : false}
-        openAt={item.openAt}
-      />
-    ));
-  }, [items, chainId]);
+  const bidsInfo = usePoolList({
+    list:
+      data?.map(e => ({ poolId: e.pool_id ?? -1, poolType: e.poolType })) ?? [],
+    contractFunctionName: 'currentBidderAmount1P',
+  });
+  const bidsReserveAmount = usePoolList({
+    list:
+      data?.map(e => ({ poolId: e.pool_id ?? -1, poolType: e.poolType })) ?? [],
+    contractFunctionName: 'reserveAmount1P',
+  });
+  const myBidderAmount = usePoolList({
+    list:
+      data?.map(e => ({ poolId: e.pool_id ?? -1, poolType: e.poolType })) ?? [],
+    contractFunctionName: 'myBidderAmount1P',
+    address,
+  });
 
   return (
-    <>
-      <Box mb={5}>
-        <Hidden mdDown>
-          <FilledTabs
-            value={catergory}
-            onChange={onCategoryTabChange as any}
-            textColor="secondary"
-            variant="scrollable"
-          >
-            {categories.map(({ label, value }) => (
-              <FilledTab
-                className={classes.tab}
-                key={uid(label)}
-                label={label}
-                value={value}
+    <TabItemsComponent>
+      <ProductCards isLoading={loading}>
+        {loading ? (
+          <ProductCardSkeleton />
+        ) : (
+          data?.map((item, index) => {
+            const bidTopPrice = bidsInfo[index]?.toNumber();
+            const bidsReservePrice = bidsReserveAmount[index]?.toNumber();
+
+            return (
+              <ProductCard
+                id={item.tokenid}
+                poolId={item.pool_id || 0}
+                auctionType={item.poolType}
+                key={uid(item)}
+                title={item.itemname}
+                href={
+                  item.pool_id && item.poolType
+                    ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                        item.pool_id,
+                        item.poolType,
+                      )
+                    : ''
+                }
+                likes={item.likecount}
+                isLike={item.isLike}
+                price={item.pool_id ? item.price : undefined}
+                priceType={(data as any)?.tokenSymbol}
+                soldData={{
+                  sold:
+                    Date.now() >= item.close_at * 1e3 &&
+                    bidTopPrice >= bidsReservePrice
+                      ? item.token_amount0
+                      : 0,
+                  quantity: item.token_amount0,
+                }}
+                endDate={
+                  item.close_at ? new Date(item.close_at * 1e3) : undefined
+                }
+                MediaProps={{
+                  category: item.category,
+                  src: item.fileurl || 'xxx',
+                  objectFit: 'contain',
+                  loading: 'lazy',
+                }}
+                state={item.state}
+                isOnSale
+                profileInfo={
+                  <ProfileInfo
+                    subTitle="Creator"
+                    title={item.username || truncateWalletAddr(item.creator)}
+                    users={[
+                      {
+                        name: item.username,
+                        avatar: item.creatorurl,
+                        href: ProfileRoutesConfig.OtherProfile.generatePath(
+                          item.creator,
+                        ),
+                        verified: item?.identity === UserRoleEnum.Verified,
+                      },
+                    ]}
+                  />
+                }
+                toSale={RoutesConfiguration.PublishNft.generatePath(
+                  item.token0,
+                  item.tokenid,
+                )}
+                isCancelTimePut={
+                  item.openAt ? +item.openAt >= Date.now() : false
+                }
+                openAt={item.openAt}
+                closeAt={item.closeAt}
+                bidTopPrice={bidTopPrice || 0}
+                bidsReserveAmount={bidsReservePrice || 0}
+                myBidderAmount={myBidderAmount[index]?.toNumber() || 0}
+                isBidder
+                isCreatorClaimed={Boolean(item.creator_claimed)}
+                isBidderClaimed={Boolean(item.bidder_claimed)}
               />
-            ))}
-          </FilledTabs>
-        </Hidden>
-
-        <Hidden lgUp>
-          <Select
-            className={classes.select}
-            value={catergory}
-            onChange={onCategorySelectChange}
-            options={categories}
-          />
-        </Hidden>
-      </Box>
-
-      {isLoading || hasItems ? (
-        <ProductCards isLoading={isLoading}>{renderedCards}</ProductCards>
-      ) : (
+            );
+          })
+        )}
+      </ProductCards>
+      {!loading && data?.length === 0 && (
         <NoItems
           href={MarketRoutesConfig.Market.generatePath()}
-          descr={t('profile.no-items.descr')}
+          title={t('profile.no-items.MyBids-title')}
+          descr={t('profile.no-items.MyBids-description')}
         />
       )}
-    </>
+    </TabItemsComponent>
   );
 };

@@ -2,6 +2,7 @@ import { Box, Container, Grid, Typography, useTheme } from '@material-ui/core';
 import { IBrandItem } from 'modules/brand/actions/fetchPopularBrands';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { t } from 'modules/i18n/utils/intl';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Button } from 'modules/uiKit/Button';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useEffect, useMemo, useState } from 'react';
@@ -44,6 +45,8 @@ export const Brands = ({
     spaceBetween: theme.spacing(5),
     lazy: true,
     onSwiper: setSwiper,
+    loop: true,
+    slidesPerView: 'auto',
   };
 
   const renderedSlides = useMemo(
@@ -52,7 +55,7 @@ export const Brands = ({
         ({ imgUrl, id, brandName, ownerAddress, contractAddress }, i) => (
           <SwiperSlide className={classes.slide} key={id}>
             <Link
-              to={BrandRoutesConfig.Brand.generatePath(id)}
+              to={ProfileRoutesConfig.OtherProfile.generatePath(ownerAddress)}
               className={classes.brand}
             >
               <BrandItems

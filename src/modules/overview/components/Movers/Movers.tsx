@@ -1,13 +1,18 @@
 import { useQuery } from '@redux-requests/react';
 import { AuctionState } from 'modules/api/common/AuctionState';
-import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AccountInfo } from 'modules/common/components/AccountInfo';
-import { ProductCard } from 'modules/common/components/ProductCard';
+import {
+  ProductCard,
+  ProductCardCategoryType,
+} from 'modules/common/components/ProductCard';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
-import { fetchOverview } from 'modules/overview/actions/fetchOverview';
-import { IItem } from 'modules/overview/api/getItems';
+import { isFixedSwap } from 'modules/common/utils/poolHelps';
+import {
+  fetchOverview,
+  IOverviewItem,
+} from 'modules/overview/actions/fetchOverview';
 import { PROMO_ITEMS_COUNT } from 'modules/overview/const';
 import { ISectionProps } from 'modules/uiKit/Section';
 import { useMemo } from 'react';
@@ -15,7 +20,7 @@ import { uid } from 'react-uid';
 import { MoversComponent } from './MoversComponent';
 
 export const Movers = (sectionProps: ISectionProps) => {
-  const overviewQuery = useQuery<IItem[] | null>({
+  const overviewQuery = useQuery<IOverviewItem[] | null>({
     type: fetchOverview.toString(),
   });
 
@@ -27,6 +32,7 @@ export const Movers = (sectionProps: ISectionProps) => {
     [overviewQuery.data],
   );
 
+  // console.log('--slicedItems---', slicedItems)
   const renderedItems = slicedItems.map(item => {
     return (
       <ProductCard
@@ -37,11 +43,14 @@ export const Movers = (sectionProps: ISectionProps) => {
         isOnSale
         title={item.itemName || ''}
         price={item.price}
-        priceType="BNB"
+        priceType={item.tokenSymbol}
         endDate={item.closeAt}
-        copies={item.supply}
-        //TODO: https://fangible.atlassian.net/browse/FAN-124
-        likes={undefined}
+        soldData={{
+          sold: item.swappedAmount0,
+          quantity: item.quantity,
+        }}
+        likes={item.likeCount}
+        isLike={item.isLike}
         href={
           item.poolId && item.poolType
             ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
@@ -52,15 +61,14 @@ export const Movers = (sectionProps: ISectionProps) => {
         }
         imgPreloader={<SwiperPreloader />}
         MediaProps={{
-          category: 'image',
+          category: item.category as ProductCardCategoryType,
           src: item.fileUrl || '',
           imgClassName: 'swiper-lazy',
           isNativeLazyLoading: false,
           objectFit: 'contain',
         }}
         state={
-          item.poolType === AuctionType.FixedSwap ||
-          item.poolType === AuctionType.FixedSwap_Timing
+          item.poolType && isFixedSwap(item.poolType)
             ? FixedSwapState.Live
             : AuctionState.Live
         }

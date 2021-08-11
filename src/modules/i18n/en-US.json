@@ -26,7 +26,7 @@
       "addNewItem": "Add new item",
       "createNewcollection": "Create new collection",
       "createNewItem": "Create new item",
-      "itemsCount": "{value, plural, =0 {No NFT} =1 {One NFT} other {# NFTs}}"
+      "itemsCount": "{value, plural, =0 {0 NFT} =1 {1 NFT} other {# NFTs}}"
     },
     "create": {
       "avatar-accepts": "Supports JPG, PNG, JPEG2000",
@@ -40,7 +40,7 @@
         "description": "Description"
       },
       "tip-warning": {
-        "collection-symbol":"Collection Symbol is an abbreviated version of your brand name. Think of it as your collection logo in the form of an acronym (i.e. BTC for bitcoin). ",
+        "collection-symbol": "Collection Symbol is an abbreviated version of your brand name. Think of it as your collection logo in the form of an acronym (i.e. BTC for bitcoin). ",
         "ERC721": "The ERC-721 token standard represents a single unique asset. It is immutable, transparent in ownership and security, and the most widely used. Each ERC-721 token holds its own unique contract values.",
         "ERC1155": "The ERC-1155 is a dual purpose fungible and non fungible token. It’s faster and more efficient to use in batch token transfers and can be deployed in a single smart contract for an infinite number of token types.",
         "description": "What's the story here?"
@@ -112,7 +112,7 @@
     ],
     "submit": "Create",
     "submitting": "Creating",
-    "title": "Create NFT collection",
+    "title": "Create NFT",
     "collections": "Collections",
     "subCollection": "When creating your first NFT, you need to create a collection. For next creation, you can put the NFT in an already created collection."
   },
@@ -121,7 +121,11 @@
       "Comicbooks": "Comic",
       "Comics": "Comics",
       "FineArts": "Fine arts",
-      "Sports": "Sports"
+      "Sports": "Sports",
+      "Collectible": "Collectible",
+      "Music": "Music",
+      "Performer": "Performer",
+      "Metaverse": "Metaverse"
     },
     "label": {
       "Set-up-date": "Set up date and time",
@@ -159,6 +163,8 @@
     "buy-now": "Buy now",
     "descr-full": "Full description",
     "descr-short": "Collapse",
+    "pool-amount-tip": "Available for purchase / Total supply",
+    "item-amount-tip": "Total supply",
     "dialog": {
       "footnote": "Bids placed in auction cannot be withdrawn",
       "input-info": "Minimum bid {value} {currency}"
@@ -198,7 +204,8 @@
     },
     "role": {
       "seller": "Owner",
-      "minter": "Creator"
+      "minter": "Creator",
+      "collection": "Collection"
     },
     "top-bid": "Top Bid",
     "your-bid": "Your bid"
@@ -218,7 +225,7 @@
     "label": {
       "live": "Live",
       "coming": "Coming",
-      "previous":"Previous"
+      "previous": "Previous"
     }
   },
   "empty-data": {
@@ -229,7 +236,8 @@
     "data-is-not-available": "Data is not available",
     "greater-than": "It must be greater than {value}",
     "less-than": "It must be less than {value}",
-    "unexpected": "Unexpected error"
+    "unexpected": "Server exception",
+    "contract-rejected": "Contract operation is rejected"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -291,7 +299,7 @@
         "creator": "Auction is in progress"
       },
       "NotSoldByReservePrice": {
-        "buyer": "Item hasn't been sold. Claim your tokens back",
+        "buyer": "Item hasn't been sold. Claim your funds back",
         "creator": "Item hasn't been sold. Claim your NFT back",
         "others": "Item hasn't been sold"
       }
@@ -315,7 +323,11 @@
     "all": "All",
     "art": "Art",
     "sports": "Sports",
-    "Comics": "Comics"
+    "Comics": "Comics",
+    "collectible": "Collectible",
+    "music": "Music",
+    "performer": "Performer",
+    "metaverse": "Metaverse"
   },
   "product-card": {
     "burn": "Burn token",
@@ -327,7 +339,17 @@
     "sold-for": "Sold for",
     "top-bid": "Top Bid",
     "pool-start-tips": "The pool will start in:",
-    "transfer": "Transfer token"
+    "transfer": "Transfer token",
+    "lost": "Your bid was lost",
+    "won": "Your bid won",
+    "outbid": "You were outbid",
+    "claim-funds": "Claim funds",
+    "claim-token": "Claim token",
+    "claim-back": "Claim back",
+    "claimed": "Claimed",
+    "item-balance-tip": "{balance} editions in account",
+    "pool-balance-tip": "{balance} available for purchase",
+    "sold-for-quantity": "Sold {sold} of {quantity}"
   },
   "cancel-timer": {
     "title": "Cancel Sale",
@@ -337,13 +359,22 @@
     "sort-label": "Sort by: {value}"
   },
   "profile": {
+    "date": {
+      "language": "enUS",
+      "ago": " ago"
+    },
     "activity": {
+      "tab": {
+        "create": "Create",
+        "listings": "Listings",
+        "bids": "Bids",
+        "purchases": "Purchases",
+        "sales": "Sales"
+      },
       "canceled": "Canceled",
       "claimed": "Claimed",
       "created": "Created",
       "date": "Date",
-      "empty-description": "You have not had any activities yet",
-      "empty-title": "No activities found",
       "event": "Event",
       "from": "From",
       "item": "Item",
@@ -387,11 +418,36 @@
     "edit-avatar": "Edit avatar",
     "edit-cover": "Edit profile cover",
     "edit-profile": "Edit profile",
-    "follow": "Follow",
+    "follow": {
+      "follow": "Follow",
+      "following": "Following",
+      "followers": "Followers",
+      "unfollow": "Unfollow",
+      "no-list": "List Is Null",
+      "my-self": "Myself"
+    },
     "no-items": {
       "btn": "Browse marketplace",
       "descr": "You have not minted any NFTs yet",
-      "title": "No items found"
+      "title": "No items found",
+      "onSale-title": "No items found",
+      "onSale-description": "You haven’t listed any item for sale yet.",
+      "showCase-title": "No items found",
+      "showCase-description": "You haven’t owned any NFT yet.",
+      "MyBids-title": "No items found",
+      "MyBids-description": "You haven’t placed a bid for any item yet. Go browse our marketplace.",
+      "Activity-title": "No activities found",
+      "Activity-description": "Go explore fangible to find excitement!",
+      "Liked-title": "No items found",
+      "Liked-description": "You haven’t liked any NFT yet. Go browse our marketplace.",
+      "other-onSale-title": "No items found",
+      "other-onSale-description": "This creator hasn't listed any item for sale yet.",
+      "other-collection-title": "No collection found",
+      "other-collection-description": "No collection has been created by this user.",
+      "other-showCase-title": "No items found",
+      "other-showCase-description": "This user hasn't owned any NFT yet.",
+      "other-Liked-title": "No items found",
+      "other-Liked-description": "This user hasn't liked any NFT yet."
     },
     "subscribers": "Subscribers",
     "tabs": {
@@ -401,10 +457,10 @@
       "following": "Following",
       "items": "Items",
       "liked": "Liked",
-      "my-bids": "My transaction",
-      "my-collections": "My collections",
-      "my-items": "My items",
-      "my-sells": "My sales"
+      "my-bids": "My Bids",
+      "my-collections": "Collections",
+      "showcase": "Showcase",
+      "my-sells": "On Sale"
     },
     "unfollow": "Unfollow",
     "user-profile": "User profile"
@@ -466,7 +522,9 @@
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
     "time-end": "Ended on {days}/{months}/{years}",
     "time-expired": "Time expired",
-    "time-over": "Time is over"
+    "time-over": "Time is over",
+    "time-left-tip": "Time left",
+    "time-left": "{days} {hours} {minutes} {seconds}"
   },
   "transfer-token": {
     "submit": "Transfer",

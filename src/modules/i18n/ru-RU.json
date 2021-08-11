@@ -22,7 +22,7 @@
       "addNewItem": "Добавить новый товар",
       "createNewItem": "Создать новый товар",
       "createNewcollection": "Создать новую коллекцию",
-      "itemsCount": "{value, plural, =0 {Нет NFT} =1 {Один NFT} other {# NFT}}"
+      "itemsCount": "{value, plural, =0 {0 NFT} =1 {1 NFT} other {# NFT}}"
     },
     "create": {
       "avatar-accepts": "Поддерживает JPG, PNG, JPEG2000",
@@ -112,7 +112,7 @@
     ],
     "submit": "Создать",
     "submitting": "В процессе создания",
-    "title": "Создать коллекцию NFT",
+    "title": "Создать NFT",
     "collections": "Коллекции",
     "subCollection": "При создании первого НМТ необходимо создать коллекцию. При следующем создании вы можете поместить НМТ в уже созданную коллекцию."
   },
@@ -121,7 +121,11 @@
       "Comicbooks": "Комикс",
       "Comics": "Комикс",
       "FineArts": "Изобразительное искусство",
-      "Sports": "Спорт"
+      "Sports": "Спорт",
+      "Collectible": "Коллекционирование",
+      "Music": "Музыка",
+      "Performer": "Исполнитель",
+      "Metaverse": "Метаверс"
     },
     "label": {
       "Set-up-date": "Установить дату и время",
@@ -159,6 +163,7 @@
     "buy-now": "Купить сейчас",
     "descr-full": "Полное описание",
     "descr-short": "развернуть",
+    "pool-amount-tip": "Общее предложение",
     "dialog": {
       "footnote": "Размещенные ставки на аукционе не могут быть отозваны",
       "input-info": "Ваша ставка должна быть не менее  {value} {currency}"
@@ -198,7 +203,8 @@
     },
     "role": {
       "seller": "Владелец",
-      "minter": "Создатель"
+      "minter": "Создатель",
+      "collection": "коллекцию"
     },
     "top-bid": "Наивысшая ставка",
     "your-bid": "Ваша ставка"
@@ -224,7 +230,8 @@
     "data-is-not-available": "Данные не доступны",
     "greater-than": "Число должно быть больше {value}",
     "less-than": "Число должно быть меньше {value}",
-    "unexpected": "Непредвиденная ошибка"
+    "unexpected": "Непредвиденная ошибка",
+    "contract-rejected": "Операция по контракту отклонена"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -307,9 +314,14 @@
     }
   },
   "product-panel": {
+    "all": "Всё",
     "art": "Исскуство",
     "sports": "Спорт",
-    "Comics": "Комикс"
+    "Comics": "Комикс",
+    "collectible": "Коллекционирование",
+    "music": "Музыка",
+    "performer": "Исполнитель",
+    "metaverse": "Метаверс"
   },
   "product-card": {
     "burn": "Сжечь токены",
@@ -321,7 +333,11 @@
     "sold-for": "Продано за",
     "top-bid": "Наивысшая ставка",
     "pool-start-tips": "Бассейн будет запущен:",
-    "transfer": "Перевести токен"
+    "transfer": "Перевести токен",
+    "balance-tip": "{balance} издания на счете",
+    "item-balance-tip": "{balance} изданий на счету",
+    "pool-balance-tip": "{balance} доступны для покупки",
+    "sold-for-quantity": "Продано {sold} из {quantity}"
   },
   "cancel-timer": {
     "title": "Отмена продажи",
@@ -331,13 +347,22 @@
     "sort-label": "Сортировать по: {value}"
   },
   "profile": {
+    "date": {
+      "language": "ru",
+      "ago": " назад"
+    },
     "activity": {
+      "tab": {
+        "create": "Создавать",
+        "listings": "Списки",
+        "bids": "Ставки",
+        "purchases": "Покупки",
+        "sales": "Продажи"
+      },
       "canceled": "Отменено",
       "claimed": "Вывыдено",
       "created": "Создано",
       "date": "Дата",
-      "empty-description": "Вы пока не совершили никаких действий",
-      "empty-title": "Не найдено никаких действий",
       "event": "Мероприятие",
       "from": "От",
       "item": "Товар",
@@ -381,11 +406,36 @@
     "edit-avatar": "Редактировать аватарку",
     "edit-cover": "Изменить обложку профиля",
     "edit-profile": "Редактировать профиль",
-    "follow": "Подписаться",
+    "follow": {
+      "follow": "Следить",
+      "following": "Следующие",
+      "followers": "Подписчики",
+      "unfollow": "Отписаться",
+      "no-list": "Список пуст",
+      "my-self": "Я"
+    },
     "no-items": {
       "btn": "Обзор рынка",
-      "descr": "У вас нет созданных NFT",
-      "title": "Товары не найдены"
+      "descr": "У вас еще нет NFT.",
+      "title": "Ничего не найдено",
+      "onSale-title": "Ничего не найдено",
+      "onSale-description": "Вы еще не выставили ни одного предмета на продажу.",
+      "showCase-title": "Ничего не найдено",
+      "showCase-description": "У вас еще нет NFT.",
+      "MyBids-title": "Ничего не найдено",
+      "MyBids-description": "Вы еще не сделали ставку ни на один товар. Зайдите на нашу торговую площадку!",
+      "Activity-title": "Действия не найдены",
+      "Activity-description": "Исследуйте фантастическое, чтобы найти азарт!",
+      "Liked-title": "Ничего не найдено",
+      "Liked-description": "Вам еще не понравились NFT. Зайдите на нашу торговую площадку!",
+      "other-onSale-title": "Предметов не найдено",
+      "other-onSale-description": "Этот автор еще не выставил ни одного предмета на продажу.",
+      "other-collection-title": "Коллекция не найдена",
+      "other-collection-description": "Этим пользователем не было создано ни одной коллекции.",
+      "other-showCase-title": "Предметов не найдено",
+      "other-showCase-description": "Этот пользователь еще не владел ни одним NFT.",
+      "other-Liked-title": "Предметов не найдено",
+      "other-Liked-description": "Этому пользователю еще не понравился ни один NFT."
     },
     "subscribers": "Подписчики",
     "tabs": {
@@ -397,7 +447,7 @@
       "liked": "Нравится",
       "my-bids": "Моя сделка",
       "my-collections": "Мои коллекции",
-      "my-items": "Мои товары",
+      "showcase": "Витрина",
       "my-sells": "Мои продажи"
     },
     "unfollow": "Отписаться",
@@ -460,7 +510,9 @@
     "time-left-short": "Осталось {days} {hours} {minutes} {seconds}",
     "time-end": "Закончился на {days}/{months}/{years}",
     "time-expired": "Время истекло",
-    "time-over": "Время истекло"
+    "time-over": "Время истекло",
+    "time-left-tip": "Остаток времени",
+    "time-left": "{days} {hours} {minutes} {seconds}"
   },
   "transfer-token": {
     "submit": "Перевести",

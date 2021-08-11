@@ -1,6 +1,7 @@
 import { TokenSymbol } from './types/TokenSymbol';
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+export const ZERO_ADDRESS2 = '0x000000000000000000000000000000000000dead';
 
 // TODO: at the end all features should be activated
 export const featuresConfig = {

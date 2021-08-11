@@ -10,6 +10,9 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   imgBox: {
     position: 'relative',
     display: 'block',
+    '&:hover img': {
+      transform: 'scale(1.1)',
+    },
   },
 
   imgWrap: {
@@ -96,8 +99,8 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
 
   title: {
     marginBottom: theme.spacing(2),
-
     fontSize: 16,
+    height: 21,
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -109,18 +112,54 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     borderWidth: '1px 0 0',
   },
 
+  // price: {
+  //   fontSize: 15,
+  //   fontWeight: 700,
+  //   margin: theme.spacing(0, 0, 1.5),
+  // },
+
+  saleContainer: {
+    display: 'grid',
+    alignItems: 'center',
+    gridTemplateRows: '1fr 1fr',
+    rowGap: theme.spacing(0.6),
+    marginTop: 'auto',
+  },
+
+  saleType: {
+    fontSize: 14,
+    lineHeight: '17px',
+    opacity: 0.4,
+  },
+
   price: {
     fontSize: 15,
-    fontWeight: 700,
-    margin: theme.spacing(0, 0, 1.5),
+    lineHeight: '18px',
+    fontWeight: 'bold',
+  },
+
+  meta: {
+    width: '100%',
+    display: 'grid',
+    gridTemplateColumns: 'auto max-content',
+  },
+
+  saleMeta: {
+    display: 'grid',
+    gridTemplateRows: '1fr auto',
+  },
+
+  timeMeta: {
+    display: 'flex',
+    alignItems: 'center',
   },
 
   infoContainer: {
     display: 'grid',
     alignItems: 'center',
-    gridTemplateColumns: '1fr auto',
+    gridTemplateColumns: 'max-content auto',
     gap: theme.spacing(0, 1.5),
-    marginTop: 'auto',
+    marginTop: 5,
   },
 
   info: {
@@ -128,6 +167,12 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     alignItems: 'center',
     fontSize: 13,
     color: fade(theme.palette.common.black, 0.5),
+  },
+
+  ratio: {
+    display: 'grid',
+    gridTemplateColumns: 'auto auto auto',
+    columnGap: 5,
   },
 
   status: {
@@ -139,24 +184,42 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
 
   icon: {
     fontSize: 16,
+    fill: 'none',
   },
 
   iconRightOffset: {
     marginRight: theme.spacing(1),
   },
 
+  relative: {
+    position: 'relative',
+  },
+  likeSite: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    background: 'rgba(0, 0, 0, 0.6)',
+    color: '#fff',
+    padding: '2px 12px 2px 8px',
+    borderRadius: 30,
+    zIndex: 2,
+    userSelect: 'none',
+    cursor: 'pointer',
+  },
   likeBtn: {
     padding: 6,
-
-    '&:hover': {
-      color: 'red',
-    },
+    transform: 'rotateY(0)',
+    transition: 'transform .4s ease',
   },
 
   saleBtn: {},
 
   likeBtnActive: {
     color: 'red',
+    transform: 'rotateY(180deg)',
+    '& svg': {
+      fill: 'red',
+    },
   },
 
   menuPopover: {
@@ -211,5 +274,11 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   stateTip: {
     fontWeight: 500,
     opacity: 0.5,
+  },
+  rightWrapper: {
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr',
+    columnGap: 5,
+    alignItems: 'center',
   },
 }));

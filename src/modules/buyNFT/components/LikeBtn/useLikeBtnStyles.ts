@@ -21,6 +21,9 @@ export const useLikeBtnStyles = makeStyles<Theme>(theme => ({
 
   btnIcon: {
     fontSize: 18,
+    fill: 'none',
+    transform: 'rotateY(0)',
+    transition: 'transform .3s ease',
   },
 
   btnText: {
@@ -29,5 +32,7 @@ export const useLikeBtnStyles = makeStyles<Theme>(theme => ({
 
   btnIconActive: {
     color: 'red',
+    fill: 'red',
+    transform: 'rotateY(180deg)',
   },
 }));

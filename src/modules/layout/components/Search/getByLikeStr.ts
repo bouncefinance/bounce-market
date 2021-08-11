@@ -129,7 +129,7 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
 
     accounts: accounts.map(item => ({
       id: item.id,
-      name: item.fullnam,
+      name: item.username,
       previewUrl: item.imgurl,
       accountAddress: item.accountaddress,
     })),

@@ -26,7 +26,7 @@
       "addNewItem": "添加新NFT",
       "createNewItem": "创建新NFT",
       "createNewcollection": "创建新作品集",
-      "itemsCount": "{value, plural, =0 {No items} =1 {One item} other {# items}}"
+      "itemsCount": "{value, plural, =0 {0 NFT} =1 {1 NFT} other {# NFT}}"
     },
     "create": {
       "avatar-accepts": "支持 JPG, PNG, JPEG2000",
@@ -112,7 +112,7 @@
     ],
     "submit": "创建",
     "submitting": "正在创建中",
-    "title": "创建NFT作品集",
+    "title": "创建 NFT",
     "collections": "作品集",
     "subCollection": "创建NFT时，需要先创建一个作品集。之后可在该作品集中创建对应标准的NFT。"
   },
@@ -121,7 +121,11 @@
       "Comicbooks": "漫画",
       "Comics": "漫画",
       "FineArts": "艺术",
-      "Sports": "体育"
+      "Sports": "体育",
+      "Collectible": "收藏品",
+      "Music": "音乐",
+      "Performer": "表演者",
+      "Metaverse": "玄幻世界"
     },
     "label": {
       "Set-up-date": "定时出售",
@@ -159,6 +163,7 @@
     "buy-now": "购买",
     "descr-full": "详细描述",
     "descr-short": "收起",
+    "pool-amount-tip": "铸造总副本数",
     "dialog": {
       "footnote": "进行中的拍卖，出价无法撤销。",
       "input-info": "您的出价必须至少为 {value} {currency}"
@@ -198,7 +203,8 @@
     },
     "role": {
       "seller": "拥有者",
-      "minter": "创建者"
+      "minter": "创建者",
+      "collection": "作品集"
     },
     "top-bid": "最高出价",
     "your-bid": "您的出价"
@@ -218,7 +224,7 @@
     "label": {
       "live": "Live",
       "coming": "Coming",
-      "previous":"Previous"
+      "previous": "Previous"
     }
   },
   "empty-data": {
@@ -229,7 +235,8 @@
     "data-is-not-available": "无法获取数据",
     "greater-than": "数值需大于 {value}",
     "less-than": "数值需小于 {value}",
-    "unexpected": "出现意外错误"
+    "unexpected": "出现意外错误",
+    "contract-rejected": "合约操作被拒绝"
   },
   "form": {
     "limit-counter": "{value}/{maxLimit}"
@@ -312,9 +319,14 @@
     }
   },
   "product-panel": {
+    "all": "所有",
     "art": "艺术",
     "sports": "体育",
-    "Comics": "漫画"
+    "Comics": "漫画",
+    "collectible": "收藏品",
+    "music": "音乐",
+    "performer": "表演者",
+    "metaverse": "玄幻世界"
   },
   "product-card": {
     "not-on-sale": "未出售",
@@ -326,7 +338,10 @@
     "put-on-cancel": "取消出售",
     "transfer": "发送token",
     "pool-start-tips": "售卖开始倒计时：",
-    "burn": "销毁token"
+    "burn": "销毁token",
+    "item-balance-tip": "当前拥有份数: {balance}",
+    "pool-balance-tip": "当前可售份数: {balance}",
+    "sold-for-quantity": "已售出 {sold} / {quantity}"
   },
   "cancel-timer": {
     "title": "取消出售",
@@ -336,17 +351,26 @@
     "sort-label": "按 {value}筛选"
   },
   "profile": {
+    "date": {
+      "language": "zhCN",
+      "ago": "前"
+    },
     "activity": {
+      "tab": {
+        "create": "创建",
+        "listings": "上架",
+        "bids": "出价",
+        "purchases": "购买",
+        "sales": "出售"
+      },
       "canceled": "已取消",
       "claimed": "已领取",
       "created": "已创建",
       "date": "日期",
-      "empty-description": "暂无任何交易记录",
-      "empty-title": "未查询到任何交易记录",
       "event": "活动",
       "from": "由",
       "item": "NFT",
-      "price": "价格",
+      "price": "金额",
       "quantity": "数量",
       "to": "转到",
       "transfer": "发送"
@@ -386,11 +410,36 @@
     "edit-avatar": "编辑头像",
     "edit-cover": "编辑主页封面",
     "edit-profile": "编辑个人信息",
-    "follow": "关注",
+    "follow": {
+      "follow": "关注",
+      "following": "正在关注",
+      "followers": "关注者",
+      "unfollow": "取消关注",
+      "no-list": "列表为空",
+      "my-self": "自己"
+    },
     "no-items": {
       "btn": "浏览市场",
-      "descr": "您还未创建任何NFT",
-      "title": "未找到任何NFT"
+      "descr": "您当前还未创造任何NFT",
+      "title": "暂无NFT",
+      "onSale-title": "暂无NFT",
+      "onSale-description": "您还未对任何NFT进行过上架。",
+      "showCase-title": "暂无NFT",
+      "showCase-description": "您当前还未拥有任何NFT。",
+      "MyBids-title": "暂无NFT",
+      "MyBids-description": "您还未对任何NFT进行过出价。浏览fangible市场吧！",
+      "Activity-title": "暂无动态数据",
+      "Activity-description": "探索fangible，发现新惊喜！",
+      "Liked-title": "暂无NFT",
+      "Liked-description": "您还未对任何NFT进行过点赞。浏览fangible市场吧！",
+      "other-onSale-title": "暂无数据",
+      "other-onSale-description": "该创建者尚未上架任何NFT。",
+      "other-collection-title": "暂无数据",
+      "other-collection-description": "该用户尚未创建任何作品集。",
+      "other-showCase-title": "暂无数据",
+      "other-showCase-description": "该用户尚未拥有任何NFT。",
+      "other-Liked-title": "暂无数据",
+      "other-Liked-description": "该创建者尚未对任何NFT进行过点赞。"
     },
     "subscribers": "Subscribers",
     "tabs": {
@@ -402,7 +451,7 @@
       "liked": "收藏",
       "my-bids": "我的交易",
       "my-collections": "我的作品集",
-      "my-items": "我的NFT",
+      "showcase": "我拥有的",
       "my-sells": "我的出售"
     },
     "unfollow": "取消关注",
@@ -465,7 +514,9 @@
     "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
     "time-end": "结束时间： {days}/{months}/{years}",
     "time-expired": "该拍卖已过期",
-    "time-over": "倒计时结束"
+    "time-over": "倒计时结束",
+    "time-left-tip": "剩余时间",
+    "time-left": "{days} {hours} {minutes} {seconds}"
   },
   "transfer-token": {
     "submit": "发送",
