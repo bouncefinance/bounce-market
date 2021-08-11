@@ -24,7 +24,7 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
   const { data: brands, loading } = useQuery<IMyBrand[]>({
     type: queryMyBrandItem.toString(),
   });
-  const [royaltyOpen, setRoyaltyOpen] = useState(true);
+  const [royaltyOpen, setRoyaltyOpen] = useState(false);
   const [collection, setCollection] = useState('');
 
   const handelOpenRoyalty: (collection: string) => void = collection => {
@@ -72,6 +72,7 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
               nftType={brand.nftType}
               handelOpenRoyalty={handelOpenRoyalty}
               collection={brand.contract}
+              isOther={isOther}
             />
           </Grid>
         ))

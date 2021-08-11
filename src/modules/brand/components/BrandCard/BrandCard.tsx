@@ -30,12 +30,11 @@ export interface IBrandCardProps {
   href: string;
   handelOpenRoyalty?: (collection: string) => void;
   collection: string;
+  isOther?: boolean;
 }
 
 export const BrandCard = ({
-  id,
   title,
-  itemsCount,
   nftType,
   imgSrc,
   withAddBtn,
@@ -43,6 +42,7 @@ export const BrandCard = ({
   href,
   handelOpenRoyalty,
   collection = '',
+  isOther = false,
 }: IBrandCardProps) => {
   const classes = useBrandCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -100,7 +100,7 @@ export const BrandCard = ({
 
   return (
     <Card className={classes.root} variant="outlined">
-      <div className={classes.extension}>{renderExtension()}</div>
+      {!isOther && <div className={classes.extension}>{renderExtension()}</div>}
 
       <Link to={href} className={classes.wrapLink}>
         <Box className={classes.imgBox}>

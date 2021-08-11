@@ -1,11 +1,12 @@
-// import { TransactionReceipt } from '@ethersproject/abstract-provider';
-import { DispatchRequest, RequestAction } from '@redux-requests/core';
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
+import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
-// import { NftType } from 'modules/api/common/NftType';
+import { setAccount } from 'modules/account/store/actions/setAccount';
+import { BounceRoyalty } from 'modules/web3/contracts';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-// import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
+import { getRoyaltySignContract } from '../api/getContract';
 import { throwIfDataIsEmptyOrError } from '../utils/throwIfDataIsEmptyOrError';
 import { getRoyaltySign, IRoyaltyload } from './getRoyaltySign';
 
@@ -32,7 +33,6 @@ export const setRoyaltyContract = createSmartAction<RequestAction<void, void>>(
       ) => {
         return {
           promise: (async function () {
-            console.log(rate);
             const royaltyPayload: IRoyaltyload = {
               _royaltyRatio: rate.toNumber(),
               _royaltyReceiver: receiverAddress,
@@ -43,36 +43,54 @@ export const setRoyaltyContract = createSmartAction<RequestAction<void, void>>(
               await store.dispatchRequest(getRoyaltySign(royaltyPayload)),
             );
 
-            console.log(poyaltyData);
+            const {
+              data: { address, chainId, web3 },
+            } = getQuery(store.getState(), {
+              type: setAccount.toString(),
+              action: setAccount,
+            });
 
-            // const {
-            //   data: { address, chainId, web3 },
-            // } = getQuery(store.getState(), {
-            //   type: setAccount.toString(),
-            //   action: setAccount,
-            // })
+            const royalty_CT = new web3.eth.Contract(
+              BounceRoyalty,
+              getRoyaltySignContract(chainId),
+            );
 
-            // const contract1155 = new web3.eth.Contract(
-            //   BounceErc1155,
-            //   contractAddress,
-            // );
+            const _collection = collection;
+            const _royaltyReceiver = receiverAddress;
+            const _royaltyRatio = web3.utils.toWei(rate.toString(), 'ether');
+            const _expireTime = poyaltyData.expireTime;
+            const _sign = poyaltyData.sign;
 
-            // return await new Promise((resolve, reject) => {
-            //   contract721.methods
-            //     .burn(tokenId)
-            //     .send({ from: address })
-            //     .on('transactionHash', (hash: string) => {
-            //       // Pending status
-            //     })
-            //     .on('receipt', async (receipt: TransactionReceipt) => {
-            //       setTimeout(() => {
-            //         resolve(receipt);
-            //       }, 15000);
-            //     })
-            //     .on('error', (error: Error) => {
-            //       reject(error);
-            //     });
-            // });
+            console.log({
+              _collection,
+              _royaltyReceiver,
+              _royaltyRatio,
+              _expireTime,
+              _sign,
+            });
+
+            return await new Promise((resolve, reject) => {
+              royalty_CT.methods
+                .setCollectionConfig(
+                  _collection,
+                  _royaltyReceiver,
+                  _royaltyRatio,
+                  _expireTime,
+                  _sign,
+                )
+                .send({ from: address })
+                .on('transactionHash', (hash: string) => {
+                  // Pending status
+                })
+                .on('receipt', async (receipt: TransactionReceipt) => {
+                  setTimeout(() => {
+                    resolve(receipt);
+                  }, 15000);
+                })
+                .on('error', (error: Error) => {
+                  reject(error);
+                });
+            });
           })(),
         };
       },

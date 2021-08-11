@@ -13,13 +13,18 @@ interface IRoyaltyRes {
   data: any;
 }
 
+interface IRoyaltyData {
+  expireTime: number;
+  sign: string;
+}
+
 export const getRoyaltySign = createSmartAction<
-  RequestAction<IRoyaltyRes, IRoyaltyRes>,
+  RequestAction<IRoyaltyRes, IRoyaltyData>,
   [IRoyaltyload]
 >('getRoyaltySign', data => {
   return {
     request: {
-      url: '/generate_royalty_sign',
+      url: '/auth/generate_royalty_sign',
       method: 'post',
       data,
     },
@@ -28,10 +33,10 @@ export const getRoyaltySign = createSmartAction<
       driver: 'axios',
       asMutation: true,
       getData: data => {
-        if (data.code !== 1) {
+        if (data.code !== 200) {
           throw new Error('Unexpected response');
         }
-        return data;
+        return data.data;
       },
     },
   };

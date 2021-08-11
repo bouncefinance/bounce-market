@@ -47,7 +47,6 @@ export const RoyaltyDialog = ({
   const loading = false;
   const onSubmit = ({ royaltyRate }: { royaltyRate: string }) => {
     if (!royaltyRate || !address) return;
-    console.log(royaltyRate);
     const payload = {
       collection: collection,
       receiverAddress: address,

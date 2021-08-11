@@ -113,7 +113,6 @@ export const fetchOverview = createSmartAction<RequestAction<IItem[], IItem[]>>(
                 ),
               );
               if (fetchItemError) {
-                console.log('fetchItemError', fetchItemError);
                 return [];
               }
 
