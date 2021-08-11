@@ -121,7 +121,11 @@
       "Comicbooks": "漫画",
       "Comics": "漫画",
       "FineArts": "艺术",
-      "Sports": "体育"
+      "Sports": "体育",
+      "Collectible": "收藏品",
+      "Music": "音乐",
+      "Performer": "表演者",
+      "Metaverse": "玄幻世界"
     },
     "label": {
       "Set-up-date": "定时出售",
@@ -318,7 +322,11 @@
     "all": "所有",
     "art": "艺术",
     "sports": "体育",
-    "Comics": "漫画"
+    "Comics": "漫画",
+    "collectible": "收藏品",
+    "music": "音乐",
+    "performer": "表演者",
+    "metaverse": "玄幻世界"
   },
   "product-card": {
     "not-on-sale": "未出售",
