@@ -552,7 +552,8 @@
     "max-size": "Max size is {value, number}MB",
     "min": "Smallest value is {value}",
     "require-integer": "This value should be a whole number",
-    "required": "This field is required"
+    "required": "This field is required",
+    "invalid-name": "word limit: 32 characters. Please don't contain：` “ ’ ' ”"
   },
   "video-player": {
     "unsupported": "Sorry, your browser does not support embedded videos or uploaded video file types!"

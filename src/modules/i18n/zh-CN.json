@@ -544,7 +544,8 @@
     "max-size": "最大文件尺寸：{value, number}MB",
     "min": "最小值为Smallest value is {value}",
     "require-integer": "请输入整数",
-    "required": "此为必填项"
+    "required": "此为必填项",
+    "invalid-name": "名称限制32位并且“不允许包含· ` “ ’ ' ”"
   },
   "video-player": {
     "unsupported": "对不起，您的浏览器不支持嵌入式视频或上传的视频文件类型！"
