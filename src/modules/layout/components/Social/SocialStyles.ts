@@ -53,5 +53,8 @@ export const useSocialStyles = makeStyles<Theme>(theme => ({
     padding: theme.spacing(X_SPACING),
     fontWeight: 'normal',
     fontSize: 16,
+    '&:hover': {
+      opacity: 0.7,
+    },
   },
 }));

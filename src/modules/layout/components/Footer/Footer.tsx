@@ -53,6 +53,9 @@ const LinkList: React.FC<LinkListProps> = ({ listTitle, links }) => {
       fontWeight: 'normal',
       fontSize: 16,
       whiteSpace: 'nowrap',
+      '&:hover': {
+        opacity: 0.7,
+      },
     },
   }));
   const classes = useLinkListStyles();
