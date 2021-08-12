@@ -614,6 +614,7 @@ export const BuyNFT = () => {
                             category={item.category}
                             loading={loading}
                             maxQuantity={poolDetails.tokenAmount0}
+                            currentPrice={poolDetails.amountMax1}
                           />
                         </>
                       )}
@@ -647,6 +648,7 @@ export const BuyNFT = () => {
                           category={item.category}
                           loading={loading}
                           maxQuantity={poolDetails.quantity}
+                          currentPrice={poolDetails.price}
                         />
                       )}
                     </Mutation>

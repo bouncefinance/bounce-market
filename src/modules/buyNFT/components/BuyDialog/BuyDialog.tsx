@@ -1,9 +1,12 @@
 import { Box, Dialog, Grid, IconButton, Typography } from '@material-ui/core';
+import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
 import { AngleUpIcon } from 'modules/common/components/Icons/AngleUpIcon';
 import { CloseIcon } from 'modules/common/components/Icons/CloseIcon';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { getTokenSymbol } from 'modules/common/conts';
 import { InputField } from 'modules/form/components/InputField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
@@ -33,6 +36,7 @@ interface IBuyDialogProps {
   category: 'image' | 'video';
   loading?: boolean;
   maxQuantity?: number;
+  currentPrice: BigNumber;
 }
 
 export const BuyDialog = ({
@@ -48,8 +52,10 @@ export const BuyDialog = ({
   category,
   loading,
   maxQuantity,
+  currentPrice,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
+  const { chainId } = useAccount();
 
   const validateForm = useCallback(
     ({ quantity }: IBuyFormValues) => {
@@ -69,16 +75,32 @@ export const BuyDialog = ({
   );
 
   const renderForm = useCallback(
-    ({ handleSubmit, values, form }: FormRenderProps<IBuyFormValues>) => {
+    ({
+      handleSubmit,
+      values,
+      form,
+      submitting,
+    }: FormRenderProps<IBuyFormValues>) => {
       const isQuantityMinusDisabled = +values.quantity <= MIN_QUANTITY;
-
+      const showTotal = values.quantity
+        ? currentPrice.multipliedBy(values.quantity).dp(4).toString()
+        : '-';
       return (
         <>
           <Box mb={2}>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+              <Grid item xs={12} className={classes.inputWrapper}>
                 <Field
-                  fullWidth
+                  className={classes.priceInput}
+                  component={InputField}
+                  name="price"
+                  type="number"
+                  label={t('common.price')}
+                  initialValue={currentPrice.toString()}
+                  disabled
+                />
+                <Field
+                  className={classes.quantityInput}
                   component={InputField}
                   name="quantity"
                   type="number"
@@ -121,6 +143,13 @@ export const BuyDialog = ({
                   }}
                 />
               </Grid>
+
+              <Grid item xs={12} className={classes.totalWrapper}>
+                <h5>{t('buy-dialog.total')}</h5>
+                <h5>
+                  {showTotal} {getTokenSymbol(chainId)}
+                </h5>
+              </Grid>
             </Grid>
           </Box>
 
@@ -129,13 +158,14 @@ export const BuyDialog = ({
             size="large"
             onClick={handleSubmit}
             loading={loading}
+            disabled={submitting}
           >
             {t('buy-dialog.submit')}
           </Button>
         </>
       );
     },
-    [classes, loading, readonly],
+    [classes, loading, readonly, currentPrice, chainId],
   );
 
   return (

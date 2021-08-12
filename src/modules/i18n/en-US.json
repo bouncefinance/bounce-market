@@ -12,8 +12,11 @@
     "title": "Burn Token"
   },
   "buy-dialog": {
-    "submit": "Buy",
-    "title": "Buy now"
+    "title": "Checkout",
+    "submit": "Proceed to pay",
+    "buy": "Buy",
+    "buy-now": "Buy now",
+    "total": "Total"
   },
   "change-wallet": {
     "description": "Change network to Ethereum Mainnet, Binance Smart Chain, or Heco",
@@ -56,6 +59,7 @@
     "load-more": "Load more",
     "nothing-found": "Nothing found",
     "quantity": "Quantity",
+    "price": "Price",
     "read-more": "read more",
     "reset": "Reset",
     "restore": "Restore",

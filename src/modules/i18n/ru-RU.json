@@ -8,8 +8,11 @@
     "title": "Сжечь токены"
   },
   "buy-dialog": {
-    "submit": "Купить",
-    "title": "Купить сейчас"
+    "title": "Касса",
+    "buy": "Купить",
+    "buy-now": "Купить сейчас",
+    "submit": "Приступить к оплате",
+    "total": "Всего"
   },
   "change-wallet": {
     "description": "Перейти на Ethereum Mainnet, Binance Smart Chain или Heco",
@@ -56,6 +59,7 @@
     "load-more": "Показать больше",
     "nothing-found": "Ничего не найдено",
     "quantity": "Количество",
+    "price": "Цена",
     "read-more": "Больше информации",
     "reset": "Сброс настроек",
     "restore": "Восстановить",
