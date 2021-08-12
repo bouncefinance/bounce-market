@@ -6,6 +6,11 @@ import { Social } from '../Social';
 import { useFooterStyles } from './FooterStyles';
 
 import { uid } from 'react-uid';
+import {
+  defaultProfileTab,
+  ProfileRoutesConfig,
+} from 'modules/profile/ProfileRoutes';
+import { StatementRoutesConfig } from 'modules/statement/Routes';
 
 interface LinkListProps {
   listTitle: string;
@@ -77,16 +82,16 @@ const companyLinkObj = {
   listTitle: 'Company',
   links: [
     {
-      title: 'About',
-      url: 'http://www.baidu.com',
+      title: 'Our Story',
+      url: StatementRoutesConfig.OurStory.generatePath('OurStory'),
     },
     {
-      title: 'Our Mission',
-      url: 'http://www.baidu.com',
+      title: 'My Profile',
+      url: ProfileRoutesConfig.UserProfile.generatePath(defaultProfileTab),
     },
     {
       title: 'Terms of servise',
-      url: 'http://www.baidu.com',
+      url: StatementRoutesConfig.TermsOfService.generatePath('TermsOfService'),
     },
   ],
 };
@@ -96,15 +101,15 @@ const helpLinkObj = {
   links: [
     {
       title: 'Get Verified',
-      url: 'http://www.baidu.com',
+      url: 'https://ankrnetwork.typeform.com/to/UBxvAPWr',
     },
     {
       title: 'FAQ',
-      url: 'http://www.baidu.com',
+      url: 'https://docs.fangible.com/',
     },
     {
       title: 'Support',
-      url: 'http://www.baidu.com',
+      url: 'https://docs.fangible.com/fangible-support',
     },
   ],
 };
@@ -115,8 +120,8 @@ export const Footer = () => {
   return (
     <footer className={classes.root}>
       <Container maxWidth={false} className={classes.container}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={12} lg={4}>
+        <Grid container spacing={1} justify="center">
+          <Grid item xs={12} sm={12} md={12} lg={5}>
             <LogoByBounce />
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={2}>
@@ -128,7 +133,7 @@ export const Footer = () => {
           <Grid item xs={12} sm={4} md={4} lg={2}>
             <Social />
           </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={2}>
+          <Grid item xs={12} sm={12} md={12} lg={1}>
             <LocaleSwitcher />
           </Grid>
         </Grid>

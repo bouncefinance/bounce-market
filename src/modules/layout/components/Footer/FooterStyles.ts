@@ -6,7 +6,7 @@ export const useFooterStyles = makeStyles<Theme>(theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(8, 0, 3, 0),
+    padding: theme.spacing(8, 6, 3, 6),
     background: theme.palette.background.default,
     color: theme.palette.text.primary,
     borderTop: `1px solid ${fade(theme.palette.text.primary, 0.1)}`,
