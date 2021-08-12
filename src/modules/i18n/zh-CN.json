@@ -121,16 +121,6 @@
     "subCollection": "创建NFT时，需要先创建一个作品集。之后可在该作品集中创建对应标准的NFT。"
   },
   "create-nft": {
-    "channelOption": {
-      "Comicbooks": "漫画",
-      "Comics": "漫画",
-      "FineArts": "艺术",
-      "Sports": "体育",
-      "Collectible": "收藏品",
-      "Music": "音乐",
-      "Performer": "表演者",
-      "Metaverse": "玄幻世界"
-    },
     "label": {
       "Set-up-date": "定时出售",
       "channel": "类型",
@@ -330,7 +320,8 @@
     "collectible": "收藏品",
     "music": "音乐",
     "performer": "表演者",
-    "metaverse": "玄幻世界"
+    "metaverse": "虚拟现实",
+    "games": "游戏"
   },
   "product-card": {
     "not-on-sale": "未出售",

@@ -26,6 +26,7 @@ export enum Channel {
   Music = 'Music',
   Performer = 'Performer',
   Metaverse = 'Metaverse',
+  Games = 'Games',
 }
 
 export interface ICreateNFTPayload {

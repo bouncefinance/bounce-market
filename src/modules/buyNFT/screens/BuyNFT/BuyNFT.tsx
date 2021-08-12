@@ -594,6 +594,7 @@ export const BuyNFT = () => {
                             maxQuantity={poolDetails.tokenAmount0}
                             minIncrease={poolDetails.amountMinIncr1}
                             lastestBidAmount={poolDetails.lastestBidAmount}
+                            minAmount1={poolDetails.amountMin1}
                           />
                           <BuyDialog
                             name={item.itemName}
@@ -615,6 +616,7 @@ export const BuyNFT = () => {
                             loading={loading}
                             maxQuantity={poolDetails.tokenAmount0}
                             currentPrice={poolDetails.amountMax1}
+                            isPack={true}
                           />
                         </>
                       )}
@@ -649,6 +651,7 @@ export const BuyNFT = () => {
                           loading={loading}
                           maxQuantity={poolDetails.quantity}
                           currentPrice={poolDetails.price}
+                          isPack={false}
                         />
                       )}
                     </Mutation>

@@ -75,22 +75,9 @@ export const useBidDialogStyles = makeStyles<Theme>(theme => ({
   },
 
   inputNumber: {
-    width: '100%',
-
-    [theme.breakpoints.up('sm')]: {
-      width: 88,
-    },
-
+    padding: 0,
     '& .MuiOutlinedInput-adornedEnd': {
       paddingRight: 0,
-    },
-
-    '& input': {
-      [theme.breakpoints.up('sm')]: {
-        paddingLeft: theme.spacing(1),
-        paddingRight: theme.spacing(1),
-        textAlign: 'center',
-      },
     },
   },
 
@@ -131,5 +118,15 @@ export const useBidDialogStyles = makeStyles<Theme>(theme => ({
 
   highlyBraced: {
     lineHeight: '20px',
+  },
+
+  inputWrapper: {
+    display: 'grid',
+    gridTemplateColumns: '3fr 1fr',
+    gridColumnGap: 23,
+
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '2fr 1fr',
+    },
   },
 }));

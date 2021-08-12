@@ -37,6 +37,7 @@ interface IBuyDialogProps {
   loading?: boolean;
   maxQuantity?: number;
   currentPrice: BigNumber;
+  isPack?: boolean;
 }
 
 export const BuyDialog = ({
@@ -53,10 +54,10 @@ export const BuyDialog = ({
   loading,
   maxQuantity,
   currentPrice,
+  isPack = false,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
   const { chainId } = useAccount();
-
   const validateForm = useCallback(
     ({ quantity }: IBuyFormValues) => {
       const errors: FormErrors<IBuyFormValues> = {};
@@ -83,7 +84,9 @@ export const BuyDialog = ({
     }: FormRenderProps<IBuyFormValues>) => {
       const isQuantityMinusDisabled = +values.quantity <= MIN_QUANTITY;
       const showTotal = values.quantity
-        ? currentPrice.multipliedBy(values.quantity).dp(4).toString()
+        ? !isPack
+          ? currentPrice.multipliedBy(values.quantity).dp(4).toString()
+          : currentPrice.dp(4).toString()
         : '-';
       return (
         <>
@@ -165,7 +168,7 @@ export const BuyDialog = ({
         </>
       );
     },
-    [classes, loading, readonly, currentPrice, chainId],
+    [classes, loading, readonly, currentPrice, chainId, isPack],
   );
 
   return (

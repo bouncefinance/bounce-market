@@ -43,6 +43,10 @@ const categories = [
     value: ItemsChannel.metaverse,
     label: t('product-panel.metaverse'),
   },
+  {
+    value: ItemsChannel.games,
+    label: t('product-panel.games'),
+  },
 ];
 
 const sortVariants = [
