@@ -47,6 +47,8 @@ export const fetchActivities = createSmartAction<
           amount: new BigNumber(Web3.utils.fromWei(item.amount.toString())), // TODO: need provide decimal
           ctime: item.ctime * 1000,
           category: item.category,
+          tokenid: item.tokenid,
+          contractaddress: item.contractaddress,
         };
       });
     },
