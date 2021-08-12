@@ -8,8 +8,11 @@
     "title": "Сжечь токены"
   },
   "buy-dialog": {
-    "submit": "Купить",
-    "title": "Купить сейчас"
+    "title": "Касса",
+    "buy": "Купить",
+    "buy-now": "Купить сейчас",
+    "submit": "Приступить к оплате",
+    "total": "Всего"
   },
   "change-wallet": {
     "description": "Перейти на Ethereum Mainnet, Binance Smart Chain или Heco",
@@ -56,6 +59,7 @@
     "load-more": "Показать больше",
     "nothing-found": "Ничего не найдено",
     "quantity": "Количество",
+    "price": "Цена",
     "read-more": "Больше информации",
     "reset": "Сброс настроек",
     "restore": "Восстановить",
@@ -117,16 +121,6 @@
     "subCollection": "При создании первого НМТ необходимо создать коллекцию. При следующем создании вы можете поместить НМТ в уже созданную коллекцию."
   },
   "create-nft": {
-    "channelOption": {
-      "Comicbooks": "Комикс",
-      "Comics": "Комикс",
-      "FineArts": "Изобразительное искусство",
-      "Sports": "Спорт",
-      "Collectible": "Коллекционирование",
-      "Music": "Музыка",
-      "Performer": "Исполнитель",
-      "Metaverse": "Метаверс"
-    },
     "label": {
       "Set-up-date": "Установить дату и время",
       "channel": "Канал",
@@ -321,7 +315,7 @@
     "collectible": "Коллекционирование",
     "music": "Музыка",
     "performer": "Исполнитель",
-    "metaverse": "Метаверс"
+    "games": "Игры"
   },
   "product-card": {
     "burn": "Сжечь токены",

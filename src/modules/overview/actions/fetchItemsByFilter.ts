@@ -12,6 +12,7 @@ export enum ItemsChannel {
   music = 'Music',
   performer = 'Performer',
   metaverse = 'Metaverse',
+  games = 'Games',
 }
 
 export enum NFTCategoryType {

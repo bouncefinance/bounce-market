@@ -10,7 +10,7 @@ import { CopyToClip } from 'modules/common/components/CopyToClip';
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { SocialShare } from 'modules/common/components/SocialShare';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import { truncateLongName } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
@@ -66,7 +66,7 @@ export const InfoPanel = ({
       <Grid container spacing={3} alignItems="center">
         <Grid item xs={12} sm="auto">
           <Tooltip title={name} arrow placement="top">
-            <Typography variant="h2">{truncateWalletAddr(name)}</Typography>
+            <Typography variant="h2">{truncateLongName(name)}</Typography>
           </Tooltip>
           {email && <Typography className={classes.url}>{email}</Typography>}
         </Grid>

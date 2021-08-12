@@ -12,8 +12,11 @@
     "title": "Burn Token"
   },
   "buy-dialog": {
-    "submit": "Buy",
-    "title": "Buy now"
+    "title": "Checkout",
+    "submit": "Proceed to pay",
+    "buy": "Buy",
+    "buy-now": "Buy now",
+    "total": "Total"
   },
   "change-wallet": {
     "description": "Change network to Ethereum Mainnet, Binance Smart Chain, or Heco",
@@ -56,6 +59,7 @@
     "load-more": "Load more",
     "nothing-found": "Nothing found",
     "quantity": "Quantity",
+    "price": "Price",
     "read-more": "read more",
     "reset": "Reset",
     "restore": "Restore",
@@ -117,16 +121,6 @@
     "subCollection": "When creating your first NFT, you need to create a collection. For next creation, you can put the NFT in an already created collection."
   },
   "create-nft": {
-    "channelOption": {
-      "Comicbooks": "Comic",
-      "Comics": "Comics",
-      "FineArts": "Fine arts",
-      "Sports": "Sports",
-      "Collectible": "Collectible",
-      "Music": "Music",
-      "Performer": "Performer",
-      "Metaverse": "Metaverse"
-    },
     "label": {
       "Set-up-date": "Set up date and time",
       "channel": "Channel",
@@ -167,7 +161,7 @@
     "item-amount-tip": "Total supply",
     "dialog": {
       "footnote": "Bids placed in auction cannot be withdrawn",
-      "input-info": "Minimum bid {value} {currency}"
+      "input-info": "You must bid at least {value} {currency}"
     },
     "enter-a-bid": "Enter a Bid",
     "history": {
@@ -327,7 +321,8 @@
     "collectible": "Collectible",
     "music": "Music",
     "performer": "Performer",
-    "metaverse": "Metaverse"
+    "metaverse": "Metaverse",
+    "games": "Games"
   },
   "product-card": {
     "burn": "Burn token",
