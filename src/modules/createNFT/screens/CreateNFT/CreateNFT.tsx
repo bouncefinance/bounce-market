@@ -55,7 +55,7 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
   if (!payload.name) {
     errors.name = t('validation.required');
   } else {
-    const reg = /^[^(`|'|"|“|‘)]{0,32}$/g;
+    const reg = /^[^`'"“‘]{0,32}$/g;
     if (!reg.test(payload.name)) {
       errors.name = t('validation.invalid-name');
     }

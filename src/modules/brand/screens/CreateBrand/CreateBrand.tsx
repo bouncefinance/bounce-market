@@ -46,7 +46,7 @@ const validateCreateBrand = (payload: ICreateBrand) => {
   if (!payload.brandName) {
     errors.brandName = t('validation.required');
   } else {
-    const reg = /^[^(`|'|"|“|‘)]{0,32}$/g;
+    const reg = /^[^`'"“‘]{0,32}$/g;
     if (!reg.test(payload.brandName)) {
       errors.brandName = t('validation.invalid-name');
     }
