@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography, useTheme } from '@material-ui/core';
+import { Box, Typography, useTheme } from '@material-ui/core';
 import { Img } from 'modules/uiKit/Img';
 import classNames from 'classnames';
 import { useDispatchRequest } from '@redux-requests/react';
