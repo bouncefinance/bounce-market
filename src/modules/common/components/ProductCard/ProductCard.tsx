@@ -39,6 +39,7 @@ export interface IProductCardProps
   isOnSeller?: boolean;
   isBidderClaimed?: boolean;
   isCreatorClaimed?: boolean;
+  reload?: () => void;
 }
 
 export const ProductCard = ({
@@ -55,6 +56,7 @@ export const ProductCard = ({
   queryAction,
   maxQuantity,
   state,
+  reload,
   ...restProps
 }: IProductCardProps) => {
   const {
@@ -119,6 +121,7 @@ export const ProductCard = ({
         ),
       ).then(({ error }) => {
         closeTransfer();
+        reload?.();
         if (!error && queryAction) {
           queryAction();
         }
@@ -131,6 +134,7 @@ export const ProductCard = ({
       dispatch(burnToken(contractAddress, standard, id, data.quantity)).then(
         ({ error }) => {
           closeBurn();
+          reload?.();
           if (!error && queryAction) {
             queryAction();
           }
@@ -154,6 +158,7 @@ export const ProductCard = ({
         auctionType={auctionType}
         state={state}
         poolId={poolId}
+        reload={reload}
         {...restProps}
       />
       <Mutation type={transferToken.toString()}>

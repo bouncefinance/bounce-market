@@ -9,7 +9,17 @@ let provider: any;
 let topBalance: BigNumber;
 let topAddress: string;
 let topChainId: number;
-export const useWeb3React = () => {
+
+export interface IWeb3React {
+  web3: Web3;
+  address: string;
+  account: string;
+  loading: boolean;
+  provider: any;
+  chainId: number;
+  balance: BigNumber;
+}
+export const useWeb3React = (): IWeb3React => {
   const [address, setAddress] = useState<string>(topAddress);
   const [chainId, setChainId] = useState<number>(topChainId);
   const [balance, setBalance] = useState<BigNumber>(topBalance);
@@ -23,7 +33,13 @@ export const useWeb3React = () => {
       provider = _provider;
     }
     const _address = (await web3.eth.getAccounts())[0];
-    const balance = await web3.eth.getBalance(_address);
+    let balance: string;
+    try {
+      // TODO Rpc may be slow
+      balance = await web3.eth.getBalance(_address);
+    } catch (error) {
+      balance = '0';
+    }
     const balanceBigNumber = new BigNumber(web3.utils.fromWei(balance));
     topBalance = balanceBigNumber;
     topAddress = _address;

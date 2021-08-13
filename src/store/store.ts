@@ -20,7 +20,11 @@ import { NotificationActions } from '../modules/notification/store/NotificationA
 import { notificationSlice } from '../modules/notification/store/notificationSlice';
 import { rootSaga } from './rootSaga';
 import { i18nPersistConfig } from './webStorageConfigs';
-import { BlockchainNetworkId, ZERO_ADDRESS } from '../modules/common/conts';
+import {
+  BlockchainNetworkId,
+  DefaultTokenSymbol,
+  ZERO_ADDRESS,
+} from '../modules/common/conts';
 import { Address } from '../modules/common/types/unit';
 import { TokenSymbol } from '../modules/common/types/TokenSymbol';
 import { disconnect } from 'modules/account/store/actions/disconnect';
@@ -150,7 +154,7 @@ export function getTokenByDriver(
     }
   }
 
-  return TokenSymbol.BNB;
+  return DefaultTokenSymbol;
 }
 
 const mainAxios = {

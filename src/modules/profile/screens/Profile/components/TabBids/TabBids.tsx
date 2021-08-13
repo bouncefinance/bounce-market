@@ -11,15 +11,18 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { fetchMyBids, IPoolNftItem } from 'modules/profile/actions/fetchSale';
+import { fetchMyBids } from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
 import { usePoolList } from 'modules/common/hooks/usePoolList';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { IPoolNftItem } from 'modules/api/common/poolType';
 
-export const TabBids = function () {
+export const TabBids: React.FC<{
+  reload?: () => void;
+}> = function ({ reload }) {
   const { address } = useAccount();
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMyBids.toString(),
@@ -54,6 +57,7 @@ export const TabBids = function () {
 
             return (
               <ProductCard
+                reload={reload}
                 id={item.tokenid}
                 poolId={item.pool_id || 0}
                 auctionType={item.poolType}

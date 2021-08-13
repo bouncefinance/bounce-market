@@ -70,7 +70,7 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
           ))
         )}
       </Grid>
-      {!loading && brands?.length === 0 && (
+      {!loading && brands?.length === 0 && isOther && (
         <NoItems
           href={MarketRoutesConfig.Market.generatePath()}
           title={
@@ -79,9 +79,7 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
               : t('profile.no-items.collection-title')
           }
           descr={
-            isOther
-              ? t('profile.no-items.other-collection-description')
-              : t('profile.no-items.collection-description')
+            isOther ? t('profile.no-items.other-collection-description') : ''
           }
         />
       )}

@@ -108,9 +108,6 @@ export const PublishNFTComponent = ({
   const theme = useTheme();
   const [purchasePriceChecked, setPurchasePriceChecked] = useState(true);
   const [reservePriceChecked, setReservePriceChecked] = useState(true);
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
-  });
 
   const togglePurchasePriceChecked = useCallback(() => {
     setPurchasePriceChecked(prev => !prev);
@@ -304,8 +301,7 @@ export const PublishNFTComponent = ({
     ],
   );
 
-  const isVerify =
-    profileInfo && profileInfo?.identity === UserRoleEnum.Verified;
+  const isVerify = identity === UserRoleEnum.Verified;
   const renderForm = ({
     handleSubmit,
     values,

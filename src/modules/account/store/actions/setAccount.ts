@@ -28,6 +28,7 @@ export const setAccount = createSmartAction(
       promise: (async function () {})(),
     },
     meta: {
+      asQuery: true,
       onRequest: (
         request: { promise: Promise<any> },
         action: RequestAction,
@@ -58,7 +59,13 @@ export const setAccount = createSmartAction(
 
             const token = authResponse.data.data.token;
             const chainId = await web3.eth.getChainId();
-            const balance = await web3.eth.getBalance(address);
+            let balance: string;
+            try {
+              // TODO Rpc may be slow
+              balance = await web3.eth.getBalance(address);
+            } catch (error) {
+              balance = '0';
+            }
             setJWTToken(token);
             return {
               token,

@@ -34,6 +34,8 @@ import { ClaimFunds } from './claimFunds';
 import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
 import { Timer } from './Timer';
+import { useEffect } from 'react';
+import { useCount } from 'modules/common/hooks/useTimer';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -89,6 +91,7 @@ export interface IProductCardComponentProps {
   isBidderClaimed?: boolean;
   isCreatorClaimed?: boolean;
   soldData?: ISoldData;
+  reload?: () => void;
 }
 
 export const ProductCardComponent = ({
@@ -131,6 +134,7 @@ export const ProductCardComponent = ({
   soldData,
   isBidderClaimed = false,
   isCreatorClaimed = false,
+  reload,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect } = useAccount();
   const classes = useProductCardStyles();
@@ -269,12 +273,17 @@ export const ProductCardComponent = ({
     ],
   );
 
+  const [now, setNow] = useState(Date.now());
+  const count = useCount(2e3);
+  useEffect(() => {
+    setNow(Date.now());
+  }, [count]);
+
   const isAuction =
     auctionType === AuctionType.EnglishAuction ||
     auctionType === AuctionType.EnglishAuction_Timing;
-  const inAuction =
-    openAt && closeAt && +openAt < Date.now() && +closeAt > Date.now();
-  const auctionEnd = closeAt && +closeAt <= Date.now();
+  const inAuction = openAt && closeAt && +openAt < now && +closeAt > now;
+  const auctionEnd = closeAt && +closeAt <= now;
   const myPriceNumber = myBidderAmount || 0;
   // Figma 4
   const isOutBid = Boolean(
@@ -324,7 +333,7 @@ export const ProductCardComponent = ({
         bidTopPrice < bidsReserveAmount,
     ) || Boolean(auctionEnd && bidTopPrice === 0);
 
-  const isPutSaleTimeCancel = Boolean(openAt && +openAt > Date.now());
+  const isPutSaleTimeCancel = Boolean(openAt && +openAt > now);
   const isSellerCancel = Boolean(
     !isPutSaleTimeCancel && isOnSeller && !isCreatorClaimed && !isAuction,
   );
@@ -408,12 +417,20 @@ export const ProductCardComponent = ({
           <div className={classes.rightWrapper}>
             <div>
               {isCancelTimePut ? (
-                <CancelPutTime auctionType={auctionType} id={poolId} />
+                <CancelPutTime
+                  auctionType={auctionType}
+                  id={poolId}
+                  reload={reload}
+                />
               ) : (
                 <></>
               )}
               {isSellerCancel && (
-                <CancelPutOnSale auctionType={auctionType} id={poolId} />
+                <CancelPutOnSale
+                  auctionType={auctionType}
+                  id={poolId}
+                  reload={reload}
+                />
               )}
 
               {!isCancelTimePut && !isSellerCancel && (
@@ -424,6 +441,7 @@ export const ProductCardComponent = ({
                       id={poolId}
                       type={BidsType.LOST}
                       isBidder={isBidder}
+                      reload={reload}
                     />
                   )}
                   {isWon && (
@@ -432,6 +450,7 @@ export const ProductCardComponent = ({
                       id={poolId}
                       type={BidsType.WON}
                       isBidder={isBidder}
+                      reload={reload}
                     />
                   )}
                   {isSellerClaimMoney && (
@@ -441,6 +460,7 @@ export const ProductCardComponent = ({
                       type={BidsType.LOST}
                       isBidder={false}
                       text={t('product-card.claim-funds')}
+                      reload={reload}
                     />
                   )}
                   {isSellerClaimNft && (
@@ -450,6 +470,7 @@ export const ProductCardComponent = ({
                       type={BidsType.LOST}
                       isBidder={false}
                       text={t('product-card.claim-back')}
+                      reload={reload}
                     />
                   )}
                   {isBidder && isBidderClaimed && (

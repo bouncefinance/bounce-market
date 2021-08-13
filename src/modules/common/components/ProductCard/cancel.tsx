@@ -13,7 +13,6 @@ import {
   BounceEnglishAuctionNFTTime,
   BounceFixedSwapNFTTime,
 } from 'modules/web3/contracts';
-import { fetchAllNftByUser } from 'modules/profile/actions/fetchAllNftByUser';
 import { useDispatchRequest } from '@redux-requests/react';
 import {
   getEnglishAuctionContract,
@@ -27,8 +26,8 @@ import { fixedSwapCancel } from 'modules/overview/actions/fixedSwapCancel';
 export const CancelPutTime: React.FC<{
   id?: number;
   auctionType?: AuctionType;
-}> = ({ id, auctionType }) => {
-  const dispatchRequest = useDispatchRequest();
+  reload?: () => void;
+}> = ({ id, auctionType, reload: refresh }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const classes = useProductCardStyles();
@@ -39,9 +38,6 @@ export const CancelPutTime: React.FC<{
   };
   const onClick = () => {
     setOpen(true);
-  };
-  const refresh = () => {
-    dispatchRequest(fetchAllNftByUser(account));
   };
   const onSuccess = () => {
     let contract;
@@ -116,15 +112,10 @@ export const CancelPutTime: React.FC<{
           <DialogContentText>{t('cancel-timer.inner')}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="outlined"
-            disable={loading}
-            loading={loading}
-            onClick={handleClose}
-          >
+          <Button variant="outlined" disabled={loading} onClick={handleClose}>
             {t('common.no')}
           </Button>
-          <Button onClick={onSuccess} loading={loading} disable={loading}>
+          <Button onClick={onSuccess} loading={loading} disabled={loading}>
             {t('common.yes')}
           </Button>
         </DialogActions>
@@ -136,15 +127,13 @@ export const CancelPutTime: React.FC<{
 export const CancelPutOnSale: React.FC<{
   id?: number;
   auctionType?: AuctionType;
-}> = ({ id, auctionType }) => {
+  reload?: () => void;
+}> = ({ id, auctionType, reload: refresh }) => {
   const dispatchRequest = useDispatchRequest();
   const classes = useProductCardStyles();
-  const { account } = useWeb3React();
+  // const { account } = useWeb3React();
   const [loading, setLoading] = useState(false);
 
-  const refresh = () => {
-    dispatchRequest(fetchAllNftByUser(account));
-  };
   const onClick = () => {
     setLoading(true);
     dispatchRequest(

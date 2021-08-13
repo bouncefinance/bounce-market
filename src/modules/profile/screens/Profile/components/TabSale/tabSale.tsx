@@ -11,7 +11,7 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { fetchMySale, IPoolNftItem } from 'modules/profile/actions/fetchSale';
+import { fetchMySale } from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
@@ -19,15 +19,17 @@ import { t } from 'modules/i18n/utils/intl';
 import { getPoolKey, isFixedSwap } from 'modules/common/utils/poolHelps';
 import { usePoolList } from 'modules/common/hooks/usePoolList';
 import { useMemo } from 'react';
+import { IPoolNftItem } from 'modules/api/common/poolType';
 
 const getStandardPoolObj = (e: IPoolNftItem) => ({
   poolId: e.poolid,
   poolType: e.poolType,
 });
 
-export const TabSale: React.FC<{ isOther?: boolean }> = function ({
-  isOther = false,
-}) {
+export const TabSale: React.FC<{
+  isOther?: boolean;
+  reload?: () => void;
+}> = function ({ isOther = false, reload }) {
   const { data, loading } = useQuery<IPoolNftItem[]>({
     type: fetchMySale.toString(),
   });
@@ -75,6 +77,7 @@ export const TabSale: React.FC<{ isOther?: boolean }> = function ({
 
             return (
               <ProductCard
+                reload={reload}
                 id={item.tokenid}
                 poolId={item.poolid || 0}
                 auctionType={item.poolType}

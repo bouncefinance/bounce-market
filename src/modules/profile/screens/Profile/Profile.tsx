@@ -119,6 +119,12 @@ export const Profile = () => {
     updateData(tab);
   }, [updateData, tab]);
 
+  const reload = (value: ProfileTab) => () => {
+    setTimeout(() => {
+      updateData(value);
+    }, 100);
+  };
+
   const tabs = useMemo(
     () => [
       {
@@ -256,11 +262,11 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>
-          <TabSale />
+          <TabSale reload={reload(ProfileTab.sells)} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.bids}>
-          <TabBids />
+          <TabBids reload={reload(ProfileTab.bids)} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>

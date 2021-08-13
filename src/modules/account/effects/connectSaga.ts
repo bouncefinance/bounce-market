@@ -10,8 +10,6 @@ import { connect, connectIsFinished } from '../store/actions/connect';
 import { disconnect } from '../store/actions/disconnect';
 import { ISetAccountData, setAccount } from '../store/actions/setAccount';
 import { updateAccount } from '../store/actions/updateAccount';
-import { fetchAllNftByUser } from '../../profile/actions/fetchAllNftByUser';
-// TODO: Check disconnection, switch chain, switch account
 
 enum WalletEventType {
   'AccountChanged' = 'AccountChanged',
@@ -92,17 +90,14 @@ export function* onConnectWallet(data?: {
   payload?: { provider: any; address: string };
 }) {
   let provider;
-  let address;
   if (!data?.payload) {
     const { action, error } = yield putResolve(setAccount());
     if (error || action.type === setAccount.toString() + '_ERROR') {
       return;
     }
     provider = action.meta.provider;
-    address = action.response.data.address;
   } else {
     provider = data.payload.provider;
-    address = data.payload.address;
   }
 
   yield put(fetchProfileInfo());
@@ -112,7 +107,6 @@ export function* onConnectWallet(data?: {
   }
 
   yield put(connectIsFinished());
-  yield put(fetchAllNftByUser(address));
 
   const channel = createEventChannel(provider);
   while (true) {
