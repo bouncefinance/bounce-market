@@ -31,8 +31,8 @@ export const DatePicker: React.FC<{
     defaultYear = new Date().getFullYear(),
     defaultDay = new Date().getDate(),
     defaultMonth = new Date().getMonth() + 1,
-    defaultHours = 0,
-    defaultMinutes = 0,
+    defaultHours = new Date().getHours(),
+    defaultMinutes = new Date().getMinutes(),
   }) => {
     const classes = useDatePickerStyles();
     const [year, setYear] = useState(defaultYear);
