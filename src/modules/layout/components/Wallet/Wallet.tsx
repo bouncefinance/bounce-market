@@ -9,12 +9,12 @@ import { useIsXLUp } from 'modules/themes/useTheme';
 import { Button } from 'modules/uiKit/Button';
 import React, { useRef } from 'react';
 import { FocusOn } from 'react-focus-on';
-import { setAccount } from '../../../account/store/actions/setAccount';
 import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 import { WalletCard } from '../WalletCard';
 import { useWalletDropdown } from './useWalletDropdown';
 import { useWalletStyles } from './useWalletStyles';
 import { getNativeTokenSymbol } from '../../../common/conts';
+import { useWeb3Balance } from 'modules/account/hooks/useWeb3React';
 
 interface IWalletProps {
   address?: string;
@@ -45,12 +45,7 @@ export const WalletComponent = ({
 
   const controlRef = useRef<HTMLButtonElement>(null);
 
-  const {
-    data: { balance },
-  } = useQuery({
-    type: setAccount.toString(),
-    action: setAccount,
-  });
+  const { balance } = useWeb3Balance();
 
   return (
     <>

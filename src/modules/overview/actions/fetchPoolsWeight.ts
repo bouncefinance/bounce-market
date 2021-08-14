@@ -1,25 +1,8 @@
-import { RequestAction, RequestActionMeta } from '@redux-requests/core';
-import { AuctionType, AuctionTypeKeys } from 'modules/api/common/auctionType';
-import { auctionTypeMap } from 'modules/api/common/poolType';
+import { RequestAction } from '@redux-requests/core';
+import { IPoolNftItem, OriginIPoolNftItem } from 'modules/api/common/poolType';
+import { IResponse } from 'modules/common/types/ResponseData';
+import { mapPoolData } from 'modules/pools/actions/map';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-
-interface IApiFetchPoolsWeightData {
-  code: 1;
-  data: {
-    pool_id: number;
-    pool_weight: number;
-    auctiontype: AuctionTypeKeys;
-  }[];
-  total: number;
-}
-
-interface IFetchPoolsWeightData {
-  list: {
-    poolId: number;
-    poolWeight: number;
-    auctionType: AuctionType;
-  }[];
-}
 
 interface IFetchPoolsWeightParams {
   limit: number;
@@ -27,34 +10,25 @@ interface IFetchPoolsWeightParams {
   orderweight: number;
 }
 
+export interface IOverviewItem extends IPoolNftItem {
+  description: string;
+}
+
 export const fetchPoolsWeight = createSmartAction<
-  RequestAction<IApiFetchPoolsWeightData, IFetchPoolsWeightData>
->(
-  'fetchPoolsWeight',
-  (
-    params: IFetchPoolsWeightParams,
-    meta?: RequestActionMeta<IApiFetchPoolsWeightData, IFetchPoolsWeightData>,
-  ) => ({
-    request: {
-      url: '/get_recomend_pools',
-      method: 'get',
+  RequestAction<IResponse<OriginIPoolNftItem[]>, IOverviewItem>
+>('fetchPoolsWeight', (params: IFetchPoolsWeightParams, meta?: any) => ({
+  request: {
+    url: '/get_recomend_pools',
+    method: 'get',
+    params,
+  },
+  meta: {
+    auth: true,
+    driver: 'axios',
+    asMutation: false,
+    getData: data => {
+      return mapPoolData(data?.data ?? []);
     },
-    meta: {
-      auth: true,
-      driver: 'axios',
-      asMutation: false,
-      getData: data => {
-        return {
-          list: data.data?.map(item => {
-            return {
-              poolId: item.pool_id,
-              poolWeight: item.pool_weight,
-              auctionType: auctionTypeMap[item.auctiontype],
-            };
-          }),
-        };
-      },
-      ...meta,
-    },
-  }),
-);
+    ...meta,
+  },
+}));

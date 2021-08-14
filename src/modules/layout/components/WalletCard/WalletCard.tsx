@@ -56,10 +56,7 @@ export const WalletCard = ({
             {logo && ENABLE_CURRENCY_ICON ? (
               <Avatar src={logo} className={classes.walletLogo} />
             ) : null}
-            {t('unit.custom-unit', {
-              value: balance.toFixed(3, 1),
-              unit: currency,
-            })}
+            {balance.toFormat(5)} {currency}
           </Box>
         </Box>
       ) : null}

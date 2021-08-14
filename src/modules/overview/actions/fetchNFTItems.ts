@@ -5,10 +5,7 @@ import {
 } from '@redux-requests/core';
 import { PoolState } from 'modules/api/common/AuctionState';
 import { auctionTypeMap } from 'modules/api/common/poolType';
-import {
-  queryAccountInfo,
-  UserRoleType,
-} from 'modules/common/actions/queryAccountInfo';
+import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
 import { ITradePool_V2, PoolCategoryType } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
 import { Store } from 'redux';
@@ -86,6 +83,9 @@ export const mapNFTItem = (
     endDate: item.close_at ? new Date(item.close_at * 1e3) : undefined,
     soldAmount: item.swapped_amount0,
     supplyAmount: item.token_amount0,
+    ownerAvatar: item?.creatorurl,
+    ownerName: item?.username,
+    identity: item?.identity,
   };
 };
 
@@ -153,25 +153,7 @@ export const fetchNFTItems = createSmartAction<
               mapNFTItem(item, poolsData?.tokenSymbol ?? TokenSymbol.BNB),
             );
 
-          const tradePoolsWithOwnerImg: INFTItem[] = await Promise.all(
-            tradePools.map(async item => {
-              const response = await store.dispatchRequest(
-                queryAccountInfo(
-                  { accountAddress: item.owneraddress },
-                  { requestKey: `${item.poolId}`, silent: true },
-                ),
-              );
-
-              return {
-                ...item,
-                ownerAvatar: response.data?.imgUrl,
-                ownerName: response.data?.username,
-                identity: response.data?.identity,
-              };
-            }),
-          );
-
-          queryResponse.items = tradePoolsWithOwnerImg;
+          queryResponse.items = tradePools;
           queryResponse.total = poolsData.total;
 
           return queryResponse;

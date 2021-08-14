@@ -7,14 +7,17 @@ import { ChangeWallet } from '../ChangeWallet';
 interface IPrivateRouteProps extends RouteProps {}
 
 export const PrivateRoute = (props: IPrivateRouteProps) => {
-  const { isConnected, isChainSupported } = useAccount();
+  const { isConnected, isChainSupported, loading } = useAccount();
 
-  if (!isConnected) {
+  if (loading) {
+    return <></>;
+  }
+  if (!isConnected && !loading) {
     // TODO Update placeholder https://ankrnetwork.atlassian.net/browse/FD-3422
     return <Route {...props} component={ConnectWallet} />;
   }
 
-  if (isConnected && !isChainSupported) {
+  if (isConnected && !isChainSupported && !loading) {
     return <Route {...props} component={ChangeWallet} />;
   }
 

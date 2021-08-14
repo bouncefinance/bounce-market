@@ -1,5 +1,6 @@
 import { PoolState } from 'modules/api/common/AuctionState';
 import { AuctionTypeKeys } from 'modules/api/common/auctionType';
+import { UserRoleType } from '../actions/queryAccountInfo';
 import { TokenSymbol } from '../types/TokenSymbol';
 
 export interface ITradeAuction {
@@ -65,6 +66,7 @@ export interface ITradePool_V2 {
   close_at: number;
   swapped_amount0: number;
   token_amount0: number;
+  identity: UserRoleType;
 }
 
 export interface IGetPoolsApi {

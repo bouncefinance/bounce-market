@@ -10,41 +10,14 @@ interface IFetchPriceBySymbolParams {
 }
 
 interface IApiFetchPriceBySymbolDetails {
-  data: [
-    {
-      coin_code: 'binance-coin' | 'auction' | 'bitcoin';
-      exchange_code: 'binance';
-      name: string; // 'Binance'
-      name_zh: string;
-      pair1: string;
-      pair2: 'USDT';
-      price: number;
-      vol: number;
-      volume: number;
-      accounting: number;
-      update_time: string; //'刚刚'
-      logo: string;
-      price_usd: number;
-      symbol_pair: string;
-      exchange_url: string;
-      is_focus: number;
-      type: number;
-      exclude: number;
-      ads: [];
-      adpairs: [];
-      exrank: number;
-      url: string;
-      tickerid: string;
-      open_interest: number;
-      open_interest_ratio: number;
-      showkline: number;
-      changerate: number;
-    },
-  ];
-  maxpage: number;
-  currpage: number;
-  code: number | 200;
-  msg: string | 'success';
+  data: {
+    basecoin: string;
+    prices: {
+      [key in string]: number;
+    };
+    code: number | 200;
+    msg: string | 'success';
+  };
 }
 
 interface IFetchPriceBySymbolDetails {
@@ -81,16 +54,23 @@ export const fetchPriceBySymbol = createSmartAction<
     }
 
     const symbol = (() => {
-      if (tokenSymbol === 'BNB') {
-        return 'binance-coin';
-      } else if (tokenSymbol === 'AUCTION') {
+      if (tokenSymbol === TokenSymbol.BNB) {
+        return 'BNB';
+      }
+      if (tokenSymbol === TokenSymbol.AUCTION) {
         return 'auction';
-      } else if (tokenSymbol === 'BTC') {
-        return 'bitcoin';
-      } else if (tokenSymbol === 'ETH') {
-        return 'ethereum';
-      } else if (tokenSymbol === 'MATIC') {
-        return 'matictoken';
+      }
+      // if (tokenSymbol === TokenSymbol.BTC) {
+      //   return 'bitcoin';
+      // }
+      if (tokenSymbol === TokenSymbol.ETH) {
+        return 'ETH';
+      }
+      if (tokenSymbol === TokenSymbol.MATIC) {
+        return 'MATIC';
+      }
+      if (tokenSymbol === TokenSymbol.HT) {
+        return 'HT';
       }
 
       return tokenSymbol;
@@ -98,12 +78,10 @@ export const fetchPriceBySymbol = createSmartAction<
 
     return {
       request: {
-        url: 'https://dncapi.bqrank.net/api/v2/Coin/market_ticker',
-        method: 'get',
-        params: {
-          page: 1,
-          pagesize: 1,
-          code: symbol,
+        url: '/get_symbols_price',
+        method: 'post',
+        data: {
+          codes: [symbol],
         },
       },
       meta: {
@@ -111,7 +89,7 @@ export const fetchPriceBySymbol = createSmartAction<
         asMutation: false,
         getData: ({ data }) => {
           return {
-            priceUsd: new BigNumber(data[0].price_usd),
+            priceUsd: new BigNumber(data.prices[symbol]),
             decimals: NATIVE_TOKEN_DECIMALS,
           };
         },
