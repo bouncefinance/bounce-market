@@ -28,12 +28,14 @@ export const fetchOwned = createSmartAction<
         console.error('getmyowneditems:', data?.msg ?? 'Unexpected error');
         return [];
       }
-      return data.data?.map(item => {
-        return {
-          ...item,
-          isLike: Boolean(item.mylikecount),
-        };
-      });
+      return (
+        data.data?.map(item => {
+          return {
+            ...item,
+            isLike: Boolean(item.mylikecount),
+          };
+        }) ?? []
+      );
     },
   },
 }));
