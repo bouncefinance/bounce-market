@@ -301,8 +301,7 @@
       }
     },
     "royalty": {
-      "rate-desc": "{rate} of the sale will go to its creator.",
-      "rate-desc-tip": "This royalty fee is set by thecreator, which can range from 0.1% to 6.5%."
+      "rate-desc": "A {rate} royalty will be issued to the Creator."
     }
   },
   "language": {
@@ -491,7 +490,7 @@
     "royalty": {
       "platform-fee": "Fangible fee",
       "royalty-fee": "Royalty fee",
-      "royalty-fee-tip": "Fangible supports creators. This royalty fee is directly sent out to the creator of this NFT once it is sold.",
+      "royalty-fee-tip": "Royalty fees are transferred to the NFT creator immediately after a sale.",
       "receive-fs": "For each edition, you will receive",
       "receive-ea": "Your earning will be based on the transaction price. "
     }
@@ -562,12 +561,13 @@
     "royalties": "Royalties",
     "change": "Change",
     "royalty-rate": "Royalty rate",
-    "royalty-rate-tip": "A royalty rate of 0.1% to 6.5% can be set and changed as you want, but the change will take effect in around 30 minutes.",
-    "royalty-desc": "Once you’ve set a royalty rate for your collection, payouts for your created and sold NFTs will show here. Your wallet address is used by default to receive the royalties, which are automatically sent out each time a transaction is completed.",
+    "royalty-rate-tip": "Select a royalty fee between 0.1% - 6.5% for your collection. Royalties take about 30 minutes to be applied by the smart contract.",
+    "royalty-desc": "Once the royalty rate is set, payouts will be shwon here. The wallet address associated with your account will receive the royalties in real-time.",
+    "royalty-change-tip": "Royalty rate is changed.",
     "table": {
       "item": "Item",
       "price": "Price",
-      "quantity":"Quantity",
+      "quantity": "Quantity",
       "fee": "Fee Earned",
       "payout": "Payout",
       "empty": "You have not received any royalty yet."

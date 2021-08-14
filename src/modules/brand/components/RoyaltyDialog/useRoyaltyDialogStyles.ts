@@ -59,6 +59,16 @@ export const useRoyaltyDialogStyles = makeStyles((theme: Theme) => ({
     marginTop: -30,
     fontSize: 16,
   },
+  changeTip: {
+    marginTop: 60,
+    fontSize: 16,
+    color: 'rgba(0,0,0,.5)',
+    marginLeft: 20,
+
+    '& svg': {
+      marginRight: 11,
+    },
+  },
 }));
 
 export const useRoyaltyTable = makeStyles<Theme>(theme => ({

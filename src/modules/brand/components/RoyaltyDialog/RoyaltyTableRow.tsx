@@ -19,8 +19,8 @@ const dateLocale: { [key: string]: Locale } = {
 export interface IRoyaltyRowProps {
   itemName: string;
   fileUrl: string;
-  quantity: string;
-  ctime: number;
+  quantity: number;
+  ctime: Date;
   category: string;
   price: BigNumber;
   fee: BigNumber;
@@ -104,7 +104,7 @@ export const RoyaltyTableRow = ({
       </TableCell>
       <TableCell>
         <div className={classes.ctime}>
-          {formatDate(ctime)}
+          {formatDate(ctime.getTime())}
           <Link to={viewScan} target="_blank">
             <ViewScanIcon />
           </Link>

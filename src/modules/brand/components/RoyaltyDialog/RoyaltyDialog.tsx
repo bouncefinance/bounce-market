@@ -11,15 +11,23 @@ import { InputField } from 'modules/form/components/InputField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useRoyaltyDialogStyles } from './useRoyaltyDialogStyles';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 import { RoyaltyTable } from './RoyaltyTable';
 import BigNumber from 'bignumber.js';
-import { setRoyaltyContract } from 'modules/common/actions/setRoyaltyContract';
+import { setRoyaltyContract } from 'modules/brand/components/RoyaltyDialog/action/setRoyaltyContract';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { useDispatchRequest } from '@redux-requests/react';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
+import {
+  fetchRoyaltyListByCollection,
+  IRoyaltyListParams,
+  IRoyaltyMapListRes,
+} from 'modules/brand/components/RoyaltyDialog/action/fetchRoyaltyListByCollection';
+import { getBlockChainExplorerAddress } from 'modules/common/conts';
+import { ReactComponent as CheckIcon } from './assets/check.svg';
+import { useState } from 'react';
 
 const MIN_RATE = 0.1;
 const MAX_RATE = 6.5;
@@ -40,17 +48,38 @@ export const RoyaltyDialog = ({
   collection,
 }: IBurnTokenDialogProps) => {
   const classes = useRoyaltyDialogStyles();
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const dispatch = useDispatchRequest();
-
+  const [showChangeTip, setShowChangeTip] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const readonly = false;
-  const loading = false;
+
+  useEffect(() => {
+    if (!collection) return;
+
+    const params: IRoyaltyListParams = {
+      collection,
+    };
+    dispatch(fetchRoyaltyListByCollection(params));
+  }, [collection, dispatch]);
+
+  const { data: royaltyList } = useQuery<IRoyaltyMapListRes | null>({
+    type: fetchRoyaltyListByCollection.toString(),
+  });
+
   const onSubmit = ({ royaltyRate }: { royaltyRate: string }) => {
     if (!royaltyRate || !address) return;
+    setSubmitLoading(true);
     const payload = {
       collection: collection,
       receiverAddress: address,
       rate: new BigNumber(royaltyRate).div(100),
+      successCallBack: () => {
+        setShowChangeTip(true);
+      },
+      finalCallBack: () => {
+        setSubmitLoading(false);
+      },
     };
     dispatch(setRoyaltyContract(payload));
   };
@@ -99,16 +128,22 @@ export const RoyaltyDialog = ({
           </div>
           <Button
             size="large"
-            loading={loading}
+            loading={submitLoading}
             onClick={handleSubmit}
             variant="outlined"
           >
             {t('royalty.change')}
           </Button>
+          {showChangeTip && collection && (
+            <div className={classes.changeTip}>
+              <CheckIcon />
+              {t('royalty.royalty-change-tip')}
+            </div>
+          )}
         </Box>
       );
     },
-    [classes, readonly, loading],
+    [classes, readonly, submitLoading, showChangeTip, collection],
   );
 
   return (
@@ -120,7 +155,9 @@ export const RoyaltyDialog = ({
         validate={validateForm}
         onSubmit={onSubmit}
         render={renderForm}
-        initialValues={{ royaltyRate: '0' }}
+        initialValues={{
+          royaltyRate: royaltyList?.currentratio.toString() || '0',
+        }}
       />
 
       <div className={classes.desc}>
@@ -128,20 +165,21 @@ export const RoyaltyDialog = ({
       </div>
 
       <RoyaltyTable
-        data={[
-          {
-            itemName: 'Exquisite Rare Portraits /10',
-            fileUrl:
-              'https://ap1-cfs3-media-bounce.bounce.finance/0df0ae4b4bab4f51832df8bef2d8d0f3-1627021511.png',
-            quantity: '1',
-            ctime: 1628567477281,
-            category: 'image',
-            price: new BigNumber(1000),
-            fee: new BigNumber(15),
-            symbol: 'BNB',
-            viewScan: 'baidu.com',
-          },
-        ]}
+        data={
+          royaltyList?.list.map(item => {
+            return {
+              itemName: item.item,
+              fileUrl: item.nfturl,
+              quantity: item.quantity,
+              ctime: item.ctime,
+              category: item.category,
+              price: item.price,
+              fee: item.feeEarned,
+              symbol: item.symbol,
+              viewScan: getBlockChainExplorerAddress(chainId) as string,
+            };
+          }) || []
+        }
       />
 
       <IconButton onClick={onClose} className={classes.close}>

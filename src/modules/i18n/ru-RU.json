@@ -293,6 +293,9 @@
         "creator": "Товар не продался. Вы можете отозвать ваш NFT.",
         "others": "Товар не продался."
       }
+    },
+    "royalty": {
+      "rate-desc": "Создателю будет выплачиваться роялти в размере {rate}."
     }
   },
   "language": {
@@ -470,6 +473,13 @@
       "directPurchase": "После установки цены прямой покупки покупатели могут пропустить процесс торгов и напрямую купить по этой цене. Цена прямой покупки должна быть больше, чем минимальная ставка и минимальная цена покупки.",
       "duration": "Аукцион завершится в это время",
       "reservePrice": "Резервная цена будет скрыта. Если вы не получите ставок, равных или превышающих ваш резерв, ваш аукцион не будет продан."
+    },
+    "royalty": {
+      "platform-fee": "Комиссия Fangible",
+      "royalty-fee": "Плата за роялти",
+      "royalty-fee-tip": "Роялти перечисляются создателю НМТ сразу после продажи.",
+      "receive-fs": "За каждое издание вы получите",
+      "receive-ea": "Ваш заработок будет основан на цене сделки. "
     }
   },
   "social": {
@@ -534,19 +544,20 @@
     "unsupported": "К сожалению, ваш браузер не поддерживает встроенные видео или форматы загруженных видеофайлов!"
   },
   "royalty": {
-    "royalty": "Royalty",
-    "royalties": "Royalties",
-    "change": "Change",
-    "royalty-rate": "Royalty rate",
-    "royalty-rate-tip": "A royalty rate of 0.1% to 6.5% can be set and changed as you want, but the change will take effect in around 30 minutes.",
-    "royalty-desc": "Once you’ve set a royalty rate for your collection, payouts for your created and sold NFTs will show here. Your wallet address is used by default to receive the royalties, which are automatically sent out each time a transaction is completed.",
+    "royalty": "Роялти",
+    "royalties": "Роялти",
+    "change": "Изменить",
+    "royalty-rate": "Ставка роялти",
+    "royalty-rate-tip": "Выберите размер роялти в диапазоне от 0,1% до 6,5% для вашей коллекции. Применение роялти смарт-контрактом занимает около 30 минут.",
+    "royalty-desc": "Как только ставка роялти будет установлена, выплаты будут производиться здесь. Адрес кошелька, связанный с вашим счетом, будет получать роялти в режиме реального времени.",
+    "royalty-change-tip": "Изменена ставка роялти.",
     "table": {
-      "item": "Item",
-      "price": "Price",
-      "quantity": "Quantity",
-      "fee": "Fee Earned",
-      "payout": "Payout",
-      "empty": "You have not received any royalty yet."
+      "item": "Пункт",
+      "price": "Цена",
+      "quantity": "Количество",
+      "fee": "Заработанное вознаграждение",
+      "payout": "Выплаты",
+      "empty": "Вы еще не получали роялти."
     }
   }
 }

@@ -6,8 +6,8 @@ import { BounceRoyalty } from 'modules/web3/contracts';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { getRoyaltySignContract } from '../api/getContract';
-import { throwIfDataIsEmptyOrError } from '../utils/throwIfDataIsEmptyOrError';
+import { getRoyaltySignContract } from '../../../../common/api/getContract';
+import { throwIfDataIsEmptyOrError } from '../../../../common/utils/throwIfDataIsEmptyOrError';
 import { getRoyaltySign, IRoyaltyload } from './getRoyaltySign';
 
 export const setRoyaltyContract = createSmartAction<RequestAction<void, void>>(
@@ -16,10 +16,14 @@ export const setRoyaltyContract = createSmartAction<RequestAction<void, void>>(
     rate,
     receiverAddress,
     collection,
+    successCallBack,
+    finalCallBack,
   }: {
     rate: BigNumber;
     receiverAddress: string;
     collection: string;
+    successCallBack?: () => void;
+    finalCallBack?: () => void;
   }) => ({
     request: {
       promise: (async function () {})(),
@@ -61,14 +65,6 @@ export const setRoyaltyContract = createSmartAction<RequestAction<void, void>>(
             const _expireTime = poyaltyData.expireTime;
             const _sign = poyaltyData.sign;
 
-            console.log({
-              _collection,
-              _royaltyReceiver,
-              _royaltyRatio,
-              _expireTime,
-              _sign,
-            });
-
             return await new Promise((resolve, reject) => {
               royalty_CT.methods
                 .setCollectionConfig(
@@ -83,11 +79,14 @@ export const setRoyaltyContract = createSmartAction<RequestAction<void, void>>(
                   // Pending status
                 })
                 .on('receipt', async (receipt: TransactionReceipt) => {
+                  successCallBack && successCallBack();
+                  finalCallBack && finalCallBack();
                   setTimeout(() => {
                     resolve(receipt);
                   }, 15000);
                 })
                 .on('error', (error: Error) => {
+                  finalCallBack && finalCallBack();
                   reject(error);
                 });
             });

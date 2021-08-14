@@ -300,6 +300,9 @@
       }
     }
   },
+  "royalty": {
+    "rate-desc": "{rate}的版税收入会归给创建者"
+  },
   "language": {
     "en-US": "English",
     "zh-CN": "中文",
@@ -329,7 +332,7 @@
     "put-on-cancel": "取消出售",
     "transfer": "发送token",
     "pool-start-tips": "售卖开始倒计时：",
-    "burn": "销毁token", 
+    "burn": "销毁token",
     "item-balance-tip": "当前拥有份数: {balance}",
     "pool-balance-tip": "当前可售份数: {balance}",
     "sold-for-quantity": "已售出 {sold} / {quantity}"
@@ -474,6 +477,13 @@
       "directPurchase": "设置直接购买价后，买家可跳过竞拍流程，直接以该价格进行购买。直接购买价需大于最低出价和最低购买价。",
       "duration": "拍卖将于该时间结束",
       "reservePrice": "设置最低购买价后，若买家出价未达到或超过该价格，您的拍卖NFT将不会被出售。"
+    },
+    "royalty": {
+      "platform-fee": "Fangible平台费",
+      "royalty-fee": "版税费",
+      "royalty-fee-tip": "版税费会在NFT售出后，直接发送给其创建者",
+      "receive-fs": "每一售出的份数，你将获得",
+      "receive-ea": "你的实际收入取决于该笔售卖的最终成交价 "
     }
   },
   "social": {
@@ -538,19 +548,20 @@
     "unsupported": "对不起，您的浏览器不支持嵌入式视频或上传的视频文件类型！"
   },
   "royalty": {
-    "royalty": "Royalty",
-    "royalties": "Royalties",
-    "change": "Change",
-    "royalty-rate": "Royalty rate",
-    "royalty-rate-tip": "A royalty rate of 0.1% to 6.5% can be set and changed as you want, but the change will take effect in around 30 minutes.",
-    "royalty-desc": "Once you’ve set a royalty rate for your collection, payouts for your created and sold NFTs will show here. Your wallet address is used by default to receive the royalties, which are automatically sent out each time a transaction is completed.",
+    "royalty": "版税费",
+    "royalties": "版税费",
+    "change": "更改",
+    "royalty-rate": "版税比例",
+    "royalty-rate-tip": "为您的作品集设置版税比例（0.1%到6.5%）设置生效时间约为30分钟。",
+    "royalty-desc": "设置版税比例后，版税费用的接收历史会列在此处。您的账户钱包地址可以实时接收版税费用。",
+    "royalty-change-tip": "修改成功！",
     "table": {
-      "item": "Item",
-      "price": "Price",
-      "quantity":"Quantity",
-      "fee": "Fee Earned",
-      "payout": "Payout",
-      "empty": "You have not received any royalty yet."
+      "item": "NFT",
+      "price": "价格",
+      "quantity": "数量",
+      "fee": "版税收入",
+      "payout": "接收时间",
+      "empty": "您尚未收到任何版税收入"
     }
   }
 }
