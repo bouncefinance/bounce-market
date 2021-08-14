@@ -15,17 +15,17 @@ export const mapPoolData = (data: OriginIPoolNftItem[]): IPoolNftItem[] => {
     const isEnglishAuction = !isFixedSwap(
       (item.pooltype as unknown) as AuctionType,
     );
-    const getLiveSate = () =>
-      isEnglishAuction ? AuctionState.Live : FixedSwapState.Live;
-    const getCloseSate = () =>
-      isEnglishAuction ? AuctionState.Claimed : FixedSwapState.Completed;
+    const liveSate = isEnglishAuction ? AuctionState.Live : FixedSwapState.Live;
+    const closeSate = isEnglishAuction
+      ? AuctionState.Claimed
+      : FixedSwapState.Completed;
     return {
       ...item,
       price: new BigNumber(Web3.utils.fromWei(item.price)),
       openAt: new Date(item.open_at * 1e3),
       closeAt: new Date(item.close_at * 1e3),
       poolType: auctionTypeMap[item.pooltype],
-      state: item.state === 0 ? getLiveSate() : getCloseSate(),
+      state: item.state === 0 ? liveSate : closeSate,
       isLike: Boolean(item.mylikecount),
       poolId: item.poolid ?? item.pool_id,
       itemName: item.itemname,

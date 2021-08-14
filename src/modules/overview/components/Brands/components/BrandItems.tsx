@@ -1,7 +1,6 @@
-import { Box, Typography, useTheme } from '@material-ui/core';
+import { Typography, useTheme } from '@material-ui/core';
 import { Img } from 'modules/uiKit/Img';
 import classNames from 'classnames';
-import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getRandomId } from 'modules/common/utils/getRandomId';
