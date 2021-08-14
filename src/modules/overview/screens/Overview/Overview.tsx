@@ -38,10 +38,12 @@ function mapPromoItem(item: IOverviewItem, tokenSymbol: string): IPromoItem {
     img: item.fileUrl,
     thumbImg: item.fileUrl || '',
     identity: item?.identity || 1,
-    href:
-      item.poolId && item.poolType
-        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
-        : '',
+    href: item.poolType
+      ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
+          item.poolId || 0,
+          item.poolType,
+        )
+      : '',
     authorHref: ProfileRoutesConfig.OtherProfile.generatePath(item.creator),
     MediaProps: {
       category: item.category,

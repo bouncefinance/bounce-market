@@ -1,8 +1,11 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ObjectFitType } from '../../common/types/ObjectFit';
 import { ImgErrorIcon } from './assets/ImgErrorIcon';
 import { useImgStyles } from './ImgStyles';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useCdnUrl } from '../../common/hooks/useCdnUrl';
 
 export interface IImgProps {
   src?: string;
@@ -45,73 +48,97 @@ export const Img = ({
   onClick,
 }: IImgProps) => {
   const classes = useImgStyles({ objectFit, ratio });
-  const [loadError, setLoadError] = useState(false);
-  const onError = () => setLoadError(true);
+  /* 
+    xs: 0,
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200,
+    HD: 1366,
+    WXGAPlus: 1440,
+    HDPlus: 1600,
+  */
 
-  let desktop, desktop2x, tablet, tablet2x, mobile, mobile2x;
-  if (typeof srcset === 'object') {
-    desktop = srcset.desktop;
-    desktop2x = srcset.desktop2x;
-    tablet = srcset.tablet;
-    tablet2x = srcset.tablet2x;
-    mobile = srcset.mobile;
-    mobile2x = srcset.mobile2x;
-  }
-  const desktopSrcSet = desktop2x ? `${desktop}, ${desktop2x} 2x` : desktop;
-  const tabletSrcSet = tablet2x ? `${tablet}, ${tablet2x} 2x` : tablet;
-  const mobileSrcSet = mobile2x ? `${mobile}, ${mobile2x} 2x` : mobile;
-  const imgSrc = desktop || src;
+  const theme = useTheme();
+  const smallerThanSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const smallerThanMd = useMediaQuery(theme.breakpoints.down('md'));
+  const smallerThanLg = useMediaQuery(theme.breakpoints.down('lg'));
+  const largerThanLg = useMediaQuery(theme.breakpoints.up('lg'));
+  const getMaxWidth = () => {
+    if (smallerThanSm) return 450;
+    if (smallerThanMd) return 360;
+    if (smallerThanLg) return 300;
+    if (largerThanLg) return 270;
+    return 400;
+  };
 
-  const isPicture = tablet || mobile || desktop2x;
+  const getCdnUrl = (
+    src: string,
+    width: number = 0,
+    height: number = 0,
+  ): string => {
+    const cdnUrl = 'https://ap1-cfs3-media-bounce.bounce.finance/';
+    const suffixs = ['.jpg', '.png', '.gif', '.jp2', '.jpeg'];
 
-  const Component = isPicture ? 'picture' : 'div';
+    const hasThumbnail =
+      src.slice(0, cdnUrl.length) === cdnUrl &&
+      suffixs.find(format => src.slice(-5)?.includes(format));
+
+    const getThumbnailUrl = (src: String): string => {
+      return `${cdnUrl}${width || 'auto'}x${height || 'auto'}/${src?.replace(
+        cdnUrl,
+        '',
+      )}`;
+    };
+
+    return hasThumbnail ? getThumbnailUrl(src) : src;
+  };
+
+  const [imgSrc, setImgSrc] = useState<string>('');
+
+  const preLoad = (src: string, origin: string, reload?: boolean) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      setImgSrc(src);
+      if (!reload && src.slice(-5)?.includes('.gif')) {
+        requestAnimationFrame(() => preLoad(origin, origin, true));
+      }
+    };
+    img.onerror = () => setImgSrc('');
+  };
+
+  useEffect(() => {
+    if (src) {
+      preLoad(getCdnUrl(src, getMaxWidth()), src);
+    }
+  }, [src]);
+
+  // const imgSrc = useCdnUrl(src, getMaxWidth())
+
+  setImgSrc(useCdnUrl(src || '', getMaxWidth()));
 
   const render = (
-    <Component
-      className={classNames(
-        classes.root,
-        className,
-        loadError && classes.rootError,
-      )}
+    <div
+      className={classNames(classes.root, className)}
       style={style}
       onClick={onClick}
     >
-      {isPicture && (
-        <source
-          srcSet={isNativeLazyLoading ? desktopSrcSet : undefined}
-          data-srcset={isNativeLazyLoading ? undefined : desktopSrcSet}
-          media={`(min-width: ${desktopBreakpoint})`}
-        />
+      <img
+        src={imgSrc as string}
+        data-src={isNativeLazyLoading ? undefined : imgSrc}
+        alt={alt}
+        title={title}
+        loading={isNativeLazyLoading ? loading : undefined}
+        className={classNames(classes.img, imgClassName)}
+        onError={() => setImgSrc('')}
+      />
+      {imgSrc === '' && (
+        <div className={classes.errorIcon}>
+          <ImgErrorIcon />
+        </div>
       )}
-      {tablet && (
-        <source
-          srcSet={isNativeLazyLoading ? tabletSrcSet : undefined}
-          data-srcset={isNativeLazyLoading ? undefined : tabletSrcSet}
-          media={`(min-width: ${tabletBreakpoint})`}
-        />
-      )}
-      {mobile && (
-        <source
-          srcSet={isNativeLazyLoading ? mobileSrcSet : undefined}
-          data-srcset={isNativeLazyLoading ? undefined : mobileSrcSet}
-        />
-      )}
-      {loadError ? (
-        <ImgErrorIcon className={classes.errorIcon} />
-      ) : (
-        <img
-          src={isNativeLazyLoading ? imgSrc : undefined}
-          data-src={isNativeLazyLoading ? undefined : imgSrc}
-          alt={alt}
-          title={title}
-          loading={isNativeLazyLoading ? loading : undefined}
-          className={classNames(classes.img, imgClassName)}
-          onError={onError}
-        />
-      )}
-    </Component>
+    </div>
   );
-
-  // return imgSrc ? render : null;
   return render;
 };
