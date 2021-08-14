@@ -1,4 +1,4 @@
-import { Box, Grid, Tooltip, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { CancelPutTime } from 'modules/common/components/ProductCard/cancel';
@@ -10,7 +10,7 @@ import { FixedSwapState } from '../../../api/common/FixedSwapState';
 import { UserRole } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
-import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
+import { IItemRoyaltyRes } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
 
 interface IInfoPricesProps {
   price: BigNumber;
@@ -30,6 +30,7 @@ interface IInfoPricesProps {
   poolType?: AuctionType;
   poolId?: number;
   saleTime: boolean;
+  royalty: IItemRoyaltyRes | null;
 }
 
 export const InfoPrices = ({
@@ -50,6 +51,7 @@ export const InfoPrices = ({
   poolType,
   poolId,
   saleTime,
+  royalty,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
   const [isTimeOver] = useState(false);
@@ -236,13 +238,15 @@ export const InfoPrices = ({
   const renderRoyalty = () => {
     return (
       <Box display="flex" alignItems="center" className={classes.rateDesc}>
-        {t('info-prices.royalty.rate-desc', { rate: '3 %' })}
+        {t('info-prices.royalty.rate-desc', {
+          rate: `${royalty?.royaltyFee.dp(2).toNumber()} %`,
+        })}
 
-        <Tooltip title={t('info-prices.royalty.rate-desc-tip')}>
+        {/* <Tooltip title={t('info-prices.royalty.rate-desc-tip')}>
           <Box component="i" ml={1}>
             <QuestionIcon />
           </Box>
-        </Tooltip>
+        </Tooltip> */}
       </Box>
     );
   };
@@ -276,7 +280,7 @@ export const InfoPrices = ({
       </Grid>
 
       <Grid item xs={12} md={12} sm={12}>
-        {renderRoyalty()}
+        {royalty?.royaltyFee.isGreaterThan(0) && renderRoyalty()}
       </Grid>
     </Grid>
   );

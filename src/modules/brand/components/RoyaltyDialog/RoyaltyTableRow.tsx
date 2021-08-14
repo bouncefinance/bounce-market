@@ -8,7 +8,6 @@ import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useCallback } from 'react';
 import BigNumber from 'bignumber.js';
 import { ReactComponent as ViewScanIcon } from './assets/viewScan.svg';
-import { Link } from 'react-router-dom';
 
 const dateLocale: { [key: string]: Locale } = {
   zhCN: zhCN,
@@ -105,9 +104,9 @@ export const RoyaltyTableRow = ({
       <TableCell>
         <div className={classes.ctime}>
           {formatDate(ctime.getTime())}
-          <Link to={viewScan} target="_blank">
+          <a href={viewScan} target="noreferrer">
             <ViewScanIcon />
-          </Link>
+          </a>
         </div>
       </TableCell>
     </TableRow>

@@ -145,7 +145,7 @@ export const RoyaltyDialog = ({
     },
     [classes, readonly, submitLoading, showChangeTip, collection],
   );
-
+  console.log(royaltyList);
   return (
     <Dialog open={isOpen} maxWidth={'lg'}>
       <Typography variant="h2" className={classes.title}>
@@ -176,7 +176,9 @@ export const RoyaltyDialog = ({
               price: item.price,
               fee: item.feeEarned,
               symbol: item.symbol,
-              viewScan: getBlockChainExplorerAddress(chainId) as string,
+              viewScan: `${getBlockChainExplorerAddress(chainId) as string}tx/${
+                item.txid
+              }`,
             };
           }) || []
         }

@@ -50,11 +50,13 @@ import {
 } from 'modules/common/actions/queryAccountInfo';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
+import {
+  fetchItemRoyalty,
+  IItemRoyaltyRes,
+} from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
-
-const FEE_PERCENTAGE = 1;
 
 interface IPublishFixedSwap {
   type: AuctionType.FixedSwap;
@@ -90,6 +92,7 @@ interface IPublishNFTComponentProps {
   category: 'image' | 'video';
   file?: string;
   identity: UserRoleType;
+  RoyaltyData: IItemRoyaltyRes | null;
 }
 
 export const PublishNFTComponent = ({
@@ -102,6 +105,7 @@ export const PublishNFTComponent = ({
   category,
   file,
   identity,
+  RoyaltyData,
 }: IPublishNFTComponentProps) => {
   const classes = usePublishNFTtyles();
   const dispatch = useDispatchRequest();
@@ -316,7 +320,9 @@ export const PublishNFTComponent = ({
 
     const reciveValue =
       values.type === AuctionType.FixedSwap
-        ? new BigNumber((+values.price * (100 - FEE_PERCENTAGE)) / 100)
+        ? new BigNumber(values.price).multipliedBy(
+            RoyaltyData?.remainingRatio || 1,
+          )
         : undefined;
 
     const renderRoyalty = () => {
@@ -325,7 +331,7 @@ export const PublishNFTComponent = ({
           <Grid container spacing={3} className={classes.royaltyWrapper}>
             <Grid item className={classes.royaltyItem}>
               <span>{t('publish-nft.royalty.platform-fee')}</span>
-              <span>1 %</span>
+              <span>{`${RoyaltyData?.platformFee.dp(2).toNumber()} %`}</span>
             </Grid>
             <div className={classes.divLine}>
               <i></i>
@@ -343,7 +349,7 @@ export const PublishNFTComponent = ({
                   </Tooltip>
                 </Box>
               </span>
-              <span>10 %</span>
+              <span>{`${RoyaltyData?.royaltyFee.dp(2).toNumber()} %`}</span>
             </Grid>
             <div className={classes.divLine}>
               <i></i>
@@ -355,9 +361,9 @@ export const PublishNFTComponent = ({
                   ? t('publish-nft.royalty.receive-fs')
                   : t('publish-nft.royalty.receive-ea')}
               </span>
-              {reciveValue && reciveValue.toNumber() ? (
+              {reciveValue && reciveValue.dp(6, 1).toNumber() ? (
                 <span>
-                  {reciveValue.toNumber()}
+                  {reciveValue.dp(6, 1).toNumber()}
                   &nbsp;
                   {currentCryptoCurrencyLabel}
                   &nbsp;&nbsp;
@@ -780,20 +786,22 @@ export const PublishNFT = () => {
   useEffect(() => {
     dispatch(fetchItem({ contract, id }));
     dispatch(fetchNftByUser({ userId: address }));
+    dispatch(fetchItemRoyalty({ collection: contract, tokenId: id }));
   }, [address, contract, dispatch, id]);
 
   return (
     <Queries<
       ResponseData<typeof fetchItem>,
-      ResponseData<typeof fetchNftByUser>
+      ResponseData<typeof fetchNftByUser>,
+      ResponseData<typeof fetchItemRoyalty>
     >
-      requestActions={[fetchItem, fetchNftByUser]}
+      requestActions={[fetchItem, fetchNftByUser, fetchItemRoyalty]}
     >
-      {({ data }, { data: nftData }) => {
+      {({ data }, { data: nftData }, { data: RoyaltyData }) => {
         const nfts = [...(nftData.nfts721 ?? []), ...(nftData.nfts1155 ?? [])];
         const maxQuantity =
           nfts.find(item => item.tokenId === id)?.balance ?? 0;
-
+        // console.log('RoyaltyData',RoyaltyData)
         return (
           <PublishNFTComponent
             name={data.itemName}
@@ -805,6 +813,7 @@ export const PublishNFT = () => {
             maxQuantity={maxQuantity}
             onPublish={handlePublish}
             identity={data.identity}
+            RoyaltyData={RoyaltyData}
           />
         );
       }}
