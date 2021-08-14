@@ -35,7 +35,9 @@ export const getFixedSwapContract = (chainID: number, isTime = false) => {
         ? process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_TIME
         : process.env.REACT_APP_FIXED_CONTRACT_ADDRESS;
     case 128:
-      return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_HECO;
+      return isTime
+        ? process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_HECO_TIME
+        : process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_HECO;
     case 137:
       return process.env.REACT_APP_FIXED_CONTRACT_ADDRESS_MATIC;
     default:

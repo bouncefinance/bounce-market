@@ -9,6 +9,7 @@ import {
   BounceFixedSwapNFT,
   BounceFixedSwapNFTTime,
 } from 'modules/web3/contracts';
+import { isFixedSwap } from '../utils/poolHelps';
 
 export const getPoolAddress = ({
   poolType,
@@ -17,10 +18,7 @@ export const getPoolAddress = ({
   poolType: AuctionType;
   chainId: number;
 }) => {
-  if (
-    poolType === AuctionType.FixedSwap ||
-    poolType === AuctionType.FixedSwap_Timing
-  ) {
+  if (isFixedSwap(poolType)) {
     return getFixedSwapContract(
       chainId,
       poolType === AuctionType.FixedSwap_Timing,

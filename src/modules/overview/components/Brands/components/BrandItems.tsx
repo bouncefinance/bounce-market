@@ -1,59 +1,36 @@
-import { Box, Typography, useTheme } from '@material-ui/core';
+import { Typography, useTheme } from '@material-ui/core';
 import { Img } from 'modules/uiKit/Img';
 import classNames from 'classnames';
-import { useDispatchRequest } from '@redux-requests/react';
-import { IItem } from 'modules/pools/actions/queryItemByFilter';
-import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { useMemo, useState, useEffect } from 'react';
-import { queryBrandPools } from 'modules/brand/actions/queryBrandPools';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { useBrandItemsStyles } from './useBrandItemsStyules';
+import { IItemsInfo } from 'modules/brand/actions/fetchPopularBrands';
 
 SwiperCore.use([Lazy, Navigation]);
 
 export const BrandItems = ({
   imgUrl,
   brandName,
-  ownerAddress,
-  contractAddress,
+  items,
 }: {
   imgUrl: string;
   brandName: string;
-  ownerAddress: string;
-  contractAddress: string;
+  items: IItemsInfo[];
 }) => {
-  const dispatch = useDispatchRequest();
   const theme = useTheme();
   const classes = useBrandItemsStyles();
 
-  const [items, setItems] = useState<IItem[]>([]);
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const prevId = useMemo(() => getRandomId('prev'), []);
   const nextId = useMemo(() => getRandomId('next'), []);
 
   const hasItems = !!items.length;
-
-  useEffect(() => {
-    setLoading(true);
-    dispatch(
-      queryBrandPools({
-        owneraddress: ownerAddress,
-        contractaddress: contractAddress,
-      }),
-    ).then(res => {
-      setLoading(false);
-      if (res.data) {
-        setItems(res.data);
-      }
-    });
-  }, [contractAddress, dispatch, ownerAddress]);
 
   useEffect(() => {
     if (items.length && swiper !== null) {
@@ -95,7 +72,6 @@ export const BrandItems = ({
               isNativeLazyLoading={false}
               imgClassName="swiper-lazy"
             />
-
             <SwiperPreloader />
           </div>
         </SwiperSlide>
@@ -111,12 +87,6 @@ export const BrandItems = ({
     </div>
   );
 
-  const renderedLoading = (
-    <Box display="flex" justifyContent="center">
-      <QueryLoading />
-    </Box>
-  );
-
   const renderedNoItems = (
     <Typography variant="body2" color="textSecondary">
       {t('collections.no-items')}
@@ -130,7 +100,6 @@ export const BrandItems = ({
           src={imgUrl}
           className={classes.brandImgWrap}
           isNativeLazyLoading={false}
-          objectFit="scale-down"
           imgClassName="swiper-lazy"
         />
         <div className={classes.item}>
@@ -143,11 +112,11 @@ export const BrandItems = ({
         </div>
       </div>
       <div className={classes.container}>
-        {loading && renderedLoading}
+        {/* {loading && renderedLoading} */}
 
-        {hasItems && !loading && rendered}
+        {hasItems && rendered}
 
-        {!hasItems && !loading && renderedNoItems}
+        {!hasItems && renderedNoItems}
       </div>
     </>
   );

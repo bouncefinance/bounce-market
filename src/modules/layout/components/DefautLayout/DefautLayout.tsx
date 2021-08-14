@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { getTheme } from '../../../common/utils/getTheme';
 import { Themes } from '../../../themes/types';
-import { Footer } from '../Footer';
 import { Header } from '../Header';
+import { Footer } from '../Footer';
 import { useDefaultLayoutStyles } from './DefaultLayoutStyles';
 
 export interface ILayoutProps {

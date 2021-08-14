@@ -17,7 +17,8 @@ export const ClaimFunds: React.FC<{
   type: BidsType;
   isBidder: boolean;
   text?: string;
-}> = ({ id, auctionType, type, isBidder, text }) => {
+  reload?: () => void;
+}> = ({ id, auctionType, type, isBidder, text, reload }) => {
   const classes = useProductCardStyles();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatchRequest();
@@ -31,11 +32,11 @@ export const ClaimFunds: React.FC<{
     (cb?: () => void) => {
       dispatch(bidderClaim({ poolId: id, isOpenSaleTime })).then(
         ({ error }) => {
+          cb?.();
           if (!error) {
             push(ProfileRoutesConfig.UserProfile.generatePath());
             return;
           }
-          cb?.();
         },
       );
     },
@@ -46,11 +47,11 @@ export const ClaimFunds: React.FC<{
     (cb?: () => void) => {
       dispatch(creatorClaim({ poolId: id, isOpenSaleTime })).then(
         ({ error }) => {
+          cb?.();
           if (!error) {
             push(ProfileRoutesConfig.UserProfile.generatePath());
             return;
           }
-          cb?.();
         },
       );
     },
@@ -62,11 +63,13 @@ export const ClaimFunds: React.FC<{
     if (isBidder) {
       handleBidderClaim(() => {
         setLoading(false);
+        reload?.();
       });
       return;
     }
     handleCreatorClaim(() => {
       setLoading(false);
+      reload?.();
     });
   };
   const state: {

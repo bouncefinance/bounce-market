@@ -22,8 +22,6 @@ export const Products = () => {
 
   const hasItems = Boolean(brandNfts && brandNfts.length);
 
-  console.log('brandNfts: ', brandNfts);
-
   const renderedCards = useMemo(
     () =>
       brandNfts?.map(mapProductCardData).map(item => (

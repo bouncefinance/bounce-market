@@ -11,7 +11,7 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { Mutation, useDispatchRequest, useQuery } from '@redux-requests/react';
+import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { add } from 'date-fns';
 import { SelectTimeField } from '../../../form/components/SelectTimeField';
@@ -48,8 +48,6 @@ import {
   UserRoleEnum,
   UserRoleType,
 } from 'modules/common/actions/queryAccountInfo';
-import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
-import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import {
   fetchItemRoyalty,
   IItemRoyaltyRes,
@@ -112,9 +110,6 @@ export const PublishNFTComponent = ({
   const theme = useTheme();
   const [purchasePriceChecked, setPurchasePriceChecked] = useState(true);
   const [reservePriceChecked, setReservePriceChecked] = useState(true);
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
-  });
 
   const togglePurchasePriceChecked = useCallback(() => {
     setPurchasePriceChecked(prev => !prev);
@@ -308,8 +303,7 @@ export const PublishNFTComponent = ({
     ],
   );
 
-  const isVerify =
-    profileInfo && profileInfo?.identity === UserRoleEnum.Verified;
+  const isVerify = identity === UserRoleEnum.Verified;
   const renderForm = ({
     handleSubmit,
     values,

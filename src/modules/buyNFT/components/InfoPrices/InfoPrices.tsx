@@ -31,6 +31,7 @@ interface IInfoPricesProps {
   poolId?: number;
   saleTime: boolean;
   royalty: IItemRoyaltyRes | null;
+  isOpenSaleTime?: boolean;
 }
 
 export const InfoPrices = ({
@@ -52,13 +53,14 @@ export const InfoPrices = ({
   poolId,
   saleTime,
   royalty,
+  isOpenSaleTime = false,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
   const [isTimeOver] = useState(false);
 
   const renderButtons = useCallback(() => {
     if (state === FixedSwapState.Live && role === 'creator') {
-      return poolType === AuctionType.FixedSwap_Timing ? (
+      return poolType === AuctionType.FixedSwap_Timing && isOpenSaleTime ? (
         <CancelPutTime auctionType={poolType} id={poolId} />
       ) : (
         <Button
@@ -233,6 +235,7 @@ export const InfoPrices = ({
     poolType,
     poolId,
     saleTime,
+    isOpenSaleTime,
   ]);
 
   const renderRoyalty = () => {

@@ -29,11 +29,13 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
 import BidsState, { BidsType } from './BidsState';
-import { CancelPutTime } from './cancel';
+import { CancelPutOnSale, CancelPutTime } from './cancel';
 import { ClaimFunds } from './claimFunds';
 import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
 import { Timer } from './Timer';
+import { useEffect } from 'react';
+import { useCount } from 'modules/common/hooks/useTimer';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -89,6 +91,7 @@ export interface IProductCardComponentProps {
   isBidderClaimed?: boolean;
   isCreatorClaimed?: boolean;
   soldData?: ISoldData;
+  reload?: () => void;
 }
 
 export const ProductCardComponent = ({
@@ -131,6 +134,7 @@ export const ProductCardComponent = ({
   soldData,
   isBidderClaimed = false,
   isCreatorClaimed = false,
+  reload,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect } = useAccount();
   const classes = useProductCardStyles();
@@ -269,53 +273,70 @@ export const ProductCardComponent = ({
     ],
   );
 
+  const [now, setNow] = useState(Date.now());
+  const count = useCount(2e3);
+  useEffect(() => {
+    setNow(Date.now());
+  }, [count]);
+
   const isAuction =
     auctionType === AuctionType.EnglishAuction ||
     auctionType === AuctionType.EnglishAuction_Timing;
-  const inAuction =
-    openAt && closeAt && +openAt < Date.now() && +closeAt > Date.now();
-  const auctionEnd = closeAt && +closeAt <= Date.now();
+  const inAuction = openAt && closeAt && +openAt < now && +closeAt > now;
+  const auctionEnd = closeAt && +closeAt <= now;
   const myPriceNumber = myBidderAmount || 0;
   // Figma 4
-  const isOutBid =
+  const isOutBid = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    inAuction &&
-    bidTopPrice &&
-    myPriceNumber > 0 &&
-    myPriceNumber < bidTopPrice;
-
+      isAuction &&
+      inAuction &&
+      bidTopPrice &&
+      myPriceNumber > 0 &&
+      myPriceNumber < bidTopPrice,
+  );
   // figama 1
-  const isLost =
+  const isLost = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    myPriceNumber > 0 &&
-    myPriceNumber === bidTopPrice &&
-    myPriceNumber < bidsReserveAmount;
+      isAuction &&
+      auctionEnd &&
+      bidTopPrice &&
+      myPriceNumber > 0 &&
+      myPriceNumber === bidTopPrice &&
+      myPriceNumber < bidsReserveAmount,
+  );
   // Figema 2
-  const isWon =
+  const isWon = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    auctionEnd &&
-    myPriceNumber > 0 &&
-    myPriceNumber === bidTopPrice &&
-    bidsReserveAmount &&
-    myPriceNumber >= bidsReserveAmount;
+      isAuction &&
+      auctionEnd &&
+      myPriceNumber > 0 &&
+      myPriceNumber === bidTopPrice &&
+      bidsReserveAmount &&
+      myPriceNumber >= bidsReserveAmount,
+  );
   // on sell
-  const isSellerClaimMoney =
-    !isCreatorClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    bidTopPrice < bidsReserveAmount;
+  const isSellerClaimMoney = Boolean(
+    isOnSeller &&
+      !isCreatorClaimed &&
+      isAuction &&
+      auctionEnd &&
+      bidTopPrice &&
+      bidTopPrice >= bidsReserveAmount,
+  );
   const isSellerClaimNft =
-    !isCreatorClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    bidTopPrice >= bidsReserveAmount;
+    Boolean(
+      isOnSeller &&
+        !isCreatorClaimed &&
+        isAuction &&
+        auctionEnd &&
+        bidTopPrice &&
+        bidTopPrice < bidsReserveAmount,
+    ) || Boolean(auctionEnd && bidTopPrice === 0);
+
+  const isPutSaleTimeCancel = Boolean(openAt && +openAt > now);
+  const isSellerCancel = Boolean(
+    !isPutSaleTimeCancel && isOnSeller && !isCreatorClaimed && !isAuction,
+  );
 
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
@@ -325,7 +346,7 @@ export const ProductCardComponent = ({
           wrapper={<Link to={href || '#'} className={classes.imgBox} />}
         >
           {renderMediaContent()}
-          {openAt && +openAt > Date.now() && (
+          {isPutSaleTimeCancel && openAt && (
             <CardPutSaleTimer openAt={openAt} />
           )}
           {isOutBid && <BidsState type={BidsType.OUTBID} />}
@@ -364,7 +385,9 @@ export const ProductCardComponent = ({
                   {(auctionType === AuctionType.EnglishAuction ||
                     auctionType === AuctionType.EnglishAuction_Timing) &&
                     (state === AuctionState.Live
-                      ? t('product-card.top-bid')
+                      ? isSellerClaimMoney
+                        ? t('product-card.sold-for')
+                        : t('product-card.top-bid')
                       : t('product-card.sold-for'))}{' '}
                 </div>
 
@@ -394,79 +417,100 @@ export const ProductCardComponent = ({
           <div className={classes.rightWrapper}>
             <div>
               {isCancelTimePut ? (
-                <CancelPutTime auctionType={auctionType} id={poolId} />
+                <CancelPutTime
+                  auctionType={auctionType}
+                  id={poolId}
+                  reload={reload}
+                />
               ) : (
                 <></>
               )}
-
-              {isLost && (
-                <ClaimFunds
+              {isSellerCancel && (
+                <CancelPutOnSale
                   auctionType={auctionType}
                   id={poolId}
-                  type={BidsType.LOST}
-                  isBidder={isBidder}
+                  reload={reload}
                 />
-              )}
-              {isWon && (
-                <ClaimFunds
-                  auctionType={auctionType}
-                  id={poolId}
-                  type={BidsType.WON}
-                  isBidder={isBidder}
-                />
-              )}
-              {isSellerClaimMoney && (
-                <ClaimFunds
-                  auctionType={auctionType}
-                  id={poolId}
-                  type={BidsType.LOST}
-                  isBidder={false}
-                  text={t('product-card.claim-funds')}
-                />
-              )}
-              {isSellerClaimNft && (
-                <ClaimFunds
-                  auctionType={auctionType}
-                  id={poolId}
-                  type={BidsType.LOST}
-                  isBidder={false}
-                  text={t('product-card.claim-back')}
-                />
-              )}
-              {isBidder && isBidderClaimed && (
-                <Button variant="outlined" rounded disabled>
-                  {t('product-card.claimed')}
-                </Button>
-              )}
-              {isOnSeller && isCreatorClaimed && (
-                <Button variant="outlined" rounded disabled>
-                  {t('product-card.claimed')}
-                </Button>
-              )}
-              {!isBidderClaimed && !isCreatorClaimed && isOnSale && endDate && (
-                <Timer endDate={endDate} />
               )}
 
-              {!isMinting && !isOnSalePending && (
-                <Box display="flex" alignItems="center">
-                  {!(copiesBalance && copiesBalance >= 0) ? (
-                    <></>
-                  ) : (
-                    <>
-                      {toSale && (
-                        <Button
-                          className={classes.saleBtn}
-                          component={RouterLink}
-                          variant="outlined"
-                          rounded
-                          to={toSale}
-                        >
-                          {t('product-card.put-on-sale')}
-                        </Button>
-                      )}
-                    </>
+              {!isCancelTimePut && !isSellerCancel && (
+                <>
+                  {isLost && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={isBidder}
+                      reload={reload}
+                    />
                   )}
-                </Box>
+                  {isWon && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.WON}
+                      isBidder={isBidder}
+                      reload={reload}
+                    />
+                  )}
+                  {isSellerClaimMoney && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={false}
+                      text={t('product-card.claim-funds')}
+                      reload={reload}
+                    />
+                  )}
+                  {isSellerClaimNft && (
+                    <ClaimFunds
+                      auctionType={auctionType}
+                      id={poolId}
+                      type={BidsType.LOST}
+                      isBidder={false}
+                      text={t('product-card.claim-back')}
+                      reload={reload}
+                    />
+                  )}
+                  {isBidder && isBidderClaimed && (
+                    <Button variant="outlined" rounded disabled>
+                      {t('product-card.claimed')}
+                    </Button>
+                  )}
+                  {isOnSeller && isCreatorClaimed && (
+                    <Button variant="outlined" rounded disabled>
+                      {t('product-card.claimed')}
+                    </Button>
+                  )}
+                  {!isPutSaleTimeCancel &&
+                    !isBidderClaimed &&
+                    !isCreatorClaimed &&
+                    isOnSale &&
+                    endDate && <Timer endDate={endDate} />}
+
+                  {!isMinting && !isOnSalePending && (
+                    <Box display="flex" alignItems="center">
+                      {!(copiesBalance && copiesBalance >= 0) ? (
+                        <></>
+                      ) : (
+                        <>
+                          {toSale && (
+                            <Button
+                              className={classes.saleBtn}
+                              component={RouterLink}
+                              variant="outlined"
+                              rounded
+                              to={toSale}
+                            >
+                              {t('product-card.put-on-sale')}
+                            </Button>
+                          )}
+                        </>
+                      )}
+                    </Box>
+                  )}
+                </>
               )}
             </div>
             {hasAction && (

@@ -50,7 +50,6 @@ export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
               priceType={item.itemsymbol}
               copies={item.supply}
               likes={item.likecount}
-              isLike={item.isLike}
               copiesBalance={item.balance}
               MediaProps={{
                 category: item.category,
@@ -93,8 +92,16 @@ export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
       {!loading && data?.length === 0 && (
         <NoItems
           href={MarketRoutesConfig.Market.generatePath()}
-          title={t('profile.no-items.showCase-title')}
-          descr={t('profile.no-items.showCase-description')}
+          title={
+            isOther
+              ? t('profile.no-items.other-showCase-title')
+              : t('profile.no-items.showCase-title')
+          }
+          descr={
+            isOther
+              ? t('profile.no-items.other-showCase-description')
+              : t('profile.no-items.showCase-description')
+          }
         />
       )}
     </TabItemsComponent>

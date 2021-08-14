@@ -2,13 +2,13 @@ import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { AuctionState } from 'modules/api/common/AuctionState';
-import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { isFixedSwap } from 'modules/common/utils/poolHelps';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
@@ -98,10 +98,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           loading: 'lazy',
         }}
         state={
-          item.poolType === AuctionType.FixedSwap ||
-          item.poolType === AuctionType.FixedSwap_Timing
-            ? FixedSwapState.Live
-            : AuctionState.Live
+          isFixedSwap(item.poolType) ? FixedSwapState.Live : AuctionState.Live
         }
         profileInfo={
           <ProfileInfo

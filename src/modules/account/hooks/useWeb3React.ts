@@ -1,15 +1,30 @@
+import { useQuery } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
+import { useCount } from 'modules/common/hooks/useTimer';
 import { getJWTToken } from 'modules/common/utils/localStorage';
 import { useCallback, useEffect, useState } from 'react';
 import Web3 from 'web3';
 import { connectWallet } from '../api/connectWallet';
-
+import { ISetAccountData, setAccount } from '../store/actions/setAccount';
 let web3: Web3;
 let provider: any;
 let topBalance: BigNumber;
 let topAddress: string;
 let topChainId: number;
-export const useWeb3React = () => {
+
+export interface IWeb3React {
+  web3: Web3;
+  address: string;
+  account: string;
+  loading: boolean;
+  provider: any;
+  chainId: number;
+  balance: BigNumber;
+}
+const getBalance = async (web3: Web3, address: string) =>
+  await web3.eth.getBalance(address);
+
+export const useWeb3React = (): IWeb3React => {
   const [address, setAddress] = useState<string>(topAddress);
   const [chainId, setChainId] = useState<number>(topChainId);
   const [balance, setBalance] = useState<BigNumber>(topBalance);
@@ -23,7 +38,8 @@ export const useWeb3React = () => {
       provider = _provider;
     }
     const _address = (await web3.eth.getAccounts())[0];
-    const balance = await web3.eth.getBalance(_address);
+    const balance = await getBalance(web3, _address);
+
     const balanceBigNumber = new BigNumber(web3.utils.fromWei(balance));
     topBalance = balanceBigNumber;
     topAddress = _address;
@@ -70,4 +86,28 @@ export const useWeb3React = () => {
     chainId,
     balance,
   };
+};
+
+export const useWeb3Balance = () => {
+  const { loading, data } = useQuery<ISetAccountData | null>({
+    type: setAccount.toString(),
+  });
+  const web3 = data?.web3;
+  const address = data?.address;
+
+  const count = useCount(5e3);
+  const [loadingBalance, setLoadingBalance] = useState(false);
+  const [balance, setBalance] = useState<BigNumber>(topBalance);
+  useEffect(() => {
+    if (web3 && address && !loading && !loadingBalance) {
+      (async () => {
+        setLoadingBalance(true);
+        const balance = await getBalance(web3, address);
+        setBalance(new BigNumber(web3.utils.fromWei(balance)));
+        setLoadingBalance(false);
+      })();
+    }
+    // eslint-disable-next-line
+  }, [count, address, loading, web3]);
+  return { balance };
 };

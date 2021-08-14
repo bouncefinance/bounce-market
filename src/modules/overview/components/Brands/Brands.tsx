@@ -45,27 +45,26 @@ export const Brands = ({
     spaceBetween: theme.spacing(5),
     lazy: true,
     onSwiper: setSwiper,
+    loop: true,
+    slidesPerView: 'auto',
   };
 
   const renderedSlides = useMemo(
     () =>
-      items.map(
-        ({ imgUrl, id, brandName, ownerAddress, contractAddress }, i) => (
-          <SwiperSlide className={classes.slide} key={id}>
-            <Link
-              to={ProfileRoutesConfig.OtherProfile.generatePath(ownerAddress)}
-              className={classes.brand}
-            >
-              <BrandItems
-                imgUrl={imgUrl}
-                brandName={brandName}
-                ownerAddress={ownerAddress}
-                contractAddress={contractAddress}
-              />
-            </Link>
-          </SwiperSlide>
-        ),
-      ),
+      items.map(({ imgUrl, id, brandName, creatorAddress, itemsInfo }, i) => (
+        <SwiperSlide className={classes.slide} key={id}>
+          <Link
+            to={ProfileRoutesConfig.OtherProfile.generatePath(creatorAddress)}
+            className={classes.brand}
+          >
+            <BrandItems
+              imgUrl={imgUrl}
+              brandName={brandName}
+              items={itemsInfo}
+            />
+          </Link>
+        </SwiperSlide>
+      )),
     [classes, items],
   );
 

@@ -42,7 +42,8 @@ export const useTabActivityStyles = makeStyles<Theme>(theme => ({
   tableItemIcon: {
     display: 'flex',
     alignItems: 'center',
-    maxWidth: 240,
+    width: 'max-content',
+    maxWidth: 300,
     '& .icon': {
       width: 52,
       height: 52,
@@ -51,15 +52,24 @@ export const useTabActivityStyles = makeStyles<Theme>(theme => ({
     },
     '& span': {
       flex: 1,
+      display: 'inline-block',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
   },
 
   tableItemVideo: {
     display: 'flex',
     alignItems: 'center',
-    maxWidth: 240,
+    width: 'max-content',
+    maxWidth: 300,
     '& span': {
       flex: 1,
+      display: 'inline-block',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
   },
 

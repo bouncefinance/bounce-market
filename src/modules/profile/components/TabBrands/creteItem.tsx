@@ -27,6 +27,11 @@ import { useTabBrandStyles } from './useTabBrandsStyles';
 import { AddFollowIcon } from '../TabFollowing/assets/AddFollowIcon';
 import { t } from 'modules/i18n/utils/intl';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
+import {
+  ILikedItem,
+  queryLikedItems,
+} from 'modules/profile/actions/queryLikedItems';
+import { useLikesMap } from 'modules/common/hooks/usePoolList';
 
 export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
   address,
@@ -60,6 +65,18 @@ export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
     );
   }, [dispatch, address, className]);
 
+  const { data: likes } = useQuery<ILikedItem[]>({
+    type: queryLikedItems.toString(),
+  });
+  const { likesMap } = useLikesMap(likes ?? [], e =>
+    e.poolId !== 0 ? '' : e.tokenid.toString(),
+  );
+  useEffect(() => {
+    if (isOther) {
+      dispatch(queryLikedItems());
+    }
+  }, [dispatch, isOther]);
+
   return (
     <TabItemsComponent>
       <div className={classes.headerGroup}>
@@ -87,7 +104,9 @@ export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
               poolId={item.tokenid || 0}
               isItemType
               likes={item.likecount}
-              isLike={item.isLike}
+              isLike={
+                isOther ? likesMap?.get(item.tokenid.toString()) : item.isLike
+              }
               key={uid(item)}
               title={item.itemname}
               href={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
@@ -103,7 +122,7 @@ export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
                 objectFit: 'contain',
                 loading: 'lazy',
               }}
-              contractAddress={isOther ? undefined : item.contractaddress}
+              contractAddress={item.contractaddress}
               standard={isOther ? undefined : item.standard}
               profileInfo={
                 <ProfileInfo
