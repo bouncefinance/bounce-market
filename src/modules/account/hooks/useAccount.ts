@@ -82,13 +82,9 @@ export const useAccount = () => {
     [dispatch],
   );
 
-  const connectLoading =
-    !Boolean(
-      !setAccountLoading && data && !web3Data.loading && web3Data.address,
-    ) &&
-    !Boolean(
-      !web3Data.loading && !setAccountLoading && !data && !web3Data.address,
-    );
+  const connectLoading = !Boolean(
+    setAccountLoading === false && web3Data.loading === false,
+  );
   return {
     loading: connectLoading,
     isConnected,
