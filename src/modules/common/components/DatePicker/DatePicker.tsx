@@ -86,9 +86,14 @@ export const DatePicker: React.FC<{
     const onMonthDayChange = (event: React.ChangeEvent<{ value: unknown }>) => {
       setDay(parseInt(event.target.value as string));
     };
-    const onTimeChange = (time: Date) => {
-      setHours(time.getHours());
-      setMinutes(time.getMinutes());
+    const onTimeChange = (time: Date | null) => {
+      if (time) {
+        setHours(time.getHours());
+        setMinutes(time.getMinutes());
+      } else {
+        setHours(0);
+        setMinutes(0);
+      }
     };
 
     return (

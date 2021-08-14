@@ -26,7 +26,7 @@ const defaultMaterialTheme = createMuiTheme({
 });
 export const TimePicker: React.FC<{
   date?: Date;
-  onChange?: (date: Date) => void;
+  onChange?: (date: Date | null) => void;
 }> = ({ date, onChange }) => {
   const classes = useDatePickerStyles();
   return (
@@ -34,12 +34,11 @@ export const TimePicker: React.FC<{
       <ThemeProvider theme={defaultMaterialTheme}>
         <Box display="flex" justifyContent="center">
           <MTimePicker
-            clearable
             ampm={false}
             value={date}
             className={classNames(classes.timePicker, '')}
             onChange={d => {
-              if (d) onChange?.(d);
+              onChange?.(d);
             }}
           />
         </Box>
