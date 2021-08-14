@@ -7,6 +7,7 @@ import {
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { BrandCard } from 'modules/brand/components/BrandCard';
 import { BrandEmptyCard } from 'modules/brand/components/BrandEmptyCard';
+import { RoyaltyDialog } from 'modules/brand/components/RoyaltyDialog';
 import { NoItems } from 'modules/common/components/NoItems';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
@@ -14,6 +15,7 @@ import {
   ProfileRoutesConfig,
   USER_CREATE_NFT_PROFILE,
 } from 'modules/profile/ProfileRoutes';
+import { useState } from 'react';
 import { uid } from 'react-uid';
 import { useTabBrandStyles } from './useTabBrandsStyles';
 
@@ -25,6 +27,13 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
   const { data: brands, loading } = useQuery<IMyBrand[]>({
     type: queryMyBrandItem.toString(),
   });
+  const [royaltyOpen, setRoyaltyOpen] = useState(false);
+  const [collection, setCollection] = useState('');
+
+  const handelOpenRoyalty: (collection: string) => void = collection => {
+    setCollection(collection);
+    setRoyaltyOpen(!royaltyOpen);
+  };
 
   return (
     <>
@@ -65,6 +74,8 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
                 itemsCount={brand.itemsCount}
                 imgSrc={brand.imgSrc}
                 nftType={brand.nftType}
+                collection={brand.contract}
+                handelOpenRoyalty={handelOpenRoyalty}
               />
             </Grid>
           ))
@@ -83,6 +94,14 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
           }
         />
       )}
+
+      <RoyaltyDialog
+        isOpen={royaltyOpen}
+        onClose={() => {
+          setRoyaltyOpen(false);
+        }}
+        collection={collection}
+      />
     </>
   );
 };

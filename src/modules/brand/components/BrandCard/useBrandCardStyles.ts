@@ -2,6 +2,7 @@ import { fade, makeStyles, Theme } from '@material-ui/core/styles';
 
 export const useBrandCardStyles = makeStyles<Theme>(theme => ({
   root: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
@@ -11,6 +12,13 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
     '&:hover': {
       borderColor: fade(theme.palette.text.primary, 0.3),
     },
+  },
+
+  extension: {
+    zIndex: 100,
+    position: 'absolute',
+    top: 16,
+    right: 22,
   },
 
   createNewMiniBtnWrap: {
@@ -99,5 +107,10 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
   },
   iconInheritFontSize: {
     fontSize: 'inherit !important',
+  },
+  menuItem: {
+    width: 170,
+    height: 48,
+    boxSizing: 'border-box',
   },
 }));
