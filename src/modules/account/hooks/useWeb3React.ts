@@ -88,7 +88,7 @@ export const useWeb3React = (): IWeb3React => {
   };
 };
 
-export const useWeb2Balance = () => {
+export const useWeb3Balance = () => {
   const { loading, data } = useQuery<ISetAccountData | null>({
     type: setAccount.toString(),
   });

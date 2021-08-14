@@ -14,7 +14,7 @@ import { WalletCard } from '../WalletCard';
 import { useWalletDropdown } from './useWalletDropdown';
 import { useWalletStyles } from './useWalletStyles';
 import { getNativeTokenSymbol } from '../../../common/conts';
-import { useWeb2Balance } from 'modules/account/hooks/useWeb3React';
+import { useWeb3Balance } from 'modules/account/hooks/useWeb3React';
 
 interface IWalletProps {
   address?: string;
@@ -45,7 +45,7 @@ export const WalletComponent = ({
 
   const controlRef = useRef<HTMLButtonElement>(null);
 
-  const { balance } = useWeb2Balance();
+  const { balance } = useWeb3Balance();
 
   return (
     <>
