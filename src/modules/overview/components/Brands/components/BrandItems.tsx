@@ -95,7 +95,6 @@ export const BrandItems = ({
               isNativeLazyLoading={false}
               imgClassName="swiper-lazy"
             />
-
             <SwiperPreloader />
           </div>
         </SwiperSlide>
@@ -130,7 +129,6 @@ export const BrandItems = ({
           src={imgUrl}
           className={classes.brandImgWrap}
           isNativeLazyLoading={false}
-          objectFit="scale-down"
           imgClassName="swiper-lazy"
         />
         <div className={classes.item}>
