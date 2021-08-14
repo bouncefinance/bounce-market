@@ -5,7 +5,6 @@ import { ImgErrorIcon } from './assets/ImgErrorIcon';
 import { useImgStyles } from './ImgStyles';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useCdnUrl } from '../../common/hooks/useCdnUrl';
 
 export interface IImgProps {
   src?: string;
@@ -35,15 +34,12 @@ export const Img = ({
   className,
   imgClassName,
   src,
-  srcset,
   objectFit = 'cover',
   alt = '',
   title,
   style,
   loading,
   ratio = '3x2',
-  tabletBreakpoint = '768px',
-  desktopBreakpoint = '1200px',
   isNativeLazyLoading = true,
   onClick,
 }: IImgProps) => {
@@ -112,11 +108,8 @@ export const Img = ({
     if (src) {
       preLoad(getCdnUrl(src, getMaxWidth()), src);
     }
+    // eslint-disable-next-line
   }, [src]);
-
-  // const imgSrc = useCdnUrl(src, getMaxWidth())
-
-  setImgSrc(useCdnUrl(src || '', getMaxWidth()));
 
   const render = (
     <div
