@@ -10,6 +10,7 @@ import { FixedSwapState } from '../../../api/common/FixedSwapState';
 import { UserRole } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
+import { IItemRoyaltyRes } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
 
 interface IInfoPricesProps {
   price: BigNumber;
@@ -29,6 +30,7 @@ interface IInfoPricesProps {
   poolType?: AuctionType;
   poolId?: number;
   saleTime: boolean;
+  royalty: IItemRoyaltyRes | null;
   isOpenSaleTime?: boolean;
 }
 
@@ -50,11 +52,10 @@ export const InfoPrices = ({
   poolType,
   poolId,
   saleTime,
+  royalty,
   isOpenSaleTime = false,
 }: IInfoPricesProps) => {
   const classes = useInfoPricesStyles();
-
-  // TODO: Update it on time over https://fangible.atlassian.net/browse/FAN-157
   const [isTimeOver] = useState(false);
 
   const renderButtons = useCallback(() => {
@@ -237,6 +238,22 @@ export const InfoPrices = ({
     isOpenSaleTime,
   ]);
 
+  const renderRoyalty = () => {
+    return (
+      <Box display="flex" alignItems="center" className={classes.rateDesc}>
+        {t('info-prices.royalty.rate-desc', {
+          rate: `${royalty?.royaltyFee.dp(2).toNumber()} %`,
+        })}
+
+        {/* <Tooltip title={t('info-prices.royalty.rate-desc-tip')}>
+          <Box component="i" ml={1}>
+            <QuestionIcon />
+          </Box>
+        </Tooltip> */}
+      </Box>
+    );
+  };
+
   return (
     <Grid container spacing={3} alignItems="center">
       <Grid item xs={12} sm>
@@ -263,6 +280,10 @@ export const InfoPrices = ({
 
       <Grid item xs={12} sm={5}>
         {renderButtons()}
+      </Grid>
+
+      <Grid item xs={12} md={12} sm={12}>
+        {royalty?.royaltyFee.isGreaterThan(0) && renderRoyalty()}
       </Grid>
     </Grid>
   );
