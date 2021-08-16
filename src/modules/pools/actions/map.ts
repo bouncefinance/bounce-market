@@ -24,7 +24,7 @@ export const mapPoolData = (data: OriginIPoolNftItem[]): IPoolNftItem[] => {
       price: new BigNumber(Web3.utils.fromWei(item.price)),
       openAt: new Date(item.open_at * 1e3),
       closeAt: new Date(item.close_at * 1e3),
-      poolType: auctionTypeMap[item.pooltype],
+      poolType: auctionTypeMap[item.pooltype ?? item.auction_type],
       state: item.state === 0 ? liveSate : closeSate,
       isLike: Boolean(item.mylikecount),
       poolId: item.poolid ?? item.pool_id,
