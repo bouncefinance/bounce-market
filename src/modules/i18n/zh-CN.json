@@ -296,10 +296,10 @@
         "creator": "NFT未出售，请取回您的NFT",
         "others": "NFT未出售"
       }
+    },
+    "royalty": {
+      "rate-desc": "{rate}的版税收入会归给创建者"
     }
-  },
-  "royalty": {
-    "rate-desc": "{rate}的版税收入会归给创建者"
   },
   "language": {
     "en-US": "English",
@@ -565,6 +565,7 @@
     "royalties": "版税费",
     "change": "更改",
     "royalty-rate": "版税比例",
+    "royalty-rate-error": "版权比例设置范围为：0.1%到6.5%",
     "royalty-rate-tip": "为您的作品集设置版税比例（0.1%到6.5%）设置生效时间约为30分钟。",
     "royalty-desc": "设置版税比例后，版税费用的接收历史会列在此处。您的账户钱包地址可以实时接收版税费用。",
     "royalty-change-tip": "修改成功！",

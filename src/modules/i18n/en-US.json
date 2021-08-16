@@ -574,6 +574,7 @@
     "royalties": "Royalties",
     "change": "Change",
     "royalty-rate": "Royalty rate",
+    "royalty-rate-error": "Please select a royalty fee between 0.1% - 6.5% for your collection.",
     "royalty-rate-tip": "Select a royalty fee between 0.1% - 6.5% for your collection. Royalties take about 30 minutes to be applied by the smart contract.",
     "royalty-desc": "Once the royalty rate is set, payouts will be shwon here. The wallet address associated with your account will receive the royalties in real-time.",
     "royalty-change-tip": "Royalty rate is changed.",

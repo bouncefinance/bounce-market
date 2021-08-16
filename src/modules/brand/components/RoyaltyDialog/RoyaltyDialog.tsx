@@ -90,9 +90,9 @@ export const RoyaltyDialog = ({
     if (!royaltyRate) {
       errors.royaltyRate = t('validation.required');
     } else if (+royaltyRate < MIN_RATE) {
-      errors.royaltyRate = t('error.greater-than', { value: MIN_RATE });
+      errors.royaltyRate = t('royalty.royalty-rate-error');
     } else if (MAX_RATE && +royaltyRate > MAX_RATE) {
-      errors.royaltyRate = t('error.less-than', { value: +MAX_RATE });
+      errors.royaltyRate = t('royalty.royalty-rate-error');
     }
 
     return errors;
