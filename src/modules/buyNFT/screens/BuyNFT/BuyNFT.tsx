@@ -24,7 +24,10 @@ import {
   getBlockChainExplorerAddress,
   getTokenSymbol,
 } from 'modules/common/conts';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import {
+  truncateLongName,
+  truncateWalletAddr,
+} from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
 import {
@@ -163,7 +166,9 @@ export const BuyNFT = () => {
   );
 
   const getSenderName = (sender: IRoleInfo) => {
-    return sender.username || truncateWalletAddr(sender.address);
+    return (
+      truncateLongName(sender.username) || truncateWalletAddr(sender.address)
+    );
   };
 
   const wrapperTitle = (name: string, address: string) => {
@@ -304,7 +309,6 @@ export const BuyNFT = () => {
         { data: roleInfos },
         { data: royalty },
       ) => {
-        console.log(royalty);
         return (
           <Queries<
             ResponseData<typeof fetchCurrency>,

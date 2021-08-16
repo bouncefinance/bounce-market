@@ -145,7 +145,6 @@ export const RoyaltyDialog = ({
     },
     [classes, readonly, submitLoading, showChangeTip, collection],
   );
-  console.log(royaltyList);
   return (
     <Dialog open={isOpen} maxWidth={'lg'}>
       <Typography variant="h2" className={classes.title}>
