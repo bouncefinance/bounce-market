@@ -56,7 +56,6 @@ export const fetchItemRoyalty = createSmartAction<
     driver: 'axios',
     asMutation: false,
     getData: data => {
-      console.log(data);
       if (data.code !== 200) {
         return null;
       }

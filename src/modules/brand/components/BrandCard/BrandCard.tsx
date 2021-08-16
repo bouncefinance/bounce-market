@@ -83,7 +83,6 @@ export const BrandCard = ({
             variant: 'outlined',
           }}
         >
-          {/* <MenuList> */}
           <MenuItem
             className={classes.menuItem}
             onClick={() => {
@@ -92,7 +91,6 @@ export const BrandCard = ({
           >
             {t('royalty.royalty')}
           </MenuItem>
-          {/* </MenuList> */}
         </Popover>
       </>
     );
