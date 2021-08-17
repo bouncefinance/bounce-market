@@ -28,6 +28,7 @@ export const useHeaderStyles = makeStyles<Theme>(theme => ({
 
   container: {
     position: 'relative',
+    zIndex: 2,
   },
 
   visibleOnHover: {

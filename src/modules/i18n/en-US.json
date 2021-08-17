@@ -12,8 +12,11 @@
     "title": "Burn Token"
   },
   "buy-dialog": {
-    "submit": "Buy",
-    "title": "Buy now"
+    "title": "Checkout",
+    "submit": "Proceed to pay",
+    "buy": "Buy",
+    "buy-now": "Buy now",
+    "total": "Total"
   },
   "change-wallet": {
     "description": "Change network to Ethereum Mainnet, Binance Smart Chain, or Heco",
@@ -56,6 +59,7 @@
     "load-more": "Load more",
     "nothing-found": "Nothing found",
     "quantity": "Quantity",
+    "price": "Price",
     "read-more": "read more",
     "reset": "Reset",
     "restore": "Restore",
@@ -117,12 +121,6 @@
     "subCollection": "When creating your first NFT, you need to create a collection. For next creation, you can put the NFT in an already created collection."
   },
   "create-nft": {
-    "channelOption": {
-      "Comicbooks": "Comic",
-      "Comics": "Comics",
-      "FineArts": "Fine arts",
-      "Sports": "Sports"
-    },
     "label": {
       "Set-up-date": "Set up date and time",
       "channel": "Channel",
@@ -163,7 +161,7 @@
     "item-amount-tip": "Total supply",
     "dialog": {
       "footnote": "Bids placed in auction cannot be withdrawn",
-      "input-info": "Minimum bid {value} {currency}"
+      "input-info": "You must bid at least {value} {currency}"
     },
     "enter-a-bid": "Enter a Bid",
     "history": {
@@ -260,7 +258,7 @@
       "users": "Users"
     },
     "select-chain": {
-      "bnb": "Binance Smart Chain",
+      "bnb": "Binance Chain",
       "eth": "Ethereum Mainnet",
       "heco": "HECO Chain",
       "heco-2": "Huobi Wallet",
@@ -299,6 +297,9 @@
         "creator": "Item hasn't been sold. Claim your NFT back",
         "others": "Item hasn't been sold"
       }
+    },
+    "royalty": {
+      "rate-desc": "A {rate} royalty will be issued to the Creator."
     }
   },
   "language": {
@@ -319,7 +320,12 @@
     "all": "All",
     "art": "Art",
     "sports": "Sports",
-    "Comics": "Comics"
+    "comics": "Comics",
+    "collectible": "Collectible",
+    "music": "Music",
+    "performer": "Performer",
+    "metaverse": "Metaverse",
+    "games": "Games"
   },
   "product-card": {
     "burn": "Burn token",
@@ -431,6 +437,7 @@
       "Activity-title": "No activities found",
       "Activity-description": "Go explore fangible to find excitement!",
       "Liked-title": "No items found",
+      "collection-title": "No collection found",
       "Liked-description": "You haven’t liked any NFT yet. Go browse our marketplace.",
       "other-onSale-title": "No items found",
       "other-onSale-description": "This creator hasn't listed any item for sale yet.",
@@ -491,6 +498,13 @@
       "directPurchase": "A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price.",
       "duration": "Auction will be completed in this time",
       "reservePrice": "Setting a reserve price creates a hidden limit. If you receive no bids equal to or greater than your reserve, your auction will not be sold."
+    },
+    "royalty": {
+      "platform-fee": "Fangible fee",
+      "royalty-fee": "Royalty fee",
+      "royalty-fee-tip": "Royalty fees are transferred to the NFT creator immediately after a sale.",
+      "receive-fs": "For each edition, you will receive",
+      "receive-ea": "Your earning will be based on the transaction price. "
     }
   },
   "social": {
@@ -549,9 +563,28 @@
     "max-size": "Max size is {value, number}MB",
     "min": "Smallest value is {value}",
     "require-integer": "This value should be a whole number",
-    "required": "This field is required"
+    "required": "This field is required",
+    "invalid-name": "word limit: 32 characters. Please don't contain：` “ ’ ' ”"
   },
   "video-player": {
     "unsupported": "Sorry, your browser does not support embedded videos or uploaded video file types!"
+  },
+  "royalty": {
+    "royalty": "Royalty",
+    "royalties": "Royalties",
+    "change": "Change",
+    "royalty-rate": "Royalty rate",
+    "royalty-rate-error": "Please select a royalty fee between 0.1% - 6.5% for your collection.",
+    "royalty-rate-tip": "Select a royalty fee between 0.1% - 6.5% for your collection. Royalties take about 30 minutes to be applied by the smart contract.",
+    "royalty-desc": "Once the royalty rate is set, payouts will be shwon here. The wallet address associated with your account will receive the royalties in real-time.",
+    "royalty-change-tip": "Royalty rate is changed.",
+    "table": {
+      "item": "Item",
+      "price": "Price",
+      "quantity": "Quantity",
+      "fee": "Fee Earned",
+      "payout": "Payout",
+      "empty": "You have not received any royalty yet."
+    }
   }
 }

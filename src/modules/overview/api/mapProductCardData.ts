@@ -8,7 +8,7 @@ export const mapProductCardData = (item: INFTItem) => ({
   poolId: item.poolId,
   poolType: item.poolType,
   href:
-    item.poolId && item.poolType
+    item.poolId !== undefined && item.poolType
       ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
       : '',
   price: new BigNumber(Web3.utils.fromWei(item.price)),

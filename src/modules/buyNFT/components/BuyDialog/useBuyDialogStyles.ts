@@ -101,4 +101,23 @@ export const useBuyDialogStyles = makeStyles<Theme>(theme => ({
   spinBtnIcon: {
     fontSize: 12,
   },
+
+  inputWrapper: {
+    display: 'grid',
+    gridTemplateColumns: '3fr 1fr',
+    gridColumnGap: 23,
+
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: '2fr 1fr',
+    },
+  },
+  totalWrapper: {
+    fontSize: 18,
+    width: '100%',
+    height: 50,
+    marginBottom: 10,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 }));

@@ -54,6 +54,11 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
 
   if (!payload.name) {
     errors.name = t('validation.required');
+  } else {
+    const reg = /^[^`'"“‘]{0,32}$/g;
+    if (!reg.test(payload.name)) {
+      errors.name = t('validation.invalid-name');
+    }
   }
 
   if (!payload.description) {
@@ -147,16 +152,36 @@ export const CreateNFT = () => {
   const channelOptions = useMemo(
     () => [
       {
-        label: t(`create-nft.channelOption.${Channel.FineArts}`),
+        label: t(`product-panel.art`),
         value: Channel.FineArts,
       },
       {
-        label: t(`create-nft.channelOption.${Channel.Sports}`),
+        label: t(`product-panel.sports`),
         value: Channel.Sports,
       },
       {
-        label: t(`create-nft.channelOption.${Channel.Comics}`),
+        label: t(`product-panel.comics`),
         value: Channel.Comics,
+      },
+      {
+        label: t(`product-panel.collectible`),
+        value: Channel.Collectible,
+      },
+      {
+        label: t(`product-panel.music`),
+        value: Channel.Music,
+      },
+      {
+        label: t(`product-panel.performer`),
+        value: Channel.Performer,
+      },
+      {
+        label: t(`product-panel.metaverse`),
+        value: Channel.Metaverse,
+      },
+      {
+        label: t(`product-panel.games`),
+        value: Channel.Games,
       },
     ],
     [],

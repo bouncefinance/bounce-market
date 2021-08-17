@@ -2,25 +2,25 @@ import { RequestAction } from '@redux-requests/core';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { FetchPopularBrandsAction } from './const';
 
+export interface IItemsInfo {
+  contractaddress: string;
+  fileurl: string;
+  itemname: string;
+  itemsymbol: string;
+  standard: number;
+  supply: number;
+  tokenid: number;
+}
 interface IApiFetchPopularBrandsData {
   code: 1;
   data: {
-    auditor: string;
-    bandimgurl: string;
     brandname: string;
-    brandsymbol: string;
     contractaddress: string;
-    created_at: string;
-    description: string;
-    faildesc: string;
-    id: number;
+    creatoraddress: string;
+    creatorimgurl: string;
     imgurl: string;
-    owneraddress: string;
-    ownername: string;
-    popularweight: string;
-    standard: 1 | 2;
-    status: number;
-    updated_at: number;
+    itemsinfo: IItemsInfo[];
+    username: string;
   }[];
 }
 
@@ -28,32 +28,34 @@ export interface IBrandItem {
   brandName: string;
   imgUrl: string;
   id: number;
-  ownerAddress: string;
+  creatorAddress: string;
   contractAddress: string;
+  itemsInfo: IItemsInfo[];
 }
 
 export const fetchPopularBrands = createSmartAction<
   RequestAction<IApiFetchPopularBrandsData, IBrandItem[]>
 >(FetchPopularBrandsAction, () => ({
   request: {
-    url: '/getpopularbrands',
-    method: 'post',
-    data: {
-      accountaddress: '',
-    },
+    url: '/getpopularinfo',
+    method: 'get',
+    data: {},
   },
   meta: {
     auth: true,
     driver: 'axios',
     asMutation: false,
     getData: data => {
-      return data.data.map(item => ({
-        brandName: item.brandname,
-        imgUrl: item.imgurl,
-        id: item.id,
-        ownerAddress: item.owneraddress,
-        contractAddress: item.contractaddress,
-      }));
+      return (
+        data?.data?.map((item, index) => ({
+          brandName: item.brandname,
+          imgUrl: item.imgurl,
+          id: index,
+          creatorAddress: item.creatoraddress,
+          contractAddress: item.contractaddress,
+          itemsInfo: item.itemsinfo,
+        })) ?? []
+      );
     },
   },
 }));

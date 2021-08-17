@@ -12,8 +12,11 @@
     "title": "销毁Token"
   },
   "buy-dialog": {
-    "submit": "购买",
-    "title": "立即购买"
+    "buy-now": "立即购买",
+    "submit": "继续支付",
+    "buy": "购买",
+    "title": "确认",
+    "total": "总金额"
   },
   "change-wallet": {
     "description": "变更为以太链，币安链或者火币链",
@@ -56,6 +59,7 @@
     "load-more": "加载更多",
     "nothing-found": "暂无数据",
     "quantity": "数量",
+    "price": "价格",
     "read-more": "了解更多",
     "reset": "重置",
     "restore": "恢复",
@@ -117,12 +121,6 @@
     "subCollection": "创建NFT时，需要先创建一个作品集。之后可在该作品集中创建对应标准的NFT。"
   },
   "create-nft": {
-    "channelOption": {
-      "Comicbooks": "漫画",
-      "Comics": "漫画",
-      "FineArts": "艺术",
-      "Sports": "体育"
-    },
     "label": {
       "Set-up-date": "定时出售",
       "channel": "类型",
@@ -298,6 +296,9 @@
         "creator": "NFT未出售，请取回您的NFT",
         "others": "NFT未出售"
       }
+    },
+    "royalty": {
+      "rate-desc": "{rate}的版税收入会归给创建者"
     }
   },
   "language": {
@@ -318,7 +319,12 @@
     "all": "所有",
     "art": "艺术",
     "sports": "体育",
-    "Comics": "漫画"
+    "comics": "漫画",
+    "collectible": "收藏品",
+    "music": "音乐",
+    "performer": "表演者",
+    "metaverse": "虚拟现实",
+    "games": "游戏"
   },
   "product-card": {
     "not-on-sale": "未出售",
@@ -483,6 +489,13 @@
       "directPurchase": "设置直接购买价后，买家可跳过竞拍流程，直接以该价格进行购买。直接购买价需大于最低出价和最低购买价。",
       "duration": "拍卖将于该时间结束",
       "reservePrice": "设置最低购买价后，若买家出价未达到或超过该价格，您的拍卖NFT将不会被出售。"
+    },
+    "royalty": {
+      "platform-fee": "Fangible平台费",
+      "royalty-fee": "版税费",
+      "royalty-fee-tip": "版税费会在NFT售出后，直接发送给其创建者",
+      "receive-fs": "每一售出的份数，你将获得",
+      "receive-ea": "你的实际收入取决于该笔售卖的最终成交价 "
     }
   },
   "social": {
@@ -541,9 +554,28 @@
     "max-size": "最大文件尺寸：{value, number}MB",
     "min": "最小值为Smallest value is {value}",
     "require-integer": "请输入整数",
-    "required": "此为必填项"
+    "required": "此为必填项",
+    "invalid-name": "名称限制32位并且“不允许包含· ` “ ’ ' ”"
   },
   "video-player": {
     "unsupported": "对不起，您的浏览器不支持嵌入式视频或上传的视频文件类型！"
+  },
+  "royalty": {
+    "royalty": "版税费",
+    "royalties": "版税费",
+    "change": "更改",
+    "royalty-rate": "版税比例",
+    "royalty-rate-error": "版权比例设置范围为：0.1%到6.5%",
+    "royalty-rate-tip": "为您的作品集设置版税比例（0.1%到6.5%）设置生效时间约为30分钟。",
+    "royalty-desc": "设置版税比例后，版税费用的接收历史会列在此处。您的账户钱包地址可以实时接收版税费用。",
+    "royalty-change-tip": "修改成功！",
+    "table": {
+      "item": "NFT",
+      "price": "价格",
+      "quantity": "数量",
+      "fee": "版税收入",
+      "payout": "接收时间",
+      "empty": "您尚未收到任何版税收入"
+    }
   }
 }

@@ -8,6 +8,11 @@ export enum ItemsChannel {
   fineArts = 'FineArts',
   sports = 'Sports',
   comics = 'Comics',
+  collectible = 'Collectible',
+  music = 'Music',
+  performer = 'Performer',
+  metaverse = 'Metaverse',
+  games = 'Games',
 }
 
 export enum NFTCategoryType {

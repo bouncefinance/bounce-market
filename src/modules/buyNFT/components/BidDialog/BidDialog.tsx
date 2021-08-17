@@ -45,6 +45,7 @@ interface IBidDialogProps {
   maxQuantity: number;
   minIncrease: BigNumber;
   lastestBidAmount: BigNumber;
+  minAmount1: BigNumber;
 }
 
 export const BidDialog = ({
@@ -62,20 +63,24 @@ export const BidDialog = ({
   maxQuantity,
   minIncrease,
   lastestBidAmount,
+  minAmount1,
 }: IBidDialogProps) => {
   const classes = useBidDialogStyles();
 
+  const minBid =
+    lastestBidAmount === minAmount1
+      ? lastestBidAmount
+      : lastestBidAmount.plus(minIncrease);
   const validateForm = useCallback(
     ({ bid, quantity }: IBidFormValues) => {
       const errors: FormErrors<IBidFormValues> = {};
       const currentBid = new BigNumber(bid);
-      const minBid = lastestBidAmount.plus(minIncrease);
 
       if (!bid) {
         errors.bid = t('validation.required');
       } else if (currentBid.isLessThan(minBid)) {
         errors.bid = t('validation.min', {
-          value: minBid.toFormat(),
+          value: `${minBid.toFormat()} ${currency}`,
         });
       }
 
@@ -89,7 +94,7 @@ export const BidDialog = ({
 
       return errors;
     },
-    [lastestBidAmount, maxQuantity, minIncrease],
+    [maxQuantity, currency, minBid],
   );
 
   const renderForm = useCallback(
@@ -100,10 +105,9 @@ export const BidDialog = ({
         <>
           <Box mb={2}>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm>
+              <Grid item xs={12} className={classes.inputWrapper}>
                 <Field
-                  fullWidth
-                  className={classNames(classes.inputWithoutSpin)}
+                  // className={classNames(classes.inputWithoutSpin)}
                   component={InputField}
                   name="bid"
                   type="number"
@@ -131,11 +135,8 @@ export const BidDialog = ({
                     ),
                   }}
                 />
-              </Grid>
 
-              <Grid item xs={12} sm="auto">
                 <Field
-                  fullWidth
                   className={classNames(
                     classes.inputNumber,
                     classes.inputWithoutSpin,
@@ -192,7 +193,7 @@ export const BidDialog = ({
             <Typography color="textSecondary">
               {t('details-nft.dialog.input-info', {
                 currency,
-                value: minIncrease.toFormat(),
+                value: minBid.toFormat(),
               })}
             </Typography>
           </Box>
@@ -214,7 +215,7 @@ export const BidDialog = ({
         </>
       );
     },
-    [classes, currency, loading, minIncrease],
+    [classes, minBid, loading, currency],
   );
 
   return (
@@ -233,7 +234,12 @@ export const BidDialog = ({
         <Grid container spacing={3} alignItems="center">
           <Grid item xs="auto">
             {category === 'image' ? (
-              <Img className={classes.imgWrap} src={filepath} ratio="1x1" />
+              <Img
+                className={classes.imgWrap}
+                src={filepath}
+                size="small"
+                ratio="1x1"
+              />
             ) : (
               <VideoPlayer src={filepath} autoPlay />
             )}

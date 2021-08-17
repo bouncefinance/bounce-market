@@ -23,6 +23,8 @@ import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import useCdnUrl from '../../../common/hooks/useCdnUrl';
+import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
 
 const dateLocale: { [key: string]: Locale } = {
   zhCN: zhCN,
@@ -50,6 +52,7 @@ const ItemIcon: React.FC<IItemProps> = ({
   label,
 }) => {
   const styles = useTabActivityStyles();
+
   return (
     <Link
       className={styles.tableItemIcon}
@@ -59,7 +62,7 @@ const ItemIcon: React.FC<IItemProps> = ({
         contractaddress,
       )}
     >
-      <Img src={url} ratio="1x1" className="icon" />
+      <Img src={url} size="small" ratio="1x1" className="icon" />
       <span>{label}</span>
     </Link>
   );
@@ -101,9 +104,13 @@ const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
   address,
 }) => {
   const styles = useTabActivityStyles();
+
+  const { imgSrc } = useCdnUrl(url, 160);
+
   return (
     <div className={styles.tableUserIcon}>
-      <Avatar src={url} className="avator" />
+      {/* <Avatar src={imgSrc} className="avator" /> */}
+      <DefaultRandomAvatar className="avator" src={imgSrc} address={address} />
       {name ? (
         (name.slice(0, 2) === '0x' || name.slice(0, 2) === '0X') &&
         name.length === 42 ? (

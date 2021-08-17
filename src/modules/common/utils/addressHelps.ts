@@ -8,7 +8,7 @@ export const getMultiCallAddress = (chainID: number) => {
     case 56:
       return process.env.REACT_APP_MULTI_CALL_BSC;
     case 128:
-      return '';
+      return process.env.REACT_APP_MULTI_CALL_HECO;
     case 137:
       return '';
     default:

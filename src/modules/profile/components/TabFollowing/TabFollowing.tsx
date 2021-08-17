@@ -5,7 +5,7 @@ import {
   fetchFollowingList,
   IFollowListItem,
 } from 'modules/profile/actions/fetchFollowersList';
-import { Avatar, Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { FollowType } from '.';
 import { useTabFollowingStyles } from './useTabFollowingStyles';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -23,6 +23,7 @@ import { AddFollowIcon } from './assets/AddFollowIcon';
 import { uid } from 'react-uid';
 import { ToggleFollowType } from 'modules/profile/actions/toggleFollow';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
 
 interface ITabFollowingProps {
   followAddress: string;
@@ -115,10 +116,10 @@ export const TabFollowing = ({
       <div className={classes.item} key={uid(item)}>
         <div className={classes.itemContentWrap}>
           <Link to={item.href} className={classes.itemAvatarLink}>
-            <Avatar
-              alt={item.userName}
-              src={item.imgSrc}
+            <DefaultRandomAvatar
               className={classes.itemAvatar}
+              src={item.imgSrc}
+              address={item.followerAddress}
             />
           </Link>
 

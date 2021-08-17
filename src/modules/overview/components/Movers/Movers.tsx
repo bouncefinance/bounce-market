@@ -1,26 +1,27 @@
 import { useQuery } from '@redux-requests/react';
 import { AuctionState } from 'modules/api/common/AuctionState';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
+import { IPoolNftItem } from 'modules/api/common/poolType';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { AccountInfo } from 'modules/common/components/AccountInfo';
 import {
   ProductCard,
   ProductCardCategoryType,
 } from 'modules/common/components/ProductCard';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { isFixedSwap } from 'modules/common/utils/poolHelps';
-import {
-  fetchOverview,
-  IOverviewItem,
-} from 'modules/overview/actions/fetchOverview';
+import { fetchOverview } from 'modules/overview/actions/fetchOverview';
 import { PROMO_ITEMS_COUNT } from 'modules/overview/const';
 import { ISectionProps } from 'modules/uiKit/Section';
 import { useMemo } from 'react';
 import { uid } from 'react-uid';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { MoversComponent } from './MoversComponent';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 
 export const Movers = (sectionProps: ISectionProps) => {
-  const overviewQuery = useQuery<IOverviewItem[] | null>({
+  const overviewQuery = useQuery<IPoolNftItem[] | null>({
     type: fetchOverview.toString(),
   });
 
@@ -32,27 +33,25 @@ export const Movers = (sectionProps: ISectionProps) => {
     [overviewQuery.data],
   );
 
-  // console.log('--slicedItems---', slicedItems)
   const renderedItems = slicedItems.map(item => {
     return (
       <ProductCard
         key={uid(item)}
-        id={item.id}
+        id={item.tokenId ?? 0}
         poolId={item.poolId || 0}
         auctionType={item.poolType}
         isOnSale
         title={item.itemName || ''}
         price={item.price}
-        priceType={item.tokenSymbol}
+        priceType={(overviewQuery.data as any)?.tokenSymbol}
         endDate={item.closeAt}
         soldData={{
-          sold: item.swappedAmount0,
-          quantity: item.quantity,
+          sold: item.swapped_amount0,
+          quantity: item.token_amount0,
         }}
         likes={item.likeCount}
-        isLike={item.isLike}
         href={
-          item.poolId && item.poolType
+          item.poolId !== undefined && item.poolType
             ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
                 item.poolId,
                 item.poolType,
@@ -72,7 +71,23 @@ export const Movers = (sectionProps: ISectionProps) => {
             ? FixedSwapState.Live
             : AuctionState.Live
         }
-        profileInfo={<AccountInfo address={item.ownerAddress} />}
+        profileInfo={
+          <ProfileInfo
+            subTitle="Creator"
+            title={item.username || truncateWalletAddr(item.creator)}
+            users={[
+              {
+                name: item.username,
+                avatar: item.creatorurl,
+                href: ProfileRoutesConfig.OtherProfile.generatePath(
+                  item.creator,
+                ),
+                verified: item?.identity === UserRoleEnum.Verified,
+                address: item.creator,
+              },
+            ]}
+          />
+        }
         openAt={item.openAt}
       />
     );

@@ -3,20 +3,22 @@ import classNames from 'classnames';
 import React from 'react';
 import { getTheme } from '../../../common/utils/getTheme';
 import { Themes } from '../../../themes/types';
-import { Footer } from '../Footer';
 import { Header } from '../Header';
+import { Footer } from '../Footer';
 import { useDefaultLayoutStyles } from './DefaultLayoutStyles';
 
 export interface ILayoutProps {
   children?: React.ReactNode;
   headerTheme?: Themes;
   footerTheme?: Themes;
+  isFooter?: boolean;
 }
 
 export const DefaultLayout = ({
   children,
   headerTheme = Themes.light,
   footerTheme = Themes.light,
+  isFooter = true,
 }: ILayoutProps) => {
   const classes = useDefaultLayoutStyles();
 
@@ -30,9 +32,11 @@ export const DefaultLayout = ({
 
       <main className={classNames(classes.main)}>{children}</main>
 
-      <ThemeProvider theme={getTheme(footerTheme)}>
-        <Footer />
-      </ThemeProvider>
+      {isFooter && (
+        <ThemeProvider theme={getTheme(footerTheme)}>
+          <Footer />
+        </ThemeProvider>
+      )}
     </div>
   );
 };

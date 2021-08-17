@@ -4,14 +4,14 @@ export const HTScanIcon = (props: SvgIconProps) => {
   return (
     <SvgIcon
       {...props}
-      clip-rule="evenodd"
-      fill-rule="evenodd"
-      stroke-linejoin="round"
-      stroke-miterlimit="2"
+      clipRule="evenodd"
+      fillRule="evenodd"
+      strokeLinejoin="round"
+      strokeMiterlimit="2"
       viewBox="0 0 560 400"
     >
       <g
-        fill-rule="nonzero"
+        fillRule="nonzero"
         transform="matrix(2.27339 0 0 2.27339 180.148 45.488)"
       >
         <path

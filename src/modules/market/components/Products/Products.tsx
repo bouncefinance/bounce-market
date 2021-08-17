@@ -92,6 +92,28 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     return (total - residue) / ITEMS_PORTION_COUNT + (residue > 0 ? 1 : 0);
   }, [nftItemsData]);
 
+  // const getImgSrc = (src: string | undefined, width?: number): string => {
+  //   const validSrcPrefix = 'https://ap1-cfs3-media-bounce.bounce.finance/';
+  //   const imgFormats = ['.jpg', '.png', '.gif', '.jp2', '.jpeg'];
+
+  //   const hasThumbnail = (src: string | undefined): boolean => {
+  //     const v1 = src?.slice(0, validSrcPrefix.length) === validSrcPrefix;
+  //     const v2 = imgFormats.find(format => src?.slice(-5)?.includes(format));
+  //     return Boolean(v1 && v2);
+  //   };
+
+  //   const getThumbnailUrl = (
+  //     src: string | undefined,
+  //     width?: number,
+  //   ): string => {
+  //     return `${src?.slice(0, validSrcPrefix.length)}${
+  //       width || 400
+  //     }xauto/${src?.slice(validSrcPrefix.length)}`;
+  //   };
+
+  //   return src ? (hasThumbnail(src) ? getThumbnailUrl(src, 520) : src) : '';
+  // };
+
   const hasItems = !!nftItems.length;
   const rendrerdCards = useMemo(
     () =>
@@ -116,6 +138,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           href={item.href}
           MediaProps={{
             category: item.category,
+            // src: getImgSrc(item.src),
             src: item.src,
             objectFit: 'contain',
             loading: 'lazy',
@@ -135,6 +158,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
                   name: item.ownerName ?? truncateWalletAddr(item.ownerAddress),
                   avatar: item.ownerAvatar,
                   verified: item.identity === UserRoleEnum.Verified,
+                  address: item.ownerAddress,
                 },
               ]}
             />

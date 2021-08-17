@@ -4,8 +4,9 @@ import { useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { featuresConfig, getTokenSymbol } from 'modules/common/conts';
+import { featuresConfig } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import { IOverviewItem } from 'modules/overview/actions/fetchPoolsWeight';
 import { Artists } from 'modules/overview/components/Artists';
 import { Brands } from 'modules/overview/components/Brands';
 import { Movers } from 'modules/overview/components/Movers';
@@ -23,17 +24,15 @@ import { useDispatch } from 'react-redux';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
 import { fetchOverview } from '../../actions/fetchOverview';
-import { IItem } from '../../api/getItems';
 import { useOverviewStyles } from './useOverviewStyles';
 
-function mapPromoItem(item: IItem, tokenSymbol: string): IPromoItem {
+function mapPromoItem(item: IOverviewItem, tokenSymbol: string): IPromoItem {
   return {
     title: item.itemName || '',
     text: item.description || '',
     createdBy:
-      truncateWalletAddr(item.ownerName) ||
-      truncateWalletAddr(item.ownerAddress),
-    avatar: item.avatar,
+      truncateWalletAddr(item.username) || truncateWalletAddr(item.creator),
+    avatar: item.creatorurl,
     price: item.price,
     priceType: tokenSymbol,
     category: item?.category,
@@ -41,12 +40,10 @@ function mapPromoItem(item: IItem, tokenSymbol: string): IPromoItem {
     thumbImg: item.fileUrl || '',
     identity: item?.identity || 1,
     href:
-      item.poolId && item.poolType
+      item.poolId !== undefined && item.poolType
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
-    authorHref: ProfileRoutesConfig.OtherProfile.generatePath(
-      item.ownerAddress,
-    ),
+    authorHref: ProfileRoutesConfig.OtherProfile.generatePath(item.creator),
     MediaProps: {
       category: item.category,
       src: item.fileUrl || '',
@@ -58,7 +55,7 @@ export const Overview = () => {
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
   const classes = useOverviewStyles();
-  const { isConnected, chainId } = useAccount();
+  const { chainId } = useAccount();
 
   useEffect(() => {
     dispatchRequest(fetchOverview());
@@ -72,7 +69,7 @@ export const Overview = () => {
         ]),
       );
     };
-  }, [dispatch, dispatchRequest, isConnected]);
+  }, [chainId, dispatch, dispatchRequest]);
 
   const renderedPromoSkeleton = (
     <ThemeProvider theme={darkTheme}>
@@ -96,8 +93,8 @@ export const Overview = () => {
                   isLoading={loading}
                   items={data
                     .slice(0, PROMO_ITEMS_COUNT)
-                    .map((item: IItem) =>
-                      mapPromoItem(item, getTokenSymbol(chainId) as string),
+                    .map(item =>
+                      mapPromoItem(item, (data as any).tokenSymbol as string),
                     )}
                 />
               </ThemeProvider>

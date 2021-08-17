@@ -26,4 +26,7 @@ export const useInfoPricesStyles = makeStyles<Theme>(theme => ({
     fontWeight: 500,
     lineHeight: 1,
   },
+  rateDesc: {
+    marginTop: 20,
+  },
 }));

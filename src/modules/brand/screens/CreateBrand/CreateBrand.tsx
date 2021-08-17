@@ -1,5 +1,6 @@
 import { Box, Container, Tooltip, Typography } from '@material-ui/core';
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
+import createDecorator from 'final-form-calculate';
 import { NftType } from 'modules/api/common/NftType';
 import { InputField } from 'modules/form/components/InputField';
 import { SelectField } from 'modules/form/components/SelectField';
@@ -12,15 +13,15 @@ import { Section } from 'modules/uiKit/Section';
 import React, { useCallback, useMemo } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { useHistory } from 'react-router';
+import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 import { Bytes, convertBytesToMegabytes } from '../../../common/types/unit';
 import {
   ProfileRoutesConfig,
   ProfileTab,
 } from '../../../profile/ProfileRoutes';
 import { createBrand } from '../../actions/createBrand';
-import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
 
-export interface ICreateBrand {
+export interface ICreateBrandValues {
   brandName: string;
   standard: NftType;
   description: string;
@@ -40,11 +41,29 @@ const NAME_CHARACTER_LIMIT = 30;
 const SYMBOL_CHARACTER_LIMIT = 15;
 const DESCRIPTION_CHARACTER_LIMIT = 200;
 
-const validateCreateBrand = (payload: ICreateBrand) => {
-  const errors: FormErrors<ICreateBrand> = {};
+// https://final-form.org/docs/react-final-form/examples#calculated-fields
+const brandSymbolDecorator = createDecorator({
+  field: 'brandName',
+  updates: {
+    brandSymbol: (_ignoredValue, allValues) => {
+      const { brandName } = allValues as Partial<ICreateBrandValues>;
+      if (brandName) {
+        return brandName.replace(/\s/g, '').slice(0, 3).toUpperCase();
+      }
+    },
+  },
+});
+
+const validateCreateBrand = (payload: ICreateBrandValues) => {
+  const errors: FormErrors<ICreateBrandValues> = {};
 
   if (!payload.brandName) {
     errors.brandName = t('validation.required');
+  } else {
+    const reg = /^[^`'"“‘]{0,32}$/g;
+    if (!reg.test(payload.brandName)) {
+      errors.brandName = t('validation.invalid-name');
+    }
   }
 
   if (!payload.brandSymbol) {
@@ -83,7 +102,7 @@ export const CreateBrand = () => {
   );
 
   const handleSubmit = useCallback(
-    (payload: ICreateBrand) => {
+    (payload: ICreateBrandValues) => {
       dispatch(createBrand(payload)).then(({ error }) => {
         if (!error) {
           replace(
@@ -95,7 +114,9 @@ export const CreateBrand = () => {
     [dispatch, replace],
   );
 
-  const renderForm = ({ handleSubmit }: FormRenderProps<ICreateBrand>) => {
+  const renderForm = ({
+    handleSubmit,
+  }: FormRenderProps<ICreateBrandValues>) => {
     return (
       <Box component="form" onSubmit={handleSubmit}>
         <Box mb={5}>
@@ -233,6 +254,7 @@ export const CreateBrand = () => {
             onSubmit={handleSubmit}
             render={renderForm}
             validate={validateCreateBrand}
+            decorators={[brandSymbolDecorator] as any}
             initialValues={{
               standard: NftType.ERC721,
             }}

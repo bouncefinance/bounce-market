@@ -1,7 +1,8 @@
+import { resetRequests } from '@redux-requests/core';
 import { useQuery } from '@redux-requests/react';
 import { getJWTToken } from 'modules/common/utils/localStorage';
 import { IAddEthereumChain } from 'modules/layout/components/Header/components/SelectChainDialog';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useAppDispatch } from 'store/useAppDispatch';
 import { BlockchainNetworkId } from '../../common/conts';
 import { changeNetworkToSupported } from '../store/actions/changeNetworkToSupported';
@@ -15,12 +16,17 @@ let initRemoteDataRun = false;
 export const useAccount = () => {
   const dispatch = useAppDispatch();
 
-  const { loading, data, error } = useQuery<ISetAccountData | null>({
+  const {
+    loading: setAccountLoading,
+    data,
+    error,
+  } = useQuery<ISetAccountData | null>({
     type: setAccount.toString(),
   });
 
   const web3Data = useWeb3React();
   const token = getJWTToken() ?? '';
+
   if (!web3Data.loading && !data && token && !run) {
     run = true;
     dispatch(
@@ -30,6 +36,11 @@ export const useAccount = () => {
       }),
     );
   }
+  useEffect(() => {
+    return () => {
+      resetRequests([setAccount.toString()]);
+    };
+  }, []);
 
   const address = data?.address;
   const isConnected = !!address;
@@ -71,8 +82,11 @@ export const useAccount = () => {
     [dispatch],
   );
 
+  const connectLoading = !Boolean(
+    setAccountLoading === false && web3Data.loading === false,
+  );
   return {
-    loading,
+    loading: connectLoading,
     isConnected,
     isChainSupported,
     walletSupportNetworkChange,

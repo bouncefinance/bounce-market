@@ -7,7 +7,7 @@ import { BlockchainNetworkId } from '../../../common/conts';
 import BigNumber from 'bignumber.js';
 import { Store } from 'redux';
 import { RootState } from '../../../../store';
-import { setJWTToken } from 'modules/common/utils/localStorage';
+import { setChainId, setJWTToken } from 'modules/common/utils/localStorage';
 
 const SIGN_STR = 'Welcome to Fangible!';
 
@@ -28,6 +28,7 @@ export const setAccount = createSmartAction(
       promise: (async function () {})(),
     },
     meta: {
+      asQuery: true,
       onRequest: (
         request: { promise: Promise<any> },
         action: RequestAction,
@@ -58,8 +59,15 @@ export const setAccount = createSmartAction(
 
             const token = authResponse.data.data.token;
             const chainId = await web3.eth.getChainId();
-            const balance = await web3.eth.getBalance(address);
+            let balance: string;
+            try {
+              // TODO Rpc may be slow
+              balance = await web3.eth.getBalance(address);
+            } catch (error) {
+              balance = '0';
+            }
             setJWTToken(token);
+            setChainId(chainId);
             return {
               token,
               address,

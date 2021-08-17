@@ -17,7 +17,8 @@ export const ClaimFunds: React.FC<{
   type: BidsType;
   isBidder: boolean;
   text?: string;
-}> = ({ id, auctionType, type, isBidder, text }) => {
+  reload?: () => void;
+}> = ({ id, auctionType, type, isBidder, text, reload }) => {
   const classes = useProductCardStyles();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatchRequest();
@@ -62,11 +63,13 @@ export const ClaimFunds: React.FC<{
     if (isBidder) {
       handleBidderClaim(() => {
         setLoading(false);
+        reload?.();
       });
       return;
     }
     handleCreatorClaim(() => {
       setLoading(false);
+      reload?.();
     });
   };
   const state: {

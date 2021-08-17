@@ -20,7 +20,7 @@ export const useSelectChainStyled = makeStyles<Theme>(theme => ({
     marginBottom: 76,
   },
   cardItem: {
-    width: 123,
+    width: 105,
     height: 153,
     boxSizing: 'border-box',
     padding: '20px 10px',

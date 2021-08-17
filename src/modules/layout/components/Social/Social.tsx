@@ -38,6 +38,7 @@ export const Social = (props: BoxProps) => {
 
   return (
     <Box {...props} component="nav">
+      <span className={classes.title}>Follow us</span>
       <ul className={classes.list}>
         {links.map(({ title, href, icon: Icon }) => {
           return (
@@ -53,6 +54,14 @@ export const Social = (props: BoxProps) => {
               >
                 <Icon className={classes.icon} />
               </IconButton>
+              <a
+                className={classes.a}
+                href={href}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {title}
+              </a>
             </li>
           );
         })}

@@ -38,6 +38,7 @@ import { TabOwned } from './components/tabOwned';
 import { TabSale } from './components/TabSale';
 import { useProfileStyles } from './useProfileStyles';
 import { RootState } from 'store/store';
+import useCdnUrl from 'modules/common/hooks/useCdnUrl';
 
 export const Profile = () => {
   const { tab, isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
@@ -55,6 +56,8 @@ export const Profile = () => {
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
   });
+
+  const { imgSrc } = useCdnUrl(profileInfo?.imgUrl || ' ', 160);
 
   const toggleAvatarModal = useCallback(
     (isOpen: boolean) => () => {
@@ -118,6 +121,12 @@ export const Profile = () => {
   useEffect(() => {
     updateData(tab);
   }, [updateData, tab]);
+
+  const reload = (value: ProfileTab) => () => {
+    setTimeout(() => {
+      updateData(value);
+    }, 100);
+  };
 
   const tabs = useMemo(
     () => [
@@ -196,7 +205,7 @@ export const Profile = () => {
       <Container>
         <Avatar
           className={classes.avatar}
-          src={profileInfo?.imgUrl}
+          src={imgSrc}
           onEditClick={toggleAvatarModal(true)}
           isEditable
           isVerified={profileInfo?.identity === 2}
@@ -256,11 +265,11 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>
-          <TabSale />
+          <TabSale reload={reload(ProfileTab.sells)} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.bids}>
-          <TabBids />
+          <TabBids reload={reload(ProfileTab.bids)} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.activity}>
