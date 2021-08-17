@@ -11,12 +11,14 @@ export interface ILayoutProps {
   children?: React.ReactNode;
   headerTheme?: Themes;
   footerTheme?: Themes;
+  isFooter?: boolean;
 }
 
 export const DefaultLayout = ({
   children,
   headerTheme = Themes.light,
   footerTheme = Themes.light,
+  isFooter = true,
 }: ILayoutProps) => {
   const classes = useDefaultLayoutStyles();
 
@@ -30,9 +32,11 @@ export const DefaultLayout = ({
 
       <main className={classNames(classes.main)}>{children}</main>
 
-      <ThemeProvider theme={getTheme(footerTheme)}>
-        <Footer />
-      </ThemeProvider>
+      {isFooter && (
+        <ThemeProvider theme={getTheme(footerTheme)}>
+          <Footer />
+        </ThemeProvider>
+      )}
     </div>
   );
 };

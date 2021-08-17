@@ -44,6 +44,7 @@ const useCdnUrl = (src: string, width?: number, height?: number) => {
     if (src) {
       preLoad(getCdnUrl(src, width, height), src);
     }
+    // eslint-disable-next-line
   }, [src, width, height]);
 
   return { imgSrc, setImgSrc };
