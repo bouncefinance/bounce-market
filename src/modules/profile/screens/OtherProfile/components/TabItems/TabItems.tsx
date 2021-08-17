@@ -69,7 +69,7 @@ export const TabItems = ({ address }: ITabItemsProps) => {
             key={uid(item)}
             title={item.itemName}
             href={
-              item.poolId && item.poolType
+              item.poolId !== undefined && item.poolType
                 ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
                     item.poolId,
                     item.poolType,

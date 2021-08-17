@@ -134,7 +134,7 @@ export const MyBrand = () => {
                   isOnSale={!!item.poolId}
                   title={item.itemName}
                   href={
-                    item.poolId && item.poolType
+                    item.poolid !== undefined && item.poolType
                       ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
                           item.poolId,
                           item.poolType,

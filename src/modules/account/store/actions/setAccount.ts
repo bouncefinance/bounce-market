@@ -7,7 +7,7 @@ import { BlockchainNetworkId } from '../../../common/conts';
 import BigNumber from 'bignumber.js';
 import { Store } from 'redux';
 import { RootState } from '../../../../store';
-import { setJWTToken } from 'modules/common/utils/localStorage';
+import { setChainId, setJWTToken } from 'modules/common/utils/localStorage';
 
 const SIGN_STR = 'Welcome to Fangible!';
 
@@ -67,6 +67,7 @@ export const setAccount = createSmartAction(
               balance = '0';
             }
             setJWTToken(token);
+            setChainId(chainId);
             return {
               token,
               address,
