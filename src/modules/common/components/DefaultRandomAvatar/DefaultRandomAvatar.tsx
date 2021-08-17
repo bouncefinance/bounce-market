@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useDefaultRandomAvatarStyles } from './useDefaultRandomAvatarStyles';
+import useCdnUrl from 'modules/common/hooks/useCdnUrl';
 
 const BG_PRESETS_COUNT = 19;
 
@@ -21,6 +22,8 @@ export const DefaultRandomAvatar = ({
   const styles = useDefaultRandomAvatarStyles();
   const dispatch = useDispatch();
   const { colors } = useSelector((store: RootState) => store.user);
+
+  const { imgSrc } = useCdnUrl(src || '', 160);
 
   const range = useMemo(() => Math.floor(Math.random() * BG_PRESETS_COUNT), []);
   useEffect(() => {
@@ -38,12 +41,12 @@ export const DefaultRandomAvatar = ({
     return range;
   }, [address, range, colors]);
 
-  const withoutImg = !src;
+  const withoutImg = !imgSrc;
 
   return (
     <Avatar
       {...restProps}
-      src={withoutImg ? userPic : src}
+      src={withoutImg ? userPic : imgSrc}
       classes={{
         ...classes,
         root: withoutImg ? styles[`color${randomBg}`] : '',

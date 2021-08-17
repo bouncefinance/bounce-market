@@ -1,11 +1,19 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
 import { ObjectFitType } from '../../common/types/ObjectFit';
 import { ImgErrorIcon } from './assets/ImgErrorIcon';
 import { useImgStyles } from './ImgStyles';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useCdnUrl from 'modules/common/hooks/useCdnUrl';
+import { memo } from 'react';
 
 export interface IImgProps {
   src?: string;
+  width?: number;
+  height?: number;
+  size?: 'small' | 'middle' | 'large' | 'xl';
+  original?: boolean;
   srcset?: {
     mobile?: string;
     mobile2x?: string;
@@ -28,90 +36,85 @@ export interface IImgProps {
   onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export const Img = ({
-  className,
-  imgClassName,
-  src,
-  srcset,
-  objectFit = 'cover',
-  alt = '',
-  title,
-  style,
-  loading,
-  ratio = '3x2',
-  tabletBreakpoint = '768px',
-  desktopBreakpoint = '1200px',
-  isNativeLazyLoading = true,
-  onClick,
-}: IImgProps) => {
-  const classes = useImgStyles({ objectFit, ratio });
-  const [loadError, setLoadError] = useState(false);
-  const onError = () => setLoadError(true);
+export const Img = memo(
+  ({
+    className,
+    imgClassName,
+    src,
+    original,
+    width,
+    height,
+    size,
+    objectFit = 'cover',
+    alt = '',
+    title,
+    style,
+    loading,
+    ratio = '3x2',
+    isNativeLazyLoading = true,
+    onClick,
+  }: IImgProps) => {
+    const classes = useImgStyles({ objectFit, ratio });
 
-  let desktop, desktop2x, tablet, tablet2x, mobile, mobile2x;
-  if (typeof srcset === 'object') {
-    desktop = srcset.desktop;
-    desktop2x = srcset.desktop2x;
-    tablet = srcset.tablet;
-    tablet2x = srcset.tablet2x;
-    mobile = srcset.mobile;
-    mobile2x = srcset.mobile2x;
-  }
-  const desktopSrcSet = desktop2x ? `${desktop}, ${desktop2x} 2x` : desktop;
-  const tabletSrcSet = tablet2x ? `${tablet}, ${tablet2x} 2x` : tablet;
-  const mobileSrcSet = mobile2x ? `${mobile}, ${mobile2x} 2x` : mobile;
-  const imgSrc = desktop || src;
+    const useMaxWidth = () => {
+      const theme = useTheme();
 
-  const isPicture = tablet || mobile || desktop2x;
+      /* 
+    xs: 0,
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200,
+    HD: 1366,
+    WXGAPlus: 1440,
+    HDPlus: 1600,
+  	*/
+      const smallerThanSm = useMediaQuery(theme.breakpoints.down('sm'));
+      const smallerThanMd = useMediaQuery(theme.breakpoints.down('md'));
+      const smallerThanLg = useMediaQuery(theme.breakpoints.down('lg'));
+      const largerThanLg = useMediaQuery(theme.breakpoints.up('lg'));
 
-  const Component = isPicture ? 'picture' : 'div';
+      if (size === 'small') return 160;
+      if (size === 'middle') return 400;
+      if (size === 'large') return 560;
 
-  const render = (
-    <Component
-      className={classNames(
-        classes.root,
-        className,
-        loadError && classes.rootError,
-      )}
-      style={style}
-      onClick={onClick}
-    >
-      {isPicture && (
-        <source
-          srcSet={isNativeLazyLoading ? desktopSrcSet : undefined}
-          data-srcset={isNativeLazyLoading ? undefined : desktopSrcSet}
-          media={`(min-width: ${desktopBreakpoint})`}
-        />
-      )}
-      {tablet && (
-        <source
-          srcSet={isNativeLazyLoading ? tabletSrcSet : undefined}
-          data-srcset={isNativeLazyLoading ? undefined : tabletSrcSet}
-          media={`(min-width: ${tabletBreakpoint})`}
-        />
-      )}
-      {mobile && (
-        <source
-          srcSet={isNativeLazyLoading ? mobileSrcSet : undefined}
-          data-srcset={isNativeLazyLoading ? undefined : mobileSrcSet}
-        />
-      )}
-      {loadError ? (
-        <ImgErrorIcon className={classes.errorIcon} />
-      ) : (
+      if (smallerThanSm) return 560;
+      if (smallerThanMd) return 400;
+      if (smallerThanLg) return 300;
+      if (largerThanLg) return 400;
+      return 400;
+    };
+
+    const maxWidth = useMaxWidth();
+
+    const { imgSrc, setImgSrc } = useCdnUrl(
+      src || '',
+      width || maxWidth,
+      height,
+    );
+
+    const render = (
+      <div
+        className={classNames(classes.root, className)}
+        style={style}
+        onClick={onClick}
+      >
         <img
-          src={isNativeLazyLoading ? imgSrc : undefined}
+          src={original ? src : (imgSrc as string)}
           data-src={isNativeLazyLoading ? undefined : imgSrc}
           alt={alt}
           title={title}
           loading={isNativeLazyLoading ? loading : undefined}
           className={classNames(classes.img, imgClassName)}
-          onError={onError}
+          onError={() => setImgSrc('')}
         />
-      )}
-    </Component>
-  );
-
-  // return imgSrc ? render : null;
-  return render;
-};
+        {imgSrc === '' && (
+          <div className={classes.errorIcon}>
+            <ImgErrorIcon />
+          </div>
+        )}
+      </div>
+    );
+    return render;
+  },
+);

@@ -67,6 +67,7 @@ export const BrandItems = ({
             <Img
               className={classes.itemImgBox}
               src={fileurl}
+              size="small"
               objectFit="scale-down"
               ratio="1x1"
               isNativeLazyLoading={false}
@@ -98,6 +99,7 @@ export const BrandItems = ({
       <div className={classes.row}>
         <Img
           src={imgUrl}
+          size="small"
           className={classes.brandImgWrap}
           isNativeLazyLoading={false}
           imgClassName="swiper-lazy"

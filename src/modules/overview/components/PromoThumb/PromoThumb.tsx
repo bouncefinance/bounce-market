@@ -28,6 +28,7 @@ export const PromoThumb = ({
       {MediaProps.category === 'image' ? (
         <Img
           src={img}
+          size="middle"
           ratio="1x1"
           className={classes.imgWrap}
           loading="lazy"

@@ -44,6 +44,7 @@ const SearchItems = ({ data }: { data: ISearchItem[] }) => {
               {item.category === 'image' ? (
                 <Img
                   src={item.previewUrl}
+                  size="small"
                   alt={item.name}
                   ratio="1x1"
                   objectFit="cover"
@@ -93,6 +94,7 @@ const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
           <div className={classes.preview}>
             <Img
               src={item.previewUrl}
+              size="small"
               alt={item.name}
               ratio="1x1"
               objectFit="cover"

@@ -45,18 +45,20 @@ export const useImgStyles = makeStyles<
     },
   },
 
-  rootError: {
-    backgroundColor: '#E0E0E0',
-  },
-
   errorIcon: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    maxHeight: '50%',
-    maxWidth: '50%',
-    fontSize: '50px',
-    transform: 'translate3d(-50%, -50%, 0px)',
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#E0E0E0',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& svg': {
+      fontSize: '50px',
+    },
   },
 
   img: {

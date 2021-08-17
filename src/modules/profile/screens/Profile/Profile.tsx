@@ -38,6 +38,7 @@ import { TabOwned } from './components/tabOwned';
 import { TabSale } from './components/TabSale';
 import { useProfileStyles } from './useProfileStyles';
 import { RootState } from 'store/store';
+import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
 
 export const Profile = () => {
   const { tab, isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
