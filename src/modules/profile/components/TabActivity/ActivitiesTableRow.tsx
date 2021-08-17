@@ -109,7 +109,6 @@ const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
 
   return (
     <div className={styles.tableUserIcon}>
-      {/* <Avatar src={imgSrc} className="avator" /> */}
       <DefaultRandomAvatar className="avator" src={imgSrc} address={address} />
       {name ? (
         (name.slice(0, 2) === '0x' || name.slice(0, 2) === '0X') &&
