@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 const useCdnUrl = (src: string, width?: number, height?: number) => {
   const [imgSrc, setImgSrc] = useState<string>('');
   const cdnUrl = process.env.REACT_APP_IMG_CDN_URL;
-  console.log('src: ', src);
 
   const preLoad = (src: string, origin: string, reload?: boolean) => {
     const img = new Image();

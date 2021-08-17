@@ -106,8 +106,6 @@ const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
 
   const { imgSrc } = useCdnUrl(url, 160);
 
-  console.log('imgSrc: ', imgSrc);
-
   return (
     <div className={styles.tableUserIcon}>
       <Avatar src={imgSrc} className="avator" />

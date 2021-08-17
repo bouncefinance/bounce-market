@@ -93,8 +93,6 @@ export const Img = memo(
       height,
     );
 
-    console.log('imgSrc: ', imgSrc);
-
     const render = (
       <div
         className={classNames(classes.root, className)}
