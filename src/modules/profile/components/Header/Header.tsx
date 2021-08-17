@@ -23,6 +23,7 @@ export const Header = ({ className, onEditClick, img }: IHeaderProps) => {
       <Img
         className={classes.imgWrap}
         src={img}
+        original
         objectFit="cover"
         loading="lazy"
       />

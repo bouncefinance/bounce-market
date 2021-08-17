@@ -51,7 +51,7 @@ export const Movers = (sectionProps: ISectionProps) => {
         }}
         likes={item.likeCount}
         href={
-          item.poolId && item.poolType
+          item.poolId !== undefined && item.poolType
             ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
                 item.poolId,
                 item.poolType,

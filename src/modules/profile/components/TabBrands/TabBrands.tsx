@@ -69,6 +69,7 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
                     ? ''
                     : BrandRoutesConfig.CreateBrandItem.generatePath(brand.id)
                 }
+                isOther={isOther}
                 title={brand.title}
                 id={brand.id}
                 itemsCount={brand.itemsCount}

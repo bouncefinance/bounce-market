@@ -27,7 +27,6 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
   avatarWrap: {
     position: 'relative',
     transition: 'transform 0.2s, opacity 0.2s',
-
     '$avatars:hover &': {
       opacity: 0.5,
 
@@ -37,7 +36,7 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
     },
 
     '&:hover': {
-      zIndex: 1,
+      zIndex: 3,
     },
 
     '& + &': {

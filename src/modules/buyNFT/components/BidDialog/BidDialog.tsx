@@ -234,7 +234,12 @@ export const BidDialog = ({
         <Grid container spacing={3} alignItems="center">
           <Grid item xs="auto">
             {category === 'image' ? (
-              <Img className={classes.imgWrap} src={filepath} ratio="1x1" />
+              <Img
+                className={classes.imgWrap}
+                src={filepath}
+                size="small"
+                ratio="1x1"
+              />
             ) : (
               <VideoPlayer src={filepath} autoPlay />
             )}

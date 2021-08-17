@@ -33,6 +33,7 @@ export interface IFollowListItem {
   imgSrc: string;
   follow: boolean;
   followState: ToggleFollowType;
+  followerAddress: string;
 }
 
 const mapFollowItemData = (item: IFetchFollowList): IFollowListItem => {
@@ -46,6 +47,7 @@ const mapFollowItemData = (item: IFetchFollowList): IFollowListItem => {
     imgSrc: item.useravatar,
     follow: item.ififollow === ToggleFollowType.Following,
     followState: item.ififollow,
+    followerAddress: item.useraddress,
   };
 };
 
