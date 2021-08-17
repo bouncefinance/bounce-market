@@ -131,7 +131,11 @@ export const CreateNFT = () => {
         ),
       ).then(({ error }) => {
         if (!error) {
-          push(ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands));
+          push(
+            ProfileRoutesConfig.UserProfile.generatePath(
+              ProfileTab.collections,
+            ),
+          );
         }
       });
     },

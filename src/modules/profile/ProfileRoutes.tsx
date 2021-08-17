@@ -19,7 +19,7 @@ export enum ProfileTab {
   owned = 'owned',
   bids = 'bids',
   sells = 'sale',
-  brands = 'brands',
+  collections = 'collections',
   activity = 'activity',
   liked = 'liked',
   following = 'following',
@@ -51,7 +51,7 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
         return {
           address,
           isCreateNft: true,
-          tab: ProfileTab.brands,
+          tab: ProfileTab.collections,
           id,
         };
       }
@@ -80,7 +80,7 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
       const brand = query.get('brand');
       if (tab === USER_CREATE_NFT_PROFILE) {
         return {
-          tab: ProfileTab.brands,
+          tab: ProfileTab.collections,
           isCreateNft: true,
           id,
           brand,

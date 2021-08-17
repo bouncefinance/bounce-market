@@ -4,9 +4,10 @@ import {
   IMyBrand,
   queryMyBrandItem,
 } from 'modules/brand/actions/queryMyBrandItem';
-import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
-import { BrandCard } from 'modules/brand/components/BrandCard';
 import { CollectHeaderCreate } from 'modules/brand/components/CollectHeaderCreate';
+import { CollectionCard } from 'modules/brand/components/CollectionCard';
+import { CollectionList } from 'modules/brand/components/CollectionList';
+import { CollectionNFTItems } from 'modules/brand/components/CollectionNFTItems';
 import { RoyaltyDialog } from 'modules/brand/components/RoyaltyDialog';
 import { NoItems } from 'modules/common/components/NoItems';
 import { t } from 'modules/i18n/utils/intl';
@@ -17,13 +18,13 @@ import {
 } from 'modules/profile/ProfileRoutes';
 import { useState } from 'react';
 import { uid } from 'react-uid';
-import { useTabBrandStyles } from './useTabBrandsStyles';
+import { useTabCollectionStyles } from './useTabCollectionStyles';
 
-export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
-  isOther = false,
-  address = '',
-}) => {
-  const classes = useTabBrandStyles();
+export const TabCollection: React.FC<{
+  isOther?: boolean;
+  address?: string;
+}> = ({ isOther = false, address = '' }) => {
+  const classes = useTabCollectionStyles();
   const { data: brands, loading } = useQuery<IMyBrand[]>({
     type: queryMyBrandItem.toString(),
   });
@@ -37,19 +38,27 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
 
   return (
     <>
+      {isOther || <CollectHeaderCreate />}
       <Grid container spacing={4} className={classes.root}>
-        {isOther || (
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-            <CollectHeaderCreate />
-          </Grid>
-        )}
         {loading ? (
           <></>
         ) : (
-          brands?.map(brand => (
-            <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(brand)}>
-              <BrandCard
-                withAddBtn
+          <CollectionList>
+            {brands?.map(brand => (
+              <CollectionCard
+                key={uid(brand.contract)}
+                name={brand.title}
+                img={brand.imgSrc}
+                descr={brand.contract}
+                nftItems={
+                  <CollectionNFTItems
+                    ownerAddress={'0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE'}
+                    contractAddress={
+                      '0x963fdb6a8559ef0d803981c6a7f29675a4bba868'
+                    }
+                  />
+                }
+                handelOpenRoyalty={handelOpenRoyalty}
                 href={
                   isOther
                     ? ProfileRoutesConfig.OtherProfile.generatePath(
@@ -64,21 +73,9 @@ export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
                         brand.id,
                       )
                 }
-                addItemHref={
-                  isOther
-                    ? ''
-                    : BrandRoutesConfig.CreateBrandItem.generatePath(brand.id)
-                }
-                title={brand.title}
-                id={brand.id}
-                itemsCount={brand.itemsCount}
-                imgSrc={brand.imgSrc}
-                nftType={brand.nftType}
-                collection={brand.contract}
-                handelOpenRoyalty={handelOpenRoyalty}
               />
-            </Grid>
-          ))
+            ))}
+          </CollectionList>
         )}
       </Grid>
       {!loading && brands?.length === 0 && isOther && (

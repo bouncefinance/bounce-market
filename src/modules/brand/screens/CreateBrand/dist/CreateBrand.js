@@ -86,7 +86,7 @@ exports.CreateBrand = function () {
         if (!error) {
           replace(
             ProfileRoutes_1.ProfileRoutesConfig.UserProfile.generatePath(
-              ProfileRoutes_1.ProfileTab.brands,
+              ProfileRoutes_1.ProfileTab.collections,
             ),
           );
         }

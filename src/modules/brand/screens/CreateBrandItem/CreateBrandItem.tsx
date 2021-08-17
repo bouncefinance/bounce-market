@@ -124,7 +124,9 @@ export const CreateBrandItem = () => {
         ).then(({ error }) => {
           if (!error) {
             push(
-              ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands),
+              ProfileRoutesConfig.UserProfile.generatePath(
+                ProfileTab.collections,
+              ),
             );
           }
         });

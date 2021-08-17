@@ -106,7 +106,9 @@ export const CreateBrand = () => {
       dispatch(createBrand(payload)).then(({ error }) => {
         if (!error) {
           replace(
-            ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands),
+            ProfileRoutesConfig.UserProfile.generatePath(
+              ProfileTab.collections,
+            ),
           );
         }
       });
