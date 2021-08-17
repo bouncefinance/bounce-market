@@ -29,6 +29,7 @@ import { Address } from '../modules/common/types/unit';
 import { TokenSymbol } from '../modules/common/types/TokenSymbol';
 import { disconnect } from 'modules/account/store/actions/disconnect';
 import { likeSlice } from 'modules/common/store/like';
+import { userSlice } from 'modules/common/store/user';
 
 type MainApiDriverName =
   | 'mainApiEthMainnet'
@@ -320,6 +321,7 @@ const rootReducer = combineReducers({
   notifications: notificationSlice.reducer,
   [LAYOUT_STATE_NAME]: layoutReducer,
   like: likeSlice.reducer,
+  user: userSlice.reducer,
 });
 
 export const store = configureStore({

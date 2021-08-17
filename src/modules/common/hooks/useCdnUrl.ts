@@ -1,8 +1,7 @@
-import { lastIndexOf } from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // 传入原始图片链接、目标宽高，处理得到缩略图链接，返回该链接并进行预加载。
-const useCdnUrl = (src: string, width: number = 0, height: number = 0) => {
+const useCdnUrl = (src: string, width?: number, height?: number) => {
   const [imgSrc, setImgSrc] = useState<string>('');
   const cdnUrl = process.env.REACT_APP_IMG_CDN_URL;
   console.log('src: ', src);

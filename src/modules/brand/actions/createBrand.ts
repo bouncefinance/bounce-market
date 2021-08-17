@@ -12,7 +12,7 @@ import {
   BoucneErc721Bytecode,
   BounceNFTFactoryV2,
 } from '../../web3/contracts';
-import { ICreateBrand } from '../screens/CreateBrand';
+import { ICreateBrandValues } from '../screens/CreateBrand';
 import { getBrandContract } from './const';
 import { IUpdateBrandInfoPayload, updateBrandInfo } from './updateBrandInfo';
 
@@ -41,7 +41,13 @@ function getBrandUri(chainId: BlockchainNetworkId): string {
 
 export const createBrand = createSmartAction(
   'createBrand',
-  ({ brandName, standard, description, brandSymbol, file }: ICreateBrand) => ({
+  ({
+    brandName,
+    standard,
+    description,
+    brandSymbol,
+    file,
+  }: ICreateBrandValues) => ({
     request: {
       promise: (async function () {})(),
     },

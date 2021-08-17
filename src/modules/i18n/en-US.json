@@ -297,6 +297,9 @@
         "creator": "Item hasn't been sold. Claim your NFT back",
         "others": "Item hasn't been sold"
       }
+    },
+    "royalty": {
+      "rate-desc": "A {rate} royalty will be issued to the Creator."
     }
   },
   "language": {
@@ -495,6 +498,13 @@
       "directPurchase": "A direct transaction price can be set, that is, users can skip the bidding process and buy directly at this price. The direct transaction price must be greater than the Minimum bid and Reserve price.",
       "duration": "Auction will be completed in this time",
       "reservePrice": "Setting a reserve price creates a hidden limit. If you receive no bids equal to or greater than your reserve, your auction will not be sold."
+    },
+    "royalty": {
+      "platform-fee": "Fangible fee",
+      "royalty-fee": "Royalty fee",
+      "royalty-fee-tip": "Royalty fees are transferred to the NFT creator immediately after a sale.",
+      "receive-fs": "For each edition, you will receive",
+      "receive-ea": "Your earning will be based on the transaction price. "
     }
   },
   "social": {
@@ -558,5 +568,23 @@
   },
   "video-player": {
     "unsupported": "Sorry, your browser does not support embedded videos or uploaded video file types!"
+  },
+  "royalty": {
+    "royalty": "Royalty",
+    "royalties": "Royalties",
+    "change": "Change",
+    "royalty-rate": "Royalty rate",
+    "royalty-rate-error": "Please select a royalty fee between 0.1% - 6.5% for your collection.",
+    "royalty-rate-tip": "Select a royalty fee between 0.1% - 6.5% for your collection. Royalties take about 30 minutes to be applied by the smart contract.",
+    "royalty-desc": "Once the royalty rate is set, payouts will be shwon here. The wallet address associated with your account will receive the royalties in real-time.",
+    "royalty-change-tip": "Royalty rate is changed.",
+    "table": {
+      "item": "Item",
+      "price": "Price",
+      "quantity": "Quantity",
+      "fee": "Fee Earned",
+      "payout": "Payout",
+      "empty": "You have not received any royalty yet."
+    }
   }
 }

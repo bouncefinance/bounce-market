@@ -7,6 +7,7 @@ import {
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { PoolType, poolTypeMap } from 'modules/api/common/poolType';
+import { fetchItemRoyalty } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -23,7 +24,10 @@ import {
   getBlockChainExplorerAddress,
   getTokenSymbol,
 } from 'modules/common/conts';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import {
+  truncateLongName,
+  truncateWalletAddr,
+} from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
 import {
@@ -104,6 +108,13 @@ export const BuyNFT = () => {
         dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
         // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
         dispatch(fetchCurrency({ unitContract: data.unitContract }));
+        // 请求版税
+        dispatch(
+          fetchItemRoyalty({
+            collection: data.tokenContract,
+            tokenId: data.tokenId,
+          }),
+        );
       })
       .then(() => {
         dispatch(fetchRoleInfo({ poolId, poolType, address }));
@@ -155,7 +166,9 @@ export const BuyNFT = () => {
   );
 
   const getSenderName = (sender: IRoleInfo) => {
-    return sender.username || truncateWalletAddr(sender.address);
+    return (
+      truncateLongName(sender.username) || truncateWalletAddr(sender.address)
+    );
   };
 
   const wrapperTitle = (name: string, address: string) => {
@@ -279,12 +292,23 @@ export const BuyNFT = () => {
     <Queries<
       ResponseData<typeof fetchItem>,
       ResponseData<typeof fetchWeb3PoolDetails>,
-      ResponseData<typeof fetchRoleInfo>
+      ResponseData<typeof fetchRoleInfo>,
+      ResponseData<typeof fetchItemRoyalty>
     >
-      requestActions={[fetchItem, fetchWeb3PoolDetails, fetchRoleInfo]}
+      requestActions={[
+        fetchItem,
+        fetchWeb3PoolDetails,
+        fetchRoleInfo,
+        fetchItemRoyalty,
+      ]}
       noDataMessage={<BuyNFTSkeleton />}
     >
-      {({ data: item }, { data: poolDetails }, { data: roleInfos }) => {
+      {(
+        { data: item },
+        { data: poolDetails },
+        { data: roleInfos },
+        { data: royalty },
+      ) => {
         return (
           <Queries<
             ResponseData<typeof fetchCurrency>,
@@ -512,6 +536,7 @@ export const BuyNFT = () => {
                         role={poolDetails.role}
                         onBidderClaim={handleBidderClaim}
                         onCreatorClaim={handleCreatorClaim}
+                        royalty={royalty}
                       />
                     ) : (
                       <InfoPrices
@@ -537,6 +562,7 @@ export const BuyNFT = () => {
                         onCancel={handleFixedSwapCancel}
                         poolType={poolType}
                         poolId={poolId}
+                        royalty={royalty}
                       />
                     )}
 

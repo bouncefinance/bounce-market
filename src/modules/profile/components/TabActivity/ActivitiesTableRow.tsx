@@ -51,6 +51,7 @@ const ItemIcon: React.FC<IItemProps> = ({
   label,
 }) => {
   const styles = useTabActivityStyles();
+
   return (
     <Link
       className={styles.tableItemIcon}
@@ -102,9 +103,14 @@ const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
   address,
 }) => {
   const styles = useTabActivityStyles();
+
+  const { imgSrc } = useCdnUrl(url, 160);
+
+  console.log('imgSrc: ', imgSrc);
+
   return (
     <div className={styles.tableUserIcon}>
-      <Avatar src={url} className="avator" />
+      <Avatar src={imgSrc} className="avator" />
       {name ? (
         (name.slice(0, 2) === '0x' || name.slice(0, 2) === '0X') &&
         name.length === 42 ? (

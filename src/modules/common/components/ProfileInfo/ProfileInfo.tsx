@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Avatar, Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -11,6 +11,7 @@ interface IUserInfo {
   avatar?: string;
   href?: string;
   verified?: boolean;
+  address?: string;
 }
 
 export interface IProfileInfoProps {
@@ -41,7 +42,7 @@ export const ProfileInfo = ({
   const classes = useProfileInfoStyles();
 
   const renderedAvatars = useMemo(() => {
-    return users.map(({ name, avatar, verified, href }, i) => {
+    return users.map(({ name, avatar, verified, href, address }, i) => {
       const commonProps = {
         className: classes.avatarWrap,
         title: name,
@@ -57,6 +58,7 @@ export const ProfileInfo = ({
               [classes.avatarSmall]: avatarSize === 'small',
             })}
             src={avatar}
+            address={address}
           />
 
           {verified && <i className={classes.avatarCheck} />}

@@ -71,6 +71,7 @@ export const TabBrands = ({ address }: ITabBrandsProps) => {
             id={brandProps.id}
             itemsCount={brandProps.itemsCount}
             imgSrc={brandProps.imgSrc}
+            collection={brandProps.contract}
           />
         </Grid>
       ))}

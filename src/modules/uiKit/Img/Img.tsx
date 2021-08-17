@@ -12,7 +12,8 @@ export interface IImgProps {
   src?: string;
   width?: number;
   height?: number;
-  size?: 'small' | 'middle' | 'large';
+  size?: 'small' | 'middle' | 'large' | 'xl';
+  original?: boolean;
   srcset?: {
     mobile?: string;
     mobile2x?: string;
@@ -40,6 +41,7 @@ export const Img = memo(
     className,
     imgClassName,
     src,
+    original,
     width,
     height,
     size,
@@ -91,6 +93,8 @@ export const Img = memo(
       height,
     );
 
+    console.log('imgSrc: ', imgSrc);
+
     const render = (
       <div
         className={classNames(classes.root, className)}
@@ -98,7 +102,7 @@ export const Img = memo(
         onClick={onClick}
       >
         <img
-          src={imgSrc as string}
+          src={original ? src : (imgSrc as string)}
           data-src={isNativeLazyLoading ? undefined : imgSrc}
           alt={alt}
           title={title}
