@@ -106,6 +106,7 @@ export const PromoCard = ({
               ratio="1x1"
               objectFit="contain"
               src={img}
+              size="middle"
               srcset={srcset}
               imgClassName="swiper-lazy"
               isNativeLazyLoading={false}

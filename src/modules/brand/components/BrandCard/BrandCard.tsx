@@ -36,7 +36,12 @@ export const BrandCard = ({
     <Card className={classes.root} variant="outlined">
       <Link to={href} className={classes.wrapLink}>
         <Box className={classes.imgBox}>
-          <Img src={imgSrc} className={classes.imgWrap} ratio="1x1" />
+          <Img
+            src={imgSrc}
+            size="small"
+            className={classes.imgWrap}
+            ratio="1x1"
+          />
         </Box>
 
         <CardContent className={classes.content}>

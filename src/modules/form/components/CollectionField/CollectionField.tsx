@@ -58,7 +58,7 @@ export const CollectionField = memo(
           }}
         >
           {item.imgSrc ? (
-            <Img src={item.imgSrc} className={classes.img} />
+            <Img src={item.imgSrc} size="small" className={classes.img} />
           ) : (
             <ImgIcon />
           )}

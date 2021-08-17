@@ -9,6 +9,7 @@ export const useProfileStyles = makeStyles<Theme>(theme => ({
   avatar: {
     marginTop: -PROFILE_AVATAR_SIZE / 2,
     marginBottom: theme.spacing(5),
+    zIndex: 2,
   },
 
   tabs: {

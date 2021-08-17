@@ -23,6 +23,7 @@ import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
+import useCdnUrl from '../../../common/hooks/useCdnUrl';
 
 const dateLocale: { [key: string]: Locale } = {
   zhCN: zhCN,
@@ -59,7 +60,7 @@ const ItemIcon: React.FC<IItemProps> = ({
         contractaddress,
       )}
     >
-      <Img src={url} ratio="1x1" className="icon" />
+      <Img src={url} size="small" ratio="1x1" className="icon" />
       <span>{label}</span>
     </Link>
   );
