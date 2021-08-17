@@ -9,6 +9,8 @@ import { Button } from 'modules/uiKit/Button';
 import React from 'react';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useMediaContainerStyles } from './useMediaContainerStyles';
+import useCdnUrl from 'modules/common/hooks/useCdnUrl';
+import { ImgErrorIcon } from 'modules/uiKit/Img/assets/ImgErrorIcon';
 
 interface INFTContentProps {
   className?: string;
@@ -37,6 +39,10 @@ export const MediaContainer = ({
 }: INFTContentProps) => {
   const classes = useMediaContainerStyles();
 
+  const { imgSrc } = useCdnUrl(src);
+
+  console.log('imgSrc: ', imgSrc);
+
   return (
     <Container className={classNames(classes.root, className)}>
       <Box mb={3}>
@@ -60,11 +66,18 @@ export const MediaContainer = ({
       </Box>
 
       <div className={classes.content}>
-        {category === 'image' ? (
-          <img className={classes.img} src={src} loading="lazy" alt="" />
+        {src && imgSrc ? (
+          category === 'image' ? (
+            <img className={classes.img} src={src} loading="lazy" alt="" />
+          ) : (
+            <VideoPlayer src={src} autoPlay />
+          )
         ) : (
-          <VideoPlayer src={src} autoPlay />
+          <div className={classes.errorIcon}>
+            <ImgErrorIcon />
+          </div>
         )}
+
         {isOpenSaleTime && (
           <CardPutSaleTimer onchange={onchange} openAt={openAt} />
         )}
