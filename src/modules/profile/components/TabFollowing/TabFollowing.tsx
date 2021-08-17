@@ -5,7 +5,7 @@ import {
   fetchFollowingList,
   IFollowListItem,
 } from 'modules/profile/actions/fetchFollowersList';
-import { Avatar, Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { FollowType } from '.';
 import { useTabFollowingStyles } from './useTabFollowingStyles';
 import { useCallback, useEffect, useMemo, useState } from 'react';
