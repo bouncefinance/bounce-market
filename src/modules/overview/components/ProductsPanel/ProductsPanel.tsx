@@ -25,7 +25,7 @@ const categories = [
   },
   {
     value: ItemsChannel.comics,
-    label: t('product-panel.Comics'),
+    label: t('product-panel.comics'),
   },
   {
     value: ItemsChannel.collectible,
