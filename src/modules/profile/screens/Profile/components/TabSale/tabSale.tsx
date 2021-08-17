@@ -84,7 +84,7 @@ export const TabSale: React.FC<{
                 key={uid(item)}
                 title={item.itemname}
                 href={
-                  item.poolid && item.poolType
+                  item.poolid !== undefined && item.poolType
                     ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
                         item.poolid,
                         item.poolType,
@@ -92,7 +92,7 @@ export const TabSale: React.FC<{
                     : ''
                 }
                 likes={item.likecount}
-                price={item.poolid ? item.price : undefined}
+                price={item.poolid !== undefined ? item.price : undefined}
                 priceType={(data as any)?.tokenSymbol}
                 soldData={{
                   sold: isFixedSwap(item.poolType)
@@ -137,6 +137,7 @@ export const TabSale: React.FC<{
                 isCancelTimePut={
                   item.openAt ? +item.openAt >= Date.now() : false
                 }
+                isOther={isOther}
                 openAt={item.openAt}
                 closeAt={item.closeAt}
                 isOnSeller

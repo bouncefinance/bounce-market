@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@material-ui/styles';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { fetchPopularBrands } from 'modules/brand/actions/fetchPopularBrands';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { featuresConfig } from 'modules/common/conts';
@@ -38,12 +39,10 @@ function mapPromoItem(item: IOverviewItem, tokenSymbol: string): IPromoItem {
     img: item.fileUrl,
     thumbImg: item.fileUrl || '',
     identity: item?.identity || 1,
-    href: item.poolType
-      ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-          item.poolId || 0,
-          item.poolType,
-        )
-      : '',
+    href:
+      item.poolId !== undefined && item.poolType
+        ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
+        : '',
     authorHref: ProfileRoutesConfig.OtherProfile.generatePath(item.creator),
     MediaProps: {
       category: item.category,
@@ -56,6 +55,7 @@ export const Overview = () => {
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
   const classes = useOverviewStyles();
+  const { chainId } = useAccount();
 
   useEffect(() => {
     dispatchRequest(fetchOverview());
@@ -69,7 +69,7 @@ export const Overview = () => {
         ]),
       );
     };
-  }, [dispatch, dispatchRequest]);
+  }, [chainId, dispatch, dispatchRequest]);
 
   const renderedPromoSkeleton = (
     <ThemeProvider theme={darkTheme}>

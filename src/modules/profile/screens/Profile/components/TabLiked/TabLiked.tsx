@@ -42,7 +42,7 @@ export const TabLiked: React.FC<{ isOther?: boolean }> = function ({
               key={uid(item)}
               title={item.name}
               href={
-                item.poolid && item.poolType
+                item.poolid !== undefined && item.poolType
                   ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
                       item.poolid,
                       item.poolType,

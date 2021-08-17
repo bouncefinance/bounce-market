@@ -29,6 +29,7 @@ import { Address } from '../modules/common/types/unit';
 import { TokenSymbol } from '../modules/common/types/TokenSymbol';
 import { disconnect } from 'modules/account/store/actions/disconnect';
 import { likeSlice } from 'modules/common/store/like';
+import { getChainId } from 'modules/common/utils/localStorage';
 import { userSlice } from 'modules/common/store/user';
 
 type MainApiDriverName =
@@ -262,26 +263,17 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
     if (action.meta?.driver === 'axios') {
       action.meta = {
         ...action.meta,
-        driver:
-          data && data.chainId
-            ? getMainApiDriverName(data.chainId)
-            : 'mainApiSmartchain',
+        driver: getMainApiDriverName(data?.chainId ?? getChainId()),
       };
     } else if (action.meta?.driver === 'nftview') {
       action.meta = {
         ...action.meta,
-        driver:
-          data && data.chainId
-            ? getNftViewApiDriverName(data.chainId)
-            : 'nftViewApiSmartchain',
+        driver: getNftViewApiDriverName(data?.chainId ?? getChainId()),
       };
     } else if (action.meta?.driver === 'nftview2') {
       action.meta = {
         ...action.meta,
-        driver:
-          data && data.chainId
-            ? getNftView2ApiDriverName(data.chainId)
-            : 'nftView2ApiSmartchain',
+        driver: getNftView2ApiDriverName(data?.chainId ?? getChainId()),
       };
     }
 
