@@ -38,7 +38,7 @@ import { TabOwned } from './components/tabOwned';
 import { TabSale } from './components/TabSale';
 import { useProfileStyles } from './useProfileStyles';
 import { RootState } from 'store/store';
-import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
+import useCdnUrl from 'modules/common/hooks/useCdnUrl';
 
 export const Profile = () => {
   const { tab, isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
@@ -56,6 +56,8 @@ export const Profile = () => {
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
   });
+
+  const { imgSrc } = useCdnUrl(profileInfo?.imgUrl || ' ', 160);
 
   const toggleAvatarModal = useCallback(
     (isOpen: boolean) => () => {
@@ -203,7 +205,7 @@ export const Profile = () => {
       <Container>
         <Avatar
           className={classes.avatar}
-          src={profileInfo?.imgUrl}
+          src={imgSrc}
           onEditClick={toggleAvatarModal(true)}
           isEditable
           isVerified={profileInfo?.identity === 2}
