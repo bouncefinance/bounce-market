@@ -1,4 +1,4 @@
-import { Avatar, TableCell, TableRow, Tooltip } from '@material-ui/core';
+import { TableCell, TableRow, Tooltip } from '@material-ui/core';
 // import { Link } from 'react-router-dom';
 // import { formatDistance } from 'date-fns';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
