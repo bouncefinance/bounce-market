@@ -41,14 +41,16 @@ export const ActivitiesTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map(item => (
-            <ActivitiesTableRow
-              symbol={symbol}
-              tabKey={tabKey}
-              item={item}
-              key={item.ctime.toString()}
-            />
-          ))}
+          {data
+            .filter(item => item.contractaddress)
+            ?.map(item => (
+              <ActivitiesTableRow
+                symbol={symbol}
+                tabKey={tabKey}
+                item={item}
+                key={item.ctime.toString()}
+              />
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
