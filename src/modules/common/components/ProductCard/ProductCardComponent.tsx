@@ -92,6 +92,7 @@ export interface IProductCardComponentProps {
   isCreatorClaimed?: boolean;
   soldData?: ISoldData;
   reload?: () => void;
+  isOther?: boolean;
 }
 
 export const ProductCardComponent = ({
@@ -134,6 +135,7 @@ export const ProductCardComponent = ({
   soldData,
   isBidderClaimed = false,
   isCreatorClaimed = false,
+  isOther = false,
   reload,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect } = useAccount();
@@ -416,7 +418,7 @@ export const ProductCardComponent = ({
 
           <div className={classes.rightWrapper}>
             <div>
-              {isCancelTimePut ? (
+              {isCancelTimePut && !isOther ? (
                 <CancelPutTime
                   auctionType={auctionType}
                   id={poolId}
@@ -425,7 +427,7 @@ export const ProductCardComponent = ({
               ) : (
                 <></>
               )}
-              {isSellerCancel && (
+              {isSellerCancel && !isOther && (
                 <CancelPutOnSale
                   auctionType={auctionType}
                   id={poolId}
@@ -433,7 +435,7 @@ export const ProductCardComponent = ({
                 />
               )}
 
-              {!isCancelTimePut && !isSellerCancel && (
+              {!isCancelTimePut && !isSellerCancel && !isOther && (
                 <>
                   {isLost && (
                     <ClaimFunds
