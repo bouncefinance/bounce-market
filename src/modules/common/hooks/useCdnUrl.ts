@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react';
 const useCdnUrl = (src: string, width?: number, height?: number) => {
   const [imgSrc, setImgSrc] = useState<string>('');
   const cdnUrl = process.env.REACT_APP_IMG_CDN_URL;
+  const hecoCdnUrl = process.env.REACT_APP_IMG_HECO_CDN_URL;
 
   const preLoad = (src: string, origin: string, reload?: boolean) => {
     const img = new Image();
     img.src = src;
     img.onload = () => {
       setImgSrc(src);
-      if (!reload && src.slice(-5)?.includes('.gif')) {
+      if (!reload && src.slice(-4)?.includes('.gif')) {
         requestAnimationFrame(() => preLoad(origin, origin, true));
       }
     };
@@ -25,11 +26,12 @@ const useCdnUrl = (src: string, width?: number, height?: number) => {
     const suffixs = ['.jpg', '.png', '.gif', '.jp2', '.jpeg'];
 
     const hasThumbnail =
-      src.slice(0, cdnUrl?.length) === cdnUrl &&
+      (src.slice(0, cdnUrl?.length) === cdnUrl ||
+        src.slice(0, hecoCdnUrl?.length) === hecoCdnUrl) &&
       suffixs.find(format => src.slice(-5)?.includes(format));
 
     const getThumbnailUrl = (src: String): string => {
-      if (cdnUrl) {
+      if (cdnUrl || hecoCdnUrl) {
         return `${src?.slice(0, src?.lastIndexOf('/'))}/${
           width > 0 ? width : 'auto'
         }x${height > 0 ? height : 'auto'}${src?.slice(src?.lastIndexOf('/'))}`;
