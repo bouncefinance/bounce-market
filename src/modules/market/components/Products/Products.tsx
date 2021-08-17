@@ -135,6 +135,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
                   name: item.ownerName ?? truncateWalletAddr(item.ownerAddress),
                   avatar: item.ownerAvatar,
                   verified: item.identity === UserRoleEnum.Verified,
+                  address: item.ownerAddress,
                 },
               ]}
             />
