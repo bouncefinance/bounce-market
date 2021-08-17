@@ -30,6 +30,7 @@ import { TokenSymbol } from '../modules/common/types/TokenSymbol';
 import { disconnect } from 'modules/account/store/actions/disconnect';
 import { likeSlice } from 'modules/common/store/like';
 import { getChainId } from 'modules/common/utils/localStorage';
+import { userSlice } from 'modules/common/store/user';
 
 type MainApiDriverName =
   | 'mainApiEthMainnet'
@@ -312,6 +313,7 @@ const rootReducer = combineReducers({
   notifications: notificationSlice.reducer,
   [LAYOUT_STATE_NAME]: layoutReducer,
   like: likeSlice.reducer,
+  user: userSlice.reducer,
 });
 
 export const store = configureStore({

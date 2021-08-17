@@ -83,6 +83,7 @@ export const Movers = (sectionProps: ISectionProps) => {
                   item.creator,
                 ),
                 verified: item?.identity === UserRoleEnum.Verified,
+                address: item.creator,
               },
             ]}
           />

@@ -112,6 +112,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
                 name: ownerName,
                 avatar: item.ownerAvatar,
                 verified: item.identity === UserRoleEnum.Verified,
+                address: item.ownerAddress,
               },
             ]}
           />
