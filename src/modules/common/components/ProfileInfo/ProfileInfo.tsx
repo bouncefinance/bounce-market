@@ -1,4 +1,4 @@
-import { Avatar, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';

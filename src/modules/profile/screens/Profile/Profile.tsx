@@ -201,17 +201,12 @@ export const Profile = () => {
       />
 
       <Container>
-        {/* <Avatar
+        <Avatar
           className={classes.avatar}
           src={profileInfo?.imgUrl}
           onEditClick={toggleAvatarModal(true)}
           isEditable
           isVerified={profileInfo?.identity === 2}
-        /> */}
-        <DefaultRandomAvatar
-          className={classes.avatar}
-          src={profileInfo?.imgUrl}
-          address={profileInfo?.accountAddress}
         />
 
         <SetAvatarModal
