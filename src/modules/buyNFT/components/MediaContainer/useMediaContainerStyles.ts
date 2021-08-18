@@ -38,17 +38,6 @@ export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
     },
   },
 
-  errorIcon: {
-    maxWidth: 300,
-    backgroundColor: '#E0E0E0',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    '& svg': {
-      fontSize: '260px',
-    },
-  },
-
   btn: {
     borderColor: fade(theme.palette.text.primary, 0.1),
     paddingLeft: theme.spacing(3),
