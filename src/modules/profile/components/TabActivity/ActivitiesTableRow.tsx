@@ -1,4 +1,4 @@
-import { Avatar, TableCell, TableRow, Tooltip } from '@material-ui/core';
+import { TableCell, TableRow, Tooltip } from '@material-ui/core';
 // import { Link } from 'react-router-dom';
 // import { formatDistance } from 'date-fns';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
@@ -24,6 +24,7 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import useCdnUrl from '../../../common/hooks/useCdnUrl';
+import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
 
 const dateLocale: { [key: string]: Locale } = {
   zhCN: zhCN,
@@ -108,7 +109,7 @@ const UserIcon: React.FC<{ url: string; name: string; address: string }> = ({
 
   return (
     <div className={styles.tableUserIcon}>
-      <Avatar src={imgSrc} className="avator" />
+      <DefaultRandomAvatar className="avator" src={imgSrc} address={address} />
       {name ? (
         (name.slice(0, 2) === '0x' || name.slice(0, 2) === '0X') &&
         name.length === 42 ? (
