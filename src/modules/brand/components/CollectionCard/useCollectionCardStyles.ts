@@ -42,28 +42,24 @@ export const useCollectionCardStyles = makeStyles<Theme>(theme => ({
   optionBtn: {
     display: 'flex',
     alignItems: 'center',
-  },
-  optionRoyalty: {
-    display: 'flex',
-    alignItems: 'center',
-    height: 50,
-    border: '1px solid rgba(0,0,0,.1)',
-    borderRadius: 50,
-    padding: '8px 20px',
-    marginLeft: 12,
-    boxSizing: 'border-box',
     fontSize: 15,
     fontWeight: 500,
     color: 'rgba(0,0,0,.5)',
+  },
+  showStandard: {
+    display: 'flex',
+    alignItems: 'center',
+    marginRight: 40,
+    '& > span': {
+      marginLeft: 12,
+    },
   },
   showRoyalty: {
     display: 'flex',
     alignItems: 'center',
     height: '100%',
-    borderRight: '1px solid rgba(0,0,0,.1)',
     paddingRight: 12,
     marginRight: 12,
-
     '& > span': {
       marginLeft: 12,
     },

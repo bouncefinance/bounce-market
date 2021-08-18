@@ -1,10 +1,10 @@
 import { Avatar, Grid, Paper, Typography } from '@material-ui/core';
-import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { useCollectionCardStyles } from './useCollectionCardStyles';
-import { ReactComponent as ShareIcon } from '../assets/share.svg';
+import { ReactComponent as BinanceIcon } from '../assets/binance.svg';
 import { ReactComponent as DollerIcon } from '../assets/doller.svg';
+import { ReactNode } from 'react';
 
 interface IBrandsItemProps {
   img?: string;
@@ -14,6 +14,7 @@ interface IBrandsItemProps {
   nftItems?: JSX.Element;
   href?: string;
   handelOpenRoyalty: (collection: string) => void;
+  chainId: number;
 }
 
 export const CollectionCard = ({
@@ -24,6 +25,7 @@ export const CollectionCard = ({
   nftItems,
   href = '#',
   handelOpenRoyalty,
+  chainId,
 }: IBrandsItemProps) => {
   const classes = useCollectionCardStyles();
 
@@ -31,6 +33,11 @@ export const CollectionCard = ({
     rootMargin: '-10% 0% -10% 0%',
     triggerOnce: true,
   });
+
+  const getIconByChainId: (chainId: number) => ReactNode = chainId => {
+    // TODO 根据链获取不同的图标
+    return <BinanceIcon />;
+  };
 
   return (
     <Paper className={classes.root} variant="outlined" ref={ref}>
@@ -47,13 +54,13 @@ export const CollectionCard = ({
           {descr && <Typography className={classes.descr}>{descr}</Typography>}
 
           <div className={classes.optionBtn}>
-            <ShareIcon />
-            <div className={classes.optionRoyalty}>
-              <div className={classes.showRoyalty}>
-                <DollerIcon />
-                <span>10 %</span>
-              </div>
-              <div className={classes.changeBtn}>change</div>
+            <div className={classes.showStandard}>
+              {getIconByChainId(chainId)}
+              <span>ERC-721</span>
+            </div>
+            <div className={classes.showRoyalty}>
+              <DollerIcon />
+              <span>10 %</span>
             </div>
           </div>
         </Grid>

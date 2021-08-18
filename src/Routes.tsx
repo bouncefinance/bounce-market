@@ -91,6 +91,7 @@ export function Routes() {
           ProfileRoutesConfig.EditProfile.path,
           ProfileRoutesConfig.UserProfile.path,
           ProfileRoutesConfig.OtherProfile.path,
+          ProfileRoutesConfig.Collection.path,
         ]}
         render={() => (
           <DefaultLayout>

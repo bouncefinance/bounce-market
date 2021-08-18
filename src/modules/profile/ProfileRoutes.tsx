@@ -10,6 +10,8 @@ export const PATH_USER_PROFILE = `${PATH_PROFILE_BASE}?id=:id?&brand=:brand?&tab
 export const PATH_OTHER_PROFILE = `${PATH_PROFILE_BASE}/address/:address`;
 export const PATH_OTHER_PROFILE_TABS = `${PATH_OTHER_PROFILE}??id=:id?&tab=:tab?`;
 export const PATH_EDIT_PROFILE = `${PATH_PROFILE_BASE}/edit`;
+export const PATH_COLLECTION_BASE = `/collection`;
+export const PATH_COLLECTION_PROFILE = `${PATH_COLLECTION_BASE}?address=:address&tab=:tab?`;
 
 export const USER_CREATE_NFT_PROFILE = 'createNft';
 export type USER_CREATE_NFT_PROFILE_TYPE = 'createNft';
@@ -28,6 +30,7 @@ export enum ProfileTab {
 
 export const defaultProfileTab = ProfileTab.sells;
 export const defaultOtherProfileTab = ProfileTab.sells;
+export const defaultCollectionTab = ProfileTab.sells;
 
 export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
   OtherProfile: {
@@ -97,6 +100,23 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
     path: PATH_EDIT_PROFILE,
     generatePath: () => PATH_EDIT_PROFILE,
   },
+
+  Collection: {
+    path: PATH_COLLECTION_BASE,
+    generatePath: (address?: string, tab?: ProfileTab) => {
+      return generatePath(PATH_COLLECTION_PROFILE, {
+        address,
+        tab: tab ?? defaultCollectionTab,
+      });
+    },
+    useParams: () => {
+      const query = useQueryParams();
+      return {
+        address: query.get('address'),
+        tab: query.get('tab') || defaultCollectionTab,
+      };
+    },
+  },
 };
 
 const LoadableProfileContainer: LoadableComponent<any> = loadable(
@@ -122,6 +142,13 @@ const LoadableOtherProfileContainer: LoadableComponent<any> = loadable(
   },
 );
 
+const LoadableCollectionContainer: LoadableComponent<any> = loadable(
+  async () => import('./screens/Collection').then(module => module.Collection),
+  {
+    fallback: <QueryLoadingAbsolute />,
+  },
+);
+
 export function ProfileRoutes() {
   return (
     <>
@@ -141,6 +168,12 @@ export function ProfileRoutes() {
         path={ProfileRoutesConfig.EditProfile.path}
         exact={true}
         component={LoadableEditProfileContainer}
+      />
+
+      <PrivateRoute
+        path={ProfileRoutesConfig.Collection.path}
+        exact={true}
+        component={LoadableCollectionContainer}
       />
     </>
   );

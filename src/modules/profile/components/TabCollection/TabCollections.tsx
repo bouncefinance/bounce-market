@@ -1,5 +1,6 @@
 import { Grid } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import {
   IMyBrand,
   queryMyBrandItem,
@@ -13,10 +14,7 @@ import { NoItems } from 'modules/common/components/NoItems';
 import { truncateLongName } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import {
-  ProfileRoutesConfig,
-  USER_CREATE_NFT_PROFILE,
-} from 'modules/profile/ProfileRoutes';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useState } from 'react';
 import { uid } from 'react-uid';
 import { useTabCollectionStyles } from './useTabCollectionStyles';
@@ -31,6 +29,7 @@ export const TabCollection: React.FC<{
   });
   const [royaltyOpen, setRoyaltyOpen] = useState(false);
   const [collection, setCollection] = useState('');
+  const { chainId } = useAccount();
 
   const handelOpenRoyalty: (collection: string) => void = collection => {
     setCollection(collection);
@@ -51,6 +50,7 @@ export const TabCollection: React.FC<{
                 name={truncateLongName(brand.title)}
                 img={brand.imgSrc}
                 descr={brand.desc}
+                chainId={chainId}
                 nftItems={
                   <CollectionNFTItems
                     ownerAddress={address}
@@ -58,20 +58,9 @@ export const TabCollection: React.FC<{
                   />
                 }
                 handelOpenRoyalty={handelOpenRoyalty}
-                href={
-                  isOther
-                    ? ProfileRoutesConfig.OtherProfile.generatePath(
-                        address,
-                        USER_CREATE_NFT_PROFILE,
-                        brand.contract || undefined,
-                        brand.id,
-                      )
-                    : ProfileRoutesConfig.UserProfile.generatePath(
-                        USER_CREATE_NFT_PROFILE,
-                        brand.contract || undefined,
-                        brand.id,
-                      )
-                }
+                href={ProfileRoutesConfig.Collection.generatePath(
+                  brand.contract,
+                )}
               />
             ))}
           </CollectionList>
