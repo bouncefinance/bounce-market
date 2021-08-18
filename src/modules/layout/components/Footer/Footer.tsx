@@ -4,6 +4,7 @@ import React from 'react';
 import { LogoByBounce } from '../LogoByBounce';
 import { Social } from '../Social';
 import { useFooterStyles } from './FooterStyles';
+import { t } from 'modules/i18n/utils/intl';
 
 import { uid } from 'react-uid';
 import {
@@ -52,7 +53,6 @@ const LinkList: React.FC<LinkListProps> = ({ listTitle, links }) => {
       padding: theme.spacing(X_SPACING),
       fontWeight: 'normal',
       fontSize: 16,
-      whiteSpace: 'nowrap',
       '&:hover': {
         opacity: 0.7,
       },
@@ -81,44 +81,46 @@ const LinkList: React.FC<LinkListProps> = ({ listTitle, links }) => {
   );
 };
 
-const companyLinkObj = {
-  listTitle: 'Company',
-  links: [
-    {
-      title: 'Our Story',
-      url: StatementRoutesConfig.OurStory.generatePath('OurStory'),
-    },
-    {
-      title: 'My Profile',
-      url: ProfileRoutesConfig.UserProfile.generatePath(defaultProfileTab),
-    },
-    {
-      title: 'Terms of servise',
-      url: StatementRoutesConfig.TermsOfService.generatePath('TermsOfService'),
-    },
-  ],
-};
-
-const helpLinkObj = {
-  listTitle: 'Help',
-  links: [
-    {
-      title: 'Get Verified',
-      url: 'https://ankrnetwork.typeform.com/to/UBxvAPWr',
-    },
-    {
-      title: 'FAQ',
-      url: 'https://docs.fangible.com/',
-    },
-    {
-      title: 'Support',
-      url: 'https://docs.fangible.com/fangible-support',
-    },
-  ],
-};
-
 export const Footer = () => {
   const classes = useFooterStyles();
+
+  const companyLinkObj = {
+    listTitle: t('footer.company.company'),
+    links: [
+      {
+        title: t('footer.company.ourStory'),
+        url: StatementRoutesConfig.OurStory.generatePath('OurStory'),
+      },
+      {
+        title: t('footer.company.myProfile'),
+        url: ProfileRoutesConfig.UserProfile.generatePath(defaultProfileTab),
+      },
+      {
+        title: t('footer.company.termsOfServices'),
+        url: StatementRoutesConfig.TermsOfService.generatePath(
+          'TermsOfService',
+        ),
+      },
+    ],
+  };
+
+  const helpLinkObj = {
+    listTitle: t('footer.help.help'),
+    links: [
+      {
+        title: t('footer.help.getVerified'),
+        url: 'https://ankrnetwork.typeform.com/to/UBxvAPWr',
+      },
+      {
+        title: t('footer.help.FAQ'),
+        url: 'https://docs.fangible.com/',
+      },
+      {
+        title: t('footer.help.support'),
+        url: 'https://docs.fangible.com/fangible-support',
+      },
+    ],
+  };
 
   return (
     <footer className={classes.root}>

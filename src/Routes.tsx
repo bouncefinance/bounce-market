@@ -69,7 +69,7 @@ export function Routes() {
         exact
         path={BuyNFTRoutesConfig.DetailsNFT.path}
         render={() => (
-          <DefaultLayout isFooter={false}>
+          <DefaultLayout>
             <BuyNFTRoutes />
           </DefaultLayout>
         )}
@@ -79,7 +79,7 @@ export function Routes() {
         exact
         path={BuyNFTRoutesConfig.Details_ITEM_NFT.path}
         render={() => (
-          <DefaultLayout isFooter={false}>
+          <DefaultLayout>
             <BuyItemNFTRoutes />
           </DefaultLayout>
         )}
