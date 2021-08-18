@@ -9,7 +9,6 @@ import { Button } from 'modules/uiKit/Button';
 import React from 'react';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useMediaContainerStyles } from './useMediaContainerStyles';
-import useCdnUrl from 'modules/common/hooks/useCdnUrl';
 
 interface INFTContentProps {
   className?: string;
@@ -38,8 +37,6 @@ export const MediaContainer = ({
 }: INFTContentProps) => {
   const classes = useMediaContainerStyles();
 
-  const { imgSrc } = useCdnUrl(src);
-
   return (
     <Container className={classNames(classes.root, className)}>
       <Box mb={3}>
@@ -63,17 +60,10 @@ export const MediaContainer = ({
       </Box>
 
       <div className={classes.content}>
-        {src && imgSrc ? (
-          category === 'image' ? (
-            <img className={classes.img} src={src} loading="lazy" alt="" />
-          ) : (
-            <VideoPlayer src={src} autoPlay />
-          )
+        {category === 'image' ? (
+          <img className={classes.img} src={src} loading="lazy" alt="" />
         ) : (
-          // <div className={classes.errorIcon}>
-          //   <ImgErrorIcon />
-          // </div>
-          <></>
+          <VideoPlayer src={src} autoPlay />
         )}
 
         {isOpenSaleTime && (
