@@ -10,6 +10,7 @@ import { CollectionList } from 'modules/brand/components/CollectionList';
 import { CollectionNFTItems } from 'modules/brand/components/CollectionNFTItems';
 import { RoyaltyDialog } from 'modules/brand/components/RoyaltyDialog';
 import { NoItems } from 'modules/common/components/NoItems';
+import { truncateLongName } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import {
@@ -47,15 +48,13 @@ export const TabCollection: React.FC<{
             {brands?.map(brand => (
               <CollectionCard
                 key={uid(brand.contract)}
-                name={brand.title}
+                name={truncateLongName(brand.title)}
                 img={brand.imgSrc}
-                descr={brand.contract}
+                descr={brand.desc}
                 nftItems={
                   <CollectionNFTItems
-                    ownerAddress={'0x2D3Fff58da3346dCE601F6DB8eeC57906CDB17bE'}
-                    contractAddress={
-                      '0x963fdb6a8559ef0d803981c6a7f29675a4bba868'
-                    }
+                    ownerAddress={address}
+                    contractAddress={brand.contract}
                   />
                 }
                 handelOpenRoyalty={handelOpenRoyalty}

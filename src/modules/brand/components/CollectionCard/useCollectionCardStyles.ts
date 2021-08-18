@@ -32,5 +32,43 @@ export const useCollectionCardStyles = makeStyles<Theme>(theme => ({
 
   descr: {
     marginBottom: theme.spacing(3),
+    maxHeight: 95,
+    overflow: 'hidden',
+    fontSize: 16,
+    display: '-webkit-box' /*盒子模型微弹性伸缩模型*/,
+    '-webkit-box-orient': 'vertical' /*伸缩盒子的子元素垂直排列*/,
+    '-webkit-line-clamp': 4 /*文本显示4行*/,
+  },
+  optionBtn: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  optionRoyalty: {
+    display: 'flex',
+    alignItems: 'center',
+    height: 50,
+    border: '1px solid rgba(0,0,0,.1)',
+    borderRadius: 50,
+    padding: '8px 20px',
+    marginLeft: 12,
+    boxSizing: 'border-box',
+    fontSize: 15,
+    fontWeight: 500,
+    color: 'rgba(0,0,0,.5)',
+  },
+  showRoyalty: {
+    display: 'flex',
+    alignItems: 'center',
+    height: '100%',
+    borderRight: '1px solid rgba(0,0,0,.1)',
+    paddingRight: 12,
+    marginRight: 12,
+
+    '& > span': {
+      marginLeft: 12,
+    },
+  },
+  changeBtn: {
+    cursor: 'pointer',
   },
 }));

@@ -45,10 +45,10 @@ export const useCollectionNFTItemsStyles = makeStyles<Theme>(theme => ({
     width: BTN_SIZE,
     height: BTN_SIZE,
 
-    '&.swiper-button-disabled': {
-      opacity: 0,
-      visibility: 'hidden',
-    },
+    // '&.swiper-button-disabled': {
+    //   opacity: 0,
+    //   visibility: 'hidden',
+    // },
   },
 
   slide: {

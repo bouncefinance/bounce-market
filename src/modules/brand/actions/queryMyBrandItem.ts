@@ -20,6 +20,7 @@ export interface IMyBrand {
   symbol: string;
   ownername: string;
   owneraddress: string;
+  desc: string;
 }
 
 export const queryMyBrandItem = createSmartAction<
@@ -62,6 +63,7 @@ export const queryMyBrandItem = createSmartAction<
                   symbol: item.brandsymbol,
                   ownername: item.ownername,
                   owneraddress: item.owneraddress,
+                  desc: item.description,
                 } as IMyBrand;
               }),
             );
