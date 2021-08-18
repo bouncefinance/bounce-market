@@ -59,9 +59,8 @@ export const ProfileInfo = ({
             })}
             src={avatar}
             address={address}
+            verified={verified}
           />
-
-          {verified && <i className={classes.avatarCheck} />}
         </>
       );
 

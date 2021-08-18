@@ -2,29 +2,26 @@ import { SvgIcon, SvgIconProps } from '@material-ui/core';
 
 export const VerifiedIcon = (props: SvgIconProps) => {
   return (
-    <SvgIcon {...props} viewBox="0 0 20 20">
+    <SvgIcon {...props} viewBox="0 0 32 32">
       <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle cx="8" cy="8" r="8" fill="url(#paint0_linear)" />
-        <path d="M4.5 8L7 10.5L12 5.5" stroke="white" strokeWidth="1.5" />
-        <defs>
-          <linearGradient
-            id="paint0_linear"
-            x1="21.3333"
-            y1="13.3333"
-            x2="1.33333"
-            y2="13.3333"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#2663FF" />
-            <stop offset="1" stopColor="#FF3828" />
-          </linearGradient>
-        </defs>
+        <circle cx="16" cy="16" r="16" fill="#2F80ED" />
+        <rect x="16" y="14.3999" width="4.8" height="4.8" fill="white" />
+        <rect x="20.8008" y="9.6001" width="4.8" height="4.8" fill="white" />
+        <rect x="6.40039" y="14.3999" width="4.8" height="4.8" fill="white" />
+        <rect
+          x="11.1992"
+          y="24"
+          width="4.8"
+          height="4.8"
+          transform="rotate(-90 11.1992 24)"
+          fill="white"
+        />
       </svg>
     </SvgIcon>
   );

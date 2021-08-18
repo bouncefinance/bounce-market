@@ -6,6 +6,17 @@ export const useDefaultRandomAvatarStyles = makeStyles<Theme>(theme => ({
     width: 17,
     height: 'auto',
   },
+  avatarBox: {
+    position: 'relative',
+    height: '100%',
+  },
+  verifiedIcon: {
+    width: 16,
+    height: 16,
+    position: 'absolute',
+    right: -6,
+    bottom: 0,
+  },
   color0: {
     background: `
 linear-gradient(360deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 50%),
