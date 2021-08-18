@@ -73,6 +73,6 @@ export const useAvatarStyles = makeStyles<Theme>(theme => ({
     height: 30,
     position: 'absolute',
     right: 0,
-    bottom: 12,
+    bottom: 0,
   },
 }));

@@ -10,7 +10,6 @@ import React from 'react';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useMediaContainerStyles } from './useMediaContainerStyles';
 import useCdnUrl from 'modules/common/hooks/useCdnUrl';
-import { ImgErrorIcon } from 'modules/uiKit/Img/assets/ImgErrorIcon';
 
 interface INFTContentProps {
   className?: string;
@@ -40,8 +39,6 @@ export const MediaContainer = ({
   const classes = useMediaContainerStyles();
 
   const { imgSrc } = useCdnUrl(src);
-
-  console.log('imgSrc: ', imgSrc);
 
   return (
     <Container className={classNames(classes.root, className)}>
@@ -73,9 +70,10 @@ export const MediaContainer = ({
             <VideoPlayer src={src} autoPlay />
           )
         ) : (
-          <div className={classes.errorIcon}>
-            <ImgErrorIcon />
-          </div>
+          // <div className={classes.errorIcon}>
+          //   <ImgErrorIcon />
+          // </div>
+          <></>
         )}
 
         {isOpenSaleTime && (
