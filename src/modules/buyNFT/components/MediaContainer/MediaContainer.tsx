@@ -41,8 +41,6 @@ export const MediaContainer = ({
 
   const { imgSrc } = useCdnUrl(src);
 
-  console.log('imgSrc: ', imgSrc);
-
   return (
     <Container className={classNames(classes.root, className)}>
       <Box mb={3}>
