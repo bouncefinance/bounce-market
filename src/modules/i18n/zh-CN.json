@@ -110,10 +110,7 @@
       "standard": "标准",
       "supply": "总量"
     },
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "创建",
     "submitting": "正在创建中",
     "title": "创建 NFT",
@@ -135,10 +132,7 @@
       "description": "讲述创建该NFT背后的故事"
     },
     "next": "下一步",
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "创建",
     "submitting": "正在创建中",
     "time": "{gender, select, male {He}female {She}other {They}}",
@@ -576,6 +570,23 @@
       "fee": "版税收入",
       "payout": "接收时间",
       "empty": "您尚未收到任何版税收入"
+    }
+  },
+  "footer": {
+    "company": {
+      "company": "公司",
+      "ourStory": "关于fangible",
+      "myProfile": "个人主页",
+      "termsOfServices": "使用条款"
+    },
+    "help": {
+      "help": "帮助",
+      "getVerified": "成为签约艺术家",
+      "FAQ": "FAQ",
+      "support": "帮助"
+    },
+    "followUs": {
+      "followUs": "关注我们"
     }
   }
 }
