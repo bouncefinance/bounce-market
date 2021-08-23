@@ -107,7 +107,7 @@ export const MyBrand = () => {
 
         <InfoPanel
           name={brandInfo?.brandname}
-          isBrand={true}
+          isCollection
           withSharing={featuresConfig.ownBrandSharing}
         />
 

@@ -3,7 +3,10 @@ import { setAccount } from 'modules/account/store/actions/setAccount';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { editBrandImg } from '../../brand/actions/editBrandImg';
+import {
+  CollectionImgType,
+  editBrandImg,
+} from '../../brand/actions/editBrandImg';
 import { editProfile } from '../../profile/actions/editProfile';
 import { editProfileBgImg } from '../../profile/actions/editProfileBgImg';
 import { fetchProfileInfo } from '../../profile/actions/fetchProfileInfo';
@@ -17,11 +20,12 @@ export enum UploadFileType {
   Avatar = 'avatar',
   BgImg = 'bgImg',
   BrandImg = 'brandImg',
+  BrandAvatar = 'brandAvatar',
 }
 
 export interface IUploadFileArgs {
   file: File;
-  fileType?: 'avatar' | 'bgImg' | 'brandImg';
+  fileType?: UploadFileType;
   contractaddress?: string;
 }
 
@@ -96,6 +100,19 @@ export const uploadFile: (
                 contractaddress: contractaddress,
                 imgUrl: response.data.result.path,
                 accountaddress: address,
+                imgType: CollectionImgType.Backgound,
+              }),
+            );
+          } else if (
+            fileType === UploadFileType.BrandAvatar &&
+            isSuccessfulUpload
+          ) {
+            store.dispatch(
+              editBrandImg({
+                contractaddress: contractaddress,
+                imgUrl: response.data.result.path,
+                accountaddress: address,
+                imgType: CollectionImgType.Avatar,
               }),
             );
           }

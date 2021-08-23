@@ -95,7 +95,6 @@ export const BrandCard = ({
       </>
     );
   };
-  console.log('isOther', isOther);
   return (
     <Card className={classes.root} variant="outlined">
       {!isOther && <div className={classes.extension}>{renderExtension()}</div>}

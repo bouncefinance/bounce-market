@@ -2,7 +2,6 @@ import { Container } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
-import { Social } from 'modules/common/components/Social';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 // import { fetchActivitiesTable } from '../../actions/fetchActivitiesTable';
@@ -13,7 +12,10 @@ import { Avatar } from 'modules/profile/components/Avatar';
 import { Bio } from 'modules/profile/components/Bio';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
-import { SetAvatarModal } from 'modules/profile/components/SetAvatarModal';
+import {
+  AvatarType,
+  SetAvatarModal,
+} from 'modules/profile/components/SetAvatarModal';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
 import { Subscribers } from 'modules/profile/components/Subscribers';
 import { FollowGroup } from 'modules/profile/components/TabFollowing';
@@ -36,6 +38,10 @@ import {
   ICollectionItem,
 } from 'modules/profile/actions/fetchCollectionInfoByAddress';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { RoyaltyDialog } from 'modules/brand/components/RoyaltyDialog';
+import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 
 export const Collection = () => {
   const {
@@ -59,6 +65,14 @@ export const Collection = () => {
     }
   }, [collectionAddress, dispatch]);
 
+  // 控制 Royalty 板块
+  const [royaltyOpen, setRoyaltyOpen] = useState(false);
+  const [collection, setCollection] = useState('');
+  const handelOpenRoyalty: (collection: string) => void = collection => {
+    setCollection(collection);
+    setRoyaltyOpen(!royaltyOpen);
+  };
+
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
   });
@@ -66,8 +80,6 @@ export const Collection = () => {
   const { data: collectionInfo } = useQuery<ICollectionItem | null>({
     type: fetchCollectionInfoByAddress.toString(),
   });
-
-  console.log('CollectionInfo', collectionInfo);
 
   const { imgSrc } = useCdnUrl(collectionInfo?.imgurl || ' ', 160);
 
@@ -178,6 +190,9 @@ export const Collection = () => {
         <SetAvatarModal
           isOpen={isAvatarModalOpened}
           onClose={toggleAvatarModal(false)}
+          avatarType={AvatarType.Collection}
+          collectionAvatar={collectionInfo?.imgurl}
+          collectionAddress={collectionAddress}
         />
 
         <InfoPanel
@@ -189,18 +204,34 @@ export const Collection = () => {
               <Subscribers count={profileInfo?.followCount} />
             )
           }
-          social={
-            featuresConfig.profileSocialLinks && (
-              <Social
-                twitter={profileInfo?.twitter}
-                instagram={profileInfo?.instagram}
-                facebook={profileInfo?.facebook}
-                website={profileInfo?.website}
-              />
-            )
-          }
           follow={renderFollow()}
           address={address}
+          isCollection={true}
+          collectionAddress={collectionAddress}
+          handelOpenRoyalty={handelOpenRoyalty}
+          profile={
+            <ProfileInfo
+              subTitle={t('details-nft.role.minter')}
+              title={
+                profileInfo?.username ??
+                truncateWalletAddr(profileInfo?.accountAddress || '')
+              }
+              users={[
+                {
+                  href: ProfileRoutesConfig.OtherProfile.generatePath(
+                    profileInfo?.accountAddress,
+                  ),
+                  name:
+                    profileInfo?.username ??
+                    truncateWalletAddr(profileInfo?.accountAddress || ''),
+                  avatar: profileInfo?.imgUrl,
+                  verified: profileInfo?.identity === UserRoleEnum.Verified,
+                  address: profileInfo?.accountAddress,
+                },
+              ]}
+            />
+          }
+          collectionDesc={collectionInfo?.description}
         />
 
         {profileInfo?.bio && <Bio>{profileInfo.bio}</Bio>}
@@ -223,6 +254,14 @@ export const Collection = () => {
           <TabSale reload={reload(ProfileTab.sells)} />
         </TabPanel>
       </Container>
+
+      <RoyaltyDialog
+        isOpen={royaltyOpen}
+        onClose={() => {
+          setRoyaltyOpen(false);
+        }}
+        collection={collection}
+      />
     </Section>
   );
 };

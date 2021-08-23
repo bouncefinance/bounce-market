@@ -19,13 +19,30 @@ interface IEditBrandImgArgs {
   imgUrl: string;
   accountaddress: string;
   contractaddress: string;
+  imgType?: CollectionImgType;
 }
+
+export enum CollectionImgType {
+  Avatar = 'CollectionAvatar',
+  Backgound = 'CollectionBg',
+}
+
+const getRequestUrl = (event?: CollectionImgType) => {
+  if (event === CollectionImgType.Backgound)
+    return '/auth/updatebandimgbycontract';
+  if (event === CollectionImgType.Avatar) return '/update_brand_img';
+};
 
 export const editBrandImg = createSmartAction<RequestAction>(
   EditBrandImgAction,
-  ({ imgUrl, accountaddress, contractaddress }: IEditBrandImgArgs) => ({
+  ({
+    imgUrl,
+    accountaddress,
+    contractaddress,
+    imgType,
+  }: IEditBrandImgArgs) => ({
     request: {
-      url: '/auth/updatebandimgbycontract',
+      url: getRequestUrl(imgType),
       method: 'post',
       data: {
         accountaddress: accountaddress,
@@ -78,7 +95,7 @@ export const editBrandImg = createSmartAction<RequestAction>(
         store: Store<RootState> & { dispatchRequest: DispatchRequest },
       ) => {
         if (isError(response.data)) {
-          await store.dispatchRequest(action);
+          // await store.dispatchRequest(action);
         } else {
           store.dispatch(showSuccesNotify());
         }

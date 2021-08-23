@@ -24,6 +24,11 @@ export interface ISetAvatarValues {
   avatar: File;
 }
 
+export enum AvatarType {
+  Profile = 'Profile',
+  Collection = 'Collection',
+}
+
 const validateForm = (payload: ISetAvatarValues) => {
   const errors: FormErrors<ISetAvatarValues> = {};
 
@@ -43,25 +48,40 @@ const validateForm = (payload: ISetAvatarValues) => {
 interface ISetAvatarModalProps {
   isOpen?: boolean;
   onClose?: () => void;
+  avatarType?: AvatarType;
+  collectionAvatar?: string;
+  collectionAddress?: string;
 }
 
 export const SetAvatarModal = ({
   onClose,
   isOpen = false,
+  avatarType = AvatarType.Profile,
+  collectionAvatar,
+  collectionAddress,
 }: ISetAvatarModalProps) => {
   const dispatch = useDispatchRequest();
 
   const onSubmit = useCallback(
     (payload: ISetAvatarValues) => {
       dispatch(
-        uploadFile({ file: payload.avatar, fileType: UploadFileType.Avatar }),
+        avatarType === AvatarType.Collection
+          ? uploadFile({
+              file: payload.avatar,
+              fileType: UploadFileType.BrandAvatar,
+              contractaddress: collectionAddress,
+            })
+          : uploadFile({
+              file: payload.avatar,
+              fileType: UploadFileType.Avatar,
+            }),
       ).then(({ error }) => {
         if (!error && typeof onClose === 'function') {
           onClose();
         }
       });
     },
-    [dispatch, onClose],
+    [dispatch, onClose, avatarType, collectionAddress],
   );
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
@@ -79,7 +99,11 @@ export const SetAvatarModal = ({
             component={UploadAvatarField}
             name="avatar"
             accepts={FILE_ACCEPTS}
-            initialAvatar={profileInfo?.imgUrl}
+            initialAvatar={
+              avatarType === AvatarType.Collection
+                ? collectionAvatar
+                : profileInfo?.imgUrl
+            }
           />
         </Box>
 

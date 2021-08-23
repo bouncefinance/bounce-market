@@ -32,4 +32,16 @@ export const useInfoPanelStyles = makeStyles<Theme>(theme => ({
   socialBox: {
     marginLeft: 'auto',
   },
+  menuIcon: {
+    width: 50,
+    height: 50,
+    marginLeft: 4,
+  },
+  desc: {
+    width: '100%',
+    marginTop: 20,
+    [theme.breakpoints.up('md')]: {
+      width: 720,
+    },
+  },
 }));
