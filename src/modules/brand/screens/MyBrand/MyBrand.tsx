@@ -5,7 +5,7 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { listBrandItems } from 'modules/brand/actions/listBrandItems';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
-import { BrandAddItem } from 'modules/brand/components/CollectHeaderCreate/BrandAddItem';
+import { CollectionAddItem } from 'modules/brand/components/CollectionHeaderCreate/CollectionAddItem';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';
@@ -113,7 +113,7 @@ export const MyBrand = () => {
 
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} lg={4} xl={3}>
-            {brandInfo?.id && <BrandAddItem id={brandInfo.id} />}
+            {brandInfo?.id && <CollectionAddItem id={brandInfo.id} />}
           </Grid>
           {items?.map((item: any) => {
             const shortAddr = address

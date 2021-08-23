@@ -5,7 +5,7 @@ import {
   IMyBrand,
   queryMyBrandItem,
 } from 'modules/brand/actions/queryMyBrandItem';
-import { CollectHeaderCreate } from 'modules/brand/components/CollectHeaderCreate';
+import { CollectHeaderCreate } from 'modules/brand/components/CollectionHeaderCreate';
 import { CollectionCard } from 'modules/brand/components/CollectionCard';
 import { CollectionList } from 'modules/brand/components/CollectionList';
 import { CollectionNFTItems } from 'modules/brand/components/CollectionNFTItems';

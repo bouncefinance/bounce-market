@@ -13,7 +13,7 @@ export interface IBrandEmptyCardProps {
   id: number;
 }
 
-export const BrandAddItem = ({ className, id }: IBrandEmptyCardProps) => {
+export const CollectionAddItem = ({ className, id }: IBrandEmptyCardProps) => {
   const classes = useBrandCardStyles();
 
   return (

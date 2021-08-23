@@ -4,7 +4,6 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-// import { fetchActivitiesTable } from '../../actions/fetchActivitiesTable';
 import { fetchOwned } from 'modules/profile/actions/fetchOwned';
 import { fetchMySale } from 'modules/profile/actions/fetchSale';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
@@ -28,8 +27,6 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { uid } from 'react-uid';
-import { TabOwned } from './components/tabOwned';
-import { TabSale } from './components/TabSale';
 import { useCollectionStyles } from './useCollectionStyles';
 import useCdnUrl from 'modules/common/hooks/useCdnUrl';
 import {
@@ -42,6 +39,8 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { CollectionDescDialog } from './components/CollectionDescDialog';
+import { TabOwned } from '../Profile/components/tabOwned';
+import { TabSale } from '../Profile/components/TabSale';
 
 export const Collection = () => {
   const {
@@ -137,10 +136,12 @@ export const Collection = () => {
 
   const onTabsChange = useCallback(
     (_, value) => {
-      push(ProfileRoutesConfig.UserProfile.generatePath(value));
+      push(
+        ProfileRoutesConfig.Collection.generatePath(collectionAddress, value),
+      );
       updateData(value);
     },
-    [push, updateData],
+    [push, updateData, collectionAddress],
   );
 
   useEffect(() => {
@@ -267,11 +268,14 @@ export const Collection = () => {
         </Tabs>
 
         <TabPanel value={tab} index={ProfileTab.owned}>
-          <TabOwned />
+          <TabOwned isOther={!isMyCollection} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>
-          <TabSale reload={reload(ProfileTab.sells)} />
+          <TabSale
+            isOther={!isMyCollection}
+            reload={reload(ProfileTab.sells)}
+          />
         </TabPanel>
       </Container>
 
