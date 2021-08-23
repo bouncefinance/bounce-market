@@ -5,7 +5,7 @@ import {
   IMyBrand,
   queryMyBrandItem,
 } from 'modules/brand/actions/queryMyBrandItem';
-import { CollectHeaderCreate } from 'modules/brand/components/CollectionHeaderCreate';
+import { CollectionHeaderCreate } from 'modules/brand/components/CollectHeaderCreate';
 import { CollectionCard } from 'modules/brand/components/CollectionCard';
 import { CollectionList } from 'modules/brand/components/CollectionList';
 import { CollectionNFTItems } from 'modules/brand/components/CollectionNFTItems';
@@ -37,7 +37,7 @@ export const TabCollection: React.FC<{
   };
   return (
     <>
-      {isOther || <CollectHeaderCreate />}
+      {isOther || <CollectionHeaderCreate />}
       <Grid container spacing={4} className={classes.root}>
         {loading ? (
           <></>

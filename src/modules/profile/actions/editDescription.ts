@@ -31,9 +31,6 @@ export const editDescription = createSmartAction<
     asMutation: false,
     auth: true,
     driver: 'axios',
-    getData: data => {
-      return data;
-    },
     onSuccess: (
       response: { data: any },
       action: RequestAction,

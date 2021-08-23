@@ -12,7 +12,7 @@ export interface IBrandEmptyCardProps {
   className?: string;
 }
 
-export const CollectHeaderCreate = ({ className }: IBrandEmptyCardProps) => {
+export const CollectionHeaderCreate = ({ className }: IBrandEmptyCardProps) => {
   const classes = useBrandCardStyles();
 
   return (
