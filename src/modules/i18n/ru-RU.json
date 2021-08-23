@@ -110,10 +110,7 @@
       "standard": "Стандарт",
       "supply": "Выпущено"
     },
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "title": "Создать NFT",
@@ -135,10 +132,7 @@
       "description": "Какая история стоит за этим NFT?"
     },
     "next": "Next",
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "time": "",
@@ -571,6 +565,23 @@
       "fee": "Заработанное вознаграждение",
       "payout": "Выплаты",
       "empty": "Вы еще не получали роялти."
+    }
+  },
+  "footer": {
+    "company": {
+      "company": "Компания",
+      "ourStory": "Наша история",
+      "myProfile": "Мой профиль",
+      "termsOfServices": "Условия предоставления услуг"
+    },
+    "help": {
+      "help": "Помощь",
+      "getVerified": "Пройти верификацию",
+      "FAQ": "FAQ",
+      "support": "Поддержка"
+    },
+    "followUs": {
+      "followUs": "Следуйте за нами"
     }
   }
 }

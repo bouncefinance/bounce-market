@@ -65,6 +65,7 @@ export const MediaContainer = ({
         ) : (
           <VideoPlayer src={src} autoPlay />
         )}
+
         {isOpenSaleTime && (
           <CardPutSaleTimer onchange={onchange} openAt={openAt} />
         )}

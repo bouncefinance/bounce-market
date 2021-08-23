@@ -7,16 +7,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useDefaultRandomAvatarStyles } from './useDefaultRandomAvatarStyles';
 import useCdnUrl from 'modules/common/hooks/useCdnUrl';
+import { VerifiedIcon } from 'modules/profile/components/Avatar/assets/VerifiedIcon';
 
 const BG_PRESETS_COUNT = 19;
 
 interface props extends AvatarProps {
   address?: string;
+  verified?: boolean;
 }
 export const DefaultRandomAvatar = ({
   classes,
   src,
   address,
+  verified,
   ...restProps
 }: props) => {
   const styles = useDefaultRandomAvatarStyles();
@@ -44,14 +47,18 @@ export const DefaultRandomAvatar = ({
   const withoutImg = !imgSrc;
 
   return (
-    <Avatar
-      {...restProps}
-      src={withoutImg ? userPic : imgSrc}
-      classes={{
-        ...classes,
-        root: withoutImg ? styles[`color${randomBg}`] : '',
-        img: withoutImg ? styles.img : '',
-      }}
-    />
+    <div className={styles.avatarBox}>
+      <Avatar
+        {...restProps}
+        src={withoutImg ? userPic : imgSrc}
+        classes={{
+          ...classes,
+          root: withoutImg ? styles[`color${randomBg}`] : '',
+          img: withoutImg ? styles.img : '',
+        }}
+      />
+
+      {verified && <VerifiedIcon className={styles.verifiedIcon} />}
+    </div>
   );
 };

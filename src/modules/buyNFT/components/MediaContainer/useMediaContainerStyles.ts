@@ -3,15 +3,12 @@ import { fade, makeStyles, Theme } from '@material-ui/core';
 export const useMediaContainerStyles = makeStyles<Theme>(theme => ({
   root: {
     paddingTop: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'column',
 
     [theme.breakpoints.up('md')]: {
       paddingTop: theme.spacing(3.5),
       paddingBottom: theme.spacing(3.5),
-    },
-
-    [theme.breakpoints.up('lg')]: {
-      display: 'flex',
-      flexDirection: 'column',
     },
 
     [theme.breakpoints.up('xl')]: {

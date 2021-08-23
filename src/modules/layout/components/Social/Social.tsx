@@ -6,6 +6,7 @@ import { MediumIcon } from 'modules/common/components/Icons/MediumIcon';
 import { useSocialStyles } from './SocialStyles';
 import { InstagramIcon } from '../../../common/components/Icons/InstagramIcon';
 import { DiscordIcon } from '../../../common/components/Icons/DiscordIcon';
+import { t } from 'modules/i18n/utils/intl';
 
 export const Social = (props: BoxProps) => {
   const classes = useSocialStyles();
@@ -38,7 +39,7 @@ export const Social = (props: BoxProps) => {
 
   return (
     <Box {...props} component="nav">
-      <span className={classes.title}>Follow us</span>
+      <span className={classes.title}>{t('footer.followUs.followUs')}</span>
       <ul className={classes.list}>
         {links.map(({ title, href, icon: Icon }) => {
           return (

@@ -587,5 +587,22 @@
       "payout": "Payout",
       "empty": "You have not received any royalty yet."
     }
+  },
+  "footer": {
+    "company": {
+      "company": "Company",
+      "ourStory": "Our Story",
+      "myProfile": "My Profile",
+      "termsOfServices": "Terms Of Services"
+    },
+    "help": {
+      "help": "Help",
+      "getVerified": "Get Verified",
+      "FAQ": "FAQ",
+      "support": "Support"
+    },
+    "followUs": {
+      "followUs": "Follow Us"
+    }
   }
 }
