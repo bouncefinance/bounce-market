@@ -5,7 +5,7 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { queryBrandById } from 'modules/brand/actions/getBrandById';
 import { listBrandItems } from 'modules/brand/actions/listBrandItems';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
-import { CollectionAddItem } from 'modules/brand/components/CollectHeaderCreate/CollectionAddItem';
+import { CollectionAddItem } from 'modules/brand/components/CollectionHeaderCreate/CollectionAddItem';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { ProductCard } from 'modules/common/components/ProductCard';

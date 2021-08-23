@@ -6,7 +6,7 @@ import {
 } from 'modules/brand/actions/queryMyBrandItem';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { BrandCard } from 'modules/brand/components/BrandCard';
-import { CollectionHeaderCreate } from 'modules/brand/components/CollectHeaderCreate';
+import { CollectionHeaderCreate } from 'modules/brand/components/CollectionHeaderCreate';
 import { RoyaltyDialog } from 'modules/brand/components/RoyaltyDialog';
 import { NoItems } from 'modules/common/components/NoItems';
 import { t } from 'modules/i18n/utils/intl';
