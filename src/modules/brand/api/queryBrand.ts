@@ -56,6 +56,7 @@ export interface IBrandInfo {
   popularweight?: number;
   standard: number;
   status?: number;
+  currentroyalty?: number;
 }
 
 export interface IApiBrandInfo {

@@ -27,28 +27,40 @@ export enum CollectionImgType {
   Backgound = 'CollectionBg',
 }
 
-const getRequestUrl = (event?: CollectionImgType) => {
+const getRequest: (
+  args: IEditBrandImgArgs,
+) => {
+  url: string;
+  params: object;
+} = args => {
+  const { imgType: event } = args;
   if (event === CollectionImgType.Backgound)
-    return '/auth/updatebandimgbycontract';
-  if (event === CollectionImgType.Avatar) return '/update_brand_img';
+    return {
+      url: '/auth/updatebandimgbycontract',
+      params: {
+        accountaddress: args.accountaddress,
+        bandimgurl: args.imgUrl,
+        contractaddress: args.contractaddress,
+      },
+    };
+  // if (event === CollectionImgType.Avatar)
+  return {
+    url: '/auth/update_brand_img',
+    params: {
+      accountaddress: args.accountaddress,
+      imgurl: args.imgUrl,
+      contractaddress: args.contractaddress,
+    },
+  };
 };
 
 export const editBrandImg = createSmartAction<RequestAction>(
   EditBrandImgAction,
-  ({
-    imgUrl,
-    accountaddress,
-    contractaddress,
-    imgType,
-  }: IEditBrandImgArgs) => ({
+  (payloadArgs: IEditBrandImgArgs) => ({
     request: {
-      url: getRequestUrl(imgType),
+      url: getRequest(payloadArgs).url,
       method: 'post',
-      data: {
-        accountaddress: accountaddress,
-        bandimgurl: imgUrl,
-        contractaddress: contractaddress,
-      },
+      data: getRequest(payloadArgs).params,
     },
     meta: {
       asMutation: true,
@@ -76,7 +88,7 @@ export const editBrandImg = createSmartAction<RequestAction>(
         ): IBrandInfo | undefined => {
           if (code === 1) {
             const updatedData = {
-              bandimgurl: imgUrl,
+              bandimgurl: payloadArgs.imgUrl,
             };
 
             if (data) {

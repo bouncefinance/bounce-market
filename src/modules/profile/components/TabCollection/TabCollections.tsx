@@ -35,7 +35,6 @@ export const TabCollection: React.FC<{
     setCollection(collection);
     setRoyaltyOpen(!royaltyOpen);
   };
-
   return (
     <>
       {isOther || <CollectHeaderCreate />}
@@ -61,6 +60,7 @@ export const TabCollection: React.FC<{
                 href={ProfileRoutesConfig.Collection.generatePath(
                   brand.contract,
                 )}
+                currentRoyalty={brand.currentroyalty}
               />
             ))}
           </CollectionList>

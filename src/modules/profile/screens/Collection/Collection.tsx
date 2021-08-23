@@ -9,7 +9,6 @@ import { fetchOwned } from 'modules/profile/actions/fetchOwned';
 import { fetchMySale } from 'modules/profile/actions/fetchSale';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
-import { Bio } from 'modules/profile/components/Bio';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import {
@@ -42,6 +41,7 @@ import { RoyaltyDialog } from 'modules/brand/components/RoyaltyDialog';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
+import { CollectionDescDialog } from './components/CollectionDescDialog';
 
 export const Collection = () => {
   const {
@@ -50,6 +50,7 @@ export const Collection = () => {
   } = ProfileRoutesConfig.Collection.useParams();
   const [isAvatarModalOpened, setAvatarModalOpened] = useState(false);
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
+  const [isMyCollection, setIsMyCollection] = useState(false);
   // const [bgImgSrc, setBgImgSrc] = useState('')
   const classes = useCollectionStyles();
   const { address } = useAccount();
@@ -73,6 +74,13 @@ export const Collection = () => {
     setRoyaltyOpen(!royaltyOpen);
   };
 
+  // 控制修改 Desc 板块
+  const [modifyDescOpen, setModifyDescOpen] = useState(false);
+  const handelOpenModifyDesc: (collection: string) => void = collection => {
+    setCollection(collection);
+    setModifyDescOpen(!modifyDescOpen);
+  };
+
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
   });
@@ -80,6 +88,14 @@ export const Collection = () => {
   const { data: collectionInfo } = useQuery<ICollectionItem | null>({
     type: fetchCollectionInfoByAddress.toString(),
   });
+
+  useEffect(() => {
+    if (!address) return;
+    const isMyCollection =
+      String(address).toLowerCase() ===
+      String(collectionInfo?.owneraddress).toLowerCase();
+    setIsMyCollection(isMyCollection);
+  }, [address, collectionInfo]);
 
   const { imgSrc } = useCdnUrl(collectionInfo?.imgurl || ' ', 160);
 
@@ -155,13 +171,13 @@ export const Collection = () => {
     if (!address) return;
     return (
       <FollowGroup
-        followAddress={address}
-        followersCount={profileInfo?.followersCount}
-        followingCount={profileInfo?.followingCount}
+        followAddress={collectionInfo?.owneraddress || ''}
+        followersCount={collectionInfo?.followerscount || 0}
+        followingCount={collectionInfo?.followingcount || 0}
         black={true}
       />
     );
-  }, [profileInfo, address]);
+  }, [collectionInfo, address]);
 
   return (
     <Section className={classes.root}>
@@ -169,34 +185,39 @@ export const Collection = () => {
       <Header
         img={collectionInfo?.bandimgurl}
         onEditClick={toggleBgImgModal(true)}
+        isHiddenCustom={!isMyCollection}
       />
 
-      <SetBgImgModal
-        isOpen={isBgImgModalOpened}
-        onClose={toggleBgImgModal(false)}
-        fileType={UploadFileType.BrandImg}
-        contractaddress={collectionInfo?.contractaddress}
-      />
+      {isMyCollection && (
+        <SetBgImgModal
+          isOpen={isBgImgModalOpened}
+          onClose={toggleBgImgModal(false)}
+          fileType={UploadFileType.BrandImg}
+          contractaddress={collectionInfo?.contractaddress}
+        />
+      )}
 
       <Container>
         <Avatar
           className={classes.avatar}
           src={imgSrc}
           onEditClick={toggleAvatarModal(true)}
-          isEditable
+          isEditable={isMyCollection}
           isVerified={profileInfo?.identity === 2}
         />
 
-        <SetAvatarModal
-          isOpen={isAvatarModalOpened}
-          onClose={toggleAvatarModal(false)}
-          avatarType={AvatarType.Collection}
-          collectionAvatar={collectionInfo?.imgurl}
-          collectionAddress={collectionAddress}
-        />
+        {isMyCollection && (
+          <SetAvatarModal
+            isOpen={isAvatarModalOpened}
+            onClose={toggleAvatarModal(false)}
+            avatarType={AvatarType.Collection}
+            collectionAvatar={collectionInfo?.imgurl}
+            collectionAddress={collectionAddress}
+          />
+        )}
 
         <InfoPanel
-          isEditable
+          isEditable={isMyCollection}
           withSharing={featuresConfig.ownProfileSharing}
           name={collectionInfo?.brandname}
           subscribers={
@@ -209,32 +230,31 @@ export const Collection = () => {
           isCollection={true}
           collectionAddress={collectionAddress}
           handelOpenRoyalty={handelOpenRoyalty}
+          handelOpenModifyDesc={handelOpenModifyDesc}
           profile={
             <ProfileInfo
               subTitle={t('details-nft.role.minter')}
               title={
-                profileInfo?.username ??
-                truncateWalletAddr(profileInfo?.accountAddress || '')
+                collectionInfo?.ownername ??
+                truncateWalletAddr(collectionInfo?.owneraddress || '')
               }
               users={[
                 {
                   href: ProfileRoutesConfig.OtherProfile.generatePath(
-                    profileInfo?.accountAddress,
+                    collectionInfo?.owneraddress,
                   ),
                   name:
-                    profileInfo?.username ??
-                    truncateWalletAddr(profileInfo?.accountAddress || ''),
-                  avatar: profileInfo?.imgUrl,
-                  verified: profileInfo?.identity === UserRoleEnum.Verified,
-                  address: profileInfo?.accountAddress,
+                    collectionInfo?.ownername ??
+                    truncateWalletAddr(collectionInfo?.owneraddress || ''),
+                  avatar: collectionInfo?.ownerimg,
+                  verified: collectionInfo?.identity === UserRoleEnum.Verified,
+                  address: collectionInfo?.owneraddress,
                 },
               ]}
             />
           }
           collectionDesc={collectionInfo?.description}
         />
-
-        {profileInfo?.bio && <Bio>{profileInfo.bio}</Bio>}
 
         <Tabs
           className={classes.tabs}
@@ -261,6 +281,15 @@ export const Collection = () => {
           setRoyaltyOpen(false);
         }}
         collection={collection}
+      />
+
+      <CollectionDescDialog
+        isOpen={modifyDescOpen}
+        onClose={() => {
+          setModifyDescOpen(false);
+        }}
+        collection={collectionAddress}
+        description={collectionInfo?.description || ''}
       />
     </Section>
   );

@@ -5,6 +5,7 @@ import { useCollectionCardStyles } from './useCollectionCardStyles';
 import { ReactComponent as BinanceIcon } from '../assets/binance.svg';
 import { ReactComponent as DollerIcon } from '../assets/doller.svg';
 import { ReactNode } from 'react';
+import BigNumber from 'bignumber.js';
 
 interface IBrandsItemProps {
   img?: string;
@@ -15,6 +16,7 @@ interface IBrandsItemProps {
   href?: string;
   handelOpenRoyalty: (collection: string) => void;
   chainId: number;
+  currentRoyalty: BigNumber;
 }
 
 export const CollectionCard = ({
@@ -26,6 +28,7 @@ export const CollectionCard = ({
   href = '#',
   handelOpenRoyalty,
   chainId,
+  currentRoyalty,
 }: IBrandsItemProps) => {
   const classes = useCollectionCardStyles();
 
@@ -60,7 +63,7 @@ export const CollectionCard = ({
             </div>
             <div className={classes.showRoyalty}>
               <DollerIcon />
-              <span>10 %</span>
+              <span>{currentRoyalty.dp(2).toString()} %</span>
             </div>
           </div>
         </Grid>

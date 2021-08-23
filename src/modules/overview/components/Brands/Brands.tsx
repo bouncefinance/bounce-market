@@ -48,13 +48,15 @@ export const Brands = ({
     loop: true,
     slidesPerView: 'auto',
   };
-
   const renderedSlides = useMemo(
     () =>
-      items.map(({ imgUrl, id, brandName, creatorAddress, itemsInfo }, i) => (
+      items.map(({ imgUrl, id, brandName, contractAddress, itemsInfo }, i) => (
         <SwiperSlide className={classes.slide} key={id}>
           <Link
-            to={ProfileRoutesConfig.OtherProfile.generatePath(creatorAddress)}
+            to={
+              contractAddress &&
+              ProfileRoutesConfig.Collection.generatePath(contractAddress)
+            }
             className={classes.brand}
           >
             <BrandItems

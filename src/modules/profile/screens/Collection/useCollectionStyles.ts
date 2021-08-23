@@ -17,4 +17,28 @@ export const useCollectionStyles = makeStyles<Theme>(theme => ({
   tabs: {
     marginBottom: theme.spacing(3),
   },
+
+  // CollectionDescDialog
+  close: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    width: 40,
+    height: 40,
+    padding: 0,
+    color: theme.palette.text.primary,
+    border: 'none',
+
+    [theme.breakpoints.up('md')]: {
+      top: 20,
+      right: 20,
+    },
+
+    '&:hover': {
+      border: 'none',
+    },
+  },
+  descBox: {
+    marginTop: 55,
+  },
 }));

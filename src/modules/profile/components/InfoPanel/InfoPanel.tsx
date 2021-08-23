@@ -35,6 +35,7 @@ interface IInfoPanelProps extends BoxProps {
   isEditable?: boolean;
   follow?: ReactNode;
   handelOpenRoyalty?: (collection: string) => void;
+  handelOpenModifyDesc?: (collection: string) => void;
   profile?: ReactNode;
   collectionDesc?: string;
 }
@@ -50,6 +51,7 @@ export const InfoPanel = ({
   withSharing,
   isEditable,
   handelOpenRoyalty,
+  handelOpenModifyDesc,
   follow,
   profile,
   collectionDesc,
@@ -124,65 +126,69 @@ export const InfoPanel = ({
           </Grid>
         )}
 
-        {isEditable && !isCollection ? (
-          <Grid item>
-            <Link to={ProfileRoutesConfig.EditProfile.generatePath()}>
-              <Tooltip
-                title={t('profile.edit-profile')}
-                arrow
-                placement="right"
-              >
-                <IconButton>
-                  <CogIcon />
-                </IconButton>
-              </Tooltip>
-            </Link>
-          </Grid>
-        ) : (
-          <>
-            <ClickAwayListener onClickAway={() => {}}>
-              <ButtonBase className={classes.menuBtn} onClick={handleClick}>
-                <ExtensionIcon className={classes.menuIcon} />
-              </ButtonBase>
-            </ClickAwayListener>
-            <Popover
-              open={isPopoverOpened}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              PaperProps={{
-                variant: 'outlined',
-              }}
-            >
-              <MenuItem
-                className={classes.menuItem}
-                onClick={() => {
-                  handleClose();
+        {isEditable &&
+          (!isCollection ? (
+            <Grid item>
+              <Link to={ProfileRoutesConfig.EditProfile.generatePath()}>
+                <Tooltip
+                  title={t('profile.edit-profile')}
+                  arrow
+                  placement="right"
+                >
+                  <IconButton>
+                    <CogIcon />
+                  </IconButton>
+                </Tooltip>
+              </Link>
+            </Grid>
+          ) : (
+            <>
+              <ClickAwayListener onClickAway={() => {}}>
+                <ButtonBase className={classes.menuBtn} onClick={handleClick}>
+                  <ExtensionIcon className={classes.menuIcon} />
+                </ButtonBase>
+              </ClickAwayListener>
+              <Popover
+                open={isPopoverOpened}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                PaperProps={{
+                  variant: 'outlined',
                 }}
               >
-                {'Edit description'}
-              </MenuItem>
-              <MenuItem
-                className={classes.menuItem}
-                onClick={() => {
-                  handleClose();
-                  handelOpenRoyalty &&
-                    collectionAddress &&
-                    handelOpenRoyalty(collectionAddress);
-                }}
-              >
-                {t('royalty.set-rayalty')}
-              </MenuItem>
-            </Popover>
-          </>
-        )}
+                <MenuItem
+                  className={classes.menuItem}
+                  onClick={() => {
+                    handleClose();
+                    handelOpenModifyDesc &&
+                      collectionAddress &&
+                      handelOpenModifyDesc(collectionAddress);
+                  }}
+                >
+                  {'Edit description'}
+                </MenuItem>
+                <MenuItem
+                  className={classes.menuItem}
+                  onClick={() => {
+                    handleClose();
+                    handelOpenRoyalty &&
+                      collectionAddress &&
+                      handelOpenRoyalty(collectionAddress);
+                  }}
+                >
+                  {t('royalty.set-rayalty')}
+                </MenuItem>
+              </Popover>
+            </>
+          ))}
 
         <Grid item xs={12} lg="auto" className={classes.linksCol}>
           <Grid container spacing={2} alignItems="center">

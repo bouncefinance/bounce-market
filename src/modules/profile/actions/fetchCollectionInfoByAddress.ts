@@ -4,7 +4,7 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 interface IResponse {
   code: number;
   msg?: string;
-  data: ICollectionItem[];
+  data: ICollectionItem;
 }
 export interface ICollectionItem {
   bandimgurl: string;
@@ -13,6 +13,7 @@ export interface ICollectionItem {
   contractaddress: string;
   description: string;
   id: number;
+  identity: number;
   imgurl: string;
   owneraddress: string;
   ownerimg: string;
@@ -20,41 +21,40 @@ export interface ICollectionItem {
   popularweight: number;
   standard: number;
   status: number;
+  followerscount: number;
+  followingcount: number;
 }
 
 export type INftItem = ICollectionItem;
 
-export type ICollectionData = ICollectionItem[];
+export type ICollectionData = ICollectionItem;
 interface IFetchCollectionArgs {
   collectionAddress: string;
 }
 export const fetchCollectionInfoByAddress = createSmartAction<
   RequestAction<IResponse, ICollectionItem | null>,
   [IFetchCollectionArgs]
->(
-  'fetchCollectionInfoByAddress',
-  ({ collectionAddress }: IFetchCollectionArgs) => ({
-    request: {
-      url: '/getbrandsbyfilter',
-      method: 'post',
-      data: {
-        brandcontractaddressess: [collectionAddress],
-      },
+>('getbrandsbyfilter', ({ collectionAddress }: IFetchCollectionArgs) => ({
+  request: {
+    url: '/get_brand_by_contract',
+    method: 'post',
+    data: {
+      contractaddress: collectionAddress,
     },
-    meta: {
-      asMutation: false,
-      auth: true,
-      driver: 'axios',
-      getData: data => {
-        if (data.code !== 1) {
-          console.error(
-            'fetchCollectionInfoByAddress:',
-            data?.msg ?? 'Unexpected error',
-          );
-          return null;
-        }
-        return data?.data[0] ?? null;
-      },
+  },
+  meta: {
+    asMutation: false,
+    auth: false,
+    driver: 'axios',
+    getData: data => {
+      if (data.code !== 200) {
+        console.error(
+          'fetchCollectionInfoByAddress:',
+          data?.msg ?? 'Unexpected error',
+        );
+        return null;
+      }
+      return data?.data ?? null;
     },
-  }),
-);
+  },
+}));

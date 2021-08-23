@@ -21,7 +21,7 @@ export const ExtensionIcon = (props: SvgIconProps) => {
           height="49"
           rx="24.5"
           stroke="black"
-          stroke-opacity="0.1"
+          strokeOpacity="0.1"
         />
       </svg>
     </SvgIcon>
