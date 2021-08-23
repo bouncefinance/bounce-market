@@ -33,7 +33,6 @@ import { CancelPutOnSale, CancelPutTime } from './cancel';
 import { ClaimFunds } from './claimFunds';
 import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
-import { Timer } from './Timer';
 import { useEffect } from 'react';
 import { useCount } from 'modules/common/hooks/useTimer';
 
@@ -485,11 +484,6 @@ export const ProductCardComponent = ({
                       {t('product-card.claimed')}
                     </Button>
                   )}
-                  {!isPutSaleTimeCancel &&
-                    !isBidderClaimed &&
-                    !isCreatorClaimed &&
-                    isOnSale &&
-                    endDate && <Timer endDate={endDate} />}
 
                   {!isMinting && !isOnSalePending && (
                     <Box display="flex" alignItems="center">
@@ -547,12 +541,12 @@ export const ProductCardComponent = ({
                       {t('product-card.transfer')}
                     </MenuItem>
 
-                    <MenuItem
+                    {/* <MenuItem
                       className={classes.menuItem}
                       onClick={onBurnClick}
                     >
                       {t('product-card.burn')}
-                    </MenuItem>
+                    </MenuItem> */}
                   </MenuList>
                 </Popover>
               </>

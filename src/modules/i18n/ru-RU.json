@@ -512,6 +512,7 @@
     "minutes-short": "{minutes} минут",
     "seconds-short": "{seconds} секуд",
     "time-left-short": "Осталось {days} {hours} {minutes} {seconds}",
+    "time-left-short-hour": "Осталось {hours}:{minutes}:{seconds}",
     "time-end": "Закончился на {days}/{months}/{years}",
     "time-expired": "Время истекло",
     "time-over": "Время истекло",

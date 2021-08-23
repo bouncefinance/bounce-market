@@ -1,23 +1,7 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
-  root: {
-    display: 'grid',
-    gridTemplateColumns: 'auto 1fr',
-    alignItems: 'center',
-    gap: theme.spacing(0, 1.5),
-    gridTemplateAreas: `
-      'avatars subTitle'
-      'avatars title'
-    `,
-  },
-
-  titleFirst: {
-    gridTemplateAreas: `
-      'avatars title'
-      'avatars subTitle'
-    `,
-  },
+  root: {},
 
   avatars: {
     gridArea: 'avatars',

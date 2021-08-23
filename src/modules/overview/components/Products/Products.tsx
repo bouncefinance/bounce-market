@@ -115,6 +115,10 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
                 address: item.ownerAddress,
               },
             ]}
+            nftCardOption={{
+              ...item.nftCardOption,
+              isOnSale: true,
+            }}
           />
         }
         openAt={item.openAt}

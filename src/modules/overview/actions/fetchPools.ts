@@ -61,7 +61,7 @@ export const fetchPools = createSmartAction<
       return request;
     },
     getData: response => {
-      if (response.code !== 1) {
+      if (response.code !== 200) {
         throw new Error(response.msg);
       }
 

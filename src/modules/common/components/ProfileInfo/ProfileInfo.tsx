@@ -1,9 +1,16 @@
-import { Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import classNames from 'classnames';
+import {
+  INftCardHelpsParams,
+  NftCardHelps,
+} from 'modules/common/utils/nftCard';
 import React, { useMemo } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { DefaultRandomAvatar } from '../DefaultRandomAvatar';
+import { NftCardTimer } from '../ProductCard/Timer';
 import { useProfileInfoStyles } from './ProfileInfoStyles';
 
 interface IUserInfo {
@@ -28,6 +35,7 @@ export interface IProfileInfoProps {
    */
   avatarSize?: 'small' | 'medium' | 'big';
   mainHref?: string;
+  nftCardOption?: INftCardHelpsParams;
 }
 
 export const ProfileInfo = ({
@@ -38,6 +46,7 @@ export const ProfileInfo = ({
   isTitleFirst = false,
   avatarSize = 'small',
   mainHref,
+  nftCardOption,
 }: IProfileInfoProps) => {
   const classes = useProfileInfoStyles();
 
@@ -75,34 +84,25 @@ export const ProfileInfo = ({
     });
   }, [avatarSize, classes, users]);
 
+  const [nftCardHelps, setNftCardHelps] = useState<NftCardHelps>();
+  useEffect(() => {
+    if (nftCardOption) {
+      setNftCardHelps(new NftCardHelps(nftCardOption));
+    }
+  }, [nftCardOption]);
+
   return (
-    <div
-      className={classNames(
-        className,
-        classes.root,
-        isTitleFirst && classes.titleFirst,
-      )}
+    <Box
+      className={classNames(className)}
+      display="flex"
+      justifyItems="center"
+      justifyContent="space-between"
     >
       <div className={classes.avatars}>{renderedAvatars}</div>
 
-      <Typography
-        component={!!mainHref ? Link : 'div'}
-        to={mainHref || '#'}
-        color="textSecondary"
-        variant="body2"
-        className={classes.subTitle}
-      >
-        {subTitle}
-      </Typography>
-
-      <Typography
-        component={!!mainHref ? Link : 'div'}
-        to={mainHref || '#'}
-        className={classes.title}
-        variant="body2"
-      >
-        {title}
-      </Typography>
-    </div>
+      {nftCardHelps?.getIsAuctionLastTime() && nftCardOption?.closeAt && (
+        <NftCardTimer endDate={nftCardOption?.closeAt} />
+      )}
+    </Box>
   );
 };

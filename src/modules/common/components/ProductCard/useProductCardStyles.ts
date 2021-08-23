@@ -5,6 +5,10 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    transition: 'filter 200ms linear, transform 200ms linear',
+    '&:hover': {
+      transform: 'scale(1.01) translateZ(0)',
+    },
     '&:hover $likeSite': {
       opacity: 1,
     },

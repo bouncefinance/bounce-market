@@ -86,6 +86,10 @@ export const Movers = (sectionProps: ISectionProps) => {
                 address: item.creator,
               },
             ]}
+            nftCardOption={{
+              ...item.nftCardOption,
+              isOnSale: true,
+            }}
           />
         }
         openAt={item.openAt}

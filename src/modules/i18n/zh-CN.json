@@ -517,6 +517,7 @@
     "minutes-short": "{minutes}分",
     "seconds-short": "{seconds}秒",
     "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
+    "time-left-short-hour": "剩余 {hours}:{minutes}:{seconds}",
     "time-end": "结束时间： {days}/{months}/{years}",
     "time-expired": "该拍卖已过期",
     "time-over": "倒计时结束",

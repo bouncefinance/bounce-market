@@ -8,6 +8,7 @@ import { auctionTypeMap } from 'modules/api/common/poolType';
 import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
 import { ITradePool_V2, PoolCategoryType } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
+import { INftCardHelpsParams } from 'modules/common/utils/nftCard';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
@@ -48,12 +49,15 @@ export interface INFTItem {
   endDate: Date | undefined;
   soldAmount: number;
   supplyAmount: number;
+  nftCardOption: INftCardHelpsParams;
 }
 
 export const mapNFTItem = (
   item: ITradePool_V2,
   tokenSymbol: TokenSymbol,
 ): INFTItem => {
+  const openAt = new Date(item.open_at * 1e3);
+  const closeAt = new Date(item.close_at * 1e3);
   return {
     category: item.category,
     channel: item.channel,
@@ -86,6 +90,13 @@ export const mapNFTItem = (
     ownerAvatar: item?.creatorurl,
     ownerName: item?.username,
     identity: item?.identity,
+    nftCardOption: {
+      openAt,
+      closeAt,
+      now: Date.now(),
+      isBidderClaimed: false,
+      isCreatorClaimed: false,
+    },
   };
 };
 

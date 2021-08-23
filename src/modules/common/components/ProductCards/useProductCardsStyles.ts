@@ -20,8 +20,15 @@ export const useProductCardsStyles = makeStyles<Theme>(theme => ({
       marginTop: theme.spacing(-4),
     },
   },
+  // colAllHover: {
+  //   '&:hover > $col:not(:hover)': {
+  //     // filter: 'brightness(0.7) saturate(0) contrast(1.1) blur(10px)',
+  //     filter: 'brightness(0.8)  blur(1.5px)',
+  //   },
+  // },
 
   col: {
+    // transition: 'filter 200ms linear, transform 200ms linear',
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     marginTop: theme.spacing(4),

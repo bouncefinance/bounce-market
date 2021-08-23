@@ -108,6 +108,10 @@ export const TabBids: React.FC<{
                         verified: item?.identity === UserRoleEnum.Verified,
                       },
                     ]}
+                    nftCardOption={{
+                      ...item.nftCardOption,
+                      isOnSale: true,
+                    }}
                   />
                 }
                 toSale={RoutesConfiguration.PublishNft.generatePath(

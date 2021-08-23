@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
+import { INftCardHelpsParams } from 'modules/common/utils/nftCard';
 import { AuctionState } from './AuctionState';
 import { FixedSwapState } from './FixedSwapState';
 
@@ -90,4 +91,5 @@ export interface IPoolNftItem extends Omit<OriginIPoolNftItem, 'price'> {
   poolId?: number;
   likeCount?: number;
   fileUrl: string;
+  nftCardOption: INftCardHelpsParams;
 }
