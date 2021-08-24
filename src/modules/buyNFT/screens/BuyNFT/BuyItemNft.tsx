@@ -168,10 +168,10 @@ export const BuyItemNFT = () => {
                 LikeBtn={
                   <Grid item xs="auto">
                     <NftLikeBtn
-                      isItemType
                       id={item.id}
                       count={item.likeCount}
                       isLike={item.isLike}
+                      contractAddress={item.contractAddress}
                     />
                   </Grid>
                 }

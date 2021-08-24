@@ -1,27 +1,14 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
-  root: {
-    display: 'grid',
-    gridTemplateColumns: 'auto 1fr',
-    alignItems: 'center',
-    gap: theme.spacing(0, 1.5),
-    gridTemplateAreas: `
-      'avatars subTitle'
-      'avatars title'
-    `,
-  },
-
-  titleFirst: {
-    gridTemplateAreas: `
-      'avatars title'
-      'avatars subTitle'
-    `,
-  },
+  root: {},
 
   avatars: {
     gridArea: 'avatars',
     display: 'flex',
+  },
+  avatarTips: {
+    backgroundColor: '#000',
   },
 
   avatarWrap: {
@@ -29,9 +16,10 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
     transition: 'transform 0.2s, opacity 0.2s',
     '$avatars:hover &': {
       opacity: 0.5,
-
+      transform: 'translate(0px, 0px)',
       '&:hover': {
         opacity: 1,
+        transform: 'translate(0px, -5px)',
       },
     },
 

@@ -50,6 +50,7 @@ interface ISetBgImgModalProps {
   onClose?: () => void;
   fileType: UploadFileType;
   contractaddress?: string;
+  successCallback?: (img: string) => void;
 }
 
 export const SetBgImgModal = ({
@@ -57,6 +58,7 @@ export const SetBgImgModal = ({
   isOpen = false,
   fileType,
   contractaddress,
+  successCallback,
 }: ISetBgImgModalProps) => {
   const classes = useSetBgImgModalStyles();
   const dispatch = useDispatchRequest();
@@ -74,13 +76,16 @@ export const SetBgImgModal = ({
       if (fileType === UploadFileType.BrandImg) {
         data.contractaddress = contractaddress;
       }
-      dispatch(uploadFile(data)).then(({ error }) => {
+      dispatch(uploadFile(data)).then(({ data, error }) => {
         if (!error && typeof onClose === 'function') {
+          const newImg = data?.result.path || '';
+          successCallback && successCallback(newImg);
+
           onClose();
         }
       });
     },
-    [fileType, contractaddress, dispatch, onClose],
+    [fileType, contractaddress, dispatch, onClose, successCallback],
   );
 
   const renderForm = ({

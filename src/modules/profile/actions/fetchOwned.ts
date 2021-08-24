@@ -24,7 +24,7 @@ export const fetchOwned = createSmartAction<
     auth: true,
     driver: 'axios',
     getData: data => {
-      if (data.code !== 1) {
+      if (data.code !== 200) {
         console.error('getmyowneditems:', data?.msg ?? 'Unexpected error');
         return [];
       }

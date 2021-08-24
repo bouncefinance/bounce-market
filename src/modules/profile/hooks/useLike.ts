@@ -4,9 +4,6 @@ import {
   useQuery,
 } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { AuctionType } from 'modules/api/common/auctionType';
-import { PoolType } from 'modules/api/common/poolType';
-import { getPoolKey } from 'modules/common/utils/poolHelps';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/store';
@@ -30,27 +27,18 @@ export const useIsLiked = (id: number, poolId: number) => {
 interface IUseLikeProps {
   id: number;
   category: string;
-  poolType?: PoolType;
-  auctionType?: AuctionType;
-  poolId: number;
   count?: number;
-  isLike?: boolean;
   isItemType?: boolean;
   contractAddress?: string;
 }
 
 export const useLike = ({
   id,
-  poolType,
-  auctionType,
   category,
-  poolId,
   /**
    * likes count required for urgent counter update
    */
   count,
-  isLike,
-  isItemType = false,
   contractAddress = '',
 }: IUseLikeProps) => {
   const { isConnected } = useAccount();
@@ -59,22 +47,20 @@ export const useLike = ({
 
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(count);
-  const { count: storeCount, listMap: likesMap } = useSelector<
-    RootState,
-    RootState['like']
-  >(state => state.like);
+  const { listMap: likesMap } = useSelector<RootState, RootState['like']>(
+    state => state.like,
+  );
 
   useEffect(() => {
-    const _isLike = likesMap?.get(
-      poolType
-        ? getPoolKey({
-            poolId,
-            poolType: (auctionType as unknown) as string,
-          })
-        : id.toString(),
-    );
-    setIsLiked(Boolean(_isLike));
-  }, [id, auctionType, poolId, storeCount, likesMap, poolType]);
+    const _likeInfo = likesMap?.get(id.toString());
+    setIsLiked(Boolean(_likeInfo?.isLike));
+    if (_likeInfo?.likeCount !== undefined) {
+      setLikeCount(_likeInfo?.likeCount);
+    }
+    if (_likeInfo === undefined && likeCount !== count) {
+      setLikeCount(count);
+    }
+  }, [id, likesMap, count, likeCount]);
 
   const { loading } = useMutation({
     type: dealAccountLike.toString(),
@@ -98,12 +84,9 @@ export const useLike = ({
     const { data: likeData } = await dispatch(
       dealAccountLike({
         requestKey,
-        poolType,
         category,
-        poolId,
         isLiked: !isLiked,
         itemId: id,
-        isItemType,
         contractAddress,
       }),
     );
@@ -112,15 +95,12 @@ export const useLike = ({
       setIsLiked(!isLiked);
     }
   }, [
-    poolType,
     category,
     dispatch,
     id,
     isLikeDisabled,
     isLiked,
-    poolId,
     requestKey,
-    isItemType,
     contractAddress,
   ]);
 

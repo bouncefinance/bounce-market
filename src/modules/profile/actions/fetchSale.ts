@@ -30,7 +30,7 @@ export const fetchMySale = createSmartAction<
     auth: true,
     driver: 'axios',
     getData: data => {
-      if (data.code !== 1) {
+      if (data.code !== 200) {
         console.error('getuseronsellpools:', data?.msg ?? 'Unexpected error');
         return [];
       }
@@ -57,7 +57,7 @@ export const fetchMyBids = createSmartAction<
     auth: true,
     driver: 'axios',
     getData: data => {
-      if (data.code !== 1) {
+      if (data.code !== 200) {
         console.error('getmybiditems:', data?.msg ?? 'Unexpected error');
         return [];
       }

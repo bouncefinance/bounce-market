@@ -11,9 +11,15 @@ interface IHeaderProps {
   className?: string;
   img?: string;
   onEditClick?: () => void;
+  isHiddenCustom?: boolean;
 }
 
-export const Header = ({ className, onEditClick, img }: IHeaderProps) => {
+export const Header = ({
+  className,
+  onEditClick,
+  img,
+  isHiddenCustom = false,
+}: IHeaderProps) => {
   const classes = useHeaderStyles();
 
   const isEditable = typeof onEditClick === 'function';
@@ -35,9 +41,11 @@ export const Header = ({ className, onEditClick, img }: IHeaderProps) => {
             display="flex"
             justifyContent="flex-end"
           >
-            <Button startIcon={<PencilIcon />} onClick={onEditClick} rounded>
-              {t('profile.customize-btn')}
-            </Button>
+            {!isHiddenCustom && (
+              <Button startIcon={<PencilIcon />} onClick={onEditClick} rounded>
+                {t('profile.customize-btn')}
+              </Button>
+            )}
           </Box>
         </Container>
       )}

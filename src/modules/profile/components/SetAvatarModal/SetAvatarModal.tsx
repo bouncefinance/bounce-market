@@ -24,6 +24,11 @@ export interface ISetAvatarValues {
   avatar: File;
 }
 
+export enum AvatarType {
+  Profile = 'Profile',
+  Collection = 'Collection',
+}
+
 const validateForm = (payload: ISetAvatarValues) => {
   const errors: FormErrors<ISetAvatarValues> = {};
 
@@ -43,25 +48,45 @@ const validateForm = (payload: ISetAvatarValues) => {
 interface ISetAvatarModalProps {
   isOpen?: boolean;
   onClose?: () => void;
+  avatarType?: AvatarType;
+  collectionAvatar?: string;
+  collectionAddress?: string;
+  successCallback?: (img: string) => void;
 }
 
 export const SetAvatarModal = ({
   onClose,
   isOpen = false,
+  avatarType = AvatarType.Profile,
+  collectionAvatar,
+  collectionAddress,
+  successCallback,
 }: ISetAvatarModalProps) => {
   const dispatch = useDispatchRequest();
 
   const onSubmit = useCallback(
     (payload: ISetAvatarValues) => {
       dispatch(
-        uploadFile({ file: payload.avatar, fileType: UploadFileType.Avatar }),
-      ).then(({ error }) => {
+        avatarType === AvatarType.Collection
+          ? uploadFile({
+              file: payload.avatar,
+              fileType: UploadFileType.BrandAvatar,
+              contractaddress: collectionAddress,
+            })
+          : uploadFile({
+              file: payload.avatar,
+              fileType: UploadFileType.Avatar,
+            }),
+      ).then(({ data, error }) => {
         if (!error && typeof onClose === 'function') {
+          const newImg = data?.result.path || '';
+          successCallback && successCallback(newImg);
+
           onClose();
         }
       });
     },
-    [dispatch, onClose],
+    [dispatch, onClose, avatarType, collectionAddress, successCallback],
   );
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
@@ -79,7 +104,11 @@ export const SetAvatarModal = ({
             component={UploadAvatarField}
             name="avatar"
             accepts={FILE_ACCEPTS}
-            initialAvatar={profileInfo?.imgUrl}
+            initialAvatar={
+              avatarType === AvatarType.Collection
+                ? collectionAvatar
+                : profileInfo?.imgUrl
+            }
           />
         </Box>
 

@@ -29,4 +29,5 @@ export const mapProductCardData = (item: INFTItem) => ({
   isLike: item.isLike,
   soldAmount: item.soldAmount,
   supplyAmount: item.supplyAmount,
+  nftCardOption: item.nftCardOption,
 });

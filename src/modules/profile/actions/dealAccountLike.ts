@@ -3,7 +3,6 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
-import { PoolType } from 'modules/api/common/poolType';
 import { Store } from 'redux';
 import { createAction } from 'redux-smart-actions';
 import { RootState } from 'store';
@@ -11,12 +10,9 @@ import { RootState } from 'store';
 interface IDealAccountLikeArgs {
   isLiked: boolean;
   category: string;
-  poolType?: PoolType;
   itemId: number;
-  poolId: number;
   contractAddress: string;
   requestKey?: string;
-  isItemType?: boolean;
 }
 
 export const dealAccountLike = createAction<
@@ -29,15 +25,8 @@ export const dealAccountLike = createAction<
     data: {
       category: params.category,
       ifLike: params.isLiked ? 1 : 0,
-      ...(params.isItemType
-        ? {
-            itemid: params.itemId,
-            contractaddress: params.contractAddress,
-          }
-        : {
-            auctiontype: params.poolType ?? 0,
-            poolid: params.poolId,
-          }),
+      itemid: params.itemId,
+      contractaddress: params.contractAddress,
     },
   },
   meta: {

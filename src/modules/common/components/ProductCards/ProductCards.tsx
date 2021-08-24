@@ -17,7 +17,6 @@ export const ProductCards = ({
   skeletonsCount = 5,
 }: IProductCardsProps) => {
   const classes = useProductCardsStyles();
-
   const modifyChildren = useCallback(
     (child: any) => {
       return (

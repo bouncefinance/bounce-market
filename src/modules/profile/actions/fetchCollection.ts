@@ -54,7 +54,7 @@ export const fetchCollection = createSmartAction<
     auth: true,
     driver: 'axios',
     getData: data => {
-      if (data.code !== 1) {
+      if (data.code !== 200) {
         console.error('fetchCollection:', data?.msg ?? 'Unexpected error');
         return [];
       }

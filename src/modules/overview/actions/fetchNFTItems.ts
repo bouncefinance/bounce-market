@@ -4,10 +4,12 @@ import {
   RequestActionMeta,
 } from '@redux-requests/core';
 import { PoolState } from 'modules/api/common/AuctionState';
-import { auctionTypeMap } from 'modules/api/common/poolType';
+import { IPoolNftItem } from 'modules/api/common/poolType';
 import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
-import { ITradePool_V2, PoolCategoryType } from 'modules/common/api/getPools';
+import { PoolCategoryType } from 'modules/common/api/getPools';
 import { ZERO_ADDRESS } from 'modules/common/conts';
+import { INftCardHelpsParams } from 'modules/common/utils/nftCard';
+import { mapPoolData } from 'modules/pools/actions/map';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
@@ -48,46 +50,8 @@ export interface INFTItem {
   endDate: Date | undefined;
   soldAmount: number;
   supplyAmount: number;
+  nftCardOption: INftCardHelpsParams;
 }
-
-export const mapNFTItem = (
-  item: ITradePool_V2,
-  tokenSymbol: TokenSymbol,
-): INFTItem => {
-  return {
-    category: item.category,
-    channel: item.channel,
-    contractaddress: item.token0,
-    createTime: new Date(item.created_at).getTime(),
-    created_at: item.created_at,
-    description: 'description',
-    externallink: 'externallink',
-    fileurl: item.fileurl,
-    id: item.tokenid,
-    itemname: item.itemname,
-    itemsymbol: 'itemsymbol',
-    likecount: item.likecount,
-    litimgurl: item.creatorurl,
-    metadata: 'metadata',
-    owneraddress: item.creator,
-    poolId: item.poolid,
-    poolType: auctionTypeMap[item.pooltype],
-    price: item.price,
-    standard: 0,
-    supply: 100,
-    token1: item.token1,
-    tokenSymbol: tokenSymbol,
-    openAt: new Date(item.open_at * 1e3),
-    state: item.state,
-    isLike: Boolean(item.mylikecount),
-    endDate: item.close_at ? new Date(item.close_at * 1e3) : undefined,
-    soldAmount: item.swapped_amount0,
-    supplyAmount: item.token_amount0,
-    ownerAvatar: item?.creatorurl,
-    ownerName: item?.username,
-    identity: item?.identity,
-  };
-};
 
 interface IFetchNFTItemsArgs {
   channel: ItemsChannel;
@@ -96,9 +60,10 @@ interface IFetchNFTItemsArgs {
 }
 
 export interface IFetchNFTItems {
-  items: INFTItem[];
+  items: IPoolNftItem[];
   offset: number;
   total: number;
+  tokenSymbol: string;
 }
 
 export type FetchNFTItemsMetaType = RequestActionMeta<any, IFetchNFTItems>;
@@ -123,6 +88,7 @@ export const fetchNFTItems = createSmartAction<
             items: [],
             offset: params.offset ?? 0,
             total: 0,
+            tokenSymbol: TokenSymbol.BNB,
           };
 
           const { data: poolsData } = await store.dispatchRequest(
@@ -147,14 +113,15 @@ export const fetchNFTItems = createSmartAction<
             return queryResponse;
           }
 
-          const tradePools = poolsData.data
-            .filter(item => item.state !== 1)
-            .map(item =>
-              mapNFTItem(item, poolsData?.tokenSymbol ?? TokenSymbol.BNB),
-            );
+          const tradePools = mapPoolData(
+            poolsData.data.filter(item => item.state !== 1),
+          );
 
           queryResponse.items = tradePools;
-          queryResponse.total = poolsData.total;
+          queryResponse.total = poolsData.total ?? 0;
+          if (poolsData.tokenSymbol) {
+            queryResponse.tokenSymbol = poolsData.tokenSymbol;
+          }
 
           return queryResponse;
         })(),

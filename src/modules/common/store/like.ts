@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ILikedItem } from 'modules/profile/actions/queryLikedItems';
+import { INftItem } from 'modules/api/common/itemType';
 import { getPoolKey } from '../utils/poolHelps';
 
-type listMapType = Map<string, boolean>;
+type listMapType = Map<string, { isLike: boolean; likeCount: number }>;
 export interface ILikeState {
   listMap: listMapType;
   count: number;
@@ -27,13 +27,13 @@ export const likeSlice = createSlice({
 });
 const { updateLikeMap, updateLikeCount } = likeSlice.actions;
 
-export const setLikesMapDataAsync = (likes: ILikedItem[]) => async (
+export const setLikesMapDataAsync = (likes: INftItem[]) => async (
   dispatch: any,
 ) => {
-  const map = new Map<string, boolean>();
+  const map: listMapType = new Map();
   (likes ?? []).forEach(like => {
     map.set(
-      like.poolId !== 0
+      like?.poolId !== 0
         ? getPoolKey(
             (like as unknown) as {
               poolId: number;
@@ -41,7 +41,10 @@ export const setLikesMapDataAsync = (likes: ILikedItem[]) => async (
             },
           )
         : like.itemId.toString(),
-      true,
+      {
+        isLike: true,
+        likeCount: like.likeCount,
+      },
     );
   });
   dispatch(updateLikeMap(map));

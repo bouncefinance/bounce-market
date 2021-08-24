@@ -72,7 +72,7 @@ export const WalletCard = ({
         </MenuItem>
         {/* <MenuItem
           component={RouterLink}
-          to={ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.brands)}
+          to={ProfileRoutesConfig.UserProfile.generatePath(ProfileTab.collections)}
           className={classes.menuItem}
           onClick={handleClose}
         >
