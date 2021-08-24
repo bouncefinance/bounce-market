@@ -1,6 +1,5 @@
 import { useQuery } from '@redux-requests/react';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
 import {
   ProductCard,
@@ -13,7 +12,6 @@ import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { fetchMySale } from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
 import { getPoolKey, isFixedSwap } from 'modules/common/utils/poolHelps';
@@ -91,6 +89,7 @@ export const TabSale: React.FC<{
                       )
                     : ''
                 }
+                contractAddress={item.token0}
                 likes={item.likecount}
                 price={item.poolid !== undefined ? item.price : undefined}
                 priceType={(data as any)?.tokenSymbol}
@@ -117,17 +116,12 @@ export const TabSale: React.FC<{
                 profileInfo={
                   <ProfileInfo
                     subTitle="Creator"
-                    title={item.username || truncateWalletAddr(item.creator)}
-                    users={[
-                      {
-                        name: item.username,
-                        avatar: item.creatorurl,
-                        href: ProfileRoutesConfig.OtherProfile.generatePath(
-                          item.creator,
-                        ),
-                        verified: item?.identity === UserRoleEnum.Verified,
-                      },
-                    ]}
+                    title={item.itemname}
+                    users={item.avatars}
+                    nftCardOption={{
+                      ...item.nftCardOption,
+                      isOnSale: true,
+                    }}
                   />
                 }
                 toSale={RoutesConfiguration.PublishNft.generatePath(

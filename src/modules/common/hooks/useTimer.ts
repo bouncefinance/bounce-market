@@ -2,7 +2,7 @@ import { useInterval } from 'modules/common/hooks/useInterval';
 import { Milliseconds, Minutes } from 'modules/common/types/unit';
 import { getTimeRemaining } from 'modules/common/utils/getTimeRemaining';
 import { t } from 'modules/i18n/utils/intl';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const INTERVAL_BREAKPOINT: Minutes = 2; // minutes
 const SHORT_STEP: Milliseconds = 1000; // when time left less than INTERVAL_BREAKPOINT
@@ -74,4 +74,59 @@ export const useCount = (delay = COUNT_DELAY) => {
     setCount(currentCount => currentCount + 1);
   }, delay);
   return count;
+};
+
+const toTimeFixed = (n: number) =>
+  n >= 10 ? n.toFixed(0) : '0' + n.toFixed(0);
+const diffNumber = (a: number, b: number) => (a > b ? a - b : b - a);
+
+interface IDiffTimeTopHours {
+  h: string;
+  m: string;
+  s: string;
+}
+export const diffTimeTopHours = (
+  time: number | Date,
+  now = new Date(),
+): IDiffTimeTopHours => {
+  let result = { h: '00', m: '00', s: '00' };
+  try {
+    const diffM = diffNumber(+new Date(time), +now) / 1e3 / 60;
+    const H = diffM / 60;
+    const m = (H - parseInt(H.toString())) * 60;
+    const s = (m - parseInt(m.toString())) * 60;
+    return {
+      h: toTimeFixed(Math.floor(H)),
+      m: toTimeFixed(Math.floor(m)),
+      s: toTimeFixed(s),
+    };
+  } catch (error) {
+    return result;
+  }
+};
+
+export const useNftCardTimer = ({
+  endDate,
+  onchange,
+}: {
+  endDate: Date;
+  onchange?: () => void;
+}) => {
+  const [timeValue, setTime] = useState('');
+  const reload = useCount(1e3);
+  const [isTimeOver, setIsTimeOver] = useState(false);
+  const hmsFormat = ({ h, m, s }: IDiffTimeTopHours) =>
+    t('time.time-left-short-hour', { hours: h, minutes: m, seconds: s });
+  useEffect(() => {
+    if (+endDate < Date.now()) {
+      setIsTimeOver(true);
+      onchange?.();
+      return () => {};
+    }
+    setTime(hmsFormat(diffTimeTopHours(endDate)));
+  }, [endDate, reload, onchange]);
+  return {
+    duration: timeValue,
+    isTimeOver,
+  };
 };

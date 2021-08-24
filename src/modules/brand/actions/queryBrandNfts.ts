@@ -55,34 +55,6 @@ export const queryBrandNfts = createAction<
             return [];
           }
 
-          // const tradePools = (poolsData.tradePools || [])
-          //   .map(item => ({
-          //     ...item,
-          //     poolType: AuctionType.FixedSwap,
-          //   }))
-          //   .filter(
-          //     item =>
-          //       item.state !== 1 &&
-          //       String(item.token0).toLowerCase() ===
-          //       String(params.contractAddress).toLowerCase(),
-          //   );
-
-          // const tradeAuctions = (poolsData.tradeAuctions || [])
-          //   .map(item => ({
-          //     ...item,
-          //     price:
-          //       item.lastestBidAmount !== '0'
-          //         ? item.lastestBidAmount
-          //         : item.amountMin1,
-          //     poolType: AuctionType.EnglishAuction,
-          //   }))
-          //   .filter(
-          //     item =>
-          //       item.state !== 1 &&
-          //       String(item.token0).toLowerCase() ===
-          //       String(params.contractAddress).toLowerCase(),
-          //   );
-
           const tradePools = (poolsData.data || [])
             .map(item => ({
               ...item,
@@ -134,7 +106,7 @@ export const queryBrandNfts = createAction<
                 poolId: pool.poolid,
                 price: pool.price,
                 createTime: new Date(pool.created_at).getTime(),
-                token1: pool.token1,
+                token1: pool.token0,
                 tokenSymbol: poolInfo ? poolInfo.tokenSymbol : TokenSymbol.BNB,
               };
             })

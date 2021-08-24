@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { AuctionState } from 'modules/api/common/AuctionState';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
+import { getNftAvatars } from 'modules/api/common/nftCardMap';
 import {
   auctionTypeMap,
   IPoolNftItem,
@@ -19,11 +20,15 @@ export const mapPoolData = (data: OriginIPoolNftItem[]): IPoolNftItem[] => {
     const closeSate = isEnglishAuction
       ? AuctionState.Claimed
       : FixedSwapState.Completed;
+    const openAt = new Date(item.open_at * 1e3);
+    const closeAt = new Date(item.close_at * 1e3);
+    const isCreatorClaimed = Boolean(item.creator_claimed);
+    const isBidderClaimed = Boolean(item.bidder_claimed);
     return {
       ...item,
       price: new BigNumber(Web3.utils.fromWei(item.price)),
-      openAt: new Date(item.open_at * 1e3),
-      closeAt: new Date(item.close_at * 1e3),
+      openAt,
+      closeAt,
       poolType: auctionTypeMap[item.pooltype ?? item.auction_type],
       state: item.state === 0 ? liveSate : closeSate,
       isLike: Boolean(item.mylikecount),
@@ -33,6 +38,17 @@ export const mapPoolData = (data: OriginIPoolNftItem[]): IPoolNftItem[] => {
       likeCount: item.likecount,
       fileUrl: item.fileurl,
       description: item.description,
+      nftCardOption: {
+        openAt,
+        closeAt,
+        now: Date.now(),
+        isBidderClaimed,
+        isCreatorClaimed,
+      },
+      avatars: getNftAvatars({
+        avatars: item,
+        isPlatform: Boolean(item.isplatform),
+      }),
     };
   });
 };

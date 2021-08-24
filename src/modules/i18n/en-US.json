@@ -349,6 +349,11 @@
     "pool-balance-tip": "{balance} available for purchase",
     "sold-for-quantity": "Sold {sold} of {quantity}"
   },
+  "avatarsType": {
+    "collection": "Collection",
+    "creator": "Creator",
+    "owner": "Owner"
+  },
   "cancel-timer": {
     "title": "Cancel Sale",
     "inner": "Are you sure you want to cancel this sale?"
@@ -526,6 +531,7 @@
     "minutes-short": "{minutes}m",
     "seconds-short": "{seconds}s",
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
+    "time-left-short-hour": "{hours}:{minutes}:{seconds} left",
     "time-end": "Ended on {days}/{months}/{years}",
     "time-expired": "Time expired",
     "time-over": "Time is over",

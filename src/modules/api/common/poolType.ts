@@ -2,8 +2,10 @@ import BigNumber from 'bignumber.js';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
+import { INftCardHelpsParams } from 'modules/common/utils/nftCard';
 import { AuctionState } from './AuctionState';
 import { FixedSwapState } from './FixedSwapState';
+import { INftAvatars, IPoolAvatars } from './NftType';
 
 export enum PoolType {
   Unknown,
@@ -38,7 +40,7 @@ const flipKeyValues = (originalObj: {
 
 export const poolTypeMap = flipKeyValues(auctionTypeMap);
 
-export interface OriginIPoolNftItem {
+export interface OriginIPoolNftItem extends IPoolAvatars {
   open_at: number | 0;
   close_at: number | 0;
   created_at: string;
@@ -59,8 +61,6 @@ export interface OriginIPoolNftItem {
   bidder_claimed: number;
   duration: number;
   itemname: string;
-  // nft main img
-  creator: string;
   creatorurl: string;
   // pool creatorname
   username: string;
@@ -77,9 +77,11 @@ export interface OriginIPoolNftItem {
   token_amount0: number;
   category: ProductCardCategoryType;
   description?: string;
+  isplatform?: boolean;
 }
 
 export interface IPoolNftItem extends Omit<OriginIPoolNftItem, 'price'> {
+  avatars: INftAvatars;
   price: BigNumber;
   openAt: Date;
   closeAt: Date;
@@ -90,4 +92,5 @@ export interface IPoolNftItem extends Omit<OriginIPoolNftItem, 'price'> {
   poolId?: number;
   likeCount?: number;
   fileUrl: string;
+  nftCardOption: INftCardHelpsParams;
 }

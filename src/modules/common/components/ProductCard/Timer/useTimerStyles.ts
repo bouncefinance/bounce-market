@@ -28,4 +28,19 @@ export const useTimerStyles = makeStyles<Theme>(theme => ({
     marginRight: theme.spacing(1),
     fontSize: 16,
   },
+  root2: {},
+  timeLeft2: {
+    display: 'inline-block',
+    fontSize: 14,
+    lineHeight: '33px',
+    height: 33,
+    border: '1px solid #ddd',
+    padding: '0px 12px',
+    fontWeight: 500,
+    userSelect: 'none',
+    borderRadius: 30,
+  },
+  timeLeftText: {
+    color: theme.palette.text.secondary,
+  },
 }));

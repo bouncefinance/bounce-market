@@ -6,7 +6,6 @@ import {
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { PoolType, poolTypeMap } from 'modules/api/common/poolType';
 import { fetchItemRoyalty } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
@@ -497,14 +496,8 @@ export const BuyNFT = () => {
                       LikeBtn={
                         <Grid item xs="auto">
                           <NftLikeBtn
-                            isItemType={false}
-                            poolId={poolId}
-                            poolType={
-                              (parseInt(
-                                poolTypeMap[poolType],
-                              ) as unknown) as PoolType
-                            }
-                            auctionType={poolType}
+                            id={item.id}
+                            contractAddress={item.contractAddress}
                             count={roleInfos.likeCount}
                             isLike={roleInfos.isLike}
                           />
