@@ -1,16 +1,9 @@
-import { Box, Tooltip } from '@material-ui/core';
-import classNames from 'classnames';
-import {
-  INftCardHelpsParams,
-  NftCardHelps,
-} from 'modules/common/utils/nftCard';
 import React, { useMemo } from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { Typography } from '@material-ui/core';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { DefaultRandomAvatar } from '../DefaultRandomAvatar';
-import { NftCardTimer } from '../ProductCard/Timer';
 import { useProfileInfoStyles } from './ProfileInfoStyles';
 
 interface IUserInfo {
@@ -19,7 +12,6 @@ interface IUserInfo {
   href?: string;
   verified?: boolean;
   address?: string;
-  typLabel?: string;
 }
 
 export interface IProfileInfoProps {
@@ -36,7 +28,6 @@ export interface IProfileInfoProps {
    */
   avatarSize?: 'small' | 'medium' | 'big';
   mainHref?: string;
-  nftCardOption?: INftCardHelpsParams;
 }
 
 export const ProfileInfo = ({
@@ -47,16 +38,15 @@ export const ProfileInfo = ({
   isTitleFirst = false,
   avatarSize = 'small',
   mainHref,
-  nftCardOption,
 }: IProfileInfoProps) => {
   const classes = useProfileInfoStyles();
 
   const renderedAvatars = useMemo(() => {
-    return users.map((props, i) => {
-      const { name, avatar, verified, href, address, typLabel } = props;
+    return users.map(({ name, avatar, verified, href, address }, i) => {
       const commonProps = {
         className: classes.avatarWrap,
-        key: uid(props, i),
+        title: name,
+        key: uid(name, i),
       };
 
       const renderedContent = (
@@ -74,50 +64,44 @@ export const ProfileInfo = ({
         </>
       );
 
-      return (
-        <Tooltip
-          key={uid(props, i)}
-          title={`${typLabel}: ${name || '--'}`}
-          arrow
-          placement="top"
-          classes={
-            {
-              // tooltip: classes.avatarTips,
-              // arrow: classes.avatarTips,
-            }
-          }
-        >
-          {href ? (
-            <Link {...commonProps} to={href}>
-              {renderedContent}
-            </Link>
-          ) : (
-            <div {...commonProps}>{renderedContent}</div>
-          )}
-        </Tooltip>
+      return href ? (
+        <Link {...commonProps} to={href}>
+          {renderedContent}
+        </Link>
+      ) : (
+        <div {...commonProps}>{renderedContent}</div>
       );
     });
   }, [avatarSize, classes, users]);
 
-  const [nftCardHelps, setNftCardHelps] = useState<NftCardHelps>();
-  useEffect(() => {
-    if (nftCardOption) {
-      setNftCardHelps(new NftCardHelps(nftCardOption));
-    }
-  }, [nftCardOption]);
-
   return (
-    <Box
-      className={classNames(className)}
-      display="flex"
-      justifyItems="center"
-      justifyContent="space-between"
+    <div
+      className={classNames(
+        className,
+        classes.root,
+        isTitleFirst && classes.titleFirst,
+      )}
     >
       <div className={classes.avatars}>{renderedAvatars}</div>
 
-      {nftCardHelps?.getIsAuctionLastTime() && nftCardOption?.closeAt && (
-        <NftCardTimer endDate={nftCardOption?.closeAt} />
-      )}
-    </Box>
+      <Typography
+        component={!!mainHref ? Link : 'div'}
+        to={mainHref || '#'}
+        color="textSecondary"
+        variant="body2"
+        className={classes.subTitle}
+      >
+        {subTitle}
+      </Typography>
+
+      <Typography
+        component={!!mainHref ? Link : 'div'}
+        to={mainHref || '#'}
+        className={classes.title}
+        variant="body2"
+      >
+        {title}
+      </Typography>
+    </div>
   );
 };

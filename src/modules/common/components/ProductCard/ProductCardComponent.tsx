@@ -8,7 +8,6 @@ import {
   MenuList,
   Popover,
   Tooltip,
-  Typography,
 } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
@@ -107,10 +106,8 @@ export const ProductCardComponent = ({
   auctionType,
   state,
   likes,
-  id,
   isLikeDisabled = false,
   isLiked = false,
-  hiddenLikeBtn = false,
   onLikeClick,
   MediaProps,
   profileInfo,
@@ -368,15 +365,6 @@ export const ProductCardComponent = ({
       </div>
 
       <CardContent className={classes.content}>
-        <ConditionalWrapper
-          condition={!!href}
-          wrapper={<Link to={href || '#'} />}
-        >
-          <Typography variant="h5" className={classes.title} title={title}>
-            {title}
-          </Typography>
-        </ConditionalWrapper>
-
         {profileInfo}
 
         <hr className={classes.devider} />

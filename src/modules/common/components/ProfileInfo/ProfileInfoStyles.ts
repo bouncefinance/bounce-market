@@ -1,7 +1,16 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
-  root: {},
+  root: {
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr',
+    alignItems: 'center',
+    gap: theme.spacing(0, 1.5),
+    gridTemplateAreas: `
+      'avatars subTitle'
+      'avatars title'
+    `,
+  },
 
   avatars: {
     gridArea: 'avatars',
@@ -12,6 +21,26 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
   },
 
   avatarWrap: {
+    position: 'relative',
+    transition: 'transform 0.2s, opacity 0.2s',
+    '$avatars:hover &': {
+      opacity: 0.5,
+
+      '&:hover': {
+        opacity: 1,
+      },
+    },
+
+    '&:hover': {
+      zIndex: 3,
+    },
+
+    '& + &': {
+      marginLeft: -6,
+    },
+  },
+
+  cardAvatarWrap: {
     position: 'relative',
     transition: 'transform 0.2s, opacity 0.2s',
     '$avatars:hover &': {
@@ -82,5 +111,13 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
+  },
+  nftTitle: {
+    marginTop: theme.spacing(2),
+    fontSize: 16,
+    height: 21,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
   },
 }));

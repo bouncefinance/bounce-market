@@ -19,7 +19,7 @@ interface IFetchPoolNftOwnerData {
     name: string;
   };
   poolId: number;
-  poolType: number;
+  poolType: PoolType;
   quantity: number;
 }
 
@@ -56,7 +56,6 @@ export const fetchPoolNftOwner = createSmartAction<
       driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
-        console.log(data);
         return data
           ?.map(item => {
             return {
@@ -72,7 +71,10 @@ export const fetchPoolNftOwner = createSmartAction<
             };
           })
           .sort((a, b) => {
-            return b.poolId - a.poolId;
+            if (a.poolId === params.poolId) {
+              return -1;
+            }
+            return 1;
           });
       },
       ...meta,

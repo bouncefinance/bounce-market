@@ -31,9 +31,9 @@ function mapPromoItem(item: IOverviewItem, tokenSymbol: string): IPromoItem {
     title: item.itemName || '',
     text: item.description || '',
     createdBy:
-      truncateWalletAddr(item.username) ||
-      truncateWalletAddr(item.creator?.address ?? ''),
-    avatar: item.creatorurl,
+      truncateWalletAddr(item.owner?.name ?? '') ||
+      truncateWalletAddr(item.owner?.address ?? ''),
+    avatar: item.owner?.avatar,
     price: item.price,
     priceType: tokenSymbol,
     category: item?.category,
@@ -88,6 +88,7 @@ export const Overview = () => {
           noDataMessage={renderedPromoSkeleton}
         >
           {({ loading, error, data }) => {
+            console.log(data);
             return (
               <ThemeProvider theme={darkTheme}>
                 <Promo

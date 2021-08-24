@@ -6,8 +6,9 @@ import {
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { PoolType } from 'modules/api/common/poolType';
+import { auctionTypeMap, PoolType } from 'modules/api/common/poolType';
 import { fetchItemRoyalty } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
+import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -38,6 +39,7 @@ import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 import { Button } from 'modules/uiKit/Button';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import { AuctionState } from '../../../api/common/AuctionState';
 import { AuctionType } from '../../../api/common/auctionType';
 import { FixedSwapState } from '../../../api/common/FixedSwapState';
@@ -450,9 +452,16 @@ export const BuyNFT = () => {
                         </Grid>
                         <Grid item className={classes.ownerBuy}>
                           {item.poolType !== PoolType.Unknown && (
-                            <Button variant="outlined" rounded>
-                              {t('buy-dialog.buy')}
-                            </Button>
+                            <Link
+                              to={BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                                item.poolId,
+                                auctionTypeMap[item.poolType],
+                              )}
+                            >
+                              <Button variant="outlined" rounded>
+                                {t('buy-dialog.buy')}
+                              </Button>
+                            </Link>
                           )}
                         </Grid>
                       </Grid>
