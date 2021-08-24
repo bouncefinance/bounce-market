@@ -1,14 +1,9 @@
 import { Box, Container } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
-import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { NoItems } from 'modules/common/components/NoItems';
-import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
-import { t } from 'modules/i18n/utils/intl';
 import { HEADER_HEIGHT_XL } from 'modules/layout/components/Header/HeaderStyles';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
@@ -16,20 +11,16 @@ import {
   fetchNFTItems,
   IFetchNFTItems,
 } from 'modules/overview/actions/fetchNFTItems';
-import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
 import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useIsSMDown } from 'modules/themes/useTheme';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { uid } from 'react-uid';
 import { Pagination } from '../../../uiKit/Pagination';
 import { useProductsStyles } from './useProductsStyles';
-import { FixedSwapState } from 'modules/api/common/FixedSwapState';
-import { AuctionState } from 'modules/api/common/AuctionState';
-import { isFixedSwap } from 'modules/common/utils/poolHelps';
+import { MarketNftCard } from './nftCard';
+import { uid } from 'react-uid';
 
 const ITEMS_PORTION_COUNT = 20;
 const DEFAULT_PAGE = 1;
@@ -78,10 +69,9 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     };
   }, [category, page, dispatch, isConnected, dispatchRequest]);
 
-  const nftItems = useMemo(
-    () => (nftItemsData ? nftItemsData.items.map(mapProductCardData) : []),
-    [nftItemsData],
-  );
+  const nftItems = useMemo(() => (nftItemsData ? nftItemsData.items : []), [
+    nftItemsData,
+  ]);
 
   const pagesCount = useMemo(() => {
     if (!nftItemsData) {
@@ -96,59 +86,13 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const rendrerdCards = useMemo(
     () =>
       nftItems.map(item => (
-        <ProductCard
-          isOnSale
-          id={item.id}
-          poolId={item.poolId}
-          auctionType={item.poolType}
+        <MarketNftCard
+          item={item}
           key={uid(item)}
-          title={item.title}
-          price={item.price}
-          priceType={item.priceType}
-          endDate={item.endDate}
-          copies={item.copies}
-          soldData={{
-            sold: item.soldAmount,
-            quantity: item.supplyAmount,
-          }}
-          likes={item.likes}
-          isLike={item.isLike}
-          href={item.href}
-          MediaProps={{
-            category: item.category,
-            // src: getImgSrc(item.src),
-            src: item.src,
-            objectFit: 'contain',
-            loading: 'lazy',
-          }}
-          state={
-            isFixedSwap(item.poolType) ? FixedSwapState.Live : AuctionState.Live
-          }
-          profileInfo={
-            <ProfileInfo
-              subTitle={t('product-card.owner')}
-              title={item.ownerName ?? truncateWalletAddr(item.ownerAddress)}
-              users={[
-                {
-                  href: ProfileRoutesConfig.OtherProfile.generatePath(
-                    item.ownerAddress,
-                  ),
-                  name: item.ownerName ?? truncateWalletAddr(item.ownerAddress),
-                  avatar: item.ownerAvatar,
-                  verified: item.identity === UserRoleEnum.Verified,
-                  address: item.ownerAddress,
-                },
-              ]}
-              nftCardOption={{
-                ...item.nftCardOption,
-                isOnSale: true,
-              }}
-            />
-          }
-          openAt={item.openAt}
+          tokenSymbol={nftItemsData?.tokenSymbol ?? ''}
         />
       )),
-    [nftItems],
+    [nftItems, nftItemsData?.tokenSymbol],
   );
 
   const renderedPagination = (

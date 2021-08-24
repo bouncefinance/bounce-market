@@ -19,7 +19,6 @@ import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { ConditionalWrapper } from 'modules/common/components/ConditionalWrapper';
 import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
-import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
@@ -35,6 +34,7 @@ import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
 import { useEffect } from 'react';
 import { useCount } from 'modules/common/hooks/useTimer';
+import { ChainsIcon } from '../Icons/Chains';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -137,7 +137,7 @@ export const ProductCardComponent = ({
   isOther = false,
   reload,
 }: IProductCardComponentProps) => {
-  const { isConnected, handleConnect } = useAccount();
+  const { isConnected, handleConnect, chainId } = useAccount();
   const classes = useProductCardStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isPopoverOpened = Boolean(anchorEl);
@@ -339,8 +339,19 @@ export const ProductCardComponent = ({
     !isPutSaleTimeCancel && isOnSeller && !isCreatorClaimed && !isAuction,
   );
 
+  const RenderChiaIcon = ({ className }: { className?: string }) => {
+    return <ChainsIcon className={className} chiaId={chainId} />;
+  };
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        className={classes.topBar}
+      >
+        <RenderChiaIcon className={classes.topChiaIcon} />
+        {renderedLikes}
+      </Box>
       <div className={classes.relative}>
         <ConditionalWrapper
           condition={!!href}
@@ -354,7 +365,6 @@ export const ProductCardComponent = ({
           {isLost && <BidsState type={BidsType.LOST} />}
           {isWon && <BidsState type={BidsType.WON} />}
         </ConditionalWrapper>
-        {featuresConfig.nftLikes && !hiddenLikeBtn && renderedLikes}
       </div>
 
       <CardContent className={classes.content}>

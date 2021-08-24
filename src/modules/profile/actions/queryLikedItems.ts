@@ -8,38 +8,17 @@ import {
 import { AuctionState } from 'modules/api/common/AuctionState';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
-import { auctionTypeMap, PoolType } from 'modules/api/common/poolType';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { IResponse } from 'modules/common/types/ResponseData';
 import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
 import { setLikesMapDataAsync } from 'modules/common/store/like';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState, store } from 'store';
-import Web3 from 'web3';
+import { INftItem, IOriginNftItem } from 'modules/api/common/itemType';
+import { mapNftItemData } from 'modules/api/common/itemMap';
+import { IPoolAvatars } from 'modules/api/common/NftType';
 
-interface ILikePoolItem {
-  category: ProductCardCategoryType;
-  contractaddress: string;
-  fileurl: string;
-  identity: number;
-  likecount: number;
-  mylikecount: number;
-  name: string;
-  username: string;
-  open_at: number;
-  poolid: number;
-  pooltype: number;
-  price: number;
-  state: FixedSwapState | AuctionState;
-  swapped_amount0: number;
-  token_amount0: number;
-  tokenid: number;
-  minteraddress: string;
-  avatar: string;
-  balance: string;
-  supply: number;
-}
-interface ILikePool {
+interface ILikePool extends IPoolAvatars {
   category: ProductCardCategoryType;
   contractaddress: string;
   fileurl: string;
@@ -67,12 +46,7 @@ export interface IPoolNftItem {
   isLike: boolean;
 }
 
-export type IMySaleData = {
-  likeitems: ILikePool[];
-  likepools: ILikePoolItem[];
-};
-
-export interface ILikedItem extends Omit<ILikePool | ILikePoolItem, 'price'> {
+export interface ILikedItem extends Omit<ILikePool | IOriginNftItem, 'price'> {
   poolType: AuctionType;
   price: BigNumber;
   itemId: number;
@@ -84,11 +58,8 @@ export interface ILikedItem extends Omit<ILikePool | ILikePoolItem, 'price'> {
   balance?: number;
 }
 
-const getIsEnglishAuction = (type: number) =>
-  type === PoolType.EnglishAuction || type === PoolType.EnglishAuctionTiming;
-
 export const queryLikedItems = createSmartAction<
-  RequestAction<IResponse<IMySaleData>, ILikedItem[]>,
+  RequestAction<IResponse<IOriginNftItem[]>, INftItem[]>,
   []
 >('queryLikedItems', () => ({
   request: {
@@ -113,33 +84,15 @@ export const queryLikedItems = createSmartAction<
       return request;
     },
     getData: data => {
-      if (data.code !== 1) {
-        console.error('getmybiditems:', data?.msg ?? 'Unexpected error');
+      if (data.code !== 200) {
+        console.error(
+          'get liked items error:',
+          data?.msg ?? 'Unexpected error',
+        );
         return [];
       }
 
-      const likes = [
-        ...data.data.likeitems.map(e => ({ ...e, isItemType: true })),
-        ...data.data.likepools.map(e => ({ ...e, isItemType: false })),
-      ].map(item => {
-        const pooltype = item.pooltype;
-        const isEnglishAuction = getIsEnglishAuction(pooltype);
-        const getLiveSate = () =>
-          isEnglishAuction ? AuctionState.Live : FixedSwapState.Live;
-        const getCloseSate = () =>
-          isEnglishAuction ? AuctionState.Claimed : FixedSwapState.Completed;
-
-        return {
-          ...item,
-          price: new BigNumber(Web3.utils.fromWei(item.price.toString())),
-          openAt: new Date(item.open_at * 1e3),
-          poolType: auctionTypeMap[pooltype],
-          state: item.state === 0 ? getLiveSate() : getCloseSate(),
-          isLike: Boolean(item.mylikecount),
-          itemId: item.tokenid,
-          poolId: item.poolid,
-        };
-      });
+      const likes = mapNftItemData(data.data);
 
       setLikesMapDataAsync(likes)(store.dispatch);
       return likes;

@@ -5,10 +5,6 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    transition: 'filter 200ms linear, transform 200ms linear',
-    '&:hover': {
-      transform: 'scale(1.01) translateZ(0)',
-    },
     '&:hover $likeSite': {
       opacity: 1,
     },
@@ -201,18 +197,16 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   relative: {
     position: 'relative',
   },
+  topBar: {
+    padding: '10px 17px',
+  },
+  topChiaIcon: {
+    width: 20,
+  },
   likeSite: {
-    position: 'absolute',
-    top: 15,
-    right: 15,
-    background: 'rgba(0, 0, 0, 0.6)',
-    color: '#fff',
-    padding: '2px 12px 2px 8px',
-    borderRadius: 30,
     zIndex: 2,
     userSelect: 'none',
     cursor: 'pointer',
-    opacity: 0,
     transition: 'opacity 0.1s linear',
   },
   likeBtn: {

@@ -31,7 +31,8 @@ function mapPromoItem(item: IOverviewItem, tokenSymbol: string): IPromoItem {
     title: item.itemName || '',
     text: item.description || '',
     createdBy:
-      truncateWalletAddr(item.username) || truncateWalletAddr(item.creator),
+      truncateWalletAddr(item.username) ||
+      truncateWalletAddr(item.creator?.address ?? ''),
     avatar: item.creatorurl,
     price: item.price,
     priceType: tokenSymbol,
@@ -43,7 +44,9 @@ function mapPromoItem(item: IOverviewItem, tokenSymbol: string): IPromoItem {
       item.poolId !== undefined && item.poolType
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
-    authorHref: ProfileRoutesConfig.OtherProfile.generatePath(item.creator),
+    authorHref: ProfileRoutesConfig.OtherProfile.generatePath(
+      item.creator?.address,
+    ),
     MediaProps: {
       category: item.category,
       src: item.fileUrl || '',

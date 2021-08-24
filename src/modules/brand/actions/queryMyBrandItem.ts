@@ -46,12 +46,6 @@ export const queryMyBrandItem = createSmartAction<
           if (brandList) {
             const result = await Promise.all(
               brandList.map(async (item: IBrandInfo) => {
-                // const { data: num } = await store.dispatchRequest(
-                //   queryBrandItems({
-                //     user_address: address,
-                //     contract_address: item.contractaddress,
-                //   }),
-                // );
                 return {
                   id: item.id,
                   title: item.brandname,

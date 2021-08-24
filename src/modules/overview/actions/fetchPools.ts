@@ -6,8 +6,9 @@ import {
 } from '@redux-requests/core';
 import { Store } from '@reduxjs/toolkit';
 import { setAccount } from 'modules/account/store/actions/setAccount';
-import { IGetPoolsApi_V2 } from 'modules/common/api/getPools';
+import { OriginIPoolNftItem } from 'modules/api/common/poolType';
 import { ZERO_ADDRESS } from 'modules/common/conts';
+import { IResponse } from 'modules/common/types/ResponseData';
 import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store/store';
@@ -19,7 +20,10 @@ export enum FetchStateType {
 }
 
 export const fetchPools = createSmartAction<
-  RequestAction<IGetPoolsApi_V2, IGetPoolsApi_V2>,
+  RequestAction<
+    IResponse<OriginIPoolNftItem[]>,
+    IResponse<OriginIPoolNftItem[]>
+  >,
   [
     {
       category?: string;
@@ -30,7 +34,10 @@ export const fetchPools = createSmartAction<
       orderfield?: number;
       state?: FetchStateType;
     }?,
-    RequestActionMeta<IGetPoolsApi_V2, IGetPoolsApi_V2>?,
+    RequestActionMeta<
+      IResponse<OriginIPoolNftItem[]>,
+      IResponse<OriginIPoolNftItem[]>
+    >?,
   ]
 >('NFTMarket/fetchPools', (params, meta) => ({
   request: {

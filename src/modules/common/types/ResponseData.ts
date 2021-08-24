@@ -9,6 +9,7 @@ export type ResponseData<
 export interface IResponse<T> {
   code: number;
   msg?: string;
+  total?: number;
   data: T;
   tokenSymbol?: string;
 }

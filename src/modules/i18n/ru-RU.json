@@ -336,6 +336,11 @@
     "pool-balance-tip": "{balance} доступны для покупки",
     "sold-for-quantity": "Продано {sold} из {quantity}"
   },
+  "avatarsType": {
+    "collection": "коллекция",
+    "creator": "создатель",
+    "owner": "владелец"
+  },
   "cancel-timer": {
     "title": "Отмена продажи",
     "inner": "Вы уверены, что хотите отменить эту продажу?"

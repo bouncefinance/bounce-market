@@ -1,24 +1,16 @@
 import { Box, Container } from '@material-ui/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { AuctionState } from 'modules/api/common/AuctionState';
-import { FixedSwapState } from 'modules/api/common/FixedSwapState';
-import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
-import { ProductCard } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { isFixedSwap } from 'modules/common/utils/poolHelps';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
+import { MarketNftCard } from 'modules/market/components/Products/nftCard';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ItemsChannel } from 'modules/overview/actions/fetchItemsByFilter';
 import {
   fetchNFTItems,
   IFetchNFTItems,
 } from 'modules/overview/actions/fetchNFTItems';
-import { mapProductCardData } from 'modules/overview/api/mapProductCardData';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Button } from 'modules/uiKit/Button';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
 import { useCallback, useEffect, useState } from 'react';
@@ -72,60 +64,15 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     );
   }, [dispatch, isConnected]);
 
-  const nftItems = data?.items.map(mapProductCardData);
+  const nftItems = data?.items;
   const hasItems = Boolean(nftItems && nftItems.length);
 
   const renderedItems = (nftItems || []).map(item => {
-    const ownerName = item.ownerName ?? truncateWalletAddr(item.ownerAddress);
     return (
-      <ProductCard
-        isOnSale
-        id={item.id}
-        poolId={item.poolId}
-        auctionType={item.poolType}
+      <MarketNftCard
+        item={item}
         key={uid(item)}
-        title={item.title}
-        price={item.price}
-        priceType={item.priceType}
-        endDate={item.endDate}
-        likes={item.likes}
-        isLike={item.isLike}
-        href={item.href}
-        MediaProps={{
-          category: item.category,
-          src: item.src,
-          objectFit: 'scale-down',
-          loading: 'lazy',
-        }}
-        state={
-          isFixedSwap(item.poolType) ? FixedSwapState.Live : AuctionState.Live
-        }
-        profileInfo={
-          <ProfileInfo
-            subTitle="Owner"
-            title={ownerName}
-            users={[
-              {
-                href: ProfileRoutesConfig.OtherProfile.generatePath(
-                  item.ownerAddress,
-                ),
-                name: ownerName,
-                avatar: item.ownerAvatar,
-                verified: item.identity === UserRoleEnum.Verified,
-                address: item.ownerAddress,
-              },
-            ]}
-            nftCardOption={{
-              ...item.nftCardOption,
-              isOnSale: true,
-            }}
-          />
-        }
-        openAt={item.openAt}
-        soldData={{
-          sold: item.soldAmount,
-          quantity: item.supplyAmount,
-        }}
+        tokenSymbol={data?.tokenSymbol ?? ''}
       />
     );
   });

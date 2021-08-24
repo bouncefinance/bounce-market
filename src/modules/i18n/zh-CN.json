@@ -341,6 +341,11 @@
     "pool-balance-tip": "当前可售份数: {balance}",
     "sold-for-quantity": "已售出 {sold} / {quantity}"
   },
+  "avatarsType": {
+    "collection": "作品集",
+    "creator": "创建者",
+    "owner": "拥有者"
+  },
   "cancel-timer": {
     "title": "取消出售",
     "inner": "你确定取消该NFT的售卖吗?"

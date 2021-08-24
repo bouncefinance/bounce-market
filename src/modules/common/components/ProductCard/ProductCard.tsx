@@ -1,7 +1,6 @@
 import { Mutation, useDispatchRequest } from '@redux-requests/react';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { NftType } from 'modules/api/common/NftType';
-import { poolTypeMap } from 'modules/api/common/poolType';
 import {
   BurnTokenDialog,
   IBurnFormValues,
@@ -67,14 +66,9 @@ export const ProductCard = ({
     likeCount,
   } = useLike({
     id,
-    poolId,
-    poolType: auctionType ? +poolTypeMap[auctionType] : undefined,
-    auctionType: auctionType,
     category: MediaProps.category,
     count: likes,
     contractAddress,
-    isItemType,
-    isLike,
   });
 
   const handleLikeClick = useCallback(() => {

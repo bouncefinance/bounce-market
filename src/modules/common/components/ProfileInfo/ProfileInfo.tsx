@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, Tooltip } from '@material-ui/core';
 import classNames from 'classnames';
 import {
   INftCardHelpsParams,
@@ -19,6 +19,7 @@ interface IUserInfo {
   href?: string;
   verified?: boolean;
   address?: string;
+  typLabel?: string;
 }
 
 export interface IProfileInfoProps {
@@ -51,11 +52,11 @@ export const ProfileInfo = ({
   const classes = useProfileInfoStyles();
 
   const renderedAvatars = useMemo(() => {
-    return users.map(({ name, avatar, verified, href, address }, i) => {
+    return users.map((props, i) => {
+      const { name, avatar, verified, href, address, typLabel } = props;
       const commonProps = {
         className: classes.avatarWrap,
-        title: name,
-        key: uid(name, i),
+        key: uid(props, i),
       };
 
       const renderedContent = (
@@ -74,12 +75,27 @@ export const ProfileInfo = ({
         </>
       );
 
-      return href ? (
-        <Link {...commonProps} to={href}>
-          {renderedContent}
-        </Link>
-      ) : (
-        <div {...commonProps}>{renderedContent}</div>
+      return (
+        <Tooltip
+          key={uid(props, i)}
+          title={`${typLabel}: ${name || '--'}`}
+          arrow
+          placement="top"
+          classes={
+            {
+              // tooltip: classes.avatarTips,
+              // arrow: classes.avatarTips,
+            }
+          }
+        >
+          {href ? (
+            <Link {...commonProps} to={href}>
+              {renderedContent}
+            </Link>
+          ) : (
+            <div {...commonProps}>{renderedContent}</div>
+          )}
+        </Tooltip>
       );
     });
   }, [avatarSize, classes, users]);

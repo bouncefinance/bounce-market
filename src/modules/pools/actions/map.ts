@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { AuctionState } from 'modules/api/common/AuctionState';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
+import { getNftAvatars } from 'modules/api/common/nftCardMap';
 import {
   auctionTypeMap,
   IPoolNftItem,
@@ -44,6 +45,10 @@ export const mapPoolData = (data: OriginIPoolNftItem[]): IPoolNftItem[] => {
         isBidderClaimed,
         isCreatorClaimed,
       },
+      avatars: getNftAvatars({
+        avatars: item,
+        isPlatform: Boolean(item.isplatform),
+      }),
     };
   });
 };
