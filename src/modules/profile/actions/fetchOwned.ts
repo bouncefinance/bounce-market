@@ -1,15 +1,15 @@
 import { RequestAction } from '@redux-requests/core';
+import { mapNftItemData } from 'modules/api/common/itemMap';
+import { INftItem, IOriginNftItem } from 'modules/api/common/itemType';
 import { IResponse } from 'modules/common/types/ResponseData';
 import { createAction as createSmartAction } from 'redux-smart-actions';
-import { INftItem } from './fetchCollection';
 
-export type IMyOwnedData = INftItem[];
 interface IArgs {
   address: string;
 }
 
 export const fetchOwned = createSmartAction<
-  RequestAction<IResponse<IMyOwnedData>, IMyOwnedData>,
+  RequestAction<IResponse<IOriginNftItem[]>, INftItem[]>,
   [IArgs]
 >('getmyowneditems', ({ address }) => ({
   request: {
@@ -28,14 +28,7 @@ export const fetchOwned = createSmartAction<
         console.error('getmyowneditems:', data?.msg ?? 'Unexpected error');
         return [];
       }
-      return (
-        data.data?.map(item => {
-          return {
-            ...item,
-            isLike: Boolean(item.mylikecount),
-          };
-        }) ?? []
-      );
+      return mapNftItemData(data?.data ?? []);
     },
   },
 }));

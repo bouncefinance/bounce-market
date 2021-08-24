@@ -1,5 +1,6 @@
 import { INftItem, IOriginNftItem } from './itemType';
 import { getNftAvatars } from './nftCardMap';
+const isOtherPlatformCode = 0;
 
 export const mapNftItemData = (data: IOriginNftItem[]): INftItem[] => {
   return (
@@ -8,7 +9,7 @@ export const mapNftItemData = (data: IOriginNftItem[]): INftItem[] => {
         ...item,
         avatars: getNftAvatars({
           avatars: item,
-          isPlatform: Boolean(item.isplatform),
+          isPlatform: Boolean(item.isplatform === isOtherPlatformCode),
         }),
         isLike: Boolean(item.mylikecount),
         tokenId: item.tokenid,
