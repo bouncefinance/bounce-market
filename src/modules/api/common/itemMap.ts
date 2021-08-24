@@ -8,7 +8,7 @@ export const mapNftItemData = (data: IOriginNftItem[]): INftItem[] => {
         ...item,
         avatars: getNftAvatars({
           avatars: item,
-          isPlatform: Boolean(item.isplatform),
+          isPlatform: Boolean(item.isplatform === 0),
         }),
         isLike: Boolean(item.mylikecount),
         tokenId: item.tokenid,

@@ -1,34 +1,21 @@
 import { useQuery } from '@redux-requests/react';
-import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { NoItems } from 'modules/common/components/NoItems';
-import {
-  ProductCard,
-  ProductCardSkeleton,
-} from 'modules/common/components/ProductCard';
+import { ProductCardSkeleton } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
-import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { fetchOwned, IMyOwnedData } from 'modules/profile/actions/fetchOwned';
-import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
-import { IProfileInfo } from 'modules/profile/api/profileInfo';
+import { fetchOwned } from 'modules/profile/actions/fetchOwned';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
+import { INftItem } from 'modules/api/common/itemType';
+import { NftItemCard } from 'modules/common/components/ProductCard/NftItemCard';
 
 export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
   isOther = false,
 }) {
-  const { data, loading } = useQuery<IMyOwnedData>({
+  const { data, loading } = useQuery<INftItem[]>({
     type: fetchOwned.toString(),
   });
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
-  });
-  const isVerify =
-    profileInfo && profileInfo?.identity === UserRoleEnum.Verified;
 
   return (
     <TabItemsComponent>
@@ -37,54 +24,11 @@ export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
           <ProductCardSkeleton />
         ) : (
           data?.map(item => (
-            <ProductCard
-              id={item.tokenid}
-              poolId={item.tokenid || 0}
-              isItemType
+            <NftItemCard
               key={uid(item)}
-              title={item.itemname}
-              href={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
-                item.tokenid,
-                item.contractaddress,
-              )}
-              priceType={item.itemsymbol}
-              copies={item.supply}
-              likes={item.likecount}
-              copiesBalance={item.balance}
-              MediaProps={{
-                category: item.category,
-                src: item.fileurl || 'xxx',
-                objectFit: 'contain',
-                loading: 'lazy',
-              }}
-              contractAddress={
-                item.balance > 0 ? item.contractaddress : undefined
-              }
-              standard={isOther ? undefined : item.standard}
-              profileInfo={
-                <ProfileInfo
-                  subTitle={t('details-nft.role.minter')}
-                  title={item.creatorname}
-                  users={[
-                    {
-                      name: item.creatorname,
-                      avatar: item.creatorimage,
-                      href: ProfileRoutesConfig.OtherProfile.generatePath(
-                        item.creatoraddress,
-                      ),
-                      verified: isVerify || false,
-                    },
-                  ]}
-                />
-              }
-              toSale={
-                isOther
-                  ? undefined
-                  : RoutesConfiguration.PublishNft.generatePath(
-                      item.contractaddress,
-                      item.tokenid,
-                    )
-              }
+              item={item}
+              isOther={isOther}
+              tokenSymbol={(data as any)?.tokenSymbol}
             />
           ))
         )}

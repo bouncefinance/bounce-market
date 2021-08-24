@@ -42,7 +42,8 @@ export const ProfileInfo = ({
   const classes = useProfileInfoStyles();
 
   const renderedAvatars = useMemo(() => {
-    return users.map(({ name, avatar, verified, href, address }, i) => {
+    console.log(users);
+    return users?.map(({ name, avatar, verified, href, address }, i) => {
       const commonProps = {
         className: classes.avatarWrap,
         title: name,
