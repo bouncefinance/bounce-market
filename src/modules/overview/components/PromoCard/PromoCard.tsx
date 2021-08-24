@@ -1,6 +1,7 @@
 import { Box, Hidden, Typography } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
@@ -87,7 +88,7 @@ export const PromoCard = ({
                 name: createdBy,
                 href: authorHref,
                 avatar: avatar,
-                verified: identity === 2,
+                verified: identity === UserRoleEnum.Verified,
               },
             ]}
           />
