@@ -51,6 +51,7 @@ interface ISetAvatarModalProps {
   avatarType?: AvatarType;
   collectionAvatar?: string;
   collectionAddress?: string;
+  successCallback?: (img: string) => void;
 }
 
 export const SetAvatarModal = ({
@@ -59,6 +60,7 @@ export const SetAvatarModal = ({
   avatarType = AvatarType.Profile,
   collectionAvatar,
   collectionAddress,
+  successCallback,
 }: ISetAvatarModalProps) => {
   const dispatch = useDispatchRequest();
 
@@ -75,13 +77,16 @@ export const SetAvatarModal = ({
               file: payload.avatar,
               fileType: UploadFileType.Avatar,
             }),
-      ).then(({ error }) => {
+      ).then(({ data, error }) => {
         if (!error && typeof onClose === 'function') {
+          const newImg = data?.result.path || '';
+          successCallback && successCallback(newImg);
+
           onClose();
         }
       });
     },
-    [dispatch, onClose, avatarType, collectionAddress],
+    [dispatch, onClose, avatarType, collectionAddress, successCallback],
   );
 
   const { data: profileInfo } = useQuery<IProfileInfo | null>({

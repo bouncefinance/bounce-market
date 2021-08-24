@@ -47,8 +47,6 @@ export const Collection = () => {
     tab,
     address: collectionAddress,
   } = ProfileRoutesConfig.Collection.useParams();
-  const [isAvatarModalOpened, setAvatarModalOpened] = useState(false);
-  const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const [isMyCollection, setIsMyCollection] = useState(false);
   // const [bgImgSrc, setBgImgSrc] = useState('')
   const classes = useCollectionStyles();
@@ -64,6 +62,32 @@ export const Collection = () => {
       );
     }
   }, [collectionAddress, dispatch]);
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
+  });
+
+  const { data: collectionInfo } = useQuery<ICollectionItem | null>({
+    type: fetchCollectionInfoByAddress.toString(),
+  });
+
+  // 设置 Collection 头像功能
+  const [isAvatarModalOpened, setAvatarModalOpened] = useState(false);
+  const [showAvatarImg, setShowAvatarImg] = useState('');
+  const { imgSrc: avatarImg } = useCdnUrl(collectionInfo?.imgurl || ' ', 160);
+  // const avatarImg = collectionInfo?.imgurl
+  const changeShowAvatarImg = (imgSrc: string) => {
+    setShowAvatarImg(imgSrc);
+  };
+
+  // 设置背景图片功能
+  const { imgSrc: bgImg } = useCdnUrl(collectionInfo?.bandimgurl || ' ', 160);
+  console.log();
+  // const bgImg = collectionInfo?.bandimgurl
+  const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
+  const [showBgImg, setShowBgImg] = useState('');
+  const changeShowBgImg = (imgSrc: string) => {
+    setShowBgImg(imgSrc);
+  };
 
   // 控制 Royalty 板块
   const [royaltyOpen, setRoyaltyOpen] = useState(false);
@@ -80,14 +104,6 @@ export const Collection = () => {
     setModifyDescOpen(!modifyDescOpen);
   };
 
-  const { data: profileInfo } = useQuery<IProfileInfo | null>({
-    type: fetchProfileInfo.toString(),
-  });
-
-  const { data: collectionInfo } = useQuery<ICollectionItem | null>({
-    type: fetchCollectionInfoByAddress.toString(),
-  });
-
   useEffect(() => {
     if (!address) return;
     const isMyCollection =
@@ -95,8 +111,6 @@ export const Collection = () => {
       String(collectionInfo?.owneraddress).toLowerCase();
     setIsMyCollection(isMyCollection);
   }, [address, collectionInfo]);
-
-  const { imgSrc } = useCdnUrl(collectionInfo?.imgurl || ' ', 160);
 
   const toggleAvatarModal = useCallback(
     (isOpen: boolean) => () => {
@@ -184,7 +198,7 @@ export const Collection = () => {
     <Section className={classes.root}>
       {/* 设置背景图片 */}
       <Header
-        img={collectionInfo?.bandimgurl}
+        img={showBgImg || bgImg}
         onEditClick={toggleBgImgModal(true)}
         isHiddenCustom={!isMyCollection}
       />
@@ -195,13 +209,14 @@ export const Collection = () => {
           onClose={toggleBgImgModal(false)}
           fileType={UploadFileType.BrandImg}
           contractaddress={collectionInfo?.contractaddress}
+          successCallback={changeShowBgImg}
         />
       )}
 
       <Container>
         <Avatar
           className={classes.avatar}
-          src={imgSrc}
+          src={showAvatarImg || avatarImg}
           onEditClick={toggleAvatarModal(true)}
           isEditable={isMyCollection}
           isVerified={profileInfo?.identity === 2}
@@ -212,8 +227,9 @@ export const Collection = () => {
             isOpen={isAvatarModalOpened}
             onClose={toggleAvatarModal(false)}
             avatarType={AvatarType.Collection}
-            collectionAvatar={collectionInfo?.imgurl}
+            collectionAvatar={showAvatarImg || avatarImg}
             collectionAddress={collectionAddress}
+            successCallback={changeShowAvatarImg}
           />
         )}
 

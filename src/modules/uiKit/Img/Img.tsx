@@ -68,7 +68,7 @@ export const Img = memo(
     HD: 1366,
     WXGAPlus: 1440,
     HDPlus: 1600,
-  	*/
+    */
       const smallerThanSm = useMediaQuery(theme.breakpoints.down('sm'));
       const smallerThanMd = useMediaQuery(theme.breakpoints.down('md'));
       const smallerThanLg = useMediaQuery(theme.breakpoints.down('lg'));
@@ -108,7 +108,7 @@ export const Img = memo(
           className={classNames(classes.img, imgClassName)}
           onError={() => setImgSrc('')}
         />
-        {imgSrc === '' && (
+        {!original && imgSrc === '' && (
           <div className={classes.errorIcon}>
             <ImgErrorIcon />
           </div>
