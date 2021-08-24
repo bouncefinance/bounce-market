@@ -1,24 +1,26 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
-import { poolTypeMap } from 'modules/api/common/poolType';
+import { PoolType, poolTypeMap } from 'modules/api/common/poolType';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { AuctionType } from '../../api/common/auctionType';
 import { IRoleInfo } from './fetchRoleInfo';
 
 export interface IApiFetchPoolNftOwner {
   code: 200;
-  data: {
-    owners: IFetchPoolNftOwnerData[];
-    total: number;
-  };
-  msg: 'ok';
+  data: IFetchPoolNftOwnerData[];
+  msg: string;
 }
 
 interface IFetchPoolNftOwnerData {
-  avatar: string;
-  balance: string;
-  owneraddress: string;
-  username: string;
+  owner: {
+    address: string;
+    avatar: string;
+    identity: number;
+    name: string;
+  };
+  poolId: number;
+  poolType: number;
+  quantity: number;
 }
 
 interface IFetchPoolNftOwnerParams {
@@ -28,7 +30,9 @@ interface IFetchPoolNftOwnerParams {
 
 interface wrapperPoolNftOwner {
   owner: IRoleInfo;
-  balance: BigNumber;
+  quantity: BigNumber;
+  poolType: PoolType;
+  poolId: number;
 }
 
 export const fetchPoolNftOwner = createSmartAction<
@@ -40,7 +44,7 @@ export const fetchPoolNftOwner = createSmartAction<
     meta?: RequestActionMeta<IApiFetchPoolNftOwner, wrapperPoolNftOwner[]>,
   ) => ({
     request: {
-      url: '/getowners',
+      url: '/get_owners',
       method: 'post',
       data: {
         poolId: params.poolId,
@@ -52,19 +56,23 @@ export const fetchPoolNftOwner = createSmartAction<
       driver: 'axios',
       asMutation: false,
       getData: ({ data }) => {
-        return data?.owners
-          .map(item => {
+        console.log(data);
+        return data
+          ?.map(item => {
             return {
               owner: {
-                address: item.owneraddress,
-                avatar: item.avatar,
-                username: item.username,
+                address: item.owner.address,
+                avatar: item.owner.avatar,
+                username: item.owner.name,
+                isVerify: item.owner.identity === 2,
               },
-              balance: new BigNumber(item.balance),
+              quantity: new BigNumber(item.quantity),
+              poolType: item.poolType,
+              poolId: item.poolId,
             };
           })
           .sort((a, b) => {
-            return b.balance.toNumber() - a.balance.toNumber();
+            return b.poolId - a.poolId;
           });
       },
       ...meta,

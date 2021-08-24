@@ -35,6 +35,7 @@ import {
   IWrapperPoolHistory,
 } from 'modules/overview/actions/fetchPoolHistory';
 import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
+import { Button } from 'modules/uiKit/Button';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { AuctionState } from '../../../api/common/AuctionState';
@@ -167,7 +168,8 @@ export const BuyNFT = () => {
 
   const getSenderName = (sender: IRoleInfo) => {
     return (
-      truncateLongName(sender.username) || truncateWalletAddr(sender.address)
+      (sender.username !== 'Unnamed' && truncateLongName(sender.username)) ||
+      truncateWalletAddr(sender.address)
     );
   };
 
@@ -419,24 +421,35 @@ export const BuyNFT = () => {
                 <InfoTabsList>
                   {poolNftOwner?.map(item => {
                     return (
-                      <ProfileInfo
-                        key={item.owner.address}
-                        isTitleFirst
-                        avatarSize="big"
-                        title={getSenderName(item.owner)}
-                        subTitle={t('details-nft.owner.balance', {
-                          balance: item.balance,
-                        })}
-                        users={[
-                          {
-                            name: getSenderName(item.owner),
-                            href: ProfileRoutesConfig.OtherProfile.generatePath(
-                              item.owner.address,
-                            ),
-                            avatar: item.owner.avatar,
-                          },
-                        ]}
-                      />
+                      <Grid container className={classes.ownerWrapper}>
+                        <Grid item>
+                          <ProfileInfo
+                            key={item.owner.address}
+                            isTitleFirst
+                            avatarSize="big"
+                            title={getSenderName(item.owner)}
+                            subTitle={t('details-nft.owner.balance', {
+                              balance: item.quantity,
+                            })}
+                            users={[
+                              {
+                                name: getSenderName(item.owner),
+                                href: ProfileRoutesConfig.OtherProfile.generatePath(
+                                  item.owner.address,
+                                ),
+                                avatar: item.owner.avatar,
+                              },
+                            ]}
+                          />
+                        </Grid>
+                        <Grid item className={classes.ownerBuy}>
+                          {item.poolType !== PoolType.Unknown && (
+                            <Button variant="outlined" rounded>
+                              {t('buy-dialog.buy')}
+                            </Button>
+                          )}
+                        </Grid>
+                      </Grid>
                     );
                   })}
                 </InfoTabsList>
