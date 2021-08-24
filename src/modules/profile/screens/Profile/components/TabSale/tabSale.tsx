@@ -116,10 +116,7 @@ export const TabSale: React.FC<{
                 profileInfo={
                   <ProfileInfo
                     subTitle="Creator"
-                    title={
-                      item.username ||
-                      truncateWalletAddr(item.creator?.address ?? '')
-                    }
+                    title={item.itemname}
                     users={item.avatars}
                     nftCardOption={{
                       ...item.nftCardOption,
