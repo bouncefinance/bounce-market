@@ -20,7 +20,10 @@ import { SetAvatarModal } from 'modules/profile/components/SetAvatarModal';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
 import { Subscribers } from 'modules/profile/components/Subscribers';
 import { FollowGroup } from 'modules/profile/components/TabFollowing';
-import { CrateItemAll, TabBrands } from 'modules/profile/components/TabBrands';
+import {
+  CrateItemAll,
+  TabCollection,
+} from 'modules/profile/components/TabCollection';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
@@ -79,7 +82,7 @@ export const Profile = () => {
         return;
       }
       switch (value) {
-        case ProfileTab.brands: {
+        case ProfileTab.collections: {
           dispatch(queryMyBrandItem(address));
           break;
         }
@@ -135,7 +138,7 @@ export const Profile = () => {
         label: t('profile.tabs.my-sells'),
       },
       {
-        value: ProfileTab.brands,
+        value: ProfileTab.collections,
         label: t('profile.tabs.my-collections'),
       },
       {
@@ -256,11 +259,11 @@ export const Profile = () => {
           <TabOwned />
         </TabPanel>
 
-        <TabPanel value={tab} index={ProfileTab.brands}>
+        <TabPanel value={tab} index={ProfileTab.collections}>
           {isCreateNft ? (
             <CrateItemAll address={address ?? ''} />
           ) : (
-            <TabBrands />
+            <TabCollection />
           )}
         </TabPanel>
 

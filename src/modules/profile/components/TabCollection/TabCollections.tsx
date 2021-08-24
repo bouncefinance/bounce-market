@@ -1,85 +1,69 @@
 import { Grid } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import {
   IMyBrand,
   queryMyBrandItem,
 } from 'modules/brand/actions/queryMyBrandItem';
-import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
-import { BrandCard } from 'modules/brand/components/BrandCard';
 import { CollectionHeaderCreate } from 'modules/brand/components/CollectionHeaderCreate';
+import { CollectionCard } from 'modules/brand/components/CollectionCard';
+import { CollectionList } from 'modules/brand/components/CollectionList';
+import { CollectionNFTItems } from 'modules/brand/components/CollectionNFTItems';
 import { RoyaltyDialog } from 'modules/brand/components/RoyaltyDialog';
 import { NoItems } from 'modules/common/components/NoItems';
+import { truncateLongName } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import {
-  ProfileRoutesConfig,
-  USER_CREATE_NFT_PROFILE,
-} from 'modules/profile/ProfileRoutes';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useState } from 'react';
 import { uid } from 'react-uid';
-import { useTabBrandStyles } from './useTabBrandsStyles';
+import { useTabCollectionStyles } from './useTabCollectionStyles';
 
-export const TabBrands: React.FC<{ isOther?: boolean; address?: string }> = ({
-  isOther = false,
-  address = '',
-}) => {
-  const classes = useTabBrandStyles();
+export const TabCollection: React.FC<{
+  isOther?: boolean;
+  address?: string;
+}> = ({ isOther = false, address = '' }) => {
+  const classes = useTabCollectionStyles();
   const { data: brands, loading } = useQuery<IMyBrand[]>({
     type: queryMyBrandItem.toString(),
   });
   const [royaltyOpen, setRoyaltyOpen] = useState(false);
   const [collection, setCollection] = useState('');
+  const { chainId } = useAccount();
 
   const handelOpenRoyalty: (collection: string) => void = collection => {
     setCollection(collection);
     setRoyaltyOpen(!royaltyOpen);
   };
-
   return (
     <>
+      {isOther || <CollectionHeaderCreate />}
       <Grid container spacing={4} className={classes.root}>
-        {isOther || (
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
-            <CollectionHeaderCreate />
-          </Grid>
-        )}
         {loading ? (
           <></>
         ) : (
-          brands?.map(brand => (
-            <Grid item xs={12} sm={6} lg={4} xl={3} key={uid(brand)}>
-              <BrandCard
-                withAddBtn
-                href={
-                  isOther
-                    ? ProfileRoutesConfig.OtherProfile.generatePath(
-                        address,
-                        USER_CREATE_NFT_PROFILE,
-                        brand.contract || undefined,
-                        brand.id,
-                      )
-                    : ProfileRoutesConfig.UserProfile.generatePath(
-                        USER_CREATE_NFT_PROFILE,
-                        brand.contract || undefined,
-                        brand.id,
-                      )
+          <CollectionList>
+            {brands?.map(brand => (
+              <CollectionCard
+                key={uid(brand.contract)}
+                name={truncateLongName(brand.title)}
+                img={brand.imgSrc}
+                descr={brand.desc}
+                chainId={chainId}
+                nftItems={
+                  <CollectionNFTItems
+                    ownerAddress={address}
+                    contractAddress={brand.contract}
+                  />
                 }
-                addItemHref={
-                  isOther
-                    ? ''
-                    : BrandRoutesConfig.CreateBrandItem.generatePath(brand.id)
-                }
-                isOther={isOther}
-                title={brand.title}
-                id={brand.id}
-                itemsCount={brand.itemsCount}
-                imgSrc={brand.imgSrc}
-                nftType={brand.nftType}
-                collection={brand.contract}
                 handelOpenRoyalty={handelOpenRoyalty}
+                href={ProfileRoutesConfig.Collection.generatePath(
+                  brand.contract,
+                )}
+                currentRoyalty={brand.currentroyalty}
               />
-            </Grid>
-          ))
+            ))}
+          </CollectionList>
         )}
       </Grid>
       {!loading && brands?.length === 0 && isOther && (

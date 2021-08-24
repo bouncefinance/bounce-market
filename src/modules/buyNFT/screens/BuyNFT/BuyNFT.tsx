@@ -373,6 +373,9 @@ export const BuyNFT = () => {
                           roleInfos.collection.address,
                         ),
                         avatar: roleInfos.collection.avatar,
+                        href: ProfileRoutesConfig.Collection.generatePath(
+                          roleInfos.collection.address,
+                        ),
                       },
                     ]}
                   />

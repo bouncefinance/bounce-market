@@ -10,9 +10,10 @@ import { BrandRoutesConfig } from '../../BrandRoutes';
 
 export interface IBrandEmptyCardProps {
   className?: string;
+  id: number;
 }
 
-export const BrandEmptyCard = ({ className }: IBrandEmptyCardProps) => {
+export const CollectionAddItem = ({ className, id }: IBrandEmptyCardProps) => {
   const classes = useBrandCardStyles();
 
   return (
@@ -20,7 +21,7 @@ export const BrandEmptyCard = ({ className }: IBrandEmptyCardProps) => {
       <CardContent className={classes.contentEmpty}>
         <Button
           component={RouterLink}
-          to={BrandRoutesConfig.CreateBrand.generatePath()}
+          to={BrandRoutesConfig.CreateBrandItem.generatePath(id)}
           className={classNames(classes.addNewBtn, classes.addNewBtnBig)}
           variant="outlined"
           fullWidth={false}
@@ -31,7 +32,7 @@ export const BrandEmptyCard = ({ className }: IBrandEmptyCardProps) => {
             />
           }
         >
-          {t('collection.card.createNewcollection')}
+          {t('collection.card.createNewItem')}
         </Button>
       </CardContent>
     </Card>

@@ -571,6 +571,7 @@
   },
   "royalty": {
     "royalty": "Royalty",
+    "set-rayalty": "Set royalty",
     "royalties": "Royalties",
     "change": "Change",
     "royalty-rate": "Royalty rate",

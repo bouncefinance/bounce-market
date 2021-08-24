@@ -30,7 +30,7 @@ export const Brand = () => {
         />
 
         <InfoPanel
-          isBrand
+          isCollection
           withSharing
           mb={4}
           name={brandInfo?.brandname || 'Unnamed'}

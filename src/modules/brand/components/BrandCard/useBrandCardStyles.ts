@@ -86,15 +86,32 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
   subTitle: {
     fontSize: 15,
   },
+
+  iconInheritFontSize: {
+    fontSize: 'inherit !important',
+  },
+  menuItem: {
+    width: 170,
+    height: 48,
+    boxSizing: 'border-box',
+  },
+
+  // New Collection Styled
+
+  createCollection: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
   addNewBtn: {
     width: 'auto',
-    minHeight: 50,
-    margin: theme.spacing(0, 'auto'),
+    minHeight: 44,
     border: `solid ${fade(theme.palette.text.primary, 0.1)}`,
+    marginBottom: 28,
     borderWidth: 1,
-    fontSize: 16,
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
+    fontSize: 13,
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
     '& .MuiButton-startIcon': {
       marginTop: '-0.1em',
     },
@@ -103,14 +120,6 @@ export const useBrandCardStyles = makeStyles<Theme>(theme => ({
     marginBottom: theme.spacing(3),
   },
   addNewBtnBig: {
-    minHeight: 60,
-  },
-  iconInheritFontSize: {
-    fontSize: 'inherit !important',
-  },
-  menuItem: {
-    width: 170,
-    height: 48,
-    boxSizing: 'border-box',
+    minHeight: 44,
   },
 }));

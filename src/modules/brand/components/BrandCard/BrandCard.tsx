@@ -95,7 +95,6 @@ export const BrandCard = ({
       </>
     );
   };
-
   return (
     <Card className={classes.root} variant="outlined">
       {!isOther && <div className={classes.extension}>{renderExtension()}</div>}

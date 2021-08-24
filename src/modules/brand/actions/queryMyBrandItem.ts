@@ -3,6 +3,7 @@ import {
   RequestAction,
   RequestActionMeta,
 } from '@redux-requests/core';
+import BigNumber from 'bignumber.js';
 import { NftType } from 'modules/api/common/NftType';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
@@ -20,6 +21,8 @@ export interface IMyBrand {
   symbol: string;
   ownername: string;
   owneraddress: string;
+  desc: string;
+  currentroyalty: BigNumber;
 }
 
 export const queryMyBrandItem = createSmartAction<
@@ -62,6 +65,10 @@ export const queryMyBrandItem = createSmartAction<
                   symbol: item.brandsymbol,
                   ownername: item.ownername,
                   owneraddress: item.owneraddress,
+                  desc: item.description,
+                  currentroyalty: new BigNumber(item.currentroyalty || 0).div(
+                    new BigNumber(10).pow(16),
+                  ),
                 } as IMyBrand;
               }),
             );

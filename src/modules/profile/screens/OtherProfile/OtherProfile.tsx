@@ -111,7 +111,7 @@ export const OtherProfile = () => {
         label: t('profile.tabs.my-sells'),
       },
       {
-        value: ProfileTab.brands,
+        value: ProfileTab.collections,
         label: t('profile.tabs.collections'),
       },
       {
@@ -143,7 +143,7 @@ export const OtherProfile = () => {
         return;
       }
       switch (value) {
-        case ProfileTab.brands: {
+        case ProfileTab.collections: {
           dispatch(queryMyBrandItem(address));
           break;
         }
@@ -237,7 +237,7 @@ export const OtherProfile = () => {
               <TabOwned isOther />
             </TabPanel>
 
-            <TabPanel value={tab} index={ProfileTab.brands}>
+            <TabPanel value={tab} index={ProfileTab.collections}>
               {isCreateNft ? (
                 <CrateItemAll isOther address={address ?? ''} />
               ) : (
