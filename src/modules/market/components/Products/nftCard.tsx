@@ -3,7 +3,7 @@ import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { IPoolNftItem } from 'modules/api/common/poolType';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { ProductCard } from 'modules/common/components/ProductCard';
-import { ProfileInfo } from 'modules/common/components/ProfileInfo';
+import { CardProfileInfo } from 'modules/common/components/ProfileInfo';
 import { isFixedSwap } from 'modules/common/utils/poolHelps';
 import { t } from 'modules/i18n/utils/intl';
 
@@ -48,7 +48,7 @@ export const MarketNftCard = ({
         isFixedSwap(item.poolType) ? FixedSwapState.Live : AuctionState.Live
       }
       profileInfo={
-        <ProfileInfo
+        <CardProfileInfo
           subTitle={t('product-card.owner')}
           title={item.itemName || ''}
           users={item.avatars}
