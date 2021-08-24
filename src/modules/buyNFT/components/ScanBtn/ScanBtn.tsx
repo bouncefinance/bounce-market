@@ -1,17 +1,12 @@
 import classNames from 'classnames';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { ChainsIcon } from 'modules/common/components/Icons/Chains';
 import {
-  BlockchainNetworkId,
   getBlockChainExplorerAddress,
   getBlockChainExplorerName,
 } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
-import React from 'react';
-import { BscScanIcon } from './assets/BscScanIcon';
-import { ETHScanIcon } from './assets/ETHScanIcon';
-import { HTScanIcon } from './assets/HTScanIcon';
-import { MaticScanIcon } from './assets/MaticScanIcon';
 import { useBSCScanBtnStyles } from './useBSCScanBtnStyles';
 
 interface IBSCScanBtnProps {
@@ -25,7 +20,6 @@ export const ScanBtn = ({ className, contractAddress }: IBSCScanBtnProps) => {
   const { chainId } = useAccount();
   const blockChainScan = getBlockChainExplorerAddress(chainId);
   const blockChaninName = getBlockChainExplorerName(chainId);
-
   return (
     <Button
       className={classNames(classes.root, className)}
@@ -35,19 +29,7 @@ export const ScanBtn = ({ className, contractAddress }: IBSCScanBtnProps) => {
       variant="outlined"
       fullWidth
     >
-      {chainId === BlockchainNetworkId.smartchain && (
-        <BscScanIcon className={classes.icon} />
-      )}
-      {(chainId === BlockchainNetworkId.mainnet ||
-        chainId === BlockchainNetworkId.rinkeby) && (
-        <ETHScanIcon className={classes.icon} />
-      )}
-      {chainId === BlockchainNetworkId.heco && (
-        <HTScanIcon className={classes.icon} />
-      )}
-      {chainId === BlockchainNetworkId.matic && (
-        <MaticScanIcon className={classes.icon} />
-      )}
+      <ChainsIcon chiaId={chainId} className={classes.icon} />
       {t('details-nft.info.view-scan', { name: blockChaninName })}
     </Button>
   );

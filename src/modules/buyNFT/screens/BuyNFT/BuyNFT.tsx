@@ -6,6 +6,7 @@ import {
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { PoolType } from 'modules/api/common/poolType';
 import { fetchItemRoyalty } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
@@ -423,10 +424,13 @@ export const BuyNFT = () => {
                 <InfoTabsList>
                   {poolNftOwner?.map(item => {
                     return (
-                      <Grid container className={classes.ownerWrapper}>
+                      <Grid
+                        container
+                        className={classes.ownerWrapper}
+                        key={item.owner.address}
+                      >
                         <Grid item>
                           <ProfileInfo
-                            key={item.owner.address}
                             isTitleFirst
                             avatarSize="big"
                             title={getSenderName(item.owner)}

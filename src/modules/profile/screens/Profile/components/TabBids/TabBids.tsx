@@ -7,7 +7,6 @@ import {
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { fetchMyBids } from 'modules/profile/actions/fetchSale';

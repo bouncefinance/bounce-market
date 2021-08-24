@@ -166,7 +166,7 @@
     "info": {
       "date": "{value, date, medium}",
       "time": "в {value, time, short}",
-      "view-scan": "Посмотреть на BscScan"
+      "view-scan": "Посмотреть на {name}"
     },
     "owner": {
       "balance": "{balance} копий"
