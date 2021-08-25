@@ -408,6 +408,7 @@
     "edit-avatar": "编辑头像",
     "edit-cover": "编辑主页封面",
     "edit-profile": "编辑个人信息",
+    "edit-collection-cover": "编辑作品集封面",
     "follow": {
       "follow": "关注",
       "following": "正在关注",
@@ -450,7 +451,8 @@
       "my-bids": "我的交易",
       "my-collections": "我的作品集",
       "showcase": "我拥有的",
-      "my-sells": "我的出售"
+      "my-sells": "我的出售",
+      "all-item":"所有NFT"
     },
     "unfollow": "取消关注",
     "user-profile": "个人主页"

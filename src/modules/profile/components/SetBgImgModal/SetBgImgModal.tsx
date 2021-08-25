@@ -133,7 +133,11 @@ export const SetBgImgModal = ({
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="xl">
       <Box mb={3} textAlign="center">
-        <Typography variant="h2">{t('profile.edit-cover')}</Typography>
+        <Typography variant="h2">
+          {fileType === UploadFileType.BrandImg
+            ? t('profile.edit-collection-cover')
+            : t('profile.edit-cover')}
+        </Typography>
       </Box>
 
       <Form onSubmit={onSubmit} render={renderForm} validate={validateForm} />
