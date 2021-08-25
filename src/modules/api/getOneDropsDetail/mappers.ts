@@ -1,12 +1,11 @@
 import BigNumber from 'bignumber.js';
 import { AuctionType } from 'modules/api/common/auctionType';
-import { auctionTypeMap } from 'modules/api/common/poolType';
+import { IPoolNftItem } from 'modules/api/common/poolType';
 import { Address } from 'modules/common/types/unit';
-import Web3 from 'web3';
+import { mapPoolData } from 'modules/pools/actions/map';
 import {
   DropsDetailPoolState,
   DropType,
-  IApiDropsDetailPoolInfo,
   IApiOneDropsDetailData,
 } from './types';
 
@@ -30,28 +29,13 @@ export interface IDropDetails {
   description: string;
   dropDate: Date;
   instagram: string;
-  poolsInfo: IDropDetailsPoolInfo[];
+  poolsInfo: IPoolNftItem[];
   title: string;
   twitter: string;
   website: string;
   videourl: string;
   dropType: DropType;
 }
-
-export const mapDropDetailsPoolInfo = (
-  data: IApiDropsDetailPoolInfo,
-): IDropDetailsPoolInfo => {
-  return {
-    fileUrl: data.fileurl,
-    name: data.name,
-    poolId: data.poolid,
-    poolType: auctionTypeMap[data.pooltype],
-    price: new BigNumber(Web3.utils.fromWei(data.price)),
-    state: data.state,
-    swappedAmount0: data.swapped_amount0,
-    tokenAmount0: data.token_amount0,
-  };
-};
 
 export const mapDropDetails = (data: IApiOneDropsDetailData): IDropDetails => {
   return {
@@ -63,7 +47,7 @@ export const mapDropDetails = (data: IApiOneDropsDetailData): IDropDetails => {
     description: data.description,
     dropDate: new Date(data.dropdate * 1000),
     instagram: data.instagram,
-    poolsInfo: data.poolsinfo.map(mapDropDetailsPoolInfo),
+    poolsInfo: mapPoolData(data?.poolsinfo ?? []),
     title: data.title,
     twitter: data.twitter,
     website: data.website,

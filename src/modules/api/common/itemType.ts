@@ -1,14 +1,16 @@
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { INftAvatars, IPoolAvatars } from './NftType';
 
+export type isPlatformType = 0 | 1;
 export interface IOriginNftItem extends IPoolAvatars {
   category: ProductCardCategoryType;
   contractaddress: string;
-  isplatform: 1 | 0;
+  isplatform: isPlatformType;
   fileurl: string;
   likecount: number;
   mylikecount: number;
   name: string;
+  itemname?: string;
   tokenid: number;
   supply: number;
   balance: number;

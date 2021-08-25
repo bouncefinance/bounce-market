@@ -4,7 +4,7 @@ import {
   truncateLongName,
   truncateWalletAddr,
 } from 'modules/common/utils/truncateWalletAddr';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import { t } from '../../i18n/utils/intl';
 import {
   INftAvatars,
@@ -22,7 +22,13 @@ export const getNftAvatars: getNftAvatarsType = ({ avatars, isPlatform }) => {
   let initData: {
     typName: NftAvatarsType;
     value: IPoolAvatar;
-  }[] = [{ typName: 'collection', value: avatars?.collectioninfo }];
+  }[] = [];
+  if (avatars?.collectioninfo?.name) {
+    initData = initData.concat({
+      typName: 'collection',
+      value: avatars?.collectioninfo,
+    });
+  }
   if (avatars?.creator?.address && !isPlatform) {
     initData = initData.concat({ typName: 'creator', value: avatars.creator });
   }
@@ -41,8 +47,10 @@ export const getNftAvatars: getNftAvatarsType = ({ avatars, isPlatform }) => {
         verified: e.value.identity === UserRoleEnum.Verified,
         href:
           e.typName === 'collection'
-            ? // TODO 2021 08 23
-              ''
+            ? ProfileRoutesConfig.Collection.generatePath(
+                e.value.address,
+                ProfileTab.sells,
+              )
             : ProfileRoutesConfig.OtherProfile.generatePath(e.value.address),
       };
     });

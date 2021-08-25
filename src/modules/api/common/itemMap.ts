@@ -1,6 +1,6 @@
+import { isOtherPlatformCode } from 'modules/common/conts';
 import { INftItem, IOriginNftItem } from './itemType';
 import { getNftAvatars } from './nftCardMap';
-const isOtherPlatformCode = 0;
 
 export const mapNftItemData = (data: IOriginNftItem[]): INftItem[] => {
   return (
@@ -9,7 +9,7 @@ export const mapNftItemData = (data: IOriginNftItem[]): INftItem[] => {
         ...item,
         avatars: getNftAvatars({
           avatars: item,
-          isPlatform: Boolean(item.isplatform === isOtherPlatformCode),
+          isPlatform: item.isplatform === isOtherPlatformCode,
         }),
         isLike: Boolean(item.mylikecount),
         tokenId: item.tokenid,
@@ -19,6 +19,7 @@ export const mapNftItemData = (data: IOriginNftItem[]): INftItem[] => {
         contractAddress: item.contractaddress,
         poolId: 0,
         isItemType: true,
+        name: item.itemname ?? item.name,
       };
     }) ?? []
   );

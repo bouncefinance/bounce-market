@@ -79,7 +79,7 @@ export const CardProfileInfo = ({
           placement="top"
           classes={{
             tooltip: classes.avatarTips,
-            // arrow: classes.avatarTips,
+            arrow: classes.avatarTipsText,
           }}
         >
           {href ? (

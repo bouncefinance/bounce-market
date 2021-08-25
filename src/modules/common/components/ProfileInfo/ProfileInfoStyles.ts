@@ -19,6 +19,9 @@ export const useProfileInfoStyles = makeStyles<Theme>(theme => ({
   avatarTips: {
     backgroundColor: '#000',
   },
+  avatarTipsText: {
+    color: '#000',
+  },
 
   avatarWrap: {
     position: 'relative',
