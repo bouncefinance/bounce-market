@@ -16,7 +16,8 @@
     "submit": "继续支付",
     "buy": "购买",
     "title": "确认",
-    "total": "总金额"
+    "total": "总金额",
+    "current": "当前池子"
   },
   "change-wallet": {
     "description": "变更为以太链，币安链或者火币链",

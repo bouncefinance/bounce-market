@@ -12,7 +12,8 @@
     "buy": "Купить",
     "buy-now": "Купить сейчас",
     "submit": "Приступить к оплате",
-    "total": "Всего"
+    "total": "Всего",
+    "current": "Текущий бассейн"
   },
   "change-wallet": {
     "description": "Перейти на Ethereum Mainnet, Binance Smart Chain или Heco",

@@ -463,8 +463,14 @@ export const BuyNFT = () => {
                                 auctionTypeMap[item.poolType],
                               )}
                             >
-                              <Button variant="outlined" rounded>
-                                {t('buy-dialog.buy')}
+                              <Button
+                                variant="outlined"
+                                rounded
+                                disabled={item.poolId === poolId}
+                              >
+                                {item.poolId === poolId
+                                  ? t('buy-dialog.current')
+                                  : t('buy-dialog.buy')}
                               </Button>
                             </Link>
                           )}

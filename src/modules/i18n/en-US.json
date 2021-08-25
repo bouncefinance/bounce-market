@@ -16,7 +16,8 @@
     "submit": "Proceed to pay",
     "buy": "Buy",
     "buy-now": "Buy now",
-    "total": "Total"
+    "total": "Total",
+    "current": "Current Pool"
   },
   "change-wallet": {
     "description": "Change network to Ethereum Mainnet, Binance Smart Chain, or Heco",
