@@ -2,10 +2,11 @@ import { Avatar, Grid, Paper, Typography } from '@material-ui/core';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { useCollectionCardStyles } from './useCollectionCardStyles';
-import { ReactComponent as BinanceIcon } from '../assets/binance.svg';
 import { ReactComponent as DollerIcon } from '../assets/doller.svg';
 import { ReactNode } from 'react';
 import BigNumber from 'bignumber.js';
+import { NftType } from 'modules/api/common/NftType';
+import { ChainSymbolIcon } from 'modules/common/components/Icons/Chains';
 
 interface IBrandsItemProps {
   img?: string;
@@ -17,6 +18,7 @@ interface IBrandsItemProps {
   handelOpenRoyalty: (collection: string) => void;
   chainId: number;
   currentRoyalty: BigNumber;
+  nftType: NftType;
 }
 
 export const CollectionCard = ({
@@ -29,6 +31,7 @@ export const CollectionCard = ({
   handelOpenRoyalty,
   chainId,
   currentRoyalty,
+  nftType,
 }: IBrandsItemProps) => {
   const classes = useCollectionCardStyles();
 
@@ -39,7 +42,7 @@ export const CollectionCard = ({
 
   const getIconByChainId: (chainId: number) => ReactNode = chainId => {
     // TODO 根据链获取不同的图标
-    return <BinanceIcon />;
+    return <ChainSymbolIcon chiaId={chainId} />;
   };
 
   return (
@@ -59,7 +62,7 @@ export const CollectionCard = ({
           <div className={classes.optionBtn}>
             <div className={classes.showStandard}>
               {getIconByChainId(chainId)}
-              <span>ERC-721</span>
+              <span>{nftType === NftType.ERC721 ? 'ERC-721' : 'ERC-1155'}</span>
             </div>
             <div className={classes.showRoyalty}>
               <DollerIcon />

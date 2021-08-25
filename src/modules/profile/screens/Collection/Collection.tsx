@@ -47,6 +47,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
 import classNames from 'classnames';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
+import { resetRequests } from '@redux-requests/core';
 
 export const Collection = () => {
   const {
@@ -57,16 +58,19 @@ export const Collection = () => {
   // const [bgImgSrc, setBgImgSrc] = useState('')
   const classes = useCollectionStyles();
   const { address } = useAccount();
-  const { push } = useHistory();
+  const { replace } = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
-    if (collectionAddress) {
-      dispatch(
-        fetchCollectionInfoByAddress({
-          collectionAddress: collectionAddress,
-        }),
-      );
-    }
+    if (!collectionAddress) return;
+    dispatch(
+      fetchCollectionInfoByAddress({
+        collectionAddress: collectionAddress,
+      }),
+    );
+
+    return function reset() {
+      dispatch(resetRequests([fetchCollectionInfoByAddress.toString()]));
+    };
   }, [collectionAddress, dispatch]);
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
@@ -156,12 +160,12 @@ export const Collection = () => {
 
   const onTabsChange = useCallback(
     (_, value) => {
-      push(
+      replace(
         ProfileRoutesConfig.Collection.generatePath(collectionAddress, value),
       );
       updateData(value);
     },
-    [push, updateData, collectionAddress],
+    [replace, updateData, collectionAddress],
   );
 
   useEffect(() => {
@@ -182,7 +186,7 @@ export const Collection = () => {
       },
       {
         value: ProfileTab.owned,
-        label: t('profile.tabs.showcase'),
+        label: t('profile.tabs.all-item'),
       },
     ],
     [],
@@ -297,7 +301,7 @@ export const Collection = () => {
               to={BrandRoutesConfig.CreateCollectionItem.generatePath(
                 collectionInfo?.id || -1,
               )}
-              size={'md'}
+              size="medium"
               variant="outlined"
               fullWidth={false}
               rounded

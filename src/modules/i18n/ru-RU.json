@@ -12,7 +12,8 @@
     "buy": "Купить",
     "buy-now": "Купить сейчас",
     "submit": "Приступить к оплате",
-    "total": "Всего"
+    "total": "Всего",
+    "current": "Текущий бассейн"
   },
   "change-wallet": {
     "description": "Перейти на Ethereum Mainnet, Binance Smart Chain или Heco",
@@ -402,6 +403,7 @@
     "edit-avatar": "Редактировать аватарку",
     "edit-cover": "Изменить обложку профиля",
     "edit-profile": "Редактировать профиль",
+    "edit-collection-cover": "Редактировать обложку коллекции",
     "follow": {
       "follow": "Следить",
       "following": "Следующие",
@@ -444,7 +446,8 @@
       "my-bids": "Моя сделка",
       "my-collections": "Мои коллекции",
       "showcase": "Витрина",
-      "my-sells": "Мои продажи"
+      "my-sells": "Мои продажи",
+      "all-item":"Все предметы"
     },
     "unfollow": "Отписаться",
     "user-profile": "Профиль пользователя"

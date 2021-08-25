@@ -362,8 +362,11 @@ export const BuyNFT = () => {
                 />
               );
 
+              const shieldNameList = ['', 'BOUNCE'];
               const renderedCollection = () => {
-                return roleInfos?.collection.name ? (
+                return !shieldNameList.includes(
+                  roleInfos?.collection.name || '',
+                ) ? (
                   <ProfileInfo
                     subTitle={t('details-nft.role.collection')}
                     title={wrapperTitle(
@@ -380,6 +383,7 @@ export const BuyNFT = () => {
                         href: ProfileRoutesConfig.Collection.generatePath(
                           roleInfos.collection.address,
                         ),
+                        verified: roleInfos.collection.isVerify,
                       },
                     ]}
                   />
@@ -459,8 +463,14 @@ export const BuyNFT = () => {
                                 auctionTypeMap[item.poolType],
                               )}
                             >
-                              <Button variant="outlined" rounded>
-                                {t('buy-dialog.buy')}
+                              <Button
+                                variant="outlined"
+                                rounded
+                                disabled={item.poolId === poolId}
+                              >
+                                {item.poolId === poolId
+                                  ? t('buy-dialog.current')
+                                  : t('buy-dialog.buy')}
                               </Button>
                             </Link>
                           )}
