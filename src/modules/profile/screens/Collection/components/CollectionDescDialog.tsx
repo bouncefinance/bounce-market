@@ -23,6 +23,7 @@ interface IDescTokenDialogProps {
   onClose: () => void;
   collection: string;
   description: string;
+  successCallback: (desc: string) => void;
 }
 
 export const CollectionDescDialog = ({
@@ -30,6 +31,7 @@ export const CollectionDescDialog = ({
   onClose,
   collection,
   description,
+  successCallback,
 }: IDescTokenDialogProps) => {
   const classes = useCollectionStyles();
   const { address } = useAccount();
@@ -48,6 +50,7 @@ export const CollectionDescDialog = ({
     ).then(() => {
       setSubmitLoading(false);
       setTimeout(() => {
+        successCallback(description);
         onClose();
       }, 1000);
     });

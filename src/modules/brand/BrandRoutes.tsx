@@ -6,7 +6,7 @@ import { PrivateRoute } from '../router/components/PrivateRoute';
 
 export const PATH_LIST_BRAND = '/brands';
 export const PATH_CREATE_BRAND = '/brand/create';
-export const PATH_CREATE_BRAND_ITEM = '/brand/create-item/:id';
+export const PATH_CREATE_BRAND_ITEM = '/collection/create-item/:brandId';
 export const PATH_MY_BRAND = '/my-brand/:id';
 export const PATH_BRAND = '/brand/view/:id';
 
@@ -19,9 +19,10 @@ export const BrandRoutesConfig: { [key: string]: RouteConfiguration } = {
     path: PATH_CREATE_BRAND,
     generatePath: () => generatePath(PATH_CREATE_BRAND),
   },
-  CreateBrandItem: {
+  CreateCollectionItem: {
     path: PATH_CREATE_BRAND_ITEM,
-    generatePath: (id: number) => generatePath(PATH_CREATE_BRAND_ITEM, { id }),
+    generatePath: (brandId: string) =>
+      generatePath(PATH_CREATE_BRAND_ITEM, { brandId }),
   },
   MyBrand: {
     path: PATH_MY_BRAND,
@@ -48,9 +49,11 @@ const LoadableCreateBrandContainer: LoadableComponent<any> = loadable(
   },
 );
 
-const LoadableCreateBrandItemContainer: LoadableComponent<any> = loadable(
+const LoadableCreateCollectionItemContainer: LoadableComponent<any> = loadable(
   async () =>
-    import('./screens/CreateBrandItem').then(module => module.CreateBrandItem),
+    import('./screens/CreateCollectionItem').then(
+      module => module.CreateCollectionItem,
+    ),
   {
     fallback: <QueryLoadingAbsolute />,
   },
@@ -86,9 +89,9 @@ export function BrandRoutes() {
       />
 
       <PrivateRoute
-        path={BrandRoutesConfig.CreateBrandItem.path}
+        path={BrandRoutesConfig.CreateCollectionItem.path}
         exact={true}
-        component={LoadableCreateBrandItemContainer}
+        component={LoadableCreateCollectionItemContainer}
       />
 
       <PrivateRoute

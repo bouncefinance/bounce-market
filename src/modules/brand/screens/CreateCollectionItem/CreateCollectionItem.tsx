@@ -81,20 +81,20 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
   return errors;
 };
 
-export const CreateBrandItem = () => {
+export const CreateCollectionItem = () => {
   const classes = useCreateNFTStyles();
   const dispatch = useDispatchRequest();
   const { push } = useHistory();
   const { address } = useAccount();
-  const { id } = useParams<any>();
+  const { brandId } = useParams<any>();
   const [brandInfo, setBrandInfo] = useState<IBrandInfo>();
 
   useEffect(() => {
-    if (address && id) {
+    if (address && brandId) {
       dispatch(
         queryBrandById(
           {
-            id: parseInt(id),
+            id: parseInt(brandId),
             accountaddress: address,
           },
           {
@@ -107,7 +107,7 @@ export const CreateBrandItem = () => {
         }
       });
     }
-  }, [id, address, dispatch]);
+  }, [brandId, address, dispatch]);
 
   const handleSubmit = useCallback(
     (payload: ICreateNFTFormData) => {

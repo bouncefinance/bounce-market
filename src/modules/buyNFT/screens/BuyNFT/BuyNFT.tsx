@@ -446,6 +446,7 @@ export const BuyNFT = () => {
                                   item.owner.address,
                                 ),
                                 avatar: item.owner.avatar,
+                                verified: item.owner.isVerify,
                               },
                             ]}
                           />
