@@ -41,4 +41,9 @@ export const useCollectionStyles = makeStyles<Theme>(theme => ({
   descBox: {
     marginTop: 55,
   },
+
+  optionHeaderBtnWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
 }));

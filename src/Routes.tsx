@@ -105,7 +105,7 @@ export function Routes() {
         path={[
           BrandRoutesConfig.ListBrand.path,
           BrandRoutesConfig.CreateBrand.path,
-          BrandRoutesConfig.CreateBrandItem.path,
+          BrandRoutesConfig.CreateCollectionItem.path,
           BrandRoutesConfig.MyBrand.path,
           BrandRoutesConfig.Brand.path,
         ]}

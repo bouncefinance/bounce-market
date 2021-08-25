@@ -166,7 +166,7 @@
     "info": {
       "date": "{value, date, medium}",
       "time": "{value, time, short}",
-      "view-scan": "在BscScan浏览器上查看"
+      "view-scan": "在{name}浏览器上查看"
     },
     "owner": {
       "balance": "{balance} 份副本"

@@ -6,7 +6,9 @@ import {
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { auctionTypeMap, PoolType } from 'modules/api/common/poolType';
 import { fetchItemRoyalty } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
+import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -34,8 +36,10 @@ import {
   IWrapperPoolHistory,
 } from 'modules/overview/actions/fetchPoolHistory';
 import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
+import { Button } from 'modules/uiKit/Button';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import { AuctionState } from '../../../api/common/AuctionState';
 import { AuctionType } from '../../../api/common/auctionType';
 import { FixedSwapState } from '../../../api/common/FixedSwapState';
@@ -166,7 +170,8 @@ export const BuyNFT = () => {
 
   const getSenderName = (sender: IRoleInfo) => {
     return (
-      truncateLongName(sender.username) || truncateWalletAddr(sender.address)
+      (sender.username !== 'Unnamed' && truncateLongName(sender.username)) ||
+      truncateWalletAddr(sender.address)
     );
   };
 
@@ -421,24 +426,46 @@ export const BuyNFT = () => {
                 <InfoTabsList>
                   {poolNftOwner?.map(item => {
                     return (
-                      <ProfileInfo
+                      <Grid
+                        container
+                        className={classes.ownerWrapper}
                         key={item.owner.address}
-                        isTitleFirst
-                        avatarSize="big"
-                        title={getSenderName(item.owner)}
-                        subTitle={t('details-nft.owner.balance', {
-                          balance: item.balance,
-                        })}
-                        users={[
-                          {
-                            name: getSenderName(item.owner),
-                            href: ProfileRoutesConfig.OtherProfile.generatePath(
-                              item.owner.address,
-                            ),
-                            avatar: item.owner.avatar,
-                          },
-                        ]}
-                      />
+                      >
+                        <Grid item>
+                          <ProfileInfo
+                            isTitleFirst
+                            avatarSize="big"
+                            title={getSenderName(item.owner)}
+                            subTitle={t('details-nft.owner.balance', {
+                              balance: item.quantity,
+                            })}
+                            users={[
+                              {
+                                name: getSenderName(item.owner),
+                                href: ProfileRoutesConfig.OtherProfile.generatePath(
+                                  item.owner.address,
+                                ),
+                                avatar: item.owner.avatar,
+                                verified: item.owner.isVerify,
+                              },
+                            ]}
+                          />
+                        </Grid>
+                        <Grid item className={classes.ownerBuy}>
+                          {item.poolType !== PoolType.Unknown && (
+                            <Link
+                              to={BuyNFTRoutesConfig.DetailsNFT.generatePath(
+                                item.poolId,
+                                auctionTypeMap[item.poolType],
+                              )}
+                            >
+                              <Button variant="outlined" rounded>
+                                {t('buy-dialog.buy')}
+                              </Button>
+                            </Link>
+                          )}
+                        </Grid>
+                      </Grid>
                     );
                   })}
                 </InfoTabsList>
