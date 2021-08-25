@@ -26,7 +26,7 @@
   },
   "collection": {
     "card": {
-      "addNewItem": "Add new item",
+      "addNewItem": "Add new NFT",
       "createNewcollection": "Create new collection",
       "createNewItem": "Create new item",
       "itemsCount": "{value, plural, =0 {0 NFT} =1 {1 NFT} other {# NFTs}}"
@@ -173,7 +173,7 @@
     "info": {
       "date": "{value, date, medium}",
       "time": "at {value, time, short}",
-      "view-scan": "View on BscScan"
+      "view-scan": "View on {name}"
     },
     "owner": {
       "balance": "{balance} copies"

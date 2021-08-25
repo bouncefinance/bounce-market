@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
@@ -41,6 +41,12 @@ import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { CollectionDescDialog } from './components/CollectionDescDialog';
 import { TabOwned } from '../Profile/components/tabOwned';
 import { TabSale } from '../Profile/components/TabSale';
+import { GoBack } from 'modules/layout/components/GoBack';
+import { Button } from 'modules/uiKit/Button';
+import { Link as RouterLink } from 'react-router-dom';
+import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
+import classNames from 'classnames';
+import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 
 export const Collection = () => {
   const {
@@ -81,7 +87,6 @@ export const Collection = () => {
 
   // 设置背景图片功能
   const { imgSrc: bgImg } = useCdnUrl(collectionInfo?.bandimgurl || ' ', 160);
-  console.log();
   // const bgImg = collectionInfo?.bandimgurl
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const [showBgImg, setShowBgImg] = useState('');
@@ -91,16 +96,17 @@ export const Collection = () => {
 
   // 控制 Royalty 板块
   const [royaltyOpen, setRoyaltyOpen] = useState(false);
-  const [collection, setCollection] = useState('');
   const handelOpenRoyalty: (collection: string) => void = collection => {
-    setCollection(collection);
     setRoyaltyOpen(!royaltyOpen);
   };
 
   // 控制修改 Desc 板块
+  const [showCollectionDesc, setShowCollectionDesc] = useState('');
+  const changeShowCollectionDesc: (desc: string) => void = desc => {
+    setShowCollectionDesc(desc);
+  };
   const [modifyDescOpen, setModifyDescOpen] = useState(false);
   const handelOpenModifyDesc: (collection: string) => void = collection => {
-    setCollection(collection);
     setModifyDescOpen(!modifyDescOpen);
   };
 
@@ -270,7 +276,7 @@ export const Collection = () => {
               ]}
             />
           }
-          collectionDesc={collectionInfo?.description}
+          collectionDesc={showCollectionDesc || collectionInfo?.description}
         />
 
         <Tabs
@@ -282,6 +288,32 @@ export const Collection = () => {
             <Tab key={uid(tabProps)} {...tabProps} />
           ))}
         </Tabs>
+
+        <Box mb={3.5} className={classes.optionHeaderBtnWrapper}>
+          <GoBack />
+          {isMyCollection && (
+            <Button
+              component={RouterLink}
+              to={BrandRoutesConfig.CreateCollectionItem.generatePath(
+                collectionInfo?.id || -1,
+              )}
+              size={'md'}
+              variant="outlined"
+              fullWidth={false}
+              rounded
+              startIcon={
+                <PlusIcon
+                  className={classNames(
+                    classes.icon,
+                    classes.iconInheritFontSize,
+                  )}
+                />
+              }
+            >
+              {t('collection.card.addNewItem')}
+            </Button>
+          )}
+        </Box>
 
         <TabPanel value={tab} index={ProfileTab.owned}>
           <TabOwned isOther={!isMyCollection} />
@@ -300,7 +332,7 @@ export const Collection = () => {
         onClose={() => {
           setRoyaltyOpen(false);
         }}
-        collection={collection}
+        collection={collectionAddress}
       />
 
       <CollectionDescDialog
@@ -310,6 +342,7 @@ export const Collection = () => {
         }}
         collection={collectionAddress}
         description={collectionInfo?.description || ''}
+        successCallback={changeShowCollectionDesc}
       />
     </Section>
   );

@@ -39,4 +39,10 @@ export const useBuyNFTStyles = makeStyles<Theme>(theme => ({
       borderLeft: `1px solid ${fade(theme.palette.text.primary, 0.1)}`,
     },
   },
+
+  ownerWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  ownerBuy: {},
 }));

@@ -53,7 +53,6 @@ export const RoyaltyDialog = ({
   const [showChangeTip, setShowChangeTip] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const readonly = false;
-
   useEffect(() => {
     if (!collection) return;
 
@@ -77,11 +76,10 @@ export const RoyaltyDialog = ({
       successCallBack: () => {
         setShowChangeTip(true);
       },
-      finalCallBack: () => {
-        setSubmitLoading(false);
-      },
     };
-    dispatch(setRoyaltyContract(payload));
+    dispatch(setRoyaltyContract(payload)).then(res => {
+      setSubmitLoading(false);
+    });
   };
 
   const validateForm = useCallback(({ royaltyRate }: IBurnFormValues) => {
