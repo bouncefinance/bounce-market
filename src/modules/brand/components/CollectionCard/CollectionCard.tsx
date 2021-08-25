@@ -6,6 +6,7 @@ import { ReactComponent as BinanceIcon } from '../assets/binance.svg';
 import { ReactComponent as DollerIcon } from '../assets/doller.svg';
 import { ReactNode } from 'react';
 import BigNumber from 'bignumber.js';
+import { NftType } from 'modules/api/common/NftType';
 
 interface IBrandsItemProps {
   img?: string;
@@ -17,6 +18,7 @@ interface IBrandsItemProps {
   handelOpenRoyalty: (collection: string) => void;
   chainId: number;
   currentRoyalty: BigNumber;
+  nftType: NftType;
 }
 
 export const CollectionCard = ({
@@ -29,6 +31,7 @@ export const CollectionCard = ({
   handelOpenRoyalty,
   chainId,
   currentRoyalty,
+  nftType,
 }: IBrandsItemProps) => {
   const classes = useCollectionCardStyles();
 
@@ -59,7 +62,7 @@ export const CollectionCard = ({
           <div className={classes.optionBtn}>
             <div className={classes.showStandard}>
               {getIconByChainId(chainId)}
-              <span>ERC-721</span>
+              <span>{nftType === NftType.ERC721 ? 'ERC-721' : 'ERC-1155'}</span>
             </div>
             <div className={classes.showRoyalty}>
               <DollerIcon />

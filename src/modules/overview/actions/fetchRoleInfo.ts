@@ -1,5 +1,6 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { poolTypeMap } from 'modules/api/common/poolType';
+import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { AuctionType } from '../../api/common/auctionType';
 
@@ -64,14 +65,15 @@ export const fetchRoleInfo = createSmartAction<
           return {
             creator: {
               ...data?.creator,
-              isVerify: data?.creator.identity === 2,
+              isVerify: data?.creator.identity === UserRoleEnum.Verified,
             },
             minter: {
               ...data?.minter,
-              isVerify: data?.minter.identity === 2,
+              isVerify: data?.minter.identity === UserRoleEnum.Verified,
             },
             collection: {
               ...data?.collection,
+              isVerify: data?.collection.identity === UserRoleEnum.Verified,
             },
             likeCount: data?.likecount,
             isLike: Boolean(data?.mylikecount),
