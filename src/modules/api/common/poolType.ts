@@ -5,6 +5,7 @@ import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { INftCardHelpsParams } from 'modules/common/utils/nftCard';
 import { AuctionState } from './AuctionState';
 import { FixedSwapState } from './FixedSwapState';
+import { isPlatformType } from './itemType';
 import { INftAvatars, IPoolAvatars } from './NftType';
 
 export enum PoolType {
@@ -48,7 +49,7 @@ export interface OriginIPoolNftItem extends IPoolAvatars {
   auction_type?: PoolType;
   poolweight: string;
   price: string;
-  state: FixedSwapState | AuctionState;
+  state: 0 | 1;
   amount_max1: string;
   amount_min1: string;
   amount_min_incr1: string;
@@ -77,11 +78,13 @@ export interface OriginIPoolNftItem extends IPoolAvatars {
   token_amount0: number;
   category: ProductCardCategoryType;
   description?: string;
-  isplatform?: boolean;
+  isplatform?: isPlatformType;
 }
 
-export interface IPoolNftItem extends Omit<OriginIPoolNftItem, 'price'> {
+export interface IPoolNftItem
+  extends Omit<Omit<OriginIPoolNftItem, 'price'>, 'state'> {
   avatars: INftAvatars;
+  state: FixedSwapState | AuctionState;
   price: BigNumber;
   openAt: Date;
   closeAt: Date;
@@ -93,4 +96,6 @@ export interface IPoolNftItem extends Omit<OriginIPoolNftItem, 'price'> {
   likeCount?: number;
   fileUrl: string;
   nftCardOption: INftCardHelpsParams;
+  isLive: boolean;
+  isClose: boolean;
 }

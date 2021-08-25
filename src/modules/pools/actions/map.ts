@@ -8,6 +8,7 @@ import {
   IPoolNftItem,
   OriginIPoolNftItem,
 } from 'modules/api/common/poolType';
+import { isOtherPlatformCode } from 'modules/common/conts';
 import { isFixedSwap } from 'modules/common/utils/poolHelps';
 import Web3 from 'web3';
 
@@ -31,6 +32,8 @@ export const mapPoolData = (data: OriginIPoolNftItem[]): IPoolNftItem[] => {
       closeAt,
       poolType: auctionTypeMap[item.pooltype ?? item.auction_type],
       state: item.state === 0 ? liveSate : closeSate,
+      isLive: item.state === 0,
+      isClose: item.state === 1,
       isLike: Boolean(item.mylikecount),
       poolId: item.poolid ?? item.pool_id,
       itemName: item.itemname,
@@ -47,7 +50,7 @@ export const mapPoolData = (data: OriginIPoolNftItem[]): IPoolNftItem[] => {
       },
       avatars: getNftAvatars({
         avatars: item,
-        isPlatform: Boolean(item.isplatform),
+        isPlatform: item.isplatform === isOtherPlatformCode,
       }),
     };
   });

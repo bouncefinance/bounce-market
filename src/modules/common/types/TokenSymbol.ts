@@ -9,3 +9,10 @@ export enum TokenSymbol {
   HT = 'HT',
   MATIC = 'MATIC',
 }
+
+export enum ChainSymbol {
+  BSC = 'BSC',
+  ETH = 'ETH',
+  HECO = 'HECO',
+  Polygon = 'POLYGON',
+}

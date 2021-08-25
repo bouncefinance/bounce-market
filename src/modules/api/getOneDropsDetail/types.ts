@@ -1,3 +1,5 @@
+import { OriginIPoolNftItem } from '../common/poolType';
+
 export interface IGetOneDropsDetailParams {
   dropsid: number;
   limit: number;
@@ -20,6 +22,7 @@ export enum DropType {
 export interface IApiDropsDetailPoolInfo {
   fileurl: string;
   name: string;
+  itemname: string;
   poolid: number;
   pooltype: number;
   price: string;
@@ -37,7 +40,7 @@ export interface IApiOneDropsDetailData {
   description: string;
   dropdate: number;
   instagram: string;
-  poolsinfo: IApiDropsDetailPoolInfo[];
+  poolsinfo: OriginIPoolNftItem[];
   title: string;
   twitter: string;
   website: string;
