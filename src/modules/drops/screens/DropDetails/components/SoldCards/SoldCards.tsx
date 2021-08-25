@@ -1,14 +1,8 @@
 import { Box, Typography } from '@material-ui/core';
-import { useAccount } from 'modules/account/hooks/useAccount';
-import { DropsDetailPoolState } from 'modules/api/getOneDropsDetail';
-import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import {
-  ProductCard,
-  ProductCardSkeleton,
-} from 'modules/common/components/ProductCard';
-import { getTokenSymbol } from 'modules/common/conts';
+import { ProductCardSkeleton } from 'modules/common/components/ProductCard';
 import { IGetDropDetails } from 'modules/drops/actions/getDropDetails';
 import { t } from 'modules/i18n/utils/intl';
+import { MarketNftCard } from 'modules/market/components/Products/nftCard';
 import { uid } from 'react-uid';
 import { CardsList } from '../CardsList';
 
@@ -21,31 +15,13 @@ export const SoldCards = ({
   loading: boolean;
   data: IGetDropDetails | null;
 }) => {
-  const { chainId } = useAccount();
-  const soldNfts = (data?.poolsInfo || []).filter(
-    poolInfo => poolInfo.state === DropsDetailPoolState.Closed,
-  );
+  const soldNfts = (data?.poolsInfo || []).filter(poolInfo => poolInfo.isClose);
 
   const renderedCards = soldNfts.map(item => (
-    <ProductCard
-      isOnSale
+    <MarketNftCard
+      item={item}
       key={uid(item)}
-      title={item.name}
-      priceType={getTokenSymbol(chainId) as string}
-      price={item.price}
-      stateTip={t('drop-details.sold-for')}
-      MediaProps={{
-        category: 'image',
-        src: item.fileUrl,
-      }}
-      href={BuyNFTRoutesConfig.DetailsNFT.generatePath(
-        item.poolId,
-        item.poolType,
-      )}
-      hiddenLikeBtn={true}
-      // todo: id is needed to do likes
-      id={0}
-      poolId={item.poolId}
+      tokenSymbol={data?.tokenSymbol ?? ''}
     />
   ));
 

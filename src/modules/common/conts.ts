@@ -1,7 +1,9 @@
-import { TokenSymbol } from './types/TokenSymbol';
+import { ChainSymbol, TokenSymbol } from './types/TokenSymbol';
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const ZERO_ADDRESS2 = '0x000000000000000000000000000000000000dead';
+
+export const isOtherPlatformCode = 0;
 
 // TODO: at the end all features should be activated
 export const featuresConfig = {
@@ -86,6 +88,25 @@ const NativeTokens: {
   [BlockchainNetworkId.matic]: TokenSymbol.MATIC,
 };
 
+const ChainsInfo = {
+  [BlockchainNetworkId.mainnet]: { chainSymbolName: ChainSymbol.ETH },
+  [BlockchainNetworkId.ropsten]: { chainSymbolName: ChainSymbol.ETH },
+  [BlockchainNetworkId.rinkeby]: { chainSymbolName: ChainSymbol.ETH },
+  [BlockchainNetworkId.goerli]: { chainSymbolName: ChainSymbol.ETH },
+  [BlockchainNetworkId.dev]: { chainSymbolName: ChainSymbol.ETH },
+  [BlockchainNetworkId.classic]: { chainSymbolName: ChainSymbol.ETH },
+  [BlockchainNetworkId.mordor]: { chainSymbolName: ChainSymbol.ETH },
+  [BlockchainNetworkId.kotti]: { chainSymbolName: ChainSymbol.ETH },
+  [BlockchainNetworkId.smartchain]: { chainSymbolName: ChainSymbol.BSC },
+  [BlockchainNetworkId.smartchainTestnet]: { chainSymbolName: ChainSymbol.BSC },
+  [BlockchainNetworkId.heco]: { chainSymbolName: ChainSymbol.HECO },
+  [BlockchainNetworkId.matic]: { chainSymbolName: ChainSymbol.Polygon },
+};
+
+export function getChainSymbol(chainId: BlockchainNetworkId) {
+  return ChainsInfo[chainId];
+}
+
 export function getNativeTokenSymbol(chainId: BlockchainNetworkId) {
   return NativeTokens[chainId];
 }
@@ -148,6 +169,7 @@ const BlockChainTokenSymbol: {
 };
 
 export const DefaultTokenSymbol = TokenSymbol.BNB;
+export const DefaultChainId = BlockchainNetworkId.smartchain;
 
 export const getTokenSymbol = (chainId: BlockchainNetworkId) =>
   BlockChainTokenSymbol[chainId] || DefaultTokenSymbol;

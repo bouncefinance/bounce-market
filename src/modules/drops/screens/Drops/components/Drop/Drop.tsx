@@ -98,7 +98,7 @@ export const Drop = ({
                 data?.slice(0, MAX_ITEMS_COUNT).map((item, i) => (
                   <Link
                     to={href}
-                    key={uid(item.name, i)}
+                    key={uid(item, i)}
                     className={classes.nftItem}
                   >
                     <Img

@@ -33,7 +33,7 @@ import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
 import { useEffect } from 'react';
 import { useCount } from 'modules/common/hooks/useTimer';
-import { ChainsIcon } from '../Icons/Chains';
+import { ChainSymbolIcon } from '../Icons/Chains';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -170,6 +170,10 @@ export const ProductCardComponent = ({
     [classes],
   );
 
+  const TooltipClasses = {
+    tooltip: classes.avatarTips,
+    arrow: classes.avatarTipsText,
+  };
   const renderedCopies = (
     <Tooltip
       title={t('product-card.item-balance-tip', {
@@ -177,6 +181,7 @@ export const ProductCardComponent = ({
       })}
       arrow
       placement="top"
+      classes={TooltipClasses}
     >
       <div className={classes.info}>
         <LayersIcon
@@ -194,6 +199,7 @@ export const ProductCardComponent = ({
       })}
       arrow
       placement="top"
+      classes={TooltipClasses}
     >
       <div className={classes.info}>
         {t('product-card.sold-for-quantity', {
@@ -337,7 +343,18 @@ export const ProductCardComponent = ({
   );
 
   const RenderChiaIcon = ({ className }: { className?: string }) => {
-    return <ChainsIcon className={className} chiaId={chainId} />;
+    return (
+      <ChainSymbolIcon
+        display="flex"
+        alignItems="center"
+        className={classes.topChiaIcon}
+        chiaId={chainId}
+      >
+        {({ symbolName }) => {
+          return <span className={classes.topChiaText}>{symbolName}</span>;
+        }}
+      </ChainSymbolIcon>
+    );
   };
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
@@ -346,7 +363,7 @@ export const ProductCardComponent = ({
         justifyContent="space-between"
         className={classes.topBar}
       >
-        <RenderChiaIcon className={classes.topChiaIcon} />
+        <RenderChiaIcon />
         {renderedLikes}
       </Box>
       <div className={classes.relative}>

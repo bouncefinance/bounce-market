@@ -13,39 +13,39 @@ import { useProductsPanelStyles } from './useProductsPanelStyles';
 const categories = [
   {
     value: ItemsChannel.all,
-    label: 'product-panel.all',
+    label: t('product-panel.all'),
   },
   {
     value: ItemsChannel.fineArts,
-    label: 'product-panel.art',
+    label: t('product-panel.art'),
   },
   {
     value: ItemsChannel.sports,
-    label: 'product-panel.sports',
+    label: t('product-panel.sports'),
   },
   {
     value: ItemsChannel.comics,
-    label: 'product-panel.comics',
+    label: t('product-panel.comics'),
   },
   {
     value: ItemsChannel.collectible,
-    label: 'product-panel.collectible',
+    label: t('product-panel.collectible'),
   },
   {
     value: ItemsChannel.music,
-    label: 'product-panel.music',
+    label: t('product-panel.music'),
   },
   {
     value: ItemsChannel.performer,
-    label: 'product-panel.performer',
+    label: t('product-panel.performer'),
   },
   {
     value: ItemsChannel.metaverse,
-    label: 'product-panel.metaverse',
+    label: t('product-panel.metaverse'),
   },
   {
     value: ItemsChannel.games,
-    label: 'product-panel.games',
+    label: t('product-panel.games'),
   },
 ];
 
@@ -129,7 +129,7 @@ export const ProductsPanel = ({
                 <FilledTab
                   className={classes.tab}
                   key={uid(label)}
-                  label={t(label)}
+                  label={label}
                   value={value}
                   disabled={disabled}
                 />

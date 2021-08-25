@@ -10,6 +10,12 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     },
   },
 
+  avatarTips: {
+    backgroundColor: '#000',
+  },
+  avatarTipsText: {
+    color: '#000',
+  },
   imgBox: {
     position: 'relative',
     display: 'block',
@@ -115,12 +121,6 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     borderWidth: '1px 0 0',
   },
 
-  // price: {
-  //   fontSize: 15,
-  //   fontWeight: 700,
-  //   margin: theme.spacing(0, 0, 1.5),
-  // },
-
   saleContainer: {
     display: 'grid',
     alignItems: 'center',
@@ -169,7 +169,7 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     display: 'flex',
     alignItems: 'center',
     fontSize: 13,
-    color: fade(theme.palette.common.black, 0.5),
+    color: fade(theme.palette.text.primary, 0.5),
   },
 
   ratio: {
@@ -200,8 +200,10 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
   topBar: {
     padding: '10px 17px',
   },
-  topChiaIcon: {
-    width: 20,
+  topChiaIcon: {},
+  topChiaText: {
+    color: fade(theme.palette.text.primary, 0.5),
+    padding: theme.spacing(0, 1),
   },
   likeSite: {
     zIndex: 2,
