@@ -515,6 +515,14 @@ export const BuyNFT = () => {
                     isOpenSaleTime={saleTime}
                     openAt={poolDetails.openAt}
                     onchange={onChangeTime}
+                    LikeBtn={
+                      <NftLikeBtn
+                        id={item.id}
+                        contractAddress={item.contractAddress}
+                        count={roleInfos.likeCount}
+                        isLike={roleInfos.isLike}
+                      />
+                    }
                   />
 
                   <Info className={classes.info}>
@@ -530,16 +538,7 @@ export const BuyNFT = () => {
                       copiesTotal={item.supply}
                       creator={renderedCreator}
                       owner={renderedCollection()}
-                      LikeBtn={
-                        <Grid item xs="auto">
-                          <NftLikeBtn
-                            id={item.id}
-                            contractAddress={item.contractAddress}
-                            count={roleInfos.likeCount}
-                            isLike={roleInfos.isLike}
-                          />
-                        </Grid>
-                      }
+                      LikeBtn={<></>}
                     />
                     {isEnglishAuction(poolDetails) ? (
                       <InfoPrices

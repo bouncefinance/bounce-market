@@ -21,6 +21,7 @@ interface INFTContentProps {
   isOpenSaleTime: boolean;
   openAt?: Date;
   onchange: () => void;
+  LikeBtn: JSX.Element;
 }
 
 export const MediaContainer = ({
@@ -34,6 +35,7 @@ export const MediaContainer = ({
   isOpenSaleTime,
   openAt = new Date(0),
   onchange,
+  LikeBtn,
 }: INFTContentProps) => {
   const classes = useMediaContainerStyles();
 
@@ -46,15 +48,19 @@ export const MediaContainer = ({
           </Grid>
 
           <Grid item>
-            <SocialShare
-              titleString={title}
-              description={description}
-              buttonContent={
-                <Button variant="outlined" className={classes.btn} rounded>
-                  <ShareIcon className={classes.btnIcon} /> {t('social.share')}
-                </Button>
-              }
-            />
+            <Box display="flex" alignItems="center">
+              <SocialShare
+                titleString={title}
+                description={description}
+                buttonContent={
+                  <Button variant="outlined" className={classes.btn} rounded>
+                    <ShareIcon className={classes.btnIcon} />{' '}
+                    {t('social.share')}
+                  </Button>
+                }
+              />
+              {LikeBtn}
+            </Box>
           </Grid>
         </Grid>
       </Box>

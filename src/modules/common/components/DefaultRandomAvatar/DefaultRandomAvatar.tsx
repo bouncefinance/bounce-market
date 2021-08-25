@@ -1,8 +1,7 @@
 import { Avatar, AvatarProps } from '@material-ui/core';
 import userPic from 'assets/img/logo-small.svg';
 import { addUserColorDataAsync } from 'modules/common/store/user';
-import React, { useMemo } from 'react';
-import { useEffect } from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useDefaultRandomAvatarStyles } from './useDefaultRandomAvatarStyles';
@@ -29,7 +28,7 @@ export const DefaultRandomAvatar = ({
   const { imgSrc } = useCdnUrl(src || '', 160);
 
   const range = useMemo(() => Math.floor(Math.random() * BG_PRESETS_COUNT), []);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (address) {
       addUserColorDataAsync({ userName: address, randomColor: range })(
         dispatch,
