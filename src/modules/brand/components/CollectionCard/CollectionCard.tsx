@@ -41,7 +41,6 @@ export const CollectionCard = ({
   });
 
   const getIconByChainId: (chainId: number) => ReactNode = chainId => {
-    // TODO 根据链获取不同的图标
     return <ChainSymbolIcon chiaId={chainId} />;
   };
 

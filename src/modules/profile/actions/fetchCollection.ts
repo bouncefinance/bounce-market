@@ -1,4 +1,4 @@
-import { RequestAction } from '@redux-requests/core';
+import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { mapNftItemData } from 'modules/api/common/itemMap';
 import { INftItem, IOriginNftItem } from 'modules/api/common/itemType';
 import { ISelectOption } from 'modules/uiKit/Select';
@@ -20,29 +20,33 @@ interface IFetchCollectionArgs {
 }
 export const fetchCollection = createSmartAction<
   RequestAction<IResponse<IOriginNftItem[]>, INftItem[]>,
-  [IFetchCollectionArgs]
->('fetchCollection', ({ address, className = '' }: IFetchCollectionArgs) => ({
-  request: {
-    url: '/getmycollectionbyfilter',
-    method: 'post',
-    data: {
-      accountaddress: address,
-      contractaddress: className,
+  [IFetchCollectionArgs, RequestActionMeta<IOriginNftItem[], INftItem[]>?]
+>(
+  'fetchCollection',
+  ({ address, className = '' }: IFetchCollectionArgs, meta?: any) => ({
+    request: {
+      url: '/getmycollectionbyfilter',
+      method: 'post',
+      data: {
+        accountaddress: address,
+        contractaddress: className,
+      },
     },
-  },
-  meta: {
-    asMutation: false,
-    auth: true,
-    driver: 'axios',
-    getData: data => {
-      if (data.code !== 200) {
-        console.error('fetchCollection:', data?.msg ?? 'Unexpected error');
-        return [];
-      }
-      return mapNftItemData(data?.data ?? []);
+    meta: {
+      asMutation: false,
+      auth: true,
+      driver: 'axios',
+      ...meta,
+      getData: data => {
+        if (data.code !== 200) {
+          console.error('fetchCollection:', data?.msg ?? 'Unexpected error');
+          return [];
+        }
+        return mapNftItemData(data?.data ?? []);
+      },
     },
-  },
-}));
+  }),
+);
 
 export const fetchCollectionClass = createSmartAction<
   RequestAction<IResponse<ICollectionClassData>, ISelectOption[]>,

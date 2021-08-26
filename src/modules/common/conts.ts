@@ -54,6 +54,7 @@ export const featuresConfig = {
    * Now this feature is not implemented in the backend
    */
   dropDetailsVideo: true,
+  collectionFollow: false,
 };
 
 export enum BlockchainNetworkId {

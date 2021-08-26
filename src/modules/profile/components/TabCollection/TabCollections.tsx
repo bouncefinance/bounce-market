@@ -13,11 +13,11 @@ import { RoyaltyDialog } from 'modules/brand/components/RoyaltyDialog';
 import { NoItems } from 'modules/common/components/NoItems';
 import { truncateLongName } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
-import { MarketRoutesConfig } from 'modules/market/Routes';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useState } from 'react';
 import { uid } from 'react-uid';
 import { useTabCollectionStyles } from './useTabCollectionStyles';
+import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
 
 export const TabCollection: React.FC<{
   isOther?: boolean;
@@ -37,49 +37,51 @@ export const TabCollection: React.FC<{
   };
   return (
     <>
-      {isOther || <CollectionHeaderCreate />}
+      {!isOther && <CollectionHeaderCreate />}
       <Grid container spacing={4} className={classes.root}>
         {loading ? (
-          <></>
+          <QueryLoading />
         ) : (
           <CollectionList>
-            {brands?.map(brand => (
-              <CollectionCard
-                key={uid(brand.contract)}
-                name={truncateLongName(brand.title)}
-                img={brand.imgSrc}
-                descr={brand.desc}
-                chainId={chainId}
-                nftType={brand.nftType}
-                nftItems={
-                  <CollectionNFTItems
-                    ownerAddress={address}
-                    contractAddress={brand.contract}
-                  />
+            {brands?.length ? (
+              brands?.map(brand => (
+                <CollectionCard
+                  key={uid(brand.contract)}
+                  name={truncateLongName(brand.title)}
+                  img={brand.imgSrc}
+                  descr={brand.desc}
+                  chainId={chainId}
+                  nftType={brand.nftType}
+                  nftItems={
+                    <CollectionNFTItems
+                      ownerAddress={brand.owneraddress}
+                      contractAddress={brand.contract}
+                    />
+                  }
+                  handelOpenRoyalty={handelOpenRoyalty}
+                  href={ProfileRoutesConfig.Collection.generatePath(
+                    brand.contract,
+                  )}
+                  currentRoyalty={brand.currentroyalty}
+                />
+              ))
+            ) : (
+              <NoItems
+                title={
+                  isOther
+                    ? t('profile.no-items.other-collection-title')
+                    : t('profile.no-items.collection-title')
                 }
-                handelOpenRoyalty={handelOpenRoyalty}
-                href={ProfileRoutesConfig.Collection.generatePath(
-                  brand.contract,
-                )}
-                currentRoyalty={brand.currentroyalty}
+                descr={
+                  isOther
+                    ? t('profile.no-items.other-collection-description')
+                    : t('profile.no-items.other-onSale-description')
+                }
               />
-            ))}
+            )}
           </CollectionList>
         )}
       </Grid>
-      {!loading && brands?.length === 0 && isOther && (
-        <NoItems
-          href={MarketRoutesConfig.Market.generatePath()}
-          title={
-            isOther
-              ? t('profile.no-items.other-collection-title')
-              : t('profile.no-items.collection-title')
-          }
-          descr={
-            isOther ? t('profile.no-items.other-collection-description') : ''
-          }
-        />
-      )}
 
       <RoyaltyDialog
         isOpen={royaltyOpen}

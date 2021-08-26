@@ -40,7 +40,7 @@ import { Button } from 'modules/uiKit/Button';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { AuctionState } from '../../../api/common/AuctionState';
+import { AuctionState, PoolState } from '../../../api/common/AuctionState';
 import { AuctionType } from '../../../api/common/auctionType';
 import { FixedSwapState } from '../../../api/common/FixedSwapState';
 import { NftType } from '../../../api/common/NftType';
@@ -466,7 +466,10 @@ export const BuyNFT = () => {
                               <Button
                                 variant="outlined"
                                 rounded
-                                disabled={item.poolId === poolId}
+                                disabled={
+                                  item.poolId === poolId || // 当前池子
+                                  item.poolstate === PoolState.Close // 已关闭池子
+                                }
                               >
                                 {item.poolId === poolId
                                   ? t('buy-dialog.current')

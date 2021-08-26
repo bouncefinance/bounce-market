@@ -4,6 +4,7 @@ import { useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { listBrands } from 'modules/brand/actions/listBrands';
 import { IBrandInfo } from 'modules/brand/api/queryBrand';
+import { CollectionNFTItems } from 'modules/brand/components/CollectionNFTItems';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { Subscribers } from 'modules/profile/components/Subscribers';
@@ -13,7 +14,6 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
-import { BrandNFTItems } from './components/BrandNFTItems';
 import { BrandsItem } from './components/BrandsItem';
 import { BrandsList } from './components/BrandsList';
 
@@ -52,8 +52,8 @@ export const Brands = () => {
                     <BrandsItem
                       href={
                         owneraddress &&
-                        ProfileRoutesConfig.OtherProfile.generatePath(
-                          owneraddress,
+                        ProfileRoutesConfig.Collection.generatePath(
+                          contractaddress,
                         )
                       }
                       key={id}
@@ -61,7 +61,7 @@ export const Brands = () => {
                       descr={description}
                       img={imgurl}
                       nftItems={
-                        <BrandNFTItems
+                        <CollectionNFTItems
                           ownerAddress={owneraddress}
                           contractAddress={contractaddress}
                         />
