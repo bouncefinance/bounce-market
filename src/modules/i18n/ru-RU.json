@@ -111,7 +111,10 @@
       "standard": "Стандарт",
       "supply": "Выпущено"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "title": "Создать NFT",
@@ -133,7 +136,10 @@
       "description": "Какая история стоит за этим NFT?"
     },
     "next": "Next",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "time": "",
@@ -424,12 +430,14 @@
       "MyBids-description": "Вы еще не сделали ставку ни на один товар. Зайдите на нашу торговую площадку!",
       "Activity-title": "Действия не найдены",
       "Activity-description": "Исследуйте фантастическое, чтобы найти азарт!",
+      "collection-title": "Не найдено",
+      "collection-description": "Вы еще не создали ни одной коллекции. ",
       "Liked-title": "Ничего не найдено",
       "Liked-description": "Вам еще не понравились NFT. Зайдите на нашу торговую площадку!",
       "other-onSale-title": "Предметов не найдено",
       "other-onSale-description": "Этот автор еще не выставил ни одного предмета на продажу.",
       "other-collection-title": "Коллекция не найдена",
-      "other-collection-description": "Этим пользователем не было создано ни одной коллекции.",
+      "other-collection-description": "Этот пользователь еще не создал ни одной коллекции.",
       "other-showCase-title": "Предметов не найдено",
       "other-showCase-description": "Этот пользователь еще не владел ни одним NFT.",
       "other-Liked-title": "Предметов не найдено",
@@ -447,7 +455,7 @@
       "my-collections": "Мои коллекции",
       "showcase": "Витрина",
       "my-sells": "Мои продажи",
-      "all-item":"Все предметы"
+      "all-item": "Все предметы"
     },
     "unfollow": "Отписаться",
     "user-profile": "Профиль пользователя"

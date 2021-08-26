@@ -293,9 +293,9 @@ export const Collection = () => {
           ))}
         </Tabs>
 
-        <Box mb={3.5} className={classes.optionHeaderBtnWrapper}>
-          <GoBack />
-          {isMyCollection && (
+        {isMyCollection && (
+          <Box mb={3.5} className={classes.optionHeaderBtnWrapper}>
+            <GoBack />
             <Button
               component={RouterLink}
               to={BrandRoutesConfig.CreateCollectionItem.generatePath(
@@ -316,8 +316,8 @@ export const Collection = () => {
             >
               {t('collection.card.addNewItem')}
             </Button>
-          )}
-        </Box>
+          </Box>
+        )}
 
         <TabPanel value={tab} index={ProfileTab.owned}>
           <TabOwned isOther={!isMyCollection} />

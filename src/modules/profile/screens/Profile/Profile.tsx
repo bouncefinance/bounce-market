@@ -263,7 +263,7 @@ export const Profile = () => {
           {isCreateNft ? (
             <CrateItemAll address={address ?? ''} />
           ) : (
-            <TabCollection />
+            <TabCollection isOther={false} />
           )}
         </TabPanel>
 
