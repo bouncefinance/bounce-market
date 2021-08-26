@@ -69,12 +69,16 @@ export const fetchPoolNftOwner = createSmartAction<
               },
               quantity: new BigNumber(item.quantity),
               poolType: item.poolType,
-              poolId: item.poolId,
+              poolId: item.poolId
+                ? item.poolId
+                : item.poolType
+                ? item.poolId
+                : -1, // -1 为 item
               poolstate: item.poolstate,
             };
           })
           .sort((a, b) => {
-            return b.poolType + b.poolId - (a.poolId + a.poolType);
+            return b.poolId - a.poolId;
           })
           .sort((a, b) => {
             if (a.poolId === params.poolId) {
