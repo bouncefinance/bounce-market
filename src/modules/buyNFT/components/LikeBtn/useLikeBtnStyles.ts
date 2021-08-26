@@ -8,6 +8,7 @@ export const useLikeBtnStyles = makeStyles<Theme>(theme => ({
     paddingRight: theme.spacing(2),
     height: theme.spacing(4.5),
     minWidth: theme.spacing(10),
+    marginLeft: theme.spacing(1.75),
 
     '&:hover': {
       color: theme.palette.text.primary,

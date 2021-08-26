@@ -22,7 +22,8 @@ import { Bio } from 'modules/profile/components/Bio';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import { Subscribers } from 'modules/profile/components/Subscribers';
-import { CrateItemAll, TabBrands } from 'modules/profile/components/TabBrands';
+import { CrateItemAll } from 'modules/profile/components/TabBrands';
+import { TabCollection } from 'modules/profile/components/TabCollection';
 import { FollowGroup } from 'modules/profile/components/TabFollowing';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
@@ -239,9 +240,9 @@ export const OtherProfile = () => {
 
             <TabPanel value={tab} index={ProfileTab.collections}>
               {isCreateNft ? (
-                <CrateItemAll isOther address={address ?? ''} />
+                <CrateItemAll address={address ?? ''} />
               ) : (
-                <TabBrands address={address} isOther />
+                <TabCollection />
               )}
             </TabPanel>
 

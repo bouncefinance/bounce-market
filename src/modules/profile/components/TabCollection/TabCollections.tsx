@@ -50,6 +50,7 @@ export const TabCollection: React.FC<{
                 img={brand.imgSrc}
                 descr={brand.desc}
                 chainId={chainId}
+                nftType={brand.nftType}
                 nftItems={
                   <CollectionNFTItems
                     ownerAddress={address}

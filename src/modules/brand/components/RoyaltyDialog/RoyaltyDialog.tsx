@@ -77,7 +77,7 @@ export const RoyaltyDialog = ({
         setShowChangeTip(true);
       },
     };
-    dispatch(setRoyaltyContract(payload)).then(res => {
+    dispatch(setRoyaltyContract(payload)).finally(() => {
       setSubmitLoading(false);
     });
   };

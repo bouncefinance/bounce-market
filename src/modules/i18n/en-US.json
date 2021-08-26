@@ -16,7 +16,8 @@
     "submit": "Proceed to pay",
     "buy": "Buy",
     "buy-now": "Buy now",
-    "total": "Total"
+    "total": "Total",
+    "current": "Current Pool"
   },
   "change-wallet": {
     "description": "Change network to Ethereum Mainnet, Binance Smart Chain, or Heco",
@@ -421,6 +422,7 @@
     "edit-avatar": "Edit avatar",
     "edit-cover": "Edit profile cover",
     "edit-profile": "Edit profile",
+    "edit-collection-cover": "Edit Collection Cover",
     "follow": {
       "follow": "Follow",
       "following": "Following",
@@ -464,7 +466,8 @@
       "my-bids": "My Bids",
       "my-collections": "Collections",
       "showcase": "Showcase",
-      "my-sells": "On Sale"
+      "my-sells": "On Sale",
+      "all-item":"All Item"
     },
     "unfollow": "Unfollow",
     "user-profile": "User profile"

@@ -1,4 +1,3 @@
-import { Grid } from '@material-ui/core';
 import { useDispatchRequest } from '@redux-requests/react';
 import { fetchItem, fetchItem2 } from 'modules/buyNFT/actions/fetchItem';
 import { Info } from 'modules/buyNFT/components/Info';
@@ -11,6 +10,7 @@ import {
 import { InfoTabsList } from 'modules/buyNFT/components/InfoTabsList';
 import { NftLikeBtn } from 'modules/buyNFT/components/LikeBtn';
 import { MediaContainer } from 'modules/buyNFT/components/MediaContainer';
+import { ScanBtn } from 'modules/buyNFT/components/ScanBtn';
 import { TokenInfo } from 'modules/buyNFT/components/TokenInfo';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
@@ -21,6 +21,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { uid } from 'react-uid';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 
 export const BuyItemNFT = () => {
@@ -64,6 +65,7 @@ export const BuyItemNFT = () => {
       {({ data: item }, { data: poolDetails }) => {
         const renderedCreator = (
           <ProfileInfo
+            key={uid(item)}
             subTitle={t('details-nft.role.minter')}
             title={wrapperTitle(
               poolDetails?.minter?.username,
@@ -135,6 +137,7 @@ export const BuyItemNFT = () => {
 
         const renderedTokenInfoList = (
           <InfoTabsList>
+            <ScanBtn contractAddress={item.contractAddress} />
             <TokenInfo
               name={item.itemName}
               itemSymbol={item.itemSymbol}
@@ -155,6 +158,14 @@ export const BuyItemNFT = () => {
               category={item.category}
               isOpenSaleTime={saleTime}
               onchange={onChangeTime}
+              LikeBtn={
+                <NftLikeBtn
+                  id={item.id}
+                  count={item.likeCount}
+                  isLike={item.isLike}
+                  contractAddress={item.contractAddress}
+                />
+              }
             />
             <Info className={classes.info}>
               <InfoDescr
@@ -165,16 +176,7 @@ export const BuyItemNFT = () => {
                 copiesTotal={item.supply}
                 creator={renderedCreator}
                 owner={renderedOwner}
-                LikeBtn={
-                  <Grid item xs="auto">
-                    <NftLikeBtn
-                      id={item.id}
-                      count={item.likeCount}
-                      isLike={item.isLike}
-                      contractAddress={item.contractAddress}
-                    />
-                  </Grid>
-                }
+                LikeBtn={<></>}
               />
               <InfoTabs
                 tabs={[NftInfoOwnersOption, NftInfoDetailOption]}

@@ -71,6 +71,9 @@ export const fetchPoolNftOwner = createSmartAction<
             };
           })
           .sort((a, b) => {
+            return b.poolId - a.poolId;
+          })
+          .sort((a, b) => {
             if (a.poolId === params.poolId) {
               return -1;
             }

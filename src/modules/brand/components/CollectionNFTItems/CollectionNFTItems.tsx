@@ -5,6 +5,7 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
+import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
 import classNames from 'classnames';
 import { AuctionType } from 'modules/api/common/auctionType';
@@ -20,6 +21,7 @@ import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 import { IItem } from 'modules/pools/actions/queryItemByFilter';
 import { Img } from 'modules/uiKit/Img';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
 import SwiperCore, { Lazy, Navigation } from 'swiper';
@@ -46,7 +48,8 @@ export const CollectionNFTItems = ({
   contractAddress,
 }: IBrandNFTItemsProps) => {
   const classes = useCollectionNFTItemsStyles();
-  const dispatch = useDispatchRequest();
+  const dispatchRequest = useDispatchRequest();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [items, setItems] = useState<ISwiperItem[]>([]);
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
@@ -59,7 +62,7 @@ export const CollectionNFTItems = ({
 
   useEffect(() => {
     setLoading(true);
-    dispatch(
+    dispatchRequest(
       queryBrandPools({
         owneraddress: ownerAddress,
         contractaddress: contractAddress,
@@ -68,13 +71,19 @@ export const CollectionNFTItems = ({
       setLoading(false);
       setItems(res.data || []);
     });
-  }, [contractAddress, dispatch, ownerAddress]);
+
+    return function reset() {
+      dispatch(resetRequests([queryBrandPools.toString()]));
+    };
+  }, [contractAddress, dispatch, ownerAddress, dispatchRequest]);
 
   useEffect(() => {
     if (items.length && swiper !== null) {
       swiper.update();
       swiper.lazy.load();
     }
+
+    return () => {};
   }, [items, swiper]);
 
   const sliderProps: Swiper = {

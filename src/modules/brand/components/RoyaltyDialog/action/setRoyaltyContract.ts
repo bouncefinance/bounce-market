@@ -56,7 +56,6 @@ export const setRoyaltyContract = createSmartAction<RequestAction<void, void>>(
               BounceRoyalty,
               getRoyaltySignContract(chainId),
             );
-            console.log(chainId, getRoyaltySignContract(chainId));
 
             const _collection = collection;
             const _royaltyReceiver = receiverAddress;
@@ -79,9 +78,7 @@ export const setRoyaltyContract = createSmartAction<RequestAction<void, void>>(
                 })
                 .on('receipt', async (receipt: TransactionReceipt) => {
                   successCallBack && successCallBack();
-                  setTimeout(() => {
-                    resolve(receipt);
-                  }, 15000);
+                  resolve(receipt);
                 })
                 .on('error', (error: Error) => {
                   reject(error);
