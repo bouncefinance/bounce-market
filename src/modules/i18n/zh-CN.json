@@ -111,7 +111,10 @@
       "standard": "标准",
       "supply": "总量"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "创建",
     "submitting": "正在创建中",
     "title": "创建 NFT",
@@ -133,7 +136,10 @@
       "description": "讲述创建该NFT背后的故事"
     },
     "next": "下一步",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "创建",
     "submitting": "正在创建中",
     "time": "{gender, select, male {He}female {She}other {They}}",
@@ -438,7 +444,13 @@
       "other-showCase-title": "暂无数据",
       "other-showCase-description": "该用户尚未拥有任何NFT。",
       "other-Liked-title": "暂无数据",
-      "other-Liked-description": "该创建者尚未对任何NFT进行过点赞。"
+      "other-Liked-description": "该创建者尚未对任何NFT进行过点赞。",
+      "tab-collection": {
+        "other-onSale-title": "暂无数据",
+        "other-onSale-description": "该创建者尚未上架任何NFT。",
+        "onSale-title": "暂无NFT",
+        "onSale-description": "您还未对任何NFT进行过上架。"
+      }
     },
     "subscribers": "Subscribers",
     "tabs": {
@@ -452,7 +464,7 @@
       "my-collections": "我的作品集",
       "showcase": "我拥有的",
       "my-sells": "我的出售",
-      "all-item":"所有NFT"
+      "all-item": "所有NFT"
     },
     "unfollow": "取消关注",
     "user-profile": "个人主页"

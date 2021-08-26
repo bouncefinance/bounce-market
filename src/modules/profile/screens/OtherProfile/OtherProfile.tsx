@@ -22,7 +22,6 @@ import { Bio } from 'modules/profile/components/Bio';
 import { Header } from 'modules/profile/components/Header';
 import { InfoPanel } from 'modules/profile/components/InfoPanel';
 import { Subscribers } from 'modules/profile/components/Subscribers';
-import { CrateItemAll } from 'modules/profile/components/TabBrands';
 import { TabCollection } from 'modules/profile/components/TabCollection';
 import { FollowGroup } from 'modules/profile/components/TabFollowing';
 import { TabPanel } from 'modules/profile/components/TabPanel';
@@ -45,11 +44,7 @@ export const PROFILE_INFO_REQUEST_KEY = '/other';
 export const OtherProfile = () => {
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
-  const {
-    tab,
-    address,
-    isCreateNft,
-  } = ProfileRoutesConfig.OtherProfile.useParams();
+  const { tab, address } = ProfileRoutesConfig.OtherProfile.useParams();
   const classes = useOtherProfileStyles();
   const { push } = useHistory();
   const { isConnected, address: accountAddress } = useAccount();
@@ -119,11 +114,6 @@ export const OtherProfile = () => {
         value: ProfileTab.owned,
         label: t('profile.tabs.showcase'),
       },
-      // {
-      //   value: ProfileTab.liked,
-      //   label: t('profile.tabs.liked'),
-      //   count: likedItems ? likedItems.length : 0,
-      // },
       ...(featuresConfig.profileFollowers
         ? [
             {
@@ -156,10 +146,6 @@ export const OtherProfile = () => {
           dispatch(fetchMySale({ address }));
           break;
         }
-        // case ProfileTab.liked: {
-        //   dispatch(queryLikedItems());
-        //   break;
-        // }
         default: {
           console.error('not match tab', value);
         }
@@ -176,7 +162,6 @@ export const OtherProfile = () => {
     [address, push, updateData],
   );
 
-  // TODO Landing conflict
   useEffect(() => {
     updateData(tab);
   }, [updateData, tab]);
@@ -239,11 +224,7 @@ export const OtherProfile = () => {
             </TabPanel>
 
             <TabPanel value={tab} index={ProfileTab.collections}>
-              {isCreateNft ? (
-                <CrateItemAll address={address ?? ''} />
-              ) : (
-                <TabCollection />
-              )}
+              <TabCollection />
             </TabPanel>
 
             <TabPanel value={tab} index={ProfileTab.sells}>

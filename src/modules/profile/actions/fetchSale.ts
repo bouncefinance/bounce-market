@@ -41,6 +41,44 @@ export const fetchMySale = createSmartAction<
   },
 }));
 
+interface ICollectionArgs extends IArgs {
+  collectionAddress: string;
+}
+
+export const fetchCollectionSale = createSmartAction<
+  RequestAction<IResponse<IMySaleData>, IPoolNftItem[]>,
+  [ICollectionArgs]
+>('getuseronsellpools', ({ address, collectionAddress, limit, offset }) => ({
+  request: {
+    url: '/get_collection_onsellpools',
+    method: 'post',
+    data: {
+      accountaddress: address,
+      // artistaddress: ,
+      contractaddress: collectionAddress,
+      offset: offset || 0,
+      limit: limit || 1000,
+    },
+  },
+  meta: {
+    asMutation: false,
+    auth: true,
+    driver: 'axios',
+    getData: data => {
+      if (data.code !== 200) {
+        console.error(
+          'get_collection_onsellpools:',
+          data?.msg ?? 'Unexpected error',
+        );
+        return [];
+      }
+
+      return mapPoolData(data?.data ?? []);
+    },
+    onSuccess: addTokenSymbolByDriver,
+  },
+}));
+
 export const fetchMyBids = createSmartAction<
   RequestAction<IResponse<IMySaleData>, IPoolNftItem[]>,
   [IArgs]

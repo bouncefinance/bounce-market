@@ -5,10 +5,7 @@ import {
 } from 'modules/common/components/ProductCard';
 import { ProductCards } from 'modules/common/components/ProductCards';
 import { GoBack } from 'modules/layout/components/GoBack';
-import {
-  fetchCollection,
-  ICollectionData,
-} from 'modules/profile/actions/fetchCollection';
+import { fetchCollection } from 'modules/profile/actions/fetchCollection';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { useEffect } from 'react';
@@ -41,10 +38,7 @@ export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
   const dispatch = useDispatch();
   const classes = useTabBrandStyles();
 
-  const {
-    data: collectionData,
-    loading: collectionLoading,
-  } = useQuery<ICollectionData>({
+  const { data: collectionData, loading: collectionLoading } = useQuery<any>({
     type: fetchCollection.toString(),
   });
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
@@ -98,7 +92,7 @@ export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
         {collectionLoading ? (
           <ProductCardSkeleton />
         ) : (
-          collectionData?.map(item => (
+          collectionData?.map((item: any) => (
             <ProductCard
               id={item.tokenid}
               poolId={item.tokenid || 0}
