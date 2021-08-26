@@ -135,14 +135,14 @@ export const Collection = () => {
 
   const updateData = useCallback(
     (value: ProfileTab) => {
-      if (!address) {
+      if (!address || !collectionInfo?.owneraddress) {
         return;
       }
       switch (value) {
         case ProfileTab.owned: {
           dispatch(
             fetchCollection({
-              address,
+              address: collectionInfo?.owneraddress || '',
               className: collectionAddress,
             }),
           );
@@ -151,7 +151,7 @@ export const Collection = () => {
         case ProfileTab.sells: {
           dispatch(
             fetchCollectionSale({
-              address,
+              address: collectionInfo?.owneraddress || '',
               collectionAddress,
             }),
           );
@@ -162,7 +162,7 @@ export const Collection = () => {
         }
       }
     },
-    [address, collectionAddress, dispatch],
+    [address, collectionAddress, dispatch, collectionInfo?.owneraddress],
   );
 
   const onTabsChange = useCallback(
@@ -259,33 +259,36 @@ export const Collection = () => {
               <Subscribers count={profileInfo?.followCount} />
             )
           }
-          follow={renderFollow()}
+          follow={featuresConfig.collectionFollow && renderFollow()}
           address={address}
           isCollection={true}
           collectionAddress={collectionAddress}
           handelOpenRoyalty={handelOpenRoyalty}
           handelOpenModifyDesc={handelOpenModifyDesc}
           profile={
-            <ProfileInfo
-              subTitle={t('details-nft.role.minter')}
-              title={
-                collectionInfo?.ownername ??
-                truncateWalletAddr(collectionInfo?.owneraddress || '')
-              }
-              users={[
-                {
-                  href: ProfileRoutesConfig.OtherProfile.generatePath(
-                    collectionInfo?.owneraddress,
-                  ),
-                  name:
-                    collectionInfo?.ownername ??
-                    truncateWalletAddr(collectionInfo?.owneraddress || ''),
-                  avatar: collectionInfo?.ownerimg,
-                  verified: collectionInfo?.identity === UserRoleEnum.Verified,
-                  address: collectionInfo?.owneraddress,
-                },
-              ]}
-            />
+            isMyCollection && (
+              <ProfileInfo
+                subTitle={t('details-nft.role.minter')}
+                title={
+                  collectionInfo?.ownername ??
+                  truncateWalletAddr(collectionInfo?.owneraddress || '')
+                }
+                users={[
+                  {
+                    href: ProfileRoutesConfig.OtherProfile.generatePath(
+                      collectionInfo?.owneraddress,
+                    ),
+                    name:
+                      collectionInfo?.ownername ??
+                      truncateWalletAddr(collectionInfo?.owneraddress || ''),
+                    avatar: collectionInfo?.ownerimg,
+                    verified:
+                      collectionInfo?.identity === UserRoleEnum.Verified,
+                    address: collectionInfo?.owneraddress,
+                  },
+                ]}
+              />
+            )
           }
           collectionDesc={showCollectionDesc || collectionInfo?.description}
         />
@@ -300,9 +303,9 @@ export const Collection = () => {
           ))}
         </Tabs>
 
-        {isMyCollection && (
-          <Box mb={3.5} className={classes.optionHeaderBtnWrapper}>
-            <GoBack />
+        <Box mb={3.5} className={classes.optionHeaderBtnWrapper}>
+          <GoBack />
+          {isMyCollection && (
             <Button
               component={RouterLink}
               to={BrandRoutesConfig.CreateCollectionItem.generatePath(
@@ -323,8 +326,8 @@ export const Collection = () => {
             >
               {t('collection.card.addNewItem')}
             </Button>
-          </Box>
-        )}
+          )}
+        </Box>
 
         <TabPanel value={tab} index={ProfileTab.owned}>
           <CrateItemAll isOther={!isMyCollection} />

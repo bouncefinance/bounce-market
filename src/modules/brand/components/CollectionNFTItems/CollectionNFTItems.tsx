@@ -8,19 +8,22 @@ import {
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
 import classNames from 'classnames';
-import { AuctionType } from 'modules/api/common/auctionType';
-import { queryBrandPools } from 'modules/brand/actions/queryBrandPools';
+import { INftItem } from 'modules/api/common/itemType';
+import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
+import { Queries } from 'modules/common/components/Queries/Queries';
 import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
 import { SwiperPreloader } from 'modules/common/components/SwiperPreloader';
 import { VideoPlayer } from 'modules/common/components/VideoPlayer';
+import { ResponseData } from 'modules/common/types/ResponseData';
 import { getRandomId } from 'modules/common/utils/getRandomId';
 import { t } from 'modules/i18n/utils/intl';
 import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
-import { IItem } from 'modules/pools/actions/queryItemByFilter';
+import { fetchCollection } from 'modules/profile/actions/fetchCollection';
 import { Img } from 'modules/uiKit/Img';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
@@ -34,57 +37,55 @@ interface IBrandNFTItemsProps {
   className?: string;
   ownerAddress: string;
   contractAddress: string;
-}
-
-interface ISwiperItem extends IItem {
-  auctionType?: AuctionType;
-  poolId?: number;
-  href: string;
+  brandId: number;
 }
 
 export const CollectionNFTItems = ({
   className,
   ownerAddress,
   contractAddress,
+  brandId,
 }: IBrandNFTItemsProps) => {
   const classes = useCollectionNFTItemsStyles();
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
   const theme = useTheme();
-  const [items, setItems] = useState<ISwiperItem[]>([]);
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const prevId = useMemo(() => getRandomId('prev'), []);
   const nextId = useMemo(() => getRandomId('next'), []);
 
-  const hasItems = !!items.length;
-
   useEffect(() => {
-    setLoading(true);
-    dispatchRequest(
-      queryBrandPools({
-        owneraddress: ownerAddress,
-        contractaddress: contractAddress,
-      }),
-    ).then(res => {
-      setLoading(false);
-      setItems(res.data || []);
-    });
+    dispatch(
+      fetchCollection(
+        {
+          address: ownerAddress,
+          className: contractAddress,
+        },
+        { requestKey: contractAddress },
+      ),
+    );
 
     return function reset() {
-      dispatch(resetRequests([queryBrandPools.toString()]));
+      dispatch(
+        resetRequests([
+          {
+            requestType: fetchCollection.toString(),
+            requestKey: contractAddress,
+          },
+        ]),
+      );
     };
   }, [contractAddress, dispatch, ownerAddress, dispatchRequest]);
 
   useEffect(() => {
-    if (items.length && swiper !== null) {
+    if (swiper !== null) {
       swiper.update();
-      swiper.lazy.load();
+      swiper.lazy?.load();
     }
 
     return () => {};
-  }, [items, swiper]);
+  }, [swiper]);
 
   const sliderProps: Swiper = {
     slidesPerView: 'auto',
@@ -106,39 +107,50 @@ export const CollectionNFTItems = ({
     },
   };
 
-  const renderedSlides = useMemo(
-    () =>
-      items.map(({ itemname, fileurl, category, href }, i) => (
-        <SwiperSlide className={classes.slide} key={uid(itemname, i)}>
-          <div className={classes.item}>
-            <Paper className={classes.itemImgFrame} variant="outlined">
-              <Link to={href}>
-                {category === NFTCategoryType.image ? (
-                  <Img
-                    className={classes.itemImgBox}
-                    src={fileurl}
-                    objectFit="scale-down"
-                    ratio="1x1"
-                    isNativeLazyLoading={false}
-                    imgClassName="swiper-lazy"
-                  />
-                ) : (
-                  <div className={classes.videoWrapper}>
-                    <div className={classNames(classes.video, 'swiper-lazy')}>
-                      <VideoPlayer src={fileurl} objectFit="scale-down" />
+  const renderedSlides = useCallback(
+    (collectionData: INftItem[]) => {
+      return collectionData.map(
+        (
+          { name: itemname, fileUrl, category, tokenId, contractAddress },
+          i,
+        ) => (
+          <SwiperSlide className={classes.slide} key={uid(itemname, i)}>
+            <div className={classes.item}>
+              <Paper className={classes.itemImgFrame} variant="outlined">
+                <Link
+                  to={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
+                    tokenId,
+                    contractAddress,
+                  )}
+                >
+                  {category === NFTCategoryType.image ? (
+                    <Img
+                      className={classes.itemImgBox}
+                      src={fileUrl}
+                      objectFit="scale-down"
+                      ratio="1x1"
+                      isNativeLazyLoading={false}
+                      imgClassName="swiper-lazy"
+                    />
+                  ) : (
+                    <div className={classes.videoWrapper}>
+                      <div className={classNames(classes.video, 'swiper-lazy')}>
+                        <VideoPlayer src={fileUrl} objectFit="scale-down" />
+                      </div>
                     </div>
-                  </div>
-                )}
-              </Link>
+                  )}
+                </Link>
 
-              <SwiperPreloader />
-            </Paper>
+                <SwiperPreloader />
+              </Paper>
 
-            <div className={classes.itemTitle}>{itemname}</div>
-          </div>
-        </SwiperSlide>
-      )),
-    [classes, items],
+              <div className={classes.itemTitle}>{itemname}</div>
+            </div>
+          </SwiperSlide>
+        ),
+      );
+    },
+    [classes],
   );
 
   const renderedLoading = (
@@ -147,23 +159,25 @@ export const CollectionNFTItems = ({
     </Box>
   );
 
-  const rendered = (
-    <div className={classNames(classes.root, className)}>
-      <Swiper {...sliderProps} className={classes.slider}>
-        {renderedSlides}
-      </Swiper>
+  const rendered = (collectionData: INftItem[]) => {
+    return (
+      <div className={classNames(classes.root, className)}>
+        <Swiper {...sliderProps} className={classes.slider}>
+          {renderedSlides(collectionData)}
+        </Swiper>
 
-      <div className={classes.buttons}>
-        <IconButton id={prevId} className={classes.navBtn}>
-          <AngleLeftIcon fontSize="small" />
-        </IconButton>
+        <div className={classes.buttons}>
+          <IconButton id={prevId} className={classes.navBtn}>
+            <AngleLeftIcon fontSize="small" />
+          </IconButton>
 
-        <IconButton id={nextId} className={classes.navBtn}>
-          <AngleRightIcon fontSize="small" />
-        </IconButton>
+          <IconButton id={nextId} className={classes.navBtn}>
+            <AngleRightIcon fontSize="small" />
+          </IconButton>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderedNoItems = (
     <Typography variant="body2" color="textSecondary">
@@ -172,12 +186,16 @@ export const CollectionNFTItems = ({
   );
 
   return (
-    <>
-      {loading && renderedLoading}
-
-      {hasItems && !loading && rendered}
-
-      {!hasItems && !loading && renderedNoItems}
-    </>
+    <Queries<ResponseData<typeof fetchCollection>>
+      requestActions={[fetchCollection]}
+      requestKeys={[contractAddress]}
+      empty={renderedNoItems}
+    >
+      {({ data: collectionData, loading: collectionLoading }) => {
+        return (
+          <>{collectionLoading ? renderedLoading : rendered(collectionData)}</>
+        );
+      }}
+    </Queries>
   );
 };

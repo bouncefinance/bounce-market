@@ -54,8 +54,9 @@ export const TabCollection: React.FC<{
                   nftType={brand.nftType}
                   nftItems={
                     <CollectionNFTItems
-                      ownerAddress={address}
+                      ownerAddress={brand.owneraddress}
                       contractAddress={brand.contract}
+                      brandId={brand.id}
                     />
                   }
                   handelOpenRoyalty={handelOpenRoyalty}
