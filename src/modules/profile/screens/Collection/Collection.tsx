@@ -345,7 +345,7 @@ export const Collection = () => {
           setModifyDescOpen(false);
         }}
         collection={collectionAddress}
-        description={collectionInfo?.description || ''}
+        description={showCollectionDesc || collectionInfo?.description || ''}
         successCallback={changeShowCollectionDesc}
       />
     </Section>
