@@ -44,6 +44,7 @@ export const NftItemCard = ({
               item.tokenId,
             )
       }
+      isOther={isOther}
       profileInfo={
         <CardProfileInfo
           subTitle="Creator"

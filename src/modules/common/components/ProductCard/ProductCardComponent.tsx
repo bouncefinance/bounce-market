@@ -34,6 +34,7 @@ import { useProductCardStyles } from './useProductCardStyles';
 import { useEffect } from 'react';
 import { useCount } from 'modules/common/hooks/useTimer';
 import { ChainSymbolIcon } from '../Icons/Chains';
+import { formatUnitNumber } from 'modules/common/utils/number';
 
 export type ProductCardCategoryType = 'image' | 'video';
 
@@ -170,15 +171,24 @@ export const ProductCardComponent = ({
     [classes],
   );
 
+  const hasRightButton = Boolean((isOnSeller || isBidder) && !isOther);
   const TooltipClasses = {
     tooltip: classes.avatarTips,
     arrow: classes.avatarTipsText,
   };
+
+  const isOnlyTotalSupply = Boolean(
+    isOther || parseInt((copiesBalance ?? 0).toString(), 10) === 0,
+  );
   const renderedCopies = (
     <Tooltip
-      title={t('product-card.item-balance-tip', {
-        balance: copiesBalance ?? 0,
-      })}
+      title={
+        isOnlyTotalSupply
+          ? t('product-card.item-total-supply-tip')
+          : t('product-card.item-balance-tip', {
+              balance: new BigNumber(copiesBalance ?? 0).toFormat(0),
+            })
+      }
       arrow
       placement="top"
       classes={TooltipClasses}
@@ -187,7 +197,11 @@ export const ProductCardComponent = ({
         <LayersIcon
           className={classNames(classes.icon, classes.iconRightOffset)}
         />
-        {`${copiesBalance ?? 0} of ${copies ?? 0}`}
+        {isOnlyTotalSupply
+          ? formatUnitNumber(copies ?? 1)
+          : `${formatUnitNumber(copiesBalance ?? 0)} of ${formatUnitNumber(
+              copies ?? 1,
+            )}`}
       </div>
     </Tooltip>
   );
@@ -195,7 +209,9 @@ export const ProductCardComponent = ({
   const renderSolds = (
     <Tooltip
       title={t('product-card.pool-balance-tip', {
-        balance: (soldData?.quantity || 0) - (soldData?.sold || 0),
+        balance: new BigNumber(
+          (soldData?.quantity || 0) - (soldData?.sold || 0),
+        ).toFormat(0),
       })}
       arrow
       placement="top"
@@ -203,8 +219,8 @@ export const ProductCardComponent = ({
     >
       <div className={classes.info}>
         {t('product-card.sold-for-quantity', {
-          sold: soldData?.sold || 0,
-          quantity: soldData?.quantity || 1,
+          sold: formatUnitNumber(soldData?.sold || 0),
+          quantity: formatUnitNumber(soldData?.quantity || 1),
         })}
       </div>
     </Tooltip>
@@ -408,26 +424,23 @@ export const ProductCardComponent = ({
                 </div>
 
                 <div className={classes.price}>
-                  {price.toFormat()} {priceType}
+                  {formatUnitNumber(price.toNumber(), 4)} {priceType}
+                </div>
+                <div className={classes.infoRight}>
+                  {!hasRightButton && (
+                    <div className={classes.infoContainer}>
+                      {isOnSale && soldData && renderSolds}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
 
-            <div className={classes.infoContainer}>
-              {isOnSale && (
-                <>
-                  {!endDate && copies && renderedCopies}
-
-                  {soldData && renderSolds}
-                </>
-              )}
-
-              {!isOnSale && (
-                <>
-                  <div>{copies !== undefined ? renderedCopies : <></>}</div>
-                </>
-              )}
-            </div>
+            {!isOnSale && (
+              <div className={classes.infoContainer}>
+                <div>{copies !== undefined ? renderedCopies : <></>}</div>
+              </div>
+            )}
           </div>
 
           <div className={classes.rightWrapper}>
@@ -568,6 +581,18 @@ export const ProductCardComponent = ({
             )}
           </div>
         </div>
+
+        {hasRightButton && (
+          <div className={classes.infoContainer}>
+            {isOnSale && (
+              <>
+                {!endDate && copies && renderedCopies}
+
+                {soldData && renderSolds}
+              </>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );

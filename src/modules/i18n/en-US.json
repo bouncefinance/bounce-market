@@ -346,6 +346,7 @@
     "claim-token": "Claim token",
     "claim-back": "Claim back",
     "claimed": "Claimed",
+    "item-total-supply-tip": "Total Supply",
     "item-balance-tip": "{balance} editions in account",
     "pool-balance-tip": "{balance} available for purchase",
     "sold-for-quantity": "Sold {sold} of {quantity}"

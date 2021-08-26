@@ -333,6 +333,7 @@
     "pool-start-tips": "Бассейн будет запущен:",
     "transfer": "Перевести токен",
     "balance-tip": "{balance} издания на счете",
+    "item-total-supply-tip": "приложен",
     "item-balance-tip": "{balance} изданий на счету",
     "pool-balance-tip": "{balance} доступны для покупки",
     "sold-for-quantity": "Продано {sold} из {quantity}"
