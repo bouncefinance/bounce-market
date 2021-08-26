@@ -66,6 +66,8 @@ export const RoyaltyDialog = ({
     type: fetchRoyaltyListByCollection.toString(),
   });
 
+  const [showRoyalty, setShowRoyalty] = useState('');
+
   const onSubmit = ({ royaltyRate }: { royaltyRate: string }) => {
     if (!royaltyRate || !address) return;
     setSubmitLoading(true);
@@ -75,6 +77,7 @@ export const RoyaltyDialog = ({
       rate: new BigNumber(royaltyRate).div(100),
       successCallBack: () => {
         setShowChangeTip(true);
+        setShowRoyalty(royaltyRate);
       },
     };
     dispatch(setRoyaltyContract(payload)).finally(() => {
@@ -153,7 +156,8 @@ export const RoyaltyDialog = ({
         onSubmit={onSubmit}
         render={renderForm}
         initialValues={{
-          royaltyRate: royaltyList?.currentratio.toString() || '0',
+          royaltyRate:
+            showRoyalty || royaltyList?.currentratio.toString() || '0',
         }}
       />
 

@@ -21,6 +21,7 @@ interface IFetchPoolNftOwnerData {
   poolId: number;
   poolType: PoolType;
   quantity: number;
+  poolstate: number;
 }
 
 interface IFetchPoolNftOwnerParams {
@@ -33,6 +34,7 @@ interface wrapperPoolNftOwner {
   quantity: BigNumber;
   poolType: PoolType;
   poolId: number;
+  poolstate: number;
 }
 
 export const fetchPoolNftOwner = createSmartAction<
@@ -67,7 +69,12 @@ export const fetchPoolNftOwner = createSmartAction<
               },
               quantity: new BigNumber(item.quantity),
               poolType: item.poolType,
-              poolId: item.poolId,
+              poolId: item.poolId
+                ? item.poolId
+                : item.poolType
+                ? item.poolId
+                : -1, // -1 为 item
+              poolstate: item.poolstate,
             };
           })
           .sort((a, b) => {

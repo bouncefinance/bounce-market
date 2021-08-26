@@ -135,14 +135,14 @@ export const Collection = () => {
 
   const updateData = useCallback(
     (value: ProfileTab) => {
-      if (!address) {
+      if (!address || !collectionInfo?.owneraddress) {
         return;
       }
       switch (value) {
         case ProfileTab.owned: {
           dispatch(
             fetchCollection({
-              address,
+              address: collectionInfo?.owneraddress || '',
               className: collectionAddress,
             }),
           );
@@ -151,7 +151,7 @@ export const Collection = () => {
         case ProfileTab.sells: {
           dispatch(
             fetchCollectionSale({
-              address,
+              address: collectionInfo?.owneraddress || '',
               collectionAddress,
             }),
           );
@@ -162,7 +162,7 @@ export const Collection = () => {
         }
       }
     },
-    [address, collectionAddress, dispatch],
+    [address, collectionAddress, dispatch, collectionInfo?.owneraddress],
   );
 
   const onTabsChange = useCallback(
@@ -259,33 +259,36 @@ export const Collection = () => {
               <Subscribers count={profileInfo?.followCount} />
             )
           }
-          follow={renderFollow()}
+          follow={featuresConfig.collectionFollow && renderFollow()}
           address={address}
           isCollection={true}
           collectionAddress={collectionAddress}
           handelOpenRoyalty={handelOpenRoyalty}
           handelOpenModifyDesc={handelOpenModifyDesc}
           profile={
-            <ProfileInfo
-              subTitle={t('details-nft.role.minter')}
-              title={
-                collectionInfo?.ownername ??
-                truncateWalletAddr(collectionInfo?.owneraddress || '')
-              }
-              users={[
-                {
-                  href: ProfileRoutesConfig.OtherProfile.generatePath(
-                    collectionInfo?.owneraddress,
-                  ),
-                  name:
-                    collectionInfo?.ownername ??
-                    truncateWalletAddr(collectionInfo?.owneraddress || ''),
-                  avatar: collectionInfo?.ownerimg,
-                  verified: collectionInfo?.identity === UserRoleEnum.Verified,
-                  address: collectionInfo?.owneraddress,
-                },
-              ]}
-            />
+            isMyCollection && (
+              <ProfileInfo
+                subTitle={t('details-nft.role.minter')}
+                title={
+                  collectionInfo?.ownername ??
+                  truncateWalletAddr(collectionInfo?.owneraddress || '')
+                }
+                users={[
+                  {
+                    href: ProfileRoutesConfig.OtherProfile.generatePath(
+                      collectionInfo?.owneraddress,
+                    ),
+                    name:
+                      collectionInfo?.ownername ??
+                      truncateWalletAddr(collectionInfo?.owneraddress || ''),
+                    avatar: collectionInfo?.ownerimg,
+                    verified:
+                      collectionInfo?.identity === UserRoleEnum.Verified,
+                    address: collectionInfo?.owneraddress,
+                  },
+                ]}
+              />
+            )
           }
           collectionDesc={showCollectionDesc || collectionInfo?.description}
         />
@@ -353,7 +356,7 @@ export const Collection = () => {
           setModifyDescOpen(false);
         }}
         collection={collectionAddress}
-        description={collectionInfo?.description || ''}
+        description={showCollectionDesc || collectionInfo?.description || ''}
         successCallback={changeShowCollectionDesc}
       />
     </Section>

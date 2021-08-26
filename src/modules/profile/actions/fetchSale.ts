@@ -53,8 +53,8 @@ export const fetchCollectionSale = createSmartAction<
     url: '/get_collection_onsellpools',
     method: 'post',
     data: {
-      accountaddress: address,
-      // artistaddress: ,
+      // accountaddress: address,
+      artistaddress: address,
       contractaddress: collectionAddress,
       offset: offset || 0,
       limit: limit || 1000,
