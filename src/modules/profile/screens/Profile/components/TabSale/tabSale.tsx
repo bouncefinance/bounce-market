@@ -9,7 +9,10 @@ import { ProductCards } from 'modules/common/components/ProductCards';
 import { CardProfileInfo } from 'modules/common/components/ProfileInfo';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { fetchMySale } from 'modules/profile/actions/fetchSale';
+import {
+  fetchCollectionSale,
+  fetchMySale,
+} from 'modules/profile/actions/fetchSale';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
@@ -25,10 +28,13 @@ const getStandardPoolObj = (e: IPoolNftItem) => ({
 
 export const TabSale: React.FC<{
   isOther?: boolean;
+  isCollectionSale?: boolean;
   reload?: () => void;
-}> = function ({ isOther = false, reload }) {
+}> = function ({ isOther = false, reload, isCollectionSale = false }) {
   const { data, loading } = useQuery<IPoolNftItem[]>({
-    type: fetchMySale.toString(),
+    type: isCollectionSale
+      ? fetchCollectionSale.toString()
+      : fetchMySale.toString(),
   });
 
   const poolList = useMemo(() => {
@@ -143,21 +149,33 @@ export const TabSale: React.FC<{
           })
         )}
       </ProductCards>
-      {!loading && data?.length === 0 && (
-        <NoItems
-          href={MarketRoutesConfig.Market.generatePath()}
-          title={
-            isOther
+      {!loading &&
+        data?.length === 0 &&
+        (() => {
+          const onSale = {
+            title: isOther
               ? t('profile.no-items.other-onSale-title')
-              : t('profile.no-items.onSale-title')
-          }
-          descr={
-            isOther
+              : t('profile.no-items.onSale-title'),
+            desc: isOther
               ? t('profile.no-items.other-onSale-description')
-              : t('profile.no-items.onSale-description')
-          }
-        />
-      )}
+              : t('profile.no-items.onSale-description'),
+          };
+          const collection = {
+            title: isOther
+              ? t('profile.no-items.tab-collection.other-onSale-title')
+              : t('profile.no-items.tab-collection.onSale-title'),
+            desc: isOther
+              ? t('profile.no-items.tab-collection.other-onSale-description')
+              : t('profile.no-items.tab-collection.onSale-description'),
+          };
+          return (
+            <NoItems
+              href={MarketRoutesConfig.Market.generatePath()}
+              title={isCollectionSale ? collection.title : onSale.title}
+              descr={isCollectionSale ? collection.desc : onSale.desc}
+            />
+          );
+        })()}
     </TabItemsComponent>
   );
 };

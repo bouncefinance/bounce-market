@@ -88,7 +88,6 @@ export const Overview = () => {
           noDataMessage={renderedPromoSkeleton}
         >
           {({ loading, error, data }) => {
-            console.log(data);
             return (
               <ThemeProvider theme={darkTheme}>
                 <Promo

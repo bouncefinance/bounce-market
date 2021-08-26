@@ -4,8 +4,7 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-import { fetchOwned } from 'modules/profile/actions/fetchOwned';
-import { fetchMySale } from 'modules/profile/actions/fetchSale';
+import { fetchCollectionSale } from 'modules/profile/actions/fetchSale';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
 import { Avatar } from 'modules/profile/components/Avatar';
 import { Header } from 'modules/profile/components/Header';
@@ -39,7 +38,6 @@ import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { UserRoleEnum } from 'modules/common/actions/queryAccountInfo';
 import { CollectionDescDialog } from './components/CollectionDescDialog';
-import { TabOwned } from '../Profile/components/tabOwned';
 import { TabSale } from '../Profile/components/TabSale';
 import { GoBack } from 'modules/layout/components/GoBack';
 import { Button } from 'modules/uiKit/Button';
@@ -48,6 +46,8 @@ import { PlusIcon } from 'modules/common/components/Icons/PlusIcon';
 import classNames from 'classnames';
 import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { resetRequests } from '@redux-requests/core';
+import { CrateItemAll } from 'modules/profile/components/TabCollection';
+import { fetchCollection } from 'modules/profile/actions/fetchCollection';
 
 export const Collection = () => {
   const {
@@ -55,7 +55,6 @@ export const Collection = () => {
     address: collectionAddress,
   } = ProfileRoutesConfig.Collection.useParams();
   const [isMyCollection, setIsMyCollection] = useState(false);
-  // const [bgImgSrc, setBgImgSrc] = useState('')
   const classes = useCollectionStyles();
   const { address } = useAccount();
   const { replace } = useHistory();
@@ -84,14 +83,12 @@ export const Collection = () => {
   const [isAvatarModalOpened, setAvatarModalOpened] = useState(false);
   const [showAvatarImg, setShowAvatarImg] = useState('');
   const { imgSrc: avatarImg } = useCdnUrl(collectionInfo?.imgurl || ' ', 160);
-  // const avatarImg = collectionInfo?.imgurl
   const changeShowAvatarImg = (imgSrc: string) => {
     setShowAvatarImg(imgSrc);
   };
 
   // 设置背景图片功能
   const { imgSrc: bgImg } = useCdnUrl(collectionInfo?.bandimgurl || ' ', 160);
-  // const bgImg = collectionInfo?.bandimgurl
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const [showBgImg, setShowBgImg] = useState('');
   const changeShowBgImg = (imgSrc: string) => {
@@ -143,11 +140,21 @@ export const Collection = () => {
       }
       switch (value) {
         case ProfileTab.owned: {
-          dispatch(fetchOwned({ address }));
+          dispatch(
+            fetchCollection({
+              address,
+              className: collectionAddress,
+            }),
+          );
           break;
         }
         case ProfileTab.sells: {
-          dispatch(fetchMySale({ address }));
+          dispatch(
+            fetchCollectionSale({
+              address,
+              collectionAddress,
+            }),
+          );
           break;
         }
         default: {
@@ -155,7 +162,7 @@ export const Collection = () => {
         }
       }
     },
-    [address, dispatch],
+    [address, collectionAddress, dispatch],
   );
 
   const onTabsChange = useCallback(
@@ -320,12 +327,13 @@ export const Collection = () => {
         )}
 
         <TabPanel value={tab} index={ProfileTab.owned}>
-          <TabOwned isOther={!isMyCollection} />
+          <CrateItemAll isOther={!isMyCollection} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>
           <TabSale
             isOther={!isMyCollection}
+            isCollectionSale
             reload={reload(ProfileTab.sells)}
           />
         </TabPanel>

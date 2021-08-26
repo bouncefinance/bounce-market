@@ -441,7 +441,13 @@
       "other-showCase-title": "Предметов не найдено",
       "other-showCase-description": "Этот пользователь еще не владел ни одним NFT.",
       "other-Liked-title": "Предметов не найдено",
-      "other-Liked-description": "Этому пользователю еще не понравился ни один NFT."
+      "other-Liked-description": "Этому пользователю еще не понравился ни один NFT.",
+      "tab-collection": {
+        "other-onSale-title": "Предметов не найдено",
+        "other-onSale-description": "Этот автор еще не выставил ни одного предмета на продажу.",
+        "onSale-title": "Ничего не найдено",
+        "onSale-description": "Вы еще не выставили ни одного предмета на продажу."
+      }
     },
     "subscribers": "Подписчики",
     "tabs": {

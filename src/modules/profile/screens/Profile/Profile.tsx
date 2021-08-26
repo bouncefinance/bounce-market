@@ -6,7 +6,6 @@ import { UploadFileType } from 'modules/common/actions/uploadFile';
 import { Social } from 'modules/common/components/Social';
 import { featuresConfig } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
-// import { fetchActivitiesTable } from '../../actions/fetchActivitiesTable';
 import { fetchOwned } from 'modules/profile/actions/fetchOwned';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 import { fetchMyBids, fetchMySale } from 'modules/profile/actions/fetchSale';
@@ -20,10 +19,7 @@ import { SetAvatarModal } from 'modules/profile/components/SetAvatarModal';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
 import { Subscribers } from 'modules/profile/components/Subscribers';
 import { FollowGroup } from 'modules/profile/components/TabFollowing';
-import {
-  CrateItemAll,
-  TabCollection,
-} from 'modules/profile/components/TabCollection';
+import { TabCollection } from 'modules/profile/components/TabCollection';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
@@ -44,7 +40,7 @@ import { RootState } from 'store/store';
 import useCdnUrl from 'modules/common/hooks/useCdnUrl';
 
 export const Profile = () => {
-  const { tab, isCreateNft } = ProfileRoutesConfig.UserProfile.useParams();
+  const { tab } = ProfileRoutesConfig.UserProfile.useParams();
   const [isAvatarModalOpened, setAvatarModalOpened] = useState(false);
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const classes = useProfileStyles();
@@ -260,11 +256,7 @@ export const Profile = () => {
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.collections}>
-          {isCreateNft ? (
-            <CrateItemAll address={address ?? ''} />
-          ) : (
-            <TabCollection isOther={false} />
-          )}
+          <TabCollection />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>

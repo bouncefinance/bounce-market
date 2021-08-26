@@ -4,8 +4,8 @@ import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoa
 import { RouteConfiguration } from '../common/types/RouteConfiguration';
 import { PrivateRoute } from '../router/components/PrivateRoute';
 
-export const PATH_LIST_BRAND = '/brands';
-export const PATH_CREATE_BRAND = '/brand/create';
+export const PATH_LIST_BRAND = '/collectionList';
+export const PATH_CREATE_BRAND = '/collection/create';
 export const PATH_CREATE_BRAND_ITEM = '/collection/create-item/:brandId';
 export const PATH_MY_BRAND = '/my-brand/:id';
 export const PATH_BRAND = '/brand/view/:id';

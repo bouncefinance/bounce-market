@@ -454,7 +454,13 @@
       "other-showCase-title": "No items found",
       "other-showCase-description": "This user hasn't owned any NFT yet.",
       "other-Liked-title": "No items found",
-      "other-Liked-description": "This user hasn't liked any NFT yet."
+      "other-Liked-description": "This user hasn't liked any NFT yet.",
+      "tab-collection": {
+        "other-onSale-title": "No items found",
+        "other-onSale-description": "This creator hasn't listed any item for sale yet.",
+        "onSale-title": "No items found",
+        "onSale-description": "You haven’t listed any item for sale yet."
+      }
     },
     "subscribers": "Subscribers",
     "tabs": {

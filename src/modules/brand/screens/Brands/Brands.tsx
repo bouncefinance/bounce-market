@@ -52,8 +52,8 @@ export const Brands = () => {
                     <BrandsItem
                       href={
                         owneraddress &&
-                        ProfileRoutesConfig.OtherProfile.generatePath(
-                          owneraddress,
+                        ProfileRoutesConfig.Collection.generatePath(
+                          contractaddress,
                         )
                       }
                       key={id}

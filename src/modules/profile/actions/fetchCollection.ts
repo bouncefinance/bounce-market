@@ -1,5 +1,6 @@
 import { RequestAction } from '@redux-requests/core';
-import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
+import { mapNftItemData } from 'modules/api/common/itemMap';
+import { INftItem, IOriginNftItem } from 'modules/api/common/itemType';
 import { ISelectOption } from 'modules/uiKit/Select';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
@@ -8,37 +9,17 @@ interface IResponse<T> {
   msg?: string;
   data: T;
 }
-interface ICollectionItem {
-  contractaddress: string;
-  creatoraddress: string;
-  creatorimage: string;
-  creatorname: string;
-  fileurl: string;
-  itemname: string;
-  itemsymbol: string;
-  likecount: number;
-  standard: 1 | 0;
-  balance: number;
-  supply: number;
-  tokenid: number;
-  mylikecount: number;
-  isLike: boolean;
-  category: ProductCardCategoryType;
-}
-
-export type INftItem = ICollectionItem;
 
 interface ICollectionClassItem {
   brandsymbol: string;
 }
-export type ICollectionData = ICollectionItem[];
 type ICollectionClassData = ICollectionClassItem[];
 interface IFetchCollectionArgs {
   address: string;
   className?: string;
 }
 export const fetchCollection = createSmartAction<
-  RequestAction<IResponse<ICollectionData>, ICollectionData>,
+  RequestAction<IResponse<IOriginNftItem[]>, INftItem[]>,
   [IFetchCollectionArgs]
 >('fetchCollection', ({ address, className = '' }: IFetchCollectionArgs) => ({
   request: {
@@ -58,12 +39,7 @@ export const fetchCollection = createSmartAction<
         console.error('fetchCollection:', data?.msg ?? 'Unexpected error');
         return [];
       }
-      return (
-        data?.data?.map(item => ({
-          ...item,
-          isLike: Boolean(item.mylikecount),
-        })) ?? []
-      );
+      return mapNftItemData(data?.data ?? []);
     },
   },
 }));
