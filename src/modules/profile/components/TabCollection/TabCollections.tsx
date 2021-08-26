@@ -56,7 +56,6 @@ export const TabCollection: React.FC<{
                     <CollectionNFTItems
                       ownerAddress={brand.owneraddress}
                       contractAddress={brand.contract}
-                      brandId={brand.id}
                     />
                   }
                   handelOpenRoyalty={handelOpenRoyalty}

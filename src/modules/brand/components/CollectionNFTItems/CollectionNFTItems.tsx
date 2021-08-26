@@ -37,14 +37,12 @@ interface IBrandNFTItemsProps {
   className?: string;
   ownerAddress: string;
   contractAddress: string;
-  brandId: number;
 }
 
 export const CollectionNFTItems = ({
   className,
   ownerAddress,
   contractAddress,
-  brandId,
 }: IBrandNFTItemsProps) => {
   const classes = useCollectionNFTItemsStyles();
   const dispatchRequest = useDispatchRequest();
