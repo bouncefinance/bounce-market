@@ -5,7 +5,6 @@ export const useTimerStyles = makeStyles<Theme>(theme => ({
     display: 'grid',
     gridTemplateRows: '1fr auto',
     rowGap: 7,
-    // alignItems: 'center',
 
     color: theme.palette.text.secondary,
     fontWeight: 500,
@@ -39,6 +38,7 @@ export const useTimerStyles = makeStyles<Theme>(theme => ({
     fontWeight: 500,
     userSelect: 'none',
     borderRadius: 30,
+    whiteSpace: 'nowrap',
   },
   timeLeftText: {
     color: theme.palette.text.secondary,

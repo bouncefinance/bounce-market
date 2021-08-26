@@ -111,7 +111,10 @@
       "standard": "Стандарт",
       "supply": "Выпущено"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "title": "Создать NFT",
@@ -133,7 +136,10 @@
       "description": "Какая история стоит за этим NFT?"
     },
     "next": "Next",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "time": "",
@@ -433,7 +439,13 @@
       "other-showCase-title": "Предметов не найдено",
       "other-showCase-description": "Этот пользователь еще не владел ни одним NFT.",
       "other-Liked-title": "Предметов не найдено",
-      "other-Liked-description": "Этому пользователю еще не понравился ни один NFT."
+      "other-Liked-description": "Этому пользователю еще не понравился ни один NFT.",
+      "tab-collection": {
+        "other-onSale-title": "Предметов не найдено",
+        "other-onSale-description": "Этот автор еще не выставил ни одного предмета на продажу.",
+        "onSale-title": "Ничего не найдено",
+        "onSale-description": "Вы еще не выставили ни одного предмета на продажу."
+      }
     },
     "subscribers": "Подписчики",
     "tabs": {
@@ -447,7 +459,7 @@
       "my-collections": "Мои коллекции",
       "showcase": "Витрина",
       "my-sells": "Мои продажи",
-      "all-item":"Все предметы"
+      "all-item": "Все предметы"
     },
     "unfollow": "Отписаться",
     "user-profile": "Профиль пользователя"

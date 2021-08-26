@@ -1,10 +1,10 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { Store } from '@reduxjs/toolkit';
+import { INftItem } from 'modules/api/common/itemType';
 import { IResponse } from 'modules/common/types/ResponseData';
 import { NotificationActions } from 'modules/notification/store/NotificationActions';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
-import { INftItem } from './fetchCollection';
 import { showSuccesNotify } from './showSuccesNotify';
 
 export type IMyOwnedData = INftItem[];
