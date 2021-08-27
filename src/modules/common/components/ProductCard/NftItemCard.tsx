@@ -10,14 +10,17 @@ export const NftItemCard = ({
   tokenSymbol = TokenSymbol.BNB,
   isOther = false,
   isTotalSupply,
+  hasAction,
 }: {
   item: INftItem;
   tokenSymbol: string;
   isOther?: boolean;
   isTotalSupply?: boolean;
+  hasAction?: boolean;
 }) => {
   return (
     <ProductCard
+      hasAction={hasAction}
       id={item.tokenId}
       poolId={0}
       isItemType

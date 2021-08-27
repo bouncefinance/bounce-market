@@ -36,6 +36,7 @@ export const TabOwned: React.FC<{
               isTotalSupply={
                 !Boolean(artAddress && address && compare(artAddress, address))
               }
+              hasAction={Boolean(artAddress && compare(artAddress, address))}
             />
           ))
         )}
