@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 import { AuctionState } from 'modules/api/common/AuctionState';
-import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { getNftAvatars } from 'modules/api/common/nftCardMap';
 import {
