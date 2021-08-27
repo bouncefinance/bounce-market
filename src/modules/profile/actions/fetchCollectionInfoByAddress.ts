@@ -16,6 +16,7 @@ export interface ICollectionItem {
   identity: number;
   imgurl: string;
   owneraddress: string;
+  isplatform: 0 | 1;
   ownerimg: string;
   ownername: string;
   popularweight: number;

@@ -8,7 +8,7 @@ import {
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
 import classNames from 'classnames';
-import { INftItem } from 'modules/api/common/itemType';
+import { INftItem, PlatformType } from 'modules/api/common/itemType';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { AngleLeftIcon } from 'modules/common/components/Icons/AngleLeftIcon';
 import { AngleRightIcon } from 'modules/common/components/Icons/AngleRightIcon';
@@ -59,6 +59,7 @@ export const CollectionNFTItems = ({
         {
           address: ownerAddress,
           className: contractAddress,
+          isPlatform: PlatformType.SELF,
         },
         { requestKey: contractAddress },
       ),

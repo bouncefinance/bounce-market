@@ -144,6 +144,7 @@ export const Collection = () => {
             fetchCollection({
               address: address,
               className: collectionAddress,
+              isPlatform: collectionInfo.isplatform,
             }),
           );
           break;
@@ -162,7 +163,14 @@ export const Collection = () => {
         }
       }
     },
-    [address, collectionAddress, dispatch, collectionInfo?.owneraddress, art],
+    [
+      address,
+      collectionAddress,
+      dispatch,
+      collectionInfo?.owneraddress,
+      collectionInfo?.isplatform,
+      art,
+    ],
   );
 
   const onTabsChange = useCallback(
