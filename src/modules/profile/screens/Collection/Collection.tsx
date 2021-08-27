@@ -142,7 +142,7 @@ export const Collection = () => {
         case ProfileTab.owned: {
           dispatch(
             fetchCollection({
-              address: collectionInfo?.owneraddress || '',
+              address: address,
               className: collectionAddress,
             }),
           );

@@ -48,7 +48,7 @@ export const dealAccountLike = createAction<
       return request;
     },
     getData: data => {
-      if (data.code !== 1) {
+      if (data.code !== 200) {
         return new Error(data.msg);
       }
 

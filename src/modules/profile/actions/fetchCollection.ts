@@ -25,7 +25,7 @@ export const fetchCollection = createSmartAction<
   'fetchCollection',
   ({ address, className = '' }: IFetchCollectionArgs, meta?: any) => ({
     request: {
-      url: '/getmycollectionbyfilter',
+      url: '/get_collection_allitems',
       method: 'post',
       data: {
         accountaddress: address,
