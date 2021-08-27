@@ -1,6 +1,7 @@
 import { RequestAction, RequestActionMeta } from '@redux-requests/core';
 import { mapNftItemData } from 'modules/api/common/itemMap';
 import { INftItem, IOriginNftItem } from 'modules/api/common/itemType';
+import { isOtherPlatformCode } from 'modules/common/conts';
 import { ISelectOption } from 'modules/uiKit/Select';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
@@ -16,6 +17,7 @@ interface ICollectionClassItem {
 type ICollectionClassData = ICollectionClassItem[];
 interface IFetchCollectionArgs {
   address: string;
+  isPlatform: number;
   className?: string;
 }
 export const fetchCollection = createSmartAction<
@@ -23,9 +25,15 @@ export const fetchCollection = createSmartAction<
   [IFetchCollectionArgs, RequestActionMeta<IOriginNftItem[], INftItem[]>?]
 >(
   'fetchCollection',
-  ({ address, className = '' }: IFetchCollectionArgs, meta?: any) => ({
+  (
+    { address, className = '', isPlatform }: IFetchCollectionArgs,
+    meta?: any,
+  ) => ({
     request: {
-      url: '/get_collection_allitems',
+      url:
+        isPlatform !== isOtherPlatformCode
+          ? 'getmycollectionbyfilter'
+          : '/get_collection_allitems',
       method: 'post',
       data: {
         accountaddress: address,

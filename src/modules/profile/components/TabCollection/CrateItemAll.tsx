@@ -35,6 +35,7 @@ export const CrateItemAll: React.FC<{
               isOther={isOther}
               tokenSymbol=""
               isTotalSupply={!Boolean(address && compare(artAddress, address))}
+              hasAction={Boolean(artAddress && compare(artAddress, address))}
             />
           ))
         )}

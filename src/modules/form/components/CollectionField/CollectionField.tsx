@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { NftType } from 'modules/api/common/NftType';
 import { Img } from 'modules/uiKit/Img';
 import { Tooltip } from '@material-ui/core';
+import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 
 export interface ICollectionItem {
   id: number;
@@ -81,7 +82,7 @@ export const CollectionField = memo(
           <SwiperSlide
             className={classes.collectionCard}
             onClick={() => {
-              history.push('/brand/create');
+              history.push(BrandRoutesConfig.CreateBrand.generatePath());
             }}
           >
             <AddIcon />

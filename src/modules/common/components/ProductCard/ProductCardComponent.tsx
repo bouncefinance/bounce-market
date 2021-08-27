@@ -193,7 +193,7 @@ export const ProductCardComponent = ({
       placement="top"
       classes={TooltipClasses}
     >
-      <div className={classes.info}>
+      <div className={classNames(classes.info, classes.itemCopiesInfo)}>
         <LayersIcon
           className={classNames(classes.icon, classes.iconRightOffset)}
         />

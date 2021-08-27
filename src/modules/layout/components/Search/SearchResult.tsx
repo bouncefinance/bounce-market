@@ -4,7 +4,6 @@ import { QueryLoadingCentered } from 'modules/common/components/QueryLoading/Que
 import { getNativeTokenSymbol } from 'modules/common/conts';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { BrandRoutesConfig } from '../../../brand/BrandRoutes';
 import { BuyNFTRoutesConfig } from '../../../buyNFT/BuyNFTRoutes';
 import { DefaultRandomAvatar } from '../../../common/components/DefaultRandomAvatar';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
@@ -87,9 +86,9 @@ const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
       <div className={classes.title}>{t('header.search.collections')}</div>
       {data.map((item: ISearchBrand) => (
         <RouterLink
-          to={BrandRoutesConfig.Brand.generatePath(item.id)}
+          to={ProfileRoutesConfig.Collection.generatePath(item.contractAddress)}
           className={classes.content}
-          key={item.id}
+          key={item.contractAddress}
         >
           <div className={classes.preview}>
             <Img

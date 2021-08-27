@@ -180,6 +180,9 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     fontSize: 13,
     color: fade(theme.palette.text.primary, 0.5),
   },
+  itemCopiesInfo: {
+    width: 84,
+  },
 
   ratio: {
     display: 'grid',

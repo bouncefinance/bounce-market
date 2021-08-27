@@ -22,10 +22,6 @@ import { UploadFileField } from '../../../form/components/UploadFileField';
 import { FormErrors } from '../../../form/utils/FormErrors';
 import { t } from '../../../i18n/utils/intl';
 import { GoBack } from '../../../layout/components/GoBack';
-import {
-  ProfileRoutesConfig,
-  ProfileTab,
-} from '../../../profile/ProfileRoutes';
 
 const MAX_SIZE: Bytes = 31457280;
 const FILE_ACCEPTS: string[] = [
@@ -84,7 +80,7 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
 export const CreateCollectionItem = () => {
   const classes = useCreateNFTStyles();
   const dispatch = useDispatchRequest();
-  const { push } = useHistory();
+  const { goBack } = useHistory();
   const { address } = useAccount();
   const { brandId } = useParams<any>();
   const [brandInfo, setBrandInfo] = useState<IBrandInfo>();
@@ -123,16 +119,12 @@ export const CreateCollectionItem = () => {
           ),
         ).then(({ error }) => {
           if (!error) {
-            push(
-              ProfileRoutesConfig.UserProfile.generatePath(
-                ProfileTab.collections,
-              ),
-            );
+            goBack();
           }
         });
       }
     },
-    [brandInfo, dispatch, push],
+    [brandInfo, dispatch, goBack],
   );
 
   const channelOptions = useMemo(
