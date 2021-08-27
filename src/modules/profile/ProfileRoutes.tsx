@@ -11,7 +11,7 @@ export const PATH_OTHER_PROFILE = `${PATH_PROFILE_BASE}/address/:address`;
 export const PATH_OTHER_PROFILE_TABS = `${PATH_OTHER_PROFILE}??id=:id?&tab=:tab?`;
 export const PATH_EDIT_PROFILE = `${PATH_PROFILE_BASE}/edit`;
 export const PATH_COLLECTION_BASE = `/collection`;
-export const PATH_COLLECTION_PROFILE = `${PATH_COLLECTION_BASE}?address=:address&tab=:tab?`;
+export const PATH_COLLECTION_PROFILE = `${PATH_COLLECTION_BASE}?address=:address&art=:art&tab=:tab?`;
 
 export const USER_CREATE_NFT_PROFILE = 'createNft';
 export type USER_CREATE_NFT_PROFILE_TYPE = 'createNft';
@@ -103,10 +103,11 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
 
   Collection: {
     path: PATH_COLLECTION_BASE,
-    generatePath: (address?: string, tab?: ProfileTab) => {
+    generatePath: (address?: string, tab?: ProfileTab, art?: string) => {
       return generatePath(PATH_COLLECTION_PROFILE, {
         address,
         tab: tab ?? defaultCollectionTab,
+        art: art ?? '_',
       });
     },
     useParams: () => {
@@ -114,6 +115,7 @@ export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
       return {
         address: query.get('address'),
         tab: query.get('tab') || defaultCollectionTab,
+        art: query.get('art'),
       };
     },
   },

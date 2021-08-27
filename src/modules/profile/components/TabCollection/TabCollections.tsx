@@ -61,6 +61,8 @@ export const TabCollection: React.FC<{
                   handelOpenRoyalty={handelOpenRoyalty}
                   href={ProfileRoutesConfig.Collection.generatePath(
                     brand.contract,
+                    undefined,
+                    'art',
                   )}
                   currentRoyalty={brand.currentroyalty}
                 />

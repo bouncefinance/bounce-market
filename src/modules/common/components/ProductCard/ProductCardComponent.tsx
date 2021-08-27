@@ -92,6 +92,7 @@ export interface IProductCardComponentProps {
   soldData?: ISoldData;
   reload?: () => void;
   isOther?: boolean;
+  isTotalSupply?: boolean;
 }
 
 export const ProductCardComponent = ({
@@ -133,6 +134,7 @@ export const ProductCardComponent = ({
   isBidderClaimed = false,
   isCreatorClaimed = false,
   isOther = false,
+  isTotalSupply,
   reload,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect, chainId } = useAccount();
@@ -177,9 +179,10 @@ export const ProductCardComponent = ({
     arrow: classes.avatarTipsText,
   };
 
-  const isOnlyTotalSupply = Boolean(
-    isOther || parseInt((copiesBalance ?? 0).toString(), 10) === 0,
-  );
+  // const isOnlyTotalSupply = Boolean(
+  //   isOther || parseInt((copiesBalance ?? 0).toString(), 10) === 0,
+  // );
+  const isOnlyTotalSupply = isTotalSupply === true;
   const renderedCopies = (
     <Tooltip
       title={

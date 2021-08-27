@@ -9,10 +9,12 @@ export const NftItemCard = ({
   item,
   tokenSymbol = TokenSymbol.BNB,
   isOther = false,
+  isTotalSupply,
 }: {
   item: INftItem;
   tokenSymbol: string;
   isOther?: boolean;
+  isTotalSupply?: boolean;
 }) => {
   return (
     <ProductCard
@@ -45,6 +47,7 @@ export const NftItemCard = ({
             )
       }
       isOther={isOther}
+      isTotalSupply={isTotalSupply}
       profileInfo={
         <CardProfileInfo
           subTitle="Creator"

@@ -29,6 +29,7 @@ export const TabLiked: React.FC<{ isOther?: boolean }> = function ({
               item={item}
               isOther={isOther}
               tokenSymbol={(data as any)?.tokenSymbol}
+              isTotalSupply
             />
           ))
         )}
