@@ -87,9 +87,9 @@ const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
       <div className={classes.title}>{t('header.search.collections')}</div>
       {data.map((item: ISearchBrand) => (
         <RouterLink
-          to={BrandRoutesConfig.Brand.generatePath(item.id)}
+          to={ProfileRoutesConfig.Collection.generatePath(item.contractAddress)}
           className={classes.content}
-          key={item.id}
+          key={item.contractAddress}
         >
           <div className={classes.preview}>
             <Img

@@ -84,7 +84,7 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
 export const CreateCollectionItem = () => {
   const classes = useCreateNFTStyles();
   const dispatch = useDispatchRequest();
-  const { push } = useHistory();
+  const { push, goBack } = useHistory();
   const { address } = useAccount();
   const { brandId } = useParams<any>();
   const [brandInfo, setBrandInfo] = useState<IBrandInfo>();
@@ -123,16 +123,12 @@ export const CreateCollectionItem = () => {
           ),
         ).then(({ error }) => {
           if (!error) {
-            push(
-              ProfileRoutesConfig.UserProfile.generatePath(
-                ProfileTab.collections,
-              ),
-            );
+            goBack();
           }
         });
       }
     },
-    [brandInfo, dispatch, push],
+    [brandInfo, dispatch, goBack],
   );
 
   const channelOptions = useMemo(
