@@ -11,6 +11,8 @@ export const useSocialStyles = makeStyles<Theme>(theme => ({
 
   item: {
     padding: theme.spacing(0, 1),
+    display: 'flex',
+    alignItems: 'center',
   },
 
   icon: {
