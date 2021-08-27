@@ -19,9 +19,10 @@ interface LinkListProps {
     title: string;
     url: string;
   }[];
+  notBlank?: boolean;
 }
 
-const LinkList: React.FC<LinkListProps> = ({ listTitle, links }) => {
+const LinkList: React.FC<LinkListProps> = ({ listTitle, links, notBlank }) => {
   const X_SPACING = 1.25;
 
   const useLinkListStyles = makeStyles<Theme>(theme => ({
@@ -68,7 +69,7 @@ const LinkList: React.FC<LinkListProps> = ({ listTitle, links }) => {
           <li className={classes.listItem} key={uid(title)}>
             <a
               className={classes.a}
-              target="_blank"
+              target={notBlank ? '_self' : '_blank'}
               rel="noreferrer"
               href={url}
             >
@@ -130,7 +131,7 @@ export const Footer = () => {
             <LogoByBounce />
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={2}>
-            <LinkList {...companyLinkObj} />
+            <LinkList {...companyLinkObj} notBlank />
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={2}>
             <LinkList {...helpLinkObj} />
