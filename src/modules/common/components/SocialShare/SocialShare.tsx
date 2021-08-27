@@ -59,7 +59,7 @@ export const SocialShare = ({
           url={url}
           title={titleForSocial}
           hashtags={['Fangible', 'nft']}
-          via={'Fangible'}
+          via={'Fangible_'}
           related={['@Fangible_']}
         >
           <TwitterIcon className={classes.menuIcon} />
