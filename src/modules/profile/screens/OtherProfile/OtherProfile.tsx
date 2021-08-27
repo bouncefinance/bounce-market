@@ -224,7 +224,7 @@ export const OtherProfile = () => {
             </TabPanel>
 
             <TabPanel value={tab} index={ProfileTab.collections}>
-              <TabCollection address={address} />
+              <TabCollection address={address} isOther />
             </TabPanel>
 
             <TabPanel value={tab} index={ProfileTab.sells}>

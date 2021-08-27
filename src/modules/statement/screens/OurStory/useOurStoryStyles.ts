@@ -16,10 +16,22 @@ export const useOurStoryStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     flexDirection: 'column',
     width: '100%',
-    '& img': {
-      objectFit: 'contain',
-      width: '100%',
-      height: 'auto',
+    overflow: 'hidden',
+
+    [theme.breakpoints.up('sm')]: {
+      '& img': {
+        objectFit: 'contain',
+        width: '100%',
+        height: 'auto',
+      },
+    },
+
+    [theme.breakpoints.down('sm')]: {
+      '& img': {
+        objectFit: 'fill',
+        // width: '100%',
+        height: '120px',
+      },
     },
   },
 }));

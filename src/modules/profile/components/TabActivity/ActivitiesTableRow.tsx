@@ -196,24 +196,14 @@ export const ActivitiesTableRow = ({
       <TableCell>
         {tabKey === ActivityKeys.Sales
           ? item.to && (
-              // <Link
-              //   target="_blank"
-              //   to={ProfileRoutesConfig.OtherProfile.generatePath(item.to)}
-              // >
               <UserIcon url={item.toUrl} name={item.toName} address={item.to} />
-              // </Link>
             )
           : item.from && (
-              // <Link
-              //   target="_blank"
-              //   to={ProfileRoutesConfig.OtherProfile.generatePath(item.from)}
-              // >
               <UserIcon
                 url={item.fromUrl}
                 name={item.fromName}
                 address={item.from}
               />
-              // </Link>
             )}
       </TableCell>
       <TableCell>{formatDate(item.ctime)}</TableCell>
