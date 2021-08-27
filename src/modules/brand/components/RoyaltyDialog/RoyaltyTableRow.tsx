@@ -95,11 +95,11 @@ export const RoyaltyTableRow = ({
       <TableCell>{renderItemPreview(category)}</TableCell>
       <TableCell>
         {' '}
-        {price.dp(4, 1).toString()} {symbol}
+        {price.dp(6, 1).toString()} {symbol}
       </TableCell>
       <TableCell>{quantity}</TableCell>
       <TableCell>
-        {fee.dp(4, 1).toString()} {symbol}
+        {fee.dp(6, 1).toString()} {symbol}
       </TableCell>
       <TableCell>
         <div className={classes.ctime}>
