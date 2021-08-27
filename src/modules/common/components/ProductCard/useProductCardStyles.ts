@@ -179,7 +179,6 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     alignItems: 'center',
     fontSize: 13,
     color: fade(theme.palette.text.primary, 0.5),
-    width: 84,
   },
 
   ratio: {

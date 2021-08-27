@@ -193,7 +193,7 @@ export const ProductCardComponent = ({
       placement="top"
       classes={TooltipClasses}
     >
-      <div className={classes.info}>
+      <div className={classes.info} style={{ width: '84px' }}>
         <LayersIcon
           className={classNames(classes.icon, classes.iconRightOffset)}
         />
