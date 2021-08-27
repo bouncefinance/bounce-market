@@ -179,9 +179,6 @@ export const ProductCardComponent = ({
     arrow: classes.avatarTipsText,
   };
 
-  // const isOnlyTotalSupply = Boolean(
-  //   isOther || parseInt((copiesBalance ?? 0).toString(), 10) === 0,
-  // );
   const isOnlyTotalSupply = isTotalSupply === true;
   const renderedCopies = (
     <Tooltip
