@@ -48,11 +48,13 @@ import { BrandRoutesConfig } from 'modules/brand/BrandRoutes';
 import { resetRequests } from '@redux-requests/core';
 import { CrateItemAll } from 'modules/profile/components/TabCollection';
 import { fetchCollection } from 'modules/profile/actions/fetchCollection';
+import { compare } from 'modules/brand/api/queryBrand';
 
 export const Collection = () => {
   const {
     tab,
     address: collectionAddress,
+    art,
   } = ProfileRoutesConfig.Collection.useParams();
   const [isMyCollection, setIsMyCollection] = useState(false);
   const classes = useCollectionStyles();
@@ -113,9 +115,7 @@ export const Collection = () => {
 
   useEffect(() => {
     if (!address) return;
-    const isMyCollection =
-      String(address).toLowerCase() ===
-      String(collectionInfo?.owneraddress).toLowerCase();
+    const isMyCollection = compare(address, collectionInfo?.owneraddress || '');
     setIsMyCollection(isMyCollection);
   }, [address, collectionInfo]);
 
@@ -142,7 +142,7 @@ export const Collection = () => {
         case ProfileTab.owned: {
           dispatch(
             fetchCollection({
-              address: collectionInfo?.owneraddress || '',
+              address: address,
               className: collectionAddress,
             }),
           );
@@ -151,7 +151,7 @@ export const Collection = () => {
         case ProfileTab.sells: {
           dispatch(
             fetchCollectionSale({
-              address: collectionInfo?.owneraddress || '',
+              address: art === 'art' ? collectionInfo?.owneraddress || '' : '',
               collectionAddress,
             }),
           );
@@ -162,17 +162,21 @@ export const Collection = () => {
         }
       }
     },
-    [address, collectionAddress, dispatch, collectionInfo?.owneraddress],
+    [address, collectionAddress, dispatch, collectionInfo?.owneraddress, art],
   );
 
   const onTabsChange = useCallback(
     (_, value) => {
       replace(
-        ProfileRoutesConfig.Collection.generatePath(collectionAddress, value),
+        ProfileRoutesConfig.Collection.generatePath(
+          collectionAddress,
+          value,
+          art,
+        ),
       );
       updateData(value);
     },
-    [replace, updateData, collectionAddress],
+    [replace, updateData, collectionAddress, art],
   );
 
   useEffect(() => {
@@ -330,7 +334,10 @@ export const Collection = () => {
         </Box>
 
         <TabPanel value={tab} index={ProfileTab.owned}>
-          <CrateItemAll isOther={!isMyCollection} />
+          <CrateItemAll
+            artAddress={collectionInfo?.owneraddress || ''}
+            isOther={!isMyCollection}
+          />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>

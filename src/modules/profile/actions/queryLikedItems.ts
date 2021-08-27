@@ -11,7 +11,10 @@ import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { IResponse } from 'modules/common/types/ResponseData';
 import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
-import { setLikesMapDataAsync } from 'modules/common/store/like';
+import {
+  setLikeCountAsync,
+  setLikesMapDataAsync,
+} from 'modules/common/store/like';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState, store } from 'store';
 import { INftItem, IOriginNftItem } from 'modules/api/common/itemType';
@@ -94,7 +97,8 @@ export const queryLikedItems = createSmartAction<
 
       const likes = mapNftItemData(data.data);
 
-      setLikesMapDataAsync(likes)(store.dispatch);
+      setLikesMapDataAsync(likes)(store.dispatch, store.getState());
+      setLikeCountAsync(likes.length)(store.dispatch);
       return likes;
     },
     onSuccess: addTokenSymbolByDriver,

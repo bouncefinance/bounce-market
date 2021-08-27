@@ -4,9 +4,13 @@ import {
   useQuery,
 } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import {
+  setLikeCountAsync,
+  setLikesMapDataAsync,
+} from 'modules/common/store/like';
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from 'store/store';
+import { RootState, store } from 'store/store';
 import { dealAccountLike } from '../actions/dealAccountLike';
 import { ILikedItem, queryLikedItems } from '../actions/queryLikedItems';
 
@@ -46,7 +50,7 @@ export const useLike = ({
   const requestKey = `/${id}`;
 
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(count);
+  let [likeCount, setLikeCount] = useState(count);
   const { listMap: likesMap } = useSelector<RootState, RootState['like']>(
     state => state.like,
   );
@@ -55,10 +59,7 @@ export const useLike = ({
     const _likeInfo = likesMap?.get(id.toString());
     setIsLiked(Boolean(_likeInfo?.isLike));
     if (_likeInfo?.likeCount !== undefined) {
-      setLikeCount(_likeInfo?.likeCount);
-    }
-    if (_likeInfo === undefined && likeCount !== count) {
-      setLikeCount(count);
+      setLikeCount(_likeInfo.likeCount);
     }
   }, [id, likesMap, count, likeCount]);
 
@@ -91,8 +92,19 @@ export const useLike = ({
       }),
     );
     dispatch(queryLikedItems());
-    if (likeData?.code === 1) {
-      setIsLiked(!isLiked);
+    if (likeData?.code === 200) {
+      const myLikeCount = likeData?.data?.mylikecount;
+      const likeCount = likeData?.data?.likecount;
+      if (likeCount !== undefined && myLikeCount !== undefined) {
+        const isLike = Boolean(myLikeCount);
+        setLikeCount(likeCount);
+        setIsLiked(isLike);
+        setLikesMapDataAsync([{ itemId: id, isLike, likeCount, poolId: 0 }])(
+          dispatch,
+          store.getState(),
+        );
+        setLikeCountAsync(likeData?.data?.myliketotal)(dispatch);
+      }
     }
   }, [
     category,

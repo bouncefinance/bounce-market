@@ -220,11 +220,11 @@ export const OtherProfile = () => {
         {isConnected ? (
           <>
             <TabPanel value={tab} index={ProfileTab.owned}>
-              <TabOwned isOther />
+              <TabOwned isOther address={address} />
             </TabPanel>
 
             <TabPanel value={tab} index={ProfileTab.collections}>
-              <TabCollection />
+              <TabCollection address={address} />
             </TabPanel>
 
             <TabPanel value={tab} index={ProfileTab.sells}>

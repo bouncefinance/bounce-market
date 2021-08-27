@@ -125,20 +125,30 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     display: 'grid',
     alignItems: 'center',
     gridTemplateRows: '1fr 1fr',
+    gridTemplateColumns: 'auto max-content',
     rowGap: theme.spacing(0.6),
     marginTop: 'auto',
+    gridTemplateAreas: `'a c' 'b c'`,
   },
 
   saleType: {
     fontSize: 14,
     lineHeight: '17px',
     opacity: 0.4,
+    gridArea: 'a',
   },
 
   price: {
     fontSize: 15,
     lineHeight: '18px',
     fontWeight: 'bold',
+    gridArea: 'b',
+    whiteSpace: 'nowrap',
+  },
+
+  infoRight: {
+    gridArea: 'c',
+    textAlign: 'center',
   },
 
   meta: {
@@ -161,7 +171,6 @@ export const useProductCardStyles = makeStyles<Theme>(theme => ({
     display: 'grid',
     alignItems: 'center',
     gridTemplateColumns: 'max-content auto',
-    gap: theme.spacing(0, 1.5),
     marginTop: 5,
   },
 

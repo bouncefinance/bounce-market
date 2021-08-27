@@ -9,13 +9,17 @@ import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
 import { INftItem } from 'modules/api/common/itemType';
 import { NftItemCard } from 'modules/common/components/ProductCard/NftItemCard';
+import { useWeb3React } from 'modules/account/hooks/useWeb3React';
+import { compare } from 'modules/brand/api/queryBrand';
 
-export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
-  isOther = false,
-}) {
+export const TabOwned: React.FC<{
+  isOther?: boolean;
+  address?: string;
+}> = function ({ isOther = false, address: artAddress }) {
   const { data, loading } = useQuery<INftItem[]>({
     type: fetchOwned.toString(),
   });
+  const { address } = useWeb3React();
 
   return (
     <TabItemsComponent>
@@ -29,6 +33,9 @@ export const TabOwned: React.FC<{ isOther?: boolean }> = function ({
               item={item}
               isOther={isOther}
               tokenSymbol={(data as any)?.tokenSymbol}
+              isTotalSupply={
+                !Boolean(artAddress && address && compare(artAddress, address))
+              }
             />
           ))
         )}

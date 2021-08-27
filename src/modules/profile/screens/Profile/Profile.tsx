@@ -252,7 +252,7 @@ export const Profile = () => {
         </Tabs>
 
         <TabPanel value={tab} index={ProfileTab.owned}>
-          <TabOwned />
+          <TabOwned address={address} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.collections}>

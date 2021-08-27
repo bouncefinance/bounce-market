@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { INftItem } from 'modules/api/common/itemType';
+import { RootState } from 'store';
 import { getPoolKey } from '../utils/poolHelps';
 
 type listMapType = Map<string, { isLike: boolean; likeCount: number }>;
@@ -27,10 +27,15 @@ export const likeSlice = createSlice({
 });
 const { updateLikeMap, updateLikeCount } = likeSlice.actions;
 
-export const setLikesMapDataAsync = (likes: INftItem[]) => async (
-  dispatch: any,
-) => {
-  const map: listMapType = new Map();
+export const setLikesMapDataAsync = (
+  likes: {
+    isLike: boolean;
+    itemId: number;
+    likeCount: number;
+    poolId?: number;
+  }[],
+) => async (dispatch: any, state: RootState) => {
+  const map: listMapType = new Map([...state.like.listMap]);
   (likes ?? []).forEach(like => {
     map.set(
       like?.poolId !== 0
@@ -42,11 +47,14 @@ export const setLikesMapDataAsync = (likes: INftItem[]) => async (
           )
         : like.itemId.toString(),
       {
-        isLike: true,
+        isLike: like.isLike,
         likeCount: like.likeCount,
       },
     );
   });
   dispatch(updateLikeMap(map));
-  dispatch(updateLikeCount(likes.length));
+};
+
+export const setLikeCountAsync = (count: number) => async (dispatch: any) => {
+  dispatch(updateLikeCount(count));
 };

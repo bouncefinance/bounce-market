@@ -39,6 +39,7 @@ export interface IProductCardProps
   isBidderClaimed?: boolean;
   isCreatorClaimed?: boolean;
   isOther?: boolean;
+  isTotalSupply?: boolean;
   reload?: () => void;
 }
 
