@@ -86,28 +86,36 @@ export const BuyItemNFT = () => {
             ]}
           />
         );
-
-        const renderedOwner = poolDetails.collection?.name ? (
-          <>
-            {poolDetails?.owners?.slice(0, 1)?.map(item => (
-              <ProfileInfo
-                subTitle={t('details-nft.role.collection')}
-                title={wrapperTitle(
-                  poolDetails.collection.name,
-                  poolDetails.collection.address,
-                )}
-                users={[
-                  {
-                    name: poolDetails.collection.name,
-                    avatar: poolDetails.collection.avatar,
-                  },
-                ]}
-              />
-            ))}
-          </>
-        ) : (
-          <></>
-        );
+        const shieldNameList = ['', 'BOUNCE'];
+        const renderedCollection = () => {
+          return !shieldNameList.includes(
+            poolDetails?.collection.name || '',
+          ) ? (
+            <>
+              {poolDetails?.owners?.slice(0, 1)?.map(pool => (
+                <ProfileInfo
+                  subTitle={t('details-nft.role.collection')}
+                  title={wrapperTitle(
+                    poolDetails.collection.name,
+                    poolDetails.collection.address,
+                  )}
+                  users={[
+                    {
+                      name: poolDetails.collection.name,
+                      avatar: poolDetails.collection.avatar,
+                      href: ProfileRoutesConfig.Collection.generatePath(
+                        poolDetails.collection.address,
+                      ),
+                      verified: item?.identity === UserRoleEnum.Verified,
+                    },
+                  ]}
+                />
+              ))}
+            </>
+          ) : (
+            <></>
+          );
+        };
         const renderedOnwersList = (
           <InfoTabsList>
             {poolDetails?.owners?.map(item => {
@@ -175,7 +183,7 @@ export const BuyItemNFT = () => {
                 currentPage="itemDetail"
                 copiesTotal={item.supply}
                 creator={renderedCreator}
-                owner={renderedOwner}
+                owner={renderedCollection()}
                 LikeBtn={<></>}
               />
               <InfoTabs
