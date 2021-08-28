@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 import { AuctionState } from 'modules/api/common/AuctionState';
-import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { getNftAvatars } from 'modules/api/common/nftCardMap';
 import {
@@ -14,9 +13,8 @@ import Web3 from 'web3';
 
 export const mapPoolData = (data: OriginIPoolNftItem[]): IPoolNftItem[] => {
   return data.map(item => {
-    const isEnglishAuction = !isFixedSwap(
-      (item.pooltype as unknown) as AuctionType,
-    );
+    const poolType = auctionTypeMap[item.pooltype ?? item.auction_type];
+    const isEnglishAuction = !isFixedSwap(poolType);
     const liveSate = isEnglishAuction ? AuctionState.Live : FixedSwapState.Live;
     const closeSate = isEnglishAuction
       ? AuctionState.Claimed
@@ -30,7 +28,7 @@ export const mapPoolData = (data: OriginIPoolNftItem[]): IPoolNftItem[] => {
       price: new BigNumber(Web3.utils.fromWei(item.price)),
       openAt,
       closeAt,
-      poolType: auctionTypeMap[item.pooltype ?? item.auction_type],
+      poolType,
       state: item.state === 0 ? liveSate : closeSate,
       isLive: item.state === 0,
       isClose: item.state === 1,

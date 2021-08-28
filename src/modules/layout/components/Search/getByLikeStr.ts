@@ -81,8 +81,8 @@ export interface ISearchItem {
 }
 
 export interface ISearchBrand {
-  id: number;
   name: string;
+  contractAddress: string;
   previewUrl: string;
 }
 
@@ -122,7 +122,7 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
     brands: brands
       .sort((a, b) => b.popularweight - a.popularweight)
       .map(item => ({
-        id: item.id,
+        contractAddress: item.contractaddress,
         name: item.brandname,
         previewUrl: item.imgurl,
       })),

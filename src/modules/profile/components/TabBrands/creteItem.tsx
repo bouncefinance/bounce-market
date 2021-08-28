@@ -29,6 +29,7 @@ import {
   queryLikedItems,
 } from 'modules/profile/actions/queryLikedItems';
 import { useLikesMap } from 'modules/common/hooks/usePoolList';
+import { PlatformType } from 'modules/api/common/itemType';
 
 export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
   address,
@@ -55,6 +56,7 @@ export const CrateItemAll: React.FC<{ address: string; isOther?: boolean }> = ({
       fetchCollection({
         address,
         className,
+        isPlatform: PlatformType.SELF,
       }),
     );
   }, [dispatch, address, className]);

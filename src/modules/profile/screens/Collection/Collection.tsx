@@ -142,8 +142,9 @@ export const Collection = () => {
         case ProfileTab.owned: {
           dispatch(
             fetchCollection({
-              address: address,
+              address: collectionInfo?.owneraddress || '',
               className: collectionAddress,
+              isPlatform: collectionInfo.isplatform,
             }),
           );
           break;
@@ -162,7 +163,14 @@ export const Collection = () => {
         }
       }
     },
-    [address, collectionAddress, dispatch, collectionInfo?.owneraddress, art],
+    [
+      address,
+      collectionAddress,
+      dispatch,
+      collectionInfo?.owneraddress,
+      collectionInfo?.isplatform,
+      art,
+    ],
   );
 
   const onTabsChange = useCallback(

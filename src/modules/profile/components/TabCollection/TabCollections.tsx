@@ -13,7 +13,7 @@ import { RoyaltyDialog } from 'modules/brand/components/RoyaltyDialog';
 import { NoItems } from 'modules/common/components/NoItems';
 import { truncateLongName } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import { ProfileRoutesConfig, ProfileTab } from 'modules/profile/ProfileRoutes';
 import { useState } from 'react';
 import { uid } from 'react-uid';
 import { useTabCollectionStyles } from './useTabCollectionStyles';
@@ -61,7 +61,7 @@ export const TabCollection: React.FC<{
                   handelOpenRoyalty={handelOpenRoyalty}
                   href={ProfileRoutesConfig.Collection.generatePath(
                     brand.contract,
-                    undefined,
+                    ProfileTab.owned,
                     'art',
                   )}
                   currentRoyalty={brand.currentroyalty}
