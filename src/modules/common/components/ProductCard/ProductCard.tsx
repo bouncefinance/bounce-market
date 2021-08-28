@@ -13,7 +13,7 @@ import { useDialog } from 'modules/buyNFT/screens/BuyNFT/useDialog';
 import { burnToken } from 'modules/common/actions/burnToken';
 import { transferToken } from 'modules/common/actions/transferToken';
 import { useLike } from 'modules/profile/hooks/useLike';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import {
   IProductCardComponentProps,
   ProductCardComponent,
@@ -58,6 +58,7 @@ export const ProductCard = ({
   maxQuantity,
   state,
   reload,
+  hasAction,
   ...restProps
 }: IProductCardProps) => {
   const {
@@ -81,10 +82,6 @@ export const ProductCard = ({
   }, [likeClickHandler, onLikeClick]);
 
   const dispatch = useDispatchRequest();
-
-  const hasAction = useMemo(() => {
-    return !!contractAddress && standard > -1 && !!id;
-  }, [contractAddress, standard, id]);
 
   const {
     opened: transferOpen,
