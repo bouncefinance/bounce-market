@@ -49,6 +49,7 @@ export const ActivitiesTable = ({
                 tabKey={tabKey}
                 item={item}
                 key={item.ctime.toString()}
+                target="_self"
               />
             ))}
         </TableBody>

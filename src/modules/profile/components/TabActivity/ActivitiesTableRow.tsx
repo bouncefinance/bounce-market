@@ -36,6 +36,7 @@ interface IActivitiesTableProps {
   item: IActivityItem;
   tabKey: ActivityKeys;
   symbol: string;
+  target?: string;
 }
 
 interface IItemProps {
@@ -43,6 +44,7 @@ interface IItemProps {
   contractaddress: string;
   url: string;
   label: string;
+  target?: string;
 }
 
 const ItemIcon: React.FC<IItemProps> = ({
@@ -50,13 +52,14 @@ const ItemIcon: React.FC<IItemProps> = ({
   contractaddress,
   url,
   label,
+  target = '_blank',
 }) => {
   const styles = useTabActivityStyles();
 
   return (
     <Link
       className={styles.tableItemIcon}
-      target="_blank"
+      target={target}
       to={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
         tokenid,
         contractaddress,
@@ -73,12 +76,13 @@ const ItemVideo: React.FC<IItemProps> = ({
   contractaddress,
   url,
   label,
+  target = '_blank',
 }) => {
   const styles = useTabActivityStyles();
   return (
     <Link
       className={styles.tableItemVideo}
-      target="_blank"
+      target={target}
       to={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
         tokenid,
         contractaddress,
@@ -161,6 +165,7 @@ export const ActivitiesTableRow = ({
   item,
   symbol,
   tabKey,
+  target,
 }: IActivitiesTableProps) => {
   const renderItemPreview = useCallback(
     (category: NFTType) => {
@@ -170,6 +175,7 @@ export const ActivitiesTableRow = ({
           contractaddress={item.contractaddress}
           url={item.fileUrl}
           label={item.itemName}
+          target={target}
         />
       ) : (
         <ItemIcon
@@ -177,10 +183,11 @@ export const ActivitiesTableRow = ({
           contractaddress={item.contractaddress}
           url={item.fileUrl}
           label={item.itemName}
+          target={target}
         />
       );
     },
-    [item.contractaddress, item.fileUrl, item.itemName, item.tokenid],
+    [item.contractaddress, item.fileUrl, item.itemName, item.tokenid, target],
   );
 
   return (
