@@ -9,7 +9,7 @@ export const useTermsOfServiceStyles = makeStyles((theme: Theme) => ({
   },
   iframe: {
     border: '0 none',
-    height: '100%',
-    width: '100%',
+    height: 5320,
+    width: 870,
   },
 }));
