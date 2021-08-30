@@ -92,7 +92,7 @@ export const BuyItemNFT = () => {
             poolDetails?.collection.name || '',
           ) ? (
             <>
-              {poolDetails?.owners?.slice(0, 1)?.map(pool => (
+              {poolDetails?.collection?.address && (
                 <ProfileInfo
                   subTitle={t('details-nft.role.collection')}
                   title={wrapperTitle(
@@ -110,7 +110,7 @@ export const BuyItemNFT = () => {
                     },
                   ]}
                 />
-              ))}
+              )}
             </>
           ) : (
             <></>
