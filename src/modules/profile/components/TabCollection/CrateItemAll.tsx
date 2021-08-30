@@ -14,7 +14,8 @@ import { compare } from 'modules/brand/api/queryBrand';
 export const CrateItemAll: React.FC<{
   isOther?: boolean;
   artAddress: string;
-}> = ({ isOther = false, artAddress }) => {
+  reload?: () => void;
+}> = ({ isOther = false, artAddress, reload }) => {
   const { address } = useWeb3React();
   const { data: collectionData, loading: collectionLoading } = useQuery<
     INftItem[]
@@ -31,6 +32,7 @@ export const CrateItemAll: React.FC<{
           collectionData?.map(item => (
             <NftItemCard
               key={uid(item)}
+              reload={reload}
               item={item}
               isOther={isOther}
               tokenSymbol=""
