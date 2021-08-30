@@ -55,7 +55,11 @@ export const Brands = ({
           <Link
             to={
               contractAddress &&
-              ProfileRoutesConfig.Collection.generatePath(contractAddress)
+              ProfileRoutesConfig.Collection.generatePath(
+                contractAddress,
+                undefined,
+                'art',
+              )
             }
             className={classes.brand}
           >

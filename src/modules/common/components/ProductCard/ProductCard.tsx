@@ -163,6 +163,7 @@ export const ProductCard = ({
             onClose={closeTransfer}
             standard={standard}
             onSubmit={handleTransfer}
+            copiesBalance={restProps.copiesBalance ?? 0}
           />
         )}
       </Mutation>

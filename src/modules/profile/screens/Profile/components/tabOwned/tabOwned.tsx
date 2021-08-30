@@ -15,7 +15,8 @@ import { compare } from 'modules/brand/api/queryBrand';
 export const TabOwned: React.FC<{
   isOther?: boolean;
   address?: string;
-}> = function ({ isOther = false, address: artAddress }) {
+  reload?: () => void;
+}> = function ({ isOther = false, address: artAddress, reload }) {
   const { data, loading } = useQuery<INftItem[]>({
     type: fetchOwned.toString(),
   });
@@ -30,6 +31,7 @@ export const TabOwned: React.FC<{
           data?.map(item => (
             <NftItemCard
               key={uid(item)}
+              reload={reload}
               item={item}
               isOther={isOther}
               tokenSymbol={(data as any)?.tokenSymbol}

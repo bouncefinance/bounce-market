@@ -565,6 +565,7 @@ export const ProductCardComponent = ({
                     <MenuItem
                       className={classes.menuItem}
                       onClick={onTransferClick}
+                      disabled={(copiesBalance ?? -1) <= 0}
                     >
                       {t('product-card.transfer')}
                     </MenuItem>

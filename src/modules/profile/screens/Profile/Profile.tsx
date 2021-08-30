@@ -252,7 +252,7 @@ export const Profile = () => {
         </Tabs>
 
         <TabPanel value={tab} index={ProfileTab.owned}>
-          <TabOwned address={address} />
+          <TabOwned address={address} reload={reload(ProfileTab.owned)} />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.collections}>

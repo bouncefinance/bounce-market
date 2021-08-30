@@ -1,6 +1,6 @@
 import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { isOtherPlatformCode } from 'modules/common/conts';
-import { INftAvatars, IPoolAvatars } from './NftType';
+import { INftAvatars, IPoolAvatars, NftType } from './NftType';
 
 export type isPlatformType = 0 | 1;
 export enum PlatformType {
@@ -20,6 +20,7 @@ export interface IOriginNftItem extends IPoolAvatars {
   tokenid: number;
   supply: number;
   balance: number;
+  standard: NftType;
 }
 
 export interface INftItem {
@@ -36,4 +37,5 @@ export interface INftItem {
   supply: number;
   balance: number;
   contractAddress: string;
+  standard?: NftType;
 }

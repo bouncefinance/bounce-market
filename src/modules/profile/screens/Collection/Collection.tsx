@@ -345,6 +345,7 @@ export const Collection = () => {
           <CrateItemAll
             artAddress={collectionInfo?.owneraddress || ''}
             isOther={!isMyCollection}
+            reload={reload(ProfileTab.owned)}
           />
         </TabPanel>
 
