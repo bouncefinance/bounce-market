@@ -20,6 +20,7 @@ export const NftItemCard = ({
 }) => {
   return (
     <ProductCard
+      standard={item.standard}
       hasAction={hasAction}
       id={item.tokenId}
       poolId={0}
