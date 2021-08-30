@@ -18,10 +18,12 @@ import { Queries } from 'modules/common/components/Queries/Queries';
 import { ResponseData } from 'modules/common/types/ResponseData';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
+import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { uid } from 'react-uid';
+import { RenderedDetailOwnersList } from './DetailOwner';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 
 export const BuyItemNFT = () => {
@@ -38,6 +40,7 @@ export const BuyItemNFT = () => {
     (async () => {
       dispatch(fetchItem({ contract, id: tokenId }));
       dispatch(fetchItem2({ contract, id: tokenId }));
+      dispatch(fetchPoolNftOwner({ tokenId, contract }));
     })();
   }, [dispatch, tokenId, contract]);
 
@@ -51,18 +54,16 @@ export const BuyItemNFT = () => {
   const wrapperTitle = (name: string, address: string) => {
     return name || truncateWalletAddr(address);
   };
-  const getSenderName = (sender: {
-    username: string;
-    owneraddress: string;
-  }) => {
-    return sender.username || truncateWalletAddr(sender.owneraddress);
-  };
 
   return (
-    <Queries<ResponseData<typeof fetchItem>, ResponseData<typeof fetchItem2>>
-      requestActions={[fetchItem, fetchItem2]}
+    <Queries<
+      ResponseData<typeof fetchItem>,
+      ResponseData<typeof fetchItem2>,
+      ResponseData<typeof fetchPoolNftOwner>
     >
-      {({ data: item }, { data: poolDetails }) => {
+      requestActions={[fetchItem, fetchItem2, fetchPoolNftOwner]}
+    >
+      {({ data: item }, { data: poolDetails }, { data: poolNftOwner }) => {
         const renderedCreator = (
           <ProfileInfo
             key={uid(item)}
@@ -116,32 +117,6 @@ export const BuyItemNFT = () => {
             <></>
           );
         };
-        const renderedOnwersList = (
-          <InfoTabsList>
-            {poolDetails?.owners?.map(item => {
-              return (
-                <ProfileInfo
-                  key={item.owneraddress}
-                  isTitleFirst
-                  avatarSize="big"
-                  title={getSenderName(item)}
-                  subTitle={t('details-nft.owner.balance', {
-                    balance: item.balance,
-                  })}
-                  users={[
-                    {
-                      name: getSenderName(item),
-                      href: ProfileRoutesConfig.OtherProfile.generatePath(
-                        item.owneraddress,
-                      ),
-                      avatar: item.avatar,
-                    },
-                  ]}
-                />
-              );
-            })}
-          </InfoTabsList>
-        );
 
         const renderedTokenInfoList = (
           <InfoTabsList>
@@ -189,7 +164,7 @@ export const BuyItemNFT = () => {
               <InfoTabs
                 tabs={[NftInfoOwnersOption, NftInfoDetailOption]}
                 tokenInfo={renderedTokenInfoList}
-                owners={renderedOnwersList}
+                owners={<RenderedDetailOwnersList list={poolNftOwner} />}
               />
             </Info>
           </div>

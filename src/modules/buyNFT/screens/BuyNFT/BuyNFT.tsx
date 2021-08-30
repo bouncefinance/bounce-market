@@ -1,4 +1,4 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import {
   Mutation,
   useDispatchRequest,
@@ -6,9 +6,7 @@ import {
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { auctionTypeMap, PoolType } from 'modules/api/common/poolType';
 import { fetchItemRoyalty } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
-import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -25,10 +23,7 @@ import {
   getBlockChainExplorerAddress,
   getTokenSymbol,
 } from 'modules/common/conts';
-import {
-  truncateLongName,
-  truncateWalletAddr,
-} from 'modules/common/utils/truncateWalletAddr';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchPoolBids } from 'modules/overview/actions/fetchPoolBids';
 import {
@@ -36,10 +31,9 @@ import {
   IWrapperPoolHistory,
 } from 'modules/overview/actions/fetchPoolHistory';
 import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
-import { Button } from 'modules/uiKit/Button';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
-import { AuctionState, PoolState } from '../../../api/common/AuctionState';
+import { AuctionState } from '../../../api/common/AuctionState';
 import { AuctionType } from '../../../api/common/auctionType';
 import { FixedSwapState } from '../../../api/common/FixedSwapState';
 import { NftType } from '../../../api/common/NftType';
@@ -50,10 +44,7 @@ import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
 import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
-import {
-  fetchRoleInfo,
-  IRoleInfo,
-} from '../../../overview/actions/fetchRoleInfo';
+import { fetchRoleInfo } from '../../../overview/actions/fetchRoleInfo';
 import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
@@ -64,6 +55,7 @@ import { BuyDialog } from '../../components/BuyDialog';
 import { ScanBtn } from '../../components/ScanBtn';
 import { TokenInfo } from '../../components/TokenInfo';
 import { BuyNFTSkeleton } from './BuyNFTSkeleton';
+import { getSenderName, RenderedDetailOwnersList } from './DetailOwner';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
 
@@ -166,13 +158,6 @@ export const BuyNFT = () => {
     },
     [chainId],
   );
-
-  const getSenderName = (sender: IRoleInfo) => {
-    return (
-      (sender.username !== 'Unnamed' && truncateLongName(sender.username)) ||
-      truncateWalletAddr(sender.address)
-    );
-  };
 
   const wrapperTitle = (name: string, address: string) => {
     return name || truncateWalletAddr(address);
@@ -425,61 +410,6 @@ export const BuyNFT = () => {
                 </InfoTabsList>
               );
 
-              const renderedOnwersList = (
-                <InfoTabsList>
-                  {poolNftOwner?.map(item => {
-                    return (
-                      <Grid
-                        container
-                        className={classes.ownerWrapper}
-                        key={item.owner.address}
-                      >
-                        <Grid item>
-                          <ProfileInfo
-                            isTitleFirst
-                            avatarSize="big"
-                            title={getSenderName(item.owner)}
-                            subTitle={t('details-nft.owner.balance', {
-                              balance: item.quantity,
-                            })}
-                            users={[
-                              {
-                                name: getSenderName(item.owner),
-                                href: ProfileRoutesConfig.OtherProfile.generatePath(
-                                  item.owner.address,
-                                ),
-                                avatar: item.owner.avatar,
-                                verified: item.owner.isVerify,
-                              },
-                            ]}
-                          />
-                        </Grid>
-                        <Grid item className={classes.ownerBuy}>
-                          {item.poolType !== PoolType.Unknown && (
-                            <Button
-                              variant="outlined"
-                              rounded
-                              href={BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                                item.poolId,
-                                auctionTypeMap[item.poolType],
-                              )}
-                              disabled={
-                                item.poolId === poolId || // 当前池子
-                                item.poolstate === PoolState.Close // 已关闭池子
-                              }
-                            >
-                              {item.poolId === poolId
-                                ? t('buy-dialog.current')
-                                : t('buy-dialog.buy')}
-                            </Button>
-                          )}
-                        </Grid>
-                      </Grid>
-                    );
-                  })}
-                </InfoTabsList>
-              );
-
               const renderedTokenInfoList = (
                 <InfoTabsList>
                   <ScanBtn contractAddress={item.contractAddress} />
@@ -610,9 +540,14 @@ export const BuyNFT = () => {
                             : renderedComingSoon
                         }
                         owners={
-                          featuresConfig.nftDetailsOwners
-                            ? renderedOnwersList
-                            : renderedComingSoon
+                          featuresConfig.nftDetailsOwners ? (
+                            <RenderedDetailOwnersList
+                              list={poolNftOwner}
+                              poolId={poolId}
+                            />
+                          ) : (
+                            renderedComingSoon
+                          )
                         }
                         tokenInfo={
                           featuresConfig.nftDetailsTokenInfo
