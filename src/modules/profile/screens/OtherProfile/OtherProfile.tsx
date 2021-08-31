@@ -36,7 +36,6 @@ import { uid } from 'react-uid';
 import { TabLiked } from '../Profile/components/TabLiked';
 import { TabOwned } from '../Profile/components/tabOwned';
 import { TabSale } from '../Profile/components/TabSale';
-import { ConnectWallet } from './components/ConnectWallet';
 import { useOtherProfileStyles } from './useOtherProfileStyles';
 
 export const PROFILE_INFO_REQUEST_KEY = '/other';
