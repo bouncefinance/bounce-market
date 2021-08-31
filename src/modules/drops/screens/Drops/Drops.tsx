@@ -8,7 +8,7 @@ import { TopCreators } from './components/TopCreators';
 import TempBg from './tempBg.png';
 
 export const Drops = () => {
-  const isDev = process.env.REACT_APP_BASE_ENV === 'TEST';
+  const isDev = true;
   return (
     <ThemeProvider theme={darkTheme}>
       {isDev ? (
