@@ -79,7 +79,6 @@ export const useCount = (delay = COUNT_DELAY) => {
 
 const toTimeFixed = (n: number) =>
   n >= 10 ? n.toFixed(0) : '0' + n.toFixed(0);
-const diffNumber = (a: number, b: number) => (a > b ? a - b : b - a);
 
 interface IDiffTimeTopHours {
   h: string;
