@@ -31,6 +31,7 @@ import { disconnect } from 'modules/account/store/actions/disconnect';
 import { likeSlice } from 'modules/common/store/like';
 import { getChainId } from 'modules/common/utils/localStorage';
 import { userSlice } from 'modules/common/store/user';
+import { getNotWeb3WalletInfo } from 'modules/account/hooks/useWeb3React';
 
 type MainApiDriverName =
   | 'mainApiEthMainnet'
@@ -260,20 +261,21 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
       action: setAccount,
     });
 
+    const chainId = (data ?? getNotWeb3WalletInfo())?.chainId ?? getChainId();
     if (action.meta?.driver === 'axios') {
       action.meta = {
         ...action.meta,
-        driver: getMainApiDriverName(data?.chainId ?? getChainId()),
+        driver: getMainApiDriverName(chainId),
       };
     } else if (action.meta?.driver === 'nftview') {
       action.meta = {
         ...action.meta,
-        driver: getNftViewApiDriverName(data?.chainId ?? getChainId()),
+        driver: getNftViewApiDriverName(chainId),
       };
     } else if (action.meta?.driver === 'nftview2') {
       action.meta = {
         ...action.meta,
-        driver: getNftView2ApiDriverName(data?.chainId ?? getChainId()),
+        driver: getNftView2ApiDriverName(chainId),
       };
     }
 
