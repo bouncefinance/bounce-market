@@ -59,8 +59,8 @@ export const RoyaltyDialog = ({
     const params: IRoyaltyListParams = {
       collection,
     };
-    dispatch(fetchRoyaltyListByCollection(params));
-  }, [collection, dispatch]);
+    if (isOpen) dispatch(fetchRoyaltyListByCollection(params));
+  }, [collection, dispatch, isOpen]);
 
   const { data: royaltyList } = useQuery<IRoyaltyMapListRes | null>({
     type: fetchRoyaltyListByCollection.toString(),
