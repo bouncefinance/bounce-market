@@ -217,32 +217,26 @@ export const OtherProfile = () => {
           ))}
         </Tabs>
 
-        {isConnected ? (
-          <>
-            <TabPanel value={tab} index={ProfileTab.owned}>
-              <TabOwned isOther address={address} />
-            </TabPanel>
+        <TabPanel value={tab} index={ProfileTab.owned}>
+          <TabOwned isOther address={address} />
+        </TabPanel>
 
-            <TabPanel value={tab} index={ProfileTab.collections}>
-              <TabCollection address={address} isOther />
-            </TabPanel>
+        <TabPanel value={tab} index={ProfileTab.collections}>
+          <TabCollection address={address} isOther />
+        </TabPanel>
 
-            <TabPanel value={tab} index={ProfileTab.sells}>
-              <TabSale isOther />
-            </TabPanel>
+        <TabPanel value={tab} index={ProfileTab.sells}>
+          <TabSale isOther />
+        </TabPanel>
 
-            <TabPanel value={tab} index={ProfileTab.liked}>
-              <TabLiked isOther />
-            </TabPanel>
+        <TabPanel value={tab} index={ProfileTab.liked}>
+          <TabLiked isOther />
+        </TabPanel>
 
-            {featuresConfig.profileFollowers && (
-              <TabPanel value={tab} index={ProfileTab.following}>
-                following
-              </TabPanel>
-            )}
-          </>
-        ) : (
-          <ConnectWallet />
+        {featuresConfig.profileFollowers && (
+          <TabPanel value={tab} index={ProfileTab.following}>
+            following
+          </TabPanel>
         )}
       </Container>
     </Section>
