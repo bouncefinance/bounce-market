@@ -25,6 +25,7 @@ interface ITransferTokenDialogProps {
   maxQuantity?: number;
   onClose: () => void;
   onSubmit: (value: ITransferFormValues, form: any, callback: any) => void;
+  copiesBalance: number;
 }
 
 export const TransferTokenDialog = ({
@@ -34,6 +35,7 @@ export const TransferTokenDialog = ({
   maxQuantity,
   onClose,
   onSubmit,
+  copiesBalance,
 }: ITransferTokenDialogProps) => {
   const classes = useTransferTokenDialogStyles();
 
@@ -54,10 +56,13 @@ export const TransferTokenDialog = ({
       } else if (maxQuantity && +quantity > maxQuantity) {
         errors.quantity = t('error.less-than', { value: +maxQuantity + 1 });
       }
+      if (quantity > copiesBalance) {
+        errors.quantity = t('validation.max', { value: copiesBalance });
+      }
 
       return errors;
     },
-    [maxQuantity],
+    [maxQuantity, copiesBalance],
   );
 
   const renderForm = useCallback(

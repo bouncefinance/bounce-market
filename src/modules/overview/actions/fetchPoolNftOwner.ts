@@ -24,12 +24,13 @@ interface IFetchPoolNftOwnerData {
   poolstate: number;
 }
 
-interface IFetchPoolNftOwnerParams {
-  poolId: number;
-  poolType: AuctionType;
+interface IFetchPoolItemNftOwnerParams {
+  poolId?: number;
+  poolType?: AuctionType;
+  tokenId?: AuctionType;
+  contract?: string;
 }
-
-interface wrapperPoolNftOwner {
+export interface wrapperPoolNftOwner {
   owner: IRoleInfo;
   quantity: BigNumber;
   poolType: PoolType;
@@ -42,15 +43,22 @@ export const fetchPoolNftOwner = createSmartAction<
 >(
   'fetchPoolNftOwner',
   (
-    params: IFetchPoolNftOwnerParams,
+    params: IFetchPoolItemNftOwnerParams,
     meta?: RequestActionMeta<IApiFetchPoolNftOwner, wrapperPoolNftOwner[]>,
   ) => ({
     request: {
       url: '/get_owners',
       method: 'post',
       data: {
-        poolId: params.poolId,
-        poolType: parseInt(poolTypeMap[params.poolType]),
+        ...(params?.poolId !== undefined && params.poolType !== undefined
+          ? {
+              poolId: params.poolId,
+              poolType: parseInt(poolTypeMap[params.poolType]),
+            }
+          : {
+              tokenid: params.tokenId,
+              contractaddress: params.contract,
+            }),
       },
     },
     meta: {

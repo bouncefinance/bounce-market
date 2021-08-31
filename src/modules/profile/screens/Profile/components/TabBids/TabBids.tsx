@@ -16,6 +16,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { usePoolList } from 'modules/common/hooks/usePoolList';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { IPoolNftItem } from 'modules/api/common/poolType';
+import { isFixedSwap } from 'modules/common/utils/poolHelps';
 
 export const TabBids: React.FC<{
   reload?: () => void;
@@ -42,13 +43,25 @@ export const TabBids: React.FC<{
     address,
   });
 
+  const filter = (item: IPoolNftItem, index: number) => {
+    const bidTopPrice = bidsInfo[index]?.toNumber();
+    const _myBidderAmount = myBidderAmount[index]?.toNumber() || 0;
+    const now = Date.now();
+    return !(
+      !isFixedSwap(item.poolType) &&
+      _myBidderAmount > 0 &&
+      _myBidderAmount < bidTopPrice &&
+      item.closeAt &&
+      +item.closeAt <= now
+    );
+  };
   return (
     <TabItemsComponent>
       <ProductCards isLoading={loading}>
         {loading ? (
           <ProductCardSkeleton />
         ) : (
-          data?.map((item, index) => {
+          data?.filter(filter)?.map((item, index) => {
             const bidTopPrice = bidsInfo[index]?.toNumber();
             const bidsReservePrice = bidsReserveAmount[index]?.toNumber();
 

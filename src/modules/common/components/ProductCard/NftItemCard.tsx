@@ -11,15 +11,19 @@ export const NftItemCard = ({
   isOther = false,
   isTotalSupply,
   hasAction,
+  reload,
 }: {
   item: INftItem;
   tokenSymbol: string;
   isOther?: boolean;
   isTotalSupply?: boolean;
   hasAction?: boolean;
+  reload?: () => void;
 }) => {
   return (
     <ProductCard
+      reload={reload}
+      standard={item.standard}
       hasAction={hasAction}
       id={item.tokenId}
       poolId={0}

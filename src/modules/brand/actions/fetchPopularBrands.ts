@@ -53,7 +53,7 @@ export const fetchPopularBrands = createSmartAction<
           id: index,
           creatorAddress: item.creatoraddress,
           contractAddress: item.contractaddress,
-          itemsInfo: item.itemsinfo,
+          itemsInfo: item.itemsinfo ?? [],
         })) ?? []
       );
     },
