@@ -44,7 +44,7 @@ export const fetchItem = createSmartAction<
   request: {
     url: getOneItemByIdUrl,
     method: 'post',
-    data: { ct: params.contract, id: params.id },
+    data: { contractaddress: params.contract, tokenid: params.id },
   },
   meta: {
     getData({ data }) {
@@ -63,7 +63,7 @@ export const fetchItem = createSmartAction<
       return request;
     },
     onSuccess: addTokenSymbolByDriver,
-    auth: true,
+    // auth: true,
     driver: 'axios',
     asMutation: false,
     ...meta,

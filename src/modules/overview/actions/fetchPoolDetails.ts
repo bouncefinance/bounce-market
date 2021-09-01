@@ -117,6 +117,7 @@ export interface IFixedAuctionDetails {
   isLike?: boolean;
   swappedAmount0: number;
   identity: number;
+  last_bidder: string;
 }
 
 export interface IEnglishAuctionDetails {
@@ -146,6 +147,7 @@ export interface IEnglishAuctionDetails {
   isLike?: boolean;
   swappedAmount0: number;
   identity: number;
+  last_bidder: string;
 }
 
 export type IFetchPoolDetailsData =
@@ -239,6 +241,7 @@ export const fetchPoolDetails = createSmartAction<
               isLike: Boolean(poolInfo?.mylikecount) ?? 0,
               swappedAmount0: poolInfo.swapped_amount0,
               identity: poolInfo.identity,
+              last_bidder: poolInfo.last_bidder,
             };
           } else {
             return {
@@ -264,6 +267,7 @@ export const fetchPoolDetails = createSmartAction<
               isLike: Boolean(poolInfo?.mylikecount) ?? 0,
               swappedAmount0: poolInfo.swapped_amount0,
               identity: poolInfo.identity,
+              last_bidder: poolInfo.last_bidder,
             };
           }
         } catch (error) {
@@ -290,6 +294,7 @@ export const fetchPoolDetails = createSmartAction<
             isLike: Boolean(poolInfo?.mylikecount) ?? 0,
             swappedAmount0: poolInfo.swapped_amount0,
             identity: poolInfo.identity,
+            last_bidder: poolInfo.last_bidder,
           };
         }
       },

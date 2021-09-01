@@ -27,6 +27,11 @@ import {
 } from './fetchPoolDetails';
 
 export type UserRole = 'creator' | 'buyer' | 'others';
+export enum UserNftRoleEnum {
+  CREATOR = 'creator',
+  BUYER = 'buyer',
+  OTHERS = 'others',
+}
 
 interface IWeb3FixedAuctionDetails extends IFixedAuctionDetails {
   role: UserRole;

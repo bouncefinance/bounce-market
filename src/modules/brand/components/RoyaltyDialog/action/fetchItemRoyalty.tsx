@@ -47,7 +47,7 @@ export const fetchItemRoyalty = createSmartAction<
   [IItemRoyaltyParams]
 >('fetchItemRoyalty', payload => ({
   request: {
-    url: '/auth/get_royaltiy_ratio',
+    url: '/get_royaltiy_ratio',
     method: 'post',
     data: payload,
   },

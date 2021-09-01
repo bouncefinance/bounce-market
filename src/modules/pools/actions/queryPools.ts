@@ -31,6 +31,7 @@ export interface IQueryPool {
   token_amount0: number;
   token_id: number;
   identity: number;
+  last_bidder: string;
 }
 export interface IQueryPools {
   tradeAuctions: {

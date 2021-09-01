@@ -1,7 +1,7 @@
 import loadable, { LoadableComponent } from '@loadable/component';
 import { USER_CREATE_NFT_PROFILE_TYPE } from 'modules/profile/ProfileRoutes';
 import { useParams } from 'react-router';
-import { generatePath } from 'react-router-dom';
+import { generatePath, Route } from 'react-router-dom';
 import { AuctionType } from '../api/common/auctionType';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
 import { PrivateRoute } from '../router/components/PrivateRoute';
@@ -67,7 +67,7 @@ const LoadableDetailsNFTItemContainer: LoadableComponent<any> = loadable(
 export function BuyNFTRoutes() {
   return (
     <>
-      <PrivateRoute
+      <Route
         path={BuyNFTRoutesConfig.DetailsNFT.path}
         exact={true}
         component={LoadableDetailsNFTContainer}
