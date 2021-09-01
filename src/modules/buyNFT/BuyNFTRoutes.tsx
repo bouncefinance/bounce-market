@@ -4,7 +4,6 @@ import { useParams } from 'react-router';
 import { generatePath, Route } from 'react-router-dom';
 import { AuctionType } from '../api/common/auctionType';
 import { QueryLoadingAbsolute } from '../common/components/QueryLoading/QueryLoading';
-import { PrivateRoute } from '../router/components/PrivateRoute';
 
 export const PATH_BUY_NFT = '/nft/buy/poolId/:poolId/poolType/:poolType';
 export const PATH_BUY_ITEM_NFT = `/item/buy/poolId/:poolId/contract/:contract`;
@@ -79,7 +78,7 @@ export function BuyNFTRoutes() {
 export function BuyItemNFTRoutes() {
   return (
     <>
-      <PrivateRoute
+      <Route
         path={BuyNFTRoutesConfig.Details_ITEM_NFT.path}
         exact={true}
         component={LoadableDetailsNFTItemContainer}

@@ -23,6 +23,7 @@ import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { uid } from 'react-uid';
+import { BuyNFTSkeleton } from './BuyNFTSkeleton';
 import { RenderedDetailOwnersList } from './DetailOwner';
 import { useBuyNFTStyles } from './useBuyNFTStyles';
 
@@ -62,6 +63,7 @@ export const BuyItemNFT = () => {
       ResponseData<typeof fetchPoolNftOwner>
     >
       requestActions={[fetchItem, fetchItem2, fetchPoolNftOwner]}
+      noDataMessage={<BuyNFTSkeleton />}
     >
       {({ data: item }, { data: poolDetails }, { data: poolNftOwner }) => {
         const renderedCreator = (

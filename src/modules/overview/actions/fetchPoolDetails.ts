@@ -231,7 +231,7 @@ export const fetchPoolDetails = createSmartAction<
               poolId: poolInfo.poolid,
               state: poolInfo.state,
               tokenContract: poolInfo.token0,
-              unitContract: poolInfo.token0,
+              unitContract: poolInfo.token1,
               tokenAmount0: poolInfo.token_amount0,
               tokenId: poolInfo.tokenid,
               avatar: poolInfo.creatorurl,

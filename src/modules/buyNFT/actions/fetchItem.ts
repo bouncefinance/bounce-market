@@ -74,7 +74,7 @@ export const fetchItem2 = createSmartAction<
   RequestAction<IApiGetOneItemById, IFetchItem2>
 >('fetchItem2', (params: { contract: string; id: number }, meta) => ({
   request: {
-    url: '/auth/getitemuserinfo',
+    url: '/getitemuserinfo',
     method: 'post',
     data: { contractaddress: params.contract, tokenid: params.id },
   },

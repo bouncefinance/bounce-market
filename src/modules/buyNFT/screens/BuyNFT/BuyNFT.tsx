@@ -103,6 +103,7 @@ export const BuyNFT = () => {
           setIsEmptyData(true);
           return;
         }
+        setIsEmptyData(false);
 
         dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
         // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails

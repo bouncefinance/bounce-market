@@ -50,12 +50,6 @@ export const fetchCurrency = createSmartAction<
       ) => {
         return {
           promise: (async function () {
-            // const {
-            //   data: { chainId, address, web3 },
-            // } = getQuery(store.getState(), {
-            //   type: setAccount.toString(),
-            //   action: setAccount,
-            // });
             const { data: accountData } = getQuery(store.getState(), {
               type: setAccount.toString(),
               action: setAccount,
@@ -65,8 +59,6 @@ export const fetchCurrency = createSmartAction<
               (accountData ?? getNotWeb3WalletInfo())?.chainId ?? getChainId();
 
             if (unitContract === ZERO_ADDRESS) {
-              // const balanceOf = await web3.eth.getBalance(address);
-
               const { data } = throwIfDataIsEmptyOrError(
                 await store.dispatchRequest(
                   fetchPriceBySymbol({
@@ -77,26 +69,9 @@ export const fetchCurrency = createSmartAction<
               return {
                 priceUsd: data.priceUsd,
                 decimals: data.decimals,
-                // balanceOf: new BigNumber(fromWei(balanceOf, data.decimals)),
               } as IFetchCurrencyData;
             }
 
-            // const BounceERC20Contract = new web3.eth.Contract(
-            //   BounceERC20,
-            //   unitContract,
-            // );
-
-            // const decimals = await BounceERC20Contract.methods
-            //   .decimals()
-            //   .call();
-            // const symbol = await BounceERC20Contract.methods.symbol().call();
-            // const balanceOf = await BounceERC20Contract.methods
-            //   .balanceOf(address)
-            //   .call();
-
-            // const { data } = throwIfDataIsEmptyOrError(
-            //   await store.dispatchRequest(fetchPriceBySymbol(symbol)),
-            // );
             const { data } = throwIfDataIsEmptyOrError(
               await store.dispatchRequest(
                 fetchPriceBySymbol({
