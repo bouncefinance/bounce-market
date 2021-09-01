@@ -38,7 +38,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { AuctionState } from '../../../api/common/AuctionState';
 import { AuctionType } from '../../../api/common/auctionType';
-import { FixedSwapState } from '../../../api/common/FixedSwapState';
 import { NftType } from '../../../api/common/NftType';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
@@ -523,7 +522,9 @@ export const BuyNFT = () => {
                         cryptoPrice={poolDetails.price}
                         cryptoCurrency={item.tokenSymbol}
                         onBuyClick={openFixedBuyDialog}
-                        disabled={poolDetails.state !== FixedSwapState.Live}
+                        disabled={
+                          (poolDetails.state as number) !== AuctionState.Live
+                        }
                         saleTime={saleTime}
                         loading={
                           fixedSwapCancelLoading ||
@@ -641,7 +642,7 @@ export const BuyNFT = () => {
                               nftType: poolDetails.nftType,
                               unitContract: poolDetails.unitContract,
                               amountTotal0: parseInt(
-                                poolDetails.totalQuantity?.toString() ?? '0',
+                                poolDetails.quantity?.toString() ?? '0',
                               ),
                               amountTotal1: poolDetails.totalPrice,
                               poolId: poolDetails.poolId,
