@@ -3,6 +3,7 @@ import { fade, makeStyles, Theme } from '@material-ui/core';
 // TODO: Extract common component
 export const useBuyDialogStyles = makeStyles<Theme>(theme => ({
   root: {
+    display: 'block',
     maxWidth: 700,
     padding: theme.spacing(4, 2.5),
     borderRadius: 22,
