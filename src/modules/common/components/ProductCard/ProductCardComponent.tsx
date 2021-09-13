@@ -147,12 +147,14 @@ export const ProductCardComponent = ({
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
       setAnchorEl(event.currentTarget);
     },
     [],
   );
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback(e => {
+    e.stopPropagation();
     setAnchorEl(null);
   }, []);
 
@@ -230,8 +232,12 @@ export const ProductCardComponent = ({
   const renderedLikes = (
     <div
       onClick={e => {
+        e.stopPropagation();
         if (!isConnected) {
           handleConnect();
+        }
+        if (!isLikeDisabled) {
+          onLikeClick?.();
         }
       }}
       className={classNames(classes.info, classes.likeSite)}
@@ -241,7 +247,6 @@ export const ProductCardComponent = ({
           classes.likeBtn,
           isLiked && classes.likeBtnActive,
         )}
-        onClick={isLikeDisabled ? undefined : onLikeClick}
         disabled={isLikeDisabled}
       >
         <HeartIcon className={classes.icon} />
@@ -543,7 +548,7 @@ export const ProductCardComponent = ({
                 )}
               </div>
               {hasAction && (
-                <>
+                <div onClick={e => e.stopPropagation()}>
                   <ClickAwayListener onClickAway={handleClose}>
                     <ButtonBase
                       className={classes.menuBtn}
@@ -586,7 +591,7 @@ export const ProductCardComponent = ({
                     </MenuItem> */}
                     </MenuList>
                   </Popover>
-                </>
+                </div>
               )}
             </div>
           </div>
