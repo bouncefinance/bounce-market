@@ -22,7 +22,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode, useCallback, useState } from 'react';
-import { Link, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
@@ -139,6 +139,7 @@ export const ProductCardComponent = ({
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect, chainId } = useAccount();
   const classes = useProductCardStyles();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isPopoverOpened = Boolean(anchorEl);
   const isMinting = status === ProductCardStatuses.Minting;
@@ -376,7 +377,12 @@ export const ProductCardComponent = ({
     <Card className={classNames(classes.root, className)} variant="outlined">
       <ConditionalWrapper
         condition={!!href}
-        wrapper={<Link to={href || '#'} className={classes.imgBox} />}
+        wrapper={
+          <div
+            style={{ cursor: 'pointer' }}
+            onClick={() => history.push(href ?? '#')}
+          ></div>
+        }
       >
         <Box
           display="flex"
