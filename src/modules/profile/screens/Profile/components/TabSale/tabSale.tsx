@@ -20,6 +20,7 @@ import { getPoolKey, isFixedSwap } from 'modules/common/utils/poolHelps';
 import { usePoolList } from 'modules/common/hooks/usePoolList';
 import { useMemo } from 'react';
 import { IPoolNftItem } from 'modules/api/common/poolType';
+import { useAccount } from 'modules/account/hooks/useAccount';
 
 const getStandardPoolObj = (e: IPoolNftItem) => ({
   poolId: e.poolid,
@@ -36,6 +37,7 @@ export const TabSale: React.FC<{
       ? fetchCollectionSale.toString()
       : fetchMySale.toString(),
   });
+  const { address } = useAccount();
 
   const poolList = useMemo(() => {
     return data?.filter(e => !isFixedSwap(e.poolType));
@@ -99,12 +101,13 @@ export const TabSale: React.FC<{
                 price={item.poolid !== undefined ? item.price : undefined}
                 priceType={(data as any)?.tokenSymbol}
                 soldData={{
-                  sold: isFixedSwap(item.poolType)
-                    ? item.swapped_amount0
-                    : Date.now() >= item.close_at * 1e3 &&
-                      bidTopPrice >= bidsReservePrice
-                    ? item.token_amount0
-                    : 0,
+                  sold:
+                    isFixedSwap(item.poolType) || !address
+                      ? item.swapped_amount0
+                      : Date.now() >= item.close_at * 1e3 &&
+                        bidTopPrice >= bidsReservePrice
+                      ? item.token_amount0
+                      : 0,
                   quantity: item.token_amount0,
                 }}
                 endDate={

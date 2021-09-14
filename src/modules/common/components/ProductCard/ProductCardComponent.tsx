@@ -22,7 +22,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
 import { IImgProps, Img } from 'modules/uiKit/Img';
 import React, { ReactNode, useCallback, useState } from 'react';
-import { Link, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon';
 import { Spinner } from '../Spinner';
 import { VideoPlayer } from '../VideoPlayer';
@@ -139,6 +139,7 @@ export const ProductCardComponent = ({
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect, chainId } = useAccount();
   const classes = useProductCardStyles();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isPopoverOpened = Boolean(anchorEl);
   const isMinting = status === ProductCardStatuses.Minting;
@@ -146,12 +147,14 @@ export const ProductCardComponent = ({
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
       setAnchorEl(event.currentTarget);
     },
     [],
   );
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback(e => {
+    e.stopPropagation();
     setAnchorEl(null);
   }, []);
 
@@ -229,8 +232,12 @@ export const ProductCardComponent = ({
   const renderedLikes = (
     <div
       onClick={e => {
+        e.stopPropagation();
         if (!isConnected) {
           handleConnect();
+        }
+        if (!isLikeDisabled) {
+          onLikeClick?.();
         }
       }}
       className={classNames(classes.info, classes.likeSite)}
@@ -240,7 +247,6 @@ export const ProductCardComponent = ({
           classes.likeBtn,
           isLiked && classes.likeBtnActive,
         )}
-        onClick={isLikeDisabled ? undefined : onLikeClick}
         disabled={isLikeDisabled}
       >
         <HeartIcon className={classes.icon} />
@@ -374,19 +380,24 @@ export const ProductCardComponent = ({
   };
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        className={classes.topBar}
+      <ConditionalWrapper
+        condition={!!href}
+        wrapper={
+          <div
+            style={{ cursor: 'pointer' }}
+            onClick={() => history.push(href ?? '#')}
+          ></div>
+        }
       >
-        <RenderChiaIcon />
-        {renderedLikes}
-      </Box>
-      <div className={classes.relative}>
-        <ConditionalWrapper
-          condition={!!href}
-          wrapper={<Link to={href || '#'} className={classes.imgBox} />}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          className={classes.topBar}
         >
+          <RenderChiaIcon />
+          {renderedLikes}
+        </Box>
+        <div className={classes.relative}>
           {renderMediaContent()}
           {isPutSaleTimeCancel && openAt && (
             <CardPutSaleTimer openAt={openAt} />
@@ -394,207 +405,210 @@ export const ProductCardComponent = ({
           {isOutBid && <BidsState type={BidsType.OUTBID} />}
           {isLost && <BidsState type={BidsType.LOST} />}
           {isWon && <BidsState type={BidsType.WON} />}
-        </ConditionalWrapper>
-      </div>
+        </div>
 
-      <CardContent className={classes.content}>
-        {profileInfo}
+        <CardContent className={classes.content}>
+          {profileInfo}
 
-        <hr className={classes.devider} />
+          <hr className={classes.devider} />
 
-        {stateTip && <p className={classes.stateTip}>{stateTip}</p>}
+          {stateTip && <p className={classes.stateTip}>{stateTip}</p>}
 
-        <div className={classes.meta}>
-          <div className={classes.saleMeta}>
-            {isOnSale && price && (
-              <div className={classes.saleContainer}>
-                <div className={classes.saleType}>
-                  {(auctionType === AuctionType.FixedSwap ||
-                    auctionType === AuctionType.FixedSwap_Timing) &&
-                    (state === FixedSwapState.Live
-                      ? t('product-card.price')
-                      : t('product-card.sold-for'))}
-                  {(auctionType === AuctionType.EnglishAuction ||
-                    auctionType === AuctionType.EnglishAuction_Timing) &&
-                    (state === AuctionState.Live
-                      ? isSellerClaimMoney
-                        ? t('product-card.sold-for')
-                        : t('product-card.top-bid')
-                      : t('product-card.sold-for'))}{' '}
+          <div className={classes.meta}>
+            <div className={classes.saleMeta}>
+              {isOnSale && price && (
+                <div className={classes.saleContainer}>
+                  <div className={classes.saleType}>
+                    {(auctionType === AuctionType.FixedSwap ||
+                      auctionType === AuctionType.FixedSwap_Timing) &&
+                      (state === FixedSwapState.Live
+                        ? t('product-card.price')
+                        : t('product-card.sold-for'))}
+                    {(auctionType === AuctionType.EnglishAuction ||
+                      auctionType === AuctionType.EnglishAuction_Timing) &&
+                      (state === AuctionState.Live
+                        ? isSellerClaimMoney
+                          ? t('product-card.sold-for')
+                          : t('product-card.top-bid')
+                        : t('product-card.sold-for'))}{' '}
+                  </div>
+
+                  <div className={classes.price}>
+                    {formatUnitNumber(price.toNumber(), 4)} {priceType}
+                  </div>
+                  <div className={classes.infoRight}>
+                    {!hasRightButton && (
+                      <div className={classes.infoContainer}>
+                        {isOnSale && soldData && renderSolds}
+                      </div>
+                    )}
+                  </div>
                 </div>
-
-                <div className={classes.price}>
-                  {formatUnitNumber(price.toNumber(), 4)} {priceType}
-                </div>
-                <div className={classes.infoRight}>
-                  {!hasRightButton && (
-                    <div className={classes.infoContainer}>
-                      {isOnSale && soldData && renderSolds}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {!isOnSale && (
-              <div className={classes.infoContainer}>
-                <div>{copies !== undefined ? renderedCopies : <></>}</div>
-              </div>
-            )}
-          </div>
-
-          <div className={classes.rightWrapper}>
-            <div>
-              {isCancelTimePut && !isOther ? (
-                <CancelPutTime
-                  auctionType={auctionType}
-                  id={poolId}
-                  reload={reload}
-                />
-              ) : (
-                <></>
-              )}
-              {isSellerCancel && !isOther && (
-                <CancelPutOnSale
-                  auctionType={auctionType}
-                  id={poolId}
-                  reload={reload}
-                />
               )}
 
-              {!isCancelTimePut && !isSellerCancel && !isOther && (
-                <>
-                  {isLost && (
-                    <ClaimFunds
-                      auctionType={auctionType}
-                      id={poolId}
-                      type={BidsType.LOST}
-                      isBidder={isBidder}
-                      reload={reload}
-                    />
-                  )}
-                  {isWon && (
-                    <ClaimFunds
-                      auctionType={auctionType}
-                      id={poolId}
-                      type={BidsType.WON}
-                      isBidder={isBidder}
-                      reload={reload}
-                    />
-                  )}
-                  {isSellerClaimMoney && (
-                    <ClaimFunds
-                      auctionType={auctionType}
-                      id={poolId}
-                      type={BidsType.LOST}
-                      isBidder={false}
-                      text={t('product-card.claim-funds')}
-                      reload={reload}
-                    />
-                  )}
-                  {isSellerClaimNft && (
-                    <ClaimFunds
-                      auctionType={auctionType}
-                      id={poolId}
-                      type={BidsType.LOST}
-                      isBidder={false}
-                      text={t('product-card.claim-back')}
-                      reload={reload}
-                    />
-                  )}
-                  {isBidder && isBidderClaimed && (
-                    <Button variant="outlined" rounded disabled>
-                      {t('product-card.claimed')}
-                    </Button>
-                  )}
-                  {isOnSeller && isCreatorClaimed && (
-                    <Button variant="outlined" rounded disabled>
-                      {t('product-card.claimed')}
-                    </Button>
-                  )}
-
-                  {!isMinting && !isOnSalePending && (
-                    <Box display="flex" alignItems="center">
-                      {!(copiesBalance && copiesBalance >= 0) ? (
-                        <></>
-                      ) : (
-                        <>
-                          {toSale && (
-                            <Button
-                              className={classes.saleBtn}
-                              component={RouterLink}
-                              variant="outlined"
-                              rounded
-                              to={toSale}
-                            >
-                              {t('product-card.put-on-sale')}
-                            </Button>
-                          )}
-                        </>
-                      )}
-                    </Box>
-                  )}
-                </>
+              {!isOnSale && (
+                <div className={classes.infoContainer}>
+                  <div>{copies !== undefined ? renderedCopies : <></>}</div>
+                </div>
               )}
             </div>
-            {hasAction && (
-              <>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <ButtonBase className={classes.menuBtn} onClick={handleClick}>
-                    <VerticalDotsIcon className={classes.menuIcon} />
-                  </ButtonBase>
-                </ClickAwayListener>
-                <Popover
-                  className={classes.menuPopover}
-                  open={isPopoverOpened}
-                  anchorEl={anchorEl}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  PaperProps={{
-                    variant: 'outlined',
-                  }}
-                >
-                  <MenuList>
-                    <MenuItem
-                      className={classes.menuItem}
-                      onClick={onTransferClick}
-                      disabled={(copiesBalance ?? -1) <= 0}
-                    >
-                      {t('product-card.transfer')}
-                    </MenuItem>
 
-                    {/* <MenuItem
+            <div className={classes.rightWrapper}>
+              <div>
+                {isCancelTimePut && !isOther ? (
+                  <CancelPutTime
+                    auctionType={auctionType}
+                    id={poolId}
+                    reload={reload}
+                  />
+                ) : (
+                  <></>
+                )}
+                {isSellerCancel && !isOther && (
+                  <CancelPutOnSale
+                    auctionType={auctionType}
+                    id={poolId}
+                    reload={reload}
+                  />
+                )}
+
+                {!isCancelTimePut && !isSellerCancel && !isOther && (
+                  <>
+                    {isLost && (
+                      <ClaimFunds
+                        auctionType={auctionType}
+                        id={poolId}
+                        type={BidsType.LOST}
+                        isBidder={isBidder}
+                        reload={reload}
+                      />
+                    )}
+                    {isWon && (
+                      <ClaimFunds
+                        auctionType={auctionType}
+                        id={poolId}
+                        type={BidsType.WON}
+                        isBidder={isBidder}
+                        reload={reload}
+                      />
+                    )}
+                    {isSellerClaimMoney && (
+                      <ClaimFunds
+                        auctionType={auctionType}
+                        id={poolId}
+                        type={BidsType.LOST}
+                        isBidder={false}
+                        text={t('product-card.claim-funds')}
+                        reload={reload}
+                      />
+                    )}
+                    {isSellerClaimNft && (
+                      <ClaimFunds
+                        auctionType={auctionType}
+                        id={poolId}
+                        type={BidsType.LOST}
+                        isBidder={false}
+                        text={t('product-card.claim-back')}
+                        reload={reload}
+                      />
+                    )}
+                    {isBidder && isBidderClaimed && (
+                      <Button variant="outlined" rounded disabled>
+                        {t('product-card.claimed')}
+                      </Button>
+                    )}
+                    {isOnSeller && isCreatorClaimed && (
+                      <Button variant="outlined" rounded disabled>
+                        {t('product-card.claimed')}
+                      </Button>
+                    )}
+
+                    {!isMinting && !isOnSalePending && (
+                      <Box display="flex" alignItems="center">
+                        {!(copiesBalance && copiesBalance >= 0) ? (
+                          <></>
+                        ) : (
+                          <>
+                            {toSale && (
+                              <Button
+                                className={classes.saleBtn}
+                                component={RouterLink}
+                                variant="outlined"
+                                rounded
+                                to={toSale}
+                              >
+                                {t('product-card.put-on-sale')}
+                              </Button>
+                            )}
+                          </>
+                        )}
+                      </Box>
+                    )}
+                  </>
+                )}
+              </div>
+              {hasAction && (
+                <div onClick={e => e.stopPropagation()}>
+                  <ClickAwayListener onClickAway={handleClose}>
+                    <ButtonBase
+                      className={classes.menuBtn}
+                      onClick={handleClick}
+                    >
+                      <VerticalDotsIcon className={classes.menuIcon} />
+                    </ButtonBase>
+                  </ClickAwayListener>
+                  <Popover
+                    className={classes.menuPopover}
+                    open={isPopoverOpened}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    PaperProps={{
+                      variant: 'outlined',
+                    }}
+                  >
+                    <MenuList>
+                      <MenuItem
+                        className={classes.menuItem}
+                        onClick={onTransferClick}
+                        disabled={(copiesBalance ?? -1) <= 0}
+                      >
+                        {t('product-card.transfer')}
+                      </MenuItem>
+
+                      {/* <MenuItem
                       className={classes.menuItem}
                       onClick={onBurnClick}
                     >
                       {t('product-card.burn')}
                     </MenuItem> */}
-                  </MenuList>
-                </Popover>
-              </>
-            )}
+                    </MenuList>
+                  </Popover>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
 
-        {hasRightButton && (
-          <div className={classes.infoContainer}>
-            {isOnSale && (
-              <>
-                {!endDate && copies && renderedCopies}
+          {hasRightButton && (
+            <div className={classes.infoContainer}>
+              {isOnSale && (
+                <>
+                  {!endDate && copies && renderedCopies}
 
-                {soldData && renderSolds}
-              </>
-            )}
-          </div>
-        )}
-      </CardContent>
+                  {soldData && renderSolds}
+                </>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </ConditionalWrapper>
     </Card>
   );
 };

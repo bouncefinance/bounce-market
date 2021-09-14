@@ -11,10 +11,10 @@ import { setAccount } from '../../account/store/actions/setAccount';
 import { Store } from 'redux';
 import { RootState } from '../../../store';
 import { fetchPriceBySymbol } from './fetchPriceBySymbol';
-import { BounceERC20 } from '../../web3/contracts';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
-import { fromWei } from '../../common/utils/fromWei';
 import { Address, Seconds } from '../../common/types/unit';
+import { getNotWeb3WalletInfo } from 'modules/account/hooks/useWeb3React';
+import { getChainId } from 'modules/common/utils/localStorage';
 
 const CACHE_LIFETIME: Seconds = 180;
 
@@ -50,16 +50,15 @@ export const fetchCurrency = createSmartAction<
       ) => {
         return {
           promise: (async function () {
-            const {
-              data: { chainId, address, web3 },
-            } = getQuery(store.getState(), {
+            const { data: accountData } = getQuery(store.getState(), {
               type: setAccount.toString(),
               action: setAccount,
             });
 
-            if (unitContract === ZERO_ADDRESS) {
-              const balanceOf = await web3.eth.getBalance(address);
+            const chainId =
+              (accountData ?? getNotWeb3WalletInfo())?.chainId ?? getChainId();
 
+            if (unitContract === ZERO_ADDRESS) {
               const { data } = throwIfDataIsEmptyOrError(
                 await store.dispatchRequest(
                   fetchPriceBySymbol({
@@ -70,31 +69,21 @@ export const fetchCurrency = createSmartAction<
               return {
                 priceUsd: data.priceUsd,
                 decimals: data.decimals,
-                balanceOf: new BigNumber(fromWei(balanceOf, data.decimals)),
               } as IFetchCurrencyData;
             }
 
-            const BounceERC20Contract = new web3.eth.Contract(
-              BounceERC20,
-              unitContract,
-            );
-
-            const decimals = await BounceERC20Contract.methods
-              .decimals()
-              .call();
-            const symbol = await BounceERC20Contract.methods.symbol().call();
-            const balanceOf = await BounceERC20Contract.methods
-              .balanceOf(address)
-              .call();
-
             const { data } = throwIfDataIsEmptyOrError(
-              await store.dispatchRequest(fetchPriceBySymbol(symbol)),
+              await store.dispatchRequest(
+                fetchPriceBySymbol({
+                  tokenSymbol: getNativeTokenSymbol(chainId),
+                }),
+              ),
             );
 
             return {
               priceUsd: data.priceUsd,
-              decimals: decimals,
-              balanceOf: new BigNumber(fromWei(balanceOf, decimals)),
+              // decimals: decimals,
+              // balanceOf: new BigNumber(fromWei(balanceOf, decimals)),
             } as IFetchCurrencyData;
           })(),
         };

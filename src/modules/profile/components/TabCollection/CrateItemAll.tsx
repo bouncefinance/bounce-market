@@ -8,15 +8,16 @@ import { MarketRoutesConfig } from 'modules/market/Routes';
 import { uid } from 'react-uid';
 import { NftItemCard } from 'modules/common/components/ProductCard/NftItemCard';
 import { INftItem } from 'modules/api/common/itemType';
-import { useWeb3React } from 'modules/account/hooks/useWeb3React';
 import { compare } from 'modules/brand/api/queryBrand';
+import { useAccount } from 'modules/account/hooks/useAccount';
+import { ZERO_ADDRESS } from 'modules/common/conts';
 
 export const CrateItemAll: React.FC<{
   isOther?: boolean;
   artAddress: string;
   reload?: () => void;
 }> = ({ isOther = false, artAddress, reload }) => {
-  const { address } = useWeb3React();
+  const { address } = useAccount();
   const { data: collectionData, loading: collectionLoading } = useQuery<
     INftItem[]
   >({
@@ -37,7 +38,9 @@ export const CrateItemAll: React.FC<{
               isOther={isOther}
               tokenSymbol=""
               isTotalSupply={!Boolean(address && compare(artAddress, address))}
-              hasAction={Boolean(artAddress && compare(artAddress, address))}
+              hasAction={Boolean(
+                artAddress && compare(artAddress, address ?? ZERO_ADDRESS),
+              )}
             />
           ))
         )}

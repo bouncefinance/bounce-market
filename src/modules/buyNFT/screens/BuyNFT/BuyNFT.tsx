@@ -6,6 +6,7 @@ import {
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { compare } from 'modules/brand/api/queryBrand';
 import { fetchItemRoyalty } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
 import { Info } from 'modules/buyNFT/components/Info';
@@ -22,6 +23,7 @@ import {
   featuresConfig,
   getBlockChainExplorerAddress,
   getTokenSymbol,
+  ZERO_ADDRESS,
 } from 'modules/common/conts';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
@@ -31,11 +33,11 @@ import {
   IWrapperPoolHistory,
 } from 'modules/overview/actions/fetchPoolHistory';
 import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
+import { UserNftRoleEnum } from 'modules/overview/actions/fetchWeb3PoolDetails';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { AuctionState } from '../../../api/common/AuctionState';
 import { AuctionType } from '../../../api/common/auctionType';
-import { FixedSwapState } from '../../../api/common/FixedSwapState';
 import { NftType } from '../../../api/common/NftType';
 import { Queries } from '../../../common/components/Queries/Queries';
 import { ResponseData } from '../../../common/types/ResponseData';
@@ -43,9 +45,11 @@ import { Address } from '../../../common/types/unit';
 import { bidderClaim } from '../../../overview/actions/bidderClaim';
 import { creatorClaim } from '../../../overview/actions/creatorClaim';
 import { fetchCurrency } from '../../../overview/actions/fetchCurrency';
-import { isEnglishAuction } from '../../../overview/actions/fetchPoolDetails';
+import {
+  fetchPoolDetails,
+  isEnglishAuction,
+} from '../../../overview/actions/fetchPoolDetails';
 import { fetchRoleInfo } from '../../../overview/actions/fetchRoleInfo';
-import { fetchWeb3PoolDetails } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { fixedSwapCancel } from '../../../overview/actions/fixedSwapCancel';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { bidEnglishAuction } from '../../actions/bidEnglishAuction';
@@ -90,7 +94,7 @@ export const BuyNFT = () => {
   const { push } = useHistory();
 
   const init = useCallback(() => {
-    dispatch(fetchWeb3PoolDetails({ poolId, poolType }))
+    dispatch(fetchPoolDetails({ poolId, poolType }))
       .then(response => {
         const { data } = response;
 
@@ -98,6 +102,7 @@ export const BuyNFT = () => {
           setIsEmptyData(true);
           return;
         }
+        setIsEmptyData(false);
 
         dispatch(fetchItem({ contract: data.tokenContract, id: data.tokenId }));
         // TODO: Dispatched twice. Here and in fetchWeb3PoolDetails
@@ -279,13 +284,13 @@ export const BuyNFT = () => {
   return (
     <Queries<
       ResponseData<typeof fetchItem>,
-      ResponseData<typeof fetchWeb3PoolDetails>,
+      ResponseData<typeof fetchPoolDetails>,
       ResponseData<typeof fetchRoleInfo>,
       ResponseData<typeof fetchItemRoyalty>
     >
       requestActions={[
         fetchItem,
-        fetchWeb3PoolDetails,
+        fetchPoolDetails,
         fetchRoleInfo,
         fetchItemRoyalty,
       ]}
@@ -433,6 +438,14 @@ export const BuyNFT = () => {
               const onChangeTime = () => {
                 setNow(Date.now());
               };
+
+              const role =
+                roleInfos?.creator?.address === address
+                  ? UserNftRoleEnum.CREATOR
+                  : compare(poolDetails.last_bidder, address ?? ZERO_ADDRESS)
+                  ? UserNftRoleEnum.BUYER
+                  : UserNftRoleEnum.OTHERS;
+
               return (
                 <div className={classes.root}>
                   <MediaContainer
@@ -494,7 +507,8 @@ export const BuyNFT = () => {
                           bidderClaimLoading
                         }
                         state={poolDetails.state}
-                        role={poolDetails.role}
+                        // role={poolDetails.role}
+                        role={role}
                         onBidderClaim={handleBidderClaim}
                         onCreatorClaim={handleCreatorClaim}
                         royalty={royalty}
@@ -508,7 +522,9 @@ export const BuyNFT = () => {
                         cryptoPrice={poolDetails.price}
                         cryptoCurrency={item.tokenSymbol}
                         onBuyClick={openFixedBuyDialog}
-                        disabled={poolDetails.state !== FixedSwapState.Live}
+                        disabled={
+                          (poolDetails.state as number) !== AuctionState.Live
+                        }
                         saleTime={saleTime}
                         loading={
                           fixedSwapCancelLoading ||
@@ -519,7 +535,7 @@ export const BuyNFT = () => {
                         onBidderClaim={handleBidderClaim}
                         onCreatorClaim={handleCreatorClaim}
                         state={poolDetails.state}
-                        role={poolDetails.role}
+                        role={role}
                         onCancel={handleFixedSwapCancel}
                         poolType={poolType}
                         poolId={poolId}
@@ -626,7 +642,7 @@ export const BuyNFT = () => {
                               nftType: poolDetails.nftType,
                               unitContract: poolDetails.unitContract,
                               amountTotal0: parseInt(
-                                poolDetails.totalQuantity?.toString() ?? '0',
+                                poolDetails.quantity?.toString() ?? '0',
                               ),
                               amountTotal1: poolDetails.totalPrice,
                               poolId: poolDetails.poolId,

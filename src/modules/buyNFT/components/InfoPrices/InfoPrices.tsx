@@ -11,6 +11,7 @@ import { UserRole } from '../../../overview/actions/fetchWeb3PoolDetails';
 import { Timer } from '../Timer';
 import { useInfoPricesStyles } from './useInfoPricesStyles';
 import { IItemRoyaltyRes } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
+import { useAccount } from 'modules/account/hooks/useAccount';
 
 interface IInfoPricesProps {
   price: BigNumber;
@@ -55,8 +56,18 @@ export const InfoPrices = ({
   royalty,
   isOpenSaleTime = false,
 }: IInfoPricesProps) => {
+  const { handleConnect, isConnected } = useAccount();
   const classes = useInfoPricesStyles();
   const [isTimeOver] = useState(false);
+  const checkLogin = useCallback(
+    (cb?: () => void) => () => {
+      if (!isConnected) {
+        return handleConnect();
+      }
+      cb?.();
+    },
+    [isConnected, handleConnect],
+  );
 
   const renderButtons = useCallback(() => {
     if (state === FixedSwapState.Live && role === 'creator') {
@@ -66,7 +77,7 @@ export const InfoPrices = ({
         <Button
           variant="outlined"
           fullWidth
-          onClick={onCancel}
+          onClick={checkLogin(onCancel)}
           loading={loading}
         >
           {t('info-prices.cancel')}
@@ -94,7 +105,7 @@ export const InfoPrices = ({
               <Button
                 variant="outlined"
                 fullWidth
-                onClick={onCreatorClaim}
+                onClick={checkLogin(onCreatorClaim)}
                 loading={loading}
                 disabled={true}
               >
@@ -111,7 +122,7 @@ export const InfoPrices = ({
               <Button
                 variant="outlined"
                 fullWidth
-                onClick={onCreatorClaim}
+                onClick={checkLogin(onCreatorClaim)}
                 loading={loading}
               >
                 {t('info-prices.claim')}
@@ -128,7 +139,7 @@ export const InfoPrices = ({
             <Button
               variant="outlined"
               fullWidth
-              onClick={onBidderClaim}
+              onClick={checkLogin(onBidderClaim)}
               loading={loading}
             >
               {t('info-prices.claim')}
@@ -154,7 +165,7 @@ export const InfoPrices = ({
             <Button
               variant="outlined"
               fullWidth
-              onClick={onCreatorClaim}
+              onClick={checkLogin(onCreatorClaim)}
               loading={loading}
             >
               {t('info-prices.claim')}
@@ -170,7 +181,7 @@ export const InfoPrices = ({
             <Button
               variant="outlined"
               fullWidth
-              onClick={onBidderClaim}
+              onClick={checkLogin(onBidderClaim)}
               loading={loading}
             >
               {t('info-prices.claim')}
@@ -201,7 +212,11 @@ export const InfoPrices = ({
     return (
       <>
         {!disabled && onBidClick && (
-          <Button disabled={saleTime} fullWidth onClick={onBidClick}>
+          <Button
+            disabled={saleTime}
+            fullWidth
+            onClick={checkLogin(onBidClick)}
+          >
             {t('details-nft.place-a-bid')}
           </Button>
         )}
@@ -212,7 +227,7 @@ export const InfoPrices = ({
               disabled={saleTime || disabled}
               variant="outlined"
               fullWidth
-              onClick={onBuyClick}
+              onClick={checkLogin(onBuyClick)}
             >
               {disabled ? t('details-nft.sold-out') : t('details-nft.buy-now')}
             </Button>
@@ -236,6 +251,7 @@ export const InfoPrices = ({
     poolId,
     saleTime,
     isOpenSaleTime,
+    checkLogin,
   ]);
 
   const renderRoyalty = () => {

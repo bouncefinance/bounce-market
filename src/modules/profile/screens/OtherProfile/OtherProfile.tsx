@@ -36,7 +36,6 @@ import { uid } from 'react-uid';
 import { TabLiked } from '../Profile/components/TabLiked';
 import { TabOwned } from '../Profile/components/tabOwned';
 import { TabSale } from '../Profile/components/TabSale';
-import { ConnectWallet } from './components/ConnectWallet';
 import { useOtherProfileStyles } from './useOtherProfileStyles';
 
 export const PROFILE_INFO_REQUEST_KEY = '/other';
@@ -217,32 +216,26 @@ export const OtherProfile = () => {
           ))}
         </Tabs>
 
-        {isConnected ? (
-          <>
-            <TabPanel value={tab} index={ProfileTab.owned}>
-              <TabOwned isOther address={address} />
-            </TabPanel>
+        <TabPanel value={tab} index={ProfileTab.owned}>
+          <TabOwned isOther address={address} />
+        </TabPanel>
 
-            <TabPanel value={tab} index={ProfileTab.collections}>
-              <TabCollection address={address} isOther />
-            </TabPanel>
+        <TabPanel value={tab} index={ProfileTab.collections}>
+          <TabCollection address={address} isOther />
+        </TabPanel>
 
-            <TabPanel value={tab} index={ProfileTab.sells}>
-              <TabSale isOther />
-            </TabPanel>
+        <TabPanel value={tab} index={ProfileTab.sells}>
+          <TabSale isOther />
+        </TabPanel>
 
-            <TabPanel value={tab} index={ProfileTab.liked}>
-              <TabLiked isOther />
-            </TabPanel>
+        <TabPanel value={tab} index={ProfileTab.liked}>
+          <TabLiked isOther />
+        </TabPanel>
 
-            {featuresConfig.profileFollowers && (
-              <TabPanel value={tab} index={ProfileTab.following}>
-                following
-              </TabPanel>
-            )}
-          </>
-        ) : (
-          <ConnectWallet />
+        {featuresConfig.profileFollowers && (
+          <TabPanel value={tab} index={ProfileTab.following}>
+            following
+          </TabPanel>
         )}
       </Container>
     </Section>

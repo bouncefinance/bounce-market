@@ -52,7 +52,7 @@ export const useWeb3React = (): IWeb3React => {
   useEffect(() => {
     if (provider) {
       provider.on('chainChanged', (chainId: number) => {
-        init();
+        window.location.reload();
       });
       provider.on('disconnect', (error: { code: number; message: string }) => {
         setLoading(true);
@@ -110,4 +110,12 @@ export const useWeb3Balance = () => {
     // eslint-disable-next-line
   }, [count, address, loading, web3]);
   return { balance };
+};
+
+export const getNotWeb3WalletInfo = () => {
+  const isWeb3Wallet = window.ethereum;
+  if (isWeb3Wallet) {
+    const chainId = parseInt(window.ethereum.networkVersion, 10);
+    return { chainId };
+  }
 };

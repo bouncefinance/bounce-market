@@ -22,6 +22,7 @@ export const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     const classes = useButtonStyles();
 
     const onLoadingClick = useCallback((e: any) => {
+      e.stopPropagation();
       e.preventDefault();
     }, []);
 
@@ -35,7 +36,14 @@ export const Button = forwardRef<HTMLButtonElement, IButtonProps>(
           loading && classes.loading,
         )}
         {...props}
-        onClick={loading ? onLoadingClick : onClick}
+        onClick={
+          loading
+            ? onLoadingClick
+            : e => {
+                e.stopPropagation();
+                onClick?.(e);
+              }
+        }
       >
         {children && (
           <span

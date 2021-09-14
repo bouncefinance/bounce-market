@@ -2,7 +2,7 @@ import { Box, Container } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
-import { featuresConfig } from 'modules/common/conts';
+import { featuresConfig, ZERO_ADDRESS } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchCollectionSale } from 'modules/profile/actions/fetchSale';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
@@ -114,8 +114,10 @@ export const Collection = () => {
   };
 
   useEffect(() => {
-    if (!address) return;
-    const isMyCollection = compare(address, collectionInfo?.owneraddress || '');
+    const isMyCollection = compare(
+      address ?? ZERO_ADDRESS,
+      collectionInfo?.owneraddress || '',
+    );
     setIsMyCollection(isMyCollection);
   }, [address, collectionInfo]);
 
@@ -135,7 +137,7 @@ export const Collection = () => {
 
   const updateData = useCallback(
     (value: ProfileTab) => {
-      if (!address || !collectionInfo?.owneraddress) {
+      if (!collectionInfo?.owneraddress) {
         return;
       }
       switch (value) {
@@ -163,6 +165,7 @@ export const Collection = () => {
         }
       }
     },
+    // eslint-disable-next-line
     [
       address,
       collectionAddress,

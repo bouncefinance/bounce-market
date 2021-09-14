@@ -7,6 +7,7 @@ import { featuresConfig } from 'modules/common/conts';
 import { useLike } from 'modules/profile/hooks/useLike';
 import { Button } from 'modules/uiKit/Button';
 import { useLikeBtnStyles } from './useLikeBtnStyles';
+import { useAccount } from 'modules/account/hooks/useAccount';
 
 interface ILikeBtnProps {
   className?: string;
@@ -63,6 +64,7 @@ export const NftLikeBtn = ({
   contractAddress,
 }: nftLikeType) => {
   const classes = useLikeBtnStyles();
+  const { isConnected, handleConnect } = useAccount();
   const { isLiked, isLikeDisabled, onLikeClick, likeCount } = useLike({
     id,
     count,
@@ -74,8 +76,13 @@ export const NftLikeBtn = ({
     <Button
       variant="outlined"
       className={classNames(classes.root, className)}
-      onClick={onLikeClick}
-      disabled={isLikeDisabled}
+      onClick={() => {
+        if (!isConnected) {
+          handleConnect();
+        }
+        onLikeClick();
+      }}
+      disabled={isLikeDisabled && isConnected}
       rounded
     >
       <HeartIcon

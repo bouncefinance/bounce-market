@@ -1,1 +1,1 @@
-export const getOneItemByIdUrl = '/auth/getoneitembyid';
+export const getOneItemByIdUrl = '/getoneitem';

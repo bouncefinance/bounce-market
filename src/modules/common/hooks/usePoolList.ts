@@ -24,16 +24,15 @@ export const usePoolList = ({
   contractFunctionName: string;
   address?: string;
 }) => {
-  const {
-    data: { chainId, web3 },
-  } = useQuery<ISetAccountData>({
+  const { data } = useQuery<ISetAccountData>({
     type: setAccount.toString(),
   });
+  const { chainId, web3 } = data ?? {};
   const [bidsInfo, setBidsInfo] = useState<BigNumber[]>([]);
 
   useEffect(() => {
     (async () => {
-      if (list.length <= 0) {
+      if (list.length <= 0 || !web3) {
         return;
       }
       const calls: CallType[] = list.map(({ poolType, poolId }) => {

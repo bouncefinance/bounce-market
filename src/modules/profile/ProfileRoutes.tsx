@@ -172,7 +172,7 @@ export function ProfileRoutes() {
         component={LoadableEditProfileContainer}
       />
 
-      <PrivateRoute
+      <Route
         path={ProfileRoutesConfig.Collection.path}
         exact={true}
         component={LoadableCollectionContainer}
