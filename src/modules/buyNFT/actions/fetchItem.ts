@@ -28,6 +28,7 @@ export interface IFetchItem2 {
     address: string;
     avatar: string;
     username: string;
+    identity: number;
   };
   owners: {
     avatar: string;

@@ -40,6 +40,7 @@ const FILE_ACCEPTS: string[] = [
   'audio/mpeg',
   'video/mpeg',
   'video/mp4',
+  'video/mp4',
 ];
 
 const DESCRIPTION_CHARACTER_LIMIT = 200;
@@ -73,7 +74,7 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
   //     errors.supply = t('validation.require-integer');
   //   }
   // }
-
+  console.log('FILE_ACCEPTS', payload.file);
   if (!payload.file) {
     errors.file = t('validation.required');
   } else if (!FILE_ACCEPTS.includes(payload.file.type)) {
