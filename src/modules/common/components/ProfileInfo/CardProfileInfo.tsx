@@ -108,6 +108,7 @@ export const CardProfileInfo = ({
         display="flex"
         justifyItems="center"
         justifyContent="space-between"
+        onClick={e => e.stopPropagation()}
       >
         <div className={classes.avatars}>{renderedAvatars}</div>
 
