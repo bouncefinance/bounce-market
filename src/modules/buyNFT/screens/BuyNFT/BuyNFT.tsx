@@ -475,7 +475,7 @@ export const BuyNFT = () => {
                       copiesCurrent={
                         isEnglishAuction(poolDetails)
                           ? poolDetails.tokenAmount0
-                          : poolDetails.quantity
+                          : poolDetails.quantity - poolDetails.swappedAmount0
                       }
                       copiesTotal={item.supply}
                       creator={renderedCreator}
@@ -657,7 +657,9 @@ export const BuyNFT = () => {
                           readonly={item.standard === NftType.ERC721}
                           category={item.category}
                           loading={loading}
-                          maxQuantity={poolDetails.quantity}
+                          maxQuantity={
+                            poolDetails.quantity - poolDetails.swappedAmount0
+                          }
                           currentPrice={poolDetails.price}
                           isPack={false}
                         />
