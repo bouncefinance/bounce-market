@@ -13,7 +13,6 @@ export function addTokenSymbolByDriver(
       ZERO_ADDRESS,
     );
     response.data.tokenSymbol = tokenSymbol;
-    console.log('----response--->', tokenSymbol, action.meta?.driver);
   }
   return response;
 }
