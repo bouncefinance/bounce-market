@@ -8,10 +8,12 @@ export function addTokenSymbolByDriver(
   store: RequestsStore,
 ) {
   if (action.meta && response.data) {
-    response.data.tokenSymbol = getTokenByDriver(
+    const tokenSymbol = getTokenByDriver(
       action.meta.driver as DriverName,
       ZERO_ADDRESS,
     );
+    response.data.tokenSymbol = tokenSymbol;
+    console.log('----response--->', tokenSymbol, action.meta?.driver);
   }
   return response;
 }

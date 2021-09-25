@@ -1,6 +1,7 @@
 import { RequestAction } from '@redux-requests/core';
 import { IPoolNftItem, OriginIPoolNftItem } from 'modules/api/common/poolType';
 import { IResponse } from 'modules/common/types/ResponseData';
+import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
 import { mapPoolData } from 'modules/pools/actions/map';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
@@ -30,5 +31,6 @@ export const fetchPoolsWeight = createSmartAction<
       return mapPoolData(data?.data ?? []);
     },
     ...meta,
+    onSuccess: addTokenSymbolByDriver,
   },
 }));
