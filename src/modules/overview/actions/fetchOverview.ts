@@ -1,6 +1,5 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { IPoolNftItem } from 'modules/api/common/poolType';
-import { addTokenSymbolByDriver } from 'modules/common/utils/addTokenSymbolByDriver';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
@@ -41,7 +40,6 @@ export const fetchOverview = createSmartAction<
           })(),
         };
       },
-      onSuccess: addTokenSymbolByDriver,
     },
   };
 });
