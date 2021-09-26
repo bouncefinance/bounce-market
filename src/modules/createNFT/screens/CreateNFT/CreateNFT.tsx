@@ -65,14 +65,14 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
     errors.description = t('validation.required');
   }
 
-  if (payload.standard === NftType.ERC1155) {
-    const supply = payload.supply;
-    if (!supply) {
-      errors.supply = t('validation.required');
-    } else if (!/^\d+$/.test(supply)) {
-      errors.supply = t('validation.require-integer');
-    }
-  }
+  // if (payload.standard === NftType.ERC1155) {
+  //   const supply = payload.supply;
+  //   if (!supply) {
+  //     errors.supply = t('validation.required');
+  //   } else if (!/^\d+$/.test(supply)) {
+  //     errors.supply = t('validation.require-integer');
+  //   }
+  // }
   if (!payload.file) {
     errors.file = t('validation.required');
   } else if (!FILE_ACCEPTS.includes(payload.file.type)) {
