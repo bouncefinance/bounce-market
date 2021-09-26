@@ -73,7 +73,6 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
   //     errors.supply = t('validation.require-integer');
   //   }
   // }
-
   if (!payload.file) {
     errors.file = t('validation.required');
   } else if (!FILE_ACCEPTS.includes(payload.file.type)) {

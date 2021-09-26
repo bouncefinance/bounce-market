@@ -84,7 +84,8 @@ export const BuyItemNFT = () => {
                   poolDetails?.minter?.address,
                 ),
                 avatar: poolDetails?.minter?.avatar,
-                verified: item?.identity === UserRoleEnum.Verified,
+                verified:
+                  poolDetails?.minter?.identity === UserRoleEnum.Verified,
               },
             ]}
           />
