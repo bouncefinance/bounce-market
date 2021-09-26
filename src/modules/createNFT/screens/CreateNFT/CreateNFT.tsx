@@ -40,7 +40,6 @@ const FILE_ACCEPTS: string[] = [
   'audio/mpeg',
   'video/mpeg',
   'video/mp4',
-  'video/mp4',
 ];
 
 const DESCRIPTION_CHARACTER_LIMIT = 200;
@@ -66,15 +65,14 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
     errors.description = t('validation.required');
   }
 
-  // if (payload.standard === NftType.ERC1155) {
-  //   const supply = payload.supply;
-  //   if (!supply) {
-  //     errors.supply = t('validation.required');
-  //   } else if (!/^\d+$/.test(supply)) {
-  //     errors.supply = t('validation.require-integer');
-  //   }
-  // }
-  console.log('FILE_ACCEPTS', payload.file);
+  if (payload.standard === NftType.ERC1155) {
+    const supply = payload.supply;
+    if (!supply) {
+      errors.supply = t('validation.required');
+    } else if (!/^\d+$/.test(supply)) {
+      errors.supply = t('validation.require-integer');
+    }
+  }
   if (!payload.file) {
     errors.file = t('validation.required');
   } else if (!FILE_ACCEPTS.includes(payload.file.type)) {
