@@ -1,9 +1,11 @@
 import { RequestAction } from '@redux-requests/core';
+import { ProductCardCategoryType } from 'modules/common/components/ProductCard';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { FetchPopularBrandsAction } from './const';
 
 export interface IItemsInfo {
   contractaddress: string;
+  category: ProductCardCategoryType;
   fileurl: string;
   itemname: string;
   itemsymbol: string;

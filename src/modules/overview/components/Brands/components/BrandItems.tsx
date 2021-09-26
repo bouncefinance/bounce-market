@@ -61,18 +61,22 @@ export const BrandItems = ({
 
   const renderedSlides = useMemo(
     () =>
-      items.map(({ itemname, fileurl }, i) => (
+      items.map(({ itemname, fileurl, category }, i) => (
         <SwiperSlide className={classes.slide} key={uid(itemname, i)}>
           <div className={classes.item}>
-            <Img
-              className={classes.itemImgBox}
-              src={fileurl}
-              size="small"
-              objectFit="scale-down"
-              ratio="1x1"
-              isNativeLazyLoading={false}
-              imgClassName="swiper-lazy"
-            />
+            {category !== 'video' ? (
+              <Img
+                className={classes.itemImgBox}
+                src={fileurl}
+                size="small"
+                objectFit="scale-down"
+                ratio="1x1"
+                isNativeLazyLoading={false}
+                imgClassName="swiper-lazy"
+              />
+            ) : (
+              <video className={classes.itemImgBox} src={fileurl} />
+            )}
             <SwiperPreloader />
           </div>
         </SwiperSlide>
