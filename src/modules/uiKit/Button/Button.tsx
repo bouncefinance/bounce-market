@@ -7,6 +7,7 @@ import { useButtonStyles } from './useButtonStyles';
 interface IButtonProps extends ButtonProps {
   rounded?: boolean;
   loading?: boolean;
+  isStopPropagation?: boolean;
   [x: string]: any;
 }
 
@@ -16,7 +17,15 @@ interface IButtonProps extends ButtonProps {
 // TODO: fix typings
 export const Button = forwardRef<HTMLButtonElement, IButtonProps>(
   (
-    { rounded = false, className, loading, children, onClick, ...props },
+    {
+      rounded = false,
+      className,
+      loading,
+      children,
+      onClick,
+      isStopPropagation = false,
+      ...props
+    },
     ref,
   ) => {
     const classes = useButtonStyles();
@@ -40,7 +49,9 @@ export const Button = forwardRef<HTMLButtonElement, IButtonProps>(
           loading
             ? onLoadingClick
             : e => {
-                e.stopPropagation();
+                if (isStopPropagation) {
+                  e.stopPropagation();
+                }
                 onClick?.(e);
               }
         }

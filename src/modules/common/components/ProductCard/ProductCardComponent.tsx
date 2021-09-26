@@ -453,7 +453,10 @@ export const ProductCardComponent = ({
               )}
             </div>
 
-            <div className={classes.rightWrapper}>
+            <div
+              onClick={e => e.stopPropagation()}
+              className={classes.rightWrapper}
+            >
               <div>
                 {isCancelTimePut && !isOther ? (
                   <CancelPutTime
