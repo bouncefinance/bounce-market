@@ -92,7 +92,7 @@ export const Collection = () => {
   // 设置背景图片功能
   const bgImg = collectionInfo?.bandimgurl;
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
-  const [showBgImg, setShowBgImg] = useState(collectionInfo?.bandimgurl);
+  const [showBgImg, setShowBgImg] = useState('');
   const changeShowBgImg = (imgSrc: string) => {
     setShowBgImg(imgSrc);
   };
