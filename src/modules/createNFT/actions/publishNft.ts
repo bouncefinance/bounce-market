@@ -331,11 +331,6 @@ export const publishNft = createSmartAction<
                 getEnglishAuctionContract(chainId, isOpenSaleTime),
               );
 
-              console.log(
-                'isOpenSaleTime-------->',
-                isOpenSaleTime,
-                ContractBounceEnglishAuctionNFT,
-              );
               if (standard === NftType.ERC721) {
                 await approveNFT_721({
                   nftContract_CT: ContractBounceERC721,
