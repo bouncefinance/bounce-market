@@ -524,7 +524,7 @@
   "time": {
     "days-left": "Осталось {days} дней",
     "days-short": "{days} дней",
-    "finished-on": "Закончил на {end, date, medium}",
+    "finished-on": "время начала {end, date, medium}",
     "hours-short": "{hours} часов",
     "minutes-short": "{minutes} минут",
     "seconds-short": "{seconds} секуд",
