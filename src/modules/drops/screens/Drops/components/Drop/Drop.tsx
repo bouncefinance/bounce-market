@@ -14,7 +14,6 @@ import Truncate from 'react-truncate';
 import { uid } from 'react-uid';
 import useBgColor from './useBgColor';
 import { useDropStyles } from './useDropStyles';
-const MAX_ITEMS_COUNT = 5;
 
 interface IDropProps {
   creator: JSX.Element;
@@ -44,6 +43,8 @@ export const Drop = ({
   const dispatch = useDispatch();
   const dispatchRequest = useDispatchRequest();
   const DROP_KEY = `/drop-${dropId}`;
+  // 屏蔽项目方 Phantom 的预览卡片
+  const MAX_ITEMS_COUNT = dropId === 10 ? 0 : 5;
 
   useEffect(() => {
     getBackgroudColor(bgImg, theme.palette.background.paper, setBgImgColor);
@@ -71,10 +72,17 @@ export const Drop = ({
       );
     };
   }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
-
   return (
     <article className={classes.root}>
-      {bgImg && <img className={classes.bgImgBox} src={bgImg} alt="" />}
+      {bgImg && (
+        <Img
+          className={classes.bgImgBox}
+          src={bgImg}
+          objectFit="cover"
+          loading="lazy"
+          width={900}
+        />
+      )}
 
       <Link className={classes.link} to={href} />
 

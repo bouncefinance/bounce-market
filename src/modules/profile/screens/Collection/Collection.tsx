@@ -90,7 +90,7 @@ export const Collection = () => {
   };
 
   // 设置背景图片功能
-  const { imgSrc: bgImg } = useCdnUrl(collectionInfo?.bandimgurl || ' ', 160);
+  const bgImg = collectionInfo?.bandimgurl;
   const [isBgImgModalOpened, setBgImgModalOpened] = useState(false);
   const [showBgImg, setShowBgImg] = useState('');
   const changeShowBgImg = (imgSrc: string) => {
