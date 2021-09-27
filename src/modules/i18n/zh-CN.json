@@ -529,7 +529,7 @@
   "time": {
     "days-left": "剩余{days}天",
     "days-short": "{days}天",
-    "finished-on": "于{end, date, medium}结束",
+    "finished-on": "于{end, date, medium}开始",
     "hours-short": "{hours}时",
     "minutes-short": "{minutes}分",
     "seconds-short": "{seconds}秒",

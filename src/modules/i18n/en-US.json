@@ -475,7 +475,7 @@
       "my-collections": "Collections",
       "showcase": "Showcase",
       "my-sells": "On Sale",
-      "all-item": "All Item"
+      "all-item": "All Items"
     },
     "unfollow": "Unfollow",
     "user-profile": "User profile"
@@ -537,7 +537,7 @@
   "time": {
     "days-left": "{days} days left",
     "days-short": "{days}d",
-    "finished-on": "Finished on {end, date, medium}",
+    "finished-on": "Start on {end, date, medium}",
     "hours-short": "{hours}h",
     "minutes-short": "{minutes}m",
     "seconds-short": "{seconds}s",

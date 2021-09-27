@@ -14,6 +14,7 @@ export interface IItemsInfo {
   tokenid: number;
 }
 interface IApiFetchPopularBrandsData {
+  // code
   code: 1;
   data: {
     brandname: string;
