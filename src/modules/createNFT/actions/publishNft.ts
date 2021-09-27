@@ -48,7 +48,10 @@ export const getFixedSwapContract = (chainID: number, isTime = false) => {
 export const getEnglishAuctionContract = (chainID: number, isTime = false) => {
   switch (chainID) {
     case 1:
-      return process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_ETH_MAINNET;
+      return isTime
+        ? process.env
+            .REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_ETH_MAINNET_TIME
+        : process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_ETH_MAINNET;
     case 4:
       return isTime
         ? process.env.REACT_APP_ENGLISH_AUCTION_CONTRACT_ADDRESS_RINKEBY_TIME
@@ -328,6 +331,11 @@ export const publishNft = createSmartAction<
                 getEnglishAuctionContract(chainId, isOpenSaleTime),
               );
 
+              console.log(
+                'isOpenSaleTime-------->',
+                isOpenSaleTime,
+                ContractBounceEnglishAuctionNFT,
+              );
               if (standard === NftType.ERC721) {
                 await approveNFT_721({
                   nftContract_CT: ContractBounceERC721,
