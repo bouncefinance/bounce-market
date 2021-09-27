@@ -74,14 +74,7 @@ export const Drop = ({
 
   return (
     <article className={classes.root}>
-      {bgImg && (
-        <Img
-          className={classes.bgImgBox}
-          src={bgImg}
-          objectFit="cover"
-          loading="lazy"
-        />
-      )}
+      {bgImg && <img className={classes.bgImgBox} src={bgImg} alt="" />}
 
       <Link className={classes.link} to={href} />
 
