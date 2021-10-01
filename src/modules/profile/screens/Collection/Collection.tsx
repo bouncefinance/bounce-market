@@ -251,7 +251,7 @@ export const Collection = () => {
           src={showAvatarImg || avatarImg}
           onEditClick={toggleAvatarModal(true)}
           isEditable={isMyCollection}
-          isVerified={collectionInfo?.identity === 2}
+          isVerified={collectionInfo?.identity === UserRoleEnum.Verified}
         />
 
         {isMyCollection && (
