@@ -164,7 +164,8 @@ export const DropsSection = () => {
       return (
         <Drop
           key={uid(item)}
-          href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
+          href={DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)}
+          // href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
           bgImg={item.coverImgUrl}
           bgColor={item.bgColor}
           title={item.title}
