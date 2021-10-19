@@ -21,6 +21,7 @@ const MIN_QUANTITY = 1;
 
 interface IBuyFormValues {
   quantity: string;
+  price?: string
 }
 
 interface IBuyDialogProps {
