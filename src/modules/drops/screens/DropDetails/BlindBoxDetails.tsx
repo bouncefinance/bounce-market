@@ -120,7 +120,6 @@ export const BlindBoxDetails = () => {
                 }
               />
 
-
             </Box>
 
             {<Mutation type={buyBlindBox.toString()} action={buyBlindBox}>
