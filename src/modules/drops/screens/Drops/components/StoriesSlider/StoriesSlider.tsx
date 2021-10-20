@@ -97,7 +97,9 @@ export const StoriesSlider = () => {
 
     return (
       <StoriesSliderItem
-        href={DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)}
+      href={item.dropType === 2 ?
+        DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)
+        : DropsRoutesConfig.DropDetails.generatePath(item.id)}
         // href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
         key={item.id}
         title={item.title}

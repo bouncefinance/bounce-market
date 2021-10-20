@@ -24,6 +24,8 @@ interface IDropProps {
   bgColor?: string;
   bgImg?: string;
   dropId?: number;
+  dropType: number;
+  itemImage: string;
 }
 
 export const Drop = ({
@@ -35,6 +37,8 @@ export const Drop = ({
   bgColor,
   bgImg,
   dropId,
+  dropType,
+  itemImage
 }: IDropProps) => {
   const theme = useTheme();
   const isMDUp = useIsMDUp();
@@ -72,23 +76,24 @@ export const Drop = ({
       );
     };
   }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
-  return (
-    <article className={classes.root}>
-      {bgImg && (
-        <Img
-          className={classes.bgImgBox}
-          src={bgImg}
-          objectFit="cover"
-          loading="lazy"
-          width={900}
-        />
-      )}
 
-      <Link className={classes.link} to={href} />
-
-      <Box mb={5}>{timer}</Box>
-
-      <Queries<ResponseData<typeof fetchDropSubCard>>
+  const renderDropItems = () => {
+    return dropType === 2 ?
+      <Box mb={4}>
+        <Link
+          to={href}
+          key={uid(itemImage)}
+          className={classes.nftItem}
+        >
+          <Img
+            className={classes.itemImgBox}
+            src={itemImage}
+            objectFit="cover"
+            loading="lazy"
+          />
+        </Link>
+      </Box>
+      : <Queries<ResponseData<typeof fetchDropSubCard>>
         requestActions={[fetchDropSubCard]}
         requestKeys={[DROP_KEY]}
       >
@@ -114,6 +119,25 @@ export const Drop = ({
           </Box>
         )}
       </Queries>
+  }
+
+  return (
+    <article className={classes.root}>
+      {bgImg && (
+        <Img
+          className={classes.bgImgBox}
+          src={bgImg}
+          objectFit="cover"
+          loading="lazy"
+          width={900}
+        />
+      )}
+
+      <Link className={classes.link} to={href} />
+
+      <Box mb={5}>{timer}</Box>
+
+      {renderDropItems()}
 
       <Typography variant="h1" className={classes.title}>
         <Truncate lines={isMDUp ? 1 : 2}>{title}</Truncate>

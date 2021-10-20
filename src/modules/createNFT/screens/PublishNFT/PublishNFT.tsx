@@ -795,7 +795,6 @@ export const PublishNFT = () => {
         const nfts = [...(nftData.nfts721 ?? []), ...(nftData.nfts1155 ?? [])];
         const maxQuantity =
           nfts.find(item => item.tokenId === id)?.balance ?? 0;
-        // console.log('RoyaltyData',RoyaltyData)
         return (
           <PublishNFTComponent
             name={data.itemName}

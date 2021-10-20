@@ -92,7 +92,6 @@ export const fetchRoyaltyListByCollection = createSmartAction<
     driver: 'axios',
     asMutation: false,
     getData: data => {
-      // console.log(data)
       if (data.code !== 200) {
         return {
           total: 0,

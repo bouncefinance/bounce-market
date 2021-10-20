@@ -18,6 +18,7 @@ export interface ISearchDropsItem {
   username: string;
   website: string;
   avatar: string;
+  dropType: number;
 }
 
 export const mapSearchDropsItem = (
@@ -41,5 +42,6 @@ export const mapSearchDropsItem = (
     username: item.username,
     website: item.website,
     avatar: item.avatar,
+    dropType: item.droptype
   };
 };

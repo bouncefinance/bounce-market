@@ -17,9 +17,15 @@ interface IGetDropDetailsArgs {
 
 export interface IGetDropDetails extends IDropDetails {
   tokenSymbol?: TokenSymbol;
+  blindboxinfo?: {
+    collection: string;
+    notsaled: number;
+    price: string;
+    totalsupply: number;
+  }
 }
 
-export const getDropDetails = createSmartAction<
+export const  getDropDetails = createSmartAction<
   RequestAction<IApiOneDropsDetail, IGetDropDetails | null>,
   [IGetDropDetailsArgs]
 >('getDropDetails', params => ({

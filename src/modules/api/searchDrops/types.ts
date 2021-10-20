@@ -40,6 +40,7 @@ export interface IApiSearchDropsItem {
   username: string;
   website: string;
   avatar: string;
+  droptype: number;
 }
 
 export interface IApiSearchDrops {

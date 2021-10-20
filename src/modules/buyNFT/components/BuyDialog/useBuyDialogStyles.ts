@@ -120,5 +120,5 @@ export const useBuyDialogStyles = makeStyles<Theme>(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
+  }
 }));

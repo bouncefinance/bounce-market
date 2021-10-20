@@ -11,7 +11,8 @@ import {
 
 interface IBuyBlindBoxPayload {
   price: BigNumber
-  count: number
+  count: number,
+  contract: string
 }
 
 export const buyBlindBox = createSmartAction<
@@ -21,7 +22,8 @@ export const buyBlindBox = createSmartAction<
   'buyBlindBox',
   ({
     price,
-    count
+    count,
+    contract
   }) => {
     return {
       request: {
@@ -44,7 +46,7 @@ export const buyBlindBox = createSmartAction<
 
               const BounceBlindBox_CT = new web3.eth.Contract(
                 BounceBlindBox,
-                '0x6871103DBeC1b957C63a1E4943B18f763d582406',
+                contract
               );
 
               BounceBlindBox_CT.methods

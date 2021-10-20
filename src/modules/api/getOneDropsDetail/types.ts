@@ -46,6 +46,12 @@ export interface IApiOneDropsDetailData {
   website: string;
   videourl: string;
   state: DropType;
+  blindboxinfo?: {
+    collection: string;
+    notsaled: number;
+    price: string;
+    totalsupply: number;
+  }
 }
 
 export interface IApiOneDropsDetail {

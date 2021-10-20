@@ -42,6 +42,7 @@ export const BlindBoxDetails = () => {
   const { data, loading, pristine } = useQuery<IDropDetails | null>({
     type: getDropDetails.toString(),
   });
+
   const status = 'Live'
 
   const handleBuyBlindBox = useCallback(
@@ -52,7 +53,8 @@ export const BlindBoxDetails = () => {
       dispatch(
         buyBlindBox({
           price: values.price,
-          count: values.count
+          count: values.count,
+          contract: '0x6871103DBeC1b957C63a1E4943B18f763d582406'
         }),
       )
       // .then(({ error }) => {
@@ -91,8 +93,8 @@ export const BlindBoxDetails = () => {
               <ProductCard
                 isOnSale
                 soldData={{
-                  sold: 20,
-                  quantity: 100,
+                  sold: (data?.blindboxinfo?.totalsupply || 0) - (data?.blindboxinfo?.notsaled || 0) || 0,
+                  quantity: data?.blindboxinfo?.totalsupply || 0,
                   color: '#000'
                 }}
                 id={0}
@@ -100,18 +102,18 @@ export const BlindBoxDetails = () => {
                 title={''}
                 MediaProps={{
                   category: 'image',
-                  src: 'https://ap1-cfs3-media-bounce.bounce.finance/6bca64a62b5990dc3e582c9684477b75-1634573265.png',
+                  src: data?.coverImgUrl,
                   objectFit: 'contain',
                   loading: 'lazy',
                 }}
                 auctionType={AuctionType.FixedSwap}
-                price={new BigNumber(0.2)}
+                price={new BigNumber(data?.blindboxinfo?.price || 0).div(1e18)}
                 priceType={'ETH'}
                 openAt={new Date()}
                 profileInfo={
                   <CardProfileInfo
                     subTitle={t('product-card.owner')}
-                    title={'NM0979 The Truth is Often Somewhere in Between'} users={[]}
+                    title={data?.title || ''} users={[]}
                   // users={item.avatars}
                   />
                 }
@@ -123,8 +125,8 @@ export const BlindBoxDetails = () => {
             {<Mutation type={buyBlindBox.toString()} action={buyBlindBox}>
               {({ loading }) => (
                 <BuyDialog
-                  name={'NM0979 The Truth is Often Somewhere in Between'}
-                  filepath={'https://ap1-cfs3-media-bounce.bounce.finance/6bca64a62b5990dc3e582c9684477b75-1634573265.png'}
+                  name={data?.title || 'Unname'}
+                  filepath={data?.coverImgUrl || 'https://ap1-cfs3-media-bounce.bounce.finance/6bca64a62b5990dc3e582c9684477b75-1634573265.png'}
                   onSubmit={data => {
                     const { price, quantity } = data
                     handleBuyBlindBox({
@@ -139,10 +141,15 @@ export const BlindBoxDetails = () => {
                   // isOwnerVerified={roleInfos.creator.isVerify}
                   category={'image'}
                   loading={loading}
-                  maxQuantity={30}
-                  currentPrice={new BigNumber(0.1)}
+                  maxQuantity={5}
+                  currentPrice={new BigNumber(data?.blindboxinfo?.price || 0).div(1e18)}
                   readonly={false}
                   isPack={false}
+                  isBlindBox={true}
+                  soldData={{
+                    notsaled: data?.blindboxinfo?.notsaled || 0,
+                    quantity: data?.blindboxinfo?.totalsupply || 0,
+                  }}
                 />
               )}
             </Mutation>}

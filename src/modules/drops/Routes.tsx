@@ -60,7 +60,6 @@ const LoadableDropDetailsContainer: LoadableComponent<any> = loadable(
 const LoadableBlindBoxDetailsContainer: LoadableComponent<any> = loadable(
   async () =>
     import('./screens/DropDetails').then(module => {
-      console.log('module',module)
       return module.BlindBoxDetails
     }),
   {

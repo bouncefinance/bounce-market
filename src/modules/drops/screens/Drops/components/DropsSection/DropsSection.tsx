@@ -160,19 +160,24 @@ export const DropsSection = () => {
           )}
         />
       );
-
       return (
         <Drop
           key={uid(item)}
-          href={DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)}
+
+          // dropType 1: drop 2: blindBox
+          href={item.dropType === 2 ?
+            DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)
+            : DropsRoutesConfig.DropDetails.generatePath(item.id)}
           // href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
-          bgImg={item.coverImgUrl}
-          bgColor={item.bgColor}
+          bgImg={item.dropType === 2 ? '' : item.coverImgUrl}
+          bgColor={item.dropType === 2 ? '#232323' : item.bgColor}
           title={item.title}
           text={item.description}
           timer={timer}
           creator={creator}
           dropId={item.id}
+          dropType = {item.dropType}
+          itemImage={item.coverImgUrl}    // 盲盒需要给他设置一个单独的item图片
         />
       );
     });
