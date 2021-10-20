@@ -1,5 +1,10 @@
 import { IApiSearchDropsItem } from './types';
 
+export enum DROPTYPE {
+  DROP = 1,
+  BLINDBOX = 2
+}
+
 export interface ISearchDropsItem {
   accountAddress: string;
   bgColor: string;
@@ -18,7 +23,7 @@ export interface ISearchDropsItem {
   username: string;
   website: string;
   avatar: string;
-  dropType: number;
+  dropType: DROPTYPE;
 }
 
 export const mapSearchDropsItem = (

@@ -7,6 +7,7 @@ import {
 } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import {
+  DROPTYPE,
   ISearchDropsItem,
   SearchDropsParamState,
 } from 'modules/api/searchDrops';
@@ -165,18 +166,18 @@ export const DropsSection = () => {
           key={uid(item)}
 
           // dropType 1: drop 2: blindBox
-          href={item.dropType === 2 ?
+          href={item.dropType === DROPTYPE.BLINDBOX ?
             DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)
             : DropsRoutesConfig.DropDetails.generatePath(item.id)}
           // href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
-          bgImg={item.dropType === 2 ? '' : item.coverImgUrl}
-          bgColor={item.dropType === 2 ? '#232323' : item.bgColor}
+          bgImg={item.dropType === DROPTYPE.BLINDBOX ? '' : item.coverImgUrl}
+          bgColor={item.dropType === DROPTYPE.BLINDBOX ? '#232323' : item.bgColor}
           title={item.title}
           text={item.description}
           timer={timer}
           creator={creator}
           dropId={item.id}
-          dropType = {item.dropType}
+          dropType={item.dropType}
           itemImage={item.coverImgUrl}    // 盲盒需要给他设置一个单独的item图片
         />
       );

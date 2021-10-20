@@ -43,6 +43,7 @@ export const BlindBoxDetails = () => {
     type: getDropDetails.toString(),
   });
 
+  console.log('blinddata', data)
   const status = 'Live'
 
   const handleBuyBlindBox = useCallback(
@@ -54,7 +55,7 @@ export const BlindBoxDetails = () => {
         buyBlindBox({
           price: values.price,
           count: values.count,
-          contract: '0x6871103DBeC1b957C63a1E4943B18f763d582406'
+          contract: data?.blindboxinfo?.collection || ''
         }),
       )
       // .then(({ error }) => {
@@ -63,7 +64,7 @@ export const BlindBoxDetails = () => {
       //   }
       // });
     },
-    [dispatch],
+    [dispatch, data?.blindboxinfo?.collection],
   );
 
   return (

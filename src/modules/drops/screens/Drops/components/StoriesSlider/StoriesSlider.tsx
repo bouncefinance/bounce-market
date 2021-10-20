@@ -1,7 +1,7 @@
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { SearchDropsParamState } from 'modules/api/searchDrops';
+import { DROPTYPE, SearchDropsParamState } from 'modules/api/searchDrops';
 import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { getDrops, IGetDrops } from 'modules/drops/actions/getDrops';
 import {
@@ -97,9 +97,9 @@ export const StoriesSlider = () => {
 
     return (
       <StoriesSliderItem
-      href={item.dropType === 2 ?
-        DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)
-        : DropsRoutesConfig.DropDetails.generatePath(item.id)}
+        href={item.dropType === DROPTYPE.BLINDBOX ?
+          DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)
+          : DropsRoutesConfig.DropDetails.generatePath(item.id)}
         // href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
         key={item.id}
         title={item.title}

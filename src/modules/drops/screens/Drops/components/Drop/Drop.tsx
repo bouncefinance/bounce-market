@@ -1,6 +1,7 @@
 import { Box, Typography, useTheme } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
+import { DROPTYPE } from 'modules/api/searchDrops';
 import { Queries } from 'modules/common/components/Queries/Queries';
 import { ResponseData } from 'modules/common/types/ResponseData';
 import { getRandomHexColor } from 'modules/common/utils/getRandomHexColor';
@@ -78,7 +79,7 @@ export const Drop = ({
   }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
 
   const renderDropItems = () => {
-    return dropType === 2 ?
+    return dropType === DROPTYPE.BLINDBOX ?
       <Box mb={4}>
         <Link
           to={href}
