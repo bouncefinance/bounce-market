@@ -616,7 +616,8 @@
       "help": "Help",
       "getVerified": "Get Verified",
       "FAQ": "FAQ",
-      "support": "Support"
+      "support": "Support",
+      "docs":"Docs"
     },
     "followUs": {
       "followUs": "Follow Us"

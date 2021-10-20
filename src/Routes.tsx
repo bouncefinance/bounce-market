@@ -121,6 +121,7 @@ export function Routes() {
         path={[
           DropsRoutesConfig.Drops.path,
           DropsRoutesConfig.DropDetails.path,
+          DropsRoutesConfig.BlindBoxDetails.path,
         ]}
         render={() => (
           <DefaultLayout headerTheme={Themes.dark} footerTheme={Themes.dark}>

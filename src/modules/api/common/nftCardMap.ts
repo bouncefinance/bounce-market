@@ -55,7 +55,6 @@ export const getNftAvatars: getNftAvatarsType = ({ avatars, isPlatform }) => {
       };
     });
   } catch (error) {
-    console.log('---getNftAvatars error--', error);
     return [];
   }
 };

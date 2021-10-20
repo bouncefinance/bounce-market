@@ -602,7 +602,8 @@
       "help": "Помощь",
       "getVerified": "Пройти верификацию",
       "FAQ": "FAQ",
-      "support": "Поддержка"
+      "support": "Поддержка",
+      "docs": "Docs"
     },
     "followUs": {
       "followUs": "Следуйте за нами"

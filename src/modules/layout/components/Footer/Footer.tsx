@@ -120,6 +120,10 @@ export const Footer = () => {
         title: t('footer.help.support'),
         url: 'https://docs.fangible.com/fangible-support',
       },
+      {
+        title: t('footer.help.docs'),
+        url: 'https://docs.fangible.com'
+      }
     ],
   };
 

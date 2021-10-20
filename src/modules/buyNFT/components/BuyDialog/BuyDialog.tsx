@@ -5,6 +5,7 @@ import { useAccount } from 'modules/account/hooks/useAccount';
 import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
 import { AngleUpIcon } from 'modules/common/components/Icons/AngleUpIcon';
 import { CloseIcon } from 'modules/common/components/Icons/CloseIcon';
+import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
 import { getTokenSymbol } from 'modules/common/conts';
 import { InputField } from 'modules/form/components/InputField';
@@ -21,6 +22,7 @@ const MIN_QUANTITY = 1;
 
 interface IBuyFormValues {
   quantity: string;
+  price?: string
 }
 
 interface IBuyDialogProps {
@@ -38,6 +40,11 @@ interface IBuyDialogProps {
   maxQuantity?: number;
   currentPrice: BigNumber;
   isPack?: boolean;
+  isBlindBox?: boolean;
+  soldData?: {
+    notsaled: number;
+    quantity: number;
+  }
 }
 
 export const BuyDialog = ({
@@ -55,6 +62,8 @@ export const BuyDialog = ({
   maxQuantity,
   currentPrice,
   isPack = false,
+  isBlindBox = false,
+  soldData
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
   const { chainId } = useAccount();
@@ -208,18 +217,24 @@ export const BuyDialog = ({
           </Grid>
 
           <Grid item xs={12} sm={4} md={3}>
-            <ProfileInfo
-              avatarSize="medium"
-              subTitle={t('product-card.owner')}
-              title={owner}
-              users={[
-                {
-                  name: owner,
-                  avatar: ownerAvatar,
-                  verified: isOwnerVerified,
-                },
-              ]}
-            />
+            {isBlindBox ?
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <LayersIcon />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <h3> {soldData?.notsaled || 0} / {soldData?.quantity || 0}</h3>
+              </div>
+              : <ProfileInfo
+                avatarSize="medium"
+                subTitle={t('product-card.owner')}
+                title={owner}
+                users={[
+                  {
+                    name: owner,
+                    avatar: ownerAvatar,
+                    verified: isOwnerVerified,
+                  },
+                ]}
+              />}
           </Grid>
         </Grid>
       </Box>

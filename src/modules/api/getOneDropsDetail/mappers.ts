@@ -35,6 +35,14 @@ export interface IDropDetails {
   website: string;
   videourl: string;
   dropType: DropType;
+  blindboxinfo?: {
+    collection: string;
+    notsaled: number;
+    price: string;
+    totalsupply: number;
+    maxbuycount: number;
+    blindcoverimgurl: string;
+  }
 }
 
 export const mapDropDetails = (data: IApiOneDropsDetailData): IDropDetails => {
@@ -53,5 +61,6 @@ export const mapDropDetails = (data: IApiOneDropsDetailData): IDropDetails => {
     website: data.website,
     videourl: data.videourl,
     dropType: data.state,
+    blindboxinfo: data.blindboxinfo
   };
 };

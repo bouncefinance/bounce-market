@@ -47,8 +47,10 @@ export const DropDetails = () => {
           {featuresConfig.dropDetailsVideo && !!data?.videourl && (
             <Video movieSrc={data.videourl} />
           )}
+
           <LiveCards loading={loading} data={data} />
           <SoldCards loading={loading} data={data} />
+
         </DropsContainer>
       </Section>
     </ThemeProvider>
