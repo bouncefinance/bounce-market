@@ -51,6 +51,8 @@ export interface IApiOneDropsDetailData {
     notsaled: number;
     price: string;
     totalsupply: number;
+    maxbuycount: number;
+    blindcoverimgurl: string;
   }
 }
 

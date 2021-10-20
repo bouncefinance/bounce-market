@@ -40,6 +40,8 @@ export interface IDropDetails {
     notsaled: number;
     price: string;
     totalsupply: number;
+    maxbuycount: number;
+    blindcoverimgurl: string;
   }
 }
 

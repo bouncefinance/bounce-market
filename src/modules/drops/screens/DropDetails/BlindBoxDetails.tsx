@@ -142,7 +142,7 @@ export const BlindBoxDetails = () => {
                   // isOwnerVerified={roleInfos.creator.isVerify}
                   category={'image'}
                   loading={loading}
-                  maxQuantity={5}
+                  maxQuantity={data?.blindboxinfo?.maxbuycount}
                   currentPrice={new BigNumber(data?.blindboxinfo?.price || 0).div(1e18)}
                   readonly={false}
                   isPack={false}

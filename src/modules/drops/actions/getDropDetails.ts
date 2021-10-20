@@ -22,6 +22,8 @@ export interface IGetDropDetails extends IDropDetails {
     notsaled: number;
     price: string;
     totalsupply: number;
+    maxbuycount: number;
+    blindcoverimgurl: string;
   }
 }
 
