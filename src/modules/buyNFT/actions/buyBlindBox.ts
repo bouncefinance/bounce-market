@@ -49,24 +49,30 @@ export const buyBlindBox = createSmartAction<
                 contract
               );
 
-              BounceBlindBox_CT.methods
-                .mintByETH(count)
-                // Apply precise
-                .send({
-                  from: address,
-                  value: web3.utils.toWei(price.multipliedBy(count).toString()),
+              const mintBlindBox = async () => {
+                return new Promise((resolve, reject) => {
+                  BounceBlindBox_CT.methods
+                    .mintByETH(count)
+                    // Apply precise
+                    .send({
+                      from: address,
+                      value: web3.utils.toWei(price.multipliedBy(count).toString()),
+                    })
+                    .on('transactionHash', (hash: string) => {
+                      // Pending status
+                    })
+                    .on('receipt', async (receipt: TransactionReceipt) => {
+                      resolve(receipt);
+                      return Promise.resolve(receipt)
+                    })
+                    .on('error', (error: Error) => {
+                      reject(error);
+                      return Promise.reject(error)
+                    });
                 })
-                .on('transactionHash', (hash: string) => {
-                  // Pending status
-                })
-                .on('receipt', async (receipt: TransactionReceipt) => {
-                  // resolve(receipt);
-                  return Promise.resolve(receipt)
-                })
-                .on('error', (error: Error) => {
-                  // reject(error);
-                  return Promise.reject(error)
-                });
+              }
+
+              await mintBlindBox()
             })(),
           };
         },

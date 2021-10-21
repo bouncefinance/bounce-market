@@ -13,6 +13,7 @@
   },
   "buy-dialog": {
     "title": "Checkout",
+    "blind-title": "Confirm",
     "submit": "Proceed to pay",
     "buy": "Buy",
     "buy-now": "Buy now",

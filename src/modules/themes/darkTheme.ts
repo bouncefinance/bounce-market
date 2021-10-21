@@ -42,6 +42,13 @@ export const darkTheme = createMuiTheme({
   overrides: {
     ...mainTheme.overrides,
 
+    MuiFormLabel: {
+      ...mainTheme.overrides?.MuiFormLabel,
+      root: {
+        color: 'white !important'
+      }
+    },
+
     MuiTypography: {
       ...mainTheme.overrides?.MuiTypography,
       root: {
@@ -60,16 +67,22 @@ export const darkTheme = createMuiTheme({
       contained: {
         ...mainTheme.overrides?.MuiButton?.contained,
         backgroundColor: '#282828',
+        // background: 'linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)',
 
         '&:hover': {
           color: mainTheme.palette.common.black,
           borderColor: fade(mainTheme.palette.common.black, 0),
           backgroundColor: '#282828',
+          // background: 'linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)',
 
           '&:before': {
             transform: 'translateY(0)',
           },
         },
+
+        '&.Red-Violet': {
+          background: 'linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)',
+        }
       },
 
       outlined: {
@@ -125,10 +138,10 @@ export const darkTheme = createMuiTheme({
       ...mainTheme.overrides?.MuiInputBase,
       root: {
         ...mainTheme.overrides?.MuiInputBase?.root,
-        border: `1px solid ${fade(PALETTE.text.primary, 0.1)}`,
+        border: `1px solid ${fade(PALETTE.text.primary, 0.5)}`,
 
         '&:hover, &.Mui-focused': {
-          borderColor: fade(PALETTE.text.primary, 0.3),
+          borderColor: fade(PALETTE.text.primary, 0.7),
         },
       },
     },
