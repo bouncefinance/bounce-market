@@ -246,7 +246,12 @@ export const BuyDialog = ({
         validate={validateForm}
         mutators={{
           increaseQuantity: (_args, state, utils) => {
-            utils.changeValue(state, 'quantity', oldValue => +oldValue + 1);
+            utils.changeValue(state, 'quantity', oldValue => {
+              if (+oldValue <= (maxQuantity || 1) - 1) {
+                return +oldValue + 1
+              }
+              return oldValue
+            });
           },
           decreaseQuantity: (_args, state, utils) => {
             utils.changeValue(state, 'quantity', oldValue => +oldValue - 1);
