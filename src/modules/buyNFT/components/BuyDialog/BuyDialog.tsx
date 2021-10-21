@@ -166,6 +166,7 @@ export const BuyDialog = ({
           </Box>
 
           <Button
+            className={isBlindBox ? 'Red-Violet' : ''}
             fullWidth
             size="large"
             onClick={handleSubmit}
@@ -177,7 +178,7 @@ export const BuyDialog = ({
         </>
       );
     },
-    [classes, loading, readonly, currentPrice, chainId, isPack],
+    [classes, loading, readonly, currentPrice, chainId, isPack, isBlindBox],
   );
 
   return (
@@ -194,7 +195,7 @@ export const BuyDialog = ({
       maxWidth="md"
     >
       <Typography variant="h2" className={classes.title}>
-        {t('buy-dialog.title')}
+        {isBlindBox ? t('buy-dialog.blind-title') : t('buy-dialog.title')}
       </Typography>
 
       <Box mb={5}>
