@@ -43,8 +43,7 @@ export const BlindBoxDetails = () => {
     type: getDropDetails.toString(),
   });
 
-  console.log('blinddata', data)
-  const status = 'Live'
+  const status = (data?.blindboxinfo?.notsaled || 0) === 0 ? 'Sold' : 'Live'
 
   const handleBuyBlindBox = useCallback(
     (values: {
@@ -89,7 +88,11 @@ export const BlindBoxDetails = () => {
                 width: 306,
                 marginTop: 20
               }}
-              onClick={() => { openFixedBuyDialog() }}
+              onClick={() => {
+                if (status === 'Live') {
+                  openFixedBuyDialog()
+                }
+              }}
             >
               <ProductCard
                 isOnSale
@@ -103,14 +106,14 @@ export const BlindBoxDetails = () => {
                 title={''}
                 MediaProps={{
                   category: 'image',
-                  src: data?.coverImgUrl,
+                  src: data?.blindboxinfo?.blindcoverimgurl,
                   objectFit: 'contain',
                   loading: 'lazy',
                 }}
                 auctionType={AuctionType.FixedSwap}
-                price={new BigNumber(data?.blindboxinfo?.price || 0).div(1e18)}
+                price={new BigNumber(data?.blindboxinfo?.price || 0)}
                 priceType={'ETH'}
-                openAt={new Date()}
+                openAt={new Date(data?.dropDate || 0)}
                 profileInfo={
                   <CardProfileInfo
                     subTitle={t('product-card.owner')}
@@ -125,7 +128,7 @@ export const BlindBoxDetails = () => {
               {({ loading }) => (
                 <BuyDialog
                   name={data?.title || 'Unname'}
-                  filepath={data?.coverImgUrl || 'https://ap1-cfs3-media-bounce.bounce.finance/6bca64a62b5990dc3e582c9684477b75-1634573265.png'}
+                  filepath={data?.blindboxinfo?.blindcoverimgurl || 'https://ap1-cfs3-media-bounce.bounce.finance/6bca64a62b5990dc3e582c9684477b75-1634573265.png'}
                   onSubmit={data => {
                     const { price, quantity } = data
                     handleBuyBlindBox({
@@ -141,7 +144,7 @@ export const BlindBoxDetails = () => {
                   category={'image'}
                   loading={loading}
                   maxQuantity={data?.blindboxinfo?.maxbuycount}
-                  currentPrice={new BigNumber(data?.blindboxinfo?.price || 0).div(1e18)}
+                  currentPrice={new BigNumber(data?.blindboxinfo?.price || 0)}
                   readonly={false}
                   isPack={false}
                   isBlindBox={true}
@@ -154,8 +157,6 @@ export const BlindBoxDetails = () => {
             </Mutation>}
           </Box>
         </DropsContainer>
-
-
       </Section>
     </ThemeProvider>
   );

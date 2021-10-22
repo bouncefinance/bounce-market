@@ -41,6 +41,7 @@ export interface IApiSearchDropsItem {
   website: string;
   avatar: string;
   droptype: number;
+  blindcoverimgurl: string;
 }
 
 export interface IApiSearchDrops {

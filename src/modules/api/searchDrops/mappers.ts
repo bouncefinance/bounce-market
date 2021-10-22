@@ -24,6 +24,7 @@ export interface ISearchDropsItem {
   website: string;
   avatar: string;
   dropType: DROPTYPE;
+  blindcoverimgurl: string;
 }
 
 export const mapSearchDropsItem = (
@@ -47,6 +48,7 @@ export const mapSearchDropsItem = (
     username: item.username,
     website: item.website,
     avatar: item.avatar,
-    dropType: item.droptype
+    dropType: item.droptype,
+    blindcoverimgurl: item.blindcoverimgurl
   };
 };

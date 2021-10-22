@@ -396,7 +396,7 @@ export const ProductCardComponent = ({
           className={classes.topBar}
         >
           <RenderChiaIcon />
-          {renderedLikes}
+          {Boolean(poolId) && renderedLikes}
         </Box>
         <div className={classes.relative}>
           {renderMediaContent()}

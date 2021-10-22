@@ -19,7 +19,8 @@ const data: IApiSearchDropsItem[] = [
     username: 'Javon JavonJavonJavonJavonJavonJavonJavonJavonJavonJavon',
     website: '',
     avatar: '',
-    droptype: 1
+    droptype: 1,
+    blindcoverimgurl: ''
   },
   {
     accountaddress: '0x26604a35b97d395a9711d839e89b44efcc549b21',
@@ -39,7 +40,8 @@ const data: IApiSearchDropsItem[] = [
     username: 'hustler',
     website: 'Sobble 2',
     avatar: '',
-    droptype: 1
+    droptype: 1,
+    blindcoverimgurl: ''
   },
 ];
 
