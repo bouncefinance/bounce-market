@@ -32,7 +32,7 @@ export const BlindBoxDetails = () => {
   } = useDialog();
 
   useEffect(() => {
-    dispatch(getDropDetails({ id: + blindboxId }));
+    dispatch(getDropDetails({ id: +blindboxId }));
 
     return function reset() {
       dispatch(resetRequests([getDropDetails.toString()]));
@@ -43,21 +43,24 @@ export const BlindBoxDetails = () => {
     type: getDropDetails.toString(),
   });
 
-  const status = (data?.blindboxinfo?.notsaled || 0) === 0 ? 'Sold' : 'Live'
+  const status =
+    (data?.blindboxinfo?.notsaled || 0) === 0
+      ? 'Sold'
+      : new Date().getTime() < (data?.dropDate.getTime() || 0)
+      ? 'Upcoming'
+      : 'Live';
 
   const handleBuyBlindBox = useCallback(
-    (values: {
-      price: BigNumber
-      count: number
-    }) => {
+    (values: { price: BigNumber; count: number }) => {
       dispatch(
         buyBlindBox({
           price: values.price,
           count: values.count,
-          contract: data?.blindboxinfo?.collection || ''
+          contract: data?.blindboxinfo?.collection || '',
         }),
-      )
+      );
       // .then(({ error }) => {
+
       //   if (!error) {
       //     push(ProfileRoutesConfig.UserProfile.generatePath());
       //   }
@@ -77,29 +80,35 @@ export const BlindBoxDetails = () => {
         <DropsContainer>
           <Description loading={loading} pristine={pristine} data={data} />
           <Box mb={5}>
-            {
-              status === 'Live' ?
-                <Typography variant="h2">⚡ {t('drop-details.live') + 'BlindBox'}</Typography> :
-                <Typography variant="h2">{t('drop-details.sold') + 'BlindBox'}</Typography>
-            }
+            {status === 'Live' ? (
+              <Typography variant="h2">
+                ⚡ {t('drop-details.live') + 'BlindBox'}
+              </Typography>
+            ) : (
+              <Typography variant="h2">
+                {t('drop-details.sold') + 'BlindBox'}
+              </Typography>
+            )}
 
             <Box
               style={{
                 width: 306,
-                marginTop: 20
+                marginTop: 20,
               }}
               onClick={() => {
                 if (status === 'Live') {
-                  openFixedBuyDialog()
+                  openFixedBuyDialog();
                 }
               }}
             >
               <ProductCard
                 isOnSale
                 soldData={{
-                  sold: (data?.blindboxinfo?.totalsupply || 0) - (data?.blindboxinfo?.notsaled || 0) || 0,
+                  sold:
+                    (data?.blindboxinfo?.totalsupply || 0) -
+                      (data?.blindboxinfo?.notsaled || 0) || 0,
                   quantity: data?.blindboxinfo?.totalsupply || 0,
-                  color: '#000'
+                  color: '#000',
                 }}
                 id={0}
                 poolId={0}
@@ -117,44 +126,50 @@ export const BlindBoxDetails = () => {
                 profileInfo={
                   <CardProfileInfo
                     subTitle={t('product-card.owner')}
-                    title={data?.title || ''} users={[]}
-                  // users={item.avatars}
+                    title={data?.title || ''}
+                    users={[]}
+                    // users={item.avatars}
                   />
                 }
               />
             </Box>
 
-            {<Mutation type={buyBlindBox.toString()} action={buyBlindBox}>
-              {({ loading }) => (
-                <BuyDialog
-                  name={data?.title || 'Unname'}
-                  filepath={data?.blindboxinfo?.blindcoverimgurl || 'https://ap1-cfs3-media-bounce.bounce.finance/6bca64a62b5990dc3e582c9684477b75-1634573265.png'}
-                  onSubmit={data => {
-                    const { price, quantity } = data
-                    handleBuyBlindBox({
-                      price: new BigNumber(price as string),
-                      count: parseInt(quantity)
-                    })
-                  }}
-                  isOpen={openedFixedBuy}
-                  onClose={closeFixedBuyDialog}
-                  owner={'ownerTitle'}
-                  // ownerAvatar={roleInfos.creator.avatar}
-                  // isOwnerVerified={roleInfos.creator.isVerify}
-                  category={'image'}
-                  loading={loading}
-                  maxQuantity={data?.blindboxinfo?.maxbuycount}
-                  currentPrice={new BigNumber(data?.blindboxinfo?.price || 0)}
-                  readonly={false}
-                  isPack={false}
-                  isBlindBox={true}
-                  soldData={{
-                    notsaled: data?.blindboxinfo?.notsaled || 0,
-                    quantity: data?.blindboxinfo?.totalsupply || 0,
-                  }}
-                />
-              )}
-            </Mutation>}
+            {
+              <Mutation type={buyBlindBox.toString()} action={buyBlindBox}>
+                {({ loading }) => (
+                  <BuyDialog
+                    name={data?.title || 'Unname'}
+                    filepath={
+                      data?.blindboxinfo?.blindcoverimgurl ||
+                      'https://ap1-cfs3-media-bounce.bounce.finance/6bca64a62b5990dc3e582c9684477b75-1634573265.png'
+                    }
+                    onSubmit={data => {
+                      const { price, quantity } = data;
+                      handleBuyBlindBox({
+                        price: new BigNumber(price as string),
+                        count: parseInt(quantity),
+                      });
+                    }}
+                    isOpen={openedFixedBuy}
+                    onClose={closeFixedBuyDialog}
+                    owner={'ownerTitle'}
+                    // ownerAvatar={roleInfos.creator.avatar}
+                    // isOwnerVerified={roleInfos.creator.isVerify}
+                    category={'image'}
+                    loading={loading}
+                    maxQuantity={data?.blindboxinfo?.maxbuycount}
+                    currentPrice={new BigNumber(data?.blindboxinfo?.price || 0)}
+                    readonly={false}
+                    isPack={false}
+                    isBlindBox={true}
+                    soldData={{
+                      notsaled: data?.blindboxinfo?.notsaled || 0,
+                      quantity: data?.blindboxinfo?.totalsupply || 0,
+                    }}
+                  />
+                )}
+              </Mutation>
+            }
           </Box>
         </DropsContainer>
       </Section>
