@@ -80,13 +80,13 @@ export const BlindBoxDetails = () => {
         <DropsContainer>
           <Description loading={loading} pristine={pristine} data={data} />
           <Box mb={5}>
-            {status === 'Live' ? (
+            {status === 'Sold' ? (
               <Typography variant="h2">
-                ⚡ {t('drop-details.live') + 'BlindBox'}
+                {t('drop-details.sold') + 'BlindBox'}
               </Typography>
             ) : (
               <Typography variant="h2">
-                {t('drop-details.sold') + 'BlindBox'}
+                ⚡ {t('drop-details.live') + 'BlindBox'}
               </Typography>
             )}
 
