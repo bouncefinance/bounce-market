@@ -1,4 +1,11 @@
-import { Box, Dialog, Grid, IconButton, Typography } from '@material-ui/core';
+import {
+  Box,
+  Dialog,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
 import { useAccount } from 'modules/account/hooks/useAccount';
@@ -22,7 +29,7 @@ const MIN_QUANTITY = 1;
 
 interface IBuyFormValues {
   quantity: string;
-  price?: string
+  price?: string;
 }
 
 interface IBuyDialogProps {
@@ -44,7 +51,7 @@ interface IBuyDialogProps {
   soldData?: {
     notsaled: number;
     quantity: number;
-  }
+  };
 }
 
 export const BuyDialog = ({
@@ -63,7 +70,7 @@ export const BuyDialog = ({
   currentPrice,
   isPack = false,
   isBlindBox = false,
-  soldData
+  soldData,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
   const { chainId } = useAccount();
@@ -218,13 +225,22 @@ export const BuyDialog = ({
           </Grid>
 
           <Grid item xs={12} sm={4} md={3}>
-            {isBlindBox ?
+            {isBlindBox ? (
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <LayersIcon />
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <h3> {soldData?.notsaled || 0} / {soldData?.quantity || 0}</h3>
+                <Tooltip
+                  title={`Available for purchase/Total Supply`}
+                  placement="top"
+                >
+                  <h3>
+                    {' '}
+                    {soldData?.notsaled || 0} / {soldData?.quantity || 0}
+                  </h3>
+                </Tooltip>
               </div>
-              : <ProfileInfo
+            ) : (
+              <ProfileInfo
                 avatarSize="medium"
                 subTitle={t('product-card.owner')}
                 title={owner}
@@ -235,7 +251,8 @@ export const BuyDialog = ({
                     verified: isOwnerVerified,
                   },
                 ]}
-              />}
+              />
+            )}
           </Grid>
         </Grid>
       </Box>
@@ -248,9 +265,9 @@ export const BuyDialog = ({
           increaseQuantity: (_args, state, utils) => {
             utils.changeValue(state, 'quantity', oldValue => {
               if (+oldValue <= (maxQuantity || 1) - 1) {
-                return +oldValue + 1
+                return +oldValue + 1;
               }
-              return oldValue
+              return oldValue;
             });
           },
           decreaseQuantity: (_args, state, utils) => {

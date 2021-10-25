@@ -350,7 +350,8 @@
     "item-total-supply-tip": "Total Supply",
     "item-balance-tip": "{balance} editions in account",
     "pool-balance-tip": "{balance} available for purchase",
-    "sold-for-quantity": "Sold {sold} of {quantity}"
+    "sold-for-quantity": "Sold {sold} of {quantity}",
+    "sold-tip": "Available for purchase / Total Supply"
   },
   "avatarsType": {
     "collection": "Collection",

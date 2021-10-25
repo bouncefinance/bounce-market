@@ -342,7 +342,8 @@
     "item-total-supply-tip": "总份数",
     "item-balance-tip": "当前拥有份数: {balance}",
     "pool-balance-tip": "当前可售份数: {balance}",
-    "sold-for-quantity": "已售出 {sold} / {quantity}"
+    "sold-for-quantity": "已售出 {sold} / {quantity}",
+    "sold-tip": "可供购买 / 总供应量"
   },
   "avatarsType": {
     "collection": "作品集",

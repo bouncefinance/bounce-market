@@ -337,7 +337,8 @@
     "item-total-supply-tip": "приложен",
     "item-balance-tip": "{balance} изданий на счету",
     "pool-balance-tip": "{balance} доступны для покупки",
-    "sold-for-quantity": "Продано {sold} из {quantity}"
+    "sold-for-quantity": "Продано {sold} из {quantity}",
+    "sold-tip": "Доступно для покупки / Общее предложение"
   },
   "avatarsType": {
     "collection": "коллекция",

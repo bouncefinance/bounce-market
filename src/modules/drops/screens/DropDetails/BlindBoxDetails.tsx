@@ -23,7 +23,7 @@ import { buyBlindBox } from 'modules/buyNFT/actions/buyBlindBox';
 
 export const BlindBoxDetails = () => {
   const dispatch = useDispatch();
-  const { chainId } = useAccount();
+  const { chainId, handleConnect } = useAccount();
   const { blindboxId } = DropsRoutesConfig.BlindBoxDetails.useParams();
   const {
     opened: openedFixedBuy,
@@ -144,6 +144,13 @@ export const BlindBoxDetails = () => {
                       'https://ap1-cfs3-media-bounce.bounce.finance/6bca64a62b5990dc3e582c9684477b75-1634573265.png'
                     }
                     onSubmit={data => {
+                      if (!chainId) {
+                        closeFixedBuyDialog();
+                        setTimeout(() => {
+                          handleConnect();
+                        });
+                        return false;
+                      }
                       const { price, quantity } = data;
                       handleBuyBlindBox({
                         price: new BigNumber(price as string),
