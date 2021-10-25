@@ -121,7 +121,7 @@ export const BlindBoxDetails = () => {
                 }}
                 auctionType={AuctionType.FixedSwap}
                 price={new BigNumber(data?.blindboxinfo?.price || 0)}
-                priceType={'ETH'}
+                priceType={chainId === 56 ? 'BNB' : 'ETH'}
                 openAt={new Date(data?.dropDate || 0)}
                 profileInfo={
                   <CardProfileInfo
