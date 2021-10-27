@@ -7,6 +7,7 @@ export const useStoriesSliderItemStyles = makeStyles<
 >(theme => ({
   root: {
     position: 'relative',
+    maxWidth: 540,
   },
 
   imgLink: {
@@ -33,7 +34,7 @@ export const useStoriesSliderItemStyles = makeStyles<
   imgWrap: {
     borderRadius: 24,
     marginBottom: theme.spacing(3.5),
-    maxHeight: 500,
+    maxHeight: 340,
     // overflow: 'hidden',
 
     [theme.breakpoints.up('md')]: {
