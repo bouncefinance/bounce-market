@@ -44,9 +44,9 @@ function mapPromoItem(item: IOverviewItem, tokenSymbol: string): IPromoItem {
       item.poolId !== undefined && item.poolType
         ? BuyNFTRoutesConfig.DetailsNFT.generatePath(item.poolId, item.poolType)
         : '',
-    authorHref: ProfileRoutesConfig.OtherProfile.generatePath(
-      item.creator?.address,
-    ),
+    authorHref: !item.creator?.address
+      ? '/404'
+      : ProfileRoutesConfig.OtherProfile.generatePath(item.creator?.address),
     MediaProps: {
       category: item.category,
       src: item.fileUrl || '',
