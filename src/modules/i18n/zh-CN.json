@@ -18,7 +18,9 @@
     "title": "确认",
     "blind-title": "确认",
     "total": "总金额",
-    "current": "当前池子"
+    "current": "当前池子",
+    "ok": "确定",
+    "view": "在“我拥有的”查看"
   },
   "change-wallet": {
     "description": "变更为以太链，币安链或者火币链",

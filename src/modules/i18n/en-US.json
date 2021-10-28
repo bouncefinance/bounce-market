@@ -18,7 +18,9 @@
     "buy": "Buy",
     "buy-now": "Buy now",
     "total": "Total",
-    "current": "Current Pool"
+    "current": "Current Pool",
+    "ok": "OK",
+    "view": "View in My Showcase"
   },
   "change-wallet": {
     "description": "Change network to Ethereum Mainnet, Binance Smart Chain, or Heco",
@@ -112,10 +114,7 @@
       "standard": "Standard",
       "supply": "Supply"
     },
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "Create",
     "submitting": "Creating",
     "title": "Create NFT",
@@ -137,10 +136,7 @@
       "description": "What's the story behind this NFT?"
     },
     "next": "Next",
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "Create",
     "submitting": "Creating",
     "time": "",
@@ -619,7 +615,7 @@
       "getVerified": "Get Verified",
       "FAQ": "FAQ",
       "support": "Support",
-      "docs":"Docs"
+      "docs": "Docs"
     },
     "followUs": {
       "followUs": "Follow Us"
