@@ -110,7 +110,7 @@ export const Footer = () => {
     links: [
       {
         title: t('footer.help.getVerified'),
-        url: 'https://ankrnetwork.typeform.com/to/UBxvAPWr',
+        url: 'https://forms.gle/pCWzLeQzZVyWkY469',
       },
       {
         title: t('footer.help.FAQ'),
@@ -122,8 +122,8 @@ export const Footer = () => {
       },
       {
         title: t('footer.help.docs'),
-        url: 'https://docs.fangible.com'
-      }
+        url: 'https://docs.fangible.com',
+      },
     ],
   };
 
