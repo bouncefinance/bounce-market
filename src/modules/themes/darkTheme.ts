@@ -45,8 +45,8 @@ export const darkTheme = createMuiTheme({
     MuiFormLabel: {
       ...mainTheme.overrides?.MuiFormLabel,
       root: {
-        color: 'white !important'
-      }
+        color: 'white !important',
+      },
     },
 
     MuiTypography: {
@@ -81,8 +81,14 @@ export const darkTheme = createMuiTheme({
         },
 
         '&.Red-Violet': {
-          background: 'linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)',
-        }
+          background:
+            'linear-gradient(259.57deg, #2663FF 1.58%, #FF3828 92.54%)',
+        },
+
+        '&.White': {
+          background: '#FFF',
+          color: '#000',
+        },
       },
 
       outlined: {

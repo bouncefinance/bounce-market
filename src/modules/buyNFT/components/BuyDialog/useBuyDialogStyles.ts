@@ -120,5 +120,18 @@ export const useBuyDialogStyles = makeStyles<Theme>(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-  }
+  },
+
+  btnWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+
+  okBtn: {
+    width: 180,
+  },
+
+  viewBtn: {
+    width: 410,
+  },
 }));

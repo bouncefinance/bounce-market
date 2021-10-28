@@ -52,6 +52,9 @@ interface IBuyDialogProps {
     notsaled: number;
     quantity: number;
   };
+  isFinished?: boolean;
+  onOk?: () => void;
+  onView?: () => void;
 }
 
 export const BuyDialog = ({
@@ -71,8 +74,12 @@ export const BuyDialog = ({
   isPack = false,
   isBlindBox = false,
   soldData,
+  isFinished = false,
+  onOk,
+  onView,
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
+
   const { chainId } = useAccount();
   const validateForm = useCallback(
     ({ quantity }: IBuyFormValues) => {
@@ -172,20 +179,67 @@ export const BuyDialog = ({
             </Grid>
           </Box>
 
-          <Button
-            className={isBlindBox ? 'Red-Violet' : ''}
-            fullWidth
-            size="large"
-            onClick={handleSubmit}
-            loading={loading}
-            disabled={submitting}
-          >
-            {t('buy-dialog.submit')}
-          </Button>
+          {isBlindBox ? (
+            isFinished ? (
+              <div className={classes.btnWrapper}>
+                <Button
+                  className={classNames('White', classes.okBtn)}
+                  size="large"
+                  onClick={onOk}
+                  loading={loading}
+                  disabled={submitting}
+                >
+                  {t('buy-dialog.ok')}
+                </Button>
+
+                <Button
+                  className={classNames('Red-Violet', classes.viewBtn)}
+                  size="large"
+                  onClick={onView}
+                  loading={loading}
+                  disabled={submitting}
+                >
+                  {t('buy-dialog.view')}
+                </Button>
+              </div>
+            ) : (
+              <Button
+                className="Red-Violet"
+                fullWidth
+                size="large"
+                onClick={handleSubmit}
+                loading={loading}
+                disabled={submitting}
+              >
+                {t('buy-dialog.submit')}
+              </Button>
+            )
+          ) : (
+            <Button
+              fullWidth
+              size="large"
+              onClick={handleSubmit}
+              loading={loading}
+              disabled={submitting}
+            >
+              {t('buy-dialog.submit')}
+            </Button>
+          )}
         </>
       );
     },
-    [classes, loading, readonly, currentPrice, chainId, isPack, isBlindBox],
+    [
+      classes,
+      loading,
+      readonly,
+      currentPrice,
+      chainId,
+      isPack,
+      isBlindBox,
+      isFinished,
+      onOk,
+      onView,
+    ],
   );
 
   return (
