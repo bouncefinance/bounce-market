@@ -1,6 +1,6 @@
 import { Box, Container, ThemeProvider, Typography } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
-import { Mutation, useQuery } from '@redux-requests/react';
+import { Mutation, useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { IDropDetails } from 'modules/api/getOneDropsDetail';
 import { ProductCard } from 'modules/common/components/ProductCard';
@@ -11,7 +11,7 @@ import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
 import { darkTheme } from 'modules/themes/darkTheme';
 import { Section } from 'modules/uiKit/Section';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Description } from './components/Description';
 import BigNumber from 'bignumber.js';
@@ -20,9 +20,13 @@ import { CardProfileInfo } from 'modules/common/components/ProfileInfo';
 import { BuyDialog } from 'modules/buyNFT/components/BuyDialog';
 import { useDialog } from 'modules/buyNFT/screens/BuyNFT/useDialog';
 import { buyBlindBox } from 'modules/buyNFT/actions/buyBlindBox';
+import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
+import { useHistory } from 'react-router';
 
 export const BlindBoxDetails = () => {
+  const [isFinished, setIsFinished] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const dispatchRequest = useDispatchRequest();
   const { chainId, handleConnect } = useAccount();
   const { blindboxId } = DropsRoutesConfig.BlindBoxDetails.useParams();
   const {
@@ -30,6 +34,7 @@ export const BlindBoxDetails = () => {
     open: openFixedBuyDialog,
     close: closeFixedBuyDialog,
   } = useDialog();
+  const { push } = useHistory();
 
   useEffect(() => {
     dispatch(getDropDetails({ id: +blindboxId }));
@@ -52,13 +57,17 @@ export const BlindBoxDetails = () => {
 
   const handleBuyBlindBox = useCallback(
     (values: { price: BigNumber; count: number }) => {
-      dispatch(
+      dispatchRequest(
         buyBlindBox({
           price: values.price,
           count: values.count,
           contract: data?.blindboxinfo?.collection || '',
         }),
-      );
+      ).then(({ error }) => {
+        if (!error) {
+          setIsFinished(true);
+        }
+      });
       // .then(({ error }) => {
 
       //   if (!error) {
@@ -66,7 +75,7 @@ export const BlindBoxDetails = () => {
       //   }
       // });
     },
-    [dispatch, data?.blindboxinfo?.collection],
+    [dispatchRequest, data?.blindboxinfo?.collection],
   );
 
   return (
@@ -172,6 +181,15 @@ export const BlindBoxDetails = () => {
                     soldData={{
                       notsaled: data?.blindboxinfo?.notsaled || 0,
                       quantity: data?.blindboxinfo?.totalsupply || 0,
+                    }}
+                    isFinished={isFinished}
+                    onOk={() => {
+                      setIsFinished(false);
+                    }}
+                    onView={() => {
+                      push(
+                        ProfileRoutesConfig.UserProfile.generatePath('owned'),
+                      );
                     }}
                   />
                 )}

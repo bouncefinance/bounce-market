@@ -14,7 +14,9 @@
     "buy-now": "Купить сейчас",
     "submit": "Приступить к оплате",
     "total": "Всего",
-    "current": "Текущий бассейн"
+    "current": "Текущий бассейн",
+    "ok": "Определение",
+    "view": "Просмотр в Витрина"
   },
   "change-wallet": {
     "description": "Перейти на Ethereum Mainnet, Binance Smart Chain или Heco",
@@ -112,10 +114,7 @@
       "standard": "Стандарт",
       "supply": "Выпущено"
     },
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "title": "Создать NFT",
@@ -137,10 +136,7 @@
       "description": "Какая история стоит за этим NFT?"
     },
     "next": "Next",
-    "standardOption": [
-      "ERC-721",
-      "ERC-1155"
-    ],
+    "standardOption": ["ERC-721", "ERC-1155"],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "time": "",
