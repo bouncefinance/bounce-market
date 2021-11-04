@@ -64,7 +64,9 @@ export const InfoPanel = ({
     window.location.protocol +
     '//' +
     window.location.hostname +
-    ProfileRoutesConfig.OtherProfile.generatePath(address);
+    ProfileRoutesConfig.OtherProfile.generatePath(
+      isCollection ? collectionAddress : address,
+    );
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
