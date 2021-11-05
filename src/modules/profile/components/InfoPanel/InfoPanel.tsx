@@ -60,13 +60,14 @@ export const InfoPanel = ({
   const classes = useInfoPanelStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isPopoverOpened = Boolean(anchorEl);
+
   const urlForSharing =
     window.location.protocol +
     '//' +
     window.location.hostname +
-    ProfileRoutesConfig.OtherProfile.generatePath(
-      isCollection ? collectionAddress : address,
-    );
+    (isCollection
+      ? ProfileRoutesConfig.Collection.generatePath(collectionAddress)
+      : ProfileRoutesConfig.OtherProfile.generatePath(address));
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
