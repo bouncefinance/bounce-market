@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 
 const PATH_ENTER_PWD = '/enterpwd';
 const PATH_CONFIRM_PROFILE = '/confirm';
+const PATH_CLAIM_NFT = '/claim';
 
 export const GiftRoutesConfig: { [key: string]: RouteConfiguration } = {
   EnterPwd: {
@@ -14,6 +15,10 @@ export const GiftRoutesConfig: { [key: string]: RouteConfiguration } = {
   ConfirmProfile: {
     path: PATH_CONFIRM_PROFILE,
     generatePath: () => PATH_CONFIRM_PROFILE,
+  },
+  ClaimNft: {
+    path: PATH_CLAIM_NFT,
+    generatePath: () => PATH_CLAIM_NFT,
   },
 };
 
@@ -32,6 +37,13 @@ const LoadableConfirmProfileContainer: LoadableComponent<any> = loadable(
   },
 );
 
+const LoadableClaimNftContainer: LoadableComponent<any> = loadable(
+  async () => import('./screens/ClaimNft').then(module => module.ClaimNft),
+  {
+    fallback: <QueryLoadingAbsolute />,
+  },
+);
+
 export function GiftRoutes() {
   return (
     <>
@@ -44,6 +56,11 @@ export function GiftRoutes() {
         path={GiftRoutesConfig.ConfirmProfile.path}
         exact={true}
         component={LoadableConfirmProfileContainer}
+      />
+      <Route
+        path={GiftRoutesConfig.ClaimNft.path}
+        exact={true}
+        component={LoadableClaimNftContainer}
       />
     </>
   );

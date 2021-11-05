@@ -52,6 +52,9 @@ export const useEnterPwdStyles = makeStyles<Theme>(theme => ({
   },
 
   enterBtn: {
+    width: 170,
+    height: 50,
+
     background: '#fff',
     border: '1px solid rgba(0, 0, 0, 0.1)',
     boxSizing: 'border-box',

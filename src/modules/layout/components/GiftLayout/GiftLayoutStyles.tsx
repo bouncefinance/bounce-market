@@ -17,5 +17,7 @@ export const useGiftLayoutStyles = makeStyles<Theme>(theme => ({
 
   main: {
     flexGrow: 1,
+
+    marginBottom: 40,
   },
 }));

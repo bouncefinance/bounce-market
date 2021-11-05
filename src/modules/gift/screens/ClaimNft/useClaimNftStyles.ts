@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
-export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
+export const useClaimNftStyles = makeStyles<Theme>(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -18,11 +18,31 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
     textAlign: 'center',
   },
 
+  description: {
+    fontSize: 14,
+    fontWeight: 'normal',
+    lineHeight: '20px',
+    textAlign: 'center',
+    color: '#fff',
+
+    marginTop: 20,
+  },
+
   nftImg: {
-    width: 175,
-    height: 175,
+    width: 230,
+    height: 230,
 
     marginTop: 40,
+  },
+
+  nftDescription: {
+    fontSize: 12,
+    fontWeight: 'normal',
+    lineHeight: '16px',
+    textAlign: 'center',
+    color: '#fff',
+
+    marginTop: 20,
   },
 
   continueBtn: {
@@ -34,7 +54,7 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
     boxSizing: 'border-box',
     borderRadius: 39,
 
-    marginTop: 192,
+    marginTop: 80,
 
     '&.MuiButton-contained': {
       color: '#000',
