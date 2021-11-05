@@ -18,17 +18,65 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
     textAlign: 'center',
   },
 
-  nftImg: {
-    width: 175,
-    height: 175,
+  addPhotoField: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
 
     marginTop: 40,
   },
 
-  continueBtn: {
-    width: 170,
-    height: 50,
+  avatar: {
+    width: 82,
+    height: 82,
 
+    '& img': {
+      width: 32,
+    },
+  },
+
+  verifiedIcon: {
+    width: 30,
+    height: 30,
+    right: 0,
+  },
+
+  addPhotoBtn: {
+    color: 'white',
+    textDecoration: 'underline',
+    height: 16,
+    fontWeight: 'normal',
+    fontSize: 10,
+
+    marginTop: 8,
+  },
+
+  textField: {
+    width: '100%',
+    marginTop: 40,
+  },
+
+  inputLabel: {
+    fontWeight: 'normal',
+    fontSize: 12,
+    color: '#eee',
+  },
+
+  Input: {
+    height: 50,
+    border: '1px solid rgba(0, 0, 0, 0.4)',
+    boxSizing: 'border-box',
+    borderRadius: 8,
+    background: '#fff',
+
+    marginTop: 10,
+
+    '&.MuiOutlinedInput-input': {
+      minHeight: 50,
+    },
+  },
+
+  continueBtn: {
     background: '#fff',
     border: '1px solid rgba(0, 0, 0, 0.1)',
     boxSizing: 'border-box',

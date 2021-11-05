@@ -20,7 +20,7 @@ export const ConfirmProfile: React.FC = () => {
 
       <Box className={classes.addPhotoField}>
         <DefaultRandomAvatar
-          className={classes.avator}
+          className={classes.avatar}
           verified
           verifiedIconClasses={classes.verifiedIcon}
         />
