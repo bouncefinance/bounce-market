@@ -35,20 +35,42 @@ export const useEnterPwdStyles = makeStyles<Theme>(theme => ({
     marginTop: 40,
   },
 
+  inputField: {
+    height: 76,
+
+    marginTop: 40,
+  },
+
   pwdInput: {
-    // width: 358,
+    width: 358,
     height: 50,
+
     border: '1px solid rgba(0, 0, 0, 0.4)',
     boxSizing: 'border-box',
     borderRadius: 8,
 
-    marginTop: 40,
-
     background: '#fff',
 
-    '&.MuiOutlinedInput-input': {
+    '& .MuiOutlinedInput-input': {
       minHeight: 50,
     },
+  },
+
+  errorPwdInput: {
+    borderColor: 'rgba(255, 0, 0, 0.4)',
+
+    '&.MuiInputBase-root:hover, &.MuiInputBase-root.Mui-focused': {
+      borderColor: 'rgba(255, 0, 0, 0.4)',
+    },
+  },
+
+  helperText: {
+    fontSize: 10,
+    lineHeight: '16px',
+    textAlign: 'center',
+    color: '#FF7373',
+
+    marginTop: 10,
   },
 
   enterBtn: {
@@ -60,7 +82,7 @@ export const useEnterPwdStyles = makeStyles<Theme>(theme => ({
     boxSizing: 'border-box',
     borderRadius: 39,
 
-    marginTop: 52,
+    marginTop: 26,
 
     '&.MuiButton-contained': {
       color: '#000',
