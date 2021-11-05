@@ -148,6 +148,7 @@ export function Routes() {
       <Route
         exact
         path={[
+          GiftRoutesConfig.LandingPage.path,
           GiftRoutesConfig.EnterPwd.path,
           GiftRoutesConfig.ConfirmProfile.path,
           GiftRoutesConfig.ClaimNft.path,

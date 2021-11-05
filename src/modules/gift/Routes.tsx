@@ -3,11 +3,16 @@ import { QueryLoadingAbsolute } from 'modules/common/components/QueryLoading/Que
 import { RouteConfiguration } from 'modules/common/types/RouteConfiguration';
 import { Route } from 'react-router-dom';
 
+const PATH_LANDING_PAGE = '/landing';
 const PATH_ENTER_PWD = '/enterpwd';
 const PATH_CONFIRM_PROFILE = '/confirm';
 const PATH_CLAIM_NFT = '/claim';
 
 export const GiftRoutesConfig: { [key: string]: RouteConfiguration } = {
+  LandingPage: {
+    path: PATH_LANDING_PAGE,
+    generatePath: () => PATH_LANDING_PAGE,
+  },
   EnterPwd: {
     path: PATH_ENTER_PWD,
     generatePath: () => PATH_ENTER_PWD,
@@ -21,6 +26,14 @@ export const GiftRoutesConfig: { [key: string]: RouteConfiguration } = {
     generatePath: () => PATH_CLAIM_NFT,
   },
 };
+
+const LoadableLandingPageContainer: LoadableComponent<any> = loadable(
+  async () =>
+    import('./screens/LandingPage').then(module => module.LandingPage),
+  {
+    fallback: <QueryLoadingAbsolute />,
+  },
+);
 
 const LoadableEnterPwdContainer: LoadableComponent<any> = loadable(
   async () => import('./screens/EnterPwd').then(module => module.EnterPwd),
@@ -47,6 +60,11 @@ const LoadableClaimNftContainer: LoadableComponent<any> = loadable(
 export function GiftRoutes() {
   return (
     <>
+      <Route
+        path={GiftRoutesConfig.LandingPage.path}
+        exact={true}
+        component={LoadableLandingPageContainer}
+      />
       <Route
         path={GiftRoutesConfig.EnterPwd.path}
         exact={true}
