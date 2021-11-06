@@ -11,7 +11,7 @@ export type IGiftTextInputProps = {
   helpText?: string;
 };
 
-const GiftTextInput: React.FC<IGiftTextInputProps> = ({
+export const GiftTextInput: React.FC<IGiftTextInputProps> = ({
   className,
   value,
   onChange,
@@ -40,5 +40,3 @@ const GiftTextInput: React.FC<IGiftTextInputProps> = ({
     </Box>
   );
 };
-
-export { GiftTextInput };

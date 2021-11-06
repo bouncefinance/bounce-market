@@ -20,9 +20,9 @@ export const GiftLayout = ({
 
   return (
     <div className={classNames(classes.root, classes.darkBg)}>
-      <ThemeProvider theme={getTheme(headerTheme)}>
+      {/* <ThemeProvider theme={getTheme(headerTheme)}>
         <GiftHeader />
-      </ThemeProvider>
+      </ThemeProvider> */}
 
       <main className={classNames(classes.main)}>{children}</main>
     </div>
