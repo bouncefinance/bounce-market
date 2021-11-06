@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Typography,
-  OutlinedInput,
-  Grow,
-  Avatar,
-} from '@material-ui/core';
-import classNames from 'classnames';
+import { Box, Button, Typography, Avatar } from '@material-ui/core';
 import { useEnterPwdStyles } from './useEnterPwdStyles';
 import { Img } from 'modules/uiKit/Img';
 
 import SVG_mail from '../../assets/mail.svg';
 
 import testImg from '../../assets/square.png';
+import { GiftTextInput } from 'modules/gift/components/GiftTextInput';
 
 const brandAvatar = testImg;
 const brandName = 'Boxing Bullies';
@@ -48,21 +41,12 @@ export const EnterPwd: React.FC = () => {
 
       <Img src={SVG_mail} className={styles.mailImg} />
 
-      <Box className={styles.inputField}>
-        <OutlinedInput
-          className={classNames(
-            styles.pwdInput,
-            isInputLegal ? '' : styles.errorPwdInput,
-          )}
-          value={inputValue}
-          onChange={handleInputChange}
-        />
-        <Grow in={!isInputLegal}>
-          <Typography variant="body2" className={styles.helperText}>
-            You entered an incorrect password, please try again
-          </Typography>
-        </Grow>
-      </Box>
+      <GiftTextInput
+        value={inputValue}
+        isValueLegal={isInputLegal}
+        onChange={handleInputChange}
+        helpText="You entered an incorrect password, please try again"
+      />
 
       <Button
         className={styles.enterBtn}

@@ -1,14 +1,9 @@
-import React from 'react';
-import {
-  Box,
-  Button,
-  Typography,
-  OutlinedInput,
-  InputLabel,
-  Avatar,
-} from '@material-ui/core';
+import React, { useState } from 'react';
+import { Box, Button, Typography, InputLabel, Avatar } from '@material-ui/core';
 import { useConfirmProfileStyles } from './useConfirmProfileStyles';
+import { useIsXSDown } from 'modules/themes/useTheme';
 import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
+import { GiftTextInput } from 'modules/gift/components/GiftTextInput';
 
 import testImg from '../../assets/square.png';
 
@@ -17,6 +12,15 @@ const brandName = 'Boxing Bullies';
 
 export const ConfirmProfile: React.FC = () => {
   const styles = useConfirmProfileStyles();
+
+  const isXSDown = useIsXSDown();
+
+  const [inputValue, setInputValue] = useState<string>('');
+  const [isInputLegal, setIsInputLegal] = useState<boolean>(true);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
 
   return (
     <Box className={styles.root}>
@@ -45,7 +49,13 @@ export const ConfirmProfile: React.FC = () => {
 
       <Box className={styles.textField}>
         <InputLabel className={styles.inputLabel}>name</InputLabel>
-        <OutlinedInput className={styles.Input} fullWidth label="Name" />
+        <GiftTextInput
+          className={isXSDown ? styles.mobileInput : styles.desktopInput}
+          value={inputValue}
+          isValueLegal={isInputLegal}
+          onChange={handleInputChange}
+          helpText="You entered an incorrect password, please try again"
+        />
       </Box>
 
       <Button className={styles.continueBtn}>Continue</Button>

@@ -72,7 +72,6 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
   },
 
   textField: {
-    width: '100%',
     marginTop: 40,
   },
 
@@ -80,20 +79,18 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
     fontWeight: 'normal',
     fontSize: 12,
     color: '#eee',
+
+    marginBottom: 10,
   },
 
-  Input: {
-    height: 50,
-    border: '1px solid rgba(0, 0, 0, 0.4)',
-    boxSizing: 'border-box',
-    borderRadius: 8,
-    background: '#fff',
+  mobileInput: {
+    width: 345,
+    height: 60,
+  },
 
-    marginTop: 10,
-
-    '&.MuiOutlinedInput-input': {
-      minHeight: 50,
-    },
+  desktopInput: {
+    width: 416,
+    height: 60,
   },
 
   continueBtn: {
