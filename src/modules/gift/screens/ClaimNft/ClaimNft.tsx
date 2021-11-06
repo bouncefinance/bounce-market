@@ -1,21 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, Typography } from '@material-ui/core';
+import { Box, Button, Typography, Avatar } from '@material-ui/core';
 import { useClaimNftStyles } from './useClaimNftStyles';
 import { Img } from 'modules/uiKit/Img';
 
 import testImg from '../../assets/square.png';
+import { useIsSMDown } from 'modules/themes/useTheme';
 // import testImg from '../../assets/long.jpg';
 // import testImg from '../../assets/tall.png';
 
+const brandAvatar = testImg;
+const brandName = 'Boxing Bullies';
 const name = 'Jake Paul - Boxing Buddies Exclusive';
 const order = '1 of 100 - Edition #3';
 
 export const ClaimNft: React.FC = () => {
   const styles = useClaimNftStyles();
 
+  const isSMDown = useIsSMDown();
+
   return (
     <Box className={styles.root}>
+      <Box className={styles.brandInfo}>
+        <Avatar className={styles.brandAvatar} src={brandAvatar} />
+        <Typography variant="h5" className={styles.brandName}>
+          {brandName}
+        </Typography>
+      </Box>
+
       <Typography variant="h2" className={styles.title}>
         Claim your NFT artwork
       </Typography>
@@ -25,7 +37,10 @@ export const ClaimNft: React.FC = () => {
         came in your package.
       </Typography>
 
-      <Img src={testImg} className={styles.nftImg} />
+      <Img
+        src={testImg}
+        className={isSMDown ? styles.smallNftImg : styles.bigNftImg}
+      />
 
       <Typography variant="h5" className={styles.nftDescription}>
         {name}

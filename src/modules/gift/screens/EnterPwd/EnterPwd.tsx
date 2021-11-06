@@ -5,12 +5,18 @@ import {
   Typography,
   OutlinedInput,
   Grow,
+  Avatar,
 } from '@material-ui/core';
+import classNames from 'classnames';
 import { useEnterPwdStyles } from './useEnterPwdStyles';
 import { Img } from 'modules/uiKit/Img';
 
 import SVG_mail from '../../assets/mail.svg';
-import classNames from 'classnames';
+
+import testImg from '../../assets/square.png';
+
+const brandAvatar = testImg;
+const brandName = 'Boxing Bullies';
 
 export const EnterPwd: React.FC = () => {
   const styles = useEnterPwdStyles();
@@ -24,6 +30,13 @@ export const EnterPwd: React.FC = () => {
 
   return (
     <Box className={styles.root}>
+      <Box className={styles.brandInfo}>
+        <Avatar className={styles.brandAvatar} src={brandAvatar} />
+        <Typography variant="h5" className={styles.brandName}>
+          {brandName}
+        </Typography>
+      </Box>
+
       <Typography variant="h2" className={styles.title}>
         Please enter your unique password
       </Typography>

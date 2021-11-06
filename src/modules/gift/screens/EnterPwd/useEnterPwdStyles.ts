@@ -11,6 +11,26 @@ export const useEnterPwdStyles = makeStyles<Theme>(theme => ({
     marginRight: 16,
   },
 
+  brandInfo: {
+    display: 'flex',
+    alignItems: 'center',
+
+    marginBottom: 60,
+  },
+
+  brandAvatar: {
+    width: 40,
+    height: 40,
+  },
+
+  brandName: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#fff',
+
+    marginLeft: 15,
+  },
+
   title: {
     fontSize: 25,
     lineHeight: '27px',

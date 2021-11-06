@@ -10,8 +10,6 @@ import { useGiftLayoutStyles } from './GiftLayoutStyles';
 export interface ILayoutProps {
   children?: React.ReactNode;
   headerTheme?: Themes;
-  title?: string;
-  description?: string;
 }
 
 export const GiftLayout = ({
