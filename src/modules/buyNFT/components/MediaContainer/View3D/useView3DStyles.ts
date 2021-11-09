@@ -11,7 +11,7 @@ export const useView3DStyles = makeStyles<Theme>(theme => ({
 
     [theme.breakpoints.up('xl')]: {
       '& canvas': {
-        width: 500,
+        width: 800,
         height: 500,
       },
     },

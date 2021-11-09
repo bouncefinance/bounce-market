@@ -27,13 +27,11 @@ export const RenderView3D = ({
   return !isLoad ? (
     <></>
   ) : (
-    <div>
-      <Canvas className={classes.canvas}>
-        <ambientLight intensity={1} />
-        <Suspense fallback={<Loader />}>
-          <Model position={[0, -4, -12]} fileUrl={fileUrl} />
-        </Suspense>
-      </Canvas>
-    </div>
+    <Canvas className={classes.canvas}>
+      <ambientLight intensity={1} />
+      <Suspense fallback={<Loader />}>
+        <Model position={[0, -4, -12]} fileUrl={fileUrl} />
+      </Suspense>
+    </Canvas>
   );
 };

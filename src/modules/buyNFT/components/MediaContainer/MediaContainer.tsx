@@ -72,6 +72,7 @@ export const MediaContainer = ({
         ) : category === 'video' ? (
           <VideoPlayer src={src} autoPlay />
         ) : (
+          // <RenderView3D fileUrl={'https://ap1-cfs3-media-bounce.bounce.finance/26418fd0ce854c0069569cc97f07095d-1636366863.glb'} />
           <img className={classes.img} src={src} loading="lazy" alt="" />
         )}
 
