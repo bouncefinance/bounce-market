@@ -9,6 +9,7 @@ import { Button } from 'modules/uiKit/Button';
 import React from 'react';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useMediaContainerStyles } from './useMediaContainerStyles';
+import { RenderView3D } from './View3D/View3D';
 
 interface INFTContentProps {
   className?: string;
@@ -16,7 +17,7 @@ interface INFTContentProps {
   title: string;
   description: string;
   isLiked?: boolean;
-  category: 'image' | 'video';
+  category: 'image' | 'video' | '3D';
   onLikeClick?: () => void;
   isOpenSaleTime: boolean;
   openAt?: Date;
@@ -66,10 +67,12 @@ export const MediaContainer = ({
       </Box>
 
       <div className={classes.content}>
-        {category === 'image' ? (
-          <img className={classes.img} src={src} loading="lazy" alt="" />
-        ) : (
+        {category === '3D' ? (
+          <RenderView3D fileUrl={src} />
+        ) : category === 'video' ? (
           <VideoPlayer src={src} autoPlay />
+        ) : (
+          <img className={classes.img} src={src} loading="lazy" alt="" />
         )}
 
         {isOpenSaleTime && (
