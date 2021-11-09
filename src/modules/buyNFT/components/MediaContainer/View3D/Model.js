@@ -48,5 +48,3 @@ export default function Model(props) {
     </animated.group>
   );
 }
-
-// useGLTF.preload('https://ap1-cfs3-media-bounce.bounce.finance/26418fd0ce854c0069569cc97f07095d-1636366863.glb')
