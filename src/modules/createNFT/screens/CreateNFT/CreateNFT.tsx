@@ -40,6 +40,8 @@ const FILE_ACCEPTS: string[] = [
   'audio/mpeg',
   'video/mpeg',
   'video/mp4',
+  'model/gltf-binary',
+  '.glb',
 ];
 
 const DESCRIPTION_CHARACTER_LIMIT = 200;
@@ -73,9 +75,13 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
   //     errors.supply = t('validation.require-integer');
   //   }
   // }
+
   if (!payload.file) {
     errors.file = t('validation.required');
-  } else if (!FILE_ACCEPTS.includes(payload.file.type)) {
+  } else if (
+    !FILE_ACCEPTS.includes(payload.file.type) &&
+    !payload.file.name.includes('.glb')
+  ) {
     errors.file = t('validation.invalid-type');
   } else if (payload.file.size > MAX_SIZE) {
     errors.file = t('validation.max-size', {
@@ -232,7 +238,7 @@ export const CreateNFT = () => {
             component={UploadFileField}
             name="file"
             maxSize={MAX_SIZE}
-            acceptsHint={['PNG', 'JPG', 'GIF', 'MP4', 'MP3']}
+            acceptsHint={['PNG', 'JPG', 'GIF', 'MP4', 'MP3', 'GLB']}
             accepts={FILE_ACCEPTS}
             fitView={true} // TODO should switching by fit/fill switcher in form
           />
