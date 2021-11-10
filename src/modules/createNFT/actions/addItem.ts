@@ -2,10 +2,11 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RequestAction } from '@redux-requests/core';
 import { IAddItem, IApiAddItem, mapAddItem } from '../api/addItem';
 import { Channel } from './createNft';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 
 export interface IAddItemPayload {
   brandid: number;
-  category: 'image' | 'video';
+  category: NFTCategoryType;
   channel: Channel;
   contractaddress: string;
   description: string;

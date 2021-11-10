@@ -18,6 +18,7 @@ import { getTokenSymbol } from 'modules/common/conts';
 import { InputField } from 'modules/form/components/InputField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import React, { useCallback } from 'react';
@@ -42,7 +43,7 @@ interface IBuyDialogProps {
   owner: string;
   ownerAvatar?: string;
   readonly: boolean;
-  category: 'image' | 'video';
+  category: NFTCategoryType;
   loading?: boolean;
   maxQuantity?: number;
   currentPrice: BigNumber;

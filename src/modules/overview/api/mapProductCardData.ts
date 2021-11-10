@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import Web3 from 'web3';
+import { NFTCategoryType } from '../actions/fetchItemsByFilter';
 import { INFTItem } from '../actions/fetchNFTItems';
 
 export const mapProductCardData = (item: INFTItem) => ({
@@ -20,7 +21,7 @@ export const mapProductCardData = (item: INFTItem) => ({
   // TODO: get NFT item end date data
   endDate: item.endDate,
   ownerAddress: item.owneraddress,
-  category: item.category || 'image',
+  category: item.category || NFTCategoryType.image,
   src: item.fileurl,
   ownerAvatar: item.ownerAvatar,
   ownerName: item.ownerName,

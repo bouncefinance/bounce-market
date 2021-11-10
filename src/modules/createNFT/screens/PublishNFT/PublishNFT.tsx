@@ -52,6 +52,7 @@ import {
   fetchItemRoyalty,
   IItemRoyaltyRes,
 } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
@@ -87,7 +88,7 @@ interface IPublishNFTComponentProps {
   tokenId: number;
   maxQuantity: number;
   onPublish: () => void;
-  category: 'image' | 'video';
+  category: NFTCategoryType;
   file?: string;
   identity: UserRoleType;
   RoyaltyData: IItemRoyaltyRes | null;

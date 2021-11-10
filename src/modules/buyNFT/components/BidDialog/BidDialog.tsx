@@ -22,6 +22,7 @@ import { Field, Form, FormRenderProps } from 'react-final-form';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useBidDialogStyles } from './useBidDialogStyles';
 import { ReactComponent as QuestionIcon } from '../../../common/assets/question.svg';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 
 const MIN_QUANTITY = 1;
 
@@ -40,7 +41,7 @@ interface IBidDialogProps {
   onSubmit: (values: IBidFormValues, form: any, callback: any) => void;
   owner: string;
   ownerAvatar?: string;
-  category: 'image' | 'video';
+  category: NFTCategoryType;
   loading: boolean;
   maxQuantity: number;
   minIncrease: BigNumber;

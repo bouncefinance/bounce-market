@@ -35,8 +35,9 @@ import { useEffect } from 'react';
 import { useCount } from 'modules/common/hooks/useTimer';
 import { ChainSymbolIcon } from '../Icons/Chains';
 import { formatUnitNumber } from 'modules/common/utils/number';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 
-export type ProductCardCategoryType = 'image' | 'video';
+export type ProductCardCategoryType = NFTCategoryType;
 
 export enum ProductCardStatuses {
   Minting,
@@ -190,8 +191,8 @@ export const ProductCardComponent = ({
         isOnlyTotalSupply
           ? t('product-card.item-total-supply-tip')
           : t('product-card.item-balance-tip', {
-            balance: new BigNumber(copiesBalance ?? 0).toFormat(0),
-          })
+              balance: new BigNumber(copiesBalance ?? 0).toFormat(0),
+            })
       }
       arrow
       placement="top"
@@ -204,8 +205,8 @@ export const ProductCardComponent = ({
         {isOnlyTotalSupply
           ? formatUnitNumber(copies ?? 1)
           : `${formatUnitNumber(copiesBalance ?? 0)} of ${formatUnitNumber(
-            copies ?? 1,
-          )}`}
+              copies ?? 1,
+            )}`}
       </div>
     </Tooltip>
   );
@@ -315,49 +316,49 @@ export const ProductCardComponent = ({
   // Figma 4
   const isOutBid = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    inAuction &&
-    bidTopPrice &&
-    myPriceNumber > 0 &&
-    myPriceNumber < bidTopPrice,
+      isAuction &&
+      inAuction &&
+      bidTopPrice &&
+      myPriceNumber > 0 &&
+      myPriceNumber < bidTopPrice,
   );
   // figama 1
   const isLost = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    myPriceNumber > 0 &&
-    myPriceNumber === bidTopPrice &&
-    myPriceNumber < bidsReserveAmount,
+      isAuction &&
+      auctionEnd &&
+      bidTopPrice &&
+      myPriceNumber > 0 &&
+      myPriceNumber === bidTopPrice &&
+      myPriceNumber < bidsReserveAmount,
   );
   // Figema 2
   const isWon = Boolean(
     !isBidderClaimed &&
-    isAuction &&
-    auctionEnd &&
-    myPriceNumber > 0 &&
-    myPriceNumber === bidTopPrice &&
-    bidsReserveAmount &&
-    myPriceNumber >= bidsReserveAmount,
+      isAuction &&
+      auctionEnd &&
+      myPriceNumber > 0 &&
+      myPriceNumber === bidTopPrice &&
+      bidsReserveAmount &&
+      myPriceNumber >= bidsReserveAmount,
   );
   // on sell
   const isSellerClaimMoney = Boolean(
     isOnSeller &&
-    !isCreatorClaimed &&
-    isAuction &&
-    auctionEnd &&
-    bidTopPrice &&
-    bidTopPrice >= bidsReserveAmount,
-  );
-  const isSellerClaimNft =
-    Boolean(
-      isOnSeller &&
       !isCreatorClaimed &&
       isAuction &&
       auctionEnd &&
       bidTopPrice &&
-      bidTopPrice < bidsReserveAmount,
+      bidTopPrice >= bidsReserveAmount,
+  );
+  const isSellerClaimNft =
+    Boolean(
+      isOnSeller &&
+        !isCreatorClaimed &&
+        isAuction &&
+        auctionEnd &&
+        bidTopPrice &&
+        bidTopPrice < bidsReserveAmount,
     ) || Boolean(auctionEnd && bidTopPrice === 0);
 
   const isPutSaleTimeCancel = Boolean(openAt && +openAt > now);

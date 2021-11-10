@@ -33,6 +33,8 @@ const FILE_ACCEPTS: string[] = [
   'audio/mpeg',
   'video/mpeg',
   'video/mp4',
+  'model/gltf-binary',
+  '.glb',
 ];
 
 interface ICreateNFTFormData extends Omit<ICreateNFTPayload, 'supply'> {
@@ -66,7 +68,10 @@ const validateCreateNFT = (payload: ICreateNFTFormData) => {
 
   if (!payload.file) {
     errors.file = t('validation.required');
-  } else if (!FILE_ACCEPTS.includes(payload.file.type)) {
+  } else if (
+    !FILE_ACCEPTS.includes(payload.file.type) &&
+    !payload.file.name.includes('.glb')
+  ) {
     errors.file = t('validation.invalid-type');
   } else if (payload.file.size > MAX_SIZE) {
     errors.file = t('validation.max-size', {

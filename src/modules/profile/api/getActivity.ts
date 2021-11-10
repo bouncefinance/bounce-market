@@ -1,7 +1,8 @@
 import { Timestamp } from '../../common/types/unit';
 import BigNumber from 'bignumber.js';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 
-export type NFTType = 'image' | 'video';
+export type NFTType = NFTCategoryType;
 
 export enum ActivityKeys {
   Create = 1,
