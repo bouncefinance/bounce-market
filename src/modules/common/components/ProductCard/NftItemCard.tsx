@@ -41,7 +41,7 @@ export const NftItemCard = ({
       copiesBalance={item?.balance ?? 0}
       MediaProps={{
         category: item.category,
-        src: item.fileUrl || 'xxx',
+        src: item.litimgurl || item.fileUrl || 'xxx',
         objectFit: 'contain',
         loading: 'lazy',
       }}

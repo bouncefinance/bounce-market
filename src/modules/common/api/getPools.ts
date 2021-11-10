@@ -1,5 +1,6 @@
 import { PoolState } from 'modules/api/common/AuctionState';
 import { AuctionTypeKeys } from 'modules/api/common/auctionType';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 import { UserRoleType } from '../actions/queryAccountInfo';
 import { TokenSymbol } from '../types/TokenSymbol';
 
@@ -40,7 +41,7 @@ export interface ITradePool {
   tokenId: number;
 }
 
-export type PoolCategoryType = 'video' | 'image';
+export type PoolCategoryType = NFTCategoryType;
 
 export interface ITradePool_V2 {
   balance: string;

@@ -5,6 +5,7 @@ import CardPutSaleTimer from 'modules/common/components/ProductCard/putsaleTimer
 import { SocialShare } from 'modules/common/components/SocialShare';
 import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 import { Button } from 'modules/uiKit/Button';
 import React from 'react';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
@@ -17,7 +18,7 @@ interface INFTContentProps {
   title: string;
   description: string;
   isLiked?: boolean;
-  category: 'image' | 'video' | '3D';
+  category: NFTCategoryType;
   onLikeClick?: () => void;
   isOpenSaleTime: boolean;
   openAt?: Date;

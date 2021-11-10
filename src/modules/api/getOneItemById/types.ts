@@ -1,11 +1,12 @@
 import { NftType } from 'modules/api/common/NftType';
 import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
 import { Channel } from 'modules/createNFT/actions/createNft';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 import type { AuctionTypeKeys } from '../common/auctionType';
 
 export interface IApiGetOneItemByIdData {
   balance: string;
-  category: 'image' | 'video';
+  category: NFTCategoryType;
   channel: Channel;
   contractaddress: string;
   created_at: string;

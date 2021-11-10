@@ -17,7 +17,7 @@ export default function Model(props) {
 
   const [activeIndex, setActiveIndex] = useState(0);
   useEffect(() => {
-    if (actions) {
+    if (actions && actions[names[activeIndex]]) {
       actions[names[activeIndex]].reset().fadeIn(0.5).play();
     }
     return () => {

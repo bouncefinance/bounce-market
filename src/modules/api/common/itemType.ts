@@ -21,11 +21,13 @@ export interface IOriginNftItem extends IPoolAvatars {
   supply: number;
   balance: number;
   standard: NftType;
+  litimgurl: string;
 }
 
 export interface INftItem {
   category: ProductCardCategoryType;
   fileUrl: string;
+  litimgurl: string;
   likeCount: number;
   isLike: boolean;
   name: string;
