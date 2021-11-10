@@ -261,13 +261,7 @@ export const ProductCardComponent = ({
   const renderMediaContent = useCallback(
     () => (
       <>
-        {MediaProps.category === 'image' ? (
-          <Img
-            {...MediaProps}
-            className={classNames(MediaProps.className, classes.imgWrap)}
-            ratio="1x1"
-          />
-        ) : (
+        {MediaProps.category === 'video' ? (
           <div className={classes.videoWrapper}>
             <div className={classes.video}>
               {MediaProps.src && (
@@ -278,6 +272,12 @@ export const ProductCardComponent = ({
               )}
             </div>
           </div>
+        ) : (
+          <Img
+            {...MediaProps}
+            className={classNames(MediaProps.className, classes.imgWrap)}
+            ratio="1x1"
+          />
         )}
 
         {imgPreloader}

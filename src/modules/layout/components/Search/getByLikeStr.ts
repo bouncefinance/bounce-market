@@ -113,7 +113,7 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
         id: item.id,
         name: item.itemname,
         category: item.category,
-        previewUrl: item.fileurl,
+        previewUrl: item.litimgurl || item.fileurl,
         // TODO chainId to wei number
         price: fromWei(item.price, 18),
         // abandoned

@@ -20,6 +20,7 @@ export const TabOwned: React.FC<{
   const { data, loading } = useQuery<INftItem[]>({
     type: fetchOwned.toString(),
   });
+
   const { address } = useWeb3React();
 
   return (

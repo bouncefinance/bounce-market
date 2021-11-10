@@ -40,21 +40,21 @@ const SearchItems = ({ data }: { data: ISearchItem[] }) => {
             key={item.id}
           >
             <div className={classes.preview}>
-              {item.category === 'image' ? (
-                <Img
-                  src={item.previewUrl}
-                  size="small"
-                  alt={item.name}
-                  ratio="1x1"
-                  objectFit="cover"
-                />
-              ) : (
+              {item.category === 'video' ? (
                 <VideoPlayer
                   src={item.previewUrl}
                   objectFit="cover"
                   autoPlay
                   muted
                   controls={false}
+                />
+              ) : (
+                <Img
+                  src={item.previewUrl}
+                  size="small"
+                  alt={item.name}
+                  ratio="1x1"
+                  objectFit="cover"
                 />
               )}
             </div>
@@ -149,7 +149,7 @@ const SearchResult = ({
   handleClose: () => void;
 }) => {
   const classes = useSearchResultStyles();
-
+  console.log('data', data);
   return (
     <div className={classes.root} onClick={handleClose}>
       {loading ? <QueryLoadingCentered /> : <SearchItems data={data.items} />}

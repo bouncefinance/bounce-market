@@ -20,6 +20,7 @@ export const mapNftItemData = (data: IOriginNftItem[]): INftItem[] => {
         poolId: 0,
         isItemType: true,
         name: item.itemname ?? item.name,
+        litimgurl: item.litimgurl,
       };
     }) ?? []
   );
