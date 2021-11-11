@@ -15,7 +15,7 @@ export const GiftTextInput: React.FC<IGiftTextInputProps> = ({
   className,
   value,
   onChange,
-  isValueLegal,
+  isValueLegal = true,
   helpText,
 }) => {
   const styles = useGiftTextInputStyles();

@@ -37,6 +37,11 @@ export const useLandingPageStyles = makeStyles<Theme>(theme => ({
     height: 170,
   },
 
+  desktopAvatar: {
+    marginTop: 60,
+    marginBottom: 34,
+  },
+
   continueBtn: {
     width: 170,
     height: 50,

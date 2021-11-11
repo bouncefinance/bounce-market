@@ -1,29 +1,65 @@
 import loadable, { LoadableComponent } from '@loadable/component';
 import { QueryLoadingAbsolute } from 'modules/common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from 'modules/common/types/RouteConfiguration';
-import { Route } from 'react-router-dom';
+import { generatePath, Route } from 'react-router-dom';
+import { useParams } from 'react-router';
 
-const PATH_LANDING_PAGE = '/landing';
-const PATH_ENTER_PWD = '/enterpwd';
-const PATH_CONFIRM_PROFILE = '/confirm';
-const PATH_CLAIM_NFT = '/claim';
+const PATH_LANDING_PAGE = '/airdrop/:airdropId/landing';
+const PATH_ENTER_PWD = '/airdrop/:airdropId/enterpwd';
+const PATH_CONFIRM_PROFILE = '/airdrop/:airdropId/confirm';
+const PATH_CLAIM_NFT = '/airdrop/:airdropId/claim';
 
 export const GiftRoutesConfig: { [key: string]: RouteConfiguration } = {
   LandingPage: {
     path: PATH_LANDING_PAGE,
-    generatePath: () => PATH_LANDING_PAGE,
+    generatePath: (airdropId: string) =>
+      generatePath(PATH_LANDING_PAGE, { airdropId }),
+    useParams: () => {
+      const { airdropId } = useParams<{ airdropId: string }>();
+
+      return {
+        airdropId,
+      };
+    },
   },
+
   EnterPwd: {
     path: PATH_ENTER_PWD,
-    generatePath: () => PATH_ENTER_PWD,
+    generatePath: (airdropId: string) =>
+      generatePath(PATH_ENTER_PWD, { airdropId }),
+    useParams: () => {
+      const { airdropId } = useParams<{ airdropId: string }>();
+
+      return {
+        airdropId,
+      };
+    },
   },
+
   ConfirmProfile: {
     path: PATH_CONFIRM_PROFILE,
-    generatePath: () => PATH_CONFIRM_PROFILE,
+    generatePath: (airdropId: string) =>
+      generatePath(PATH_CONFIRM_PROFILE, { airdropId }),
+    useParams: () => {
+      const { airdropId } = useParams<{ airdropId: string }>();
+
+      return {
+        airdropId,
+      };
+    },
   },
+
   ClaimNft: {
     path: PATH_CLAIM_NFT,
-    generatePath: () => PATH_CLAIM_NFT,
+    generatePath: (airdropId: string) =>
+      generatePath(PATH_CLAIM_NFT, { airdropId }),
+    useParams: () => {
+      const { airdropId } = useParams<{ airdropId: string }>();
+
+      return {
+        airdropId,
+      };
+    },
   },
 };
 

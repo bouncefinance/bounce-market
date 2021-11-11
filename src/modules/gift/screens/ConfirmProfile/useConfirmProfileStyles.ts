@@ -49,10 +49,6 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
   avatar: {
     width: 82,
     height: 82,
-
-    '& img': {
-      width: 32,
-    },
   },
 
   verifiedIcon: {
@@ -61,7 +57,11 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
     right: 0,
   },
 
-  addPhotoBtn: {
+  fileInput: {
+    display: 'none',
+  },
+
+  addStr: {
     color: 'white',
     textDecoration: 'underline',
     height: 16,

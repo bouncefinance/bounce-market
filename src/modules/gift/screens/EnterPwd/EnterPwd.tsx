@@ -8,6 +8,14 @@ import SVG_mail from '../../assets/mail.svg';
 import testImg from '../../assets/square.png';
 import { GiftTextInput } from 'modules/gift/components/GiftTextInput';
 import { GiftHeader } from 'modules/gift/components/GiftHeader';
+import { Link, useHistory } from 'react-router-dom';
+import { GiftRoutesConfig } from 'modules/gift/Routes';
+import { useDispatchRequest } from '@redux-requests/react';
+import {
+  getAirdropByCode,
+  IGetAirdropByCodePayload,
+} from 'modules/gift/actions/getAirdropByCode';
+import { data } from 'modules/api/getTopArtistList/dummy';
 
 const brandAvatar = testImg;
 const brandName = 'Boxing Bullies';
@@ -16,38 +24,46 @@ const description =
   'You’ll find this password on the interior of the attached envelope that came in your package.';
 
 export const EnterPwd: React.FC = () => {
+  const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
+  const dispatchRequest = useDispatchRequest();
+  const history = useHistory();
+
   const styles = useEnterPwdStyles();
 
   const [inputValue, setInputValue] = useState<string>('');
   const [isInputLegal, setIsInputLegal] = useState<boolean>(true);
+  // const [
+  //   airdropData,
+  //   setAirdropData,
+  // ] = useState<IGetAirdropByCodePayload | null>();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 
+  const handleClick = () => {
+    dispatchRequest(getAirdropByCode({ verifycode: inputValue })).then(res => {
+      console.log('res: ', res);
+      if (res.data) {
+        const location = {
+          pathname: `/airdrop/${airdropId}/confirm`,
+          state: { verifyCode: inputValue },
+        };
+
+        history.push(location);
+      } else {
+        setIsInputLegal(false);
+      }
+    });
+  };
+
   return (
     <Box className={styles.root}>
       <GiftHeader
-        brandAvatar={brandAvatar}
-        brandName={brandName}
+        airdropId={+airdropId}
         title={title}
         description={description}
       />
-      {/* <Box className={styles.brandInfo}>
-        <Avatar className={styles.brandAvatar} src={brandAvatar} />
-        <Typography variant="h5" className={styles.brandName}>
-          {brandName}
-        </Typography>
-      </Box>
-
-      <Typography variant="h2" className={styles.title}>
-        Please enter your unique password
-      </Typography>
-
-      <Typography variant="h5" className={styles.description}>
-        You’ll find this password on the interior of the attached envelope that
-        came in your package.
-      </Typography> */}
 
       <Img src={SVG_mail} className={styles.mailImg} />
 
@@ -58,12 +74,7 @@ export const EnterPwd: React.FC = () => {
         helpText="You entered an incorrect password, please try again"
       />
 
-      <Button
-        className={styles.enterBtn}
-        onClick={() => {
-          setIsInputLegal(!isInputLegal);
-        }}
-      >
+      <Button className={styles.enterBtn} onClick={handleClick}>
         Enter Password
       </Button>
     </Box>

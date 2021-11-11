@@ -1,6 +1,10 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
 export const useClaimNftStyles = makeStyles<Theme>(theme => ({
+  loadingBox: {
+    color: '#fff',
+  },
+
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -46,6 +50,10 @@ export const useClaimNftStyles = makeStyles<Theme>(theme => ({
     color: '#fff',
 
     marginTop: 20,
+  },
+
+  skeleton: {
+    background: 'rgba(255,255,255,0.2)',
   },
 
   smallNftImg: {
