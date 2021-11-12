@@ -1,27 +1,17 @@
-import React, { useState } from 'react';
-import { Box, Button } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Box } from '@material-ui/core';
 import { useEnterPwdStyles } from './useEnterPwdStyles';
 import { Img } from 'modules/uiKit/Img';
 
-import SVG_mail from '../../assets/mail.svg';
-
-import testImg from '../../assets/square.png';
 import { GiftTextInput } from 'modules/gift/components/GiftTextInput';
 import { GiftHeader } from 'modules/gift/components/GiftHeader';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { GiftRoutesConfig } from 'modules/gift/Routes';
 import { useDispatchRequest } from '@redux-requests/react';
-import {
-  getAirdropByCode,
-  IGetAirdropByCodePayload,
-} from 'modules/gift/actions/getAirdropByCode';
-import { data } from 'modules/api/getTopArtistList/dummy';
+import { getAirdropByCode } from 'modules/gift/actions/getAirdropByCode';
 
-const brandAvatar = testImg;
-const brandName = 'Boxing Bullies';
-const title = 'Please enter your unique password';
-const description =
-  'You’ll find this password on the interior of the attached envelope that came in your package.';
+import SVG_mail from '../../assets/mail.svg';
+import { Button } from 'modules/uiKit/Button';
 
 export const EnterPwd: React.FC = () => {
   const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
@@ -32,37 +22,45 @@ export const EnterPwd: React.FC = () => {
 
   const [inputValue, setInputValue] = useState<string>('');
   const [isInputLegal, setIsInputLegal] = useState<boolean>(true);
-  // const [
-  //   airdropData,
-  //   setAirdropData,
-  // ] = useState<IGetAirdropByCodePayload | null>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 
   const handleClick = () => {
-    dispatchRequest(getAirdropByCode({ verifycode: inputValue })).then(res => {
-      console.log('res: ', res);
-      if (res.data) {
-        const location = {
-          pathname: `/airdrop/${airdropId}/confirm`,
-          state: { verifyCode: inputValue },
-        };
+    setLoading(true);
 
-        history.push(location);
-      } else {
-        setIsInputLegal(false);
-      }
-    });
+    try {
+      dispatchRequest(getAirdropByCode({ verifycode: inputValue })).then(
+        res => {
+          if (res.data) {
+            const location = {
+              pathname: `/airdrop/${airdropId}/confirm`,
+              state: { verifyCode: inputValue },
+            };
+
+            history.push(location);
+          } else {
+            setIsInputLegal(false);
+          }
+        },
+      );
+    } catch (error) {
+      console.log('error: ', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Box className={styles.root}>
       <GiftHeader
         airdropId={+airdropId}
-        title={title}
-        description={description}
+        title={'Please enter your unique password'}
+        description={
+          'You’ll find this password on the interior of the attached envelope that came in your package.'
+        }
       />
 
       <Img src={SVG_mail} className={styles.mailImg} />
@@ -74,7 +72,11 @@ export const EnterPwd: React.FC = () => {
         helpText="You entered an incorrect password, please try again"
       />
 
-      <Button className={styles.enterBtn} onClick={handleClick}>
+      <Button
+        className={styles.enterBtn}
+        loading={loading}
+        onClick={handleClick}
+      >
         Enter Password
       </Button>
     </Box>

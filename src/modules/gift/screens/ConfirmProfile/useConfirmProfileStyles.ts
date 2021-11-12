@@ -9,6 +9,7 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
 
     marginLeft: 14,
     marginRight: 16,
+    marginBottom: 20,
   },
 
   brandInfo: {

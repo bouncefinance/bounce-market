@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Avatar } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { useGiftHeaderStyles } from './useGiftHeaderStyles';
 import classNames from 'classnames';
-import { Logo } from 'modules/layout/components/Logo';
 import { useIsXSDown } from 'modules/themes/useTheme';
 import { getAirdropInfo } from 'modules/gift/actions/getAirdropInfo';
 import { useDispatchRequest } from '@redux-requests/react';
@@ -12,8 +11,6 @@ export type IGiftHeaderProps = {
   className?: string;
   airdropId: number;
   isLogoVisible?: boolean;
-  // brandAvatar?: string;
-  // brandName?: string;
   title?: string;
   description?: string;
 };
@@ -21,9 +18,6 @@ export type IGiftHeaderProps = {
 export const GiftHeader: React.FC<IGiftHeaderProps> = ({
   className,
   airdropId,
-  isLogoVisible = true,
-  // brandAvatar,
-  // brandName,
   title,
   description,
 }) => {
@@ -40,23 +34,16 @@ export const GiftHeader: React.FC<IGiftHeaderProps> = ({
     dispatchRequest(getAirdropInfo({ dropsid: +airdropId })).then(res => {
       console.log('res: ', res);
       setBrandAvatar(res.data?.avatar);
-      // TODO: creator换成brandname，等待接口添加brandname字段
-      setBrandName(res.data?.creator);
+      setBrandName(res.data?.airdropinfo.brandname);
     });
   }, [dispatchRequest, airdropId]);
 
   return (
     <Box className={classNames(styles.root, className)}>
-      {/* {isLogoVisible && (
-        <Box className={styles.logo}>
-          <Logo />
-        </Box>
-      )} */}
-
       <Box className={styles.brandInfo}>
         <DefaultRandomAvatar className={styles.brandAvatar} src={brandAvatar} />
         <Typography variant="h5" className={styles.brandName}>
-          {brandName || 'Unnamed'}
+          {brandName || ''}
         </Typography>
       </Box>
 

@@ -5,6 +5,12 @@ export const useClaimNftStyles = makeStyles<Theme>(theme => ({
     color: '#fff',
   },
 
+  waitStr: {
+    position: 'absolute',
+    top: '43%',
+    left: 'calc(50% - 33px)',
+  },
+
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -13,6 +19,7 @@ export const useClaimNftStyles = makeStyles<Theme>(theme => ({
 
     marginLeft: 14,
     marginRight: 16,
+    marginBottom: 20,
   },
 
   brandInfo: {

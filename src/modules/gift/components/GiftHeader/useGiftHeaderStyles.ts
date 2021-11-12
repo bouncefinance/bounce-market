@@ -37,6 +37,8 @@ export const useGiftHeaderStyles = makeStyles(theme =>
       fontSize: 16,
       color: '#fff',
       marginLeft: 15,
+      maxWidth: 200,
+      wordBreak: 'break-all',
     },
 
     title: {

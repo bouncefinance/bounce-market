@@ -4,7 +4,6 @@ import {
   // Button,
   Typography,
   InputLabel,
-  Avatar,
   IconButton,
 } from '@material-ui/core';
 import { Button } from 'modules/uiKit/Button';
@@ -13,17 +12,14 @@ import { useIsXSDown } from 'modules/themes/useTheme';
 import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
 import { GiftTextInput } from 'modules/gift/components/GiftTextInput';
 
-import testImg from '../../assets/square.png';
 import { useHistory, useLocation } from 'react-router-dom';
-import {
-  getAirdropByCode,
-  IGetAirdropByCodePayload,
-} from 'modules/gift/actions/getAirdropByCode';
+import { getAirdropByCode } from 'modules/gift/actions/getAirdropByCode';
 import { uploadFile } from 'modules/common/actions/uploadFile';
 import { useDispatchRequest } from '@redux-requests/react';
 import { updateUserInfo } from 'modules/gift/actions/updateUserInfo';
 import { GiftRoutesConfig } from 'modules/gift/Routes';
 import { GiftHeader } from 'modules/gift/components/GiftHeader';
+import { useAccount } from 'modules/account/hooks/useAccount';
 
 export const ConfirmProfile: React.FC = () => {
   const styles = useConfirmProfileStyles();
@@ -33,64 +29,77 @@ export const ConfirmProfile: React.FC = () => {
   }>();
   const dispatchRequest = useDispatchRequest();
   const history = useHistory();
-
-  console.log('location: ', location);
-
   const isXSDown = useIsXSDown();
+  const { isConnected } = useAccount();
+
+  useEffect(() => {
+    if (!isConnected) {
+      history.push(`/airdrop/${airdropId}/landing`);
+    }
+  }, [airdropId, history, isConnected]);
 
   const [inputValue, setInputValue] = useState<string>();
   const [avatarSrc, setAvatarSrc] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log('loading: ', loading);
+  }, [loading]);
 
   useEffect(() => {
     dispatchRequest(
       getAirdropByCode({ verifycode: location.state.verifyCode }),
     ).then(res => {
-      console.log('res: ', res);
-
       setAvatarSrc(res.data?.avatar);
       setInputValue(res.data?.username);
     });
-  }, []);
+  }, [dispatchRequest, location.state.verifyCode]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 
-  const handleFileInputChange = (e: any) => {
-    // TODO: 修改头像和名称
-    // console.log('e.target.files[0]: ', e.target.files[0]);
-    dispatchRequest(uploadFile({ file: e.target.files[0] })).then(res => {
-      // console.log('res: ', res);
-      setAvatarSrc(res.data?.result.path);
-    });
-    // mint
+  const handleFileInputChange = async (e: any) => {
+    try {
+      const res = await dispatchRequest(
+        uploadFile({ file: e.target.files[0] }),
+      );
+
+      return res;
+    } catch (error) {
+      console.log('file upload err: ', error);
+    }
   };
 
   const handleContinueBtnClick = () => {
-    if (
-      avatarSrc &&
-      inputValue &&
-      avatarSrc.length > 0 &&
-      inputValue.length > 0
-    )
-      dispatchRequest(
-        updateUserInfo({
-          verifycode: location.state.verifyCode,
-          useravatar: avatarSrc,
-          username: inputValue,
-        }),
-      ).then(res => {
-        console.log('updateUserInfo res: ', res);
+    try {
+      setLoading(true);
 
-        if (res.data.msg === 'success') {
-          const claimLocation = {
-            pathname: `/airdrop/${airdropId}/claim`,
-            state: location.state,
-          };
+      if (avatarSrc && inputValue) {
+        dispatchRequest(
+          updateUserInfo({
+            verifycode: location.state.verifyCode,
+            useravatar: avatarSrc,
+            username: inputValue,
+          }),
+        ).then(res => {
+          console.log('updateUserInfo res: ', res);
 
-          history.push(claimLocation);
-        }
-      });
+          if (res.data.msg === 'success') {
+            const claimLocation = {
+              pathname: `/airdrop/${airdropId}/claim`,
+              state: location.state,
+            };
+
+            history.push(claimLocation);
+          }
+        });
+      }
+    } catch (error) {
+      console.log('enter pwd err: ', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -103,7 +112,13 @@ export const ConfirmProfile: React.FC = () => {
           className={styles.fileInput}
           id="icon-button-file"
           type="file"
-          onChange={handleFileInputChange}
+          onChange={async e => {
+            setLoading(true);
+            const res = await handleFileInputChange(e);
+
+            setAvatarSrc(res?.data?.result.path);
+            setLoading(!1);
+          }}
         />
         <label htmlFor="icon-button-file">
           <IconButton
@@ -134,7 +149,11 @@ export const ConfirmProfile: React.FC = () => {
         />
       </Box>
 
-      <Button className={styles.continueBtn} onClick={handleContinueBtnClick}>
+      <Button
+        className={styles.continueBtn}
+        loading={loading}
+        onClick={handleContinueBtnClick}
+      >
         Continue
       </Button>
     </Box>
