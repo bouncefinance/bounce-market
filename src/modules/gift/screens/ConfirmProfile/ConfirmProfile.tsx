@@ -66,6 +66,10 @@ export const ConfirmProfile: React.FC = () => {
       );
 
       return res;
+
+      // dispatchRequest(uploadFile({ file: e.target.files[0] })).then(res => {
+      //   setAvatarSrc(res?.data?.result.path);
+      // });
     } catch (error) {
       console.log('file upload err: ', error);
     }
@@ -73,8 +77,6 @@ export const ConfirmProfile: React.FC = () => {
 
   const handleContinueBtnClick = () => {
     try {
-      setLoading(true);
-
       if (avatarSrc && inputValue) {
         dispatchRequest(
           updateUserInfo({
@@ -97,8 +99,6 @@ export const ConfirmProfile: React.FC = () => {
       }
     } catch (error) {
       console.log('enter pwd err: ', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -117,7 +117,7 @@ export const ConfirmProfile: React.FC = () => {
             const res = await handleFileInputChange(e);
 
             setAvatarSrc(res?.data?.result.path);
-            setLoading(!1);
+            setLoading(false);
           }}
         />
         <label htmlFor="icon-button-file">

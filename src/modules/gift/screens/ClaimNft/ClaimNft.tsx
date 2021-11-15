@@ -91,7 +91,7 @@ export const ClaimNft: React.FC = () => {
     <Box className={styles.root}>
       <GiftHeader
         airdropId={+airdropId}
-        title={'Claim your NFT artwork'}
+        title={status === 'claim' ? 'Claim your NFT artwork' : 'You’re all set'}
         description={
           'You’ll find this password on the interior of the attached envelope that came in your package.'
         }
@@ -100,7 +100,10 @@ export const ClaimNft: React.FC = () => {
       {nftData?.fileurl ? (
         <Img
           src={nftData?.fileurl}
-          className={isSMDown ? styles.smallNftImg : styles.bigNftImg}
+          className={classNames(
+            styles.nftImg,
+            isSMDown ? styles.smallNftImg : styles.bigNftImg,
+          )}
         />
       ) : (
         <Skeleton
@@ -108,6 +111,7 @@ export const ClaimNft: React.FC = () => {
           animation="wave"
           className={classNames(
             styles.skeleton,
+            styles.nftImg,
             isSMDown ? styles.smallNftImg : styles.bigNftImg,
           )}
         />

@@ -7,7 +7,7 @@ interface Props {
 export const useGiftHeaderStyles = makeStyles(theme =>
   createStyles({
     root: (props: Props) => ({
-      marginTop: props.isXSDown ? 40 : 24,
+      // marginTop: props.isXSDown ? 40 : 24,
       width: 315,
       display: 'flex',
       flexDirection: 'column',
@@ -23,7 +23,7 @@ export const useGiftHeaderStyles = makeStyles(theme =>
       display: 'flex',
       alignItems: 'center',
 
-      marginTop: props.isXSDown ? 24 : 60,
+      // marginTop: props.isXSDown ? 24 : 60,
       marginBottom: props.isXSDown ? 24 : 60,
     }),
 

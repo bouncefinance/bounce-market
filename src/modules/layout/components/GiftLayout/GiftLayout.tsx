@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { getTheme } from '../../../common/utils/getTheme';
 import { Themes } from '../../../themes/types';
-import { GiftHeader } from '../GiftHeader';
+import { IconHeader } from '../IconHeader';
 import { useGiftLayoutStyles } from './GiftLayoutStyles';
 
 export interface ILayoutProps {
@@ -20,7 +20,7 @@ export const GiftLayout = ({
   return (
     <div className={classNames(classes.root, classes.darkBg)}>
       <ThemeProvider theme={getTheme(headerTheme)}>
-        <GiftHeader />
+        <IconHeader />
       </ThemeProvider>
 
       <main className={classNames(classes.main)}>{children}</main>

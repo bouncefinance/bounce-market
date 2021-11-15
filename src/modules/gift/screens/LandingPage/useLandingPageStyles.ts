@@ -43,8 +43,13 @@ export const useLandingPageStyles = makeStyles<Theme>(theme => ({
   },
 
   desktopAvatar: {
-    marginTop: 60,
-    marginBottom: 34,
+    marginTop: 120,
+    marginBottom: 60,
+  },
+
+  mobileAvatar: {
+    marginTop: 40,
+    marginBottom: 20,
   },
 
   continueBtn: {
@@ -56,11 +61,17 @@ export const useLandingPageStyles = makeStyles<Theme>(theme => ({
     boxSizing: 'border-box',
     borderRadius: 39,
 
-    marginTop: 40,
-
     '&.MuiButton-contained': {
       color: '#000',
     },
+  },
+
+  desktopContinueBtn: {
+    marginTop: 60,
+  },
+
+  mobileContinueBtn: {
+    marginTop: 40,
   },
 
   description2: {

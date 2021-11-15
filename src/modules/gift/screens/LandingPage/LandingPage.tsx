@@ -42,20 +42,23 @@ export const LandingPage: React.FC = () => {
         <DefaultRandomAvatar
           className={classNames(
             classes.avatar,
-            !isXSDown && classes.desktopAvatar,
+            isXSDown ? classes.mobileAvatar : classes.desktopAvatar,
           )}
           src={airdropData?.coverimgurl}
         />
       </Box>
 
       <GiftHeader
-        airdropId={+airdropId}
+        // airdropId={+airdropId}
         title={airdropData?.title}
         description={airdropData?.description}
       />
 
       <Button
-        className={classes.continueBtn}
+        className={classNames(
+          classes.continueBtn,
+          isXSDown ? classes.mobileContinueBtn : classes.desktopContinueBtn,
+        )}
         loading={loading}
         onClick={() => {
           isConnected

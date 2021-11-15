@@ -1,13 +1,13 @@
 import React from 'react';
 import { Logo } from '../Logo';
-import { useGiftHeaderStyles } from './useGiftHeaderStyles';
+import { useIconHeaderStyles } from './useIconHeaderStyles';
 import { useIsXSDown } from 'modules/themes/useTheme';
 
-export const GiftHeader: React.FC = () => {
+export const IconHeader: React.FC = () => {
   const isXSDown = useIsXSDown();
   const props = { isXSDown };
 
-  const classes = useGiftHeaderStyles(props);
+  const classes = useIconHeaderStyles(props);
 
   return (
     <div className={classes.root}>

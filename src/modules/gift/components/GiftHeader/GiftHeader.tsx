@@ -9,8 +9,8 @@ import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvat
 
 export type IGiftHeaderProps = {
   className?: string;
-  airdropId: number;
-  isLogoVisible?: boolean;
+  airdropId?: number;
+  // isBrandInfoVisible?: boolean;
   title?: string;
   description?: string;
 };
@@ -18,6 +18,7 @@ export type IGiftHeaderProps = {
 export const GiftHeader: React.FC<IGiftHeaderProps> = ({
   className,
   airdropId,
+  // isBrandInfoVisible = true,
   title,
   description,
 }) => {
@@ -31,6 +32,10 @@ export const GiftHeader: React.FC<IGiftHeaderProps> = ({
   const [brandName, setBrandName] = useState<string>();
 
   useEffect(() => {
+    if (!airdropId) {
+      return;
+    }
+
     dispatchRequest(getAirdropInfo({ dropsid: +airdropId })).then(res => {
       console.log('res: ', res);
       setBrandAvatar(res.data?.avatar);
@@ -40,12 +45,17 @@ export const GiftHeader: React.FC<IGiftHeaderProps> = ({
 
   return (
     <Box className={classNames(styles.root, className)}>
-      <Box className={styles.brandInfo}>
-        <DefaultRandomAvatar className={styles.brandAvatar} src={brandAvatar} />
-        <Typography variant="h5" className={styles.brandName}>
-          {brandName || ''}
-        </Typography>
-      </Box>
+      {airdropId && (
+        <Box className={styles.brandInfo}>
+          <DefaultRandomAvatar
+            className={styles.brandAvatar}
+            src={brandAvatar}
+          />
+          <Typography variant="h5" className={styles.brandName}>
+            {brandName || ''}
+          </Typography>
+        </Box>
+      )}
 
       {title && title.length > 0 && (
         <Typography variant="h2" className={styles.title}>

@@ -63,18 +63,22 @@ export const useClaimNftStyles = makeStyles<Theme>(theme => ({
     background: 'rgba(255,255,255,0.2)',
   },
 
+  nftImg: {
+    marginTop: 40,
+
+    '& img': {
+      objectFit: 'contain',
+    },
+  },
+
   smallNftImg: {
     width: 230,
     height: 230,
-
-    marginTop: 40,
   },
 
   bigNftImg: {
     width: 420,
     height: 420,
-
-    marginTop: 40,
   },
 
   nftDescription: {
