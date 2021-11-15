@@ -7,18 +7,21 @@ import { RootState } from 'store';
 import { useDefaultRandomAvatarStyles } from './useDefaultRandomAvatarStyles';
 import useCdnUrl from 'modules/common/hooks/useCdnUrl';
 import { VerifiedIcon } from 'modules/profile/components/Avatar/assets/VerifiedIcon';
+import classNames from 'classnames';
 
 const BG_PRESETS_COUNT = 19;
 
 interface props extends AvatarProps {
   address?: string;
   verified?: boolean;
+  verifiedIconClasses?: string;
 }
 export const DefaultRandomAvatar = ({
   classes,
   src,
   address,
   verified,
+  verifiedIconClasses,
   ...restProps
 }: props) => {
   const styles = useDefaultRandomAvatarStyles();
@@ -57,7 +60,11 @@ export const DefaultRandomAvatar = ({
         }}
       />
 
-      {verified && <VerifiedIcon className={styles.verifiedIcon} />}
+      {verified && (
+        <VerifiedIcon
+          className={classNames(styles.verifiedIcon, verifiedIconClasses)}
+        />
+      )}
     </div>
   );
 };
