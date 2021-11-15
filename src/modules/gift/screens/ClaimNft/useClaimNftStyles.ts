@@ -100,10 +100,17 @@ export const useClaimNftStyles = makeStyles<Theme>(theme => ({
     boxSizing: 'border-box',
     borderRadius: 39,
 
-    marginTop: 80,
-
     '&.MuiButton-contained': {
       color: '#000',
     },
+  },
+
+  mobileContineBtn: {
+    marginTop: 82,
+    marginBottom: 40,
+  },
+
+  desktopContineBtn: {
+    marginTop: 60,
   },
 }));

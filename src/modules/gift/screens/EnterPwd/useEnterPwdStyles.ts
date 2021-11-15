@@ -9,7 +9,6 @@ export const useEnterPwdStyles = makeStyles<Theme>(theme => ({
 
     marginLeft: 14,
     marginRight: 16,
-    marginBottom: 20,
   },
 
   brandInfo: {
@@ -49,11 +48,20 @@ export const useEnterPwdStyles = makeStyles<Theme>(theme => ({
     marginTop: 20,
   },
 
-  mailImg: {
+  mobileMailImg: {
     width: 175,
     height: 175,
 
     marginTop: 40,
+    marginBottom: 40,
+  },
+
+  desktopMailImg: {
+    width: 200,
+    height: 200,
+
+    marginTop: 40,
+    marginBottom: 60,
   },
 
   inputField: {
@@ -103,10 +111,17 @@ export const useEnterPwdStyles = makeStyles<Theme>(theme => ({
     boxSizing: 'border-box',
     borderRadius: 39,
 
-    marginTop: 26,
-
     '&.MuiButton-contained': {
       color: '#000',
     },
+  },
+
+  mobileEnterBtn: {
+    marginTop: 26,
+    marginBottom: 40,
+  },
+
+  desktopEnterBtn: {
+    marginTop: 14,
   },
 }));

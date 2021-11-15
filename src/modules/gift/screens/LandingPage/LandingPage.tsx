@@ -48,11 +48,19 @@ export const LandingPage: React.FC = () => {
         />
       </Box>
 
-      <GiftHeader
-        // airdropId={+airdropId}
-        title={airdropData?.title}
-        description={airdropData?.description}
-      />
+      <Typography variant="h2" className={classes.title}>
+        {airdropData?.title}
+      </Typography>
+
+      <Typography
+        variant="h5"
+        className={classNames(
+          classes.description1,
+          isXSDown ? classes.mobileDescription1 : classes.desktopDescription1,
+        )}
+      >
+        {airdropData?.description}
+      </Typography>
 
       <Button
         className={classNames(

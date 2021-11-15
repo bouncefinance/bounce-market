@@ -9,7 +9,6 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
 
     marginLeft: 14,
     marginRight: 16,
-    marginBottom: 20,
   },
 
   brandInfo: {
@@ -72,7 +71,11 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
     marginTop: 8,
   },
 
-  textField: {
+  mobileTextField: {
+    marginTop: 20,
+  },
+
+  desktopTextField: {
     marginTop: 40,
   },
 
@@ -105,5 +108,13 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
     '&.MuiButton-contained': {
       color: '#000',
     },
+  },
+
+  mobileContinueBtn: {
+    marginTop: 110,
+  },
+
+  desktopContinueBtn: {
+    marginTop: 34,
   },
 }));

@@ -20,6 +20,7 @@ import { updateUserInfo } from 'modules/gift/actions/updateUserInfo';
 import { GiftRoutesConfig } from 'modules/gift/Routes';
 import { GiftHeader } from 'modules/gift/components/GiftHeader';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import classNames from 'classnames';
 
 export const ConfirmProfile: React.FC = () => {
   const styles = useConfirmProfileStyles();
@@ -140,7 +141,9 @@ export const ConfirmProfile: React.FC = () => {
         </Typography>
       </Box>
 
-      <Box className={styles.textField}>
+      <Box
+        className={isXSDown ? styles.mobileTextField : styles.mobileTextField}
+      >
         <InputLabel className={styles.inputLabel}>name</InputLabel>
         <GiftTextInput
           className={isXSDown ? styles.mobileInput : styles.desktopInput}
@@ -150,7 +153,10 @@ export const ConfirmProfile: React.FC = () => {
       </Box>
 
       <Button
-        className={styles.continueBtn}
+        className={classNames(
+          styles.continueBtn,
+          isXSDown ? styles.mobileContinueBtn : styles.desktopContinueBtn,
+        )}
         loading={loading}
         onClick={handleContinueBtnClick}
       >

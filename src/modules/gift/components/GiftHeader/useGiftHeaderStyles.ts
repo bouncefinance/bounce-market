@@ -7,12 +7,13 @@ interface Props {
 export const useGiftHeaderStyles = makeStyles(theme =>
   createStyles({
     root: (props: Props) => ({
-      // marginTop: props.isXSDown ? 40 : 24,
-      width: 315,
+      width: props.isXSDown ? 315 : 416,
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
+
+      marginTop: props.isXSDown ? 24 : 60,
     }),
 
     logo: {
@@ -23,7 +24,6 @@ export const useGiftHeaderStyles = makeStyles(theme =>
       display: 'flex',
       alignItems: 'center',
 
-      // marginTop: props.isXSDown ? 24 : 60,
       marginBottom: props.isXSDown ? 24 : 60,
     }),
 
@@ -41,12 +41,12 @@ export const useGiftHeaderStyles = makeStyles(theme =>
       wordBreak: 'break-all',
     },
 
-    title: {
-      fontSize: 25,
-      lineHeight: '27px',
+    title: (props: Props) => ({
+      fontSize: props.isXSDown ? 25 : 32,
+      lineHeight: props.isXSDown ? '27px' : '39px',
       color: '#fff',
       textAlign: 'center',
-    },
+    }),
 
     description: (props: Props) => ({
       fontSize: 14,

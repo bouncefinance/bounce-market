@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@material-ui/core';
 import { useEnterPwdStyles } from './useEnterPwdStyles';
 import { Img } from 'modules/uiKit/Img';
@@ -12,11 +12,14 @@ import { getAirdropByCode } from 'modules/gift/actions/getAirdropByCode';
 
 import SVG_mail from '../../assets/mail.svg';
 import { Button } from 'modules/uiKit/Button';
+import classNames from 'classnames';
+import { useIsXSDown } from 'modules/themes/useTheme';
 
 export const EnterPwd: React.FC = () => {
   const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
   const dispatchRequest = useDispatchRequest();
   const history = useHistory();
+  const isXSDown = useIsXSDown();
 
   const styles = useEnterPwdStyles();
 
@@ -63,7 +66,10 @@ export const EnterPwd: React.FC = () => {
         }
       />
 
-      <Img src={SVG_mail} className={styles.mailImg} />
+      <Img
+        src={SVG_mail}
+        className={isXSDown ? styles.mobileMailImg : styles.desktopMailImg}
+      />
 
       <GiftTextInput
         value={inputValue}
@@ -73,7 +79,10 @@ export const EnterPwd: React.FC = () => {
       />
 
       <Button
-        className={styles.enterBtn}
+        className={classNames(
+          styles.enterBtn,
+          isXSDown ? styles.mobileEnterBtn : styles.desktopEnterBtn,
+        )}
         loading={loading}
         onClick={handleClick}
       >

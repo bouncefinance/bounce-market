@@ -5,7 +5,7 @@ import { Box, Button, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { useClaimNftStyles } from './useClaimNftStyles';
 import { Img } from 'modules/uiKit/Img';
-import { useIsSMDown } from 'modules/themes/useTheme';
+import { useIsSMDown, useIsXSDown } from 'modules/themes/useTheme';
 import { GiftHeader } from 'modules/gift/components/GiftHeader';
 import { GiftRoutesConfig } from 'modules/gift/Routes';
 import { useDispatchRequest } from '@redux-requests/react';
@@ -31,6 +31,7 @@ export const ClaimNft: React.FC = () => {
     verifyCode: string;
   }>();
   const history = useHistory();
+  const isXSDown = useIsXSDown();
 
   const [isClaiming, setIsClaiming] = useState<boolean>(false);
 
@@ -129,7 +130,10 @@ export const ClaimNft: React.FC = () => {
 
       {status === 'back' && (
         <Button
-          className={styles.continueBtn}
+          className={classNames(
+            styles.continueBtn,
+            isXSDown ? styles.mobileContineBtn : styles.desktopContineBtn,
+          )}
           onClick={() => {
             history.push('/');
           }}
@@ -139,7 +143,13 @@ export const ClaimNft: React.FC = () => {
       )}
 
       {status === 'claim' && (
-        <Button className={styles.continueBtn} onClick={handleClaim}>
+        <Button
+          className={classNames(
+            styles.continueBtn,
+            isXSDown ? styles.mobileContineBtn : styles.desktopContineBtn,
+          )}
+          onClick={handleClaim}
+        >
           Claim NFT
         </Button>
       )}

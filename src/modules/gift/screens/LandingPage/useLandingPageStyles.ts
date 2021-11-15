@@ -9,7 +9,6 @@ export const useLandingPageStyles = makeStyles<Theme>(theme => ({
 
     marginLeft: 14,
     marginRight: 16,
-    marginBottom: 20,
   },
 
   title: {
@@ -31,6 +30,14 @@ export const useLandingPageStyles = makeStyles<Theme>(theme => ({
     width: 358,
 
     marginTop: 20,
+  },
+
+  mobileDescription1: {
+    marginTop: 20,
+  },
+
+  desktopDescription1: {
+    marginTop: 40,
   },
 
   avatar: {
