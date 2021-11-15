@@ -8,7 +8,7 @@ import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
-import { isVideo } from '../../common/utils/isVideo';
+import { whatType } from '../../common/utils/isVideo';
 import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
 import { IBrandInfo } from '../api/queryBrand';
 
@@ -50,7 +50,7 @@ export const createBrandNFT = createSmartAction(
 
             const addItemPayload: IAddItemPayload = {
               brandid: brandInfo.id,
-              category: isVideo(file) ? 'video' : 'image',
+              category: whatType(file),
               channel,
               contractaddress: brandInfo.contractaddress,
               description,

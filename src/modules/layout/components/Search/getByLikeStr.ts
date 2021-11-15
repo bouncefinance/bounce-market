@@ -1,6 +1,7 @@
 import { RequestAction } from '@redux-requests/core';
 import { AuctionTypeKeys } from 'modules/api/common/auctionType';
 import { fromWei } from 'modules/common/utils/fromWei';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 
 interface IApiSearchResult {
@@ -41,7 +42,7 @@ interface IApiSearchResult {
       poolid: number;
       pooltype: AuctionTypeKeys;
       brandid: number;
-      category: 'image' | 'video';
+      category: NFTCategoryType;
       channel: string;
       contractaddress: string;
       created_at: string;
@@ -75,7 +76,7 @@ export interface ISearchItem {
   id: number;
   name: string;
   previewUrl: string;
-  category: 'image' | 'video';
+  category: NFTCategoryType;
   price: string;
   priceType: string;
 }
@@ -112,7 +113,7 @@ const mapSearchResult = (result: IApiSearchResult): ISearchResult => {
         id: item.id,
         name: item.itemname,
         category: item.category,
-        previewUrl: item.fileurl,
+        previewUrl: item.litimgurl || item.fileurl,
         // TODO chainId to wei number
         price: fromWei(item.price, 18),
         // abandoned

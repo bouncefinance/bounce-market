@@ -22,6 +22,7 @@ import { useDialog } from 'modules/buyNFT/screens/BuyNFT/useDialog';
 import { buyBlindBox } from 'modules/buyNFT/actions/buyBlindBox';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { useHistory } from 'react-router';
+import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 
 export const BlindBoxDetails = () => {
   const [isFinished, setIsFinished] = useState<boolean>(false);
@@ -123,7 +124,7 @@ export const BlindBoxDetails = () => {
                 poolId={0}
                 title={''}
                 MediaProps={{
-                  category: 'image',
+                  category: NFTCategoryType.image,
                   src: data?.blindboxinfo?.blindcoverimgurl,
                   objectFit: 'contain',
                   loading: 'lazy',
@@ -171,7 +172,7 @@ export const BlindBoxDetails = () => {
                     owner={'ownerTitle'}
                     // ownerAvatar={roleInfos.creator.avatar}
                     // isOwnerVerified={roleInfos.creator.isVerify}
-                    category={'image'}
+                    category={NFTCategoryType.image}
                     loading={loading}
                     maxQuantity={data?.blindboxinfo?.maxbuycount}
                     currentPrice={new BigNumber(data?.blindboxinfo?.price || 0)}

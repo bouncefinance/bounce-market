@@ -7,7 +7,7 @@ import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
-import { isVideo } from '../../common/utils/isVideo';
+import { whatType } from '../../common/utils/isVideo';
 import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { addNFTByEvent } from '../../profile/actions/addNftByEvent';
 import { ProfileRoutesConfig } from '../../profile/ProfileRoutes';
@@ -71,7 +71,7 @@ export const createNft = createSmartAction(
 
             const addItemPayload: IAddItemPayload = {
               brandid: standard === NftType.ERC721 ? 10 : 11,
-              category: isVideo(file) ? 'video' : 'image',
+              category: whatType(file),
               channel,
               contractaddress:
                 standard === NftType.ERC721

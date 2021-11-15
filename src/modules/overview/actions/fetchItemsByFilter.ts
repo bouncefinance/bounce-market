@@ -18,6 +18,7 @@ export enum ItemsChannel {
 export enum NFTCategoryType {
   video = 'video',
   image = 'image',
+  model = '3D',
   default = '',
 }
 
