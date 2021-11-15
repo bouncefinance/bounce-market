@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import { Box, Typography, OutlinedInput, Grow } from '@material-ui/core';
 import { useGiftTextInputStyles } from './useGiftTextInputStyles';
 import classNames from 'classnames';
@@ -7,7 +7,7 @@ import { useIsXSDown } from 'modules/themes/useTheme';
 export type IGiftTextInputProps = {
   className?: string;
   value: string;
-  onChange: any;
+  onChange: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   isValueLegal?: boolean;
   helpText?: string;
 };
@@ -20,13 +20,11 @@ export const GiftTextInput: React.FC<IGiftTextInputProps> = ({
   helpText,
 }) => {
   const isXSDown = useIsXSDown();
-  const props = { isXSDown };
-  const styles = useGiftTextInputStyles(props);
+  const styles = useGiftTextInputStyles({ isXSDown });
 
   return (
     <Box className={classNames(className, styles.root)}>
       <OutlinedInput
-        // fullWidth
         className={classNames(
           styles.pwdInput,
           !isValueLegal && styles.errorPwdInput,

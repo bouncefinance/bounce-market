@@ -17,24 +17,6 @@ export interface IGetAirdropByCodePayload {
   avatar: string;
 }
 
-// export interface IGetAirdropByCodePayload {
-//   accountaddress: string;
-//   bgcolor: string;
-//   blindboxinfo: null;
-//   coverimgurl: string;
-//   creator: string;
-//   description: string;
-//   dropdate: number;
-//   droptype: number;
-//   instagram: string;
-//   poolsinfo: null;
-//   state: number;
-//   title: string;
-//   twitter: string;
-//   videourl: string;
-//   website: string;
-// }
-
 export const getAirdropByCode = createSmartAction<
   RequestAction<IApiGetAirdropByCode, IGetAirdropByCodePayload | null>,
   [IGetAirdropByCodeArgs]
@@ -47,8 +29,6 @@ export const getAirdropByCode = createSmartAction<
   meta: {
     driver: 'axios',
     getData: data => {
-      console.log(data);
-
       if (data.code !== 200) {
         console.error('getone_by_verifycode:', 'Unexpected response');
         return null;

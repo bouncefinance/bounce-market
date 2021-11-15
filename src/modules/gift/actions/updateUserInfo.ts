@@ -20,8 +20,6 @@ export const updateUserInfo = createSmartAction<
   meta: {
     driver: 'axios',
     getData: data => {
-      console.log(data);
-
       if (data.code !== 200) {
         console.error('updateUserInfo:', 'Unexpected response');
       }

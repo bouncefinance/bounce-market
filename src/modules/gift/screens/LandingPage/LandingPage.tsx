@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { useLandingPageStyles } from './useLandingPageStyles';
 
-import { GiftHeader } from 'modules/gift/components/GiftHeader';
 import { useIsXSDown } from 'modules/themes/useTheme';
 import classNames from 'classnames';
 import {

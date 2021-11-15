@@ -31,11 +31,12 @@ export const EnterPwd: React.FC = () => {
     setInputValue(event.target.value);
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    setIsInputLegal(true);
     setLoading(true);
 
     try {
-      dispatchRequest(getAirdropByCode({ verifycode: inputValue })).then(
+      await dispatchRequest(getAirdropByCode({ verifycode: inputValue })).then(
         res => {
           if (res.data) {
             const location = {
@@ -45,14 +46,19 @@ export const EnterPwd: React.FC = () => {
 
             history.push(location);
           } else {
-            setIsInputLegal(false);
+            setTimeout(() => {
+              setLoading(false);
+              setIsInputLegal(false);
+            }, 500);
           }
         },
       );
     } catch (error) {
-      console.log('error: ', error);
+      // console.log('error: ', error);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   };
 

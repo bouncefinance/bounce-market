@@ -5,9 +5,7 @@ import { useIsXSDown } from 'modules/themes/useTheme';
 
 export const IconHeader: React.FC = () => {
   const isXSDown = useIsXSDown();
-  const props = { isXSDown };
-
-  const classes = useIconHeaderStyles(props);
+  const classes = useIconHeaderStyles({ isXSDown });
 
   return (
     <div className={classes.root}>

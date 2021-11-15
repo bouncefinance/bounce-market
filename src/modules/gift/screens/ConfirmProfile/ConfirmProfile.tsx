@@ -40,12 +40,8 @@ export const ConfirmProfile: React.FC = () => {
   }, [airdropId, history, isConnected]);
 
   const [inputValue, setInputValue] = useState<string>();
-  const [avatarSrc, setAvatarSrc] = useState<string>();
+  const [avatarSrc, setAvatarSrc] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    console.log('loading: ', loading);
-  }, [loading]);
 
   useEffect(() => {
     dispatchRequest(
@@ -61,33 +57,43 @@ export const ConfirmProfile: React.FC = () => {
   };
 
   const handleFileInputChange = async (e: any) => {
+    setLoading(true);
+
     try {
-      const res = await dispatchRequest(
-        uploadFile({ file: e.target.files[0] }),
+      await dispatchRequest(uploadFile({ file: e.target.files[0] })).then(
+        () => {
+          setTimeout(() => {
+            let fileReader = new FileReader();
+            fileReader.readAsDataURL(e.target.files[0]);
+            fileReader.onload = () => {
+              setAvatarSrc(fileReader.result);
+            };
+
+            setLoading(false);
+          }, 500);
+        },
       );
-
-      return res;
-
-      // dispatchRequest(uploadFile({ file: e.target.files[0] })).then(res => {
-      //   setAvatarSrc(res?.data?.result.path);
-      // });
     } catch (error) {
-      console.log('file upload err: ', error);
+      // console.log('file upload err: ', error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   };
 
-  const handleContinueBtnClick = () => {
+  const handleContinueBtnClick = async () => {
+    setLoading(true);
+
     try {
       if (avatarSrc && inputValue) {
-        dispatchRequest(
+        await dispatchRequest(
           updateUserInfo({
             verifycode: location.state.verifyCode,
             useravatar: avatarSrc,
             username: inputValue,
           }),
         ).then(res => {
-          console.log('updateUserInfo res: ', res);
-
           if (res.data.msg === 'success') {
             const claimLocation = {
               pathname: `/airdrop/${airdropId}/claim`,
@@ -99,7 +105,11 @@ export const ConfirmProfile: React.FC = () => {
         });
       }
     } catch (error) {
-      console.log('enter pwd err: ', error);
+      // console.log('enter pwd err: ', error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   };
 
@@ -113,12 +123,8 @@ export const ConfirmProfile: React.FC = () => {
           className={styles.fileInput}
           id="icon-button-file"
           type="file"
-          onChange={async e => {
-            setLoading(true);
-            const res = await handleFileInputChange(e);
-
-            setAvatarSrc(res?.data?.result.path);
-            setLoading(false);
+          onChange={e => {
+            handleFileInputChange(e);
           }}
         />
         <label htmlFor="icon-button-file">

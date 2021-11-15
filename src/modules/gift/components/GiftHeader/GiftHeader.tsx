@@ -24,9 +24,7 @@ export const GiftHeader: React.FC<IGiftHeaderProps> = ({
 }) => {
   const isXSDown = useIsXSDown();
   const dispatchRequest = useDispatchRequest();
-  const props = { isXSDown };
-
-  const styles = useGiftHeaderStyles(props);
+  const styles = useGiftHeaderStyles({ isXSDown });
 
   const [brandAvatar, setBrandAvatar] = useState<string>();
   const [brandName, setBrandName] = useState<string>();
@@ -37,7 +35,6 @@ export const GiftHeader: React.FC<IGiftHeaderProps> = ({
     }
 
     dispatchRequest(getAirdropInfo({ dropsid: +airdropId })).then(res => {
-      console.log('res: ', res);
       setBrandAvatar(res.data?.avatar);
       setBrandName(res.data?.airdropinfo.brandname);
     });

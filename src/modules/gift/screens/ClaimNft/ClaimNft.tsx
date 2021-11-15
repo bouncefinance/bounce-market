@@ -80,6 +80,7 @@ export const ClaimNft: React.FC = () => {
   if (isClaiming) {
     return (
       <Box className={styles.root}>
+        <GiftHeader airdropId={+airdropId} />
         <Box className={styles.loadingBox}>
           <span className={styles.waitStr}>Please wait</span>
           <Spinner centered />
