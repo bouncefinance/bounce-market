@@ -26,6 +26,8 @@ import {
 } from './modules/overview/Routes';
 import { PageNotFound } from './modules/router/components/PageNotFound';
 import { Themes } from './modules/themes/types';
+import { GiftRoutes, GiftRoutesConfig } from 'modules/gift/Routes';
+import { GiftLayout } from 'modules/layout/components/GiftLayout';
 
 export function Routes() {
   return (
@@ -140,6 +142,21 @@ export function Routes() {
           <DefaultLayout>
             <StatementRoutes />
           </DefaultLayout>
+        )}
+      />
+
+      <Route
+        exact
+        path={[
+          GiftRoutesConfig.LandingPage.path,
+          GiftRoutesConfig.EnterPwd.path,
+          GiftRoutesConfig.ConfirmProfile.path,
+          GiftRoutesConfig.ClaimNft.path,
+        ]}
+        render={() => (
+          <GiftLayout>
+            <GiftRoutes />
+          </GiftLayout>
         )}
       />
 
