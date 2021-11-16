@@ -34,13 +34,14 @@ export const ConfirmProfile: React.FC = () => {
   const { isConnected } = useAccount();
 
   useEffect(() => {
-    if (!isConnected) {
+    if (!isConnected || !location.state.verifyCode) {
       history.push(`/airdrop/${airdropId}/landing`);
     }
-  }, [airdropId, history, isConnected]);
+  }, [airdropId, history, isConnected, location.state.verifyCode]);
 
   const [inputValue, setInputValue] = useState<string>();
   const [avatarSrc, setAvatarSrc] = useState<any>();
+  const [avatarUrl, setAvatarUrl] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export const ConfirmProfile: React.FC = () => {
       getAirdropByCode({ verifycode: location.state.verifyCode }),
     ).then(res => {
       setAvatarSrc(res.data?.avatar);
+      setAvatarUrl(res.data?.avatar);
       setInputValue(res.data?.username);
     });
   }, [dispatchRequest, location.state.verifyCode]);
@@ -61,7 +63,9 @@ export const ConfirmProfile: React.FC = () => {
 
     try {
       await dispatchRequest(uploadFile({ file: e.target.files[0] })).then(
-        () => {
+        res => {
+          setAvatarUrl(res?.data?.result.path);
+
           setTimeout(() => {
             let fileReader = new FileReader();
             fileReader.readAsDataURL(e.target.files[0]);
@@ -86,11 +90,11 @@ export const ConfirmProfile: React.FC = () => {
     setLoading(true);
 
     try {
-      if (avatarSrc && inputValue) {
+      if (avatarUrl && inputValue) {
         await dispatchRequest(
           updateUserInfo({
             verifycode: location.state.verifyCode,
-            useravatar: avatarSrc,
+            useravatar: avatarUrl,
             username: inputValue,
           }),
         ).then(res => {

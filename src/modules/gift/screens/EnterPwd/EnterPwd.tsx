@@ -72,8 +72,9 @@ export const EnterPwd: React.FC = () => {
         }
       />
 
-      <Img
+      <img
         src={SVG_mail}
+        alt="icon"
         className={isXSDown ? styles.mobileMailImg : styles.desktopMailImg}
       />
 

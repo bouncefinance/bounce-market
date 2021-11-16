@@ -6,6 +6,10 @@ interface Props {
 
 export const useGiftHeaderStyles = makeStyles(theme =>
   createStyles({
+    skeleton: {
+      background: 'rgba(255,255,255,0.2)',
+    },
+
     root: (props: Props) => ({
       width: props.isXSDown ? 315 : 416,
       display: 'flex',
@@ -23,6 +27,7 @@ export const useGiftHeaderStyles = makeStyles(theme =>
     brandInfo: (props: Props) => ({
       display: 'flex',
       alignItems: 'center',
+      columnGap: 15,
 
       marginBottom: props.isXSDown ? 24 : 60,
     }),
@@ -36,7 +41,6 @@ export const useGiftHeaderStyles = makeStyles(theme =>
       fontWeight: 'bold',
       fontSize: 16,
       color: '#fff',
-      marginLeft: 15,
       maxWidth: 200,
       wordBreak: 'break-all',
     },

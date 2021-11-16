@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { useLandingPageStyles } from './useLandingPageStyles';
 
@@ -14,6 +14,7 @@ import { useHistory } from 'react-router-dom';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { Button } from 'modules/uiKit/Button';
 import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
+import { GiftSkeleton } from 'modules/gift/components/GiftSkeleton';
 
 export const LandingPage: React.FC = () => {
   const classes = useLandingPageStyles();
@@ -21,19 +22,40 @@ export const LandingPage: React.FC = () => {
   const history = useHistory();
   const dispatchRequest = useDispatchRequest();
   const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
-
   const { isConnected, handleConnect, loading } = useAccount();
 
+  const [dataLoading, setDataLoading] = useState<boolean>(false);
   const [
     airdropData,
     setAirdropData,
   ] = useState<IGetAirdropInfoPayload | null>();
 
   useEffect(() => {
-    dispatchRequest(getAirdropInfo({ dropsid: +airdropId })).then(res => {
-      setAirdropData(res.data);
-    });
-  }, [dispatchRequest, airdropId]);
+    setDataLoading(true);
+
+    if (!loading && !isConnected) {
+      handleConnect();
+    }
+  }, [handleConnect, isConnected, loading]);
+
+  useEffect(() => {
+    if (!isConnected) {
+      return;
+    }
+
+    try {
+      dispatchRequest(getAirdropInfo({ dropsid: +airdropId })).then(res => {
+        setAirdropData(res.data);
+        setDataLoading(false);
+      });
+    } catch (error) {
+      console.log('getAirdropInfo');
+    }
+  }, [dispatchRequest, airdropId, isConnected]);
+
+  if (loading || dataLoading) {
+    return <GiftSkeleton />;
+  }
 
   return (
     <Box className={classes.root}>

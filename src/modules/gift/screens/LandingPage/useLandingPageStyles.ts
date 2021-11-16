@@ -92,4 +92,8 @@ export const useLandingPageStyles = makeStyles<Theme>(theme => ({
 
     marginTop: 20,
   },
+
+  skeleton: {
+    background: 'rgba(255,255,255,0.2)',
+  },
 }));
