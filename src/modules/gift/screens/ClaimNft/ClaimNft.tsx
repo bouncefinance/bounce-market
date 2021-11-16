@@ -5,7 +5,7 @@ import { Box, Button, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { useClaimNftStyles } from './useClaimNftStyles';
 import { Img } from 'modules/uiKit/Img';
-import { useIsSMDown, useIsXSDown } from 'modules/themes/useTheme';
+import { useIsXSDown } from 'modules/themes/useTheme';
 import { GiftHeader } from 'modules/gift/components/GiftHeader';
 import { GiftRoutesConfig } from 'modules/gift/Routes';
 import { useDispatchRequest } from '@redux-requests/react';
@@ -24,7 +24,6 @@ import { Spinner } from 'modules/common/components/Spinner';
 export const ClaimNft: React.FC = () => {
   const styles = useClaimNftStyles();
   const { address } = useAccount();
-  const isSMDown = useIsSMDown();
   const dispatchRequest = useDispatchRequest();
   const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
   let location = useLocation<{
@@ -32,6 +31,7 @@ export const ClaimNft: React.FC = () => {
   }>();
   const history = useHistory();
   const isXSDown = useIsXSDown();
+  const { isConnected } = useAccount();
 
   const [isClaiming, setIsClaiming] = useState<boolean>(false);
 
@@ -66,10 +66,22 @@ export const ClaimNft: React.FC = () => {
   };
 
   useEffect(() => {
+    if (!isConnected || !location.state.verifyCode) {
+      history.push(`/airdrop/${airdropId}/landing`);
+    }
+  }, [airdropId, history, isConnected, location.state.verifyCode]);
+
+  useEffect(() => {
+    if (!isConnected) {
+      return;
+    }
+
     dispatchRequest(getAirdropInfo({ dropsid: +airdropId })).then(res => {
       setAirdropData(res.data);
     });
+  }, [airdropId, dispatchRequest, isConnected]);
 
+  useEffect(() => {
     dispatchRequest(
       getAirdropByCode({ verifycode: location.state.verifyCode }),
     ).then(res => {
@@ -104,7 +116,7 @@ export const ClaimNft: React.FC = () => {
           src={nftData?.fileurl}
           className={classNames(
             styles.nftImg,
-            isSMDown ? styles.smallNftImg : styles.bigNftImg,
+            isXSDown ? styles.smallNftImg : styles.bigNftImg,
           )}
         />
       ) : (
@@ -114,7 +126,7 @@ export const ClaimNft: React.FC = () => {
           className={classNames(
             styles.skeleton,
             styles.nftImg,
-            isSMDown ? styles.smallNftImg : styles.bigNftImg,
+            isXSDown ? styles.smallNftImg : styles.bigNftImg,
           )}
         />
       )}

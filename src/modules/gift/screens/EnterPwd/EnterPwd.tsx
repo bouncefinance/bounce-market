@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from '@material-ui/core';
 import { useEnterPwdStyles } from './useEnterPwdStyles';
-import { Img } from 'modules/uiKit/Img';
 
 import { GiftTextInput } from 'modules/gift/components/GiftTextInput';
 import { GiftHeader } from 'modules/gift/components/GiftHeader';
@@ -72,8 +71,9 @@ export const EnterPwd: React.FC = () => {
         }
       />
 
-      <Img
+      <img
         src={SVG_mail}
+        alt="icon"
         className={isXSDown ? styles.mobileMailImg : styles.desktopMailImg}
       />
 
