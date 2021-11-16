@@ -13,6 +13,7 @@ export const RenderView3D = ({
 }): React.ReactElement => {
   const classes = useView3DStyles();
   const [isLoad, setIsLoad] = useState(false);
+
   try {
     if (fileUrl) {
       (async () => {
