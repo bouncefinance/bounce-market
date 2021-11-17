@@ -1,5 +1,5 @@
 import loadable, { LoadableComponent } from '@loadable/component';
-import { QueryLoadingAbsolute } from 'modules/common/components/QueryLoading/QueryLoading';
+import { WhiteQueryLoadingAbsolute } from 'modules/common/components/QueryLoading/QueryLoading';
 import { RouteConfiguration } from 'modules/common/types/RouteConfiguration';
 import { generatePath, Route } from 'react-router-dom';
 import { useParams } from 'react-router';
@@ -67,14 +67,14 @@ const LoadableLandingPageContainer: LoadableComponent<any> = loadable(
   async () =>
     import('./screens/LandingPage').then(module => module.LandingPage),
   {
-    fallback: <QueryLoadingAbsolute />,
+    fallback: <WhiteQueryLoadingAbsolute />,
   },
 );
 
 const LoadableEnterPwdContainer: LoadableComponent<any> = loadable(
   async () => import('./screens/EnterPwd').then(module => module.EnterPwd),
   {
-    fallback: <QueryLoadingAbsolute />,
+    fallback: <WhiteQueryLoadingAbsolute />,
   },
 );
 
@@ -82,14 +82,14 @@ const LoadableConfirmProfileContainer: LoadableComponent<any> = loadable(
   async () =>
     import('./screens/ConfirmProfile').then(module => module.ConfirmProfile),
   {
-    fallback: <QueryLoadingAbsolute />,
+    fallback: <WhiteQueryLoadingAbsolute />,
   },
 );
 
 const LoadableClaimNftContainer: LoadableComponent<any> = loadable(
   async () => import('./screens/ClaimNft').then(module => module.ClaimNft),
   {
-    fallback: <QueryLoadingAbsolute />,
+    fallback: <WhiteQueryLoadingAbsolute />,
   },
 );
 

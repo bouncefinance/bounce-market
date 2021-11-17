@@ -22,3 +22,11 @@ export const QueryLoadingCentered = (props: BoxProps) => {
     </Box>
   );
 };
+
+export const WhiteQueryLoadingAbsolute = (props: BoxProps) => {
+  return (
+    <Box display="flex" justifyContent="center" color="#fff" {...props}>
+      <Spinner centered />
+    </Box>
+  );
+};
