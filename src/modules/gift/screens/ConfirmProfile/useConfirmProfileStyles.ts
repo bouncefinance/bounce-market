@@ -63,7 +63,6 @@ export const useConfirmProfileStyles = makeStyles<Theme>(theme => ({
 
   addStr: {
     color: 'white',
-    textDecoration: 'underline',
     height: 16,
     fontWeight: 'normal',
     fontSize: 10,

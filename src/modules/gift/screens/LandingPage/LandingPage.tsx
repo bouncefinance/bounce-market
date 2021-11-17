@@ -24,15 +24,13 @@ export const LandingPage: React.FC = () => {
   const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
   const { isConnected, handleConnect, loading } = useAccount();
 
-  const [dataLoading, setDataLoading] = useState<boolean>(false);
+  const [dataLoading, setDataLoading] = useState<boolean>(true);
   const [
     airdropData,
     setAirdropData,
   ] = useState<IGetAirdropInfoPayload | null>();
 
   useEffect(() => {
-    setDataLoading(true);
-
     if (!loading && !isConnected) {
       handleConnect();
     }
@@ -66,6 +64,7 @@ export const LandingPage: React.FC = () => {
             isXSDown ? classes.mobileAvatar : classes.desktopAvatar,
           )}
           src={airdropData?.coverimgurl}
+          imgWidth={320}
         />
       </Box>
 
