@@ -50,13 +50,13 @@ export const ConfirmProfile: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (profileInfo) {
-      setAvatarSrc(profileInfo.imgUrl);
-      setAvatarUrl(profileInfo.imgUrl);
-      setInputValue(profileInfo.username);
+    // if (profileInfo) {
+    //   setAvatarSrc(profileInfo.imgUrl);
+    //   setAvatarUrl(profileInfo.imgUrl);
+    //   setInputValue(profileInfo.username);
 
-      return;
-    }
+    //   return;
+    // }
 
     dispatchRequest(
       getAirdropByCode({ verifycode: location.state.verifyCode }),
