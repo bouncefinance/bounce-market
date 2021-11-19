@@ -18,6 +18,7 @@ export interface IGetAirdropInfoPayload {
   airdropinfo: {
     brandname: string;
     totalsupply: number;
+    brandimgurl: string;
   };
 }
 

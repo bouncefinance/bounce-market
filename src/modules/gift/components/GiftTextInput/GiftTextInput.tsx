@@ -2,7 +2,7 @@ import React, { ChangeEventHandler } from 'react';
 import { Box, Typography, OutlinedInput, Grow } from '@material-ui/core';
 import { useGiftTextInputStyles } from './useGiftTextInputStyles';
 import classNames from 'classnames';
-import { useIsXSDown } from 'modules/themes/useTheme';
+import { useIsSMDown } from 'modules/themes/useTheme';
 
 export type IGiftTextInputProps = {
   className?: string;
@@ -19,8 +19,8 @@ export const GiftTextInput: React.FC<IGiftTextInputProps> = ({
   isValueLegal = true,
   helpText,
 }) => {
-  const isXSDown = useIsXSDown();
-  const styles = useGiftTextInputStyles({ isXSDown });
+  const isSMDown = useIsSMDown();
+  const styles = useGiftTextInputStyles({ isSMDown });
 
   return (
     <Box className={classNames(className, styles.root)}>

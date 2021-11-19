@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { useLandingPageStyles } from './useLandingPageStyles';
 
-import { useIsXSDown } from 'modules/themes/useTheme';
+import { useIsSMDown } from 'modules/themes/useTheme';
 import classNames from 'classnames';
 import {
   getAirdropInfo,
@@ -18,7 +18,7 @@ import { GiftSkeleton } from 'modules/gift/components/GiftSkeleton';
 
 export const LandingPage: React.FC = () => {
   const classes = useLandingPageStyles();
-  const isXSDown = useIsXSDown();
+  const isSMDown = useIsSMDown();
   const history = useHistory();
   const dispatchRequest = useDispatchRequest();
   const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
@@ -31,7 +31,7 @@ export const LandingPage: React.FC = () => {
   ] = useState<IGetAirdropInfoPayload | null>();
 
   useEffect(() => {
-    if (!loading && !isConnected) {
+    if (!isConnected) {
       handleConnect();
     }
   }, [handleConnect, isConnected, loading]);
@@ -61,7 +61,7 @@ export const LandingPage: React.FC = () => {
         <DefaultRandomAvatar
           className={classNames(
             classes.avatar,
-            isXSDown ? classes.mobileAvatar : classes.desktopAvatar,
+            isSMDown ? classes.mobileAvatar : classes.desktopAvatar,
           )}
           src={airdropData?.coverimgurl}
           imgWidth={320}
@@ -76,7 +76,7 @@ export const LandingPage: React.FC = () => {
         variant="h5"
         className={classNames(
           classes.description1,
-          isXSDown ? classes.mobileDescription1 : classes.desktopDescription1,
+          isSMDown ? classes.mobileDescription1 : classes.desktopDescription1,
         )}
       >
         {airdropData?.description}
@@ -85,7 +85,7 @@ export const LandingPage: React.FC = () => {
       <Button
         className={classNames(
           classes.continueBtn,
-          isXSDown ? classes.mobileContinueBtn : classes.desktopContinueBtn,
+          isSMDown ? classes.mobileContinueBtn : classes.desktopContinueBtn,
         )}
         loading={loading}
         onClick={() => {

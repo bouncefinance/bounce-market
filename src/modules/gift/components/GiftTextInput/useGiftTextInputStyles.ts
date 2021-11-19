@@ -1,14 +1,14 @@
 import { makeStyles, createStyles } from '@material-ui/core';
 
 interface Props {
-  isXSDown: boolean;
+  isSMDown: boolean;
 }
 
 export const useGiftTextInputStyles = makeStyles(theme =>
   createStyles({
     root: (props: Props) => ({
-      width: props.isXSDown ? 344 : 358,
-      // marginTop: props.isXSDown ? 40 : 60,
+      width: props.isSMDown ? 344 : 358,
+      // marginTop: props.isSMDown ? 40 : 60,
     }),
 
     pwdInput: {

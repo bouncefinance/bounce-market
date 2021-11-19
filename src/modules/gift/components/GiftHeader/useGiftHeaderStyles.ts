@@ -1,7 +1,7 @@
 import { createStyles, makeStyles } from '@material-ui/core';
 
 interface Props {
-  isXSDown: boolean;
+  isSMDown: boolean;
 }
 
 export const useGiftHeaderStyles = makeStyles(theme =>
@@ -11,13 +11,13 @@ export const useGiftHeaderStyles = makeStyles(theme =>
     },
 
     root: (props: Props) => ({
-      width: props.isXSDown ? 315 : 416,
+      width: props.isSMDown ? 315 : 416,
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
 
-      marginTop: props.isXSDown ? 24 : 60,
+      marginTop: props.isSMDown ? 24 : 60,
     }),
 
     logo: {
@@ -29,7 +29,7 @@ export const useGiftHeaderStyles = makeStyles(theme =>
       alignItems: 'center',
       columnGap: 15,
 
-      marginBottom: props.isXSDown ? 24 : 60,
+      marginBottom: props.isSMDown ? 24 : 60,
     }),
 
     brandAvatar: {
@@ -46,8 +46,8 @@ export const useGiftHeaderStyles = makeStyles(theme =>
     },
 
     title: (props: Props) => ({
-      fontSize: props.isXSDown ? 25 : 32,
-      lineHeight: props.isXSDown ? '27px' : '39px',
+      fontSize: props.isSMDown ? 25 : 32,
+      lineHeight: props.isSMDown ? '27px' : '39px',
       color: '#fff',
       textAlign: 'center',
     }),
@@ -59,7 +59,7 @@ export const useGiftHeaderStyles = makeStyles(theme =>
       textAlign: 'center',
       color: '#fff',
 
-      marginTop: props.isXSDown ? 20 : 40,
+      marginTop: props.isSMDown ? 20 : 40,
     }),
   }),
 );

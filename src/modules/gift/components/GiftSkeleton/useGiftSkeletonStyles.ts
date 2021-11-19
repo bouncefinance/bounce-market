@@ -1,7 +1,7 @@
 import { makeStyles, createStyles } from '@material-ui/core';
 
 interface Props {
-  isXSDown: boolean;
+  isSMDown: boolean;
 }
 
 export const useGiftSkeletonStyles = makeStyles(theme =>
