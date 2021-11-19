@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { Box, Button, Typography } from '@material-ui/core';
@@ -20,10 +20,10 @@ import {
 import classNames from 'classnames';
 import { mint } from 'modules/gift/actions/mint';
 import { Spinner } from 'modules/common/components/Spinner';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 
 export const ClaimNft: React.FC = () => {
   const styles = useClaimNftStyles();
-  const { address } = useAccount();
   const dispatchRequest = useDispatchRequest();
   const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
   let location = useLocation<{
@@ -31,7 +31,8 @@ export const ClaimNft: React.FC = () => {
   }>();
   const history = useHistory();
   const isSMDown = useIsSMDown();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+  const dispatch = useDispatchRequest();
 
   const [isClaiming, setIsClaiming] = useState<boolean>(false);
 
@@ -161,7 +162,13 @@ export const ClaimNft: React.FC = () => {
             styles.continueBtn,
             isSMDown ? styles.mobileContineBtn : styles.desktopContineBtn,
           )}
-          onClick={handleClaim}
+          onClick={() => {
+            handleClaim();
+
+            if (address) {
+              dispatch(fetchProfileInfo({ address }));
+            }
+          }}
         >
           Claim NFT
         </Button>
