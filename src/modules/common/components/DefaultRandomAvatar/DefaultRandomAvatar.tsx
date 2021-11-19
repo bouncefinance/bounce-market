@@ -12,6 +12,7 @@ import classNames from 'classnames';
 const BG_PRESETS_COUNT = 19;
 
 interface props extends AvatarProps {
+  useCdn?: boolean;
   address?: string;
   imgWidth?: number;
   verified?: boolean;
@@ -19,6 +20,7 @@ interface props extends AvatarProps {
 }
 export const DefaultRandomAvatar = ({
   classes,
+  useCdn = true,
   src,
   imgWidth = 160,
   address,
@@ -30,7 +32,9 @@ export const DefaultRandomAvatar = ({
   const dispatch = useDispatch();
   const { colors } = useSelector((store: RootState) => store.user);
 
-  const { imgSrc } = useCdnUrl(src || '', imgWidth);
+  const { imgSrc: _imgSrc } = useCdnUrl(src || '', imgWidth);
+
+  const imgSrc = useCdn ? _imgSrc : src;
 
   const range = useMemo(() => Math.floor(Math.random() * BG_PRESETS_COUNT), []);
   useLayoutEffect(() => {
