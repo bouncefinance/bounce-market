@@ -3,6 +3,7 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { IApiUpdateUserInfo } from '../api/updateUserInfo';
 
 interface IUpdateUserInfoArgs {
+  accountaddress: string;
   verifycode: string;
   useravatar: string;
   username: string;

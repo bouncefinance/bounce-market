@@ -1,11 +1,11 @@
 import React from 'react';
 import { Logo } from '../Logo';
 import { useIconHeaderStyles } from './useIconHeaderStyles';
-import { useIsXSDown } from 'modules/themes/useTheme';
+import { useIsSMDown } from 'modules/themes/useTheme';
 
 export const IconHeader: React.FC = () => {
-  const isXSDown = useIsXSDown();
-  const classes = useIconHeaderStyles({ isXSDown });
+  const isSMDown = useIsSMDown();
+  const classes = useIconHeaderStyles({ isSMDown });
 
   return (
     <div className={classes.root}>

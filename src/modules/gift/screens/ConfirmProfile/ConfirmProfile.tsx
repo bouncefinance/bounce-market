@@ -8,19 +8,21 @@ import {
 } from '@material-ui/core';
 import { Button } from 'modules/uiKit/Button';
 import { useConfirmProfileStyles } from './useConfirmProfileStyles';
-import { useIsXSDown } from 'modules/themes/useTheme';
+import { useIsSMDown } from 'modules/themes/useTheme';
 import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
 import { GiftTextInput } from 'modules/gift/components/GiftTextInput';
 
 import { useHistory, useLocation } from 'react-router-dom';
 import { getAirdropByCode } from 'modules/gift/actions/getAirdropByCode';
 import { uploadFile } from 'modules/common/actions/uploadFile';
-import { useDispatchRequest } from '@redux-requests/react';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { updateUserInfo } from 'modules/gift/actions/updateUserInfo';
 import { GiftRoutesConfig } from 'modules/gift/Routes';
 import { GiftHeader } from 'modules/gift/components/GiftHeader';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import classNames from 'classnames';
+import { IProfileInfo } from 'modules/profile/api/profileInfo';
+import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
 
 export const ConfirmProfile: React.FC = () => {
   const styles = useConfirmProfileStyles();
@@ -30,8 +32,11 @@ export const ConfirmProfile: React.FC = () => {
   }>();
   const dispatchRequest = useDispatchRequest();
   const history = useHistory();
-  const isXSDown = useIsXSDown();
-  const { isConnected } = useAccount();
+  const isSMDown = useIsSMDown();
+  const { isConnected, address } = useAccount();
+  const { data: profileInfo } = useQuery<IProfileInfo | null>({
+    type: fetchProfileInfo.toString(),
+  });
 
   useEffect(() => {
     if (!isConnected || !location.state.verifyCode) {
@@ -45,6 +50,14 @@ export const ConfirmProfile: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    if (profileInfo) {
+      setAvatarSrc(profileInfo.imgUrl);
+      setAvatarUrl(profileInfo.imgUrl);
+      setInputValue(profileInfo.username);
+
+      return;
+    }
+
     dispatchRequest(
       getAirdropByCode({ verifycode: location.state.verifyCode }),
     ).then(res => {
@@ -52,7 +65,7 @@ export const ConfirmProfile: React.FC = () => {
       setAvatarUrl(res.data?.avatar);
       setInputValue(res.data?.username);
     });
-  }, [dispatchRequest, location.state.verifyCode]);
+  }, [dispatchRequest, location.state.verifyCode, profileInfo]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -90,12 +103,15 @@ export const ConfirmProfile: React.FC = () => {
     setLoading(true);
 
     try {
-      if (avatarUrl && inputValue) {
-        await dispatchRequest(
+      if (!address) {
+        history.push(`/airdrop/${airdropId}/landing`);
+      } else {
+        dispatchRequest(
           updateUserInfo({
+            accountaddress: address,
             verifycode: location.state.verifyCode,
-            useravatar: avatarUrl,
-            username: inputValue,
+            useravatar: avatarUrl || '',
+            username: inputValue || '',
           }),
         ).then(res => {
           if (res.data.msg === 'success') {
@@ -152,11 +168,11 @@ export const ConfirmProfile: React.FC = () => {
       </Box>
 
       <Box
-        className={isXSDown ? styles.mobileTextField : styles.mobileTextField}
+        className={isSMDown ? styles.mobileTextField : styles.mobileTextField}
       >
         <InputLabel className={styles.inputLabel}>name</InputLabel>
         <GiftTextInput
-          className={isXSDown ? styles.mobileInput : styles.desktopInput}
+          className={isSMDown ? styles.mobileInput : styles.desktopInput}
           value={inputValue || ''}
           onChange={handleInputChange}
         />
@@ -165,7 +181,7 @@ export const ConfirmProfile: React.FC = () => {
       <Button
         className={classNames(
           styles.continueBtn,
-          isXSDown ? styles.mobileContinueBtn : styles.desktopContinueBtn,
+          isSMDown ? styles.mobileContinueBtn : styles.desktopContinueBtn,
         )}
         loading={loading}
         onClick={handleContinueBtnClick}

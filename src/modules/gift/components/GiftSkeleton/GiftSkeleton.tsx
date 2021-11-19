@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@material-ui/core';
 import { useGiftSkeletonStyles } from './useGiftSkeletonStyles';
 import classNames from 'classnames';
-import { useIsXSDown } from 'modules/themes/useTheme';
+import { useIsSMDown } from 'modules/themes/useTheme';
 import { Skeleton } from '@material-ui/lab';
 
 export type IGiftSkeletonProps = {
@@ -13,15 +13,15 @@ export type IGiftSkeletonProps = {
 };
 
 export const GiftSkeleton: React.FC<IGiftSkeletonProps> = ({ className }) => {
-  const isXSDown = useIsXSDown();
-  const styles = useGiftSkeletonStyles({ isXSDown });
+  const isSMDown = useIsSMDown();
+  const styles = useGiftSkeletonStyles({ isSMDown });
 
   return (
     <Box className={classNames(styles.root, className)}>
       <Skeleton
         className={classNames(
           styles.skeleton,
-          isXSDown ? styles.mobileAvatar : styles.desktopAvatar,
+          isSMDown ? styles.mobileAvatar : styles.desktopAvatar,
         )}
         variant="circle"
         width={170}
@@ -56,7 +56,7 @@ export const GiftSkeleton: React.FC<IGiftSkeletonProps> = ({ className }) => {
         className={classNames(
           styles.skeleton,
           styles.continueBtn,
-          isXSDown ? styles.mobileContinueBtn : styles.desktopContinueBtn,
+          isSMDown ? styles.mobileContinueBtn : styles.desktopContinueBtn,
         )}
         variant="rect"
         width={170}

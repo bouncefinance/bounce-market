@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { useGiftHeaderStyles } from './useGiftHeaderStyles';
 import classNames from 'classnames';
-import { useIsXSDown } from 'modules/themes/useTheme';
+import { useIsSMDown } from 'modules/themes/useTheme';
 import { getAirdropInfo } from 'modules/gift/actions/getAirdropInfo';
 import { useDispatchRequest } from '@redux-requests/react';
 import { DefaultRandomAvatar } from 'modules/common/components/DefaultRandomAvatar';
@@ -22,9 +22,9 @@ export const GiftHeader: React.FC<IGiftHeaderProps> = ({
   title,
   description,
 }) => {
-  const isXSDown = useIsXSDown();
+  const isSMDown = useIsSMDown();
   const dispatchRequest = useDispatchRequest();
-  const styles = useGiftHeaderStyles({ isXSDown });
+  const styles = useGiftHeaderStyles({ isSMDown });
   const { isConnected } = useAccount();
 
   const [dataLoading, setDataLoading] = useState<boolean>(true);
@@ -39,7 +39,7 @@ export const GiftHeader: React.FC<IGiftHeaderProps> = ({
     try {
       dispatchRequest(getAirdropInfo({ dropsid: +airdropId }))
         .then(res => {
-          setBrandAvatar(res.data?.avatar);
+          setBrandAvatar(res.data?.airdropinfo.brandimgurl);
           setBrandName(res.data?.airdropinfo.brandname);
         })
         .then(() => setDataLoading(false));

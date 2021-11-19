@@ -5,7 +5,7 @@ import { Box, Button, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { useClaimNftStyles } from './useClaimNftStyles';
 import { Img } from 'modules/uiKit/Img';
-import { useIsXSDown } from 'modules/themes/useTheme';
+import { useIsSMDown } from 'modules/themes/useTheme';
 import { GiftHeader } from 'modules/gift/components/GiftHeader';
 import { GiftRoutesConfig } from 'modules/gift/Routes';
 import { useDispatchRequest } from '@redux-requests/react';
@@ -30,7 +30,7 @@ export const ClaimNft: React.FC = () => {
     verifyCode: string;
   }>();
   const history = useHistory();
-  const isXSDown = useIsXSDown();
+  const isSMDown = useIsSMDown();
   const { isConnected } = useAccount();
 
   const [isClaiming, setIsClaiming] = useState<boolean>(false);
@@ -116,7 +116,7 @@ export const ClaimNft: React.FC = () => {
           src={nftData?.fileurl}
           className={classNames(
             styles.nftImg,
-            isXSDown ? styles.smallNftImg : styles.bigNftImg,
+            isSMDown ? styles.smallNftImg : styles.bigNftImg,
           )}
         />
       ) : (
@@ -126,7 +126,7 @@ export const ClaimNft: React.FC = () => {
           className={classNames(
             styles.skeleton,
             styles.nftImg,
-            isXSDown ? styles.smallNftImg : styles.bigNftImg,
+            isSMDown ? styles.smallNftImg : styles.bigNftImg,
           )}
         />
       )}
@@ -145,7 +145,7 @@ export const ClaimNft: React.FC = () => {
         <Button
           className={classNames(
             styles.continueBtn,
-            isXSDown ? styles.mobileContineBtn : styles.desktopContineBtn,
+            isSMDown ? styles.mobileContineBtn : styles.desktopContineBtn,
           )}
           onClick={() => {
             history.push('/');
@@ -159,7 +159,7 @@ export const ClaimNft: React.FC = () => {
         <Button
           className={classNames(
             styles.continueBtn,
-            isXSDown ? styles.mobileContineBtn : styles.desktopContineBtn,
+            isSMDown ? styles.mobileContineBtn : styles.desktopContineBtn,
           )}
           onClick={handleClaim}
         >
