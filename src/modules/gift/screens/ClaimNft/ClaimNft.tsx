@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { Box, Button, Typography } from '@material-ui/core';

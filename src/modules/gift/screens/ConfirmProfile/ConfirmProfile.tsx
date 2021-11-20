@@ -155,7 +155,6 @@ export const ConfirmProfile: React.FC = () => {
           >
             <DefaultRandomAvatar
               className={styles.avatar}
-              useCdn={false}
               verified
               verifiedIconClasses={styles.verifiedIcon}
               src={avatarSrc}

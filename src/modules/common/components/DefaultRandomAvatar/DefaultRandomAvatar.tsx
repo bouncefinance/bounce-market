@@ -32,9 +32,9 @@ export const DefaultRandomAvatar = ({
   const dispatch = useDispatch();
   const { colors } = useSelector((store: RootState) => store.user);
 
-  const { imgSrc: _imgSrc } = useCdnUrl(src || '', imgWidth);
+  const { imgSrc: cdnImgSrc } = useCdnUrl(src || '', imgWidth);
 
-  const imgSrc = useCdn ? _imgSrc : src;
+  const imgSrc = useCdn ? cdnImgSrc : src;
 
   const range = useMemo(() => Math.floor(Math.random() * BG_PRESETS_COUNT), []);
   useLayoutEffect(() => {
