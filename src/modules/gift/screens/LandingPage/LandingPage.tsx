@@ -25,33 +25,26 @@ export const LandingPage: React.FC = () => {
   const { isConnected, handleConnect, loading } = useAccount();
 
   const [dataLoading, setDataLoading] = useState<boolean>(true);
+  const [walletLoading, setWalletLoading] = useState<boolean>(false);
   const [
     airdropData,
     setAirdropData,
   ] = useState<IGetAirdropInfoPayload | null>();
 
   useEffect(() => {
-    if (!isConnected) {
-      handleConnect();
-    }
-  }, [handleConnect, isConnected, loading]);
-
-  useEffect(() => {
-    if (!isConnected) {
-      return;
-    }
-
     try {
       dispatchRequest(getAirdropInfo({ dropsid: +airdropId })).then(res => {
         setAirdropData(res.data);
-        setDataLoading(false);
+        if (res.data) {
+          setDataLoading(false);
+        }
       });
     } catch (error) {
       console.log('getAirdropInfo');
     }
-  }, [dispatchRequest, airdropId, isConnected]);
+  }, [dispatchRequest, airdropId]);
 
-  if (loading || dataLoading) {
+  if (dataLoading) {
     return <GiftSkeleton />;
   }
 
@@ -87,9 +80,11 @@ export const LandingPage: React.FC = () => {
           classes.continueBtn,
           isSMDown ? classes.mobileContinueBtn : classes.desktopContinueBtn,
         )}
-        loading={loading}
+        loading={walletLoading && loading}
         onClick={() => {
-          if (isConnected) {
+          if (!window.ethereum) {
+            history.push('/airdrop/instruction');
+          } else if (isConnected) {
             if (
               airdropData &&
               airdropData.airdropinfo.opendate >
@@ -102,6 +97,7 @@ export const LandingPage: React.FC = () => {
               });
             }
           } else {
+            setWalletLoading(true);
             handleConnect();
           }
         }}
