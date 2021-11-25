@@ -152,6 +152,7 @@ export function Routes() {
           GiftRoutesConfig.EnterPwd.path,
           GiftRoutesConfig.ConfirmProfile.path,
           GiftRoutesConfig.ClaimNft.path,
+          GiftRoutesConfig.Instruction.path,
         ]}
         render={() => (
           <GiftLayout>

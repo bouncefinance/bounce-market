@@ -38,7 +38,8 @@ type MainApiDriverName =
   | 'mainApiEthRinkeby'
   | 'mainApiSmartchain'
   | 'mainApiHeco'
-  | 'mainApiMatic';
+  | 'mainApiMatic'
+  | 'mainApiAirdrop';
 
 const chainToMainApiDriver: {
   [key in BlockchainNetworkId]: MainApiDriverName | undefined;
@@ -59,6 +60,10 @@ const chainToMainApiDriver: {
 
 function getMainApiDriverName(chainId: BlockchainNetworkId): MainApiDriverName {
   return chainToMainApiDriver[chainId] || 'mainApiSmartchain';
+}
+
+function getAirdropMainApiDriverName(): MainApiDriverName {
+  return 'mainApiAirdrop';
 }
 
 type NftViewApiDriverName =
@@ -176,6 +181,9 @@ const mainAxios = {
   mainApiMatic: axios.create({
     baseURL: process.env.REACT_APP_API_BASE_MATIC,
   }),
+  mainApiAirdrop: axios.create({
+    baseURL: process.env.REACT_APP_API_BASE_AIRDROP,
+  }),
 };
 
 type mainApiDriversType = keyof typeof mainAxios;
@@ -266,6 +274,11 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
       action.meta = {
         ...action.meta,
         driver: getMainApiDriverName(chainId),
+      };
+    } else if (action.meta?.driver === 'airdropAxios') {
+      action.meta = {
+        ...action.meta,
+        driver: getAirdropMainApiDriverName(),
       };
     } else if (action.meta?.driver === 'nftview') {
       action.meta = {

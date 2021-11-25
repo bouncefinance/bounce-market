@@ -25,33 +25,26 @@ export const LandingPage: React.FC = () => {
   const { isConnected, handleConnect, loading } = useAccount();
 
   const [dataLoading, setDataLoading] = useState<boolean>(true);
+  const [walletLoading, setWalletLoading] = useState<boolean>(false);
   const [
     airdropData,
     setAirdropData,
   ] = useState<IGetAirdropInfoPayload | null>();
 
   useEffect(() => {
-    if (!isConnected) {
-      handleConnect();
-    }
-  }, [handleConnect, isConnected, loading]);
-
-  useEffect(() => {
-    if (!isConnected) {
-      return;
-    }
-
     try {
       dispatchRequest(getAirdropInfo({ dropsid: +airdropId })).then(res => {
         setAirdropData(res.data);
-        setDataLoading(false);
+        if (res.data) {
+          setDataLoading(false);
+        }
       });
     } catch (error) {
       console.log('getAirdropInfo');
     }
-  }, [dispatchRequest, airdropId, isConnected]);
+  }, [dispatchRequest, airdropId]);
 
-  if (loading || dataLoading) {
+  if (dataLoading) {
     return <GiftSkeleton />;
   }
 
@@ -87,11 +80,26 @@ export const LandingPage: React.FC = () => {
           classes.continueBtn,
           isSMDown ? classes.mobileContinueBtn : classes.desktopContinueBtn,
         )}
-        loading={loading}
+        loading={walletLoading && loading}
         onClick={() => {
-          isConnected
-            ? history.push(`/airdrop/${airdropId}/enterpwd`)
-            : handleConnect();
+          if (!window.ethereum) {
+            history.push('/airdrop/instruction');
+          } else if (isConnected) {
+            if (
+              airdropData &&
+              airdropData.airdropinfo.opendate >
+                Math.floor(new Date().valueOf() / 1000)
+            ) {
+              history.push(`/airdrop/${airdropId}/enterpwd`);
+            } else {
+              history.push(`/airdrop/${airdropId}/claim`, {
+                verifycode: undefined,
+              });
+            }
+          } else {
+            setWalletLoading(true);
+            handleConnect();
+          }
         }}
       >
         Continue

@@ -8,6 +8,7 @@ const PATH_LANDING_PAGE = '/airdrop/:airdropId/landing';
 const PATH_ENTER_PWD = '/airdrop/:airdropId/enterpwd';
 const PATH_CONFIRM_PROFILE = '/airdrop/:airdropId/confirm';
 const PATH_CLAIM_NFT = '/airdrop/:airdropId/claim';
+const PATH_INSTRUCTION = '/airdrop/instruction';
 
 export const GiftRoutesConfig: { [key: string]: RouteConfiguration } = {
   LandingPage: {
@@ -61,6 +62,11 @@ export const GiftRoutesConfig: { [key: string]: RouteConfiguration } = {
       };
     },
   },
+
+  Instruction: {
+    path: PATH_INSTRUCTION,
+    generatePath: () => generatePath(PATH_INSTRUCTION),
+  },
 };
 
 const LoadableLandingPageContainer: LoadableComponent<any> = loadable(
@@ -93,6 +99,14 @@ const LoadableClaimNftContainer: LoadableComponent<any> = loadable(
   },
 );
 
+const LoadableInstructionContainer: LoadableComponent<any> = loadable(
+  async () =>
+    import('./screens/Instruction').then(module => module.Instruction),
+  {
+    fallback: <WhiteQueryLoadingAbsolute />,
+  },
+);
+
 export function GiftRoutes() {
   return (
     <>
@@ -115,6 +129,11 @@ export function GiftRoutes() {
         path={GiftRoutesConfig.ClaimNft.path}
         exact={true}
         component={LoadableClaimNftContainer}
+      />
+      <Route
+        path={GiftRoutesConfig.Instruction.path}
+        exact={true}
+        component={LoadableInstructionContainer}
       />
     </>
   );

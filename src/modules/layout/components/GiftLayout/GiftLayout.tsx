@@ -1,9 +1,6 @@
 import { ThemeProvider } from '@material-ui/styles';
 import classNames from 'classnames';
-import { useAccount } from 'modules/account/hooks/useAccount';
-import { GiftRoutesConfig } from 'modules/gift/Routes';
-import { useIsSMUp } from 'modules/themes/useTheme';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router';
 import { getTheme } from '../../../common/utils/getTheme';
 import { Themes } from '../../../themes/types';
@@ -21,27 +18,14 @@ export const GiftLayout = ({
 }: ILayoutProps) => {
   const classes = useGiftLayoutStyles();
   const history = useHistory();
-  const isSMUp = useIsSMUp();
-  const { isConnected } = useAccount();
-  const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
-
-  useEffect(() => {
-    if (!window.ethereum && isSMUp) {
-      window.location.href = 'https://metamask.io/download';
-    }
-  }, [isSMUp]);
-
-  useEffect(() => {
-    if (!isConnected) {
-      history.push(`/airdrop/${airdropId}/landing`);
-    }
-  }, [airdropId, history, isConnected]);
 
   return (
     <div className={classNames(classes.root, classes.darkBg)}>
-      <ThemeProvider theme={getTheme(headerTheme)}>
-        <IconHeader />
-      </ThemeProvider>
+      {!history.location.pathname.includes('instruction') && (
+        <ThemeProvider theme={getTheme(headerTheme)}>
+          <IconHeader />
+        </ThemeProvider>
+      )}
 
       <main className={classNames(classes.main)}>{children}</main>
     </div>

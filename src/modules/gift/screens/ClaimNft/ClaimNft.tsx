@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { Box, Button, Typography } from '@material-ui/core';
@@ -21,76 +21,107 @@ import classNames from 'classnames';
 import { mint } from 'modules/gift/actions/mint';
 import { Spinner } from 'modules/common/components/Spinner';
 import { fetchProfileInfo } from 'modules/profile/actions/fetchProfileInfo';
+import { getOneVerifyCode } from 'modules/gift/actions/getOneVerifyCode';
+
+const title = {
+  available: 'Claim your NFT artwork',
+  success: 'You’re all set',
+  claimed: 'The NFT was claimed',
+};
 
 export const ClaimNft: React.FC = () => {
   const styles = useClaimNftStyles();
   const dispatchRequest = useDispatchRequest();
   const { airdropId } = GiftRoutesConfig.LandingPage.useParams();
   let location = useLocation<{
-    verifyCode: string;
+    verifyCode?: string;
   }>();
   const history = useHistory();
   const isSMDown = useIsSMDown();
   const { isConnected, address } = useAccount();
   const dispatch = useDispatchRequest();
 
-  const [isClaiming, setIsClaiming] = useState<boolean>(false);
-
+  const [loading, setLoading] = useState<boolean>(true);
   const [
     airdropData,
     setAirdropData,
   ] = useState<IGetAirdropInfoPayload | null>();
   const [nftData, setNftData] = useState<IGetAirdropByCodePayload | null>();
-
-  const [status, setStatus] = useState<'claim' | 'back'>('claim');
-
-  const handleClaim = async () => {
-    if (!nftData?.tokenid || !address || !nftData.contractaddress) {
-      return;
-    }
-    setIsClaiming(true);
-    try {
-      await dispatchRequest(
-        mint({
-          accountaddress: address,
-          contractaddress: nftData.contractaddress,
-          tokenid: nftData?.tokenid,
-          verifycode: location.state.verifyCode,
-        }),
-      );
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsClaiming(false);
-      setStatus('back');
-    }
-  };
+  const [claimStatus, setClaimStatus] = useState<
+    'available' | 'success' | 'claimed'
+  >('available');
+  const [verifyCode, setVerifyCode] = useState(location.state.verifyCode);
+  const [isBeforeOpenTime, setIsBeforeOpenTime] = useState<boolean>();
 
   useEffect(() => {
-    if (!isConnected || !location.state.verifyCode) {
-      history.push(`/airdrop/${airdropId}/landing`);
-    }
-  }, [airdropId, history, isConnected, location.state.verifyCode]);
-
-  useEffect(() => {
-    if (!isConnected) {
-      return;
-    }
-
     dispatchRequest(getAirdropInfo({ dropsid: +airdropId })).then(res => {
       setAirdropData(res.data);
+
+      // 保存当前时间是否超过开抢时间
+      if (res.data) {
+        setIsBeforeOpenTime(
+          res.data.airdropinfo.opendate >
+            Math.floor(new Date().valueOf() / 1000),
+        );
+      }
     });
-  }, [airdropId, dispatchRequest, isConnected]);
+  }, [airdropId, dispatchRequest]);
+
+  // 未连接钱包或在开抢前没带verifyCode进入,则回到首页
+  useEffect(() => {
+    if (!isConnected || (isBeforeOpenTime && !location.state.verifyCode)) {
+      history.push(`/airdrop/${airdropId}/landing`);
+    }
+  }, [
+    airdropId,
+    history,
+    isConnected,
+    isBeforeOpenTime,
+    location.state.verifyCode,
+    verifyCode,
+  ]);
+
+  // 如果当前时间已过开抢时间，则通过接口获取verifycode
+  useEffect(() => {
+    if (!airdropData) {
+      return;
+    }
+
+    if (!isBeforeOpenTime) {
+      dispatchRequest(
+        getOneVerifyCode({
+          contractaddress: airdropData.airdropinfo.collection,
+        }),
+      ).then(res => {
+        if (res.data) {
+          setVerifyCode(res.data.verifycode);
+        }
+      });
+    }
+  }, [airdropData, dispatchRequest, isBeforeOpenTime]);
 
   useEffect(() => {
+    if (!airdropData || !verifyCode) {
+      return;
+    }
+
+    setLoading(true);
+
     dispatchRequest(
-      getAirdropByCode({ verifycode: location.state.verifyCode }),
+      getAirdropByCode({
+        verifycode: verifyCode,
+      }),
     ).then(res => {
       setNftData(res.data);
-    });
-  }, [airdropId, dispatchRequest, location.state.verifyCode]);
+      if (res.data?.state === 2 || res.data?.state === 3) {
+        setClaimStatus('claimed');
+      }
 
-  if (isClaiming) {
+      setLoading(false);
+    });
+  }, [airdropData, dispatchRequest, verifyCode]);
+
+  if (loading) {
     return (
       <Box className={styles.root}>
         <GiftHeader airdropId={+airdropId} />
@@ -102,11 +133,42 @@ export const ClaimNft: React.FC = () => {
     );
   }
 
+  const handleClaim = async () => {
+    if (
+      !nftData?.tokenid ||
+      !address ||
+      !nftData.contractaddress ||
+      !airdropData ||
+      !verifyCode
+    ) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      dispatchRequest(
+        mint({
+          accountaddress: address,
+          contractaddress: nftData.contractaddress,
+          tokenid: nftData?.tokenid,
+          verifycode: verifyCode,
+        }),
+      ).then(() => {
+        setLoading(false);
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setClaimStatus('success');
+    }
+  };
+
   return (
     <Box className={styles.root}>
       <GiftHeader
         airdropId={+airdropId}
-        title={status === 'claim' ? 'Claim your NFT artwork' : 'You’re all set'}
+        title={title[claimStatus]}
         description={
           'You’ll find this password on the interior of the attached envelope that came in your package.'
         }
@@ -142,7 +204,8 @@ export const ClaimNft: React.FC = () => {
         }`}
       </Typography>
 
-      {status === 'back' && (
+      {(claimStatus === 'success' ||
+        (nftData && (nftData.state === 2 || nftData.state === 3))) && (
         <Button
           className={classNames(
             styles.continueBtn,
@@ -156,7 +219,7 @@ export const ClaimNft: React.FC = () => {
         </Button>
       )}
 
-      {status === 'claim' && (
+      {claimStatus === 'available' && (
         <Button
           className={classNames(
             styles.continueBtn,

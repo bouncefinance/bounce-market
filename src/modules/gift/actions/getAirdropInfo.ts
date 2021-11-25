@@ -19,6 +19,8 @@ export interface IGetAirdropInfoPayload {
     brandname: string;
     totalsupply: number;
     brandimgurl: string;
+    opendate: number;
+    collection: string;
   };
 }
 
@@ -32,7 +34,7 @@ export const getAirdropInfo = createSmartAction<
     data: params,
   },
   meta: {
-    driver: 'axios',
+    driver: 'airdropAxios',
     getData: data => {
       if (data.code !== 200) {
         console.error('getonedropsdetail:', 'Unexpected response');
