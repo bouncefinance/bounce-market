@@ -15,6 +15,7 @@ export interface IGetAirdropByCodePayload {
   description: string;
   username: string;
   avatar: string;
+  state: 1 | 2 | 3;
 }
 
 export const getAirdropByCode = createSmartAction<

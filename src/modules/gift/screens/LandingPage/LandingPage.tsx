@@ -89,9 +89,21 @@ export const LandingPage: React.FC = () => {
         )}
         loading={loading}
         onClick={() => {
-          isConnected
-            ? history.push(`/airdrop/${airdropId}/enterpwd`)
-            : handleConnect();
+          if (isConnected) {
+            if (
+              airdropData &&
+              airdropData.airdropinfo.opendate >
+                Math.floor(new Date().valueOf() / 1000)
+            ) {
+              history.push(`/airdrop/${airdropId}/enterpwd`);
+            } else {
+              history.push(`/airdrop/${airdropId}/claim`, {
+                verifycode: undefined,
+              });
+            }
+          } else {
+            handleConnect();
+          }
         }}
       >
         Continue
