@@ -1,10 +1,6 @@
 import { Box } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
-import {
-  useDispatchRequest,
-  useMutation,
-  useQuery,
-} from '@redux-requests/react';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import {
   DROPTYPE,
@@ -20,132 +16,99 @@ import { DropsContainer } from 'modules/drops/components/DropsContainer';
 import { DropsOwner } from 'modules/drops/components/DropsOwner';
 import { NothingFound } from 'modules/drops/components/NothingFound';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
+import { GiftRoutesConfig } from 'modules/gift/Routes';
 import { t } from 'modules/i18n/utils/intl';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Button } from 'modules/uiKit/Button';
 import { Section } from 'modules/uiKit/Section';
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { uid } from 'react-uid';
-import { DROPS_COMING_KEY, DROPS_PREV_KEY } from '../../const';
+import { DROPS_COMING_KEY, DROPS_LIVE_KEY } from '../../const';
 import { Drop } from '../Drop';
 import { DropSkeleton } from '../Drop/DropSkeleton';
 import { DropList } from '../DropList';
-import { DropsTab, DropsTabs } from '../DropsTabs';
+import { DropsTab } from '../DropsTabs';
 import { DropTimer } from '../DropTimer';
 
 const DROPS_INITIAL_PORTION_COUNT = 4;
 const DROPS_MORE_PORTION_COUNT = 4;
 
-enum DropsSortBy {
-  Coming = SearchDropsParamState.Coming,
-  Previous = SearchDropsParamState.Previous,
-}
-
-const tabs = [
-  {
-    id: DropsSortBy.Coming,
-    label: 'drops.upcoming',
-  },
-  {
-    id: DropsSortBy.Previous,
-    label: 'drops.previous',
-  },
-];
-
-export const DropsSection = () => {
+export const DropsSection = (props: { scene: 'Active' | 'Upcoming' }) => {
   const { isConnected } = useAccount();
   const dispatchRequest = useDispatchRequest();
   const dispatch = useDispatch();
-  const [sortBy, setSortBy] = useState<DropsSortBy>(DropsSortBy.Coming);
+  const loadMoreRef = useRef<HTMLButtonElement>(null);
+  const tab =
+    props.scene === 'Active'
+      ? {
+          id: SearchDropsParamState.Live,
+          label: 'drops.active',
+        }
+      : {
+          id: SearchDropsParamState.Coming,
+          label: 'drops.upcoming',
+        };
+  const DROPS_KEY =
+    props.scene === 'Active' ? DROPS_LIVE_KEY : DROPS_COMING_KEY;
+  console.log('DROPS_KEY', DROPS_KEY);
 
-  const {
-    data: dataComing,
-    loading: loadingComing,
-  } = useQuery<IGetDrops | null>({
-    type: getDrops.toString(),
-    requestKey: DROPS_COMING_KEY,
-  });
+  const { data: dropsData, loading: dropsLoading } = useQuery<IGetDrops | null>(
+    {
+      type: getDrops.toString(),
+      requestKey: DROPS_KEY,
+    },
+  );
 
-  const { data: dataPrev, loading: loadingPrev } = useQuery<IGetDrops | null>({
-    type: getDrops.toString(),
-    requestKey: DROPS_PREV_KEY,
-  });
-
-  const { loading: loadingUpdatePrev } = useMutation({
-    type: updateDrops.toString(),
-    requestKey: DROPS_PREV_KEY,
-  });
-
-  const loading = loadingComing || loadingPrev;
-
-  const dispatchComingDrops = useCallback(
-    () =>
+  const dispatchDropList = useCallback(
+    () => {
       dispatchRequest(
         getDrops(
-          { state: SearchDropsParamState.Coming },
-          { requestKey: DROPS_COMING_KEY },
+          { state: tab.id, limit: DROPS_INITIAL_PORTION_COUNT },
+          { requestKey: DROPS_KEY },
         ),
-      ),
-    [dispatchRequest],
+      );
+    },
+    // eslint-disable-next-line
+    [dispatchRequest, DROPS_KEY],
   );
 
   useEffect(() => {
-    dispatchComingDrops();
+    dispatchDropList();
 
     return function reset() {
       dispatch(
         resetRequests([
           {
             requestType: getDrops.toString(),
-            requestKey: DROPS_COMING_KEY,
-          },
-          {
-            requestType: getDrops.toString(),
-            requestKey: DROPS_PREV_KEY,
+            requestKey: DROPS_KEY,
           },
         ]),
       );
     };
-  }, [dispatchRequest, isConnected, dispatch, dispatchComingDrops]);
-
-  const onSortChange = useCallback(
-    (_e: ChangeEvent<{}>, newValue: DropsSortBy) => {
-      setSortBy(newValue);
-
-      if (newValue === DropsSortBy.Coming && !dataComing) {
-        dispatchComingDrops();
-      } else if (newValue === DropsSortBy.Previous && !dataPrev) {
-        dispatchRequest(
-          getDrops(
-            {
-              state: SearchDropsParamState.Previous,
-              limit: DROPS_INITIAL_PORTION_COUNT,
-              offset: 0,
-            },
-            { requestKey: DROPS_PREV_KEY },
-          ),
-        );
-      }
-    },
-    [dataComing, dataPrev, dispatchComingDrops, dispatchRequest],
-  );
+  }, [dispatchRequest, isConnected, dispatch, dispatchDropList, DROPS_KEY]);
 
   const onLoadMoreClick = () => {
-    if (!dataPrev) {
+    const tempPosition = loadMoreRef.current?.offsetTop;
+    const tempDiffTop = loadMoreRef.current?.getBoundingClientRect().top;
+
+    if (!dropsData) {
       return false;
     }
 
     dispatchRequest(
       updateDrops(
         {
-          state: SearchDropsParamState.Previous,
+          state: tab.id,
           limit: DROPS_MORE_PORTION_COUNT,
-          offset: dataPrev.offset + DROPS_MORE_PORTION_COUNT,
+          offset: dropsData.offset + DROPS_MORE_PORTION_COUNT,
         },
-        { requestKey: DROPS_PREV_KEY },
+        { requestKey: DROPS_KEY },
       ),
-    );
+    ).finally(() => {
+      if (tempPosition && tempDiffTop)
+        window.scrollTo({ top: tempPosition - tempDiffTop });
+    });
   };
 
   const renderDrops = (items: ISearchDropsItem[]) => {
@@ -164,9 +127,13 @@ export const DropsSection = () => {
       return (
         <Drop
           key={uid(item)}
-          href={item.dropType === DROPTYPE.BLINDBOX ?
-            DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)
-            : DropsRoutesConfig.DropDetails.generatePath(item.id)}
+          href={
+            item.dropType === DROPTYPE.BLINDBOX
+              ? DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)
+              : item.dropType === DROPTYPE.AIRDROP
+              ? GiftRoutesConfig.LandingPage.generatePath(item.id)
+              : DropsRoutesConfig.DropDetails.generatePath(item.id)
+          }
           // href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
           bgImg={item.coverImgUrl}
           bgColor={item.bgColor}
@@ -176,7 +143,7 @@ export const DropsSection = () => {
           creator={creator}
           dropId={item.id}
           dropType={item.dropType}
-          itemImage={item.blindcoverimgurl}    // 盲盒需要给他设置一个单独的item图片
+          itemImage={item.blindcoverimgurl} // 盲盒需要给他设置一个单独的item图片
         />
       );
     });
@@ -193,40 +160,18 @@ export const DropsSection = () => {
   return (
     <Section>
       <DropsContainer>
-        <Box mb={{ xs: 4, md: 7 }}>
-          <DropsTabs value={sortBy} onChange={onSortChange as any}>
-            {tabs.map(({ label, id }) => (
-              <DropsTab
-                disabled={loading}
-                key={id}
-                label={t(label)}
-                value={id}
-              />
-            ))}
-          </DropsTabs>
+        <Box mb={{ xs: 4, md: 7 }} textAlign="center">
+          <DropsTab
+            disabled={dropsLoading}
+            label={t(tab.label)}
+            value={tab.id}
+          />
         </Box>
 
-        {sortBy === DropsSortBy.Coming && (
+        {
           <Queries<ResponseData<typeof getDrops>>
             requestActions={[getDrops]}
-            requestKeys={[DROPS_COMING_KEY]}
-            noDataMessage={renderedSkeletons}
-            empty={<NothingFound />}
-          >
-            {({ data }) => {
-              if (!data || !data.items.length) {
-                return <NothingFound />;
-              }
-
-              return <DropList>{renderDrops(data.items)}</DropList>;
-            }}
-          </Queries>
-        )}
-
-        {sortBy === DropsSortBy.Previous && (
-          <Queries<ResponseData<typeof getDrops>>
-            requestActions={[getDrops]}
-            requestKeys={[DROPS_PREV_KEY]}
+            requestKeys={[DROPS_KEY]}
             noDataMessage={renderedSkeletons}
             empty={<NothingFound />}
           >
@@ -244,8 +189,9 @@ export const DropsSection = () => {
                       <Button
                         rounded
                         variant="outlined"
-                        loading={loadingUpdatePrev}
+                        loading={dropsLoading}
                         onClick={onLoadMoreClick}
+                        ref={loadMoreRef}
                       >
                         {t('common.load-more')}
                       </Button>
@@ -255,7 +201,7 @@ export const DropsSection = () => {
               );
             }}
           </Queries>
-        )}
+        }
       </DropsContainer>
     </Section>
   );

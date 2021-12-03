@@ -2,7 +2,8 @@ import { IApiSearchDropsItem } from './types';
 
 export enum DROPTYPE {
   DROP = 1,
-  BLINDBOX = 2
+  BLINDBOX = 2,
+  AIRDROP = 3,
 }
 
 export interface ISearchDropsItem {
@@ -49,6 +50,6 @@ export const mapSearchDropsItem = (
     website: item.website,
     avatar: item.avatar,
     dropType: item.droptype,
-    blindcoverimgurl: item.blindcoverimgurl
+    blindcoverimgurl: item.blindcoverimgurl,
   };
 };

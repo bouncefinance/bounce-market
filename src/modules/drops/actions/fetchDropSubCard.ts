@@ -46,13 +46,13 @@ export const fetchDropSubCard = createSmartAction<
     ...meta,
     driver: 'axios',
     getData: data => {
-      if (data.code !== 1) {
-        console.error(`
-        getDropDetails: Unexpected response.
-        To avoid this type of error notification you might need
-        to look at the https://github.com/klis87/redux-requests/discussions/470
-        `);
-      }
+      // if (data.code !== 200) {
+      //   console.error(`
+      //   getDropDetails: Unexpected response.
+      //   To avoid this type of error notification you might need
+      //   to look at the https://github.com/klis87/redux-requests/discussions/470
+      //   `);
+      // }
 
       if (!data.data) {
         return null;

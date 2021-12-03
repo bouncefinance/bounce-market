@@ -34,7 +34,7 @@ export const getDrops = createSmartAction<
     method: 'post',
     data: {
       accountaddress: params?.address || '',
-      limit: params?.limit || 1000,
+      limit: params?.limit || 10,
       offset: params?.offset || 0,
       ordertype: params?.ordertype || SearchDropsParamOrderType.Inverted,
       state: params?.state || SearchDropsParamState.Live,
@@ -61,6 +61,7 @@ export const getDrops = createSmartAction<
         items: data.data.map(mapSearchDropsItem),
         total: data.total || 0,
         offset: params?.offset || 0,
+        allLoaded: data.data.length < (params?.limit || 10),
       };
     },
   },
