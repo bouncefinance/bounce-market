@@ -39,7 +39,7 @@ export const Drop = ({
   bgImg,
   dropId,
   dropType,
-  itemImage
+  itemImage,
 }: IDropProps) => {
   const theme = useTheme();
   const isMDUp = useIsMDUp();
@@ -79,13 +79,9 @@ export const Drop = ({
   }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
 
   const renderDropItems = () => {
-    return dropType === DROPTYPE.BLINDBOX ?
+    return dropType === DROPTYPE.BLINDBOX ? (
       <Box mb={4}>
-        <Link
-          to={href}
-          key={uid(itemImage)}
-          className={classes.nftItem}
-        >
+        <Link to={href} key={uid(itemImage)} className={classes.nftItem}>
           <Img
             className={classes.itemImgBox}
             src={itemImage}
@@ -94,9 +90,11 @@ export const Drop = ({
           />
         </Link>
       </Box>
-      : <Queries<ResponseData<typeof fetchDropSubCard>>
+    ) : (
+      <Queries<ResponseData<typeof fetchDropSubCard>>
         requestActions={[fetchDropSubCard]}
         requestKeys={[DROP_KEY]}
+        empty={<></>}
       >
         {({ loading, data }) => (
           <Box mb={4}>
@@ -120,7 +118,8 @@ export const Drop = ({
           </Box>
         )}
       </Queries>
-  }
+    );
+  };
 
   return (
     <article className={classes.root}>
@@ -136,7 +135,7 @@ export const Drop = ({
 
       <Link className={classes.link} to={href} />
 
-      <Box mb={5}>{timer}</Box>
+      <Box mb={5}></Box>
 
       {renderDropItems()}
 
