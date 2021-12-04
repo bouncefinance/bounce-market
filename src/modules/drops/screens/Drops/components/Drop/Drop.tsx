@@ -160,7 +160,7 @@ export const Drop = ({
         <Truncate lines={isMDUp ? 2 : 4}>{text}</Truncate>
       </Typography>
 
-      <div className={classes.creator}>{creator}</div>
+      {/* <div className={classes.creator}>{creator}</div> */}
     </article>
   );
 };
