@@ -10,11 +10,15 @@ export const useDropsTabsStyles = makeStyles<Theme>(theme => ({
   tab: {
     maxWidth: 'none',
     color: theme.palette.text.primary,
-    opacity: 0.5,
+    opacity: 1,
     fontSize: 20,
     transition: 'opacity 0.2s',
     lineHeight: 1,
     padding: 0,
+
+    '& span': {
+      fontWeight: 500,
+    },
 
     [theme.breakpoints.up('md')]: {
       fontSize: 32,
@@ -31,7 +35,7 @@ export const useDropsTabsStyles = makeStyles<Theme>(theme => ({
     },
 
     '&:hover': {
-      opacity: 0.7,
+      opacity: 0.8,
     },
 
     '&$tabSelected': {
