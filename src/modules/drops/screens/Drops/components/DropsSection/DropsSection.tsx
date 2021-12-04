@@ -127,13 +127,16 @@ export const DropsSection = (props: { scene: 'Active' | 'Upcoming' }) => {
       return (
         <Drop
           key={uid(item)}
-          href={
-            item.dropType === DROPTYPE.BLINDBOX
+          href={(() => {
+            // upcoming 屏蔽点击
+            if (props.scene === 'Upcoming') return;
+
+            return item.dropType === DROPTYPE.BLINDBOX
               ? DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)
               : item.dropType === DROPTYPE.AIRDROP
               ? GiftRoutesConfig.LandingPage.generatePath(item.id)
-              : DropsRoutesConfig.DropDetails.generatePath(item.id)
-          }
+              : DropsRoutesConfig.DropDetails.generatePath(item.id);
+          })()}
           // href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
           bgImg={item.coverImgUrl}
           bgColor={item.bgColor}

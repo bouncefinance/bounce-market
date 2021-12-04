@@ -3,7 +3,6 @@ import { Dialog } from '@material-ui/core';
 import { useSelectChainStyled } from './useSelectChainStyled';
 import { ReactComponent as EthereumIcon } from './assets/ethereum.svg';
 import { ReactComponent as BinanceIcon } from './assets/binance.svg';
-import { ReactComponent as HecoIcon } from './assets/heco.svg';
 // import { ReactComponent as PolygonIcon } from './assets/polygon.svg';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import { useAccount } from 'modules/account/hooks/useAccount';
@@ -77,24 +76,24 @@ export const SelectChainDialog = ({
         ],
       },
     },
-    {
-      icon: <HecoIcon />,
-      title: t('header.select-chain.heco'),
-      subTitle: '',
-      chainConfig: {
-        chainId: '0x80',
-        chainName: 'Huobi ECO Chain Mainnet',
-        nativeCurrency: {
-          name: 'Heco',
-          symbol: TokenSymbol.HT,
-          decimals: 18,
-        },
-        rpcUrls: ['https://http-mainnet.hecochain.com'],
-        blockExplorerUrls: [
-          getBlockChainExplorerAddress(BlockchainNetworkId.heco),
-        ],
-      },
-    },
+    // {
+    //   icon: <HecoIcon />,
+    //   title: t('header.select-chain.heco'),
+    //   subTitle: '',
+    //   chainConfig: {
+    //     chainId: '0x80',
+    //     chainName: 'Huobi ECO Chain Mainnet',
+    //     nativeCurrency: {
+    //       name: 'Heco',
+    //       symbol: TokenSymbol.HT,
+    //       decimals: 18,
+    //     },
+    //     rpcUrls: ['https://http-mainnet.hecochain.com'],
+    //     blockExplorerUrls: [
+    //       getBlockChainExplorerAddress(BlockchainNetworkId.heco),
+    //     ],
+    //   },
+    // },
     // {
     //   icon: <PolygonIcon />,
     //   title: t('header.select-chain.polygon'),
