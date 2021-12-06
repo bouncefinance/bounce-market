@@ -29,6 +29,13 @@ const title = {
   claimed: 'The NFT was claimed',
 };
 
+const description = {
+  available:
+    'Please claim your NFT by Saturday, December 18 @ 9 p.m. ET/6 p.m. PT. Otherwise your password will be expired.',
+  success: 'Check your NFT on fangible.com - [My Profile] - [Showcase]',
+  claimed: '',
+};
+
 export const ClaimNft: React.FC = () => {
   const styles = useClaimNftStyles();
   const dispatchRequest = useDispatchRequest();
@@ -166,7 +173,11 @@ export const ClaimNft: React.FC = () => {
 
   return (
     <Box className={styles.root}>
-      <GiftHeader airdropId={+airdropId} title={title[claimStatus]} />
+      <GiftHeader
+        airdropId={+airdropId}
+        title={title[claimStatus]}
+        description={description[claimStatus]}
+      />
 
       {nftData?.fileurl ? (
         <Img
