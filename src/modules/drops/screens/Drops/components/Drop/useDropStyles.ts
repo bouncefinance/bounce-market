@@ -48,9 +48,10 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
     height: '100%',
     borderRadius: 'inherit',
     transition: 'opacity 0.2s',
+    opacity: 0.9,
 
     '$root:hover &': {
-      opacity: 0.8,
+      opacity: 1,
     },
 
     '&:before': {
@@ -65,13 +66,13 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
       width: '100%',
       height: '100%',
       borderRadius: 'inherit',
-      background: ({ bgColor }) =>
-        `linear-gradient(
-          0deg,
-          ${fade(bgColor || '#000', 0.93)} 18.41%,
-          ${fade(bgColor || '#000', 0.56)} 38.42%,
-          ${fade(bgColor || '#000', 0)} 56.27%
-          )`,
+      // background: ({ bgColor }) =>
+      //   `linear-gradient(
+      //     0deg,
+      //     ${fade(bgColor || '#000', 0.53)} 18.41%,
+      //     ${fade(bgColor || '#000', 0.36)} 38.42%,
+      //     ${fade(bgColor || '#000', 0)} 56.27%
+      //     )`,
     },
   },
 

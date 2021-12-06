@@ -213,7 +213,8 @@
   "drops": {
     "previous": "Previous drops",
     "top-creators": "Top Creators",
-    "upcoming": "Upcoming  dr🔥ps",
+    "active": "Active",
+    "upcoming": "Upcoming",
     "label": {
       "live": "Live",
       "coming": "Coming",

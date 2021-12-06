@@ -24,10 +24,10 @@ export interface IGetDropDetails extends IDropDetails {
     totalsupply: number;
     maxbuycount: number;
     blindcoverimgurl: string;
-  }
+  };
 }
 
-export const  getDropDetails = createSmartAction<
+export const getDropDetails = createSmartAction<
   RequestAction<IApiOneDropsDetail, IGetDropDetails | null>,
   [IGetDropDetailsArgs]
 >('getDropDetails', params => ({
@@ -46,13 +46,13 @@ export const  getDropDetails = createSmartAction<
     auth: false,
     driver: 'axios',
     getData: data => {
-      if (data.code !== 1) {
-        console.error(`
-        getDropDetails: Unexpected response.
-        To avoid this type of error notification you might need
-        to look at the https://github.com/klis87/redux-requests/discussions/470
-        `);
-      }
+      // if (data.code !== 200) {
+      //   console.error(`
+      //   getDropDetails: Unexpected response.
+      //   To avoid this type of error notification you might need
+      //   to look at the https://github.com/klis87/redux-requests/discussions/470
+      //   `);
+      // }
 
       if (!data.data) {
         return null;

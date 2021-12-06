@@ -10,7 +10,7 @@ import { useIsMDUp } from 'modules/themes/useTheme';
 import { Img } from 'modules/uiKit/Img';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Truncate from 'react-truncate';
 import { uid } from 'react-uid';
 import useBgColor from './useBgColor';
@@ -21,7 +21,7 @@ interface IDropProps {
   title: string;
   text: string;
   timer: JSX.Element;
-  href: string;
+  href?: string;
   bgColor?: string;
   bgImg?: string;
   dropId?: number;
@@ -39,7 +39,7 @@ export const Drop = ({
   bgImg,
   dropId,
   dropType,
-  itemImage
+  itemImage,
 }: IDropProps) => {
   const theme = useTheme();
   const isMDUp = useIsMDUp();
@@ -50,6 +50,7 @@ export const Drop = ({
   const DROP_KEY = `/drop-${dropId}`;
   // 屏蔽项目方 Phantom 的预览卡片
   const MAX_ITEMS_COUNT = dropId === 10 ? 0 : 5;
+  const history = useHistory();
 
   useEffect(() => {
     getBackgroudColor(bgImg, theme.palette.background.paper, setBgImgColor);
@@ -79,12 +80,13 @@ export const Drop = ({
   }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
 
   const renderDropItems = () => {
-    return dropType === DROPTYPE.BLINDBOX ?
+    return dropType === DROPTYPE.BLINDBOX ? (
       <Box mb={4}>
-        <Link
-          to={href}
-          key={uid(itemImage)}
+        <Box
           className={classes.nftItem}
+          onClick={() => {
+            href && history.push(href);
+          }}
         >
           <Img
             className={classes.itemImgBox}
@@ -92,21 +94,25 @@ export const Drop = ({
             objectFit="cover"
             loading="lazy"
           />
-        </Link>
+        </Box>
       </Box>
-      : <Queries<ResponseData<typeof fetchDropSubCard>>
+    ) : (
+      <Queries<ResponseData<typeof fetchDropSubCard>>
         requestActions={[fetchDropSubCard]}
         requestKeys={[DROP_KEY]}
+        empty={<></>}
       >
         {({ loading, data }) => (
           <Box mb={4}>
             <div className={classes.nftList}>
               {!loading &&
                 data?.slice(0, MAX_ITEMS_COUNT).map((item, i) => (
-                  <Link
-                    to={href}
-                    key={uid(item, i)}
+                  <Box
+                    key={uid(item)}
                     className={classes.nftItem}
+                    onClick={() => {
+                      href && history.push(href);
+                    }}
                   >
                     <Img
                       className={classes.itemImgBox}
@@ -114,13 +120,14 @@ export const Drop = ({
                       objectFit="cover"
                       loading="lazy"
                     />
-                  </Link>
+                  </Box>
                 ))}
             </div>
           </Box>
         )}
       </Queries>
-  }
+    );
+  };
 
   return (
     <article className={classes.root}>
@@ -134,9 +141,14 @@ export const Drop = ({
         />
       )}
 
-      <Link className={classes.link} to={href} />
+      <Box
+        className={classes.link}
+        onClick={() => {
+          href && history.push(href);
+        }}
+      />
 
-      <Box mb={5}>{timer}</Box>
+      <Box mb={5}></Box>
 
       {renderDropItems()}
 
@@ -148,7 +160,7 @@ export const Drop = ({
         <Truncate lines={isMDUp ? 2 : 4}>{text}</Truncate>
       </Typography>
 
-      <div className={classes.creator}>{creator}</div>
+      {/* <div className={classes.creator}>{creator}</div> */}
     </article>
   );
 };
