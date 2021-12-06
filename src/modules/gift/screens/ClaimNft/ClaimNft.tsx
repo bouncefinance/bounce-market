@@ -166,13 +166,7 @@ export const ClaimNft: React.FC = () => {
 
   return (
     <Box className={styles.root}>
-      <GiftHeader
-        airdropId={+airdropId}
-        title={title[claimStatus]}
-        description={
-          'You’ll find this password on the interior of the attached envelope that came in your package.'
-        }
-      />
+      <GiftHeader airdropId={+airdropId} title={title[claimStatus]} />
 
       {nftData?.fileurl ? (
         <Img
