@@ -56,7 +56,7 @@ export const LandingPage: React.FC = () => {
             classes.avatar,
             isSMDown ? classes.mobileAvatar : classes.desktopAvatar,
           )}
-          src={airdropData?.coverimgurl}
+          src={airdropData?.airdropinfo.logourl}
           imgWidth={320}
         />
       </Box>

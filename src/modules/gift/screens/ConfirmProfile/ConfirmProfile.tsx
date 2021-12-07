@@ -48,6 +48,7 @@ export const ConfirmProfile: React.FC = () => {
   const [avatarSrc, setAvatarSrc] = useState<any>();
   const [avatarUrl, setAvatarUrl] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [isInputLegal, setIsInputLegal] = useState<boolean>(true);
 
   useEffect(() => {
     // if (profileInfo) {
@@ -115,12 +116,16 @@ export const ConfirmProfile: React.FC = () => {
           }),
         ).then(res => {
           if (res.data.msg === 'success') {
+            setIsInputLegal(true);
+
             const claimLocation = {
               pathname: `/airdrop/${airdropId}/claim`,
               state: location.state,
             };
 
             history.push(claimLocation);
+          } else if (res.data.msg === 'database error') {
+            setIsInputLegal(false);
           }
         });
       }
@@ -175,6 +180,8 @@ export const ConfirmProfile: React.FC = () => {
           className={isSMDown ? styles.mobileInput : styles.desktopInput}
           value={inputValue || ''}
           onChange={handleInputChange}
+          isValueLegal={isInputLegal}
+          helpText={'This name is duplicate or invalid.'}
         />
       </Box>
 
