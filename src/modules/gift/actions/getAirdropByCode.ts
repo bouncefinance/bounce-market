@@ -6,6 +6,12 @@ interface IGetAirdropByCodeArgs {
   verifycode: string;
 }
 
+export enum ENftState {
+  'UNCLAIMED' = 1,
+  'CLAIMED' = 2,
+  'CONFIRMED' = 3,
+}
+
 export interface IGetAirdropByCodePayload {
   tokenid: number;
   itemname: string;
@@ -15,7 +21,7 @@ export interface IGetAirdropByCodePayload {
   description: string;
   username: string;
   avatar: string;
-  state: 1 | 2 | 3;
+  state: ENftState;
 }
 
 export const getAirdropByCode = createSmartAction<

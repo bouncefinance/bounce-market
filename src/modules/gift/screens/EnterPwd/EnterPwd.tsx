@@ -7,7 +7,10 @@ import { GiftHeader } from 'modules/gift/components/GiftHeader';
 import { useHistory } from 'react-router-dom';
 import { GiftRoutesConfig } from 'modules/gift/Routes';
 import { useDispatchRequest } from '@redux-requests/react';
-import { getAirdropByCode } from 'modules/gift/actions/getAirdropByCode';
+import {
+  ENftState,
+  getAirdropByCode,
+} from 'modules/gift/actions/getAirdropByCode';
 
 import SVG_mail from '../../assets/mail.svg';
 import { Button } from 'modules/uiKit/Button';
@@ -38,8 +41,11 @@ export const EnterPwd: React.FC = () => {
       await dispatchRequest(getAirdropByCode({ verifycode: inputValue })).then(
         res => {
           if (res.data) {
+            // 只有密码没有被cliam过才能去修改用户信息
             const location = {
-              pathname: `/airdrop/${airdropId}/confirm`,
+              pathname: `/airdrop/${airdropId}/${
+                res.data.state === ENftState.UNCLAIMED ? 'confirm' : 'claim'
+              }`,
               state: { verifyCode: inputValue },
             };
 
