@@ -21,6 +21,7 @@ export interface IGetAirdropInfoPayload {
     brandimgurl: string;
     opendate: number;
     collection: string;
+    logourl: string;
   };
 }
 

@@ -31,8 +31,9 @@ const title = {
 
 const description = {
   available:
-    'Please claim your NFT by Saturday, December 18 @ 9 p.m. ET/6 p.m. PT. Otherwise your password will be expired.',
-  success: 'Check your NFT on fangible.com - [My Profile] - [Showcase]',
+    'All NFT holders are also eligible to win an airdrop of Bounce tokens (now on Coinbase).',
+  success:
+    'To check your NFT, use the button below to visit fangible.com - use the menu to access [My Profile] - click [Showcase] tab',
   claimed: '',
 };
 
@@ -200,13 +201,7 @@ export const ClaimNft: React.FC = () => {
       )}
 
       <Typography variant="h5" className={styles.nftDescription}>
-        {`${airdropData?.title || ''} - ${
-          airdropData?.airdropinfo.brandname || ''
-        } Exclusive`}
-        <br />
-        {`1 of ${airdropData?.airdropinfo.totalsupply || ''} - Edition #${
-          nftData?.tokenid || ''
-        }`}
+        {nftData?.itemname}
       </Typography>
 
       {(claimStatus === 'success' ||

@@ -41,7 +41,7 @@ export const useGiftHeaderStyles = makeStyles(theme =>
       fontWeight: 'bold',
       fontSize: 16,
       color: '#fff',
-      maxWidth: 200,
+      maxWidth: 300,
       wordBreak: 'break-all',
     },
 

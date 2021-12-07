@@ -67,7 +67,7 @@ export const EnterPwd: React.FC = () => {
         airdropId={+airdropId}
         title={'Please enter your unique password'}
         description={
-          'You’ll find this password on the interior of the attached envelope that came in your package.'
+          'Please claim your NFT by Saturday, December 18 @ 9pm ET/6pm PT - password will expire then and all unclaimed NFTs will be available for event guests to claim.'
         }
       />
 
