@@ -3,6 +3,7 @@ import { Dialog } from '@material-ui/core';
 import { useSelectChainStyled } from './useSelectChainStyled';
 import { ReactComponent as EthereumIcon } from './assets/ethereum.svg';
 import { ReactComponent as BinanceIcon } from './assets/binance.svg';
+import { ReactComponent as SolanaIcon } from './assets/solana.svg';
 // import { ReactComponent as PolygonIcon } from './assets/polygon.svg';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import { useAccount } from 'modules/account/hooks/useAccount';
@@ -76,6 +77,22 @@ export const SelectChainDialog = ({
         ],
       },
     },
+    {
+      icon: <SolanaIcon />,
+      title: t('header.select-chain.solana'),
+      subTitle: '',
+      chainConfig: {
+        chainId: '0x1bf52', // 随便定的
+        chainName: 'Solana Mainnet',
+        nativeCurrency: {
+          name: 'Solana',
+          symbol: TokenSymbol.Solana,
+          decimals: 18,
+        },
+        rpcUrls: ['https://api.mainnet-beta.solana.com'],
+        blockExplorerUrls: ['https://explorer.solana.com/'],
+      },
+    },
     // {
     //   icon: <HecoIcon />,
     //   title: t('header.select-chain.heco'),
@@ -126,6 +143,9 @@ export const SelectChainDialog = ({
   }) => {
     const handleClickSwitchChain = () => {
       if (Number(chainConfig.chainId) === currentChain) return;
+      if (chainConfig.chainId === '0x1bf52') {
+        window.location.href = 'https://solana.fangible.com/index';
+      }
       handleChangeNetworkToSupported(chainConfig);
     };
 

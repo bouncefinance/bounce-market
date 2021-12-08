@@ -262,6 +262,7 @@
       "heco": "HECO Chain",
       "heco-2": "Huobi Wallet",
       "polygon": "Polygon Mainnet",
+      "solana": "Solana Mainnet",
       "title": "Select network"
     },
     "network": {
@@ -270,6 +271,7 @@
       "rinkby": "Rinkeby Test Chain",
       "heco": "Heco Chain",
       "polygon": "Matic Chain",
+      "solana": "Solana Chain",
       "unknow": "Unknown network"
     }
   },
