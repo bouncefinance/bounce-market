@@ -34,7 +34,8 @@ const description = {
     'All NFT holders are also eligible to win an airdrop of Bounce tokens (now on Coinbase).',
   success:
     'To check your NFT, use the button below to visit fangible.com - use the menu to access [My Profile] - click [Showcase] tab',
-  claimed: '',
+  claimed:
+    'To check your NFT, use the button below to visit fangible.com - [My Profile] - [Showcase]',
 };
 
 export const ClaimNft: React.FC = () => {
