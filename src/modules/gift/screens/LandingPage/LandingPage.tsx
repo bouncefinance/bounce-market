@@ -72,9 +72,9 @@ export const LandingPage: React.FC = () => {
           isSMDown ? classes.mobileDescription1 : classes.desktopDescription1,
         )}
       >
-        The Boxing Bullies NFT collection will launch after Jake Paul’s historic
-        second fight against Tyron Woodley, with exclusive releases from Sneaky
-        Vampire Syndicate and Wilder World.
+        Boxing Bullies, a foundation created by Jake to instill leadership and
+        confidence in the youth through boxing, is releasing a collection of
+        NFTs to commemorate the historic second #PaulWoodley fight.
       </Typography>
 
       <Button
