@@ -131,6 +131,8 @@ export const DropsSection = (props: { scene: 'Active' | 'Upcoming' }) => {
             // upcoming 屏蔽点击
             if (props.scene === 'Upcoming') return;
 
+            if (props.scene === 'Active') return item.directLink;
+
             return item.dropType === DROPTYPE.BLINDBOX
               ? DropsRoutesConfig.BlindBoxDetails.generatePath(item.id)
               : item.dropType === DROPTYPE.AIRDROP

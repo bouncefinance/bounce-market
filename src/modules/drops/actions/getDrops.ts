@@ -9,6 +9,7 @@ import {
   searchDropsUrl,
 } from 'modules/api/searchDrops';
 import { createAction as createSmartAction } from 'redux-smart-actions';
+import { mockActive } from './mockActive';
 
 export interface IGetDropsArgs {
   address?: string;
@@ -37,7 +38,7 @@ export const getDrops = createSmartAction<
       limit: params?.limit || 10,
       offset: params?.offset || 0,
       ordertype: params?.ordertype || SearchDropsParamOrderType.Inverted,
-      state: params?.state || SearchDropsParamState.Live,
+      state: params?.state,
     } as ISearchDropsParams,
   },
   meta: {
@@ -57,11 +58,16 @@ export const getDrops = createSmartAction<
       if (!data.data) {
         return null;
       }
+      let resultData = data.data;
+      if (params?.state === SearchDropsParamState.Live) {
+        resultData = mockActive;
+      }
+
       return {
-        items: data.data.map(mapSearchDropsItem),
+        items: resultData.map(mapSearchDropsItem),
         total: data.total || 0,
         offset: params?.offset || 0,
-        allLoaded: data.data.length < (params?.limit || 10),
+        allLoaded: resultData.length < (params?.limit || 10),
       };
     },
   },

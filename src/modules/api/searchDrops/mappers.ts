@@ -26,6 +26,7 @@ export interface ISearchDropsItem {
   avatar: string;
   dropType: DROPTYPE;
   blindcoverimgurl: string;
+  directLink?: string;
 }
 
 export const mapSearchDropsItem = (
@@ -51,5 +52,6 @@ export const mapSearchDropsItem = (
     avatar: item.avatar,
     dropType: item.droptype,
     blindcoverimgurl: item.blindcoverimgurl,
+    directLink: item.directLink,
   };
 };
