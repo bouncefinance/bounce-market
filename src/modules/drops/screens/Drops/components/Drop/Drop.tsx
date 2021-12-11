@@ -111,6 +111,7 @@ export const Drop = ({
                     key={uid(item)}
                     className={classes.nftItem}
                     onClick={() => {
+                      // href && (window.location.href = href)
                       href && history.push(href);
                     }}
                   >
@@ -144,7 +145,11 @@ export const Drop = ({
       <Box
         className={classes.link}
         onClick={() => {
-          href && history.push(href);
+          if (href && href.includes('http')) {
+            href && (window.location.href = href)
+          } else {
+            href && history.push(href);
+          }
         }}
       />
 
