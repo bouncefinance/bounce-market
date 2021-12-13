@@ -90,7 +90,7 @@ export const CrateItemAll: React.FC<{
         <NoItems href={MarketRoutesConfig.Market.generatePath()} />
       )}
 
-      {Boolean(collectionData?.total > 10) &&
+      {Boolean(collectionData?.total > ITEMS_PORTION_COUNT) &&
         isOtherPlatform &&
         renderedBottomPagination}
     </TabItemsComponent>

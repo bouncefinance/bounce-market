@@ -11,12 +11,12 @@ import {
 } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
-// import { useAccount } from 'modules/account/hooks/useAccount';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { AuctionState } from 'modules/api/common/AuctionState';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { FixedSwapState } from 'modules/api/common/FixedSwapState';
 import { ConditionalWrapper } from 'modules/common/components/ConditionalWrapper';
-// import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
+import { HeartIcon } from 'modules/common/components/Icons/HeartIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { t } from 'modules/i18n/utils/intl';
 import { Button } from 'modules/uiKit/Button';
@@ -33,7 +33,7 @@ import CardPutSaleTimer from './putsaleTimer';
 import { useProductCardStyles } from './useProductCardStyles';
 import { useEffect } from 'react';
 import { useCount } from 'modules/common/hooks/useTimer';
-// import { ChainSymbolIcon } from '../Icons/Chains';
+import { ChainSymbolIcon } from '../Icons/Chains';
 import { formatUnitNumber } from 'modules/common/utils/number';
 import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
 
@@ -139,7 +139,7 @@ export const ProductCardComponent = ({
   isTotalSupply,
   reload,
 }: IProductCardComponentProps) => {
-  // const { isConnected, handleConnect, chainId } = useAccount();
+  const { isConnected, handleConnect, chainId } = useAccount();
   const classes = useProductCardStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -231,32 +231,32 @@ export const ProductCardComponent = ({
     </Tooltip>
   );
 
-  // const renderedLikes = (
-  //   <div
-  //     onClick={e => {
-  //       e.stopPropagation();
-  //       if (!isConnected) {
-  //         handleConnect();
-  //       }
-  //       if (!isLikeDisabled) {
-  //         onLikeClick?.();
-  //       }
-  //     }}
-  //     className={classNames(classes.info, classes.likeSite)}
-  //   >
-  //     <ButtonBase
-  //       className={classNames(
-  //         classes.likeBtn,
-  //         isLiked && classes.likeBtnActive,
-  //       )}
-  //       disabled={isLikeDisabled}
-  //     >
-  //       <HeartIcon className={classes.icon} />
-  //     </ButtonBase>
+  const renderedLikes = (
+    <div
+      onClick={e => {
+        e.stopPropagation();
+        if (!isConnected) {
+          handleConnect();
+        }
+        if (!isLikeDisabled) {
+          onLikeClick?.();
+        }
+      }}
+      className={classNames(classes.info, classes.likeSite)}
+    >
+      <ButtonBase
+        className={classNames(
+          classes.likeBtn,
+          isLiked && classes.likeBtnActive,
+        )}
+        disabled={isLikeDisabled}
+      >
+        <HeartIcon className={classes.icon} />
+      </ButtonBase>
 
-  //     {likes || '0'}
-  //   </div>
-  // );
+      {likes || '0'}
+    </div>
+  );
 
   const renderMediaContent = useCallback(
     () => (
@@ -366,20 +366,20 @@ export const ProductCardComponent = ({
     !isPutSaleTimeCancel && isOnSeller && !isCreatorClaimed && !isAuction,
   );
 
-  // const RenderChiaIcon = ({ className }: { className?: string }) => {
-  //   return (
-  //     <ChainSymbolIcon
-  //       display="flex"
-  //       alignItems="center"
-  //       className={classes.topChiaIcon}
-  //       chiaId={chainId}
-  //     >
-  //       {({ symbolName }) => {
-  //         return <span className={classes.topChiaText}>{symbolName}</span>;
-  //       }}
-  //     </ChainSymbolIcon>
-  //   );
-  // };
+  const RenderChiaIcon = ({ className }: { className?: string }) => {
+    return (
+      <ChainSymbolIcon
+        display="flex"
+        alignItems="center"
+        className={classes.topChiaIcon}
+        chiaId={chainId}
+      >
+        {({ symbolName }) => {
+          return <span className={classes.topChiaText}>{symbolName}</span>;
+        }}
+      </ChainSymbolIcon>
+    );
+  };
   return (
     <Card className={classNames(classes.root, className)} variant="outlined">
       <ConditionalWrapper
@@ -391,14 +391,16 @@ export const ProductCardComponent = ({
           ></div>
         }
       >
-        {/* <Box
-          display="flex"
-          justifyContent="space-between"
-          className={classes.topBar}
-        >
-          <RenderChiaIcon />
-          {Boolean(poolId) && renderedLikes}
-        </Box> */}
+        {false && (
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            className={classes.topBar}
+          >
+            <RenderChiaIcon />
+            {Boolean(poolId) && renderedLikes}
+          </Box>
+        )}
         <div className={classes.relative}>
           {renderMediaContent()}
           {isPutSaleTimeCancel && openAt && (
