@@ -78,59 +78,6 @@ export const Drop = ({
     };
   }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
 
-  // const renderDropItems = () => {
-  //   return dropType === DROPTYPE.BLINDBOX ? (
-  //     <Box mb={4}>
-  //       <Box
-  //         className={classes.nftItem}
-  //         onClick={() => {
-  //           href && history.push(href);
-  //         }}
-  //       >
-  //         <Img
-  //           className={classes.itemImgBox}
-  //           src={itemImage}
-  //           objectFit="cover"
-  //           loading="lazy"
-  //         />
-  //       </Box>
-  //     </Box>
-  //   ) : (
-  //     <Queries<ResponseData<typeof fetchDropSubCard>>
-  //       requestActions={[fetchDropSubCard]}
-  //       requestKeys={[DROP_KEY]}
-  //       empty={<></>}
-  //     >
-  //       {({ loading, data }) => (
-  //         <Box mb={4}>
-  //           <div className={classes.nftList}>
-  //             {!loading &&
-  //               data?.slice(0, MAX_ITEMS_COUNT).map((item, i) => (
-  //                 <Box
-  //                   key={uid(item)}
-  //                   className={classes.nftItem}
-  //                   onClick={() => {
-  //                     // disconnect()
-  //                     // setChainId(1)
-  //                     // href && (window.location.href = href)
-  //                     href && history.push(href);
-  //                   }}
-  //                 >
-  //                   <Img
-  //                     className={classes.itemImgBox}
-  //                     src={item.fileurl}
-  //                     objectFit="cover"
-  //                     loading="lazy"
-  //                   />
-  //                 </Box>
-  //               ))}
-  //           </div>
-  //         </Box>
-  //       )}
-  //     </Queries>
-  //   );
-  // };
-
   return (
     <article className={classes.root}>
       {bgImg && (
