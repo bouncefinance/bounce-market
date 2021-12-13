@@ -62,7 +62,7 @@ export const Collection = () => {
   } = ProfileRoutesConfig.Collection.useParams();
   const [isMyCollection, setIsMyCollection] = useState(false);
   const classes = useCollectionStyles();
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const { replace } = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -76,7 +76,7 @@ export const Collection = () => {
     return function reset() {
       dispatch(resetRequests([fetchCollectionInfoByAddress.toString()]));
     };
-  }, [collectionAddress, dispatch]);
+  }, [collectionAddress, dispatch, chainId]);
   const { data: profileInfo } = useQuery<IProfileInfo | null>({
     type: fetchProfileInfo.toString(),
   });

@@ -8,7 +8,7 @@ import {
 } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 
-export type ChainType = 1 | 56 | 1111;
+export type ChainType = 1 | 4 | 56 | 1111;
 
 export const getChainConfig = (tarChain: ChainType) => {
   const chainList: {
@@ -31,6 +31,26 @@ export const getChainConfig = (tarChain: ChainType) => {
         ],
         blockExplorerUrls: [
           getBlockChainExplorerAddress(BlockchainNetworkId.mainnet),
+        ],
+      },
+    },
+    4: {
+      icon: <EthereumIcon />,
+      title: 'Rinkeby',
+      subTitle: '',
+      chainConfig: {
+        chainId: '0x4',
+        chainName: 'Rinkeby',
+        nativeCurrency: {
+          name: 'Ethereum',
+          symbol: TokenSymbol.ETH,
+          decimals: 18,
+        },
+        rpcUrls: [
+          'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+        ],
+        blockExplorerUrls: [
+          getBlockChainExplorerAddress(BlockchainNetworkId.rinkeby),
         ],
       },
     },
