@@ -142,6 +142,7 @@ export const Collection = () => {
   interface reloadOptions {
     offset: number;
   }
+  const isOtherPlatform = collectionInfo?.isplatform === isOtherPlatformCode;
   const updateData = useCallback(
     (value: ProfileTab, option?: reloadOptions) => {
       if (!collectionInfo?.owneraddress) {
@@ -154,7 +155,7 @@ export const Collection = () => {
               address: collectionInfo?.owneraddress || '',
               className: collectionAddress,
               isPlatform: collectionInfo.isplatform,
-              ...(option
+              ...(isOtherPlatform
                 ? {
                     offset: option?.offset ?? 0,
                     limit: 10,
@@ -266,7 +267,6 @@ export const Collection = () => {
           isEditable={isMyCollection}
           isVerified={collectionInfo?.identity === UserRoleEnum.Verified}
         />
-
         {isMyCollection && (
           <SetAvatarModal
             isOpen={isAvatarModalOpened}
@@ -277,7 +277,6 @@ export const Collection = () => {
             successCallback={changeShowAvatarImg}
           />
         )}
-
         <InfoPanel
           isEditable={isMyCollection}
           withSharing={featuresConfig.ownProfileSharing}
@@ -320,7 +319,6 @@ export const Collection = () => {
           }
           collectionDesc={showCollectionDesc || collectionInfo?.description}
         />
-
         <Tabs
           className={classes.tabs}
           onChange={onTabsChange as any}
@@ -330,7 +328,6 @@ export const Collection = () => {
             <Tab key={uid(tabProps)} {...tabProps} />
           ))}
         </Tabs>
-
         <Box mb={3.5} className={classes.optionHeaderBtnWrapper}>
           <GoBack />
           {isMyCollection && (
@@ -362,10 +359,9 @@ export const Collection = () => {
             artAddress={collectionInfo?.owneraddress || ''}
             isOther={!isMyCollection}
             reload={reload(ProfileTab.owned)}
-            isOtherPlatform={collectionInfo?.isplatform === isOtherPlatformCode}
+            isOtherPlatform={isOtherPlatform}
           />
         </TabPanel>
-
         <TabPanel value={tab} index={ProfileTab.sells}>
           <TabSale
             isOther={!isMyCollection}

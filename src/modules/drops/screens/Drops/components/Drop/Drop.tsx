@@ -146,7 +146,7 @@ export const Drop = ({
         className={classes.link}
         onClick={() => {
           if (href && href.includes('http')) {
-            href && (window.location.href = href)
+            href && (window.location.href = href);
           } else {
             href && history.push(href);
           }
