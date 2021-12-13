@@ -158,11 +158,11 @@ export const CollectionNFTItems = ({
     </Box>
   );
 
-  const rendered = (collectionData: INftItem[]) => {
+  const rendered = (collectionData: { total: number; list: INftItem[] }) => {
     return (
       <div className={classNames(classes.root, className)}>
         <Swiper {...sliderProps} className={classes.slider}>
-          {renderedSlides(collectionData)}
+          {renderedSlides(collectionData.list)}
         </Swiper>
 
         <div className={classes.buttons}>
