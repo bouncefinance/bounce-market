@@ -140,6 +140,7 @@ export const ProductCardComponent = ({
   reload,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect, chainId } = useAccount();
+
   const classes = useProductCardStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
