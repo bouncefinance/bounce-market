@@ -2,7 +2,11 @@ import { Box, Container } from '@material-ui/core';
 import { useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { UploadFileType } from 'modules/common/actions/uploadFile';
-import { featuresConfig, ZERO_ADDRESS } from 'modules/common/conts';
+import {
+  featuresConfig,
+  isOtherPlatformCode,
+  ZERO_ADDRESS,
+} from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchCollectionSale } from 'modules/profile/actions/fetchSale';
 import { IProfileInfo } from 'modules/profile/api/profileInfo';
@@ -135,8 +139,11 @@ export const Collection = () => {
     [],
   );
 
+  interface reloadOptions {
+    offset: number;
+  }
   const updateData = useCallback(
-    (value: ProfileTab) => {
+    (value: ProfileTab, option?: reloadOptions) => {
       if (!collectionInfo?.owneraddress) {
         return;
       }
@@ -147,6 +154,12 @@ export const Collection = () => {
               address: collectionInfo?.owneraddress || '',
               className: collectionAddress,
               isPlatform: collectionInfo.isplatform,
+              ...(option
+                ? {
+                    offset: option?.offset ?? 0,
+                    limit: 10,
+                  }
+                : {}),
             }),
           );
           break;
@@ -194,9 +207,9 @@ export const Collection = () => {
     updateData(tab);
   }, [updateData, tab]);
 
-  const reload = (value: ProfileTab) => () => {
+  const reload = (value: ProfileTab) => (option?: reloadOptions) => {
     setTimeout(() => {
-      updateData(value);
+      updateData(value, option);
     }, 100);
   };
 
@@ -349,6 +362,7 @@ export const Collection = () => {
             artAddress={collectionInfo?.owneraddress || ''}
             isOther={!isMyCollection}
             reload={reload(ProfileTab.owned)}
+            isOtherPlatform={collectionInfo?.isplatform === isOtherPlatformCode}
           />
         </TabPanel>
 
