@@ -29,6 +29,7 @@ import {
   useDialogState,
 } from './components/SelectChainDialog';
 import { useCallback } from 'react';
+import { setChainId } from 'modules/common/utils/localStorage';
 
 export const Header = () => {
   const {
@@ -53,6 +54,7 @@ export const Header = () => {
   } = useDialogState();
 
   const mapChainIdName = useCallback(() => {
+    setChainId(chainId);
     switch (chainId) {
       case 1:
         return t('header.network.etherreum');

@@ -32,8 +32,8 @@ export const mockActive = [
     videourl: '',
     website: '',
     directLink:
-      'https://fangible.com/collection?address=0x315eb39921f2499ef698de3ddeec63219c02541a&art=_&tab=owned',
-    tarChain: 1 as ChainType,
+      'http://stage.fangible.com/collection?address=0x949bda42a32a6159908bc773d215f523e8c336f8&art=_&tab=sale',
+    tarChain: 4 as ChainType,
   },
   {
     accountaddress: '0x8031957cEecEe4Dbd63935def5745940D6d75Bc6',
