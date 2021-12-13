@@ -269,9 +269,6 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
       action: setAccount,
     });
 
-    console.log('chainIddata', data);
-    console.log('chainIddataq11', getChainId());
-
     const chainId =
       data?.chainId ?? getChainId() ?? getNotWeb3WalletInfo()?.chainId;
 

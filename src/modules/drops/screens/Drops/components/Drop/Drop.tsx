@@ -153,7 +153,6 @@ export const Drop = ({
         className={classes.link}
         onClick={() => {
           if (tarChain && href && href.includes('http')) {
-            console.log(href);
             if (
               isConnected &&
               tarChain &&
