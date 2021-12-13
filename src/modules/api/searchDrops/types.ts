@@ -1,3 +1,4 @@
+import { ChainType } from 'modules/account/hooks/chainConfig';
 import { Address, Timestamp } from 'modules/common/types/unit';
 
 export enum SearchDropsParamState {
@@ -43,6 +44,7 @@ export interface IApiSearchDropsItem {
   droptype: number;
   blindcoverimgurl: string;
   directLink?: string;
+  tarChain?: ChainType;
 }
 
 export interface IApiSearchDrops {

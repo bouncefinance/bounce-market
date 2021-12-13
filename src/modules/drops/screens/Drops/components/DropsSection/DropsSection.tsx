@@ -51,7 +51,6 @@ export const DropsSection = (props: { scene: 'Active' | 'Upcoming' }) => {
         };
   const DROPS_KEY =
     props.scene === 'Active' ? DROPS_LIVE_KEY : DROPS_COMING_KEY;
-  console.log('DROPS_KEY', DROPS_KEY);
 
   const { data: dropsData, loading: dropsLoading } = useQuery<IGetDrops | null>(
     {
@@ -139,6 +138,7 @@ export const DropsSection = (props: { scene: 'Active' | 'Upcoming' }) => {
               ? GiftRoutesConfig.LandingPage.generatePath(item.id)
               : DropsRoutesConfig.DropDetails.generatePath(item.id);
           })()}
+          tarChain={item.tarChain}
           // href={DropsRoutesConfig.DropDetails.generatePath(item.id)}
           bgImg={item.coverImgUrl}
           bgColor={item.bgColor}
@@ -148,7 +148,7 @@ export const DropsSection = (props: { scene: 'Active' | 'Upcoming' }) => {
           creator={creator}
           dropId={item.id}
           dropType={item.dropType}
-          itemImage={item.blindcoverimgurl} // 盲盒需要给他设置一个单独的item图片
+          itemImage={item.blindcoverimgurl} // 盲盒需要给他设置一个单独的 item图片
         />
       );
     });

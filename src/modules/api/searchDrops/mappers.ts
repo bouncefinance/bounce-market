@@ -1,3 +1,4 @@
+import { ChainType } from 'modules/account/hooks/chainConfig';
 import { IApiSearchDropsItem } from './types';
 
 export enum DROPTYPE {
@@ -27,6 +28,7 @@ export interface ISearchDropsItem {
   dropType: DROPTYPE;
   blindcoverimgurl: string;
   directLink?: string;
+  tarChain?: ChainType;
 }
 
 export const mapSearchDropsItem = (
@@ -53,5 +55,6 @@ export const mapSearchDropsItem = (
     dropType: item.droptype,
     blindcoverimgurl: item.blindcoverimgurl,
     directLink: item.directLink,
+    tarChain: item.tarChain,
   };
 };

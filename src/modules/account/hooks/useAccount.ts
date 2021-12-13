@@ -1,5 +1,5 @@
 import { resetRequests } from '@redux-requests/core';
-import { useQuery } from '@redux-requests/react';
+import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { getJWTToken } from 'modules/common/utils/localStorage';
 import { IAddEthereumChain } from 'modules/layout/components/Header/components/SelectChainDialog';
 import { useCallback, useEffect } from 'react';
@@ -15,6 +15,7 @@ let run = false;
 let initRemoteDataRun = false;
 export const useAccount = () => {
   const dispatch = useAppDispatch();
+  const disPatchRequst = useDispatchRequest();
 
   const {
     loading: setAccountLoading,
@@ -69,10 +70,18 @@ export const useAccount = () => {
   }, [dispatch]);
 
   const handleChangeNetworkToSupported = useCallback(
-    (chainConfig?: IAddEthereumChain) => {
-      dispatch(changeNetworkToSupported(chainConfig));
+    async (chainConfig?: IAddEthereumChain, autoRefresh?: boolean) => {
+      try {
+        const result = await disPatchRequst(
+          changeNetworkToSupported(chainConfig),
+        );
+        if (autoRefresh) return window.location.reload();
+        return Promise.resolve(result);
+      } catch (error) {
+        return Promise.reject(error);
+      }
     },
-    [dispatch],
+    [disPatchRequst],
   );
 
   const handleUpdate = useCallback(

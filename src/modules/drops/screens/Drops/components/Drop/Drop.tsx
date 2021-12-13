@@ -1,11 +1,15 @@
 import { Box, Typography, useTheme } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
+import { ChainType, getChainConfig } from 'modules/account/hooks/chainConfig';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { DROPTYPE } from 'modules/api/searchDrops';
 import { Queries } from 'modules/common/components/Queries/Queries';
 import { ResponseData } from 'modules/common/types/ResponseData';
 import { getRandomHexColor } from 'modules/common/utils/getRandomHexColor';
+import { setChainId } from 'modules/common/utils/localStorage';
 import { fetchDropSubCard } from 'modules/drops/actions/fetchDropSubCard';
+import { IAddEthereumChain } from 'modules/layout/components/Header/components/SelectChainDialog';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { Img } from 'modules/uiKit/Img';
 import React, { useEffect, useState } from 'react';
@@ -27,19 +31,19 @@ interface IDropProps {
   dropId?: number;
   dropType: number;
   itemImage: string;
+  tarChain?: ChainType;
 }
 
 export const Drop = ({
   href,
-  creator,
   title,
   text,
-  timer,
   bgColor,
   bgImg,
   dropId,
   dropType,
   itemImage,
+  tarChain,
 }: IDropProps) => {
   const theme = useTheme();
   const isMDUp = useIsMDUp();
@@ -51,6 +55,7 @@ export const Drop = ({
   // 屏蔽项目方 Phantom 的预览卡片
   const MAX_ITEMS_COUNT = dropId === 10 ? 0 : 5;
   const history = useHistory();
+  const { isConnected, handleChangeNetworkToSupported, chainId } = useAccount();
 
   useEffect(() => {
     getBackgroudColor(bgImg, theme.palette.background.paper, setBgImgColor);
@@ -111,6 +116,8 @@ export const Drop = ({
                     key={uid(item)}
                     className={classes.nftItem}
                     onClick={() => {
+                      // disconnect()
+                      // setChainId(1)
                       // href && (window.location.href = href)
                       href && history.push(href);
                     }}
@@ -145,8 +152,27 @@ export const Drop = ({
       <Box
         className={classes.link}
         onClick={() => {
-          if (href && href.includes('http')) {
-            href && (window.location.href = href)
+          if (tarChain && href && href.includes('http')) {
+            console.log(href);
+            if (
+              isConnected &&
+              tarChain &&
+              tarChain !== 1111 &&
+              tarChain !== chainId
+            ) {
+              // 如果用户链接了钱包，则调起钱包切链
+              const tarChainConfig = getChainConfig(tarChain)
+                .chainConfig as IAddEthereumChain;
+              handleChangeNetworkToSupported(tarChainConfig, false);
+              // .then((data) => {
+              //   console.log('data', data)
+              // })
+            } else {
+              // 如果用户没有连接钱包，则设置 localStrage [dropChainId]
+              // 请求默认使用 localStrage 中的默认 chainId
+              setChainId(tarChain);
+              href && (window.location.href = href);
+            }
           } else {
             href && history.push(href);
           }

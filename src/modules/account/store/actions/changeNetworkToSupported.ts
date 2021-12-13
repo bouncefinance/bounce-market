@@ -42,7 +42,7 @@ export const changeNetworkToSupported = createSmartAction(
                           BlockchainNetworkId.smartchain,
                       }),
                     );
-                    window.location.reload();
+                    // window.location.reload();
                   });
               } catch (switchError) {
                 // This error code indicates that the chain has not been added to MetaMask.
@@ -81,7 +81,7 @@ export const changeNetworkToSupported = createSmartAction(
                               BlockchainNetworkId.smartchain,
                           }),
                         );
-                        window.location.reload();
+                        // window.location.reload();
                       });
                   } catch (addError) {
                     // handle "add" error
