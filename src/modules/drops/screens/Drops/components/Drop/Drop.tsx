@@ -3,9 +3,6 @@ import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest } from '@redux-requests/react';
 import { ChainType, getChainConfig } from 'modules/account/hooks/chainConfig';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { DROPTYPE } from 'modules/api/searchDrops';
-import { Queries } from 'modules/common/components/Queries/Queries';
-import { ResponseData } from 'modules/common/types/ResponseData';
 import { getRandomHexColor } from 'modules/common/utils/getRandomHexColor';
 import { setChainId } from 'modules/common/utils/localStorage';
 import { fetchDropSubCard } from 'modules/drops/actions/fetchDropSubCard';
@@ -16,7 +13,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Truncate from 'react-truncate';
-import { uid } from 'react-uid';
 import useBgColor from './useBgColor';
 import { useDropStyles } from './useDropStyles';
 
@@ -52,8 +48,6 @@ export const Drop = ({
   const dispatch = useDispatch();
   const dispatchRequest = useDispatchRequest();
   const DROP_KEY = `/drop-${dropId}`;
-  // 屏蔽项目方 Phantom 的预览卡片
-  const MAX_ITEMS_COUNT = dropId === 10 ? 0 : 5;
   const history = useHistory();
   const { isConnected, handleChangeNetworkToSupported, chainId } = useAccount();
 
@@ -83,59 +77,6 @@ export const Drop = ({
       );
     };
   }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
-
-  const renderDropItems = () => {
-    return dropType === DROPTYPE.BLINDBOX ? (
-      <Box mb={4}>
-        <Box
-          className={classes.nftItem}
-          onClick={() => {
-            href && history.push(href);
-          }}
-        >
-          <Img
-            className={classes.itemImgBox}
-            src={itemImage}
-            objectFit="cover"
-            loading="lazy"
-          />
-        </Box>
-      </Box>
-    ) : (
-      <Queries<ResponseData<typeof fetchDropSubCard>>
-        requestActions={[fetchDropSubCard]}
-        requestKeys={[DROP_KEY]}
-        empty={<></>}
-      >
-        {({ loading, data }) => (
-          <Box mb={4}>
-            <div className={classes.nftList}>
-              {!loading &&
-                data?.slice(0, MAX_ITEMS_COUNT).map((item, i) => (
-                  <Box
-                    key={uid(item)}
-                    className={classes.nftItem}
-                    onClick={() => {
-                      // disconnect()
-                      // setChainId(1)
-                      // href && (window.location.href = href)
-                      href && history.push(href);
-                    }}
-                  >
-                    <Img
-                      className={classes.itemImgBox}
-                      src={item.fileurl}
-                      objectFit="cover"
-                      loading="lazy"
-                    />
-                  </Box>
-                ))}
-            </div>
-          </Box>
-        )}
-      </Queries>
-    );
-  };
 
   return (
     <article className={classes.root}>
@@ -180,7 +121,7 @@ export const Drop = ({
 
       <Box mb={5}></Box>
 
-      {renderDropItems()}
+      {/* {renderDropItems()} */}
 
       <Typography variant="h1" className={classes.title}>
         <Truncate lines={isMDUp ? 1 : 2}>{title}</Truncate>
