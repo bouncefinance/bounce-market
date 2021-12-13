@@ -392,14 +392,16 @@ export const ProductCardComponent = ({
           ></div>
         }
       >
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          className={classes.topBar}
-        >
-          <RenderChiaIcon />
-          {Boolean(poolId) && renderedLikes}
-        </Box>
+        {false && (
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            className={classes.topBar}
+          >
+            <RenderChiaIcon />
+            {Boolean(poolId) && renderedLikes}
+          </Box>
+        )}
         <div className={classes.relative}>
           {renderMediaContent()}
           {isPutSaleTimeCancel && openAt && (

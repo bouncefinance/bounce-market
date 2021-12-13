@@ -19,14 +19,28 @@ interface IFetchCollectionArgs {
   address: string;
   isPlatform: number;
   className?: string;
+  offset?: number;
+  limit?: number;
 }
 export const fetchCollection = createSmartAction<
-  RequestAction<IResponse<IOriginNftItem[]>, INftItem[]>,
-  [IFetchCollectionArgs, RequestActionMeta<IOriginNftItem[], INftItem[]>?]
+  RequestAction<
+    IResponse<IOriginNftItem[]>,
+    { total: number; list: INftItem[] }
+  >,
+  [
+    IFetchCollectionArgs,
+    RequestActionMeta<IOriginNftItem[], { total: number; list: INftItem[] }>?,
+  ]
 >(
   'fetchCollection',
   (
-    { address, className = '', isPlatform }: IFetchCollectionArgs,
+    {
+      address,
+      className = '',
+      isPlatform,
+      offset,
+      limit,
+    }: IFetchCollectionArgs,
     meta?: any,
   ) => ({
     request: {
@@ -38,6 +52,8 @@ export const fetchCollection = createSmartAction<
       data: {
         accountaddress: address,
         contractaddress: className,
+        offset,
+        limit,
       },
     },
     meta: {
@@ -50,7 +66,10 @@ export const fetchCollection = createSmartAction<
           console.error('fetchCollection:', data?.msg ?? 'Unexpected error');
           return [];
         }
-        return mapNftItemData(data?.data ?? []);
+        return {
+          list: mapNftItemData(data?.data ?? []),
+          total: (data as any).total,
+        };
       },
     },
   }),
