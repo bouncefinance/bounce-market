@@ -1,3 +1,7 @@
+import { ChainType } from 'modules/account/hooks/chainConfig';
+
+// interface IApiSearchDropsItem
+
 export const mockActive = [
   {
     accountaddress: '0xc6a34b2bf59baf984884a0cf4c84ed1541e710d7',
@@ -21,7 +25,7 @@ export const mockActive = [
     nfts: 108,
     price: '',
     state: 2,
-    title: 'Boxing Bullies by Jake Paul',
+    title: 'Exclusive Boxing Bullies Collection by Jake Paul',
     twitter: '',
     updated_at: '2021-12-09T03:27:39Z',
     username: '0xc6a34b2bf59baF984884A0cf4C84eD1541E710d7',
@@ -29,9 +33,7 @@ export const mockActive = [
     website: '',
     directLink:
       'http://localhost:3000/collection?address=0x315eb39921f2499ef698de3ddeec63219c02541a&art=_&tab=owned',
-    // link: {
-    //     'eth': "https://fangible.com/collection?address=0x315eb39921f2499ef698de3ddeec63219c02541a&art=_&tab=owned"
-    // }
+    tarChain: 1 as ChainType,
   },
   {
     accountaddress: '0x8031957cEecEe4Dbd63935def5745940D6d75Bc6',
@@ -43,7 +45,7 @@ export const mockActive = [
       'https://ap1-cfs3-eth-fib.fangible.com/0650ce97ef615f014ad03564c36c35b7-1639369122.jpg',
     created_at: '2021-12-06T06:30:00Z',
     description:
-      'Space Runners represents the digital fashion vision of the future. Unique, functional & fully 3D. Designed for virtual experiences.',
+      'Jake Paul’s Boxing Bullies joins forces with Space Runners Metaverse NFT Fashion brand to fight against bullying. The auction features 2 unique sneaker NFTs,where all proceeds will be donated to fight bullying.',
     display: 1,
     dropdate: 1638772243,
     droptype: 1,
@@ -54,7 +56,7 @@ export const mockActive = [
     nfts: 0,
     price: '',
     state: 2,
-    title: 'Space Runners',
+    title: 'Boxing Bullies x Space Runners',
     twitter: '',
     updated_at: '2021-12-06T06:30:46Z',
     username: '0x8031957cEecEe4Dbd63935def5745940D6d75Bc6',
@@ -62,5 +64,6 @@ export const mockActive = [
     website: '',
     directLink:
       'https://stage-solona-guwkoimwk5.ccian.cc/profile/address/4fSBkyZDQ35uxYnBf42pEPk3e4u4JBWBRM7shJvD97yf?id=&tab=owned',
+    tarChain: 1111 as ChainType, // 1111 是 Solana
   },
 ];

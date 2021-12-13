@@ -269,7 +269,11 @@ const { requestsReducer, requestsMiddleware } = handleRequests({
       action: setAccount,
     });
 
-    const chainId = (data ?? getNotWeb3WalletInfo())?.chainId ?? getChainId();
+    const chainId =
+      data?.chainId ?? getChainId() ?? getNotWeb3WalletInfo()?.chainId;
+
+    console.log('chainId', chainId);
+
     if (action.meta?.driver === 'axios') {
       action.meta = {
         ...action.meta,

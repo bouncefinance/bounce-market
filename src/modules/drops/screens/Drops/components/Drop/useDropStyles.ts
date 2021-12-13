@@ -30,6 +30,7 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
     '&:hover': {
       background: ({ bgColor }) => (bgColor ? fade(bgColor, 0.8) : undefined),
       // 'boxShadow': '5px 5px 20px #666',
+      cursor: 'pointer',
       '& img': {
         transform: 'scale(1.05)',
       },

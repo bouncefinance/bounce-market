@@ -1,18 +1,11 @@
 import React, { ReactNode } from 'react';
 import { Dialog } from '@material-ui/core';
 import { useSelectChainStyled } from './useSelectChainStyled';
-import { ReactComponent as EthereumIcon } from './assets/ethereum.svg';
-import { ReactComponent as BinanceIcon } from './assets/binance.svg';
-import { ReactComponent as SolanaIcon } from './assets/solana.svg';
 // import { ReactComponent as PolygonIcon } from './assets/polygon.svg';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { t } from 'modules/i18n/utils/intl';
-import {
-  BlockchainNetworkId,
-  getBlockChainExplorerAddress,
-} from 'modules/common/conts';
-import { TokenSymbol } from 'modules/common/types/TokenSymbol';
+import { ChainType, getChainConfig } from 'modules/account/hooks/chainConfig';
 
 export interface IAddEthereumChain {
   chainId: string; // A 0x-prefixed hexadecimal string
@@ -38,97 +31,7 @@ export const SelectChainDialog = ({
 }) => {
   const classes = useSelectChainStyled();
   const { handleChangeNetworkToSupported } = useAccount();
-  const chainList = [
-    {
-      icon: <EthereumIcon />,
-      title: t('header.select-chain.eth'),
-      subTitle: '',
-      chainConfig: {
-        chainId: '0x1',
-        chainName: 'Ethereum Chain Mainnet',
-        nativeCurrency: {
-          name: 'Ethereum',
-          symbol: TokenSymbol.ETH,
-          decimals: 18,
-        },
-        rpcUrls: [
-          'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-        ],
-        blockExplorerUrls: [
-          getBlockChainExplorerAddress(BlockchainNetworkId.mainnet),
-        ],
-      },
-    },
-    {
-      icon: <BinanceIcon />,
-      title: t('header.select-chain.bnb'),
-      subTitle: '',
-      chainConfig: {
-        chainId: '0x38',
-        chainName: 'Binance Smart Chain Mainnet',
-        nativeCurrency: {
-          name: 'Binance',
-          symbol: TokenSymbol.BNB,
-          decimals: 18,
-        },
-        rpcUrls: ['https://bsc-dataseed4.binance.org'],
-        blockExplorerUrls: [
-          getBlockChainExplorerAddress(BlockchainNetworkId.smartchain),
-        ],
-      },
-    },
-    {
-      icon: <SolanaIcon />,
-      title: t('header.select-chain.solana'),
-      subTitle: '',
-      chainConfig: {
-        chainId: '0x1bf52', // 随便定的
-        chainName: 'Solana Mainnet',
-        nativeCurrency: {
-          name: 'Solana',
-          symbol: TokenSymbol.Solana,
-          decimals: 18,
-        },
-        rpcUrls: ['https://api.mainnet-beta.solana.com'],
-        blockExplorerUrls: ['https://explorer.solana.com/'],
-      },
-    },
-    // {
-    //   icon: <HecoIcon />,
-    //   title: t('header.select-chain.heco'),
-    //   subTitle: '',
-    //   chainConfig: {
-    //     chainId: '0x80',
-    //     chainName: 'Huobi ECO Chain Mainnet',
-    //     nativeCurrency: {
-    //       name: 'Heco',
-    //       symbol: TokenSymbol.HT,
-    //       decimals: 18,
-    //     },
-    //     rpcUrls: ['https://http-mainnet.hecochain.com'],
-    //     blockExplorerUrls: [
-    //       getBlockChainExplorerAddress(BlockchainNetworkId.heco),
-    //     ],
-    //   },
-    // },
-    // {
-    //   icon: <PolygonIcon />,
-    //   title: t('header.select-chain.polygon'),
-    //   chainConfig: {
-    //     chainId: '0x89',
-    //     chainName: 'Polygon Mainnet',
-    //     nativeCurrency: {
-    //       name: 'polygon',
-    //       symbol: TokenSymbol.MATIC,
-    //       decimals: 18,
-    //     },
-    //     rpcUrls: ['https://polygonscan.com'],
-    //     blockExplorerUrls: [
-    //       getBlockChainExplorerAddress(BlockchainNetworkId.matic),
-    //     ],
-    //   },
-    // },
-  ];
+  const chainList: ChainType[] = [1, 56, 1111];
 
   const renderCard = ({
     icon,
@@ -176,7 +79,7 @@ export const SelectChainDialog = ({
     >
       <h1 className={classes.h1}>{t('header.select-chain.title')}</h1>
       <div className={classes.cardWrapper}>
-        {chainList.map(item => renderCard(item))}
+        {chainList.map(item => renderCard(getChainConfig(item)))}
       </div>
 
       <ModalCloseBtn onClick={onClose} />
