@@ -31,8 +31,8 @@ export const mockActive = [
     username: '0xc6a34b2bf59baF984884A0cf4C84eD1541E710d7',
     videourl: '',
     website: '',
-    // directLink:
-    //   'http://stage.fangible.com/collection?address=0x949bda42a32a6159908bc773d215f523e8c336f8&art=_&tab=owned',
+    directLink:
+      'http://stage.fangible.com/collection?address=0x949bda42a32a6159908bc773d215f523e8c336f8&art=_&tab=owned',
     tarChain: 4 as ChainType,
   },
   {
@@ -62,8 +62,8 @@ export const mockActive = [
     username: '0x8031957cEecEe4Dbd63935def5745940D6d75Bc6',
     videourl: '',
     website: '',
-    // directLink:
-    //   'https://stage-solona-guwkoimwk5.ccian.cc/profile/address/4fSBkyZDQ35uxYnBf42pEPk3e4u4JBWBRM7shJvD97yf?id=&tab=owned',
+    directLink:
+      'https://stage-solona-guwkoimwk5.ccian.cc/profile/address/4fSBkyZDQ35uxYnBf42pEPk3e4u4JBWBRM7shJvD97yf?id=&tab=owned',
     tarChain: 1111 as ChainType, // 1111 是 Solana
   },
 ];
