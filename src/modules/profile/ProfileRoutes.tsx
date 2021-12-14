@@ -29,7 +29,7 @@ export enum ProfileTab {
 }
 
 export const defaultProfileTab = ProfileTab.sells;
-export const defaultOtherProfileTab = ProfileTab.sells;
+export const defaultOtherProfileTab = ProfileTab.owned;
 export const defaultCollectionTab = ProfileTab.sells;
 
 export const ProfileRoutesConfig: { [key: string]: RouteConfiguration } = {
