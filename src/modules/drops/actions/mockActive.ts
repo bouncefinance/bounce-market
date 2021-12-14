@@ -32,7 +32,7 @@ export const mockActive = [
     videourl: '',
     website: '',
     // directLink:
-    //   'http://stage.fangible.com/collection?address=0x949bda42a32a6159908bc773d215f523e8c336f8&art=_&tab=sale',
+    //   'http://stage.fangible.com/collection?address=0x949bda42a32a6159908bc773d215f523e8c336f8&art=_&tab=owned',
     tarChain: 4 as ChainType,
   },
   {

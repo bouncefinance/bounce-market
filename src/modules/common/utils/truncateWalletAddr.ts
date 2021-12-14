@@ -13,8 +13,8 @@ export const truncateWalletAddr = (address: string): string => {
   return `${firstPart}...${lastPart}`;
 };
 
-export const truncateLongName = (name: string): string => {
-  const LENGTH = 15;
+export const truncateLongName = (name: string, length?: number): string => {
+  const LENGTH = length || 15;
   if (name.length <= LENGTH) {
     return name;
   }
