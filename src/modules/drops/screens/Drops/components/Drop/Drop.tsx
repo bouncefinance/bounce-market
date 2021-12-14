@@ -9,12 +9,16 @@ import { fetchDropSubCard } from 'modules/drops/actions/fetchDropSubCard';
 import { IAddEthereumChain } from 'modules/layout/components/Header/components/SelectChainDialog';
 import { useIsMDUp } from 'modules/themes/useTheme';
 import { Img } from 'modules/uiKit/Img';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Truncate from 'react-truncate';
 import useBgColor from './useBgColor';
 import { useDropStyles } from './useDropStyles';
+
+import { ReactComponent as EthereumIcon } from '../../../../../account/assets/ethereum.svg';
+import { ReactComponent as BinanceIcon } from '../../../../../account/assets/binance.svg';
+import { ReactComponent as SolanaIcon } from '../../../../../account/assets/solana.svg';
 
 interface IDropProps {
   creator: JSX.Element;
@@ -78,6 +82,22 @@ export const Drop = ({
     };
   }, [dispatch, dropId, dispatchRequest, DROP_KEY]);
 
+  const renderChainIcon = useMemo(() => {
+    switch (tarChain) {
+      case 1:
+      case 4:
+        return <EthereumIcon />;
+
+      case 56:
+        return <BinanceIcon />;
+
+      case 1111:
+        return <SolanaIcon />;
+      default:
+        return <></>;
+    }
+  }, [tarChain]);
+
   return (
     <article className={classes.root}>
       {bgImg && (
@@ -132,6 +152,8 @@ export const Drop = ({
       </Typography>
 
       {/* <div className={classes.creator}>{creator}</div> */}
+
+      <Box className={classes.chainIcon}>{renderChainIcon}</Box>
     </article>
   );
 };
