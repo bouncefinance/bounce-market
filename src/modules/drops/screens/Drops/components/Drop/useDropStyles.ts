@@ -190,4 +190,10 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
     position: 'relative',
     margin: '0 auto',
   },
+
+  chainIcon: {
+    position: 'absolute',
+    right: 45,
+    bottom: 38,
+  },
 }));
