@@ -16,9 +16,9 @@ import Truncate from 'react-truncate';
 import useBgColor from './useBgColor';
 import { useDropStyles } from './useDropStyles';
 
-import { ReactComponent as EthereumIcon } from '../../../../../account/assets/ethereum.svg';
+import { ReactComponent as EthereumIcon } from '../../assets/ethereum.svg';
 import { ReactComponent as BinanceIcon } from '../../../../../account/assets/binance.svg';
-import { ReactComponent as SolanaIcon } from '../../../../../account/assets/solana.svg';
+import { ReactComponent as SolanaIcon } from '../../assets/solana.svg';
 
 interface IDropProps {
   creator: JSX.Element;
@@ -41,8 +41,7 @@ export const Drop = ({
   bgColor,
   bgImg,
   dropId,
-  dropType,
-  itemImage,
+  timer,
   tarChain,
 }: IDropProps) => {
   const theme = useTheme();
@@ -139,9 +138,7 @@ export const Drop = ({
         }}
       />
 
-      <Box mb={5}></Box>
-
-      {/* {renderDropItems()} */}
+      <Box mb={5}>{timer}</Box>
 
       <Typography variant="h1" className={classes.title}>
         <Truncate lines={isMDUp ? 1 : 2}>{title}</Truncate>

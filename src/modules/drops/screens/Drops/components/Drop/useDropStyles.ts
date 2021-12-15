@@ -193,7 +193,11 @@ export const useDropStyles = makeStyles<Theme, { bgColor?: string }>(theme => ({
 
   chainIcon: {
     position: 'absolute',
-    right: 45,
-    bottom: 38,
+    right: 12,
+    bottom: 17,
+    '& svg': {
+      width: 50,
+      height: 50,
+    },
   },
 }));

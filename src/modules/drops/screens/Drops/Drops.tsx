@@ -10,7 +10,7 @@ export const Drops = () => {
       {/* <StoriesSlider /> */}
       {/* <TopCreators /> */}
       <DropsSection scene={'Active'} />
-      <DropsSection scene={'Upcoming'} />
+      {/* <DropsSection scene={'Upcoming'} /> */}
     </ThemeProvider>
   );
 };

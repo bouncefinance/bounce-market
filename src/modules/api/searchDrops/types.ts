@@ -45,6 +45,7 @@ export interface IApiSearchDropsItem {
   blindcoverimgurl: string;
   directLink?: string;
   tarChain?: ChainType;
+  comingTime?: string;
 }
 
 export interface IApiSearchDrops {

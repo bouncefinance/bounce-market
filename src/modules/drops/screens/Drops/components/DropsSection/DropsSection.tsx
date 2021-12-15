@@ -43,7 +43,8 @@ export const DropsSection = (props: { scene: 'Active' | 'Upcoming' }) => {
     props.scene === 'Active'
       ? {
           id: SearchDropsParamState.Live,
-          label: 'drops.active',
+          // label: 'drops.active',
+          label: 'drops.upcoming',
         }
       : {
           id: SearchDropsParamState.Coming,
@@ -112,7 +113,11 @@ export const DropsSection = (props: { scene: 'Active' | 'Upcoming' }) => {
 
   const renderDrops = (items: ISearchDropsItem[]) => {
     return items.map((item, i) => {
-      const timer = <DropTimer endDate={item.dropDate} />;
+      const timer = item.comingTime ? (
+        <DropTimer time={item.comingTime} />
+      ) : (
+        <></>
+      );
       const creator = (
         <DropsOwner
           title={item.username || truncateWalletAddr(item.accountAddress)}
