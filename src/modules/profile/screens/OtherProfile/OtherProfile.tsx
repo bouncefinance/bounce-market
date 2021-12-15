@@ -105,10 +105,10 @@ export const OtherProfile = () => {
         value: ProfileTab.sells,
         label: t('profile.tabs.my-sells'),
       },
-      {
-        value: ProfileTab.collections,
-        label: t('profile.tabs.collections'),
-      },
+      // {
+      //   value: ProfileTab.collections,
+      //   label: t('profile.tabs.collections'),
+      // },
       {
         value: ProfileTab.owned,
         label: t('profile.tabs.showcase'),
