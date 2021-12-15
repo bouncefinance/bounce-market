@@ -1,5 +1,5 @@
 import { Box, Typography } from '@material-ui/core';
-import { t } from 'modules/i18n/utils/intl';
+// import { t } from 'modules/i18n/utils/intl';
 import React, { ReactNode } from 'react';
 import { useBioStyles } from './useBioStyles';
 
@@ -12,9 +12,9 @@ export const Bio = ({ children }: IBioProps) => {
 
   return (
     <>
-      <Box mb={2}>
+      {/* <Box mb={2}>
         <Typography variant="h4">{t('profile.bio')}</Typography>
-      </Box>
+      </Box> */}
 
       <Box mb={9}>
         <Typography className={classes.bioDescr}>{children}</Typography>

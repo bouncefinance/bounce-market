@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { CopyToClip } from 'modules/common/components/CopyToClip';
+// import { CopyToClip } from 'modules/common/components/CopyToClip';
 import { CogIcon } from 'modules/common/components/Icons/CogIcon';
 import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import { ExtensionIcon } from 'modules/common/components/Icons/ExtensionIcon';
@@ -103,13 +103,13 @@ export const InfoPanel = ({
           {email && <Typography className={classes.url}>{email}</Typography>}
         </Grid>
 
-        {!isCollection && (
+        {/* {!isCollection && (
           <Grid item>
             <div className={classes.address}>
               {address && <CopyToClip address={address} />}
             </div>
           </Grid>
-        )}
+        )} */}
 
         {withSharing && (
           <Grid item>
