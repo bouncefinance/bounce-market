@@ -25,14 +25,13 @@ export const mockActive = [
     nfts: 108,
     price: '',
     state: 2,
-    title: 'Exclusive Boxing Bullies Collection by Jake Paul',
+    title: 'Exclusive Boxing Bullies by Jake Paul',
     twitter: '',
     updated_at: '2021-12-09T03:27:39Z',
     username: '0xc6a34b2bf59baF984884A0cf4C84eD1541E710d7',
     videourl: '',
     website: '',
-    directLink:
-      'https://stage.fangible.com/profile/address/0x388651742c4e61e2f16999cb92dd8bf36bd360f9?id=&tab=owned',
+    // directLink: 'https://stage.fangible.com/profile/address/0x388651742c4e61e2f16999cb92dd8bf36bd360f9?id=&tab=owned',
     tarChain: 4 as ChainType,
   },
   {
@@ -62,8 +61,8 @@ export const mockActive = [
     username: '0x8031957cEecEe4Dbd63935def5745940D6d75Bc6',
     videourl: '',
     website: '',
-    directLink:
-      'https://stage-solona-guwkoimwk5.ccian.cc/profile/address/4fSBkyZDQ35uxYnBf42pEPk3e4u4JBWBRM7shJvD97yf?id=&tab=owned',
+    // directLink: 'https://stage-solona-guwkoimwk5.ccian.cc/profile/address/4fSBkyZDQ35uxYnBf42pEPk3e4u4JBWBRM7shJvD97yf?id=&tab=owned',
     tarChain: 1111 as ChainType, // 1111 是 Solana
+    comingTime: 'Coming Early 2022',
   },
 ];

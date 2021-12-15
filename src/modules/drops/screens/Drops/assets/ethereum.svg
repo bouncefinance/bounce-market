@@ -1,0 +1,25 @@
+<svg width="66" height="65" viewBox="0 0 66 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.65" filter="url(#filter0_bi_6811_27977)">
+<circle cx="32.5" cy="32.5" r="32.5" fill="white" fill-opacity="0.59"/>
+</g>
+<path d="M33.0693 8.125V26.1422L48.532 32.947L33.0693 8.125Z" fill="white" fill-opacity="0.602"/>
+<path d="M33.0682 8.125L17.6035 32.947L33.0682 26.1422V8.125Z" fill="white"/>
+<path d="M33.0693 44.6224V56.8648L48.5422 35.7825L33.0693 44.6224Z" fill="white" fill-opacity="0.602"/>
+<path d="M33.0682 56.8648V44.6204L17.6035 35.7825L33.0682 56.8648Z" fill="white"/>
+<path d="M33.0693 41.7892L48.532 32.9471L33.0693 26.1465V41.7892Z" fill="white" fill-opacity="0.2"/>
+<path d="M17.6035 32.9471L33.0682 41.7892V26.1465L17.6035 32.9471Z" fill="white" fill-opacity="0.602"/>
+<defs>
+<filter id="filter0_bi_6811_27977" x="-4" y="-4" width="73" height="73" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feGaussianBlur in="BackgroundImage" stdDeviation="2"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6811_27977"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_6811_27977" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feGaussianBlur stdDeviation="1.5"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/>
+<feBlend mode="normal" in2="shape" result="effect2_innerShadow_6811_27977"/>
+</filter>
+</defs>
+</svg>

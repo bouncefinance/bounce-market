@@ -29,6 +29,7 @@ export interface ISearchDropsItem {
   blindcoverimgurl: string;
   directLink?: string;
   tarChain?: ChainType;
+  comingTime?: string;
 }
 
 export const mapSearchDropsItem = (
@@ -56,5 +57,6 @@ export const mapSearchDropsItem = (
     blindcoverimgurl: item.blindcoverimgurl,
     directLink: item.directLink,
     tarChain: item.tarChain,
+    comingTime: item.comingTime,
   };
 };
