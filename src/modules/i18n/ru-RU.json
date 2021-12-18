@@ -79,6 +79,10 @@
       "description": "Кошелёк Binance Chain и Smart Chain",
       "name": "Binance Chain"
     },
+    "custom-clover": {
+      "description": "клевер",
+      "name": "клевер"
+    },
     "custom-huobi": {
       "description": "Мультивалютная поддержка, практично и удобно",
       "name": "Кошелёк Huobi"
@@ -114,7 +118,10 @@
       "standard": "Стандарт",
       "supply": "Выпущено"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "title": "Создать NFT",
@@ -136,7 +143,10 @@
       "description": "Какая история стоит за этим NFT?"
     },
     "next": "Next",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "time": "",

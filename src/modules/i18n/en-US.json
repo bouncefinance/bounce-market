@@ -79,6 +79,10 @@
       "description": "Binance Chain & Smart Chain Wallet",
       "name": "Binance Chain"
     },
+    "custom-clover": {
+      "description": "Clover",
+      "name": "Clover"
+    },
     "custom-huobi": {
       "description": "Multi-currency support, practical and convenient",
       "name": "Huobi Wallet"
@@ -114,7 +118,10 @@
       "standard": "Standard",
       "supply": "Supply"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "title": "Create NFT",
@@ -136,7 +143,10 @@
       "description": "What's the story behind this NFT?"
     },
     "next": "Next",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "time": "",

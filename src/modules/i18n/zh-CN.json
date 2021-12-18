@@ -79,6 +79,10 @@
       "description": "币安链& 智能链钱包",
       "name": "币安链"
     },
+    "custom-clover": {
+      "description": "三叶草钱包",
+      "name": "三叶草"
+    },
     "custom-huobi": {
       "description": "实用、方便，支持多种货币",
       "name": "Huobi Wallet"
@@ -612,7 +616,7 @@
       "getVerified": "成为签约艺术家",
       "FAQ": "FAQ",
       "support": "帮助",
-      "docs":"文档"
+      "docs": "文档"
     },
     "followUs": {
       "followUs": "关注我们"
