@@ -7,13 +7,14 @@ import cloverWalletLogo from '../assets/clover.svg';
 import { BscConnector } from '@binance-chain/bsc-connector';
 import Web3 from 'web3';
 import { t } from '../../i18n/utils/intl';
+import { CloverConnector } from '@clover-network/clover-connector';
 
 export const RPC = {
   1: 'https://mainnet.infura.io/v3/0b500c5f885b43a4ab192e8048f6fa88',
   4: 'https://rinkeby.infura.io/v3/8f6d3d5d7a1442a38d9e8050c31c1884',
   56: 'https://bsc-dataseed4.binance.org',
 };
-const OPEN_CLOVER = false;
+const OPEN_CLOVER = true;
 export async function connectWallet(cacheProvider?: boolean) {
   const providerOptions: IProviderOptions = {
     ...(window.BinanceChain
@@ -51,8 +52,10 @@ export async function connectWallet(cacheProvider?: boolean) {
             },
             options: {},
             connector: async () => {
-              // TODO
-              return {};
+              const cloverConnector = new CloverConnector({
+                supportedChainIds: [1, 4, 137, 128, 56, 97],
+              });
+              return cloverConnector.getProvider();
             },
           },
         }
