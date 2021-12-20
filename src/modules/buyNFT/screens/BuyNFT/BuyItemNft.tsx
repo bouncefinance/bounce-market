@@ -1,4 +1,5 @@
 import { useDispatchRequest } from '@redux-requests/react';
+import { useAccount } from 'modules/account/hooks/useAccount';
 import { fetchItem, fetchItem2 } from 'modules/buyNFT/actions/fetchItem';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -29,13 +30,13 @@ import { useBuyNFTStyles } from './useBuyNFTStyles';
 
 export const BuyItemNFT = () => {
   const classes = useBuyNFTStyles();
-  const { poolId: tokenIdParam, contract } = useParams<{
+  const { poolId: tokenId, contract } = useParams<{
     poolId: string;
     contract: string;
   }>();
 
-  const tokenId = parseInt(tokenIdParam, 10);
   const dispatch = useDispatchRequest();
+  const { chainId } = useAccount();
 
   const init = useCallback(() => {
     (async () => {
@@ -47,7 +48,7 @@ export const BuyItemNFT = () => {
 
   useEffect(() => {
     init();
-  }, [init]);
+  }, [init, chainId]);
 
   const saleTime = false;
   const onChangeTime = () => {};

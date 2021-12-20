@@ -125,7 +125,7 @@ export const BuyNFT = () => {
 
   useEffect(() => {
     init();
-  }, [init]);
+  }, [init, chainId]);
 
   const getHistoryTitle = useCallback(
     (item: IWrapperPoolHistory) => {
