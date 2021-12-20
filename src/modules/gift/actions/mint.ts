@@ -5,7 +5,7 @@ import { IApiMint } from '../api/mint';
 interface IMintArgs {
   accountaddress: string;
   contractaddress: string;
-  tokenid: number;
+  tokenid: string;
   verifycode: string;
 }
 

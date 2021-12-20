@@ -21,7 +21,7 @@ import {
 
 export interface IProductCardProps
   extends Omit<IProductCardComponentProps, 'isLiked'> {
-  id: number;
+  id: number | string;
   poolId: number;
   auctionType?: AuctionType;
   contractAddress?: string;

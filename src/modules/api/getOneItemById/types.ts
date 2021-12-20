@@ -13,7 +13,8 @@ export interface IApiGetOneItemByIdData {
   description: string;
   externallink: string;
   fileurl: string;
-  id: number;
+  id: string;
+  tokenid: string;
   itemname: string;
   itemsymbol: 'BOUNCE';
   likecount: number;

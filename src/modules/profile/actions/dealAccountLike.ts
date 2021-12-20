@@ -10,7 +10,7 @@ import { RootState } from 'store';
 interface IDealAccountLikeArgs {
   isLiked: boolean;
   category: string;
-  itemId: number;
+  itemId: string;
   contractAddress: string;
   requestKey?: string;
 }

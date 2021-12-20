@@ -33,7 +33,7 @@ interface IFetchPoolHistoryData {
   price: string;
   quantity: number;
   to: string;
-  token_id: number;
+  token_id: string;
   txid: string;
   user_address: string;
   username: string;

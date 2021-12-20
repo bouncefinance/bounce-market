@@ -20,7 +20,7 @@ interface IApiPool {
   state: AuctionState;
   token0: Address;
   token1: Address;
-  tokenId: number;
+  tokenId: string;
 }
 
 export interface IPool {
@@ -35,7 +35,7 @@ export interface IPool {
   state: AuctionState;
   tokenContract: Address;
   unitContract: Address;
-  tokenId: number;
+  tokenId: string;
 }
 
 function mapPool(data: IQueryPool): IPool {

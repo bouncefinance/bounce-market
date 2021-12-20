@@ -45,7 +45,7 @@ export const fetchItem = createSmartAction<
   request: {
     url: getOneItemByIdUrl,
     method: 'post',
-    data: { contractaddress: params.contract, tokenid: params.id },
+    data: { contractaddress: params.contract, tokenid: params.id + '' },
   },
   meta: {
     getData({ data }) {
@@ -77,7 +77,7 @@ export const fetchItem2 = createSmartAction<
   request: {
     url: '/getitemuserinfo',
     method: 'post',
-    data: { contractaddress: params.contract, tokenid: params.id },
+    data: { contractaddress: params.contract, tokenid: params.id + '' },
   },
   meta: {
     getData({ data }) {

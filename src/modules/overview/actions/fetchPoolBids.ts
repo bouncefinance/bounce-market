@@ -31,7 +31,7 @@ interface IFetchPoolBidsData_FixedSwap {
   contract: string;
   from: string;
   to: string;
-  token_id: number;
+  token_id: string;
   quantity: number;
   price: string;
   user_address: string;

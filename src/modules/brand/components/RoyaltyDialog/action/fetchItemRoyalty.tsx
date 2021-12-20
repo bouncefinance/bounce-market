@@ -7,7 +7,7 @@ export type IItemRoyaltyParams = NFTItem | PoolItem;
 
 interface NFTItem {
   collection: string;
-  tokenId: number;
+  tokenId: string;
 }
 
 interface PoolItem {

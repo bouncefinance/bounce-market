@@ -37,7 +37,7 @@ interface ILikePool extends IPoolAvatars {
   state: FixedSwapState | AuctionState;
   swapped_amount0: number;
   token_amount0: number;
-  tokenid: number;
+  tokenid: string;
   minteraddress: string;
   avatar: string;
 }
@@ -52,7 +52,7 @@ export interface IPoolNftItem {
 export interface ILikedItem extends Omit<ILikePool | IOriginNftItem, 'price'> {
   poolType: AuctionType;
   price: BigNumber;
-  itemId: number;
+  itemId: string;
   poolId: number;
   isLike: boolean;
   openAt: Date;

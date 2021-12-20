@@ -17,7 +17,7 @@ export interface IOriginNftItem extends IPoolAvatars {
   mylikecount: number;
   name: string;
   itemname?: string;
-  tokenid: number;
+  tokenid: string;
   supply: number;
   balance: number;
   standard: NftType;
@@ -31,9 +31,9 @@ export interface INftItem {
   likeCount: number;
   isLike: boolean;
   name: string;
-  tokenId: number;
+  tokenId: string;
   poolId?: number;
-  itemId: number;
+  itemId: string;
   avatars: INftAvatars;
   isItemType: boolean;
   supply: number;

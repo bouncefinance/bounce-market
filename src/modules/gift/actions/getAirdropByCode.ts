@@ -13,7 +13,7 @@ export enum ENftState {
 }
 
 export interface IGetAirdropByCodePayload {
-  tokenid: number;
+  tokenid: string;
   itemname: string;
   itemsymbol: string;
   fileurl: string;

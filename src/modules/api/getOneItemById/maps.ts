@@ -36,7 +36,7 @@ export const mapGetOneItemById = (data: IApiGetOneItemByIdData) => {
     description: data.description,
     externalLink: data.externallink,
     fileUrl: data.fileurl,
-    id: data.id,
+    id: data.tokenid,
     itemName: data.itemname,
     itemSymbol: data.itemsymbol,
     likeCount: data.likecount,

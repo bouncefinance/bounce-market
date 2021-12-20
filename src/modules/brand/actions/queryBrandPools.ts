@@ -18,7 +18,7 @@ export interface IQueryBrandPoolsArgs {
 }
 
 interface ITempToken {
-  tokenId: number;
+  tokenId: string;
   auctionType: AuctionType;
   poolId: number;
 }
