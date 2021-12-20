@@ -27,7 +27,7 @@ export interface INFTItem {
   description?: string;
   externallink?: string;
   fileurl?: string;
-  id: number;
+  id: string;
   itemname?: string;
   itemsymbol?: string;
   likecount?: number;

@@ -22,7 +22,7 @@ export interface ITradeAuction {
   token0: string;
   token1: string;
   tokenAmount0: number;
-  tokenId: number;
+  tokenId: string;
   auctiontype: AuctionTypeKeys;
 }
 
@@ -38,7 +38,7 @@ export interface ITradePool {
   state: number;
   token0: string;
   token1: string;
-  tokenId: number;
+  tokenId: string;
 }
 
 export type PoolCategoryType = NFTCategoryType;
@@ -59,7 +59,7 @@ export interface ITradePool_V2 {
   state: PoolState;
   token0: string;
   token1: string;
-  tokenid: number;
+  tokenid: string;
   username: string;
   category: PoolCategoryType;
   channel: string;

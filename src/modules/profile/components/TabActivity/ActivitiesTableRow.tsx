@@ -40,7 +40,7 @@ interface IActivitiesTableProps {
 }
 
 interface IItemProps {
-  tokenid: number;
+  tokenid: string;
   contractaddress: string;
   url: string;
   label: string;

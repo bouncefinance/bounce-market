@@ -83,7 +83,7 @@ type IPublishNftPayload =
       tokenContract: string;
       unitContract: string;
       standard: NftType;
-      tokenId: number;
+      tokenId: string;
       price: BigNumber;
       quantity: number;
       saleTime: ISaleTime;
@@ -99,18 +99,21 @@ type IPublishNftPayload =
       tokenContract: string;
       unitContract: string;
       standard: NftType;
-      tokenId: number;
+      tokenId: string;
       quantity: number;
       saleTime: ISaleTime;
     };
 
 interface IApproveParams {
   nftContract_CT: any;
-  nftId?: number;
+  nftId?: string;
   tarContract?: string;
   sender?: string;
 }
 
+const createAuctionTokenType = (token: string) => {
+  return token;
+};
 export const publishNft = createSmartAction<
   RequestAction<null, null>,
   [IPublishNftPayload]
@@ -272,7 +275,7 @@ export const publishNft = createSmartAction<
                             cutName(name),
                             tokenContract,
                             unitContract,
-                            tokenId,
+                            createAuctionTokenType(tokenId),
                             quantity,
                             toWei(
                               price.multipliedBy(quantity).toFixed(),
@@ -285,7 +288,7 @@ export const publishNft = createSmartAction<
                             cutName(name),
                             tokenContract,
                             unitContract,
-                            tokenId,
+                            createAuctionTokenType(tokenId),
                             quantity,
                             toWei(
                               price.multipliedBy(quantity).toFixed(),
@@ -350,7 +353,7 @@ export const publishNft = createSmartAction<
                             cutName(name),
                             tokenContract,
                             unitContract,
-                            tokenId,
+                            createAuctionTokenType(tokenId),
                             toWei(purchasePrice, decimals),
                             toWei(minBid, decimals),
                             toWei(minIncremental.toFixed(), decimals),
@@ -363,7 +366,7 @@ export const publishNft = createSmartAction<
                             cutName(name),
                             tokenContract,
                             unitContract,
-                            tokenId,
+                            createAuctionTokenType(tokenId),
                             toWei(purchasePrice, decimals),
                             toWei(minBid, decimals),
                             toWei(minIncremental.toFixed(), decimals),
@@ -404,7 +407,7 @@ export const publishNft = createSmartAction<
                             cutName(name),
                             tokenContract,
                             unitContract,
-                            tokenId,
+                            createAuctionTokenType(tokenId),
                             quantity,
                             toWei(purchasePrice, decimals),
                             toWei(minBid, decimals),
@@ -418,7 +421,7 @@ export const publishNft = createSmartAction<
                             cutName(name),
                             tokenContract,
                             unitContract,
-                            tokenId,
+                            createAuctionTokenType(tokenId),
                             quantity,
                             toWei(purchasePrice, decimals),
                             toWei(minBid, decimals),

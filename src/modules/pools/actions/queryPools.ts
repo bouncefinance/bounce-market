@@ -29,7 +29,7 @@ export interface IQueryPool {
   token0: string;
   token1: string;
   token_amount0: number;
-  token_id: number;
+  token_id: string;
   identity: number;
   last_bidder: string;
 }
@@ -52,7 +52,7 @@ export interface IQueryPools {
     token0: string;
     token1: string;
     tokenAmount0: number;
-    tokenId: number;
+    tokenId: string;
   }[];
   tradePools: {
     amount_total0: number;
@@ -66,7 +66,7 @@ export interface IQueryPools {
     state: number;
     token0: string;
     token1: string;
-    tokenId: number;
+    tokenId: string;
   }[];
 }
 

@@ -46,7 +46,7 @@ export interface IApiPoolDetails {
   token0: string;
   token1: string;
   token_amount0: number;
-  tokenid: number;
+  tokenid: string;
   username: string;
   open_at: number;
   mylikecount: number;
@@ -64,7 +64,7 @@ export interface IApiFixedAuctionDetails {
   state: 0 | 1;
   token0: string;
   token1: string;
-  tokenId: number;
+  tokenId: string;
 }
 export interface IApiEnglishAuctionDetails {
   amountMax1: string;
@@ -84,7 +84,7 @@ export interface IApiEnglishAuctionDetails {
   token0: string;
   token1: string;
   tokenAmount0: number;
-  tokenId: number;
+  tokenId: string;
 }
 
 export interface IApiFetchPoolDetails {
@@ -108,7 +108,7 @@ export interface IFixedAuctionDetails {
   state: FixedSwapState;
   tokenContract: Address;
   unitContract: Address;
-  tokenId: number;
+  tokenId: string;
   openAt: Date;
   avatar?: string;
   auctionType?: AuctionType;
@@ -138,7 +138,7 @@ export interface IEnglishAuctionDetails {
   tokenContract: Address;
   unitContract: Address;
   tokenAmount0: number;
-  tokenId: number;
+  tokenId: string;
   openAt: Date;
   avatar?: string;
   auctionType?: AuctionType;

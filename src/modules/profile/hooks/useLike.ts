@@ -14,7 +14,7 @@ import { RootState, store } from 'store/store';
 import { dealAccountLike } from '../actions/dealAccountLike';
 import { ILikedItem, queryLikedItems } from '../actions/queryLikedItems';
 
-export const useIsLiked = (id: number, poolId: number) => {
+export const useIsLiked = (id: number | string, poolId: number) => {
   const { data } = useQuery<ILikedItem[] | null>({
     type: queryLikedItems.toString(),
   });
@@ -29,7 +29,7 @@ export const useIsLiked = (id: number, poolId: number) => {
 };
 
 interface IUseLikeProps {
-  id: number;
+  id: number | string | -1;
   category: string;
   count?: number;
   isItemType?: boolean;
@@ -87,7 +87,7 @@ export const useLike = ({
         requestKey,
         category,
         isLiked: !isLiked,
-        itemId: id,
+        itemId: id as string,
         contractAddress,
       }),
     );
@@ -99,10 +99,9 @@ export const useLike = ({
         const isLike = Boolean(myLikeCount);
         setLikeCount(likeCount);
         setIsLiked(isLike);
-        setLikesMapDataAsync([{ itemId: id, isLike, likeCount, poolId: 0 }])(
-          dispatch,
-          store.getState(),
-        );
+        setLikesMapDataAsync([
+          { itemId: id as string, isLike, likeCount, poolId: 0 },
+        ])(dispatch, store.getState());
         setLikeCountAsync(likeData?.data?.myliketotal)(dispatch);
       }
     }

@@ -56,7 +56,7 @@ export const fetchPoolNftOwner = createSmartAction<
               poolType: parseInt(poolTypeMap[params.poolType]),
             }
           : {
-              tokenid: params.tokenId,
+              tokenid: params.tokenId + '',
               contractaddress: params.contract,
             }),
       },

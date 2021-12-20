@@ -30,7 +30,7 @@ export interface IItemByFilter {
   description: string;
   externallink: string;
   fileurl: string;
-  id: number;
+  id: string;
   itemname: string;
   itemsymbol: string;
   likecount: number;
@@ -51,7 +51,7 @@ interface IApiFetchItemsByFilter {
 }
 
 interface IFetchItemsByFilterArgs {
-  ids: number[];
+  ids: string[];
   cts: string[];
   category?: NFTCategoryType;
   channel: ItemsChannel;

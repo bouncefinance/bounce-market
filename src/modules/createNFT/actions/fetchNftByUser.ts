@@ -39,7 +39,7 @@ export interface IItem {
   name: null;
   ownerAddress: string;
   providerLink: string;
-  tokenId: number;
+  tokenId: string;
   tokenType: NftType;
   tokenUri: string;
 }
@@ -62,7 +62,7 @@ function mapItem(item: IApiItem): IItem {
     name: item.name,
     ownerAddress: item.owner_addr,
     providerLink: item.provider_link,
-    tokenId: parseInt(item.token_id, 10),
+    tokenId: item.token_id,
     tokenType: item.token_type === '721' ? NftType.ERC721 : NftType.ERC1155,
     tokenUri: item.token_uri,
   };

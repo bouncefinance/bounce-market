@@ -31,7 +31,7 @@ export const BuyNFTRoutesConfig = {
   },
   Details_ITEM_NFT: {
     path: PATH_BUY_ITEM_NFT,
-    generatePath: (poolId: number, contract: string) =>
+    generatePath: (poolId: string, contract: string) =>
       generatePath(PATH_BUY_ITEM_NFT, { poolId, contract }),
     useParams: () => {
       const { poolId: poolIdParam, contract } = useParams<{

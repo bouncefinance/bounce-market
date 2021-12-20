@@ -30,7 +30,7 @@ const { updateLikeMap, updateLikeCount } = likeSlice.actions;
 export const setLikesMapDataAsync = (
   likes: {
     isLike: boolean;
-    itemId: number;
+    itemId: string;
     likeCount: number;
     poolId?: number;
   }[],

@@ -12,7 +12,7 @@ interface ITokenInfoProps {
   standard: NftType;
   contractAddress: string;
   supply: number;
-  tokenId: number;
+  tokenId: string;
 }
 
 export const TokenInfo = ({

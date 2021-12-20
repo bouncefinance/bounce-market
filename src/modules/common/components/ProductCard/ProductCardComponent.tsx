@@ -68,7 +68,7 @@ export interface IProductCardComponentProps {
   };
   profileInfo?: ReactNode;
   href?: string;
-  id?: number;
+  id?: number | string;
   isLiked?: boolean;
   isLikeDisabled?: boolean;
   hiddenLikeBtn?: boolean;

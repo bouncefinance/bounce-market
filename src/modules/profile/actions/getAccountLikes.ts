@@ -15,7 +15,7 @@ export interface IApiAccountLike {
   category: NFTCategoryType;
   iflike: number;
   imageurl: string;
-  itemid: number;
+  itemid: string;
   itemname: string;
   poolid: number;
 }
@@ -33,7 +33,7 @@ export interface IAccountLike {
   category: NFTCategoryType;
   isLiked: number;
   imageUrl: string;
-  itemId: number;
+  itemId: string;
   itemName: string;
   poolId: number;
 }

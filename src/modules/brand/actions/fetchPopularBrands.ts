@@ -11,7 +11,7 @@ export interface IItemsInfo {
   itemsymbol: string;
   standard: number;
   supply: number;
-  tokenid: number;
+  tokenid: string;
 }
 interface IApiFetchPopularBrandsData {
   // code

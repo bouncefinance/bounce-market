@@ -85,7 +85,7 @@ interface IPublishNFTComponentProps {
   name: string;
   tokenContract: string;
   nftType: NftType;
-  tokenId: number;
+  tokenId: string;
   maxQuantity: number;
   onPublish: () => void;
   category: NFTCategoryType;
@@ -766,12 +766,12 @@ export const PublishNFTComponent = ({
 
 export const PublishNFT = () => {
   const dispatch = useDispatchRequest();
-  const { id: idParam, contract } = useParams<{
+  const { id, contract } = useParams<{
     contract: string;
     id: string;
   }>();
   const { replace } = useHistory();
-  const id = parseInt(idParam, 10);
+  // const id = parseInt(idParam, 10);
 
   const handlePublish = useCallback(() => {
     replace(ProfileRoutesConfig.UserProfile.generatePath());

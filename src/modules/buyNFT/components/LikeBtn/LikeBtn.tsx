@@ -52,7 +52,7 @@ type nftLikeType = {
   className?: number;
   category?: string;
   count?: number;
-  id?: number;
+  id?: number | string;
   isLike?: boolean;
   contractAddress: string;
 };

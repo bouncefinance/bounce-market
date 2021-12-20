@@ -73,7 +73,7 @@ export interface OriginIPoolNftItem extends IPoolAvatars {
   mylikecount: number;
   // contract
   token0: string;
-  tokenid: number;
+  tokenid: string;
   swapped_amount0: number;
   token_amount0: number;
   category: ProductCardCategoryType;
@@ -90,7 +90,7 @@ export interface IPoolNftItem
   closeAt: Date;
   poolType: AuctionType;
   isLike: boolean;
-  tokenId?: number;
+  tokenId?: string;
   itemName: string;
   poolId?: number;
   likeCount?: number;
