@@ -55,13 +55,14 @@ export const TabBids: React.FC<{
       +item.closeAt <= now
     );
   };
+  const showList = data?.filter(filter) ?? [];
   return (
     <TabItemsComponent>
       <ProductCards isLoading={loading}>
         {loading ? (
           <ProductCardSkeleton />
         ) : (
-          data?.filter(filter)?.map((item, index) => {
+          showList?.map((item, index) => {
             const bidTopPrice = bidsInfo[index]?.toNumber();
             const bidsReservePrice = bidsReserveAmount[index]?.toNumber();
 
@@ -135,7 +136,7 @@ export const TabBids: React.FC<{
           })
         )}
       </ProductCards>
-      {!loading && data?.length === 0 && (
+      {!loading && showList?.length === 0 && (
         <NoItems
           href={MarketRoutesConfig.Market.generatePath()}
           title={t('profile.no-items.MyBids-title')}
