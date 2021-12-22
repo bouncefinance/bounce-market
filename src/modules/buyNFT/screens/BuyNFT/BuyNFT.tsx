@@ -499,7 +499,10 @@ export const BuyNFT = () => {
                         cryptoCurrency={item.tokenSymbol}
                         onBidClick={openBidDialog}
                         onBuyClick={openEnglishBuyDialog}
-                        disabled={poolDetails.state !== AuctionState.Live}
+                        // disabled={poolDetails.state !== AuctionState.Live}
+                        disabled={Boolean(
+                          poolDetails?.closeAt && +poolDetails.closeAt <= now,
+                        )}
                         saleTime={saleTime}
                         loading={
                           fixedSwapCancelLoading ||
