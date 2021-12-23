@@ -33,6 +33,7 @@ interface IInfoPricesProps {
   saleTime: boolean;
   royalty: IItemRoyaltyRes | null;
   isOpenSaleTime?: boolean;
+  notClaim?: boolean;
 }
 
 export const InfoPrices = ({
@@ -55,6 +56,7 @@ export const InfoPrices = ({
   saleTime,
   royalty,
   isOpenSaleTime = false,
+  notClaim = false,
 }: IInfoPricesProps) => {
   const { handleConnect, isConnected } = useAccount();
   const classes = useInfoPricesStyles();
@@ -130,7 +132,7 @@ export const InfoPrices = ({
             </>
           );
         }
-      } else if (role === 'buyer') {
+      } else if (role === 'buyer' && !notClaim) {
         return (
           <>
             <Box mb={2}>
@@ -252,6 +254,7 @@ export const InfoPrices = ({
     saleTime,
     isOpenSaleTime,
     checkLogin,
+    notClaim,
   ]);
 
   const renderRoyalty = () => {
