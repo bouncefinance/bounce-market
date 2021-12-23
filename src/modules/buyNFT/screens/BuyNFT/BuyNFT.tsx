@@ -510,6 +510,12 @@ export const BuyNFT = () => {
                           bidderClaimLoading
                         }
                         state={poolDetails.state}
+                        notClaim={Boolean(
+                          poolDetails.lastestBidAmount &&
+                            poolDetails.lastestBidAmount.isGreaterThanOrEqualTo(
+                              poolDetails.amountMax1,
+                            ),
+                        )}
                         // role={poolDetails.role}
                         role={role}
                         onBidderClaim={handleBidderClaim}
