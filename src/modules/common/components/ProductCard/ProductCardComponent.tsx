@@ -36,6 +36,7 @@ import { useCount } from 'modules/common/hooks/useTimer';
 import { ChainSymbolIcon } from '../Icons/Chains';
 import { formatUnitNumber } from 'modules/common/utils/number';
 import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
+import { SoldOutMask } from './souldOut';
 
 export type ProductCardCategoryType = NFTCategoryType;
 
@@ -95,6 +96,7 @@ export interface IProductCardComponentProps {
   reload?: () => void;
   isOther?: boolean;
   isTotalSupply?: boolean;
+  soldout?: boolean;
 }
 
 export const ProductCardComponent = ({
@@ -138,6 +140,7 @@ export const ProductCardComponent = ({
   isOther = false,
   isTotalSupply,
   reload,
+  soldout,
 }: IProductCardComponentProps) => {
   const { isConnected, handleConnect, chainId } = useAccount();
 
@@ -410,6 +413,7 @@ export const ProductCardComponent = ({
           {isOutBid && <BidsState type={BidsType.OUTBID} />}
           {isLost && <BidsState type={BidsType.LOST} />}
           {isWon && <BidsState type={BidsType.WON} />}
+          {soldout && <SoldOutMask />}
         </div>
 
         <CardContent className={classes.content}>

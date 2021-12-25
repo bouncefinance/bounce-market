@@ -79,6 +79,7 @@ export interface OriginIPoolNftItem extends IPoolAvatars {
   category: ProductCardCategoryType;
   description?: string;
   isplatform?: isPlatformType;
+  soldout?: boolean;
 }
 
 export interface IPoolNftItem
@@ -98,4 +99,5 @@ export interface IPoolNftItem
   nftCardOption: INftCardHelpsParams;
   isLive: boolean;
   isClose: boolean;
+  soldout?: boolean;
 }
