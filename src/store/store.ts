@@ -59,7 +59,7 @@ const chainToMainApiDriver: {
 };
 
 function getMainApiDriverName(chainId: BlockchainNetworkId): MainApiDriverName {
-  return chainToMainApiDriver[chainId] || 'mainApiSmartchain';
+  return chainToMainApiDriver[chainId] || 'mainApiEthMainnet';
 }
 
 function getAirdropMainApiDriverName(): MainApiDriverName {
