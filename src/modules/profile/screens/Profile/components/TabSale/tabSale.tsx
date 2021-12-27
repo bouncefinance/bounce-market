@@ -147,6 +147,7 @@ export const TabSale: React.FC<{
                 bidsReserveAmount={bidsReservePrice}
                 isCreatorClaimed={Boolean(item.creator_claimed)}
                 isBidderClaimed={Boolean(item.bidder_claimed)}
+                soldout={item.soldout}
               />
             );
           })

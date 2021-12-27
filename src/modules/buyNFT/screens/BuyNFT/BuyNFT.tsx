@@ -609,7 +609,11 @@ export const BuyNFT = () => {
                             category={item.category}
                             loading={loading}
                             maxQuantity={poolDetails.tokenAmount0}
-                            minIncrease={poolDetails.amountMinIncr1}
+                            minIncrease={
+                              poolBids?.length === 0
+                                ? new BigNumber(0)
+                                : poolDetails.amountMinIncr1
+                            }
                             lastestBidAmount={poolDetails.lastestBidAmount}
                             minAmount1={poolDetails.amountMin1}
                           />
