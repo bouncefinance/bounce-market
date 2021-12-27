@@ -92,39 +92,3 @@ export const getChainConfig = (tarChain: ChainType) => {
 
   return chainList[tarChain];
 };
-
-// {
-//   icon: <HecoIcon />,
-//   title: t('header.select-chain.heco'),
-//   subTitle: '',
-//   chainConfig: {
-//     chainId: '0x80',
-//     chainName: 'Huobi ECO Chain Mainnet',
-//     nativeCurrency: {
-//       name: 'Heco',
-//       symbol: TokenSymbol.HT,
-//       decimals: 18,
-//     },
-//     rpcUrls: ['https://http-mainnet.hecochain.com'],
-//     blockExplorerUrls: [
-//       getBlockChainExplorerAddress(BlockchainNetworkId.heco),
-//     ],
-//   },
-// },
-// {
-//   icon: <PolygonIcon />,
-//   title: t('header.select-chain.polygon'),
-//   chainConfig: {
-//     chainId: '0x89',
-//     chainName: 'Polygon Mainnet',
-//     nativeCurrency: {
-//       name: 'polygon',
-//       symbol: TokenSymbol.MATIC,
-//       decimals: 18,
-//     },
-//     rpcUrls: ['https://polygonscan.com'],
-//     blockExplorerUrls: [
-//       getBlockChainExplorerAddress(BlockchainNetworkId.matic),
-//     ],
-//   },
-// }

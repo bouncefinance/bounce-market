@@ -169,8 +169,8 @@ const BlockChainTokenSymbol: {
   [BlockchainNetworkId.matic]: TokenSymbol.MATIC,
 };
 
-export const DefaultTokenSymbol = TokenSymbol.BNB;
-export const DefaultChainId = BlockchainNetworkId.smartchain;
+export const DefaultTokenSymbol = TokenSymbol.ETH;
+export const DefaultChainId = BlockchainNetworkId.mainnet;
 
 export const getTokenSymbol = (chainId: BlockchainNetworkId) =>
   BlockChainTokenSymbol[chainId] || DefaultTokenSymbol;

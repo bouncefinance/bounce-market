@@ -13,6 +13,6 @@ export const setChainId = (id: number) => {
 export const getChainId = () => {
   return localStorage.chainId
     ? parseInt(localStorage.chainId, 10)
-    : BlockchainNetworkId.smartchain;
+    : BlockchainNetworkId.mainnet;
   // TODO chainId may invalid
 };
