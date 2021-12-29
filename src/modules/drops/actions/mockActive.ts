@@ -31,8 +31,8 @@ export const mockActive = [
     username: '0xc6a34b2bf59baF984884A0cf4C84eD1541E710d7',
     videourl: '',
     website: '',
-    // directLink:
-    //   'https://stage.fangible.com/profile/address/0x388651742c4e61e2f16999cb92dd8bf36bd360f9?id=&tab=owned',
+    directLink:
+      'https://fangible.com/profile/address/0xc3204884fad1fbc91b52e2fab27b7236f6e27137?id=&tab=sale',
     tarChain: 4 as ChainType,
   },
   {
@@ -62,8 +62,8 @@ export const mockActive = [
     username: '0x8031957cEecEe4Dbd63935def5745940D6d75Bc6',
     videourl: '',
     website: '',
-    // directLink:
-    //   'https://stage-solona-guwkoimwk5.ccian.cc/profile/address/4fSBkyZDQ35uxYnBf42pEPk3e4u4JBWBRM7shJvD97yf?id=&tab=owned',
+    directLink:
+      'https://solana.fangible.com/profile/address/5nmTGuPPcVw5jy5mNXpnqLCR3fJ7cnBUt28oKFgPpHfE?id=&tab=sale',
     tarChain: 1111 as ChainType, // 1111 是 Solana
     // comingTime: 'Coming Early 2022',
   },
