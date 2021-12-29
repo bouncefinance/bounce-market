@@ -466,99 +466,101 @@ export const ProductCardComponent = ({
               onClick={e => e.stopPropagation()}
               className={classes.rightWrapper}
             >
-              <div>
-                {isCancelTimePut && !isOther ? (
-                  <CancelPutTime
-                    auctionType={auctionType}
-                    id={poolId}
-                    reload={reload}
-                  />
-                ) : (
-                  <></>
-                )}
-                {isSellerCancel && !isOther && (
-                  <CancelPutOnSale
-                    auctionType={auctionType}
-                    id={poolId}
-                    reload={reload}
-                  />
-                )}
+              {!soldout && (
+                <div>
+                  {isCancelTimePut && !isOther ? (
+                    <CancelPutTime
+                      auctionType={auctionType}
+                      id={poolId}
+                      reload={reload}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                  {isSellerCancel && !isOther && (
+                    <CancelPutOnSale
+                      auctionType={auctionType}
+                      id={poolId}
+                      reload={reload}
+                    />
+                  )}
 
-                {!isCancelTimePut && !isSellerCancel && !isOther && (
-                  <>
-                    {isLost && (
-                      <ClaimFunds
-                        auctionType={auctionType}
-                        id={poolId}
-                        type={BidsType.LOST}
-                        isBidder={isBidder}
-                        reload={reload}
-                      />
-                    )}
-                    {isWon && (
-                      <ClaimFunds
-                        auctionType={auctionType}
-                        id={poolId}
-                        type={BidsType.WON}
-                        isBidder={isBidder}
-                        reload={reload}
-                      />
-                    )}
-                    {isSellerClaimMoney && (
-                      <ClaimFunds
-                        auctionType={auctionType}
-                        id={poolId}
-                        type={BidsType.LOST}
-                        isBidder={false}
-                        text={t('product-card.claim-funds')}
-                        reload={reload}
-                      />
-                    )}
-                    {isSellerClaimNft && (
-                      <ClaimFunds
-                        auctionType={auctionType}
-                        id={poolId}
-                        type={BidsType.LOST}
-                        isBidder={false}
-                        text={t('product-card.claim-back')}
-                        reload={reload}
-                      />
-                    )}
-                    {isBidder && isBidderClaimed && (
-                      <Button variant="outlined" rounded disabled>
-                        {t('product-card.claimed')}
-                      </Button>
-                    )}
-                    {isOnSeller && isCreatorClaimed && (
-                      <Button variant="outlined" rounded disabled>
-                        {t('product-card.claimed')}
-                      </Button>
-                    )}
+                  {!isCancelTimePut && !isSellerCancel && !isOther && (
+                    <>
+                      {isLost && (
+                        <ClaimFunds
+                          auctionType={auctionType}
+                          id={poolId}
+                          type={BidsType.LOST}
+                          isBidder={isBidder}
+                          reload={reload}
+                        />
+                      )}
+                      {isWon && (
+                        <ClaimFunds
+                          auctionType={auctionType}
+                          id={poolId}
+                          type={BidsType.WON}
+                          isBidder={isBidder}
+                          reload={reload}
+                        />
+                      )}
+                      {isSellerClaimMoney && (
+                        <ClaimFunds
+                          auctionType={auctionType}
+                          id={poolId}
+                          type={BidsType.LOST}
+                          isBidder={false}
+                          text={t('product-card.claim-funds')}
+                          reload={reload}
+                        />
+                      )}
+                      {isSellerClaimNft && (
+                        <ClaimFunds
+                          auctionType={auctionType}
+                          id={poolId}
+                          type={BidsType.LOST}
+                          isBidder={false}
+                          text={t('product-card.claim-back')}
+                          reload={reload}
+                        />
+                      )}
+                      {isBidder && isBidderClaimed && (
+                        <Button variant="outlined" rounded disabled>
+                          {t('product-card.claimed')}
+                        </Button>
+                      )}
+                      {isOnSeller && isCreatorClaimed && (
+                        <Button variant="outlined" rounded disabled>
+                          {t('product-card.claimed')}
+                        </Button>
+                      )}
 
-                    {!isMinting && !isOnSalePending && (
-                      <Box display="flex" alignItems="center">
-                        {!(copiesBalance && copiesBalance >= 0) ? (
-                          <></>
-                        ) : (
-                          <>
-                            {toSale && (
-                              <Button
-                                className={classes.saleBtn}
-                                component={RouterLink}
-                                variant="outlined"
-                                rounded
-                                to={toSale}
-                              >
-                                {t('product-card.put-on-sale')}
-                              </Button>
-                            )}
-                          </>
-                        )}
-                      </Box>
-                    )}
-                  </>
-                )}
-              </div>
+                      {!isMinting && !isOnSalePending && (
+                        <Box display="flex" alignItems="center">
+                          {!(copiesBalance && copiesBalance >= 0) ? (
+                            <></>
+                          ) : (
+                            <>
+                              {toSale && (
+                                <Button
+                                  className={classes.saleBtn}
+                                  component={RouterLink}
+                                  variant="outlined"
+                                  rounded
+                                  to={toSale}
+                                >
+                                  {t('product-card.put-on-sale')}
+                                </Button>
+                              )}
+                            </>
+                          )}
+                        </Box>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
               {hasAction && (
                 <div onClick={e => e.stopPropagation()}>
                   <ClickAwayListener onClickAway={handleClose}>

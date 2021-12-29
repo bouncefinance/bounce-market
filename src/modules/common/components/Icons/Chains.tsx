@@ -46,6 +46,13 @@ export const ChainsIcon: React.FC<{
   );
 };
 
+export const getSymbolName = (chiaId: BlockchainNetworkId) => {
+  return (
+    getChainSymbol(chiaId as BlockchainNetworkId)?.chainSymbolName ??
+    getChainSymbol(DefaultChainId).chainSymbolName
+  );
+};
+
 interface props extends BoxProps {
   chiaId?: number;
   className?: string;

@@ -34,6 +34,7 @@ interface IInfoPricesProps {
   royalty: IItemRoyaltyRes | null;
   isOpenSaleTime?: boolean;
   notClaim?: boolean;
+  isFixedSwap?: boolean;
 }
 
 export const InfoPrices = ({
@@ -57,6 +58,7 @@ export const InfoPrices = ({
   royalty,
   isOpenSaleTime = false,
   notClaim = false,
+  isFixedSwap = false,
 }: IInfoPricesProps) => {
   const { handleConnect, isConnected } = useAccount();
   const classes = useInfoPricesStyles();
@@ -99,7 +101,7 @@ export const InfoPrices = ({
         isTimeOver &&
         (role === 'buyer' || role === 'creator'))
     ) {
-      if (role === 'creator') {
+      if (role === 'creator' && !isFixedSwap && !notClaim) {
         if (state === AuctionState.CompletedByDirectPurchase) {
           return (
             <>
@@ -255,6 +257,7 @@ export const InfoPrices = ({
     isOpenSaleTime,
     checkLogin,
     notClaim,
+    isFixedSwap,
   ]);
 
   const renderRoyalty = () => {
