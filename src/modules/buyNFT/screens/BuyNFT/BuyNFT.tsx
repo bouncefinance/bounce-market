@@ -513,12 +513,16 @@ export const BuyNFT = () => {
                           bidderClaimLoading
                         }
                         state={poolDetails.state}
-                        notClaim={Boolean(
-                          poolDetails.lastestBidAmount &&
-                            poolDetails.lastestBidAmount.isGreaterThanOrEqualTo(
-                              poolDetails.amountMax1,
-                            ),
-                        )}
+                        notClaim={
+                          Boolean(
+                            poolDetails.lastestBidAmount &&
+                              poolDetails.lastestBidAmount.isGreaterThanOrEqualTo(
+                                poolDetails.amountMax1,
+                              ),
+                          ) ||
+                          Boolean(poolDetails.bidderClaimed) ||
+                          Boolean(poolDetails.creatorClaimed)
+                        }
                         // role={poolDetails.role}
                         role={role}
                         onBidderClaim={handleBidderClaim}
@@ -531,6 +535,8 @@ export const BuyNFT = () => {
                           currency.priceUsd,
                         )}
                         hasSetDirectPrice={true}
+                        notClaim={true}
+                        isFixedSwap
                         cryptoPrice={poolDetails.price}
                         cryptoCurrency={item.tokenSymbol}
                         onBuyClick={openFixedBuyDialog}
