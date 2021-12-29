@@ -25,7 +25,7 @@ export const mockActive = [
     nfts: 108,
     price: '',
     state: 2,
-    title: 'Exclusive Boxing Bullies by Jake Paul',
+    title: 'Exclusive Boxing Bullies by Jake Paul Collection',
     twitter: '',
     updated_at: '2021-12-09T03:27:39Z',
     username: '0xc6a34b2bf59baF984884A0cf4C84eD1541E710d7',
@@ -65,6 +65,6 @@ export const mockActive = [
     // directLink:
     //   'https://stage-solona-guwkoimwk5.ccian.cc/profile/address/4fSBkyZDQ35uxYnBf42pEPk3e4u4JBWBRM7shJvD97yf?id=&tab=owned',
     tarChain: 1111 as ChainType, // 1111 是 Solana
-    comingTime: 'Coming Early 2022',
+    // comingTime: 'Coming Early 2022',
   },
 ];

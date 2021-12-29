@@ -7,7 +7,7 @@ export const DropsTab = ({ classes, ...restProps }: TabProps) => {
   return (
     <Box className={styles.root}>
       <h1 className={styles.tab}>
-        {restProps.label} dr<span>🔥</span>ps
+        {restProps.label} Dr<span>🔥</span>ps
       </h1>
     </Box>
   );
