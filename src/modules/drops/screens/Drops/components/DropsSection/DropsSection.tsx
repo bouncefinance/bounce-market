@@ -43,8 +43,7 @@ export const DropsSection = (props: { scene: 'Active' | 'Upcoming' }) => {
     props.scene === 'Active'
       ? {
           id: SearchDropsParamState.Live,
-          // label: 'drops.active',
-          label: 'drops.upcoming',
+          label: 'drops.active',
         }
       : {
           id: SearchDropsParamState.Coming,
