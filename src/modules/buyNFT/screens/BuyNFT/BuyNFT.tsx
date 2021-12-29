@@ -324,6 +324,9 @@ export const BuyNFT = () => {
               { data: poolBids },
               { data: poolNftOwner },
             ) => {
+              if (!item) {
+                return <EmptyPageData />;
+              }
               const ownerTitle =
                 roleInfos.creator.username ||
                 truncateWalletAddr(item.ownerAddress);

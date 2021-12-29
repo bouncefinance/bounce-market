@@ -220,6 +220,10 @@ export const PublishNFTComponent = ({
   const durationOptions = useMemo(
     () => [
       {
+        label: t('unit.day', { value: 1 }),
+        value: 1,
+      },
+      {
         label: t('unit.day', { value: 3 }),
         value: 3,
       },
