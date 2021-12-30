@@ -12,10 +12,6 @@ export const Bio = ({ children }: IBioProps) => {
 
   return (
     <>
-      {/* <Box mb={2}>
-        <Typography variant="h4">{t('profile.bio')}</Typography>
-      </Box> */}
-
       <Box mb={9}>
         <Typography className={classes.bioDescr}>{children}</Typography>
       </Box>
