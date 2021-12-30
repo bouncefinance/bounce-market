@@ -33,7 +33,7 @@ export const mockActive = [
     website: '',
     directLink:
       'https://fangible.com/profile/address/0xc3204884fad1fbc91b52e2fab27b7236f6e27137?id=&tab=sale',
-    tarChain: 4 as ChainType,
+    tarChain: 1 as ChainType,
   },
   {
     accountaddress: '0x8031957cEecEe4Dbd63935def5745940D6d75Bc6',
