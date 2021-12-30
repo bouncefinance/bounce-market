@@ -11,6 +11,7 @@ import { Tabs, Tab } from '@material-ui/core';
 import { NoItems } from 'modules/common/components/NoItems';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { t } from 'modules/i18n/utils/intl';
+import { getSymbolName } from 'modules/common/components/Icons/Chains';
 
 export const TabActivity = () => {
   const styles = useTabActivityStyles();
@@ -42,7 +43,7 @@ export const TabActivity = () => {
   ];
 
   const dispatch = useDispatchRequest();
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const [tabKey, setTabKey] = useState<ActivityKeys>(ActivityKeys.Create);
 
   const onTabsChange = useCallback((_, value) => {
@@ -98,7 +99,7 @@ export const TabActivity = () => {
             <ActivitiesTable
               data={data.sort((a, b) => b.ctime - a.ctime)}
               tabKey={tabKey} // TODO: 需要按链接提取
-              symbol={'BNB'}
+              symbol={getSymbolName(chainId) ?? 'BNB'}
             />
           );
         }}
