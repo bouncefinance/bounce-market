@@ -1,6 +1,9 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
 export const useInfoPanelStyles = makeStyles<Theme>(theme => ({
+  root: {
+    marginBottom: 32,
+  },
   email: {
     fontWeight: 500,
     marginTop: theme.spacing(1),

@@ -81,7 +81,7 @@ export const InfoPanel = ({
   }, []);
 
   return (
-    <Box mb={8} {...boxProps}>
+    <Box mb={8} {...boxProps} className={classes.root}>
       <Grid
         container
         spacing={3}
@@ -98,7 +98,7 @@ export const InfoPanel = ({
       <Grid container spacing={3} alignItems="center">
         <Grid item xs={12} sm="auto">
           <Tooltip title={name} arrow placement="top">
-            <Typography variant="h2">{truncateLongName(name, 30)}</Typography>
+            <Typography variant="h2">{truncateLongName(name, 60)}</Typography>
           </Tooltip>
           {email && <Typography className={classes.url}>{email}</Typography>}
         </Grid>
