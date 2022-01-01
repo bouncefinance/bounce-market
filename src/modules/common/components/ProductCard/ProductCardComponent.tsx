@@ -343,7 +343,7 @@ export const ProductCardComponent = ({
       auctionEnd &&
       myPriceNumber > 0 &&
       myPriceNumber === bidTopPrice &&
-      bidsReserveAmount &&
+      // bidsReserveAmount &&
       myPriceNumber >= bidsReserveAmount,
   );
   // on sell
