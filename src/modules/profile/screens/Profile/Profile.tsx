@@ -239,7 +239,7 @@ export const Profile = () => {
           address={address}
         />
 
-        {profileInfo?.bio && <Bio>{profileInfo.bio}</Bio>}
+        {profileInfo?.bio && <Bio bio={profileInfo?.bio} />}
 
         <Tabs
           className={classes.tabs}
