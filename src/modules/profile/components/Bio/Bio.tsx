@@ -1,19 +1,32 @@
 import { Box, Typography } from '@material-ui/core';
-// import { t } from 'modules/i18n/utils/intl';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { useBioStyles } from './useBioStyles';
 
 interface IBioProps {
-  children?: ReactNode;
+  bio?: string;
 }
 
-export const Bio = ({ children }: IBioProps) => {
+export const Bio = ({ bio }: IBioProps) => {
   const classes = useBioStyles();
 
   return (
     <>
       <Box mb={9}>
-        <Typography className={classes.bioDescr}>{children}</Typography>
+        <Typography component="div" className={classes.bioDescr}>
+          {bio?.split('\n')?.map((v, i, arr) => {
+            return (
+              <p
+                key={i}
+                style={{
+                  marginTop: 0,
+                  ...(i === arr.length - 1 ? { marginBottom: 0 } : {}),
+                }}
+              >
+                {v}
+              </p>
+            );
+          })}
+        </Typography>
       </Box>
     </>
   );

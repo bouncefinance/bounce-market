@@ -65,7 +65,7 @@ const validateEditProfile = (payload: IEditProfileValues) => {
 
 const USERNAME_MAX_LENGTH = 25;
 const FULLNAME_MAX_LENGTH = 25;
-const BIO_CHARACTER_LIMIT = 200;
+const BIO_CHARACTER_LIMIT = 1000;
 
 export const EditProfile = () => {
   const dispatch = useDispatchRequest();
