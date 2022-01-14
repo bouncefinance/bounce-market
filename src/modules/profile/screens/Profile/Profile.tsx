@@ -19,7 +19,6 @@ import { SetAvatarModal } from 'modules/profile/components/SetAvatarModal';
 import { SetBgImgModal } from 'modules/profile/components/SetBgImgModal';
 import { Subscribers } from 'modules/profile/components/Subscribers';
 import { FollowGroup } from 'modules/profile/components/TabFollowing';
-import { TabCollection } from 'modules/profile/components/TabCollection';
 import { TabPanel } from 'modules/profile/components/TabPanel';
 import { Tabs } from 'modules/profile/components/Tabs';
 import { Tab } from 'modules/profile/components/Tabs/Tab';
@@ -132,10 +131,6 @@ export const Profile = () => {
       {
         value: ProfileTab.sells,
         label: t('profile.tabs.my-sells'),
-      },
-      {
-        value: ProfileTab.collections,
-        label: t('profile.tabs.my-collections'),
       },
       {
         value: ProfileTab.owned,
@@ -253,10 +248,6 @@ export const Profile = () => {
 
         <TabPanel value={tab} index={ProfileTab.owned}>
           <TabOwned address={address} reload={reload(ProfileTab.owned)} />
-        </TabPanel>
-
-        <TabPanel value={tab} index={ProfileTab.collections}>
-          <TabCollection />
         </TabPanel>
 
         <TabPanel value={tab} index={ProfileTab.sells}>

@@ -13,10 +13,9 @@ import {
 } from 'modules/overview/actions/fetchNFTItems';
 import { Button } from 'modules/uiKit/Button';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { uid } from 'react-uid';
-import { ProductsPanel } from '../ProductsPanel';
 import { useProductsStyles } from './useProductsStyles';
 
 const NFT_ITEMS_COUNT = 10;
@@ -30,32 +29,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     type: fetchNFTItems.toString(),
   });
 
-  const [sortBy, setSortBy] = useState<string>('1');
-  const [catergory, setCategory] = useState<ItemsChannel>(ItemsChannel.all);
-
-  const onSortChange = useCallback((value: string) => {
-    setSortBy(value);
-  }, []);
-
-  const onCategoryChange = useCallback(
-    (value: string) => {
-      setCategory(value as ItemsChannel);
-
-      dispatch(
-        fetchNFTItems({
-          channel: value as ItemsChannel,
-          limit: NFT_ITEMS_COUNT,
-        }),
-      );
-    },
-    [dispatch],
-  );
-
   useEffect(() => {
-    if (!isConnected) {
-      return;
-    }
-
     dispatch(
       fetchNFTItems({
         channel: ItemsChannel.all,
@@ -86,10 +60,10 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
       <NoItems href={MarketRoutesConfig.Market.generatePath()} />
     );
 
-  return isConnected ? (
+  return (
     <Section {...sectionProps}>
       <Container>
-        <Box mb={6}>
+        {/* <Box mb={6}>
           <ProductsPanel
             onSortChange={onSortChange}
             onCategoryChange={onCategoryChange}
@@ -97,7 +71,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
             sortBy={sortBy}
             disabled={loading}
           />
-        </Box>
+        </Box> */}
 
         {renderedCards}
 
@@ -117,5 +91,5 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
         )}
       </Container>
     </Section>
-  ) : null;
+  );
 };

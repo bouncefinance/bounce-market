@@ -23,12 +23,12 @@ export const getNftAvatars: getNftAvatarsType = ({ avatars, isPlatform }) => {
     typName: NftAvatarsType;
     value: IPoolAvatar;
   }[] = [];
-  if (avatars?.collectioninfo?.name) {
-    initData = initData.concat({
-      typName: 'collection',
-      value: avatars?.collectioninfo,
-    });
-  }
+  // if (avatars?.collectioninfo?.name) {
+  //   initData = initData.concat({
+  //     typName: 'collection',
+  //     value: avatars?.collectioninfo,
+  //   });
+  // }
   if (avatars?.creator?.address && !isPlatform) {
     initData = initData.concat({ typName: 'creator', value: avatars.creator });
   }

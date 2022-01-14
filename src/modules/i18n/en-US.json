@@ -253,7 +253,7 @@
       "collections": "Collections",
       "empty": "No results found",
       "items": "Items",
-      "placeholder": "Search by name, creator, collection...",
+      "placeholder": "Search by name, creator",
       "users": "Users"
     },
     "select-chain": {

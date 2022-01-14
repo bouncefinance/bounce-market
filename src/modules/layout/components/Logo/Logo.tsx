@@ -8,7 +8,7 @@ export const Logo = () => {
   return (
     <Link
       // to={RoutesConfiguration.Overview.generatePath()}
-      to={'/drops'}
+      to={'/index'}
       className={classes.root}
     >
       <LogoImg className={classes.img} />

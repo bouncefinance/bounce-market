@@ -7,15 +7,12 @@ import {
   ThemeProvider,
 } from '@material-ui/core';
 import { useAccount } from 'modules/account/hooks/useAccount';
-import { featuresConfig } from 'modules/common/conts';
 import { getTheme } from 'modules/common/utils/getTheme';
 import { t } from 'modules/i18n/utils/intl';
 import { Themes } from 'modules/themes/types';
 import { useIsXLUp } from 'modules/themes/useTheme';
 import { Button } from 'modules/uiKit/Button';
-import { Link as RouterLink } from 'react-router-dom';
-import { RoutesConfiguration } from '../../../createNFT/Routes';
-import { HeaderLinks, HeaderLinksSecondary } from '../HeaderLinks';
+import { HeaderLinks } from '../HeaderLinks';
 import { Logo } from '../Logo';
 import { Search } from '../Search';
 import { SearchTrigger } from '../SearchTrigger';
@@ -76,9 +73,10 @@ export const Header = () => {
   const renderedDesktop = (
     <>
       <Search className={classes.search} />
-      <HeaderLinks />
-      {featuresConfig.howItWorkPage && <HeaderLinksSecondary />}
-      <Button
+      {/* <HeaderLinks /> */}
+      <div></div>
+      {/* {featuresConfig.howItWorkPage && <HeaderLinksSecondary />} */}
+      {/* <Button
         rounded
         component={RouterLink}
         to={RoutesConfiguration.CreateNft.generatePath()}
@@ -87,7 +85,7 @@ export const Header = () => {
         color="primary"
       >
         {t('header.create')}
-      </Button>
+      </Button> */}
 
       {!isConnected && (
         <Button onClick={handleConnect} loading={loading} rounded>
@@ -168,10 +166,11 @@ export const Header = () => {
                   <Box mb={5}>
                     <HeaderLinks />
 
-                    {featuresConfig.howItWorkPage && <HeaderLinksSecondary />}
+                    <div></div>
+                    {/* {featuresConfig.howItWorkPage && <HeaderLinksSecondary />} */}
                   </Box>
 
-                  <Box mt="auto" mb={3}>
+                  {/* <Box mt="auto" mb={3}>
                     <Button
                       component={RouterLink}
                       className={classes.btnCreate}
@@ -183,7 +182,7 @@ export const Header = () => {
                     >
                       {t('header.create')}
                     </Button>
-                  </Box>
+                  </Box> */}
 
                   <Box mt="auto" mb={3}>
                     <Button

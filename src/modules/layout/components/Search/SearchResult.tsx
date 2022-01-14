@@ -10,12 +10,7 @@ import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { t } from '../../../i18n/utils/intl';
 import { ProfileRoutesConfig } from '../../../profile/ProfileRoutes';
 import { Img } from '../../../uiKit/Img';
-import {
-  ISearchAccount,
-  ISearchBrand,
-  ISearchItem,
-  ISearchResult,
-} from './getByLikeStr';
+import { ISearchAccount, ISearchItem, ISearchResult } from './getByLikeStr';
 import { useSearchResultStyles } from './useSearchResultStyles';
 
 const SearchItems = ({ data }: { data: ISearchItem[] }) => {
@@ -74,40 +69,6 @@ const SearchItems = ({ data }: { data: ISearchItem[] }) => {
   );
 };
 
-const SearchBrand = ({ data }: { data: ISearchBrand[] }) => {
-  const classes = useSearchResultStyles();
-
-  if (!data.length) {
-    return null;
-  }
-
-  return (
-    <div className={classes.group}>
-      <div className={classes.title}>{t('header.search.collections')}</div>
-      {data.map((item: ISearchBrand) => (
-        <RouterLink
-          to={ProfileRoutesConfig.Collection.generatePath(item.contractAddress)}
-          className={classes.content}
-          key={item.contractAddress}
-        >
-          <div className={classes.preview}>
-            <Img
-              src={item.previewUrl}
-              size="small"
-              alt={item.name}
-              ratio="1x1"
-              objectFit="cover"
-            />
-          </div>
-          <div className={classes.item}>
-            <div className={classes.name}>{item.name}</div>
-          </div>
-        </RouterLink>
-      ))}
-    </div>
-  );
-};
-
 const SearchAccount = ({ data }: { data: ISearchAccount[] }) => {
   const classes = useSearchResultStyles();
 
@@ -153,7 +114,7 @@ const SearchResult = ({
   return (
     <div className={classes.root} onClick={handleClose}>
       {loading ? <QueryLoadingCentered /> : <SearchItems data={data.items} />}
-      {loading ? <QueryLoadingCentered /> : <SearchBrand data={data.brands} />}
+      {/* {loading ? <QueryLoadingCentered /> : <SearchBrand data={data.brands} />} */}
       {loading ? (
         <QueryLoadingCentered />
       ) : (
