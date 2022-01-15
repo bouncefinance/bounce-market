@@ -1,4 +1,4 @@
-import { Box, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import { resetRequests } from '@redux-requests/core';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
@@ -11,10 +11,9 @@ import {
   fetchNFTItems,
   IFetchNFTItems,
 } from 'modules/overview/actions/fetchNFTItems';
-import { ProductsPanel } from 'modules/overview/components/ProductsPanel';
 import { useIsSMDown } from 'modules/themes/useTheme';
 import { ISectionProps, Section } from 'modules/uiKit/Section';
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Pagination } from '../../../uiKit/Pagination';
@@ -30,7 +29,6 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const dispatch = useDispatch();
   const { page, category } = MarketRoutesConfig.Market.useParams();
   const history = useHistory();
-  const [sortBy, setSortBy] = useState<string>('1');
   const isMobile = useIsSMDown();
   const classes = useProductsStyles();
   const { isConnected } = useAccount();
@@ -42,18 +40,10 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
     type: fetchNFTItems.toString(),
   });
 
-  const onCategoryChange = (value: string) => {
-    history.push(MarketRoutesConfig.Market.generatePath(DEFAULT_PAGE, value));
-  };
-
   const onPaginationChange = (event: ChangeEvent<unknown>, value: number) => {
     history.push(MarketRoutesConfig.Market.generatePath(value, category));
     window.scrollTo(0, HEADER_HEIGHT_XL);
   };
-
-  const onSortChange = useCallback((value: string) => {
-    setSortBy(value);
-  }, []);
 
   useEffect(() => {
     dispatchRequest(
@@ -111,7 +101,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   return (
     <Section {...sectionProps}>
       <Container>
-        <Box mb={{ xs: 4, md: 6 }}>
+        {/* <Box mb={{ xs: 4, md: 6 }}>
           <ProductsPanel
             onSortChange={onSortChange}
             onCategoryChange={onCategoryChange}
@@ -119,7 +109,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
             sortBy={sortBy}
             disabled={nftItemsLoading}
           />
-        </Box>
+        </Box> */}
 
         {nftItemsLoading || hasItems ? (
           <>
