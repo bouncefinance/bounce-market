@@ -114,7 +114,10 @@
       "standard": "Standard",
       "supply": "Supply"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "title": "Create NFT",
@@ -136,7 +139,10 @@
       "description": "What's the story behind this NFT?"
     },
     "next": "Next",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Create",
     "submitting": "Creating",
     "time": "",
@@ -242,6 +248,7 @@
     "collections": "Collections",
     "connect": "Connect Wallet",
     "create": "Create",
+    "deposit": "Deposit",
     "disconnect": "Disconnect",
     "drops": "Dr🔥ps",
     "how-it-works": "How it works",

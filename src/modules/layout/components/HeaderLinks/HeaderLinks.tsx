@@ -1,4 +1,4 @@
-import { DropsRoutesConfig } from 'modules/drops/Routes';
+// import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { Button } from 'modules/uiKit/Button';
@@ -59,10 +59,10 @@ export const HeaderLinks = () => {
   const { onItemClick } = useHeaderLinks();
   const items = useMemo(
     () => [
-      {
-        label: t('header.drops'),
-        href: DropsRoutesConfig.Drops.generatePath(),
-      },
+      // {
+      //   label: t('header.drops'),
+      //   href: DropsRoutesConfig.Drops.generatePath(),
+      // },
       {
         label: t('header.market'),
         href: MarketRoutesConfig.Market.generatePath(),

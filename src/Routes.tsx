@@ -58,6 +58,7 @@ export function Routes() {
         exact
         path={[
           CreateNFTRoutesConfig.CreateNft.path,
+          CreateNFTRoutesConfig.DepositToken.path,
           CreateNFTRoutesConfig.PublishNft.path,
         ]}
         render={() => (

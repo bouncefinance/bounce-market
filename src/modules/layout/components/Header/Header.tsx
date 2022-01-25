@@ -27,6 +27,8 @@ import {
 } from './components/SelectChainDialog';
 import { useCallback } from 'react';
 import { setChainId } from 'modules/common/utils/localStorage';
+import { RoutesConfiguration } from 'modules/createNFT/Routes';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
   const {
@@ -76,16 +78,16 @@ export const Header = () => {
       {/* <HeaderLinks /> */}
       <div></div>
       {/* {featuresConfig.howItWorkPage && <HeaderLinksSecondary />} */}
-      {/* <Button
+      <Button
         rounded
-        component={RouterLink}
-        to={RoutesConfiguration.CreateNft.generatePath()}
+        component={Link}
+        to={RoutesConfiguration.DepositToken.generatePath()}
         className={classes.btnCreate}
         variant="outlined"
         color="primary"
       >
-        {t('header.create')}
-      </Button> */}
+        {t('header.deposit')}
+      </Button>
 
       {!isConnected && (
         <Button onClick={handleConnect} loading={loading} rounded>
