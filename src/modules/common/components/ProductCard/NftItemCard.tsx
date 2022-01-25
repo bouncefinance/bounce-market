@@ -62,6 +62,7 @@ export const NftItemCard = ({
           users={item.avatars}
         />
       }
+      apetype={item.apetype}
     />
   );
 };

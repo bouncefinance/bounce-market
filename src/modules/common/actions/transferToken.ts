@@ -6,7 +6,9 @@ import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
+import { tokenFrozen } from './frozen';
 
+const isFrozen = true;
 export const transferToken = createSmartAction<RequestAction<void, void>>(
   'transferToken',
   (
@@ -15,6 +17,7 @@ export const transferToken = createSmartAction<RequestAction<void, void>>(
     tokenId: number,
     toAddress: string,
     quantity?: number,
+    tokenType?: string,
   ) => ({
     request: {
       promise: (async function () {})(),
@@ -34,6 +37,20 @@ export const transferToken = createSmartAction<RequestAction<void, void>>(
               type: setAccount.toString(),
               action: setAccount,
             });
+
+            if (isFrozen && tokenType) {
+              const res = await store.dispatchRequest(
+                tokenFrozen({
+                  address,
+                  token_type: tokenType + '0',
+                  token_id: tokenId + '',
+                }),
+              );
+              console.log('tokenFrozen res------->', res);
+              if (res.error) {
+                return;
+              }
+            }
 
             const contract721 = new web3.eth.Contract(
               BounceErc721,

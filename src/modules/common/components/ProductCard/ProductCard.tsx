@@ -41,6 +41,7 @@ export interface IProductCardProps
   isOther?: boolean;
   isTotalSupply?: boolean;
   reload?: () => void;
+  apetype?: string;
 }
 
 export const ProductCard = ({
@@ -111,6 +112,7 @@ export const ProductCard = ({
           id,
           data.toAddress,
           data.quantity,
+          restProps.apetype,
         ),
       ).then(({ error }) => {
         closeTransfer();

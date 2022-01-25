@@ -22,6 +22,7 @@ export interface IOriginNftItem extends IPoolAvatars {
   balance: number;
   standard: NftType;
   litimgurl: string;
+  apetype?: string;
 }
 
 export interface INftItem {
@@ -40,4 +41,5 @@ export interface INftItem {
   balance: number;
   contractAddress: string;
   standard?: NftType;
+  apetype?: string;
 }
