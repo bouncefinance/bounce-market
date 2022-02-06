@@ -14,16 +14,18 @@ import {
   getPoolAddress,
   getPoolContract,
 } from 'modules/common/hooks/contractHelps';
+import { tokenUnfrozen } from 'modules/common/actions/frozen';
 
 interface ICancelParams {
   poolId: string;
   poolType: AuctionType;
+  tokenId: string;
 }
 
 export const fixedSwapCancel = createSmartAction<RequestAction<void, void>>(
   'fixedSwapCancel',
   (
-    { poolId, poolType }: ICancelParams,
+    { poolId, poolType, tokenId }: ICancelParams,
     meta?: RequestActionMeta<void, void>,
   ) => ({
     request: {
@@ -48,6 +50,16 @@ export const fixedSwapCancel = createSmartAction<RequestAction<void, void>>(
               getPoolContract(poolType),
               getPoolAddress({ poolType, chainId }),
             );
+            const unfrozen = async () => {
+              store.dispatchRequest(
+                tokenUnfrozen({
+                  address,
+                  // TODO
+                  token_type: '',
+                  token_id: tokenId + '',
+                }),
+              );
+            }
 
             await new Promise((resolve, reject) => {
               contract.methods

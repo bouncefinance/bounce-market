@@ -14,6 +14,7 @@ import { addTokenSymbolByDriver } from '../../common/utils/addTokenSymbolByDrive
 
 export interface IFetchItem extends IGetOneItemById {
   tokenSymbol: TokenSymbol;
+  apetype: string;
 }
 export interface IFetchItem2 {
   likecount: number;

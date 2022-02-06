@@ -29,6 +29,7 @@ export interface IGetOneItemById {
 export const mapGetOneItemById = (data: IApiGetOneItemByIdData) => {
   return {
     balance: data.balance,
+    apetype: data.apetype,
     category: data.category,
     channel: data.channel,
     contractAddress: data.contractaddress,

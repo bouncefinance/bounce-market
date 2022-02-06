@@ -13,6 +13,7 @@ import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoadin
 import { getBlockChainExplorerAddress } from 'modules/common/conts';
 // import { useCount } from 'modules/common/hooks/useTimer';
 import { depositToken } from 'modules/createNFT/actions/depositToken';
+import { getFTAddress } from 'modules/createNFT/hooks/useCurrencies';
 import { InputField } from 'modules/form/components/InputField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
@@ -33,14 +34,19 @@ export const DepositToken: React.FC<IDepositToken> = () => {
   const { web3, address, chainId } = useWeb3React();
   const blockChainScan = getBlockChainExplorerAddress(chainId);
   const [tokenInfo, setTokenInfo] = useState({
-    contractAddress: '0xE9EB9E2E6a03f7a78a6Cf75B15c42c8954CCD200', // FT rinkeby
+    // contractAddress: '0xE9EB9E2E6a03f7a78a6Cf75B15c42c8954CCD200', // FT rinkeby
     // contractAddress: '0xc3Af90A5b9DB6ca66664da4d6B54092Dc8943ebe', //StrayInu bsc
+    contractAddress: getFTAddress(chainId), 
     logo:
       'https://pancakeswap.finance/images/tokens/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82.png',
     name: 'TokenName',
     balance: '0',
     decimals: '18',
   });
+  useEffect(() => {
+    setTokenInfo({...tokenInfo, contractAddress: getFTAddress(chainId)})
+  // eslint-disable-next-line
+  }, [chainId, getFTAddress])
   const validateDeposit = (payload: IDepositTokenFormData) => {
     const errors: FormErrors<IDepositTokenFormData> = {};
     if (!payload.amount) {
@@ -58,7 +64,7 @@ export const DepositToken: React.FC<IDepositToken> = () => {
   const dispatch = useDispatchRequest();
   const [submitTokenNum, setSubmitTokenNum] = useState('0');
   const handleSubmit = (payload: IDepositTokenFormData) => {
-    console.log('handleSubmit', payload);
+    console.log('handleSubmit', payload, tokenInfo);
     setSubmitTokenNum(payload.amount);
     dispatch(
       depositToken({

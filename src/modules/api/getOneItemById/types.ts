@@ -27,6 +27,7 @@ export interface IApiGetOneItemByIdData {
   open_at: number;
   auctiontype: AuctionTypeKeys;
   identity: UserRoleType;
+  apetype: string;
 }
 
 export interface IApiGetOneItemById {

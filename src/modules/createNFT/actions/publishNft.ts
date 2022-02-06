@@ -3,6 +3,7 @@ import { DispatchRequest, getQuery, RequestAction } from '@redux-requests/core';
 import BigNumber from 'bignumber.js';
 import { AuctionType } from 'modules/api/common/auctionType';
 import { NftType } from 'modules/api/common/NftType';
+import { tokenFrozen } from 'modules/common/actions/frozen';
 import { Store } from 'redux';
 import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
@@ -84,6 +85,7 @@ type IPublishNftPayload =
       unitContract: string;
       standard: NftType;
       tokenId: string;
+      apetype: string;
       price: BigNumber;
       quantity: number;
       saleTime: ISaleTime;
@@ -100,6 +102,7 @@ type IPublishNftPayload =
       unitContract: string;
       standard: NftType;
       tokenId: string;
+      apetype: string;
       quantity: number;
       saleTime: ISaleTime;
     };
@@ -208,9 +211,19 @@ export const publishNft = createSmartAction<
                 unitContract,
                 standard,
                 tokenId,
+                apetype,
                 price,
                 quantity,
               } = payload;
+              const frozen = async () => {
+                store.dispatchRequest(
+                  tokenFrozen({
+                    address,
+                    token_type: apetype + '',
+                    token_id: tokenId + '',
+                  }),
+                );
+              }
 
               const ContractBounceFixedSwapNFT = new web3.eth.Contract(
                 isOpenSaleTime ? BounceFixedSwapNFTTime : BounceFixedSwapNFT,
@@ -249,6 +262,7 @@ export const publishNft = createSmartAction<
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
                       // Pending status
+                      frozen()
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
                       setTimeout(() => {
@@ -300,6 +314,7 @@ export const publishNft = createSmartAction<
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
                       // Pending status
+                      frozen()
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
                       setTimeout(() => {
@@ -319,6 +334,7 @@ export const publishNft = createSmartAction<
                 unitContract,
                 standard,
                 tokenId,
+                apetype,
                 purchasePrice,
                 minBid,
                 minIncremental,
@@ -326,6 +342,16 @@ export const publishNft = createSmartAction<
                 duration,
                 quantity,
               } = payload;
+
+              const frozen = async () => {
+                store.dispatchRequest(
+                  tokenFrozen({
+                    address,
+                    token_type: apetype + '',
+                    token_id: tokenId + '',
+                  }),
+                );
+              }
 
               const ContractBounceEnglishAuctionNFT = new web3.eth.Contract(
                 isOpenSaleTime
@@ -378,6 +404,7 @@ export const publishNft = createSmartAction<
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
                       // Pending status
+                      frozen()
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
                       setTimeout(() => {
@@ -434,6 +461,7 @@ export const publishNft = createSmartAction<
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
                       // Pending status
+                      frozen()
                     })
                     .on('receipt', async (receipt: TransactionReceipt) => {
                       setTimeout(() => {

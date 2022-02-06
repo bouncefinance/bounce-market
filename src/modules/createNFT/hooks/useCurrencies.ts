@@ -1,11 +1,41 @@
 import { useQuery } from '@redux-requests/react';
-import { getNativeTokenSymbol, ZERO_ADDRESS } from 'modules/common/conts';
+// import {  getNativeTokenSymbol, ZERO_ADDRESS } from 'modules/common/conts';
 import { useMemo } from 'react';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { TokenSymbol } from '../../common/types/TokenSymbol';
 
 const ENABLE_FIXED_TOKENS = false;
+const FT_FIXED_TOKENS = true
 
+export function getFTAddress(chainId: number) {
+  switch (chainId) {
+    case 1:
+      return '';
+    case 4:
+      return '0xE9EB9E2E6a03f7a78a6Cf75B15c42c8954CCD200';
+    case 97:
+      return '';
+    case 56:
+      return '';
+    default:
+      return '';
+  }
+}
+// TODO
+export function getAPEAddress(chainId: number) {
+  switch (chainId) {
+    case 1:
+      return '';
+    case 4:
+      return '0xE9EB9E2E6a03f7a78a6Cf75B15c42c8954CCD200';
+    case 97:
+      return '';
+    case 56:
+      return '';
+    default:
+      return '';
+  }
+}
 function getUSDTAddress(chainId: number) {
   switch (chainId) {
     case 1:
@@ -65,12 +95,12 @@ export function useCurrencies() {
       chainId
         ? {
             options: [
-              {
-                label: getNativeTokenSymbol(chainId),
-                value: ZERO_ADDRESS,
-                contract: ZERO_ADDRESS,
-                decimals: 18,
-              },
+              // {
+              //   label: getNativeTokenSymbol(chainId),
+              //   value: ZERO_ADDRESS,
+              //   contract: ZERO_ADDRESS,
+              //   decimals: 18,
+              // },
               ...(chainId === 56 && ENABLE_FIXED_TOKENS
                 ? [
                     {
@@ -94,8 +124,18 @@ export function useCurrencies() {
                     },
                   ]
                 : []),
+                ...(FT_FIXED_TOKENS
+                  ? [
+                      {
+                        label: 'APE',
+                        value: getAPEAddress(chainId),
+                        decimals: 18,
+                      },
+                    ]
+                  : []),
             ],
-            default: ZERO_ADDRESS,
+            // default: ZERO_ADDRESS,
+            default: getAPEAddress(chainId),
           }
         : { options: [], default: undefined },
     [chainId],

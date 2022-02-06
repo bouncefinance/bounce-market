@@ -38,17 +38,19 @@ export const transferToken = createSmartAction<RequestAction<void, void>>(
               action: setAccount,
             });
 
-            if (isFrozen && tokenType) {
-              const res = await store.dispatchRequest(
-                tokenFrozen({
-                  address,
-                  token_type: tokenType + '0',
-                  token_id: tokenId + '',
-                }),
-              );
-              console.log('tokenFrozen res------->', res);
-              if (res.error) {
-                return;
+            const frozen = async () => {
+              if (isFrozen && tokenType) {
+                const res = await store.dispatchRequest(
+                  tokenFrozen({
+                    address,
+                    token_type: tokenType + '',
+                    token_id: tokenId + '',
+                  }),
+                );
+                console.log('tokenFrozen res------->', res);
+                if (res.error) {
+                  return;
+                }
               }
             }
 
@@ -69,6 +71,7 @@ export const transferToken = createSmartAction<RequestAction<void, void>>(
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     // Pending status
+                    frozen()
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
                     setTimeout(() => {
@@ -92,6 +95,7 @@ export const transferToken = createSmartAction<RequestAction<void, void>>(
                   .send({ from: address })
                   .on('transactionHash', (hash: string) => {
                     // Pending status
+                    frozen()
                   })
                   .on('receipt', async (receipt: TransactionReceipt) => {
                     setTimeout(() => {

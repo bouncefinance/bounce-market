@@ -86,6 +86,7 @@ interface IPublishNFTComponentProps {
   tokenContract: string;
   nftType: NftType;
   tokenId: string;
+  apetype: string;
   maxQuantity: number;
   onPublish: () => void;
   category: NFTCategoryType;
@@ -99,6 +100,7 @@ export const PublishNFTComponent = ({
   tokenContract,
   nftType,
   tokenId,
+  apetype,
   maxQuantity,
   onPublish,
   category,
@@ -258,6 +260,7 @@ export const PublishNFTComponent = ({
             unitContract: payload.unitContract,
             standard: nftType,
             tokenId,
+            apetype,
             price: new BigNumber(payload.price),
             quantity: +payload.quantity,
             saleTime: payload.saleTimeFS,
@@ -286,6 +289,7 @@ export const PublishNFTComponent = ({
             unitContract: payload.unitContract,
             standard: nftType,
             tokenId,
+            apetype,
             quantity: +payload.quantity,
             saleTime: payload.saleTimeEA,
           }),
@@ -423,7 +427,7 @@ export const PublishNFTComponent = ({
         </div>
 
         <div>
-          <Box mb={6}>
+          {false && <Box mb={6}>
             <FormControl fullWidth>
               <InputLabel shrink>{t('publish-nft.label.type')}</InputLabel>
 
@@ -436,7 +440,7 @@ export const PublishNFTComponent = ({
                 items={options}
               />
             </FormControl>
-          </Box>
+          </Box>}
 
           {values.type === AuctionType.FixedSwap ? (
             <>
@@ -807,6 +811,7 @@ export const PublishNFT = () => {
             nftType={data.standard}
             tokenId={data.id}
             file={data.fileUrl}
+            apetype={data.apetype}
             category={data.category}
             maxQuantity={maxQuantity}
             onPublish={handlePublish}
