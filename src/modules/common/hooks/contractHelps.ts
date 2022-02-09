@@ -39,3 +39,27 @@ export const getPoolContract = (poolType: AuctionType) => {
   };
   return poolTypes[poolType] || poolTypes[AuctionType.FixedSwap_Timing];
 };
+
+export const getApeSwapContract = (chainID: number) => {
+  switch (chainID) {
+    case 1: return '';
+    case 4:  return '0xa2655d3a8197bD16259461d3FACe52F48d7D5B89';
+    case 56: return ''
+    case 128: return ''
+    case 137: return '';
+    default:
+      return '0xa2655d3a8197bD16259461d3FACe52F48d7D5B89';
+  }
+}
+
+export const getApeContract = (chainID: number) => {
+  switch (chainID) {
+    case 1: return '';
+    case 4:  return '0x4ab5117195e6a4921ae90312a914d7f5a769455e';
+    case 56: return ''
+    case 128: return ''
+    case 137: return '';
+    default:
+      return '0x4ab5117195e6a4921ae90312a914d7f5a769455e';
+  }
+}

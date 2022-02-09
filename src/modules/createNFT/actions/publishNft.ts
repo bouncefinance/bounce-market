@@ -9,9 +9,7 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
 import { RootState } from 'store';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { Seconds } from '../../common/types/unit';
-import { throwIfDataIsEmptyOrError } from '../../common/utils/throwIfDataIsEmptyOrError';
 import { toWei } from '../../common/utils/toWei';
-import { fetchCurrency } from '../../overview/actions/fetchCurrency';
 import {
   BounceEnglishAuctionNFT,
   BounceErc1155,
@@ -151,13 +149,14 @@ export const publishNft = createSmartAction<
             );
             const onlyBOT = false;
 
-            const {
-              data: { decimals },
-            } = throwIfDataIsEmptyOrError(
-              await store.dispatchRequest(
-                fetchCurrency({ unitContract: payload.unitContract }),
-              ),
-            );
+            // const {
+            //   data: { decimals },
+            // } = throwIfDataIsEmptyOrError(
+            //   await store.dispatchRequest(
+            //     fetchCurrency({ unitContract: payload.unitContract }),
+            //   ),
+            // );
+            const decimals = 18 
 
             const cutName = (name: string) => {
               if (name.length < 30) {

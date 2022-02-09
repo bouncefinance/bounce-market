@@ -60,6 +60,7 @@ export function Routes() {
           CreateNFTRoutesConfig.CreateNft.path,
           CreateNFTRoutesConfig.DepositToken.path,
           CreateNFTRoutesConfig.PublishNft.path,
+          CreateNFTRoutesConfig.PublishErc20.path,
         ]}
         render={() => (
           <DefaultLayout>

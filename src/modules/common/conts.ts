@@ -174,3 +174,19 @@ export const DefaultChainId = BlockchainNetworkId.mainnet;
 
 export const getTokenSymbol = (chainId: BlockchainNetworkId) =>
   BlockChainTokenSymbol[chainId] || DefaultTokenSymbol;
+
+  export enum NftFtKeys {
+    NFT,
+    FT
+  }
+
+export  const NftFtTabs = [
+    {
+      label: 'NFT',
+      value: NftFtKeys.NFT,
+    },
+    {
+      label: 'FT',
+      value: NftFtKeys.FT,
+    },
+  ]

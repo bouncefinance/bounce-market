@@ -1,4 +1,5 @@
 import { useQuery } from '@redux-requests/react';
+import { getApeContract } from 'modules/common/hooks/contractHelps';
 // import {  getNativeTokenSymbol, ZERO_ADDRESS } from 'modules/common/conts';
 import { useMemo } from 'react';
 import { setAccount } from '../../account/store/actions/setAccount';
@@ -21,21 +22,7 @@ export function getFTAddress(chainId: number) {
       return '';
   }
 }
-// TODO
-export function getAPEAddress(chainId: number) {
-  switch (chainId) {
-    case 1:
-      return '';
-    case 4:
-      return '0xE9EB9E2E6a03f7a78a6Cf75B15c42c8954CCD200';
-    case 97:
-      return '';
-    case 56:
-      return '';
-    default:
-      return '';
-  }
-}
+
 function getUSDTAddress(chainId: number) {
   switch (chainId) {
     case 1:
@@ -128,14 +115,14 @@ export function useCurrencies() {
                   ? [
                       {
                         label: 'APE',
-                        value: getAPEAddress(chainId),
+                        value: getApeContract(chainId),
                         decimals: 18,
                       },
                     ]
                   : []),
             ],
             // default: ZERO_ADDRESS,
-            default: getAPEAddress(chainId),
+            default: getApeContract(chainId),
           }
         : { options: [], default: undefined },
     [chainId],

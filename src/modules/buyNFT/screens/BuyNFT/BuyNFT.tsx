@@ -64,7 +64,7 @@ import { useBuyNFTStyles } from './useBuyNFTStyles';
 import { useDialog } from './useDialog';
 
 export const BuyNFT = () => {
-  const { chainId } = useAccount();
+  const { chainId } = useAccount()
   const blockChainScan = getBlockChainExplorerAddress(chainId);
   const [isEmptyData, setIsEmptyData] = useState(false);
   const [now, setNow] = useState(Date.now());

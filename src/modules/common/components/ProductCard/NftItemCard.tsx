@@ -1,7 +1,9 @@
+import { getMetaData, IMetadataInfo } from 'modules/api/common/getMetadata';
 import { INftItem } from 'modules/api/common/itemType';
 import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
 import { TokenSymbol } from 'modules/common/types/TokenSymbol';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
+import { useEffect, useState } from 'react';
 import { CardProfileInfo } from '../ProfileInfo';
 import { ProductCard } from './ProductCard';
 
@@ -20,6 +22,18 @@ export const NftItemCard = ({
   hasAction?: boolean;
   reload?: () => void;
 }) => {
+  const [metadata, setMetadata] = useState<IMetadataInfo>()
+  const init = async () => {
+    try {
+      const res = await getMetaData(item.itemId)
+      setMetadata(res)
+    } catch (error) {
+    }
+  }
+  useEffect(() => {
+    init()
+  // eslint-disable-next-line
+  }, [item.itemId])
   return (
     <ProductCard
       reload={reload}
@@ -28,7 +42,7 @@ export const NftItemCard = ({
       id={item.tokenId}
       poolId={0}
       isItemType
-      title={item.name}
+      title={metadata?.name || item.name}
       href={BuyNFTRoutesConfig.Details_ITEM_NFT.generatePath(
         item.tokenId,
         item.contractAddress,
@@ -41,7 +55,7 @@ export const NftItemCard = ({
       copiesBalance={item?.balance ?? 0}
       MediaProps={{
         category: item.category,
-        src: item.litimgurl || item.fileUrl || 'xxx',
+        src: metadata?.image || item.litimgurl || item.fileUrl || 'xxx',
         objectFit: 'contain',
         loading: 'lazy',
       }}
@@ -58,7 +72,7 @@ export const NftItemCard = ({
       profileInfo={
         <CardProfileInfo
           subTitle="Creator"
-          title={item.name}
+          title={metadata?.name || item.name}
           users={item.avatars}
         />
       }

@@ -46,6 +46,8 @@ export const fixedSwapCancel = createSmartAction<RequestAction<void, void>>(
               action: setAccount,
             });
 
+            console.log('tokenId---->', tokenId)
+
             const contract = new web3.eth.Contract(
               getPoolContract(poolType),
               getPoolAddress({ poolType, chainId }),
@@ -54,19 +56,21 @@ export const fixedSwapCancel = createSmartAction<RequestAction<void, void>>(
               store.dispatchRequest(
                 tokenUnfrozen({
                   address,
-                  // TODO
-                  token_type: '',
                   token_id: tokenId + '',
                 }),
               );
             }
-
+            
             await new Promise((resolve, reject) => {
+              if(!tokenId){
+                return reject('not toklenId')
+              }
               contract.methods
                 .cancel(poolId)
                 .send({ from: address })
                 .on('transactionHash', (hash: string) => {
                   // Pending
+                  unfrozen()
                 })
                 .on('receipt', async (receipt: TransactionReceipt) => {
                   resolve(receipt);

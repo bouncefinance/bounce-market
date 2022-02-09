@@ -126,9 +126,10 @@ export const CancelPutTime: React.FC<{
 
 export const CancelPutOnSale: React.FC<{
   id?: number;
+  tokenId: string;
   auctionType?: AuctionType;
   reload?: () => void;
-}> = ({ id, auctionType, reload: refresh }) => {
+}> = ({ id, tokenId, auctionType, reload: refresh }) => {
   const dispatchRequest = useDispatchRequest();
   const classes = useProductCardStyles();
   // const { account } = useWeb3React();
@@ -137,7 +138,7 @@ export const CancelPutOnSale: React.FC<{
   const onClick = () => {
     setLoading(true);
     dispatchRequest(
-      fixedSwapCancel({ poolId: id, poolType: auctionType }),
+      fixedSwapCancel({ poolId: id, poolType: auctionType, tokenId }),
     ).then(({ error }) => {
       setLoading(false);
       if (!error) {

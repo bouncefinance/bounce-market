@@ -448,6 +448,7 @@
       "onSale-description": "You haven’t listed any item for sale yet.",
       "showCase-title": "No items found",
       "showCase-description": "You haven’t owned any NFT yet.",
+      "showCase-description-coin": "You haven’t owned any {coinName} yet.",
       "MyBids-title": "No items found",
       "MyBids-description": "You haven’t placed a bid for any item yet. Go browse our marketplace.",
       "Activity-title": "No activities found",
@@ -462,6 +463,7 @@
       "other-collection-description": "No collection has been created by this user.",
       "other-showCase-title": "No items found",
       "other-showCase-description": "This user hasn't owned any NFT yet.",
+      "other-showCase-description-coin": "This user hasn't owned any {coinName} yet.",
       "other-Liked-title": "No items found",
       "other-Liked-description": "This user hasn't liked any NFT yet.",
       "tab-collection": {

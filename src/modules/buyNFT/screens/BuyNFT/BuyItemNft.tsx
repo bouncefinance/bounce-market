@@ -1,5 +1,6 @@
 import { useDispatchRequest } from '@redux-requests/react';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { getMetaData, IMetadataInfo } from 'modules/api/common/getMetadata';
 import { fetchItem, fetchItem2 } from 'modules/buyNFT/actions/fetchItem';
 import { Info } from 'modules/buyNFT/components/Info';
 import { InfoDescr } from 'modules/buyNFT/components/InfoDescr';
@@ -21,7 +22,7 @@ import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import { t } from 'modules/i18n/utils/intl';
 import { fetchPoolNftOwner } from 'modules/overview/actions/fetchPoolNftOwner';
 import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { uid } from 'react-uid';
 import { BuyNFTSkeleton } from './BuyNFTSkeleton';
@@ -38,17 +39,24 @@ export const BuyItemNFT = () => {
   const dispatch = useDispatchRequest();
   const { chainId } = useAccount();
 
+  const [metadata, setMetadata] = useState<IMetadataInfo>()
   const init = useCallback(() => {
     (async () => {
       dispatch(fetchItem({ contract, id: tokenId }));
       dispatch(fetchItem2({ contract, id: tokenId }));
       dispatch(fetchPoolNftOwner({ tokenId, contract }));
+      try {
+        const res = await getMetaData(tokenId)
+        setMetadata(res)
+      } catch (error) {
+      }
     })();
   }, [dispatch, tokenId, contract]);
 
   useEffect(() => {
     init();
   }, [init, chainId]);
+
 
   const saleTime = false;
   const onChangeTime = () => {};
@@ -139,9 +147,9 @@ export const BuyItemNFT = () => {
           <div className={classes.root}>
             <MediaContainer
               className={classes.imgContainer}
-              src={item.fileUrl}
-              title={item.itemName}
-              description={item.description}
+              src={metadata?.image || item.fileUrl}
+              title={metadata?.name || item.itemName}
+              description={metadata?.description || item.description}
               category={item.category}
               isOpenSaleTime={saleTime}
               onchange={onChangeTime}
@@ -156,8 +164,8 @@ export const BuyItemNFT = () => {
             />
             <Info className={classes.info}>
               <InfoDescr
-                title={item.itemName}
-                description={item.description}
+                title={metadata?.name || item.itemName}
+                description={metadata?.description || item.description}
                 // copiesCurrent={item.balance}
                 currentPage="itemDetail"
                 copiesTotal={item.supply}

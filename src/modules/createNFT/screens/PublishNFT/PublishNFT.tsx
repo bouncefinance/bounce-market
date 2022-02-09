@@ -301,6 +301,7 @@ export const PublishNFTComponent = ({
       }
     },
     [
+      apetype,
       dispatch,
       name,
       nftType,

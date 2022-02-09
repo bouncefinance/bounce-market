@@ -12,7 +12,7 @@ import {
   IFetchNFTItems,
 } from 'modules/overview/actions/fetchNFTItems';
 import { useIsSMDown } from 'modules/themes/useTheme';
-import { ISectionProps, Section } from 'modules/uiKit/Section';
+import { ISectionProps } from 'modules/uiKit/Section';
 import { ChangeEvent, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -99,7 +99,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   );
 
   return (
-    <Section {...sectionProps}>
+    <>
       <Container>
         {/* <Box mb={{ xs: 4, md: 6 }}>
           <ProductsPanel
@@ -133,6 +133,6 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
           </>
         )}
       </Container>
-    </Section>
+    </>
   );
 };

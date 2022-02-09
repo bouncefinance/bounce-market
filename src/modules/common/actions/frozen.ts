@@ -14,7 +14,7 @@ export const tokenFrozen = createSmartAction<
     {
       address: string;
       token_type: string;
-      token_id: string;
+      token_id?: string;
       ft?: number;
     },
   ]
@@ -25,16 +25,7 @@ export const tokenFrozen = createSmartAction<
       method: 'post',
       data: {
         address,
-        asset_list: {
-          nft: [
-            {
-              token_type,
-              token_id,
-            },
-          ],
-          // 精度
-          // ft,
-        },
+        token_id,
       },
     },
     meta: {
@@ -62,28 +53,18 @@ export const tokenUnfrozen = createSmartAction<
   [
     {
       address: string;
-      token_type: string;
-      token_id: string;
+      token_id?: string;
       ft?: number;
     },
   ]
->('tokenFrozen', ({ address, token_type, token_id, ft = 0 }) => {
+>('tokenFrozen', ({ address, token_id, ft = 0 }) => {
   return {
     request: {
-      url: '/assets/unFrozen',
+      url: '/assets/unfrozen',
       method: 'post',
       data: {
         address,
-        asset_list: {
-          nft: [
-            {
-              token_type,
-              token_id,
-            },
-          ],
-          // 精度
-          // ft,
-        },
+        token_id
       },
     },
     meta: {

@@ -100,6 +100,7 @@ export interface IProductCardComponentProps {
 }
 
 export const ProductCardComponent = ({
+  id,
   className,
   href,
   price,
@@ -481,6 +482,7 @@ export const ProductCardComponent = ({
                     <CancelPutOnSale
                       auctionType={auctionType}
                       id={poolId}
+                      tokenId={`${id}`}
                       reload={reload}
                     />
                   )}

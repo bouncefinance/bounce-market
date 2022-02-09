@@ -8,13 +8,11 @@ import {
 } from '@material-ui/core';
 import BigNumber from 'bignumber.js';
 import classNames from 'classnames';
-import { useAccount } from 'modules/account/hooks/useAccount';
 import { AngleDownIcon } from 'modules/common/components/Icons/AngleDownIcon';
 import { AngleUpIcon } from 'modules/common/components/Icons/AngleUpIcon';
 import { CloseIcon } from 'modules/common/components/Icons/CloseIcon';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { ProfileInfo } from 'modules/common/components/ProfileInfo';
-import { getTokenSymbol } from 'modules/common/conts';
 import { InputField } from 'modules/form/components/InputField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
@@ -81,7 +79,6 @@ export const BuyDialog = ({
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
 
-  const { chainId } = useAccount();
   const validateForm = useCallback(
     ({ quantity }: IBuyFormValues) => {
       const errors: FormErrors<IBuyFormValues> = {};
@@ -174,7 +171,9 @@ export const BuyDialog = ({
               <Grid item xs={12} className={classes.totalWrapper}>
                 <h5>{t('buy-dialog.total')}</h5>
                 <h5>
-                  {showTotal} {getTokenSymbol(chainId)}
+                  {showTotal}
+                  {' APE'} 
+                  {/* {getTokenSymbol(chainId)} */}
                 </h5>
               </Grid>
             </Grid>
@@ -234,7 +233,6 @@ export const BuyDialog = ({
       loading,
       readonly,
       currentPrice,
-      chainId,
       isPack,
       isBlindBox,
       isFinished,

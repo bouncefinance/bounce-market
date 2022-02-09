@@ -1,185 +1,48 @@
-import { useQuery } from '@redux-requests/react';
-import { BuyNFTRoutesConfig } from 'modules/buyNFT/BuyNFTRoutes';
-import { NoItems } from 'modules/common/components/NoItems';
-import {
-  ProductCard,
-  ProductCardSkeleton,
-} from 'modules/common/components/ProductCard';
-import { ProductCards } from 'modules/common/components/ProductCards';
-import { CardProfileInfo } from 'modules/common/components/ProfileInfo';
-import { RoutesConfiguration } from 'modules/createNFT/Routes';
-import { MarketRoutesConfig } from 'modules/market/Routes';
-import {
-  fetchCollectionSale,
-  fetchMySale,
-} from 'modules/profile/actions/fetchSale';
-import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
-import { uid } from 'react-uid';
-import { t } from 'modules/i18n/utils/intl';
-import { getPoolKey, isFixedSwap } from 'modules/common/utils/poolHelps';
-import { usePoolList } from 'modules/common/hooks/usePoolList';
-import { useMemo } from 'react';
-import { IPoolNftItem } from 'modules/api/common/poolType';
-import { useAccount } from 'modules/account/hooks/useAccount';
-
-const getStandardPoolObj = (e: IPoolNftItem) => ({
-  poolId: e.poolid,
-  poolType: e.poolType,
-});
+import { Tab, Tabs } from "@material-ui/core";
+import { useTabActivityStyles } from "modules/profile/components/TabActivity/useTabActivityStyles";
+import { useCallback, useState } from "react";
+import { NftFtKeys, NftFtTabs as tabs } from 'modules/common/conts';
+import { TabSaleNft } from "./tabSaleNft";
+import { TabSelaErc20 } from "./tabSelaErc20";
 
 export const TabSale: React.FC<{
   isOther?: boolean;
   isCollectionSale?: boolean;
   reload?: () => void;
-}> = function ({ isOther = false, reload, isCollectionSale = false }) {
-  const { data, loading } = useQuery<IPoolNftItem[]>({
-    type: isCollectionSale
-      ? fetchCollectionSale.toString()
-      : fetchMySale.toString(),
-  });
-  const { address } = useAccount();
+}> = function ({ isOther = false, isCollectionSale, reload }) {
+  const styles = useTabActivityStyles();
+  const [tabKey, setTabKey] = useState<NftFtKeys>(NftFtKeys.NFT);
 
-  const poolList = useMemo(() => {
-    return data?.filter(e => !isFixedSwap(e.poolType));
-  }, [data]);
-  const bidsInfo = usePoolList({
-    list: poolList?.map(getStandardPoolObj) ?? [],
-    contractFunctionName: 'currentBidderAmount1P',
-  });
-  const bidsReserveAmount = usePoolList({
-    list: poolList?.map(getStandardPoolObj) ?? [],
-    contractFunctionName: 'reserveAmount1P',
-  });
+  const onTabsChange = useCallback((_, value) => {
+    setTabKey(value);
+  }, []);
 
-  const poolMap = useMemo(() => {
-    const map = new Map<
-      string,
-      { bidTopPrice: number; bidsReserveAmount: number }
-    >();
-    poolList?.forEach((e, i) => {
-      map.set(getPoolKey(getStandardPoolObj(e)), {
-        bidTopPrice: bidsInfo[i]?.toNumber() ?? 0,
-        bidsReserveAmount: bidsReserveAmount[i]?.toNumber() ?? 0,
-      });
-    });
-    return map;
-  }, [bidsInfo, bidsReserveAmount, poolList]);
+  return <>
 
-  return (
-    <TabItemsComponent>
-      <ProductCards isLoading={loading}>
-        {loading ? (
-          <ProductCardSkeleton />
-        ) : (
-          data?.map((item, index) => {
-            const bidTopPrice =
-              poolMap?.get(getPoolKey(getStandardPoolObj(item)))?.bidTopPrice ||
-              0;
-
-            const bidsReservePrice =
-              poolMap?.get(getPoolKey(getStandardPoolObj(item)))
-                ?.bidsReserveAmount || 0;
-
-            return (
-              <ProductCard
-                reload={reload}
-                id={item.tokenid}
-                poolId={item.poolid || 0}
-                auctionType={item.poolType}
-                key={uid(item)}
-                title={item.itemname}
-                href={
-                  item.poolid !== undefined && item.poolType
-                    ? BuyNFTRoutesConfig.DetailsNFT.generatePath(
-                        item.poolid,
-                        item.poolType,
-                      )
-                    : ''
-                }
-                contractAddress={item.token0}
-                likes={item.likecount}
-                price={item.poolid !== undefined ? item.price : undefined}
-                priceType={(data as any)?.tokenSymbol}
-                soldData={{
-                  sold:
-                    isFixedSwap(item.poolType) || !address
-                      ? item.swapped_amount0
-                      : Date.now() >= item.close_at * 1e3 &&
-                        bidTopPrice >= bidsReservePrice
-                      ? item.token_amount0
-                      : 0,
-                  quantity: item.token_amount0,
-                }}
-                endDate={
-                  item.close_at ? new Date(item.close_at * 1e3) : undefined
-                }
-                MediaProps={{
-                  category: item.category,
-                  src: item.fileurl || 'xxx',
-                  objectFit: 'contain',
-                  loading: 'lazy',
-                }}
-                state={item.state}
-                isOnSale
-                profileInfo={
-                  <CardProfileInfo
-                    subTitle="Creator"
-                    title={item.itemname}
-                    users={item.avatars}
-                    nftCardOption={{
-                      ...item.nftCardOption,
-                      isOnSale: true,
-                    }}
-                  />
-                }
-                toSale={RoutesConfiguration.PublishNft.generatePath(
-                  item.token0,
-                  item.tokenid,
-                )}
-                isCancelTimePut={
-                  item.openAt ? +item.openAt >= Date.now() : false
-                }
-                isOther={isOther}
-                openAt={item.openAt}
-                closeAt={item.closeAt}
-                isOnSeller
-                bidTopPrice={bidTopPrice}
-                bidsReserveAmount={bidsReservePrice}
-                isCreatorClaimed={Boolean(item.creator_claimed)}
-                isBidderClaimed={Boolean(item.bidder_claimed)}
-                soldout={item.soldout}
-              />
-            );
-          })
-        )}
-      </ProductCards>
-      {!loading &&
-        data?.length === 0 &&
-        (() => {
-          const onSale = {
-            title: isOther
-              ? t('profile.no-items.other-onSale-title')
-              : t('profile.no-items.onSale-title'),
-            desc: isOther
-              ? t('profile.no-items.other-onSale-description')
-              : t('profile.no-items.onSale-description'),
-          };
-          const collection = {
-            title: isOther
-              ? t('profile.no-items.tab-collection.other-onSale-title')
-              : t('profile.no-items.tab-collection.onSale-title'),
-            desc: isOther
-              ? t('profile.no-items.tab-collection.other-onSale-description')
-              : t('profile.no-items.tab-collection.onSale-description'),
-          };
-          return (
-            <NoItems
-              href={MarketRoutesConfig.Market.generatePath()}
-              title={isCollectionSale ? collection.title : onSale.title}
-              descr={isCollectionSale ? collection.desc : onSale.desc}
-            />
-          );
-        })()}
-    </TabItemsComponent>
-  );
+    <Tabs
+      variant="scrollable"
+      classes={{
+        root: styles.tabs,
+        indicator: styles.tabsIndicator,
+      }}
+      onChange={onTabsChange}
+      value={tabKey}
+    >
+      {tabs.map(tab => (
+        <Tab
+          key={tab.value}
+          classes={{
+            root: styles.tabRoot,
+            selected: styles.tabSelected,
+          }}
+          label={tab.label}
+          value={tab.value}
+        />
+      ))}
+    </Tabs>
+    {tabKey === NftFtKeys.NFT ?
+      <TabSaleNft isOther={isOther} isCollectionSale={isCollectionSale} reload={reload} />
+      : <TabSelaErc20 isOther={isOther} reload={reload} />
+    }
+  </>
 };
