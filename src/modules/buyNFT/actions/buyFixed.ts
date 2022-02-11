@@ -58,7 +58,6 @@ export const buyFixed = createSmartAction<
                 type: setAccount.toString(),
                 action: setAccount,
               });
-              debugger
 
               const BounceERC20_CT = new web3.eth.Contract(
                 BounceERC20,
@@ -100,6 +99,7 @@ export const buyFixed = createSmartAction<
                   const allowance = await BounceERC20_CT.methods
                     .allowance(address, fixedSwapContract)
                     .call();
+                  console.log(BigNumber, allowance, amountTotal1)
                   if (
                     new BigNumber(allowance)
                       // .dividedBy(amountTotal1)
