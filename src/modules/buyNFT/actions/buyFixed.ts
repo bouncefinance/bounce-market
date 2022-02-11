@@ -106,10 +106,13 @@ export const buyFixed = createSmartAction<
                       // .isLessThan(1)
                       .isLessThan(amountTotal1.multipliedBy(1e18))
                   ) {
+                    console.log('---approve--')
+                    console.log('---approve arg--', amountTotal1.multipliedBy(1e18), address)
                     const approveRes = await BounceERC20_CT.methods
                       .approve(fixedSwapContract, amountTotal1.multipliedBy(1e18))
                       .send({ from: address });
 
+                      console.log('---approve end--')
                     if (!approveRes) {
                       throw new Error('TODO Error description');
                     }
