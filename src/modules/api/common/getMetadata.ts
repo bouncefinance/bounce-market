@@ -10,7 +10,7 @@ export const getMetaData = async (tokenId: string) => {
     if(!tokenId){
         console.log('get metadata not tokenid')
     }
-    const res = await axios.get(`https://api-ape-stage.ccian.cc/game/v1/metadata/${tokenId}/en-US`)
+    const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL_RINKEBY}/game/v1/metadata/${tokenId}/en-US`)
     const data = res.data.data as IMetadataInfo
     return data
 }

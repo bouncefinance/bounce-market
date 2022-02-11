@@ -13,7 +13,7 @@ export function getFTAddress(chainId: number) {
     case 1:
       return '';
     case 4:
-      return '0xE9EB9E2E6a03f7a78a6Cf75B15c42c8954CCD200';
+      return process.env.REACT_APP_FT_CONTRACT_ADDRESS_RINKEBY ?? '';
     case 97:
       return '';
     case 56:

@@ -18,9 +18,10 @@ export interface IFtConfig {
     decimals: string;
 }
 
+// TODO Rinkeby
 export const FT_CONFIG_LIST: IFtConfig[] = [
     {
-        contract: '0xe9eb9e2e6a03f7a78a6cf75b15c42c8954ccd200',
+        contract: process.env.REACT_APP_FT_CONTRACT_ADDRESS_RINKEBY ?? '',
         name: 'FT',
         tokenImg: 'https://pancakeswap.finance/images/tokens/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82.png',
         decimals: '18'

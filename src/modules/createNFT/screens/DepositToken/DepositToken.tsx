@@ -34,7 +34,6 @@ export const DepositToken: React.FC<IDepositToken> = () => {
   const { web3, address, chainId } = useWeb3React();
   const blockChainScan = getBlockChainExplorerAddress(chainId);
   const [tokenInfo, setTokenInfo] = useState({
-    // contractAddress: '0xE9EB9E2E6a03f7a78a6Cf75B15c42c8954CCD200', // FT rinkeby
     // contractAddress: '0xc3Af90A5b9DB6ca66664da4d6B54092Dc8943ebe', //StrayInu bsc
     contractAddress: getFTAddress(chainId), 
     logo:

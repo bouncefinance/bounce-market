@@ -792,6 +792,7 @@ export const PublishNFT = () => {
   }
   useEffect(() => {
     init()
+  // eslint-disable-next-line 
   }, [id])
 
   const handlePublish = useCallback(() => {

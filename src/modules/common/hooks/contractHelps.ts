@@ -55,11 +55,11 @@ export const getApeSwapContract = (chainID: number) => {
 export const getApeContract = (chainID: number) => {
   switch (chainID) {
     case 1: return '';
-    case 4:  return '0x4ab5117195e6a4921ae90312a914d7f5a769455e';
+    case 4:  return process.env.REACT_APP_APE_CONTRACT_ADDRESS_RINKEBY;
     case 56: return ''
     case 128: return ''
     case 137: return '';
     default:
-      return '0x4ab5117195e6a4921ae90312a914d7f5a769455e';
+      return process.env.REACT_APP_APE_CONTRACT_ADDRESS_RINKEBY;
   }
 }
