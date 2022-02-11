@@ -109,7 +109,7 @@ export const buyFixed = createSmartAction<
                     console.log('---approve--')
                     console.log('---approve arg--', amountTotal1.multipliedBy(1e18), address)
                     const approveRes = await BounceERC20_CT.methods
-                      .approve(fixedSwapContract, amountTotal1.multipliedBy(1e18))
+                      .approve(fixedSwapContract, amountTotal1.multipliedBy(1e18).toString())
                       .send({ from: address });
 
                       console.log('---approve end--')
