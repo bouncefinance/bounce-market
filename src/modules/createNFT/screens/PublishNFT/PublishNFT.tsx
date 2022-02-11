@@ -53,6 +53,7 @@ import {
   IItemRoyaltyRes,
 } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
 import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
+import { getMetaData, IMetadataInfo } from 'modules/api/common/getMetadata';
 
 const MIN_AMOUNT = 1;
 const MIN_INCREMENTAL_PART = 0.05;
@@ -781,6 +782,17 @@ export const PublishNFT = () => {
   }>();
   const { replace } = useHistory();
   // const id = parseInt(idParam, 10);
+  const [metadata, setMetadata] = useState<IMetadataInfo>()
+  const init = async () => {
+    try {
+      const res = await getMetaData(id)
+      setMetadata(res)
+    } catch (error) {
+    }
+  }
+  useEffect(() => {
+    init()
+  }, [id])
 
   const handlePublish = useCallback(() => {
     replace(ProfileRoutesConfig.UserProfile.generatePath());
@@ -807,11 +819,11 @@ export const PublishNFT = () => {
           nfts.find(item => item.tokenId === id)?.balance ?? 0;
         return (
           <PublishNFTComponent
-            name={data.itemName}
+            name={metadata?.name || data.itemName}
             tokenContract={data.contractAddress}
             nftType={data.standard}
             tokenId={data.id}
-            file={data.fileUrl}
+            file={metadata?.image || data.fileUrl}
             apetype={data.apetype}
             category={data.category}
             maxQuantity={maxQuantity}
