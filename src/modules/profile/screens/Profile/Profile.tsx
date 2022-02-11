@@ -136,14 +136,14 @@ export const Profile = () => {
         value: ProfileTab.owned,
         label: t('profile.tabs.showcase'),
       },
-      {
-        value: ProfileTab.bids,
-        label: t('profile.tabs.my-bids'),
-      },
-      {
-        value: ProfileTab.activity,
-        label: t('profile.tabs.activity'),
-      },
+      // {
+      //   value: ProfileTab.bids,
+      //   label: t('profile.tabs.my-bids'),
+      // },
+      // {
+      //   value: ProfileTab.activity,
+      //   label: t('profile.tabs.activity'),
+      // },
       ...(featuresConfig.nftLikes
         ? [
             {

@@ -58,6 +58,7 @@ export const buyFixed = createSmartAction<
                 type: setAccount.toString(),
                 action: setAccount,
               });
+              debugger
 
               const BounceERC20_CT = new web3.eth.Contract(
                 BounceERC20,

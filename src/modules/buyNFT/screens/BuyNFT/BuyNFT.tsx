@@ -664,8 +664,8 @@ export const BuyNFT = () => {
                     <Mutation type={buyFixed.toString()} action={buyFixed}>
                       {({ loading }) => (
                         <BuyDialog
-                          name={item.itemName}
-                          filepath={item.fileUrl}
+                          name={metadata?.name || item.itemName}
+                          filepath={metadata?.image || item.fileUrl}
                           onSubmit={data => {
                             handleBuyFixed({
                               nftType: poolDetails.nftType,
