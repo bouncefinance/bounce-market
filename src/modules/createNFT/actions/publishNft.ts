@@ -210,7 +210,6 @@ export const publishNft = createSmartAction<
                 unitContract,
                 standard,
                 tokenId,
-                apetype,
                 price,
                 quantity,
               } = payload;
@@ -218,7 +217,6 @@ export const publishNft = createSmartAction<
                 store.dispatchRequest(
                   tokenFrozen({
                     address,
-                    token_type: apetype + '',
                     token_id: tokenId + '',
                   }),
                 );

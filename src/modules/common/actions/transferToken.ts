@@ -8,7 +8,6 @@ import { RootState } from 'store';
 import { BounceErc1155, BounceErc721 } from '../../web3/contracts';
 import { tokenFrozen } from './frozen';
 
-const isFrozen = true;
 export const transferToken = createSmartAction<RequestAction<void, void>>(
   'transferToken',
   (
@@ -20,7 +19,7 @@ export const transferToken = createSmartAction<RequestAction<void, void>>(
     tokenType?: string,
   ) => ({
     request: {
-      promise: (async function () {})(),
+      promise: (async function () { })(),
     },
     meta: {
       asMutation: true,
@@ -39,18 +38,15 @@ export const transferToken = createSmartAction<RequestAction<void, void>>(
             });
 
             const frozen = async () => {
-              if (isFrozen && tokenType) {
-                const res = await store.dispatchRequest(
-                  tokenFrozen({
-                    address,
-                    token_type: tokenType + '',
-                    token_id: tokenId + '',
-                  }),
-                );
-                console.log('tokenFrozen res------->', res);
-                if (res.error) {
-                  return;
-                }
+              const res = await store.dispatchRequest(
+                tokenFrozen({
+                  address,
+                  token_id: tokenId + '',
+                }),
+              );
+              console.log('tokenFrozen res------->', res);
+              if (res.error) {
+                return;
               }
             }
 

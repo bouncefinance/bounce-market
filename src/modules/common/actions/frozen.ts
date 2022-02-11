@@ -13,12 +13,12 @@ export const tokenFrozen = createSmartAction<
   [
     {
       address: string;
-      token_type: string;
+      token_type?: string;
       token_id?: string;
       ft?: number;
     },
   ]
->('tokenFrozen', ({ address, token_type, token_id, ft = 0 }) => {
+>('tokenFrozen', ({ address, token_id, ft = 0 }) => {
   return {
     request: {
       url: '/assets/frozen',
