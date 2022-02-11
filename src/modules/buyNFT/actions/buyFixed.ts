@@ -99,14 +99,14 @@ export const buyFixed = createSmartAction<
                   const allowance = await BounceERC20_CT.methods
                     .allowance(address, fixedSwapContract)
                     .call();
-
                   if (
                     new BigNumber(allowance)
-                      .dividedBy(amountTotal1)
-                      .isLessThan(1)
+                      // .dividedBy(amountTotal1)
+                      // .isLessThan(1)
+                      .isLessThan(amountTotal1.multipliedBy(1e18))
                   ) {
                     const approveRes = await BounceERC20_CT.methods
-                      .approve(fixedSwapContract, '0xffffffffffffffff')
+                      .approve(fixedSwapContract, amountTotal1.multipliedBy(1e18))
                       .send({ from: address });
 
                     if (!approveRes) {

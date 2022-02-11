@@ -6,6 +6,7 @@ import {
 } from '@redux-requests/react';
 import BigNumber from 'bignumber.js';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { getMetaData, IMetadataInfo } from 'modules/api/common/getMetadata';
 import { compare } from 'modules/brand/api/queryBrand';
 import { fetchItemRoyalty } from 'modules/brand/components/RoyaltyDialog/action/fetchItemRoyalty';
 import { BidDialog } from 'modules/buyNFT/components/BidDialog';
@@ -92,10 +93,11 @@ export const BuyNFT = () => {
   } = useDialog();
   const { address } = useAccount();
   const { push } = useHistory();
-
+  
+  const [metadata, setMetadata] = useState<IMetadataInfo>()
   const init = useCallback(() => {
     dispatch(fetchPoolDetails({ poolId, poolType }))
-      .then(response => {
+      .then(async response => {
         const { data } = response;
 
         if (!data) {
@@ -114,6 +116,11 @@ export const BuyNFT = () => {
             tokenId: data.tokenId,
           }),
         );
+        try {
+          const res = await getMetaData(data.tokenId)
+          setMetadata(res)
+        } catch (error) {
+        }
       })
       .then(() => {
         dispatch(fetchRoleInfo({ poolId, poolType, address }));
@@ -453,9 +460,9 @@ export const BuyNFT = () => {
                 <div className={classes.root}>
                   <MediaContainer
                     className={classes.imgContainer}
-                    src={item.fileUrl}
-                    title={item.itemName}
-                    description={item.description}
+                    src={metadata?.image || item.fileUrl}
+                    title={metadata?.name || item.itemName}
+                    description={metadata?.description || item.description}
                     category={item.category}
                     isOpenSaleTime={saleTime}
                     openAt={poolDetails.openAt}
@@ -472,8 +479,8 @@ export const BuyNFT = () => {
 
                   <Info className={classes.info}>
                     <InfoDescr
-                      title={item.itemName}
-                      description={item.description}
+                      title={metadata?.name || item.itemName}
+                      description={metadata?.description || item.description}
                       currentPage="poolDetail"
                       copiesCurrent={
                         isEnglishAuction(poolDetails)

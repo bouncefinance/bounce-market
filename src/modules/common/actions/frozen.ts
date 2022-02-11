@@ -60,7 +60,7 @@ export const tokenUnfrozen = createSmartAction<
 >('tokenFrozen', ({ address, token_id, ft = 0 }) => {
   return {
     request: {
-      url: '/assets/unfrozen',
+      url: '/assets/unfreeze',
       method: 'post',
       data: {
         address,
