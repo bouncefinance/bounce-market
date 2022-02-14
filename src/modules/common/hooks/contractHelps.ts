@@ -43,12 +43,12 @@ export const getPoolContract = (poolType: AuctionType) => {
 export const getApeSwapContract = (chainID: number) => {
   switch (chainID) {
     case 1: return '';
-    case 4:  return '0xa2655d3a8197bD16259461d3FACe52F48d7D5B89';
+    case 4:  return process.env.REACT_APP_APE_SWAPE_CONTRACT_ADDRESS_RINKEBY;
     case 56: return ''
     case 128: return ''
     case 137: return '';
     default:
-      return '0xa2655d3a8197bD16259461d3FACe52F48d7D5B89';
+      return process.env.REACT_APP_APE_SWAPE_CONTRACT_ADDRESS_RINKEBY;
   }
 }
 

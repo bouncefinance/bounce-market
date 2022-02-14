@@ -5,26 +5,18 @@ import { MarketRoutesConfig } from 'modules/market/Routes';
 import { TabItems as TabItemsComponent } from 'modules/profile/components/TabItems';
 import { uid } from 'react-uid';
 import { t } from 'modules/i18n/utils/intl';
-import { useEffect, useState } from 'react';
 import { FtPoolCard } from 'modules/common/components/ProductCard/FtPoolCard';
+import { useQuery } from '@redux-requests/react';
+import { fetchOnsellApeMarketPools, IApePoolMArketRes } from 'modules/market/actions/ftMarketList';
 
 export const TabSelaErc20: React.FC<{
   isOther?: boolean;
   reload?: () => void;
 }> = function ({ isOther = false, reload }) {
-  // const { data, loading } = useQuery<INftItem[]>({
-  //   type: fetchOwned.toString(),
-  // });
-  const data: any[] = [
-    1,2,3,4,5
-  ]
-  const [loading, setLoding] = useState(true)
-  
-  useEffect(() => {
-    setTimeout(() => {
-      setLoding(false)
-    }, 500)
-  }, [])
+  const { data: res, loading } = useQuery<IApePoolMArketRes>({
+    type: fetchOnsellApeMarketPools.toString(),
+  });
+  const data = res.data
 
   return (
     <TabItemsComponent>
@@ -37,6 +29,7 @@ export const TabSelaErc20: React.FC<{
               key={uid(item)}
               reload={reload}
               isOther={isOther}
+              item={item}
               // hasAction={Boolean(artAddress && compare(artAddress, address))}
             />
           ))

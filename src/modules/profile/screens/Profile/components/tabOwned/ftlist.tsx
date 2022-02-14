@@ -18,8 +18,8 @@ export const TabOwnedFt: React.FC<{
   // const { data, loading } = useQuery<INftItem[]>({
   //   type: fetchOwned.toString(),
   // });
-  const data: IFtConfig[] = FT_CONFIG_LIST
-  const { address } = useWeb3React();
+  const { address, chainId } = useWeb3React();
+  const data: IFtConfig[] = FT_CONFIG_LIST(chainId)
   const [loading, setLoding] = useState(true)
   
   useEffect(() => {

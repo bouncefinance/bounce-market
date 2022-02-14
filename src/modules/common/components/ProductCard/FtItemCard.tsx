@@ -18,17 +18,23 @@ export interface IFtConfig {
     decimals: string;
 }
 
-// TODO Rinkeby
-export const FT_CONFIG_LIST: IFtConfig[] = [
+const rinkebyConfig = [
     {
         contract: process.env.REACT_APP_FT_CONTRACT_ADDRESS_RINKEBY ?? '',
         name: 'FT',
-        tokenImg: 'https://pancakeswap.finance/images/tokens/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82.png',
+        tokenImg: 'https://ap1-cfs3-media-bounce.bounce.finance/160xauto/4818b35c8eff5ba68ea807a64d06c498-1644662588.png',
         decimals: '18'
     }
 ]
+export const FT_CONFIG_LIST: (chainId: number) => IFtConfig[] = (chainId) => {
+    switch(chainId){
+        case 4: return rinkebyConfig
+        // TODO more chain
+    }
+    return rinkebyConfig
+}
 
-export const getFtItemInfo = (id: string) => FT_CONFIG_LIST.find((e) => e.contract === id)
+export const getFtItemInfo = (chainId: number,id: string) => FT_CONFIG_LIST(chainId).find((e) => e.contract === id)
 
 export const FtItemCard = ({
     isOther,
@@ -57,7 +63,9 @@ export const FtItemCard = ({
                 <Img className={classes.ft} src={item.tokenImg} />
             </Box>
             <Box className={classes.actions} mt={8} display="flex">
-                <Button rounded fullWidth variant="outlined">Deposit</Button>
+                <Link href={RoutesConfiguration.DepositToken.generatePath() + `?id=${item.contract}`}>
+                    <Button rounded fullWidth variant="outlined">Deposit</Button>
+                </Link>
                 <div style={{ width: 20 }}></div>
                 <Link style={{ width: '100%', whiteSpace: 'nowrap' }} href={RoutesConfiguration.PublishErc20.generatePath(item.contract)}>
                     <Button rounded fullWidth variant="outlined">
@@ -67,12 +75,12 @@ export const FtItemCard = ({
             </Box>
             <Box mt={2.5}>
                 <a
-                    href={`${blockChainScan}/address/0x4074A8deA884611F6553932CDF0B8390CDbA427E`}
+                    href={`${blockChainScan}/address/${item.contract}`}
                     className={linkClasses.link}
                     target="_blank"
                     rel="noreferrer"
                 >
-                    {truncateWalletAddr('0x4074A8deA884611F6553932CDF0B8390CDbA427E')}
+                    {truncateWalletAddr(item.contract)}
                     &nbsp;
                     <ExternalIcon className={classes.linkIcon} />
                 </a>

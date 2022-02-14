@@ -9,7 +9,7 @@ import BigNumber from 'bignumber.js';
 import { useWeb3React } from 'modules/account/hooks/useWeb3React';
 import { getFtItemInfo } from 'modules/common/components/ProductCard/FtItemCard';
 import { QueryLoading } from 'modules/common/components/QueryLoading/QueryLoading';
-import { depositToken } from 'modules/createNFT/actions/depositToken';
+import { getApeContract, getApeSwapContract } from 'modules/common/hooks/contractHelps';
 import { publishToken } from 'modules/createNFT/actions/publishToken';
 import { getFTAddress } from 'modules/createNFT/hooks/useCurrencies';
 import { InputField } from 'modules/form/components/InputField';
@@ -39,7 +39,7 @@ export const PublishErc20: React.FC<IDepositToken> = () => {
   const { id } = useParams<{
     id: string;
   }>();
-  const itemInfo = getFtItemInfo(id)
+  const itemInfo = getFtItemInfo(chainId, id)
   if(!itemInfo){
     console.error('not find contract')
   }
@@ -77,6 +77,8 @@ export const PublishErc20: React.FC<IDepositToken> = () => {
     dispatch(
       publishToken({
         contract: tokenInfo.contractAddress,
+        tokenB: getApeContract(chainId) ?? '',
+        apeSwapContract: getApeSwapContract(chainId) ?? '',
         walletAddress: address,
         web3,
         amount: payload.amount,
@@ -209,11 +211,11 @@ export const PublishErc20: React.FC<IDepositToken> = () => {
         </div>
         <Box mt={1} mb={4} display="flex" justifyContent="space-between">
           <span>You will receive</span>
-          <span>xx APE</span>
+          <span>{`${new BigNumber(form.getFieldState('amount')?.value || '1').multipliedBy(form.getFieldState('uintPrice')?.value ?? '0').multipliedBy(100 - 2).dividedBy(100).dp(4)}`} APE</span>
         </Box>
 
         <Box mb={2}>
-          <Mutation type={depositToken.toString()}>
+          <Mutation type={publishToken.toString()}>
             {({ loading }) =>
               loading ? (
                 <Button

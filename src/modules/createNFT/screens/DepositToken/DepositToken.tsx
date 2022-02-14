@@ -22,6 +22,7 @@ import { Section } from 'modules/uiKit/Section';
 import { BounceERC20 } from 'modules/web3/contracts';
 import { useEffect, useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
+import { useLocation } from 'react-router-dom';
 import { useDepositStyles } from './useDepositToken';
 
 interface IDepositToken {}
@@ -32,10 +33,14 @@ interface IDepositTokenFormData {
 export const DepositToken: React.FC<IDepositToken> = () => {
   const classes = useDepositStyles();
   const { web3, address, chainId } = useWeb3React();
+  const location = useLocation()
+  const queryId = location.search.split('=')[1]
+
+  console.log('queryId----->',queryId)
   const blockChainScan = getBlockChainExplorerAddress(chainId);
   const [tokenInfo, setTokenInfo] = useState({
     // contractAddress: '0xc3Af90A5b9DB6ca66664da4d6B54092Dc8943ebe', //StrayInu bsc
-    contractAddress: getFTAddress(chainId), 
+    contractAddress: queryId ?? getFTAddress(chainId), 
     logo:
       'https://pancakeswap.finance/images/tokens/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82.png',
     name: 'TokenName',
@@ -43,7 +48,9 @@ export const DepositToken: React.FC<IDepositToken> = () => {
     decimals: '18',
   });
   useEffect(() => {
-    setTokenInfo({...tokenInfo, contractAddress: getFTAddress(chainId)})
+    if(!queryId){
+      setTokenInfo({...tokenInfo, contractAddress: getFTAddress(chainId)})
+    }
   // eslint-disable-next-line
   }, [chainId, getFTAddress])
   const validateDeposit = (payload: IDepositTokenFormData) => {
