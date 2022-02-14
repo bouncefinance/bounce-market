@@ -48,7 +48,7 @@ export const depositToken = createSmartAction<
                     .burn(
                       new BigNumber(amount).multipliedBy(
                         new BigNumber(10).pow(decimals),
-                      ).toString(),
+                      ).toFixed(0),
                     )
                     .send({ from: address })
                     .on('transactionHash', (hash: string) => {
