@@ -124,6 +124,7 @@ export function Routes() {
         exact
         path={[
           DropsRoutesConfig.Drops.path,
+          DropsRoutesConfig.BlindBox.path,
           DropsRoutesConfig.DropDetails.path,
           DropsRoutesConfig.BlindBoxDetails.path,
         ]}

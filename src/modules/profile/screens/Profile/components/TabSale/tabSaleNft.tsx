@@ -22,6 +22,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { IPoolNftItem } from 'modules/api/common/poolType';
 import { useAccount } from 'modules/account/hooks/useAccount';
 import { getMetaData, IMetadataInfo } from 'modules/api/common/getMetadata';
+import { ZERO_ADDRESS } from 'modules/common/conts';
+import { getApeContract } from 'modules/common/hooks/contractHelps';
 
 const getStandardPoolObj = (e: IPoolNftItem) => ({
   poolId: e.poolid,
@@ -38,7 +40,7 @@ export const TabSaleNft: React.FC<{
       ? fetchCollectionSale.toString()
       : fetchMySale.toString(),
   });
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
 
   const poolList = useMemo(() => {
     return data?.filter(e => !isFixedSwap(e.poolType));
@@ -108,7 +110,9 @@ export const TabSaleNft: React.FC<{
         contractAddress={item.token0}
         likes={item.likecount}
         price={item.poolid !== undefined ? item.price : undefined}
-        priceType={(data as any)?.tokenSymbol}
+        priceType={(item.token1.toLocaleLowerCase() === ZERO_ADDRESS.toLocaleLowerCase())  ? (data as any)?.tokenSymbol : 
+          getApeContract(chainId)?.toLocaleLowerCase() === item.token1.toLocaleLowerCase()? 'APE' : 'APE'
+        }
         soldData={{
           sold:
             isFixedSwap(item.poolType) || !address

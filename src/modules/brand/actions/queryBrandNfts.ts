@@ -1,6 +1,6 @@
 import { DispatchRequest, RequestAction } from '@redux-requests/core';
 import { AuctionType } from 'modules/api/common/auctionType';
-import { getApeContract } from 'modules/common/hooks/contractHelps';
+// import { getApeContract } from 'modules/common/hooks/contractHelps';
 import {
   fetchItemsByFilter,
   ItemsChannel,
@@ -40,7 +40,7 @@ export const queryBrandNfts = createAction<
               {
                 category: '',
                 channel: params?.channel || 'FineArts',
-                currency: getApeContract(0),
+                // currency: getApeContract(0),
                 limit: 1000,
                 offset: 0,
                 orderfield: 1,

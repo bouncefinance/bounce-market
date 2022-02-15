@@ -73,6 +73,7 @@ export interface OriginIPoolNftItem extends IPoolAvatars {
   mylikecount: number;
   // contract
   token0: string;
+  token1: string;
   tokenid: string;
   swapped_amount0: number;
   token_amount0: number;

@@ -20,6 +20,8 @@ import { Pagination } from '../../../uiKit/Pagination';
 import { useProductsStyles } from './useProductsStyles';
 import { MarketNftCard } from './nftCard';
 import { uid } from 'react-uid';
+import { ZERO_ADDRESS } from 'modules/common/conts';
+import { getApeContract } from 'modules/common/hooks/contractHelps';
 
 const ITEMS_PORTION_COUNT = 20;
 const DEFAULT_PAGE = 1;
@@ -31,7 +33,7 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
   const history = useHistory();
   const isMobile = useIsSMDown();
   const classes = useProductsStyles();
-  const { isConnected } = useAccount();
+  const { isConnected, chainId } = useAccount();
 
   const {
     data: nftItemsData,
@@ -79,10 +81,12 @@ export const Products = ({ ...sectionProps }: ISectionProps) => {
         <MarketNftCard
           item={item}
           key={uid(item)}
-          tokenSymbol={nftItemsData?.tokenSymbol ?? ''}
+          tokenSymbol={
+            (item.token1.toLocaleLowerCase() === ZERO_ADDRESS.toLocaleLowerCase()) ? (nftItemsData?.tokenSymbol ?? '') :
+          getApeContract(chainId)?.toLocaleLowerCase() === item.token1.toLocaleLowerCase()? 'APE' : 'APE'}
         />
       )),
-    [nftItems, nftItemsData?.tokenSymbol],
+    [nftItems, nftItemsData?.tokenSymbol, chainId],
   );
 
   const renderedPagination = (

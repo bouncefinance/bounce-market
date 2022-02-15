@@ -1,12 +1,12 @@
 import { useQuery } from '@redux-requests/react';
 import { getApeContract } from 'modules/common/hooks/contractHelps';
-// import {  getNativeTokenSymbol, ZERO_ADDRESS } from 'modules/common/conts';
+import {  getNativeTokenSymbol, ZERO_ADDRESS } from 'modules/common/conts';
 import { useMemo } from 'react';
 import { setAccount } from '../../account/store/actions/setAccount';
 import { TokenSymbol } from '../../common/types/TokenSymbol';
 
 const ENABLE_FIXED_TOKENS = false;
-const FT_FIXED_TOKENS = true
+const FT_FIXED_TOKENS = !true
 
 export function getFTAddress(chainId: number) {
   switch (chainId) {
@@ -82,12 +82,12 @@ export function useCurrencies() {
       chainId
         ? {
             options: [
-              // {
-              //   label: getNativeTokenSymbol(chainId),
-              //   value: ZERO_ADDRESS,
-              //   contract: ZERO_ADDRESS,
-              //   decimals: 18,
-              // },
+              {
+                label: getNativeTokenSymbol(chainId),
+                value: ZERO_ADDRESS,
+                contract: ZERO_ADDRESS,
+                decimals: 18,
+              },
               ...(chainId === 56 && ENABLE_FIXED_TOKENS
                 ? [
                     {
@@ -121,8 +121,8 @@ export function useCurrencies() {
                     ]
                   : []),
             ],
-            // default: ZERO_ADDRESS,
-            default: getApeContract(chainId),
+            default: ZERO_ADDRESS,
+            // default: getApeContract(chainId),
           }
         : { options: [], default: undefined },
     [chainId],

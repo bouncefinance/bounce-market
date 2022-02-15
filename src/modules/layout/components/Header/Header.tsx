@@ -29,6 +29,7 @@ import { useCallback } from 'react';
 import { setChainId } from 'modules/common/utils/localStorage';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { Link } from 'react-router-dom';
+import { DropsRoutesConfig } from 'modules/drops/Routes';
 
 export const Header = () => {
   const {
@@ -78,7 +79,14 @@ export const Header = () => {
       {/* <HeaderLinks /> */}
       <div></div>
       {/* {featuresConfig.howItWorkPage && <HeaderLinksSecondary />} */}
-      <Button
+      
+      <div>
+        <Link to={DropsRoutesConfig.BlindBox.generatePath()}>Blindbox</Link>
+        &nbsp; &nbsp;
+        <Link to={RoutesConfiguration.DepositToken.generatePath()}>{t('header.deposit')}</Link>
+      </div>
+
+      {/* <Button
         rounded
         component={Link}
         to={RoutesConfiguration.DepositToken.generatePath()}
@@ -87,7 +95,7 @@ export const Header = () => {
         color="primary"
       >
         {t('header.deposit')}
-      </Button>
+      </Button> */}
 
       {!isConnected && (
         <Button onClick={handleConnect} loading={loading} rounded>

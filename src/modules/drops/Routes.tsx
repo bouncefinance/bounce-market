@@ -7,12 +7,17 @@ import { generatePath, Route } from 'react-router-dom';
 
 const PATH_DROPS = '/drops';
 const PATH_DROP_DETAILS = '/drop/view/:dropId';
+const PATH_BLINDBOXS = '/blindbox';
 const PATH_BLINDBOX_DETAILS = '/blindbox/view/:blindboxId';
 
 export const DropsRoutesConfig: { [key: string]: RouteConfiguration } = {
   Drops: {
     path: PATH_DROPS,
     generatePath: () => PATH_DROPS,
+  },
+  BlindBox: {
+    path: PATH_BLINDBOXS,
+    generatePath: () => PATH_BLINDBOXS,
   },
 
   DropDetails: {
@@ -48,6 +53,12 @@ const LoadableContainer: LoadableComponent<any> = loadable(
     fallback: <QueryLoadingAbsolute />,
   },
 );
+const LoadableBlindBoxContainer: LoadableComponent<any> = loadable(
+  async () => import('./screens/BlindBox').then(module => module.BlindBox),
+  {
+    fallback: <QueryLoadingAbsolute />,
+  },
+);
 
 const LoadableDropDetailsContainer: LoadableComponent<any> = loadable(
   async () =>
@@ -74,6 +85,12 @@ export function DropsRoutes() {
         path={DropsRoutesConfig.Drops.path}
         exact={true}
         component={LoadableContainer}
+      />
+
+      <Route
+        path={DropsRoutesConfig.BlindBox.path}
+        exact={true}
+        component={LoadableBlindBoxContainer}
       />
 
       <Route

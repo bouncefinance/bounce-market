@@ -7,7 +7,7 @@ import { PoolState } from 'modules/api/common/AuctionState';
 import { IPoolNftItem } from 'modules/api/common/poolType';
 import { UserRoleType } from 'modules/common/actions/queryAccountInfo';
 import { PoolCategoryType } from 'modules/common/api/getPools';
-import { getApeContract } from 'modules/common/hooks/contractHelps';
+// import { getApeContract } from 'modules/common/hooks/contractHelps';
 import { INftCardHelpsParams } from 'modules/common/utils/nftCard';
 import { mapPoolData } from 'modules/pools/actions/map';
 import { Store } from 'redux';
@@ -97,7 +97,7 @@ export const fetchNFTItems = createSmartAction<
                 category: '',
                 channel:
                   params.channel === ItemsChannel.all ? '' : params.channel,
-                currency: getApeContract(0),
+                // currency: getApeContract(0),
                 limit: params.limit,
                 offset: params.offset,
                 orderfield: 1,
