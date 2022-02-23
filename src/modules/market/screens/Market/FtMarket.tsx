@@ -6,9 +6,12 @@ import { uid } from 'react-uid';
 import { useEffect, useMemo } from 'react';
 import { FtPoolCard } from 'modules/common/components/ProductCard/FtPoolCard';
 import { Box, Container } from '@material-ui/core';
-import { fetchOnsellApeMarketPools, IApePoolMArketRes } from 'modules/market/actions/ftMarketList';
+import {
+  fetchOnsellApeMarketPools,
+  IApePoolMArketRes,
+} from 'modules/market/actions/ftMarketList';
 import { MarketRoutesConfig } from 'modules/market/Routes';
-import { useAccount } from 'modules/account/hooks/useAccount';
+// import { useAccount } from 'modules/account/hooks/useAccount';
 import { useDispatchRequest, useQuery } from '@redux-requests/react';
 import { useHistory } from 'react-router-dom';
 import { HEADER_HEIGHT_XL } from 'modules/layout/components/Header/HeaderStyles';
@@ -22,22 +25,24 @@ export const FtMarket: React.FC<{}> = function () {
     type: fetchOnsellApeMarketPools.toString(),
   });
   const dispatchRequest = useDispatchRequest();
-  const { address } = useAccount();
+  // const { address } = useAccount();
   const history = useHistory();
   const { page, category } = MarketRoutesConfig.Market.useParams();
   const productscSlasses = useProductsStyles();
-  
+
   useEffect(() => {
-    if(address){
-      dispatchRequest(fetchOnsellApeMarketPools({
+    // if(address){
+    dispatchRequest(
+      fetchOnsellApeMarketPools({
         offset: (page - 1) * ITEMS_PORTION_COUNT,
         limit: ITEMS_PORTION_COUNT,
-        useraddress: address
-      }))
-    }
-  // eslint-disable-next-line
-  }, [page, address])
-  
+        // useraddress: address,
+      }),
+    );
+    // }
+    // eslint-disable-next-line
+  }, [page /* address */]);
+
   const onPaginationChange = (_: any, value: number) => {
     history.push(MarketRoutesConfig.Market.generatePath(value, category));
     window.scrollTo(0, HEADER_HEIGHT_XL);
@@ -61,34 +66,36 @@ export const FtMarket: React.FC<{}> = function () {
   );
 
   const renderedBottomPagination = (
-    <div className={productscSlasses.paginationBottom}>{renderedPagination}</div>
+    <div className={productscSlasses.paginationBottom}>
+      {renderedPagination}
+    </div>
   );
 
   return (
     <TabItemsComponent>
       <Container>
-      <ProductCards isLoading={loading}>
-        {loading ? (
-          <ProductCardSkeleton />
+        <ProductCards isLoading={loading}>
+          {loading ? (
+            <ProductCardSkeleton />
+          ) : (
+            data?.data?.map(item => (
+              <FtPoolCard
+                key={uid(item)}
+                reload={() => {}}
+                isOther={true}
+                item={item}
+                isMarket
+                // hasAction={Boolean(artAddress && compare(artAddress, address))}
+              />
+            ))
+          )}
+        </ProductCards>
+        {!loading && data?.data?.length === 0 ? (
+          <NoItems />
         ) : (
-          data?.data?.map(item => (
-            <FtPoolCard
-              key={uid(item)}
-              reload={() => {}}
-              isOther={true}
-              item={item}
-              isMarket
-              // hasAction={Boolean(artAddress && compare(artAddress, address))}
-            />
-          ))
+          <>{renderedBottomPagination}</>
         )}
-      </ProductCards>
-      {!loading && data?.data?.length === 0 ? (
-        <NoItems />
-      ): <>
-      {renderedBottomPagination}
-      </>}
-      <Box mt={5}></Box>
+        <Box mt={5}></Box>
       </Container>
     </TabItemsComponent>
   );

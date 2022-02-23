@@ -553,6 +553,7 @@
     "seconds-short": "{seconds}s",
     "time-left-short": "{days} {hours} {minutes} {seconds} left",
     "time-left-short-hour": "{hours}:{minutes}:{seconds} left",
+    "left-short-hour-2": "{hours}h {minutes}m {seconds}s",
     "time-end": "Ended on {days}/{months}/{years}",
     "time-expired": "Time expired",
     "time-over": "Time is over",

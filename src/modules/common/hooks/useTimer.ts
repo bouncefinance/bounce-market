@@ -109,15 +109,21 @@ export const diffTimeTopHours = (
 export const useNftCardTimer = ({
   endDate,
   onchange,
+  formatTime,
 }: {
   endDate: Date;
   onchange?: () => void;
+  formatTime?: string;
 }) => {
   const [timeValue, setTime] = useState('');
   const reload = useCount(1e3);
   const [isTimeOver, setIsTimeOver] = useState(false);
   const hmsFormat = ({ h, m, s }: IDiffTimeTopHours) =>
-    t('time.time-left-short-hour', { hours: h, minutes: m, seconds: s });
+    t(formatTime || 'time.time-left-short-hour', {
+      hours: h,
+      minutes: m,
+      seconds: s,
+    });
   useEffect(() => {
     if (+endDate < Date.now()) {
       setIsTimeOver(true);
@@ -125,6 +131,7 @@ export const useNftCardTimer = ({
       return () => {};
     }
     setTime(hmsFormat(diffTimeTopHours(endDate)));
+    // eslint-disable-next-line
   }, [endDate, reload, onchange]);
   return {
     duration: timeValue,

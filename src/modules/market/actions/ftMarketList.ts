@@ -4,7 +4,7 @@ import { createAction as createSmartAction } from 'redux-smart-actions';
  * 0: open
  * 1: close
  */
-export type TypeApePoolState = 0 | 1
+export type TypeApePoolState = 0 | 1;
 
 export interface IApePoolData {
   price: string;
@@ -22,18 +22,18 @@ export interface IApePoolMArketRes {
   code: number;
   msg?: string;
   data: IApePoolData[];
-  total: number
+  total: number;
 }
 export const fetchOnsellApeMarketPools = createSmartAction<
   any,
   [
     {
-      useraddress: string;
+      useraddress?: string;
       offset: number;
       limit?: number;
     },
   ]
->('get_onsell_apepools', ({ useraddress, offset, limit = 20}) => {
+>('get_onsell_apepools', ({ useraddress, offset, limit = 20 }) => {
   return {
     request: {
       url: '/get_onsell_apepools',
@@ -41,7 +41,7 @@ export const fetchOnsellApeMarketPools = createSmartAction<
       data: {
         useraddress,
         offset,
-        limit
+        limit,
       },
     },
     meta: {

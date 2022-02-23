@@ -30,6 +30,7 @@ import { setChainId } from 'modules/common/utils/localStorage';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
 import { Link } from 'react-router-dom';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
+import { MarketRoutesConfig } from 'modules/market/Routes';
 
 export const Header = () => {
   const {
@@ -79,11 +80,15 @@ export const Header = () => {
       {/* <HeaderLinks /> */}
       <div></div>
       {/* {featuresConfig.howItWorkPage && <HeaderLinksSecondary />} */}
-      
+
       <div>
-        <Link to={DropsRoutesConfig.BlindBox.generatePath()}>Blindbox</Link>
+        <Link to={DropsRoutesConfig.BlindBox.generatePath()}>Blind Box</Link>
         &nbsp; &nbsp;
-        <Link to={RoutesConfiguration.DepositToken.generatePath()}>{t('header.deposit')}</Link>
+        <Link to={MarketRoutesConfig.Market.generatePath()}>Market</Link>
+        &nbsp; &nbsp;
+        <Link to={RoutesConfiguration.DepositToken.generatePath()}>
+          {t('header.deposit')}
+        </Link>
       </div>
 
       {/* <Button

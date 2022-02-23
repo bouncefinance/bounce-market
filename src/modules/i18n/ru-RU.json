@@ -114,7 +114,10 @@
       "standard": "Стандарт",
       "supply": "Выпущено"
     },
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "title": "Создать NFT",
@@ -136,7 +139,10 @@
       "description": "Какая история стоит за этим NFT?"
     },
     "next": "Next",
-    "standardOption": ["ERC-721", "ERC-1155"],
+    "standardOption": [
+      "ERC-721",
+      "ERC-1155"
+    ],
     "submit": "Создать",
     "submitting": "В процессе создания",
     "time": "",
@@ -528,6 +534,7 @@
     "seconds-short": "{seconds} секуд",
     "time-left-short": "Осталось {days} {hours} {minutes} {seconds}",
     "time-left-short-hour": "Осталось {hours}:{minutes}:{seconds}",
+    "left-short-hour-2": "{hours}h {minutes}m {seconds}s",
     "time-end": "Закончился на {days}/{months}/{years}",
     "time-expired": "Время истекло",
     "time-over": "Время истекло",

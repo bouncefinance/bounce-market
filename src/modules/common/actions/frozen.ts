@@ -21,7 +21,7 @@ export const tokenFrozen = createSmartAction<
 >('tokenFrozen', ({ address, token_id, ft = 0 }) => {
   return {
     request: {
-      url: '/assets/frozen',
+      url: '/proxy/assets/frozen',
       method: 'post',
       data: {
         address,
@@ -60,11 +60,11 @@ export const tokenUnfrozen = createSmartAction<
 >('tokenFrozen', ({ address, token_id, ft = 0 }) => {
   return {
     request: {
-      url: '/assets/unfreeze',
+      url: '/proxy/assets/unfreeze',
       method: 'post',
       data: {
         address,
-        token_id
+        token_id,
       },
     },
     meta: {

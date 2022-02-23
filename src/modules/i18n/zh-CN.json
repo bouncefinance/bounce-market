@@ -539,6 +539,7 @@
     "seconds-short": "{seconds}秒",
     "time-left-short": "剩余{days} {hours} {minutes} {seconds}",
     "time-left-short-hour": "剩余 {hours}:{minutes}:{seconds}",
+    "left-short-hour-2": "{hours}h {minutes}m {seconds}s",
     "time-end": "结束时间： {days}/{months}/{years}",
     "time-expired": "该拍卖已过期",
     "time-over": "倒计时结束",
@@ -612,7 +613,7 @@
       "getVerified": "成为签约艺术家",
       "FAQ": "FAQ",
       "support": "帮助",
-      "docs":"文档"
+      "docs": "文档"
     },
     "followUs": {
       "followUs": "关注我们"
