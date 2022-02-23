@@ -73,7 +73,7 @@ export const BuyBlindBoxDialog = ({
   };
   const [initialValues] = useState<IBuyCoinFormData>({
     quantity: '1',
-    price: item?.price,
+    price: new BigNumber(item?.price).dividedBy(100).dp(2).toString(),
   });
   const renderForm = ({
     handleSubmit,
@@ -116,7 +116,10 @@ export const BuyBlindBoxDialog = ({
           <Typography>Total</Typography>
           <Typography>
             {new BigNumber(form?.getFieldState('quantity')?.value ?? '0')
-              .multipliedBy(item?.price ?? '0')
+              .multipliedBy(
+                new BigNumber(item?.price).dividedBy(100).dp(2).toString() ??
+                  '0',
+              )
               .toFixed(2)}{' '}
             {chainIdSymbol}
           </Typography>
