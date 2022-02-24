@@ -31,11 +31,19 @@ import { Skeleton } from '@material-ui/lab';
 import { ApeBlindBox } from 'modules/web3/contracts';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
+import { getBlindBoxVerify } from 'modules/api/common/getBlindBoxVerify';
 
+enum IsVerifyEnum {
+  LOADING,
+  NO,
+  OK,
+}
 type onDrawType = (item: IBlindBoxItem, nftSwapNum: string) => void;
+
+const IsBlindBoxSupportChainList = [4, 56];
 export const BlindBox = () => {
   const classes = useBlindBoxStyles({});
-  const { chainId, web3 } = useWeb3React();
+  const { chainId, web3, address } = useWeb3React();
   const dispatch = useDispatch();
   const [isBuyOpen, setIsBuyOpen] = useState(false);
   const [swapNum, setSwapNum] = useState('');
@@ -54,7 +62,9 @@ export const BlindBox = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchBlindBoxList({}));
+    if (IsBlindBoxSupportChainList.includes(chainId)) {
+      dispatch(fetchBlindBoxList({}));
+    }
   }, [chainId, dispatch]);
   //   const { data, loading } = useQuery<IBlindBoxList>({
   //     type: fetchBlindBoxList.toString(),
@@ -68,25 +78,32 @@ export const BlindBox = () => {
           <Box mt={5} mb={4}>
             <Typography variant="h2">🔥Live</Typography>
           </Box>
-          <Queries<IBlindBoxList>
-            requestActions={[fetchBlindBoxList]}
-            // requestKeys={[BLIND_BOX_KEY]}
-            noDataMessage={<RenderedSkeletons />}
-            empty={<NothingFound />}
-          >
-            {({ data }) => {
-              //   return <RenderedSkeletons />;
-              return data?.data?.map(item => (
-                <ItemView
-                  key={item.id}
-                  item={item}
-                  onDraw={onDraw}
-                  web3={web3}
-                  chainId={chainId}
-                />
-              ));
-            }}
-          </Queries>
+          {IsBlindBoxSupportChainList.includes(chainId) ? (
+            <Queries<IBlindBoxList>
+              requestActions={[fetchBlindBoxList]}
+              // requestKeys={[BLIND_BOX_KEY]}
+              noDataMessage={<RenderedSkeletons />}
+              empty={<NothingFound />}
+            >
+              {({ data }) => {
+                //   return <RenderedSkeletons />;
+                return data?.data?.map(item => (
+                  <ItemView
+                    key={item.id}
+                    item={item}
+                    onDraw={onDraw}
+                    web3={web3}
+                    chainId={chainId}
+                    address={address}
+                  />
+                ));
+              }}
+            </Queries>
+          ) : (
+            <>
+              <Typography variant="h2">Not support this chain</Typography>
+            </>
+          )}
         </div>
       </div>
       {selectItem && (
@@ -106,11 +123,13 @@ const ItemView = ({
   onDraw,
   chainId,
   web3,
+  address,
 }: {
   item: IBlindBoxItem;
   onDraw: onDrawType;
   chainId?: number;
   web3: Web3;
+  address: string;
 }) => {
   const classes = useBlindBoxStyles({});
   const theme = useTheme();
@@ -131,14 +150,36 @@ const ItemView = ({
         getApeBlindBoxContract(chainId),
       );
       const res = await ApeBlindBox_CT.methods.totalSell(item.phase_id).call();
-      console.log('box sell total --------->', res);
+      // console.log('box sell total --------->', res);
       setTotalSell(res);
+    }
+  };
+  const [isVerify, setIsVerify] = useState<IsVerifyEnum>(IsVerifyEnum.LOADING);
+  const initVerify = async () => {
+    if (chainId && address) {
+      try {
+        const res = await getBlindBoxVerify(chainId, address);
+        // console.log('getBlindBoxVerify---->', res);
+        if (res) {
+          if (res?.call_code === 8000) {
+            setIsVerify(IsVerifyEnum.OK);
+          } else {
+            setIsVerify(IsVerifyEnum.NO);
+          }
+        }
+      } catch (error) {
+        console.log('Verify error--->', error);
+      }
     }
   };
   useEffect(() => {
     getBoxTotalSell();
     // eslint-disable-next-line
   }, [chainId]);
+  useEffect(() => {
+    if (!localStorage.notBlindBoxVerify) initVerify();
+    // eslint-disable-next-line
+  }, [chainId, address]);
   //   const { duration, isTimeOver } = { duration: '', isTimeOver: true };
 
   return (
@@ -164,6 +205,7 @@ const ItemView = ({
               nftSwapNum={nftSwapNum}
               isTimeOver={isTimeOver}
               item={item}
+              isVerify={isVerify}
             />
           )}
         </Box>
@@ -174,6 +216,7 @@ const ItemView = ({
           nftSwapNum={nftSwapNum}
           isTimeOver={isTimeOver}
           item={item}
+          isVerify={isVerify}
         />
       )}
     </Box>
@@ -185,11 +228,13 @@ const Detail = ({
   isTimeOver,
   nftSwapNum,
   onDraw,
+  isVerify,
 }: {
   item: IBlindBoxItem;
   isTimeOver: boolean;
   nftSwapNum: string;
   onDraw: onDrawType;
+  isVerify: IsVerifyEnum;
 }) => {
   const classes = useBlindBoxStyles({});
   const theme = useTheme();
@@ -221,9 +266,9 @@ const Detail = ({
         <Button
           onClick={() => onDraw(item, nftSwapNum)}
           style={{ flex: 1, maxWidth: 350, marginLeft: 15 }}
-          disabled={isTimeOver}
+          disabled={isTimeOver || isVerify === IsVerifyEnum.NO}
         >
-          DRAW
+          {isVerify === IsVerifyEnum.NO ? 'Check Fail' : 'DRAW'}
         </Button>
       </Box>
     </>
