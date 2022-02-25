@@ -653,6 +653,7 @@ export const BuyNFT = () => {
                             loading={loading}
                             maxQuantity={poolDetails.tokenAmount0}
                             currentPrice={poolDetails.amountMax1}
+                            cryptoCurrency={item.tokenSymbol}
                             isPack={true}
                           />
                         </>

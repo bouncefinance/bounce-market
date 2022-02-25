@@ -54,6 +54,7 @@ interface IBuyDialogProps {
   isFinished?: boolean;
   onOk?: () => void;
   onView?: () => void;
+  cryptoCurrency?: string;
 }
 
 export const BuyDialog = ({
@@ -76,6 +77,7 @@ export const BuyDialog = ({
   isFinished = false,
   onOk,
   onView,
+  cryptoCurrency
 }: IBuyDialogProps) => {
   const classes = useBuyDialogStyles();
 
@@ -172,7 +174,7 @@ export const BuyDialog = ({
                 <h5>{t('buy-dialog.total')}</h5>
                 <h5>
                   {showTotal}
-                  {' APE'} 
+                  {cryptoCurrency}
                   {/* {getTokenSymbol(chainId)} */}
                 </h5>
               </Grid>
@@ -238,6 +240,7 @@ export const BuyDialog = ({
       isFinished,
       onOk,
       onView,
+      cryptoCurrency
     ],
   );
 

@@ -2,7 +2,7 @@ import { RoutesConfiguration } from 'modules/overview/Routes';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../Logo';
-import { ReactComponent as LogoImg } from './assets/logo.svg';
+// import { ReactComponent as LogoImg } from './assets/logo.svg';
 import { useLogoByBounceStyles } from './useLogoByBounceStyles';
 
 interface ILogoByBounceProps {
