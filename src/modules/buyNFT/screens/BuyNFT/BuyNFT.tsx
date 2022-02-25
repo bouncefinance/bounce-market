@@ -692,6 +692,7 @@ export const BuyNFT = () => {
                           }
                           currentPrice={poolDetails.price}
                           isPack={false}
+                          cryptoCurrency={item.tokenSymbol}
                         />
                       )}
                     </Mutation>
