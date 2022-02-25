@@ -5,6 +5,8 @@ export const ZERO_ADDRESS2 = '0x000000000000000000000000000000000000dead';
 
 export const isOtherPlatformCode = 0;
 
+export const isShowFtTabs = false;
+
 // TODO: at the end all features should be activated
 export const featuresConfig = {
   /**
@@ -175,18 +177,18 @@ export const DefaultChainId = BlockchainNetworkId.mainnet;
 export const getTokenSymbol = (chainId: BlockchainNetworkId) =>
   BlockChainTokenSymbol[chainId] || DefaultTokenSymbol;
 
-  export enum NftFtKeys {
-    NFT,
-    FT
-  }
+export enum NftFtKeys {
+  NFT,
+  FT,
+}
 
-export  const NftFtTabs = [
-    {
-      label: 'NFT',
-      value: NftFtKeys.NFT,
-    },
-    {
-      label: 'FT',
-      value: NftFtKeys.FT,
-    },
-  ]
+export const NftFtTabs = [
+  {
+    label: 'NFT',
+    value: NftFtKeys.NFT,
+  },
+  {
+    label: 'FT',
+    value: NftFtKeys.FT,
+  },
+];

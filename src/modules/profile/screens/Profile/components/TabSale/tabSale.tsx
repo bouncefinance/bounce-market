@@ -1,9 +1,13 @@
-import { Tab, Tabs } from "@material-ui/core";
-import { useTabActivityStyles } from "modules/profile/components/TabActivity/useTabActivityStyles";
-import { useCallback, useState } from "react";
-import { NftFtKeys, NftFtTabs as tabs } from 'modules/common/conts';
-import { TabSaleNft } from "./tabSaleNft";
-import { TabSelaErc20 } from "./tabSelaErc20";
+import { Tab, Tabs } from '@material-ui/core';
+import { useTabActivityStyles } from 'modules/profile/components/TabActivity/useTabActivityStyles';
+import { useCallback, useState } from 'react';
+import {
+  isShowFtTabs,
+  NftFtKeys,
+  NftFtTabs as tabs,
+} from 'modules/common/conts';
+import { TabSaleNft } from './tabSaleNft';
+import { TabSelaErc20 } from './tabSelaErc20';
 
 export const TabSale: React.FC<{
   isOther?: boolean;
@@ -17,32 +21,40 @@ export const TabSale: React.FC<{
     setTabKey(value);
   }, []);
 
-  return <>
-
-    <Tabs
-      variant="scrollable"
-      classes={{
-        root: styles.tabs,
-        indicator: styles.tabsIndicator,
-      }}
-      onChange={onTabsChange}
-      value={tabKey}
-    >
-      {tabs.map(tab => (
-        <Tab
-          key={tab.value}
+  return (
+    <>
+      {isShowFtTabs && (
+        <Tabs
+          variant="scrollable"
           classes={{
-            root: styles.tabRoot,
-            selected: styles.tabSelected,
+            root: styles.tabs,
+            indicator: styles.tabsIndicator,
           }}
-          label={tab.label}
-          value={tab.value}
+          onChange={onTabsChange}
+          value={tabKey}
+        >
+          {tabs.map(tab => (
+            <Tab
+              key={tab.value}
+              classes={{
+                root: styles.tabRoot,
+                selected: styles.tabSelected,
+              }}
+              label={tab.label}
+              value={tab.value}
+            />
+          ))}
+        </Tabs>
+      )}
+      {tabKey === NftFtKeys.NFT ? (
+        <TabSaleNft
+          isOther={isOther}
+          isCollectionSale={isCollectionSale}
+          reload={reload}
         />
-      ))}
-    </Tabs>
-    {tabKey === NftFtKeys.NFT ?
-      <TabSaleNft isOther={isOther} isCollectionSale={isCollectionSale} reload={reload} />
-      : <TabSelaErc20 isOther={isOther} reload={reload} />
-    }
-  </>
+      ) : (
+        <TabSelaErc20 isOther={isOther} reload={reload} />
+      )}
+    </>
+  );
 };
