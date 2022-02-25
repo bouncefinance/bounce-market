@@ -505,7 +505,7 @@
       "wrong-reserve-bid-amount": "Make sure Minimum bid ≤ Reserve price"
     },
     "expire": "Will expire on {value, date, medium} {value, time, short}",
-    "fee": "Fangible fee {value}%",
+    "fee": "MetaApes fee {value}%",
     "label": {
       "amount": "Amount",
       "count": "Count",
@@ -526,7 +526,7 @@
       "reservePrice": "Setting a reserve price creates a hidden limit. If you receive no bids equal to or greater than your reserve, your auction will not be sold."
     },
     "royalty": {
-      "platform-fee": "Fangible fee",
+      "platform-fee": "MetaApes fee",
       "royalty-fee": "Royalty fee",
       "royalty-fee-tip": "Royalty fees are transferred to the NFT creator immediately after a sale.",
       "receive-fs": "For each edition, you will receive",

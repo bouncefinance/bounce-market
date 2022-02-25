@@ -1,6 +1,7 @@
 import { RoutesConfiguration } from 'modules/overview/Routes';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Logo } from '../Logo';
 import { ReactComponent as LogoImg } from './assets/logo.svg';
 import { useLogoByBounceStyles } from './useLogoByBounceStyles';
 
@@ -16,7 +17,8 @@ export const LogoByBounce = ({ className }: ILogoByBounceProps) => {
       to={RoutesConfiguration.Overview.generatePath()}
       className={classes.root}
     >
-      <LogoImg className={classes.img} />
+      {/* <LogoImg className={classes.img} /> */}
+      <Logo />
     </Link>
   );
 };

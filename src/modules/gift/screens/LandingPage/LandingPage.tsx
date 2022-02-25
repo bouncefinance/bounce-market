@@ -108,7 +108,7 @@ export const LandingPage: React.FC = () => {
       </Button>
 
       <Typography variant="body1" className={classes.description2}>
-        By clicking Continue, you agree to Fangible’s Privacy Policy and
+        By clicking Continue, you agree to MetaApes’s Privacy Policy and
         WalletConnect’s Terms of Service.
       </Typography>
     </Box>

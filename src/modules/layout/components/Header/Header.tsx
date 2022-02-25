@@ -28,9 +28,10 @@ import {
 import { useCallback } from 'react';
 import { setChainId } from 'modules/common/utils/localStorage';
 import { RoutesConfiguration } from 'modules/createNFT/Routes';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { MarketRoutesConfig } from 'modules/market/Routes';
+import { useHeaderLinksStyles } from '../HeaderLinks/HeaderLinksStyles';
 
 export const Header = () => {
   const {
@@ -46,6 +47,7 @@ export const Header = () => {
 
   const { isConnected, handleConnect, loading, chainId } = useAccount();
   const classes = useHeaderStyles();
+  const linksClasses = useHeaderLinksStyles();
   const isXLUp = useIsXLUp();
 
   const {
@@ -74,6 +76,7 @@ export const Header = () => {
 
   const renderedWallet = <Wallet />;
 
+  const lindSpaceStyles = { marginRight: 35 };
   const renderedDesktop = (
     <>
       <Search className={classes.search} />
@@ -82,13 +85,37 @@ export const Header = () => {
       {/* {featuresConfig.howItWorkPage && <HeaderLinksSecondary />} */}
 
       <div>
-        <Link to={DropsRoutesConfig.BlindBox.generatePath()}>Blind Box</Link>
-        &nbsp; &nbsp;
-        <Link to={MarketRoutesConfig.Market.generatePath()}>Market</Link>
-        &nbsp; &nbsp;
-        <Link to={RoutesConfiguration.DepositToken.generatePath()}>
+        <Button
+          component={NavLink}
+          variant="text"
+          style={lindSpaceStyles}
+          activeClassName={linksClasses.activeLink}
+          className={linksClasses.link}
+          to={DropsRoutesConfig.BlindBox.generatePath()}
+        >
+          Blind Box
+        </Button>
+        <Button
+          component={NavLink}
+          variant="text"
+          style={lindSpaceStyles}
+          activeClassName={linksClasses.activeLink}
+          className={linksClasses.link}
+          to={MarketRoutesConfig.Market.generatePath()}
+        >
+          Market
+        </Button>
+        <Button
+          style={lindSpaceStyles}
+          component={NavLink}
+          variant="text"
+          activeClassName={linksClasses.activeLink}
+          className={linksClasses.link}
+          to={RoutesConfiguration.DepositToken.generatePath()}
+          href={RoutesConfiguration.DepositToken.generatePath()}
+        >
           {t('header.deposit')}
-        </Link>
+        </Button>
       </div>
 
       {/* <Button

@@ -147,9 +147,9 @@ export const Footer = () => {
             <LocaleSwitcher />
           </Grid>
         </Grid>
-        <p className={classes.description}>
-          Non-fungible tokens + Fans = Fangible
-        </p>
+        {/* <p className={classes.description}>
+          Non-fungible tokens + Fans = MetaApes
+        </p> */}
       </Container>
     </footer>
   );

@@ -9,7 +9,7 @@ import { Store } from 'redux';
 import { RootState } from '../../../../store';
 import { setChainId, setJWTToken } from 'modules/common/utils/localStorage';
 
-const SIGN_STR = 'Welcome to Fangible!';
+const SIGN_STR = 'Welcome to MetaApes!';
 
 // TODO pass unit (now BNB hardcoded)
 export interface ISetAccountData {

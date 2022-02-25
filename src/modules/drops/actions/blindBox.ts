@@ -119,27 +119,39 @@ export const buyBlindBox = createSmartAction<
               // }
 
               const buy = () =>
-                new Promise((resolve, reject) => {
-                  ApeBlindBox_CT.methods
-                    .buyBox(blindBoxId)
-                    .send({
-                      from: address,
-                      value: approveVal.multipliedBy(1e18).toString(),
-                    })
-                    .on('transactionHash', (hash: string) => {
-                      // Pending status
-                    })
-                    .on('receipt', async (receipt: TransactionReceipt) => {
-                      resolve(receipt);
-                    })
-                    .on('error', (error: Error) => {
-                      reject(error);
-                    });
+                new Promise(async (resolve, reject) => {
+                  try {
+                    const estimateGas = await ApeBlindBox_CT.methods
+                      .buyBox(blindBoxId)
+                      .estimateGas({
+                        from: address,
+                        value: approveVal.multipliedBy(1e18).toString(),
+                      });
+                    console.log('estimateGas---->', estimateGas);
+                    ApeBlindBox_CT.methods
+                      .buyBox(blindBoxId)
+                      .send({
+                        from: address,
+                        value: approveVal.multipliedBy(1e18).toString(),
+                        gas: (estimateGas * 3) | 0,
+                      })
+                      .on('transactionHash', (hash: string) => {
+                        // Pending status
+                      })
+                      .on('receipt', async (receipt: TransactionReceipt) => {
+                        resolve(receipt);
+                      })
+                      .on('error', (error: Error) => {
+                        reject(error);
+                      });
+                  } catch (error) {
+                    reject(error);
+                  }
                 });
 
               await buy();
             } catch (error) {
-              throw new Error('catch error');
+              throw new Error('Error');
             }
 
             return true;

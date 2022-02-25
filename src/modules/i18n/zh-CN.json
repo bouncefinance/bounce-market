@@ -491,7 +491,7 @@
       "wrong-reserve-bid-amount": "请确保：最低出价 ≤ 最低购买价"
     },
     "expire": "将于 {value, date, medium} {value, time, short}结束",
-    "fee": "Fangible平台费{value}%",
+    "fee": "MetaApes平台费{value}%",
     "label": {
       "amount": "数量",
       "count": "数量",
@@ -512,7 +512,7 @@
       "reservePrice": "设置最低购买价后，若买家出价未达到或超过该价格，您的拍卖NFT将不会被出售。"
     },
     "royalty": {
-      "platform-fee": "Fangible平台费",
+      "platform-fee": "MetaApes平台费",
       "royalty-fee": "版税费",
       "royalty-fee-tip": "版税费会在NFT售出后，直接发送给其创建者",
       "receive-fs": "每一售出的份数，你将获得",

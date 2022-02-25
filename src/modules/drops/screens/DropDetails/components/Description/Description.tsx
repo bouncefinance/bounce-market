@@ -45,7 +45,7 @@ export const Description = ({ data, loading, pristine }: IDescriptionProps) => {
           share={
             <SocialShare
               // TODO: make the relevant description for sharing
-              titleString={`Fangible Drop: ${data.title}`}
+              titleString={`MetaApes Drop: ${data.title}`}
               buttonContent={
                 <Button
                   className={classes.shareBtn}

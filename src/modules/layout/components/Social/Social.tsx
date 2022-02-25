@@ -21,7 +21,7 @@ export const Social = (props: BoxProps) => {
       {
         title: 'Twitter',
         icon: TwitterIcon,
-        href: 'https://twitter.com/Fangible_',
+        href: 'https://twitter.com/MetaApes_',
       },
       {
         title: 'Instagram',
@@ -31,8 +31,8 @@ export const Social = (props: BoxProps) => {
       {
         title: 'Discord',
         icon: DiscordIcon,
-        href: 'https://discord.gg/Bs9n5d6VrP'
-      }
+        href: 'https://discord.gg/Bs9n5d6VrP',
+      },
     ],
     [],
   );

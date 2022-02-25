@@ -58,9 +58,9 @@ export const SocialShare = ({
           className={classes.menuButton}
           url={url}
           title={titleForSocial}
-          hashtags={['Fangible', 'nft']}
-          via={'Fangible_'}
-          related={['@Fangible_']}
+          hashtags={['MetaApes', 'nft']}
+          via={'MetaApes_'}
+          related={['@MetaApes_']}
         >
           <TwitterIcon className={classes.menuIcon} />
           {t('social.twitter')}
@@ -73,7 +73,7 @@ export const SocialShare = ({
           className={classes.menuButton}
           url={url}
           quote={titleForSocial}
-          hashtag="#Fangible"
+          hashtag="#MetaApes"
         >
           <FacebookIcon className={classes.menuIcon} />
           {t('social.facebook')}
@@ -85,7 +85,7 @@ export const SocialShare = ({
           resetButtonStyle={false}
           className={classes.menuButton}
           url={url}
-          title={`${titleForSocial} \n#Fangible #nft`}
+          title={`${titleForSocial} \n#MetaApes #nft`}
         >
           <TelegramIcon className={classes.menuIcon} />
           {t('social.telegram')}

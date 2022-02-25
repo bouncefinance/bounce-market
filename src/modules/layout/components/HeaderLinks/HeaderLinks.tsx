@@ -1,4 +1,6 @@
 // import { DropsRoutesConfig } from 'modules/drops/Routes';
+import { RoutesConfiguration } from 'modules/createNFT/Routes';
+import { DropsRoutesConfig } from 'modules/drops/Routes';
 import { useLayout } from 'modules/layout/hooks/useLayout';
 import { MarketRoutesConfig } from 'modules/market/Routes';
 import { Button } from 'modules/uiKit/Button';
@@ -66,6 +68,14 @@ export const HeaderLinks = () => {
       {
         label: t('header.market'),
         href: MarketRoutesConfig.Market.generatePath(),
+      },
+      {
+        label: 'Blind Box',
+        href: DropsRoutesConfig.BlindBox.generatePath(),
+      },
+      {
+        label: t('header.deposit'),
+        href: RoutesConfiguration.DepositToken.generatePath(),
       },
     ],
     [],

@@ -86,7 +86,7 @@ export const BuyBlindBoxDialog = ({
         onSubmit={handleSubmit}
         className={classes.form}
       >
-        <Box display="flex">
+        <Box display="flex" mb={2}>
           <Box flex={1} mb={2}>
             <Field
               component={InputField}
@@ -101,33 +101,42 @@ export const BuyBlindBoxDialog = ({
               disabled
             />
           </Box>
-          <Box ml={2} mb={2} width={150}>
-            <Field
-              component={InputField}
-              name="quantity"
-              type="number"
-              label={'Quantity'}
-              fullWidth={true}
-            />
-          </Box>
+          {false && (
+            <Box ml={2} mb={2} width={150}>
+              <Field
+                component={InputField}
+                name="quantity"
+                type="number"
+                label={'Quantity'}
+                fullWidth={true}
+              />
+            </Box>
+          )}
         </Box>
 
-        <Box mb={4} display="flex" justifyContent="space-between">
-          <Typography>Total</Typography>
-          <Typography>
-            {new BigNumber(form?.getFieldState('quantity')?.value ?? '0')
-              .multipliedBy(
-                new BigNumber(item?.price).dividedBy(100).dp(2).toString() ??
-                  '0',
-              )
-              .toFixed(2)}{' '}
-            {chainIdSymbol}
-          </Typography>
-        </Box>
+        {false && (
+          <Box mb={4} display="flex" justifyContent="space-between">
+            <Typography>Total</Typography>
+            <Typography>
+              {new BigNumber(form?.getFieldState('quantity')?.value ?? '0')
+                .multipliedBy(
+                  new BigNumber(item?.price).dividedBy(100).dp(2).toString() ??
+                    '0',
+                )
+                .toFixed(2)}{' '}
+              {chainIdSymbol}
+            </Typography>
+          </Box>
+        )}
         <Mutation type={buyBlindBox.toString()} action={buyBlindBox}>
           {({ loading }) => {
             return (
-              <Button loading={loading} type="submit" fullWidth>
+              <Button
+                disabled={swapNum === (item?.total_supply).toString()}
+                loading={loading}
+                type="submit"
+                fullWidth
+              >
                 DRAW
               </Button>
             );

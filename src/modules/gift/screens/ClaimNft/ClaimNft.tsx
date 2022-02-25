@@ -216,7 +216,7 @@ export const ClaimNft: React.FC = () => {
             history.push('/');
           }}
         >
-          Back to Fangible
+          Back to MetaApes
         </Button>
       )}
 

@@ -31,7 +31,8 @@ export const SelectChainDialog = ({
 }) => {
   const classes = useSelectChainStyled();
   const { handleChangeNetworkToSupported } = useAccount();
-  const chainList: ChainType[] = [1, 56, 1111];
+  // const chainList: ChainType[] = [1, 56, 1111];
+  const chainList: ChainType[] = [56];
 
   const renderCard = ({
     icon,

@@ -32,6 +32,7 @@ import { ApeBlindBox } from 'modules/web3/contracts';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import { getBlindBoxVerify } from 'modules/api/common/getBlindBoxVerify';
+import { useAccount } from 'modules/account/hooks/useAccount';
 
 enum IsVerifyEnum {
   LOADING,
@@ -43,7 +44,8 @@ type onDrawType = (item: IBlindBoxItem, nftSwapNum: string) => void;
 const IsBlindBoxSupportChainList = [4, 56];
 export const BlindBox = () => {
   const classes = useBlindBoxStyles({});
-  const { chainId, web3, address } = useWeb3React();
+  const { chainId } = useAccount();
+  const { web3, address } = useWeb3React();
   const dispatch = useDispatch();
   const [isBuyOpen, setIsBuyOpen] = useState(false);
   const [swapNum, setSwapNum] = useState('');
@@ -62,8 +64,11 @@ export const BlindBox = () => {
   );
 
   useEffect(() => {
+    console.log('chainId------>', chainId);
     if (IsBlindBoxSupportChainList.includes(chainId)) {
-      dispatch(fetchBlindBoxList({}));
+      setTimeout(() => {
+        dispatch(fetchBlindBoxList({}));
+      }, 200);
     }
   }, [chainId, dispatch]);
   //   const { data, loading } = useQuery<IBlindBoxList>({
@@ -86,17 +91,22 @@ export const BlindBox = () => {
               empty={<NothingFound />}
             >
               {({ data }) => {
+                console.log('IBlindBoxList---->', data?.data?.length === 0);
                 //   return <RenderedSkeletons />;
-                return data?.data?.map(item => (
-                  <ItemView
-                    key={item.id}
-                    item={item}
-                    onDraw={onDraw}
-                    web3={web3}
-                    chainId={chainId}
-                    address={address}
-                  />
-                ));
+                return data?.data?.length === 0 ? (
+                  <NothingFound />
+                ) : (
+                  data?.data?.map(item => (
+                    <ItemView
+                      key={item.id}
+                      item={item}
+                      onDraw={onDraw}
+                      web3={web3}
+                      chainId={chainId}
+                      address={address}
+                    />
+                  ))
+                );
               }}
             </Queries>
           ) : (
@@ -173,9 +183,11 @@ const ItemView = ({
     }
   };
   useEffect(() => {
-    getBoxTotalSell();
+    if (chainId && IsBlindBoxSupportChainList.includes(chainId)) {
+      getBoxTotalSell();
+    }
     // eslint-disable-next-line
-  }, [chainId]);
+  }, [chainId, address]);
   useEffect(() => {
     if (!localStorage.notBlindBoxVerify) initVerify();
     // eslint-disable-next-line
@@ -268,7 +280,11 @@ const Detail = ({
           style={{ flex: 1, maxWidth: 350, marginLeft: 15 }}
           disabled={isTimeOver || isVerify === IsVerifyEnum.NO}
         >
-          {isVerify === IsVerifyEnum.NO ? 'Check Fail' : 'DRAW'}
+          {isVerify === IsVerifyEnum.NO
+            ? isMobile
+              ? 'Not qualified'
+              : 'Not qualified'
+            : 'DRAW'}
         </Button>
       </Box>
     </>
