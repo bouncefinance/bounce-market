@@ -110,9 +110,11 @@ export const BlindBox = () => {
               }}
             </Queries>
           ) : (
-            <>
-              <Typography variant="h2">Not support this chain</Typography>
-            </>
+            <Box mb={10}>
+              <Typography variant="h3" align="center" color="textSecondary">
+                Not support this chain
+              </Typography>
+            </Box>
           )}
         </div>
       </div>
