@@ -174,7 +174,7 @@ export const BuyDialog = ({
                 <h5>{t('buy-dialog.total')}</h5>
                 <h5>
                   {showTotal}
-                  {cryptoCurrency}
+                  {' ' + cryptoCurrency}
                   {/* {getTokenSymbol(chainId)} */}
                 </h5>
               </Grid>
