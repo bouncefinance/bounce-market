@@ -33,6 +33,11 @@ import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import { getBlindBoxVerify } from 'modules/api/common/getBlindBoxVerify';
 import { useAccount } from 'modules/account/hooks/useAccount';
+import { useQuery } from '@redux-requests/react';
+import {
+  ISetAccountData,
+  setAccount,
+} from 'modules/account/store/actions/setAccount';
 
 enum IsVerifyEnum {
   LOADING,
@@ -45,7 +50,13 @@ const IsBlindBoxSupportChainList = [4, 56];
 export const BlindBox = () => {
   const classes = useBlindBoxStyles({});
   const { chainId } = useAccount();
-  const { web3, address } = useWeb3React();
+  const { address } = useWeb3React();
+
+  const { data } = useQuery<ISetAccountData | null>({
+    type: setAccount.toString(),
+  });
+  const web3 = data?.web3;
+
   const dispatch = useDispatch();
   const [isBuyOpen, setIsBuyOpen] = useState(false);
   const [swapNum, setSwapNum] = useState('');
@@ -140,7 +151,7 @@ const ItemView = ({
   item: IBlindBoxItem;
   onDraw: onDrawType;
   chainId?: number;
-  web3: Web3;
+  web3?: Web3;
   address: string;
 }) => {
   const classes = useBlindBoxStyles({});
@@ -156,6 +167,10 @@ const ItemView = ({
     if (chainId) {
       if (!item.phase_id) {
         return console.error('not phase_id');
+      }
+      if (!web3) {
+        window.location.reload();
+        return;
       }
       const ApeBlindBox_CT = new web3.eth.Contract(
         ApeBlindBox,
