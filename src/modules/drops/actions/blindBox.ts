@@ -150,8 +150,8 @@ export const buyBlindBox = createSmartAction<
                 });
 
               await buy();
-            } catch (error) {
-              throw new Error('Error');
+            } catch (error: any) {
+              throw new Error(error?.message);
             }
 
             return true;
