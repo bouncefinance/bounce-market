@@ -4,6 +4,7 @@ import {
   INftCardHelpsParams,
   NftCardHelps,
 } from 'modules/common/utils/nftCard';
+import { truncateWalletAddr } from 'modules/common/utils/truncateWalletAddr';
 import React, { useMemo } from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -74,7 +75,7 @@ export const CardProfileInfo = ({
       return (
         <Tooltip
           key={uid(props, i)}
-          title={`${typLabel}: ${name || '--'}`}
+          title={`${typLabel}: ${name || truncateWalletAddr(address ?? '')}`}
           arrow
           placement="top"
           classes={{
