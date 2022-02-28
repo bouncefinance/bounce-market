@@ -16,7 +16,9 @@ export const Overview = () => {
             width: '100vw',
             maxHeight: '500px',
           }}
-          src="https://ap1-cfs3-media-bounce.bounce.finance/e0ffc3992712350b70c1f2a2d9cb8266-1642157257.png"
+          original
+          // src="https://ap1-cfs3-media-bounce.bounce.finance/e0ffc3992712350b70c1f2a2d9cb8266-1642157257.png"
+          src="https://ap1-cfs3-media-bounce.bounce.finance/a90fea2c135a3dfaee31a8c1fdfda0c7-1646063280.jpg"
         />
       </div>
 

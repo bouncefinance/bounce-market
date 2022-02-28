@@ -71,5 +71,18 @@ export const useBlindBoxStyles = makeStyles<Theme, { bgColor?: string }>(theme =
         [theme.breakpoints.down('sm')]: {
             fontSize: 16,
         }
+    },
+    
+    dialogHead: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    viewExplorer: {
+        color: 'rgba(255,255,255,0.3)',
+        textDecoration: 'underline',
+    },
+    tips: {
+        color: 'rgba(255,255,255,0.3)'
     }
 }))

@@ -13,13 +13,11 @@ import { buyBlindBox, IBlindBoxItem } from 'modules/drops/actions/blindBox';
 import { InputField } from 'modules/form/components/InputField';
 import { FormErrors } from 'modules/form/utils/FormErrors';
 import { t } from 'modules/i18n/utils/intl';
-import { ProfileRoutesConfig } from 'modules/profile/ProfileRoutes';
 import { Button } from 'modules/uiKit/Button';
 import { Img } from 'modules/uiKit/Img';
 import { ModalCloseBtn } from 'modules/uiKit/ModalCloseBtn';
 import { useState } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
-import { useHistory } from 'react-router-dom';
 import { getSymbolName } from '../Icons/Chains';
 import { LayersIcon } from '../Icons/LayersIcon';
 import { useBlindBoxDialogStyles } from './useBuyBlindBoxDialogStyles';
@@ -31,15 +29,16 @@ export interface IBuyCoinFormData {
 export const BuyBlindBoxDialog = ({
   isOpen,
   onClose,
+  setIsSuccessOpen,
   item,
   swapNum,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  setIsSuccessOpen: (val: boolean) => void;
   item: IBlindBoxItem;
   swapNum: string;
 }) => {
-  const { push } = useHistory();
   const classes = useBlindBoxDialogStyles();
   const { chainId } = useWeb3React();
   const dispatch = useDispatchRequest();
@@ -50,7 +49,9 @@ export const BuyBlindBoxDialog = ({
       dispatch(buyBlindBox(payload, item.phase_id)).then(({ error }: any) => {
         if (!error) {
           console.log('success');
-          push(ProfileRoutesConfig.UserProfile.generatePath());
+          onClose()
+          setIsSuccessOpen(true)
+          // push(ProfileRoutesConfig.UserProfile.generatePath());
         }
       });
     } catch (error) {}
