@@ -39,6 +39,10 @@ export const BuyBlindBoxDialog = ({
   item: IBlindBoxItem;
   swapNum: string;
 }) => {
+  const able =
+    swapNum === '-'
+      ? '-'
+      : new BigNumber(item.total_supply).minus(swapNum || '0').toNumber();
   const classes = useBlindBoxDialogStyles();
   const { chainId } = useWeb3React();
   const dispatch = useDispatchRequest();
@@ -133,7 +137,7 @@ export const BuyBlindBoxDialog = ({
           {({ loading }) => {
             return (
               <Button
-                disabled={swapNum === (item?.total_supply).toString()}
+                disabled={able.toString() === (item?.total_supply).toString()}
                 loading={loading}
                 type="submit"
                 fullWidth
@@ -187,13 +191,7 @@ export const BuyBlindBoxDialog = ({
                 placement="top"
               >
                 <Typography className={classes.soldNumber}>
-                  &nbsp;&nbsp;{' '}
-                  {swapNum === '-'
-                    ? '-'
-                    : new BigNumber(item.total_supply)
-                        .minus(swapNum || '0')
-                        .toNumber()}{' '}
-                  / {item?.total_supply}
+                  &nbsp;&nbsp; {able} / {item?.total_supply}
                 </Typography>
               </Tooltip>
             </Box>
