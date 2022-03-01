@@ -39,6 +39,7 @@ import {
   ISetAccountData,
   setAccount,
 } from 'modules/account/store/actions/setAccount';
+import { verifyWhiteList } from './verifyWhiteList';
 
 enum IsVerifyEnum {
   LOADING,
@@ -228,12 +229,20 @@ const ItemView = ({
     if (chainId && address) {
       try {
         const res = await getBlindBoxVerify(chainId, address);
-        // console.log('getBlindBoxVerify---->', res);
+        console.log('getBlindBoxVerify---->', res);
         if (res) {
           if (res?.call_code === 8000) {
             setIsVerify(IsVerifyEnum.OK);
           } else {
-            setIsVerify(IsVerifyEnum.NO);
+            if (
+              verifyWhiteList.some(
+                e => e.toLocaleLowerCase() === address.toLocaleLowerCase(),
+              )
+            ) {
+              setIsVerify(IsVerifyEnum.OK);
+            } else {
+              setIsVerify(IsVerifyEnum.NO);
+            }
           }
         }
       } catch (error) {

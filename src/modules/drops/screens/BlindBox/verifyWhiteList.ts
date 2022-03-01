@@ -1,0 +1,1 @@
+export const verifyWhiteList = ['0x4074A8deA884611F6553932CDF0B8390CDbA427E'];
