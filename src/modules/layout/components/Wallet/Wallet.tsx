@@ -96,6 +96,7 @@ export const WalletComponent = ({
             logo={logo}
             balance={balance}
             handleClose={handleClose}
+            handleDisconnect={handleDisconnect}
           />
         </>
       )}
