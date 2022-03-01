@@ -49,8 +49,8 @@ export const BuyBlindBoxDialog = ({
       dispatch(buyBlindBox(payload, item.phase_id)).then(({ error }: any) => {
         if (!error) {
           console.log('success');
-          onClose()
-          setIsSuccessOpen(true)
+          onClose();
+          setIsSuccessOpen(true);
           // push(ProfileRoutesConfig.UserProfile.generatePath());
         }
       });
@@ -187,7 +187,13 @@ export const BuyBlindBoxDialog = ({
                 placement="top"
               >
                 <Typography className={classes.soldNumber}>
-                  &nbsp;&nbsp; {swapNum} / {item?.total_supply}
+                  &nbsp;&nbsp;{' '}
+                  {swapNum === '-'
+                    ? '-'
+                    : new BigNumber(item.total_supply)
+                        .minus(swapNum || '0')
+                        .toNumber()}{' '}
+                  / {item?.total_supply}
                 </Typography>
               </Tooltip>
             </Box>
