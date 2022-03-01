@@ -22,18 +22,17 @@ export const NftItemCard = ({
   hasAction?: boolean;
   reload?: () => void;
 }) => {
-  const [metadata, setMetadata] = useState<IMetadataInfo>()
+  const [metadata, setMetadata] = useState<IMetadataInfo>();
   const init = async () => {
     try {
-      const res = await getMetaData(item.itemId)
-      setMetadata(res)
-    } catch (error) {
-    }
-  }
+      const res = await getMetaData(item.itemId);
+      setMetadata(res);
+    } catch (error) {}
+  };
   useEffect(() => {
-    init()
-  // eslint-disable-next-line
-  }, [item.itemId])
+    init();
+    // eslint-disable-next-line
+  }, [item.itemId]);
   return (
     <ProductCard
       reload={reload}
@@ -58,6 +57,7 @@ export const NftItemCard = ({
         src: metadata?.image || item.litimgurl || item.fileUrl || 'xxx',
         objectFit: 'contain',
         loading: 'lazy',
+        original: Boolean(metadata?.image),
       }}
       toSale={
         isOther
