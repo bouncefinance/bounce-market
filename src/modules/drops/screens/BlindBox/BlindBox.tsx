@@ -11,7 +11,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { darkTheme } from 'modules/themes/darkTheme';
 import { Img } from 'modules/uiKit/Img';
 import { useBlindBoxStyles } from './useBlinkBoxStyles';
-import topImg from './assets/blindBoxBg.png';
+// import topImg from './assets/blindBoxBg.png';
 import { LayersIcon } from 'modules/common/components/Icons/LayersIcon';
 import { BuyBlindBoxDialog } from 'modules/common/components/BuyBlindBox/buyBlindBoxDialog';
 import { useCallback, useEffect, useState } from 'react';
@@ -42,6 +42,7 @@ import {
 import { verifyWhiteList } from './verifyWhiteList';
 import { ConnectWallet } from 'modules/router/components/ConnectWallet';
 
+const topImg = 'https://ap1-cfs3-media-bounce.bounce.finance/25165306fb14827ee235d93b67575fc1-1646144508.jpg'
 enum IsVerifyEnum {
   LOADING,
   NO,
