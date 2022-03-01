@@ -2,13 +2,14 @@ import { TokenSymbol } from 'modules/common/types/TokenSymbol';
 import { ReactComponent as EthereumIcon } from '../assets/ethereum.svg';
 import { ReactComponent as BinanceIcon } from '../assets/binance.svg';
 import { ReactComponent as SolanaIcon } from '../assets/solana.svg';
+import { ReactComponent as HecoIcon } from '../assets/heco.svg';
 import {
   BlockchainNetworkId,
   getBlockChainExplorerAddress,
 } from 'modules/common/conts';
 import { t } from 'modules/i18n/utils/intl';
 
-export type ChainType = 1 | 4 | 56 | 1111;
+export type ChainType = 1 | 4 | 56 | 128 | 1111;
 
 export const getChainConfig = (tarChain: ChainType) => {
   const chainList: {
@@ -69,6 +70,24 @@ export const getChainConfig = (tarChain: ChainType) => {
         rpcUrls: ['https://bsc-dataseed4.binance.org'],
         blockExplorerUrls: [
           getBlockChainExplorerAddress(BlockchainNetworkId.smartchain),
+        ],
+      },
+    },
+    128: {
+      icon: <HecoIcon />,
+      title: t('header.select-chain.heco'),
+      subTitle: '',
+      chainConfig: {
+        chainId: '0x80',
+        chainName: 'Huobi ECO Chain Mainnet',
+        nativeCurrency: {
+          name: 'Heco',
+          symbol: TokenSymbol.HT,
+          decimals: 18,
+        },
+        rpcUrls: ['https://http-mainnet.hecochain.com'],
+        blockExplorerUrls: [
+          getBlockChainExplorerAddress(BlockchainNetworkId.heco),
         ],
       },
     },
