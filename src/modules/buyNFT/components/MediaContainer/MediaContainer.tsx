@@ -1,12 +1,8 @@
 import { Box, Container, Grid } from '@material-ui/core';
 import classNames from 'classnames';
-import { ShareIcon } from 'modules/common/components/Icons/ShareIcon';
 import CardPutSaleTimer from 'modules/common/components/ProductCard/putsaleTimer';
-import { SocialShare } from 'modules/common/components/SocialShare';
-import { t } from 'modules/i18n/utils/intl';
 import { GoBack } from 'modules/layout/components/GoBack';
 import { NFTCategoryType } from 'modules/overview/actions/fetchItemsByFilter';
-import { Button } from 'modules/uiKit/Button';
 import React from 'react';
 import { VideoPlayer } from '../../../common/components/VideoPlayer';
 import { useMediaContainerStyles } from './useMediaContainerStyles';
@@ -51,16 +47,6 @@ export const MediaContainer = ({
 
           <Grid item>
             <Box display="flex" alignItems="center">
-              <SocialShare
-                titleString={title}
-                description={description}
-                buttonContent={
-                  <Button variant="outlined" className={classes.btn} rounded>
-                    <ShareIcon className={classes.btnIcon} />{' '}
-                    {t('social.share')}
-                  </Button>
-                }
-              />
               {LikeBtn}
             </Box>
           </Grid>

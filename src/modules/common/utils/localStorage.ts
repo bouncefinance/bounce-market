@@ -11,8 +11,10 @@ export const setChainId = (id: number) => {
 };
 
 export const getChainId = () => {
-  return localStorage.chainId
+  return localStorage.chainId && parseInt(localStorage.chainId, 10) !== 0
     ? parseInt(localStorage.chainId, 10)
-    : BlockchainNetworkId.mainnet;
+    : // : BlockchainNetworkId.mainnet;
+      // TODO
+      BlockchainNetworkId.rinkeby;
   // TODO chainId may invalid
 };
